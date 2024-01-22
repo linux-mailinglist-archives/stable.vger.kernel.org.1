@@ -1,125 +1,151 @@
-Return-Path: <stable+bounces-12770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F588372B7
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:37:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E9C8372BD
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:38:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 440291C2771C
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:37:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 606961F251C7
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A5B3F8D2;
-	Mon, 22 Jan 2024 19:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45013FB0B;
+	Mon, 22 Jan 2024 19:38:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/sA/J6Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9791E1EF07;
-	Mon, 22 Jan 2024 19:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED483F8FA
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 19:38:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705952246; cv=none; b=Q+aLq2dng5m4yxEARRlbGPkhq+mPH5UNMM+H+6Ku4yD1jEZJvCZ+8YwpRmPo57yqKmn5E1WlEtX+dZLY9ahEZ2sohjRkzDphY/Z2DunMA0phQpgmjpE/GqeXW0q85zU5eWETIhoddj9NQkXMleAvmq/954qD82U2huxCW9tQAIY=
+	t=1705952321; cv=none; b=PMs/VHL66eNcobtwonZFUdI83ZMf7sLWtzjngtrUlCVQfDExmmhyh7LkfsP0c843Ke2CYdlUA2Zvu1xpWGJoyA8YFRWI+rIOrY/IhfoFzZ7le0vX408DLQggCr2IuK4FJAy0m+sqdk1npbtepsNe6Tl0Y26QS0v+pCqr3+qdJIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705952246; c=relaxed/simple;
-	bh=RoIkcs5ey0VmVT8DRVQBY+Ice/V2Jk6D5ruHVfHqb6I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sUG9ZSZykP0Fa36paAJxEOp75We4mw+qZwJz3nyNgZysJfAf8oEZz0Vuwrl9dPDeZBlvQqEzwmwzD0LfsAfqx2ia/3QY3US6w5YGPTN+89Nv5ithFs4KRousWHHnNunwgAYXlVvhx1ov8QdENLoM6NP9rRL7ZyPX9LoCAOF9MDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5958d3f2d8aso225975eaf.1;
-        Mon, 22 Jan 2024 11:37:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705952244; x=1706557044;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nesK9y4qWZhrNCSiCMAkJgfEGumzzvprEvfcz7ekwg4=;
-        b=pFkB8C6kfiJ+Dkx0yQHLZ6JdwXEsXOb/OJiJSOY2tknnvnaDXFZBqWi+Z4TEuWUCjQ
-         jHJAfW0C+qEdbCfY/2jiNTXKld0czbD7zpJ/sfvSXdYu76FjLkrT8OwY6oKpoLf1Xa5N
-         KaE75jNGvPiYozIJUSlxxBptOdAzT+hJcTOGuBwqXxokIsGNhKI9APVPyYsehwHZi6BK
-         AOclO3QYnGpXhz4q17Mp8WxdvbUPeHvDUuwhePjwnhPPN8BN2gM8iXY8uLEyxycC5GuP
-         toCL3CKrdeI0FPR1fManrajl3KPXG5F5T24e6dVkh5zxg0K+coe5T9IucSIvk3hHfh8G
-         pkJg==
-X-Gm-Message-State: AOJu0YzIo8JZU82fXKkWJyR0Iwjnu82GtZ7CN7CoWOv6M+h/1QQWiq+Q
-	0PFcAynTXlh57ZlsusOwJsLU6CrydzjW97+uKhfw34Nac7MYq1GLheCloTJpE3qLh46yzwv7kYK
-	QeHVK6y8bsoA/FtZkTySLUHMmf9A=
-X-Google-Smtp-Source: AGHT+IH0fdGswoQ6uEC4cc+D2uB7ejqea2Nnj7UmJc5iLidGGpOGUvopdRgTpzEh6BeeFThhHzHcXlUkMCieOABJ27k=
-X-Received: by 2002:a4a:d744:0:b0:598:e709:7620 with SMTP id
- h4-20020a4ad744000000b00598e7097620mr7318381oot.1.1705952244669; Mon, 22 Jan
- 2024 11:37:24 -0800 (PST)
+	s=arc-20240116; t=1705952321; c=relaxed/simple;
+	bh=h4l9gomf5vr7XQk6DCdeeAbnUOr5z+eL0FNR9svWN9I=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=k4aJlu67wJOE+y7AMw9RQ/SqONRlpIblQGzCzudFHJiD8iiVMNQhI6bsLRMuoUWpMlXEaapxOv5dicQ9oC+QUoDpaa/I6pwkMBT47EKdSFwyLtId71vQ2+McjUG3kF1V9zpAXSmJDE7/mc2I3QhC5Onpl3Qy7fgMhFlgMZFAs0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/sA/J6Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA764C433C7;
+	Mon, 22 Jan 2024 19:38:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1705952321;
+	bh=h4l9gomf5vr7XQk6DCdeeAbnUOr5z+eL0FNR9svWN9I=;
+	h=Subject:To:Cc:From:Date:From;
+	b=i/sA/J6QpBEe+hpvKVjrMptWSbQqg++Br16M7R8nC+Ai3xsljVacJveuuWuR4HJdd
+	 asVO+JGZ574rMEmA9k6ZIci6GGcwAB4uoJ0Sxjye2FU4Fd6dqFJGTQSKiV8wUhTKwQ
+	 lj9j1/6V0uz/k4i6DZ3bv73ArhZWDx2Q03NnuY68=
+Subject: FAILED: patch "[PATCH] rootfs: Fix support for rootfstype= when root= is given" failed to apply to 4.19-stable tree
+To: stefanb@linux.ibm.com,gregkh@linuxfoundation.org,rob@landley.net,stable@vger.kernel.org,zohar@linux.ibm.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 22 Jan 2024 11:38:38 -0800
+Message-ID: <2024012238-coke-debrief-5c9b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240119113319.54158-1-mario.limonciello@amd.com> <CAAE01kHEperoassBmLwM3pWhJmWpjRS2fcE8VPkLAgvz7yAuQA@mail.gmail.com>
-In-Reply-To: <CAAE01kHEperoassBmLwM3pWhJmWpjRS2fcE8VPkLAgvz7yAuQA@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 22 Jan 2024 20:37:13 +0100
-Message-ID: <CAJZ5v0jXvjaC5niHqSxQyc+QnEj=gf+vgKrjjhdFkTgQrPHb3Q@mail.gmail.com>
-Subject: Re: [PATCH] cpufreq/amd-pstate: Fix setting scaling max/min freq values
-To: Wyes Karny <wkarny@gmail.com>, Mario Limonciello <mario.limonciello@amd.com>
-Cc: ray.huang@amd.com, rafael@kernel.org, viresh.kumar@linaro.org, 
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 22, 2024 at 3:57=E2=80=AFPM Wyes Karny <wkarny@gmail.com> wrote=
-:
->
-> On Sat, Jan 20, 2024 at 5:49=E2=80=AFAM Mario Limonciello
-> <mario.limonciello@amd.com> wrote:
-> >
-> > Scaling min/max freq values were being cached and lagging a setting
-> > each time.  Fix the ordering of the clamp call to ensure they work.
-> >
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217931
-> > Cc: stable@vger.kernel.org
-> > Cc: wkarny@gmail.com
-> > Fixes: febab20caeba ("cpufreq/amd-pstate: Fix scaling_min_freq and scal=
-ing_max_freq update")
-> > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
->
-> Reviewed-by: Wyes Karny <wkarny@gmail.com>
->
-> > ---
-> >  drivers/cpufreq/amd-pstate.c | 7 +++----
-> >  1 file changed, 3 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.=
-c
-> > index 1f6186475715..1791d37fbc53 100644
-> > --- a/drivers/cpufreq/amd-pstate.c
-> > +++ b/drivers/cpufreq/amd-pstate.c
-> > @@ -1232,14 +1232,13 @@ static void amd_pstate_epp_update_limit(struct =
-cpufreq_policy *policy)
-> >         max_limit_perf =3D div_u64(policy->max * cpudata->highest_perf,=
- cpudata->max_freq);
-> >         min_limit_perf =3D div_u64(policy->min * cpudata->highest_perf,=
- cpudata->max_freq);
-> >
-> > +       WRITE_ONCE(cpudata->max_limit_perf, max_limit_perf);
-> > +       WRITE_ONCE(cpudata->min_limit_perf, min_limit_perf);
-> > +
-> >         max_perf =3D clamp_t(unsigned long, max_perf, cpudata->min_limi=
-t_perf,
-> >                         cpudata->max_limit_perf);
-> >         min_perf =3D clamp_t(unsigned long, min_perf, cpudata->min_limi=
-t_perf,
-> >                         cpudata->max_limit_perf);
-> > -
-> > -       WRITE_ONCE(cpudata->max_limit_perf, max_limit_perf);
-> > -       WRITE_ONCE(cpudata->min_limit_perf, min_limit_perf);
-> > -
-> >         value =3D READ_ONCE(cpudata->cppc_req_cached);
-> >
-> >         if (cpudata->policy =3D=3D CPUFREQ_POLICY_PERFORMANCE)
-> > --
 
-Applied as 6.8-rc material, thanks!
+The patch below does not apply to the 4.19-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git checkout FETCH_HEAD
+git cherry-pick -x 21528c69a0d8483f7c6345b1a0bc8d8975e9a172
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012238-coke-debrief-5c9b@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+
+Possible dependencies:
+
+21528c69a0d8 ("rootfs: Fix support for rootfstype= when root= is given")
+037f11b4752f ("mnt_init(): call shmem_init() unconditionally")
+fd3e007f6c6a ("don't bother with registering rootfs")
+14a253ce4210 ("init_rootfs(): don't bother with init_ramfs_fs()")
+9bc61ab18b1d ("vfs: Introduce fs_context, switch vfs_kern_mount() to it.")
+505b050fdf42 ("Merge branch 'mount.part1' of git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 21528c69a0d8483f7c6345b1a0bc8d8975e9a172 Mon Sep 17 00:00:00 2001
+From: Stefan Berger <stefanb@linux.ibm.com>
+Date: Sun, 19 Nov 2023 20:12:48 -0500
+Subject: [PATCH] rootfs: Fix support for rootfstype= when root= is given
+
+Documentation/filesystems/ramfs-rootfs-initramfs.rst states:
+
+  If CONFIG_TMPFS is enabled, rootfs will use tmpfs instead of ramfs by
+  default.  To force ramfs, add "rootfstype=ramfs" to the kernel command
+  line.
+
+This currently does not work when root= is provided since then
+saved_root_name contains a string and rootfstype= is ignored. Therefore,
+ramfs is currently always chosen when root= is provided.
+
+The current behavior for rootfs's filesystem is:
+
+   root=       | rootfstype= | chosen rootfs filesystem
+   ------------+-------------+--------------------------
+   unspecified | unspecified | tmpfs
+   unspecified | tmpfs       | tmpfs
+   unspecified | ramfs       | ramfs
+    provided   | ignored     | ramfs
+
+rootfstype= should be respected regardless whether root= is given,
+as shown below:
+
+   root=       | rootfstype= | chosen rootfs filesystem
+   ------------+-------------+--------------------------
+   unspecified | unspecified | tmpfs  (as before)
+   unspecified | tmpfs       | tmpfs  (as before)
+   unspecified | ramfs       | ramfs  (as before)
+    provided   | unspecified | ramfs  (compatibility with before)
+    provided   | tmpfs       | tmpfs  (new)
+    provided   | ramfs       | ramfs  (new)
+
+This table represents the new behavior.
+
+Fixes: 6e19eded3684 ("initmpfs: use initramfs if rootfstype= or root= specified")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Rob Landley <rob@landley.net>
+Link: https://lore.kernel.org/lkml/8244c75f-445e-b15b-9dbf-266e7ca666e2@landley.net/
+Reviewed-and-Tested-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+Link: https://lore.kernel.org/r/20231120011248.396012-1-stefanb@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/init/do_mounts.c b/init/do_mounts.c
+index 5fdef94f0864..279ad28bf4fb 100644
+--- a/init/do_mounts.c
++++ b/init/do_mounts.c
+@@ -510,7 +510,10 @@ struct file_system_type rootfs_fs_type = {
+ 
+ void __init init_rootfs(void)
+ {
+-	if (IS_ENABLED(CONFIG_TMPFS) && !saved_root_name[0] &&
+-		(!root_fs_names || strstr(root_fs_names, "tmpfs")))
+-		is_tmpfs = true;
++	if (IS_ENABLED(CONFIG_TMPFS)) {
++		if (!saved_root_name[0] && !root_fs_names)
++			is_tmpfs = true;
++		else if (root_fs_names && !!strstr(root_fs_names, "tmpfs"))
++			is_tmpfs = true;
++	}
+ }
+
 
