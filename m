@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77695837F59
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD110838202
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C91E28D49B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 952181F244E9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E280262A01;
-	Tue, 23 Jan 2024 00:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D950F55C1E;
+	Tue, 23 Jan 2024 01:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lbc1l8Ty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZxfB33Fl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0992627F7;
-	Tue, 23 Jan 2024 00:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5C754BD6;
+	Tue, 23 Jan 2024 01:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971079; cv=none; b=AYFpBxf4VBOaBbyIMl4DWEudr3g5ny7pepyXkWGJ2Ojz10isxaCRTpvVBTJRjcWwraeox3snPsw6+0bzIfdJwmnWKYkUjxImzTuKH+6xyJ/c3jR7YCuhDwCsgf+QuAQE09leX7OG6ZBs06mAkf86J//EzPj2jIqgjz5nYbShstc=
+	t=1705974034; cv=none; b=CRBrzeU/qc4moP+WCTzKwWhT/KcXYFOSR7hT3M9nrInIEeJgw3akINEqPK3+O7AR4UPaM25Q+tQ3egMalRXx5j7+OyiWp/epwZefNvXalC3+RNO4GN52xD5eehIHU8OrxRxkskbrLFr6Ma8xqrNvAS96Qf9itNimvAsc+rRw588=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971079; c=relaxed/simple;
-	bh=+wUjYnoHsj2axSQlyPwjIlcZvjTC32HIGULzW+BfNs0=;
+	s=arc-20240116; t=1705974034; c=relaxed/simple;
+	bh=wJSbdoeku2YCbb/84+FLgImcLG3+RdTILHBZpZW0rXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FnrmEInhXR2o+AQi2q6oze6jzKpmsEHTZvY9REAjCwQNxqf5Eq2IXRn5CjZ+L+/ZEjUtMvLWeJ0H7z0dewNX1JOP1XjHDcOOnZLfNzXbjMXPu152NZZrAbExT5crkm9gYuhenJAlXCSRRT8aDpSmcreBHDC8w9kSUHvvJoigAT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lbc1l8Ty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07903C433F1;
-	Tue, 23 Jan 2024 00:51:18 +0000 (UTC)
+	 MIME-Version; b=DXWvWXDgc/yqHmAvZHdBkd0A2kr3YRyUykxaaZDWSdJju0h+QPbmHaYuSCKMffMg0aY8pyvL4ERZo+7F1QoRFKVKqiSU75gtGn0s0B1Ian/TyyG1ki6eeQT3Xg0Ub+ttMmEJmX32OHpTSdzDvKD5XW4Wu/FmXegEEJEGGC26c5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZxfB33Fl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB87DC43390;
+	Tue, 23 Jan 2024 01:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971079;
-	bh=+wUjYnoHsj2axSQlyPwjIlcZvjTC32HIGULzW+BfNs0=;
+	s=korg; t=1705974034;
+	bh=wJSbdoeku2YCbb/84+FLgImcLG3+RdTILHBZpZW0rXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lbc1l8Tyd297C6hoyhE6HwH387G0Gfwmf2lsU8BlkfR1oB6/8TnKAiO+8XOPRblEc
-	 tgBByp4p9TkW+kx8x7KQ35MbL6+DHPHR4KBG5P0WLkBtK6r8ieZariVecFvNCkWB7X
-	 ryKs+OFMDg7e523B1B3vnBMInNK1wGtkok3c+qYw=
+	b=ZxfB33FlxH/qb+5edIQY1/0RA2pHy+Hc57lj71MlJ1oNEYNZOxgmPYAQttxNLqr4Z
+	 QteVCVhAoJ6MQoKv0qZjs/mGZAvU5oy6IjH17CLW18J9YZyuWGBDKHkey47YMR3DSe
+	 449eZ37NXYqv9qfAABGarNwxgxBZywpMcDUumYw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 084/286] crypto: sa2ul - Return crypto_aead_setkey to transfer the error
+Subject: [PATCH 5.15 134/374] arm64: dts: qcom: sm8250: Make watchdog bark interrupt edge triggered
 Date: Mon, 22 Jan 2024 15:56:30 -0800
-Message-ID: <20240122235735.272745490@linuxfoundation.org>
+Message-ID: <20240122235749.301933870@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit ce852f1308ac738e61c5b2502517deea593a1554 ]
+[ Upstream commit 735d80e2e8e5d073ae8b1fff8b1589ea284aa5af ]
 
-Return crypto_aead_setkey() in order to transfer the error if
-it fails.
+As described in the patch ("arm64: dts: qcom: sc7180: Make watchdog
+bark interrupt edge triggered"), the Qualcomm watchdog timer's bark
+interrupt should be configured as edge triggered. Make the change.
 
-Fixes: d2c8ac187fc9 ("crypto: sa2ul - Add AEAD algorithm support")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 46a4359f9156 ("arm64: dts: qcom: sm8250: Add watchdog bark interrupt")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20231106144335.v2.5.I2910e7c10493d896841e9785c1817df9b9a58701@changeid
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sa2ul.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8250.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/sa2ul.c b/drivers/crypto/sa2ul.c
-index f15fc1fb3707..0888f4489a76 100644
---- a/drivers/crypto/sa2ul.c
-+++ b/drivers/crypto/sa2ul.c
-@@ -1848,9 +1848,8 @@ static int sa_aead_setkey(struct crypto_aead *authenc,
- 	crypto_aead_set_flags(ctx->fallback.aead,
- 			      crypto_aead_get_flags(authenc) &
- 			      CRYPTO_TFM_REQ_MASK);
--	crypto_aead_setkey(ctx->fallback.aead, key, keylen);
+diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+index 5d6551e1fcd8..8880e9cbc974 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -3947,7 +3947,7 @@ watchdog@17c10000 {
+ 			compatible = "qcom,apss-wdt-sm8250", "qcom,kpss-wdt";
+ 			reg = <0 0x17c10000 0 0x1000>;
+ 			clocks = <&sleep_clk>;
+-			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
+ 		};
  
--	return 0;
-+	return crypto_aead_setkey(ctx->fallback.aead, key, keylen);
- }
- 
- static int sa_aead_setauthsize(struct crypto_aead *tfm, unsigned int authsize)
+ 		timer@17c20000 {
 -- 
 2.43.0
 
