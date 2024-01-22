@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4377837FCA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08E5F838270
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EB661C2943D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD16B286294
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612C712BE9C;
-	Tue, 23 Jan 2024 00:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8613C5BAF7;
+	Tue, 23 Jan 2024 01:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdXcqF2s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxM0xSro"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF1C12BE9A;
-	Tue, 23 Jan 2024 00:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B445BAD4;
+	Tue, 23 Jan 2024 01:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971349; cv=none; b=pmF0npW1cBJY2eaIwNo/qb6UOhURPLaD5064r7hsD6JGr09Gn7GhAhJGothhM6Iv+A2/sSFPMDKi1oe3AiJAA9bIXvUfEWaXO+8Iqi+zu/YmbWqjOFiKBD4hFpa/k5E+Tqx252cmOwjEOANdrDJfvuE1c2h8MJss365LkJNszZ8=
+	t=1705974353; cv=none; b=uPvQ3ImIhche3tMW1C5HnbuKlwXUWuRTQXCp2KC4UyngU+hzHeZ8QpcyKJucUR41bjPzV6Y9k8DTWRSxt+ngvhS+7BzlDrBTopfz2srKlMOIm5sNdqsDgyUqIp+j37BCktd3XGAvZGLMmm1M4C1dpsM76yG01KvRXMrP99+uVos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971349; c=relaxed/simple;
-	bh=V95U7RPQI4O3lFWGllgNkDCeSFv2jz3iaTi0yycKeVg=;
+	s=arc-20240116; t=1705974353; c=relaxed/simple;
+	bh=e9Z9CMYMJV92S8DutiGS81hHQpzh4UY2NzYW95FUX1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dwZYD2DyoMt9pvhCFtatbN9EycgZdSrvTWwgV+ywOZiQPAT96rVvQGDR52atFDcsGTuXUjp0ZCLdgOYv1qyX9dyHjPNgdBn/uO+PASOuHXWJytB4Mct66M0dJkk61h7nQGa+VPTR2CHSZrIXCZNdnxBsdqdhnTZuE3SlVVeyeJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdXcqF2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE21C433F1;
-	Tue, 23 Jan 2024 00:55:48 +0000 (UTC)
+	 MIME-Version; b=QCMv6GJxrJcuZmw+Zb9gEWADDMRb5el49aSr3aEyD+Y2Iz5Iw+/vIS/zJVigsTwgg/hRQdEVKBEkoaREcbizGvX+ykN8HYUdDmG0LILGA/9NCPNPnyW5Tm7+f8uhWnOsgeCnmBQ6zrxjRrlFromgnTsHZTLCP8FNF6MxBzIN7G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxM0xSro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0C0C43390;
+	Tue, 23 Jan 2024 01:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971348;
-	bh=V95U7RPQI4O3lFWGllgNkDCeSFv2jz3iaTi0yycKeVg=;
+	s=korg; t=1705974353;
+	bh=e9Z9CMYMJV92S8DutiGS81hHQpzh4UY2NzYW95FUX1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gdXcqF2syCNSLHM3DxE3dVM48kMo2TUjQ8dNcoAWi1ncDYRxyazCGIoleXD/rmuw6
-	 6W9BzLWFh4L8vUQOtoDMT5xbtt/ruZjBGy+q8H5D1pkRtteoxi2vsc2vCaefG/5AYL
-	 5mzcpZkn8UWi55+3B34tGAePxIe3Dci+MXP5cq40=
+	b=mxM0xSroCLTr/Mq4CSgqjv3WbQ5siH6YOY2RZO1WKgPU+0GDJk1poHxKmLJf2bS0F
+	 xN4/jZyzzL2FLQ2HY89I21FG5CAvmd+kiFA+teFW2sMKomrCuBJij3A60m+VCVK4bJ
+	 P5rRMqMnYEeSE/GQv+G9B/wwew3zSAt67nfzcjB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 138/286] wifi: rtlwifi: rtl8192se: using calculate_bit_shift()
+Subject: [PATCH 5.15 188/374] drm/radeon/r100: Fix integer overflow issues in r100_cs_track_check()
 Date: Mon, 22 Jan 2024 15:57:24 -0800
-Message-ID: <20240122235737.451836676@linuxfoundation.org>
+Message-ID: <20240122235751.163048656@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit ac32b9317063b101a8ff3d3e885f76f87a280419 ]
+[ Upstream commit b5c5baa458faa5430c445acd9a17481274d77ccf ]
 
-Using calculate_bit_shift() to replace _rtl92s_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+It may be possible, albeit unlikely, to encounter integer overflow
+during the multiplication of several unsigned int variables, the
+result being assigned to a variable 'size' of wider type.
 
-Fixes: d15853163bea ("rtlwifi: rtl8192se: Merge phy routines")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-10-suhui@nfschina.com
+Prevent this potential behaviour by converting one of the multiples
+to unsigned long.
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 0242f74d29df ("drm/radeon: clean up CS functions in r100.c")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/realtek/rtlwifi/rtl8192se/phy.c  | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/radeon/r100.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
-index 63283d9e7485..cd735d61f630 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
-@@ -14,13 +14,6 @@
- #include "hw.h"
- #include "table.h"
- 
--static u32 _rtl92s_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
--
- u32 rtl92s_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
-@@ -30,7 +23,7 @@ u32 rtl92s_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- 		regaddr, bitmask);
- 
- 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
--	bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
- 
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE, "BBR MASK=0x%x Addr[0x%x]=0x%x\n",
-@@ -52,7 +45,7 @@ void rtl92s_phy_set_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask,
- 
- 	if (bitmask != MASKDWORD) {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
- 	}
- 
-@@ -160,7 +153,7 @@ u32 rtl92s_phy_query_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
- 
- 	original_value = _rtl92s_phy_rf_serial_read(hw, rfpath, regaddr);
- 
--	bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -191,7 +184,7 @@ void rtl92s_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
- 	if (bitmask != RFREG_OFFSET_MASK) {
- 		original_value = _rtl92s_phy_rf_serial_read(hw, rfpath,
- 							    regaddr);
--		bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((original_value & (~bitmask)) | (data << bitshift));
- 	}
- 
+diff --git a/drivers/gpu/drm/radeon/r100.c b/drivers/gpu/drm/radeon/r100.c
+index 2dd85ba1faa2..d3ad98bd2590 100644
+--- a/drivers/gpu/drm/radeon/r100.c
++++ b/drivers/gpu/drm/radeon/r100.c
+@@ -2320,7 +2320,7 @@ int r100_cs_track_check(struct radeon_device *rdev, struct r100_cs_track *track)
+ 	switch (prim_walk) {
+ 	case 1:
+ 		for (i = 0; i < track->num_arrays; i++) {
+-			size = track->arrays[i].esize * track->max_indx * 4;
++			size = track->arrays[i].esize * track->max_indx * 4UL;
+ 			if (track->arrays[i].robj == NULL) {
+ 				DRM_ERROR("(PW %u) Vertex array %u no buffer "
+ 					  "bound\n", prim_walk, i);
+@@ -2339,7 +2339,7 @@ int r100_cs_track_check(struct radeon_device *rdev, struct r100_cs_track *track)
+ 		break;
+ 	case 2:
+ 		for (i = 0; i < track->num_arrays; i++) {
+-			size = track->arrays[i].esize * (nverts - 1) * 4;
++			size = track->arrays[i].esize * (nverts - 1) * 4UL;
+ 			if (track->arrays[i].robj == NULL) {
+ 				DRM_ERROR("(PW %u) Vertex array %u no buffer "
+ 					  "bound\n", prim_walk, i);
 -- 
 2.43.0
 
