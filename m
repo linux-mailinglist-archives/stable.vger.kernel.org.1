@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D8B8838032
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AB3A838317
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7F271F2C7C7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D78F728B7DD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB11467742;
-	Tue, 23 Jan 2024 00:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040C6605C9;
+	Tue, 23 Jan 2024 01:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbOHNYK+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wm1jSp9r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEE564CEB;
-	Tue, 23 Jan 2024 00:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AA0604B5;
+	Tue, 23 Jan 2024 01:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971582; cv=none; b=qHh2sQgcaOUpzq2inhTMbee3GcB6UhBwX/ByRR2s4+S/sUv0kC2iCtJXeaMlyGeDQsWRTpX79J4CxAn9r19MqGxobuIB+aPHcSwsK1ocVLNI/QniHpnHCd7PHqEy/fwPcS2F7QFey6DNMK9BTAByVTtW8LJrnGcKq1fOV9xWenI=
+	t=1705974700; cv=none; b=XeXE6+vsy6DTm49n+hySIrdNmPgnsjdJRQTYPAYKmNkc3IIFT0wc/UW38VId4eYhDYPdtJxzBt0nomfEs/2/215K9+lR62OIS0sXPcm7Ha5ECbp3YiEeQfdz5ouh3NXFGZ7wwbm/4+IfYawXkpod9l4LFQ3SjqwhF2do8O/2wx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971582; c=relaxed/simple;
-	bh=aDWgdRsg4ZbcNSykNndQAyQT8acCbVoMpd0bDAMA3bk=;
+	s=arc-20240116; t=1705974700; c=relaxed/simple;
+	bh=7ep2YmWZXW8KRZ79Bm404oAtp32AXYpQ1tFriZkZ+Xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LBv4lQeulCtwaX33YJKAl2/3891J2OlE4t4FeLy1gVPcTgRV6tjW8h3Kssnx9qM+psnyxhm/ADfiJPncaP4phfqcM9o1yIhETfF5o0sFHsYAyLkflpX9LFPZW51XoDG119RE17iGLxvkSWHe9w27Q/4CcDVt1HG1AtlszRKiDqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbOHNYK+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405B5C433C7;
-	Tue, 23 Jan 2024 00:59:42 +0000 (UTC)
+	 MIME-Version; b=ov4+XyPC1HMlGr7livI3GVQxdpsuft2wV/aHDqMn9VxZuaHp5QsJcRsn5KF1OJzJFmLCxvhDpo0ypRwc3aH2I9f+srYPcVYW0E01vt5hRDU3jTnbzbWNoLwEIe/plWF2Me92hjK0feRDOHl4/9PwUIX9ANSzY7r6c/wIXf8ywV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wm1jSp9r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4D0C43394;
+	Tue, 23 Jan 2024 01:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971582;
-	bh=aDWgdRsg4ZbcNSykNndQAyQT8acCbVoMpd0bDAMA3bk=;
+	s=korg; t=1705974700;
+	bh=7ep2YmWZXW8KRZ79Bm404oAtp32AXYpQ1tFriZkZ+Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RbOHNYK+x6rDBk40mYYzEi/UvogPuQZYZRJGj8a12cHO6x2YFvSXAQl64X+gKnMoA
-	 AyjilEnx5tFsRLPam2BzIcgOLd+VTfU4EP9YXr5Fg41vGOyxYSJ2KMd8AOGfbg7KSD
-	 LOyT4NrRZ/CpI9bLUnWdHmu879rUMg6c/fMUZC5E=
+	b=wm1jSp9rkuc73ixDh4QKu3tsXEoe2KdD9FwE1WgoXWQNQhbValWwdHsgZRZnQQdfa
+	 qMY4pOMoovOKwqjicDdu5iwPxqpbt5ABOxprI+zkB+J6b1hIJB4r7yfCnuXufNMIOF
+	 6aiinN5SNZGi7prsqD203eCd3/RC16Q4kbxkT0AQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 181/286] drivers: clk: zynqmp: update divider round rate logic
+Subject: [PATCH 5.15 231/374] ALSA: scarlett2: Add missing error check to scarlett2_config_save()
 Date: Mon, 22 Jan 2024 15:58:07 -0800
-Message-ID: <20240122235739.117169063@linuxfoundation.org>
+Message-ID: <20240122235752.745368712@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-[ Upstream commit 1fe15be1fb613534ecbac5f8c3f8744f757d237d ]
+[ Upstream commit 5f6ff6931a1c0065a55448108940371e1ac8075f ]
 
-Currently zynqmp divider round rate is considering single parent and
-calculating rate and parent rate accordingly. But if divider clock flag
-is set to SET_RATE_PARENT then its not trying to traverse through all
-parent rate and not selecting best parent rate from that. So use common
-divider_round_rate() which is traversing through all clock parents and
-its rate and calculating proper parent rate.
+scarlett2_config_save() was ignoring the return value from
+scarlett2_usb(). As this function is not called from user-space we
+can't return the error, so call usb_audio_err() instead.
 
-Fixes: 3fde0e16d016 ("drivers: clk: Add ZynqMP clock driver")
-Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
-Link: https://lore.kernel.org/r/20231129112916.23125-3-jay.buddhabhatti@amd.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
+Link: https://lore.kernel.org/r/bf0a15332d852d7825fa6da87d2a0d9c0b702053.1703001053.git.g@b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/zynqmp/divider.c | 66 +++---------------------------------
- 1 file changed, 5 insertions(+), 61 deletions(-)
+ sound/usb/mixer_scarlett_gen2.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/zynqmp/divider.c b/drivers/clk/zynqmp/divider.c
-index acdd5e48e147..acfd4878cce2 100644
---- a/drivers/clk/zynqmp/divider.c
-+++ b/drivers/clk/zynqmp/divider.c
-@@ -109,52 +109,6 @@ static unsigned long zynqmp_clk_divider_recalc_rate(struct clk_hw *hw,
- 	return DIV_ROUND_UP_ULL(parent_rate, value);
+diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
+index 53ebabf42472..6e79872e68c4 100644
+--- a/sound/usb/mixer_scarlett_gen2.c
++++ b/sound/usb/mixer_scarlett_gen2.c
+@@ -1213,9 +1213,11 @@ static void scarlett2_config_save(struct usb_mixer_interface *mixer)
+ {
+ 	__le32 req = cpu_to_le32(SCARLETT2_USB_CONFIG_SAVE);
+ 
+-	scarlett2_usb(mixer, SCARLETT2_USB_DATA_CMD,
+-		      &req, sizeof(u32),
+-		      NULL, 0);
++	int err = scarlett2_usb(mixer, SCARLETT2_USB_DATA_CMD,
++				&req, sizeof(u32),
++				NULL, 0);
++	if (err < 0)
++		usb_audio_err(mixer->chip, "config save failed: %d\n", err);
  }
  
--static void zynqmp_get_divider2_val(struct clk_hw *hw,
--				    unsigned long rate,
--				    struct zynqmp_clk_divider *divider,
--				    u32 *bestdiv)
--{
--	int div1;
--	int div2;
--	long error = LONG_MAX;
--	unsigned long div1_prate;
--	struct clk_hw *div1_parent_hw;
--	struct zynqmp_clk_divider *pdivider;
--	struct clk_hw *div2_parent_hw = clk_hw_get_parent(hw);
--
--	if (!div2_parent_hw)
--		return;
--
--	pdivider = to_zynqmp_clk_divider(div2_parent_hw);
--	if (!pdivider)
--		return;
--
--	div1_parent_hw = clk_hw_get_parent(div2_parent_hw);
--	if (!div1_parent_hw)
--		return;
--
--	div1_prate = clk_hw_get_rate(div1_parent_hw);
--	*bestdiv = 1;
--	for (div1 = 1; div1 <= pdivider->max_div;) {
--		for (div2 = 1; div2 <= divider->max_div;) {
--			long new_error = ((div1_prate / div1) / div2) - rate;
--
--			if (abs(new_error) < abs(error)) {
--				*bestdiv = div2;
--				error = new_error;
--			}
--			if (divider->flags & CLK_DIVIDER_POWER_OF_TWO)
--				div2 = div2 << 1;
--			else
--				div2++;
--		}
--		if (pdivider->flags & CLK_DIVIDER_POWER_OF_TWO)
--			div1 = div1 << 1;
--		else
--			div1++;
--	}
--}
--
- /**
-  * zynqmp_clk_divider_round_rate() - Round rate of divider clock
-  * @hw:			handle between common and hardware-specific interfaces
-@@ -173,6 +127,7 @@ static long zynqmp_clk_divider_round_rate(struct clk_hw *hw,
- 	u32 div_type = divider->div_type;
- 	u32 bestdiv;
- 	int ret;
-+	u8 width;
- 
- 	/* if read only, just return current value */
- 	if (divider->flags & CLK_DIVIDER_READ_ONLY) {
-@@ -192,23 +147,12 @@ static long zynqmp_clk_divider_round_rate(struct clk_hw *hw,
- 		return DIV_ROUND_UP_ULL((u64)*prate, bestdiv);
- 	}
- 
--	bestdiv = zynqmp_divider_get_val(*prate, rate, divider->flags);
--
--	/*
--	 * In case of two divisors, compute best divider values and return
--	 * divider2 value based on compute value. div1 will  be automatically
--	 * set to optimum based on required total divider value.
--	 */
--	if (div_type == TYPE_DIV2 &&
--	    (clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT)) {
--		zynqmp_get_divider2_val(hw, rate, divider, &bestdiv);
--	}
-+	width = fls(divider->max_div);
- 
--	if ((clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT) && divider->is_frac)
--		bestdiv = rate % *prate ? 1 : bestdiv;
-+	rate = divider_round_rate(hw, rate, prate, NULL, width, divider->flags);
- 
--	bestdiv = min_t(u32, bestdiv, divider->max_div);
--	*prate = rate * bestdiv;
-+	if (divider->is_frac && (clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT) && (rate % *prate))
-+		*prate = rate;
- 
- 	return rate;
- }
+ /* Delayed work to save config */
 -- 
 2.43.0
 
