@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE38F838440
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE1D8837F41
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 750AF298E95
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E516E1F29768
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4308E6A346;
-	Tue, 23 Jan 2024 02:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132C512A15F;
+	Tue, 23 Jan 2024 00:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gg8cQbXK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jdsZUKPo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035036A320;
-	Tue, 23 Jan 2024 02:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BC2129A86;
+	Tue, 23 Jan 2024 00:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975343; cv=none; b=cZEeNXvz6wOPARewEL2fmSpDSX4zgT/8Ha1OysqsmDGzS0srSmuGIpmjiDKta5I1jjBreFVgIT5Ispo4Cqj/WCd+hanIsKQdAbZcXqg5uS02XMHSMcHpf4pIahyPTDIRi6yQ1gcMZLHZmvyMItnu8Wx7xbxhZJFtxLksBZckKoo=
+	t=1705971017; cv=none; b=fyCt7YDuRaNWcoCuj8aUDuZ6L9W3UsLx5F813pcqaYRpeER5cy7xxATco+07blOc8PYnQ0r64j8VxXciBMoycjCAw9/hd1X/Y3qXs85M2Wv56uz2acHNqGIZf1Mo9x7Up3qqIHcACuAdCBCaA0oT5NgxEFD69XM8Hj+zwPbyXFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975343; c=relaxed/simple;
-	bh=shEMUHsgyMOAuQx3vfHNpkm6z305yuoalm4Q8uMmKI0=;
+	s=arc-20240116; t=1705971017; c=relaxed/simple;
+	bh=B4edW0mMkmzZuv7rGHrU5EEPvx1bo1UrgqDj1rhgF0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3PMaGwraxsqizs3AxKKOF0Iz+m/t+Wb/VR1p6Hucap5rKAhj5altGzxrhHGUWfVK4ppRH6qCvWTk63NUfdeOehL8MYT2CS87c0IGeXqr9tFsOO1YSl5BbUp4wga+wuz6owy2kjbtySh0bDWSbSBg/GtAfcsF1vk28vBrX4B6qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gg8cQbXK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC869C433C7;
-	Tue, 23 Jan 2024 02:02:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nQHrDxdRPx6lfwsHL/q/Dtf0aGTMbVCmqiKuctxB81On5YI4rCFZZ6US/D1DkiAxJiKkXzWAPmTPSqAtya/IoqnbQiu/3SXndLpfoxJjrwUsXmH+H/1HJYph0owEdlFjFD631NzsEoPQcIkfllOQjAnSjnhlxrvXubU/eH5AonU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdsZUKPo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2109BC433C7;
+	Tue, 23 Jan 2024 00:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975342;
-	bh=shEMUHsgyMOAuQx3vfHNpkm6z305yuoalm4Q8uMmKI0=;
+	s=korg; t=1705971017;
+	bh=B4edW0mMkmzZuv7rGHrU5EEPvx1bo1UrgqDj1rhgF0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gg8cQbXKTwQtKbRkxaw+57rvX0qvlLdPVS6YSjGR73YsTm0vRGnTXdC8nYXHmIfzN
-	 EOVpz4nbTBfrV7GCnFD0NcYQzkO1fZ2v8LNqm/TqCXCX5WoiJvDh/DxZWDwIyGTUCN
-	 9SZTdIbw8SR2ZkP1Bs/yHA6HlbcYk1/rVwIQNlHc=
+	b=jdsZUKPo6QYNPIW+hvTJN6PM43DRJMByhkmT4pHPKdZTcdJlv2KeGBNjk76ohPxJX
+	 muF38JX2bR9XN45bsxJYxyCFjfEUwU8gpK/CNzEQHpoi4/ge5cERwS729I4u1hoPJT
+	 2iFPWar3FNALqGdPiypI3To7Sp+6uzE1vCJzf15Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 280/583] media: dvb-frontends: m88ds3103: Fix a memory leak in an error handling path of m88ds3103_probe()
+Subject: [PATCH 6.1 163/417] drm/bridge: tpd12s015: Drop buggy __exit annotation for remove function
 Date: Mon, 22 Jan 2024 15:55:31 -0800
-Message-ID: <20240122235820.568064599@linuxfoundation.org>
+Message-ID: <20240122235757.491382217@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 5b2f885e2f6f482d05c23f04c8240f7b4fc5bdb5 ]
+[ Upstream commit ce3e112e7ae854249d8755906acc5f27e1542114 ]
 
-If an error occurs after a successful i2c_mux_add_adapter(), then
-i2c_mux_del_adapters() should be called to free some resources, as
-already done in the remove function.
+With tpd12s015_remove() marked with __exit this function is discarded
+when the driver is compiled as a built-in. The result is that when the
+driver unbinds there is no cleanup done which results in resource
+leakage or worse.
 
-Fixes: e6089feca460 ("media: m88ds3103: Add support for ds3103b demod")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: cff5e6f7e83f ("drm/bridge: Add driver for the TI TPD12S015 HDMI level shifter")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231102165640.3307820-19-u.kleine-koenig@pengutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/m88ds3103.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/ti-tpd12s015.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/m88ds3103.c b/drivers/media/dvb-frontends/m88ds3103.c
-index cf037b61b226..affaa36d3147 100644
---- a/drivers/media/dvb-frontends/m88ds3103.c
-+++ b/drivers/media/dvb-frontends/m88ds3103.c
-@@ -1894,7 +1894,7 @@ static int m88ds3103_probe(struct i2c_client *client)
- 		/* get frontend address */
- 		ret = regmap_read(dev->regmap, 0x29, &utmp);
- 		if (ret)
--			goto err_kfree;
-+			goto err_del_adapters;
- 		dev->dt_addr = ((utmp & 0x80) == 0) ? 0x42 >> 1 : 0x40 >> 1;
- 		dev_dbg(&client->dev, "dt addr is 0x%02x\n", dev->dt_addr);
- 
-@@ -1902,11 +1902,14 @@ static int m88ds3103_probe(struct i2c_client *client)
- 						      dev->dt_addr);
- 		if (IS_ERR(dev->dt_client)) {
- 			ret = PTR_ERR(dev->dt_client);
--			goto err_kfree;
-+			goto err_del_adapters;
- 		}
- 	}
- 
+diff --git a/drivers/gpu/drm/bridge/ti-tpd12s015.c b/drivers/gpu/drm/bridge/ti-tpd12s015.c
+index e0e015243a60..b588fea12502 100644
+--- a/drivers/gpu/drm/bridge/ti-tpd12s015.c
++++ b/drivers/gpu/drm/bridge/ti-tpd12s015.c
+@@ -179,7 +179,7 @@ static int tpd12s015_probe(struct platform_device *pdev)
  	return 0;
-+
-+err_del_adapters:
-+	i2c_mux_del_adapters(dev->muxc);
- err_kfree:
- 	kfree(dev);
- err:
+ }
+ 
+-static int __exit tpd12s015_remove(struct platform_device *pdev)
++static int tpd12s015_remove(struct platform_device *pdev)
+ {
+ 	struct tpd12s015_device *tpd = platform_get_drvdata(pdev);
+ 
+@@ -197,7 +197,7 @@ MODULE_DEVICE_TABLE(of, tpd12s015_of_match);
+ 
+ static struct platform_driver tpd12s015_driver = {
+ 	.probe	= tpd12s015_probe,
+-	.remove	= __exit_p(tpd12s015_remove),
++	.remove = tpd12s015_remove,
+ 	.driver	= {
+ 		.name	= "tpd12s015",
+ 		.of_match_table = tpd12s015_of_match,
 -- 
 2.43.0
 
