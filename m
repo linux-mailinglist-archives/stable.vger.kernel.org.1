@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A194C837C5E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23957837E6F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C63971C287DA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B30891F2827D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9035546AB;
-	Tue, 23 Jan 2024 00:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3FF53E10;
+	Tue, 23 Jan 2024 00:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysD157G0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEZZuw+y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502094A27;
-	Tue, 23 Jan 2024 00:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD155102B;
+	Tue, 23 Jan 2024 00:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969593; cv=none; b=N/0vByzhxRW7yy5YprkLKDGvDer0f6iK0SjKTOPWFo7pHqSxNKq/x/zW9GGUDFVTuKyZa1sqO8dbTM+BVLhWZLcXTi0FkGwllEkM9DtmowX+3YXpc2OhFZq6SxpgMXlbpsLh0rBKH5zbMGwTEpOkiwCOlHrIh943meA/iq40lQ8=
+	t=1705970576; cv=none; b=sxQ+EyT8CiTcLc0AgQd7Co3bOZ0gcKfdbuGzz397QkT1RULJaISZuZA+nVt5hSSZSY0S3XpHQ8im5LYFgUvTSbgyOeQDLVEuok92eyuCBnzUdnlEGWgkVrAT/saLEEA06GlGs36CgijZRAhbUoVprYc72Wvh9Lo2ib70cQBwucQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969593; c=relaxed/simple;
-	bh=zMfPq63/UZdQOJ1LnuKH8WmZ5srnqMCkJVzwZ8wzTQ8=;
+	s=arc-20240116; t=1705970576; c=relaxed/simple;
+	bh=bYXqQFH6li2betpIstf1yLTiOC+NIjMlrb5OAES5CEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8mV51dUW+n+o2UPUJO8blBxvsaaYJpu2S0kwBGqAGXbQbkpfvZnqpeV9Rb5hvVddh4RPjSZ1D2XvVm+jVB4eiJHMdOk6L1o/3t/gDZRx2DfTbYXVAwtkQ4EkyxhujgfdIwIQWoK0G3dXVTeD4LIJcfi3uo3/sJBSGySjiy0jGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysD157G0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7B7C43390;
-	Tue, 23 Jan 2024 00:26:33 +0000 (UTC)
+	 MIME-Version; b=I+zONs7WmEH4I9YPm8nFcF6dzdF1lbYuYC8I3j0K07RwwLzawTIyN52p182Ip+3pPYOjrmATGmvnfPP0eb29L43NU1CopmdLsZiE27OPtd/x3nDhgM7rsQWZUU0Z+x2uT8Un9zK4f5rsgx8AGvH+4ouBoOXbctLMaBY1fuB3flU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEZZuw+y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B7BC433C7;
+	Tue, 23 Jan 2024 00:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969593;
-	bh=zMfPq63/UZdQOJ1LnuKH8WmZ5srnqMCkJVzwZ8wzTQ8=;
+	s=korg; t=1705970576;
+	bh=bYXqQFH6li2betpIstf1yLTiOC+NIjMlrb5OAES5CEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ysD157G0c+9/7AMJQIr3tiR65aWhE0u9KE2P+FJsV89wb9aMNKSUk2ZkXD3hVRIP9
-	 /YiyqhWxUbsGL5JklVSYcy44XnoUFtT/BgW7N/WtwNLIOj4P1AQICThIp4SZF70NjQ
-	 WdyTCaTwVXoLJAh+EqPtfCk230szDcJzKxSPixeQ=
+	b=UEZZuw+yUJeN5UokcqSYwk6EF1p2vKFV6vEQFC9dLYmwpfs2I2misrht73kH2O3tC
+	 X56TCpT7WtUhLkfR2vm3O3nMy6vKEYNsdJ8WSPuOGRhQIr/QoaY1DlVoFHA+9Ffhwt
+	 6XOoe5lJYotkXHCpzYCLSwZMJMqv87MOFjwtdX5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 320/641] clk: renesas: rzg2l: Check reset monitor registers
+Subject: [PATCH 6.1 056/417] crypto: sahara - handle zero-length aes requests
 Date: Mon, 22 Jan 2024 15:53:44 -0800
-Message-ID: <20240122235827.893569473@linuxfoundation.org>
+Message-ID: <20240122235753.633543715@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit da235d2fac212d0add570e755feb1167a830bc99 ]
+[ Upstream commit d1d6351e37aac14b32a291731d0855996c459d11 ]
 
-The hardware manual of both RZ/G2L and RZ/G3S specifies that the reset
-monitor registers need to be interrogated when the reset signals are
-toggled (chapters "Procedures for Supplying and Stopping Reset Signals"
-and "Procedure for Activating Modules").  Without this, there is a
-chance that different modules (e.g. Ethernet) are not ready after their
-reset signal is toggled, leading to failures (on probe or resume from
-deep sleep states).
+In case of a zero-length input, exit gracefully from sahara_aes_crypt().
 
-The same indications are available for RZ/V2M for TYPE-B reset controls.
-
-Fixes: ef3c613ccd68 ("clk: renesas: Add CPG core wrapper for RZ/G2L SoC")
-Fixes: 8090bea32484 ("clk: renesas: rzg2l: Add support for RZ/V2M reset monitor reg")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20231207070700.4156557-2-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzg2l-cpg.c | 59 ++++++++++++++++++++++++---------
- 1 file changed, 44 insertions(+), 15 deletions(-)
+ drivers/crypto/sahara.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
-index 3189c3167ba8..3d2daa4ba2a4 100644
---- a/drivers/clk/renesas/rzg2l-cpg.c
-+++ b/drivers/clk/renesas/rzg2l-cpg.c
-@@ -1416,12 +1416,27 @@ static int rzg2l_cpg_assert(struct reset_controller_dev *rcdev,
- 	struct rzg2l_cpg_priv *priv = rcdev_to_priv(rcdev);
- 	const struct rzg2l_cpg_info *info = priv->info;
- 	unsigned int reg = info->resets[id].off;
--	u32 value = BIT(info->resets[id].bit) << 16;
-+	u32 mask = BIT(info->resets[id].bit);
-+	s8 monbit = info->resets[id].monbit;
-+	u32 value = mask << 16;
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 89fd54bc0127..4b32e96e197d 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -677,6 +677,9 @@ static int sahara_aes_crypt(struct skcipher_request *req, unsigned long mode)
+ 	struct sahara_dev *dev = dev_ptr;
+ 	int err = 0;
  
- 	dev_dbg(rcdev->dev, "assert id:%ld offset:0x%x\n", id, CLK_RST_R(reg));
- 
- 	writel(value, priv->base + CLK_RST_R(reg));
--	return 0;
-+
-+	if (info->has_clk_mon_regs) {
-+		reg = CLK_MRST_R(reg);
-+	} else if (monbit >= 0) {
-+		reg = CPG_RST_MON;
-+		mask = BIT(monbit);
-+	} else {
-+		/* Wait for at least one cycle of the RCLK clock (@ ca. 32 kHz) */
-+		udelay(35);
++	if (!req->cryptlen)
 +		return 0;
-+	}
 +
-+	return readl_poll_timeout_atomic(priv->base + reg, value,
-+					 value & mask, 10, 200);
- }
+ 	if (unlikely(ctx->keylen != AES_KEYSIZE_128))
+ 		return sahara_aes_fallback(req, mode);
  
- static int rzg2l_cpg_deassert(struct reset_controller_dev *rcdev,
-@@ -1430,14 +1445,28 @@ static int rzg2l_cpg_deassert(struct reset_controller_dev *rcdev,
- 	struct rzg2l_cpg_priv *priv = rcdev_to_priv(rcdev);
- 	const struct rzg2l_cpg_info *info = priv->info;
- 	unsigned int reg = info->resets[id].off;
--	u32 dis = BIT(info->resets[id].bit);
--	u32 value = (dis << 16) | dis;
-+	u32 mask = BIT(info->resets[id].bit);
-+	s8 monbit = info->resets[id].monbit;
-+	u32 value = (mask << 16) | mask;
- 
- 	dev_dbg(rcdev->dev, "deassert id:%ld offset:0x%x\n", id,
- 		CLK_RST_R(reg));
- 
- 	writel(value, priv->base + CLK_RST_R(reg));
--	return 0;
-+
-+	if (info->has_clk_mon_regs) {
-+		reg = CLK_MRST_R(reg);
-+	} else if (monbit >= 0) {
-+		reg = CPG_RST_MON;
-+		mask = BIT(monbit);
-+	} else {
-+		/* Wait for at least one cycle of the RCLK clock (@ ca. 32 kHz) */
-+		udelay(35);
-+		return 0;
-+	}
-+
-+	return readl_poll_timeout_atomic(priv->base + reg, value,
-+					 !(value & mask), 10, 200);
- }
- 
- static int rzg2l_cpg_reset(struct reset_controller_dev *rcdev,
-@@ -1449,9 +1478,6 @@ static int rzg2l_cpg_reset(struct reset_controller_dev *rcdev,
- 	if (ret)
- 		return ret;
- 
--	/* Wait for at least one cycle of the RCLK clock (@ ca. 32 kHz) */
--	udelay(35);
--
- 	return rzg2l_cpg_deassert(rcdev, id);
- }
- 
-@@ -1460,18 +1486,21 @@ static int rzg2l_cpg_status(struct reset_controller_dev *rcdev,
- {
- 	struct rzg2l_cpg_priv *priv = rcdev_to_priv(rcdev);
- 	const struct rzg2l_cpg_info *info = priv->info;
--	unsigned int reg = info->resets[id].off;
--	u32 bitmask = BIT(info->resets[id].bit);
- 	s8 monbit = info->resets[id].monbit;
-+	unsigned int reg;
-+	u32 bitmask;
- 
- 	if (info->has_clk_mon_regs) {
--		return !!(readl(priv->base + CLK_MRST_R(reg)) & bitmask);
-+		reg = CLK_MRST_R(info->resets[id].off);
-+		bitmask = BIT(info->resets[id].bit);
- 	} else if (monbit >= 0) {
--		u32 monbitmask = BIT(monbit);
--
--		return !!(readl(priv->base + CPG_RST_MON) & monbitmask);
-+		reg = CPG_RST_MON;
-+		bitmask = BIT(monbit);
-+	} else {
-+		return -ENOTSUPP;
- 	}
--	return -ENOTSUPP;
-+
-+	return !!(readl(priv->base + reg) & bitmask);
- }
- 
- static const struct reset_control_ops rzg2l_cpg_reset_ops = {
 -- 
 2.43.0
 
