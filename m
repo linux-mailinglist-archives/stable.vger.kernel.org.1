@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19FE837FD5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F155B838568
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:41:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A87671F2AB70
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78E85B23FFA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D242012BEBC;
-	Tue, 23 Jan 2024 00:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F276DCF3;
+	Tue, 23 Jan 2024 02:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQr2qmVN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbdF+RcO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DF24E1AD;
-	Tue, 23 Jan 2024 00:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EB36BB56;
+	Tue, 23 Jan 2024 02:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971383; cv=none; b=mLstWytdM90ILTlO7M1qm1OYJSlRb+/Q5raDCf955EnBwHDSDY5iaw+Bc2vcWUvIYNyWvCSISMqzjiERMbSBQvtuAQDxRLzHwlh9LqzitQltrVag3Y0x23qftQ//aioIcBe3cWTuLPiCBa1cLHmR57MQ+uhyczCgOu4BLSZUPxI=
+	t=1705975398; cv=none; b=LugVWrPl7YwPS4E9FWeNFz32h0N9t9T/6Nspg8Vu9DHx/RbAfg3rE0m2MZaEkUmkJiKgMxSPViafkfZ5oVoLGe1iHGIW6Rffa4RH76tCAJRI/Lb1rLBaNVR+yTxifJi0HIUhcJfVcG8jBAkV83yCFD4CRoaZQDCoRy5PiGAFKd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971383; c=relaxed/simple;
-	bh=+fIvsgkVJgS64TAIyjqNwXz6qO2hYgnGudANt2C5OXU=;
+	s=arc-20240116; t=1705975398; c=relaxed/simple;
+	bh=fnQUxwwWySV1v7fjR5tFNfMpKyjFr44qvAW5kvezLNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pj8ZQJ6NmQSxs1bl2SUq4vR+DeXPJndK6JDBicKQj/oIQze0f+XN+uj8SiKXagLn4/bmcK6wfzgKo2K/sYz3AH0i0pcqiJo4YFK/IZebx0njizrSJsQjz6mgZM708lVcVztn1xR3CLuZNsmHa78/RYH/LM4xo6/7gk60DHX7Caw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQr2qmVN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08407C433F1;
-	Tue, 23 Jan 2024 00:56:22 +0000 (UTC)
+	 MIME-Version; b=evVhndACF3SVV9vwmTvScMCkcZ5RWNnyPEMAS70+axXfQ80QNgB5Gvj0cBnRldnrZXd55/PJ9hXymI2+pi3kjztL+3nu3QtOoX1fsJHXw4AbanME9R9/5l56u1zFQJUlivUsh0a0DXESLxbQ37VEt7xoLmgF52y04sgJWYAAdIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbdF+RcO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D4BC433C7;
+	Tue, 23 Jan 2024 02:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971383;
-	bh=+fIvsgkVJgS64TAIyjqNwXz6qO2hYgnGudANt2C5OXU=;
+	s=korg; t=1705975398;
+	bh=fnQUxwwWySV1v7fjR5tFNfMpKyjFr44qvAW5kvezLNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQr2qmVNlJI1GrFKd3EL58xIuWkb26dGb2fqmu3bYx+Iqnu1ygeQuuafVllKCLiPB
-	 9eDONXeA20gM6F0zZMcoi50TGYYzykCfC0f8ut+g25AfmirXdaO6J8Ch4pc25KlOXG
-	 Bxv9lqD8DSyjrgUDtNTEm9FqIxpE9v57XjcAF05E=
+	b=dbdF+RcOBn1oJ3IOEN81dDwzJs2MD+06nQQ9pOKKs3N19tioCfYri630JRqOfBA/C
+	 tgF+rKkmGtJ+RnGX6s8VSgjECSvpzqt9G0DL6GxLn+H0fnj8GeUCi4kai80POP84t3
+	 Y3obosLCIg8HeS81jSOnw8mxo9qv2ZCOV/4h8/7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 215/417] dt-bindings: clock: Update the videocc resets for sm8150
+Subject: [PATCH 6.6 332/583] drm/amd/pm/smu7: fix a memleak in smu7_hwmgr_backend_init
 Date: Mon, 22 Jan 2024 15:56:23 -0800
-Message-ID: <20240122235759.373006375@linuxfoundation.org>
+Message-ID: <20240122235822.204749867@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 3185f96968eedd117ec72ee7b87ead44b6d1bbbd ]
+[ Upstream commit 2f3be3ca779b11c332441b10e00443a2510f4d7b ]
 
-Add all the available resets for the video clock controller
-on sm8150.
+The hwmgr->backend, (i.e. data) allocated by kzalloc is not freed in
+the error-handling paths of smu7_get_evv_voltages and
+smu7_update_edc_leakage_table. However, it did be freed in the
+error-handling of phm_initializa_dynamic_state_adjustment_rule_settings,
+by smu7_hwmgr_backend_fini. So the lack of free in smu7_get_evv_voltages
+and smu7_update_edc_leakage_table is considered a memleak in this patch.
 
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20231201-videocc-8150-v3-1-56bec3a5e443@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 1fd9a939db24 ("clk: qcom: videocc-sm8150: Update the videocc resets")
+Fixes: 599a7e9fe1b6 ("drm/amd/powerplay: implement smu7 hwmgr to manager asics with smu ip version 7.")
+Fixes: 8f0804c6b7d0 ("drm/amd/pm: add edc leakage controller setting")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/clock/qcom,videocc-sm8150.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/dt-bindings/clock/qcom,videocc-sm8150.h b/include/dt-bindings/clock/qcom,videocc-sm8150.h
-index e24ee840cfdb..c557b78dc572 100644
---- a/include/dt-bindings/clock/qcom,videocc-sm8150.h
-+++ b/include/dt-bindings/clock/qcom,videocc-sm8150.h
-@@ -16,6 +16,10 @@
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index 11372fcc59c8..b1a8799e2dee 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -2974,6 +2974,8 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 		result = smu7_get_evv_voltages(hwmgr);
+ 		if (result) {
+ 			pr_info("Get EVV Voltage Failed.  Abort Driver loading!\n");
++			kfree(hwmgr->backend);
++			hwmgr->backend = NULL;
+ 			return -EINVAL;
+ 		}
+ 	} else {
+@@ -3019,8 +3021,10 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 	}
  
- /* VIDEO_CC Resets */
- #define VIDEO_CC_MVSC_CORE_CLK_BCR	0
-+#define VIDEO_CC_INTERFACE_BCR		1
-+#define VIDEO_CC_MVS0_BCR		2
-+#define VIDEO_CC_MVS1_BCR		3
-+#define VIDEO_CC_MVSC_BCR		4
+ 	result = smu7_update_edc_leakage_table(hwmgr);
+-	if (result)
++	if (result) {
++		smu7_hwmgr_backend_fini(hwmgr);
+ 		return result;
++	}
  
- /* VIDEO_CC GDSCRs */
- #define VENUS_GDSC			0
+ 	return 0;
+ }
 -- 
 2.43.0
 
