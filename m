@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE7FD837F1A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7208383EA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E48429BE10
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64B022959EA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49BE260886;
-	Tue, 23 Jan 2024 00:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCDE65BA3;
+	Tue, 23 Jan 2024 01:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjBYLv1x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWBqQ49W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0869527456;
-	Tue, 23 Jan 2024 00:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3B8657D6;
+	Tue, 23 Jan 2024 01:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970940; cv=none; b=XMf+T0Ni8T2zntQrpAAhYf9cm2FwOL6sZNJaiNi8RaMhvt2m8Ilj7wJ6NoCY9OsH9FijkMcl2vwPK43oO1e+D2laJm8G7VbP7HJ4XdYugkXrjLCFYhA3YCLkDdt3Ez8LfxkcjUDUoxa2Q70Jg4INCELeWcp22dllBqFMyHqOAIA=
+	t=1705975096; cv=none; b=LmgHQlB+SZwac0Obxg3DegqgY2WhvU4uaHSkKLxroYd2GRyKdRW5rIlgifAgwG17dxXwsKhKdx1C6T5Udu5gHv2Do5ndrq1y8kYrq0WOab5X/jdEGy6uXVbU0BJNGCCDNOD5ec/HZavrNpCyrDshyBrQw4qW8lyQzvJghy0tPlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970940; c=relaxed/simple;
-	bh=kDm11rET1fT4c/QP1nHEm3oBT+dqRyEwwj27dmxbuM4=;
+	s=arc-20240116; t=1705975096; c=relaxed/simple;
+	bh=H+D6oSkASw7LpeZbS+E1qQDaN+e7e6NQhp+ckvaqvjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g94foDsoPeiaS82BK0gXhL9RmJePx/Pfg9471BZSk93Vle1zQAcIFjcHKSxP2LdyO8SlLHLmuCRREMP8auT9zcv6g1UQBLYWofg8dBzas9bBsh/IThkyNVq6cr8S10bSIIrMF9FufzASJW5r0mRIIyDgyfnfNX2oOqNA3EGmQ9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjBYLv1x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C459C433C7;
-	Tue, 23 Jan 2024 00:48:59 +0000 (UTC)
+	 MIME-Version; b=PzJQTox2cd4XTMvJc+BEs4iuAayyFP98Uz9trUdDIeOGCQhxt6FgBp1+Ck74mTGaVEzzxYHyCd+ON2JlYehPC0JDimE5WFceKIVzTzm8vASV3KhhU3Si/Tdvj/nS4g22Hke5p2ulG0d8yyiXtrA+uE6jc1ZP8sg4czwqMamjaEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWBqQ49W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A74C433C7;
+	Tue, 23 Jan 2024 01:58:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970939;
-	bh=kDm11rET1fT4c/QP1nHEm3oBT+dqRyEwwj27dmxbuM4=;
+	s=korg; t=1705975096;
+	bh=H+D6oSkASw7LpeZbS+E1qQDaN+e7e6NQhp+ckvaqvjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JjBYLv1x/0Uy00APLh0NcnZKlIP2mJwmpbi4bZnsg6bqA+WE4GLZfnQdtyqnVsICR
-	 OaeLsY04c84ZA3qaXfzv4NFx4FJXYhKZPG39ztJc/wc3nYQ8CCzeqUiXasqNTzI+k1
-	 SGr05LvHKg+pAGp6JPOJUPKawJzZxx4EcljdnSYY=
+	b=qWBqQ49WrjrBDpECFJD0nwMJY7ZB0pp6aaT1A8N5zP1D/mikzpxu8AYqGlnsE9kL/
+	 spedCKv5pQx9RbZLIloKKG1bM93j0FCAG33zpl3WCz49Qk/Q0npBzhXoD4EjM8emCf
+	 WHCASgTumV93e2RUFeFtAgixi5Bg501mjyJKx2dY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/417] ARM: dts: stm32: dont mix SCMI and non-SCMI board compatibles
+Subject: [PATCH 6.6 236/583] media: verisilicon: Hook the (TRY_)DECODER_CMD stateless ioctls
 Date: Mon, 22 Jan 2024 15:54:47 -0800
-Message-ID: <20240122235755.908402624@linuxfoundation.org>
+Message-ID: <20240122235819.212825154@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
 
-[ Upstream commit bfc3c6743de0ecb169026c36cbdbc0d12d22a528 ]
+[ Upstream commit 6c0d9e12b1d12bbd95484e4b99f63feeb423765f ]
 
-The binding erroneously decreed that the SCMI variants of the ST
-evaluation kits are compatible with the non-SCMI variants.
+The (TRY_)DECODER_CMD ioctls are used to support flushing when holding
+capture buffers is supported. This is the case of this driver but the
+ioctls were never hooked to the ioctl ops.
 
-This is not correct, as a kernel or bootloader compatible with the non-SCMI
-variant is not necessarily able to function, when direct access
-to resources is replaced by having to talk SCMI to the secure monitor.
+Add them to correctly support flushing.
 
-The binding has been adjusted to reflect thus, so synchronize the device
-trees now.
-
-Fixes: 5b7e58313a77 ("ARM: dts: stm32: Add SCMI version of STM32 boards (DK1/DK2/ED1/EV1)")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Fixes: 340ce50f75a6 ("media: hantro: Enable HOLD_CAPTURE_BUF for H.264")
+Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/stm32mp157a-dk1-scmi.dts | 2 +-
- arch/arm/boot/dts/stm32mp157c-dk2-scmi.dts | 2 +-
- arch/arm/boot/dts/stm32mp157c-ed1-scmi.dts | 2 +-
- arch/arm/boot/dts/stm32mp157c-ev1-scmi.dts | 3 +--
- 4 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/media/platform/verisilicon/hantro_drv.c  | 2 ++
+ drivers/media/platform/verisilicon/hantro_v4l2.c | 3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/arch/arm/boot/dts/stm32mp157a-dk1-scmi.dts b/arch/arm/boot/dts/stm32mp157a-dk1-scmi.dts
-index e539cc80bef8..942a6ca38d97 100644
---- a/arch/arm/boot/dts/stm32mp157a-dk1-scmi.dts
-+++ b/arch/arm/boot/dts/stm32mp157a-dk1-scmi.dts
-@@ -11,7 +11,7 @@
+diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/media/platform/verisilicon/hantro_drv.c
+index 50ec24c753e9..1874c976081f 100644
+--- a/drivers/media/platform/verisilicon/hantro_drv.c
++++ b/drivers/media/platform/verisilicon/hantro_drv.c
+@@ -904,6 +904,8 @@ static int hantro_add_func(struct hantro_dev *vpu, unsigned int funcid)
  
- / {
- 	model = "STMicroelectronics STM32MP157A-DK1 SCMI Discovery Board";
--	compatible = "st,stm32mp157a-dk1-scmi", "st,stm32mp157a-dk1", "st,stm32mp157";
-+	compatible = "st,stm32mp157a-dk1-scmi", "st,stm32mp157";
+ 	if (funcid == MEDIA_ENT_F_PROC_VIDEO_ENCODER) {
+ 		vpu->encoder = func;
++		v4l2_disable_ioctl(vfd, VIDIOC_TRY_DECODER_CMD);
++		v4l2_disable_ioctl(vfd, VIDIOC_DECODER_CMD);
+ 	} else {
+ 		vpu->decoder = func;
+ 		v4l2_disable_ioctl(vfd, VIDIOC_TRY_ENCODER_CMD);
+diff --git a/drivers/media/platform/verisilicon/hantro_v4l2.c b/drivers/media/platform/verisilicon/hantro_v4l2.c
+index b3ae037a50f6..db145519fc5d 100644
+--- a/drivers/media/platform/verisilicon/hantro_v4l2.c
++++ b/drivers/media/platform/verisilicon/hantro_v4l2.c
+@@ -785,6 +785,9 @@ const struct v4l2_ioctl_ops hantro_ioctl_ops = {
+ 	.vidioc_g_selection = vidioc_g_selection,
+ 	.vidioc_s_selection = vidioc_s_selection,
  
- 	reserved-memory {
- 		optee@de000000 {
-diff --git a/arch/arm/boot/dts/stm32mp157c-dk2-scmi.dts b/arch/arm/boot/dts/stm32mp157c-dk2-scmi.dts
-index 97e4f94b0a24..99c4ff1f5c21 100644
---- a/arch/arm/boot/dts/stm32mp157c-dk2-scmi.dts
-+++ b/arch/arm/boot/dts/stm32mp157c-dk2-scmi.dts
-@@ -11,7 +11,7 @@
- 
- / {
- 	model = "STMicroelectronics STM32MP157C-DK2 SCMI Discovery Board";
--	compatible = "st,stm32mp157c-dk2-scmi", "st,stm32mp157c-dk2", "st,stm32mp157";
-+	compatible = "st,stm32mp157c-dk2-scmi", "st,stm32mp157";
- 
- 	reserved-memory {
- 		optee@de000000 {
-diff --git a/arch/arm/boot/dts/stm32mp157c-ed1-scmi.dts b/arch/arm/boot/dts/stm32mp157c-ed1-scmi.dts
-index 9cf0a44d2f47..21010458b36f 100644
---- a/arch/arm/boot/dts/stm32mp157c-ed1-scmi.dts
-+++ b/arch/arm/boot/dts/stm32mp157c-ed1-scmi.dts
-@@ -11,7 +11,7 @@
- 
- / {
- 	model = "STMicroelectronics STM32MP157C-ED1 SCMI eval daughter";
--	compatible = "st,stm32mp157c-ed1-scmi", "st,stm32mp157c-ed1", "st,stm32mp157";
-+	compatible = "st,stm32mp157c-ed1-scmi", "st,stm32mp157";
- 
- 	reserved-memory {
- 		optee@fe000000 {
-diff --git a/arch/arm/boot/dts/stm32mp157c-ev1-scmi.dts b/arch/arm/boot/dts/stm32mp157c-ev1-scmi.dts
-index 3b9dd6f4ccc9..d37637149919 100644
---- a/arch/arm/boot/dts/stm32mp157c-ev1-scmi.dts
-+++ b/arch/arm/boot/dts/stm32mp157c-ev1-scmi.dts
-@@ -11,8 +11,7 @@
- 
- / {
- 	model = "STMicroelectronics STM32MP157C-EV1 SCMI eval daughter on eval mother";
--	compatible = "st,stm32mp157c-ev1-scmi", "st,stm32mp157c-ev1", "st,stm32mp157c-ed1",
--		     "st,stm32mp157";
-+	compatible = "st,stm32mp157c-ev1-scmi", "st,stm32mp157c-ed1", "st,stm32mp157";
- 
- 	reserved-memory {
- 		optee@fe000000 {
++	.vidioc_decoder_cmd = v4l2_m2m_ioctl_stateless_decoder_cmd,
++	.vidioc_try_decoder_cmd = v4l2_m2m_ioctl_stateless_try_decoder_cmd,
++
+ 	.vidioc_try_encoder_cmd = v4l2_m2m_ioctl_try_encoder_cmd,
+ 	.vidioc_encoder_cmd = vidioc_encoder_cmd,
+ };
 -- 
 2.43.0
 
