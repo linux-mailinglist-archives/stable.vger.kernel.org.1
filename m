@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E4A837E23
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC483837C0B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A80891F29D6B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:36:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04F5D1C27E74
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3165915C;
-	Tue, 23 Jan 2024 00:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30C41FBF;
+	Tue, 23 Jan 2024 00:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXBO/YcK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oA8eXZxP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BBD50A75;
-	Tue, 23 Jan 2024 00:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830391C02;
+	Tue, 23 Jan 2024 00:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970402; cv=none; b=XCcL3JWUA2hOMJk+X5OBVHUUBsxQKh7ofl4w9l6Y7glgw0eTfyrUWgxvpZPwn9mCTrqCTjqJLTEYj8czz4ahHgCjOLUOBtn/ZbaZFzOA8RDJHl8eTdv1t9E+tqo7noWHYnFzkaLNKMo/j+UaiCi69MCiJfGNPn5sThA98zhW6Lc=
+	t=1705969484; cv=none; b=oPguMtPfWFenLwcZLfXqW8iudAHPAvPff13AYSKP3D8kEHPU0sywqGO4sKYPR5nN+KfJQapunnjg7Yg/ZmWaLCtBVcR6fn4fWPGvpA8JM6ZzFnv+R6pr6LFQow3Gky1NrAybdh4rSjO7H+GcQ7tnJaY8ldCN7r/QjHZxmyqaaV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970402; c=relaxed/simple;
-	bh=XMdXYFU4x7IvbBlURtCMOg+VC68nd8r0zrQ2CQnjoPY=;
+	s=arc-20240116; t=1705969484; c=relaxed/simple;
+	bh=vR9Ps+A2UXaeqNrbdwRuIW2M1xcK8td7RL0xDYb4cKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IEFUPUpRVLV3B/Tstdb6tc1X0Uu9KFZhvXArixnpcJbrqUdypIE4MmM60fZfxFy9NJ+PJpW6t+oDXGEwij5KodMSyBozpNa1xOQBFZKr1kKRnWTbShVBkl05py7oI5ehKdmkguRi5Wim4QSX3D/gwPZK2e/hGYwT7TWxhRyHLUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXBO/YcK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE049C433C7;
-	Tue, 23 Jan 2024 00:40:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cCFMZqCicfT/W4j2c4xBOS11lDGiEyGhHb5sAtpUk0OtU4MwnkJasIZOwWzEiVLZTJZQTPT8wQWlrfkiS7cnGHJMSptcjbjTXId1wMqcenkkST9zLdEWlC0DvU90DvcXQVh5shu1XVqTceFnSn2S7CTZPzWag0G5Pq1bRLr/r6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oA8eXZxP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD47C433F1;
+	Tue, 23 Jan 2024 00:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970401;
-	bh=XMdXYFU4x7IvbBlURtCMOg+VC68nd8r0zrQ2CQnjoPY=;
+	s=korg; t=1705969484;
+	bh=vR9Ps+A2UXaeqNrbdwRuIW2M1xcK8td7RL0xDYb4cKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cXBO/YcKmzIC+StuxfS6tgljoB2kp6W42nxckK8YhNPRTip+vNazTxCKBdFyODnyn
-	 0PfrbpiPkSkUw/XYMX3pzW1NSdfNJzZzmwGP1DZb058WY6SisMCCjsqZynWl2u3rUx
-	 EqVLyd93L9bdGqlGYWK09CF6wAnWVdDTgv+aV8fY=
+	b=oA8eXZxPSpgHWtx1mEc8R45YUMQAfJHBefB+fo7cqx3nLYTtVfkCcpaSs7R2NMwI2
+	 s875qIt751GdGe2BQYOCcmDEL8sRtxapoqtzO9LEguS9U3wJL5QXa6Gm1narcj1W8E
+	 AzrFNv3jeCuyAQvv3OgbALx3fOI06ESvzgGOdITM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Philipp Zabel <philipp.zabel@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/417] powerpc/powernv: Add a null pointer check in opal_event_init()
-Date: Mon, 22 Jan 2024 15:52:58 -0800
-Message-ID: <20240122235751.854101533@linuxfoundation.org>
+Subject: [PATCH 6.7 275/641] drm/imx/lcdc: Fix double-free of driver data
+Date: Mon, 22 Jan 2024 15:52:59 -0800
+Message-ID: <20240122235826.522388184@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 8649829a1dd25199bbf557b2621cedb4bf9b3050 ]
+[ Upstream commit ff3670877e7c73d06c2a835d9abb62efcae0145c ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+The struct imx_lcdc driver data is allocated using devm_drm_dev_alloc()
+so it must not be explicitly kfree()d.
 
-Fixes: 2717a33d6074 ("powerpc/opal-irqchip: Use interrupt names if present")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231127030755.1546750-1-chentao@kylinos.cn
+Also drm_kms_helper_poll_fini() should not be called as there is no
+matching drm_kms_helper_poll_init(). So drop the release function
+completely.
+
+Fixes: c87e859cdeb5 ("drm/imx/lcdc: Implement DRM driver for imx25")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Philipp Zabel <philipp.zabel@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230706092731.2630232-1-u.kleine-koenig@pengutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/opal-irqchip.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/imx/lcdc/imx-lcdc.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-irqchip.c b/arch/powerpc/platforms/powernv/opal-irqchip.c
-index d55652b5f6fa..391f50535200 100644
---- a/arch/powerpc/platforms/powernv/opal-irqchip.c
-+++ b/arch/powerpc/platforms/powernv/opal-irqchip.c
-@@ -275,6 +275,8 @@ int __init opal_event_init(void)
- 		else
- 			name = kasprintf(GFP_KERNEL, "opal");
+diff --git a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+index 22b65f4a0e30..4beb3b4bd694 100644
+--- a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
++++ b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
+@@ -342,21 +342,12 @@ static const struct drm_mode_config_helper_funcs imx_lcdc_mode_config_helpers =
+ 	.atomic_commit_tail = drm_atomic_helper_commit_tail_rpm,
+ };
  
-+		if (!name)
-+			continue;
- 		/* Install interrupt handler */
- 		rc = request_irq(r->start, opal_interrupt, r->flags & IRQD_TRIGGER_MASK,
- 				 name, NULL);
+-static void imx_lcdc_release(struct drm_device *drm)
+-{
+-	struct imx_lcdc *lcdc = imx_lcdc_from_drmdev(drm);
+-
+-	drm_kms_helper_poll_fini(drm);
+-	kfree(lcdc);
+-}
+-
+ DEFINE_DRM_GEM_DMA_FOPS(imx_lcdc_drm_fops);
+ 
+ static struct drm_driver imx_lcdc_drm_driver = {
+ 	.driver_features = DRIVER_GEM | DRIVER_MODESET | DRIVER_ATOMIC,
+ 	.fops = &imx_lcdc_drm_fops,
+ 	DRM_GEM_DMA_DRIVER_OPS_VMAP,
+-	.release = imx_lcdc_release,
+ 	.name = "imx-lcdc",
+ 	.desc = "i.MX LCDC driver",
+ 	.date = "20200716",
 -- 
 2.43.0
 
