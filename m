@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7069483826E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB4F837BC8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B7271C28AAD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FE311F2A366
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0F6482ED;
-	Tue, 23 Jan 2024 01:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34A915445D;
+	Tue, 23 Jan 2024 00:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsGt+yxW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qOL8tgh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E131A5A7B8;
-	Tue, 23 Jan 2024 01:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6201E154441;
+	Tue, 23 Jan 2024 00:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974352; cv=none; b=GSTNoBmvpWb+o/2vvhLnk5XCDUbJ5WU8LN+4r3WCOD5vd0Xy8wNNDfKS90j4xZXe3X5ieHCv+6IKECSVAkfW36BTVu1hBCQ2xxrERmMFHcz9oBNUP/gNxKxpHumS+zqZnQByKq4ipxP83RnXTOZzjY5EmdHzqjS1fDd5E3H9mbw=
+	t=1705969383; cv=none; b=ExM0V+ywuZpXS71JkChfYacUU33EZFCph/epKUzoRI2r4iok47C9pn86n0jvZ/+qgAlaoJ2O6cAMs86dhcDUlE5Y46sBZtOiEuziizYJtc0Vb5zd3N6wxLV4ykl74jYm2jr7zgjwIwU8dHEWFQ/qjncS/axIpIBVn7cc2xavE1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974352; c=relaxed/simple;
-	bh=fbZRUCrxvH2l9HtJWm3v+o4clJOz/kZUGEia2jAYRk8=;
+	s=arc-20240116; t=1705969383; c=relaxed/simple;
+	bh=QTttser246UF5wyHiZ8BgPJfWJDd8l72j/MqVWBOozI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DS3pk0eXEWyUMCOU5W1H+1orH/Gn2VF6i21x2xdxiHPZ7ncjXoh7oe2JRZHIBP8J2RB6ICn9Rpqa9FwDQavOCOBxfW3dBCXO7FHLTA4a0e4r4ywGMUnY4QrfRN6JOurey48tSqOb0obn+xli9jMSHIuk03Jsm7Uk7oer91rLjRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsGt+yxW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCCFC433F1;
-	Tue, 23 Jan 2024 01:45:51 +0000 (UTC)
+	 MIME-Version; b=Z2hqLS02/kqbb/+Yr4/5vqQ87k+Iu8NkL6OACXMec+2TXeYPR/ui7z1C/4KEaybDgoZ9vXYnStcNzCovbuNY2UZdT1oLupG4zDjnDmUwQ1yAfb/0EM0rHrq0iYE8wSqO8xlex1LGPaWZjWKhD5CMy231/sCsSQLbH349+XMPlOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qOL8tgh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B43C43399;
+	Tue, 23 Jan 2024 00:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974351;
-	bh=fbZRUCrxvH2l9HtJWm3v+o4clJOz/kZUGEia2jAYRk8=;
+	s=korg; t=1705969383;
+	bh=QTttser246UF5wyHiZ8BgPJfWJDd8l72j/MqVWBOozI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nsGt+yxWNiycB/vPQLyYpWcD/wAweOMRxuFVeRBKD+mKrIEkMyAhDcgoKOVvM1A2z
-	 AyXWC6eAdsyqma0GXkxR1MWvraJ4acZGIhVC15LcdhmlIhAm7Oo+wzBgojKFz7pjmx
-	 ZSym+FvevygANDGLsa2+N9xjPkQmaHaXin0w/rzQ=
+	b=2qOL8tghokU35ORqLmy1r8Cwafj6CvQX3hl+nGxzd0gVOKpRRoiZVqmkPocierqzS
+	 mObyX0Wh3dS+QIAZwyUjhYHWsx0CFKTi0tc8/R3dxM2wY3NrLUOf695ovY5vAB2LV9
+	 kkhb4xNnkdlEA0JqZ7WRHe6vOYJY0nR+rokzKDdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Hu <huyue2@coolpad.com>,
-	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/583] erofs: fix memory leak on short-lived bounced pages
+Subject: [PATCH 6.7 208/641] wifi: rtlwifi: rtl8188ee: phy: using calculate_bit_shift()
 Date: Mon, 22 Jan 2024 15:51:52 -0800
-Message-ID: <20240122235813.993590053@linuxfoundation.org>
+Message-ID: <20240122235824.458826199@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 93d6fda7f926451a0fa1121b9558d75ca47e861e ]
+[ Upstream commit 969bc926f04b438676768aeffffffb050e480b62 ]
 
-Both MicroLZMA and DEFLATE algorithms can use short-lived pages on
-demand for the overlapped inplace I/O decompression.
+Using calculate_bit_shift() to replace _rtl88e_phy_calculate_bit_shift().
+And fix the undefined bitwise shift behavior problem.
 
-However, those short-lived pages are actually added to
-`be->compressed_pages`.  Thus, it should be checked instead of
-`pcl->compressed_bvecs`.
-
-The LZ4 algorithm doesn't work like this, so it won't be impacted.
-
-Fixes: 67139e36d970 ("erofs: introduce `z_erofs_parse_in_bvecs'")
-Reviewed-by: Yue Hu <huyue2@coolpad.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20231128180431.4116991-1-hsiangkao@linux.alibaba.com
+Fixes: f0eb856e0b6c ("rtlwifi: rtl8188ee: Add new driver")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-4-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zdata.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ .../net/wireless/realtek/rtlwifi/rtl8188ee/phy.c   | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index a7e6847f6f8f..a33cd6757f98 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1309,12 +1309,11 @@ static int z_erofs_decompress_pcluster(struct z_erofs_decompress_backend *be,
- 		put_page(page);
- 	} else {
- 		for (i = 0; i < pclusterpages; ++i) {
--			page = pcl->compressed_bvecs[i].page;
-+			/* consider shortlived pages added when decompressing */
-+			page = be->compressed_pages[i];
- 
- 			if (erofs_page_is_managed(sbi, page))
- 				continue;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
+index 12d0b3a87af7..0fab3a0c7d49 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
+@@ -16,12 +16,6 @@ static u32 _rtl88e_phy_rf_serial_read(struct ieee80211_hw *hw,
+ static void _rtl88e_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 					enum radio_path rfpath, u32 offset,
+ 					u32 data);
+-static u32 _rtl88e_phy_calculate_bit_shift(u32 bitmask)
+-{
+-	u32 i = ffs(bitmask);
 -
--			/* recycle all individual short-lived pages */
- 			(void)z_erofs_put_shortlivedpage(be->pagepool, page);
- 			WRITE_ONCE(pcl->compressed_bvecs[i].page, NULL);
- 		}
+-	return i ? i - 1 : 32;
+-}
+ static bool _rtl88e_phy_bb8188e_config_parafile(struct ieee80211_hw *hw);
+ static bool _rtl88e_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);
+ static bool phy_config_bb_with_headerfile(struct ieee80211_hw *hw,
+@@ -51,7 +45,7 @@ u32 rtl88e_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+ 		"regaddr(%#x), bitmask(%#x)\n", regaddr, bitmask);
+ 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-	bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	returnvalue = (originalvalue & bitmask) >> bitshift;
+ 
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+@@ -74,7 +68,7 @@ void rtl88e_phy_set_bb_reg(struct ieee80211_hw *hw,
+ 
+ 	if (bitmask != MASKDWORD) {
+ 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-		bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
+ 	}
+ 
+@@ -99,7 +93,7 @@ u32 rtl88e_phy_query_rf_reg(struct ieee80211_hw *hw,
+ 
+ 
+ 	original_value = _rtl88e_phy_rf_serial_read(hw, rfpath, regaddr);
+-	bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
+ 
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -127,7 +121,7 @@ void rtl88e_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = _rtl88e_phy_rf_serial_read(hw,
+ 								    rfpath,
+ 								    regaddr);
+-			bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
 -- 
 2.43.0
 
