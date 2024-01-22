@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69443837F62
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB04C8384CD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0480728C2EF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05DBAB2B7D3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B041D29434;
-	Tue, 23 Jan 2024 00:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEC86A329;
+	Tue, 23 Jan 2024 02:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F43MQKqB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnxXodOc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705FB22062;
-	Tue, 23 Jan 2024 00:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA686A320;
+	Tue, 23 Jan 2024 02:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971098; cv=none; b=hFMBJFmmEIHPDPpxFVEUorgTEVNV/fwx60YXTRQ1ZADZgXNRHLCAD0Xn1JZBd7syAkVqY28U50RjCLxSrh7fsO50YDK+xzR8uiUyxP7Z0pPk0gEQ62RhoB+iUwQmoacjQx/0MLe3ArjmUstg5WO9ik9DPpfNNwBw9Ilp1KcrUwE=
+	t=1705975335; cv=none; b=gClyMcXoPSMIYe0uZHG0LR4Vjlyw51OXQ30rN//peGWB42muJHoFAKEW3jXk/5U2anr5YddfJecwoVz7p5Cb2E7aoUVpVNnH+xN6TI8iZIMZ7RhmyM1B+ngU1i3aglMcVuMRrCg+XptZcz1eakBgNL8Q4V00TI4Yn1LLQqu47N0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971098; c=relaxed/simple;
-	bh=I0tBsHX1GsjDSqg3RmZuVBfP2z4A99aSyAdWGpl5d64=;
+	s=arc-20240116; t=1705975335; c=relaxed/simple;
+	bh=XmWLCvI2rZ2MChlFG4+AHcXwhp7R46CYO4mwQRO49Z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o/K/idUGCw0zoImmTOu++FBZd5hBYwXqAqzr9xwjkT40me25L5VHl8sSB4LnlU+sAiiIuywCyzFR/dals7E8/cSETalX87JbYpuZaP6vU9lYArSQDVkNXPK5kPVJQOBn7SWvB6mXO2v5Lza7XXlvsTqWGMdNkE2LQ8Y5ESsiljY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F43MQKqB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8671C433F1;
-	Tue, 23 Jan 2024 00:51:37 +0000 (UTC)
+	 MIME-Version; b=pa549XyvH8vCjy9YVpGWivlzYzLNc+leif3/BBROZ3S39ucaWUWXhnQcWq0vMwaIecJgrCRQuKOmZrImCiX+t1z3pYYrL+fb7khfGljT7vDiYFR5OEsSLE4KfcWG5LLx2Mqy8Ty9cImgo7hPFnmaIcMzOaa4CFgihsnPJw3+1oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnxXodOc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5700C43390;
+	Tue, 23 Jan 2024 02:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971098;
-	bh=I0tBsHX1GsjDSqg3RmZuVBfP2z4A99aSyAdWGpl5d64=;
+	s=korg; t=1705975335;
+	bh=XmWLCvI2rZ2MChlFG4+AHcXwhp7R46CYO4mwQRO49Z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F43MQKqBeErK1n31i+5yU8YWihc8PC5wnLL4qc/P/J3ltAsMCkUT2zI7z2do4sanB
-	 7AFcKW7mCwQdkP5Mv/AShQu6Sx76o36UDxNzJQOGMcFfbvfA9wjH26klozVQ59lqng
-	 zXg8kTC33J8USRnh9Ikjv3PLUN9KGBdlXJcuhOSM=
+	b=HnxXodOcY2rIgGgU97lFvlVgqXiNqd5tsSBseTVv19bRFUvqV6KW0CMdC86bhffTe
+	 zxLoXS/oNNFiM59uDcROAY+o3PAA/dyxORPhi14MFLVtqQVJlR7PbN8DPHm+JtOvJL
+	 xAdB+LJA6wyxUqJanvd9OnFLEuZ8Qtt7nhDcPOsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 180/417] ASoC: cs35l34: Fix GPIO name and drop legacy include
+Subject: [PATCH 6.6 297/583] clk: sp7021: fix return value check in sp7021_clk_probe()
 Date: Mon, 22 Jan 2024 15:55:48 -0800
-Message-ID: <20240122235758.096450607@linuxfoundation.org>
+Message-ID: <20240122235821.102722845@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit a6122b0b4211d132934ef99e7b737910e6d54d2f ]
+[ Upstream commit 1004c346a2b7393fce37dd1f320555e0a0d71e3f ]
 
-This driver includes the legacy GPIO APIs <linux/gpio.h> and
-<linux/of_gpio.h> but does not use any symbols from any of
-them.
+devm_platform_ioremap_resource() never returns NULL pointer,
+it will return ERR_PTR() when it fails, so replace the check
+with IS_ERR().
 
-Drop the includes.
-
-Further the driver is requesting "reset-gpios" rather than
-just "reset" from the GPIO framework. This is wrong because
-the gpiolib core will add "-gpios" before processing the
-request from e.g. device tree. Drop the suffix.
-
-The last problem means that the optional RESET GPIO has
-never been properly retrieved and used even if it existed,
-but nobody noticed.
-
-Fixes: c1124c09e103 ("ASoC: cs35l34: Initial commit of the cs35l34 CODEC driver.")
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20231201-descriptors-sound-cirrus-v2-3-ee9f9d4655eb@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d54c1fd4a51e ("clk: Add Sunplus SP7021 clock driver")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Link: https://lore.kernel.org/r/20231128133016.2494699-1-yangyingliang@huawei.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l34.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/clk/clk-sp7021.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/codecs/cs35l34.c b/sound/soc/codecs/cs35l34.c
-index b3f98023e6a7..57d125c03fad 100644
---- a/sound/soc/codecs/cs35l34.c
-+++ b/sound/soc/codecs/cs35l34.c
-@@ -20,14 +20,12 @@
- #include <linux/regulator/machine.h>
- #include <linux/pm_runtime.h>
- #include <linux/of_device.h>
--#include <linux/of_gpio.h>
- #include <linux/of_irq.h>
- #include <sound/core.h>
- #include <sound/pcm.h>
- #include <sound/pcm_params.h>
- #include <sound/soc.h>
- #include <sound/soc-dapm.h>
--#include <linux/gpio.h>
- #include <linux/gpio/consumer.h>
- #include <sound/initval.h>
- #include <sound/tlv.h>
-@@ -1061,7 +1059,7 @@ static int cs35l34_i2c_probe(struct i2c_client *i2c_client)
- 		dev_err(&i2c_client->dev, "Failed to request IRQ: %d\n", ret);
+diff --git a/drivers/clk/clk-sp7021.c b/drivers/clk/clk-sp7021.c
+index 01d3c4c7b0b2..7cb7d501d7a6 100644
+--- a/drivers/clk/clk-sp7021.c
++++ b/drivers/clk/clk-sp7021.c
+@@ -604,14 +604,14 @@ static int sp7021_clk_probe(struct platform_device *pdev)
+ 	int i;
  
- 	cs35l34->reset_gpio = devm_gpiod_get_optional(&i2c_client->dev,
--				"reset-gpios", GPIOD_OUT_LOW);
-+				"reset", GPIOD_OUT_LOW);
- 	if (IS_ERR(cs35l34->reset_gpio)) {
- 		ret = PTR_ERR(cs35l34->reset_gpio);
- 		goto err_regulator;
+ 	clk_base = devm_platform_ioremap_resource(pdev, 0);
+-	if (!clk_base)
+-		return -ENXIO;
++	if (IS_ERR(clk_base))
++		return PTR_ERR(clk_base);
+ 	pll_base = devm_platform_ioremap_resource(pdev, 1);
+-	if (!pll_base)
+-		return -ENXIO;
++	if (IS_ERR(pll_base))
++		return PTR_ERR(pll_base);
+ 	sys_base = devm_platform_ioremap_resource(pdev, 2);
+-	if (!sys_base)
+-		return -ENXIO;
++	if (IS_ERR(sys_base))
++		return PTR_ERR(sys_base);
+ 
+ 	/* enable default clks */
+ 	for (i = 0; i < ARRAY_SIZE(sp_clken); i++)
 -- 
 2.43.0
 
