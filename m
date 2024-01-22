@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-13459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7BE837C28
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 350D4838351
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CCF01C287F0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF9BA1F27631
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9171552FF;
-	Tue, 23 Jan 2024 00:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461DF6166C;
+	Tue, 23 Jan 2024 01:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7KnhHz9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjnx4lQv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B901EEE8;
-	Tue, 23 Jan 2024 00:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCEC61674;
+	Tue, 23 Jan 2024 01:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969520; cv=none; b=on7JqsTmZkfR8P+Yt1lZXrL2U5AbdLYj9FQpF+AEZ35nYr4aORkIAVGAL2RYkBxofiPkf2lOhXKePSCP/GvTp9+QzqJ+lHGLY8twXklp2z4WzWVcGrjzzP0Y6bpel2wGFjB9x2vXY8Y4Q75+lvt6iZ8vibd2tscJItZ5+YNehPc=
+	t=1705974936; cv=none; b=TFOGqoiY1XAGsYclWX+OxkF1W5tN42h8kLO7hsW91fv5vODxXMz1BRzeyjgUCBdpLyHfjOmmd0hjDBC6BBn402j1Xp2NRYtYEo87Af6OwIBzp9esk7OWIrywnucrclNLeXCd//Pc/GTmy+4NRuExj4+sLlNTMPyECu61+8d74sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969520; c=relaxed/simple;
-	bh=KmXTxCnnwHgMco5hU0CgAmGgeQyIqdUbJBUgHUjVRCw=;
+	s=arc-20240116; t=1705974936; c=relaxed/simple;
+	bh=ctEYgXlZoauO3JU3e8u1o6ZsHeXoF7iUcT6eGbLLzNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HqKtfIYa8TMYgzedU3zz6B/XguRpN4TYgu3WmdK1qmA4H5D4xeV9lKwOSgAcD+fLNjHeZ+91dGy7NeEjR4Lc8+VIPtBGBO06FyUaYLOo3wmYusRgwP4o3kMb/0PMF6hU9AvRrbrmk00fOs91vTb4O/5w/89APV1wZchLLsoSpuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7KnhHz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FFEC433A6;
-	Tue, 23 Jan 2024 00:25:20 +0000 (UTC)
+	 MIME-Version; b=gbBjZGN3nZ2QH7Hvu/R5kHebcd0sJjis9oIsyP9SOE3ZvBBHH3GCa2tdWimW96xw+Cmld/yrsbvcy0ujlu5NKncJEfol/WZXiOV3a7BcP6crQFKysRDHs126C1ValGRqJJpSwhizvuhuqz8+RHc08nbTFwThSOwrcm2BK7rodh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjnx4lQv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951B8C433F1;
+	Tue, 23 Jan 2024 01:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969520;
-	bh=KmXTxCnnwHgMco5hU0CgAmGgeQyIqdUbJBUgHUjVRCw=;
+	s=korg; t=1705974935;
+	bh=ctEYgXlZoauO3JU3e8u1o6ZsHeXoF7iUcT6eGbLLzNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K7KnhHz9wTwMTREWpryJPgcdYY/XY1eT4RH0rnTkNfdSbXJ9JN2OIqWInD/WtPuxf
-	 90RpfESQmyKkv2hlPXexDbaIeEcD9cwaL1kV2kG3+fsXH1lvrgVrRUgZfZYJTRcj0w
-	 ZGxmdJkp/+5lVafCWXScee5y16COdBWoK/0JAaV8=
+	b=yjnx4lQvVJXzQdSc654GZ2q5e+Um/QsIjG3prmTVDp1pVKKuorRfDHYJa99MdE2xB
+	 2Yk1i4nngGRpPY1Dbaa1EuIRt1QIoj5wdY+QxjDJP4c+gDJbYO/gIZdOoyzmv9Uf6S
+	 /yL9GP9v+Qgykc9VKB1j5mM6BVGCl0YqWOvHXTx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 302/641] clk: qcom: gpucc-sm8150: Update the gpu_cc_pll1 config
-Date: Mon, 22 Jan 2024 15:53:26 -0800
-Message-ID: <20240122235827.362117385@linuxfoundation.org>
+Subject: [PATCH 6.6 156/583] arm64: dts: renesas: white-hawk-cpu: Fix missing serial console pin control
+Date: Mon, 22 Jan 2024 15:53:27 -0800
+Message-ID: <20240122235816.825490977@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 6ebd9a4f8b8d2b35cf965a04849c4ba763722f13 ]
+[ Upstream commit fc67495680f60e88bb8ca43421c1dd628928d581 ]
 
-Update the test_ctl_hi_val and test_ctl_hi1_val of gpu_cc_pll1
-as per latest HW recommendation.
+The pin control description for the serial console was added, but not
+enabled, due to missing pinctrl properties in the serial port device
+node.
 
-Fixes: 0cef71f2ccc8 ("clk: qcom: Add graphics clock controller driver for SM8150")
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231122042814.4158076-1-quic_skakitap@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 7a8d590de8132853 ("arm64: dts: renesas: white-hawk-cpu: Add serial port pin control")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/8a51516581cd71ecbfa174af9c7cebad1fc83c5b.1702459865.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gpucc-sm8150.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/qcom/gpucc-sm8150.c b/drivers/clk/qcom/gpucc-sm8150.c
-index 8422fd047493..c89a5b59ddb7 100644
---- a/drivers/clk/qcom/gpucc-sm8150.c
-+++ b/drivers/clk/qcom/gpucc-sm8150.c
-@@ -37,8 +37,8 @@ static struct alpha_pll_config gpu_cc_pll1_config = {
- 	.config_ctl_hi_val = 0x00002267,
- 	.config_ctl_hi1_val = 0x00000024,
- 	.test_ctl_val = 0x00000000,
--	.test_ctl_hi_val = 0x00000002,
--	.test_ctl_hi1_val = 0x00000000,
-+	.test_ctl_hi_val = 0x00000000,
-+	.test_ctl_hi1_val = 0x00000020,
- 	.user_ctl_val = 0x00000000,
- 	.user_ctl_hi_val = 0x00000805,
- 	.user_ctl_hi1_val = 0x000000d0,
+diff --git a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi
+index bb4a5270f71b..913f70fe6c5c 100644
+--- a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi
++++ b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi
+@@ -187,6 +187,9 @@ &extalr_clk {
+ };
+ 
+ &hscif0 {
++	pinctrl-0 = <&hscif0_pins>;
++	pinctrl-names = "default";
++
+ 	status = "okay";
+ };
+ 
 -- 
 2.43.0
 
