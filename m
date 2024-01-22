@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70647838063
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE472838007
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4CF21C296B6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B39C28CB0F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11E6B67758;
-	Tue, 23 Jan 2024 01:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20BD966B22;
+	Tue, 23 Jan 2024 00:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lV81161H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iY7L8Khs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C521B6774B;
-	Tue, 23 Jan 2024 01:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D397062805;
+	Tue, 23 Jan 2024 00:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971695; cv=none; b=qI3oqtxg2kw5krIiTZk8u1my3RP1DUK5dvFcbR+05W7AH6wsOfO3Rras/pNggn47zEWP4d5VJ31lH5qb+YIBwglQbVIdQxtzp5RRtl2PJ5fCpCyZGYLOMk7rxGGdceFAGFq+xlM8EhJuB935Dtyp8YUicbhpSlXjw7vODTuOL/c=
+	t=1705971503; cv=none; b=thWhWYEYEAaFLk03ShaKHw5dIDoY+6M25UD7AFSEh/Z+1XoM/sq1XmBrNfNSBw/pMpOMaHVQGjfUnCCK1j59A3GhyrpVmgKRnGi3PCeyLDTn9jpXsluP+A5MFUQD9P0aD+tvAKDXSr8c92K74VipK7Z4fVN35SJ8HHQk5YjsPvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971695; c=relaxed/simple;
-	bh=AJFY02ZOzJgBYb1kQoRXe66eagICcX47pYjbIUv44Cw=;
+	s=arc-20240116; t=1705971503; c=relaxed/simple;
+	bh=bNGJAnoRVgvcmOBHcdbjDChNFSPuTS5tT2zFLY1TEAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=usV4jdHyrGH7rwxAqN2j16AnvuHsAFvdu82psRwmOPJuEbUxN3nDfibS/7Isf6DRTbuLK9ydDbMbKZ/GnN6asnOU4aiBngD2rS17jxVQDDWfkn08zd0gAOuOKKb6576BOmeV5As37wlWuODHmXniwhe/NuCyWtgXOStJq+cG9uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lV81161H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3E0C43394;
-	Tue, 23 Jan 2024 01:01:35 +0000 (UTC)
+	 MIME-Version; b=BHUz0MzGpb/mxwSjs0VfC+ybVXN4M8rDnRjaFsHDzxWXcHooZDBXq4mdBTw2/fxNkV+9SyrTxVv1LDI7Ulw6B60tb5npQys67qX5WZBatHO03xaZhLe1PwtcZDEpsgmnKhosid7mKvOtEQ9UJpmOlxMKAnu9JihzHLz1hFnsH3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iY7L8Khs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD45C433C7;
+	Tue, 23 Jan 2024 00:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971695;
-	bh=AJFY02ZOzJgBYb1kQoRXe66eagICcX47pYjbIUv44Cw=;
+	s=korg; t=1705971503;
+	bh=bNGJAnoRVgvcmOBHcdbjDChNFSPuTS5tT2zFLY1TEAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lV81161HKJkiuOkqysZRA8x/sS6y5DOjRcTKzKNTuZFx9/AOX51s2VR/RLgCay4T8
-	 +bNq9yzvY4l3DOJFodlyAHbND8QXDGWp1pK0s3yRw52UEeZrNCfEIphYMuc+7rcYk/
-	 N3duc6AY2PCY6gd8hefMCS4sOstn+euw+T0EXsiM=
+	b=iY7L8Khsq92oPaI0AG9nlTd8Qf22RCcuDl8btRDTlytLIOi3/G2dk85bxlviVDqpm
+	 Yzk/cUUhFJJo+zJG83ii8S31vXksg569mMMjvz7u35m99aKkUZpUgazPPv0Qy2Ibo0
+	 fxEdbeMBtBMYMlyONTRCUqBM96FO0AvYWcG1GIj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Liu <song@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	kernel test robot <lkp@intel.com>,
-	Bart Van Assche <bvanassche@acm.org>
-Subject: [PATCH 6.1 300/417] md/raid1: Use blk_opf_t for read and write operations
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 162/286] drm/radeon/trinity_dpm: fix a memleak in trinity_parse_power_table
 Date: Mon, 22 Jan 2024 15:57:48 -0800
-Message-ID: <20240122235802.221325213@linuxfoundation.org>
+Message-ID: <20240122235738.407718281@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-commit 7dab24554dedd4e6f408af8eb2d25c89997a6a1f upstream.
+[ Upstream commit 28c28d7f77c06ac2c0b8f9c82bc04eba22912b3b ]
 
-Use the type blk_opf_t for read and write operations instead of int. This
-patch does not affect the generated code but fixes the following sparse
-warning:
+The rdev->pm.dpm.ps allocated by kcalloc should be freed in every
+following error-handling path. However, in the error-handling of
+rdev->pm.power_state[i].clock_info the rdev->pm.dpm.ps is not freed,
+resulting in a memleak in this function.
 
-drivers/md/raid1.c:1993:60: sparse: sparse: incorrect type in argument 5 (different base types)
-     expected restricted blk_opf_t [usertype] opf
-     got int rw
-
-Cc: Song Liu <song@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Fixes: 3c5e514db58f ("md/raid1: Use the new blk_opf_t type")
-Cc: stable@vger.kernel.org # v6.0+
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202401080657.UjFnvQgX-lkp@intel.com/
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240108001223.23835-1-bvanassche@acm.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d70229f70447 ("drm/radeon/kms: add dpm support for trinity asics")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid1.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/radeon/trinity_dpm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -1972,12 +1972,12 @@ static void end_sync_write(struct bio *b
- }
- 
- static int r1_sync_page_io(struct md_rdev *rdev, sector_t sector,
--			   int sectors, struct page *page, int rw)
-+			   int sectors, struct page *page, blk_opf_t rw)
- {
- 	if (sync_page_io(rdev, sector, sectors << 9, page, rw, false))
- 		/* success */
- 		return 1;
--	if (rw == WRITE) {
-+	if (rw == REQ_OP_WRITE) {
- 		set_bit(WriteErrorSeen, &rdev->flags);
- 		if (!test_and_set_bit(WantReplacement,
- 				      &rdev->flags))
-@@ -2094,7 +2094,7 @@ static int fix_sync_read_error(struct r1
- 			rdev = conf->mirrors[d].rdev;
- 			if (r1_sync_page_io(rdev, sect, s,
- 					    pages[idx],
--					    WRITE) == 0) {
-+					    REQ_OP_WRITE) == 0) {
- 				r1_bio->bios[d]->bi_end_io = NULL;
- 				rdev_dec_pending(rdev, mddev);
- 			}
-@@ -2109,7 +2109,7 @@ static int fix_sync_read_error(struct r1
- 			rdev = conf->mirrors[d].rdev;
- 			if (r1_sync_page_io(rdev, sect, s,
- 					    pages[idx],
--					    READ) != 0)
-+					    REQ_OP_READ) != 0)
- 				atomic_add(s, &rdev->corrected_errors);
- 		}
- 		sectors -= s;
-@@ -2321,7 +2321,7 @@ static void fix_read_error(struct r1conf
- 				atomic_inc(&rdev->nr_pending);
- 				rcu_read_unlock();
- 				r1_sync_page_io(rdev, sect, s,
--						conf->tmppage, WRITE);
-+						conf->tmppage, REQ_OP_WRITE);
- 				rdev_dec_pending(rdev, mddev);
- 			} else
- 				rcu_read_unlock();
-@@ -2338,7 +2338,7 @@ static void fix_read_error(struct r1conf
- 				atomic_inc(&rdev->nr_pending);
- 				rcu_read_unlock();
- 				if (r1_sync_page_io(rdev, sect, s,
--						    conf->tmppage, READ)) {
-+						conf->tmppage, REQ_OP_READ)) {
- 					atomic_add(s, &rdev->corrected_errors);
- 					pr_info("md/raid1:%s: read error corrected (%d sectors at %llu on %pg)\n",
- 						mdname(mddev), s,
+diff --git a/drivers/gpu/drm/radeon/trinity_dpm.c b/drivers/gpu/drm/radeon/trinity_dpm.c
+index 4d93b84aa739..49c28fbe366e 100644
+--- a/drivers/gpu/drm/radeon/trinity_dpm.c
++++ b/drivers/gpu/drm/radeon/trinity_dpm.c
+@@ -1770,8 +1770,10 @@ static int trinity_parse_power_table(struct radeon_device *rdev)
+ 		non_clock_array_index = power_state->v2.nonClockInfoIndex;
+ 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
+ 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
+-		if (!rdev->pm.power_state[i].clock_info)
++		if (!rdev->pm.power_state[i].clock_info) {
++			kfree(rdev->pm.dpm.ps);
+ 			return -EINVAL;
++		}
+ 		ps = kzalloc(sizeof(struct sumo_ps), GFP_KERNEL);
+ 		if (ps == NULL) {
+ 			kfree(rdev->pm.dpm.ps);
+-- 
+2.43.0
+
 
 
 
