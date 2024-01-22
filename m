@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BD028384B8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B16837D94
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C55D01F22970
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCCE71F226FA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA7974E06;
-	Tue, 23 Jan 2024 02:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A747A5B1FE;
+	Tue, 23 Jan 2024 00:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+oFOXHj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUDIkQTA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4CF74E09;
-	Tue, 23 Jan 2024 02:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6591756B68;
+	Tue, 23 Jan 2024 00:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975467; cv=none; b=pvjaTl7E9N5VNNNhvcDWMWefT/wRt4AyEKyZEqyEUbyq0ALX6uYiXsHwFFyqQae+zOvmXfnKVtgfzlv/CISgU3U/A4tGknb0vaOsaojhOgNcy8l07dZKKPJh8WP9P3OiXrueOXAhmAvakNvmAnkQfft/zVZpk0cSHxKAj++FBU0=
+	t=1705970038; cv=none; b=PA66wvVb77cddDSCiahDb9a08XwhyNzkwoVcKl2VrIdfe9ZoDBGrhFBO7KtA1dV9vGUGRJBGLo/k7rpJ3s6ijRyY6/Lf+NrqLuS51ltHhuzVN9apRlY4G1whlXKo1zSZtWtjz7l2kjtq4lH0OjhqaN6vdu6RfBgI1FmacHlLoqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975467; c=relaxed/simple;
-	bh=mXhM9nzqNZO5PhBpGbl/IOx0mKt/15wjgEkc4+6QAdI=;
+	s=arc-20240116; t=1705970038; c=relaxed/simple;
+	bh=uOjbrtXcvWNsROkAqS5BKyNR0SwhzVzrUvmvtOoe9ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ngHXggwlWx46pkN5tmpqXe/wWjvAn/BCgHu4NnOWzBn53QWe3KOwPZNLbWoPVDbSkEml2F1XzlskGlq7gJd2ovcCg6PPdm+ruVszQJ0dnszqtJ+rzrBzgP481D4fUoKZZMtPCDQVKLzCyFk8+rH0JKLQBWvedJzEZPoDJpPEHtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+oFOXHj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D447AC43399;
-	Tue, 23 Jan 2024 02:04:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WAsuqGqS2R4ZJdIrl2Mj2Nvqvr1C06mMMLxthuscP4TEEIDmSX4gasEWx8MC6Fd5UkwxBa/VrssD1VTKxQ9xX9i4x8k9tAbo3qCCk+fgqQWaB4zRKQi8OeOCMV1BKJy2jU4XrII0NuiGC8EUEScUMDdk3jsvwkY4+fZn4SvKqXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUDIkQTA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1CCC433F1;
+	Tue, 23 Jan 2024 00:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975467;
-	bh=mXhM9nzqNZO5PhBpGbl/IOx0mKt/15wjgEkc4+6QAdI=;
+	s=korg; t=1705970038;
+	bh=uOjbrtXcvWNsROkAqS5BKyNR0SwhzVzrUvmvtOoe9ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+oFOXHjmzNi3JkyGC0WNTwsQ1VTuoHmWcZqJBC3V5euNexOgTURPjm3faUdyUdic
-	 aQRFxiHmx6DFYhqejeubBLLeqFDmt/wXikDi8dWlWwwP7QVdkWNrm8QbGzBwDLw8Z7
-	 GcprNqb4BC5925JKwKs27bcO5RMnVeav2ecz6ffI=
+	b=NUDIkQTAMib1upRC+m/9VnqJEsmUhXEUNOkeXyuVJq4LoOI+KkiASCI6inyDl642J
+	 wnRKdCZPAnpeOOQUyi6OXQIFYilYdsyTut8z2tutygDywsZ7UAsN0PYaJNmB9Lb0cc
+	 kXfCwYH+F+jA2nEOrw/od8XEEbl4gKqP2Pq4loNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tadeusz Struk <tstruk@gigaio.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	stable@kernel.org
-Subject: [PATCH 6.6 423/583] PCI/P2PDMA: Remove reference to pci_p2pdma_map_sg()
-Date: Mon, 22 Jan 2024 15:57:54 -0800
-Message-ID: <20240122235824.930800724@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 571/641] nvmet: re-fix tracing strncpy() warning
+Date: Mon, 22 Jan 2024 15:57:55 -0800
+Message-ID: <20240122235836.027911132@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tadeusz Struk <tstruk@gigaio.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 9a000a72af75886e5de13f4edef7f0d788622e7d upstream.
+[ Upstream commit 4ee7ffeb4ce50c80bc4504db6f39b25a2df6bcf4 ]
 
-Update Documentation/driver-api/pci/p2pdma.rst doc and remove references to
-obsolete p2pdma mapping functions.
+An earlier patch had tried to address a warning about a string copy with
+missing zero termination:
 
-Fixes: 0d06132fc84b ("PCI/P2PDMA: Remove pci_p2pdma_[un]map_sg()")
-Link: https://lore.kernel.org/r/20231113180325.444692-1-tstruk@gmail.com
-Signed-off-by: Tadeusz Struk <tstruk@gigaio.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/nvme/target/trace.h:52:3: warning: ‘strncpy’ specified bound 32 equals destination size [-Wstringop-truncation]
+
+The new version causes a different warning with some compiler versions, notably
+gcc-9 and gcc-10, and also misses the zero padding that was apparently done
+intentionally in the original code:
+
+drivers/nvme/target/trace.h:56:2: error: 'strncpy' specified bound depends on the length of the source argument [-Werror=stringop-overflow=]
+
+Change it to use strscpy_pad() with the original length, which will give
+a properly padded and zero-terminated string as well as avoiding the warning.
+
+Fixes: d86481e924a7 ("nvmet: use min of device_path and disk len")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/driver-api/pci/p2pdma.rst |   16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ drivers/nvme/target/trace.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/Documentation/driver-api/pci/p2pdma.rst
-+++ b/Documentation/driver-api/pci/p2pdma.rst
-@@ -83,19 +83,9 @@ this to include other types of resources
- Client Drivers
- --------------
+diff --git a/drivers/nvme/target/trace.h b/drivers/nvme/target/trace.h
+index 6109b3806b12..155334ddc13f 100644
+--- a/drivers/nvme/target/trace.h
++++ b/drivers/nvme/target/trace.h
+@@ -53,8 +53,7 @@ static inline void __assign_req_name(char *name, struct nvmet_req *req)
+ 		return;
+ 	}
  
--A client driver typically only has to conditionally change its DMA map
--routine to use the mapping function :c:func:`pci_p2pdma_map_sg()` instead
--of the usual :c:func:`dma_map_sg()` function. Memory mapped in this
--way does not need to be unmapped.
--
--The client may also, optionally, make use of
--:c:func:`is_pci_p2pdma_page()` to determine when to use the P2P mapping
--functions and when to use the regular mapping functions. In some
--situations, it may be more appropriate to use a flag to indicate a
--given request is P2P memory and map appropriately. It is important to
--ensure that struct pages that back P2P memory stay out of code that
--does not have support for them as other code may treat the pages as
--regular memory which may not be appropriate.
-+A client driver only has to use the mapping API :c:func:`dma_map_sg()`
-+and :c:func:`dma_unmap_sg()` functions as usual, and the implementation
-+will do the right thing for the P2P capable memory.
+-	strncpy(name, req->ns->device_path,
+-		min_t(size_t, DISK_NAME_LEN, strlen(req->ns->device_path)));
++	strscpy_pad(name, req->ns->device_path, DISK_NAME_LEN);
+ }
+ #endif
  
- 
- Orchestrator Drivers
+-- 
+2.43.0
+
 
 
 
