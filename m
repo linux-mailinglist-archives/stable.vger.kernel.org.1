@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 522628380D1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4432838535
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A04728D2D6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C78F21C2A5BF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAAAE134735;
-	Tue, 23 Jan 2024 01:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0F27E58A;
+	Tue, 23 Jan 2024 02:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qoqnWi6c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRk2ex2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987D5133435;
-	Tue, 23 Jan 2024 01:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2977417CA;
+	Tue, 23 Jan 2024 02:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971910; cv=none; b=nfH9ZeS32iJrk0P8ApyPWCEPAiVlC3XG75UIZvUeqJLVQvTeRxwezPh2uATZob55L7eGFwbnIvM6axgDiQ+yd7SI49k4oQ36CVUqlbZU08f2Np0XIgVsG7k4LDLt06AYGcPUfgHEf7zRRknz/HtY4kdprIbutzKvcI+y8c/5BLY=
+	t=1705975766; cv=none; b=t4n8oEcbEu2llVxBC1HEPHKfJmF59vaPdlZDtpnjjlx4uyEMGazQrIWSj+DfS/GmA17A9eXvoiVasZBZQj0uZIYC+kkc4evUcuqIIkZmb9EQs1J5Z2buThl0VEGjhdlwhjvBLTYeZBesJpKFHmMoOoD8lySuhZ79oGI1JNxuafU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971910; c=relaxed/simple;
-	bh=Z91cLNa0IsfjHj6jGmO2YWZw0uJyw0J4cPhHTY2l+ZE=;
+	s=arc-20240116; t=1705975766; c=relaxed/simple;
+	bh=qZac6A0My1nV4uEXzXHEcgknoHFAT6ioGyADDw2MwO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdbSJpCzEIaJgWzCQbeasPKDmJHH2NYT2M1DYONpFCgt4J5AD/fZ/N+jt6lUbe7uBE+lVPRfTK++e9CbhgQzgDKX37GH6XNFCacZNG5OrE/iyJexqGD3UHvby2Ck79dS8b9YDpiisSBJNNxM0vGV0DYnQwf8rnAdbYRYuZd3FxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qoqnWi6c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66ADC43390;
-	Tue, 23 Jan 2024 01:05:09 +0000 (UTC)
+	 MIME-Version; b=bz0HJqByAA8mq9lROaXlQni2CSM8Ds5xrisbE12HgQlGG8SuqjjumKM12cGFFxMYB2kUc5LDmlCK97DXSNoWWSiRbCZPhMla5SGPrFie23qaX0F9wlznlvGU9yaTW862sq+YSdz4hhSrTnW57f8WmsNkYtOP3+AZWjgiYaynp+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRk2ex2F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB731C43394;
+	Tue, 23 Jan 2024 02:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971910;
-	bh=Z91cLNa0IsfjHj6jGmO2YWZw0uJyw0J4cPhHTY2l+ZE=;
+	s=korg; t=1705975766;
+	bh=qZac6A0My1nV4uEXzXHEcgknoHFAT6ioGyADDw2MwO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qoqnWi6cuEpOsEpxR5ILnOfw3FTeDIrkwg8ucAWgoTbZDiQHfOI0s0hjEHPSsOif2
-	 i4DS762KpCouy3Juyigb7IxMA2jrYvIEzarhHaCNxo8mQpDzJfbxVwwI53dS2YbOUL
-	 WvqHFZQr2Q6hZ6kgUZfmpWyZM5f2lj/jR684JIRw=
+	b=rRk2ex2FKNsju7wJGXtKnUYuJFAB/3pQUJ9FTDscrXHg176QAJfXEuzf6PiS48Vyj
+	 seHPEjh8pZe9NOIW4B1RnfoYUDT8hqOBWYHImEYzVVQv95FfQxb/3H+oRdQ+/6Gua1
+	 Yo2w9jfl0+LjNb3fpYaF8Tvfu7HeJb10zh74eHG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	John Johansen <john.johansen@canonical.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 261/286] apparmor: avoid crash when parsed profile name is empty
+Subject: [PATCH 6.6 516/583] hisi_acc_vfio_pci: Update migration data pointer correctly on saving/resume
 Date: Mon, 22 Jan 2024 15:59:27 -0800
-Message-ID: <20240122235742.088939725@linuxfoundation.org>
+Message-ID: <20240122235827.868215042@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
 
-[ Upstream commit 55a8210c9e7d21ff2644809699765796d4bfb200 ]
+[ Upstream commit be12ad45e15b5ee0e2526a50266ba1d295d26a88 ]
 
-When processing a packed profile in unpack_profile() described like
+When the optional PRE_COPY support was added to speed up the device
+compatibility check, it failed to update the saving/resuming data
+pointers based on the fd offset. This results in migration data
+corruption and when the device gets started on the destination the
+following error is reported in some cases,
 
- "profile :ns::samba-dcerpcd /usr/lib*/samba/{,samba/}samba-dcerpcd {...}"
+[  478.907684] arm-smmu-v3 arm-smmu-v3.2.auto: event 0x10 received:
+[  478.913691] arm-smmu-v3 arm-smmu-v3.2.auto:  0x0000310200000010
+[  478.919603] arm-smmu-v3 arm-smmu-v3.2.auto:  0x000002088000007f
+[  478.925515] arm-smmu-v3 arm-smmu-v3.2.auto:  0x0000000000000000
+[  478.931425] arm-smmu-v3 arm-smmu-v3.2.auto:  0x0000000000000000
+[  478.947552] hisi_zip 0000:31:00.0: qm_axi_rresp [error status=0x1] found
+[  478.955930] hisi_zip 0000:31:00.0: qm_db_timeout [error status=0x400] found
+[  478.955944] hisi_zip 0000:31:00.0: qm sq doorbell timeout in function 2
 
-a string ":samba-dcerpcd" is unpacked as a fully-qualified name and then
-passed to aa_splitn_fqname().
-
-aa_splitn_fqname() treats ":samba-dcerpcd" as only containing a namespace.
-Thus it returns NULL for tmpname, meanwhile tmpns is non-NULL. Later
-aa_alloc_profile() crashes as the new profile name is NULL now.
-
-general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 6 PID: 1657 Comm: apparmor_parser Not tainted 6.7.0-rc2-dirty #16
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-RIP: 0010:strlen+0x1e/0xa0
-Call Trace:
- <TASK>
- ? strlen+0x1e/0xa0
- aa_policy_init+0x1bb/0x230
- aa_alloc_profile+0xb1/0x480
- unpack_profile+0x3bc/0x4960
- aa_unpack+0x309/0x15e0
- aa_replace_profiles+0x213/0x33c0
- policy_update+0x261/0x370
- profile_replace+0x20e/0x2a0
- vfs_write+0x2af/0xe00
- ksys_write+0x126/0x250
- do_syscall_64+0x46/0xf0
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
- </TASK>
----[ end trace 0000000000000000 ]---
-RIP: 0010:strlen+0x1e/0xa0
-
-It seems such behaviour of aa_splitn_fqname() is expected and checked in
-other places where it is called (e.g. aa_remove_profiles). Well, there
-is an explicit comment "a ns name without a following profile is allowed"
-inside.
-
-AFAICS, nothing can prevent unpacked "name" to be in form like
-":samba-dcerpcd" - it is passed from userspace.
-
-Deny the whole profile set replacement in such case and inform user with
-EPROTO and an explaining message.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 04dc715e24d0 ("apparmor: audit policy ns specified in policy load")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: d9a871e4a143 ("hisi_acc_vfio_pci: Introduce support for PRE_COPY state transitions")
+Signed-off-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/20231120091406.780-1-shameerali.kolothum.thodi@huawei.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/policy_unpack.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
-index 10896d69c442..6c2a536173b5 100644
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -696,6 +696,10 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
+diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+index b2f9778c8366..4d27465c8f1a 100644
+--- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
++++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+@@ -694,6 +694,7 @@ static ssize_t hisi_acc_vf_resume_write(struct file *filp, const char __user *bu
+ 					size_t len, loff_t *pos)
+ {
+ 	struct hisi_acc_vf_migration_file *migf = filp->private_data;
++	u8 *vf_data = (u8 *)&migf->vf_data;
+ 	loff_t requested_length;
+ 	ssize_t done = 0;
+ 	int ret;
+@@ -715,7 +716,7 @@ static ssize_t hisi_acc_vf_resume_write(struct file *filp, const char __user *bu
+ 		goto out_unlock;
+ 	}
  
- 	tmpname = aa_splitn_fqname(name, strlen(name), &tmpns, &ns_len);
- 	if (tmpns) {
-+		if (!tmpname) {
-+			info = "empty profile name";
-+			goto fail;
-+		}
- 		*ns_name = kstrndup(tmpns, ns_len, GFP_KERNEL);
- 		if (!*ns_name) {
- 			info = "out of memory";
+-	ret = copy_from_user(&migf->vf_data, buf, len);
++	ret = copy_from_user(vf_data + *pos, buf, len);
+ 	if (ret) {
+ 		done = -EFAULT;
+ 		goto out_unlock;
+@@ -835,7 +836,9 @@ static ssize_t hisi_acc_vf_save_read(struct file *filp, char __user *buf, size_t
+ 
+ 	len = min_t(size_t, migf->total_length - *pos, len);
+ 	if (len) {
+-		ret = copy_to_user(buf, &migf->vf_data, len);
++		u8 *vf_data = (u8 *)&migf->vf_data;
++
++		ret = copy_to_user(buf, vf_data + *pos, len);
+ 		if (ret) {
+ 			done = -EFAULT;
+ 			goto out_unlock;
 -- 
 2.43.0
 
