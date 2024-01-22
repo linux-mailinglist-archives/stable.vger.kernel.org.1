@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-13058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D719F837A5A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4AFD837A5B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E8AD1F27E32
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 236F31C239D7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC5F12BF31;
-	Tue, 23 Jan 2024 00:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D636712BF15;
+	Tue, 23 Jan 2024 00:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fx5mUSX4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pB7IQwNV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D109D12BF15;
-	Tue, 23 Jan 2024 00:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BBB12BF2C;
+	Tue, 23 Jan 2024 00:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968907; cv=none; b=RQ4pZ8U8V14FM5eFqoIbX1pJnYmVLpCi5qgUAUucWzFwU4sN8IdRK6L/mHJBfowmX4a7g7TRwWql0Ae9af0UYMVztMOoXyxf8l9OuNTBYlMSJToxL2Vio7vhv2chbdcaFLg1Me05MJcJ7Q64NZxzmpO3vqoCQ3G9RBZUQGWAtq8=
+	t=1705968911; cv=none; b=WgSJhHVrUqDVhRl+mJ8+IbFtnY24llfNK6jCmDn7LUiDKAC8RrA0kZZosFYHjEPY/hiNuryVCOAlgkHP93AAHBfyp6lnPgGfDK8paaOqCIWWq2nQ6zvpH6ZalQVBxqMt1MObd2pnsxWWJXg3NdpwHa4hHdz5texZ4fO4URXHI+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968907; c=relaxed/simple;
-	bh=V2uzLiywCpPFSH3Quvg03ijZ+LSEIJtUuspavN6Kgkg=;
+	s=arc-20240116; t=1705968911; c=relaxed/simple;
+	bh=Ec5cK2ZQVDlMzVUC+8WUoawCz3bYDpWWR+2UO3OthdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ss3KltlFvWKLEm+IGnWP/kYVionw2bjaFLh2rSMXoGG7BQ09BeF5sISqRy+2gG9VivBCr0BhNA8HF+lM/FW2EJnm04I1nBQVKz1xvAy1xB7d8rZjznDu19mQaycJO55rDeupHPLjMvMFmawrk/gO3xokuSY9X8toLSFCfjV8b3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fx5mUSX4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4E6C43390;
-	Tue, 23 Jan 2024 00:15:07 +0000 (UTC)
+	 MIME-Version; b=TC6hdJH0TZDaP/LGsH4uvFa9cAbTjl01nNU2Ze3B1Um7HVqpuYLL+0zTYnCr9EwOKVecLswJRETL3m2RAcXPEkbRZAoK1cir770eyq0G+MKLVMaesdSD2WwK8gI1fTeKRE9ayhwA4fcagw+MAUeSuzsTnR4x7knCjqLn0hH6jOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pB7IQwNV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 164FFC43390;
+	Tue, 23 Jan 2024 00:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968907;
-	bh=V2uzLiywCpPFSH3Quvg03ijZ+LSEIJtUuspavN6Kgkg=;
+	s=korg; t=1705968911;
+	bh=Ec5cK2ZQVDlMzVUC+8WUoawCz3bYDpWWR+2UO3OthdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fx5mUSX4f8AxHJjsGCOZCq6QlHCN/5+a6oYdpXiImr1ayXkLwxKx61lITvpQ6KBf5
-	 rYVFzwAGhdUT/2FE6Iw6f2nxXmcrFuNcU8SgyMiXeFSGrCRs2CtpImywAGaOMGq9sv
-	 Za/w2zmCxaz2Lr4inXwGJQpRJEKpEiGIUxgdISF8=
+	b=pB7IQwNVtcMvBzN7u/d0ZDnSz8/YEk/qPRFfYetviVtlacWMcAdSe0sx5FgNlFN/f
+	 IBwEGfAuYnNe7R5Pz/+WRmesZZ69NHQ2XYIUMRwrlpjoCBAjX8JjJrMj/N3xNHcywh
+	 b8WxRIbXGdqo1cmuhI7yFCq3z98Eq/SnVA5h8yTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Joakim Zhang <joakim.zhang@cixtech.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 093/194] virtio/vsock: fix logic which reduces credit update messages
-Date: Mon, 22 Jan 2024 15:57:03 -0800
-Message-ID: <20240122235723.229347269@linuxfoundation.org>
+Subject: [PATCH 5.4 094/194] dma-mapping: clear dev->dma_mem to NULL after freeing it
+Date: Mon, 22 Jan 2024 15:57:04 -0800
+Message-ID: <20240122235723.273225807@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
 References: <20240122235719.206965081@linuxfoundation.org>
@@ -68,67 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: Joakim Zhang <joakim.zhang@cixtech.com>
 
-[ Upstream commit 93b80887668226180ea5f5349cc728ca6dc700ab ]
+[ Upstream commit b07bc2347672cc8c7293c64499f1488278c5ca3d ]
 
-Add one more condition for sending credit update during dequeue from
-stream socket: when number of bytes in the rx queue is smaller than
-SO_RCVLOWAT value of the socket. This is actual for non-default value
-of SO_RCVLOWAT (e.g. not 1) - idea is to "kick" peer to continue data
-transmission, because we need at least SO_RCVLOWAT bytes in our rx
-queue to wake up user for reading data (in corner case it is also
-possible to stuck both tx and rx sides, this is why 'Fixes' is used).
+Reproduced with below sequence:
+dma_declare_coherent_memory()->dma_release_coherent_memory()
+->dma_declare_coherent_memory()->"return -EBUSY" error
 
-Fixes: b89d882dc9fc ("vsock/virtio: reduce credit update messages")
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+It will return -EBUSY from the dma_assign_coherent_memory()
+in dma_declare_coherent_memory(), the reason is that dev->dma_mem
+pointer has not been set to NULL after it's freed.
+
+Fixes: cf65a0f6f6ff ("dma-mapping: move all DMA mapping code to kernel/dma")
+Signed-off-by: Joakim Zhang <joakim.zhang@cixtech.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ kernel/dma/coherent.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index e0bb83f5746c..434c5608a75d 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -276,6 +276,8 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 	struct virtio_vsock_pkt *pkt;
- 	size_t bytes, total = 0;
- 	u32 free_space;
-+	u32 fwd_cnt_delta;
-+	bool low_rx_bytes;
- 	int err = -EFAULT;
+diff --git a/kernel/dma/coherent.c b/kernel/dma/coherent.c
+index 2a0c4985f38e..d164b3dbcd93 100644
+--- a/kernel/dma/coherent.c
++++ b/kernel/dma/coherent.c
+@@ -323,8 +323,10 @@ static int rmem_dma_device_init(struct reserved_mem *rmem, struct device *dev)
+ static void rmem_dma_device_release(struct reserved_mem *rmem,
+ 				    struct device *dev)
+ {
+-	if (dev)
++	if (dev) {
+ 		dev->dma_mem = NULL;
++		dev->dma_mem = NULL;
++	}
+ }
  
- 	spin_lock_bh(&vvs->rx_lock);
-@@ -307,7 +309,10 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 		}
- 	}
- 
--	free_space = vvs->buf_alloc - (vvs->fwd_cnt - vvs->last_fwd_cnt);
-+	fwd_cnt_delta = vvs->fwd_cnt - vvs->last_fwd_cnt;
-+	free_space = vvs->buf_alloc - fwd_cnt_delta;
-+	low_rx_bytes = (vvs->rx_bytes <
-+			sock_rcvlowat(sk_vsock(vsk), 0, INT_MAX));
- 
- 	spin_unlock_bh(&vvs->rx_lock);
- 
-@@ -317,9 +322,11 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 	 * too high causes extra messages. Too low causes transmitter
- 	 * stalls. As stalls are in theory more expensive than extra
- 	 * messages, we set the limit to a high value. TODO: experiment
--	 * with different values.
-+	 * with different values. Also send credit update message when
-+	 * number of bytes in rx queue is not enough to wake up reader.
- 	 */
--	if (free_space < VIRTIO_VSOCK_MAX_PKT_BUF_SIZE) {
-+	if (fwd_cnt_delta &&
-+	    (free_space < VIRTIO_VSOCK_MAX_PKT_BUF_SIZE || low_rx_bytes)) {
- 		virtio_transport_send_credit_update(vsk,
- 						    VIRTIO_VSOCK_TYPE_STREAM,
- 						    NULL);
+ static const struct reserved_mem_ops rmem_dma_ops = {
 -- 
 2.43.0
 
