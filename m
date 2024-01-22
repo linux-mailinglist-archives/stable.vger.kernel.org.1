@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-15039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E27C8383A2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B8883816F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1579E29489D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D18BB2B881
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28989634E7;
-	Tue, 23 Jan 2024 01:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9471E13DBBD;
+	Tue, 23 Jan 2024 01:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryD94hw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z2a1yCHj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1826313F;
-	Tue, 23 Jan 2024 01:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523E013DBB7;
+	Tue, 23 Jan 2024 01:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975025; cv=none; b=oYg2emx6GyAlgl3Wz11m3ebOkZ6p7kTzjb09njkBS6/sivdMz6oQhTJKrgMJlsc4DtwVNG74q+yBAIg0y/+VpBcuZ7BzUCJeZnUepW3lL48efXZrZQBPLT1O2+rc7OsXndUfUb6two2FlLFGha3hOtkzHCHr8A/53csqsBl21aY=
+	t=1705971980; cv=none; b=CWi7erzVDAI4Siij1LFE4KZn79p2aueF+hnS06+hSKDIWKaeOsKCnk8Oq3c+r7lC2i2mcNwDaiKN1BWni0PFZ10khJfhJbaUU/V1DTJXjoJbP8/UFAtNlxE2wjbtPrOIY9nPbHAwFfPkALT7NCwvGyf0dKnQyUm9lwdUuPQMT1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975025; c=relaxed/simple;
-	bh=+hg5hL6WvyDnoUOR/idODyZRcJuZg/Skj5a3SU4hIWY=;
+	s=arc-20240116; t=1705971980; c=relaxed/simple;
+	bh=gvCaObOaoypwu/sRWKV79RXWnppku0JMPByJj4Y1aiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r8oscOp16RnZF8LmDdy6xWpF60k469LBJp1Dsca6jpkGMjLzTTlmx6r001DxMJlDyHClPlmIIKeh8/U7Qe6oebQiOMVlqxyzYN9j9vZWs8gMzRt7UXVFUzK2TzjPVve145I3thoOdeMCN1cxPokOaA+p1qoDWh8fG0kxtnB0h6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryD94hw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C953C433F1;
-	Tue, 23 Jan 2024 01:57:05 +0000 (UTC)
+	 MIME-Version; b=AXLPDk2h0L//DfMSS4Ef967ndq3Dmuw3NyCDTvacBAQLKLhkSi8X5LTYtIvHKY3tbREoirRbrNrfnncjsYKqd6yd2IW2bqfABlPsxLbwhNmInJbFVhouitml3gjTH7j1RL+2pZFKO5lgwTQ4iPrVtzupBnZagNSnXZmEFpc5tTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z2a1yCHj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150C1C433F1;
+	Tue, 23 Jan 2024 01:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975025;
-	bh=+hg5hL6WvyDnoUOR/idODyZRcJuZg/Skj5a3SU4hIWY=;
+	s=korg; t=1705971980;
+	bh=gvCaObOaoypwu/sRWKV79RXWnppku0JMPByJj4Y1aiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ryD94hw17O5JAEHNS6Vz8Pxe3Bk/tCbMmwiGwIbq1fPQGSxTmhyKC0Qdx4BPDTjh+
-	 SzZb0cXY+dJu/yB02U8MKTQhFAh8q0D10Mgblc46cmpxTRC3zuRrRWQU8V4+Np6d+R
-	 H9fDmIBJxs9Eyyj2+p1ARVtkiR9+bzy+YZk7dG4U=
+	b=z2a1yCHjl3XSl8m6ww0Ayk7XR9lJEqVNVrl+bf4YSiYTYJmwLYWGIBku+qXJMC4ge
+	 LMamVC8oB42fMbYaft470Ya4nXDlSG/NzRsbPu1M1Bvj7sQLYeo98L+f/5vIXwJhNU
+	 EEyUhEE9q4zRrSVa5187Eb1DproYdjtyKYp6mINc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 329/374] nvmet-tcp: Fix the H2C expected PDU len calculation
-Date: Mon, 22 Jan 2024 15:59:45 -0800
-Message-ID: <20240122235756.342489086@linuxfoundation.org>
+Subject: [PATCH 5.10 280/286] mlxsw: spectrum_acl_tcam: Make fini symmetric to init
+Date: Mon, 22 Jan 2024 15:59:46 -0800
+Message-ID: <20240122235742.848911256@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 9a1abc24850eb759e36a2f8869161c3b7254c904 ]
+[ Upstream commit 61fe3b9102ac84ba479ab84d8f5454af2e21e468 ]
 
-The nvmet_tcp_handle_h2c_data_pdu() function should take into
-consideration the possibility that the header digest and/or the data
-digests are enabled when calculating the expected PDU length, before
-comparing it to the value stored in cmd->pdu_len.
+Move mutex_destroy() to the end to make the function symmetric with
+mlxsw_sp_acl_tcam_init(). No functional changes.
 
-Fixes: efa56305908b ("nvmet-tcp: Fix a kernel panic when host sends an invalid H2C PDU length")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 483ae90d8f97 ("mlxsw: spectrum_acl_tcam: Fix stack corruption")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index d25ca0742f91..4f2164a3f466 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -931,7 +931,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index c8d9f523242e..08d91bfa7b39 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -88,10 +88,10 @@ void mlxsw_sp_acl_tcam_fini(struct mlxsw_sp *mlxsw_sp,
  {
- 	struct nvme_tcp_data_pdu *data = &queue->pdu.data;
- 	struct nvmet_tcp_cmd *cmd;
--	unsigned int plen;
-+	unsigned int exp_data_len;
+ 	const struct mlxsw_sp_acl_tcam_ops *ops = mlxsw_sp->acl_tcam_ops;
  
- 	if (likely(queue->nr_cmds)) {
- 		if (unlikely(data->ttag >= queue->nr_cmds)) {
-@@ -954,9 +954,13 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		return -EPROTO;
- 	}
+-	mutex_destroy(&tcam->lock);
+ 	ops->fini(mlxsw_sp, tcam->priv);
+ 	bitmap_free(tcam->used_groups);
+ 	bitmap_free(tcam->used_regions);
++	mutex_destroy(&tcam->lock);
+ }
  
--	plen = le32_to_cpu(data->hdr.plen);
-+	exp_data_len = le32_to_cpu(data->hdr.plen) -
-+			nvmet_tcp_hdgst_len(queue) -
-+			nvmet_tcp_ddgst_len(queue) -
-+			sizeof(*data);
-+
- 	cmd->pdu_len = le32_to_cpu(data->data_length);
--	if (unlikely(cmd->pdu_len != (plen - sizeof(*data)) ||
-+	if (unlikely(cmd->pdu_len != exp_data_len ||
- 		     cmd->pdu_len == 0 ||
- 		     cmd->pdu_len > NVMET_TCP_MAXH2CDATA)) {
- 		pr_err("H2CData PDU len %u is invalid\n", cmd->pdu_len);
+ int mlxsw_sp_acl_tcam_priority_get(struct mlxsw_sp *mlxsw_sp,
 -- 
 2.43.0
 
