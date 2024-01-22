@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-12949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E538379D6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:46:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 166E0837A75
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9E0C1F281FA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:46:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C398F28E854
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6CC128389;
-	Tue, 23 Jan 2024 00:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E02012CDAD;
+	Tue, 23 Jan 2024 00:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vT3Dr0FB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJUbYltm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD741272D1;
-	Tue, 23 Jan 2024 00:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E121D12BF3D;
+	Tue, 23 Jan 2024 00:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968677; cv=none; b=Q1TAeUnMsn9NvvvS/vrzteNomKk7Jj+RTUTv7sBFMNDZqjREV4sIxonNGvVKPiEL3KZfXRbLL73csXADLZOC3EVK5REsKXsfrZKMdFhZzCkxoL0t/MzGXfB9UyYxWV2tXXE9FA/voZjKgfOXI2XF2MTBogoVwS1AvOejy6FkBlU=
+	t=1705968965; cv=none; b=TibKemgvSCpJGTGqY60kA+y2EOyMTR9Ax/b/ZvRADqD3IBvRHfkqaF97sEBrRiiMm4rCiQTnNeOj63SjtcOtuMgG4AQGXQkDP7fFFqRmO4EbVOjdSReJw/RZFPIRm7MG1Mn1HvZfbF4/xjBRn+RsKM1X24T2dkYY+TJOjdVgy/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968677; c=relaxed/simple;
-	bh=OA4ggVGsVhmF9UZ6uWf7NRyh1yeG3OL91L9YuZoR+68=;
+	s=arc-20240116; t=1705968965; c=relaxed/simple;
+	bh=mFhvM0Q0+AsMLYUZI5uFr5iSgnpzYzARxMJyfgbuzeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=od+/k8s1T4CgYFkWE51VLqzTHzBb/Rrhd95Y6iMio6VHtVllDEAylMUjT1/ddvMdMP7hLNhoezHPohLsuiqyAU/4V1CZhN8xy6Mp6cr1/DbV0GttCh1lwJyrj5Keah7MKddoYj0SZV8ggxd17VKYj9A9G/gHCkZClUZl6n1pumo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vT3Dr0FB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E5B9C433F1;
-	Tue, 23 Jan 2024 00:11:16 +0000 (UTC)
+	 MIME-Version; b=hEPZK2NQtibwz9VcFqLzVmANvLI37wNqTjHWIy44hfnIjg+SXsLH95tPd/ALT9I1388ct10/nj5vXPD5y6DkpiybXJ6hDHmY1qQjXRsXCK7ezN5bYfZTk1G1ko1/slKtpy2KxY749qGQAR3vAtnvudEnS3CitRe5GXoxXO2iXQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJUbYltm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93210C433F1;
+	Tue, 23 Jan 2024 00:16:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968677;
-	bh=OA4ggVGsVhmF9UZ6uWf7NRyh1yeG3OL91L9YuZoR+68=;
+	s=korg; t=1705968964;
+	bh=mFhvM0Q0+AsMLYUZI5uFr5iSgnpzYzARxMJyfgbuzeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vT3Dr0FBpVu6Bp7NsreFtlOwzyZTGxEB3vONjbZANWI+3EDaBmwvcaOC7uFVcA2kf
-	 PPpCO+dS+XtYiaM6TKyWs5VjTLK32ZMLlBtmeVG0Yi38sDoW+nbAKaLZuGpVt+PJfv
-	 7cImuZQ1zXHqo5wqJXNYsHHD0ySBFzun3mlaVHIk=
+	b=sJUbYltm2/4RQX4t9XSILC1BevrLM2t+gBQcBC54yJDVqy5C7U4YxWs/0Pm3w4JnG
+	 zNv7ik82BFvA5uD62DABe6NEs4gFYk74Zg3BWJNCGretfeR/sJB7t6rnBZZvnTalpT
+	 KGWpUYbSCtLspEV3imGyIBKJlFwtAjxnekszVURY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 099/148] drm/radeon/trinity_dpm: fix a memleak in trinity_parse_power_table
-Date: Mon, 22 Jan 2024 15:57:35 -0800
-Message-ID: <20240122235716.396578089@linuxfoundation.org>
+Subject: [PATCH 5.4 126/194] media: dvbdev: drop refcount on error path in dvb_device_open()
+Date: Mon, 22 Jan 2024 15:57:36 -0800
+Message-ID: <20240122235724.640921363@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 28c28d7f77c06ac2c0b8f9c82bc04eba22912b3b ]
+[ Upstream commit a2dd235df435a05d389240be748909ada91201d2 ]
 
-The rdev->pm.dpm.ps allocated by kcalloc should be freed in every
-following error-handling path. However, in the error-handling of
-rdev->pm.power_state[i].clock_info the rdev->pm.dpm.ps is not freed,
-resulting in a memleak in this function.
+If call to file->f_op->open() fails, then call dvb_device_put(dvbdev).
 
-Fixes: d70229f70447 ("drm/radeon/kms: add dpm support for trinity asics")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 0fc044b2b5e2 ("media: dvbdev: adopts refcnt to avoid UAF")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/trinity_dpm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/dvb-core/dvbdev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/radeon/trinity_dpm.c b/drivers/gpu/drm/radeon/trinity_dpm.c
-index 5d317f763eea..e9e44df4a22a 100644
---- a/drivers/gpu/drm/radeon/trinity_dpm.c
-+++ b/drivers/gpu/drm/radeon/trinity_dpm.c
-@@ -1769,8 +1769,10 @@ static int trinity_parse_power_table(struct radeon_device *rdev)
- 		non_clock_array_index = power_state->v2.nonClockInfoIndex;
- 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
- 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
--		if (!rdev->pm.power_state[i].clock_info)
-+		if (!rdev->pm.power_state[i].clock_info) {
-+			kfree(rdev->pm.dpm.ps);
- 			return -EINVAL;
-+		}
- 		ps = kzalloc(sizeof(struct sumo_ps), GFP_KERNEL);
- 		if (ps == NULL) {
- 			kfree(rdev->pm.dpm.ps);
+diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
+index 31b299ced3c1..e7cd7b13fc28 100644
+--- a/drivers/media/dvb-core/dvbdev.c
++++ b/drivers/media/dvb-core/dvbdev.c
+@@ -114,6 +114,8 @@ static int dvb_device_open(struct inode *inode, struct file *file)
+ 			err = file->f_op->open(inode, file);
+ 		up_read(&minor_rwsem);
+ 		mutex_unlock(&dvbdev_mutex);
++		if (err)
++			dvb_device_put(dvbdev);
+ 		return err;
+ 	}
+ fail:
 -- 
 2.43.0
 
