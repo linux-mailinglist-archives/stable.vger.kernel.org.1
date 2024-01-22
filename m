@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6EF9838359
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC6E837C0E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9FBC1C29B3E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EC7E1C285FC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E556168F;
-	Tue, 23 Jan 2024 01:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220D2210D;
+	Tue, 23 Jan 2024 00:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGb0Q23y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1pD3R2N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F1861673;
-	Tue, 23 Jan 2024 01:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69C31FDB;
+	Tue, 23 Jan 2024 00:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974942; cv=none; b=rW7DvoXuTiWro7qLe2Bifmebe92Kq2uhsbNDNLbuPujxCW7d21gL/dbzdSBfdU0ObgKY854epSJhvyeP3R8XRim5rA1f5MvP3JjNN0bCN6H0e9tTRtokrr07bmBY+nFL6xnZIsbAuwOVLlT9x8KqQWv5QizBOE5xV+4PElGIToU=
+	t=1705969488; cv=none; b=OE4bFynP9mlAJ5YP8Nc2TsSWJ54ccs84elHNOhP7rg99CGC9skDil01JjWHYAqHEbjS/+ZeXh9V+1JsZ6ph3yQ8In2eL+bzjNKEau4lYbqgQKdw0ImdqrhdR4YyiVlkcPjsMKqOLqoF6v+NNj8iu3/crTpRLL3XIzyymAY9+CKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974942; c=relaxed/simple;
-	bh=tmzyn4fPMzw/RbEnmLBGbWlAZ/I3BfbtEk0aAqrJipk=;
+	s=arc-20240116; t=1705969488; c=relaxed/simple;
+	bh=N/mdc422U8S8qQ28tKuRS3M6oiqaVCAjyu+FgCXwpBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RRH1BHcXrwSHjsvx4SrWVaIZgKpHCcIB6SBA2T5nOjTEBTLNb0kD+terbmOK5YBsCUA8DtMg7kYBKx7mywet9YNZbc2NBtlAytKSeXziwsYBrcwjCpaL4dm2CVGrARxya6yD1WtnblbrdjNDlfUtbmg0JsfjAsOudhXk3X6+DVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGb0Q23y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC364C43399;
-	Tue, 23 Jan 2024 01:55:41 +0000 (UTC)
+	 MIME-Version; b=LGo1nrQP6NSh43Bk/vUXXz+PYqZhLMuaXZqyLjzcViyKhXv/SWsNFux9Yk+cgOYAxVyEDpB2F++FC3mJWCPl5SladCpEhjlTfBlvVJUY27geW7pV6NGSre5099WAwA/2aD1dU02GpqHKRH6JHBS7fYwv+HiG0VSt0sRqlMxyZh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1pD3R2N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A05C433A6;
+	Tue, 23 Jan 2024 00:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974941;
-	bh=tmzyn4fPMzw/RbEnmLBGbWlAZ/I3BfbtEk0aAqrJipk=;
+	s=korg; t=1705969488;
+	bh=N/mdc422U8S8qQ28tKuRS3M6oiqaVCAjyu+FgCXwpBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGb0Q23yLE08gy350aj8VE49NXNCNPglNVp3yOUzW6Bxh+Er+QB2fbxvsZ3gt8zch
-	 cSSpCUfEupWr9PuCUGugzG58ZCNMacktY5QhkpX4nHsf5YMMFOKAX16KM178W7APhI
-	 j7kalUCFhnjvLmmmroqOBpsqPz9TCa0TCcxgFsxQ=
+	b=L1pD3R2NBuzqAOoqTVRGlkLdCHwIMy3o6yAggI0VFu1BPXixIXK68ETKco4Fw8IMO
+	 44ela/bZj/i/GwoPO4zuA1/jVzP/xYCe0u7cBngLjkxoK2Mstvf1EiY1tJ1EumRV5f
+	 ARfkDuQl/ujr7wnmlHefQMyJ9wAsLrIDlhsATtoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Arnd Bergmann <arnd@arndb.de>,
 	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/583] arm64: dts: qcom: sc7280: Fix up GPU SIDs
-Date: Mon, 22 Jan 2024 15:53:01 -0800
-Message-ID: <20240122235816.111631467@linuxfoundation.org>
+Subject: [PATCH 6.7 278/641] drm/msm/a6xx: add QMP dependency
+Date: Mon, 22 Jan 2024 15:53:02 -0800
+Message-ID: <20240122235826.610235002@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 94085049fdad7a36fe14dd55e72e712fe55d6bca ]
+[ Upstream commit 96ab215b2d5edc39310c00f50b33d8ab72ac3fe3 ]
 
-GPU_SMMU SID 1 is meant for Adreno LPAC (Low Priority Async Compute).
-On platforms that support it (in firmware), it is necessary to
-describe that link, or Adreno register access will hang the board.
+When QMP is in a loadable module, the A6xx GPU driver fails to link
+as built-in:
 
-The current settings are functionally identical, *but* due to what is
-likely hardcoded security policies, the secure firmware rejects them,
-resulting in the board hanging. To avoid that, alter the settings such
-that SID 0 and 1 are described separately.
+x86_64-linux-ld: drivers/gpu/drm/msm/adreno/a6xx_gmu.o: in function `a6xx_gmu_resume':
+a6xx_gmu.c:(.text+0xd62): undefined reference to `qmp_send'
 
-Fixes: 96c471970b7b ("arm64: dts: qcom: sc7280: Add gpu support")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230926-topic-a643-v2-2-06fa3d899c0a@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Add the usual dependency that still allows compiling without QMP but
+otherwise avoids the broken combination of options.
+
+Fixes: 88a0997f2f949 ("drm/msm/a6xx: Send ACD state to QMP at GMU resume")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/562945/
+Link: https://lore.kernel.org/r/20231016200415.791090-1-arnd@kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7280.dtsi | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index 95c35892fb85..4903d17c4207 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -2558,7 +2558,8 @@ gpu: gpu@3d00000 {
- 				    "cx_mem",
- 				    "cx_dbgc";
- 			interrupts = <GIC_SPI 300 IRQ_TYPE_LEVEL_HIGH>;
--			iommus = <&adreno_smmu 0 0x401>;
-+			iommus = <&adreno_smmu 0 0x400>,
-+				 <&adreno_smmu 1 0x400>;
- 			operating-points-v2 = <&gpu_opp_table>;
- 			qcom,gmu = <&gmu>;
- 			interconnects = <&gem_noc MASTER_GFX3D 0 &mc_virt SLAVE_EBI1 0>;
+diff --git a/drivers/gpu/drm/msm/Kconfig b/drivers/gpu/drm/msm/Kconfig
+index 6309a857ca31..ad70b611b44f 100644
+--- a/drivers/gpu/drm/msm/Kconfig
++++ b/drivers/gpu/drm/msm/Kconfig
+@@ -6,6 +6,7 @@ config DRM_MSM
+ 	depends on ARCH_QCOM || SOC_IMX5 || COMPILE_TEST
+ 	depends on COMMON_CLK
+ 	depends on IOMMU_SUPPORT
++	depends on QCOM_AOSS_QMP || QCOM_AOSS_QMP=n
+ 	depends on QCOM_OCMEM || QCOM_OCMEM=n
+ 	depends on QCOM_LLCC || QCOM_LLCC=n
+ 	depends on QCOM_COMMAND_DB || QCOM_COMMAND_DB=n
 -- 
 2.43.0
 
