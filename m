@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F36837AE3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F57F837896
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E21A6B2D06D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18D7328CA09
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0989712BEAD;
-	Tue, 23 Jan 2024 00:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECFB413BEA7;
+	Tue, 23 Jan 2024 00:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Hui/fv4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3pye5Xs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7F712A17F;
-	Tue, 23 Jan 2024 00:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93DD13BE9F;
+	Tue, 23 Jan 2024 00:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968855; cv=none; b=e+Itc4Wj2NTtLL9hKYKlIAasVQko2AOjNQ7g5ZFpGo/EPDIkmiIpmTVbQZ6h86rP9tblYsF8O0QGDe2Er882HA2WcuzoCb2O4SP/8tcjgg3rngz1ufe1J5tEH1mT0SDYjaq1yc89WkMGIlAjrs6xadPDzuGjI0Fl9oNGgJiPea0=
+	t=1705968135; cv=none; b=ZeX0bPJz4hDJl8/8K+Cnj+XMd6amBMzr/V4BmLB1PYBzYpQOTYKaV96rwORDimX8jn0l8WSnruiUPY1Bg9Ja/J8Rr20WaihNsAxe7UA4dYvRdVQmEAQwZ9tJDqCz0vghI77bAFnwNp0OwsH+4yASyb2do6vPfIEWS3vls0vcHsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968855; c=relaxed/simple;
-	bh=f4FZ8lF4d+yNZLdp6PjtmwEyn1enThQpT6U04YYcXG0=;
+	s=arc-20240116; t=1705968135; c=relaxed/simple;
+	bh=9C4BHFFK8M3vledS6/sAYw09Xw+KjAGsM/HmF4WXNVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZzcAlnAPvwHohIiqBQhQhFSMz9s+uj8IQ+B08OapJ/59C1frp3wYaRbonoDxRudMIKK/3Z6WYi7gfZV7IFVG6DnIM4Qa13ssru3DkBScTFvvrbhe7J6hOygwnEMT4bHHAXnUZu1scTpz2fpUmjZU+rGosPdYNHihiJcgcyM9ZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Hui/fv4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40AD5C433C7;
-	Tue, 23 Jan 2024 00:14:15 +0000 (UTC)
+	 MIME-Version; b=l+NbIwL0bh4MQeRYCAM7p5h8D1SUgY7bSnd2Ab5PU+HB/a+Wl2VnQnc5keFy7YohM6iteB4FAJp9THaUPnwSpc4v277Cd8qxBRQ0qwSGPymApAOw0+bhD3tP4GiagAfN7NilbdmRjFNu/wIw3xVv7KnzxfVlidFUGEdynu/skiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3pye5Xs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A5AC433C7;
+	Tue, 23 Jan 2024 00:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968855;
-	bh=f4FZ8lF4d+yNZLdp6PjtmwEyn1enThQpT6U04YYcXG0=;
+	s=korg; t=1705968135;
+	bh=9C4BHFFK8M3vledS6/sAYw09Xw+KjAGsM/HmF4WXNVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Hui/fv4ItJxUXW6dhT3L+cOwsf+VofRNwKH4EIdyB+fTNT30+v3JEpOGeLLo34n0
-	 i4/+i1yK0Q96q4iZvznNiSh18E3hm493WHX9xhiVwA/uPSG6ee9wgQz+ReGqZkFCjH
-	 AL56cFZqAu7r2PXtve6QSvFFQ6E4QYMmrDlbx5Dk=
+	b=x3pye5XsTP2pCwpvrv0PuxE0AJ1qTY1JWJeNdmirSzuvjFQQBa0C8yzqP8npVnNHR
+	 AAcYo4ChC+rzmwsQzb/1Tlk9aFIvxpXNuHGRXAmpXWiFrkOp+Kg3kG91pMpBWdBuk4
+	 NbkzftTCjUe5pZ8DcJV/vY6wXdnH+XZ0Qr28H+mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Maciej Strozek <mstrozek@opensource.cirrus.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 030/194] ARM: sun9i: smp: fix return code check of of_property_match_string
+Subject: [PATCH 4.19 004/148] ASoC: cs43130: Fix incorrect frame delay configuration
 Date: Mon, 22 Jan 2024 15:56:00 -0800
-Message-ID: <20240122235720.501005750@linuxfoundation.org>
+Message-ID: <20240122235712.612413847@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Maciej Strozek <mstrozek@opensource.cirrus.com>
 
-[ Upstream commit 643fe70e7bcdcc9e2d96952f7fc2bab56385cce5 ]
+[ Upstream commit aa7e8e5e4011571022dc06e4d7a2f108feb53d1a ]
 
-of_property_match_string returns an int; either an index from 0 or
-greater if successful or negative on failure. Even it's very
-unlikely that the DT CPU node contains multiple enable-methods
-these checks should be fixed.
-
-This patch was inspired by the work of Nick Desaulniers.
-
-Link: https://lore.kernel.org/lkml/20230516-sunxi-v1-1-ac4b9651a8c1@google.com/T/
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20231228193903.9078-2-wahrenst@gmx.net
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20231117141344.64320-3-mstrozek@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-sunxi/mc_smp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/cs43130.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-sunxi/mc_smp.c b/arch/arm/mach-sunxi/mc_smp.c
-index b2f5f4f28705..f779e386b6e7 100644
---- a/arch/arm/mach-sunxi/mc_smp.c
-+++ b/arch/arm/mach-sunxi/mc_smp.c
-@@ -804,12 +804,12 @@ static int __init sunxi_mc_smp_init(void)
- 	for (i = 0; i < ARRAY_SIZE(sunxi_mc_smp_data); i++) {
- 		ret = of_property_match_string(node, "enable-method",
- 					       sunxi_mc_smp_data[i].enable_method);
--		if (!ret)
-+		if (ret >= 0)
- 			break;
- 	}
- 
- 	of_node_put(node);
--	if (ret)
-+	if (ret < 0)
- 		return -ENODEV;
- 
- 	is_a83t = sunxi_mc_smp_data[i].is_a83t;
+diff --git a/sound/soc/codecs/cs43130.c b/sound/soc/codecs/cs43130.c
+index 95060ae7dbb4..0ffd93564555 100644
+--- a/sound/soc/codecs/cs43130.c
++++ b/sound/soc/codecs/cs43130.c
+@@ -581,7 +581,7 @@ static int cs43130_set_sp_fmt(int dai_id, unsigned int bitwidth_sclk,
+ 		break;
+ 	case SND_SOC_DAIFMT_LEFT_J:
+ 		hi_size = bitwidth_sclk;
+-		frm_delay = 2;
++		frm_delay = 0;
+ 		frm_phase = 1;
+ 		break;
+ 	case SND_SOC_DAIFMT_DSP_A:
 -- 
 2.43.0
 
