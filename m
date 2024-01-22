@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-14466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E8E838109
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 773AA83835A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84DD728AAFC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CA0028EB6E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D91413E234;
-	Tue, 23 Jan 2024 01:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD216169C;
+	Tue, 23 Jan 2024 01:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5f6YJdz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkPnOi7+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D002313DBB7;
-	Tue, 23 Jan 2024 01:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6F06168A;
+	Tue, 23 Jan 2024 01:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972002; cv=none; b=rI0HyKOIj/ySrc8k9XZ7ZkQH7KekpeuABvhdPUH5x6sDfEfnLXJnQYUiagJI2K1wIPoVLAJJ98pSm34DmBkckDCXa4PevpjMRalMEHzztZ6zuw1flaAePBcV+esH7Dimkdg05ipRXa5ji2aIU/TiGxB+8DMA2aXkAfC+jb26ScI=
+	t=1705974945; cv=none; b=cLJp/HcrI+BfIMT1IQveQhtGbmrb+vK8TUBmKWSkQFAFgf5C8ikAIBHpykfximCPE0Oky0ePN291qJAC8+xR0kwmpUJtRu85JDemPyICpsE6BNHJ/SGHtmR+Q3vBuYfWuVH5vgboA6uIb3/mSqZ77WkOBdGgP6iFV1vX9Ii2k4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972002; c=relaxed/simple;
-	bh=lLMA/BUDsIAZjkC0oU75ultpDegZ42KXMESTmacqgtg=;
+	s=arc-20240116; t=1705974945; c=relaxed/simple;
+	bh=KhPKd/iYAxDSmKMQ5WjXJ2CAtyvfRjqKcg95wFDKvSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rC/J0YW2U1lw+aQvd2kzWvHAoJeaWScTlrpwN74SPaKAEucSTZPQS61hdrpHw63VARw1jrvOiw4bjazMTj1LWI9DDhNLq9LLSBIR959gSuqHrso+NFdp4/QwU1HPN9Z6l+BpK8y/Mu70zVZLihYJ9vXGwxQdgilPohwmPuGTxno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5f6YJdz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DA0C433F1;
-	Tue, 23 Jan 2024 01:06:42 +0000 (UTC)
+	 MIME-Version; b=AL3UpaRiESyOLLzTpX67vhQKm/VPkBR0bL0oMmOo0kSOyp93VViEcZ1GPfF1hj28m92B4xdMPxfCHfzXWJPS29QMbJsGu9HhWygsABSCJ2NxXLS+zwZEP9sd2V9uge93g79hgTxKO/T9wUhhosRZLSAVkY2gsYzId7cA8RYnah4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkPnOi7+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7629EC433F1;
+	Tue, 23 Jan 2024 01:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972002;
-	bh=lLMA/BUDsIAZjkC0oU75ultpDegZ42KXMESTmacqgtg=;
+	s=korg; t=1705974945;
+	bh=KhPKd/iYAxDSmKMQ5WjXJ2CAtyvfRjqKcg95wFDKvSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A5f6YJdzy04gVqdwqVyfm5x6g4feDCVQqQ0vRmy7HNdzEWHkGFucfGhqOAJYSRFgd
-	 g5ZqwNsMOQyWNMhqx4lpyNbxwmQ+aICLpoDLrVnT9xwc601C553RNrUpeiNlKshOhb
-	 Bq5+PWEdU7o8iaRfnF79kstt1srGsnB8InMmXJQM=
+	b=qkPnOi7+tTE0pv8aexJ7aHRjZoghjk/MOqoOC29krQy0u/HBfFTiUM5Jml00Zmstc
+	 kK/XI1acg2EXajSe5FYwO8UJYLqOEb36VVDZfox/rEaRbCBcZIGrhlbNw24MQ28Nt/
+	 ahTxixI3eES7/tirwnjakR4kEMGptpFloZYzAymE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Subash Abhinov Kasiviswanathan <quic_subashab@quicinc.com>,
-	Simon Horman <horms@kernel.org>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 378/417] net: qualcomm: rmnet: fix global oob in rmnet_policy
+	Tom Murphy <murphyt7@tcd.ie>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Saravana Kannan <saravanak@google.com>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 5.15 290/374] iommu/dma: Trace bounce buffer usage when mapping buffers
 Date: Mon, 22 Jan 2024 15:59:06 -0800
-Message-ID: <20240122235804.883668218@linuxfoundation.org>
+Message-ID: <20240122235754.865626150@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,110 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Isaac J. Manjarres <isaacmanjarres@google.com>
 
-[ Upstream commit b33fb5b801c6db408b774a68e7c8722796b59ecc ]
+commit a63c357b9fd56ad5fe64616f5b22835252c6a76a upstream.
 
-The variable rmnet_link_ops assign a *bigger* maxtype which leads to a
-global out-of-bounds read when parsing the netlink attributes. See bug
-trace below:
+When commit 82612d66d51d ("iommu: Allow the dma-iommu api to
+use bounce buffers") was introduced, it did not add the logic
+for tracing the bounce buffer usage from iommu_dma_map_page().
 
-==================================================================
-BUG: KASAN: global-out-of-bounds in validate_nla lib/nlattr.c:386 [inline]
-BUG: KASAN: global-out-of-bounds in __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
-Read of size 1 at addr ffffffff92c438d0 by task syz-executor.6/84207
+All of the users of swiotlb_tbl_map_single() trace their bounce
+buffer usage, except iommu_dma_map_page(). This makes it difficult
+to track SWIOTLB usage from that function. Thus, trace bounce buffer
+usage from iommu_dma_map_page().
 
-CPU: 0 PID: 84207 Comm: syz-executor.6 Tainted: G                 N 6.1.0 #3
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x8b/0xb3 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:284 [inline]
- print_report+0x172/0x475 mm/kasan/report.c:395
- kasan_report+0xbb/0x1c0 mm/kasan/report.c:495
- validate_nla lib/nlattr.c:386 [inline]
- __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
- __nla_parse+0x3e/0x50 lib/nlattr.c:697
- nla_parse_nested_deprecated include/net/netlink.h:1248 [inline]
- __rtnl_newlink+0x50a/0x1880 net/core/rtnetlink.c:3485
- rtnl_newlink+0x64/0xa0 net/core/rtnetlink.c:3594
- rtnetlink_rcv_msg+0x43c/0xd70 net/core/rtnetlink.c:6091
- netlink_rcv_skb+0x14f/0x410 net/netlink/af_netlink.c:2540
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x54e/0x800 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x930/0xe50 net/netlink/af_netlink.c:1921
- sock_sendmsg_nosec net/socket.c:714 [inline]
- sock_sendmsg+0x154/0x190 net/socket.c:734
- ____sys_sendmsg+0x6df/0x840 net/socket.c:2482
- ___sys_sendmsg+0x110/0x1b0 net/socket.c:2536
- __sys_sendmsg+0xf3/0x1c0 net/socket.c:2565
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7fdcf2072359
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fdcf13e3168 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007fdcf219ff80 RCX: 00007fdcf2072359
-RDX: 0000000000000000 RSI: 0000000020000200 RDI: 0000000000000003
-RBP: 00007fdcf20bd493 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fffbb8d7bdf R14: 00007fdcf13e3300 R15: 0000000000022000
- </TASK>
-
-The buggy address belongs to the variable:
- rmnet_policy+0x30/0xe0
-
-The buggy address belongs to the physical page:
-page:0000000065bdeb3c refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x155243
-flags: 0x200000000001000(reserved|node=0|zone=2)
-raw: 0200000000001000 ffffea00055490c8 ffffea00055490c8 0000000000000000
-raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffffffff92c43780: f9 f9 f9 f9 00 00 00 02 f9 f9 f9 f9 00 00 00 07
- ffffffff92c43800: f9 f9 f9 f9 00 00 00 05 f9 f9 f9 f9 06 f9 f9 f9
->ffffffff92c43880: f9 f9 f9 f9 00 00 00 00 00 00 f9 f9 f9 f9 f9 f9
-                                                 ^
- ffffffff92c43900: 00 00 00 00 00 00 00 00 07 f9 f9 f9 f9 f9 f9 f9
- ffffffff92c43980: 00 00 00 07 f9 f9 f9 f9 00 00 00 05 f9 f9 f9 f9
-
-According to the comment of `nla_parse_nested_deprecated`, the maxtype
-should be len(destination array) - 1. Hence use `IFLA_RMNET_MAX` here.
-
-Fixes: 14452ca3b5ce ("net: qualcomm: rmnet: Export mux_id and flags to netlink")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Subash Abhinov Kasiviswanathan <quic_subashab@quicinc.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20240110061400.3356108-1-linma@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
+Cc: stable@vger.kernel.org # v5.15+
+Cc: Tom Murphy <murphyt7@tcd.ie>
+Cc: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Saravana Kannan <saravanak@google.com>
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Link: https://lore.kernel.org/r/20231208234141.2356157-1-isaacmanjarres@google.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/dma-iommu.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-index 27b1663c476e..64b209a0ad21 100644
---- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-+++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-@@ -391,7 +391,7 @@ static int rmnet_fill_info(struct sk_buff *skb, const struct net_device *dev)
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -25,6 +25,7 @@
+ #include <linux/vmalloc.h>
+ #include <linux/crash_dump.h>
+ #include <linux/dma-direct.h>
++#include <trace/events/swiotlb.h>
  
- struct rtnl_link_ops rmnet_link_ops __read_mostly = {
- 	.kind		= "rmnet",
--	.maxtype	= __IFLA_RMNET_MAX,
-+	.maxtype	= IFLA_RMNET_MAX,
- 	.priv_size	= sizeof(struct rmnet_priv),
- 	.setup		= rmnet_vnd_setup,
- 	.validate	= rmnet_rtnl_validate,
--- 
-2.43.0
-
+ struct iommu_dma_msi_page {
+ 	struct list_head	list;
+@@ -817,6 +818,8 @@ static dma_addr_t iommu_dma_map_page(str
+ 		void *padding_start;
+ 		size_t padding_size, aligned_size;
+ 
++		trace_swiotlb_bounced(dev, phys, size, swiotlb_force);
++
+ 		aligned_size = iova_align(iovad, size);
+ 		phys = swiotlb_tbl_map_single(dev, phys, size, aligned_size,
+ 					      iova_mask(iovad), dir, attrs);
 
 
 
