@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09FF783846B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 043BC837F75
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACA48299855
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 378B01C290A2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0EF6DCE0;
-	Tue, 23 Jan 2024 02:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB13629E7;
+	Tue, 23 Jan 2024 00:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uub+v7Bg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSsREJHo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2DF6D1DA;
-	Tue, 23 Jan 2024 02:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33620629E2;
+	Tue, 23 Jan 2024 00:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975391; cv=none; b=X5XgkiNOj0IjGfWnPTXaImOQP2QEx2dMfNMQIcd9WrDwJ9mYbpL4Cu0SfYsXs+71qkDCmIi3ZcmrHO4NrbVPlHpSL+T565xTaEpSH0+mJeVJrQl4ICtVXPw9VjZ219qJltmjPt2CZIjZuQMAUqKR1xrVdd7Eby7rOffWYxCBdz4=
+	t=1705971144; cv=none; b=XEe9c1DSXHQuaK75BwKj3SHpLAhNLmLeo93fYp0v6QdEVGpk1JK5FZgzjXLBmINNQSl9HDMFfcUqRgrB7WhUU4aQitIk2SM2gDSR/CZ9O8WrwklFHznLzR9gxjzzUI7Nc6Xbp9s2AN4ZhTivEOAKS1IOqwA/mFtSWmxlYpG7t+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975391; c=relaxed/simple;
-	bh=VdQvV3YNp4bVMQdmBbZvS7RmHS17oLc/nqLCreLOguE=;
+	s=arc-20240116; t=1705971144; c=relaxed/simple;
+	bh=yMqOdIrFgOWqtR1n2DtCnG817Vsb2mj+M6pfEydbC0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NPRdV7BlYuU62fzlSQ3+Cqtdtdp80D7a6NBSWZw7N2TSJi/8+gSs9D1oCD3pyMqYiUzwh/BwUGO7rsV5D6GyZVd4PggoQJ8SCl/gXAyPuSv0fen7uWAMaoUEXzM5ljnvRG6jsxochzvwBnUshkFfCc2syM03q7uasjW4Xt3uLDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uub+v7Bg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F0BC43390;
-	Tue, 23 Jan 2024 02:03:11 +0000 (UTC)
+	 MIME-Version; b=RfNDEwRNHg/zRBT2rJriZVmKvz+mf2M2VYNrd0X0YyH9/i8ZNFXwiFFt8jDWX6ONqyPPK3IQpjt6PZLATM/WVfgunR5UA+YXNxHLsP39w35eWT6riOw+gATmcOFlJjeUQxIEcow0MN4kWYKVY1DiRCJMztYy8tNt4GOCiITlavE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSsREJHo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DEAAC43390;
+	Tue, 23 Jan 2024 00:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975391;
-	bh=VdQvV3YNp4bVMQdmBbZvS7RmHS17oLc/nqLCreLOguE=;
+	s=korg; t=1705971142;
+	bh=yMqOdIrFgOWqtR1n2DtCnG817Vsb2mj+M6pfEydbC0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uub+v7BggA/saF1fHqMbz4W2S3QEo9HRumz4Jk+Wg9tERbsU1SL7YJ531UC7i2AVu
-	 epVRBTlb6evDw0eJYNkbqwcMDIIHF1rOXZOVfdehtoi85ygudX4dZhnG/D9kiX4VDp
-	 MCKjFpMgXiJd0EZFZNoDJkrIHUV+LreN842eWnKo=
+	b=hSsREJHoy3RF6BYml8tOWRHAAUibEIbgzltFO5DAwGFI4JXLVQG/vsuyaccb4lgvr
+	 4Z8Zcv5THVPLwvhYigLrLGD2quCLr/HNoU9Z8t2QQK80/p5jFNcfVg6txIYuNBLK0C
+	 1Tfh1I8OnWcU3GTWW12ZcbfUYtSh7tp+5LICLBYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>,
-	Paul Durrant <paul@xen.org>
-Subject: [PATCH 6.6 352/583] xen-netback: dont produce zero-size SKB frags
+	wangyangxin <wangyangxin1@huawei.com>,
+	Gonglei <arei.gonglei@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 097/286] crypto: virtio - Wait for tasklet to complete on device remove
 Date: Mon, 22 Jan 2024 15:56:43 -0800
-Message-ID: <20240122235822.793870174@linuxfoundation.org>
+Message-ID: <20240122235735.804963582@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: wangyangxin <wangyangxin1@huawei.com>
 
-commit c7ec4f2d684e17d69bbdd7c4324db0ef5daac26a upstream.
+[ Upstream commit 67cc511e8d436456cc98033e6d4ba83ebfc8e672 ]
 
-While frontends may submit zero-size requests (wasting a precious slot),
-core networking code as of at least 3ece782693c4b ("sock: skb_copy_ubufs
-support for compound pages") can't deal with SKBs when they have all
-zero-size fragments. Respond to empty requests right when populating
-fragments; all further processing is fragment based and hence won't
-encounter these empty requests anymore.
+The scheduled tasklet needs to be executed on device remove.
 
-In a way this should have been that way from the beginning: When no data
-is to be transferred for a particular request, there's not even a point
-in validating the respective grant ref. That's no different from e.g.
-passing NULL into memcpy() when at the same time the size is 0.
-
-This is XSA-448 / CVE-2023-46838.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Paul Durrant <paul@xen.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
+Signed-off-by: wangyangxin <wangyangxin1@huawei.com>
+Signed-off-by: Gonglei <arei.gonglei@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netback/netback.c |   44 ++++++++++++++++++++++++++++++++------
- 1 file changed, 38 insertions(+), 6 deletions(-)
+ drivers/crypto/virtio/virtio_crypto_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/xen-netback/netback.c
-+++ b/drivers/net/xen-netback/netback.c
-@@ -463,12 +463,25 @@ static void xenvif_get_requests(struct x
- 	}
+diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
+index 630af33929ef..3da956145892 100644
+--- a/drivers/crypto/virtio/virtio_crypto_core.c
++++ b/drivers/crypto/virtio/virtio_crypto_core.c
+@@ -488,11 +488,14 @@ static void virtcrypto_free_unused_reqs(struct virtio_crypto *vcrypto)
+ static void virtcrypto_remove(struct virtio_device *vdev)
+ {
+ 	struct virtio_crypto *vcrypto = vdev->priv;
++	int i;
  
- 	for (shinfo->nr_frags = 0; nr_slots > 0 && shinfo->nr_frags < MAX_SKB_FRAGS;
--	     shinfo->nr_frags++, gop++, nr_slots--) {
-+	     nr_slots--) {
-+		if (unlikely(!txp->size)) {
-+			unsigned long flags;
-+
-+			spin_lock_irqsave(&queue->response_lock, flags);
-+			make_tx_response(queue, txp, 0, XEN_NETIF_RSP_OKAY);
-+			push_tx_responses(queue);
-+			spin_unlock_irqrestore(&queue->response_lock, flags);
-+			++txp;
-+			continue;
-+		}
-+
- 		index = pending_index(queue->pending_cons++);
- 		pending_idx = queue->pending_ring[index];
- 		xenvif_tx_create_map_op(queue, pending_idx, txp,
- 				        txp == first ? extra_count : 0, gop);
- 		frag_set_pending_idx(&frags[shinfo->nr_frags], pending_idx);
-+		++shinfo->nr_frags;
-+		++gop;
+ 	dev_info(&vdev->dev, "Start virtcrypto_remove.\n");
  
- 		if (txp == first)
- 			txp = txfrags;
-@@ -481,20 +494,39 @@ static void xenvif_get_requests(struct x
- 		shinfo = skb_shinfo(nskb);
- 		frags = shinfo->frags;
- 
--		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots;
--		     shinfo->nr_frags++, txp++, gop++) {
-+		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots; ++txp) {
-+			if (unlikely(!txp->size)) {
-+				unsigned long flags;
-+
-+				spin_lock_irqsave(&queue->response_lock, flags);
-+				make_tx_response(queue, txp, 0,
-+						 XEN_NETIF_RSP_OKAY);
-+				push_tx_responses(queue);
-+				spin_unlock_irqrestore(&queue->response_lock,
-+						       flags);
-+				continue;
-+			}
-+
- 			index = pending_index(queue->pending_cons++);
- 			pending_idx = queue->pending_ring[index];
- 			xenvif_tx_create_map_op(queue, pending_idx, txp, 0,
- 						gop);
- 			frag_set_pending_idx(&frags[shinfo->nr_frags],
- 					     pending_idx);
-+			++shinfo->nr_frags;
-+			++gop;
- 		}
- 
--		skb_shinfo(skb)->frag_list = nskb;
--	} else if (nskb) {
-+		if (shinfo->nr_frags) {
-+			skb_shinfo(skb)->frag_list = nskb;
-+			nskb = NULL;
-+		}
-+	}
-+
-+	if (nskb) {
- 		/* A frag_list skb was allocated but it is no longer needed
--		 * because enough slots were converted to copy ops above.
-+		 * because enough slots were converted to copy ops above or some
-+		 * were empty.
- 		 */
- 		kfree_skb(nskb);
- 	}
+ 	if (virtcrypto_dev_started(vcrypto))
+ 		virtcrypto_dev_stop(vcrypto);
++	for (i = 0; i < vcrypto->max_data_queues; i++)
++		tasklet_kill(&vcrypto->data_vq[i].done_task);
+ 	vdev->config->reset(vdev);
+ 	virtcrypto_free_unused_reqs(vcrypto);
+ 	virtcrypto_clear_crypto_engines(vcrypto);
+-- 
+2.43.0
+
 
 
 
