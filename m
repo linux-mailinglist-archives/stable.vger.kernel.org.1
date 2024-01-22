@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-12941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C85108379C6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:45:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FBEF8379D5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:46:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 061AF1C27542
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:45:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08FBF285C74
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93F1A1272BB;
-	Tue, 23 Jan 2024 00:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8EB128386;
+	Tue, 23 Jan 2024 00:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IxhxcgTA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHsbZ81Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538521272B8;
-	Tue, 23 Jan 2024 00:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02C7482ED;
+	Tue, 23 Jan 2024 00:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968496; cv=none; b=MV8w+sWWnsA5tSFLFR+lQ9TG5wjkEMiWjDiFNYRtjpR0geJ8MBN/ixzNq81EyBEI58mFRAEODbCWfDuS1hC9nrnLAFZzY6bcPnBAiqSnkliguWbxFuta/7evWYqRcsyyRim7Lb4m+dZ8nBifzjz1V2MtMXoYbCRWY0xgpCdnxFo=
+	t=1705968675; cv=none; b=r6wAk4ieBDotjP7mFQ3ezK5CWTzoSfzgQbx3tRWIiHLbKJu5z005QIkrMuZuSHdIncL/X/lq3LS3Hsl2fcakqHJTjQVd2jmTiC74MfXq16XjmvLkvu7zBbkFtCxDdQ4Aqk4eB6/P2c7UW0z7RMLFrVjFdeuQtlANTpCQj+NIh20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968496; c=relaxed/simple;
-	bh=IIrHV/MUtlkO3Q1rcxzb9CpZoX9ZkBavGpbYcDa8Dzk=;
+	s=arc-20240116; t=1705968675; c=relaxed/simple;
+	bh=C9z6Ur/AU2sPVItJlZwrZo/V3t8BpkgSrGTsH1jmx88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T9TMN2H+fEHAthgGb4g4cdgOn0b6qJkbRZCrsT1IpAIHBty/gs+GEAbQYzbIVN7VIfexrXaL5hcnWNKdtwqpfDEAAKel/Br1l+r7i3pPk5Wh9fjRJUWOK1ZBIpGmikhHIc6cYqfVKJtADzyFM7I2pspDa8HZjrHl6ULDGXcn1kM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IxhxcgTA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E72C433C7;
-	Tue, 23 Jan 2024 00:08:13 +0000 (UTC)
+	 MIME-Version; b=SEf2FkUt0Eb0vgiQXjqLqPUjx5JEJyJZbTh58vWHCdY5t4YdBNKz4zN3f+6mkH/sVDBKhdGP7j/hic2jbEpyB6Y/wujHTo/1Ghb+U9DSFmRo5bkzzj+3pMcuN9wmo2ACK7EWDHXTKR6u1EtatmrdNu1ff2v1pPZXwsZtPMJi4x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHsbZ81Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C4BC4AF5E;
+	Tue, 23 Jan 2024 00:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968495;
-	bh=IIrHV/MUtlkO3Q1rcxzb9CpZoX9ZkBavGpbYcDa8Dzk=;
+	s=korg; t=1705968675;
+	bh=C9z6Ur/AU2sPVItJlZwrZo/V3t8BpkgSrGTsH1jmx88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IxhxcgTAnXckgBTfqcVtuh4AkMP7mkhKFH0xIfx4OAxPwNPS7F0GzmNFCv4ouYBZv
-	 8jd3reZ8+Rj6Y7v3Msv6nvLnbhGwf4cJDmyxNx74AFes4DhNqLBTFBm3kqVuzTDzhH
-	 8wGQNHr70qz15JFE9f0pd9UZkMnBktFeFazbCrcU=
+	b=JHsbZ81ZsM0ByFz0oHaZC7mBcj6E+3PeyxFgRQkGyIHZL+ONHpBkfMSzCeHrnBtnC
+	 Iz58n1hSwPGrBW/UiKCvxOp+Sh1F/VGh/WKL2aqOlkRPS57WsarTiThYpSe8A1K9sY
+	 VNP1gcKsi6htQ7rS0U2GShVyxXq3bpvJxqI44/bo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 097/148] drm/radeon: check the alloc_workqueue return value in radeon_crtc_init()
-Date: Mon, 22 Jan 2024 15:57:33 -0800
-Message-ID: <20240122235716.314624809@linuxfoundation.org>
+Subject: [PATCH 4.19 098/148] drm/radeon/dpm: fix a memleak in sumo_parse_power_table
+Date: Mon, 22 Jan 2024 15:57:34 -0800
+Message-ID: <20240122235716.359247322@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
 References: <20240122235712.442097787@linuxfoundation.org>
@@ -66,43 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 7a2464fac80d42f6f8819fed97a553e9c2f43310 ]
+[ Upstream commit 0737df9ed0997f5b8addd6e2b9699a8c6edba2e4 ]
 
-check the alloc_workqueue return value in radeon_crtc_init()
-to avoid null-ptr-deref.
+The rdev->pm.dpm.ps allocated by kcalloc should be freed in every
+following error-handling path. However, in the error-handling of
+rdev->pm.power_state[i].clock_info the rdev->pm.dpm.ps is not freed,
+resulting in a memleak in this function.
 
-Fixes: fa7f517cb26e ("drm/radeon: rework page flip handling v4")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Fixes: 80ea2c129c76 ("drm/radeon/kms: add dpm support for sumo asics (v2)")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon_display.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/sumo_dpm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_display.c b/drivers/gpu/drm/radeon/radeon_display.c
-index 5985efc5a1f3..b7308ed7e266 100644
---- a/drivers/gpu/drm/radeon/radeon_display.c
-+++ b/drivers/gpu/drm/radeon/radeon_display.c
-@@ -676,11 +676,16 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
- 	if (radeon_crtc == NULL)
- 		return;
- 
-+	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
-+	if (!radeon_crtc->flip_queue) {
-+		kfree(radeon_crtc);
-+		return;
-+	}
-+
- 	drm_crtc_init(dev, &radeon_crtc->base, &radeon_crtc_funcs);
- 
- 	drm_mode_crtc_set_gamma_size(&radeon_crtc->base, 256);
- 	radeon_crtc->crtc_id = index;
--	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
- 	rdev->mode_info.crtcs[index] = radeon_crtc;
- 
- 	if (rdev->family >= CHIP_BONAIRE) {
+diff --git a/drivers/gpu/drm/radeon/sumo_dpm.c b/drivers/gpu/drm/radeon/sumo_dpm.c
+index 1e4975f3374c..b9dc3805d7fb 100644
+--- a/drivers/gpu/drm/radeon/sumo_dpm.c
++++ b/drivers/gpu/drm/radeon/sumo_dpm.c
+@@ -1494,8 +1494,10 @@ static int sumo_parse_power_table(struct radeon_device *rdev)
+ 		non_clock_array_index = power_state->v2.nonClockInfoIndex;
+ 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
+ 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
+-		if (!rdev->pm.power_state[i].clock_info)
++		if (!rdev->pm.power_state[i].clock_info) {
++			kfree(rdev->pm.dpm.ps);
+ 			return -EINVAL;
++		}
+ 		ps = kzalloc(sizeof(struct sumo_ps), GFP_KERNEL);
+ 		if (ps == NULL) {
+ 			kfree(rdev->pm.dpm.ps);
 -- 
 2.43.0
 
