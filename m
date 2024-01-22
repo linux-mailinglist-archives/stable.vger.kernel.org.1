@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ACD8837EF2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2074F83814A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:07:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E706F29BC72
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FB711F2221B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B867604CB;
-	Tue, 23 Jan 2024 00:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778DF131745;
+	Tue, 23 Jan 2024 01:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ktJrUpq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9gXDKD/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A46560274;
-	Tue, 23 Jan 2024 00:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3560114A088;
+	Tue, 23 Jan 2024 01:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970841; cv=none; b=hOyBqqD5/hY/2z10U8XsJij+UnSN0SALY1UCLsUBu83cc/GbjiFiSTqi3tzNIe0utgqsQZKGbn2rUV8zsETSWXz33V4DV4xGTvWyRLEnjlRMDNfCqDzOkecne/s2Q/yC7SHju8AsGjN5TZnRcmG0b7z3TN19E3HYHo/LXaZKW+E=
+	t=1705972097; cv=none; b=mFo0GDxHLiXMKIJgzCoQtTa4JT0ZFk6dOnPIBM4TkfuWDtEmeSDMhN1MTnTtKyLV35WcBX2QTtJae65DBZUxm+DIfOvm6C5njwcKpm8Q2hQ4hK5yB5xo6VZ98xXsrpEWua22d2gMNeUF0lgfv1Tx/CxBFgr62tuDFbk+s5Qo1L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970841; c=relaxed/simple;
-	bh=7V3/Y51cDklvX0CtTRpsHWmxgvsWB2WvQwfESe/K61M=;
+	s=arc-20240116; t=1705972097; c=relaxed/simple;
+	bh=sTXd5xpUVHhqOj2rLECFNvI2inyiJmKjxF46ttD7o/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pymsfnmlrlxoSPeWtf+iIX7Nrf+javz6WBi1RNMIvqfssHZqiyee2ZGamWv89BK1BgcFSHTP36YKBvGadVqzfhoaCf+48/uVtP5bBGyqIuveps1GvrRhsLXnjIJYVDQtf745oWUbZT6K+VwQdlffCfhb3yDeZ4Bstj83IStDXHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ktJrUpq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3ACC43390;
-	Tue, 23 Jan 2024 00:47:20 +0000 (UTC)
+	 MIME-Version; b=CmdIikhe1Mya9yEht4vHRgYYu7BumZmF7OVRMrXKdrsbsJ+jP8rrsSFBDmASbedKO+HGSiiXR84QEy7qEEIVkPKOlDsuH++BEFTpyr+DKXW+njsIRGk7smdtqLUuTIkLEvTRl/g01J95mtBXUuo2jHU5/n/Jp/IQXzMa//U60cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9gXDKD/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90411C43390;
+	Tue, 23 Jan 2024 01:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970841;
-	bh=7V3/Y51cDklvX0CtTRpsHWmxgvsWB2WvQwfESe/K61M=;
+	s=korg; t=1705972096;
+	bh=sTXd5xpUVHhqOj2rLECFNvI2inyiJmKjxF46ttD7o/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ktJrUpqc1z7i7SDwt9l2X2/doV+wP13lmZHzTLgTsLk8UhPwFuJ1gs81Fukw1R0s
-	 JugawNBmHYOaxSLilyGIQxHjovUViMRBZ/5f/SESRJL33ey8htxxIFNaPMY9Cq354w
-	 NNPcRt/poQMAyFncVpEA40JIeYo4XMxeicjpwQ54=
+	b=b9gXDKD/GzWepwvLCJ56No03o2A5bY88en1RBGphwM5WVW/bhxl1GJ9S8uClpeNb5
+	 hRcPwJ9eayF3W+Iu5MAj+aVds9/tOJkiFrWazl1b4D1/P9RjKgMSkKUshdr7EARNCN
+	 BIfWgaxJWjwuKd0Kj3m25AlKCixGkL0aBSw4rozA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Zhang <joakim.zhang@cixtech.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/417] dma-mapping: clear dev->dma_mem to NULL after freeing it
+Subject: [PATCH 5.15 035/374] tracing: Fix uaf issue when open the hist or hist_debug file
 Date: Mon, 22 Jan 2024 15:54:51 -0800
-Message-ID: <20240122235756.060040401@linuxfoundation.org>
+Message-ID: <20240122235745.866828744@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joakim Zhang <joakim.zhang@cixtech.com>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit b07bc2347672cc8c7293c64499f1488278c5ca3d ]
+[ Upstream commit 1cc111b9cddc71ce161cd388f11f0e9048edffdb ]
 
-Reproduced with below sequence:
-dma_declare_coherent_memory()->dma_release_coherent_memory()
-->dma_declare_coherent_memory()->"return -EBUSY" error
+KASAN report following issue. The root cause is when opening 'hist'
+file of an instance and accessing 'trace_event_file' in hist_show(),
+but 'trace_event_file' has been freed due to the instance being removed.
+'hist_debug' file has the same problem. To fix it, call
+tracing_{open,release}_file_tr() in file_operations callback to have
+the ref count and avoid 'trace_event_file' being freed.
 
-It will return -EBUSY from the dma_assign_coherent_memory()
-in dma_declare_coherent_memory(), the reason is that dev->dma_mem
-pointer has not been set to NULL after it's freed.
+  BUG: KASAN: slab-use-after-free in hist_show+0x11e0/0x1278
+  Read of size 8 at addr ffff242541e336b8 by task head/190
 
-Fixes: cf65a0f6f6ff ("dma-mapping: move all DMA mapping code to kernel/dma")
-Signed-off-by: Joakim Zhang <joakim.zhang@cixtech.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+  CPU: 4 PID: 190 Comm: head Not tainted 6.7.0-rc5-g26aff849438c #133
+  Hardware name: linux,dummy-virt (DT)
+  Call trace:
+   dump_backtrace+0x98/0xf8
+   show_stack+0x1c/0x30
+   dump_stack_lvl+0x44/0x58
+   print_report+0xf0/0x5a0
+   kasan_report+0x80/0xc0
+   __asan_report_load8_noabort+0x1c/0x28
+   hist_show+0x11e0/0x1278
+   seq_read_iter+0x344/0xd78
+   seq_read+0x128/0x1c0
+   vfs_read+0x198/0x6c8
+   ksys_read+0xf4/0x1e0
+   __arm64_sys_read+0x70/0xa8
+   invoke_syscall+0x70/0x260
+   el0_svc_common.constprop.0+0xb0/0x280
+   do_el0_svc+0x44/0x60
+   el0_svc+0x34/0x68
+   el0t_64_sync_handler+0xb8/0xc0
+   el0t_64_sync+0x168/0x170
+
+  Allocated by task 188:
+   kasan_save_stack+0x28/0x50
+   kasan_set_track+0x28/0x38
+   kasan_save_alloc_info+0x20/0x30
+   __kasan_slab_alloc+0x6c/0x80
+   kmem_cache_alloc+0x15c/0x4a8
+   trace_create_new_event+0x84/0x348
+   __trace_add_new_event+0x18/0x88
+   event_trace_add_tracer+0xc4/0x1a0
+   trace_array_create_dir+0x6c/0x100
+   trace_array_create+0x2e8/0x568
+   instance_mkdir+0x48/0x80
+   tracefs_syscall_mkdir+0x90/0xe8
+   vfs_mkdir+0x3c4/0x610
+   do_mkdirat+0x144/0x200
+   __arm64_sys_mkdirat+0x8c/0xc0
+   invoke_syscall+0x70/0x260
+   el0_svc_common.constprop.0+0xb0/0x280
+   do_el0_svc+0x44/0x60
+   el0_svc+0x34/0x68
+   el0t_64_sync_handler+0xb8/0xc0
+   el0t_64_sync+0x168/0x170
+
+  Freed by task 191:
+   kasan_save_stack+0x28/0x50
+   kasan_set_track+0x28/0x38
+   kasan_save_free_info+0x34/0x58
+   __kasan_slab_free+0xe4/0x158
+   kmem_cache_free+0x19c/0x508
+   event_file_put+0xa0/0x120
+   remove_event_file_dir+0x180/0x320
+   event_trace_del_tracer+0xb0/0x180
+   __remove_instance+0x224/0x508
+   instance_rmdir+0x44/0x78
+   tracefs_syscall_rmdir+0xbc/0x140
+   vfs_rmdir+0x1cc/0x4c8
+   do_rmdir+0x220/0x2b8
+   __arm64_sys_unlinkat+0xc0/0x100
+   invoke_syscall+0x70/0x260
+   el0_svc_common.constprop.0+0xb0/0x280
+   do_el0_svc+0x44/0x60
+   el0_svc+0x34/0x68
+   el0t_64_sync_handler+0xb8/0xc0
+   el0t_64_sync+0x168/0x170
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231214012153.676155-1-zhengyejian1@huawei.com
+
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/coherent.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/trace/trace.c             |  6 ++++++
+ kernel/trace/trace.h             |  1 +
+ kernel/trace/trace_events_hist.c | 12 ++++++++----
+ 3 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/dma/coherent.c b/kernel/dma/coherent.c
-index c21abc77c53e..ff5683a57f77 100644
---- a/kernel/dma/coherent.c
-+++ b/kernel/dma/coherent.c
-@@ -132,8 +132,10 @@ int dma_declare_coherent_memory(struct device *dev, phys_addr_t phys_addr,
- 
- void dma_release_coherent_memory(struct device *dev)
- {
--	if (dev)
-+	if (dev) {
- 		_dma_release_coherent_memory(dev->dma_mem);
-+		dev->dma_mem = NULL;
-+	}
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 66322196b256..bac5505b243e 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -4904,6 +4904,12 @@ int tracing_release_file_tr(struct inode *inode, struct file *filp)
+ 	return 0;
  }
  
- static void *__dma_alloc_from_coherent(struct device *dev,
++int tracing_single_release_file_tr(struct inode *inode, struct file *filp)
++{
++	tracing_release_file_tr(inode, filp);
++	return single_release(inode, filp);
++}
++
+ static int tracing_mark_open(struct inode *inode, struct file *filp)
+ {
+ 	stream_open(inode, filp);
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index c6eb116dc279..449a8bd873cf 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -593,6 +593,7 @@ int tracing_open_generic(struct inode *inode, struct file *filp);
+ int tracing_open_generic_tr(struct inode *inode, struct file *filp);
+ int tracing_open_file_tr(struct inode *inode, struct file *filp);
+ int tracing_release_file_tr(struct inode *inode, struct file *filp);
++int tracing_single_release_file_tr(struct inode *inode, struct file *filp);
+ bool tracing_is_disabled(void);
+ bool tracer_tracing_is_on(struct trace_array *tr);
+ void tracer_tracing_on(struct trace_array *tr);
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index c32a53f08922..e7799814a3c8 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -4946,10 +4946,12 @@ static int event_hist_open(struct inode *inode, struct file *file)
+ {
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = tracing_open_file_tr(inode, file);
+ 	if (ret)
+ 		return ret;
+ 
++	/* Clear private_data to avoid warning in single_open() */
++	file->private_data = NULL;
+ 	return single_open(file, hist_show, file);
+ }
+ 
+@@ -4957,7 +4959,7 @@ const struct file_operations event_hist_fops = {
+ 	.open = event_hist_open,
+ 	.read = seq_read,
+ 	.llseek = seq_lseek,
+-	.release = single_release,
++	.release = tracing_single_release_file_tr,
+ };
+ 
+ #ifdef CONFIG_HIST_TRIGGERS_DEBUG
+@@ -5218,10 +5220,12 @@ static int event_hist_debug_open(struct inode *inode, struct file *file)
+ {
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = tracing_open_file_tr(inode, file);
+ 	if (ret)
+ 		return ret;
+ 
++	/* Clear private_data to avoid warning in single_open() */
++	file->private_data = NULL;
+ 	return single_open(file, hist_debug_show, file);
+ }
+ 
+@@ -5229,7 +5233,7 @@ const struct file_operations event_hist_debug_fops = {
+ 	.open = event_hist_debug_open,
+ 	.read = seq_read,
+ 	.llseek = seq_lseek,
+-	.release = single_release,
++	.release = tracing_single_release_file_tr,
+ };
+ #endif
+ 
 -- 
 2.43.0
 
