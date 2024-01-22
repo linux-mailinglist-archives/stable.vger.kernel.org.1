@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-12976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 524F7837A0F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E0BA837A18
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A95728345E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:49:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C40891F28947
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E156129A77;
-	Tue, 23 Jan 2024 00:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22BE12A153;
+	Tue, 23 Jan 2024 00:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRJ5hvGw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GScJ5eR+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0793129A74;
-	Tue, 23 Jan 2024 00:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E67129A63;
+	Tue, 23 Jan 2024 00:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968720; cv=none; b=i9MAMqQNwebtCGhjRGJXFxrCSX+DzT1Z5BnbQbf7A8jgw5dpUTSI0SgvvFGQZVMvM38nVjCzsULg9W+xbD2iGcqiVWk1SD1ItxPsQ/wTniXZDEumaAKiV3kcLIqjzLQIgTFAdsxtfMTI+Iz/8acoYFmFxy+8RclaRigmUGBPdQ0=
+	t=1705968738; cv=none; b=m7e774hzMimtbcQHUKn/8WsLPh3C8dhKhAWTCOKxIeXg9QZ1w1DKHLHEYZ8YIzeDKlH7QhXhlg+olMwR5S0gDzVlJm4LTm3CDJz2odx8ldOi0lY+fLvLV9mbBKtjO4/rNP25/NhXvlVibxspWmwzFqqy8VWfgw1+kARD1yV+mpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968720; c=relaxed/simple;
-	bh=vI2lx9x4OVJkXh3NHMkHjxToUH2Dx+OPAF9za9PAKNs=;
+	s=arc-20240116; t=1705968738; c=relaxed/simple;
+	bh=c+p/cOFAacfle0BJQQGuqXZKbApc4rA/jJvSBiYkloQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ube3q/uJ2USA1Qy/xCxkPHDZUNPGgPpoIRo9vUv2Knsn/i0l2v7wRF/bEnbWwtiI+DLlQo2CNNhg0Yu7bcJ7AaY25R/qFwnvMEgD6DsYnB6y7DjChU95gIKWxZ5kLq54F7h77VIIVf1V+ddByoGDyX6KyArwxy7TOEEnrkNMpCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRJ5hvGw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F7EC433C7;
-	Tue, 23 Jan 2024 00:11:59 +0000 (UTC)
+	 MIME-Version; b=hfXXNbWy3gmRXMJUUhOi8QkOQAyHaizapMweLbtX3hPgWwoT5qZOjYySwFrV+0kpaYxlQ2txGCiS67SSw6GvXr9Ugu2Z9VlnLB5TNaZGeqOGo7JGnpIkUUj23x2qizjw3ZEhabofwfwUm7lBWZ65QJnueypKcbun8fWdZusAvVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GScJ5eR+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17938C43390;
+	Tue, 23 Jan 2024 00:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968719;
-	bh=vI2lx9x4OVJkXh3NHMkHjxToUH2Dx+OPAF9za9PAKNs=;
+	s=korg; t=1705968738;
+	bh=c+p/cOFAacfle0BJQQGuqXZKbApc4rA/jJvSBiYkloQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dRJ5hvGwPEMfmv0hnlHfYnniDEC2cU9b30V3yRbfcbUCKCdPDh4FcRIu/PjnJcXEg
-	 +FXx3VaPWj5/fEkcegR6CSwvmajshu7NZBC+1QqunvnUjNDjxwcdlgot8btBWwEdQg
-	 A6PalMbQH9+n9yLqhY+gmdh8A29C2AmungrENX78=
+	b=GScJ5eR+hn2zcQJEJguPQsI+6s+BNf/0MIC5wkbmBiww0C+DDA0eQJAIc5RzkkeEp
+	 7A3L2EsxOky7iJWeJr9RWtUqlvqJRrAbsB+tbHTdbtTaP5+dFn0T5eJ6L9NhpaH0+E
+	 glG9mgDAPGmVkHjmAOibCM9Vvvp8R/iaeioNbUCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamil Duljas <kamil.duljas@gmail.com>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	kernel test robot <lkp@intel.com>,
+	David Lin <CTLIN0@nuvoton.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 004/194] ASoC: Intel: Skylake: Fix mem leak in few functions
-Date: Mon, 22 Jan 2024 15:55:34 -0800
-Message-ID: <20240122235719.398763744@linuxfoundation.org>
+Subject: [PATCH 5.4 005/194] ASoC: nau8822: Fix incorrect type in assignment and cast to restricted __be16
+Date: Mon, 22 Jan 2024 15:55:35 -0800
+Message-ID: <20240122235719.444588574@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
 References: <20240122235719.206965081@linuxfoundation.org>
@@ -61,61 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamil Duljas <kamil.duljas@gmail.com>
+From: David Lin <CTLIN0@nuvoton.com>
 
-[ Upstream commit d5c65be34df73fa01ed05611aafb73b440d89e29 ]
+[ Upstream commit c1501f2597dd08601acd42256a4b0a0fc36bf302 ]
 
-The resources should be freed when function return error.
+This issue is reproduced when W=1 build in compiler gcc-12.
+The following are sparse warnings:
 
-Signed-off-by: Kamil Duljas <kamil.duljas@gmail.com>
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20231116125150.1436-1-kamil.duljas@gmail.com
+sound/soc/codecs/nau8822.c:199:25: sparse: sparse: incorrect type in assignment
+sound/soc/codecs/nau8822.c:199:25: sparse: expected unsigned short
+sound/soc/codecs/nau8822.c:199:25: sparse: got restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311122320.T1opZVkP-lkp@intel.com/
+Signed-off-by: David Lin <CTLIN0@nuvoton.com>
+Link: https://lore.kernel.org/r/20231117043011.1747594-1-CTLIN0@nuvoton.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/skylake/skl-pcm.c     | 4 +++-
- sound/soc/intel/skylake/skl-sst-ipc.c | 4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ sound/soc/codecs/nau8822.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/intel/skylake/skl-pcm.c b/sound/soc/intel/skylake/skl-pcm.c
-index 439dd4ba690c..19176ae27274 100644
---- a/sound/soc/intel/skylake/skl-pcm.c
-+++ b/sound/soc/intel/skylake/skl-pcm.c
-@@ -260,8 +260,10 @@ static int skl_pcm_open(struct snd_pcm_substream *substream,
- 	snd_pcm_set_sync(substream);
+diff --git a/sound/soc/codecs/nau8822.c b/sound/soc/codecs/nau8822.c
+index cd163978792e..1450a84df4e8 100644
+--- a/sound/soc/codecs/nau8822.c
++++ b/sound/soc/codecs/nau8822.c
+@@ -184,6 +184,7 @@ static int nau8822_eq_get(struct snd_kcontrol *kcontrol,
+ 	struct soc_bytes_ext *params = (void *)kcontrol->private_value;
+ 	int i, reg;
+ 	u16 reg_val, *val;
++	__be16 tmp;
  
- 	mconfig = skl_tplg_fe_get_cpr_module(dai, substream->stream);
--	if (!mconfig)
-+	if (!mconfig) {
-+		kfree(dma_params);
- 		return -EINVAL;
-+	}
+ 	val = (u16 *)ucontrol->value.bytes.data;
+ 	reg = NAU8822_REG_EQ1;
+@@ -192,8 +193,8 @@ static int nau8822_eq_get(struct snd_kcontrol *kcontrol,
+ 		/* conversion of 16-bit integers between native CPU format
+ 		 * and big endian format
+ 		 */
+-		reg_val = cpu_to_be16(reg_val);
+-		memcpy(val + i, &reg_val, sizeof(reg_val));
++		tmp = cpu_to_be16(reg_val);
++		memcpy(val + i, &tmp, sizeof(tmp));
+ 	}
  
- 	skl_tplg_d0i3_get(skl, mconfig->d0i3_caps);
+ 	return 0;
+@@ -216,6 +217,7 @@ static int nau8822_eq_put(struct snd_kcontrol *kcontrol,
+ 	void *data;
+ 	u16 *val, value;
+ 	int i, reg, ret;
++	__be16 *tmp;
  
-diff --git a/sound/soc/intel/skylake/skl-sst-ipc.c b/sound/soc/intel/skylake/skl-sst-ipc.c
-index 667cdddc289f..7286cbd0c46f 100644
---- a/sound/soc/intel/skylake/skl-sst-ipc.c
-+++ b/sound/soc/intel/skylake/skl-sst-ipc.c
-@@ -1003,8 +1003,10 @@ int skl_ipc_get_large_config(struct sst_generic_ipc *ipc,
- 
- 	reply.size = (reply.header >> 32) & IPC_DATA_OFFSET_SZ_MASK;
- 	buf = krealloc(reply.data, reply.size, GFP_KERNEL);
--	if (!buf)
-+	if (!buf) {
-+		kfree(reply.data);
- 		return -ENOMEM;
-+	}
- 	*payload = buf;
- 	*bytes = reply.size;
- 
+ 	data = kmemdup(ucontrol->value.bytes.data,
+ 		params->max, GFP_KERNEL | GFP_DMA);
+@@ -228,7 +230,8 @@ static int nau8822_eq_put(struct snd_kcontrol *kcontrol,
+ 		/* conversion of 16-bit integers between native CPU format
+ 		 * and big endian format
+ 		 */
+-		value = be16_to_cpu(*(val + i));
++		tmp = (__be16 *)(val + i);
++		value = be16_to_cpup(tmp);
+ 		ret = snd_soc_component_write(component, reg + i, value);
+ 		if (ret) {
+ 			dev_err(component->dev,
 -- 
 2.43.0
 
