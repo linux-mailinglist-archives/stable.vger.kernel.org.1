@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D306D837F2C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DAFF838420
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09E811C233AC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4DC3297F5D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29F01292E8;
-	Tue, 23 Jan 2024 00:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA55067E78;
+	Tue, 23 Jan 2024 02:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0H3+adj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSOuIwC+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D451292DF;
-	Tue, 23 Jan 2024 00:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9684F67E69;
+	Tue, 23 Jan 2024 02:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970981; cv=none; b=oAJzUQ94JerwNC+MdROmH14716lbGdvWQ4T+3aIsk4EWV08PvQ/Tk8n+ZgD+AzZiYZPT5xZkDwGI+8t0pXBHTUUITFwFKSslPKMGR3pqpgyNgGUc6YcIphY0Ja6ibXHyouL1z6s8TasrXu20sGboA4+UaCBuBewUSZer8BN6xu8=
+	t=1705975309; cv=none; b=Pf1ecYSC83/TfR4Z84mZy+xg7rEiqJFb3fri27sDaHI7z6gOW5ngtKwRCCflzghrs5iRKCR+0g9NnTFgmpADRn0w1ZUNqaDiAzIoia+iIAz8j5EGPv6xvMD+hXqdQjoOHud7YLUAZcDJRdr8+Fwg0EvWdwh09dTBpO0/RYQyVms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970981; c=relaxed/simple;
-	bh=V8asHHJMbDw+IJmIOxjRygwUycjLMyRBL5CF2lA3pLs=;
+	s=arc-20240116; t=1705975309; c=relaxed/simple;
+	bh=p98vyFLoj6bqTm7xFvIue5blV/zJ+hwsep9t0frR8fs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOnpq512b4g4dCk2xbGyLRktp7xhWG0IA3ZjPG5KpEAGoIdefnJ/6D0ExZ98QxDfHRQaVAFlIcdkWmwDQqqYEhCPIGLLDt24olL6RzSovreNO3bAB2xWPY4S35gl5Rk40EUo536NFd/Q+rFm9ZJ6gyHyPMkOK9UGH3/BviqfZsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0H3+adj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD688C43390;
-	Tue, 23 Jan 2024 00:49:40 +0000 (UTC)
+	 MIME-Version; b=XR2j/5+dVEC9crRks9F1ftAe5gSp5qFTBtTay75f7+Mmbsmr0JQXSEr60bVZB0s0FeMq9NlniP2IIFRKqYXBZ0MspWQZltlcpz6tYYX9/Un/BZ+4NyHKK0mrn0km+0lBhQ0Td+LBUAwV69cPcbBn3LsvLMnxThNFvgQ11zcFWoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSOuIwC+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D45C433C7;
+	Tue, 23 Jan 2024 02:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970981;
-	bh=V8asHHJMbDw+IJmIOxjRygwUycjLMyRBL5CF2lA3pLs=;
+	s=korg; t=1705975309;
+	bh=p98vyFLoj6bqTm7xFvIue5blV/zJ+hwsep9t0frR8fs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b0H3+adj44wKT5haRTyzi71QkthQ7WsSJrNucn4BNp79W528JZ8cAhO34+HrrhyIf
-	 y+vCGbKZ5nADQePe/nvomajWictAQXn2yckgRAaKkOdXm2EUtLdaaFubP43e0yujLF
-	 XeEKkL6lwZVwI+Otnig2XT6sdxPPH3OrKuOuq4AU=
+	b=QSOuIwC+ZSNXdfBkhjPoHNfU6B6dLmEe1GOcpZxVK/miMDMpnDhJknatxP0T+lMOP
+	 IQDy9D2J9iO0NtJ13NGskL2SrkDebEHWWpnWXYaJC75YP94IdlX1qQ2PEYca49Xd0o
+	 vjm68Kdlvmrs/Wm1FNn8mVZ8OcYhgfe/n/36DvG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Mehdi Djait <mehdi.djait@bootlin.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 155/417] ARM: davinci: always select CONFIG_CPU_ARM926T
+Subject: [PATCH 6.6 272/583] media: dt-bindings: media: rkisp1: Fix the port description for the parallel interface
 Date: Mon, 22 Jan 2024 15:55:23 -0800
-Message-ID: <20240122235757.207958208@linuxfoundation.org>
+Message-ID: <20240122235820.317740006@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Mehdi Djait <mehdi.djait@bootlin.com>
 
-[ Upstream commit 40974ee421b4d1fc74ac733d86899ce1b83d8f65 ]
+[ Upstream commit 25bf28b25a2afa1864b7143259443160d9163ea0 ]
 
-The select was lost by accident during the multiplatform conversion.
-Any davinci-only
+The bus-type belongs to the endpoint's properties and should therefore
+be moved.
 
-arm-linux-gnueabi-ld: arch/arm/mach-davinci/sleep.o: in function `CACHE_FLUSH':
-(.text+0x168): undefined reference to `arm926_flush_kern_cache_all'
+Link: https://lore.kernel.org/r/20231115164407.99876-1-mehdi.djait@bootlin.com
 
-Fixes: f962396ce292 ("ARM: davinci: support multiplatform build for ARM v5")
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/r/20240108110055.1531153-1-arnd@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 6a0eaa25bf36 ("media: dt-bindings: media: rkisp1: Add port for parallel interface")
+Signed-off-by: Mehdi Djait <mehdi.djait@bootlin.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-davinci/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ .../devicetree/bindings/media/rockchip-isp1.yaml      | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
-index c8cbd9a30791..0b54ca56555b 100644
---- a/arch/arm/mach-davinci/Kconfig
-+++ b/arch/arm/mach-davinci/Kconfig
-@@ -4,6 +4,7 @@ menuconfig ARCH_DAVINCI
- 	bool "TI DaVinci"
- 	depends on ARCH_MULTI_V5
- 	depends on CPU_LITTLE_ENDIAN
-+	select CPU_ARM926T
- 	select DAVINCI_TIMER
- 	select ZONE_DMA
- 	select PM_GENERIC_DOMAINS if PM
+diff --git a/Documentation/devicetree/bindings/media/rockchip-isp1.yaml b/Documentation/devicetree/bindings/media/rockchip-isp1.yaml
+index e466dff8286d..afcaa427d48b 100644
+--- a/Documentation/devicetree/bindings/media/rockchip-isp1.yaml
++++ b/Documentation/devicetree/bindings/media/rockchip-isp1.yaml
+@@ -90,15 +90,16 @@ properties:
+         description: connection point for input on the parallel interface
+ 
+         properties:
+-          bus-type:
+-            enum: [5, 6]
+-
+           endpoint:
+             $ref: video-interfaces.yaml#
+             unevaluatedProperties: false
+ 
+-        required:
+-          - bus-type
++            properties:
++              bus-type:
++                enum: [5, 6]
++
++            required:
++              - bus-type
+ 
+     anyOf:
+       - required:
 -- 
 2.43.0
 
