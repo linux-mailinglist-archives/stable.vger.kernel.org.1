@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11BEC83844B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A86E8381A3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:10:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43E971C2A063
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D635528620A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472416BB30;
-	Tue, 23 Jan 2024 02:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF571EEEA;
+	Tue, 23 Jan 2024 01:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vpo+R3Lf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xh1rADfe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053146A354;
-	Tue, 23 Jan 2024 02:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B79837C;
+	Tue, 23 Jan 2024 01:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975356; cv=none; b=LCF5W8+xji76KVT7rmptBqnVmgXBzNZpF4J1R/CmnIJXsUFtRtCnWtPg76K5z7K3kaVx1X3qdgnbCG7+tOJ2DIy06YeT9YxvqYYECwu7ncG8LBSe6FhOpIauPvk920DCkgRv99b8oDazMU9vIYozPr9aMNQwgeonbo3/uzwRCGE=
+	t=1705972192; cv=none; b=ffmogmtgOcWKGtPx9TaDYAowx0/nm5xBeXiUt470ZhK9far6eoRgKiSvnZhxr5YZpOob1XepDLkQZibsDKoueosELQDnBU1QKo0AeApW7EQHirKyLkCcTU+sYu9ZjZ8CvYpAJQRQZ4M+9oR5XXdrsIU2HitADRf51B6ySItuK5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975356; c=relaxed/simple;
-	bh=ZPb9mf9KBkRMHOOKCLqj/hOYkxSkj5hgjoqDN2oShhI=;
+	s=arc-20240116; t=1705972192; c=relaxed/simple;
+	bh=Gu9kSAaBUAp2z8Ixb360pSuxCKgbn6dAhdIlF7vjxw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BDiBnuxKpgbLnv+0U8J5Vk6nlo1pdSBlKy1Hi4Bq951sUBsFCX9R5bVQoY1ItXM0pp8i+SEd7O781XOgKTh6iG9DMKhaajJFdCWGRx4B0BpQaQkwAc7wVlzBQBoS+fldE5lmP0KPLd3nem9zrliBMC7vX0LCFMMtOBTSV2gcMBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vpo+R3Lf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB537C433B1;
-	Tue, 23 Jan 2024 02:02:35 +0000 (UTC)
+	 MIME-Version; b=d6bdfSPL6pSTRtQfTz1PhlPmxcYNEIUdsWX8569BB4fpJjAy96YgEFIp2w1dvXO3n6LUv+0XumfRVDFqEWMYfjHHIxeamDP0LTeXhMnCM3uMxMoC7ibhB0ycIvlzvLTcFwL0omZsBccUt3zo4ILP3ZEv/w8tIFDshUpNfnywJy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xh1rADfe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480E6C433C7;
+	Tue, 23 Jan 2024 01:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975355;
-	bh=ZPb9mf9KBkRMHOOKCLqj/hOYkxSkj5hgjoqDN2oShhI=;
+	s=korg; t=1705972192;
+	bh=Gu9kSAaBUAp2z8Ixb360pSuxCKgbn6dAhdIlF7vjxw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vpo+R3LfDB8FGVQAH1AjU+yJXkOcafsUZuLswqWFn7FcSBAYvJPg34zedwJQrrfbk
-	 In7op9//sKQGbAC6Z/4Vs2CLcqJu+RV6YPVnOMNjpOQBVROzjw6NdFJNRxxv/kIn5J
-	 Z5uZwP6FJ5RSRE5/WAYBtkAjpFuj38GZHEhKROE0=
+	b=xh1rADfeHemqBIViKp0VwbduN3ZsFs8rhV4Jc1MURImmAdjRSezzW/lzZviH5xXig
+	 zb/1JJZtMLi/grqxNJG4R0zEBpVikwrVX7lh33NnslVzzeFr0Jj4DUYlFmnygnhpoU
+	 ks9E0Se8cwnsegTtbFxU6UFb/PVb3tC1z1x43Uao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Chiu <chiu@endlessos.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 318/583] ASoC: rt5645: Drop double EF20 entry from dmi_platform_data[]
+Subject: [PATCH 5.15 113/374] crypto: sahara - do not resize req->src when doing hash operations
 Date: Mon, 22 Jan 2024 15:56:09 -0800
-Message-ID: <20240122235821.770897720@linuxfoundation.org>
+Message-ID: <20240122235748.574314955@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 51add1687f39292af626ac3c2046f49241713273 ]
+[ Upstream commit a3c6f4f4d249cecaf2f34471aadbfb4f4ef57298 ]
 
-dmi_platform_data[] first contains a DMI entry matching:
+When testing sahara sha256 speed performance with tcrypt (mode=404) on
+imx53-qsrb board, multiple "Invalid numbers of src SG." errors are
+reported. This was traced to sahara_walk_and_recalc() resizing req->src
+and causing the subsequent dma_map_sg() call to fail.
 
-   DMI_MATCH(DMI_PRODUCT_NAME, "EF20"),
+Now that the previous commit fixed sahara_sha_hw_links_create() to take
+into account the actual request size, rather than relying on sg->length
+values, the resize operation is no longer necessary.
 
-and then contains an identical entry except for the match being:
+Therefore, remove sahara_walk_and_recalc() and simplify associated logic.
 
-   DMI_MATCH(DMI_PRODUCT_NAME, "EF20EA"),
-
-Since these are partial (non exact) DMI matches the first match
-will also match any board with "EF20EA" in their DMI product-name,
-drop the second, redundant, entry.
-
-Fixes: a4dae468cfdd ("ASoC: rt5645: Add ACPI-defined GPIO for ECS EF20 series")
-Cc: Chris Chiu <chiu@endlessos.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://msgid.link/r/20231126214024.300505-2-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5645.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/crypto/sahara.c | 38 ++------------------------------------
+ 1 file changed, 2 insertions(+), 36 deletions(-)
 
-diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
-index a0d01d71d8b5..edcb85bd8ea7 100644
---- a/sound/soc/codecs/rt5645.c
-+++ b/sound/soc/codecs/rt5645.c
-@@ -3854,14 +3854,6 @@ static const struct dmi_system_id dmi_platform_data[] = {
- 		},
- 		.driver_data = (void *)&ecs_ef20_platform_data,
- 	},
--	{
--		.ident = "EF20EA",
--		.callback = cht_rt5645_ef20_quirk_cb,
--		.matches = {
--			DMI_MATCH(DMI_PRODUCT_NAME, "EF20EA"),
--		},
--		.driver_data = (void *)&ecs_ef20_platform_data,
--	},
- 	{ }
- };
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 538beec3b062..b9832978b935 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -887,24 +887,6 @@ static int sahara_sha_hw_context_descriptor_create(struct sahara_dev *dev,
+ 	return 0;
+ }
  
+-static int sahara_walk_and_recalc(struct scatterlist *sg, unsigned int nbytes)
+-{
+-	if (!sg || !sg->length)
+-		return nbytes;
+-
+-	while (nbytes && sg) {
+-		if (nbytes <= sg->length) {
+-			sg->length = nbytes;
+-			sg_mark_end(sg);
+-			break;
+-		}
+-		nbytes -= sg->length;
+-		sg = sg_next(sg);
+-	}
+-
+-	return nbytes;
+-}
+-
+ static int sahara_sha_prepare_request(struct ahash_request *req)
+ {
+ 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
+@@ -941,36 +923,20 @@ static int sahara_sha_prepare_request(struct ahash_request *req)
+ 					hash_later, 0);
+ 	}
+ 
+-	/* nbytes should now be multiple of blocksize */
+-	req->nbytes = req->nbytes - hash_later;
+-
+-	sahara_walk_and_recalc(req->src, req->nbytes);
+-
++	rctx->total = len - hash_later;
+ 	/* have data from previous operation and current */
+ 	if (rctx->buf_cnt && req->nbytes) {
+ 		sg_init_table(rctx->in_sg_chain, 2);
+ 		sg_set_buf(rctx->in_sg_chain, rctx->rembuf, rctx->buf_cnt);
+-
+ 		sg_chain(rctx->in_sg_chain, 2, req->src);
+-
+-		rctx->total = req->nbytes + rctx->buf_cnt;
+ 		rctx->in_sg = rctx->in_sg_chain;
+-
+-		req->src = rctx->in_sg_chain;
+ 	/* only data from previous operation */
+ 	} else if (rctx->buf_cnt) {
+-		if (req->src)
+-			rctx->in_sg = req->src;
+-		else
+-			rctx->in_sg = rctx->in_sg_chain;
+-		/* buf was copied into rembuf above */
++		rctx->in_sg = rctx->in_sg_chain;
+ 		sg_init_one(rctx->in_sg, rctx->rembuf, rctx->buf_cnt);
+-		rctx->total = rctx->buf_cnt;
+ 	/* no data from previous operation */
+ 	} else {
+ 		rctx->in_sg = req->src;
+-		rctx->total = req->nbytes;
+-		req->src = rctx->in_sg;
+ 	}
+ 
+ 	/* on next call, we only have the remaining data in the buffer */
 -- 
 2.43.0
 
