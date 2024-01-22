@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D5C7837C09
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C8183830B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23DC2295109
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7CBB1F27F22
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C52372;
-	Tue, 23 Jan 2024 00:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D63605A4;
+	Tue, 23 Jan 2024 01:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbnLvxQa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moHexOi+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9357186B;
-	Tue, 23 Jan 2024 00:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331BA604DE;
+	Tue, 23 Jan 2024 01:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969478; cv=none; b=GK4wLf9nissXQOkv8MU6SpZm6hqVaVnJeXmXjcqBZgRi6YZLb6S4L6jz/jVqJHrxIaQr33AkaVzZCZttjD3EhXJvAe9hkjybruiQKIjyH0qPhcKyEi6EzgJPtyS/lB+SUm3IBEWbtNVAcGZaCR1b6JWu0KnMvwdcu76KQMd7CHI=
+	t=1705974691; cv=none; b=uyME3cKbmCKMVjM5sAlu78Xk0kDxUVwIwArNmV+KBmwn8XUQwI5ieP6iDstKO7lVOZSzXOGz/kbPar2TaCdrXDibXuQBx5zu7Atc3C6v69k0YGgU5YFcus0d06oGi3odQ3kgPp+Ko6Nrfg8VYgGTgDA9zPbkdRsTrAnqjWnJKSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969478; c=relaxed/simple;
-	bh=AJydT7JHr0oBQw1ZoHDEIjKrLJQGxhzj2Nx7gDgPnks=;
+	s=arc-20240116; t=1705974691; c=relaxed/simple;
+	bh=DJsQlQ24GVSez00z2ealBnRE9oF2GjjoSlq7zWlB5t8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=frbjtz6j9iAKe3Yynio/uNevgHvGH7dvodPMA2RTQ8ATiOj+7BWVnymxKi1KxAwc77kwPMRyTyNVSp/PaavyMzABzWhLFn10XB6wcT8rmDACl++crpCIrqVDcRyh6KiVm0Ht6bbH+yQPvmDx91M5DDepshvJPh5yWMtSH3siND0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbnLvxQa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72803C43394;
-	Tue, 23 Jan 2024 00:24:38 +0000 (UTC)
+	 MIME-Version; b=FMNfCu6LCUwzt+Pa+2l2sRB97TuJoQLDD0DH1A9ck9HkX5ssqbTrle//vSn7F7bIg8BoMsMx9f81W6vqzgAFh6WoC0cFcajucff7qW5grk7Sg0EI4N6gjwHyPWdSbEJvUQSe7z6Ubmi7fyT5qJmiVUj1VTBFAF7CeKdpmK9aRKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moHexOi+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8C9C433F1;
+	Tue, 23 Jan 2024 01:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969478;
-	bh=AJydT7JHr0oBQw1ZoHDEIjKrLJQGxhzj2Nx7gDgPnks=;
+	s=korg; t=1705974690;
+	bh=DJsQlQ24GVSez00z2ealBnRE9oF2GjjoSlq7zWlB5t8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jbnLvxQa3tYtAqbYxRVU+XKP6WwwAMDwDaATq9QElo1uawJU1MKnAm9uZJ1VFkzFv
-	 EnKl8KxFeMff+ZgZAFypfTavXc1P1kNJlDJwKo71ttBKw/wjrXWxS02CllrrYezyPO
-	 377FP02Sw3agHdf2Xpij93mU2EFJ0bhDwxdu8ULM=
+	b=moHexOi+SevejD1gEfIuE2Ry+EsUj/fdlIs8yQH2q+unZ8T5/sFgj+6hnVay+wtdl
+	 WUqHS4MaEgo09zOBTH8sBaqlOD2E2uUABtEM+oyCli7kAMbJcxpaW1jREPCwwJ5qbV
+	 GZ/Dso+zIbXPX2pJ3kJOSpl1oehCc29UkZIrtw9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 272/641] drm/tidss: Return error value from from softreset
+Subject: [PATCH 6.6 125/583] arm64: dts: qcom: qrb2210-rb1: use USB host mode
 Date: Mon, 22 Jan 2024 15:52:56 -0800
-Message-ID: <20240122235826.433110269@linuxfoundation.org>
+Message-ID: <20240122235815.964049565@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Caleb Connolly <caleb.connolly@linaro.org>
 
-[ Upstream commit aceafbb5035c4bfc75a321863ed1e393d644d2d2 ]
+[ Upstream commit e0cee8dc6757f9f18718eec553be9fffa503e103 ]
 
-Return an error value from dispc_softreset() so that the caller can
-handle the errors.
+The default for the QCM2290 platform that this board is based on is OTG
+mode, however the role detection logic is not hooked up for this board
+and the dwc3 driver is configured to not allow role switching from
+userspace.
 
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-5-ac91b5ea35c0@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Stable-dep-of: bc288a927815 ("drm/tidss: Fix dss reset")
+Force this board to host mode as this is the preferred usecase until we
+get role switching hooked up.
+
+Fixes: e18771961336 ("arm64: dts: qcom: Add initial QTI RB1 device tree")
+Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231025-b4-rb1-usb-host-v1-1-522616c575ef@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/qcom/qrb2210-rb1.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index 8d822372bf94..9a29f5fa8453 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -2702,7 +2702,7 @@ static void dispc_init_errata(struct dispc_device *dispc)
- 	}
- }
+diff --git a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
+index 52be19d55aed..37abb83ea464 100644
+--- a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
++++ b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
+@@ -372,6 +372,10 @@ &usb_qmpphy {
+ 	status = "okay";
+ };
  
--static void dispc_softreset(struct dispc_device *dispc)
-+static int dispc_softreset(struct dispc_device *dispc)
- {
- 	u32 val;
- 	int ret = 0;
-@@ -2712,8 +2712,12 @@ static void dispc_softreset(struct dispc_device *dispc)
- 	/* Wait for reset to complete */
- 	ret = readl_poll_timeout(dispc->base_common + DSS_SYSSTATUS,
- 				 val, val & 1, 100, 5000);
--	if (ret)
--		dev_warn(dispc->dev, "failed to reset dispc\n");
-+	if (ret) {
-+		dev_err(dispc->dev, "failed to reset dispc\n");
-+		return ret;
-+	}
++&usb_dwc3 {
++	dr_mode = "host";
++};
 +
-+	return 0;
- }
- 
- int dispc_init(struct tidss_device *tidss)
-@@ -2826,8 +2830,11 @@ int dispc_init(struct tidss_device *tidss)
- 			     &dispc->memory_bandwidth_limit);
- 
- 	/* K2G display controller does not support soft reset */
--	if (feat->subrev != DISPC_K2G)
--		dispc_softreset(dispc);
-+	if (feat->subrev != DISPC_K2G) {
-+		r = dispc_softreset(dispc);
-+		if (r)
-+			return r;
-+	}
- 
- 	tidss->dispc = dispc;
- 
+ &usb_hsphy {
+ 	vdd-supply = <&pm2250_l12>;
+ 	vdda-pll-supply = <&pm2250_l13>;
 -- 
 2.43.0
 
