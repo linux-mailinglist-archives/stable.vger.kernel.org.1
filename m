@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0CC83805C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED2C2837E06
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80E2D1F2CB57
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E1D4291BFD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C5FC65189;
-	Tue, 23 Jan 2024 01:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E57A653E00;
+	Tue, 23 Jan 2024 00:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZbNYV9D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUj46WmI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6B8664CD;
-	Tue, 23 Jan 2024 01:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DA8524BD;
+	Tue, 23 Jan 2024 00:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971679; cv=none; b=C5rfaejfG45uWNRNuqPeWI/pPwT09ahkSzrv2InSpmTo/3UZ+DELKy9XHxOXq6AJuodbocWkj/szmxSL6lLf24OBJAzKcEMdt8vKr3+nDYKAa5s58rAYyVv9KOd/zn7L/n4kh6cvmlQaJdcRigfdRl4FoiRe/OOleh7JyF/FJRs=
+	t=1705970199; cv=none; b=QVPEpcjt42Mpc4DtgFKir0Ew+lGaXi4yfnevGRsW3N2N77I+VyfUgyUdM+1LzLM26XAoQD1FxJkN5CJm06WeOav9b2tsK/pWilyhBDfPN1yeXtOAGM0n0yIwlPfCwXlsdjezNZee2pj7uzm777x9TIV5ZB+qkXJb29i+AozMU9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971679; c=relaxed/simple;
-	bh=9kzvvZmQsCI43NU8mah4+p81lvbNVfPG5tWPJU3z1hY=;
+	s=arc-20240116; t=1705970199; c=relaxed/simple;
+	bh=2B1NXSw0dyx4bw7xGCslB3o5UDEqgaythDV/d2I0Cdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OXZ+/9Wa1vvFsaEgAw+iB+egVX3fAkBaVMgDsSmDQMeFtsJvgvla7i0f9txLxx8RGNJYKcIeLotSPQYY7N/fQN+k+yEQ0EZojAA+s6J/5eqj81Wam0IuD6tyXyqfyIo9hIscbyKURpV/1BZgQONB6FpXiboMKTxGuAkYlb0cWfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZbNYV9D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3889C43394;
-	Tue, 23 Jan 2024 01:01:18 +0000 (UTC)
+	 MIME-Version; b=QD5hV0Cw3cW/c6s0aLsrSZ0+NUYcMECNH4nErVCUT/wpJuELh/3P4LMBiBdmaTSBSypMl+qd4CdLSBL3QpIR57TK/M6EGJgsbGt7Y7pmJw1wknuxPPhrD5xzlp/jbyiOsK23SuVlIiYvKYfea1c2bQRQUlPYLkXOE5RYW4+NPto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUj46WmI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E519C43399;
+	Tue, 23 Jan 2024 00:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971679;
-	bh=9kzvvZmQsCI43NU8mah4+p81lvbNVfPG5tWPJU3z1hY=;
+	s=korg; t=1705970199;
+	bh=2B1NXSw0dyx4bw7xGCslB3o5UDEqgaythDV/d2I0Cdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OZbNYV9DTcn7AcIOmCyOZHFfRFczBjVla5fJuu7pUHE/UT2W+7mv2T4RNMG8RusFJ
-	 EeZXcPuQhOsaYFocG41GBqQ7bvgkCN5wRNMPg+11mvukMjk4ZV7Fu7Yiu0FHW47ZjG
-	 QfDDARIa0mZrtH58XTjSEt9DYfWMd547J3zRQuwY=
+	b=AUj46WmInS/PCJREqaCJwgcexYTzIORDVLOtYRMIQyPPNxWy1fle/PuO25YPL0yRj
+	 AFEJI1bSqzDZ0obE8BH3iXnGaqzpphvnXzpcME3S925D4XKRY0ng7/dGHSXGxgiccF
+	 IaBH6JiD/tjzUEhS1vdGPr/RaikDZPeHmdH1aRaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yongjun <weiyongjun1@huawei.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Gonglei <arei.gonglei@huawei.com>,
-	zhenwei pi <pizhenwei@bytedance.com>,
-	Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 5.10 204/286] virtio-crypto: fix memory leak in virtio_crypto_alg_skcipher_close_session()
+	Michal Simek <michal.simek@amd.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 606/641] dt-bindings: gpio: xilinx: Fix node address in gpio
 Date: Mon, 22 Jan 2024 15:58:30 -0800
-Message-ID: <20240122235739.966085949@linuxfoundation.org>
+Message-ID: <20240122235837.210134620@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
+From: Michal Simek <michal.simek@amd.com>
 
-commit b1d65f717cd6305a396a8738e022c6f7c65cfbe8 upstream.
+[ Upstream commit 314c020c4ed3de72b15603eb6892250bc4b51702 ]
 
-'vc_ctrl_req' is alloced in virtio_crypto_alg_skcipher_close_session(),
-and should be freed in the invalid ctrl_status->status error handling
-case. Otherwise there is a memory leak.
+Node address doesn't match reg property which is not correct.
 
-Fixes: 0756ad15b1fe ("virtio-crypto: use private buffer for control request")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-Message-Id: <20221114110740.537276-1-weiyongjun@huaweicloud.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Gonglei <arei.gonglei@huawei.com>
-Acked-by: zhenwei pi<pizhenwei@bytedance.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ba96b2e7974b ("dt-bindings: gpio: gpio-xilinx: Convert Xilinx axi gpio binding to YAML")
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/virtio/virtio_crypto_algs.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/virtio/virtio_crypto_algs.c
-+++ b/drivers/crypto/virtio/virtio_crypto_algs.c
-@@ -239,7 +239,8 @@ static int virtio_crypto_alg_skcipher_cl
- 		pr_err("virtio_crypto: Close session failed status: %u, session_id: 0x%llx\n",
- 			ctrl_status->status, destroy_session->session_id);
+diff --git a/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml b/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
+index c1060e5fcef3..d3d8a2e143ed 100644
+--- a/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
++++ b/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
+@@ -126,7 +126,7 @@ examples:
+   - |
+     #include <dt-bindings/interrupt-controller/arm-gic.h>
  
--		return -EINVAL;
-+		err = -EINVAL;
-+		goto out;
- 	}
- 
- 	err = 0;
+-        gpio@e000a000 {
++        gpio@a0020000 {
+             compatible = "xlnx,xps-gpio-1.00.a";
+             reg = <0xa0020000 0x10000>;
+             #gpio-cells = <2>;
+-- 
+2.43.0
+
 
 
 
