@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CEE837C05
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 070238382CF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B321A295012
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F5D52895B6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C870215C6;
-	Tue, 23 Jan 2024 00:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B660171B1;
+	Tue, 23 Jan 2024 01:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XD5swdtT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkWYs7YU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8638F371;
-	Tue, 23 Jan 2024 00:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1803FE1;
+	Tue, 23 Jan 2024 01:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969473; cv=none; b=A9kX9bz/Op1AEjzrLdtkqFDm1OnmKVfmjNjnIv00sSnBuXvaHok4NVXOf6AHGoEgoTeeMqvKF2PPXh2DCYexh4ijpxIDKJYIah97b9c9JAexkAbJDSLazCjenLTqh2a2jb0XD/iZIUIJn4RSjHkLhjmGPD7m6ovT+YFA1c2Tw/c=
+	t=1705974632; cv=none; b=qussrBcKLPXOxh79/8ki2IiAAep5qx7IjkQJWZHvYVrN4c8c8SlHmJdCgice/n8ODQu/a3yx3UCKn+N764/Apxso37DOYmEfTVQdT3HFnud1Y4Bt8sXAWj3+ZL+0q3APMkX/NWc1g/bvdUlCrFM0ggeFDtIahWLbY/9F1e9OI/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969473; c=relaxed/simple;
-	bh=x05L4RuGDybPpjmIAHDnE8r0vXLhz7Bjfp5Y7jkM568=;
+	s=arc-20240116; t=1705974632; c=relaxed/simple;
+	bh=JCAnIo/GoQDMKtzHxIUcebM+e4IpBVOKACOIIn/ChPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=poRanTCWVU0OcDQpMv2LLx3wQkPwx23fy/ahNgg3JOR7KgWYK/ZCnai1KFYMyzHGaLFJNTnOalExsKDCJuTk98bP6h1J9XNald3/6LK/y8VsgLTassjjVHhmQ9KQF5PIOlavmmdVS3blWaNreYNQ2b+PzY3LPAwSZHn58vAgbnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XD5swdtT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC45C43399;
-	Tue, 23 Jan 2024 00:24:32 +0000 (UTC)
+	 MIME-Version; b=iIr7qI2QQ0hDxCfyrMaW511lMy1uMsLlw5UlCSfsLbOckJ8MpcYGUL1bmvCb6rJYd6+EgARzClloaOHe58A58Ccqz8qKNWyjzf/9KFFUTEeHvyIVLoIBf6BK9v5c5RUb5ao+6XehNT0nGaORhD4b1y+wEXAjzvPEpfWzgutyIiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkWYs7YU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B381FC433F1;
+	Tue, 23 Jan 2024 01:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969473;
-	bh=x05L4RuGDybPpjmIAHDnE8r0vXLhz7Bjfp5Y7jkM568=;
+	s=korg; t=1705974632;
+	bh=JCAnIo/GoQDMKtzHxIUcebM+e4IpBVOKACOIIn/ChPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XD5swdtTd9LknUBhMA8IFi+SdTrDop8qJTZs7t6rNOeNutVvTxjGfluZdnNrkv/7f
-	 l3a46vmKSxtG/KLaFz/HjIlIqHnjgE9cazrovU5pFY6bOjhkNyjpI1cnL7khfoCn99
-	 9+Dn5HUZAh9PDUDqcMcrdaYfWtozkEg4udApUWVg=
+	b=QkWYs7YUlLYD2uGsTcVtXwKiOrQQP0e0K5wdeqn+F9P2/7v7qeu3A2o+SoSfMzyId
+	 X1rakbYBPGp+CDGnGRDzwTrPSWHGvJESsiCcoNKc5TFXfhuscFtNNhBTFF89FKIu1c
+	 n+sbalrog1KWNw/XogjNshHpD64N+EdC7wDTntQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+	Nitin Yadav <n-yadav@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 244/641] drm/i915/display: Move releasing gem object away from fb tracking
+Subject: [PATCH 6.6 097/583] arm64: dts: ti: k3-am62a-main: Fix GPIO pin count in DT nodes
 Date: Mon, 22 Jan 2024 15:52:28 -0800
-Message-ID: <20240122235825.560925905@linuxfoundation.org>
+Message-ID: <20240122235815.155335786@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Nitin Yadav <n-yadav@ti.com>
 
-[ Upstream commit 501069dad5214fafe1b8ba38fa26a5d07df784c3 ]
+[ Upstream commit 7dc4af358cc382c5d20bd5b726e53ef0f526eb6d ]
 
-As a preparation for Xe we want to remove all i915_gem_object details away
-from frontbuffer tacking code. Due to this move releasing gem object
-reference to i915_gem_object_set_frontbuffer.
+Fix number of gpio pins in main_gpio0 & main_gpio1 DT nodes according
+to AM62A7 datasheet[0].
 
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231012072158.4115795-2-jouni.hogander@intel.com
-Stable-dep-of: 560ea72c76eb ("drm/i915/dp_mst: Fix race between connector registration and setup")
+[0] https://www.ti.com/lit/gpn/am62a3 Section: 6.3.10 GPIO (Page No. 52-55)
+Fixes: 5fc6b1b62639 ("arm64: dts: ti: Introduce AM62A7 family of SoCs")
+Signed-off-by: Nitin Yadav <n-yadav@ti.com>
+Link: https://lore.kernel.org/r/20231027065930.1187405-1-n-yadav@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_frontbuffer.c       | 2 --
- drivers/gpu/drm/i915/gem/i915_gem_object_frontbuffer.h | 1 +
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62a-main.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_frontbuffer.c b/drivers/gpu/drm/i915/display/intel_frontbuffer.c
-index ec46716b2f49..2ea37c0414a9 100644
---- a/drivers/gpu/drm/i915/display/intel_frontbuffer.c
-+++ b/drivers/gpu/drm/i915/display/intel_frontbuffer.c
-@@ -265,8 +265,6 @@ static void frontbuffer_release(struct kref *ref)
- 	spin_unlock(&intel_bo_to_i915(obj)->display.fb_tracking.lock);
- 
- 	i915_active_fini(&front->write);
--
--	i915_gem_object_put(obj);
- 	kfree_rcu(front, rcu);
- }
- 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_object_frontbuffer.h b/drivers/gpu/drm/i915/gem/i915_gem_object_frontbuffer.h
-index e5e870b6f186..9fbf14867a2a 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_object_frontbuffer.h
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_object_frontbuffer.h
-@@ -89,6 +89,7 @@ i915_gem_object_set_frontbuffer(struct drm_i915_gem_object *obj,
- 
- 	if (!front) {
- 		RCU_INIT_POINTER(obj->frontbuffer, NULL);
-+		drm_gem_object_put(intel_bo_to_drm_bo(obj));
- 	} else if (rcu_access_pointer(obj->frontbuffer)) {
- 		cur = rcu_dereference_protected(obj->frontbuffer, true);
- 		kref_get(&cur->ref);
+diff --git a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+index 3198af08fb9f..de36abb243f1 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+@@ -462,7 +462,7 @@ main_gpio0: gpio@600000 {
+ 			     <193>, <194>, <195>;
+ 		interrupt-controller;
+ 		#interrupt-cells = <2>;
+-		ti,ngpio = <87>;
++		ti,ngpio = <92>;
+ 		ti,davinci-gpio-unbanked = <0>;
+ 		power-domains = <&k3_pds 77 TI_SCI_PD_EXCLUSIVE>;
+ 		clocks = <&k3_clks 77 0>;
+@@ -480,7 +480,7 @@ main_gpio1: gpio@601000 {
+ 			     <183>, <184>, <185>;
+ 		interrupt-controller;
+ 		#interrupt-cells = <2>;
+-		ti,ngpio = <88>;
++		ti,ngpio = <52>;
+ 		ti,davinci-gpio-unbanked = <0>;
+ 		power-domains = <&k3_pds 78 TI_SCI_PD_EXCLUSIVE>;
+ 		clocks = <&k3_clks 78 0>;
 -- 
 2.43.0
 
