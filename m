@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4877A838113
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:05:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 121EE83836E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 752961C20AE9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:05:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C051D285516
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A1113F01D;
-	Tue, 23 Jan 2024 01:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0329F629FC;
+	Tue, 23 Jan 2024 01:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZIwBjb+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8l0hew4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94DF13F016;
-	Tue, 23 Jan 2024 01:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BD8629E1;
+	Tue, 23 Jan 2024 01:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972019; cv=none; b=KnO1mcgcpzRbf+V4EcTm7XImV97At176VhGq2JeVIbHq2JmtC2+DIddA52E9dEpbfTBaUEnb7zgL6j4Q6paM5ALy45zshBV4lzR8wLvXyHggbEow2af+jr05xLwrM+tzgLyZ7AvMuNHVt+qqnBPoWzeLi4ZO7lzvTt7G1cL24sM=
+	t=1705974971; cv=none; b=MCec46r3zEDxeHeSW8iaWdTamzVCq756+R5sZQV+SQgkUadjN7XnUqrqEFbdstlwQb6qnz/LNpmpSS0KDY98C5YQmieZDOd2ObmYKTGpFLy1A7CXjTl70Y2ozxcYBqPc4NmdNdhAW5ml00W9kDlakqSiscX7wwSymJjXIZ1SCgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972019; c=relaxed/simple;
-	bh=O8symqwPI26kRMgGrk8Cib/ZqIXESmzPkj+iSZEzi+s=;
+	s=arc-20240116; t=1705974971; c=relaxed/simple;
+	bh=jQPJ/pBRFtQc5EbN/cLyRoiu0R2+Od4gSytAFXBUqSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bd4q77g/XC1hZAtfvLHeMps7bz0+PJeou8kPd7jGjLN3B5xrgU6rwAP3Yhc9LQNPE64X/9rKf82gH4CaEryzbGA1mLqWvMiwSvRYu3Krk9vaXG/NdzmsWgaa64HVEkK8+6HLXCgCwP6nZftKqUTK7La6YPjKXy0XJAgV9OQSVbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZIwBjb+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBD6C433C7;
-	Tue, 23 Jan 2024 01:06:58 +0000 (UTC)
+	 MIME-Version; b=KjkjAckyz0kip7LZn8nbfvyxJkm0R2Lks0ZP2C9V49IZujQvu4I2XyK59fPnVBh0nPs3ftjoo1dDMqyb5O08cz0YN35PZTVJNrp9E4gfJWPMPcNywZdMYJYe/7Ipc0XtN5SHxEq76fMViEct/AJJjXgmoY0kyCWJrdtMksQrzzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8l0hew4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AFE4C43390;
+	Tue, 23 Jan 2024 01:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972018;
-	bh=O8symqwPI26kRMgGrk8Cib/ZqIXESmzPkj+iSZEzi+s=;
+	s=korg; t=1705974971;
+	bh=jQPJ/pBRFtQc5EbN/cLyRoiu0R2+Od4gSytAFXBUqSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gZIwBjb+ZuGCX7hqYq/XqJycGyRzi4EVIsfj2Hg9Zom5MUtQ7QRq1u5gmKhO7IgCj
-	 SArAFgLH9Il8m7zOVrLn5K71f8a1H/FtBjMDaZWOWpq3FNNSZsJlC8WA6lTWhR6FQG
-	 N985uL3pyLdE0z6cO9hOCMVWf3AmaSxNhNMK/Iq8=
+	b=H8l0hew4zge/jq2ZrzOsr2S7q4QdOv2V1dJKObyelUoRE3ibISLYMYir91ZjrdYi2
+	 pm/D6lgfiupKirfE/Y0Yrt4mAvjpVmHT7PBUmj2AAvieuR9tojALhji9afsERJUaCy
+	 8hoHLzMWqDvYjWhCm5N4tkKjz8l5hG1fCOIonYYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Simek <michal.simek@amd.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Su Hui <suhui@nfschina.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 390/417] dt-bindings: gpio: xilinx: Fix node address in gpio
+Subject: [PATCH 5.15 302/374] power: supply: bq256xx: fix some problem in bq256xx_hw_init
 Date: Mon, 22 Jan 2024 15:59:18 -0800
-Message-ID: <20240122235805.274631091@linuxfoundation.org>
+Message-ID: <20240122235755.299302896@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Simek <michal.simek@amd.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 314c020c4ed3de72b15603eb6892250bc4b51702 ]
+[ Upstream commit b55d073e6501dc6077edaa945a6dad8ac5c8bbab ]
 
-Node address doesn't match reg property which is not correct.
+smatch complains that there is a buffer overflow and clang complains
+'ret' is never read.
 
-Fixes: ba96b2e7974b ("dt-bindings: gpio: gpio-xilinx: Convert Xilinx axi gpio binding to YAML")
-Signed-off-by: Michal Simek <michal.simek@amd.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Smatch error:
+drivers/power/supply/bq256xx_charger.c:1578 bq256xx_hw_init() error:
+buffer overflow 'bq256xx_watchdog_time' 4 <= 4
+
+Clang static checker:
+Value stored to 'ret' is never read.
+
+Add check for buffer overflow and error code from regmap_update_bits().
+
+Fixes: 32e4978bb920 ("power: supply: bq256xx: Introduce the BQ256XX charger driver")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20231116041822.1378758-1-suhui@nfschina.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/bq256xx_charger.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml b/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
-index f333ee2288e7..11ae8ec3c739 100644
---- a/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
-+++ b/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
-@@ -126,7 +126,7 @@ examples:
-   - |
-     #include <dt-bindings/interrupt-controller/arm-gic.h>
+diff --git a/drivers/power/supply/bq256xx_charger.c b/drivers/power/supply/bq256xx_charger.c
+index f501ecd49202..9fb7b44e890a 100644
+--- a/drivers/power/supply/bq256xx_charger.c
++++ b/drivers/power/supply/bq256xx_charger.c
+@@ -1514,13 +1514,16 @@ static int bq256xx_hw_init(struct bq256xx_device *bq)
+ 			wd_reg_val = i;
+ 			break;
+ 		}
+-		if (bq->watchdog_timer > bq256xx_watchdog_time[i] &&
++		if (i + 1 < BQ256XX_NUM_WD_VAL &&
++		    bq->watchdog_timer > bq256xx_watchdog_time[i] &&
+ 		    bq->watchdog_timer < bq256xx_watchdog_time[i + 1])
+ 			wd_reg_val = i;
+ 	}
+ 	ret = regmap_update_bits(bq->regmap, BQ256XX_CHARGER_CONTROL_1,
+ 				 BQ256XX_WATCHDOG_MASK, wd_reg_val <<
+ 						BQ256XX_WDT_BIT_SHIFT);
++	if (ret)
++		return ret;
  
--        gpio@e000a000 {
-+        gpio@a0020000 {
-             compatible = "xlnx,xps-gpio-1.00.a";
-             reg = <0xa0020000 0x10000>;
-             #gpio-cells = <2>;
+ 	ret = power_supply_get_battery_info(bq->charger, &bat_info);
+ 	if (ret) {
 -- 
 2.43.0
 
