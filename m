@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-14990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD5F8383D7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 475EF8380C2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7ACA6B20AF8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01362280C60
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC8862A06;
-	Tue, 23 Jan 2024 01:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246201339A3;
+	Tue, 23 Jan 2024 01:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LAfakB6d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaVzNJaR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EA762A0F;
-	Tue, 23 Jan 2024 01:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8796133435;
+	Tue, 23 Jan 2024 01:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974976; cv=none; b=Hr3K1ZiAwJScjhVtE4IdnrOqzcp/uRWtzFNthl20TWc7IEYTZqId2CEqxB3cO0I00+9U5oI6P9kfgIJfLXjlDplw5oBiX4hu7fdtw5NgSumfq/TolHFtsY2StQNC3ljgYF8E+lcqRt6eHnLmgl6lGHpqou++fnDRKMCBJAeJw14=
+	t=1705971885; cv=none; b=Sn/tFVghHUgszNIrwmlPz2mOVp3D0vmC6AAjZRtk/ampb2GTkjUvOEM2S0dHEHq9Ex66Qb+o79U4ohxIGrNHaQMpxKEmbh7S4XgRsCnoN7zaPv/5su4H915CpXrj90FSB8XKn3EmYW+WsPRHqBYFc2ERXRXy2fpuz67QWcPSW3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974976; c=relaxed/simple;
-	bh=eEmlSjk6rpRuaGSggUDSI1cKPthMUuVuu/4Na3ODas0=;
+	s=arc-20240116; t=1705971885; c=relaxed/simple;
+	bh=wyhhG9bsTvmXLChX9H6XNUozh3y8Yzj00LRoPcWM40U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EahrZHnAXiG/yHSejoifxtwdxSzgmyOW9Mo5Cdm8pLBA1fpsjBrXIIyOKbL5yGP/3YMxWBn7x4M5VmCL9wTY5rAH9GcXYP3qn016UsOGiiBzgQYMF+wWGZCZdpoNiM9Yrfrq5oo44kyKO1qhnMLZ/IGLlhDgZ00HvsSksOXtS5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LAfakB6d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E02BC43390;
-	Tue, 23 Jan 2024 01:56:16 +0000 (UTC)
+	 MIME-Version; b=a8wUoFbN8V9ACWKkI+1CE4yA/cwzQKan4wN6RDOrCKGaEdB+xUb27pFNWJ9pvrZT3osQgQRcNBKm8uU+soBQNhsrOKi2hPRWWDX9Q9ZnRLMYc6iDcnDNOCqd3nE20N88YfIg19cqv5SrRvPptKWXUSC6538O7Ns0g+soCeCfFYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaVzNJaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F57C433C7;
+	Tue, 23 Jan 2024 01:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974976;
-	bh=eEmlSjk6rpRuaGSggUDSI1cKPthMUuVuu/4Na3ODas0=;
+	s=korg; t=1705971885;
+	bh=wyhhG9bsTvmXLChX9H6XNUozh3y8Yzj00LRoPcWM40U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LAfakB6d27mcxFNIlclk0EsBadYxBuKEjquq2sP6utYoD53i+ckhPC4mR6VC4oLf+
-	 BX4e8pWIwH5Y4gOGXtUw63h4ov81wx8OfwdD6MByG+/myeGY2G9u5xoIswdhJas539
-	 QTuXvIfrhgvor60kOXqno5v2M3p5amZMX1IDdLjM=
+	b=TaVzNJaRgd6R69sFX02Z4qFE+p6H5TEyxYDR9EiKqJH+m0lq0EwFBIDPOF2+hbdGk
+	 oP6MbYSW7iVsMrYlQ/r3IJvwhBxU9ysO38c+2ah/6NtveFsjHSZSkqIK1efO56qibe
+	 eMZP47hXH0sA16bi04uDKkewCiMpwDX12Ngl4Msc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 304/374] libapi: Add missing linux/types.h header to get the __u64 type on io.h
+Subject: [PATCH 5.10 254/286] tty: early return from send_break() on TTY_DRIVER_HARDWARE_BREAK
 Date: Mon, 22 Jan 2024 15:59:20 -0800
-Message-ID: <20240122235755.385032971@linuxfoundation.org>
+Message-ID: <20240122235741.822205054@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,41 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit af76b2dec0984a079d8497bfa37d29a9b55932e1 ]
+[ Upstream commit 66619686d187b4a6395316b7f39881e945dce4bc ]
 
-There are functions using __u64, so we need to have the linux/types.h
-header otherwise we'll break when its not included before api/io.h.
+If the driver sets TTY_DRIVER_HARDWARE_BREAK, we leave ops->break_ctl()
+to the driver and return from send_break(). But we do it using a local
+variable and keep the code flowing through the end of the function.
+Instead, do 'return' immediately with the ops->break_ctl()'s return
+value.
 
-Fixes: e95770af4c4a280f ("tools api: Add a lightweight buffered reading api")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/lkml/ZWjDPL+IzPPsuC3X@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+This way, we don't have to stuff the 'else' branch of the 'if' with the
+software break handling. And we can re-indent the function too.
+
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20230919085156.1578-14-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 66aad7d8d3ec ("usb: cdc-acm: return correct error code on unsupported break")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/api/io.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/tty_io.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/tools/lib/api/io.h b/tools/lib/api/io.h
-index 777c20f6b604..458acd294237 100644
---- a/tools/lib/api/io.h
-+++ b/tools/lib/api/io.h
-@@ -9,6 +9,7 @@
+diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
+index 38877489f700..145c26401218 100644
+--- a/drivers/tty/tty_io.c
++++ b/drivers/tty/tty_io.c
+@@ -2470,22 +2470,24 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
+ 		return 0;
  
- #include <stdlib.h>
- #include <unistd.h>
-+#include <linux/types.h>
+ 	if (tty->driver->flags & TTY_DRIVER_HARDWARE_BREAK)
+-		retval = tty->ops->break_ctl(tty, duration);
+-	else {
+-		/* Do the work ourselves */
+-		if (tty_write_lock(tty, false) < 0)
+-			return -EINTR;
+-		retval = tty->ops->break_ctl(tty, -1);
+-		if (retval)
+-			goto out;
+-		if (!signal_pending(current))
+-			msleep_interruptible(duration);
+-		retval = tty->ops->break_ctl(tty, 0);
++		return tty->ops->break_ctl(tty, duration);
++
++	/* Do the work ourselves */
++	if (tty_write_lock(tty, false) < 0)
++		return -EINTR;
++
++	retval = tty->ops->break_ctl(tty, -1);
++	if (retval)
++		goto out;
++	if (!signal_pending(current))
++		msleep_interruptible(duration);
++	retval = tty->ops->break_ctl(tty, 0);
+ out:
+-		tty_write_unlock(tty);
+-		if (signal_pending(current))
+-			retval = -EINTR;
+-	}
++	tty_write_unlock(tty);
++
++	if (signal_pending(current))
++		retval = -EINTR;
++
+ 	return retval;
+ }
  
- struct io {
- 	/* File descriptor being read/ */
 -- 
 2.43.0
 
