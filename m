@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-13417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3750837BFA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE2383842F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3090E1C28489
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D0A1B24BE3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658AB1420A5;
-	Tue, 23 Jan 2024 00:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5905FF1D;
+	Tue, 23 Jan 2024 01:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwCwBE9G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyWvu9i6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BAE3C24;
-	Tue, 23 Jan 2024 00:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8005FF16;
+	Tue, 23 Jan 2024 01:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969460; cv=none; b=HxFLVlIR/o7KcKVZf1c9iUVgLYZBOoSkzefBWisdVHuSs7fk1r5Rx4f4+yeK+454ZU4sm3flQvWJ/Unh+zbAJoRV+bW9TLZ1q5b7Kbtl2DQ+PusPwruLauScq/WJF4zXILaB7CQazgq0GIawfcqM6DNSiGwk90U+PdjcY61gj3U=
+	t=1705974665; cv=none; b=UTQbPmT+D1PgaLgoGXngw+YL/obDTRBPoDQPAmBqCyfDyBuPtHPqD0QSI7ECwvW+JrD22ehm59v1KiakED1ukyfMp9b1ch753jQpcyoOmGOl6Tun9mo+eFoguQt0QpYW2OIHMuwVjOrVh0fg2RkzKfxBXV3qE9833yCS2lD9jbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969460; c=relaxed/simple;
-	bh=SVeZgmFjHlPkg+V6/OG2A5K/o/yvwJZ0QOXfbBFTdHg=;
+	s=arc-20240116; t=1705974665; c=relaxed/simple;
+	bh=1yyJu3WuN+BpMWUnJUz+LIm1W4gTGgHiQJqdz8jk9bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+1ojvYvPltIqPxNplYXMxsh1Z0I4Ano2VPsbkAC8iMDdXMXViwC4BrcQVeaiK6gBGT/lu1dlzRsCEQM0j3M8Xo6uU4K5SXM9A+/XjGSfIWaDqiCPtl1unIr5er1TRR9Fjk1Socu28FquhKK677dONvB5lRSu3cyhk7rAQ7rTrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwCwBE9G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE01C43390;
-	Tue, 23 Jan 2024 00:24:19 +0000 (UTC)
+	 MIME-Version; b=NBvKYBDkrNeT1gieOeN/78+L58+Mm76pMn6j0ilw/oySF4eHjBjqZcpGjfPxdGZQgRb9ETF3DUqgw5rHVYqKvrBo0HgC4sMGUezCLhKpXAtp0BILwM0ccIoyxFQ6Oqe/FmzQLNngYDsUJjMsSZQ43y+StXoGIdUiHxUHkLPne6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyWvu9i6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B85AC43390;
+	Tue, 23 Jan 2024 01:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969460;
-	bh=SVeZgmFjHlPkg+V6/OG2A5K/o/yvwJZ0QOXfbBFTdHg=;
+	s=korg; t=1705974664;
+	bh=1yyJu3WuN+BpMWUnJUz+LIm1W4gTGgHiQJqdz8jk9bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PwCwBE9GbqS+TOY1Fq8H5/e8nP2WI2nkWjT7wVFEnoO3uOp9C0Rq4pQv/hY9orQF2
-	 f1pvOm94PbDNnJeYj1UgMoKqkwFWdXLy34qJarAa727tDyqjCswLMnJ5DCuv864JVn
-	 3QiVDmW4n8KnH5USJu5q4LugLBaN5STlA9CLLjw8=
+	b=jyWvu9i6+ypAabq0P6pzoCzvGxdvla1fpJyDVjVCV4Tbn+TFkBfNBrq+BTMtbajM1
+	 +D88NDlR4chIqoAPSYvUlV6RR6TEhfVlAt5x3K/el/UrG9Sevf9udcYn2+ok706iwR
+	 WZPh+pSE0Gip1uCqMA/Y7LaH+ivNTli82HqQWX0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Ming Qian <ming.qian@nxp.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 259/641] media: amphion: Fix VPU core alias name
-Date: Mon, 22 Jan 2024 15:52:43 -0800
-Message-ID: <20240122235826.041029745@linuxfoundation.org>
+Subject: [PATCH 6.6 113/583] arm64: dts: qcom: sdm845: Make watchdog bark interrupt edge triggered
+Date: Mon, 22 Jan 2024 15:52:44 -0800
+Message-ID: <20240122235815.618983475@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit f033c87fda47e272bb4f75dc7b03677261d91158 ]
+[ Upstream commit 263b348499454f38d36b9442c3cf9279c571bb54 ]
 
-Starting with commit f6038de293f2 ("arm64: dts: imx8qm: Fix VPU core
-alias name") the alias for VPU cores uses dashes instead of underscores.
-Adjust the alias stem accordingly. Fixes the errors:
-amphion-vpu-core 2d040000.vpu-core: can't get vpu core id
-amphion-vpu-core 2d050000.vpu-core: can't get vpu core id
+As described in the patch ("arm64: dts: qcom: sc7180: Make watchdog
+bark interrupt edge triggered"), the Qualcomm watchdog timer's bark
+interrupt should be configured as edge triggered. Make the change.
 
-Fixes: f6038de293f2 ("arm64: dts: imx8qm: Fix VPU core alias name")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Ming Qian <ming.qian@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 36c436b03c58 ("arm64: dts: qcom: sdm845: Add watchdog bark interrupt")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20231106144335.v2.3.I16675ebe5517c68453a1bd7f4334ff885f806c03@changeid
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vpu_core.c | 2 +-
+ arch/arm64/boot/dts/qcom/sdm845.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/amphion/vpu_core.c b/drivers/media/platform/amphion/vpu_core.c
-index 1af6fc9460d4..3a2030d02e45 100644
---- a/drivers/media/platform/amphion/vpu_core.c
-+++ b/drivers/media/platform/amphion/vpu_core.c
-@@ -642,7 +642,7 @@ static int vpu_core_probe(struct platform_device *pdev)
- 		return -ENODEV;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+index 055ca80c0075..2cf1993a8190 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -5118,7 +5118,7 @@ watchdog@17980000 {
+ 			compatible = "qcom,apss-wdt-sdm845", "qcom,kpss-wdt";
+ 			reg = <0 0x17980000 0 0x1000>;
+ 			clocks = <&sleep_clk>;
+-			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
+ 		};
  
- 	core->type = core->res->type;
--	core->id = of_alias_get_id(dev->of_node, "vpu_core");
-+	core->id = of_alias_get_id(dev->of_node, "vpu-core");
- 	if (core->id < 0) {
- 		dev_err(dev, "can't get vpu core id\n");
- 		return core->id;
+ 		apss_shared: mailbox@17990000 {
 -- 
 2.43.0
 
