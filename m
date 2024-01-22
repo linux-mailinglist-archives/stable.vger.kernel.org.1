@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-14181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23528837FD6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 533A3837FD7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5FEB28D498
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A5FA1C2945D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6621E12BF04;
-	Tue, 23 Jan 2024 00:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8AB112BF0A;
+	Tue, 23 Jan 2024 00:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3uQ75e4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fiUUQ5A4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B1512BF00;
-	Tue, 23 Jan 2024 00:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781294E1AD;
+	Tue, 23 Jan 2024 00:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971388; cv=none; b=VoEgZdrP7nTJdCCaDkmXPywbQxqhi5AG1XvEODH0muWQtct05ifPmY8wZSZwo6BFip7fQ2XdEkb9HF0N/Ivie2h+SjaTVE58meOOjWLiqXoK/bMUzV94j9jKA7VZ4ST+0D6+vrSShryhMYwFENlO9pxfdmpchEaTDvtwWLI2/nY=
+	t=1705971392; cv=none; b=Ls/HooEo8u5IArFYKIlDD2NrhBjcht1TCRiZ68Yigzzro3MxerghRBvJ0UsIMBN2eYe0r4GTihhi8X7fcNBM+Ho8lNxak1h0/BJc/kf5NhxNa/2ZlWJgVJqSrfLuxNlAmyQ3ofObifIydt2IRQxXR7RgHEFE137KoU5/KKM41E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971388; c=relaxed/simple;
-	bh=bfh4EteW1RJGLJXJBV7OFKmRE+OUtqbCTSL5zdk1kR0=;
+	s=arc-20240116; t=1705971392; c=relaxed/simple;
+	bh=SH4cigonEG/g2Pc4QUaUHkWoB+R5xQ/hzty1Q7GI9ag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGSlIeua2g7PVmCcPv7+3RCIHZqYDgZzCODbHxl8VzbAvTSE2w6L4Rkrn4kKzM6cx1ulKcLduzjbgsYjT7yUokYMlpRvXcUM5ovo1Yb5tt3K7CdB0aZcX5xLxEvmsab/4xDg0qGvFCAuIdUmuc7H8jmRh0giQ6wzvEqeymDd0Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3uQ75e4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475C0C433C7;
-	Tue, 23 Jan 2024 00:56:27 +0000 (UTC)
+	 MIME-Version; b=h0v7Ri7XK5H8pOGlFP/IKMfDJFPhsiy4bIBkyoYwTtc2Ole+4tP3kk5LxwfaFqcy6efKFNbKciu5vT6TMJ85h0cg48qG75+c5F8f8T1GTxc70DFl73KVsQ64c6Ybwgq9kZ3uoGZ3Uo/15lDcW8/rD7Ds8jD05/3JsZ5anFxq1V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fiUUQ5A4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC48C43390;
+	Tue, 23 Jan 2024 00:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971388;
-	bh=bfh4EteW1RJGLJXJBV7OFKmRE+OUtqbCTSL5zdk1kR0=;
+	s=korg; t=1705971392;
+	bh=SH4cigonEG/g2Pc4QUaUHkWoB+R5xQ/hzty1Q7GI9ag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S3uQ75e4GXGafHC2ZLdeEidOburFvq39XPHcnLGD5BuQkI22dJdGd72lPxz+K82Ne
-	 ElPd5afKpz8FKkVkVArqdACwW4SRyjBWaBkI/DwiUXb0rmkrCwmCESnhRA/gm8fbnU
-	 y+TkkomoNSs0QYTzx4FWjpCEXJcmjiAJ/AjHY7To=
+	b=fiUUQ5A4JP5/Ci4IO7MxtSRMI2HGD83jIDAEar5NU6FCyqVjlywrWsCRh9B+mXahV
+	 +/HQZf7hTR9zNxDzlICHgwnpIeW741odS/dsBWq3uW3NUAhOoZOJiUiHfRRw/m6coJ
+	 6NEo9J+WL7K7VYc0NRemaHjwWDXjOueat9u9zolo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Geoffrey D. Bennett" <g@b4.vu>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 233/417] ALSA: scarlett2: Add missing error check to scarlett2_usb_set_config()
-Date: Mon, 22 Jan 2024 15:56:41 -0800
-Message-ID: <20240122235759.963324793@linuxfoundation.org>
+Subject: [PATCH 6.1 234/417] ALSA: scarlett2: Allow passing any output to line_out_remap()
+Date: Mon, 22 Jan 2024 15:56:42 -0800
+Message-ID: <20240122235759.991324689@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
 References: <20240122235751.480367507@linuxfoundation.org>
@@ -68,37 +68,79 @@ Content-Transfer-Encoding: 8bit
 
 From: Geoffrey D. Bennett <g@b4.vu>
 
-[ Upstream commit ca459dfa7d4ed9098fcf13e410963be6ae9b6bf3 ]
+[ Upstream commit 2190b9aea4eb92ccf3176e35c17c959e40f1a81b ]
 
-scarlett2_usb_set_config() calls scarlett2_usb_get() but was not
-checking the result. Return the error if it fails rather than
-continuing with an invalid value.
+Line outputs 3 & 4 on the Gen 3 18i8 are internally the analogue 7 and
+8 outputs, and this renumbering is hidden from the user by
+line_out_remap(). By allowing higher values (representing non-analogue
+outputs) to be passed to line_out_remap(), repeated code from
+scarlett2_mux_src_enum_ctl_get() and scarlett2_mux_src_enum_ctl_put()
+can be removed.
 
 Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Fixes: 9e15fae6c51a ("ALSA: usb-audio: scarlett2: Allow bit-level access to config")
-Link: https://lore.kernel.org/r/def110c5c31dbdf0a7414d258838a0a31c0fab67.1703001053.git.g@b4.vu
+Link: https://lore.kernel.org/r/3b70267931f5994628ab27306c73cddd17b93c8f.1698342632.git.g@b4.vu
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 50603a67daef ("ALSA: scarlett2: Add missing error checks to *_ctl_get()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett_gen2.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/usb/mixer_scarlett_gen2.c | 25 +++++++++----------------
+ 1 file changed, 9 insertions(+), 16 deletions(-)
 
 diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
-index 3da0d3167ebf..94704581865b 100644
+index 94704581865b..f8a2ba479b7c 100644
 --- a/sound/usb/mixer_scarlett_gen2.c
 +++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -1390,7 +1390,10 @@ static int scarlett2_usb_set_config(
- 		size = 1;
- 		offset = config_item->offset;
+@@ -1901,9 +1901,16 @@ static int scarlett2_master_volume_ctl_get(struct snd_kcontrol *kctl,
+ static int line_out_remap(struct scarlett2_data *private, int index)
+ {
+ 	const struct scarlett2_device_info *info = private->info;
++	const int (*port_count)[SCARLETT2_PORT_DIRNS] = info->port_count;
++	int line_out_count =
++		port_count[SCARLETT2_PORT_TYPE_ANALOGUE][SCARLETT2_PORT_OUT];
  
--		scarlett2_usb_get(mixer, offset, &tmp, 1);
-+		err = scarlett2_usb_get(mixer, offset, &tmp, 1);
-+		if (err < 0)
-+			return err;
+ 	if (!info->line_out_remap_enable)
+ 		return index;
 +
- 		if (value)
- 			tmp |= (1 << index);
- 		else
++	if (index >= line_out_count)
++		return index;
++
+ 	return info->line_out_remap[index];
+ }
+ 
+@@ -3388,14 +3395,7 @@ static int scarlett2_mux_src_enum_ctl_get(struct snd_kcontrol *kctl,
+ 	struct usb_mixer_elem_info *elem = kctl->private_data;
+ 	struct usb_mixer_interface *mixer = elem->head.mixer;
+ 	struct scarlett2_data *private = mixer->private_data;
+-	const struct scarlett2_device_info *info = private->info;
+-	const int (*port_count)[SCARLETT2_PORT_DIRNS] = info->port_count;
+-	int line_out_count =
+-		port_count[SCARLETT2_PORT_TYPE_ANALOGUE][SCARLETT2_PORT_OUT];
+-	int index = elem->control;
+-
+-	if (index < line_out_count)
+-		index = line_out_remap(private, index);
++	int index = line_out_remap(private, elem->control);
+ 
+ 	mutex_lock(&private->data_mutex);
+ 	if (private->mux_updated)
+@@ -3412,16 +3412,9 @@ static int scarlett2_mux_src_enum_ctl_put(struct snd_kcontrol *kctl,
+ 	struct usb_mixer_elem_info *elem = kctl->private_data;
+ 	struct usb_mixer_interface *mixer = elem->head.mixer;
+ 	struct scarlett2_data *private = mixer->private_data;
+-	const struct scarlett2_device_info *info = private->info;
+-	const int (*port_count)[SCARLETT2_PORT_DIRNS] = info->port_count;
+-	int line_out_count =
+-		port_count[SCARLETT2_PORT_TYPE_ANALOGUE][SCARLETT2_PORT_OUT];
+-	int index = elem->control;
++	int index = line_out_remap(private, elem->control);
+ 	int oval, val, err = 0;
+ 
+-	if (index < line_out_count)
+-		index = line_out_remap(private, index);
+-
+ 	mutex_lock(&private->data_mutex);
+ 
+ 	oval = private->mux[index];
 -- 
 2.43.0
 
