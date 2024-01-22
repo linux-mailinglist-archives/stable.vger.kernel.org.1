@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-13132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F653837AA1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1BE98379FA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56C031F242A1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2161F1C28431
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43ADF12FF76;
-	Tue, 23 Jan 2024 00:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CBAA171B1;
+	Tue, 23 Jan 2024 00:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7SYRESG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWzNTr5N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023A112F5A7;
-	Tue, 23 Jan 2024 00:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0AC566A;
+	Tue, 23 Jan 2024 00:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969027; cv=none; b=Mx9ggML5aUTTlvZKbjxlUlH4Dl2oAdCGsKqZkDF60O/6cH83wpHpA1zpxkbeAenf0FOoNWW/5y3ugbJ00jDlGMgO0/IlgMpl4pPHMu96jLkw/+HCXatrdYNn/D8rzCFZnU9s9dttssX5a3BlCeHZePD0sNliSpTB7x7exbPb5a4=
+	t=1705968693; cv=none; b=Tw4FnXnRvLATejs0H1TsofONoO28EfRhtLhhktyOudm+A/uUz22Uv8U2hXXU8Dsfwu+arL53aYDuUldJMbN2dcAJhuhWlMbBKcd9vNbByITB5gcLtveioonLnvti1juXL0bwT4ETdHlH0UT0FDecYx33AmsmXzCXpfIp37cVD+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969027; c=relaxed/simple;
-	bh=9c4JCoxqxdgeJV1PrfJu90FhJOlOgqQqFxCk1m8OvLo=;
+	s=arc-20240116; t=1705968693; c=relaxed/simple;
+	bh=T4Nh3xhjcE0rpcwhVscRY+7O6A5jtjmBwTRMRYKudEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D58IPlbL5tcaZBhJDu8wwWh9MVWStRSdrbrqugfA68QFo4J2U7S46ZaT7iSBkbetUaQIc2mmuhFGxRQ0nq3Nvyg/UABsfiKVawJdmQ5goSy8u+CRXrydsK+4K3okBWKkAK/d3t419DKqyHFHmedhJHEg7shAHubpDLsUUrgtq4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7SYRESG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90931C433C7;
-	Tue, 23 Jan 2024 00:17:06 +0000 (UTC)
+	 MIME-Version; b=L28iZv6hg/qBRXofrOAHp6ChiEptkeZn5MDFy3b7xTymIuPRy1E4Ao3kn+cnk/3+7k+mLOdXlzoTl4eNNN6F9LpFMQcGQaBp6UekPYBfFSiLrY+xsaeFWIii2bsVX6e/T7atMkCmokXH/RfT+yM8fu66ST863sfomdNM0xZC+B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWzNTr5N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD756C433F1;
+	Tue, 23 Jan 2024 00:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969026;
-	bh=9c4JCoxqxdgeJV1PrfJu90FhJOlOgqQqFxCk1m8OvLo=;
+	s=korg; t=1705968693;
+	bh=T4Nh3xhjcE0rpcwhVscRY+7O6A5jtjmBwTRMRYKudEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z7SYRESG1TFN/xZK0e4c/RcX7rgasFmVb0Fl+gFO1nIBu0hWV4AC+O77D0P3xzxUF
-	 8jbetGBWRFR4Q6VdvdaklbiDDlCUrdk/HYB5ivRparzNnD4BaXSeXksHcULCfq1fYe
-	 of23S73Zo3svQx0B8IteqUIZ6IJdIhMsI0twFORk=
+	b=sWzNTr5N8mHROJWqaV1i4LakUboIAmwIpUMxQ7YJw2C2JuODOwdg/WpFXKaAJ4IuT
+	 NOoJpTvZyaR64Zk+Q4Hjw0fYc2EXN8MCfDATNU11g0s/UwQqKZGm3j7PES2NKxiEFC
+	 GlzeVZW8MMazh7JrVAZsXks86LJtmIxcRMbkWRd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Julian Anastasov <ja@ssi.bg>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 168/194] acpi: property: Let args be NULL in __acpi_node_get_property_reference
+Subject: [PATCH 4.19 142/148] ipvs: avoid stat macros calls from preemptible context
 Date: Mon, 22 Jan 2024 15:58:18 -0800
-Message-ID: <20240122235726.417627908@linuxfoundation.org>
+Message-ID: <20240122235718.348418415@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit bef52aa0f3de1b7d8c258c13b16e577361dabf3a ]
+[ Upstream commit d6938c1c76c64f42363d0d1f051e1b4641c2ad40 ]
 
-fwnode_get_property_reference_args() may not be called with args argument
-NULL on ACPI, OF already supports this. Add the missing NULL checks and
-document this.
+Inside decrement_ttl() upon discovering that the packet ttl has exceeded,
+__IP_INC_STATS and __IP6_INC_STATS macros can be called from preemptible
+context having the following backtrace:
 
-The purpose is to be able to count the references.
+check_preemption_disabled: 48 callbacks suppressed
+BUG: using __this_cpu_add() in preemptible [00000000] code: curl/1177
+caller is decrement_ttl+0x217/0x830
+CPU: 5 PID: 1177 Comm: curl Not tainted 6.7.0+ #34
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xbd/0xe0
+ check_preemption_disabled+0xd1/0xe0
+ decrement_ttl+0x217/0x830
+ __ip_vs_get_out_rt+0x4e0/0x1ef0
+ ip_vs_nat_xmit+0x205/0xcd0
+ ip_vs_in_hook+0x9b1/0x26a0
+ nf_hook_slow+0xc2/0x210
+ nf_hook+0x1fb/0x770
+ __ip_local_out+0x33b/0x640
+ ip_local_out+0x2a/0x490
+ __ip_queue_xmit+0x990/0x1d10
+ __tcp_transmit_skb+0x288b/0x3d10
+ tcp_connect+0x3466/0x5180
+ tcp_v4_connect+0x1535/0x1bb0
+ __inet_stream_connect+0x40d/0x1040
+ inet_stream_connect+0x57/0xa0
+ __sys_connect_file+0x162/0x1a0
+ __sys_connect+0x137/0x160
+ __x64_sys_connect+0x72/0xb0
+ do_syscall_64+0x6f/0x140
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
+RIP: 0033:0x7fe6dbbc34e0
 
-Fixes: 977d5ad39f3e ("ACPI: Convert ACPI reference args to generic fwnode reference args")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20231109101010.1329587-2-sakari.ailus@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use the corresponding preemption-aware variants: IP_INC_STATS and
+IP6_INC_STATS.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 8d8e20e2d7bb ("ipvs: Decrement ttl")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Acked-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/property.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/netfilter/ipvs/ip_vs_xmit.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 479856ceda9f..5906e247b9fa 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -646,6 +646,7 @@ acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
-  * @index: Index of the reference to return
-  * @num_args: Maximum number of arguments after each reference
-  * @args: Location to store the returned reference with optional arguments
-+ *	  (may be NULL)
-  *
-  * Find property with @name, verifify that it is a package containing at least
-  * one object reference and if so, store the ACPI device object pointer to the
-@@ -704,6 +705,9 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
- 		if (ret)
- 			return ret == -ENODEV ? -EINVAL : ret;
+diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
+index 11f7c546e57b..e47d1a29c140 100644
+--- a/net/netfilter/ipvs/ip_vs_xmit.c
++++ b/net/netfilter/ipvs/ip_vs_xmit.c
+@@ -272,7 +272,7 @@ static inline bool decrement_ttl(struct netns_ipvs *ipvs,
+ 			skb->dev = dst->dev;
+ 			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
+ 				    ICMPV6_EXC_HOPLIMIT, 0);
+-			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
++			IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
  
-+		if (!args)
-+			return 0;
-+
- 		args->fwnode = acpi_fwnode_handle(device);
- 		args->nargs = 0;
- 		return 0;
+ 			return false;
+ 		}
+@@ -287,7 +287,7 @@ static inline bool decrement_ttl(struct netns_ipvs *ipvs,
+ 	{
+ 		if (ip_hdr(skb)->ttl <= 1) {
+ 			/* Tell the sender its packet died... */
+-			__IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
++			IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
+ 			icmp_send(skb, ICMP_TIME_EXCEEDED, ICMP_EXC_TTL, 0);
+ 			return false;
+ 		}
 -- 
 2.43.0
 
