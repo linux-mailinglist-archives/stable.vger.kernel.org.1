@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA18837A29
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 504BB837893
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E28F1C23F49
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E510F1F24357
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200AF12AAD3;
-	Tue, 23 Jan 2024 00:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2C0137C53;
+	Tue, 23 Jan 2024 00:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usFPTfrf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYQYvnn7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D5312AAC7;
-	Tue, 23 Jan 2024 00:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93638137C48;
+	Tue, 23 Jan 2024 00:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968773; cv=none; b=VcRqIVBCxT9kbOCrzXPaYWpmny3E1KvvX7zNEOrt7W88ZotwSTw17vlQp2CXSAUoi/hqGnpVv5fyJze7Ht2qPFvSFe++oUPBT9P1rJC9d0V6SMw4stgvtZegvakpEiGggeIzG3xY5MOyYbMGdFU6QUeyEVHIOG/dRMuCJBA/Gbw=
+	t=1705968123; cv=none; b=QR3eLDRE5jXO4dTNqPHPYFXOHDle7AYx3gqSfUjp9dvbQLoVo1dLuSyft1m9rnOkvvJDEz3NA7EcXhmKXw9ax0YWUbabo5H0T1be2gHLKqBdrgfxxMSmA4m9IWyrdBPDB3++7VuByUwVUCvIu1Y6g8qpeskNRbKCl1BuwcNPtxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968773; c=relaxed/simple;
-	bh=cGd/Bia6tqPrdPmR0hvCspoioc3Pizi/KtLQ8DqJyTs=;
+	s=arc-20240116; t=1705968123; c=relaxed/simple;
+	bh=Xo/bv46EKmxeQbMPHrF1eDnBhOKIBf+L7yw/s2fw/c4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QWuP1hL+B+L+M9CpKNMptu4tDpHcSgftKIM2lYHf6VrADyvBjPOFSrjf35T5YlzdJvrOVIXzHui8gemMywz7s9JtGsfC7fydMMdlCvg38K4384aaWdcCiPQZS9/zP85EpOrJVKTuKYLObbTZ7jK5pXUHDK79jVIDP38xqkneMoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usFPTfrf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46287C433F1;
-	Tue, 23 Jan 2024 00:12:53 +0000 (UTC)
+	 MIME-Version; b=tEEIGsmIpTK1PkOfMpUMLDy4WFew5PaO9sjos2XSkieURl6wmXmB3AZWXf1gqJUFucZ0r4JXseAYhGUzopKLz91a06RnHcf08gkzMiKH0cNrW75IpMaqPcj05WiW9nxThbUoDqG+flzeqYsUbyNct3pHq4JJoBuwTEU85StRlX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYQYvnn7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310A9C433F1;
+	Tue, 23 Jan 2024 00:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968773;
-	bh=cGd/Bia6tqPrdPmR0hvCspoioc3Pizi/KtLQ8DqJyTs=;
+	s=korg; t=1705968123;
+	bh=Xo/bv46EKmxeQbMPHrF1eDnBhOKIBf+L7yw/s2fw/c4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=usFPTfrfRMrjacenakmzIk/VDRslHe4w6Z9Iq8K/MO8ceh+ZZvS6GeCaVsf1Uj36e
-	 ieqfUBLL5IfX7BTclQulOkyHrrGc0CVqkqulCth6DWMOnjVkBfOpdDRhKn4QQBP7Gs
-	 BW34deF5AP6Rwnus0HZpXRwqr/W8o75qDKNGaqrE=
+	b=zYQYvnn7eAfYk5NRxPXAyrHZswsohCqjn4TMdimT6f6JpYnP5uLZmVh9M06sDSAt5
+	 qySkCfAlf7NAE3nKDvZti9L/o2vwBxm4uybcAnQGAtM7VIMUHlKXQt6hcwXr2YUvxq
+	 t3rtV6QA4Ww1KzeAqCxDc1Swuc1rUtIr9o9wYa+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	kernel test robot <lkp@intel.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Esther Shimanovich <eshimanovich@chromium.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 043/194] powerpc/44x: select I2C for CURRITUCK
+Subject: [PATCH 4.19 017/148] Input: i8042 - add nomux quirk for Acer P459-G2-M
 Date: Mon, 22 Jan 2024 15:56:13 -0800
-Message-ID: <20240122235721.076952750@linuxfoundation.org>
+Message-ID: <20240122235713.123199221@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Esther Shimanovich <eshimanovich@chromium.org>
 
-[ Upstream commit 4a74197b65e69c46fe6e53f7df2f4d6ce9ffe012 ]
+[ Upstream commit 335fe00319e030d481a54d5e0e68d50c5e672c0e ]
 
-Fix build errors when CURRITUCK=y and I2C is not builtin (=m or is
-not set). Fixes these build errors:
+After the laptop lid is opened, and the device resumes from S3 deep
+sleep, if the user presses a keyboard key while the screen is still black,
+the mouse and keyboard become unusable.
 
-powerpc-linux-ld: arch/powerpc/platforms/44x/ppc476.o: in function `avr_halt_system':
-ppc476.c:(.text+0x58): undefined reference to `i2c_smbus_write_byte_data'
-powerpc-linux-ld: arch/powerpc/platforms/44x/ppc476.o: in function `ppc47x_device_probe':
-ppc476.c:(.init.text+0x18): undefined reference to `i2c_register_driver'
+Enabling this quirk prevents this behavior from occurring.
 
-Fixes: 2a2c74b2efcb ("IBM Akebono: Add the Akebono platform")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: lore.kernel.org/r/202312010820.cmdwF5X9-lkp@intel.com
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231201055159.8371-1-rdunlap@infradead.org
+Signed-off-by: Esther Shimanovich <eshimanovich@chromium.org>
+Link: https://lore.kernel.org/r/20231130195615.v2.1.Ibe78a9df97ecd18dc227a5cff67d3029631d9c11@changeid
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/44x/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/input/serio/i8042-x86ia64io.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/powerpc/platforms/44x/Kconfig b/arch/powerpc/platforms/44x/Kconfig
-index 25ebe634a661..e9d3c6b241a8 100644
---- a/arch/powerpc/platforms/44x/Kconfig
-+++ b/arch/powerpc/platforms/44x/Kconfig
-@@ -178,6 +178,7 @@ config ISS4xx
- config CURRITUCK
- 	bool "IBM Currituck (476fpe) Support"
- 	depends on PPC_47x
-+	select I2C
- 	select SWIOTLB
- 	select 476FPE
- 	select FORCE_PCI
+diff --git a/drivers/input/serio/i8042-x86ia64io.h b/drivers/input/serio/i8042-x86ia64io.h
+index 2d4df82d65af..06d99931519b 100644
+--- a/drivers/input/serio/i8042-x86ia64io.h
++++ b/drivers/input/serio/i8042-x86ia64io.h
+@@ -355,6 +355,14 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_DRITEK)
+ 	},
++	{
++		/* Acer TravelMate P459-G2-M */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "TravelMate P459-G2-M"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
++	},
+ 	{
+ 		/* Amoi M636/A737 */
+ 		.matches = {
 -- 
 2.43.0
 
