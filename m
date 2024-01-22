@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6003B837D7F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1116C83804D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 936791C23A70
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B29071F2CC87
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE50E5C61E;
-	Tue, 23 Jan 2024 00:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01FDD664A9;
+	Tue, 23 Jan 2024 01:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDTcDRj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2LtyC4YD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0A94E1D8;
-	Tue, 23 Jan 2024 00:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52C56518A;
+	Tue, 23 Jan 2024 01:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969985; cv=none; b=kXMJXszdt+E8zzDVUOkVnaJVz/pTUZCTiK5b2OhovBLM/Z7kD/TRFQCv5hPawffz+WHfvs5LbQ1+mFMm+IkpHD8CJPxqvNs9YqpHFlNI/vGV3uDjBqknKec367iUTvS4DGFqKNMZKnRtCD9XIm5yzDtocWxmXrqBhYBXHVuSrts=
+	t=1705971652; cv=none; b=CE7ukvQ4Kz+B4y+d2pRyvr68MKCDonvG8L0f/QcbvUXFYUUTpUupRGGSfRUdkiFNfF0v60nrira3cTnUDNVUn8LrZ2pU2wjKAfyz1orbVPHi/3vAX40g1I4MwniBVI6iZw5zYLJ0nG4X0NT+IOUbOqhI/XIu6FhgUw0dyU8pG4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969985; c=relaxed/simple;
-	bh=qffpP7hfvNJFv3sfr5ybEsyilsyo+397Mbb1DeIjQ8I=;
+	s=arc-20240116; t=1705971652; c=relaxed/simple;
+	bh=aKIPzVrYLRrd/i1KiGSdpbXLLClowGtm+hO3UHQtSpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UmTf2J5/NCIfarJiQ8svrr1cgOHzRjgzDpnilye7fa8EbCb85wu+IxLhBSrfqBqLM4qwHIfVjQEcbSdXUB/JcyDC18gz/27T2MAAMjMj4Z/xFjtcoXS250RLpod5P6u09FYhrvW5pMgNHJuUOxrSiY6xLf0lCs80ETbBuNzYAbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDTcDRj/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61289C433F1;
-	Tue, 23 Jan 2024 00:33:04 +0000 (UTC)
+	 MIME-Version; b=qZnZQparPdMjHyGDU+aJfuKd9nCSx0H+3wt2pfO+9qT8HwWTS1z0YZo92soNr6/0+aWpR02J+c1xFY3WEKBd3FFfDLOeyoX0qZJuVF7Gr1O+Mz/6vgyRSzJel/0A7Zck4dXZTNMfwsk8EFABBkgzd7DVSrJaGLwygnSNPztMdYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2LtyC4YD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9C2C433F1;
+	Tue, 23 Jan 2024 01:00:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969985;
-	bh=qffpP7hfvNJFv3sfr5ybEsyilsyo+397Mbb1DeIjQ8I=;
+	s=korg; t=1705971652;
+	bh=aKIPzVrYLRrd/i1KiGSdpbXLLClowGtm+hO3UHQtSpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IDTcDRj/BRJBH+SLU8zJgPMJkCTAKUVTven62ntYVZG4yiynPIjam0qKxrJrp/kLd
-	 QX0+0Gp/rzDvxk7HDMLHXI9iOjQ9m2xxVc1YayHElrE9mS8KC3FnEkMRi0uRiD5BwX
-	 VIwtTvxBcXCXtsDCBEyG+qYxXi/kKrH0doAfpeCY=
+	b=2LtyC4YD22nU7f7Sx9r5nocUNyJVs06awyIakfgZIIRbr0SKSp0CZXCg593oGGKCn
+	 KRC0ssiYRpdaTZG9tznrz74ZSEIyhRabKAIKs1NGawrLIp+/M/n4vLDGWef64VBzmF
+	 tw/BUruGQIix9bGpMgW4DCM/H1OvqSBEXOL9hTa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 551/641] vdpa: Fix an error handling path in eni_vdpa_probe()
+	Nam Cao <namcao@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 287/417] fbdev: flush deferred work in fb_deferred_io_fsync()
 Date: Mon, 22 Jan 2024 15:57:35 -0800
-Message-ID: <20240122235835.393892773@linuxfoundation.org>
+Message-ID: <20240122235801.778716103@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit c1b9f2c66eed3261db76cccd8a22a9affae8dcbf ]
+commit 15e4c1f462279b4e128f27de48133e0debe9e0df upstream.
 
-After a successful vp_legacy_probe() call, vp_legacy_remove() should be
-called in the error handling path, as already done in the remove function.
+The driver's fsync() is supposed to flush any pending operation to
+hardware. It is implemented in this driver by cancelling the queued
+deferred IO first, then schedule it for "immediate execution" by calling
+schedule_delayed_work() again with delay=0. However, setting delay=0
+only means the work is scheduled immediately, it does not mean the work
+is executed immediately. There is no guarantee that the work is finished
+after schedule_delayed_work() returns. After this driver's fsync()
+returns, there can still be pending work. Furthermore, if close() is
+called by users immediately after fsync(), the pending work gets
+cancelled and fsync() may do nothing.
 
-Add the missing call.
+To ensure that the deferred IO completes, use flush_delayed_work()
+instead. Write operations to this driver either write to the device
+directly, or invoke schedule_delayed_work(); so by flushing the
+workqueue, it can be guaranteed that all previous writes make it to the
+device.
 
-Fixes: e85087beedca ("eni_vdpa: add vDPA driver for Alibaba ENI")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-Id: <a7b0ef1eabd081f1c7c894e9b11de01678e85dee.1666293559.git.christophe.jaillet@wanadoo.fr>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5e841b88d23d ("fb: fsync() method for deferred I/O flush.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vdpa/alibaba/eni_vdpa.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/core/fb_defio.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/vdpa/alibaba/eni_vdpa.c b/drivers/vdpa/alibaba/eni_vdpa.c
-index 5a09a09cca70..cce3d1837104 100644
---- a/drivers/vdpa/alibaba/eni_vdpa.c
-+++ b/drivers/vdpa/alibaba/eni_vdpa.c
-@@ -497,7 +497,7 @@ static int eni_vdpa_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (!eni_vdpa->vring) {
- 		ret = -ENOMEM;
- 		ENI_ERR(pdev, "failed to allocate virtqueues\n");
--		goto err;
-+		goto err_remove_vp_legacy;
- 	}
+--- a/drivers/video/fbdev/core/fb_defio.c
++++ b/drivers/video/fbdev/core/fb_defio.c
+@@ -132,11 +132,7 @@ int fb_deferred_io_fsync(struct file *fi
+ 		return 0;
  
- 	for (i = 0; i < eni_vdpa->queues; i++) {
-@@ -509,11 +509,13 @@ static int eni_vdpa_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	ret = vdpa_register_device(&eni_vdpa->vdpa, eni_vdpa->queues);
- 	if (ret) {
- 		ENI_ERR(pdev, "failed to register to vdpa bus\n");
--		goto err;
-+		goto err_remove_vp_legacy;
- 	}
+ 	inode_lock(inode);
+-	/* Kill off the delayed work */
+-	cancel_delayed_work_sync(&info->deferred_work);
+-
+-	/* Run it immediately */
+-	schedule_delayed_work(&info->deferred_work, 0);
++	flush_delayed_work(&info->deferred_work);
+ 	inode_unlock(inode);
  
  	return 0;
- 
-+err_remove_vp_legacy:
-+	vp_legacy_remove(&eni_vdpa->ldev);
- err:
- 	put_device(&eni_vdpa->vdpa.dev);
- 	return ret;
--- 
-2.43.0
-
 
 
 
