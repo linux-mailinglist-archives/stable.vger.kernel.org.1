@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-13687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C49C1837D6B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3BB837FEA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B9F41F22FB8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5E9B1C214D3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045885C5E6;
-	Tue, 23 Jan 2024 00:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C2412C544;
+	Tue, 23 Jan 2024 00:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dlaLH+db"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z819cun3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86D552F7C;
-	Tue, 23 Jan 2024 00:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFF66281D;
+	Tue, 23 Jan 2024 00:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969935; cv=none; b=IaohGYrlybpl5IecJNRjaRpb12LgHEaKGlxUvFHzgKmGzh1kw9oe15wP09NwLONhs+GZK+J84fOPthvrJKMwrSRkwD31EN6eX4RVBc8mOt30JHFJtkk3c030fEtLS0gmVQWfIhCQLfvkS4Ya4mOJV6870Yx6MDpplYZdCyMuRew=
+	t=1705971443; cv=none; b=DFyO9ZdoYEf8jnf7tUaEPBQqRhRFy/cA0BE0JBzfhug6HM2EKPjsDD/7PBPwmzu/zusOZM6B2DFRjIZzb/S1KJAJqExdPZ8CZOLw0otPALZa0ySXYAcc4Wwcm27A48suQ5gzvKB9TaVKlgCTkmQLGrL5L2omc744HDe51Hszukk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969935; c=relaxed/simple;
-	bh=0f+fNcUNF2wpEhC2AyMLwF7POsSjBgfw3hJ1zjnNrZs=;
+	s=arc-20240116; t=1705971443; c=relaxed/simple;
+	bh=wGuN975V07rpQPfbn8kxmTghtVRXyNhe6OvU9yJ+a88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+A+dSP+g1qDocE3UJ0dJpURCf26VovF1rNrWWSMDKLGwKictAchKWmKLdsBQO+EhQTc8d7I3ZgFY1ggjLT+loAI98bqfveGvV8FJrBRvoYask2nP6vKJOjy1flGyDBi6h+zwthdBYMSef8zFnOFtAYWromjTH28Ny1fi3zvmYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dlaLH+db; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62885C433F1;
-	Tue, 23 Jan 2024 00:32:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Zl4H77qFOyZ6TzNKxcrSz23DNx4tM16aS5OEW50mzI7TAco2+yYt4UYv2C4DSMurmM6JpDXQ/JQcnBcSCeLSJz+2kbz1+OmEw4emvKKQkH8SxAIE8fx3Xs8DAAazIBX9H2MPlV4ukkN2FqDnwis7+lwawRwVqAOqjhC00p+7llo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z819cun3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD55C433F1;
+	Tue, 23 Jan 2024 00:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969935;
-	bh=0f+fNcUNF2wpEhC2AyMLwF7POsSjBgfw3hJ1zjnNrZs=;
+	s=korg; t=1705971443;
+	bh=wGuN975V07rpQPfbn8kxmTghtVRXyNhe6OvU9yJ+a88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dlaLH+dbo9aFy0D/UkrA3+5Rm3Eeb+KJWfL5kv4G0WCRdk0vGhemvGZ/l3ucR+eRW
-	 2hkdPw+ZaV6z0bnxWBsSM5atYN3/x8dw9wCazbwm8PNN1UBpqQMbkz/+dPlRm3adUT
-	 Xu7gvkEv5Y679vaNLPBtssC2yx+eaoZDHWrbKSuc=
+	b=z819cun3WtHtacJYyZrJ/nz3QDFeVzvw3wbG/5Go9gTxD/n7qoDRtKYOKOH4mY08A
+	 JbRjgcq+HB3Sxk7wKSMa0iWUk0gL1xdX08Exh7wj6TBPVp5E3AJYIdY2mBySLoluPo
+	 uLqBlV8rGn0pd8kwStlrRMpQrs/DJNpg1bJl0cDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-sound@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 506/641] iommu: Map reserved memory as cacheable if device is coherent
-Date: Mon, 22 Jan 2024 15:56:50 -0800
-Message-ID: <20240122235833.902172301@linuxfoundation.org>
+Subject: [PATCH 6.1 243/417] kselftest/alsa - mixer-test: Fix the print format specifier warning
+Date: Mon, 22 Jan 2024 15:56:51 -0800
+Message-ID: <20240122235800.296862359@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +67,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+From: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
 
-[ Upstream commit f1aad9df93f39267e890836a28d22511f23474e1 ]
+[ Upstream commit 3f47c1ebe5ca9c5883e596c7888dec4bec0176d8 ]
 
-Check if the device is marked as DMA coherent in the DT and if so,
-map its reserved memory as cacheable in the IOMMU.
-This fixes the recently added IOMMU reserved memory support which
-uses IOMMU_RESV_DIRECT without properly building the PROT for the
-mapping.
+The GCC 13.2.0 compiler issued the following warning:
 
-Fixes: a5bf3cfce8cb ("iommu: Implement of_iommu_get_resv_regions()")
-Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20230926152600.8749-1-laurentiu.tudor@nxp.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+mixer-test.c: In function ‘ctl_value_index_valid’:
+mixer-test.c:322:79: warning: format ‘%lld’ expects argument of type ‘long long int’, \
+			      but argument 5 has type ‘long int’ [-Wformat=]
+  322 |                         ksft_print_msg("%s.%d value %lld more than maximum %lld\n",
+      |                                                                            ~~~^
+      |                                                                               |
+      |                                                                               long long int
+      |                                                                            %ld
+  323 |                                        ctl->name, index, int64_val,
+  324 |                                        snd_ctl_elem_info_get_max(ctl->info));
+      |                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                        |
+      |                                        long int
+
+Fixing the format specifier as advised by the compiler suggestion removes the
+warning.
+
+Fixes: 3f48b137d88e7 ("kselftest: alsa: Factor out check that values meet constraints")
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: linux-sound@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240107173704.937824-3-mirsad.todorovac@alu.unizg.hr
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/of_iommu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/alsa/mixer-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-index 35ba090f3b5e..47302b637cc0 100644
---- a/drivers/iommu/of_iommu.c
-+++ b/drivers/iommu/of_iommu.c
-@@ -260,6 +260,9 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
- 				phys_addr_t iova;
- 				size_t length;
+diff --git a/tools/testing/selftests/alsa/mixer-test.c b/tools/testing/selftests/alsa/mixer-test.c
+index d59910658c8c..9ad39db32d14 100644
+--- a/tools/testing/selftests/alsa/mixer-test.c
++++ b/tools/testing/selftests/alsa/mixer-test.c
+@@ -358,7 +358,7 @@ static bool ctl_value_index_valid(struct ctl_data *ctl,
+ 		}
  
-+				if (of_dma_is_coherent(dev->of_node))
-+					prot |= IOMMU_CACHE;
-+
- 				maps = of_translate_dma_region(np, maps, &iova, &length);
- 				type = iommu_resv_region_get_type(dev, &phys, iova, length);
- 
+ 		if (int64_val > snd_ctl_elem_info_get_max64(ctl->info)) {
+-			ksft_print_msg("%s.%d value %lld more than maximum %lld\n",
++			ksft_print_msg("%s.%d value %lld more than maximum %ld\n",
+ 				       ctl->name, index, int64_val,
+ 				       snd_ctl_elem_info_get_max(ctl->info));
+ 			return false;
 -- 
 2.43.0
 
