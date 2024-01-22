@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-14647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402C38381FE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C9A838200
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 732A81C235F7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAD981C24BEF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9912E56472;
-	Tue, 23 Jan 2024 01:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A5E4E1D3;
+	Tue, 23 Jan 2024 01:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYeEyzCY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXzoQRo8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8005731C;
-	Tue, 23 Jan 2024 01:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30023984D;
+	Tue, 23 Jan 2024 01:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974028; cv=none; b=IO9qr2h8p23Ca9Iq961YQkLABu3SkNIEI/CVo4JWw2HGfhqt9Xz4XK0F+dyiCQq5JYjO9RiK2MOj6mSn+7TWtI324fHhCgOs+Mnth/BITsIct4KtFcjMGZ8FjsOBBqRUgZLFSriCYj7UdRSjO6agC3pjnt7QR/33+TnI0OXKAxA=
+	t=1705974031; cv=none; b=BZyNACn5m1MURZKo6HHeUg/Dq3uoF6p3dplpVnCU1WcXJChVohRUvNsrxqbvoSGgcik19eR9lfq+YuKq8EAfQ1vFM2BJiLjyi2zz31Smkhlyw6NhH0kH9ecrkseN42W3zHKH/IbOdIfQAFhj4kFK16RKh68dL3PGtAUsS5wdNP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974028; c=relaxed/simple;
-	bh=RKquzdfDiwxbJ5TipOs/CfDmwzFu3ubnPMsxjZEZW2Y=;
+	s=arc-20240116; t=1705974031; c=relaxed/simple;
+	bh=YjT7TvmZNE1CPwzZ3/fWWzI6Hc+WTIivg32V/cZ6vD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPp3X5DXwrY52TSaVE+e2xqmCgDcl9UYCdaZGBe5I7aSVIqIxafgqkyt7uLRewCFEJcjYTEJT5MjsNGNfNCtNhzfPygncDbgbJ0ORP9yhECqWkK5NLYlbGKNxRZokYLDELT5+d2Yl41HN9RBcZS/YXz3m1pe82Mt+d8fcaBIOgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYeEyzCY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9D2C433C7;
-	Tue, 23 Jan 2024 01:40:27 +0000 (UTC)
+	 MIME-Version; b=evCWEpBWTD/OkV00WFhC6lQaTqF0Gk4ziWpI0qk04lHLbW0PQvvoL7koxigpOovzWiLB0ZbnYkfrUuEOZgV1PhBVWxc+U20dCJN9bISYyOy/eVFxvTB8DxQzWSUNtrExD+nS/eigIbfCLr+kyu6rfsMfkG3/peDhuLKoNmhPCEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXzoQRo8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA3CC433C7;
+	Tue, 23 Jan 2024 01:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974028;
-	bh=RKquzdfDiwxbJ5TipOs/CfDmwzFu3ubnPMsxjZEZW2Y=;
+	s=korg; t=1705974031;
+	bh=YjT7TvmZNE1CPwzZ3/fWWzI6Hc+WTIivg32V/cZ6vD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tYeEyzCY30OcXWmK42lulhpmchtl0PdA+t4nKlDXqDJQq7BqX148Ppm0d/hTqCbGW
-	 CJjhYSBu1QAwev++M4sDRgQx0spY7BPtLh9nniFyEdM8nROxe9fLvvGlI9NgvzKsw0
-	 krf9RN1ejHMD12i7npi+WOXBBf9aUyOOwqTzaHxA=
+	b=RXzoQRo8fvdSuzmqKLh/QqRJcVVcTdVNFYwX7TfjJusxa9rP/Qu57AyiFvO0/jQ9Y
+	 tRRuMS0B0pygAczc2k1J/1gYfucRGFratnf5+QIaoY6IDVQsN1NjyGNQKVqC43ldap
+	 JGABAVttk0jUi79+3eQRQ6u28kJHsxF+LTOOtX7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jing Zhang <renyu.zj@linux.alibaba.com>,
-	Robin Murphy <robin.murphy@arm.com>,
+	Junhao He <hejunhao3@huawei.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
 	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/583] perf/arm-cmn: Fix HN-F class_occup_id events
-Date: Mon, 22 Jan 2024 15:50:59 -0800
-Message-ID: <20240122235812.495205468@linuxfoundation.org>
+Subject: [PATCH 6.6 009/583] drivers/perf: hisi: Fix some event id for HiSilicon UC pmu
+Date: Mon, 22 Jan 2024 15:51:00 -0800
+Message-ID: <20240122235812.521504258@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -67,38 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Junhao He <hejunhao3@huawei.com>
 
-[ Upstream commit 590f23b092401f29e410fd4ca67128fcc45192fc ]
+[ Upstream commit 38bbef7240b8c5f2dc4493eec356e2efbf2da5f4 ]
 
-A subtle copy-paste error managed to slip through the reorganisation
-of these patches in development, and not only give some HN-F events
-the wrong type, but use that wrong type before the subsequent patch
-defined it. Too late to fix history, but we can at least fix the bug.
+Some event id of HiSilicon uncore UC PMU driver is incorrect, fix them.
 
-Fixes: b1b7dc38e482 ("perf/arm-cmn: Refactor HN-F event selector macros")
-Reported-by: Jing Zhang <renyu.zj@linux.alibaba.com>
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/5a22439de84ff188ef76674798052448eb03a3e1.1700740693.git.robin.murphy@arm.com
+Fixes: 312eca95e28d ("drivers/perf: hisi: Add support for HiSilicon UC PMU driver")
+Signed-off-by: Junhao He <hejunhao3@huawei.com>
+Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
+Link: https://lore.kernel.org/r/20231204110425.20354-1-hejunhao3@huawei.com
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm-cmn.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/perf/hisilicon/hisi_uncore_uc_pmu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
-index caae2d3e9d3e..6404b17d3aeb 100644
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -811,7 +811,7 @@ static umode_t arm_cmn_event_attr_is_visible(struct kobject *kobj,
- #define CMN_EVENT_HNF_OCC(_model, _name, _event)			\
- 	CMN_EVENT_HN_OCC(_model, hnf_##_name, CMN_TYPE_HNF, _event)
- #define CMN_EVENT_HNF_CLS(_model, _name, _event)			\
--	CMN_EVENT_HN_CLS(_model, hnf_##_name, CMN_TYPE_HNS, _event)
-+	CMN_EVENT_HN_CLS(_model, hnf_##_name, CMN_TYPE_HNF, _event)
- #define CMN_EVENT_HNF_SNT(_model, _name, _event)			\
- 	CMN_EVENT_HN_SNT(_model, hnf_##_name, CMN_TYPE_HNF, _event)
- 
+diff --git a/drivers/perf/hisilicon/hisi_uncore_uc_pmu.c b/drivers/perf/hisilicon/hisi_uncore_uc_pmu.c
+index 63da05e5831c..636fb79647c8 100644
+--- a/drivers/perf/hisilicon/hisi_uncore_uc_pmu.c
++++ b/drivers/perf/hisilicon/hisi_uncore_uc_pmu.c
+@@ -383,8 +383,8 @@ static struct attribute *hisi_uc_pmu_events_attr[] = {
+ 	HISI_PMU_EVENT_ATTR(cpu_rd,		0x10),
+ 	HISI_PMU_EVENT_ATTR(cpu_rd64,		0x17),
+ 	HISI_PMU_EVENT_ATTR(cpu_rs64,		0x19),
+-	HISI_PMU_EVENT_ATTR(cpu_mru,		0x1a),
+-	HISI_PMU_EVENT_ATTR(cycles,		0x9c),
++	HISI_PMU_EVENT_ATTR(cpu_mru,		0x1c),
++	HISI_PMU_EVENT_ATTR(cycles,		0x95),
+ 	HISI_PMU_EVENT_ATTR(spipe_hit,		0xb3),
+ 	HISI_PMU_EVENT_ATTR(hpipe_hit,		0xdb),
+ 	HISI_PMU_EVENT_ATTR(cring_rxdat_cnt,	0xfa),
 -- 
 2.43.0
 
