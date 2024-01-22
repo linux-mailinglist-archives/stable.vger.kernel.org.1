@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277A3837E14
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B9678380F9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3EAA1F29CBA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E12391F22C5D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D265675D;
-	Tue, 23 Jan 2024 00:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D7113DBB1;
+	Tue, 23 Jan 2024 01:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeiuw5OE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m53y/bg2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A5753E16;
-	Tue, 23 Jan 2024 00:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDDA13DBAF;
+	Tue, 23 Jan 2024 01:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970348; cv=none; b=R+NGHt4Sh/i+J77F6LJYSHWG9tkeUNsaNI2UoIVOC6KleJ/3bpvDx1iC1X4dCbkjtb0C5HjvJdOISVf74Vn+g06rp9RXdIM2MXlEZj0BQ7Tt5wXPTBYsD9RGdk4E285E4Yf8BHksa0jHtT7hZrzsVARQLpmo3fUByTmGAt2FMeg=
+	t=1705971979; cv=none; b=RDBmVZqncOST3K6F6adZt72kKcAtayLRgZu7YqV10TWhWOU5R1S6G4Ala3WbL+ziA0YoQXQ5awa7OQrdl+7yJZS9VmtbSg4BWC1mu20GdbNpB3J6QSYpeJXraAwCOYAla83oxeoC9HEy1rHQNfdcy3sweXW754GSZZ3+hvqV/iM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970348; c=relaxed/simple;
-	bh=Z9M+oCeannoAnAH//HqwoEdLByCcc9yrmNiRMDLx4Cc=;
+	s=arc-20240116; t=1705971979; c=relaxed/simple;
+	bh=KJBB89CpZ3dW8Is283WA0ESm201JPcBDsIoBvf3KyM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nn10CEQs7CnFpqWcDc86sipOljU7hTjixzcy+vo1iTEwonOLMZvHMBKIUZu97QxuJSRsGGoecnbI9Hzob+5i9xoAR2/y/FzzB6UwXPT822oqcz2ZnZQRH94bimshPnrrtH0G9CFyuRJ9b9mHVgRaIWhqQSA8SPwZ4825WG+ToT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeiuw5OE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDCDC433F1;
-	Tue, 23 Jan 2024 00:39:08 +0000 (UTC)
+	 MIME-Version; b=bYhY+iVGjIdDYGkiQKY6Xn17JpUui1hZYSvBHOUfwu4SmfHFCBSGN7RhzOmj3qUtiqjxFxnRCqOQfY+QLnw/a9eys1Z4tcQDe3B8owihXKUqTrw6mNQR46vK86AouU57YsK5W0fNcLMNAnfALx054QZzQlS7wfZu8La8mtKFBF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m53y/bg2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA31C433F1;
+	Tue, 23 Jan 2024 01:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970348;
-	bh=Z9M+oCeannoAnAH//HqwoEdLByCcc9yrmNiRMDLx4Cc=;
+	s=korg; t=1705971979;
+	bh=KJBB89CpZ3dW8Is283WA0ESm201JPcBDsIoBvf3KyM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oeiuw5OETZFAHP6OvcU68k+crBNc67fvKQ96DnDhZdF78C1yeDHBR163BWI86Zhfg
-	 6kJzc6JNYlxQNZPc/LDfgbvM9XmqlBamlp5sGoLo/issGbK6h+zlo9799qx6DRDUHi
-	 YTYa2XvIXFSX2sM/+c8Yg/SLB8gFIKN0vpGuhI10=
+	b=m53y/bg2PmHdaf8WMgZX0pMEMLl9C5yC/qTBp4DOpMr3StruRi2QcaRhAB+b/VTZD
+	 VMZzhcfcYTV2S1TuG4cQIWtTonB3yNXCVV139G8vffasoap1wPV2/NIz3LjO+OZUDE
+	 3/VfbUUTzdrBdMyBClmKViUwrrp0atArVtg9NFOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Chunfeng Yun <chunfeng.yun@mediatek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 633/641] loop: fix the the direct I/O support check when used on top of block devices
+Subject: [PATCH 6.1 369/417] usb: xhci-mtk: fix a short packet issue of gen1 isoc-in transfer
 Date: Mon, 22 Jan 2024 15:58:57 -0800
-Message-ID: <20240122235838.079801656@linuxfoundation.org>
+Message-ID: <20240122235804.591858440@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Chunfeng Yun <chunfeng.yun@mediatek.com>
 
-[ Upstream commit baa7d536077dcdfe2b70c476a8873d1745d3de0f ]
+[ Upstream commit 017dbfc05c31284150819890b4cc86a699cbdb71 ]
 
-__loop_update_dio only checks the alignment requirement for block backed
-file systems, but misses them for the case where the loop device is
-created directly on top of another block device.  Due to this creating
-a loop device with default option plus the direct I/O flag on a > 512 byte
-sector size file system will lead to incorrect I/O being submitted to the
-lower block device and a lot of error from the lock layer.  This can
-be seen with xfstests generic/563.
+For Gen1 isoc-in transfer, host still send out unexpected ACK after device
+finish the burst with a short packet, this will cause an exception on the
+connected device, such as, a usb 4k camera.
+It can be fixed by setting rxfifo depth less than 4k bytes, prefer to use
+3k here, the side-effect is that may cause performance drop about 10%,
+including bulk transfer.
 
-Fix the code in __loop_update_dio by factoring the alignment check into
-a helper, and calling that also for the struct block_device of a block
-device inode.
-
-Also remove the TODO comment talking about dynamically switching between
-buffered and direct I/O, which is a would be a recipe for horrible
-performance and occasional data loss.
-
-Fixes: 2e5ab5f379f9 ("block: loop: prepare for supporing direct IO")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240117175901.871796-1-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 926d60ae64a6 ("usb: xhci-mtk: modify the SOF/ITP interval for mt8195")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Chunfeng Yun <chunfeng.yun@mediatek.com>
+Link: https://lore.kernel.org/r/20240104061640.7335-2-chunfeng.yun@mediatek.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c | 52 +++++++++++++++++++++-----------------------
- 1 file changed, 25 insertions(+), 27 deletions(-)
+ drivers/usb/host/xhci-mtk.c | 40 +++++++++++++++++++++++++++++++++++--
+ drivers/usb/host/xhci-mtk.h |  2 ++
+ 2 files changed, 40 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 9f2d412fc560..552f56a84a7e 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -165,39 +165,37 @@ static loff_t get_loop_size(struct loop_device *lo, struct file *file)
- 	return get_size(lo->lo_offset, lo->lo_sizelimit, file);
+diff --git a/drivers/usb/host/xhci-mtk.c b/drivers/usb/host/xhci-mtk.c
+index a0921687444b..bb4f80627cdc 100644
+--- a/drivers/usb/host/xhci-mtk.c
++++ b/drivers/usb/host/xhci-mtk.c
+@@ -7,6 +7,7 @@
+  *  Chunfeng Yun <chunfeng.yun@mediatek.com>
+  */
+ 
++#include <linux/bitfield.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/iopoll.h>
+ #include <linux/kernel.h>
+@@ -73,6 +74,9 @@
+ #define FRMCNT_LEV1_RANG	(0x12b << 8)
+ #define FRMCNT_LEV1_RANG_MASK	GENMASK(19, 8)
+ 
++#define HSCH_CFG1		0x960
++#define SCH3_RXFIFO_DEPTH_MASK	GENMASK(21, 20)
++
+ #define SS_GEN2_EOF_CFG		0x990
+ #define SSG2EOF_OFFSET		0x3c
+ 
+@@ -114,6 +118,8 @@
+ #define SSC_IP_SLEEP_EN	BIT(4)
+ #define SSC_SPM_INT_EN		BIT(1)
+ 
++#define SCH_FIFO_TO_KB(x)	((x) >> 10)
++
+ enum ssusb_uwk_vers {
+ 	SSUSB_UWK_V1 = 1,
+ 	SSUSB_UWK_V2,
+@@ -165,6 +171,35 @@ static void xhci_mtk_set_frame_interval(struct xhci_hcd_mtk *mtk)
+ 	writel(value, hcd->regs + SS_GEN2_EOF_CFG);
  }
  
 +/*
-+ * We support direct I/O only if lo_offset is aligned with the logical I/O size
-+ * of backing device, and the logical block size of loop is bigger than that of
-+ * the backing device.
++ * workaround: usb3.2 gen1 isoc rx hw issue
++ * host send out unexpected ACK afer device fininsh a burst transfer with
++ * a short packet.
 + */
-+static bool lo_bdev_can_use_dio(struct loop_device *lo,
-+		struct block_device *backing_bdev)
++static void xhci_mtk_rxfifo_depth_set(struct xhci_hcd_mtk *mtk)
 +{
-+	unsigned short sb_bsize = bdev_logical_block_size(backing_bdev);
++	struct usb_hcd *hcd = mtk->hcd;
++	u32 value;
 +
-+	if (queue_logical_block_size(lo->lo_queue) < sb_bsize)
-+		return false;
-+	if (lo->lo_offset & (sb_bsize - 1))
-+		return false;
-+	return true;
++	if (!mtk->rxfifo_depth)
++		return;
++
++	value = readl(hcd->regs + HSCH_CFG1);
++	value &= ~SCH3_RXFIFO_DEPTH_MASK;
++	value |= FIELD_PREP(SCH3_RXFIFO_DEPTH_MASK,
++			    SCH_FIFO_TO_KB(mtk->rxfifo_depth) - 1);
++	writel(value, hcd->regs + HSCH_CFG1);
 +}
 +
- static void __loop_update_dio(struct loop_device *lo, bool dio)
++static void xhci_mtk_init_quirk(struct xhci_hcd_mtk *mtk)
++{
++	/* workaround only for mt8195 */
++	xhci_mtk_set_frame_interval(mtk);
++
++	/* workaround for SoCs using SSUSB about before IPM v1.6.0 */
++	xhci_mtk_rxfifo_depth_set(mtk);
++}
++
+ static int xhci_mtk_host_enable(struct xhci_hcd_mtk *mtk)
  {
- 	struct file *file = lo->lo_backing_file;
--	struct address_space *mapping = file->f_mapping;
--	struct inode *inode = mapping->host;
--	unsigned short sb_bsize = 0;
--	unsigned dio_align = 0;
-+	struct inode *inode = file->f_mapping->host;
-+	struct block_device *backing_bdev = NULL;
- 	bool use_dio;
+ 	struct mu3c_ippc_regs __iomem *ippc = mtk->ippc_regs;
+@@ -453,8 +488,7 @@ static int xhci_mtk_setup(struct usb_hcd *hcd)
+ 		if (ret)
+ 			return ret;
  
--	if (inode->i_sb->s_bdev) {
--		sb_bsize = bdev_logical_block_size(inode->i_sb->s_bdev);
--		dio_align = sb_bsize - 1;
--	}
-+	if (S_ISBLK(inode->i_mode))
-+		backing_bdev = I_BDEV(inode);
-+	else if (inode->i_sb->s_bdev)
-+		backing_bdev = inode->i_sb->s_bdev;
+-		/* workaround only for mt8195 */
+-		xhci_mtk_set_frame_interval(mtk);
++		xhci_mtk_init_quirk(mtk);
+ 	}
  
--	/*
--	 * We support direct I/O only if lo_offset is aligned with the
--	 * logical I/O size of backing device, and the logical block
--	 * size of loop is bigger than the backing device's.
--	 *
--	 * TODO: the above condition may be loosed in the future, and
--	 * direct I/O may be switched runtime at that time because most
--	 * of requests in sane applications should be PAGE_SIZE aligned
--	 */
--	if (dio) {
--		if (queue_logical_block_size(lo->lo_queue) >= sb_bsize &&
--		    !(lo->lo_offset & dio_align) &&
--		    (file->f_mode & FMODE_CAN_ODIRECT))
--			use_dio = true;
--		else
--			use_dio = false;
--	} else {
--		use_dio = false;
--	}
-+	use_dio = dio && (file->f_mode & FMODE_CAN_ODIRECT) &&
-+		(!backing_bdev || lo_bdev_can_use_dio(lo, backing_bdev));
+ 	ret = xhci_gen_setup(hcd, xhci_mtk_quirks);
+@@ -531,6 +565,8 @@ static int xhci_mtk_probe(struct platform_device *pdev)
+ 	of_property_read_u32(node, "mediatek,u2p-dis-msk",
+ 			     &mtk->u2p_dis_msk);
  
- 	if (lo->use_dio == use_dio)
- 		return;
++	of_property_read_u32(node, "rx-fifo-depth", &mtk->rxfifo_depth);
++
+ 	ret = usb_wakeup_of_property_parse(mtk, node);
+ 	if (ret) {
+ 		dev_err(dev, "failed to parse uwk property\n");
+diff --git a/drivers/usb/host/xhci-mtk.h b/drivers/usb/host/xhci-mtk.h
+index 1174a510dd38..2a6a47d0f09a 100644
+--- a/drivers/usb/host/xhci-mtk.h
++++ b/drivers/usb/host/xhci-mtk.h
+@@ -160,6 +160,8 @@ struct xhci_hcd_mtk {
+ 	struct regmap *uwk;
+ 	u32 uwk_reg_base;
+ 	u32 uwk_vers;
++	/* quirk */
++	u32 rxfifo_depth;
+ };
+ 
+ static inline struct xhci_hcd_mtk *hcd_to_mtk(struct usb_hcd *hcd)
 -- 
 2.43.0
 
