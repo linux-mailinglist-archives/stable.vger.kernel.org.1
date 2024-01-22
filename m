@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-13554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E5E4837C94
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE2838383D0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D20001C2890C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C93A1C295CA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97DC013666A;
-	Tue, 23 Jan 2024 00:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A03564CE9;
+	Tue, 23 Jan 2024 01:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJN51Ni9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x61emzHs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F331136658;
-	Tue, 23 Jan 2024 00:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BC7651BC;
+	Tue, 23 Jan 2024 01:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969674; cv=none; b=hetXgYHW/WsGeOGe6MAKZCbagT5ejr5Xvsz5BiQrOnIKCs/jfuizRljsgRbl2qq4hTCDjA+JbcvJr4zR7TWKKS0K21W58lsAL9DUd+cOT+T4NAM/+8uZ8PqPiO57lGbJPq1lurd48b+a39D9nAMr1elkLbs52eAHsh+2jw529pw=
+	t=1705975071; cv=none; b=hL3vEPintNf/LL92nrVNj3n2z90gUaS2kQdC7hgSYb9ntwSaWpnAOoW3CkL3jltoShTTtFPh27YhzwYbNyK/B/a+xT9fkg9p5CK3KmNeRIvVepz7Px4hERr/YfFB91yi+WBGoSRBEXQ+Y2Rw5GDp1MCsS7mJJP5kokAcKLKWnVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969674; c=relaxed/simple;
-	bh=8ldTsHBR8+UfMAM9Ms8ceIPB+37tzxc7GRSf9YnjQDw=;
+	s=arc-20240116; t=1705975071; c=relaxed/simple;
+	bh=EU/2OLK3hhfPiS5Gi+r78raRDDiOXywCJDc4e/RmXy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s4ZQtN+t1WpEY2cNPZPoq6x9Y8xVgZ0bScj6dJ5nJ9Py+G3jNuVbsThrMQyNjWn5ODPh6H7RRbdDCkJw3q7y/BJQp6kSeRzySF+Bpu5jq3XV6axxJf7ynSMqQ/SFbpTh+JHV17+clRxZZZa5lP1H6sfzlrYquIVI9tS0QvTBwp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJN51Ni9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068CCC433C7;
-	Tue, 23 Jan 2024 00:27:54 +0000 (UTC)
+	 MIME-Version; b=Yz/axlKA9waL1BQ0SppVZdKuE0WnI3grlg9XZnK234BzXQQKCBYc8TgadnB9cAXydhL0XyLz564CKhWvdhPcVHGqYJMkxaeHAjh9yOuGaF/K68snTOOB0YurQIutXEmSuBca6LicgJ1GP7Ri36hTiGLXc6KjDyil4d6Tjj6A+T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x61emzHs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E023CC43394;
+	Tue, 23 Jan 2024 01:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969674;
-	bh=8ldTsHBR8+UfMAM9Ms8ceIPB+37tzxc7GRSf9YnjQDw=;
+	s=korg; t=1705975071;
+	bh=EU/2OLK3hhfPiS5Gi+r78raRDDiOXywCJDc4e/RmXy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nJN51Ni9B+a8VNDjAlYPFoclpZMk5EnvfuuL717Ddy1ut6wtJrhZzCwi1sdTvTi1/
-	 f6xKFMoicuhEW2DRfUkFPiNqRKpJzmpPbHIt8hQ8Th2f+OYScUSCUelIxiTWrlAN7N
-	 GSWV0lvLuSYVgoYH61aBuY2ophht1bDLwT7WoAaE=
+	b=x61emzHsIgVTwlrECMfLLui3q+VD3f0iprK9TWgDnyoCAsbJxxTE4sxTLEqoOBOJr
+	 RRUanz09a6+DQag+JXnT//hZ+Uz3AaYF2HyEJBUw44yj6/z2SLjRVfs8TjTVGHLbhp
+	 F4YqyUdJ7KJuIxsqv+4QdEfy6NX451xBKookReRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-sound@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-	Takashi Iwai <tiwai@suse.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Steven Price <steven.price@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 372/641] kselftest/alsa - conf: Stringify the printed errno in sysfs_get()
+Subject: [PATCH 6.6 225/583] drm/panfrost: Really power off GPU cores in panfrost_gpu_power_off()
 Date: Mon, 22 Jan 2024 15:54:36 -0800
-Message-ID: <20240122235829.600410402@linuxfoundation.org>
+Message-ID: <20240122235818.890074201@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,61 +60,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit fd38dd6abda589a8771e7872e4dea28c99c6a6ef ]
+[ Upstream commit 22aa1a209018dc2eca78745f7666db63637cd5dc ]
 
-GCC 13.2.0 reported the warning of the print format specifier:
+The layout of the registers {TILER,SHADER,L2}_PWROFF_LO, used to request
+powering off cores, is the same as the {TILER,SHADER,L2}_PWRON_LO ones:
+this means that in order to request poweroff of cores, we are supposed
+to write a bitmask of cores that should be powered off!
+This means that the panfrost_gpu_power_off() function has always been
+doing nothing.
 
-conf.c: In function ‘sysfs_get’:
-conf.c:181:72: warning: format ‘%s’ expects argument of type ‘char *’, \
-			but argument 3 has type ‘int’ [-Wformat=]
-  181 |                 ksft_exit_fail_msg("sysfs: unable to read value '%s': %s\n",
-      |                                                                       ~^
-      |                                                                        |
-      |                                                                        char *
-      |                                                                       %d
+Fix powering off the GPU by writing a bitmask of the cores to poweroff
+to the relevant PWROFF_LO registers and then check that the transition
+(from ON to OFF) has finished by polling the relevant PWRTRANS_LO
+registers.
 
-The fix passes strerror(errno) as it was intended, like in the sibling error
-exit message.
+While at it, in order to avoid code duplication, move the core mask
+logic from panfrost_gpu_power_on() to a new panfrost_get_core_mask()
+function, used in both poweron and poweroff.
 
-Fixes: aba51cd0949ae ("selftests: alsa - add PCM test")
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: linux-sound@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240107173704.937824-5-mirsad.todorovac@alu.unizg.hr
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231102141507.73481-1-angelogioacchino.delregno@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/alsa/conf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/panfrost/panfrost_gpu.c | 64 ++++++++++++++++++-------
+ 1 file changed, 46 insertions(+), 18 deletions(-)
 
-diff --git a/tools/testing/selftests/alsa/conf.c b/tools/testing/selftests/alsa/conf.c
-index 00925eb8d9f4..89e3656a042d 100644
---- a/tools/testing/selftests/alsa/conf.c
-+++ b/tools/testing/selftests/alsa/conf.c
-@@ -179,7 +179,7 @@ static char *sysfs_get(const char *sysfs_root, const char *id)
- 	close(fd);
- 	if (len < 0)
- 		ksft_exit_fail_msg("sysfs: unable to read value '%s': %s\n",
--				   path, errno);
-+				   path, strerror(errno));
- 	while (len > 0 && path[len-1] == '\n')
- 		len--;
- 	path[len] = '\0';
+diff --git a/drivers/gpu/drm/panfrost/panfrost_gpu.c b/drivers/gpu/drm/panfrost/panfrost_gpu.c
+index d28b99732dde..e20619169fe1 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_gpu.c
++++ b/drivers/gpu/drm/panfrost/panfrost_gpu.c
+@@ -321,28 +321,38 @@ static void panfrost_gpu_init_features(struct panfrost_device *pfdev)
+ 		 pfdev->features.shader_present, pfdev->features.l2_present);
+ }
+ 
++static u64 panfrost_get_core_mask(struct panfrost_device *pfdev)
++{
++	u64 core_mask;
++
++	if (pfdev->features.l2_present == 1)
++		return U64_MAX;
++
++	/*
++	 * Only support one core group now.
++	 * ~(l2_present - 1) unsets all bits in l2_present except
++	 * the bottom bit. (l2_present - 2) has all the bits in
++	 * the first core group set. AND them together to generate
++	 * a mask of cores in the first core group.
++	 */
++	core_mask = ~(pfdev->features.l2_present - 1) &
++		     (pfdev->features.l2_present - 2);
++	dev_info_once(pfdev->dev, "using only 1st core group (%lu cores from %lu)\n",
++		      hweight64(core_mask),
++		      hweight64(pfdev->features.shader_present));
++
++	return core_mask;
++}
++
+ void panfrost_gpu_power_on(struct panfrost_device *pfdev)
+ {
+ 	int ret;
+ 	u32 val;
+-	u64 core_mask = U64_MAX;
++	u64 core_mask;
+ 
+ 	panfrost_gpu_init_quirks(pfdev);
++	core_mask = panfrost_get_core_mask(pfdev);
+ 
+-	if (pfdev->features.l2_present != 1) {
+-		/*
+-		 * Only support one core group now.
+-		 * ~(l2_present - 1) unsets all bits in l2_present except
+-		 * the bottom bit. (l2_present - 2) has all the bits in
+-		 * the first core group set. AND them together to generate
+-		 * a mask of cores in the first core group.
+-		 */
+-		core_mask = ~(pfdev->features.l2_present - 1) &
+-			     (pfdev->features.l2_present - 2);
+-		dev_info_once(pfdev->dev, "using only 1st core group (%lu cores from %lu)\n",
+-			      hweight64(core_mask),
+-			      hweight64(pfdev->features.shader_present));
+-	}
+ 	gpu_write(pfdev, L2_PWRON_LO, pfdev->features.l2_present & core_mask);
+ 	ret = readl_relaxed_poll_timeout(pfdev->iomem + L2_READY_LO,
+ 		val, val == (pfdev->features.l2_present & core_mask),
+@@ -367,9 +377,27 @@ void panfrost_gpu_power_on(struct panfrost_device *pfdev)
+ 
+ void panfrost_gpu_power_off(struct panfrost_device *pfdev)
+ {
+-	gpu_write(pfdev, TILER_PWROFF_LO, 0);
+-	gpu_write(pfdev, SHADER_PWROFF_LO, 0);
+-	gpu_write(pfdev, L2_PWROFF_LO, 0);
++	u64 core_mask = panfrost_get_core_mask(pfdev);
++	int ret;
++	u32 val;
++
++	gpu_write(pfdev, SHADER_PWROFF_LO, pfdev->features.shader_present & core_mask);
++	ret = readl_relaxed_poll_timeout(pfdev->iomem + SHADER_PWRTRANS_LO,
++					 val, !val, 1, 1000);
++	if (ret)
++		dev_err(pfdev->dev, "shader power transition timeout");
++
++	gpu_write(pfdev, TILER_PWROFF_LO, pfdev->features.tiler_present);
++	ret = readl_relaxed_poll_timeout(pfdev->iomem + TILER_PWRTRANS_LO,
++					 val, !val, 1, 1000);
++	if (ret)
++		dev_err(pfdev->dev, "tiler power transition timeout");
++
++	gpu_write(pfdev, L2_PWROFF_LO, pfdev->features.l2_present & core_mask);
++	ret = readl_poll_timeout(pfdev->iomem + L2_PWRTRANS_LO,
++				 val, !val, 0, 1000);
++	if (ret)
++		dev_err(pfdev->dev, "l2 power transition timeout");
+ }
+ 
+ int panfrost_gpu_init(struct panfrost_device *pfdev)
 -- 
 2.43.0
 
