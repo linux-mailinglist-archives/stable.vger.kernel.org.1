@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-12946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57A6B837A8E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E26837AB4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E928B2B13F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:45:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58E241F247CD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD4BA1272CA;
-	Tue, 23 Jan 2024 00:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06C7130E48;
+	Tue, 23 Jan 2024 00:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TwRHfvv/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHWLN0Sx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1B31272B5;
-	Tue, 23 Jan 2024 00:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F3312FF86;
+	Tue, 23 Jan 2024 00:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968512; cv=none; b=AVNX7q1tQQeOOjbQLnPwrohoEt+P+58axXoZdnKnUNdmzwW2AcKfmCrb15wrL6LqfkvI/m7ZvFNzuVuPWRzwxhnZKb4D2iOO9q094oDvOe46zuCg3uhXK9JNvFVDLbt4AX8pXqnJc5C4+uHTfOsInysZgoHJ6F2nwHLnA3622IE=
+	t=1705969062; cv=none; b=K4KhmjBIcqXLrpKq6DbZvyXhZsSmy7alVWiX5e+17ckoszmd6FIcRlV1kQRvsA0BjC74KJ6urVcqt8nwS4Mce+plV03rr4dy4mXuZZhSRPO4S5Hlz41Ze0SixVKRrcN7Mq03+8ZOkKYi/7Dl740yO6rW8l3G5T1l7dEnQ8SQlvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968512; c=relaxed/simple;
-	bh=dSKaPmA+gIzllEGznL9loMjQc9+pcWsxqhn6tuQw8yc=;
+	s=arc-20240116; t=1705969062; c=relaxed/simple;
+	bh=EMzseC5oaKX1Uix1RrDm43qeFINNgHDLPi34Wm+RWCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OKy35A0F2iIpDoA9RHx4kB5bC1gk/jC8Q5hz0iLUNfD30DsBfv3vwWoF24J2h9x91tCqF6dO6hhwURrTqgLb00vlka5WCDVmnugaVdZrWwCKCpnLi7kWKIsuKwQJ05hqs5OwEKz+vDZAc2Yq5h2M2fZZqAh50GGP+Dm56YP1Vgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TwRHfvv/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F040C433F1;
-	Tue, 23 Jan 2024 00:08:31 +0000 (UTC)
+	 MIME-Version; b=FMceuJfmw+p/uvvu4NcKizbX7ZJQvZqEnxtKXcatkCL+e+Kkf6pMPs+krpt1xBEAa9puQW/Ey7VnUgnT9upKq9O7BcenEKIKBmEIiAYd8Z7VRFzIc52Y8kUAm2mqh1L00Ji0IDr/vxrAgag3EwhDZUiuN45JBkiOA942DKO7/qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHWLN0Sx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31AA5C433C7;
+	Tue, 23 Jan 2024 00:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968512;
-	bh=dSKaPmA+gIzllEGznL9loMjQc9+pcWsxqhn6tuQw8yc=;
+	s=korg; t=1705969062;
+	bh=EMzseC5oaKX1Uix1RrDm43qeFINNgHDLPi34Wm+RWCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TwRHfvv/RJFlONaBCmDiI48NJAqztN/hMnroJyYVPEKPfsDcPvXvF8XxdfKc3NUhf
-	 O9zT23GvbaAx4jSpBe9OU/7ocq6bk+Zbv9bZYU7IHM/IGDFmnSO6QAkkrcyLWr+ISN
-	 hcZoBb9VYitpZGjcv9SJrNsK6CXy6XNm7wj9rl8M=
+	b=RHWLN0SxTw6uPUT7Ya/pirRjcZ77Ycb312vGGTWIvv6RylgrEztJE49Yv6vXA+Cwp
+	 jFqEhrhb8SjC7c6TFZYzjVFzWVPjvro9NVdmLtBVnYw4qulnL04iI2tOmIdPLeP/62
+	 RzvI8DHU1Xy9rjTaYHNNANAW7B0Qpw2wZPRdtBas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 4.19 128/148] fbdev: flush deferred work in fb_deferred_io_fsync()
-Date: Mon, 22 Jan 2024 15:58:04 -0800
-Message-ID: <20240122235717.719869744@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 155/194] ALSA: oxygen: Fix right channel of capture volume mixer
+Date: Mon, 22 Jan 2024 15:58:05 -0800
+Message-ID: <20240122235725.840308983@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 15e4c1f462279b4e128f27de48133e0debe9e0df upstream.
+commit a03cfad512ac24a35184d7d87ec0d5489e1cb763 upstream.
 
-The driver's fsync() is supposed to flush any pending operation to
-hardware. It is implemented in this driver by cancelling the queued
-deferred IO first, then schedule it for "immediate execution" by calling
-schedule_delayed_work() again with delay=0. However, setting delay=0
-only means the work is scheduled immediately, it does not mean the work
-is executed immediately. There is no guarantee that the work is finished
-after schedule_delayed_work() returns. After this driver's fsync()
-returns, there can still be pending work. Furthermore, if close() is
-called by users immediately after fsync(), the pending work gets
-cancelled and fsync() may do nothing.
+There was a typo in oxygen mixer code that didn't update the right
+channel value properly for the capture volume.  Let's fix it.
 
-To ensure that the deferred IO completes, use flush_delayed_work()
-instead. Write operations to this driver either write to the device
-directly, or invoke schedule_delayed_work(); so by flushing the
-workqueue, it can be guaranteed that all previous writes make it to the
-device.
+This trivial fix was originally reported on Bugzilla.
 
-Fixes: 5e841b88d23d ("fb: fsync() method for deferred I/O flush.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: a3601560496d ("[ALSA] oxygen: add front panel controls")
+Cc: <stable@vger.kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=156561
+Link: https://lore.kernel.org/r/20240112111023.6208-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fb_defio.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ sound/pci/oxygen/oxygen_mixer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/core/fb_defio.c
-+++ b/drivers/video/fbdev/core/fb_defio.c
-@@ -78,11 +78,7 @@ int fb_deferred_io_fsync(struct file *fi
- 		return 0;
- 
- 	inode_lock(inode);
--	/* Kill off the delayed work */
--	cancel_delayed_work_sync(&info->deferred_work);
--
--	/* Run it immediately */
--	schedule_delayed_work(&info->deferred_work, 0);
-+	flush_delayed_work(&info->deferred_work);
- 	inode_unlock(inode);
- 
- 	return 0;
+--- a/sound/pci/oxygen/oxygen_mixer.c
++++ b/sound/pci/oxygen/oxygen_mixer.c
+@@ -718,7 +718,7 @@ static int ac97_fp_rec_volume_put(struct
+ 	oldreg = oxygen_read_ac97(chip, 1, AC97_REC_GAIN);
+ 	newreg = oldreg & ~0x0707;
+ 	newreg = newreg | (value->value.integer.value[0] & 7);
+-	newreg = newreg | ((value->value.integer.value[0] & 7) << 8);
++	newreg = newreg | ((value->value.integer.value[1] & 7) << 8);
+ 	change = newreg != oldreg;
+ 	if (change)
+ 		oxygen_write_ac97(chip, 1, AC97_REC_GAIN, newreg);
 
 
 
