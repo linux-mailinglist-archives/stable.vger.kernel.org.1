@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C363837FCC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FBE837D3F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7269D1C29183
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CE552921FE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE0F12BEA1;
-	Tue, 23 Jan 2024 00:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C0C053806;
+	Tue, 23 Jan 2024 00:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3MSp6nM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmZNQ9es"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7900364CDA;
-	Tue, 23 Jan 2024 00:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29717524B5;
+	Tue, 23 Jan 2024 00:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971355; cv=none; b=Qz7Lve+/XUsYJT0wJ86yw69lQeWHgZ0nbUoDpHQ21B6bC1Xe4hPWbbZoNXHz8j0E8qblFv4Z91iW61wBFrP/OD7cwbArQqVdSn/CGp77P1g/Eci9DshDoldPEkWjVPkjNp1w758xJZG6wJ+NUS9Rd1j0WB96Ayo7bZ82aj7MR0g=
+	t=1705969862; cv=none; b=sFvaDIA8HWrqwdMiSaUlQRSkZlLemJI78hoeqTv6KfHxqMccfR0Tkze33kGjvVdgnzmLqcMzaCpqgNM+Z+QE7EMfa0qmB+iDTZ+lDbRc1VAOte+vzcHb5RCLEogpJ8TwrS2yec7EuUrAqgwGbYNKgRZoHi59OX7FvHb3sznfBTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971355; c=relaxed/simple;
-	bh=guq6HyedpCgIMgbeWJjX+56YacbzZKuIb8d86CRC+FM=;
+	s=arc-20240116; t=1705969862; c=relaxed/simple;
+	bh=TSlte6UC3our9tRTYMD/O7OWYA7diOC0YG78L64ELeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o+gy5wrjALiqGmfJ1aoibiEF/n7H/rWi1CeESZ+KJ2ykcXZnhOmX/Q4HSm4ob9IHxiCBWLZqxhUd36syXLBqR67oI2UNtrVzKrzbjOzp4ZTvKBRY/IBNKd0dSBK1UiuVExijwoC4SiCgR/Vyxg9vjAWagPpCHivWE66mQZF6lNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3MSp6nM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF71C433C7;
-	Tue, 23 Jan 2024 00:55:54 +0000 (UTC)
+	 MIME-Version; b=HDcgjuJEvdKE9eeDrK2vn/N60YtqNq+zgfdPOfu3G/f4J0qT+hCANbqKHnbcFBS1wwjZALgZFnP0BYGBmoFPfa3Di1X38I0G/tG4xykfqQCpiOZI02UcQXq0dsyE7MYmhz98q6EBBm2OrOCKPhforXF/B+SOFpU3InmkfKQJgVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QmZNQ9es; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C28C433F1;
+	Tue, 23 Jan 2024 00:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971355;
-	bh=guq6HyedpCgIMgbeWJjX+56YacbzZKuIb8d86CRC+FM=;
+	s=korg; t=1705969862;
+	bh=TSlte6UC3our9tRTYMD/O7OWYA7diOC0YG78L64ELeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H3MSp6nMJo20ItR54lsxQm1rItBgqtFDp8bG2QlsQc0jgvQ2+QH8IdZKU7ZwMSfSe
-	 BrW9be2nK10bpxuTFJW+ZxC54tC4CA26WWEm4/mQAp4nd1mQn0B+ouVLnHyRSf15kS
-	 /S5jVkTYkp52TayYO3jkFeoGxDjzl+i+kZQJ0Sl0=
+	b=QmZNQ9esgOAkJmWBXx8ew1IB3M4fKcHmfIsHqwU3UgO5n+FOSdDGJ6ASYFc4yhxOo
+	 9BxyCPv0/3nGHfUFMkGzpu1bJjBN65mNL+2QjhIL6FVT7/B9SuagkNh8yaVx36FZSV
+	 E0FfrF1P4RR8rnZGSd8w+C5Lw9Z9MWPeQz/k4yVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Thierry Reding <thierry.reding@gmail.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 228/417] pwm: stm32: Use regmap_clear_bits and regmap_set_bits where applicable
+Subject: [PATCH 6.7 492/641] mips: Fix incorrect max_low_pfn adjustment
 Date: Mon, 22 Jan 2024 15:56:36 -0800
-Message-ID: <20240122235759.802957845@linuxfoundation.org>
+Message-ID: <20240122235833.467748903@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,151 +60,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-[ Upstream commit 632ae5d7eb348b3ef88552ec0999260b6f9d6ab1 ]
+[ Upstream commit 0f5cc249ff73552d3bd864e62f85841dafaa107d ]
 
-Found using coccinelle and the following semantic patch:
+max_low_pfn variable is incorrectly adjusted if the kernel is built with
+high memory support and the later is detected in a running system, so the
+memory which actually can be directly mapped is getting into the highmem
+zone. See the ZONE_NORMAL range on my MIPS32r5 system:
 
-@@
-expression map, reg, bits;
-@@
+> Zone ranges:
+>   DMA      [mem 0x0000000000000000-0x0000000000ffffff]
+>   Normal   [mem 0x0000000001000000-0x0000000007ffffff]
+>   HighMem  [mem 0x0000000008000000-0x000000020fffffff]
 
-- regmap_update_bits(map, reg, bits, bits)
-+ regmap_set_bits(map, reg, bits)
+while the zones are supposed to look as follows:
 
-@@
-expression map, reg, bits;
-@@
+> Zone ranges:
+>   DMA      [mem 0x0000000000000000-0x0000000000ffffff]
+>   Normal   [mem 0x0000000001000000-0x000000001fffffff]
+>   HighMem  [mem 0x0000000020000000-0x000000020fffffff]
 
-- regmap_update_bits(map, reg, bits, 0)
-+ regmap_clear_bits(map, reg, bits)
+Even though the physical memory within the range [0x08000000;0x20000000]
+belongs to MMIO on our system, we don't really want it to be considered as
+high memory since on MIPS32 that range still can be directly mapped.
 
-Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://lore.kernel.org/r/20221115111347.3705732-6-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
-Stable-dep-of: 19f1016ea960 ("pwm: stm32: Fix enable count for clk in .probe()")
+Note there might be other problems caused by the max_low_pfn variable
+misconfiguration. For instance high_memory variable is initialize with
+virtual address corresponding to the max_low_pfn PFN, and by design it
+must define the upper bound on direct map memory, then end of the normal
+zone. That in its turn potentially may cause problems in accessing the
+memory by means of the /dev/mem and /dev/kmem devices.
+
+Let's fix the discovered misconfiguration then. It turns out the commit
+a94e4f24ec83 ("MIPS: init: Drop boot_mem_map") didn't introduce the
+max_low_pfn adjustment quite correct. If the kernel is built with high
+memory support and the system is equipped with high memory, the
+max_low_pfn variable will need to be initialized with PFN of the most
+upper directly reachable memory address so the zone normal would be
+correctly setup. On MIPS that PFN corresponds to PFN_DOWN(HIGHMEM_START).
+If the system is built with no high memory support and one is detected in
+the running system, we'll just need to adjust the max_pfn variable to
+discard the found high memory from the system and leave the max_low_pfn as
+is, since the later will be less than PFN_DOWN(HIGHMEM_START) anyway by
+design of the for_each_memblock() loop performed a bit early in the
+bootmem_init() method.
+
+Fixes: a94e4f24ec83 ("MIPS: init: Drop boot_mem_map")
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32.c | 34 ++++++++++++++++------------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ arch/mips/kernel/setup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index 794ca5b02968..21e4a34dfff3 100644
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -115,14 +115,14 @@ static int stm32_pwm_raw_capture(struct stm32_pwm *priv, struct pwm_device *pwm,
- 	int ret;
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 2d2ca024bd47..0461ab49e8f1 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -321,11 +321,11 @@ static void __init bootmem_init(void)
+ 		panic("Incorrect memory mapping !!!");
  
- 	/* Ensure registers have been updated, enable counter and capture */
--	regmap_update_bits(priv->regmap, TIM_EGR, TIM_EGR_UG, TIM_EGR_UG);
--	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, TIM_CR1_CEN);
-+	regmap_set_bits(priv->regmap, TIM_EGR, TIM_EGR_UG);
-+	regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
- 
- 	/* Use cc1 or cc3 DMA resp for PWM input channels 1 & 2 or 3 & 4 */
- 	dma_id = pwm->hwpwm < 2 ? STM32_TIMERS_DMA_CH1 : STM32_TIMERS_DMA_CH3;
- 	ccen = pwm->hwpwm < 2 ? TIM_CCER_CC12E : TIM_CCER_CC34E;
- 	ccr = pwm->hwpwm < 2 ? TIM_CCR1 : TIM_CCR3;
--	regmap_update_bits(priv->regmap, TIM_CCER, ccen, ccen);
-+	regmap_set_bits(priv->regmap, TIM_CCER, ccen);
- 
- 	/*
- 	 * Timer DMA burst mode. Request 2 registers, 2 bursts, to get both
-@@ -160,8 +160,8 @@ static int stm32_pwm_raw_capture(struct stm32_pwm *priv, struct pwm_device *pwm,
+ 	if (max_pfn > PFN_DOWN(HIGHMEM_START)) {
++		max_low_pfn = PFN_DOWN(HIGHMEM_START);
+ #ifdef CONFIG_HIGHMEM
+-		highstart_pfn = PFN_DOWN(HIGHMEM_START);
++		highstart_pfn = max_low_pfn;
+ 		highend_pfn = max_pfn;
+ #else
+-		max_low_pfn = PFN_DOWN(HIGHMEM_START);
+ 		max_pfn = max_low_pfn;
+ #endif
  	}
- 
- stop:
--	regmap_update_bits(priv->regmap, TIM_CCER, ccen, 0);
--	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
-+	regmap_clear_bits(priv->regmap, TIM_CCER, ccen);
-+	regmap_clear_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
- 
- 	return ret;
- }
-@@ -359,7 +359,7 @@ static int stm32_pwm_config(struct stm32_pwm *priv, int ch,
- 
- 	regmap_write(priv->regmap, TIM_PSC, prescaler);
- 	regmap_write(priv->regmap, TIM_ARR, prd - 1);
--	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE, TIM_CR1_ARPE);
-+	regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE);
- 
- 	/* Calculate the duty cycles */
- 	dty = prd * duty_ns;
-@@ -377,7 +377,7 @@ static int stm32_pwm_config(struct stm32_pwm *priv, int ch,
- 	else
- 		regmap_update_bits(priv->regmap, TIM_CCMR2, mask, ccmr);
- 
--	regmap_update_bits(priv->regmap, TIM_BDTR, TIM_BDTR_MOE, TIM_BDTR_MOE);
-+	regmap_set_bits(priv->regmap, TIM_BDTR, TIM_BDTR_MOE);
- 
- 	return 0;
- }
-@@ -411,13 +411,13 @@ static int stm32_pwm_enable(struct stm32_pwm *priv, int ch)
- 	if (priv->have_complementary_output)
- 		mask |= TIM_CCER_CC1NE << (ch * 4);
- 
--	regmap_update_bits(priv->regmap, TIM_CCER, mask, mask);
-+	regmap_set_bits(priv->regmap, TIM_CCER, mask);
- 
- 	/* Make sure that registers are updated */
--	regmap_update_bits(priv->regmap, TIM_EGR, TIM_EGR_UG, TIM_EGR_UG);
-+	regmap_set_bits(priv->regmap, TIM_EGR, TIM_EGR_UG);
- 
- 	/* Enable controller */
--	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, TIM_CR1_CEN);
-+	regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
- 
- 	return 0;
- }
-@@ -431,11 +431,11 @@ static void stm32_pwm_disable(struct stm32_pwm *priv, int ch)
- 	if (priv->have_complementary_output)
- 		mask |= TIM_CCER_CC1NE << (ch * 4);
- 
--	regmap_update_bits(priv->regmap, TIM_CCER, mask, 0);
-+	regmap_clear_bits(priv->regmap, TIM_CCER, mask);
- 
- 	/* When all channels are disabled, we can disable the controller */
- 	if (!active_channels(priv))
--		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
-+		regmap_clear_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
- 
- 	clk_disable(priv->clk);
- }
-@@ -568,10 +568,9 @@ static void stm32_pwm_detect_complementary(struct stm32_pwm *priv)
- 	 * If complementary bit doesn't exist writing 1 will have no
- 	 * effect so we can detect it.
- 	 */
--	regmap_update_bits(priv->regmap,
--			   TIM_CCER, TIM_CCER_CC1NE, TIM_CCER_CC1NE);
-+	regmap_set_bits(priv->regmap, TIM_CCER, TIM_CCER_CC1NE);
- 	regmap_read(priv->regmap, TIM_CCER, &ccer);
--	regmap_update_bits(priv->regmap, TIM_CCER, TIM_CCER_CC1NE, 0);
-+	regmap_clear_bits(priv->regmap, TIM_CCER, TIM_CCER_CC1NE);
- 
- 	priv->have_complementary_output = (ccer != 0);
- }
-@@ -585,10 +584,9 @@ static int stm32_pwm_detect_channels(struct stm32_pwm *priv)
- 	 * If channels enable bits don't exist writing 1 will have no
- 	 * effect so we can detect and count them.
- 	 */
--	regmap_update_bits(priv->regmap,
--			   TIM_CCER, TIM_CCER_CCXE, TIM_CCER_CCXE);
-+	regmap_set_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
- 	regmap_read(priv->regmap, TIM_CCER, &ccer);
--	regmap_update_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE, 0);
-+	regmap_clear_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
- 
- 	if (ccer & TIM_CCER_CC1E)
- 		npwm++;
 -- 
 2.43.0
 
