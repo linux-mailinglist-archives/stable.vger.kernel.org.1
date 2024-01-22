@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-13391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E03F8837CD5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:19:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F548382A7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30916B2177A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F7F428BCB0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52934132C11;
-	Tue, 23 Jan 2024 00:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410675DF3D;
+	Tue, 23 Jan 2024 01:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tY4AQHQT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4jxN7jj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A45131741;
-	Tue, 23 Jan 2024 00:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002205DF19;
+	Tue, 23 Jan 2024 01:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969419; cv=none; b=dOsrL5mB4SrhVXlRulbZPp3KQtK5icpKwjE3fckG8hqMYWe8nIP9HQJUG6cn89yXIooNsuQnf8onHyo2KPH2Bc8YUB27Ezvrh6MzLQ3SkoYWRcbDzEC3cNBsIa5GLKvpnTBIC+hCy7TkXav6UpDvjn8Te5WvWSYdIibLVra02E8=
+	t=1705974401; cv=none; b=AdNgsOC3CpqPgs+c8FaMREFwf6AGXoLmB5xDlpqK1eT7AegklqUL9lWbSovrtiv3iDsVYEkayQIYJ4DdNPh/e9UrP1qVimx6OuiLb0FR8tGTvGkLCcNX5Vn7TzCpavl/o742Y+7AiqybrcS9k5sNPknKHLwqZnOjat2xM16ao0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969419; c=relaxed/simple;
-	bh=MrGB/PxYrKLjdWnbZdYS0Um86Ot/uI7Mzzz+7yYyu4k=;
+	s=arc-20240116; t=1705974401; c=relaxed/simple;
+	bh=S6jpGuuqJdOD4uniltOF0jQxKVnAAZ5ZOYHZKKhiTGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMWc4c5eC9QRIz/OTbr3Ff/mI9905cqFN6O97IxRWgGmQDJZY6kHiMYlLPnz+bno4QweqBjdDWOpl7MEeFMUjmLgXaUSZv8XfDT+Di9LE3psZpp9lrnIYF8v/mPT0VFtZxXdpdh8Mo5kxYbIAt2JLivwwaA5wQISPfdkh4x1+oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tY4AQHQT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A10EC433B1;
-	Tue, 23 Jan 2024 00:23:38 +0000 (UTC)
+	 MIME-Version; b=q36lpO36GiFhTo6rpOx19Qrb8JGJtZAAQFgOjyfUXMKmfuJW75pM901t7ytLiuJtHj8W9jm5Z7nLdMLyofvs88VyMEh4HwR0biiNcr1mAp5zmEztrDTNOsNFFzEuU+QCYpUQ/klE2aqGgzNM6Nl9oZjGwqbPEqhd+OA3IZaqtL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4jxN7jj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDCAC433C7;
+	Tue, 23 Jan 2024 01:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969418;
-	bh=MrGB/PxYrKLjdWnbZdYS0Um86Ot/uI7Mzzz+7yYyu4k=;
+	s=korg; t=1705974400;
+	bh=S6jpGuuqJdOD4uniltOF0jQxKVnAAZ5ZOYHZKKhiTGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tY4AQHQTp+Z4JP1mY15gpyzVFcxTSQL5nNxUJCJw7WAEakPE5irpY1y6UX/oExuYS
-	 Es/drA4BvD9JOqGOC+EsUWXY1e/4ZUrVjwHc0b0+XCTFGjc92m07xAK3im+Xb1LU2m
-	 hTS04369eqTAh6xqopIuB3fI3WpeNzzUTEPPtkik=
+	b=g4jxN7jj2ifhf3les6lG9y8zufZNXxblVTwr3C5blDl1k5dV0kmtk0AsMSxisy8OM
+	 Phg7RjDJ4du6noAQtVWj5T8uFTkvv9KDsU7GQO2HRB4FlIkNQpfgdE9Kj9YVIyZcwz
+	 Kli21ByL+ljzaYx+5xQbhrxhBVNpVKaE0D4iHsEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 233/641] sctp: fix busy polling
+Subject: [PATCH 6.6 086/583] wifi: plfxlc: check for allocation failure in plfxlc_usb_wreq_async()
 Date: Mon, 22 Jan 2024 15:52:17 -0800
-Message-ID: <20240122235825.215196554@linuxfoundation.org>
+Message-ID: <20240122235814.797904160@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit a562c0a2d651e040681b0bfce9b4d229ac3b0b8c ]
+[ Upstream commit 40018a8fa9aa63ca5b26e803502138158fb0ff96 ]
 
-Busy polling while holding the socket lock makes litle sense,
-because incoming packets wont reach our receive queue.
+Check for if the usb_alloc_urb() failed.
 
-Fixes: 8465a5fcd1ce ("sctp: add support for busy polling to sctp protocol")
-Reported-by: Jacob Moroni <jmoroni@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Cc: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 68d57a07bfe5 ("wireless: add plfxlc driver for pureLiFi X, XL, XC devices")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/e8d4a19a-f251-4101-a89b-607345e938cb@moroto.mountain
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/socket.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/net/wireless/purelifi/plfxlc/usb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 5fb02bbb4b34..6b9fcdb0952a 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -2102,6 +2102,10 @@ static int sctp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 	if (unlikely(flags & MSG_ERRQUEUE))
- 		return inet_recv_error(sk, msg, len, addr_len);
+diff --git a/drivers/net/wireless/purelifi/plfxlc/usb.c b/drivers/net/wireless/purelifi/plfxlc/usb.c
+index 76d0a778636a..311676c1ece0 100644
+--- a/drivers/net/wireless/purelifi/plfxlc/usb.c
++++ b/drivers/net/wireless/purelifi/plfxlc/usb.c
+@@ -493,9 +493,12 @@ int plfxlc_usb_wreq_async(struct plfxlc_usb *usb, const u8 *buffer,
+ 			  void *context)
+ {
+ 	struct usb_device *udev = interface_to_usbdev(usb->ez_usb);
+-	struct urb *urb = usb_alloc_urb(0, GFP_ATOMIC);
++	struct urb *urb;
+ 	int r;
  
-+	if (sk_can_busy_loop(sk) &&
-+	    skb_queue_empty_lockless(&sk->sk_receive_queue))
-+		sk_busy_loop(sk, flags & MSG_DONTWAIT);
-+
- 	lock_sock(sk);
++	urb = usb_alloc_urb(0, GFP_ATOMIC);
++	if (!urb)
++		return -ENOMEM;
+ 	usb_fill_bulk_urb(urb, udev, usb_sndbulkpipe(udev, EP_DATA_OUT),
+ 			  (void *)buffer, buffer_len, complete_fn, context);
  
- 	if (sctp_style(sk, TCP) && !sctp_sstate(sk, ESTABLISHED) &&
-@@ -9046,12 +9050,6 @@ struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags, int *err)
- 		if (sk->sk_shutdown & RCV_SHUTDOWN)
- 			break;
- 
--		if (sk_can_busy_loop(sk)) {
--			sk_busy_loop(sk, flags & MSG_DONTWAIT);
--
--			if (!skb_queue_empty_lockless(&sk->sk_receive_queue))
--				continue;
--		}
- 
- 		/* User doesn't want to wait.  */
- 		error = -EAGAIN;
 -- 
 2.43.0
 
