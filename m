@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-15367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C2FB8384EB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9151E8380F5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 243E12879BB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A95428D9C3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4867B77F16;
-	Tue, 23 Jan 2024 02:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2160D13DB9C;
+	Tue, 23 Jan 2024 01:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdAwPeXR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/p38qcn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0821F77F1D;
-	Tue, 23 Jan 2024 02:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D594013DB90;
+	Tue, 23 Jan 2024 01:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975535; cv=none; b=nshdaF/ZexCk6qi/cnUTdxbQNXnSZKVelXUPnfxkwKVGxGBsWuiw+5QcwySbLxvE8tPIa4TOGiPjqLbZHKp8vK6Q+QZiuHonecMqY9v7578MkqBDvrw42PJwOGNY2GiR8pNStTNJMI8bMqrh3BLsHueU/ezbA/c+P1qUmaABb6E=
+	t=1705971975; cv=none; b=TLiZ4IIoogCxPLcfcbetMZEyJx8ksWr2/eCLjz9UKRbOZbWHGwIy0/S5shvlUDO7Vz5AB/AwYOG50FDgtyEnupHteNi2YfFEqQ+2qe3J7XrVpyLyWIKmfxjIW5jz/YemVfYHnKgL5YX2gCbguWhzNARMsS4GhfOM/p+OEL41lAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975535; c=relaxed/simple;
-	bh=yM4Y2Nd+T5SrPE2U3fOgseA39tOpGALo2EwO8s7AQGA=;
+	s=arc-20240116; t=1705971975; c=relaxed/simple;
+	bh=0m8aTbyLaPQ1BgOS4I2QFAwA0umQvCK0XdzswC59DXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQVhpebJqhLGidgGvvRnVaxmsJ+zb6KpOvHvaxhb1M7sbpuOAFXAZzIdu63uk2Ki7oVZ/nWwm4kyiRt9cew+GtREJlnR6zekQNR3wxJxCsscK/3v2NPzEmk+rCBnIrBl5JB5ne9rwyYcTMniLqo9TiX0f8SGmjmB6Ei0QPDcYMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdAwPeXR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9747C433C7;
-	Tue, 23 Jan 2024 02:05:34 +0000 (UTC)
+	 MIME-Version; b=pk0d+soiuXYWkhNeBog1tNrVycPE4vdg0dbv7o3mKM6Iv3nyn5hcsGoE3Eaybe4iJ+mJdFphXQk9cSKgT87GRZ5L6fgbGj/g+l5NRzhdnmSSMyjus4m+mLROp1J2BNLC/Z0dAF8kMOQC2bwdEi0Z5pSRPL1K34MjTPzmZ2NZ//8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/p38qcn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E667C433C7;
+	Tue, 23 Jan 2024 01:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975534;
-	bh=yM4Y2Nd+T5SrPE2U3fOgseA39tOpGALo2EwO8s7AQGA=;
+	s=korg; t=1705971975;
+	bh=0m8aTbyLaPQ1BgOS4I2QFAwA0umQvCK0XdzswC59DXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fdAwPeXRL7YTKe2D0c46XovGPMTSoLsRdtFmfoQwZSyr5rF+phqrkKEctlmudslQ/
-	 pFOqRooC5hyh+lPR41BtnbUGAW7kZjgsBFogdAvuFOsIlq9O2qoXUrhCLvD3A6r3/s
-	 +5IjAq84IaC4frbm9x9qo5AQqzcm3WYAky+1gf9s=
+	b=M/p38qcnJfEqLuNn5Plmz5F6bifUnUkxYet+vWyYioCgqJZkJ9abGdAWvTRPdutvu
+	 fkXaqykBXNInQkkFmBDCO32Wk2waOt9JnKmBQIi/n2v6wRV1X2TQKFQV/lYpHwyn3v
+	 suTMEwZUa4uLHgFqCYfGoPZTf+OBWQKCEKrHsA3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Fangrui Song <maskray@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Lieven Hey <lieven.hey@kdab.com>,
-	Milian Wolff <milian.wolff@kdab.com>,
-	Pablo Galindo <pablogsal@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 485/583] perf genelf: Set ELF program header addresses properly
+Subject: [PATCH 6.1 368/417] apparmor: avoid crash when parsed profile name is empty
 Date: Mon, 22 Jan 2024 15:58:56 -0800
-Message-ID: <20240122235826.851082675@linuxfoundation.org>
+Message-ID: <20240122235804.564653454@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,52 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 1af478903fc48c1409a8dd6b698383b62387adf1 ]
+[ Upstream commit 55a8210c9e7d21ff2644809699765796d4bfb200 ]
 
-The text section starts after the ELF headers so PHDR.p_vaddr and
-others should have the correct addresses.
+When processing a packed profile in unpack_profile() described like
 
-Fixes: babd04386b1df8c3 ("perf jit: Include program header in ELF files")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Fangrui Song <maskray@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Lieven Hey <lieven.hey@kdab.com>
-Cc: Milian Wolff <milian.wolff@kdab.com>
-Cc: Pablo Galindo <pablogsal@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231212070547.612536-2-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+ "profile :ns::samba-dcerpcd /usr/lib*/samba/{,samba/}samba-dcerpcd {...}"
+
+a string ":samba-dcerpcd" is unpacked as a fully-qualified name and then
+passed to aa_splitn_fqname().
+
+aa_splitn_fqname() treats ":samba-dcerpcd" as only containing a namespace.
+Thus it returns NULL for tmpname, meanwhile tmpns is non-NULL. Later
+aa_alloc_profile() crashes as the new profile name is NULL now.
+
+general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 6 PID: 1657 Comm: apparmor_parser Not tainted 6.7.0-rc2-dirty #16
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
+RIP: 0010:strlen+0x1e/0xa0
+Call Trace:
+ <TASK>
+ ? strlen+0x1e/0xa0
+ aa_policy_init+0x1bb/0x230
+ aa_alloc_profile+0xb1/0x480
+ unpack_profile+0x3bc/0x4960
+ aa_unpack+0x309/0x15e0
+ aa_replace_profiles+0x213/0x33c0
+ policy_update+0x261/0x370
+ profile_replace+0x20e/0x2a0
+ vfs_write+0x2af/0xe00
+ ksys_write+0x126/0x250
+ do_syscall_64+0x46/0xf0
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
+ </TASK>
+---[ end trace 0000000000000000 ]---
+RIP: 0010:strlen+0x1e/0xa0
+
+It seems such behaviour of aa_splitn_fqname() is expected and checked in
+other places where it is called (e.g. aa_remove_profiles). Well, there
+is an explicit comment "a ns name without a following profile is allowed"
+inside.
+
+AFAICS, nothing can prevent unpacked "name" to be in form like
+":samba-dcerpcd" - it is passed from userspace.
+
+Deny the whole profile set replacement in such case and inform user with
+EPROTO and an explaining message.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 04dc715e24d0 ("apparmor: audit policy ns specified in policy load")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/genelf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ security/apparmor/policy_unpack.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/perf/util/genelf.c b/tools/perf/util/genelf.c
-index fefc72066c4e..ac17a3cb59dc 100644
---- a/tools/perf/util/genelf.c
-+++ b/tools/perf/util/genelf.c
-@@ -293,9 +293,9 @@ jit_write_elf(int fd, uint64_t load_addr, const char *sym,
- 	 */
- 	phdr = elf_newphdr(e, 1);
- 	phdr[0].p_type = PT_LOAD;
--	phdr[0].p_offset = 0;
--	phdr[0].p_vaddr = 0;
--	phdr[0].p_paddr = 0;
-+	phdr[0].p_offset = GEN_ELF_TEXT_OFFSET;
-+	phdr[0].p_vaddr = GEN_ELF_TEXT_OFFSET;
-+	phdr[0].p_paddr = GEN_ELF_TEXT_OFFSET;
- 	phdr[0].p_filesz = csize;
- 	phdr[0].p_memsz = csize;
- 	phdr[0].p_flags = PF_X | PF_R;
+diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
+index 7012fd82f1bb..633e778ec369 100644
+--- a/security/apparmor/policy_unpack.c
++++ b/security/apparmor/policy_unpack.c
+@@ -674,6 +674,10 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
+ 
+ 	tmpname = aa_splitn_fqname(name, strlen(name), &tmpns, &ns_len);
+ 	if (tmpns) {
++		if (!tmpname) {
++			info = "empty profile name";
++			goto fail;
++		}
+ 		*ns_name = kstrndup(tmpns, ns_len, GFP_KERNEL);
+ 		if (!*ns_name) {
+ 			info = "out of memory";
 -- 
 2.43.0
 
