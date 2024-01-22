@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-15178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9398D83843A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 822498381EF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C594C1C2A176
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 391FD28C69C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4F36A32C;
-	Tue, 23 Jan 2024 02:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E7854F80;
+	Tue, 23 Jan 2024 01:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XI/+tBqm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5jAxRbM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2266A328;
-	Tue, 23 Jan 2024 02:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3D14F20D;
+	Tue, 23 Jan 2024 01:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975332; cv=none; b=gQvp/LTw0Xxk4y1xkZ0xLWwbVU4mGH57HKQrOLiqG8yrS5vuGQ1fRnaz59V7eOJJOFe+3ZULHJb+9PlFZosnWWN1gpGHgiezgF091EC+STJ7OlI+RO1HpA1pyhyBw5yeJq2MZ4GRnXoXpP0CEbpffZvaZ3a7y5OAxhq2Oi1NJPs=
+	t=1705974009; cv=none; b=BgKF7qF+ad0r4tVqA2pEksoFJYmcvFJLj/gzj0kXKGARmn7vX9fT+iFRtkX3RUUGBYRq8FbB4jp+dfWmbG4Ct1E90Syr2g/Hofm+8IHhxJkLb+AErV/FjwNJEaJYmUNaiRoELzjJR/DOiygkIeC7naV/mBykP20RqfEnMlRyoao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975332; c=relaxed/simple;
-	bh=mgMfkIKP7DHR2e/y32ZKo+Qfxla+bRVAgWOvkGAgmJ4=;
+	s=arc-20240116; t=1705974009; c=relaxed/simple;
+	bh=vQJqG7GAQiGnlO1Wq6eJLSr6DdevrxEJS1eScIKzk/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e0l7Fz7GYd13BSTXsXzprM5Xoimlda503DVev3gLM0BM8xey9DFdyiDKtMsXuCE0BdbT0+pVPwKEnJpsvgFxGHmpSg9uk6FRtKzZSCfZQXeYidDuDaIpp8Ur1oXztF0WFH2ptUrDO2v086rcUUIokfOLrzFFSzUbLmSfzEW6NEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XI/+tBqm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35B1C43390;
-	Tue, 23 Jan 2024 02:02:11 +0000 (UTC)
+	 MIME-Version; b=a1S8wmg07EnYWmQNrA1XWuz2Vnv3BevddprzYuO8xihUYzLItIWx4j9m3+m2K+ObQRpVZ5E4xAZYUnT3DIPcPful7+KarA07VY46Pua09MYIJJVylsmGmdlQ7otvTJycKxAw1+OvgDMPaibfiiFZu/mFFX2aWM3WzPS2mba+BKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5jAxRbM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E49C43390;
+	Tue, 23 Jan 2024 01:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975332;
-	bh=mgMfkIKP7DHR2e/y32ZKo+Qfxla+bRVAgWOvkGAgmJ4=;
+	s=korg; t=1705974009;
+	bh=vQJqG7GAQiGnlO1Wq6eJLSr6DdevrxEJS1eScIKzk/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XI/+tBqmk2DWui2PSYouiJ5N03EiX8RyB4upUCiMvszr2het9iLCVnegua+yYuxIH
-	 ESk9/gOgD5WNuwa9cJA8HzNzfzds0MUiazSrwNaxRg+vQbryvMDcJc4Weg9n8sQLaf
-	 6bUHJgDLSX1voq6Xu6Ye8bCAn6g1p++MaK3nAVnk=
+	b=G5jAxRbMM0aky85siHyCzh9zj87L4T72dAQVqxx8veMnCjTpyg80q28xr4WVB81Ch
+	 P7MZ0GMMuay4WgIGb3dgsXR0hQJH6UIcMT0KPqoOsTrPkqRYn9qrg2J2Jbrk3rNjF1
+	 3xgJbug/AmokfsR9eQTATcSuiYJB5zgd9vYDDCaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Erwin Tsaur <erwin.tsaur@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 295/583] clk: qcom: videocc-sm8150: Update the videocc resets
+Subject: [PATCH 5.15 090/374] ACPI: extlog: Clear Extended Error Log status when RAS_CEC handled the error
 Date: Mon, 22 Jan 2024 15:55:46 -0800
-Message-ID: <20240122235821.044344920@linuxfoundation.org>
+Message-ID: <20240122235747.745398592@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Tony Luck <tony.luck@intel.com>
 
-[ Upstream commit 1fd9a939db24d2f66e48f8bca3e3654add3fa205 ]
+[ Upstream commit 38c872a9e96f72f2947affc0526cc05659367d3d ]
 
-Add all the available resets for the video clock controller
-on sm8150.
+When both CONFIG_RAS_CEC and CONFIG_ACPI_EXTLOG are enabled, Linux does
+not clear the status word of the BIOS supplied error record for corrected
+errors. This may prevent logging of subsequent uncorrected errors.
 
-Fixes: 5658e8cf1a8a ("clk: qcom: add video clock controller driver for SM8150")
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231201-videocc-8150-v3-2-56bec3a5e443@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fix by clearing the status.
+
+Fixes: 23ba710a0864 ("x86/mce: Fix all mce notifiers to update the mce->kflags bitmask")
+Reported-by: Erwin Tsaur <erwin.tsaur@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/videocc-sm8150.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/acpi/acpi_extlog.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/videocc-sm8150.c b/drivers/clk/qcom/videocc-sm8150.c
-index 1afdbe4a249d..6a5f89f53da8 100644
---- a/drivers/clk/qcom/videocc-sm8150.c
-+++ b/drivers/clk/qcom/videocc-sm8150.c
-@@ -214,6 +214,10 @@ static const struct regmap_config video_cc_sm8150_regmap_config = {
+diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
+index e648158368a7..088db2356998 100644
+--- a/drivers/acpi/acpi_extlog.c
++++ b/drivers/acpi/acpi_extlog.c
+@@ -145,9 +145,14 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
+ 	static u32 err_seq;
  
- static const struct qcom_reset_map video_cc_sm8150_resets[] = {
- 	[VIDEO_CC_MVSC_CORE_CLK_BCR] = { 0x850, 2 },
-+	[VIDEO_CC_INTERFACE_BCR] = { 0x8f0 },
-+	[VIDEO_CC_MVS0_BCR] = { 0x870 },
-+	[VIDEO_CC_MVS1_BCR] = { 0x8b0 },
-+	[VIDEO_CC_MVSC_BCR] = { 0x810 },
- };
+ 	estatus = extlog_elog_entry_check(cpu, bank);
+-	if (estatus == NULL || (mce->kflags & MCE_HANDLED_CEC))
++	if (!estatus)
+ 		return NOTIFY_DONE;
  
- static const struct qcom_cc_desc video_cc_sm8150_desc = {
++	if (mce->kflags & MCE_HANDLED_CEC) {
++		estatus->block_status = 0;
++		return NOTIFY_DONE;
++	}
++
+ 	memcpy(elog_buf, (void *)estatus, ELOG_ENTRY_LEN);
+ 	/* clear record status to enable BIOS to update it again */
+ 	estatus->block_status = 0;
 -- 
 2.43.0
 
