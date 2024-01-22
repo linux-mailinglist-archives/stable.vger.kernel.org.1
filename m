@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F0783817F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF498838443
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D56E1C291C1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9377A298EC4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5386414A4F3;
-	Tue, 23 Jan 2024 01:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E8B6A350;
+	Tue, 23 Jan 2024 02:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+/LVbPu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEdTurdy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12599A3F;
-	Tue, 23 Jan 2024 01:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C8D6A320;
+	Tue, 23 Jan 2024 02:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972149; cv=none; b=PSCesabd0bQBSjIL0ZOIkp+aEZOtwl9UucuSpgAAPDVzyyyp413XpaboecfgAqacG8qL7+2eaLaU3+o9ZaLNbWj44tZ+tnC4oTrAJw2bZ5YsHS+FAiVSrj7Ge6DC3HcGRplhz0IBYNwKsFoUHt3wzWsyyIcRs2hHugyjWm919pg=
+	t=1705975345; cv=none; b=DHKN0lVSoaeSMlSU63zbSkqo5fUjRtDB+KFiQw/0A3/ct66HyzETGG5mul9fH9xZz1UXxXLDtcwzrC3f2OTdtrh8n5gleAeTZ3FwUTk4pYRX8fbWfKbWeFd8HQUAqmgXYKZ8uYpTPvSAfUUmeJAomrVOeHbydGbfuPKUyeioJVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972149; c=relaxed/simple;
-	bh=MJpDHo/zNXmcXYuLpm+hdFj3loJ01T6dLNcEcogBuRA=;
+	s=arc-20240116; t=1705975345; c=relaxed/simple;
+	bh=G03V0MO601oyhjy+/uT4cAsBUzgp8Me1YiEz7qmtitc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VfJkik6OKTTaueXBEjil3V+7Tep+2ibqNNjX2JjTFTpbPZ0VjIIVx6ku+Srq+1Q/Rn3ey3crLEGj1j7lFlgbQyRf512o1aCAgBs8NxfMu2D7Ws4ZkMtvYSeAsOac5KC0s7FXAucL8Qcten642vqakaADwDOQp0bbfVkWhmcsBxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+/LVbPu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9EDDC433B1;
-	Tue, 23 Jan 2024 01:09:08 +0000 (UTC)
+	 MIME-Version; b=i0yvSmA4qul3NqWfxsVzcS7BYT/Stuid7V+0nh4txDaZCzU6/PuxRGfyw+/WyrAee+ZnXNXbtn+oTeQpn6Lwg5Mh0CA1dPSRyM+fLCxBq5Nbgd6jEr3UsvPT/Itx8vTIQFz26JXItAjbFywJ+iP9RcUkAcdW+Anh2Gdeoeax5jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEdTurdy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766E3C43394;
+	Tue, 23 Jan 2024 02:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972148;
-	bh=MJpDHo/zNXmcXYuLpm+hdFj3loJ01T6dLNcEcogBuRA=;
+	s=korg; t=1705975345;
+	bh=G03V0MO601oyhjy+/uT4cAsBUzgp8Me1YiEz7qmtitc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+/LVbPuC4fSbG5s3fAH3gujxH9/Ft+8h2nV2nMqpgytJ0S9b9TVoxMMiWbFa1uA/
-	 YmFjdUnkq3RKBiAAJ91/2OGNrL0ssUC8WOx/NRpDdcjrEbj1rY9RhF27+Fq03Yutb2
-	 UroDOgTnBnOXDQm5LI+DkJch9y0kXTkbpMMaRkzc=
+	b=FEdTurdyd6x7p2+z0yaEIvn9hPoQUuNQgMod6ff8KK0E1tzzT9pfn2A71Vp3zOJkb
+	 +Hieb/ZU+8XYjsmAm4wf+VEr4m6gEuuMScTaTe3208wMGiToCAuaT1WDWmKfEfS2An
+	 ph7oPewaluri+yk3qaLeCWX85opjptSJSXQV9Yeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Rob Clark <robdclark@gmail.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 077/374] powerpc/imc-pmu: Add a null pointer check in update_events_in_group()
-Date: Mon, 22 Jan 2024 15:55:33 -0800
-Message-ID: <20240122235747.290787396@linuxfoundation.org>
+Subject: [PATCH 6.6 283/583] drm/msm/dpu: Set input_sel bit for INTF
+Date: Mon, 22 Jan 2024 15:55:34 -0800
+Message-ID: <20240122235820.659483383@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
 
-[ Upstream commit 0a233867a39078ebb0f575e2948593bbff5826b3 ]
+[ Upstream commit 980fffd0c69e5df0f67ee089d405899d532aeeab ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+Set the input_sel bit for encoders as it was missed in the initial
+implementation.
 
-Fixes: 885dcd709ba9 ("powerpc/perf: Add nest IMC PMU support")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231126093719.1440305-1-chentao@kylinos.cn
+Reported-by: Rob Clark <robdclark@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/39
+Fixes: 91143873a05d ("drm/msm/dpu: Add MISR register support for interface")
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/572007/
+Link: https://lore.kernel.org/r/20231213-encoder-fixup-v4-1-6da6cd1bf118@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/imc-pmu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c | 2 +-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.c   | 2 +-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.c | 9 +++++++--
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h | 3 ++-
+ 4 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-index 55a853edc3be..e2f6fe259aa6 100644
---- a/arch/powerpc/perf/imc-pmu.c
-+++ b/arch/powerpc/perf/imc-pmu.c
-@@ -292,6 +292,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
- 	attr_group->attrs = attrs;
- 	do {
- 		ev_val_str = kasprintf(GFP_KERNEL, "event=0x%x", pmu->events[i].value);
-+		if (!ev_val_str)
-+			continue;
- 		dev_str = device_str_attr_create(pmu->events[i].name, ev_val_str);
- 		if (!dev_str)
- 			continue;
-@@ -299,6 +301,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
- 		attrs[j++] = dev_str;
- 		if (pmu->events[i].scale) {
- 			ev_scale_str = kasprintf(GFP_KERNEL, "%s.scale", pmu->events[i].name);
-+			if (!ev_scale_str)
-+				continue;
- 			dev_str = device_str_attr_create(ev_scale_str, pmu->events[i].scale);
- 			if (!dev_str)
- 				continue;
-@@ -308,6 +312,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
+index 8ec6505d9e78..bce8783d644c 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
+@@ -320,7 +320,7 @@ static u32 dpu_hw_intf_get_line_count(struct dpu_hw_intf *intf)
  
- 		if (pmu->events[i].unit) {
- 			ev_unit_str = kasprintf(GFP_KERNEL, "%s.unit", pmu->events[i].name);
-+			if (!ev_unit_str)
-+				continue;
- 			dev_str = device_str_attr_create(ev_unit_str, pmu->events[i].unit);
- 			if (!dev_str)
- 				continue;
+ static void dpu_hw_intf_setup_misr(struct dpu_hw_intf *intf, bool enable, u32 frame_count)
+ {
+-	dpu_hw_setup_misr(&intf->hw, INTF_MISR_CTRL, enable, frame_count);
++	dpu_hw_setup_misr(&intf->hw, INTF_MISR_CTRL, enable, frame_count, 0x1);
+ }
+ 
+ static int dpu_hw_intf_collect_misr(struct dpu_hw_intf *intf, u32 *misr_value)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.c
+index d1c3bd8379ea..a34cf8c979cb 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.c
+@@ -83,7 +83,7 @@ static void dpu_hw_lm_setup_border_color(struct dpu_hw_mixer *ctx,
+ 
+ static void dpu_hw_lm_setup_misr(struct dpu_hw_mixer *ctx, bool enable, u32 frame_count)
+ {
+-	dpu_hw_setup_misr(&ctx->hw, LM_MISR_CTRL, enable, frame_count);
++	dpu_hw_setup_misr(&ctx->hw, LM_MISR_CTRL, enable, frame_count, 0x0);
+ }
+ 
+ static int dpu_hw_lm_collect_misr(struct dpu_hw_mixer *ctx, u32 *misr_value)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.c
+index 9d2273fd2fed..da04a914b065 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.c
+@@ -481,9 +481,13 @@ void _dpu_hw_setup_qos_lut(struct dpu_hw_blk_reg_map *c, u32 offset,
+ 		      cfg->danger_safe_en ? QOS_QOS_CTRL_DANGER_SAFE_EN : 0);
+ }
+ 
++/*
++ * note: Aside from encoders, input_sel should be set to 0x0 by default
++ */
+ void dpu_hw_setup_misr(struct dpu_hw_blk_reg_map *c,
+ 		u32 misr_ctrl_offset,
+-		bool enable, u32 frame_count)
++		bool enable, u32 frame_count,
++		u8 input_sel)
+ {
+ 	u32 config = 0;
+ 
+@@ -494,7 +498,8 @@ void dpu_hw_setup_misr(struct dpu_hw_blk_reg_map *c,
+ 
+ 	if (enable) {
+ 		config = (frame_count & MISR_FRAME_COUNT_MASK) |
+-			MISR_CTRL_ENABLE | MISR_CTRL_FREE_RUN_MASK;
++			MISR_CTRL_ENABLE | MISR_CTRL_FREE_RUN_MASK |
++			((input_sel & 0xF) << 24);
+ 
+ 		DPU_REG_WRITE(c, misr_ctrl_offset, config);
+ 	} else {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h
+index 1f6079f47071..f7061fcc97f7 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h
+@@ -360,7 +360,8 @@ void _dpu_hw_setup_qos_lut(struct dpu_hw_blk_reg_map *c, u32 offset,
+ void dpu_hw_setup_misr(struct dpu_hw_blk_reg_map *c,
+ 		u32 misr_ctrl_offset,
+ 		bool enable,
+-		u32 frame_count);
++		u32 frame_count,
++		u8 input_sel);
+ 
+ int dpu_hw_collect_misr(struct dpu_hw_blk_reg_map *c,
+ 		u32 misr_ctrl_offset,
 -- 
 2.43.0
 
