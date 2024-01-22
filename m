@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D61838476
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD83B838135
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EB8DB22F31
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58478B23B10
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AFC50263;
-	Tue, 23 Jan 2024 01:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14CC134723;
+	Tue, 23 Jan 2024 01:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="twu99YTl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qD8fzLbo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F0B5025C;
-	Tue, 23 Jan 2024 01:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEE2134721;
+	Tue, 23 Jan 2024 01:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974729; cv=none; b=a/Vzc/FTWskHi/zg7YHWSFhmFREsgqEe2PYX7r6vrNDJNmu9n82wtD+T2OnEwN1jKyVT7+PpJFXb3O55vVN23ou6ZpHZjhFcojnLuKZ5RobAr5LUH/2QxIa30YYkF6Uwt0d7EJeDHmBcx8CuFafbB6C7Y1grwAHKinYivfLIrR4=
+	t=1705971899; cv=none; b=TneMcWY94gKvOqt2Lzo/R7jTNUmhVq1KEeocrah6J9+wey50HpjMqced0PpBzK3D7H7IgVJbowItFEtfEUcsxptKyheFj15HFsfjfnRav5pDGcJ767zMKxlO2soGYiqjZa8cPWC5HT+pulLb3Bc1QhwT5lrmxeutqEOUG1V2cwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974729; c=relaxed/simple;
-	bh=Qz3rjU4L0bfeSRqzW7AMj5s6kJJkzxf9uQdhU1eZe58=;
+	s=arc-20240116; t=1705971899; c=relaxed/simple;
+	bh=sYe+bmP46EovBsZpVFw1V1qxYPna20oxUlc0BlsQsXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VHlCNPHuCZ3yQ27Og4c2PF7e+Nw7P4ZofEPM7mu8K8XDSv7KxZ8cjtGcxEaHOmmlJ4VcnIyHKs/mha2pzEY2snkEtrXlOXIEsXhbem1eroHDB300yNtbZosRIhk78IM/RTrhkknHict/Xt2wA2BJJcQCzm/+OkThPcuDh11dhm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twu99YTl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDB8C43394;
-	Tue, 23 Jan 2024 01:52:08 +0000 (UTC)
+	 MIME-Version; b=gqp73uU9KIFgXxswq46N/1J0TXSrcZR0ZDfmXTMsaSxMeRtVZvK/Crh4l8EoilK66Q/E1A/502kxNysw5a9G9UiO0dW5TnrG3uusFSf2OndRE1bWh/9OpATW0s8d9LA8aqseW5VPfjB50VJiDjDF5k8BDPTiOEf0SM2qd6WsLCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qD8fzLbo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C66C433C7;
+	Tue, 23 Jan 2024 01:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974729;
-	bh=Qz3rjU4L0bfeSRqzW7AMj5s6kJJkzxf9uQdhU1eZe58=;
+	s=korg; t=1705971899;
+	bh=sYe+bmP46EovBsZpVFw1V1qxYPna20oxUlc0BlsQsXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=twu99YTlA6HpSC0DR4Ekb+G9xTq0U4ZctNpVyupH6OWEIHxPPQXw83lUZpf4f1EcM
-	 QlRersmTyoYp8ChUl5oB8nK8lyyRa0z38IOCzuEXmf56KE8IdgQXFISsOiyDKZnJsm
-	 OU3qhM4PQBJo7ScA53T5hsrC4kX6ZgF/lDSRTWfQ=
+	b=qD8fzLbofs5UqMZw9U9Wy085xbaSHzCzEtgcVBlO/L6sHLyV3C1KUv7xO+cAu65Xa
+	 c2Apra9WvvQEs2zmNpIKpJaoe8y2Fzma0STTDdFc6fibaVIGSRWBMgEaVEpTvZ+jXy
+	 XOM3YLc1KdLpEODWBOTJywoHE7Os/1c+jqXlH5Bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chen <peter.chen@kernel.org>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Li Jun <jun.li@nxp.com>
-Subject: [PATCH 5.15 257/374] usb: chipidea: wait controller resume finished for wakeup irq
+	Paul Geurts <paul_geurts@live.nl>,
+	Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
+	Eberhard Stoll <eberhard.stoll@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 345/417] serial: imx: fix tx statemachine deadlock
 Date: Mon, 22 Jan 2024 15:58:33 -0800
-Message-ID: <20240122235753.713553722@linuxfoundation.org>
+Message-ID: <20240122235803.740766623@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Paul Geurts <paul_geurts@live.nl>
 
-commit 128d849074d05545becf86e713715ce7676fc074 upstream.
+[ Upstream commit 78d60dae9a0c9f09aa3d6477c94047df2fe6f7b0 ]
 
-After the chipidea driver introduce extcon for id and vbus, it's able
-to wakeup from another irq source, in case the system with extcon ID
-cable, wakeup from usb ID cable and device removal, the usb device
-disconnect irq may come firstly before the extcon notifier while system
-resume, so we will get 2 "wakeup" irq, one for usb device disconnect;
-and one for extcon ID cable change(real wakeup event), current driver
-treat them as 2 successive wakeup irq so can't handle it correctly, then
-finally the usb irq can't be enabled. This patch adds a check to bypass
-further usb events before controller resume finished to fix it.
+When using the serial port as RS485 port, the tx statemachine is used to
+control the RTS pin to drive the RS485 transceiver TX_EN pin. When the
+TTY port is closed in the middle of a transmission (for instance during
+userland application crash), imx_uart_shutdown disables the interface
+and disables the Transmission Complete interrupt. afer that,
+imx_uart_stop_tx bails on an incomplete transmission, to be retriggered
+by the TC interrupt. This interrupt is disabled and therefore the tx
+statemachine never transitions out of SEND. The statemachine is in
+deadlock now, and the TX_EN remains low, making the interface useless.
 
-Fixes: 1f874edcb731 ("usb: chipidea: add runtime power management support")
-cc:  <stable@vger.kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Signed-off-by: Li Jun <jun.li@nxp.com>
-Link: https://lore.kernel.org/r/20231228110753.1755756-2-xu.yang_2@nxp.com
+imx_uart_stop_tx now checks for incomplete transmission AND whether TC
+interrupts are enabled before bailing to be retriggered. This makes sure
+the state machine handling is reached, and is properly set to
+WAIT_AFTER_SEND.
+
+Fixes: cb1a60923609 ("serial: imx: implement rts delaying for rs485")
+Signed-off-by: Paul Geurts <paul_geurts@live.nl>
+Tested-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+Tested-by: Eberhard Stoll <eberhard.stoll@gmx.de>
+Link: https://lore.kernel.org/r/AM0PR09MB26758F651BC1B742EB45775995B8A@AM0PR09MB2675.eurprd09.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/core.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/tty/serial/imx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/chipidea/core.c
-+++ b/drivers/usb/chipidea/core.c
-@@ -521,6 +521,13 @@ static irqreturn_t ci_irq_handler(int ir
- 	u32 otgsc = 0;
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 48c05fc1064e..c2cc104225ec 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -450,13 +450,13 @@ static void imx_uart_stop_tx(struct uart_port *port)
+ 	ucr1 = imx_uart_readl(sport, UCR1);
+ 	imx_uart_writel(sport, ucr1 & ~UCR1_TRDYEN, UCR1);
  
- 	if (ci->in_lpm) {
-+		/*
-+		 * If we already have a wakeup irq pending there,
-+		 * let's just return to wait resume finished firstly.
-+		 */
-+		if (ci->wakeup_int)
-+			return IRQ_HANDLED;
-+
- 		disable_irq_nosync(irq);
- 		ci->wakeup_int = true;
- 		pm_runtime_get(ci->dev);
++	ucr4 = imx_uart_readl(sport, UCR4);
+ 	usr2 = imx_uart_readl(sport, USR2);
+-	if (!(usr2 & USR2_TXDC)) {
++	if ((!(usr2 & USR2_TXDC)) && (ucr4 & UCR4_TCEN)) {
+ 		/* The shifter is still busy, so retry once TC triggers */
+ 		return;
+ 	}
+ 
+-	ucr4 = imx_uart_readl(sport, UCR4);
+ 	ucr4 &= ~UCR4_TCEN;
+ 	imx_uart_writel(sport, ucr4, UCR4);
+ 
+-- 
+2.43.0
+
 
 
 
