@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF37D838236
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA96F837BC1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2A411C24E9D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 315AE293D26
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3F750275;
-	Tue, 23 Jan 2024 01:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D1D154433;
+	Tue, 23 Jan 2024 00:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMTqMzSs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YB0+TRv/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B70D6AA6;
-	Tue, 23 Jan 2024 01:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BBF153BC3;
+	Tue, 23 Jan 2024 00:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974097; cv=none; b=jZ8H2sO+fvBf/rMB1f10mMyObVd1RPHCLLYFDmkMkK77IS7EsJaXFwP6oRuaO3F7Ps5XQje4V5RWYg7WPx15+0dyVkwraqgHD2RDFVe+aP9Kj7hwTzd/PtSikvgg/lE04DC/eixI3OnKEjLKYFrzOOb8Url5PY+T5eo9KjGNcxQ=
+	t=1705969372; cv=none; b=S9UMj25jcg9EaECpozdU3Bo9Ye8NsF1eHotcibfZujix2B5EBxZtZFI1iGIh0i9YLb7/B/tzB0Hp2G3gjX/Szq9HDOCtqbhNthlYaN144sbFcUi3KZ/7y8qQr5FplHsPzJA0RbMaJpMK8TkQ4qmXPlLF/1F5WnHwpNQxDLQ7caM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974097; c=relaxed/simple;
-	bh=8uhAKQTybVcUQjGjyDCEYZtiXfV8BEN9qyfZeROp1yM=;
+	s=arc-20240116; t=1705969372; c=relaxed/simple;
+	bh=l6Ekw+TvCpzJgSvGze7YZVfx/EqsoXrDmlmct8sYPKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C4UDsESrq0e0OrAg5EdZsErPY/ajgDoEAcD4DRBEm/56osunx9F3yCx5QFsCmo/k+yIS24y0ivPt6/y8V2caCOd8Ar58WaJWXUay0SoAHjd8M0FTOUX8jhleccR7zm4OoZaBvxKwXUbJGpF7ttt9uRd5Qye6tHK9sTa0fYE9cpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMTqMzSs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D251C43399;
-	Tue, 23 Jan 2024 01:41:37 +0000 (UTC)
+	 MIME-Version; b=fFdskZ+NCpMe9nXNPFbjruw/Rt56ERAyruY20AAEvvvgQ4A9msOmYwwQpwA9SS9k5ObrjrI0PVbYV14vHGa5BN/y90+/Bfi3gRc7s3bW59QT2R45dpbKKPTVvrRufFbqLJ9Fwp9XqdJYmvZcOjBaKJ5q4ItULLkB3UJX50bbXWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YB0+TRv/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7258C433C7;
+	Tue, 23 Jan 2024 00:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974097;
-	bh=8uhAKQTybVcUQjGjyDCEYZtiXfV8BEN9qyfZeROp1yM=;
+	s=korg; t=1705969371;
+	bh=l6Ekw+TvCpzJgSvGze7YZVfx/EqsoXrDmlmct8sYPKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bMTqMzSsxQGlDQgKoqOoE1sov0lw0doy7Ba7SVhcyVVvSADUcrdFMFNAW51AzptpI
-	 qQNGL3MBKdo6avF9jdzSudn9GooJIYg1Tgou117eL8Hh+GBa3Jptm02dj6h8HbNKTX
-	 he8yjIr0CxbIroP0F1pV2WyvMihPxwzX8/EqFaZM=
+	b=YB0+TRv/PvXNSSU6J7mqf/RTYxSametFfXj0bNuNFN6hTr4JbJySq/vxVXroxmPAW
+	 kDPACxg+7StFvxg0xLUpUBPpSsIkkXiuR8e7g3odO2Y7mdkIm4Y1QeQmBsvYBLBzwh
+	 QvKmN27P3dGVmyXf2XLhS9R4ID9ee/CCnxCj8D4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Rae Moar <rmoar@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Leone Fernando <leone4fernando@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/583] kunit: debugfs: Fix unchecked dereference in debugfs_print_results()
-Date: Mon, 22 Jan 2024 15:51:28 -0800
-Message-ID: <20240122235813.294351264@linuxfoundation.org>
+Subject: [PATCH 6.7 185/641] ipmr: support IP_PKTINFO on cache report IGMP msg
+Date: Mon, 22 Jan 2024 15:51:29 -0800
+Message-ID: <20240122235823.775002073@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Leone Fernando <leone4fernando@gmail.com>
 
-[ Upstream commit 34dfd5bb2e5507e69d9b6d6c90f546600c7a4977 ]
+[ Upstream commit bb7403655b3c3eb245d0ee330047cd3e20b3c4af ]
 
-Move the call to kunit_suite_has_succeeded() after the check that
-the kunit_suite pointer is valid.
+In order to support IP_PKTINFO on those packets, we need to call
+ipv4_pktinfo_prepare.
 
-This was found by smatch:
+When sending mrouted/pimd daemons a cache report IGMP msg, it is
+unnecessary to set dst on the newly created skb.
+It used to be necessary on older versions until
+commit d826eb14ecef ("ipv4: PKTINFO doesnt need dst reference") which
+changed the way IP_PKTINFO struct is been retrieved.
 
- lib/kunit/debugfs.c:66 debugfs_print_results() warn: variable
- dereferenced before check 'suite' (see line 63)
+Changes from v1:
+1. Undo changes in ipv4_pktinfo_prepare function. use it directly
+   and copy the control block.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: 38289a26e1b8 ("kunit: fix debugfs code to use enum kunit_status, not bool")
-Reviewed-by: Rae Moar <rmoar@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: d826eb14ecef ("ipv4: PKTINFO doesnt need dst reference")
+Signed-off-by: Leone Fernando <leone4fernando@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kunit/debugfs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ipv4/ipmr.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/lib/kunit/debugfs.c b/lib/kunit/debugfs.c
-index 22c5c496a68f..35ddb329dad6 100644
---- a/lib/kunit/debugfs.c
-+++ b/lib/kunit/debugfs.c
-@@ -53,12 +53,14 @@ static void debugfs_print_result(struct seq_file *seq,
- static int debugfs_print_results(struct seq_file *seq, void *v)
- {
- 	struct kunit_suite *suite = (struct kunit_suite *)seq->private;
--	enum kunit_status success = kunit_suite_has_succeeded(suite);
-+	enum kunit_status success;
- 	struct kunit_case *test_case;
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index 9e222a57bc2b..0063a237253b 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -1025,6 +1025,10 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 	struct sk_buff *skb;
+ 	int ret;
  
- 	if (!suite)
- 		return 0;
- 
-+	success = kunit_suite_has_succeeded(suite);
++	mroute_sk = rcu_dereference(mrt->mroute_sk);
++	if (!mroute_sk)
++		return -EINVAL;
 +
- 	/* Print KTAP header so the debugfs log can be parsed as valid KTAP. */
- 	seq_puts(seq, "KTAP version 1\n");
- 	seq_puts(seq, "1..1\n");
+ 	if (assert == IGMPMSG_WHOLEPKT || assert == IGMPMSG_WRVIFWHOLE)
+ 		skb = skb_realloc_headroom(pkt, sizeof(struct iphdr));
+ 	else
+@@ -1069,7 +1073,8 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 		msg = (struct igmpmsg *)skb_network_header(skb);
+ 		msg->im_vif = vifi;
+ 		msg->im_vif_hi = vifi >> 8;
+-		skb_dst_set(skb, dst_clone(skb_dst(pkt)));
++		ipv4_pktinfo_prepare(mroute_sk, pkt);
++		memcpy(skb->cb, pkt->cb, sizeof(skb->cb));
+ 		/* Add our header */
+ 		igmp = skb_put(skb, sizeof(struct igmphdr));
+ 		igmp->type = assert;
+@@ -1079,12 +1084,6 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 		skb->transport_header = skb->network_header;
+ 	}
+ 
+-	mroute_sk = rcu_dereference(mrt->mroute_sk);
+-	if (!mroute_sk) {
+-		kfree_skb(skb);
+-		return -EINVAL;
+-	}
+-
+ 	igmpmsg_netlink_event(mrt, skb);
+ 
+ 	/* Deliver to mrouted */
 -- 
 2.43.0
 
