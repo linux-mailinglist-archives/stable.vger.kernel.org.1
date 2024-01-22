@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2CCD837FA0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED01B83821F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43B1C29367D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3B221F256A9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4BE6311F;
-	Tue, 23 Jan 2024 00:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAE76127;
+	Tue, 23 Jan 2024 01:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXJ2O28Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DciVqi45"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCC2634F7;
-	Tue, 23 Jan 2024 00:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE8258AAC;
+	Tue, 23 Jan 2024 01:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971249; cv=none; b=Tx12v7F9lHyReQQgswjzLWv+iuDuonIwS6G8VC9NBx/SY8qCcK9ZBGvO8CUrRK3WP8B3bN3SoSlD2ELw3i7nG0RVHg3GNGETOljriwIy8qPC0tuEVeI8YFYAGnRcMTQ5qC8Sk05EThjjpk8c39bZeFYFWdNOxFmXRGjoPu0W2q0=
+	t=1705974070; cv=none; b=HqO50xX43F/jX6Zv0XsB8MGjaGHkK5Lf6hC5h2A2qQIVuyTOGSt77xyolOKPyZQ/ihmAV/BT3EAMqUuzMwrlSsiQb8KUtFjhw/QF1uWSbnM3GYoEJEYYCoLv8LaSAe+C8J8ixlhWQTb2to9/g2aHzOob+4d39u9ZEaz5Js/cWXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971249; c=relaxed/simple;
-	bh=PhVKNYSgWuRHdh/YRnQ+D5FszZv3GWqOwp/0xMZ7PJw=;
+	s=arc-20240116; t=1705974070; c=relaxed/simple;
+	bh=FfzmUb4cz1d/OhVGbzVaJ98VcFG9XoVaI+yh7lU4iU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lAxPdKqnRXY53ecQfROmKJgu9pEkJeei9BAPdBFr9rbE2xpjQONqQlNDY82glqx+IEmGF1+IkOMf+OA3P+2EI/qZ9kMBKpmnYq3WCOzyaiaUrnkIT844O/yQf08l3Zx82WPDnOrmyjl6asGxkUS1PtOne8TQFhDONQ7Na3QOIkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXJ2O28Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B30C433F1;
-	Tue, 23 Jan 2024 00:54:08 +0000 (UTC)
+	 MIME-Version; b=VkT43CkCsDIMZAhgWc5trPywSv9brnUk8t/1TUgEr3E3ZDoaxWSGmaIssxZ+roSet82vj4gb7BZUMcmuaSCCYetbK7TFUKDPZ3NflNhVmPyi2D5jmcjKqSI47laegK2cOvRs6dA370uQULWzoxldICBI2WTLhNkRqm1VUpwCmvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DciVqi45; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B2EC43399;
+	Tue, 23 Jan 2024 01:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971249;
-	bh=PhVKNYSgWuRHdh/YRnQ+D5FszZv3GWqOwp/0xMZ7PJw=;
+	s=korg; t=1705974068;
+	bh=FfzmUb4cz1d/OhVGbzVaJ98VcFG9XoVaI+yh7lU4iU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NXJ2O28YckZdZwMUwKCXlMuRMcN0AkLPWaAukFjcvItzJ+mp/TNa1+43FP3Lyc2Cv
-	 fKXnLWN88+Bu+/UMm8OZk4VrMvPKzyROCdu/pjg7u55aeEbTadeFoElOsoDO8h85oW
-	 pVOL6b74QDCLJFb2tARCuF/vSj0dBn4CI22xxFNs=
+	b=DciVqi45l721egKBdlo3hjZ2PCvZlSrqn0TEWHqaawhQgbf9l0WAL1OQAYnQsb3YY
+	 n0Y54tCKbvW+uWKFREr7uRyil4tJRzLqbInILqeV7nN0tVbgKE3fWl0YuZnj8oEEDk
+	 vzEB0exQzqALhOf80gaRDVPvX52CAyWQaCguU588=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Joakim Zhang <joakim.zhang@cixtech.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 100/286] crypto: sahara - fix ahash reqsize
+Subject: [PATCH 5.15 150/374] dma-mapping: clear dev->dma_mem to NULL after freeing it
 Date: Mon, 22 Jan 2024 15:56:46 -0800
-Message-ID: <20240122235735.923543375@linuxfoundation.org>
+Message-ID: <20240122235749.846045273@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Joakim Zhang <joakim.zhang@cixtech.com>
 
-[ Upstream commit efcb50f41740ac55e6ccc4986c1a7740e21c62b4 ]
+[ Upstream commit b07bc2347672cc8c7293c64499f1488278c5ca3d ]
 
-Set the reqsize for sha algorithms to sizeof(struct sahara_sha_reqctx), the
-extra space is not needed.
+Reproduced with below sequence:
+dma_declare_coherent_memory()->dma_release_coherent_memory()
+->dma_declare_coherent_memory()->"return -EBUSY" error
 
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+It will return -EBUSY from the dma_assign_coherent_memory()
+in dma_declare_coherent_memory(), the reason is that dev->dma_mem
+pointer has not been set to NULL after it's freed.
+
+Fixes: cf65a0f6f6ff ("dma-mapping: move all DMA mapping code to kernel/dma")
+Signed-off-by: Joakim Zhang <joakim.zhang@cixtech.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/dma/coherent.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index d6510e169c8e..a97b1dadf6a4 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -1162,8 +1162,7 @@ static int sahara_sha_import(struct ahash_request *req, const void *in)
- static int sahara_sha_cra_init(struct crypto_tfm *tfm)
- {
- 	crypto_ahash_set_reqsize(__crypto_ahash_cast(tfm),
--				 sizeof(struct sahara_sha_reqctx) +
--				 SHA_BUFFER_LEN + SHA256_BLOCK_SIZE);
-+				 sizeof(struct sahara_sha_reqctx));
+diff --git a/kernel/dma/coherent.c b/kernel/dma/coherent.c
+index ca05989d9901..2df824fa40ef 100644
+--- a/kernel/dma/coherent.c
++++ b/kernel/dma/coherent.c
+@@ -133,8 +133,10 @@ int dma_declare_coherent_memory(struct device *dev, phys_addr_t phys_addr,
  
- 	return 0;
+ void dma_release_coherent_memory(struct device *dev)
+ {
+-	if (dev)
++	if (dev) {
+ 		_dma_release_coherent_memory(dev->dma_mem);
++		dev->dma_mem = NULL;
++	}
  }
+ 
+ static void *__dma_alloc_from_coherent(struct device *dev,
 -- 
 2.43.0
 
