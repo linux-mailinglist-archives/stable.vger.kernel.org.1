@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-14206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55FE837FF5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21015837D9F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 495CF1F2BBA6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6C9D28A44A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF2312CDAE;
-	Tue, 23 Jan 2024 00:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BCD3537FA;
+	Tue, 23 Jan 2024 00:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyQcOsAh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJh4CCJY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF1062805;
-	Tue, 23 Jan 2024 00:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B68551014;
+	Tue, 23 Jan 2024 00:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971467; cv=none; b=S5W58+rFG5L95aN6Mg9lxz8NsxoBcHK7b0eBtggxM2gs/scNeCAX57i3qtZvHiJ3EDsAjORKQhcx5rKD60rqOU0HXNKE6Ib2yEUSqAOhULr4BXv1XiFl82Uur8K2aSWN5HY7gA8enLHL/xlPOAN/2e0NeKIr966jEKTuqwlVj1M=
+	t=1705970082; cv=none; b=uymmHf3xNMa+4ib52hK9WC24dle3cgaik1Fua5AnuScDQ+DHPtNp+AIPt1UWEdtQ3382FmRrlZJY/IRwwJYMOESY3lnQQcJo1bMYXzEokUuZIGp9BjbVztcIwdoo51mKfTw2ZuWNJbZiW/ao6cqfnGH4WVPIdb7/lo0MmFIyURo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971467; c=relaxed/simple;
-	bh=rnQEcyQfgKVV/yy1OOJVjZ0TopI/a5FVzGTgxRe9YUw=;
+	s=arc-20240116; t=1705970082; c=relaxed/simple;
+	bh=EQVnnqxHvt+6QFwvcQzkjSzo3s2EaK2BuIhtORPC5X4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VxfiUliw31hnltgv9oY7Z9crZhzwflNYmrDki/K6vTwNcjiSNg9ZjAIJFg/2o0ft8XUZH7cNOtYBxb4PArM9HDWS/8nIadhPTQat0jaFb7XZxhlXd9NbP0Noi8wzCYYs9jHYYN/Tn72qp+eh9CsnZmFozk/WgsiZZ6w/4ukt/jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyQcOsAh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FBEC433F1;
-	Tue, 23 Jan 2024 00:57:47 +0000 (UTC)
+	 MIME-Version; b=Z6AbuiYmoVMJMrnSxDbwhxIP51/jCE3RQ0CPRZp/UQaOfvGvN/58BM9P2cmyx3XU69zUsr86LVGfGp0o+VAhK/OxLFoSmiqxSg5d0wXgkWaEmp5l0R1GcLhIH8irScYHatJZeaYYc+wcCPf8PURW/GfQaTDLpc//6SPvPRxIXOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJh4CCJY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8C8C433C7;
+	Tue, 23 Jan 2024 00:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971467;
-	bh=rnQEcyQfgKVV/yy1OOJVjZ0TopI/a5FVzGTgxRe9YUw=;
+	s=korg; t=1705970081;
+	bh=EQVnnqxHvt+6QFwvcQzkjSzo3s2EaK2BuIhtORPC5X4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GyQcOsAhhFFf2Qr2wgun5z0D1hr7f1U3nbgNI57m9o2VNfcQqp2vpCAIb4T9Z3dxi
-	 XYSnnh8nCGu0VNnPmFiiCgB5G//hla92svax5O66lOnHtvPDcjQXOu/v7OyM2E9qJN
-	 D4QVI6HyOiJ6SxSrJ6kPdw3ubzX6tzljcVk2uKwU=
+	b=XJh4CCJY1meg21abhPh+ROyvbk0PWkoZ7JFaHPd0gK37d1pgsLTlKOcwpGErJgCjn
+	 OXdEEF7dN7me8hdYKg1J5/dVJ009MxaaNN4VMhPjVG0WXcphbTn41oPZH9VpVcmlVh
+	 VYaNVCULanluC+L48wX6MgDTeqE62LRU9nExss50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Guillaume Endignoux <guillaumee@google.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	John Garry <john.g.garry@oracle.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 156/286] ASoC: cs35l34: Fix GPIO name and drop legacy include
+Subject: [PATCH 6.7 558/641] perf stat: Fix hard coded LL miss units
 Date: Mon, 22 Jan 2024 15:57:42 -0800
-Message-ID: <20240122235738.180657195@linuxfoundation.org>
+Message-ID: <20240122235835.605765224@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +72,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit a6122b0b4211d132934ef99e7b737910e6d54d2f ]
+[ Upstream commit f2567e12a090f0eb22553a4468d4c4fe04aad906 ]
 
-This driver includes the legacy GPIO APIs <linux/gpio.h> and
-<linux/of_gpio.h> but does not use any symbols from any of
-them.
+Copy-paste error where LL cache misses are reported as l1i.
 
-Drop the includes.
-
-Further the driver is requesting "reset-gpios" rather than
-just "reset" from the GPIO framework. This is wrong because
-the gpiolib core will add "-gpios" before processing the
-request from e.g. device tree. Drop the suffix.
-
-The last problem means that the optional RESET GPIO has
-never been properly retrieved and used even if it existed,
-but nobody noticed.
-
-Fixes: c1124c09e103 ("ASoC: cs35l34: Initial commit of the cs35l34 CODEC driver.")
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20231201-descriptors-sound-cirrus-v2-3-ee9f9d4655eb@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 0a57b910807ad163 ("perf stat: Use counts rather than saved_value")
+Suggested-by: Guillaume Endignoux <guillaumee@google.com>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: John Garry <john.g.garry@oracle.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20231211181242.1721059-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l34.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ tools/perf/util/stat-shadow.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cs35l34.c b/sound/soc/codecs/cs35l34.c
-index b792c006e530..d9f975b52b21 100644
---- a/sound/soc/codecs/cs35l34.c
-+++ b/sound/soc/codecs/cs35l34.c
-@@ -20,14 +20,12 @@
- #include <linux/regulator/machine.h>
- #include <linux/pm_runtime.h>
- #include <linux/of_device.h>
--#include <linux/of_gpio.h>
- #include <linux/of_irq.h>
- #include <sound/core.h>
- #include <sound/pcm.h>
- #include <sound/pcm_params.h>
- #include <sound/soc.h>
- #include <sound/soc-dapm.h>
--#include <linux/gpio.h>
- #include <linux/gpio/consumer.h>
- #include <sound/initval.h>
- #include <sound/tlv.h>
-@@ -1058,7 +1056,7 @@ static int cs35l34_i2c_probe(struct i2c_client *i2c_client,
- 		dev_err(&i2c_client->dev, "Failed to request IRQ: %d\n", ret);
+diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
+index 1c5c3eeba4cf..e31426167852 100644
+--- a/tools/perf/util/stat-shadow.c
++++ b/tools/perf/util/stat-shadow.c
+@@ -264,7 +264,7 @@ static void print_ll_miss(struct perf_stat_config *config,
+ 	static const double color_ratios[3] = {20.0, 10.0, 5.0};
  
- 	cs35l34->reset_gpio = devm_gpiod_get_optional(&i2c_client->dev,
--				"reset-gpios", GPIOD_OUT_LOW);
-+				"reset", GPIOD_OUT_LOW);
- 	if (IS_ERR(cs35l34->reset_gpio))
- 		return PTR_ERR(cs35l34->reset_gpio);
+ 	print_ratio(config, evsel, aggr_idx, misses, out, STAT_LL_CACHE, color_ratios,
+-		    "of all L1-icache accesses");
++		    "of all LL-cache accesses");
+ }
  
+ static void print_dtlb_miss(struct perf_stat_config *config,
 -- 
 2.43.0
 
