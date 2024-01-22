@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-13348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF0D837B80
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:01:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C55837B67
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:01:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 567E029313C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:01:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD5B81C2865A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E401350FB;
-	Tue, 23 Jan 2024 00:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3035813472F;
+	Tue, 23 Jan 2024 00:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZ93vlWW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBcYRW0J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264BD1350EE;
-	Tue, 23 Jan 2024 00:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45CE13398C;
+	Tue, 23 Jan 2024 00:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969354; cv=none; b=MKIkgQoUUBmbBFoBeqtuoS/JpsXiBxK2Keajbe5Bn3DT86gpsBdGn0SSyQ2zOh9lDttiYrWDcV8bRNxIExE3lNwWFOa4UbeJ4q3fKLYe0TZkxrbmxkL42cMKuhj1kYLidMNV3eF3EvLj38QnmUk1gW9KV70Fyvi5StsPdCjwEUw=
+	t=1705969311; cv=none; b=FDBoB/iPAVxltxRn8geUXz1ds5HkGv44ZmlmVHBPWkzw7MfsQwwGOe/3QCIfQB22JvmE1sP9kLzeJTPeYUi7b8hFB9Q/jltqSLuAijB4XwufquGIUfEvLbG/mdMtROTIGTgxu6E8Ti/RB9tfdI4xAGgn6XIAofGp70TjTCJy9QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969354; c=relaxed/simple;
-	bh=ZKII2TeeI/UuhqOWPCDiSdjJlix0BaqTA7G3iymHLVw=;
+	s=arc-20240116; t=1705969311; c=relaxed/simple;
+	bh=0CoNZVXH55BqRjy+9omlPCY1pCiD7vi4/sUIWr5e058=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qq23ZGERQkQIVrANkBhZC19FlGzj+bg2aADF2uINwr675a1FDuIUTEyg44xFH86FkLqT4HILV1EBlDbF8IPTM0E/BLns4OEdOmycRmRjThffhe0zx/soDbrqooudKeN7hqM0sg4hf4e3uRwa/SFTZuSqKutTxpxsthNwk4V+Ctw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZ93vlWW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C57BC43394;
-	Tue, 23 Jan 2024 00:22:33 +0000 (UTC)
+	 MIME-Version; b=ixv5/LbrwJor4bDUc8TnddC/OBUXlQmc5eBXnFIU1qA7TTGlnoueec+7tOeelrxFihmXWsgAqXXukShq+A9Q2IAQAsuZaGHn3CjVYd/U2Q95cLmAMu15dqmM1SvY1nmOFSAyNdE/wr+ArkBHpLqvC9eJgwzx+TES6yoeR8Y6xcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBcYRW0J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D0FC433B1;
+	Tue, 23 Jan 2024 00:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969353;
-	bh=ZKII2TeeI/UuhqOWPCDiSdjJlix0BaqTA7G3iymHLVw=;
+	s=korg; t=1705969310;
+	bh=0CoNZVXH55BqRjy+9omlPCY1pCiD7vi4/sUIWr5e058=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZ93vlWWOC/u23z17LASIIZ6Uga+DiLJ7DH9SzeBF/GPUIj50R7115wsqxwPYujVT
-	 eUm4lzRTyzrHVBgqfGF4sgJLivl+BXNe1AxD87crmscgyqGDbUQH6yIM5FvaRS2ang
-	 4EXMfcbQu5RnFhywZaf9VyjmPWLzZv4QnS8x6s50=
+	b=qBcYRW0JKZ7zD6e70Wue2/8QzmopARq18IuL1KCl76toJqG5lO/Kbsao1praS/Rd5
+	 DXmbM1veLzlmXnBVk3OiQulDyPbn7PyQwW6WUNcfeKgkDYdI1J9cE1ERLYJB+U9Tqm
+	 /4bhbnIXozhdI+pENDn76IkzMrCxreMy1NNameAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Wei Xu <xuwei5@hisilicon.com>,
+	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
+	Andrei Matei <andreimatei1@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 157/641] arm64: dts: hisilicon: hikey970-pmic: fix regulator cells properties
-Date: Mon, 22 Jan 2024 15:51:01 -0800
-Message-ID: <20240122235822.941419118@linuxfoundation.org>
+Subject: [PATCH 6.7 158/641] bpf: Guard stack limits against 32bit overflow
+Date: Mon, 22 Jan 2024 15:51:02 -0800
+Message-ID: <20240122235822.979877679@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -66,35 +67,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Andrei Matei <andreimatei1@gmail.com>
 
-[ Upstream commit 44ab3ee76a5a977864ba0bb6c352dcf6206804e0 ]
+[ Upstream commit 1d38a9ee81570c4bd61f557832dead4d6f816760 ]
 
-The Hi6421 PMIC regulator child nodes do not have unit addresses so drop
-the incorrect '#address-cells' and '#size-cells' properties.
+This patch promotes the arithmetic around checking stack bounds to be
+done in the 64-bit domain, instead of the current 32bit. The arithmetic
+implies adding together a 64-bit register with a int offset. The
+register was checked to be below 1<<29 when it was variable, but not
+when it was fixed. The offset either comes from an instruction (in which
+case it is 16 bit), from another register (in which case the caller
+checked it to be below 1<<29 [1]), or from the size of an argument to a
+kfunc (in which case it can be a u32 [2]). Between the register being
+inconsistently checked to be below 1<<29, and the offset being up to an
+u32, it appears that we were open to overflowing the `int`s which were
+currently used for arithmetic.
 
-Fixes: 6219b20e1ecd ("arm64: dts: hisilicon: Add support for Hikey 970 PMIC")
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Wei Xu <xuwei5@hisilicon.com>
+[1] https://github.com/torvalds/linux/blob/815fb87b753055df2d9e50f6cd80eb10235fe3e9/kernel/bpf/verifier.c#L7494-L7498
+[2] https://github.com/torvalds/linux/blob/815fb87b753055df2d9e50f6cd80eb10235fe3e9/kernel/bpf/verifier.c#L11904
+
+Reported-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Signed-off-by: Andrei Matei <andreimatei1@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20231207041150.229139-4-andreimatei1@gmail.com
+Stable-dep-of: 6b4a64bafd10 ("bpf: Fix accesses to uninit stack slots")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/hisilicon/hikey970-pmic.dtsi | 3 ---
- 1 file changed, 3 deletions(-)
+ kernel/bpf/verifier.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/hisilicon/hikey970-pmic.dtsi b/arch/arm64/boot/dts/hisilicon/hikey970-pmic.dtsi
-index 970047f2dabd..c06e011a6c3f 100644
---- a/arch/arm64/boot/dts/hisilicon/hikey970-pmic.dtsi
-+++ b/arch/arm64/boot/dts/hisilicon/hikey970-pmic.dtsi
-@@ -25,9 +25,6 @@ pmic: pmic@0 {
- 			gpios = <&gpio28 0 0>;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index acc1f3b7b183..4d91df312b99 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -6761,7 +6761,7 @@ static int check_ptr_to_map_access(struct bpf_verifier_env *env,
+  * The minimum valid offset is -MAX_BPF_STACK for writes, and
+  * -state->allocated_stack for reads.
+  */
+-static int check_stack_slot_within_bounds(int off,
++static int check_stack_slot_within_bounds(s64 off,
+ 					  struct bpf_func_state *state,
+ 					  enum bpf_access_type t)
+ {
+@@ -6790,7 +6790,7 @@ static int check_stack_access_within_bounds(
+ 	struct bpf_reg_state *regs = cur_regs(env);
+ 	struct bpf_reg_state *reg = regs + regno;
+ 	struct bpf_func_state *state = func(env, reg);
+-	int min_off, max_off;
++	s64 min_off, max_off;
+ 	int err;
+ 	char *err_extra;
  
- 			regulators {
--				#address-cells = <1>;
--				#size-cells = <0>;
--
- 				ldo3: ldo3 { /* HDMI */
- 					regulator-name = "ldo3";
- 					regulator-min-microvolt = <1500000>;
+@@ -6803,7 +6803,7 @@ static int check_stack_access_within_bounds(
+ 		err_extra = " write to";
+ 
+ 	if (tnum_is_const(reg->var_off)) {
+-		min_off = reg->var_off.value + off;
++		min_off = (s64)reg->var_off.value + off;
+ 		max_off = min_off + access_size;
+ 	} else {
+ 		if (reg->smax_value >= BPF_MAX_VAR_OFF ||
 -- 
 2.43.0
 
