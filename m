@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-15339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 986B28384D4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 526EB837DCA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B26028910E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E72661F290F5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0032A7762D;
-	Tue, 23 Jan 2024 02:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955476024C;
+	Tue, 23 Jan 2024 00:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/RxBPPG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFXRaFWr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44C97762F;
-	Tue, 23 Jan 2024 02:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E6C5FF19;
+	Tue, 23 Jan 2024 00:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975505; cv=none; b=TV1jX9kmAjsHVlny1FuvXUlw3xZlNsS+u8Ed+TT48Xo2Iw7wNzU8qr50flWfyX0PuTKmCurxV5bJpmu6go/3HQcSkWYSkZXDwld4g6nFVA94JPzNfeoa6Ua7iFlMX+7iGw1htgCmQZkangvuvhcbhnNwooCL8SxwmsE2tA9LVr4=
+	t=1705970167; cv=none; b=Xa7qMNZQFDRL6qtdY1a0MwHqE9OBDW0LhS6cyAykvygqh32HC81N15IUN3OVagRVFmtmimPH/d05X0w0DZnm63mNcUREj4srr1sz6D28qydKaHHwD+/6bqjWglcKJ1rPBLHlIy1/BR/E2AIGEQ5sLpCc8+1KbyfmgAEcce6wdjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975505; c=relaxed/simple;
-	bh=0qV7VE7cAj+yYc8TVULnv1T/PB8Vd0Axy39jPYMySvg=;
+	s=arc-20240116; t=1705970167; c=relaxed/simple;
+	bh=Mg8OTdClf5f9sV7eEO1Pw+W3SSbscxMN15WWynBCn7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DCy7HmJxnUcgA/MXLz5S//7KYLde9EW101uWyMWdDfl4kIvkz7qWEtupNIv1QzaruiNTgnQ79azWeBIxUZVVhN4om2OW9hh2HtSZ1CoO6uTL4JDwpk9IF95SI2x7GJpxKApXXYcLKM+G0sab6asGIgNrGDUDrFnwtWRNgjdOcmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/RxBPPG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D1AC433C7;
-	Tue, 23 Jan 2024 02:05:05 +0000 (UTC)
+	 MIME-Version; b=W1/JY/oVgNaQdMhtkWpAiwItKdKTNyRXlellxg0FCqhvBFL4ve0OALgrI7t78CH5Fd4DM3Vg9TX9eGtWlJyOBPGMGxgjRnocFPN27+9F1ZY3fqNn3mWKS8UxC/rCeDCw/A1pU8dJ/JFyN9/IaiVtisZDLEk2EA2R5Q8YATApnc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFXRaFWr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09735C43390;
+	Tue, 23 Jan 2024 00:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975505;
-	bh=0qV7VE7cAj+yYc8TVULnv1T/PB8Vd0Axy39jPYMySvg=;
+	s=korg; t=1705970166;
+	bh=Mg8OTdClf5f9sV7eEO1Pw+W3SSbscxMN15WWynBCn7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p/RxBPPG0z18tqEhSbtzridMv+ceSW4SSB3t+AKSw/30aL44bU8dd5AzTNjVgFqvn
-	 FJd8CwlzZdGWNNyMN3/E8Rue2ytznVWMtmT6fMJQqVaNnVqsx51pvkqNggb7Svzczx
-	 KzxLQ2pa3CJqcESwuDJhM7USqMHgFb28VlptNLa4=
+	b=dFXRaFWrvp1sx2ssN9SSJ9hRv6zyVBTjqE86nWlZdoprw8ySVypO4qPxm4mmE7cRM
+	 FL6IlDqFd1vrGDyO8yGFRQUYpvfhQIWa7EJOzTB4Pf0fgFT50vddS4SgJoe0ZILVvG
+	 IpHrGyedTST3wZzipry65WWT73QbXYwe4Q+aENRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 457/583] power: supply: bq256xx: fix some problem in bq256xx_hw_init
+	Edward Adam Davis <eadavis@qq.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+f2977222e0e95cec15c8@syzkaller.appspotmail.com
+Subject: [PATCH 6.7 604/641] net: tls, fix WARNIING in __sk_msg_free
 Date: Mon, 22 Jan 2024 15:58:28 -0800
-Message-ID: <20240122235825.950796313@linuxfoundation.org>
+Message-ID: <20240122235837.134025724@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: John Fastabend <john.fastabend@gmail.com>
 
-[ Upstream commit b55d073e6501dc6077edaa945a6dad8ac5c8bbab ]
+[ Upstream commit dc9dfc8dc629e42f2234e3327b75324ffc752bc9 ]
 
-smatch complains that there is a buffer overflow and clang complains
-'ret' is never read.
+A splice with MSG_SPLICE_PAGES will cause tls code to use the
+tls_sw_sendmsg_splice path in the TLS sendmsg code to move the user
+provided pages from the msg into the msg_pl. This will loop over the
+msg until msg_pl is full, checked by sk_msg_full(msg_pl). The user
+can also set the MORE flag to hint stack to delay sending until receiving
+more pages and ideally a full buffer.
 
-Smatch error:
-drivers/power/supply/bq256xx_charger.c:1578 bq256xx_hw_init() error:
-buffer overflow 'bq256xx_watchdog_time' 4 <= 4
+If the user adds more pages to the msg than can fit in the msg_pl
+scatterlist (MAX_MSG_FRAGS) we should ignore the MORE flag and send
+the buffer anyways.
 
-Clang static checker:
-Value stored to 'ret' is never read.
+What actually happens though is we abort the msg to msg_pl scatterlist
+setup and then because we forget to set 'full record' indicating we
+can no longer consume data without a send we fallthrough to the 'continue'
+path which will check if msg_data_left(msg) has more bytes to send and
+then attempts to fit them in the already full msg_pl. Then next
+iteration of sender doing send will encounter a full msg_pl and throw
+the warning in the syzbot report.
 
-Add check for buffer overflow and error code from regmap_update_bits().
+To fix simply check if we have a full_record in splice code path and
+if not send the msg regardless of MORE flag.
 
-Fixes: 32e4978bb920 ("power: supply: bq256xx: Introduce the BQ256XX charger driver")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20231116041822.1378758-1-suhui@nfschina.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Reported-and-tested-by: syzbot+f2977222e0e95cec15c8@syzkaller.appspotmail.com
+Reported-by: Edward Adam Davis <eadavis@qq.com>
+Fixes: fe1e81d4f73b ("tls/sw: Support MSG_SPLICE_PAGES")
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq256xx_charger.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/tls/tls_sw.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/bq256xx_charger.c b/drivers/power/supply/bq256xx_charger.c
-index 82d3cd5ee2f9..c8368dae69c7 100644
---- a/drivers/power/supply/bq256xx_charger.c
-+++ b/drivers/power/supply/bq256xx_charger.c
-@@ -1574,13 +1574,16 @@ static int bq256xx_hw_init(struct bq256xx_device *bq)
- 			wd_reg_val = i;
- 			break;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index e37b4d2e2acd..31e8a94dfc11 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1052,7 +1052,11 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+ 			if (ret < 0)
+ 				goto send_end;
+ 			tls_ctx->pending_open_record_frags = true;
+-			if (full_record || eor || sk_msg_full(msg_pl))
++
++			if (sk_msg_full(msg_pl))
++				full_record = true;
++
++			if (full_record || eor)
+ 				goto copied;
+ 			continue;
  		}
--		if (bq->watchdog_timer > bq256xx_watchdog_time[i] &&
-+		if (i + 1 < BQ256XX_NUM_WD_VAL &&
-+		    bq->watchdog_timer > bq256xx_watchdog_time[i] &&
- 		    bq->watchdog_timer < bq256xx_watchdog_time[i + 1])
- 			wd_reg_val = i;
- 	}
- 	ret = regmap_update_bits(bq->regmap, BQ256XX_CHARGER_CONTROL_1,
- 				 BQ256XX_WATCHDOG_MASK, wd_reg_val <<
- 						BQ256XX_WDT_BIT_SHIFT);
-+	if (ret)
-+		return ret;
- 
- 	ret = power_supply_get_battery_info(bq->charger, &bat_info);
- 	if (ret == -ENOMEM)
 -- 
 2.43.0
 
