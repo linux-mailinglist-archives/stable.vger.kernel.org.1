@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-15069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71DDE8383C0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E406837C71
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A588D1C29A44
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC3F42967FD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3CF64CD3;
-	Tue, 23 Jan 2024 01:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E298E2C686;
+	Tue, 23 Jan 2024 00:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ux/kMbHa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrgG9Y2N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CF864CCB;
-	Tue, 23 Jan 2024 01:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11AF2581;
+	Tue, 23 Jan 2024 00:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975054; cv=none; b=iclt+oTHcecVCHeqISv17qK2D8st+bocb1lXfXjxtMnOos0MAu6wehJrRCoIeyQzqsvcMPLaC2YD0BKb9CDLZmdvq8TeEquiBfcs3eN3EbEOeHQjo/ICFz3T2Me8TwzPgC9NuAC5aE/FPVBYOAayJimMThLs59AtBn7slEqI91k=
+	t=1705969620; cv=none; b=sHzjqDrGAbkyxJ9OZxZimsbOnjVz3xWnCNjfffCMY9DtdhO5L4jF7FIQ4FLzowrhvpeBF2W7ekox8Hfu1yRS7irt0mYJp/siOf6NBcmDKIEMVBDmnaxxju5FurX7DWdodVfva7vbQrcIepd1jAhEvX/ckaKKWhRdZICSNCQlDeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975054; c=relaxed/simple;
-	bh=R+4fE9Rjy5idG9PKPGFc4P9EtODzT0OKWNuJv+PVBKM=;
+	s=arc-20240116; t=1705969620; c=relaxed/simple;
+	bh=/8FOvJ5QOzWsbx/4y2Kv/Val/bzLPg9/mswHS032Jj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDcUzS/PxghUam7glo4GInoQDtHPTV8XDoNqnpzYi6EuWOOs7/CkezB9N0dgYtS6XLGiBHpIG6XSwwJ1fpmreTG/tdOdAv5mZX2CJum+95Go5WwnCwll8m0aFrkd+nlUJIpR8i+0Mf7KMVm/sR26tq/zsSTMvoRTeiGujYOMEG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ux/kMbHa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93266C433C7;
-	Tue, 23 Jan 2024 01:57:34 +0000 (UTC)
+	 MIME-Version; b=hWG6vLNhAaEht905RdgA6tiiv9tGN8MMG/g0MT9RdXhEgsSJ3rN+3XbX8qZu/kriOkcVUxXtuikC6Y0IxtfhAqgI0WTBMQJN8QIobtPEyzeWvJmT1G9gAqFh1j4IeP77tfk1c4ZW7AcvMEm1aFTHNoLLuXNC8tZkJgE7eXjHV34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrgG9Y2N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6169DC433F1;
+	Tue, 23 Jan 2024 00:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975054;
-	bh=R+4fE9Rjy5idG9PKPGFc4P9EtODzT0OKWNuJv+PVBKM=;
+	s=korg; t=1705969620;
+	bh=/8FOvJ5QOzWsbx/4y2Kv/Val/bzLPg9/mswHS032Jj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ux/kMbHamOn6/mm+XXsZWJobrf5sVwtl45PM5Phm5RfmRdv/9Gzb4yITfGfGhPDKR
-	 eAj38OPEU2JPa2PeI5g7pBaI2dhCUDSm4TyCanxyxZbcQjim7eqNIPlyNN5POdGgBi
-	 gZkp+IgNlDPxPPC0eLXn+Z+vvfug/HC4X04Fxgy4=
+	b=lrgG9Y2NM3sK3vyrK3/ZBCK8aLQLuqzGacFWXbPLqChvB6A3OIgyxTbuRyuxbRljZ
+	 SGVVZJDV9QFvVQsNFESb+Dg56jnsQJGLv3yPeqHhnpKuuIabGTR5yIrj3vAvpfe/Fh
+	 rPnFoDRyt2RzRLMYV/f9DvdFQAoGWXay1QbYPDVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Changhui Zhong <czhong@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 215/583] blk-cgroup: fix rcu lockdep warning in blkg_lookup()
+Subject: [PATCH 6.7 362/641] ALSA: scarlett2: Add missing mutex lock around get meter levels
 Date: Mon, 22 Jan 2024 15:54:26 -0800
-Message-ID: <20240122235818.592454802@linuxfoundation.org>
+Message-ID: <20240122235829.265685595@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-[ Upstream commit 393cd8ffd832f23eec3a105553eff622e8198918 ]
+[ Upstream commit 993f7b42fa066b055e3a19b7f76ad8157c0927a0 ]
 
-blkg_lookup() is called with either queue_lock or rcu read lock, so
-use rcu_dereference_check(lockdep_is_held(&q->queue_lock)) for
-retrieving 'blkg', which way models the check exactly for covering
-queue lock or rcu read lock.
+As scarlett2_meter_ctl_get() uses meter_level_map[], the data_mutex
+should be locked while accessing it.
 
-Fix lockdep warning of "block/blk-cgroup.h:254 suspicious rcu_dereference_check() usage!"
-from blkg_lookup().
-
-Tested-by: Changhui Zhong <czhong@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Fixes: 83462a6c971c ("blkcg: Drop unnecessary RCU read [un]locks from blkg_conf_prep/finish()")
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20231219012833.2129540-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Fixes: 3473185f31df ("ALSA: scarlett2: Remap Level Meter values")
+Link: https://lore.kernel.org/r/77e093c27402c83d0730681448fa4f57583349dd.1703001053.git.g@b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-cgroup.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/usb/mixer_scarlett2.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-cgroup.h b/block/blk-cgroup.h
-index fd482439afbc..b927a4a0ad03 100644
---- a/block/blk-cgroup.h
-+++ b/block/blk-cgroup.h
-@@ -252,7 +252,8 @@ static inline struct blkcg_gq *blkg_lookup(struct blkcg *blkcg,
- 	if (blkcg == &blkcg_root)
- 		return q->root_blkg;
+diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
+index cdaf0470e62b..3b7fcd0907e6 100644
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -3880,10 +3880,12 @@ static int scarlett2_meter_ctl_get(struct snd_kcontrol *kctl,
+ 	u16 meter_levels[SCARLETT2_MAX_METERS];
+ 	int i, err;
  
--	blkg = rcu_dereference(blkcg->blkg_hint);
-+	blkg = rcu_dereference_check(blkcg->blkg_hint,
-+			lockdep_is_held(&q->queue_lock));
- 	if (blkg && blkg->q == q)
- 		return blkg;
++	mutex_lock(&private->data_mutex);
++
+ 	err = scarlett2_usb_get_meter_levels(elem->head.mixer, elem->channels,
+ 					     meter_levels);
+ 	if (err < 0)
+-		return err;
++		goto unlock;
  
+ 	/* copy & translate from meter_levels[] using meter_level_map[] */
+ 	for (i = 0; i < elem->channels; i++) {
+@@ -3898,7 +3900,10 @@ static int scarlett2_meter_ctl_get(struct snd_kcontrol *kctl,
+ 		ucontrol->value.integer.value[i] = value;
+ 	}
+ 
+-	return 0;
++unlock:
++	mutex_unlock(&private->data_mutex);
++
++	return err;
+ }
+ 
+ static const struct snd_kcontrol_new scarlett2_meter_ctl = {
 -- 
 2.43.0
 
