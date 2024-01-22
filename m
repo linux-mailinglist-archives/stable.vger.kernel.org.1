@@ -1,144 +1,246 @@
-Return-Path: <stable+bounces-15494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 671A4838B5B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 11:05:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A8D838EC1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 13:49:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17D6929029B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 10:05:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3531B28A3D8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 12:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA7C5A0F9;
-	Tue, 23 Jan 2024 10:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 167C45EE8C;
+	Tue, 23 Jan 2024 12:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="YQmDWkOh";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="YQmDWkOh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="btKkdB20"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA6D5C5ED;
-	Tue, 23 Jan 2024 10:05:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93F65EE64;
+	Tue, 23 Jan 2024 12:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706004318; cv=none; b=ZR3HR1VU0vIxOe0XkUh1eJATKbiTlYtNbwY6knWypLJ5PNHFU5Oh2cTt2p8c7nOli9qfe82Fryot4ObuezLD4Wi+vVzwcGrxvPJW+hgTIwDEbchRjEoJM4b5laz2ZjI1eYbslBlCfsSi/9Wp+FfKa4oHITpO6qUJ2CezrnVnfO0=
+	t=1706014173; cv=none; b=KUi3K0TOYQF+77qzWz8LN31HGIbYMFcK5nj4R6pDMoeHOvHyhf3L8+lPXDj6RIlz8tJPnCj1KNpV8W+hJqFQeT0Lxd7O+K8EEAegoFBW7qrW3OsZz0n7/Bf4eX8qYCgfChCWN/Yga4ii745j2T5e7JW/4AgSakC2Cli9xDfcvnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706004318; c=relaxed/simple;
-	bh=dod4ySizz+UXy9hLArED1qnGN6vM5M8n8D354HPBERk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S2r/1ALIJLhpAM+Dn1ZWHExYC0LwM7EAfBmnTSdbdKwf62o8qntORTu1IUDHiyQEyWojjfClN9V/PAvy2G6kzsaRxEnZWdG+8dCf9ff77zHFtZJKS1PHHRuOzK9Z32c+/uhRUsfwRhbPeQLrLwCHTKHs0+FK9TO7PXUpV5/mQ2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=YQmDWkOh; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=YQmDWkOh; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7B4221FD48;
-	Tue, 23 Jan 2024 10:05:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1706004314; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hCbpUW79UBQklyQUgghM/5s8J/FybqEF+7dXOs7C6RM=;
-	b=YQmDWkOho0o9ZGR4Yz5FT2ornPOxmnaXzF1wFcirQzSlzqcZ1+L9N59/6ddEgse4ImivCc
-	h/g0vRBjHe/GxLL9CXT3pnbv5FNc+gHynszHaDZQFNAQ2/8oVRsQ/UzBCijfdt/1eVnLLg
-	jeAmopyVcBKlmkgDTg/Cxt2GNC4BZ70=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1706004314; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hCbpUW79UBQklyQUgghM/5s8J/FybqEF+7dXOs7C6RM=;
-	b=YQmDWkOho0o9ZGR4Yz5FT2ornPOxmnaXzF1wFcirQzSlzqcZ1+L9N59/6ddEgse4ImivCc
-	h/g0vRBjHe/GxLL9CXT3pnbv5FNc+gHynszHaDZQFNAQ2/8oVRsQ/UzBCijfdt/1eVnLLg
-	jeAmopyVcBKlmkgDTg/Cxt2GNC4BZ70=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 55E5013786;
-	Tue, 23 Jan 2024 10:05:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CuWXElqPr2WJEQAAD6G6ig
-	(envelope-from <mhocko@suse.com>); Tue, 23 Jan 2024 10:05:14 +0000
-Date: Tue, 23 Jan 2024 11:05:13 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"david@redhat.com" <david@redhat.com>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"hannes@cmpxchg.org" <hannes@cmpxchg.org>,
-	"mgorman@techsingularity.net" <mgorman@techsingularity.net>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"quic_pkondeti@quicinc.com" <quic_pkondeti@quicinc.com>,
-	"vbabka@suse.cz" <vbabka@suse.cz>,
-	"quic_charante@quicinc.com" <quic_charante@quicinc.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"quic_cgoldswo@quicinc.com" <quic_cgoldswo@quicinc.com>
-Subject: Re: [RESEND PATCH V2] mm: page_alloc: unreserve highatomic page
- blocks before oom
-Message-ID: <Za-PWcwmHFl3wmth@tiehlicka>
-References: <1700823445-27531-1-git-send-email-quic_charante@quicinc.com>
- <3fe3b3edd33cd784071dd9b459d20a79605ec918.camel@infinera.com>
- <2024012205-undrilled-those-2435@gregkh>
- <PH0PR10MB461565CEE892267025BC697BF4752@PH0PR10MB4615.namprd10.prod.outlook.com>
- <2024012210-outshoot-dragonish-fe8e@gregkh>
- <01010dd280badd149291cf4d2a4a88847113cf6d.camel@infinera.com>
+	s=arc-20240116; t=1706014173; c=relaxed/simple;
+	bh=V3AWB9t1pbtDxFIVCwVVKA1rQbsU5Kyt5t48eN+gYgM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h5Qp4Zg/3Vs4D7FOfHRut2J7lSizd8nz5IBJKN7KfFuvGdopX9brRdvS5cUSCsKL2QmjLUfpsED/lZ12QFh1x3SfQnpd/PhStfZZecfcRZMo/uB56X7lrUH67lDW1ICcC2eTvB2a5GCUVZfEwkMufMSIxwvxHwUAMShJIFdWVN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=btKkdB20; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEA6C433B1;
+	Tue, 23 Jan 2024 12:49:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1706014173;
+	bh=V3AWB9t1pbtDxFIVCwVVKA1rQbsU5Kyt5t48eN+gYgM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=btKkdB20lPqaFFN76/5fk4pGikU2BwLV02b5xECCxuvxi/XTZUSP+dS0QPfjQmm+1
+	 MjnkfmKJRnzQOmGX3MwWPETiTaQr7YXXnJCQPPu0SxtDKsNfFGgpSOBU5LfFGYSfwf
+	 wFs0FCerOh0ciqPwY9sv/TW/CnBTrImVHHM+jnkk=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.7 455/641] wifi: rtlwifi: Remove bogus and dangerous ASPM disable/enable code
+Date: Mon, 22 Jan 2024 15:55:59 -0800
+Message-ID: <20240122235832.256413627@linuxfoundation.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <01010dd280badd149291cf4d2a4a88847113cf6d.camel@infinera.com>
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: 0.70
-X-Spamd-Result: default: False [0.70 / 50.00];
-	 TO_DN_EQ_ADDR_SOME(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 NEURAL_HAM_SHORT(-0.20)[-0.996];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 BAYES_HAM(-0.01)[45.75%];
-	 ARC_NA(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 MIME_GOOD(-0.10)[text/plain];
-	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	 RCPT_COUNT_TWELVE(0.00)[13];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 MID_RHS_NOT_FQDN(0.50)[];
-	 RCVD_TLS_ALL(0.00)[];
-	 SUSPICIOUS_RECIPS(1.50)[]
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon 22-01-24 23:14:59, Joakim Tjernlund wrote:
-> On Mon, 2024-01-22 at 15:04 -0800, Greg KH wrote:
-[...]
-> > For mm patches like this, that are not explicitly tagged by the
-> > maintainers to be included in the stable tree, we need their ack to be
-> > able to apply them based on their requests.  So can you get that for
-> > this change and provide tested patches, we will be glad to queue them
-> > up.
-> 
-> I asked the author and he acknowledged it could be backported. Charan, please chim in.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
-The patch itself is safe to backport but it would be great to here what
-kind of problem you are trying to deal with. The issue fixed by this
-patch is more on a corner case side than something that many users
-should see. Could you share oom report you are seeing?
--- 
-Michal Hocko
-SUSE Labs
+------------------
+
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+
+commit b3943b3c2971444364e03224cfc828c5789deada upstream.
+
+Ever since introduction in the commit 0c8173385e54 ("rtl8192ce: Add new
+driver") the rtlwifi code has, according to comments, attempted to
+disable/enable ASPM of the upstream bridge by writing into its LNKCTL
+register. However, the code has never been correct because it performs
+the writes to the device instead of the upstream bridge.
+
+Worse yet, the offset where the PCIe capabilities reside is derived
+from the offset of the upstream bridge. As a result, the write will use
+an offset on the device that does not relate to the LNKCTL register
+making the ASPM disable/enable code outright dangerous.
+
+Because of those problems, there is no indication that the driver needs
+disable/enable ASPM on the upstream bridge. As the Capabilities offset
+is not correctly calculated for the write to target device's LNKCTL
+register, the code is not disabling/enabling device's ASPM either.
+Therefore, just remove the upstream bridge related ASPM disable/enable
+code entirely.
+
+The upstream bridge related ASPM code was the only user of the struct
+mp_adapter members num4bytes, pcibridge_pciehdr_offset, and
+pcibridge_linkctrlreg so those are removed as well.
+
+Note: This change does not remove the code related to changing the
+device's ASPM on purpose (which is independent of this flawed code
+related to upstream bridge's ASPM).
+
+Suggested-by: Bjorn Helgaas <bhelgaas@kernel.org>
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+Fixes: 886e14b65a8f ("rtlwifi: Eliminate raw reads and writes from PCIe portion")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231124084725.12738-2-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/net/wireless/realtek/rtlwifi/pci.c |   58 -----------------------------
+ drivers/net/wireless/realtek/rtlwifi/pci.h |    5 --
+ 2 files changed, 1 insertion(+), 62 deletions(-)
+
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -192,11 +192,8 @@ static void rtl_pci_disable_aspm(struct
+ 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+ 	u8 pcibridge_vendor = pcipriv->ndis_adapter.pcibridge_vendor;
+-	u8 num4bytes = pcipriv->ndis_adapter.num4bytes;
+ 	/*Retrieve original configuration settings. */
+ 	u8 linkctrl_reg = pcipriv->ndis_adapter.linkctrl_reg;
+-	u16 pcibridge_linkctrlreg = pcipriv->ndis_adapter.
+-				pcibridge_linkctrlreg;
+ 	u16 aspmlevel = 0;
+ 	u8 tmp_u1b = 0;
+ 
+@@ -221,16 +218,8 @@ static void rtl_pci_disable_aspm(struct
+ 	/*Set corresponding value. */
+ 	aspmlevel |= BIT(0) | BIT(1);
+ 	linkctrl_reg &= ~aspmlevel;
+-	pcibridge_linkctrlreg &= ~(BIT(0) | BIT(1));
+ 
+ 	_rtl_pci_platform_switch_device_pci_aspm(hw, linkctrl_reg);
+-	udelay(50);
+-
+-	/*4 Disable Pci Bridge ASPM */
+-	pci_write_config_byte(rtlpci->pdev, (num4bytes << 2),
+-			      pcibridge_linkctrlreg);
+-
+-	udelay(50);
+ }
+ 
+ /*Enable RTL8192SE ASPM & Enable Pci Bridge ASPM for
+@@ -245,9 +234,7 @@ static void rtl_pci_enable_aspm(struct i
+ 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+ 	u8 pcibridge_vendor = pcipriv->ndis_adapter.pcibridge_vendor;
+-	u8 num4bytes = pcipriv->ndis_adapter.num4bytes;
+ 	u16 aspmlevel;
+-	u8 u_pcibridge_aspmsetting;
+ 	u8 u_device_aspmsetting;
+ 
+ 	if (!ppsc->support_aspm)
+@@ -259,25 +246,6 @@ static void rtl_pci_enable_aspm(struct i
+ 		return;
+ 	}
+ 
+-	/*4 Enable Pci Bridge ASPM */
+-
+-	u_pcibridge_aspmsetting =
+-	    pcipriv->ndis_adapter.pcibridge_linkctrlreg |
+-	    rtlpci->const_hostpci_aspm_setting;
+-
+-	if (pcibridge_vendor == PCI_BRIDGE_VENDOR_INTEL)
+-		u_pcibridge_aspmsetting &= ~BIT(0);
+-
+-	pci_write_config_byte(rtlpci->pdev, (num4bytes << 2),
+-			      u_pcibridge_aspmsetting);
+-
+-	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
+-		"PlatformEnableASPM(): Write reg[%x] = %x\n",
+-		(pcipriv->ndis_adapter.pcibridge_pciehdr_offset + 0x10),
+-		u_pcibridge_aspmsetting);
+-
+-	udelay(50);
+-
+ 	/*Get ASPM level (with/without Clock Req) */
+ 	aspmlevel = rtlpci->const_devicepci_aspm_setting;
+ 	u_device_aspmsetting = pcipriv->ndis_adapter.linkctrl_reg;
+@@ -358,22 +326,6 @@ static bool rtl_pci_check_buddy_priv(str
+ 	return tpriv != NULL;
+ }
+ 
+-static void rtl_pci_get_linkcontrol_field(struct ieee80211_hw *hw)
+-{
+-	struct rtl_pci_priv *pcipriv = rtl_pcipriv(hw);
+-	struct rtl_pci *rtlpci = rtl_pcidev(pcipriv);
+-	u8 capabilityoffset = pcipriv->ndis_adapter.pcibridge_pciehdr_offset;
+-	u8 linkctrl_reg;
+-	u8 num4bbytes;
+-
+-	num4bbytes = (capabilityoffset + 0x10) / 4;
+-
+-	/*Read  Link Control Register */
+-	pci_read_config_byte(rtlpci->pdev, (num4bbytes << 2), &linkctrl_reg);
+-
+-	pcipriv->ndis_adapter.pcibridge_linkctrlreg = linkctrl_reg;
+-}
+-
+ static void rtl_pci_parse_configuration(struct pci_dev *pdev,
+ 					struct ieee80211_hw *hw)
+ {
+@@ -2028,12 +1980,6 @@ static bool _rtl_pci_find_adapter(struct
+ 		    PCI_SLOT(bridge_pdev->devfn);
+ 		pcipriv->ndis_adapter.pcibridge_funcnum =
+ 		    PCI_FUNC(bridge_pdev->devfn);
+-		pcipriv->ndis_adapter.pcibridge_pciehdr_offset =
+-		    pci_pcie_cap(bridge_pdev);
+-		pcipriv->ndis_adapter.num4bytes =
+-		    (pcipriv->ndis_adapter.pcibridge_pciehdr_offset + 0x10) / 4;
+-
+-		rtl_pci_get_linkcontrol_field(hw);
+ 
+ 		if (pcipriv->ndis_adapter.pcibridge_vendor ==
+ 		    PCI_BRIDGE_VENDOR_AMD) {
+@@ -2050,13 +1996,11 @@ static bool _rtl_pci_find_adapter(struct
+ 		pdev->vendor, pcipriv->ndis_adapter.linkctrl_reg);
+ 
+ 	rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+-		"pci_bridge busnumber:devnumber:funcnumber:vendor:pcie_cap:link_ctl_reg:amd %d:%d:%d:%x:%x:%x:%x\n",
++		"pci_bridge busnumber:devnumber:funcnumber:vendor:amd %d:%d:%d:%x:%x\n",
+ 		pcipriv->ndis_adapter.pcibridge_busnum,
+ 		pcipriv->ndis_adapter.pcibridge_devnum,
+ 		pcipriv->ndis_adapter.pcibridge_funcnum,
+ 		pcibridge_vendors[pcipriv->ndis_adapter.pcibridge_vendor],
+-		pcipriv->ndis_adapter.pcibridge_pciehdr_offset,
+-		pcipriv->ndis_adapter.pcibridge_linkctrlreg,
+ 		pcipriv->ndis_adapter.amd_l1_patch);
+ 
+ 	rtl_pci_parse_configuration(pdev, hw);
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.h
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.h
+@@ -236,11 +236,6 @@ struct mp_adapter {
+ 	u16 pcibridge_vendorid;
+ 	u16 pcibridge_deviceid;
+ 
+-	u8 num4bytes;
+-
+-	u8 pcibridge_pciehdr_offset;
+-	u8 pcibridge_linkctrlreg;
+-
+ 	bool amd_l1_patch;
+ };
+ 
+
+
 
