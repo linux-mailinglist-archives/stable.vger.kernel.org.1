@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A1383820D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:17:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6E2838464
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E3151F23A72
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F1451C2A19C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037BA5731F;
-	Tue, 23 Jan 2024 01:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B0D6D1C4;
+	Tue, 23 Jan 2024 02:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1ZUSdlg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcd08tfn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FBE51C44;
-	Tue, 23 Jan 2024 01:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DBD6A354;
+	Tue, 23 Jan 2024 02:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974048; cv=none; b=TQORyum3aVhnknBLWFIK+uEXVl+fOKEtnv+kpco6tCSCRBpmv0AhVl8G6WiZDK2KgM47E9O81mruioO0rl8OvxkvyCvuY3fccfjTYShbginiLZwhNbEJ3F0iYaGePblTloUfq9JHwTJy9ldZWkRnJhbwInm6itkxtCswnL25WlM=
+	t=1705975384; cv=none; b=n2ngteINJsxuOaGf9hGcZw7rbnUFgwQDZhPxA+qwTfw3NqHjerDqwlJkXoiSx5wcKry/x+lw0SOpoE9oA+aIHRw2Y81/+//L03osr5LQI92reJZb/UvBOeMwRQaQPNwTMVTUR6We0IH1+Ty6wH54aM0qrXL+hfzLVMWYzVmluoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974048; c=relaxed/simple;
-	bh=wlDSfpqZsuysaByQVHdgj3Tb2DnkNjQyPvtwmYPfayw=;
+	s=arc-20240116; t=1705975384; c=relaxed/simple;
+	bh=a5Kr+nS51dggcsddD3THaeiCO8DI1TcCAOCJpu2asG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlaYhvqaz5c1imirImagdIuOItVyPUd4IiOS5wsQ1zludpjjWUPeB2nNmj5aljL5uij85xwCKr6TrnRTNtgxDNNTa7Z8bAAtb1U/NviVC+NiYV83nQ5izp3sE/QZljp7xYiEJBO7IOCgJ80Jk7Xw6yNbhu97hNMwJi251o4OG8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1ZUSdlg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E86C43390;
-	Tue, 23 Jan 2024 01:40:48 +0000 (UTC)
+	 MIME-Version; b=o8+myr+dMUbTX1uOlzki043M1UWO39TqGHtcJa0HXOhmW+eCGvK+XxFimG42Qlhh1aE0Q8ElwV09J8P0d174AsS/7GDJhNPIyxDmJJdYlPleUUZQi6ivLHg1d9FZwczBucaPcKQmNXtvKcio7E2Oi4i3jL4rr7oD3XVmqSjd7K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rcd08tfn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55627C43390;
+	Tue, 23 Jan 2024 02:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974048;
-	bh=wlDSfpqZsuysaByQVHdgj3Tb2DnkNjQyPvtwmYPfayw=;
+	s=korg; t=1705975384;
+	bh=a5Kr+nS51dggcsddD3THaeiCO8DI1TcCAOCJpu2asG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C1ZUSdlgqEiimWNsL6Zmg27HB5aZeXnQll1UVbxbXGyA330eJ7P978PAcUyELpmrm
-	 ZQ9srnL/LGyIunOKDhZIDrb0qWYvX2bd3TzH7ZcmcCzduILFMIR58QKyF1flsgTqfJ
-	 x3URzCRgptXhHD4aGxO5Toe5lwCaEarUz24iv7M0=
+	b=rcd08tfnY66xbQ2laoPg25sLVmzFQ164Wt/CdIxRqutnJgYcpaP4Zp4g0thmuDktR
+	 z7LaN/O6E6QDs6FQQl9oxf7LtFdCle2RGIHQN+B/bx17MjCveBQqoohv2UxX/a+Nmj
+	 yD+BEpSXGErXsjvWKdLiOmiphi7pAvZFCkw6dkq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Sun <sunhao.th@gmail.com>,
-	Andrei Matei <andreimatei1@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 140/374] bpf: Fix verification of indirect var-off stack access
+	Pengfei Xu <pengfei.xu@intel.com>,
+	David Howells <dhowells@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Petr Vorel <pvorel@suse.cz>
+Subject: [PATCH 6.6 345/583] keys, dns: Fix size check of V1 server-list header
 Date: Mon, 22 Jan 2024 15:56:36 -0800
-Message-ID: <20240122235749.500212645@linuxfoundation.org>
+Message-ID: <20240122235822.583517952@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Matei <andreimatei1@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit a833a17aeac73b33f79433d7cee68d5cafd71e4f ]
+commit acc657692aed438e9931438f8c923b2b107aebf9 upstream.
 
-This patch fixes a bug around the verification of possibly-zero-sized
-stack accesses. When the access was done through a var-offset stack
-pointer, check_stack_access_within_bounds was incorrectly computing the
-maximum-offset of a zero-sized read to be the same as the register's min
-offset. Instead, we have to take in account the register's maximum
-possible value. The patch also simplifies how the max offset is checked;
-the check is now simpler than for min offset.
+Fix the size check added to dns_resolver_preparse() for the V1 server-list
+header so that it doesn't give EINVAL if the size supplied is the same as
+the size of the header struct (which should be valid).
 
-The bug was allowing accesses to erroneously pass the
-check_stack_access_within_bounds() checks, only to later crash in
-check_stack_range_initialized() when all the possibly-affected stack
-slots are iterated (this time with a correct max offset).
-check_stack_range_initialized() is relying on
-check_stack_access_within_bounds() for its accesses to the
-stack-tracking vector to be within bounds; in the case of zero-sized
-accesses, we were essentially only verifying that the lowest possible
-slot was within bounds. We would crash when the max-offset of the stack
-pointer was >= 0 (which shouldn't pass verification, and hopefully is
-not something anyone's code attempts to do in practice).
+This can be tested with:
 
-Thanks Hao for reporting!
+        echo -n -e '\0\0\01\xff\0\0' | keyctl padd dns_resolver desc @p
 
-Fixes: 01f810ace9ed3 ("bpf: Allow variable-offset stack access")
-Reported-by: Hao Sun <sunhao.th@gmail.com>
-Signed-off-by: Andrei Matei <andreimatei1@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20231207041150.229139-2-andreimatei1@gmail.com
+which will give "add_key: Invalid argument" without this fix.
 
-Closes: https://lore.kernel.org/bpf/CACkBjsZGEUaRCHsmaX=h-efVogsRfK1FPxmkgb0Os_frnHiNdw@mail.gmail.com/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1997b3cb4217 ("keys, dns: Fix missing size check of V1 server-list header")
+Reported-by: Pengfei Xu <pengfei.xu@intel.com>
+Link: https://lore.kernel.org/r/ZZ4fyY4r3rqgZL+4@xpf.sh.intel.com/
+Signed-off-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Petr Vorel <pvorel@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ net/dns_resolver/dns_key.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index cc284371eea0..c2ecf349523d 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -4305,10 +4305,7 @@ static int check_stack_access_within_bounds(
+--- a/net/dns_resolver/dns_key.c
++++ b/net/dns_resolver/dns_key.c
+@@ -104,7 +104,7 @@ dns_resolver_preparse(struct key_prepars
+ 		const struct dns_server_list_v1_header *v1;
  
- 	if (tnum_is_const(reg->var_off)) {
- 		min_off = reg->var_off.value + off;
--		if (access_size > 0)
--			max_off = min_off + access_size - 1;
--		else
--			max_off = min_off;
-+		max_off = min_off + access_size;
- 	} else {
- 		if (reg->smax_value >= BPF_MAX_VAR_OFF ||
- 		    reg->smin_value <= -BPF_MAX_VAR_OFF) {
-@@ -4317,15 +4314,12 @@ static int check_stack_access_within_bounds(
- 			return -EACCES;
- 		}
- 		min_off = reg->smin_value + off;
--		if (access_size > 0)
--			max_off = reg->smax_value + off + access_size - 1;
--		else
--			max_off = min_off;
-+		max_off = reg->smax_value + off + access_size;
- 	}
+ 		/* It may be a server list. */
+-		if (datalen <= sizeof(*v1))
++		if (datalen < sizeof(*v1))
+ 			return -EINVAL;
  
- 	err = check_stack_slot_within_bounds(min_off, state, type);
--	if (!err)
--		err = check_stack_slot_within_bounds(max_off, state, type);
-+	if (!err && max_off > 0)
-+		err = -EINVAL; /* out of stack access into non-negative offsets */
- 
- 	if (err) {
- 		if (tnum_is_const(reg->var_off)) {
--- 
-2.43.0
-
+ 		v1 = (const struct dns_server_list_v1_header *)data;
 
 
 
