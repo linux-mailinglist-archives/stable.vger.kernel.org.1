@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-13656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF7F837D48
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA8EA837FAD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 902751C27C74
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFF5F1C2916E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916E058AA8;
-	Tue, 23 Jan 2024 00:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF0664AA5;
+	Tue, 23 Jan 2024 00:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/wh1Ul7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+6eHK/w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDBA3A8F4;
-	Tue, 23 Jan 2024 00:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A06A634F8;
+	Tue, 23 Jan 2024 00:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969875; cv=none; b=fT0ByYAEusVxH2xKKlTbOowo34A1mhP3TTkTrNEc8Pz4SlUB+5DY6APUCxRzZwNXJl3jqMD3hR++Spp+ZgmIX3vai9Yi7zz5aoxbYqfixpv7qFSszQsdpltmGTqL4DpsFpBekxJ527mls2gVUNcSznFQ/07n6CMdoLYJnavwBS0=
+	t=1705971282; cv=none; b=GQmOWR3BVXpgHN8GcgCCpQlfyrlY40jsWN2PN2eldW6pyqErqwnfwEGqi9JnPZ+Sx5AHK0fwFt5Y/6/+RZfIbrxGeMuWeZORWxk7tdEfWFusPEn+k39h0IrPJq/4oxIoY5jFna1SvvHhlWjsrPklKawrINiwshXK9yi2oDlk+ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969875; c=relaxed/simple;
-	bh=JC405hPRvvGe7apQCTHI2CmLZox/qbyeqLlqztQ3Xy0=;
+	s=arc-20240116; t=1705971282; c=relaxed/simple;
+	bh=zZbNnhP3FYDEEgNy5NzVibh8DtPiFmUTf20fmCFo7GU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r+QPUi4+1kZlUBHqvTgjkL/WMoKG80OoqLQvxmhDM5CVkgJmzYkh9J9Su5Qm069mSmFT45KmBeLzFeNvAIofiRRBY6fBdRqeEOUbJJiOQMdEG4/C4fH46Sqc+IVcwD71Vy02Nr+ZWdPLX1xEtOBz6aNHXDVgEJdw1JgkPoJIaJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/wh1Ul7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E56BC43390;
-	Tue, 23 Jan 2024 00:31:14 +0000 (UTC)
+	 MIME-Version; b=Bk475mliomav8Fxm8dbnoxSUgVFVy2deNq5ox/GQi1wCscxdxjz6YIp/6cXjRx+CAUkR+a6QGgXM10QGOloNCheyKSTF7mVUG9B7/gfqp73uVYsjX3JufMpfSAQKUsqXNHjx0QZ/+ayBplPUaXFUqBtBDvl5MqtWQBETY2mIElM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+6eHK/w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9876AC433C7;
+	Tue, 23 Jan 2024 00:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969875;
-	bh=JC405hPRvvGe7apQCTHI2CmLZox/qbyeqLlqztQ3Xy0=;
+	s=korg; t=1705971282;
+	bh=zZbNnhP3FYDEEgNy5NzVibh8DtPiFmUTf20fmCFo7GU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/wh1Ul7f7I4LcxFeat+22iFgjRW1HXHYTrEdagRjnXKkL0jkIAWb7xoqzylLJL96
-	 j2rdiyUqKxGPNpWoZjaM6LsJStg+wqYTx24X5Yok2Tax4fc/v0Eq/QJOCi/7Sz8P7G
-	 vq72Vjk8aCdEl8zC6RPs2Ekm+QUr2ZLELkTv1KU8=
+	b=O+6eHK/wlCm+E1M/rfd9PT3SpFz9d4kFUWf+qtemxOT4E+y3nWABjMBPkClgKXdL1
+	 cWGy351hzNk/bwGyR4JbSgXFv6vqoBozQXeboiks3Ex8+tx5vhGgbn+hggMi/l/Q+e
+	 8t53IgNY8uxfeOV0mlrJchHL7atbF9+Nvicy2Tg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Swati Sharma <swati2.sharma@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 499/641] drm/i915/dp: Fix the max DSC bpc supported by source
-Date: Mon, 22 Jan 2024 15:56:43 -0800
-Message-ID: <20240122235833.676783547@linuxfoundation.org>
+Subject: [PATCH 5.10 098/286] crypto: sahara - avoid skcipher fallback code duplication
+Date: Mon, 22 Jan 2024 15:56:44 -0800
+Message-ID: <20240122235735.846139559@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +62,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 584ebbefd12296c6bad009c8a0c9e610eb8283c8 ]
+[ Upstream commit 01d70a4bbff20ea05cadb4c208841985a7cc6596 ]
 
-Use correct helper for getting max DSC bpc supported by the source.
+Factor out duplicated skcipher fallback handling code to a helper function
+sahara_aes_fallback(). Also, keep a single check if fallback is required in
+sahara_aes_crypt().
 
-Fixes: 1c56e9a39833 ("drm/i915/dp: Get optimal link config to have best compressed bpp")
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231213091632.431557-3-ankit.k.nautiyal@intel.com
-(cherry picked from commit cd7b0b2dd3d9fecc6057c07b40e8087db2f9f71a)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: d1d6351e37aa ("crypto: sahara - handle zero-length aes requests")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/sahara.c | 85 ++++++++++++-----------------------------
+ 1 file changed, 25 insertions(+), 60 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index 62ce92772367..1710ef24c511 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -2025,7 +2025,7 @@ static int intel_dp_dsc_compute_pipe_bpp(struct intel_dp *intel_dp,
- 		}
- 	}
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 3cd872d282b4..b584dd086989 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -648,12 +648,37 @@ static int sahara_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
+ 	return crypto_skcipher_setkey(ctx->fallback, key, keylen);
+ }
  
--	dsc_max_bpc = intel_dp_dsc_min_src_input_bpc(i915);
-+	dsc_max_bpc = intel_dp_dsc_max_src_input_bpc(i915);
- 	if (!dsc_max_bpc)
- 		return -EINVAL;
++static int sahara_aes_fallback(struct skcipher_request *req, unsigned long mode)
++{
++	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
++	struct sahara_ctx *ctx = crypto_skcipher_ctx(
++		crypto_skcipher_reqtfm(req));
++
++	skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
++	skcipher_request_set_callback(&rctx->fallback_req,
++				      req->base.flags,
++				      req->base.complete,
++				      req->base.data);
++	skcipher_request_set_crypt(&rctx->fallback_req, req->src,
++				   req->dst, req->cryptlen, req->iv);
++
++	if (mode & FLAGS_ENCRYPT)
++		return crypto_skcipher_encrypt(&rctx->fallback_req);
++
++	return crypto_skcipher_decrypt(&rctx->fallback_req);
++}
++
+ static int sahara_aes_crypt(struct skcipher_request *req, unsigned long mode)
+ {
+ 	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
++	struct sahara_ctx *ctx = crypto_skcipher_ctx(
++		crypto_skcipher_reqtfm(req));
+ 	struct sahara_dev *dev = dev_ptr;
+ 	int err = 0;
+ 
++	if (unlikely(ctx->keylen != AES_KEYSIZE_128))
++		return sahara_aes_fallback(req, mode);
++
+ 	dev_dbg(dev->device, "nbytes: %d, enc: %d, cbc: %d\n",
+ 		req->cryptlen, !!(mode & FLAGS_ENCRYPT), !!(mode & FLAGS_CBC));
+ 
+@@ -676,81 +701,21 @@ static int sahara_aes_crypt(struct skcipher_request *req, unsigned long mode)
+ 
+ static int sahara_aes_ecb_encrypt(struct skcipher_request *req)
+ {
+-	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
+-	struct sahara_ctx *ctx = crypto_skcipher_ctx(
+-		crypto_skcipher_reqtfm(req));
+-
+-	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
+-		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
+-		skcipher_request_set_callback(&rctx->fallback_req,
+-					      req->base.flags,
+-					      req->base.complete,
+-					      req->base.data);
+-		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
+-					   req->dst, req->cryptlen, req->iv);
+-		return crypto_skcipher_encrypt(&rctx->fallback_req);
+-	}
+-
+ 	return sahara_aes_crypt(req, FLAGS_ENCRYPT);
+ }
+ 
+ static int sahara_aes_ecb_decrypt(struct skcipher_request *req)
+ {
+-	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
+-	struct sahara_ctx *ctx = crypto_skcipher_ctx(
+-		crypto_skcipher_reqtfm(req));
+-
+-	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
+-		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
+-		skcipher_request_set_callback(&rctx->fallback_req,
+-					      req->base.flags,
+-					      req->base.complete,
+-					      req->base.data);
+-		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
+-					   req->dst, req->cryptlen, req->iv);
+-		return crypto_skcipher_decrypt(&rctx->fallback_req);
+-	}
+-
+ 	return sahara_aes_crypt(req, 0);
+ }
+ 
+ static int sahara_aes_cbc_encrypt(struct skcipher_request *req)
+ {
+-	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
+-	struct sahara_ctx *ctx = crypto_skcipher_ctx(
+-		crypto_skcipher_reqtfm(req));
+-
+-	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
+-		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
+-		skcipher_request_set_callback(&rctx->fallback_req,
+-					      req->base.flags,
+-					      req->base.complete,
+-					      req->base.data);
+-		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
+-					   req->dst, req->cryptlen, req->iv);
+-		return crypto_skcipher_encrypt(&rctx->fallback_req);
+-	}
+-
+ 	return sahara_aes_crypt(req, FLAGS_ENCRYPT | FLAGS_CBC);
+ }
+ 
+ static int sahara_aes_cbc_decrypt(struct skcipher_request *req)
+ {
+-	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
+-	struct sahara_ctx *ctx = crypto_skcipher_ctx(
+-		crypto_skcipher_reqtfm(req));
+-
+-	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
+-		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
+-		skcipher_request_set_callback(&rctx->fallback_req,
+-					      req->base.flags,
+-					      req->base.complete,
+-					      req->base.data);
+-		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
+-					   req->dst, req->cryptlen, req->iv);
+-		return crypto_skcipher_decrypt(&rctx->fallback_req);
+-	}
+-
+ 	return sahara_aes_crypt(req, FLAGS_CBC);
+ }
  
 -- 
 2.43.0
