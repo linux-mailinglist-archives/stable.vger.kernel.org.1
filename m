@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C68837D30
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DA41837FC9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C129291E31
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5027EB286DC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664921DA52;
-	Tue, 23 Jan 2024 00:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D10660B8D;
+	Tue, 23 Jan 2024 00:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFkJMjVM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Am4WkAeu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2408836B04;
-	Tue, 23 Jan 2024 00:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14593FFE;
+	Tue, 23 Jan 2024 00:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969830; cv=none; b=jM8JRBx2482OlF39KxzPIIbVe5kdawZ4Ge21Stt8KSdmXKzfgqkMAi247Nyc/Avi9cLUZLl47fk4Y78fPZZZuSQFvtbY/ZHgL7cLXT9gs/4MtpCGgePSCSM+PtmcgHZzMxhX5pMJVoYrdVx9vSdBvZD0AkdP72JWlZnUD5zvQfo=
+	t=1705970946; cv=none; b=ndhz8sUan7WKXJcFVWIhHQhaKj/0nQQyR8fPrS/6U65R+d/Dz/RQ0bjNFHwYI62jMVJJFKxDhNHDGssXMClEQ/GyQdO1d/XhSwriVks2n0Udk0JvMGyA+gUgiufNzhyH8g6dunJWZtuYHy5Fe7OX3AnR/9Lz1xwhqcHn5HyYPZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969830; c=relaxed/simple;
-	bh=HjyjPtoKzsQ7g7RYFklPIUQs4olkvW5vb1ryIr+qH7w=;
+	s=arc-20240116; t=1705970946; c=relaxed/simple;
+	bh=JejALwjfDkGcQLVmmUEFNesHqAbIdgGyN+zjpD5SPDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S27QmZl8rEovTqFA8lq+e9SA4r7nj0rnoa3AoiEssVwvznRJtiQ5ArGaa4Si3waGUhX93Ato9b+p3rp1xriktgKhgqYX9P0QVexklhS/tw48NzF1R++EI/1D/teiJyhbmPoeuANMWxMp6xb10HhKvbvMQX3Q85dzlE7xCdqMbao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFkJMjVM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D80AAC43394;
-	Tue, 23 Jan 2024 00:30:29 +0000 (UTC)
+	 MIME-Version; b=eIYO2k3/bbm4d0InYUwk++tttYTeJuzeXWt5MefIduWlQQq2BIqlcprHAzBtC4WNG6A49FTtT0zbcFhTL4BnOodnTDaNmZS5FG2cxfqAXLATfY172Ta3DiQQqoqpifeZoDleHXFfZr3RwYBDmGYmisOSZkT9zWPSOSX4MPd4Cl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Am4WkAeu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B975BC43390;
+	Tue, 23 Jan 2024 00:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969830;
-	bh=HjyjPtoKzsQ7g7RYFklPIUQs4olkvW5vb1ryIr+qH7w=;
+	s=korg; t=1705970945;
+	bh=JejALwjfDkGcQLVmmUEFNesHqAbIdgGyN+zjpD5SPDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dFkJMjVMXPcSaPEMRy8uQN4Xp4bvBIsbQAoouwwGFCfn2srGJ1InlnaEHhjwWqwQc
-	 uQzEuLUPKWrjRrVVLdibCaT6kGBzHcPYxkBEWbqi0jl51O3rIUA054z7MO3s9jg3Zc
-	 /2pQpn4ttn2LAeZMjd+cxHV8uq+yHE0WHcAl2pAc=
+	b=Am4WkAeuoj2NtbY/h0XlNC6Rxz0a2AcyyWhFQnB2urOfbT/nrFMx7UgLgRl8lNKKy
+	 CwJsLDqtnnUWXTnTihQJb9WmLLfVPT8Q9idUy8aaPlWlOWtUjb/4FQuRhr27pQCHo8
+	 tMdxrfgfRox1vbK+gYN4DeEpW7b/DiASy/hc+s80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Slaby <jirislaby@gmail.com>,
-	David Laight <David.Laight@ACULAB.COM>,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.7 451/641] media: solo6x10: replace max(a, min(b, c)) by clamp(b, a, c)
+	Colin Ian King <colin.i.king@gmail.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 049/286] x86/lib: Fix overflow when counting digits
 Date: Mon, 22 Jan 2024 15:55:55 -0800
-Message-ID: <20240122235832.133784775@linuxfoundation.org>
+Message-ID: <20240122235733.920115507@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurelien Jarno <aurelien@aurel32.net>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-commit 31e97d7c9ae3de072d7b424b2cf706a03ec10720 upstream.
+[ Upstream commit a24d61c609813963aacc9f6ec8343f4fcaac7243 ]
 
-This patch replaces max(a, min(b, c)) by clamp(b, a, c) in the solo6x10
-driver.  This improves the readability and more importantly, for the
-solo6x10-p2m.c file, this reduces on my system (x86-64, gcc 13):
+tl;dr: The num_digits() function has a theoretical overflow issue.
+But it doesn't affect any actual in-tree users.  Fix it by using
+a larger type for one of the local variables.
 
- - the preprocessed size from 121 MiB to 4.5 MiB;
+Long version:
 
- - the build CPU time from 46.8 s to 1.6 s;
+There is an overflow in variable m in function num_digits when val
+is >= 1410065408 which leads to the digit calculation loop to
+iterate more times than required. This results in either more
+digits being counted or in some cases (for example where val is
+1932683193) the value of m eventually overflows to zero and the
+while loop spins forever).
 
- - the build memory from 2786 MiB to 98MiB.
+Currently the function num_digits is currently only being used for
+small values of val in the SMP boot stage for digit counting on the
+number of cpus and NUMA nodes, so the overflow is never encountered.
+However it is useful to fix the overflow issue in case the function
+is used for other purposes in the future. (The issue was discovered
+while investigating the digit counting performance in various
+kernel helper functions rather than any real-world use-case).
 
-In fine, this allows this relatively simple C file to be built on a
-32-bit system.
+The simplest fix is to make m a long long, the overhead in
+multiplication speed for a long long is very minor for small values
+of val less than 10000 on modern processors. The alternative
+fix is to replace the multiplication with a constant division
+by 10 loop (this compiles down to an multiplication and shift)
+without needing to make m a long long, but this is slightly slower
+than the fix in this commit when measured on a range of x86
+processors).
 
-Reported-by: Jiri Slaby <jirislaby@gmail.com>
-Closes: https://lore.kernel.org/lkml/18c6df0d-45ed-450c-9eda-95160a2bbb8e@gmail.com/
-Cc:  <stable@vger.kernel.org> # v6.7+
-Suggested-by: David Laight <David.Laight@ACULAB.COM>
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
-Reviewed-by: David Laight <David.Laight@ACULAB.COM>
-Reviewed-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ dhansen: subject and changelog tweaks ]
+
+Fixes: 646e29a1789a ("x86: Improve the printout of the SMP bootup CPU table")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20231102174901.2590325-1-colin.i.king%40gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/solo6x10/solo6x10-offsets.h |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/lib/misc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/pci/solo6x10/solo6x10-offsets.h
-+++ b/drivers/media/pci/solo6x10/solo6x10-offsets.h
-@@ -57,16 +57,16 @@
- #define SOLO_MP4E_EXT_ADDR(__solo) \
- 	(SOLO_EREF_EXT_ADDR(__solo) + SOLO_EREF_EXT_AREA(__solo))
- #define SOLO_MP4E_EXT_SIZE(__solo) \
--	max((__solo->nr_chans * 0x00080000),				\
--	    min(((__solo->sdram_size - SOLO_MP4E_EXT_ADDR(__solo)) -	\
--		 __SOLO_JPEG_MIN_SIZE(__solo)), 0x00ff0000))
-+	clamp(__solo->sdram_size - SOLO_MP4E_EXT_ADDR(__solo) -	\
-+	      __SOLO_JPEG_MIN_SIZE(__solo),			\
-+	      __solo->nr_chans * 0x00080000, 0x00ff0000)
+diff --git a/arch/x86/lib/misc.c b/arch/x86/lib/misc.c
+index a018ec4fba53..c97be9a1430a 100644
+--- a/arch/x86/lib/misc.c
++++ b/arch/x86/lib/misc.c
+@@ -6,7 +6,7 @@
+  */
+ int num_digits(int val)
+ {
+-	int m = 10;
++	long long m = 10;
+ 	int d = 1;
  
- #define __SOLO_JPEG_MIN_SIZE(__solo)		(__solo->nr_chans * 0x00080000)
- #define SOLO_JPEG_EXT_ADDR(__solo) \
- 		(SOLO_MP4E_EXT_ADDR(__solo) + SOLO_MP4E_EXT_SIZE(__solo))
- #define SOLO_JPEG_EXT_SIZE(__solo) \
--	max(__SOLO_JPEG_MIN_SIZE(__solo),				\
--	    min((__solo->sdram_size - SOLO_JPEG_EXT_ADDR(__solo)), 0x00ff0000))
-+	clamp(__solo->sdram_size - SOLO_JPEG_EXT_ADDR(__solo),	\
-+	      __SOLO_JPEG_MIN_SIZE(__solo), 0x00ff0000)
- 
- #define SOLO_SDRAM_END(__solo) \
- 	(SOLO_JPEG_EXT_ADDR(__solo) + SOLO_JPEG_EXT_SIZE(__solo))
+ 	if (val < 0) {
+-- 
+2.43.0
+
 
 
 
