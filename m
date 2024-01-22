@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC838382AD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0894838009
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 515E328D31A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 883B71F2BDC4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE0F5EE6A;
-	Tue, 23 Jan 2024 01:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A80657A6;
+	Tue, 23 Jan 2024 00:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17yTKPHc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTPmQ/2d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6275EE62;
-	Tue, 23 Jan 2024 01:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC55E65199;
+	Tue, 23 Jan 2024 00:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974407; cv=none; b=TzzJO7EDkKZpR0gqj/1Il7z+Dkq4Rnviu7v0qFW0RKBJKZr2R1GFSXQPtsa77uFAqPXYxKISsFPHdTsWg/Lr5kICu+41w0tr6nW27aRV7Q7fO7RjH7DBj5INvxYac5xfFWFehTqjPf0We1Ws8YWk7hdTmCvFrKQwIXedltlBHLw=
+	t=1705971513; cv=none; b=qV8l+6P09DeDSVJ1x1fu+WcgcB6jAgEasb4CoSWyZe+I5Sfq3bHEL3brl6Lt7MMcaHVPFL+fTVSdWROBGQSOTfa/8YXsYvSxHRfpHvFexOBORSBzRuCDNTnTYD/sRzQmyh5eGkQvnwTxtcJXpZ12NQAPvBGEWIOOQjrVEXLPLPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974407; c=relaxed/simple;
-	bh=xlaeMjpUDpnNwJqaklZVDRsKydLOLUR5N/ooyKijPas=;
+	s=arc-20240116; t=1705971513; c=relaxed/simple;
+	bh=XjS+PzE5Ey/BVw9EO6i7LV4781J0YbBKv4pWsXKdPZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mPplY97b7qkOUFDutJWVmQkiDIys4Dc/I8LDWsPHeSl+cn4EX917KLrh3Bp8IWagvW8ba7Ja7aQ/1VBzAhyrmWDGYiyAtPaSPHKI9a3UcO0xoTU5GbvSAXs7NeAqIch1voEKW0P6Rf/4lfZtgVrzpgjggBAFsM6TYnIuWjmXGvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17yTKPHc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AF5C433C7;
-	Tue, 23 Jan 2024 01:46:47 +0000 (UTC)
+	 MIME-Version; b=nXNacWaSGAbudNUll+0+0AneSMEBh8MvS3eRds2IPshGtVa1UrKa278wUUjJKp1EL39sLdCzJpXK4QGGbo4gzGJTC9EKjQfAUAwCUnpvlXRjbKDaFNfa342hT0Ar3sW7rDmfgPzVk53GDiLvLPW7VztIG8zegYLr49PigjC0d2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTPmQ/2d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B41AC433F1;
+	Tue, 23 Jan 2024 00:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974407;
-	bh=xlaeMjpUDpnNwJqaklZVDRsKydLOLUR5N/ooyKijPas=;
+	s=korg; t=1705971512;
+	bh=XjS+PzE5Ey/BVw9EO6i7LV4781J0YbBKv4pWsXKdPZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=17yTKPHcLwUU7D0R9vvZkdu7fcZYvHorzQr/BErb5S05x4hQncRJUWjtqyiZ9flgP
-	 Y6fwayFAY2GrnzCXoHentegTTJAA1hYL2VgAFPT0gIi5hl76k8x8s01t3p83sPO2iJ
-	 akMj7tXeGWTJXlBg1P8Sm6fuvH34yJFb6a9KVV/A=
+	b=tTPmQ/2dnoLxTbW/kQqiTWfB4Xd3XLMMRvWRdmA/aSIXyfEaIslNZWbc43nLSKfYt
+	 A7VM9vWsvRqFyfkfm4IPy+0F/9MaMIUwR/VuLTRH3Q7o5f9WqatwXdIb8Zc5v2l1tq
+	 gLLeKh0bWyFZkUd4sHZ/DbF5e4AwLxqQ3atQbNwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 213/374] clk: qcom: videocc-sm8150: Update the videocc resets
-Date: Mon, 22 Jan 2024 15:57:49 -0800
-Message-ID: <20240122235752.052856527@linuxfoundation.org>
+Subject: [PATCH 5.10 164/286] media: cx231xx: fix a memleak in cx231xx_init_isoc
+Date: Mon, 22 Jan 2024 15:57:50 -0800
+Message-ID: <20240122235738.489487778@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 1fd9a939db24d2f66e48f8bca3e3654add3fa205 ]
+[ Upstream commit 5d3c8990e2bbf929cb211563dadd70708f42e4e6 ]
 
-Add all the available resets for the video clock controller
-on sm8150.
+The dma_q->p_left_data alloced by kzalloc should be freed in all the
+following error handling paths. However, it hasn't been freed in the
+allocation error paths of dev->video_mode.isoc_ctl.urb and
+dev->video_mode.isoc_ctl.transfer_buffer.
 
-Fixes: 5658e8cf1a8a ("clk: qcom: add video clock controller driver for SM8150")
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231201-videocc-8150-v3-2-56bec3a5e443@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+On the other hand, the dma_q->p_left_data did be freed in the
+error-handling paths after that of dev->video_mode.isoc_ctl.urb and
+dev->video_mode.isoc_ctl.transfer_buffer, by calling
+cx231xx_uninit_isoc(dev). So the same free operation should be done in
+error-handling paths of those two allocation.
+
+Fixes: 64fbf4445526 ("[media] cx231xx: Added support for Carraera, Shelby, RDx_253S and VIDEO_GRABBER")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/videocc-sm8150.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/media/usb/cx231xx/cx231xx-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/qcom/videocc-sm8150.c b/drivers/clk/qcom/videocc-sm8150.c
-index 1afdbe4a249d..6a5f89f53da8 100644
---- a/drivers/clk/qcom/videocc-sm8150.c
-+++ b/drivers/clk/qcom/videocc-sm8150.c
-@@ -214,6 +214,10 @@ static const struct regmap_config video_cc_sm8150_regmap_config = {
+diff --git a/drivers/media/usb/cx231xx/cx231xx-core.c b/drivers/media/usb/cx231xx/cx231xx-core.c
+index 05d91caaed0c..46e34225b45c 100644
+--- a/drivers/media/usb/cx231xx/cx231xx-core.c
++++ b/drivers/media/usb/cx231xx/cx231xx-core.c
+@@ -1024,6 +1024,7 @@ int cx231xx_init_isoc(struct cx231xx *dev, int max_packets,
+ 	if (!dev->video_mode.isoc_ctl.urb) {
+ 		dev_err(dev->dev,
+ 			"cannot alloc memory for usb buffers\n");
++		kfree(dma_q->p_left_data);
+ 		return -ENOMEM;
+ 	}
  
- static const struct qcom_reset_map video_cc_sm8150_resets[] = {
- 	[VIDEO_CC_MVSC_CORE_CLK_BCR] = { 0x850, 2 },
-+	[VIDEO_CC_INTERFACE_BCR] = { 0x8f0 },
-+	[VIDEO_CC_MVS0_BCR] = { 0x870 },
-+	[VIDEO_CC_MVS1_BCR] = { 0x8b0 },
-+	[VIDEO_CC_MVSC_BCR] = { 0x810 },
- };
+@@ -1033,6 +1034,7 @@ int cx231xx_init_isoc(struct cx231xx *dev, int max_packets,
+ 		dev_err(dev->dev,
+ 			"cannot allocate memory for usbtransfer\n");
+ 		kfree(dev->video_mode.isoc_ctl.urb);
++		kfree(dma_q->p_left_data);
+ 		return -ENOMEM;
+ 	}
  
- static const struct qcom_cc_desc video_cc_sm8150_desc = {
 -- 
 2.43.0
 
