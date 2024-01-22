@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-14160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D156C837FBB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C49837D86
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88C241F2A322
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B452280E85
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B014812A167;
-	Tue, 23 Jan 2024 00:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F4651C3E;
+	Tue, 23 Jan 2024 00:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHz+kiq4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X2Q6ED3n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD6664A80;
-	Tue, 23 Jan 2024 00:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61AAB4E1D8;
+	Tue, 23 Jan 2024 00:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971324; cv=none; b=HLva25ZB5kAhiIW2KDcE2z8l9pDQrQfWff8rVxcOsqiBIbk+/wInaacn5pDmv0l8LsT31/6mht52Nj6DVbCFxlGH3uTz2c5oCRZu5385IPgBBQw3TpodyhlJA7M2AUSehw0aUxd2PxnIcPNopBQisKIrjp7HY3Xgytq74+JNIoE=
+	t=1705970003; cv=none; b=uuAOaFpkscFuqt7Z2fYn4LZF62kwkNPIE+76GNFkwDkK0AGLqPRBJfXgukhwond5/mkO+d1ga/4VHm/8PTnuKwPbtaolihB/Yu+76Xu3+HOb7jdAvXaDPMbV0/9/5EhIvf0BPsdNRIMS9hRaE8ZTiVWTQi5t07BxWiMs8U/yIVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971324; c=relaxed/simple;
-	bh=ek2SvwxGDRX23e/BujISexAJ9oHG/MUbdhKz4v+AUvo=;
+	s=arc-20240116; t=1705970003; c=relaxed/simple;
+	bh=a+vEKBhGU/TR1im6bY5Zx0mUAifvTl5DnXwBas2gzKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G1Vh4n+FLw7uR1HxH9nM7VL1wmMQKR9Z8KG7m8sO7mIdakal+XTzZlfN6yQKdOQwaA7eAJpVKeN3HshuLNHRf9qG4Myyy+ZicfbW+3KdXKgX8/ZgSmBDi3lEatcWrYn7wQU+1Jqy0vzYa55PykfvjjO0d8HRmMfXU061y7uxaSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHz+kiq4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC83C433C7;
-	Tue, 23 Jan 2024 00:55:23 +0000 (UTC)
+	 MIME-Version; b=t71mE+D+sJRtMqJVlnTeHgRion7SCijlYCmR4aRt+91ROSZkRsauUYmN3J9cKXwee1DMoXMl8CDAvL5z13zXi2+dHNtRf895wcwLqxYuYbZFg2tOI0BZluBHiAd/OADFnDrxg7JIj1mQwHt0l91l5cQhSnfkPRBMGNCWDkFTcUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2Q6ED3n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7845C433F1;
+	Tue, 23 Jan 2024 00:33:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971324;
-	bh=ek2SvwxGDRX23e/BujISexAJ9oHG/MUbdhKz4v+AUvo=;
+	s=korg; t=1705970003;
+	bh=a+vEKBhGU/TR1im6bY5Zx0mUAifvTl5DnXwBas2gzKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHz+kiq4AqFGdXUEcU5urWhDEUq2vk9WbABdJRKhMarQHDpTyv1qsc/vtGI6QfebW
-	 bWTV6nGfQNphS5V7wue6M2VwVxj4Wai3K9iaPDzAUK2LmXluKvVWkTW2uJZZvUy1ii
-	 mKOUNIwtZPB5cEifnGpDesWv53gLRzPMj6S1xj6Q=
+	b=X2Q6ED3ntRkzomkZcJPnIWrJ1JgVDECjTZfabCsCiO8M3cgUBOL5RplDxrDlJcEKR
+	 tetRYjwkjwXlhbdGYbp28k0mF/t7ANwWa9P3HORAWmpLJ70cUAsW8w0iCj6PgtQ4f9
+	 t4lS4Ym2WIV0d7HG4fY6sUKQRvjgGrA5IkfQAK5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Fangrui Song <maskray@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Milian Wolff <milian.wolff@kdab.com>,
+	Pablo Galindo <pablogsal@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 134/286] wifi: rtlwifi: rtl8192ce: using calculate_bit_shift()
+Subject: [PATCH 6.7 536/641] perf unwind-libunwind: Fix base address for .eh_frame
 Date: Mon, 22 Jan 2024 15:57:20 -0800
-Message-ID: <20240122235737.301028942@linuxfoundation.org>
+Message-ID: <20240122235834.894829842@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +70,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 3d03e8231031bcc65a48cd88ef9c71b6524ce70b ]
+[ Upstream commit 4fb54994b2360ab5029ee3a959161f6fe6bbb349 ]
 
-Using calculate_bit_shift() to replace _rtl92c_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+The base address of a DSO mapping should start at the start of the file.
+Usually DSOs are mapped from the pgoff 0 so it doesn't matter when it
+uses the start of the map address.
 
-Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-7-suhui@nfschina.com
+But generated DSOs for JIT codes doesn't start from the 0 so it should
+subtract the offset to calculate the .eh_frame table offsets correctly.
+
+Fixes: dc2cf4ca866f5715 ("perf unwind: Fix segbase for ld.lld linked objects")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Fangrui Song <maskray@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Milian Wolff <milian.wolff@kdab.com>
+Cc: Pablo Galindo <pablogsal@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20231212070547.612536-4-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c | 6 +++---
- drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h | 1 -
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ tools/perf/util/unwind-libunwind-local.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
-index 04735da11168..6b98e77768e9 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
-@@ -39,7 +39,7 @@ u32 rtl92c_phy_query_rf_reg(struct ieee80211_hw *hw,
- 							       rfpath, regaddr);
- 	}
+diff --git a/tools/perf/util/unwind-libunwind-local.c b/tools/perf/util/unwind-libunwind-local.c
+index c0641882fd2f..5e5c3395a499 100644
+--- a/tools/perf/util/unwind-libunwind-local.c
++++ b/tools/perf/util/unwind-libunwind-local.c
+@@ -327,7 +327,7 @@ static int read_unwind_spec_eh_frame(struct dso *dso, struct unwind_info *ui,
  
--	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
+ 	maps__for_each_entry(thread__maps(ui->thread), map_node) {
+ 		struct map *map = map_node->map;
+-		u64 start = map__start(map);
++		u64 start = map__start(map) - map__pgoff(map);
  
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -110,7 +110,7 @@ void rtl92ce_phy_set_rf_reg(struct ieee80211_hw *hw,
- 			original_value = _rtl92c_phy_rf_serial_read(hw,
- 								    rfpath,
- 								    regaddr);
--			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
-@@ -122,7 +122,7 @@ void rtl92ce_phy_set_rf_reg(struct ieee80211_hw *hw,
- 			original_value = _rtl92c_phy_fw_rf_serial_read(hw,
- 								       rfpath,
- 								       regaddr);
--			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
-index 7582a162bd11..c7a0d4c776f0 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
-@@ -94,7 +94,6 @@ u32 _rtl92c_phy_rf_serial_read(struct ieee80211_hw *hw, enum radio_path rfpath,
- 			       u32 offset);
- u32 _rtl92c_phy_fw_rf_serial_read(struct ieee80211_hw *hw,
- 				  enum radio_path rfpath, u32 offset);
--u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask);
- void _rtl92c_phy_rf_serial_write(struct ieee80211_hw *hw,
- 				 enum radio_path rfpath, u32 offset, u32 data);
- void _rtl92c_phy_fw_rf_serial_write(struct ieee80211_hw *hw,
+ 		if (map__dso(map) == dso && start < base_addr)
+ 			base_addr = start;
 -- 
 2.43.0
 
