@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C9B837F2A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9990283841E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 902D229BE17
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CD481F29195
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E06112839E;
-	Tue, 23 Jan 2024 00:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D6967E72;
+	Tue, 23 Jan 2024 02:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUhYf4w+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9RpyozC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D174B7C0A5;
-	Tue, 23 Jan 2024 00:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837AA67E69;
+	Tue, 23 Jan 2024 02:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970974; cv=none; b=j5tVJ92kWfL80aHH9KTCsTdXQpLMzviYqm5m+4SBGKQ7S81LFHy8fsfrT1Mz2ofkc4R8iSH6K4tPYpEquV5fI8/slqUg8i9BLgFEt+5rPAPwCJdRairNpxC/j2VR/weblbWTB5bszcEX467K43M6BJf+7M2qKR/V9vxkVFWPLgQ=
+	t=1705975307; cv=none; b=ssjkrfsOlRdxJCVgNFkCbRu95Nsdc4yGTZ7CRNh9oswthqnqMWJnPpOfAlnemFLevf0q5v41d/0rpUiy2qIFNqG9q7kjSrvZenrvNHUhY3VVefLMk+zH+5mvykebxKgWYtSeQzw6fcbcHq0kdwpxjWejZWq6L8pHTDrdq/CG4TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970974; c=relaxed/simple;
-	bh=Cg26YXIzqjDrhwl5/KvBsgX+9couq384p/o3CA9izfE=;
+	s=arc-20240116; t=1705975307; c=relaxed/simple;
+	bh=V23Nmt+FzKsTBJNAajuapYKlf/PHE1WxhGpdYB7exYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S98l53tZiViyxvXI7z3bbMU1lFk3+yj5I3P8qLBX/hPKM/dYdbQKNfaapaRlOuKxN6VU10sBVufOpa1fk9D1Bz6V7Vm1iiHXIq4RX+rDDI7Xfq8b/k+f3Zb3D9c4k/JvEdkp+tPPoxK2Lj8WWApKNbAITQ1psSx4MMVG7g0DMYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUhYf4w+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFF2C43394;
-	Tue, 23 Jan 2024 00:49:33 +0000 (UTC)
+	 MIME-Version; b=k9nZQm63BujYOcVHke5UW925CRvknR3/VcaU9NcDVgqfNmjZfnN9tzuc5F0FjAgeaKNCIFYpnCdSpnt4LFw4urBJTs49CHSBVUu3dDSGBYK43I5oJq9E/Sx3v9/B4ggmmTOU+zVbne1cCm2+icYRKYu6CjQBG10bGNEJXMK53DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9RpyozC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48AB4C433C7;
+	Tue, 23 Jan 2024 02:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970974;
-	bh=Cg26YXIzqjDrhwl5/KvBsgX+9couq384p/o3CA9izfE=;
+	s=korg; t=1705975307;
+	bh=V23Nmt+FzKsTBJNAajuapYKlf/PHE1WxhGpdYB7exYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uUhYf4w+RJmZaqV9UwAO7Hx+MU1zuTkF+N8xPyxrgE17+aeZoDiV29xmHHNdQsPHM
-	 FyfjtFcf6wnYoHJNPtBhxKuscGBw98MalvIDURw0yKJH0Z165F+hm/hxcuKAIfVJ0g
-	 UO/2wF4gJiKXl1sIXkX+wsKGPNM7Hy5IvsaYHzl0=
+	b=o9RpyozC5ty5+ocoS2s+6Hmal1LRFh238MF6Kh1Jq+n5GBSi9QktmW/OZZ7KpV6am
+	 mbuNWVyCUjwY3uhcCvRqI0ZWyGAuKwSqBjKfzCEBR3TCR2jlvmq3+VbqEbqvbF2lHc
+	 HWg/G/S/ejCgiYyQxxMDA/C7/T3UFwRDaKHZarzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/417] mlxbf_gige: Enable the GigE port in mlxbf_gige_open
+Subject: [PATCH 6.6 270/583] media: imx-mipi-csis: Fix clock handling in remove()
 Date: Mon, 22 Jan 2024 15:55:21 -0800
-Message-ID: <20240122235757.136890327@linuxfoundation.org>
+Message-ID: <20240122235820.258863867@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asmaa Mnebhi <asmaa@nvidia.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit a460f4a684511e007bbf1700758a41f05d9981e6 ]
+[ Upstream commit 5705b0e0eb550ff834125a46a4ef99b62093d83d ]
 
-At the moment, the GigE port is enabled in the mlxbf_gige_probe
-function. If the mlxbf_gige_open is not executed, this could cause
-pause frames to increase in the case where there is high backgroud
-traffic. This results in clogging the port.
-So move enabling the OOB port to mlxbf_gige_open.
+The driver always calls mipi_csis_runtime_suspend() and
+mipi_csis_clk_disable() in remove(). This causes multiple WARNs from the
+kernel, as the clocks get disabled too many times.
 
-Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
-Reviewed-by: David Thompson <davthompson@nvidia.com>
-Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fix the remove() to call mipi_csis_runtime_suspend() and
+mipi_csis_clk_disable() in a way that reverses what is done in probe().
+
+Link: https://lore.kernel.org/r/20231122-imx-csis-v2-1-e44b8dc4cb66@ideasonboard.com
+
+Fixes: 7807063b862b ("media: staging/imx7: add MIPI CSI-2 receiver subdev for i.MX7")
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c   | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/media/platform/nxp/imx-mipi-csis.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-index eafc0d3313fd..83c4659390fd 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-@@ -130,9 +130,15 @@ static int mlxbf_gige_open(struct net_device *netdev)
- {
- 	struct mlxbf_gige *priv = netdev_priv(netdev);
- 	struct phy_device *phydev = netdev->phydev;
-+	u64 control;
- 	u64 int_en;
- 	int err;
+diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+index 5f93712bf485..e7629c9f5746 100644
+--- a/drivers/media/platform/nxp/imx-mipi-csis.c
++++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+@@ -1504,8 +1504,10 @@ static void mipi_csis_remove(struct platform_device *pdev)
+ 	v4l2_async_nf_cleanup(&csis->notifier);
+ 	v4l2_async_unregister_subdev(&csis->sd);
  
-+	/* Perform general init of GigE block */
-+	control = readq(priv->base + MLXBF_GIGE_CONTROL);
-+	control |= MLXBF_GIGE_CONTROL_PORT_EN;
-+	writeq(control, priv->base + MLXBF_GIGE_CONTROL);
++	if (!pm_runtime_enabled(&pdev->dev))
++		mipi_csis_runtime_suspend(&pdev->dev);
 +
- 	err = mlxbf_gige_request_irqs(priv);
- 	if (err)
- 		return err;
-@@ -279,7 +285,6 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
- 	void __iomem *plu_base;
- 	void __iomem *base;
- 	int addr, phy_irq;
--	u64 control;
- 	int err;
- 
- 	base = devm_platform_ioremap_resource(pdev, MLXBF_GIGE_RES_MAC);
-@@ -294,11 +299,6 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
- 	if (IS_ERR(plu_base))
- 		return PTR_ERR(plu_base);
- 
--	/* Perform general init of GigE block */
--	control = readq(base + MLXBF_GIGE_CONTROL);
--	control |= MLXBF_GIGE_CONTROL_PORT_EN;
--	writeq(control, base + MLXBF_GIGE_CONTROL);
--
- 	netdev = devm_alloc_etherdev(&pdev->dev, sizeof(*priv));
- 	if (!netdev)
- 		return -ENOMEM;
+ 	pm_runtime_disable(&pdev->dev);
+-	mipi_csis_runtime_suspend(&pdev->dev);
+ 	mipi_csis_clk_disable(csis);
+ 	v4l2_subdev_cleanup(&csis->sd);
+ 	media_entity_cleanup(&csis->sd.entity);
 -- 
 2.43.0
 
