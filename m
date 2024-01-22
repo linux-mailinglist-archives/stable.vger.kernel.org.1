@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0673A837F2E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 840EE838421
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABA7A29BD9D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C2E61F2913B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E029B1292F0;
-	Tue, 23 Jan 2024 00:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D37167E7B;
+	Tue, 23 Jan 2024 02:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLirciPs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lD7ieYzZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DAB1292EC;
-	Tue, 23 Jan 2024 00:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C37F67E69;
+	Tue, 23 Jan 2024 02:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970986; cv=none; b=dBU4zp0sk80Z1hsYmEbao3rguC/0BLXiNA+v2KjxnbZbvYCQJHatadmNWO2yFWgBXXHgM/1bNOzMcKxT9vtJequuF4z4WlXOHQIY0EpYidaav9ik3YFG7NfGqPqfGVXj67Fw1Ue1Zn6asDwb8w6jrfUG8yBm79kqlagOW9AxBus=
+	t=1705975310; cv=none; b=QND/qPG6Z2Us9dh8RT9PiVqqCHXIhZ885lV0SsgxCGb/d5KLCoWj5iqkDUXbXPTA4I7P9O0N2+nis70DVSY9DshuHHpfpcbsevIgdlO10oNpuhk3R2VnlkmvNiNde4+qh/phLndW3WdemyQykW6t4ZniY/BeMr4eMCOW57ztqZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970986; c=relaxed/simple;
-	bh=B+5ySjDHbSfDc6VFp7P8zB1jO3I5dZdYcvNqn7nHXfc=;
+	s=arc-20240116; t=1705975310; c=relaxed/simple;
+	bh=BmEPPigl4hcuSCOwe8F7DdvIUMgdMVhoFPM3X9VZNsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxeAHlgIHWg63m/NBEC/dg80Ww3af8p1bYM6sdvS6ocErxELu3vtDhlpU71sM0rAc8HGaxX0o3qhJGUpgpe1Gv4Yku/2N34thUDvE99yWXnlQ1FiymW+mNOlF5dVZXyWns9juDFqJqpYh8s4rwuB+EeytTpfRuP+x9gSGJA49vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLirciPs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C76C43390;
-	Tue, 23 Jan 2024 00:49:45 +0000 (UTC)
+	 MIME-Version; b=Tx+bUHXolztBw3z4PJiw7WUsrqxTXc41otgNrg94ZdFgf+bV9arVPPvGWv8UXEKgC+2Cc+RjFiK5XzphtWtAXW1DWekklV8ma1U8OhCmh1+11p9Uf3sfK4GPTxFWIBADObKICAgsiAv5ccQAIvOb/H+FqRoYKqqBK3lvtKrHQkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lD7ieYzZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F161CC43390;
+	Tue, 23 Jan 2024 02:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970986;
-	bh=B+5ySjDHbSfDc6VFp7P8zB1jO3I5dZdYcvNqn7nHXfc=;
+	s=korg; t=1705975310;
+	bh=BmEPPigl4hcuSCOwe8F7DdvIUMgdMVhoFPM3X9VZNsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JLirciPsgcZW2ytq71mZoxyzlxz/g0LZz0nS9N2Wr1eN+I88FqtYApqc233n+TbrP
-	 X6bBkcKAnTXeWFXGCqwxr48fMMGQG0f9vnvJQexw74GGHC0vXRx/rOZmljgcMkRCRL
-	 Z2RKzeIPgM3gc8y5nXEnP+4TEcGAhtxa63pwv9/w=
+	b=lD7ieYzZCQYXlySy+swqb1uMZWbY6pZEoC0AftHy31/WL8Kn3RoKEgCQW71/JJnPo
+	 Kv2CmQd767ZUILAfpeAENHXrfqP+zDIqFkwNys2GpGI+nN6jhKwQXny+0BlTgaqjUz
+	 IGz82HZWiJYGaJ+4sxXemZfnpgbkhzb6PB4MPhE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tommaso Merciai <tomm.merciai@gmail.com>,
 	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 156/417] Revert "drm/tidss: Annotate dma-fence critical section in commit path"
+Subject: [PATCH 6.6 273/583] media: rkisp1: Fix media device memory leak
 Date: Mon, 22 Jan 2024 15:55:24 -0800
-Message-ID: <20240122235757.249008073@linuxfoundation.org>
+Message-ID: <20240122235820.349567406@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,177 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit ca34d816558c3e4c3f8fe037b5a6b16c944693de ]
+[ Upstream commit 452f604a4683654f4d9472b3126d8da61d748443 ]
 
-This reverts commit 4d56a4f08391857ba93465de489707b66adad114.
+Add missing calls to media_device_cleanup() to fix memory leak.
 
-The DMA-fence annotations cause a lockdep warning (see below). As per
-https://patchwork.freedesktop.org/patch/462170/ it sounds like the
-annotations don't work correctly.
+Link: https://lore.kernel.org/r/20231122-rkisp-fixes-v2-1-78bfb63cdcf8@ideasonboard.com
 
-======================================================
-WARNING: possible circular locking dependency detected
-6.6.0-rc2+ #1 Not tainted
-------------------------------------------------------
-kmstest/733 is trying to acquire lock:
-ffff8000819377f0 (fs_reclaim){+.+.}-{0:0}, at: __kmem_cache_alloc_node+0x58/0x2d4
-
-but task is already holding lock:
-ffff800081a06aa0 (dma_fence_map){++++}-{0:0}, at: tidss_atomic_commit_tail+0x20/0xc0 [tidss]
-
-which lock already depends on the new lock.
-
-the existing dependency chain (in reverse order) is:
-
--> #2 (dma_fence_map){++++}-{0:0}:
-       __dma_fence_might_wait+0x5c/0xd0
-       dma_resv_lockdep+0x1a4/0x32c
-       do_one_initcall+0x84/0x2fc
-       kernel_init_freeable+0x28c/0x4c4
-       kernel_init+0x24/0x1dc
-       ret_from_fork+0x10/0x20
-
--> #1 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}:
-       fs_reclaim_acquire+0x70/0xe4
-       __kmem_cache_alloc_node+0x58/0x2d4
-       kmalloc_trace+0x38/0x78
-       __kthread_create_worker+0x3c/0x150
-       kthread_create_worker+0x64/0x8c
-       workqueue_init+0x1e8/0x2f0
-       kernel_init_freeable+0x11c/0x4c4
-       kernel_init+0x24/0x1dc
-       ret_from_fork+0x10/0x20
-
--> #0 (fs_reclaim){+.+.}-{0:0}:
-       __lock_acquire+0x1370/0x20d8
-       lock_acquire+0x1e8/0x308
-       fs_reclaim_acquire+0xd0/0xe4
-       __kmem_cache_alloc_node+0x58/0x2d4
-       __kmalloc_node_track_caller+0x58/0xf0
-       kmemdup+0x34/0x60
-       regmap_bulk_write+0x64/0x2c0
-       tc358768_bridge_pre_enable+0x8c/0x12d0 [tc358768]
-       drm_atomic_bridge_call_pre_enable+0x68/0x80 [drm]
-       drm_atomic_bridge_chain_pre_enable+0x50/0x158 [drm]
-       drm_atomic_helper_commit_modeset_enables+0x164/0x264 [drm_kms_helper]
-       tidss_atomic_commit_tail+0x58/0xc0 [tidss]
-       commit_tail+0xa0/0x188 [drm_kms_helper]
-       drm_atomic_helper_commit+0x1a8/0x1c0 [drm_kms_helper]
-       drm_atomic_commit+0xa8/0xe0 [drm]
-       drm_mode_atomic_ioctl+0x9ec/0xc80 [drm]
-       drm_ioctl_kernel+0xc4/0x170 [drm]
-       drm_ioctl+0x234/0x4b0 [drm]
-       drm_compat_ioctl+0x110/0x12c [drm]
-       __arm64_compat_sys_ioctl+0x128/0x150
-       invoke_syscall+0x48/0x110
-       el0_svc_common.constprop.0+0x40/0xe0
-       do_el0_svc_compat+0x1c/0x38
-       el0_svc_compat+0x48/0xb4
-       el0t_32_sync_handler+0xb0/0x138
-       el0t_32_sync+0x194/0x198
-
-other info that might help us debug this:
-
-Chain exists of:
-  fs_reclaim --> mmu_notifier_invalidate_range_start --> dma_fence_map
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  rlock(dma_fence_map);
-                               lock(mmu_notifier_invalidate_range_start);
-                               lock(dma_fence_map);
-  lock(fs_reclaim);
-
- *** DEADLOCK ***
-
-3 locks held by kmstest/733:
- #0: ffff800082e5bba0 (crtc_ww_class_acquire){+.+.}-{0:0}, at: drm_mode_atomic_ioctl+0x118/0xc80 [drm]
- #1: ffff000004224c88 (crtc_ww_class_mutex){+.+.}-{3:3}, at: modeset_lock+0xdc/0x1a0 [drm]
- #2: ffff800081a06aa0 (dma_fence_map){++++}-{0:0}, at: tidss_atomic_commit_tail+0x20/0xc0 [tidss]
-
-stack backtrace:
-CPU: 0 PID: 733 Comm: kmstest Not tainted 6.6.0-rc2+ #1
-Hardware name: Toradex Verdin AM62 on Verdin Development Board (DT)
-Call trace:
- dump_backtrace+0x98/0x118
- show_stack+0x18/0x24
- dump_stack_lvl+0x60/0xac
- dump_stack+0x18/0x24
- print_circular_bug+0x288/0x368
- check_noncircular+0x168/0x17c
- __lock_acquire+0x1370/0x20d8
- lock_acquire+0x1e8/0x308
- fs_reclaim_acquire+0xd0/0xe4
- __kmem_cache_alloc_node+0x58/0x2d4
- __kmalloc_node_track_caller+0x58/0xf0
- kmemdup+0x34/0x60
- regmap_bulk_write+0x64/0x2c0
- tc358768_bridge_pre_enable+0x8c/0x12d0 [tc358768]
- drm_atomic_bridge_call_pre_enable+0x68/0x80 [drm]
- drm_atomic_bridge_chain_pre_enable+0x50/0x158 [drm]
- drm_atomic_helper_commit_modeset_enables+0x164/0x264 [drm_kms_helper]
- tidss_atomic_commit_tail+0x58/0xc0 [tidss]
- commit_tail+0xa0/0x188 [drm_kms_helper]
- drm_atomic_helper_commit+0x1a8/0x1c0 [drm_kms_helper]
- drm_atomic_commit+0xa8/0xe0 [drm]
- drm_mode_atomic_ioctl+0x9ec/0xc80 [drm]
- drm_ioctl_kernel+0xc4/0x170 [drm]
- drm_ioctl+0x234/0x4b0 [drm]
- drm_compat_ioctl+0x110/0x12c [drm]
- __arm64_compat_sys_ioctl+0x128/0x150
- invoke_syscall+0x48/0x110
- el0_svc_common.constprop.0+0x40/0xe0
- do_el0_svc_compat+0x1c/0x38
- el0_svc_compat+0x48/0xb4
- el0t_32_sync_handler+0xb0/0x138
- el0t_32_sync+0x194/0x198
-
-Fixes: 4d56a4f08391 ("drm/tidss: Annotate dma-fence critical section in commit path")
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Fixes: d65dd85281fb ("media: staging: rkisp1: add Rockchip ISP1 base driver")
+Reviewed-by: Tommaso Merciai <tomm.merciai@gmail.com>
 Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230920-dma-fence-annotation-revert-v1-1-7ebf6f7f5bf6@ideasonboard.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_kms.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_kms.c b/drivers/gpu/drm/tidss/tidss_kms.c
-index afb2879980c6..995bac488392 100644
---- a/drivers/gpu/drm/tidss/tidss_kms.c
-+++ b/drivers/gpu/drm/tidss/tidss_kms.c
-@@ -4,8 +4,6 @@
-  * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
-  */
+diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+index c41abd2833f1..894d5afaff4e 100644
+--- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
++++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+@@ -582,7 +582,7 @@ static int rkisp1_probe(struct platform_device *pdev)
  
--#include <linux/dma-fence.h>
--
- #include <drm/drm_atomic.h>
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
-@@ -27,7 +25,6 @@ static void tidss_atomic_commit_tail(struct drm_atomic_state *old_state)
- {
- 	struct drm_device *ddev = old_state->dev;
- 	struct tidss_device *tidss = to_tidss(ddev);
--	bool fence_cookie = dma_fence_begin_signalling();
+ 	ret = v4l2_device_register(rkisp1->dev, &rkisp1->v4l2_dev);
+ 	if (ret)
+-		goto err_pm_runtime_disable;
++		goto err_media_dev_cleanup;
  
- 	dev_dbg(ddev->dev, "%s\n", __func__);
+ 	ret = media_device_register(&rkisp1->media_dev);
+ 	if (ret) {
+@@ -617,6 +617,8 @@ static int rkisp1_probe(struct platform_device *pdev)
+ 	media_device_unregister(&rkisp1->media_dev);
+ err_unreg_v4l2_dev:
+ 	v4l2_device_unregister(&rkisp1->v4l2_dev);
++err_media_dev_cleanup:
++	media_device_cleanup(&rkisp1->media_dev);
+ err_pm_runtime_disable:
+ 	pm_runtime_disable(&pdev->dev);
+ 	return ret;
+@@ -637,6 +639,8 @@ static void rkisp1_remove(struct platform_device *pdev)
+ 	media_device_unregister(&rkisp1->media_dev);
+ 	v4l2_device_unregister(&rkisp1->v4l2_dev);
  
-@@ -38,7 +35,6 @@ static void tidss_atomic_commit_tail(struct drm_atomic_state *old_state)
- 	drm_atomic_helper_commit_modeset_enables(ddev, old_state);
++	media_device_cleanup(&rkisp1->media_dev);
++
+ 	pm_runtime_disable(&pdev->dev);
+ }
  
- 	drm_atomic_helper_commit_hw_done(old_state);
--	dma_fence_end_signalling(fence_cookie);
- 	drm_atomic_helper_wait_for_flip_done(ddev, old_state);
- 
- 	drm_atomic_helper_cleanup_planes(ddev, old_state);
 -- 
 2.43.0
 
