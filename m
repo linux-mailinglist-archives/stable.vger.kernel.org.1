@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-14749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81BA7838266
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0042E83802F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 393121F27610
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95CDB1F2C736
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0FB75BADB;
-	Tue, 23 Jan 2024 01:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640A4657DE;
+	Tue, 23 Jan 2024 00:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SG4TyxAr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtQkMhKX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16B85BAD9;
-	Tue, 23 Jan 2024 01:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24ADE657A9;
+	Tue, 23 Jan 2024 00:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974343; cv=none; b=LWqZcVUxnPN2o54h4zUKqVM56eQbZEedbCH9cac2qY/PXdMJKVq0eZQNAk9OfHt6+cBJuu3+TGP0NFL1cbVF3Dz2oday1UVKp1LnBLkebSuCBEUh5b77v0lgNAzAAfI3eJ1h4A6ua2TWx4Eh2/rTGdwGOhABGp2BThCEHWEnZug=
+	t=1705971577; cv=none; b=M5MgtLRPSYDomDkdh74I8KD8nYe3S9SmPH8vocZHSsXMF2OCptGq6nmkWN7dERXRdLSJaZZRpMGXO3KqhpUUJujpSi8AJJHbXiHq+1wwuivYbIVftt6VqiaTz3iBbZyJ7rzyxctmkOkR3c756PuV9CfdwrAQzz3VypSB2qiHuCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974343; c=relaxed/simple;
-	bh=3ik3krRZx98IWr9hpmqXv9aeoIuqHUY3D6Bozzlkz8A=;
+	s=arc-20240116; t=1705971577; c=relaxed/simple;
+	bh=1n1pVs0gj1Ow+mSJRKRV1ftwF0pZ6l34bkROLTYOsCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQHLQvG5BeinD+lzM2ZUDa2ah1ENekVNzyuIkccolYMlq1QJ0/bf7D7Yf3zf5NjtoVkUufjxITzemErOcTKJySJxHakuLvywUzIFNScGwXW4DmPUQ/8m7FG/9qP0g4U2t0GXKgaOR1d+h1zJ7sfOX4vvdWrPu2cf9hhtamjyMH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SG4TyxAr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294D1C433F1;
-	Tue, 23 Jan 2024 01:45:43 +0000 (UTC)
+	 MIME-Version; b=YC9kpSRaXI1muMdGHXXXkYc/Xv1Ov5BCq9tWESf697WxuIZEYtbLNwnuLKWsN1ZydebbuTwMXLXq3Qu3jwLlAVYXTxqoh9BhehnQyCmMH9akZ5yHJ6WWcBRwLgKsUc0QyF1ptgCgEYTD90RoTSjTog61Qfx3sXROOA5Ar1OsTvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtQkMhKX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A7EC433C7;
+	Tue, 23 Jan 2024 00:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974343;
-	bh=3ik3krRZx98IWr9hpmqXv9aeoIuqHUY3D6Bozzlkz8A=;
+	s=korg; t=1705971577;
+	bh=1n1pVs0gj1Ow+mSJRKRV1ftwF0pZ6l34bkROLTYOsCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SG4TyxArJFz0fs3rbbEvkc8py0LOGbRECPL454PRA8o45EynayZZzzbNWSKaPIPzR
-	 2iU8xQDkenFX2SJd2IOaiIJJNmyRhyse8LMYUhfPthvx7MXGtenCh/b1BTlaKC40VJ
-	 jn8+UuqFu7OJITnMui+qwpG5V/tAFsU80FlyQsJ8=
+	b=YtQkMhKXyjPlDJpjcEcYQCJKVyV48YdUL+a5uucidaxr051CQQ1SaF5DcZnV4NWQS
+	 EJRBz/DJt7tJogD8jcIg6ue2Rz/vp8A+wLEGE6CvoNBZoRclyFngJ1moZHnB1t1abM
+	 kjOfnbOJUkdCpINLBUQoBbTeKrDYBh+QPf67IF+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ricardo B. Marliere" <ricardo@marliere.net>,
-	Mike Isely <isely@pobox.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+621409285c4156a009b3@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 184/374] media: pvrusb2: fix use after free on context disconnection
+	stable <stable@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 6.1 272/417] serial: 8250_bcm2835aux: Restore clock error handling
 Date: Mon, 22 Jan 2024 15:57:20 -0800
-Message-ID: <20240122235751.026504623@linuxfoundation.org>
+Message-ID: <20240122235801.271905340@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marliere <ricardo@marliere.net>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit ded85b0c0edd8f45fec88783d7555a5b982449c1 ]
+commit 83e571f054cd742eb9a46d46ef05193904adf53f upstream.
 
-Upon module load, a kthread is created targeting the
-pvr2_context_thread_func function, which may call pvr2_context_destroy
-and thus call kfree() on the context object. However, that might happen
-before the usb hub_event handler is able to notify the driver. This
-patch adds a sanity check before the invalid read reported by syzbot,
-within the context disconnection call stack.
+The commit fcc446c8aa63 ("serial: 8250_bcm2835aux: Add ACPI support")
+dropped the error handling for clock acquiring. But even an optional
+clock needs this.
 
-Reported-and-tested-by: syzbot+621409285c4156a009b3@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000a02a4205fff8eb92@google.com/
-
-Fixes: e5be15c63804 ("V4L/DVB (7711): pvrusb2: Fix race on module unload")
-Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
-Acked-by: Mike Isely <isely@pobox.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fcc446c8aa63 ("serial: 8250_bcm2835aux: Add ACPI support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20231220114334.4712-1-wahrenst@gmx.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/pvrusb2/pvrusb2-context.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_bcm2835aux.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/usb/pvrusb2/pvrusb2-context.c b/drivers/media/usb/pvrusb2/pvrusb2-context.c
-index 14170a5d72b3..1764674de98b 100644
---- a/drivers/media/usb/pvrusb2/pvrusb2-context.c
-+++ b/drivers/media/usb/pvrusb2/pvrusb2-context.c
-@@ -268,7 +268,8 @@ void pvr2_context_disconnect(struct pvr2_context *mp)
- {
- 	pvr2_hdw_disconnect(mp->hdw);
- 	mp->disconnect_flag = !0;
--	pvr2_context_notify(mp);
-+	if (!pvr2_context_shutok())
-+		pvr2_context_notify(mp);
- }
+--- a/drivers/tty/serial/8250/8250_bcm2835aux.c
++++ b/drivers/tty/serial/8250/8250_bcm2835aux.c
+@@ -119,6 +119,8 @@ static int bcm2835aux_serial_probe(struc
  
+ 	/* get the clock - this also enables the HW */
+ 	data->clk = devm_clk_get_optional(&pdev->dev, NULL);
++	if (IS_ERR(data->clk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(data->clk), "could not get clk\n");
  
--- 
-2.43.0
-
+ 	/* get the interrupt */
+ 	ret = platform_get_irq(pdev, 0);
 
 
 
