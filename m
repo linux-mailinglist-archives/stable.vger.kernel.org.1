@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A16C837EFB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2418837D03
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:23:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E64601F2B892
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9C8A29109D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F16605D8;
-	Tue, 23 Jan 2024 00:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27CAD15E276;
+	Tue, 23 Jan 2024 00:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0mVR8Pm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDPmojSC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524406025A;
-	Tue, 23 Jan 2024 00:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD4215E272;
+	Tue, 23 Jan 2024 00:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970863; cv=none; b=M2M3YgxR1iqvQXlsZsSq8RgtU8NGdMPCPHdT+3edNgrcsYO2dJ6rDktg9XexoPNAbm5VCQIJr3dsewy3FlUcyaOKDMTJXMaN74AfBYNtQLWI2AFQITXIicBJhum8M+iKqkKjrYlwWFxUyUpVx/nF52FNEAxUSGk9I4lxKNfvWcA=
+	t=1705969764; cv=none; b=tVqebBq8mI27KwrgEOytQEYgh5rLbVNfeu3xDwhFAywK52HB0eIh/3HCWNwdHoST/dJNYOG9vI2gUYkio5hURFQQ60TImE2eqGZsGllZIhf2lgg7nJypk3/Qinit+Arsbwl8tEvKQ/Dyeg52PLEkZM9BVNHRrDYvKorpIRJfzAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970863; c=relaxed/simple;
-	bh=3Jv1UgWeUCgQrfKOhC2inbAqh/03kp9zUKg7J9ha9EY=;
+	s=arc-20240116; t=1705969764; c=relaxed/simple;
+	bh=DzdoeayJhfmuJv9tVvRTTqftDLfw1vN3018M+Y2M8Yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lPFWZGnKvM8rBRHD2F5SLlKaUZhRpNuoR3y4oJZat076SUzs+aTkVCeXQMIK6MkkVOnQ/s9qj4DRwKXzgWnqPasrs6xsJ2YM4KktW1e8EnmCVND4lCHKPWXYSFmSJ8qri984fjF2i0HbxZL8nEqw4FLjNTTEwB8dbP0X1WGJYaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0mVR8Pm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006AFC433C7;
-	Tue, 23 Jan 2024 00:47:42 +0000 (UTC)
+	 MIME-Version; b=IqcBuRduGpemtIFQkNTnrLcCWsn/2mmoUJBsw2pzNbFSs7hCKZ1xzIIVLbDsiuG9M9FJ99jRn5S/ExiPe0MpBdd5LkqgPybXpUJoGOyM84F87/iT4cz6oHU5+P0bOWrPMz3pcIpMtl7Ato0SEoSAO7onc9lYff0guz+NzhKo/8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDPmojSC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7449FC433F1;
+	Tue, 23 Jan 2024 00:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970863;
-	bh=3Jv1UgWeUCgQrfKOhC2inbAqh/03kp9zUKg7J9ha9EY=;
+	s=korg; t=1705969762;
+	bh=DzdoeayJhfmuJv9tVvRTTqftDLfw1vN3018M+Y2M8Yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t0mVR8Pmni9e5pD60xJaTmEveTW7YHGiesELfXWE6LV4tjey8o/XYjaBW/nmw4M3X
-	 3vMg2Zl94hLNkYzHtXjthGXNz0OKX/8rdHTvJ7Y3Cj35rgWn9x99myjQ+V5MMpMYZi
-	 IJFCMW84+zixXKDfvi1LEthyfBCrdHDKxGZjT0KI=
+	b=QDPmojSCuAvwXtMe/xv185H1z2mKPDSR0CCYjel9SjpaCyuV+ijrn4yoAafoW5PJi
+	 kOuFv+q6Xy965vLTJjF5RwrLJFSzKHHUUoBxlkdQ4sFDIJkCURYc2H9Ama58IkyNJ1
+	 Dop97n1T28jo6EHpV8EsAV2b8VVo+kNpOfw4/tzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 033/286] ARC: fix spare error
+	Sathya Prakash <sathya.prakash@broadcom.com>,
+	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.7 435/641] scsi: mpi3mr: Refresh sdev queue depth after controller reset
 Date: Mon, 22 Jan 2024 15:55:39 -0800
-Message-ID: <20240122235733.299437134@linuxfoundation.org>
+Message-ID: <20240122235831.603086807@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vineet Gupta <vgupta@kernel.org>
+From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
 
-[ Upstream commit aca02d933f63ba8bc84258bf35f9ffaf6b664336 ]
+commit e5aab848dfdf7996d20ece4d28d2733c732c5e5a upstream.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312082320.VDN5A9hb-lkp@intel.com/
-Signed-off-by: Vineet Gupta <vgupta@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+After a controller reset, the firmware may modify the device queue depth.
+Therefore, update the device queue depth accordingly.
+
+Cc: <stable@vger.kernel.org> # v5.15+
+Co-developed-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+Link: https://lore.kernel.org/r/20231126053134.10133-2-chandrakanth.patil@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arc/kernel/signal.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_os.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arc/kernel/signal.c b/arch/arc/kernel/signal.c
-index 4868bdebf586..c43d323bcb59 100644
---- a/arch/arc/kernel/signal.c
-+++ b/arch/arc/kernel/signal.c
-@@ -61,7 +61,7 @@ struct rt_sigframe {
- 	unsigned int sigret_magic;
- };
- 
--static int save_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
-+static int save_arcv2_regs(struct sigcontext __user *mctx, struct pt_regs *regs)
- {
- 	int err = 0;
- #ifndef CONFIG_ISA_ARCOMPACT
-@@ -74,12 +74,12 @@ static int save_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
- #else
- 	v2abi.r58 = v2abi.r59 = 0;
- #endif
--	err = __copy_to_user(&mctx->v2abi, &v2abi, sizeof(v2abi));
-+	err = __copy_to_user(&mctx->v2abi, (void const *)&v2abi, sizeof(v2abi));
- #endif
- 	return err;
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -1070,8 +1070,14 @@ void mpi3mr_rfresh_tgtdevs(struct mpi3mr
+ 	tgtdev = NULL;
+ 	list_for_each_entry(tgtdev, &mrioc->tgtdev_list, list) {
+ 		if ((tgtdev->dev_handle != MPI3MR_INVALID_DEV_HANDLE) &&
+-		    !tgtdev->is_hidden && !tgtdev->host_exposed)
+-			mpi3mr_report_tgtdev_to_host(mrioc, tgtdev->perst_id);
++		    !tgtdev->is_hidden) {
++			if (!tgtdev->host_exposed)
++				mpi3mr_report_tgtdev_to_host(mrioc,
++							     tgtdev->perst_id);
++			else if (tgtdev->starget)
++				starget_for_each_device(tgtdev->starget,
++							(void *)tgtdev, mpi3mr_update_sdev);
++	}
+ 	}
  }
  
--static int restore_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
-+static int restore_arcv2_regs(struct sigcontext __user *mctx, struct pt_regs *regs)
- {
- 	int err = 0;
- #ifndef CONFIG_ISA_ARCOMPACT
--- 
-2.43.0
-
 
 
 
