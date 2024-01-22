@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D85A78382B8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96045837B9E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CC63B2A51F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B9FFB224A6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B2456B79;
-	Tue, 23 Jan 2024 01:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C650A1350E9;
+	Tue, 23 Jan 2024 00:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ieru0Q74"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aiyu84Yk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F14C51C44;
-	Tue, 23 Jan 2024 01:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4D51350D6;
+	Tue, 23 Jan 2024 00:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974044; cv=none; b=sBmgZNdaz4Ii81MTRtREVKknCQM7iS4n7HQbAyogItyb4w16iZhNRnKw1XzEQ4CGFaHojzz3qDh9VfkJsp3dsk7cY6gfAcZSWkmYvDbttl9UHm2I+7EfZ9hODZ6o/zQ25+RFNIxEPkmi4/ZfZ7Td02vc5Q95jOIbr7PIe3bwj1Q=
+	t=1705969345; cv=none; b=LAG8Frkumlrf/Uum980jw+oi1ZP+T9SOYHtJEyUdS5YLHKNdXar4uF5TpC1w53np/07XHGYVbmai0xt3RTPftPVEfh7WLGxZyZxhs/Y9uC1CzmlSlynYv9O/gx+1GqZmvCn0Zkf2n82S8XbV+N0P2cv4ZHYMesjVd5v47znxUmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974044; c=relaxed/simple;
-	bh=vD4FmNhDUIfx4aSxpYKr05eQhMrXne6BjyvsdYRBhPY=;
+	s=arc-20240116; t=1705969345; c=relaxed/simple;
+	bh=p2+3T1Xl8t0MBTNSNfSrVR08gaqO2xW/Qq737NmgohI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YUp5FXkvz53SkrYoS7BKH0M7AlEuhEKBg70fWZrPi9xpwKi1aqKcyX+jpl928R9oIYMZ22pJt19shyT+r/1iRSeae+kNL6K/LFzVH4DYnlkR6OTE5O1kcvY4c512a+8SaBiP2ekRb6NvQ9FE/iZlDZhZbLXMgH8U6zFD/rNRJP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ieru0Q74; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE35BC43390;
-	Tue, 23 Jan 2024 01:40:43 +0000 (UTC)
+	 MIME-Version; b=PJmzyIY1HgYBy/J1wt0YiHZyBGfAddiNIxHQr2LZyeT+LRSxAmIxMym9SK7R69P4USfeRmKMf7uqwW2ZK/CSGal9498GIhWkm3yxJMzSyTtYjoVYKbu8UFz1GrudM5t9Zflek4dMgiXBhUSqKCgZsnZfsr6Tp5ZTLjRpXFmzckk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aiyu84Yk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE775C43394;
+	Tue, 23 Jan 2024 00:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974044;
-	bh=vD4FmNhDUIfx4aSxpYKr05eQhMrXne6BjyvsdYRBhPY=;
+	s=korg; t=1705969345;
+	bh=p2+3T1Xl8t0MBTNSNfSrVR08gaqO2xW/Qq737NmgohI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ieru0Q74XQuwp5QtJgA6h/S7G1HRJ1f71nN2VAp+Fad2syjiCboPQuOsusKc6xlgt
-	 KKWyTsVSJqKr+TAavMer/VepO8Y9TnmFNrdFf5qaFwi3fCRsf5pNeADmdvippHVUNb
-	 e7kQRSiI/ta86g5Ghtmg3JeIb1BjBmZyhctc3oew=
+	b=Aiyu84YkSUejH8VDUrFaHtxZ53nGOQVvL/OgJ+8piOeV96FQEFckNqAGO+1yeGd9o
+	 fN7d30hjNbCDTgkMLyPT4Gs8kLR4u+oqzEdm3f0AzS3AsCBRGLQI74FIEAqqNaGEMs
+	 taXd+j7m0TiRVpx75eEnqp7bBJ3/RfAIbHBkGCxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Moudy Ho <moudy.ho@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/583] powerpc/rtas: Avoid warning on invalid token argument to sys_rtas()
+Subject: [PATCH 6.7 162/641] arm64: dts: mediatek: mt8183: correct MDP3 DMA-related nodes
 Date: Mon, 22 Jan 2024 15:51:06 -0800
-Message-ID: <20240122235812.686882590@linuxfoundation.org>
+Message-ID: <20240122235823.095521959@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Moudy Ho <moudy.ho@mediatek.com>
 
-[ Upstream commit 01e346ffefda3a7088afebf02b940614179688e7 ]
+[ Upstream commit 188ffcd7fea79af3cac441268fc99f60e87f03b3 ]
 
-rtas_token_to_function() WARNs when passed an invalid token; it's
-meant to catch bugs in kernel-based users of RTAS functions. However,
-user space controls the token value passed to rtas_token_to_function()
-by block_rtas_call(), so user space with sufficient privilege to use
-sys_rtas() can trigger the warnings at will:
+In order to generalize the node names, the DMA-related nodes
+corresponding to MT8183 MDP3 need to be corrected.
 
-  unexpected failed lookup for token 2048
-  WARNING: CPU: 20 PID: 2247 at arch/powerpc/kernel/rtas.c:556
-    rtas_token_to_function+0xfc/0x110
-  ...
-  NIP rtas_token_to_function+0xfc/0x110
-  LR  rtas_token_to_function+0xf8/0x110
-  Call Trace:
-    rtas_token_to_function+0xf8/0x110 (unreliable)
-    sys_rtas+0x188/0x880
-    system_call_exception+0x268/0x530
-    system_call_common+0x160/0x2c4
-
-It's desirable to continue warning on bogus tokens in
-rtas_token_to_function(). Currently it is used to look up RTAS
-function descriptors when tracing, where we know there has to have
-been a successful descriptor lookup by different means already, and it
-would be a serious inconsistency for the reverse lookup to fail.
-
-So instead of weakening rtas_token_to_function()'s contract by
-removing the warnings, introduce rtas_token_to_function_untrusted(),
-which has no opinion on failed lookups. Convert block_rtas_call() and
-rtas_token_to_function() to use it.
-
-Fixes: 8252b88294d2 ("powerpc/rtas: improve function information lookups")
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231212-papr-sys_rtas-vs-lockdown-v6-1-e9eafd0c8c6c@linux.ibm.com
+Fixes: 60a2fb8d202a ("arm64: dts: mt8183: add MediaTek MDP3 nodes")
+Signed-off-by: Moudy Ho <moudy.ho@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/rtas.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8183.dtsi | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index eddc031c4b95..87d65bdd3eca 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -544,6 +544,21 @@ static int __init rtas_token_to_function_xarray_init(void)
- }
- arch_initcall(rtas_token_to_function_xarray_init);
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+index 976dc968b3ca..df6e9990cd5f 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+@@ -1660,7 +1660,7 @@ mmsys: syscon@14000000 {
+ 			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0 0x1000>;
+ 		};
  
-+/*
-+ * For use by sys_rtas(), where the token value is provided by user
-+ * space and we don't want to warn on failed lookups.
-+ */
-+static const struct rtas_function *rtas_token_to_function_untrusted(s32 token)
-+{
-+	return xa_load(&rtas_token_to_function_xarray, token);
-+}
-+
-+/*
-+ * Reverse lookup for deriving the function descriptor from a
-+ * known-good token value in contexts where the former is not already
-+ * available. @token must be valid, e.g. derived from the result of a
-+ * prior lookup against the function table.
-+ */
- static const struct rtas_function *rtas_token_to_function(s32 token)
- {
- 	const struct rtas_function *func;
-@@ -551,7 +566,7 @@ static const struct rtas_function *rtas_token_to_function(s32 token)
- 	if (WARN_ONCE(token < 0, "invalid token %d", token))
- 		return NULL;
+-		mdp3-rdma0@14001000 {
++		dma-controller0@14001000 {
+ 			compatible = "mediatek,mt8183-mdp3-rdma";
+ 			reg = <0 0x14001000 0 0x1000>;
+ 			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x1000 0x1000>;
+@@ -1672,6 +1672,7 @@ mdp3-rdma0@14001000 {
+ 			iommus = <&iommu M4U_PORT_MDP_RDMA0>;
+ 			mboxes = <&gce 20 CMDQ_THR_PRIO_LOWEST 0>,
+ 				 <&gce 21 CMDQ_THR_PRIO_LOWEST 0>;
++			#dma-cells = <1>;
+ 		};
  
--	func = xa_load(&rtas_token_to_function_xarray, token);
-+	func = rtas_token_to_function_untrusted(token);
+ 		mdp3-rsz0@14003000 {
+@@ -1692,7 +1693,7 @@ mdp3-rsz1@14004000 {
+ 			clocks = <&mmsys CLK_MM_MDP_RSZ1>;
+ 		};
  
- 	if (WARN_ONCE(!func, "unexpected failed lookup for token %d", token))
- 		return NULL;
-@@ -1726,7 +1741,7 @@ static bool block_rtas_call(int token, int nargs,
- 	 * If this token doesn't correspond to a function the kernel
- 	 * understands, you're not allowed to call it.
- 	 */
--	func = rtas_token_to_function(token);
-+	func = rtas_token_to_function_untrusted(token);
- 	if (!func)
- 		goto err;
- 	/*
+-		mdp3-wrot0@14005000 {
++		dma-controller@14005000 {
+ 			compatible = "mediatek,mt8183-mdp3-wrot";
+ 			reg = <0 0x14005000 0 0x1000>;
+ 			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x5000 0x1000>;
+@@ -1701,6 +1702,7 @@ mdp3-wrot0@14005000 {
+ 			power-domains = <&spm MT8183_POWER_DOMAIN_DISP>;
+ 			clocks = <&mmsys CLK_MM_MDP_WROT0>;
+ 			iommus = <&iommu M4U_PORT_MDP_WROT0>;
++			#dma-cells = <1>;
+ 		};
+ 
+ 		mdp3-wdma@14006000 {
 -- 
 2.43.0
 
