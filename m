@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-15450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 499D3838546
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 623B98383BD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB9C31F294F3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C76B295231
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB935662;
-	Tue, 23 Jan 2024 02:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DA864CD8;
+	Tue, 23 Jan 2024 01:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RppXQOCo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2iR+VsB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFC35243;
-	Tue, 23 Jan 2024 02:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681A764CCD;
+	Tue, 23 Jan 2024 01:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975788; cv=none; b=cpmadvfD48eu0aAXMLnt09cfrpvhRZlnmtMT15dm1apVO/QOkdfNZFLbpgurC/QqvfB/1Y+Lox76ety/QIWOVsOhUX+cwdbjqqzzRfDhfEGXYQqVbYvfB4lv+HfxIwtJHq4rc2mYwNz/HKc3rD/EjnB69SoR5Mz1013mSQuHvew=
+	t=1705975052; cv=none; b=X9AJoT090QxOmjgQwwaK5gJzcYretZhbGHRnOBc4P23WRHuiVwXE+4EupoUs8wQE8CQY+0Fg9gQHujh6y9Z1r3ke8vLvYupIuQlzxqfU11TAKXYbYrZ26omG7py5Nq8wP5wKiucTjEcWJbdlcevRKOwhVy5jQHJWF4Sik9YVbdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975788; c=relaxed/simple;
-	bh=d1JUfHeg7SMZnqSwnRevkV04MEHt77dp1E8OFx3ZmMg=;
+	s=arc-20240116; t=1705975052; c=relaxed/simple;
+	bh=bb50fbsYDDG7h/NinbRXXE4W1T3iznQw23gwO7nbE8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VsaiSqg4L5qfB8auq9YZM1oFH3+Gd5mt2MkMG2U0Fw3Ri5fdkF+JdgRC0T2cujXccbIUAi34/iRefpEAy1JCraEMt1Jl+dnOwHQV7eJAAJ9Md/9k3xuFPx4yc4NCILgZNmkhobU+zH9LXnw9J5Gri8r+qlUh5KIDUpSj7h5EkXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RppXQOCo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E415C43390;
-	Tue, 23 Jan 2024 02:09:48 +0000 (UTC)
+	 MIME-Version; b=J5SikWr+fcyx0DMX+Vj8ejbehOBvL+cwXJGvyEdUdSNunmtDyTQTNjRHs5XNSv2IBpIjNJPHp6Uvb5xG2/JJyywLGTWhnyyrbOPIGJ3tQeaKbaho3IwXzu8mcSK7lfcmHou+8zbrVLkvJW7a/V68QkOokCFaYkFpFnmMHPyVk2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L2iR+VsB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD046C43399;
+	Tue, 23 Jan 2024 01:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975788;
-	bh=d1JUfHeg7SMZnqSwnRevkV04MEHt77dp1E8OFx3ZmMg=;
+	s=korg; t=1705975052;
+	bh=bb50fbsYDDG7h/NinbRXXE4W1T3iznQw23gwO7nbE8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RppXQOCoj/l0F91bonDvyk8cSN6PpPm5Vih7nicg9dRvYgqUlWM/tG9WDRYBhxyUE
-	 1d3yg+vSGiE+7EHOluZfeBXdYBOACQ7R5ejKVoQqgRBtUrimvmKLh6vq8VkO3hakPn
-	 XZdjkWEpicP5DJmI2k+JiW1HpC6QspRn60Z/HH9I=
+	b=L2iR+VsB82YnfdWhteH8Ru6xvHWiWwnuOn5qwptpzEbN5liIdo6dgU4XBinSOX3wE
+	 PFcdpWTQ8gcyRek2I+qpL1WU+5gb/OVBNDX7Nt7ut+Th/VOzjeAemM0gQtW8b1uKHH
+	 4dDvJXxyrmRsac5ReJSraL2eirKYavOMiU3JZiBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditi Ghag <aditi.ghag@isovalent.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Qiang Ma <maqianga@uniontech.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 545/583] bpf: Avoid iter->offset making backward progress in bpf_iter_udp
-Date: Mon, 22 Jan 2024 15:59:56 -0800
-Message-ID: <20240122235828.808784045@linuxfoundation.org>
+Subject: [PATCH 5.15 341/374] net: stmmac: ethtool: Fixed calltrace caused by unbalanced disable_irq_wake calls
+Date: Mon, 22 Jan 2024 15:59:57 -0800
+Message-ID: <20240122235756.775043330@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Qiang Ma <maqianga@uniontech.com>
 
-[ Upstream commit 2242fd537fab52d5f4d2fbb1845f047c01fad0cf ]
+[ Upstream commit a23aa04042187cbde16f470b49d4ad60d32e9206 ]
 
-There is a bug in the bpf_iter_udp_batch() function that stops
-the userspace from making forward progress.
+We found the following dmesg calltrace when testing the GMAC NIC notebook:
 
-The case that triggers the bug is the userspace passed in
-a very small read buffer. When the bpf prog does bpf_seq_printf,
-the userspace read buffer is not enough to capture the whole bucket.
+[9.448656] ------------[ cut here ]------------
+[9.448658] Unbalanced IRQ 43 wake disable
+[9.448673] WARNING: CPU: 3 PID: 1083 at kernel/irq/manage.c:688 irq_set_irq_wake+0xe0/0x128
+[9.448717] CPU: 3 PID: 1083 Comm: ethtool Tainted: G           O      4.19 #1
+[9.448773]         ...
+[9.448774] Call Trace:
+[9.448781] [<9000000000209b5c>] show_stack+0x34/0x140
+[9.448788] [<9000000000d52700>] dump_stack+0x98/0xd0
+[9.448794] [<9000000000228610>] __warn+0xa8/0x120
+[9.448797] [<9000000000d2fb60>] report_bug+0x98/0x130
+[9.448800] [<900000000020a418>] do_bp+0x248/0x2f0
+[9.448805] [<90000000002035f4>] handle_bp_int+0x4c/0x78
+[9.448808] [<900000000029ea40>] irq_set_irq_wake+0xe0/0x128
+[9.448813] [<9000000000a96a7c>] stmmac_set_wol+0x134/0x150
+[9.448819] [<9000000000be6ed0>] dev_ethtool+0x1368/0x2440
+[9.448824] [<9000000000c08350>] dev_ioctl+0x1f8/0x3e0
+[9.448827] [<9000000000bb2a34>] sock_ioctl+0x2a4/0x450
+[9.448832] [<900000000046f044>] do_vfs_ioctl+0xa4/0x738
+[9.448834] [<900000000046f778>] ksys_ioctl+0xa0/0xe8
+[9.448837] [<900000000046f7d8>] sys_ioctl+0x18/0x28
+[9.448840] [<9000000000211ab4>] syscall_common+0x20/0x34
+[9.448842] ---[ end trace 40c18d9aec863c3e ]---
 
-When the read buffer is not large enough, the kernel will remember
-the offset of the bucket in iter->offset such that the next userspace
-read() can continue from where it left off.
+Multiple disable_irq_wake() calls will keep decreasing the IRQ
+wake_depth, When wake_depth is 0, calling disable_irq_wake() again,
+will report the above calltrace.
 
-The kernel will skip the number (== "iter->offset") of sockets in
-the next read(). However, the code directly decrements the
-"--iter->offset". This is incorrect because the next read() may
-not consume the whole bucket either and then the next-next read()
-will start from offset 0. The net effect is the userspace will
-keep reading from the beginning of a bucket and the process will
-never finish. "iter->offset" must always go forward until the
-whole bucket is consumed.
+Due to the need to appear in pairs, we cannot call disable_irq_wake()
+without calling enable_irq_wake(). Fix this by making sure there are
+no unbalanced disable_irq_wake() calls.
 
-This patch fixes it by using a local variable "resume_offset"
-and "resume_bucket". "iter->offset" is always reset to 0 before
-it may be used. "iter->offset" will be advanced to the
-"resume_offset" when it continues from the "resume_bucket" (i.e.
-"state->bucket == resume_bucket"). This brings it closer to
-the bpf_iter_tcp's offset handling which does not suffer
-the same bug.
-
-Cc: Aditi Ghag <aditi.ghag@isovalent.com>
-Fixes: c96dac8d369f ("bpf: udp: Implement batching for sockets iterator")
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Aditi Ghag <aditi.ghag@isovalent.com>
-Link: https://lore.kernel.org/r/20240112190530.3751661-3-martin.lau@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 3172d3afa998 ("stmmac: support wake up irq from external sources (v3)")
+Signed-off-by: Qiang Ma <maqianga@uniontech.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240112021249.24598-1-maqianga@uniontech.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h         |  1 +
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 10 ++++++++--
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c    |  1 +
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index a4857c85a020..9cb22a6ae1dc 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -3116,16 +3116,18 @@ static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
- 	struct bpf_udp_iter_state *iter = seq->private;
- 	struct udp_iter_state *state = &iter->state;
- 	struct net *net = seq_file_net(seq);
-+	int resume_bucket, resume_offset;
- 	struct udp_table *udptable;
- 	unsigned int batch_sks = 0;
- 	bool resized = false;
- 	struct sock *sk;
- 
-+	resume_bucket = state->bucket;
-+	resume_offset = iter->offset;
-+
- 	/* The current batch is done, so advance the bucket. */
--	if (iter->st_bucket_done) {
-+	if (iter->st_bucket_done)
- 		state->bucket++;
--		iter->offset = 0;
--	}
- 
- 	udptable = udp_get_table_seq(seq, net);
- 
-@@ -3145,19 +3147,19 @@ static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
- 	for (; state->bucket <= udptable->mask; state->bucket++) {
- 		struct udp_hslot *hslot2 = &udptable->hash2[state->bucket];
- 
--		if (hlist_empty(&hslot2->head)) {
--			iter->offset = 0;
-+		if (hlist_empty(&hslot2->head))
- 			continue;
--		}
- 
-+		iter->offset = 0;
- 		spin_lock_bh(&hslot2->lock);
- 		udp_portaddr_for_each_entry(sk, &hslot2->head) {
- 			if (seq_sk_match(seq, sk)) {
- 				/* Resume from the last iterated socket at the
- 				 * offset in the bucket before iterator was stopped.
- 				 */
--				if (iter->offset) {
--					--iter->offset;
-+				if (state->bucket == resume_bucket &&
-+				    iter->offset < resume_offset) {
-+					++iter->offset;
- 					continue;
- 				}
- 				if (iter->end_sk < iter->max_sk) {
-@@ -3171,9 +3173,6 @@ static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
- 
- 		if (iter->end_sk)
- 			break;
--
--		/* Reset the current bucket's offset before moving to the next bucket. */
--		iter->offset = 0;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+index f03779205ade..1a74437787c0 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+@@ -241,6 +241,7 @@ struct stmmac_priv {
+ 	u32 msg_enable;
+ 	int wolopts;
+ 	int wol_irq;
++	bool wol_irq_disabled;
+ 	int clk_csr;
+ 	struct timer_list eee_ctrl_timer;
+ 	int lpi_irq;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+index 9e8ae4384e4f..7b954365e564 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+@@ -758,10 +758,16 @@ static int stmmac_set_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
+ 	if (wol->wolopts) {
+ 		pr_info("stmmac: wakeup enable\n");
+ 		device_set_wakeup_enable(priv->device, 1);
+-		enable_irq_wake(priv->wol_irq);
++		/* Avoid unbalanced enable_irq_wake calls */
++		if (priv->wol_irq_disabled)
++			enable_irq_wake(priv->wol_irq);
++		priv->wol_irq_disabled = false;
+ 	} else {
+ 		device_set_wakeup_enable(priv->device, 0);
+-		disable_irq_wake(priv->wol_irq);
++		/* Avoid unbalanced disable_irq_wake calls */
++		if (!priv->wol_irq_disabled)
++			disable_irq_wake(priv->wol_irq);
++		priv->wol_irq_disabled = true;
  	}
  
- 	/* All done: no batch made. */
+ 	mutex_lock(&priv->lock);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 08693d7458d1..ede630bfad2f 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3506,6 +3506,7 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	/* Request the Wake IRQ in case of another line
+ 	 * is used for WoL
+ 	 */
++	priv->wol_irq_disabled = true;
+ 	if (priv->wol_irq > 0 && priv->wol_irq != dev->irq) {
+ 		int_name = priv->int_name_wol;
+ 		sprintf(int_name, "%s:%s", dev->name, "wol");
 -- 
 2.43.0
 
