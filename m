@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-12955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 434628379DC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:46:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCF8837B7F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:01:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F03E42835EC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:46:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CF33B2BE26
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CE312839D;
-	Tue, 23 Jan 2024 00:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 260F81292C2;
+	Tue, 23 Jan 2024 00:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJvgtmD+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYAH3eAG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14065128394;
-	Tue, 23 Jan 2024 00:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BA927456;
+	Tue, 23 Jan 2024 00:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968690; cv=none; b=cEYp3D9QVxQkU7xqj8WUPrW9oVfQ67mipQLDEUxjpcx4lc3sw8IRaOT3CdtpNizVEwpY0ZmpdbmuXp4uCqTl4hmZ8tffg0V8x4KMitZ9Q8sHfJBwto1LBkXdL0nvMY3tBKqZIN/QSXIBbwoxF5F2Hk1s9rxq1jUUtd+kilChuXs=
+	t=1705968701; cv=none; b=tQazX0+871KLOUgeBcH0jIZgTjgNvUDk5D95BhKJVqspLu7q2Zf311BbHtSnKI1zzVLqYedGB72C5JW0qRrrQNvlQDaoVF7ckhXTJaI6Apn6t3xAPDC+FOAmFcD1OZB/daBDVBEXcKGZeeT5qXK2cRAHaz0fxWUQ7HEgfNMe18I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968690; c=relaxed/simple;
-	bh=cb1S5+QoX9TOiKlxU3c8MXUR/eEM6cXLNH2LqEhUiGk=;
+	s=arc-20240116; t=1705968701; c=relaxed/simple;
+	bh=ffvy+RPIt6ngLd4xxqzIdvJvN5GOU/AshztjWgGN4ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CxDNMwRjBO+Y1J9+WRKcB4f7K3IyAybkpAp5uEcx1ZjRiR44er2wsaXbtzvm81l4s0lIAXnIjCUrrDFshKzxImHGvT7r8l/ZmIdYVDaBwoApiTijyia19qVw66UKv2zNaFzhjEp3SBVMNeR9ZGfzqCRiTKrnTQo/k+N40zFsAEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJvgtmD+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4010C433F1;
-	Tue, 23 Jan 2024 00:11:29 +0000 (UTC)
+	 MIME-Version; b=XHE6iRqgAQHwAGJSqwAKZvmdbvadg2JMbBmYwnAA0ael5zyg0hIxvMI/j0vX+rnjftV3w/Cnl+RishVE9U/Ua8Shvlmpms4ijZMvXQOTM1rR6TJZaLgCKI93tYuN9FJ2CNPHZKPLq+UuSx1Z1ybitpSLNsszE+DYh+oOo0HEwi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYAH3eAG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB0BC433C7;
+	Tue, 23 Jan 2024 00:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968689;
-	bh=cb1S5+QoX9TOiKlxU3c8MXUR/eEM6cXLNH2LqEhUiGk=;
+	s=korg; t=1705968701;
+	bh=ffvy+RPIt6ngLd4xxqzIdvJvN5GOU/AshztjWgGN4ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iJvgtmD+IZyJ5jyRRLaluADKLXH4TZqx2P9WFrEpzUSePuaBP4+l9+UGfK4WHUiss
-	 7GiuTSwCFzLJXdfqsImLXYoVDvwfFFWJovEccLD82f8uWHbV/LHoFUl0h6AjVSoEps
-	 sZ7h4mrSxSAW5J5OpV1Uv3XVqGdPUK8pHxP6l1oc=
+	b=FYAH3eAGl4YJsgW8SNYHGJLkR9Va5GZTZCNYCtRyH4jrTushY3Sgq86vhPoRSFfnf
+	 oneMSH6ZwwOQpWcyh8v7GIfVAqOi9FTL63aS4wWegoa1qqgCW5+Uu21Y0Qf507GBSs
+	 hrDZIeCxl/GDNdAHTGOrgIIHhIPm9WUiYCNXeGQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 4.19 132/148] HID: wacom: Correct behavior when processing some confidence == false touches
-Date: Mon, 22 Jan 2024 15:58:08 -0800
-Message-ID: <20240122235717.898055725@linuxfoundation.org>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 133/148] MIPS: Alchemy: Fix an out-of-bound access in db1200_dev_setup()
+Date: Mon, 22 Jan 2024 15:58:09 -0800
+Message-ID: <20240122235717.942088164@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
 References: <20240122235712.442097787@linuxfoundation.org>
@@ -67,104 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jason Gerecke <jason.gerecke@wacom.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 502296030ec6b0329e00f9fb15018e170cc63037 upstream.
+[ Upstream commit 89c4b588d11e9acf01d604de4b0c715884f59213 ]
 
-There appear to be a few different ways that Wacom devices can deal with
-confidence:
+When calling spi_register_board_info(), we should pass the number of
+elements in 'db1200_spi_devs', not 'db1200_i2c_devs'.
 
-  1. If the device looses confidence in a touch, it will first clear
-     the tipswitch flag in one report, and then clear the confidence
-     flag in a second report. This behavior is used by e.g. DTH-2452.
-
-  2. If the device looses confidence in a touch, it will clear both
-     the tipswitch and confidence flags within the same report. This
-     behavior is used by some AES devices.
-
-  3. If the device looses confidence in a touch, it will clear *only*
-     the confidence bit. The tipswitch bit will remain set so long as
-     the touch is tracked. This behavior may be used in future devices.
-
-The driver does not currently handle situation 3 properly. Touches that
-loose confidence will remain "in prox" and essentially frozen in place
-until the tipswitch bit is finally cleared. Not only does this result
-in userspace seeing a stuck touch, but it also prevents pen arbitration
-from working properly (the pen won't send events until all touches are
-up, but we don't currently process events from non-confident touches).
-
-This commit centralizes the checking of the confidence bit in the
-wacom_wac_finger_slot() function and has 'prox' depend on it. In the
-case where situation 3 is encountered, the treat the touch as though
-it was removed, allowing both userspace and the pen arbitration to
-act normally.
-
-Signed-off-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
-Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Fixes: 7fb0413baa7f ("HID: wacom: Use "Confidence" flag to prevent reporting invalid contacts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 63323ec54a7e ("MIPS: Alchemy: Extended DB1200 board support.")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c |   32 ++++----------------------------
- 1 file changed, 4 insertions(+), 28 deletions(-)
+ arch/mips/alchemy/devboards/db1200.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -2533,8 +2533,8 @@ static void wacom_wac_finger_slot(struct
- {
- 	struct hid_data *hid_data = &wacom_wac->hid_data;
- 	bool mt = wacom_wac->features.touch_max > 1;
--	bool prox = hid_data->tipswitch &&
--		    report_touch_events(wacom_wac);
-+	bool touch_down = hid_data->tipswitch && hid_data->confidence;
-+	bool prox = touch_down && report_touch_events(wacom_wac);
+diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
+index 48840e48e79a..e47bac04cf75 100644
+--- a/arch/mips/alchemy/devboards/db1200.c
++++ b/arch/mips/alchemy/devboards/db1200.c
+@@ -864,7 +864,7 @@ int __init db1200_dev_setup(void)
+ 	i2c_register_board_info(0, db1200_i2c_devs,
+ 				ARRAY_SIZE(db1200_i2c_devs));
+ 	spi_register_board_info(db1200_spi_devs,
+-				ARRAY_SIZE(db1200_i2c_devs));
++				ARRAY_SIZE(db1200_spi_devs));
  
- 	if (wacom_wac->shared->has_mute_touch_switch &&
- 	    !wacom_wac->shared->is_touch_on) {
-@@ -2573,24 +2573,6 @@ static void wacom_wac_finger_slot(struct
- 	}
- }
- 
--static bool wacom_wac_slot_is_active(struct input_dev *dev, int key)
--{
--	struct input_mt *mt = dev->mt;
--	struct input_mt_slot *s;
--
--	if (!mt)
--		return false;
--
--	for (s = mt->slots; s != mt->slots + mt->num_slots; s++) {
--		if (s->key == key &&
--			input_mt_get_value(s, ABS_MT_TRACKING_ID) >= 0) {
--			return true;
--		}
--	}
--
--	return false;
--}
--
- static void wacom_wac_finger_event(struct hid_device *hdev,
- 		struct hid_field *field, struct hid_usage *usage, __s32 value)
- {
-@@ -2633,14 +2615,8 @@ static void wacom_wac_finger_event(struc
- 
- 
- 	if (usage->usage_index + 1 == field->report_count) {
--		if (equivalent_usage == wacom_wac->hid_data.last_slot_field) {
--			bool touch_removed = wacom_wac_slot_is_active(wacom_wac->touch_input,
--				wacom_wac->hid_data.id) && !wacom_wac->hid_data.tipswitch;
--
--			if (wacom_wac->hid_data.confidence || touch_removed) {
--				wacom_wac_finger_slot(wacom_wac, wacom_wac->touch_input);
--			}
--		}
-+		if (equivalent_usage == wacom_wac->hid_data.last_slot_field)
-+			wacom_wac_finger_slot(wacom_wac, wacom_wac->touch_input);
- 	}
- }
- 
+ 	/* SWITCHES:	S6.8 I2C/SPI selector  (OFF=I2C	 ON=SPI)
+ 	 *		S6.7 AC97/I2S selector (OFF=AC97 ON=I2S)
+-- 
+2.43.0
+
 
 
 
