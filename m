@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-14823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57538382BF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCD88382BC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DFF8B25BFB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EED681C2914F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9B35F564;
-	Tue, 23 Jan 2024 01:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DEA5D8F2;
+	Tue, 23 Jan 2024 01:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwgTVVdS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6GXXHMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796525F54F;
-	Tue, 23 Jan 2024 01:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE9B5F569;
+	Tue, 23 Jan 2024 01:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974422; cv=none; b=tpLzWOIMZipSFGZ+++5L6KDekXo8yPTFRMHJekgk7vNTbZqCd14drzbDLINiFvYfmg4IjeOhIyCPYXYsNZYtdl+SEw571cQlaC5jq4A28L+c8PHvnlTi61ESTEJc4h4C3i7lM3dtIIPxi/Q13bNk9UaU9Kxqxbkr6QoVRaOOPQI=
+	t=1705974424; cv=none; b=FxYWhVtp8Bxm3YW6d/I1oFMrYaLhubexSwfDXMZK0u662QjYiLohrOFzv5gjvMaNsvbfEfPiHBHCKSM7cVvzOOY4znHHWL76X3hHQLwIj10/PDOpQJe9TDlmDOsJW9F4YOw1HkS4pOVxHqhDAPyiGrJttYCs+CY0cs0zAPyXEL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974422; c=relaxed/simple;
-	bh=3XmD3dXSmcgjJsw+Of9PU1fTrrdAAht5DpgiqskDWlo=;
+	s=arc-20240116; t=1705974424; c=relaxed/simple;
+	bh=DX417kBxFhczjvQoLVMwlcFEWFa0OWfzzlASyWhJ1g8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Un1h5kvzzXq923WmPmCaQXy4zkE0QvGuYYmEKEsy2d+pPayXqCsjH3xkg5jZK3qDE9hDUWRxdhR8NvKs6+HUolLygaZjAtx6ThfzPPkAot91AJaJhKGjvuZfuAI0tfhMwyzBXeMVA6OLMMZL0b1U/XdX6q6QPvaDwNIHdsoMvRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwgTVVdS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B618C43399;
-	Tue, 23 Jan 2024 01:47:02 +0000 (UTC)
+	 MIME-Version; b=CqvYmofCv8/6zKu3HNz2brzIsIskRPAezO31UOg8D5TphyL3/WO7jdNXSmyRRmifoW6AyUA8bzsI+QOHQl2ZHkEW52YCRBpTppOBKQcJqd5dxbPSszYGG/9vBjHs5P5pfE2c3LcBkoIXPZ3MJ0Kmp5X4zaUi2kBe26rBsAqXU+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6GXXHMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E1CC433F1;
+	Tue, 23 Jan 2024 01:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974422;
-	bh=3XmD3dXSmcgjJsw+Of9PU1fTrrdAAht5DpgiqskDWlo=;
+	s=korg; t=1705974424;
+	bh=DX417kBxFhczjvQoLVMwlcFEWFa0OWfzzlASyWhJ1g8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XwgTVVdSRB6d93CdOoDHyS1OIVCQIx1hc90noDHzgntu8VokqV/6zYZocJEXQ2hF6
-	 dtHKVbFEn3yO+Wo0il85PfPqEvXJjHZCA42B+Knwhs3RblMietVRUKmWAe8p+Hc1mw
-	 l1AZO2rTJiJuhpMHAAyY4/KG7Buj/cNL6xDnZeW8=
+	b=j6GXXHMze28RCdmUzJxlO2bTIoTLE4SdyWFjxP7rpv+kZ690O7UJohJox4lkvVXi6
+	 lYXJEz8jwvI1WxFGroAI82vUFC3tKYzW7SK2JYp1V1Fx8+iBzBL7v6xfvgWeZXbPON
+	 UVIiTSvHO4ElGLO4+/H0UsLigmmBm8oMRKWhxyyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Curtis Klein <curtis.klein@hpe.com>,
+	Jerry Hoemann <jerry.hoemann@hpe.com>,
 	Guenter Roeck <linux@roeck-us.net>,
 	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 219/374] watchdog: set cdev owner before adding
-Date: Mon, 22 Jan 2024 15:57:55 -0800
-Message-ID: <20240122235752.272063232@linuxfoundation.org>
+Subject: [PATCH 5.15 220/374] watchdog/hpwdt: Only claim UNKNOWN NMI if from iLO
+Date: Mon, 22 Jan 2024 15:57:56 -0800
+Message-ID: <20240122235752.312677273@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
 References: <20240122235744.598274724@linuxfoundation.org>
@@ -67,59 +67,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Curtis Klein <curtis.klein@hpe.com>
+From: Jerry Hoemann <jerry.hoemann@hpe.com>
 
-[ Upstream commit 38d75297745f04206db9c29bdd75557f0344c7cc ]
+[ Upstream commit dced0b3e51dd2af3730efe14dd86b5e3173f0a65 ]
 
-When the new watchdog character device is registered, it becomes
-available for opening. This creates a race where userspace may open the
-device before the character device's owner is set. This results in an
-imbalance in module_get calls as the cdev_get in cdev_open will not
-increment the reference count on the watchdog driver module.
+Avoid unnecessary crashes by claiming only NMIs that are due to
+ERROR signalling or generated by the hpwdt hardware device.
 
-This causes problems when the watchdog character device is released as
-the module loader's reference will also be released. This makes it
-impossible to open the watchdog device later on as it now appears that
-the module is being unloaded. The open will fail with -ENXIO from
-chrdev_open.
+The code does this, but only for iLO5.
 
-The legacy watchdog device will fail with -EBUSY from the try_module_get
-in watchdog_open because it's module owner is the watchdog core module
-so it can still be opened but it will fail to get a refcount on the
-underlying watchdog device driver.
+The intent was to preserve legacy, Gen9 and earlier, semantics of
+using hpwdt for error containtment as hardware/firmware would signal
+fatal IO errors as an NMI with the expectation of hpwdt crashing
+the system.  Howerver, these IO errors should be received by hpwdt
+as an NMI_IO_CHECK.  So the test is overly permissive and should
+not be limited to only ilo5.
 
-Fixes: 72139dfa2464 ("watchdog: Fix the race between the release of watchdog_core_data and cdev")
-Signed-off-by: Curtis Klein <curtis.klein@hpe.com>
+We need to enable this protection for future iLOs not matching the
+current PCI IDs.
+
+Fixes: 62290a5c194b ("watchdog: hpwdt: Claim NMIs generated by iLO5")
+Signed-off-by: Jerry Hoemann <jerry.hoemann@hpe.com>
 Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231205190522.55153-1-curtis.klein@hpe.com
+Link: https://lore.kernel.org/r/20231213215340.495734-2-jerry.hoemann@hpe.com
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/watchdog_dev.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/watchdog/hpwdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/watchdog_dev.c b/drivers/watchdog/watchdog_dev.c
-index 5eec84fa6517..d3b5aa87c141 100644
---- a/drivers/watchdog/watchdog_dev.c
-+++ b/drivers/watchdog/watchdog_dev.c
-@@ -1035,6 +1035,7 @@ static int watchdog_cdev_register(struct watchdog_device *wdd)
+diff --git a/drivers/watchdog/hpwdt.c b/drivers/watchdog/hpwdt.c
+index a5006a58e0db..39fc209f799e 100644
+--- a/drivers/watchdog/hpwdt.c
++++ b/drivers/watchdog/hpwdt.c
+@@ -176,7 +176,7 @@ static int hpwdt_pretimeout(unsigned int ulReason, struct pt_regs *regs)
+ 		"3. OA Forward Progress Log\n"
+ 		"4. iLO Event Log";
  
- 	/* Fill in the data structures */
- 	cdev_init(&wd_data->cdev, &watchdog_fops);
-+	wd_data->cdev.owner = wdd->ops->owner;
+-	if (ilo5 && ulReason == NMI_UNKNOWN && !mynmi)
++	if (ulReason == NMI_UNKNOWN && !mynmi)
+ 		return NMI_DONE;
  
- 	/* Add the device */
- 	err = cdev_device_add(&wd_data->cdev, &wd_data->dev);
-@@ -1049,8 +1050,6 @@ static int watchdog_cdev_register(struct watchdog_device *wdd)
- 		return err;
- 	}
- 
--	wd_data->cdev.owner = wdd->ops->owner;
--
- 	/* Record time of most recent heartbeat as 'just before now'. */
- 	wd_data->last_hw_keepalive = ktime_sub(ktime_get(), 1);
- 	watchdog_set_open_deadline(wd_data);
+ 	if (ilo5 && !pretimeout && !mynmi)
 -- 
 2.43.0
 
