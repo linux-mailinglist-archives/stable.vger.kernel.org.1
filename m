@@ -1,131 +1,70 @@
-Return-Path: <stable+bounces-12711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7864836EF6
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:07:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2660C8370AF
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:49:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06FC61C29610
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 18:07:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91ACCB2F343
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 18:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A501B3F8D2;
-	Mon, 22 Jan 2024 17:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D689746531;
+	Mon, 22 Jan 2024 17:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vMJTWOsG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F1Uwfe8u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDBB46B99;
-	Mon, 22 Jan 2024 17:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988B946521
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 17:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705944541; cv=none; b=vFN2kjXvT/lAm7BSGdmzv7afn+LwiRH1rL6RkV8DHPgt6BjDoGipIA3Jt74f7fFNRSDaC+0x71Gabl3QPnSZPC5eVer1T/rVilgLRYpwJPcxNGY0EicFDOCn6J3UvoJgrbhwQofpcVdUUp2KI7We4KTIQcryRn0XCt4X9Zj68Cg=
+	t=1705945248; cv=none; b=c3R9aA/nEeYuoI5kXul2iFUpXKBwVjDncqEngy78dn/Xgzah1LjkQKNdaUTD7THydI1+5sFW7ZZC3lFXb3naDibW8UEA7FXIE0YfIba1WSuntVcPlPD3H9mvhZsdUEySbKHPcwwEgyg/jXhSs9/ab6qX7yOjdEJPciG1mqr8v60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705944541; c=relaxed/simple;
-	bh=6FeAIXLL4BMXxP3NQlpVvmV8ek7N+/33fe5B2RSSNM4=;
+	s=arc-20240116; t=1705945248; c=relaxed/simple;
+	bh=A15fpLuqtEewedy+3KW1XIOtSEhXtsRr36/bedCmV0w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oLEc/Hnw+hGbkgvfmKgxDroTfUcqXyrDgbgZg9gYUHVeoa3FZr2GcSwVm+YtMdzYHKMMrSgxD9RYP82fNai2Pdg6oRQLgRh6ECIJLSI7efle/V2wUVdeuWr/Kx36a7xwPw2jvc5fW3q39GwRspbLiWkIYYQqJULgGH+ze22qgA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vMJTWOsG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADACC43390;
-	Mon, 22 Jan 2024 17:29:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705944540;
-	bh=6FeAIXLL4BMXxP3NQlpVvmV8ek7N+/33fe5B2RSSNM4=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=CZxVQYYQEeG8if0KG31Mox8RLexut2iWNy5Wo/lQOviNQtAzSjlD1uUfN+k0r9m7DeyR5r+TdZiCdkWDlgYu8R8eVoZu86LEvQaPGvVU6T96lIZD58l39jjGC0LgVhynQiYf1NSxcvJX26xobukQjsQpLBayAzhejZVTGefO5UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F1Uwfe8u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1AEC43390;
+	Mon, 22 Jan 2024 17:40:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1705945248;
+	bh=A15fpLuqtEewedy+3KW1XIOtSEhXtsRr36/bedCmV0w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vMJTWOsGivJR62sg5NtIpQ4+SkzwUTtajCJivqs3X5LFdwl1WJMKpC9/sPpycZ7RE
-	 EMVL/5OB5lQHH2qXPZWRHyt9Z2IgGJB+gWzhEEVTd/XAC83KWiS45P087CIHvjBXMx
-	 doyKBdZB9FWdUx53efJBAi/UpMov+/tW9Ysm4o9ZRzOsENuhC3PuDGm7MKF/9BeY4j
-	 PnaV01wZHf/fxQLG5NQIEpUKVoNRzb1jarK1IBUSJsljfjam5k7Xcda5G/vWeCPvE8
-	 sSwuyaHTRs/FpHfSkZte7dAYMmW7pAXzevefBWDpXkGwnu6igaTC0TyUN8yjFcVLB/
-	 cMAsPztStzxaA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rRy6i-000000000rG-2U1d;
-	Mon, 22 Jan 2024 18:29:12 +0100
-Date: Mon, 22 Jan 2024 18:29:12 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Banajit Goswami <bgoswami@quicinc.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4 2/4] ASoC: qcom: sc8280xp: limit speaker volumes
-Message-ID: <Za6l6EP7OqXPU9mj@hovoldconsulting.com>
-References: <20240119112420.7446-1-johan+linaro@kernel.org>
- <20240119112420.7446-3-johan+linaro@kernel.org>
- <d54d3640-49bf-4a2f-903b-4beeb0ebd56c@sirena.org.uk>
- <Za4cR90XoAaATq8X@hovoldconsulting.com>
- <aca2b125-acf8-4791-a3eb-ea19826d3ee4@sirena.org.uk>
+	b=F1Uwfe8uWI8gpJVB+OnOO8bOubxgwH/teDNYP1XmzplDcjgcAL1qE5IWE3cHrbl1F
+	 2KrKhxnEZkwYpP3AOKDgtdK56ci1ziE+PhLtIg/snlruqwt2cRtrDRV3sh4m8jTl+J
+	 uVlDCie/46ogE7Nvk3ct/NQp0L6Y7QoFETwTfw+Y=
+Date: Mon, 22 Jan 2024 09:40:46 -0800
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	Matthew Maurer <mmaurer@google.com>
+Subject: Re: Apply bad098d76835 to 6.6.y and 6.7.y
+Message-ID: <2024012239-draw-shopping-d462@gregkh>
+References: <CANiq72koa-tTXuxKRujXMuJUCw__WiPbgnxj6i9J2c6Yby78Uw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="zuPb1ptY6OeW5Twe"
-Content-Disposition: inline
-In-Reply-To: <aca2b125-acf8-4791-a3eb-ea19826d3ee4@sirena.org.uk>
-
-
---zuPb1ptY6OeW5Twe
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CANiq72koa-tTXuxKRujXMuJUCw__WiPbgnxj6i9J2c6Yby78Uw@mail.gmail.com>
 
-On Mon, Jan 22, 2024 at 04:05:37PM +0000, Mark Brown wrote:
-> On Mon, Jan 22, 2024 at 08:41:59AM +0100, Johan Hovold wrote:
-> > On Mon, Jan 22, 2024 at 12:03:55AM +0000, Mark Brown wrote:
->=20
-> > > This doesn't apply against current code, please check and resend.
->=20
-> > These patches are based on Linus's tree after merging the sound updates
-> > and I just verified that they apply cleanly to 6.8-rc1.
->=20
-> > I couldn't find anything related in either linux-next or your ASoC tree
-> > that should interfere.
->=20
-> > Could you please try again or let me know which branch to rebase on?
->=20
-> I was applying it against v6.8-rc1.
+On Sat, Jan 20, 2024 at 03:13:13AM +0100, Miguel Ojeda wrote:
+> Hi Greg and Sasha,
+> 
+> Please consider applying commit bad098d76835 ("rust: Ignore
+> preserve-most functions") to 6.6.y and 6.7.y (6.1.y does not need it
+> since `__preserve_most` was introduced in 6.6). It fixes a build error
+> with Rust + `CONFIG_LIST_HARDENED`. It should apply cleanly.
 
-That's what I assumed, but I still don't understand why it doesn't apply
-on your end:
+Now queued up, thanks,
 
-	$ git checkout -b tmp v6.8-rc1
-	$ b4 am 20240119112420.7446-1-johan+linaro@kernel.org
-	...
- 	$ git am ./v4_20240119_johan_linaro_asoc_qcom_volume_fixes_and_codec_clea=
-nups.mbx
-	Applying: ASoC: codecs: wsa883x: fix PA volume control
-	Applying: ASoC: qcom: sc8280xp: limit speaker volumes
-	Applying: ASoC: codecs: lpass-wsa-macro: fix compander volume hack
-	Applying: ASoC: codecs: wcd9335: drop unused gain hack remnant
-
-And if I generate patches from this branch, the diffs are identical to
-the v4 patches I sent.
-
-Could you please try again, and tell me which patch fails to apply and
-how it fails?
-
-Johan
-
---zuPb1ptY6OeW5Twe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQQHbPq+cpGvN/peuzMLxc3C7H1lCAUCZa6l5AAKCRALxc3C7H1l
-CDS1AP9v09QUe0W/JBDJqz8b7Z8aLnAKxR6EToN186tpJEhmQQD/ZITVhd2YTnO0
-WgezFd6GQaMqTSjOQhoI/Zrt8Qu8Vw8=
-=IyN/
------END PGP SIGNATURE-----
-
---zuPb1ptY6OeW5Twe--
+greg k-h
 
