@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A35F83837A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1B6837C48
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40A4B1F28062
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13BB51F2B78A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA1663117;
-	Tue, 23 Jan 2024 01:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5958D145327;
+	Tue, 23 Jan 2024 00:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIjdN6T1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3GVqrdX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBD762A0F;
-	Tue, 23 Jan 2024 01:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DED23C6;
+	Tue, 23 Jan 2024 00:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974985; cv=none; b=UscXdLNgQ9t92kXqE6t2kuj4V7g4xW9T/P1NUbEzmllBu0s6YBpzGJ6U1hXdXdeBnLBcgpK055JMS7TiCPHaeN1OM/sr+KLyosYT3gd9HYYjxaKIzkQXQbpQIGyUVyr+Tt3Vz9401SUhxq3z7BoadK2Seu2NRlBcrn9biaHCaxo=
+	t=1705969568; cv=none; b=ZIQJAPZR2MoNCuHnkIQ91MU0ZbFeir3I1Zbz670WUy3ZOaOFjsN4W7hakcIAtGFWhgtWnIFNIL9huzWuQCyRFmomZAMXieyprVLmcTWTs3t4gFrSk/DrqHeFmw/BVDn69aM3pCY8mRHweCKBsdoNMVYSFHsqZzT3TrSzn22f2D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974985; c=relaxed/simple;
-	bh=B+TSbABwFxL+YhSZG7aipl+y5sXHAAcq1Bztbs5sFjY=;
+	s=arc-20240116; t=1705969568; c=relaxed/simple;
+	bh=J0NgGju+HTDbOMGuWiiQo89hrEARs/PkXBMfXQxeAiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KZOguxK3y/F/SYJPBqwhavaXv5mFbfGj+VN2yRBtg9QjY3kdg3Jj6KsDx9JFXREWZ8+ibOYOk6lLsQiGEF8JYiYPKZz0N6uHu58+ccwjMUgq8KYDItqoh9At7+WGQj4TX2yzQVHGVdu7UkL3t1N/2qH4KN8NsJRzc1IvV2VtAYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIjdN6T1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A1AC433F1;
-	Tue, 23 Jan 2024 01:56:25 +0000 (UTC)
+	 MIME-Version; b=lj/NrxJ0gHXhOe/8X1PS/fnf5Qp6qKUkBP0e4r8A9THnk/HJV3qbOGF7t4BUCeJa2b7siYQ6SSaWW0oquTzslsYGlJPzQL7D+Nn9NcZYU2QNqIZYENkzqKxP/i8Xe1s0MJ39+K2+Bh0UYZAfM/eRdcPprJjH7eWs7ey0lFym9J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3GVqrdX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C65A7C433F1;
+	Tue, 23 Jan 2024 00:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974985;
-	bh=B+TSbABwFxL+YhSZG7aipl+y5sXHAAcq1Bztbs5sFjY=;
+	s=korg; t=1705969567;
+	bh=J0NgGju+HTDbOMGuWiiQo89hrEARs/PkXBMfXQxeAiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tIjdN6T1q+CcwjnY3lBcpzJ4A3v1mzxElb1TFbNxcMHfNQYwdtxfdlBxMqQBzECbb
-	 132S6vYvkvRehMWZzeA2q6Mar7UEHotPT1QsRC+jOBQaYx6ZIu3ZuviKgVgbQCa+pB
-	 u1Q7yjj/JAmiHcFcpB7w30+L/ida5S0fDzEXID/I=
+	b=j3GVqrdX5I1iqKwmQvG/DkJzsZ9J21FK6aRc5zAY0b7LjiBoqpy1NmHYKKyryGxmF
+	 dMzL5oiJftRpmWxS1mTeI5beo16D0ZMGwha0U3cTyzhVQ29MZxkVRx8cWKIu3wByUD
+	 ix/AxKVJxM4EhyktbJxnzgoF6v4RQcGNUr6AnauE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 181/583] arm64: dts: qcom: sc7280: Mark SDHCI hosts as cache-coherent
+Subject: [PATCH 6.7 328/641] drm/amd/pm: fix a double-free in si_dpm_init
 Date: Mon, 22 Jan 2024 15:53:52 -0800
-Message-ID: <20240122235817.554474887@linuxfoundation.org>
+Message-ID: <20240122235828.153657911@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 827f5fc8d912203c1f971e47d61130b13c6820ba ]
+[ Upstream commit ac16667237a82e2597e329eb9bc520d1cf9dff30 ]
 
-The SDHCI hosts on SC7280 are cache-coherent, just like on most fairly
-recent Qualcomm SoCs. Mark them as such.
+When the allocation of
+adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries fails,
+amdgpu_free_extended_power_table is called to free some fields of adev.
+However, when the control flow returns to si_dpm_sw_init, it goes to
+label dpm_failed and calls si_dpm_fini, which calls
+amdgpu_free_extended_power_table again and free those fields again. Thus
+a double-free is triggered.
 
-Fixes: 298c81a7d44f ("arm64: dts: qcom: sc7280: Add nodes for eMMC and SD card")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231218-topic-7280_dmac_sdhci-v1-1-97af7efd64a1@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7280.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index e6798447b29a..ec5c36425a22 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -925,6 +925,7 @@ sdhc_1: mmc@7c4000 {
- 
- 			bus-width = <8>;
- 			supports-cqe;
-+			dma-coherent;
- 
- 			qcom,dll-config = <0x0007642c>;
- 			qcom,ddr-config = <0x80040868>;
-@@ -3291,6 +3292,7 @@ sdhc_2: mmc@8804000 {
- 			operating-points-v2 = <&sdhc2_opp_table>;
- 
- 			bus-width = <4>;
-+			dma-coherent;
- 
- 			qcom,dll-config = <0x0007642c>;
- 
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index fc8e4ac6c8e7..df4f20293c16 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -7379,10 +7379,9 @@ static int si_dpm_init(struct amdgpu_device *adev)
+ 		kcalloc(4,
+ 			sizeof(struct amdgpu_clock_voltage_dependency_entry),
+ 			GFP_KERNEL);
+-	if (!adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries) {
+-		amdgpu_free_extended_power_table(adev);
++	if (!adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries)
+ 		return -ENOMEM;
+-	}
++
+ 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.count = 4;
+ 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[0].clk = 0;
+ 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[0].v = 0;
 -- 
 2.43.0
 
