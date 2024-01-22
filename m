@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-12943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE9E28379C9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:45:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C7C837A91
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D32D1F27DCA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:45:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16298290212
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFDD1272C1;
-	Tue, 23 Jan 2024 00:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED12412F5A5;
+	Tue, 23 Jan 2024 00:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ezrh1N4u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFfD5iri"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00F51272B5;
-	Tue, 23 Jan 2024 00:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC86B12F58D;
+	Tue, 23 Jan 2024 00:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968502; cv=none; b=NIHFOIUM13azT/YK/v02KTIzzmUCQN2gw94NT7oTi+0lZ2xzivEP7EiMjNxy4Hw8ysiu149rRkEhbKAf35QTInIKaAqGLu0QLZY9wxbNSpiI/NLpgariT6DTsJCXnstHPYBvF1nTHwaBvB92wbJk84RsjHV75/GuJv3YkTgrI2k=
+	t=1705969000; cv=none; b=fK/s+fl6IgLeFFERTS5e5IclF+osoaBhl46+SHO3a2TvdpNfPlZCG6AyficfIM5JKkl3Su/i7c4KQv5Q2TnKpMb0RpcMEJOU5BXuJwX6DTidNgf9h0HEhgTEpbFzij5ITxXxd4XqYvTa5nBuUWxWG+YNWn4wbXW5lKyH28XiFVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968502; c=relaxed/simple;
-	bh=7PGwSF136yCOh5GlJ/KRr7CPoLN4HX/GDfyDraJZw5E=;
+	s=arc-20240116; t=1705969000; c=relaxed/simple;
+	bh=mrlG/8eLZmtcXc7BM7Y0ICKqxSKanF4ZMiF3/W5t7S4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fE1EknrV1s2bnLIrRmuJjkn+cXxxY6xAvqWRA8Q1FLZjBzBt7bkc+rJnKCvM7mT8VdcEq2nMQX1TgtvBneanT0J93aoDtPo3PaV+TlYwwopJ+Vo6cO01w4ChUz18cv7D0wB3/sIIi8mGutCsMJtsvmzfe3tMSM+LGue7ddBSpfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ezrh1N4u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31304C433C7;
-	Tue, 23 Jan 2024 00:08:22 +0000 (UTC)
+	 MIME-Version; b=r7fi0F2Gr0mTwQ3W3wHysQfm7vDzp5/p2i9Qzk5qVSgXCtALl+8sl3fdsaFNRuy8YkP4JfFnEe6aMj2kiLNUSSk/iEpoLyPvixokNEfIGVrgUIQ+9oFVOLMpsWKUguTQoTBT7dgFLlzvUReyyBRNG0yQbv67a6/FesGDmJIcDzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFfD5iri; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E87F3C433F1;
+	Tue, 23 Jan 2024 00:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968502;
-	bh=7PGwSF136yCOh5GlJ/KRr7CPoLN4HX/GDfyDraJZw5E=;
+	s=korg; t=1705969000;
+	bh=mrlG/8eLZmtcXc7BM7Y0ICKqxSKanF4ZMiF3/W5t7S4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ezrh1N4uH3FXrZtRqznmPKPTRAlyRdJCWMnaOSpfgVGVuQncLqk//uREFMj8ng5Y0
-	 PJAFP9THzUQmWCu6nTyNWgFx8q+5NL6DAt5uv7QppCQx7rf61N4mWU0fq3MpAh/Mst
-	 xPzjL6r1oKd51/LVV4v6oiPfypOnn8x345t24LaQ=
+	b=AFfD5irirSIXV+sTEHmcbkPc6YSpBcHcL8wwvsh2wfcHxDyzWXAg626Oor5iynrVP
+	 R3AoaySn6F0JYDqNJJIXsnKNZLBMfoXnTHSELI3g7LLcmJXhZIL4d0J/5tyx5iN0cA
+	 6/HmYpmyrVnrCRhaOhwexhipawfBGP70vVoOEO3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	RD Babiera <rdbabiera@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 4.19 125/148] usb: typec: class: fix typec_altmode_put_partner to put plugs
+	Peter Chen <peter.chen@kernel.org>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Li Jun <jun.li@nxp.com>
+Subject: [PATCH 5.4 151/194] usb: chipidea: wait controller resume finished for wakeup irq
 Date: Mon, 22 Jan 2024 15:58:01 -0800
-Message-ID: <20240122235717.582030140@linuxfoundation.org>
+Message-ID: <20240122235725.677398881@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit 5962ded777d689cd8bf04454273e32228d7fb71f upstream.
+commit 128d849074d05545becf86e713715ce7676fc074 upstream.
 
-When typec_altmode_put_partner is called by a plug altmode upon release,
-the port altmode the plug belongs to will not remove its reference to the
-plug. The check to see if the altmode being released is a plug evaluates
-against the released altmode's partner instead of the calling altmode, so
-change adev in typec_altmode_put_partner to properly refer to the altmode
-being released.
+After the chipidea driver introduce extcon for id and vbus, it's able
+to wakeup from another irq source, in case the system with extcon ID
+cable, wakeup from usb ID cable and device removal, the usb device
+disconnect irq may come firstly before the extcon notifier while system
+resume, so we will get 2 "wakeup" irq, one for usb device disconnect;
+and one for extcon ID cable change(real wakeup event), current driver
+treat them as 2 successive wakeup irq so can't handle it correctly, then
+finally the usb irq can't be enabled. This patch adds a check to bypass
+further usb events before controller resume finished to fix it.
 
-Because typec_altmode_set_partner calls get_device() on the port altmode,
-add partner_adev that points to the port altmode in typec_put_partner to
-call put_device() on. typec_altmode_set_partner is not called for port
-altmodes, so add a check in typec_altmode_release to prevent
-typec_altmode_put_partner() calls on port altmode release.
-
-Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
-Cc:  <stable@vger.kernel.org>
-Co-developed-by: Christian A. Ehrhardt <lk@c--e.de>
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Tested-by: Christian A. Ehrhardt <lk@c--e.de>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240103181754.2492492-2-rdbabiera@google.com
+Fixes: 1f874edcb731 ("usb: chipidea: add runtime power management support")
+cc:  <stable@vger.kernel.org>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Signed-off-by: Li Jun <jun.li@nxp.com>
+Link: https://lore.kernel.org/r/20231228110753.1755756-2-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/class.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/usb/chipidea/core.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -188,11 +188,13 @@ static void typec_altmode_put_partner(st
- {
- 	struct altmode *partner = altmode->partner;
- 	struct typec_altmode *adev;
-+	struct typec_altmode *partner_adev;
+--- a/drivers/usb/chipidea/core.c
++++ b/drivers/usb/chipidea/core.c
+@@ -541,6 +541,13 @@ static irqreturn_t ci_irq_handler(int ir
+ 	u32 otgsc = 0;
  
- 	if (!partner)
- 		return;
- 
--	adev = &partner->adev;
-+	adev = &altmode->adev;
-+	partner_adev = &partner->adev;
- 
- 	if (is_typec_plug(adev->dev.parent)) {
- 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
-@@ -201,7 +203,7 @@ static void typec_altmode_put_partner(st
- 	} else {
- 		partner->partner = NULL;
- 	}
--	put_device(&adev->dev);
-+	put_device(&partner_adev->dev);
- }
- 
- static int __typec_port_match(struct device *dev, const void *name)
-@@ -459,7 +461,8 @@ static void typec_altmode_release(struct
- {
- 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
- 
--	typec_altmode_put_partner(alt);
-+	if (!is_typec_port(dev->parent))
-+		typec_altmode_put_partner(alt);
- 
- 	altmode_id_remove(alt->adev.dev.parent, alt->id);
- 	kfree(alt);
+ 	if (ci->in_lpm) {
++		/*
++		 * If we already have a wakeup irq pending there,
++		 * let's just return to wait resume finished firstly.
++		 */
++		if (ci->wakeup_int)
++			return IRQ_HANDLED;
++
+ 		disable_irq_nosync(irq);
+ 		ci->wakeup_int = true;
+ 		pm_runtime_get(ci->dev);
 
 
 
