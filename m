@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527E1837DA0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C87783829D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09B321F23F59
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA05328CCF4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE7D55791;
-	Tue, 23 Jan 2024 00:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2F25D75D;
+	Tue, 23 Jan 2024 01:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcLnft1J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mo/bLGXE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADC651014;
-	Tue, 23 Jan 2024 00:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F025E5D746;
+	Tue, 23 Jan 2024 01:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970085; cv=none; b=V6Ne/TFHM8QCAOR0G2V546sFS2kbcbM/AFabtYdKPkV4nHzUvnalKTdr43jzgHG4BhRoEuK3aeg1zsJLZyr2qMk5yVukkcmf8UPQazGoj9qck8vtV0OcDTQz1Rtw4Pn2P2ojbxi4DRj/IfqSt/f+wWsebnhZbTNiy2vWtWuReu8=
+	t=1705974394; cv=none; b=YdsuYGdh7NbnXLv/9gpbKCBfga2Kai/9fdTpVdXH1nkwUSkwfNJQL/ebfdFp8YZPcwwyK6ylxkzPmTV1JRdED5vK6cbFCJRYrkM4QS9pjokAXnjWgAkq5UT23+6Wwo+hH37pNWXfge/4KDufd8toAFZKEMuECcD/WtFRJBqmMB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970085; c=relaxed/simple;
-	bh=u5VCg+latCj5iCXQkPePiaig1A2wccYi78PoiGMEsbU=;
+	s=arc-20240116; t=1705974394; c=relaxed/simple;
+	bh=YcnDSCiMX+EqDuC0hOx4dx+Jr1Ub/q3q9LLFL582jcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UUQfq713gu8t1tLOz/rQloOWL4YPa+szvmUZXfIKIOqaPDbwdf+MgP4tCv0KgvICiyjUrfVuNqTmceM4oJ6Dxe947f8qX0HbriU1q9OWhad9BxsW8RgAdX/nD69GRmZ4C1ZXNQsRbVHCHZjkLezkc7Gd2qVydgZmkoQ6IikXoJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcLnft1J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7056DC433F1;
-	Tue, 23 Jan 2024 00:34:44 +0000 (UTC)
+	 MIME-Version; b=IhQLDJGQThhBqYm2D7THtWvWuOETwm7aPkPv71BNdIVKbjpZcvR8xPbeJNqyrwQpH6wCLVvZSvcKUwXN2j9I1CUGAycanW5CC2a5gkkBYEiInDPjfQScXGfhPp6DNxTOvQ6tgHZ79UTTqPYr/NMiHXvxRWa9ILSs/5ETiPjS2SE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mo/bLGXE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE62C43390;
+	Tue, 23 Jan 2024 01:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970084;
-	bh=u5VCg+latCj5iCXQkPePiaig1A2wccYi78PoiGMEsbU=;
+	s=korg; t=1705974393;
+	bh=YcnDSCiMX+EqDuC0hOx4dx+Jr1Ub/q3q9LLFL582jcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KcLnft1JZPK86IMToAO4azdYHWBtQ9qNG5n2S5vOtaR4cdX1x9PDHayIxgFsS68oJ
-	 1y5am7a+yuSiru+Ye5tx5SPUUmG3yAoFsaqIAH+q6NLkmABewDi12zGejWtSPSo5nV
-	 DVrFAqUGR1Tr8RMF3rfQ5yiuWHyMYPDlIO7HmC0k=
+	b=Mo/bLGXER2fc+epcrLmbAQsFYB7IgTGPOv4XzmhkGkFTFLsUu9aHpb2zIoovoiREO
+	 gbqk0v6ncIqbNI/MoXjqMW6m6nZcv7tZVV+nO6cpwPRxL7jQCVjgye+72ib/sfwMso
+	 Xbv1VL0lNsNNs36weHjKyEbZ7npVglTp5Rt4w9KM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Harris <jim.harris@samsung.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Fan Ni <fan.ni@samsung.com>,
-	Dan Williams <dan.j.williams@intel.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 559/641] cxl/region: fix x9 interleave typo
+Subject: [PATCH 5.15 207/374] media: dvb-frontends: m88ds3103: Fix a memory leak in an error handling path of m88ds3103_probe()
 Date: Mon, 22 Jan 2024 15:57:43 -0800
-Message-ID: <20240122235835.637334376@linuxfoundation.org>
+Message-ID: <20240122235751.820637017@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Harris <jim.harris@samsung.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit c7ad3dc3649730af483ee1e78be5d0362da25bfe ]
+[ Upstream commit 5b2f885e2f6f482d05c23f04c8240f7b4fc5bdb5 ]
 
-CXL supports x3, x6 and x12 - not x9.
+If an error occurs after a successful i2c_mux_add_adapter(), then
+i2c_mux_del_adapters() should be called to free some resources, as
+already done in the remove function.
 
-Fixes: 80d10a6cee050 ("cxl/region: Add interleave geometry attributes")
-Signed-off-by: Jim Harris <jim.harris@samsung.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
-Link: https://lore.kernel.org/r/169904271254.204936.8580772404462743630.stgit@ubuntu
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Fixes: e6089feca460 ("media: m88ds3103: Add support for ds3103b demod")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/region.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/dvb-frontends/m88ds3103.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 3e817a6f94c6..76fec47a13a4 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -397,7 +397,7 @@ static ssize_t interleave_ways_store(struct device *dev,
- 		return rc;
+diff --git a/drivers/media/dvb-frontends/m88ds3103.c b/drivers/media/dvb-frontends/m88ds3103.c
+index e03fac025b51..fdf993da3001 100644
+--- a/drivers/media/dvb-frontends/m88ds3103.c
++++ b/drivers/media/dvb-frontends/m88ds3103.c
+@@ -1898,7 +1898,7 @@ static int m88ds3103_probe(struct i2c_client *client,
+ 		/* get frontend address */
+ 		ret = regmap_read(dev->regmap, 0x29, &utmp);
+ 		if (ret)
+-			goto err_kfree;
++			goto err_del_adapters;
+ 		dev->dt_addr = ((utmp & 0x80) == 0) ? 0x42 >> 1 : 0x40 >> 1;
+ 		dev_dbg(&client->dev, "dt addr is 0x%02x\n", dev->dt_addr);
  
- 	/*
--	 * Even for x3, x9, and x12 interleaves the region interleave must be a
-+	 * Even for x3, x6, and x12 interleaves the region interleave must be a
- 	 * power of 2 multiple of the host bridge interleave.
- 	 */
- 	if (!is_power_of_2(val / cxld->interleave_ways) ||
+@@ -1906,11 +1906,14 @@ static int m88ds3103_probe(struct i2c_client *client,
+ 						      dev->dt_addr);
+ 		if (IS_ERR(dev->dt_client)) {
+ 			ret = PTR_ERR(dev->dt_client);
+-			goto err_kfree;
++			goto err_del_adapters;
+ 		}
+ 	}
+ 
+ 	return 0;
++
++err_del_adapters:
++	i2c_mux_del_adapters(dev->muxc);
+ err_kfree:
+ 	kfree(dev);
+ err:
 -- 
 2.43.0
 
