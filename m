@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DEA683845D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8959837F1D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CD551F291DB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6242D29BE70
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A62F6D1A3;
-	Tue, 23 Jan 2024 02:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FA460887;
+	Tue, 23 Jan 2024 00:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfyAYJYM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iGWegJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386076A354;
-	Tue, 23 Jan 2024 02:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E9B3FFE;
+	Tue, 23 Jan 2024 00:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975372; cv=none; b=RfpknnYyMtHAj40L+BT6BWlmHhZJUrcaLSI067sEb9SLk0O7cYcQSGgcrbV7dPwJnx7v9QedA7A/M4DDA3/XU6XFqEUEjNwPHxFXySQ7o2Cw4Ddk6bINojbzYPcOOSEROvhuD5vAyVnx6iu+ECPeeP7P1kWkPsiyh3Hqg4r5NPI=
+	t=1705970947; cv=none; b=p8n11tbHAy639XeU8GDg4SKoz909lWwOS0Xj2fKgy4nMSfXgECP+6/QAKje6UBBEjfKyw+bffw2tRm6HY9EU9+Q620CGvBBDZWiy6lQso+MThf9Sd6SyQFXBYPiUgcngCfCun07aDfZtpAiuHHsDso150eo+IdA7OJqf18JXF3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975372; c=relaxed/simple;
-	bh=eLeU5xlDBPy/kD//MsCCBsu6RNKMyBYHzhp/eCNwpJ8=;
+	s=arc-20240116; t=1705970947; c=relaxed/simple;
+	bh=HgQTH1kdWtXMahbMNUddfZWidp655py30ovrrIp7Txo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OzlzZvmDKh3N/nE6t38Txh2itYgQdNXPqetirDY/huC9FDmYmwefy8uRjux2d0RPfL8a1XTtk7P667qLVzdc/GjoDEVFQzVw4049gg3ZDKe/OIyu+HLJUfzv0+WF5TwPn2ZTeGryvW2mEu5uPD/s5s7Bh+rnwIEZWNdiKcoPTgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfyAYJYM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5ED5C433C7;
-	Tue, 23 Jan 2024 02:02:51 +0000 (UTC)
+	 MIME-Version; b=WwPnGtyd2VT5uxefJvCV6OsIOE4HGg5OvJQrM5xszIoUt5nfQ7v4MK9nzQZSrW9mIGul8UEKTWY1+fyzT5kvndBGKC5tEExZY1faxo5oPlzMMEsnuJh6HsCiBAndAt8fK8YetwXUgYO8OHfPWYNuNv23IzHbaXEHukjOwEevBn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iGWegJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17191C433C7;
+	Tue, 23 Jan 2024 00:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975372;
-	bh=eLeU5xlDBPy/kD//MsCCBsu6RNKMyBYHzhp/eCNwpJ8=;
+	s=korg; t=1705970947;
+	bh=HgQTH1kdWtXMahbMNUddfZWidp655py30ovrrIp7Txo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IfyAYJYMV2GsvdTDVaTmhxZIoJerQfcOPL9ywrvMPnVYgxtbgeZO/G1HCCPFsWEiU
-	 q1BnokPaCpCWduLrGzMNGcRjOeJp4oSMKOtpH/Ed5OSJSPOPAMyvSfhBixbCIGvWzt
-	 ccqJMiHIHrfyB/MeXqYKBS8fY7tToZhKV956jIC0=
+	b=1iGWegJ8XJSEbr5gJrD4JeceTWVAVoCPAAvvJyRYMZuIvu1keA5asvM00aFwj3y2l
+	 s5Tp/AXmpuEk+r/mvUuuSy4/qhfwniQVbyo+boeWwwVLmCrWYeGDsUS8ykAJ3jy/jP
+	 ScDWi6cgq5RdBHt15AqAMT7CWzVytoJEtxMFGGlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingyuan Mo <hdthky0@gmail.com>,
-	Oded Gabbay <ogabbay@kernel.org>,
+	Laurent Dufour <ldufour@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 309/583] accel/habanalabs: fix information leak in sec_attest_info()
+Subject: [PATCH 5.10 054/286] powerpc/pseries/memhotplug: Quieten some DLPAR operations
 Date: Mon, 22 Jan 2024 15:56:00 -0800
-Message-ID: <20240122235821.482251221@linuxfoundation.org>
+Message-ID: <20240122235734.110995873@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingyuan Mo <hdthky0@gmail.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
 
-[ Upstream commit a9f07790a4b2250f0140e9a61c7f842fd9b618c7 ]
+[ Upstream commit 20e9de85edae3a5866f29b6cce87c9ec66d62a1b ]
 
-This function may copy the pad0 field of struct hl_info_sec_attest to user
-mode which has not been initialized, resulting in leakage of kernel heap
-data to user mode. To prevent this, use kzalloc() to allocate and zero out
-the buffer, which can also eliminate other uninitialized holes, if any.
+When attempting to remove by index a set of LMBs a lot of messages are
+displayed on the console, even when everything goes fine:
 
-Fixes: 0c88760f8f5e ("habanalabs/gaudi2: add secured attestation info uapi")
-Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
-Reviewed-by: Oded Gabbay <ogabbay@kernel.org>
-Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
+  pseries-hotplug-mem: Attempting to hot-remove LMB, drc index 8000002d
+  Offlined Pages 4096
+  pseries-hotplug-mem: Memory at 2d0000000 was hot-removed
+
+The 2 messages prefixed by "pseries-hotplug-mem" are not really
+helpful for the end user, they should be debug outputs.
+
+In case of error, because some of the LMB's pages couldn't be
+offlined, the following is displayed on the console:
+
+  pseries-hotplug-mem: Attempting to hot-remove LMB, drc index 8000003e
+  pseries-hotplug-mem: Failed to hot-remove memory at 3e0000000
+  dlpar: Could not handle DLPAR request "memory remove index 0x8000003e"
+
+Again, the 2 messages prefixed by "pseries-hotplug-mem" are useless,
+and the generic DLPAR prefixed message should be enough.
+
+These 2 first changes are mainly triggered by the changes introduced
+in drmgr:
+  https://groups.google.com/g/powerpc-utils-devel/c/Y6ef4NB3EzM/m/9cu5JHRxAQAJ
+
+Also, when adding a bunch of LMBs, a message is displayed in the console per LMB
+like these ones:
+  pseries-hotplug-mem: Memory at 7e0000000 (drc index 8000007e) was hot-added
+  pseries-hotplug-mem: Memory at 7f0000000 (drc index 8000007f) was hot-added
+  pseries-hotplug-mem: Memory at 800000000 (drc index 80000080) was hot-added
+  pseries-hotplug-mem: Memory at 810000000 (drc index 80000081) was hot-added
+
+When adding 1TB of memory and LMB size is 256MB, this leads to 4096
+messages to be displayed on the console. These messages are not really
+helpful for the end user, so moving them to the DEBUG level.
+
+Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+[mpe: Tweak change log wording]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20201211145954.90143-1-ldufour@linux.ibm.com
+Stable-dep-of: bd68ffce69f6 ("powerpc/pseries/memhp: Fix access beyond end of drmem array")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/habanalabs/common/habanalabs_ioctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/pseries/hotplug-memory.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/accel/habanalabs/common/habanalabs_ioctl.c b/drivers/accel/habanalabs/common/habanalabs_ioctl.c
-index 6a45a92344e9..a7f6c54c123e 100644
---- a/drivers/accel/habanalabs/common/habanalabs_ioctl.c
-+++ b/drivers/accel/habanalabs/common/habanalabs_ioctl.c
-@@ -682,7 +682,7 @@ static int sec_attest_info(struct hl_fpriv *hpriv, struct hl_info_args *args)
- 	if (!sec_attest_info)
- 		return -ENOMEM;
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index a5f968b5fa3a..0e602c3b01ea 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -481,7 +481,7 @@ static int dlpar_memory_remove_by_index(u32 drc_index)
+ 	int lmb_found;
+ 	int rc;
  
--	info = kmalloc(sizeof(*info), GFP_KERNEL);
-+	info = kzalloc(sizeof(*info), GFP_KERNEL);
- 	if (!info) {
- 		rc = -ENOMEM;
- 		goto free_sec_attest_info;
+-	pr_info("Attempting to hot-remove LMB, drc index %x\n", drc_index);
++	pr_debug("Attempting to hot-remove LMB, drc index %x\n", drc_index);
+ 
+ 	lmb_found = 0;
+ 	for_each_drmem_lmb(lmb) {
+@@ -499,10 +499,10 @@ static int dlpar_memory_remove_by_index(u32 drc_index)
+ 		rc = -EINVAL;
+ 
+ 	if (rc)
+-		pr_info("Failed to hot-remove memory at %llx\n",
+-			lmb->base_addr);
++		pr_debug("Failed to hot-remove memory at %llx\n",
++			 lmb->base_addr);
+ 	else
+-		pr_info("Memory at %llx was hot-removed\n", lmb->base_addr);
++		pr_debug("Memory at %llx was hot-removed\n", lmb->base_addr);
+ 
+ 	return rc;
+ }
+@@ -719,8 +719,8 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
+ 			if (!drmem_lmb_reserved(lmb))
+ 				continue;
+ 
+-			pr_info("Memory at %llx (drc index %x) was hot-added\n",
+-				lmb->base_addr, lmb->drc_index);
++			pr_debug("Memory at %llx (drc index %x) was hot-added\n",
++				 lmb->base_addr, lmb->drc_index);
+ 			drmem_remove_lmb_reservation(lmb);
+ 		}
+ 		rc = 0;
 -- 
 2.43.0
 
