@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-14491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C013838120
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39ED6838531
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A134E1F24735
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BDDB1C2A582
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A11141983;
-	Tue, 23 Jan 2024 01:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD057E585;
+	Tue, 23 Jan 2024 02:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcGSmB9z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCixFY/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA22140796;
-	Tue, 23 Jan 2024 01:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B343110A;
+	Tue, 23 Jan 2024 02:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972038; cv=none; b=s1sBjSv77iRPf3e+JVp9ybWU0o+DrPPALpjTubFdRXOKg3aph614wPzFbgl6OlBshL+ZtcWzWO6+QQk9tqjQ30Lmf+JC+bBcnHQDDWGICYFoEIqBWUi6PkvJh7fDrW5ceVCS0MdSnFBOonG3ljdLHoBLoXmqyYE+0tq8T5Idoh0=
+	t=1705975763; cv=none; b=oLBwl94Qt8pkzE2nql/387Kehhwn0Qws4avtsAM3U/LByjENX7RaYOeMvB/TotYtJ+N/wQa5sFZqJw06DCcIZRumfOx+isDnJqRVeQ1jelOEGEfU7tE0xOuRNFSD75Dcy39znj9ysafCEPktga1eOwE2pCvKGZGkiPnmhhhNLOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972038; c=relaxed/simple;
-	bh=oSzuZ0vcEhBeSiN8Xr7CIjIqij8At7XXE2VtK/iHjg0=;
+	s=arc-20240116; t=1705975763; c=relaxed/simple;
+	bh=WyQaQfEPYIq7FbRHM+JIvj3sUsntFK0zg9tNIrHSHd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KR1gBvyBm0WgKYfujHyi9jSDfyPRKEf7fkD7WVra61KkqWcEj7HmQOV+7Bw2XDcKuj96PHifsyQfMsm4iEJsjsvSYJA+ByvJ27neebpRj0+oSZf9byjOD4BRv8KcjJ3gdJ0dm6AI6XqadQKhAbYS2dmIjjUbucDSWnwTc0iiTr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcGSmB9z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B192CC433C7;
-	Tue, 23 Jan 2024 01:07:17 +0000 (UTC)
+	 MIME-Version; b=trhd6+TZvokHd/78jW7gcD1hSSC6LnCXkCH/EwzlQTKY4K5eGvQ14TnHZoPwcxEKc/cssxul79EqgJrdH3rKQTJH83IFQh5wBsMEDrWpL/XnvPaE4WqyswWngT04z1aJrIIBQIwOONWFo9fMMHuCrHS0ipYagDBCstYkaSko75I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCixFY/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB17C433C7;
+	Tue, 23 Jan 2024 02:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972037;
-	bh=oSzuZ0vcEhBeSiN8Xr7CIjIqij8At7XXE2VtK/iHjg0=;
+	s=korg; t=1705975763;
+	bh=WyQaQfEPYIq7FbRHM+JIvj3sUsntFK0zg9tNIrHSHd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VcGSmB9zHd8v3rSNJ/YGYT6XyAXWdgy2qhVqlHJEFhnDkRsElobyuVPWlNrItg5t6
-	 AcidRcuXVq5CGxcNyO3kj0S9BIwLQVVt9273n3n2tCPRLR4D0ci4FkAmU8SR1BUgIa
-	 zoUqqI4a9HubKMzXWWSRW2ImnIM3EzI+8DtFNjrQ=
+	b=qCixFY/YSJhYlIx1rhx6AA0ynCSs/H5WEeRYivdArT37z2fh2qkUs8pUZNMuEdFPA
+	 msI9hWORsnaTFW6LRSL5XpIsUCQ5e35J8Xpbhj+MtwpcxpvHAdUSRDAq4++5IFUSSD
+	 wyGYCFmas99NF86kTc7FrX/dg9gwb7qty00JtDH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 406/417] netfilter: nf_tables: reject NFT_SET_CONCAT with not field length description
+Subject: [PATCH 6.6 523/583] s390/pci: fix max size calculation in zpci_memcpy_toio()
 Date: Mon, 22 Jan 2024 15:59:34 -0800
-Message-ID: <20240122235805.776994559@linuxfoundation.org>
+Message-ID: <20240122235828.084686416@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 113661e07460a6604aacc8ae1b23695a89e7d4b3 ]
+[ Upstream commit 80df7d6af7f6d229b34cf237b2cc9024c07111cd ]
 
-It is still possible to set on the NFT_SET_CONCAT flag by specifying a
-set size and no field description, report EINVAL in such case.
+The zpci_get_max_write_size() helper is used to determine the maximum
+size a PCI store or load can use at a given __iomem address.
 
-Fixes: 1b6345d4160e ("netfilter: nf_tables: check NFT_SET_CONCAT flag if field_count is specified")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+For the PCI block store the following restrictions apply:
+
+1. The dst + len must not cross a 4K boundary in the (pseudo-)MMIO space
+2. len must not exceed ZPCI_MAX_WRITE_SIZE
+3. len must be a multiple of 8 bytes
+4. The src address must be double word (8 byte) aligned
+5. The dst address must be double word (8 byte) aligned
+
+Otherwise only a normal PCI store which takes its src value from
+a register can be used. For these PCI store restriction 1 still applies.
+Similarly 1 also applies to PCI loads.
+
+It turns out zpci_max_write_size() instead implements stricter
+conditions which prevents PCI block stores from being used where they
+can and should be used. In particular instead of conditions 4 and 5 it
+wrongly enforces both dst and src to be size aligned. This indirectly
+covers condition 1 but also prevents many legal PCI block stores.
+
+On top of the functional shortcomings the zpci_get_max_write_size() is
+misnamed as it is used for both read and write size calculations. Rename
+it to zpci_get_max_io_size() and implement the listed conditions
+explicitly.
+
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Fixes: cd24834130ac ("s390/pci: base support")
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+[agordeev@linux.ibm.com replaced spaces with tabs]
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/s390/include/asm/pci_io.h | 32 ++++++++++++++++++--------------
+ arch/s390/pci/pci_mmio.c       | 12 ++++++------
+ 2 files changed, 24 insertions(+), 20 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index a4e5d877956f..2702294ac46c 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4773,8 +4773,12 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
- 		if (err < 0)
- 			return err;
+diff --git a/arch/s390/include/asm/pci_io.h b/arch/s390/include/asm/pci_io.h
+index 287bb88f7698..2686bee800e3 100644
+--- a/arch/s390/include/asm/pci_io.h
++++ b/arch/s390/include/asm/pci_io.h
+@@ -11,6 +11,8 @@
+ /* I/O size constraints */
+ #define ZPCI_MAX_READ_SIZE	8
+ #define ZPCI_MAX_WRITE_SIZE	128
++#define ZPCI_BOUNDARY_SIZE	(1 << 12)
++#define ZPCI_BOUNDARY_MASK	(ZPCI_BOUNDARY_SIZE - 1)
  
--		if (desc.field_count > 1 && !(flags & NFT_SET_CONCAT))
-+		if (desc.field_count > 1) {
-+			if (!(flags & NFT_SET_CONCAT))
-+				return -EINVAL;
-+		} else if (flags & NFT_SET_CONCAT) {
- 			return -EINVAL;
-+		}
- 	} else if (flags & NFT_SET_CONCAT) {
+ /* I/O Map */
+ #define ZPCI_IOMAP_SHIFT		48
+@@ -125,16 +127,18 @@ static inline int zpci_read_single(void *dst, const volatile void __iomem *src,
+ int zpci_write_block(volatile void __iomem *dst, const void *src,
+ 		     unsigned long len);
+ 
+-static inline u8 zpci_get_max_write_size(u64 src, u64 dst, int len, int max)
++static inline int zpci_get_max_io_size(u64 src, u64 dst, int len, int max)
+ {
+-	int count = len > max ? max : len, size = 1;
++	int offset = dst & ZPCI_BOUNDARY_MASK;
++	int size;
+ 
+-	while (!(src & 0x1) && !(dst & 0x1) && ((size << 1) <= count)) {
+-		dst = dst >> 1;
+-		src = src >> 1;
+-		size = size << 1;
+-	}
+-	return size;
++	size = min3(len, ZPCI_BOUNDARY_SIZE - offset, max);
++	if (IS_ALIGNED(src, 8) && IS_ALIGNED(dst, 8) && IS_ALIGNED(size, 8))
++		return size;
++
++	if (size >= 8)
++		return 8;
++	return rounddown_pow_of_two(size);
+ }
+ 
+ static inline int zpci_memcpy_fromio(void *dst,
+@@ -144,9 +148,9 @@ static inline int zpci_memcpy_fromio(void *dst,
+ 	int size, rc = 0;
+ 
+ 	while (n > 0) {
+-		size = zpci_get_max_write_size((u64 __force) src,
+-					       (u64) dst, n,
+-					       ZPCI_MAX_READ_SIZE);
++		size = zpci_get_max_io_size((u64 __force) src,
++					    (u64) dst, n,
++					    ZPCI_MAX_READ_SIZE);
+ 		rc = zpci_read_single(dst, src, size);
+ 		if (rc)
+ 			break;
+@@ -166,9 +170,9 @@ static inline int zpci_memcpy_toio(volatile void __iomem *dst,
  		return -EINVAL;
- 	}
+ 
+ 	while (n > 0) {
+-		size = zpci_get_max_write_size((u64 __force) dst,
+-					       (u64) src, n,
+-					       ZPCI_MAX_WRITE_SIZE);
++		size = zpci_get_max_io_size((u64 __force) dst,
++					    (u64) src, n,
++					    ZPCI_MAX_WRITE_SIZE);
+ 		if (size > 8) /* main path */
+ 			rc = zpci_write_block(dst, src, size);
+ 		else
+diff --git a/arch/s390/pci/pci_mmio.c b/arch/s390/pci/pci_mmio.c
+index 588089332931..a90499c087f0 100644
+--- a/arch/s390/pci/pci_mmio.c
++++ b/arch/s390/pci/pci_mmio.c
+@@ -97,9 +97,9 @@ static inline int __memcpy_toio_inuser(void __iomem *dst,
+ 		return -EINVAL;
+ 
+ 	while (n > 0) {
+-		size = zpci_get_max_write_size((u64 __force) dst,
+-					       (u64 __force) src, n,
+-					       ZPCI_MAX_WRITE_SIZE);
++		size = zpci_get_max_io_size((u64 __force) dst,
++					    (u64 __force) src, n,
++					    ZPCI_MAX_WRITE_SIZE);
+ 		if (size > 8) /* main path */
+ 			rc = __pcistb_mio_inuser(dst, src, size, &status);
+ 		else
+@@ -242,9 +242,9 @@ static inline int __memcpy_fromio_inuser(void __user *dst,
+ 	u8 status;
+ 
+ 	while (n > 0) {
+-		size = zpci_get_max_write_size((u64 __force) src,
+-					       (u64 __force) dst, n,
+-					       ZPCI_MAX_READ_SIZE);
++		size = zpci_get_max_io_size((u64 __force) src,
++					    (u64 __force) dst, n,
++					    ZPCI_MAX_READ_SIZE);
+ 		rc = __pcilg_mio_inuser(dst, src, size, &status);
+ 		if (rc)
+ 			break;
 -- 
 2.43.0
 
