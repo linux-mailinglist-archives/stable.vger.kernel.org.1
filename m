@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3B14838112
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:05:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FCA78380DF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CB7328E12D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:05:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB21328DA43
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDD213EFF8;
-	Tue, 23 Jan 2024 01:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704191350C1;
+	Tue, 23 Jan 2024 01:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OY0Y4tq0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTunK5g1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DCF13EFEC;
-	Tue, 23 Jan 2024 01:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCCC13473B;
+	Tue, 23 Jan 2024 01:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972013; cv=none; b=Mn7Oy9Qfr2HiihlawzpLCa+16YvIfdAMXbLnCbn/BvXKPzbItV4/Gg8SoyDMARyRth1FNx/7jMYShLYcsuxx7MP5ldAOQL5ghH48U7PLvz0zu2TTFl2/+mV2R56aZh20C620nDbP/Sd0cITwAcLo6Nj5QBYXDqi7qMwiLtG6zEw=
+	t=1705971932; cv=none; b=aKLL+/MojtgmhKQO24yrjJgQLdGLIH097ykkdgAaIpP1rMO74Axff2yIBaOJcoWCIn+dXrgF4m1iYtnS/VxzGPqFR4RYAsnkFKqS/YhleKY6TXwbsx0RYPN0Gp0gXX3Cr/vlI7zMGVrTlFptngO7tjUHYvdqJwVLFBjBkLjKOuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972013; c=relaxed/simple;
-	bh=UZZ515LyYoZo/rxLA8UN9VLyWYCEgCFYvGAMXDYKNXk=;
+	s=arc-20240116; t=1705971932; c=relaxed/simple;
+	bh=NDSHDBEms2jHIf3fkT/117ovDhGzdN2w7DZup1a+7o4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJPb4oHmsQ75hqSldQY/9y7ehOGpvKduoPor/R25HG+/y0jUR2H1Y1QySD01NQUfEPA6XXs8KGbv7nDVlT8gc2l18RoZ+SRg+md17ro2a9ej3Ir3W/Ij4tj/koLbNn7mHZlg71ZrVeae3HnVcXWfiRt7szmmyq1e2s2Iwp1Wo1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OY0Y4tq0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87354C433F1;
-	Tue, 23 Jan 2024 01:06:53 +0000 (UTC)
+	 MIME-Version; b=EfA3jYj8P4SmI2RrHnNOurg/eynWpZ4VXaqPs8R0HB8eqYuL/zoEvDz247enNFdx4eVHEBN1ndpMB2A1KffelBTtwxRiQe4M/nv37Hp7p8+WsqAB0aCcEc4QCZDFIOKsY1RncYGkBkX4cJEQDet/PlhBF7aalhMkkWPL1ZNLTOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTunK5g1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAE84C433F1;
+	Tue, 23 Jan 2024 01:05:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972013;
-	bh=UZZ515LyYoZo/rxLA8UN9VLyWYCEgCFYvGAMXDYKNXk=;
+	s=korg; t=1705971932;
+	bh=NDSHDBEms2jHIf3fkT/117ovDhGzdN2w7DZup1a+7o4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OY0Y4tq02MNBwOuTQTkoyrtwrav2cNfyqMfDeBkKvjR8gLxVu+uEthJNSGdSzrwHg
-	 yuN4IaziIMgavHtNNt7dQbVfQ4BzT8sG46ZNtbnA18c5JRINm+GFVJUq9Ji3FEgPmQ
-	 uMrwYC3BdCW6v+FxzLw9QZLBXA+b69/OlmB9e2r4=
+	b=HTunK5g1G9titcqM0vAUxh+hLshMQR/qTf9L8oHetwf7kTGeMVV70EGCxsCkPz1UU
+	 +4XOqgq+fQBzlubm6q05vtk9PVU+lTi84zVmIObDzWh2dYqpiJ9bgEwKxSaKQ2r6v3
+	 hMUgq7/DQ3YN9ArWjV251tqayK6vT1WyM3bR/PEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 387/417] block: ensure we hold a queue reference when using queue limits
+Subject: [PATCH 5.10 249/286] iio: adc: ad9467: fix reset gpio handling
 Date: Mon, 22 Jan 2024 15:59:15 -0800
-Message-ID: <20240122235805.172884438@linuxfoundation.org>
+Message-ID: <20240122235741.655283582@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit 7b4f36cd22a65b750b4cb6ac14804fb7d6e6c67d ]
+[ Upstream commit 76f028539cf360f750efd8cde560edda298e4c6b ]
 
-q_usage_counter is the only thing preventing us from the limits changing
-under us in __bio_split_to_limits, but blk_mq_submit_bio doesn't hold
-it while calling into it.
+The reset gpio was being handled with inverted polarity. This means that
+as far as gpiolib is concerned we were actually leaving the pin asserted
+(in theory, this would mean reset). However, inverting the polarity in
+devicetree made things work. Fix it by doing it the proper way and how
+gpiolib expects it to be done.
 
-Move the splitting inside the region where we know we've got a queue
-reference. Ideally this could still remain a shared section of code, but
-let's keep the fix simple and defer any refactoring here to later.
+While at it, moved the handling to it's own function and dropped
+'reset_gpio' from the 'struct ad9467_state' as we only need it during
+probe. On top of that, refactored things so that we now request the gpio
+asserted (i.e in reset) and then de-assert it. Also note that we now use
+gpiod_set_value_cansleep() instead of gpiod_direction_output() as we
+already request the pin as output.
 
-Reported-by: Christoph Hellwig <hch@lst.de>
-Fixes: 900e08075202 ("block: move queue enter logic into blk_mq_submit_bio()")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20231207-iio-backend-prep-v2-1-a4a33bc4d70e@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/iio/adc/ad9467.c | 31 ++++++++++++++++++-------------
+ 1 file changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 368f1947c895..b3f99dda4530 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -2946,12 +2946,6 @@ void blk_mq_submit_bio(struct bio *bio)
- 	blk_status_t ret;
+diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+index 92837dcbc170..f2620dcd2a2c 100644
+--- a/drivers/iio/adc/ad9467.c
++++ b/drivers/iio/adc/ad9467.c
+@@ -121,7 +121,6 @@ struct ad9467_state {
+ 	unsigned int			output_mode;
  
- 	bio = blk_queue_bounce(bio, q);
--	if (bio_may_exceed_limits(bio, &q->limits)) {
--		bio = __bio_split_to_limits(bio, &q->limits, &nr_segs);
--		if (!bio)
--			return;
--	}
+ 	struct gpio_desc		*pwrdown_gpio;
+-	struct gpio_desc		*reset_gpio;
+ };
+ 
+ static int ad9467_spi_read(struct spi_device *spi, unsigned int reg)
+@@ -378,6 +377,21 @@ static int ad9467_preenable_setup(struct adi_axi_adc_conv *conv)
+ 	return ad9467_outputmode_set(st->spi, st->output_mode);
+ }
+ 
++static int ad9467_reset(struct device *dev)
++{
++	struct gpio_desc *gpio;
++
++	gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR_OR_NULL(gpio))
++		return PTR_ERR_OR_ZERO(gpio);
++
++	fsleep(1);
++	gpiod_set_value_cansleep(gpio, 0);
++	fsleep(10 * USEC_PER_MSEC);
++
++	return 0;
++}
++
+ static int ad9467_probe(struct spi_device *spi)
+ {
+ 	const struct ad9467_chip_info *info;
+@@ -406,18 +420,9 @@ static int ad9467_probe(struct spi_device *spi)
+ 	if (IS_ERR(st->pwrdown_gpio))
+ 		return PTR_ERR(st->pwrdown_gpio);
+ 
+-	st->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset",
+-						 GPIOD_OUT_LOW);
+-	if (IS_ERR(st->reset_gpio))
+-		return PTR_ERR(st->reset_gpio);
 -
- 	bio_set_ioprio(bio);
+-	if (st->reset_gpio) {
+-		udelay(1);
+-		ret = gpiod_direction_output(st->reset_gpio, 1);
+-		if (ret)
+-			return ret;
+-		mdelay(10);
+-	}
++	ret = ad9467_reset(&spi->dev);
++	if (ret)
++		return ret;
  
- 	if (plug) {
-@@ -2960,6 +2954,11 @@ void blk_mq_submit_bio(struct bio *bio)
- 			rq = NULL;
- 	}
- 	if (rq) {
-+		if (unlikely(bio_may_exceed_limits(bio, &q->limits))) {
-+			bio = __bio_split_to_limits(bio, &q->limits, &nr_segs);
-+			if (!bio)
-+				return;
-+		}
- 		if (!bio_integrity_prep(bio))
- 			return;
- 		if (blk_mq_attempt_bio_merge(q, bio, nr_segs))
-@@ -2970,6 +2969,11 @@ void blk_mq_submit_bio(struct bio *bio)
- 	} else {
- 		if (unlikely(bio_queue_enter(bio)))
- 			return;
-+		if (unlikely(bio_may_exceed_limits(bio, &q->limits))) {
-+			bio = __bio_split_to_limits(bio, &q->limits, &nr_segs);
-+			if (!bio)
-+				goto fail;
-+		}
- 		if (!bio_integrity_prep(bio))
- 			goto fail;
- 	}
+ 	spi_set_drvdata(spi, st);
+ 
 -- 
 2.43.0
 
