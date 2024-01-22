@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9471C837A32
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B9C8378CD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C68128A45C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBB0EB2364E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D1612AAE9;
-	Tue, 23 Jan 2024 00:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635B4107A6;
+	Tue, 23 Jan 2024 00:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJeET49p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yetxnN9x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243F312A17F;
-	Tue, 23 Jan 2024 00:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20758F504;
+	Tue, 23 Jan 2024 00:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968788; cv=none; b=icNOiX6zMa6vqtvG7mJV9BRkyb9X4TuGfMukRNPwN1RNDSa96cMfDn4UlM7JLp2Kpols3mk2KNI3XfN+7QX2UNn0reyMZdTbimPPRwQKrU6mPZeZ033Vmb28Xc5Wzs4fnh0+0lzS3BvXZ7EYbcsju2B0VO0w7zNNOQukfFjzLnk=
+	t=1705968254; cv=none; b=pYFQXkT4zB9HWmsIzFlhVVUj501I5ocqrPBsriy/c3q7tPI8REm1YwKTMbqEL90LXZEL73p7T2omd+NQSUq3kHaLkO2aTyGZQSRaNJiM/TbHH4P/Qw/FeJnGLIs7m/t27hv0BJeOOWqt2OFQcx5eMk+RecvX7cy7IoujP+sDaSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968788; c=relaxed/simple;
-	bh=yXiW5vkOl9UoQzxRx0zvbX9pUujuquKHX5Nbp6pF6qw=;
+	s=arc-20240116; t=1705968254; c=relaxed/simple;
+	bh=ZH0qaRItczQagGvOHVLOqxTthUemlEAByzIMUlZa3K0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u633fGKXezCLb1e+NJoYGqBw5Lc6zZLo9iigapxJtbbTr8LV2Rzr7M2x7kIPFC326f9wo5dJVDJyrDd4FaenE5ttpx/0v2afXcmC9NXmM9XIrrn+oK5hvLANV/Ngyygn2rM2qQuXrQVI5MXF6SYPjVNEEfOXmys91B0rPbqZVY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJeET49p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA97AC433F1;
-	Tue, 23 Jan 2024 00:13:06 +0000 (UTC)
+	 MIME-Version; b=gsLA/4+eYz/j/yU2UaUOcl2z1yAYQRRav5roy/Zw119Qeb7FeiCyWoszrYHP56kcVKMBt7XOvUNt7IyCzwaKFXaHKRXrm96hCzRjrG2NNSzpzaQSI6ArRttuIjOE+UESlgt/eBwroHdQREn/JgONxt8o8mmgU5zfq+WBC/3mNDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yetxnN9x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02AEEC433F1;
+	Tue, 23 Jan 2024 00:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968787;
-	bh=yXiW5vkOl9UoQzxRx0zvbX9pUujuquKHX5Nbp6pF6qw=;
+	s=korg; t=1705968254;
+	bh=ZH0qaRItczQagGvOHVLOqxTthUemlEAByzIMUlZa3K0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJeET49pOGqxHG+Mq62Ugb7DuZaUNpA9/L5bKkU7Ie7u9XMzY6Ov9TvChAPBCJHpK
-	 3RHtfkx7COTeTV1e0jz7DuXVZzZGh09/sHqmrQ+wxj3envTGPovNqWHYiAfPXFWGgi
-	 Oi5L1662gQMH9cGH24IMWdPr1FxBj34Z/y1rNHmk=
+	b=yetxnN9xLkF+drFsqvW0Ez5vyUDJcqex/2JPNeqtTu2OWSjgg4b0hBz4NgepPpb9Q
+	 GtQ2JW3jqFLb5mBl7zJfdTcDL5yLlmsAmqWIG0PCA4BnCYVJJVevrPMGtBTG0MHM3y
+	 XtUYmGzXqT05HBYGfXh9nKdQZCjDxm+QTyDTxXC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 050/194] powerpc/imc-pmu: Add a null pointer check in update_events_in_group()
-Date: Mon, 22 Jan 2024 15:56:20 -0800
-Message-ID: <20240122235721.349194522@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Guanghui Feng <guanghuifeng@linux.alibaba.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: [PATCH 4.19 025/148] uio: Fix use-after-free in uio_open
+Date: Mon, 22 Jan 2024 15:56:21 -0800
+Message-ID: <20240122235713.441195414@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-[ Upstream commit 0a233867a39078ebb0f575e2948593bbff5826b3 ]
+commit 0c9ae0b8605078eafc3bea053cc78791e97ba2e2 upstream.
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+core-1				core-2
+-------------------------------------------------------
+uio_unregister_device		uio_open
+				idev = idr_find()
+device_unregister(&idev->dev)
+put_device(&idev->dev)
+uio_device_release
+				get_device(&idev->dev)
+kfree(idev)
+uio_free_minor(minor)
+				uio_release
+				put_device(&idev->dev)
+				kfree(idev)
+-------------------------------------------------------
 
-Fixes: 885dcd709ba9 ("powerpc/perf: Add nest IMC PMU support")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231126093719.1440305-1-chentao@kylinos.cn
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In the core-1 uio_unregister_device(), the device_unregister will kfree
+idev when the idev->dev kobject ref is 1. But after core-1
+device_unregister, put_device and before doing kfree, the core-2 may
+get_device. Then:
+1. After core-1 kfree idev, the core-2 will do use-after-free for idev.
+2. When core-2 do uio_release and put_device, the idev will be double
+   freed.
+
+To address this issue, we can get idev atomic & inc idev reference with
+minor_lock.
+
+Fixes: 57c5f4df0a5a ("uio: fix crash after the device is unregistered")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Link: https://lore.kernel.org/r/1703152663-59949-1-git-send-email-guanghuifeng@linux.alibaba.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/perf/imc-pmu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/uio/uio.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-index 872313021eaa..565dc073ceca 100644
---- a/arch/powerpc/perf/imc-pmu.c
-+++ b/arch/powerpc/perf/imc-pmu.c
-@@ -292,6 +292,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
- 	attr_group->attrs = attrs;
- 	do {
- 		ev_val_str = kasprintf(GFP_KERNEL, "event=0x%x", pmu->events[i].value);
-+		if (!ev_val_str)
-+			continue;
- 		dev_str = device_str_attr_create(pmu->events[i].name, ev_val_str);
- 		if (!dev_str)
- 			continue;
-@@ -299,6 +301,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
- 		attrs[j++] = dev_str;
- 		if (pmu->events[i].scale) {
- 			ev_scale_str = kasprintf(GFP_KERNEL, "%s.scale", pmu->events[i].name);
-+			if (!ev_scale_str)
-+				continue;
- 			dev_str = device_str_attr_create(ev_scale_str, pmu->events[i].scale);
- 			if (!dev_str)
- 				continue;
-@@ -308,6 +312,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
+--- a/drivers/uio/uio.c
++++ b/drivers/uio/uio.c
+@@ -464,13 +464,13 @@ static int uio_open(struct inode *inode,
  
- 		if (pmu->events[i].unit) {
- 			ev_unit_str = kasprintf(GFP_KERNEL, "%s.unit", pmu->events[i].name);
-+			if (!ev_unit_str)
-+				continue;
- 			dev_str = device_str_attr_create(ev_unit_str, pmu->events[i].unit);
- 			if (!dev_str)
- 				continue;
--- 
-2.43.0
-
+ 	mutex_lock(&minor_lock);
+ 	idev = idr_find(&uio_idr, iminor(inode));
+-	mutex_unlock(&minor_lock);
+ 	if (!idev) {
+ 		ret = -ENODEV;
++		mutex_unlock(&minor_lock);
+ 		goto out;
+ 	}
+-
+ 	get_device(&idev->dev);
++	mutex_unlock(&minor_lock);
+ 
+ 	if (!try_module_get(idev->owner)) {
+ 		ret = -ENODEV;
+@@ -1019,9 +1019,8 @@ void uio_unregister_device(struct uio_in
+ 	idev->info = NULL;
+ 	mutex_unlock(&idev->info_lock);
+ 
+-	device_unregister(&idev->dev);
+-
+ 	uio_free_minor(minor);
++	device_unregister(&idev->dev);
+ 
+ 	return;
+ }
 
 
 
