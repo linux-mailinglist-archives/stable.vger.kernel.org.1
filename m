@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-13033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E252837A44
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B5783788D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23AB21F2898C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A39C91C2731D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DB412BEA4;
-	Tue, 23 Jan 2024 00:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D6B131745;
+	Tue, 23 Jan 2024 00:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="waWVH2Im"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tfFAlV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C576B12A17F;
-	Tue, 23 Jan 2024 00:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF94131739;
+	Tue, 23 Jan 2024 00:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968845; cv=none; b=eZBVYbr0lCeyvMvZRBTPmCZhU2T6HAgNr3IXOtBRTjMl5i26CeMkdfj0dK0vnnsRrPK2BPudk8Vs0qOdNo9rjmeAC3yQzhJ1rId19QPWtdFFiPGrbhKHl+FpiZqY3TkRiLjA0HJEqJkiy5bepyoO5O9QLq3r78NFhLoT0imyT4k=
+	t=1705968099; cv=none; b=HwGjvdOs/nQpWBBaXjdRIOy7eXNZlS1ZGgobxyMtpqvvHwd30ViwqFhSoTDvPX0jurL4H0M4zNciD3qaxniD3DoX06NF84qh91Efz8ZJI7y50xN753h5mpNSEpHqNbgzYjPsI5r2kIpsDRhOWgbpttoL2K1MWW+MsYbD/sw/9fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968845; c=relaxed/simple;
-	bh=YRtKL7uJ9xxf5OrcTxY8Hoc2MHv8hIgx4fov3msN7MI=;
+	s=arc-20240116; t=1705968099; c=relaxed/simple;
+	bh=bqi8XDWU+OLUfXiCJo3XOuoapVfLTIiSwrcA2t+o8/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qYgRjmyB18NDydjsrq2TjTo2tM71tScu24vJ7pISfFjlwoj3/UudcpI174s4LOow6qvxRRRiGYcGFqTCvQKoW5EmhXvyjE46LPItkWj5QA9bFoLFH8hPRgpwYyR0E5rRM3W5ewz701p+Sak9nY6CjR0KYM4+YMBHt3XQuPn+JpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=waWVH2Im; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D48C433F1;
-	Tue, 23 Jan 2024 00:14:05 +0000 (UTC)
+	 MIME-Version; b=PemzIlZqH0aKZN09J0818frg2Ru+EJNMsS1w5Ejej+fjJgQCpUvUcllwLbwMCR9hV4GktpPTtXn0NT9V3nLb2vQ3SOdqm+KAWq2/bieZVMmYDBIG77NT6lsy0BLo3Z1rk/uFjrnwJfzetbcU4kXkvcBT9j05HgVs9VpqExiRbec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tfFAlV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F94C433B1;
+	Tue, 23 Jan 2024 00:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968845;
-	bh=YRtKL7uJ9xxf5OrcTxY8Hoc2MHv8hIgx4fov3msN7MI=;
+	s=korg; t=1705968099;
+	bh=bqi8XDWU+OLUfXiCJo3XOuoapVfLTIiSwrcA2t+o8/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=waWVH2Imi4RyxqVTzU4oHeQpSRFyDjLstk/tUJ/5MLGLIjcTqvjitaoOiw/YwyePy
-	 rc88GYhZ4H9UH+Wug4sLBkqZ8LvqBwNSmo0WmgLUD9LEA//mrc+sX4ie23q3J9FUMJ
-	 JfWhcWMhPDQdyIhKgQ0EHTexgJbnPq7WwF6eWMgI=
+	b=2tfFAlV2ouv4mRsy8TKo7goffw2pO3Yn33skXZqwHyYPXvwWH/BOJSJgGDSQGZbhe
+	 QbI2FgqXleZsM6ziHN6IrqGgcNuUQeJuBNPWcjJN5yaPIIyKWRKDO1PBgBSHs+4xWo
+	 GT44hYOH9rO5220YLaR24T7kf85hrbY+MFHmYh8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cameron Williams <cang1@live.co.uk>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH 5.4 037/194] parport: parport_serial: Add Brainboxes BAR details
+	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com,
+	Ziqi Zhao <astrajoan@yahoo.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 011/148] drm/crtc: Fix uninit-value bug in drm_mode_setcrtc
 Date: Mon, 22 Jan 2024 15:56:07 -0800
-Message-ID: <20240122235720.796182095@linuxfoundation.org>
+Message-ID: <20240122235712.893344510@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +64,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Ziqi Zhao <astrajoan@yahoo.com>
 
-commit 65fde134b0a4ffe838729f9ee11b459a2f6f2815 upstream.
+[ Upstream commit 3823119b9c2b5f9e9b760336f75bc989b805cde6 ]
 
-Add BAR/enum entries for Brainboxes serial/parallel cards.
+The connector_set contains uninitialized values when allocated with
+kmalloc_array. However, in the "out" branch, the logic assumes that any
+element in connector_set would be equal to NULL if failed to
+initialize, which causes the bug reported by Syzbot. The fix is to use
+an extra variable to keep track of how many connectors are initialized
+indeed, and use that variable to decrease any refcounts in the "out"
+branch.
 
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Link: https://lore.kernel.org/r/AS4PR02MB79035155C2D5C3333AE6FA52C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
+Signed-off-by: Ziqi Zhao <astrajoan@yahoo.com>
+Reported-and-tested-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
+Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Link: https://lore.kernel.org/r/20230721161446.8602-1-astrajoan@yahoo.com
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parport/parport_serial.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/drm_crtc.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/parport/parport_serial.c
-+++ b/drivers/parport/parport_serial.c
-@@ -65,6 +65,10 @@ enum parport_pc_pci_cards {
- 	sunix_5069a,
- 	sunix_5079a,
- 	sunix_5099a,
-+	brainboxes_uc257,
-+	brainboxes_is300,
-+	brainboxes_uc414,
-+	brainboxes_px263,
- };
+diff --git a/drivers/gpu/drm/drm_crtc.c b/drivers/gpu/drm/drm_crtc.c
+index 6e241a3c31ee..52a1bfeef0d9 100644
+--- a/drivers/gpu/drm/drm_crtc.c
++++ b/drivers/gpu/drm/drm_crtc.c
+@@ -573,8 +573,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 	struct drm_mode_set set;
+ 	uint32_t __user *set_connectors_ptr;
+ 	struct drm_modeset_acquire_ctx ctx;
+-	int ret;
+-	int i;
++	int ret, i, num_connectors;
  
- /* each element directly indexed from enum list, above */
-@@ -158,6 +162,10 @@ static struct parport_pc_pci cards[] = {
- 	/* sunix_5069a */		{ 1, { { 1, 2 }, } },
- 	/* sunix_5079a */		{ 1, { { 1, 2 }, } },
- 	/* sunix_5099a */		{ 1, { { 1, 2 }, } },
-+	/* brainboxes_uc257 */	{ 1, { { 3, -1 }, } },
-+	/* brainboxes_is300 */	{ 1, { { 3, -1 }, } },
-+	/* brainboxes_uc414 */  { 1, { { 3, -1 }, } },
-+	/* brainboxes_px263 */	{ 1, { { 3, -1 }, } },
- };
+ 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
+ 		return -EINVAL;
+@@ -719,6 +718,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 			goto out;
+ 		}
  
- static struct pci_device_id parport_serial_pci_tbl[] = {
++		num_connectors = 0;
+ 		for (i = 0; i < crtc_req->count_connectors; i++) {
+ 			connector_set[i] = NULL;
+ 			set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req->set_connectors_ptr;
+@@ -739,6 +739,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 					connector->name);
+ 
+ 			connector_set[i] = connector;
++			num_connectors++;
+ 		}
+ 	}
+ 
+@@ -747,7 +748,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 	set.y = crtc_req->y;
+ 	set.mode = mode;
+ 	set.connectors = connector_set;
+-	set.num_connectors = crtc_req->count_connectors;
++	set.num_connectors = num_connectors;
+ 	set.fb = fb;
+ 
+ 	if (drm_drv_uses_atomic_modeset(dev))
+@@ -760,7 +761,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 		drm_framebuffer_put(fb);
+ 
+ 	if (connector_set) {
+-		for (i = 0; i < crtc_req->count_connectors; i++) {
++		for (i = 0; i < num_connectors; i++) {
+ 			if (connector_set[i])
+ 				drm_connector_put(connector_set[i]);
+ 		}
+-- 
+2.43.0
+
 
 
 
