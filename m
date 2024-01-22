@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6228D837BF2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459928382E4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C1FB294BB0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 784EE1C2977F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4A21420C1;
-	Tue, 23 Jan 2024 00:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8235A5FDD2;
+	Tue, 23 Jan 2024 01:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AlQkm+YL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6M/EeUb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEDA131748;
-	Tue, 23 Jan 2024 00:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4033850258;
+	Tue, 23 Jan 2024 01:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969447; cv=none; b=gOpXWtlNY6mbaGQlfqI3JfPRyMhKzOodBAQ5wjvi9ZzKEiUg/pP36FJBGZFSG50mYxuwUufAZP/r2FvOsyB77n1f4C+o/6QGngx4O5qGVb9zRe2cI6S4864zkJxkAnO77DaCS/syT+d+fVqYvucYjw+QojGD0MVKbRy1od/K7Ro=
+	t=1705974652; cv=none; b=J5CPLOCEOoBiD04b+xzXtGLZ/ZyDt3OuOzpX48sHTdpyDGWFy4wUZfOqnH7074nIOXi/E9k6c9R/y/PonTC0aJkf+7xHuZqVqdaFUO/a9MS0E3X6YfZkRPSYZClRhkwRSeWCI3CM1UQ0yQm7Bl89i6RLEFvHIm9o2lca1IHvBf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969447; c=relaxed/simple;
-	bh=31IE789LQMFxm+yls3Pzg0NVGVMKbCW6EzCCuyaGZ2w=;
+	s=arc-20240116; t=1705974652; c=relaxed/simple;
+	bh=oSoBrT4VOdlvNdOTGiWsfIaOmWQ7SuvfFEObIGspN+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aJwRBzHV1aChSQ6bVtxHnr476oiw5CaHSlL7NmXgiIiH5BD+s+V0u8LyzJ1FrDUUjRAEBtOLHSKGOLShDMYV0LC7z12YiZ+H92RvXUr5pRYS5zA6PfPsyy83gBe1DhqIUKNGTBfQRrEE3a+BYa44Mj9JBS5p+fBsGmCkWwrfk4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AlQkm+YL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FB3C43399;
-	Tue, 23 Jan 2024 00:24:07 +0000 (UTC)
+	 MIME-Version; b=vGkRQPXum6HGH8zGT5dUcgbm8jXzUPJ16jTDn/aos1RXNwhDPisevx5WHa/5F/qkmVqXa7FS2MTsqWLzUoAdZClxgBqXu6bZlPEa+cf5O6nlDexWo8CgTAwRhOknAgnfrs0oyG9njcw62W8jz9TByQkGFI/O57fj7jAxPx1TzN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6M/EeUb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F578C43394;
+	Tue, 23 Jan 2024 01:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969447;
-	bh=31IE789LQMFxm+yls3Pzg0NVGVMKbCW6EzCCuyaGZ2w=;
+	s=korg; t=1705974651;
+	bh=oSoBrT4VOdlvNdOTGiWsfIaOmWQ7SuvfFEObIGspN+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AlQkm+YLPQhwI7cJKAiY3ONFTJJA/XIcQBYq/8yxdDC/WYaB7EZ3F4jXloTik7qcq
-	 ETnrbc6mV4O01PDlLhvV7kzG7pLdzPAPbkMxAQjboZsc63zOyOwk6o8eYtMZGuCV5w
-	 uOtu6pEwZJw9ficjrAhuXBg6K/IdkY+RXZPQArMg=
+	b=E6M/EeUb/f4goFojwcgoeQgZEvOi+meaun9O1GeSEeplnBoMlTgB4gYatqoNsMx0a
+	 67R6sQHaaSr9T0I+YB9xxv5AzTdaqerx3iw3S9G+G7BFCLQk91Iy+QAoFxAmpK6KZK
+	 16KmjWoFM4KH6fJ6ihUSdIQbZuW8zXt2GlhvB4b4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 253/641] drm/tilcdc: Fix irq free on unload
-Date: Mon, 22 Jan 2024 15:52:37 -0800
-Message-ID: <20240122235825.832218669@linuxfoundation.org>
+Subject: [PATCH 6.6 107/583] arm64: dts: qcom: sc8180x-primus: Fix HALL_INT polarity
+Date: Mon, 22 Jan 2024 15:52:38 -0800
+Message-ID: <20240122235815.438180993@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-[ Upstream commit 38360bf96d816e175bc602c4ee76953cd303b71d ]
+[ Upstream commit 1aaa08e8de365cce59203541cafadb5053b1ec1a ]
 
-The driver only frees the reserved irq if priv->irq_enabled is set to
-true. However, the driver mistakenly sets priv->irq_enabled to false,
-instead of true, in tilcdc_irq_install(), and thus the driver never
-frees the irq, causing issues on loading the driver a second time.
+The hall sensor interrupt on the Primus is active low, which means that
+with the current configuration the device attempts to suspend when the
+LID is open.
 
-Fixes: b6366814fa77 ("drm/tilcdc: Convert to Linux IRQ interfaces")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230919-lcdc-v1-1-ba60da7421e1@ideasonboard.com
+Fix the polarity of the HALL_INT GPIO to avoid this.
+
+Fixes: 2ce38cc1e8fe ("arm64: dts: qcom: sc8180x: Introduce Primus")
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231130-sc8180x-primus-lid-polarity-v1-1-da917b59604b@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tilcdc/tilcdc_drv.c | 2 +-
+ arch/arm64/boot/dts/qcom/sc8180x-primus.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.c b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-index 8ebd7134ee21..2f6eaac7f659 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-@@ -138,7 +138,7 @@ static int tilcdc_irq_install(struct drm_device *dev, unsigned int irq)
- 	if (ret)
- 		return ret;
+diff --git a/arch/arm64/boot/dts/qcom/sc8180x-primus.dts b/arch/arm64/boot/dts/qcom/sc8180x-primus.dts
+index 834e6f9fb7c8..ae008c3b0aed 100644
+--- a/arch/arm64/boot/dts/qcom/sc8180x-primus.dts
++++ b/arch/arm64/boot/dts/qcom/sc8180x-primus.dts
+@@ -42,7 +42,7 @@ gpio-keys {
+ 		pinctrl-0 = <&hall_int_active_state>;
  
--	priv->irq_enabled = false;
-+	priv->irq_enabled = true;
- 
- 	return 0;
- }
+ 		lid-switch {
+-			gpios = <&tlmm 121 GPIO_ACTIVE_HIGH>;
++			gpios = <&tlmm 121 GPIO_ACTIVE_LOW>;
+ 			linux,input-type = <EV_SW>;
+ 			linux,code = <SW_LID>;
+ 			wakeup-source;
 -- 
 2.43.0
 
