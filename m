@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC7E7837CBB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:15:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FBD883841B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7768028D85C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:15:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C30841C297DE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93318157039;
-	Tue, 23 Jan 2024 00:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB0467E68;
+	Tue, 23 Jan 2024 02:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9esRAju"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYSf9IOK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50817157031;
-	Tue, 23 Jan 2024 00:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1FD6775D;
+	Tue, 23 Jan 2024 02:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969729; cv=none; b=j7JcNxaaIqCa/5zQh79BTYR3zXQ1CDJHCv3LC+6Lk9KmChAVtDrKU5Oq2xPyoVZ5LTwgX8toADZYlY08oMopAqoeFhz/KbeFxqWR+01Vvkjr3FaYRiA2YRS6vLhh/VNSSMyDXUvFb0ygMbijSLSsyk74QXhLOeoKYriAFTFL0mQ=
+	t=1705975303; cv=none; b=RwlswgoKWlG2Sc9ckHLA43HYt9G5Zy6bUO9+UEhR7X+1nBXHnDsdTcIyUZvXNTZD8dWLwfg0yS7gI+PW1wVVKy3WqPVy4mtCRx4auFIFbKQ0GwYctXmGtH40uPVQeR/rew2QJLnfT0yYKDnV3fjsYA9IyU1QJc+/h9qmtwKp/WE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969729; c=relaxed/simple;
-	bh=/ZeqTQlzHx5tgiNmv+Mh0FSjwaD1zgL+O6XnIXFs9Vw=;
+	s=arc-20240116; t=1705975303; c=relaxed/simple;
+	bh=ZWzszK4miFrUFCF2ZNRzGbgEUsXaxEXOvVKEQVYda4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f+CHRNV1hgWUsDXcDn8rlG6TEQtPKRSOEatunSDLNnZH0qei1j33dlLFSs1Tw3piJEKaj+PeDe2TWDGjwk9faYD+8ihD6XhbUWzcSVqhBdNNHsi61nWus4Bn1Ps206nmt0slYqrjFZd9hMTiFVGZ/nEjMIgGW6wISF4taIPyecU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9esRAju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA32C43330;
-	Tue, 23 Jan 2024 00:28:47 +0000 (UTC)
+	 MIME-Version; b=cFb3qqUfLE4ACRwJ8vohx9BpOezRIZzMUcxUyBCb6PL03KsDahwAZSlfELT3Ud7FtWwaI2T8fxBBDEy96R6FTuQyGcsmoL6hHwYQ5/jyGTxk5qU0qSIkG+ZTJigTUI24Tg3Ba/An6ZeodMtrfC8kADnvGTBeuBIMUge9rTvILLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYSf9IOK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 422F7C43390;
+	Tue, 23 Jan 2024 02:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969728;
-	bh=/ZeqTQlzHx5tgiNmv+Mh0FSjwaD1zgL+O6XnIXFs9Vw=;
+	s=korg; t=1705975303;
+	bh=ZWzszK4miFrUFCF2ZNRzGbgEUsXaxEXOvVKEQVYda4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9esRAjuvd9Win+MpeANUotoL0RZ2uEU29A51Fa9nXsKOfn+2QAlxj41ewTirtj+1
-	 BIlbtRsYMfeB/GWlmUV1INm9Oo6MZnHerVDD3uZvG6qwuD0XfyFrXfWOQ4Ih+92Yx/
-	 +5SaP1yMN5ovNsXpc12C4imHY775taL6MBqf2eeg=
+	b=yYSf9IOKqAkBv4MrimFqWPUyPRvCtBf5IXT5m/dGpcrxXyyR4yMmbA3sNivPnKjuw
+	 IL6vP7fm1iX6aQ0cHwbfEvbVPsRQt6MQBx0i3vjtfwDtgKdQiTeTQ4Occ+xdT2qvn1
+	 fXmN47r5H7cnvTASvMtQgIbecVihtEWtKb0Hainw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Wesley Cheng <quic_wcheng@quicinc.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.7 397/641] usb: dwc3: gadget: Handle EP0 request dequeuing properly
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 250/583] drm/msm/mdp4: flush vblank event on disable
 Date: Mon, 22 Jan 2024 15:55:01 -0800
-Message-ID: <20240122235830.387931789@linuxfoundation.org>
+Message-ID: <20240122235819.653093161@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 730e12fbec53ab59dd807d981a204258a4cfb29a upstream.
+[ Upstream commit c6721b3c6423d8a348ae885a0f4c85e14f9bf85c ]
 
-Current EP0 dequeue path will share the same as other EPs.  However, there
-are some special considerations that need to be made for EP0 transfers:
+Flush queued events when disabling the crtc. This avoids timeouts when
+we come back and wait for dependencies (like the previous frame's
+flip_done).
 
-  - EP0 transfers never transition into the started_list
-  - EP0 only has one active request at a time
-
-In case there is a vendor specific control message for a function over USB
-FFS, then there is no guarantee on the timeline which the DATA/STATUS stage
-is responded to.  While this occurs, any attempt to end transfers on
-non-control EPs will end up having the DWC3_EP_DELAY_STOP flag set, and
-defer issuing of the end transfer command.  If the USB FFS application
-decides to timeout the control transfer, or if USB FFS AIO path exits, the
-USB FFS driver will issue a call to usb_ep_dequeue() for the ep0 request.
-
-In case of the AIO exit path, the AIO FS blocks until all pending USB
-requests utilizing the AIO path is completed.  However, since the dequeue
-of ep0 req does not happen properly, all non-control EPs with the
-DWC3_EP_DELAY_STOP flag set will not be handled, and the AIO exit path will
-be stuck waiting for the USB FFS data endpoints to receive a completion
-callback.
-
-Fix is to utilize dwc3_ep0_reset_state() in the dequeue API to ensure EP0
-is brought back to the SETUP state, and ensures that any deferred end
-transfer commands are handled.  This also will end any active transfers
-on EP0, compared to the previous implementation which directly called
-giveback only.
-
-Fixes: fcd2def66392 ("usb: dwc3: gadget: Refactor dwc3_gadget_ep_dequeue")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20231206201814.32664-1-quic_wcheng@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c8afe684c95c ("drm/msm: basic KMS driver for snapdragon")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/569127/
+Link: https://lore.kernel.org/r/20231127215401.4064128-1-dmitry.baryshkov@linaro.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2103,7 +2103,17 @@ static int dwc3_gadget_ep_dequeue(struct
+diff --git a/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c b/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
+index 169f9de4a12a..3100957225a7 100644
+--- a/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
++++ b/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
+@@ -269,6 +269,7 @@ static void mdp4_crtc_atomic_disable(struct drm_crtc *crtc,
+ {
+ 	struct mdp4_crtc *mdp4_crtc = to_mdp4_crtc(crtc);
+ 	struct mdp4_kms *mdp4_kms = get_kms(crtc);
++	unsigned long flags;
  
- 	list_for_each_entry(r, &dep->pending_list, list) {
- 		if (r == req) {
--			dwc3_gadget_giveback(dep, req, -ECONNRESET);
-+			/*
-+			 * Explicitly check for EP0/1 as dequeue for those
-+			 * EPs need to be handled differently.  Control EP
-+			 * only deals with one USB req, and giveback will
-+			 * occur during dwc3_ep0_stall_and_restart().  EP0
-+			 * requests are never added to started_list.
-+			 */
-+			if (dep->number > 1)
-+				dwc3_gadget_giveback(dep, req, -ECONNRESET);
-+			else
-+				dwc3_ep0_reset_state(dwc);
- 			goto out;
- 		}
- 	}
+ 	DBG("%s", mdp4_crtc->name);
+ 
+@@ -281,6 +282,14 @@ static void mdp4_crtc_atomic_disable(struct drm_crtc *crtc,
+ 	mdp_irq_unregister(&mdp4_kms->base, &mdp4_crtc->err);
+ 	mdp4_disable(mdp4_kms);
+ 
++	if (crtc->state->event && !crtc->state->active) {
++		WARN_ON(mdp4_crtc->event);
++		spin_lock_irqsave(&mdp4_kms->dev->event_lock, flags);
++		drm_crtc_send_vblank_event(crtc, crtc->state->event);
++		crtc->state->event = NULL;
++		spin_unlock_irqrestore(&mdp4_kms->dev->event_lock, flags);
++	}
++
+ 	mdp4_crtc->enabled = false;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
