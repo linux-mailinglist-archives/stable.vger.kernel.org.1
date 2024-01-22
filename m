@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE348384AA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B32837E66
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E851B23DC7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6CE01F2811F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38DA62817;
-	Tue, 23 Jan 2024 01:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF9F5FEFA;
+	Tue, 23 Jan 2024 00:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iEDbwyeh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZdXVQWh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B251562806;
-	Tue, 23 Jan 2024 01:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1654E1D1;
+	Tue, 23 Jan 2024 00:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974962; cv=none; b=l0RCH/MWpCCZH4F+d6+8HyyoWBu9GQu4eYAG489vyDPwlJmlg/NbEJpCqjBxyr8XKmopIi/AVVMgDdhNhip5pICUq4RRkbMSyfJA+vq3ypAqiO7WMuJQbO8pPMqvx47Foq3BIAaStDAGsFbATDjtI3lXQ47ti5Z61W9poOPzJbk=
+	t=1705970565; cv=none; b=VNpXb1QJ39TFuxjgEt31a33TsC4s18OulUIaicJGp18yoWyFQk5ggDxC+i53MBLicrZj0+1GzbdUFV2TxVfA/abIoI2pyjBDRzJrrsQ40VBCEFe3PLA5qdNdyRoZTlenVttA3igWRAzos6Hw1IJiIp6IJJ9Tp+BWbm4T7G75o6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974962; c=relaxed/simple;
-	bh=eFK6QNCx+gc09KdgvD8FtJ/dlskP+TTF705f88xQrT4=;
+	s=arc-20240116; t=1705970565; c=relaxed/simple;
+	bh=pbzTVdD8QJLXLFuXAnZm6SCP2rNIAPc3TC6iBMHtH1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R21pHhtmnatJ8P+7t713XYo4AbLv+MthEuMhwZGfoHq5/m5nrKh8jY2oNhpKAG3I2t3PPE9cMTkA0+YjDvkhvjgTFMpwCkn/djbIk7rDsmoX1Y7hb8u4EHoXUsEhekt6HiUDvZdEalQleeQIah0ERfeEqDKe9NiLyg7kMjvJpB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iEDbwyeh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752E7C433C7;
-	Tue, 23 Jan 2024 01:56:02 +0000 (UTC)
+	 MIME-Version; b=imn05/DSRjazXwEoYlMWbAC9Agh+2O8o24rLPg+h+CrpGRwlvnZAXhj99hdXLH2+FM5K+fX8NCa+YQaCq4OnIEq9Y754vpjAz0KJ90mjGCTRWEyFFURPOjcrtfxCt3xfbJPjePnhY1OAbcipD5UJq7We4I1YLpZhihgk6XrQ6nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZdXVQWh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980C7C433C7;
+	Tue, 23 Jan 2024 00:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974962;
-	bh=eFK6QNCx+gc09KdgvD8FtJ/dlskP+TTF705f88xQrT4=;
+	s=korg; t=1705970565;
+	bh=pbzTVdD8QJLXLFuXAnZm6SCP2rNIAPc3TC6iBMHtH1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iEDbwyehAxI4qqJ4CAQCSygQmWnKpYRdcZURbwANF6RIK8s4vkWVcwSFl97ph8hsB
-	 xlcmU3LT1/0risX1W91usNQOAOUOl21Ko7OnqCW4nl663EvLkORnqfAIwSSl/t5MGb
-	 96s9uCj6+zC5CdWocBLfjj5A4sJZ5RRMEt6VlNzo=
+	b=jZdXVQWhRhS8lbq2CAuCVuKFxe09bLfyT38qXaL6K8diOfmk6BcizrVeHt/GlE1la
+	 p0sGMhruhZ6JIXWQLpx3w/Jn4D2th2DEM7gkf/wEBWKnxIyruxpQBRysK3R1lOLLiu
+	 QxwffOudETPzQD5SPJ9wnvvYVzMdoKrrxXMJHsLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Zhang <joakim.zhang@cixtech.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 170/583] dma-mapping: clear dev->dma_mem to NULL after freeing it
+	Osama Muhammad <osmtendev@gmail.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+da0fc229cc1ff4bb2e6d@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 053/417] gfs2: Fix kernel NULL pointer dereference in gfs2_rgrp_dump
 Date: Mon, 22 Jan 2024 15:53:41 -0800
-Message-ID: <20240122235817.231188911@linuxfoundation.org>
+Message-ID: <20240122235753.512825209@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joakim Zhang <joakim.zhang@cixtech.com>
+From: Osama Muhammad <osmtendev@gmail.com>
 
-[ Upstream commit b07bc2347672cc8c7293c64499f1488278c5ca3d ]
+[ Upstream commit 8877243beafa7c6bfc42022cbfdf9e39b25bd4fa ]
 
-Reproduced with below sequence:
-dma_declare_coherent_memory()->dma_release_coherent_memory()
-->dma_declare_coherent_memory()->"return -EBUSY" error
+Syzkaller has reported a NULL pointer dereference when accessing
+rgd->rd_rgl in gfs2_rgrp_dump().  This can happen when creating
+rgd->rd_gl fails in read_rindex_entry().  Add a NULL pointer check in
+gfs2_rgrp_dump() to prevent that.
 
-It will return -EBUSY from the dma_assign_coherent_memory()
-in dma_declare_coherent_memory(), the reason is that dev->dma_mem
-pointer has not been set to NULL after it's freed.
-
-Fixes: cf65a0f6f6ff ("dma-mapping: move all DMA mapping code to kernel/dma")
-Signed-off-by: Joakim Zhang <joakim.zhang@cixtech.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reported-and-tested-by: syzbot+da0fc229cc1ff4bb2e6d@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=da0fc229cc1ff4bb2e6d
+Fixes: 72244b6bc752 ("gfs2: improve debug information when lvb mismatches are found")
+Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/coherent.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/gfs2/rgrp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/dma/coherent.c b/kernel/dma/coherent.c
-index c21abc77c53e..ff5683a57f77 100644
---- a/kernel/dma/coherent.c
-+++ b/kernel/dma/coherent.c
-@@ -132,8 +132,10 @@ int dma_declare_coherent_memory(struct device *dev, phys_addr_t phys_addr,
+diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+index f602fb844951..dcaaa32efc4a 100644
+--- a/fs/gfs2/rgrp.c
++++ b/fs/gfs2/rgrp.c
+@@ -2306,7 +2306,7 @@ void gfs2_rgrp_dump(struct seq_file *seq, struct gfs2_rgrpd *rgd,
+ 		       (unsigned long long)rgd->rd_addr, rgd->rd_flags,
+ 		       rgd->rd_free, rgd->rd_free_clone, rgd->rd_dinodes,
+ 		       rgd->rd_requested, rgd->rd_reserved, rgd->rd_extfail_pt);
+-	if (rgd->rd_sbd->sd_args.ar_rgrplvb) {
++	if (rgd->rd_sbd->sd_args.ar_rgrplvb && rgd->rd_rgl) {
+ 		struct gfs2_rgrp_lvb *rgl = rgd->rd_rgl;
  
- void dma_release_coherent_memory(struct device *dev)
- {
--	if (dev)
-+	if (dev) {
- 		_dma_release_coherent_memory(dev->dma_mem);
-+		dev->dma_mem = NULL;
-+	}
- }
- 
- static void *__dma_alloc_from_coherent(struct device *dev,
+ 		gfs2_print_dbg(seq, "%s  L: f:%02x b:%u i:%u\n", fs_id_buf,
 -- 
 2.43.0
 
