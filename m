@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62D28837D60
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B5ED837FA3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 968AC1C286C2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA9C41F29FD2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4ED5731F;
-	Tue, 23 Jan 2024 00:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C286350D;
+	Tue, 23 Jan 2024 00:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7Xu/WXC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQzbiGro"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0DA452F7C;
-	Tue, 23 Jan 2024 00:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935AB627F3;
+	Tue, 23 Jan 2024 00:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969913; cv=none; b=P9Qrytv+ExKD1nB40w/V4R3upGfMjp4zu9jptYzk/nYe02DiBHBtT3CkSZURdr0s2h4VXqaDQGSV/j4/Fl/wIleH5MarYt4WuRx33WTSfgsMMLmGJLS7EgYCBNlDK236sdKY3deTYI78i+jJtYyQ/Hm3ffOdzVwAAtMJ/4mFhyw=
+	t=1705971257; cv=none; b=kzXlM+73Rzo4ukLS/HfuK4pQA7DozvKw4xH+KK9Gr34YWF9Z8Fc/x5htde2uweGgEEYGGKhdzbUyr8YTrs+qEa4k+HqeEBC6YRpIs5NqDDrJvCM325k8YFlcbv+0pOR/BLiQ4R5uIGepIbtgbuZ0vcFEVmJTXb72XUW4WCdLVO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969913; c=relaxed/simple;
-	bh=Q6Jlgmsl01peV84VohgMUQR+zCJcBCh6jwGXvFQeRvA=;
+	s=arc-20240116; t=1705971257; c=relaxed/simple;
+	bh=PJ7LU4glwfvABsssfXQ5o/W29CMn+ByjfpR4hfcyoS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ON0jWIni7tA5Sk/j+Xtr3dEN7W7Dj+6r8TlUKsQ1kv0X5QZxRDWVj+2suvFCInPF0rk2X8wpKYj00eij8EfvHDGTkg6JkWjfSZC9kQSTbEd4Bv5iYnFq0iGe6KxNbM8NbUMUqPY10WX/xHJ95czxv3+aYxCRWQz6UILsQmlLKLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7Xu/WXC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94CE0C433F1;
-	Tue, 23 Jan 2024 00:31:52 +0000 (UTC)
+	 MIME-Version; b=I5MtmKz71b5geG8byIm8mwO6M+GZgWafTDPNxbTIcN2iWx8iGPi6dBtgbz5Yqr/Nh0vZ6OlpbsnLW8xLB1jG8EI8T4gzYL8p8BWZG/E+CvXTGjpJi4q5oXu3UuqpBDj6NcW+EP6E0B6tmKtnoTiHGskew2l1obpANpf9JPyaOJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQzbiGro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49201C433F1;
+	Tue, 23 Jan 2024 00:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969912;
-	bh=Q6Jlgmsl01peV84VohgMUQR+zCJcBCh6jwGXvFQeRvA=;
+	s=korg; t=1705971257;
+	bh=PJ7LU4glwfvABsssfXQ5o/W29CMn+ByjfpR4hfcyoS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x7Xu/WXCyW5z5Q+tmxDB61kQn9YwTDJD+c4tuS6D/A9u5cJeRTmwmEFzcFLbBCMqo
-	 Z5RxAHe1NlvbEXFcVNX6qz6lc1tlNNAuBPkbRmR9QGIT1Rh9/tG/jijhCoQMZjO4cY
-	 RBd/b8VkTtP47LcAtd4741KqJOqgP6DTY+iXgwy0=
+	b=sQzbiGroEqHe5Fb3caifsfVzAGe4Y5/3T0dTrgdyrXYlJhjfNLwE521eRgP10g4M3
+	 CnBKd4HCwTECmIJYAUQdHqio5QYUG7fmFeQwN5JRHwJo2/SF3Ak9pav0mB+p2HcFcO
+	 /wbxRGWyTSkX58DDt+DOq5bfO0P9fU2FpDisGmCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 521/641] acpi: property: Let args be NULL in __acpi_node_get_property_reference
+Subject: [PATCH 5.10 119/286] arm64: dts: ti: k3-am65-main: Fix DSS irq trigger type
 Date: Mon, 22 Jan 2024 15:57:05 -0800
-Message-ID: <20240122235834.396804296@linuxfoundation.org>
+Message-ID: <20240122235736.710365180@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit bef52aa0f3de1b7d8c258c13b16e577361dabf3a ]
+[ Upstream commit b57160859263c083c49482b0d083a586b1517f78 ]
 
-fwnode_get_property_reference_args() may not be called with args argument
-NULL on ACPI, OF already supports this. Add the missing NULL checks and
-document this.
+DSS irq trigger type is set to IRQ_TYPE_EDGE_RISING in the DT file, but
+the TRM says it is level triggered.
 
-The purpose is to be able to count the references.
+For some reason triggering on rising edge results in double the amount
+of expected interrupts, e.g. for normal page flipping test the number of
+interrupts per second is 2 * fps. It is as if the IRQ triggers on both
+edges. There are no other side effects to this issue than slightly
+increased CPU & power consumption due to the extra interrupt.
 
-Fixes: 977d5ad39f3e ("ACPI: Convert ACPI reference args to generic fwnode reference args")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20231109101010.1329587-2-sakari.ailus@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Switching to IRQ_TYPE_LEVEL_HIGH is correct and fixes the issue, so
+let's do that.
+
+Fixes: fc539b90eda2 ("arm64: dts: ti: am654: Add DSS node")
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Link: https://lore.kernel.org/r/20231106-am65-dss-clk-edge-v1-1-4a959fec0e1e@ideasonboard.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/property.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/ti/k3-am65-main.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 6979a3f9f90a..4d042673d57b 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -852,6 +852,7 @@ static int acpi_get_ref_args(struct fwnode_reference_args *args,
-  * @index: Index of the reference to return
-  * @num_args: Maximum number of arguments after each reference
-  * @args: Location to store the returned reference with optional arguments
-+ *	  (may be NULL)
-  *
-  * Find property with @name, verifify that it is a package containing at least
-  * one object reference and if so, store the ACPI device object pointer to the
-@@ -908,6 +909,9 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
- 		if (!device)
- 			return -EINVAL;
+diff --git a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+index 4265f627ca16..a3538279d710 100644
+--- a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+@@ -865,7 +865,7 @@ dss: dss@4a00000 {
+ 		assigned-clocks = <&k3_clks 67 2>;
+ 		assigned-clock-parents = <&k3_clks 67 5>;
  
-+		if (!args)
-+			return 0;
-+
- 		args->fwnode = acpi_fwnode_handle(device);
- 		args->nargs = 0;
- 		return 0;
+-		interrupts = <GIC_SPI 166 IRQ_TYPE_EDGE_RISING>;
++		interrupts = <GIC_SPI 166 IRQ_TYPE_LEVEL_HIGH>;
+ 
+ 		status = "disabled";
+ 
 -- 
 2.43.0
 
