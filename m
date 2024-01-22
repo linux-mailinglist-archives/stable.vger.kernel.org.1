@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BDD683822F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 540E2837D54
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 238D71F24123
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87C5B1C21C65
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3872959B5E;
-	Tue, 23 Jan 2024 01:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321B650A96;
+	Tue, 23 Jan 2024 00:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJnCtM8h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yW3w31Ei"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F338359B78;
-	Tue, 23 Jan 2024 01:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61A44F5E9;
+	Tue, 23 Jan 2024 00:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974087; cv=none; b=LKAu8paOTTCqo0d7XMoGqTtRoRvDqi+0EUjA4PsxyWmHnChD7x+52B0x1sHVXw6ELpk1eooxYJhFXdt6y8c9uPSEnArUcnLeVVR4iH34GuV8PLVeA1NbKlVzTY0BtdoDpAyc2cx2J3j06jJDLAvxj64wrkuGAgbgK84oYpKlNKE=
+	t=1705969895; cv=none; b=EwX7Y2nB3mWVg6hxS5f4lElGE2PmKA8tKP83PrPm3Dgd2Qu/uBGMSJiCrobNZmUhUQBYDgRsQtlQie9ZptX21UtL8LIf/IwtGXpe7lS6dt0B+OTH90FjaSwvELJkGU0jM/albuxrFIRuPw98rvb8wTFki9TwnDMytKBDJYMh9JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974087; c=relaxed/simple;
-	bh=/mxLaEAUbaNnKsbfl6or7es4PTwkiazKzZQzTM6GpCQ=;
+	s=arc-20240116; t=1705969895; c=relaxed/simple;
+	bh=cFv3EbDLwiDbWZyZNj+KtnvO7wAIcFgT49xdwhJC8Wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q2MvihXS+V/a3ehl8G8A0eEJuw247HVhRnI3DIjgqvH+5JR15jNBSf3wZwCThIui4SyE9iWuhu3Dch1tpDHW3GOerD8WBEpJvsWfyefTKaO8X1AB+sJ2H8uTvrfYoQdvLD+XlYgcT/gs0wYf6WlLSbyCQrvEP1eUpolJKnrjspk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJnCtM8h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38755C43390;
-	Tue, 23 Jan 2024 01:41:26 +0000 (UTC)
+	 MIME-Version; b=pQewU/0WzavUEekjkmAE4/Mdld4p7tvF9YnfmhEBJVWoce7gBI/S4VQcS7l27HDWpaq1Wfijk+446eFjeWDXNTqSyFdz6iE/aAN+u89NbrWosCTpEoSIZDEq6pXk/Uk8+gZGRaxklK6xkExdFr+W6JCXMrSIk3dBXX1f1QwJjMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yW3w31Ei; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B455C433F1;
+	Tue, 23 Jan 2024 00:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974086;
-	bh=/mxLaEAUbaNnKsbfl6or7es4PTwkiazKzZQzTM6GpCQ=;
+	s=korg; t=1705969894;
+	bh=cFv3EbDLwiDbWZyZNj+KtnvO7wAIcFgT49xdwhJC8Wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iJnCtM8hgmJ4n9vPQSfCDAOI+4zXs8cCQ09CFIb/E5g1zOxSkFH5qY/DXIVDqQhiY
-	 Fwv6yv6hmKgkjUwW1jew9xTDH0/Dk8YT+BqVpqlwEfpCgi+JhlC0wGX2Ad0Cjlik3C
-	 /XLZXchK7IV4tYhzqyGNhbDRGqn9RCEQnK2nNymc=
+	b=yW3w31Ei79pZJXnPNi36MPPN8SQ5DIqM/Z0/43h5LE4BWuKkZngbLCIv29p24A680
+	 Fm/3ac0enPEmkppfgFZm9GnspZ2ohJBH5tc8StasiEjZz8Dp8PuAtHVZpexJlA3n8o
+	 phBkdpTvq+WlAmbuRsYDGIPoZoVrTX0FUdjZlzoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Umang Jain <umang.jain@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 158/374] wifi: rtlwifi: rtl8192cu: using calculate_bit_shift()
-Date: Mon, 22 Jan 2024 15:56:54 -0800
-Message-ID: <20240122235750.104579171@linuxfoundation.org>
+Subject: [PATCH 6.7 511/641] staging: vc04_services: Do not pass NULL to vchiq_log_error()
+Date: Mon, 22 Jan 2024 15:56:55 -0800
+Message-ID: <20240122235834.075595925@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Umang Jain <umang.jain@ideasonboard.com>
 
-[ Upstream commit f4088c8fcbabadad9dd17d17ae9ba24e9e3221ec ]
+[ Upstream commit 149261d378d0ca441b16de6c1a250a350df66598 ]
 
-Using calculate_bit_shift() to replace _rtl92c_phy_calculate_bit_shift().
-And fix an undefined bitwise shift behavior problem.
+vchiq_add_connected_callback() logs using vchiq_log_error() macro,
+but passes NULL instead of a struct device pointer. Fix it.
 
-Fixes: f0a39ae738d6 ("rtlwifi: rtl8192cu: Add routine phy")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-6-suhui@nfschina.com
+vchiq_add_connected_callback() is not used anywhere in the vc04_services
+as of now. It will be used when we add new drivers(VC shared memory and
+bcm2835-isp), hence it kept as it is for now.
+
+Fixes: 1d8915cf8899 ("staging: vc04: Convert vchiq_log_error() to use dynamic debug")
+Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
+Link: https://lore.kernel.org/r/20231128201926.489269-2-umang.jain@ideasonboard.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../vc04_services/interface/vchiq_arm/vchiq_connected.c       | 4 ++--
+ .../vc04_services/interface/vchiq_arm/vchiq_connected.h       | 4 +++-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c
-index a8d9fe269f31..0b8cb7e61fd8 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c
-@@ -32,7 +32,7 @@ u32 rtl92cu_phy_query_rf_reg(struct ieee80211_hw *hw,
- 		original_value = _rtl92c_phy_fw_rf_serial_read(hw,
- 							       rfpath, regaddr);
- 	}
--	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
- 		"regaddr(%#x), rfpath(%#x), bitmask(%#x), original_value(%#x)\n",
-@@ -56,7 +56,7 @@ void rtl92cu_phy_set_rf_reg(struct ieee80211_hw *hw,
- 			original_value = _rtl92c_phy_rf_serial_read(hw,
- 								    rfpath,
- 								    regaddr);
--			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
-@@ -67,7 +67,7 @@ void rtl92cu_phy_set_rf_reg(struct ieee80211_hw *hw,
- 			original_value = _rtl92c_phy_fw_rf_serial_read(hw,
- 								       rfpath,
- 								       regaddr);
--			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.c
+index b3928bd8c9c6..21f9fa1a1713 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.c
+@@ -27,7 +27,7 @@ static void connected_init(void)
+  * be made immediately, otherwise it will be deferred until
+  * vchiq_call_connected_callbacks is called.
+  */
+-void vchiq_add_connected_callback(void (*callback)(void))
++void vchiq_add_connected_callback(struct vchiq_device *device, void (*callback)(void))
+ {
+ 	connected_init();
+ 
+@@ -39,7 +39,7 @@ void vchiq_add_connected_callback(void (*callback)(void))
+ 		callback();
+ 	} else {
+ 		if (g_num_deferred_callbacks >= MAX_CALLBACKS) {
+-			vchiq_log_error(NULL, VCHIQ_CORE,
++			vchiq_log_error(&device->dev, VCHIQ_CORE,
+ 					"There already %d callback registered - please increase MAX_CALLBACKS",
+ 					g_num_deferred_callbacks);
+ 		} else {
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.h b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.h
+index 4caf5e30099d..e4ed56446f8a 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.h
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.h
+@@ -1,10 +1,12 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /* Copyright (c) 2010-2012 Broadcom. All rights reserved. */
+ 
++#include "vchiq_bus.h"
++
+ #ifndef VCHIQ_CONNECTED_H
+ #define VCHIQ_CONNECTED_H
+ 
+-void vchiq_add_connected_callback(void (*callback)(void));
++void vchiq_add_connected_callback(struct vchiq_device *device, void (*callback)(void));
+ void vchiq_call_connected_callbacks(void);
+ 
+ #endif /* VCHIQ_CONNECTED_H */
 -- 
 2.43.0
 
