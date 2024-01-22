@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-14093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37D0F837F77
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C433837D4D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BBB41C2904B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FA471F295F7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C74B63110;
-	Tue, 23 Jan 2024 00:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DDB95B1E7;
+	Tue, 23 Jan 2024 00:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZkkfcnO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ksZQeF9t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD0F6280B;
-	Tue, 23 Jan 2024 00:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAB85A114;
+	Tue, 23 Jan 2024 00:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971148; cv=none; b=TyVZUg4jS2NYQJX25/PY14zf/cXIVJC5BwoAoLJRDRBrytiej2djcshOt6PuOKHXYRA+shRUdsQjBe58HZ68cGMQpfcTOguLlUAgmiIBPIukFbl3cderhktifu//V25cB26EKls0Zk20gngXdAmRI92TqsAkcl1w+LlchiskOAU=
+	t=1705969881; cv=none; b=iC2OMrpnpoam1Y/OMtzbWHBZugveF2eNILqhhWmleKenWCb4E4dln9uvNAEzRem8l3AJyNwTpU9hz1wsi+jtyEu1v//EZMBYUocm4eIa8LI/Wzkcm75ONzXHgFCUEZqjCBQRNF31Oh5H8RnEPDN74dSLT8dKshwbeZurd3J0ifA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971148; c=relaxed/simple;
-	bh=GtAo4309ZWeBWBrshP6ezGI0uZR1vlrKmwa1jospWyE=;
+	s=arc-20240116; t=1705969881; c=relaxed/simple;
+	bh=tYMzkpSF93reewwZOZ5n6oy1aZhiJyHmDqxJAhglUtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1RWwt8AVLpJ4KVxgfg25vsMww521hDM08N3EnQQ4OOAfmwStfgSOu04j1m4SHgwULc0duT000/2/3IPY+YmoZ9AkTGkZ4Qivt3xN8L9hW/8AiRCeAG3wSJSqiC6JbQykmLlwcdX4b6tcDAYTkPDO9at6UmWqo4EbYia7V1xltM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZkkfcnO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082CBC433F1;
-	Tue, 23 Jan 2024 00:52:27 +0000 (UTC)
+	 MIME-Version; b=exV28snH2tBnIhClXj0DWWhQR36Ao1d31R90DOzSTYDUJJQBG9IEHSMDw6r/ASU8WMKgJ+k2hkaexaJFuxpl2W6PhQh0JtJGA65YdOIQAwtfC5lS/zRTqaYGofBFuznVi2D0dyqNk5ZR3nA9lB/Zrx59sdtKbYMu9UDcskkX8OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ksZQeF9t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5E7C433C7;
+	Tue, 23 Jan 2024 00:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971148;
-	bh=GtAo4309ZWeBWBrshP6ezGI0uZR1vlrKmwa1jospWyE=;
+	s=korg; t=1705969881;
+	bh=tYMzkpSF93reewwZOZ5n6oy1aZhiJyHmDqxJAhglUtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZkkfcnOfFhrSU4ShNWTo/JuMXKgpPA8VuSzYsqxGe4NUmlu085dhE0za5dc+rYZG
-	 MLbfmPCeSJ036H5cKXLFa7nzEZvgY92p2IJJVjiZQ7qjgyqwQ0garz9TQRl1jaxN5G
-	 IRB1BotGT+BleagHC965vBV9UDjpCBrt9rtEtT+o=
+	b=ksZQeF9tYfx6nNOZdTXRH/Q4eTExXc4dXVyaszgMaHHGStdebekY+5833SdsOfVT+
+	 XTc5bhYep4EzRP69o0AQ/KJNLarPR3S58ztpK/l4SGbO94zP4Cf2YQ39DUab/tVqEn
+	 fT18ov7cSKQSEk+OxptGzNJUH+K1hpzZ7qfN3itQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gonglei <arei.gonglei@huawei.com>,
-	zhenwei pi <pizhenwei@bytedance.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 077/286] virtio_crypto: Introduce VIRTIO_CRYPTO_NOSPC
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.7 479/641] serial: sc16is7xx: add check for unsupported SPI modes during probe
 Date: Mon, 22 Jan 2024 15:56:23 -0800
-Message-ID: <20240122235735.001277733@linuxfoundation.org>
+Message-ID: <20240122235833.045688687@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhenwei pi <pizhenwei@bytedance.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 13d640a3e9a3ac7ec694843d3d3b785e85fb8cb8 ]
+commit 6d710b769c1f5f0d55c9ad9bb49b7dce009ec103 upstream.
 
-Base on the lastest virtio crypto spec, define VIRTIO_CRYPTO_NOSPC.
+The original comment is confusing because it implies that variants other
+than the SC16IS762 supports other SPI modes beside SPI_MODE_0.
 
-Reviewed-by: Gonglei <arei.gonglei@huawei.com>
-Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
-Link: https://lore.kernel.org/r/20220302033917.1295334-2-pizhenwei@bytedance.com
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Stable-dep-of: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Extract from datasheet:
+    The SC16IS762 differs from the SC16IS752 in that it supports SPI clock
+    speeds up to 15 Mbit/s instead of the 4 Mbit/s supported by the
+    SC16IS752... In all other aspects, the SC16IS762 is functionally and
+    electrically the same as the SC16IS752.
+
+The same is also true of the SC16IS760 variant versus the SC16IS740 and
+SC16IS750 variants.
+
+For all variants, only SPI mode 0 is supported.
+
+Change comment and abort probing if the specified SPI mode is not
+SPI_MODE_0.
+
+Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231221231823.2327894-3-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/virtio_crypto.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/sc16is7xx.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/virtio_crypto.h b/include/uapi/linux/virtio_crypto.h
-index a03932f10565..1166a49084b0 100644
---- a/include/uapi/linux/virtio_crypto.h
-+++ b/include/uapi/linux/virtio_crypto.h
-@@ -408,6 +408,7 @@ struct virtio_crypto_op_data_req {
- #define VIRTIO_CRYPTO_BADMSG    2
- #define VIRTIO_CRYPTO_NOTSUPP   3
- #define VIRTIO_CRYPTO_INVSESS   4 /* Invalid session id */
-+#define VIRTIO_CRYPTO_NOSPC     5 /* no free session ID */
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1727,7 +1727,10 @@ static int sc16is7xx_spi_probe(struct sp
  
- /* The accelerator hardware is ready */
- #define VIRTIO_CRYPTO_S_HW_READY  (1 << 0)
--- 
-2.43.0
-
+ 	/* Setup SPI bus */
+ 	spi->bits_per_word	= 8;
+-	/* only supports mode 0 on SC16IS762 */
++	/* For all variants, only mode 0 is supported */
++	if ((spi->mode & SPI_MODE_X_MASK) != SPI_MODE_0)
++		return dev_err_probe(&spi->dev, -EINVAL, "Unsupported SPI mode\n");
++
+ 	spi->mode		= spi->mode ? : SPI_MODE_0;
+ 	spi->max_speed_hz	= spi->max_speed_hz ? : 15000000;
+ 	ret = spi_setup(spi);
 
 
 
