@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A6BD8382AF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1106B837C07
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC46628D43B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75A851F2AE70
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE055EE74;
-	Tue, 23 Jan 2024 01:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8F51854;
+	Tue, 23 Jan 2024 00:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXX40tVw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsYd/B5x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8E45EE70;
-	Tue, 23 Jan 2024 01:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEADF371;
+	Tue, 23 Jan 2024 00:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974409; cv=none; b=OzWRkZnSz8oUxveK9PHkKc9X4gmXuEZWexD6GnRx4NaD+G2na87InH/zckNAVK2EZX0G+W6viniTrAFhkaJEKRmaf/VlkPkL21Y7FRbkHIJZeafop+c6qtuBslHEJJw0rhuMbI2XDnXE49lf1l8vFwPVC0jZ1oExqjGQrc3nNKk=
+	t=1705969476; cv=none; b=eUBv2ti8bhVzJLmqFoogCf17hOvg0jrFBuaMBUrPuGPc0U9uGi7gnMO6UFfkvTBukUYeCAD1/7Ha7D5lkRWv4LVq38xPiFMedmUEu5UI078CAmtYiSNQeCrEHXdEgwvQAGg5ewleBbxPEigwXYl0asokFKUTeXKsL2WfW1AHP2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974409; c=relaxed/simple;
-	bh=Ka3vHaz08tJn5V0wk7ccSmKNf/3pZEkVCsSjYa8B3a0=;
+	s=arc-20240116; t=1705969476; c=relaxed/simple;
+	bh=hdqFfnwNpNQbQIx3B1GxdPl6U0ZwHfmyKIUMKkqwb5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LgG744DVwu6Sh604Ub5Gjxw7ADr/FXSVi5oLbcpZo2uXPvn2hI1HNiAhrtF2Niso0FTIVQ4cb7l8rQeQE+4UUeIZzpgqgOjiaE90S8eprtMMo/rF4NKAZ3w6NCF6M5wGfF94vxV7NFAjsCXYWqJT0VfMZNU7LREKWlnAvJwQ70I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXX40tVw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 534EDC433F1;
-	Tue, 23 Jan 2024 01:46:49 +0000 (UTC)
+	 MIME-Version; b=eysRe/wTVWmiVftQzHdRQPMXjGh4qoYmypl9miWDXTeMmihbBENVC6b8+VOrwt5PF2sK646LuSweiBCGOnDDiRD/tRjs2XPXgLaRKEYd3P7FhXtlv4Qwiwv/AJgUh8oMO0ET5zmQ1ElI+yU1mXPCOzq9xEY+Lq9KfyY4S8PLGfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsYd/B5x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE6AC433F1;
+	Tue, 23 Jan 2024 00:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974409;
-	bh=Ka3vHaz08tJn5V0wk7ccSmKNf/3pZEkVCsSjYa8B3a0=;
+	s=korg; t=1705969475;
+	bh=hdqFfnwNpNQbQIx3B1GxdPl6U0ZwHfmyKIUMKkqwb5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VXX40tVwP1+ULjLN7rzyqrXXxBMrLQXIh0ZuqUQiUsQJhtdUT0NGId9kAsfqJ2YHT
-	 sPF1XS2pLSx6y8EXoSQYlLyaMZpdX7lGx4Brtzek/y+bVGH1Ev1qXumC0knhFVpGg9
-	 U6c1RjjB+NwbdLZot0w5tALtwfUQgV8448KmavAI=
+	b=EsYd/B5xsQVjBTe4ilgwE7qoVu6zczPxyPAnQDOWxD3Ex9s5tEEa2ft0yY9X+tzCp
+	 AhRMZNkvo8m2RBJf13KkGsvZI5z9D/VEgVYbC+Im9SH53DaoCniOIz0j9AArqqXYjX
+	 scN8bLzZiRrFmD9ex2kL7iLfNkbulX1Jl6aPkuuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordan Rome <jordalgo@meta.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Tao Liu <taoliu828@163.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/583] bpf: Add crosstask check to __bpf_get_stack
+Subject: [PATCH 6.7 236/641] net/sched: act_ct: fix skb leak and crash on ooo frags
 Date: Mon, 22 Jan 2024 15:52:20 -0800
-Message-ID: <20240122235814.895130776@linuxfoundation.org>
+Message-ID: <20240122235825.313001329@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +62,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rome <jordalgo@meta.com>
+From: Tao Liu <taoliu828@163.com>
 
-[ Upstream commit b8e3a87a627b575896e448021e5c2f8a3bc19931 ]
+[ Upstream commit 3f14b377d01d8357eba032b4cabc8c1149b458b6 ]
 
-Currently get_perf_callchain only supports user stack walking for
-the current task. Passing the correct *crosstask* param will return
-0 frames if the task passed to __bpf_get_stack isn't the current
-one instead of a single incorrect frame/address. This change
-passes the correct *crosstask* param but also does a preemptive
-check in __bpf_get_stack if the task is current and returns
--EOPNOTSUPP if it is not.
+act_ct adds skb->users before defragmentation. If frags arrive in order,
+the last frag's reference is reset in:
 
-This issue was found using bpf_get_task_stack inside a BPF
-iterator ("iter/task"), which iterates over all tasks.
-bpf_get_task_stack works fine for fetching kernel stacks
-but because get_perf_callchain relies on the caller to know
-if the requested *task* is the current one (via *crosstask*)
-it was failing in a confusing way.
+  inet_frag_reasm_prepare
+    skb_morph
 
-It might be possible to get user stacks for all tasks utilizing
-something like access_process_vm but that requires the bpf
-program calling bpf_get_task_stack to be sleepable and would
-therefore be a breaking change.
+which is not straightforward.
 
-Fixes: fa28dcb82a38 ("bpf: Introduce helper bpf_get_task_stack()")
-Signed-off-by: Jordan Rome <jordalgo@meta.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20231108112334.3433136-1-jordalgo@meta.com
+However when frags arrive out of order, nobody unref the last frag, and
+all frags are leaked. The situation is even worse, as initiating packet
+capture can lead to a crash[0] when skb has been cloned and shared at the
+same time.
+
+Fix the issue by removing skb_get() before defragmentation. act_ct
+returns TC_ACT_CONSUMED when defrag failed or in progress.
+
+[0]:
+[  843.804823] ------------[ cut here ]------------
+[  843.809659] kernel BUG at net/core/skbuff.c:2091!
+[  843.814516] invalid opcode: 0000 [#1] PREEMPT SMP
+[  843.819296] CPU: 7 PID: 0 Comm: swapper/7 Kdump: loaded Tainted: G S 6.7.0-rc3 #2
+[  843.824107] Hardware name: XFUSION 1288H V6/BC13MBSBD, BIOS 1.29 11/25/2022
+[  843.828953] RIP: 0010:pskb_expand_head+0x2ac/0x300
+[  843.833805] Code: 8b 70 28 48 85 f6 74 82 48 83 c6 08 bf 01 00 00 00 e8 38 bd ff ff 8b 83 c0 00 00 00 48 03 83 c8 00 00 00 e9 62 ff ff ff 0f 0b <0f> 0b e8 8d d0 ff ff e9 b3 fd ff ff 81 7c 24 14 40 01 00 00 4c 89
+[  843.843698] RSP: 0018:ffffc9000cce07c0 EFLAGS: 00010202
+[  843.848524] RAX: 0000000000000002 RBX: ffff88811a211d00 RCX: 0000000000000820
+[  843.853299] RDX: 0000000000000640 RSI: 0000000000000000 RDI: ffff88811a211d00
+[  843.857974] RBP: ffff888127d39518 R08: 00000000bee97314 R09: 0000000000000000
+[  843.862584] R10: 0000000000000000 R11: ffff8881109f0000 R12: 0000000000000880
+[  843.867147] R13: ffff888127d39580 R14: 0000000000000640 R15: ffff888170f7b900
+[  843.871680] FS:  0000000000000000(0000) GS:ffff889ffffc0000(0000) knlGS:0000000000000000
+[  843.876242] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  843.880778] CR2: 00007fa42affcfb8 CR3: 000000011433a002 CR4: 0000000000770ef0
+[  843.885336] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[  843.889809] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[  843.894229] PKRU: 55555554
+[  843.898539] Call Trace:
+[  843.902772]  <IRQ>
+[  843.906922]  ? __die_body+0x1e/0x60
+[  843.911032]  ? die+0x3c/0x60
+[  843.915037]  ? do_trap+0xe2/0x110
+[  843.918911]  ? pskb_expand_head+0x2ac/0x300
+[  843.922687]  ? do_error_trap+0x65/0x80
+[  843.926342]  ? pskb_expand_head+0x2ac/0x300
+[  843.929905]  ? exc_invalid_op+0x50/0x60
+[  843.933398]  ? pskb_expand_head+0x2ac/0x300
+[  843.936835]  ? asm_exc_invalid_op+0x1a/0x20
+[  843.940226]  ? pskb_expand_head+0x2ac/0x300
+[  843.943580]  inet_frag_reasm_prepare+0xd1/0x240
+[  843.946904]  ip_defrag+0x5d4/0x870
+[  843.950132]  nf_ct_handle_fragments+0xec/0x130 [nf_conntrack]
+[  843.953334]  tcf_ct_act+0x252/0xd90 [act_ct]
+[  843.956473]  ? tcf_mirred_act+0x516/0x5a0 [act_mirred]
+[  843.959657]  tcf_action_exec+0xa1/0x160
+[  843.962823]  fl_classify+0x1db/0x1f0 [cls_flower]
+[  843.966010]  ? skb_clone+0x53/0xc0
+[  843.969173]  tcf_classify+0x24d/0x420
+[  843.972333]  tc_run+0x8f/0xf0
+[  843.975465]  __netif_receive_skb_core+0x67a/0x1080
+[  843.978634]  ? dev_gro_receive+0x249/0x730
+[  843.981759]  __netif_receive_skb_list_core+0x12d/0x260
+[  843.984869]  netif_receive_skb_list_internal+0x1cb/0x2f0
+[  843.987957]  ? mlx5e_handle_rx_cqe_mpwrq_rep+0xfa/0x1a0 [mlx5_core]
+[  843.991170]  napi_complete_done+0x72/0x1a0
+[  843.994305]  mlx5e_napi_poll+0x28c/0x6d0 [mlx5_core]
+[  843.997501]  __napi_poll+0x25/0x1b0
+[  844.000627]  net_rx_action+0x256/0x330
+[  844.003705]  __do_softirq+0xb3/0x29b
+[  844.006718]  irq_exit_rcu+0x9e/0xc0
+[  844.009672]  common_interrupt+0x86/0xa0
+[  844.012537]  </IRQ>
+[  844.015285]  <TASK>
+[  844.017937]  asm_common_interrupt+0x26/0x40
+[  844.020591] RIP: 0010:acpi_safe_halt+0x1b/0x20
+[  844.023247] Code: ff 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 65 48 8b 04 25 00 18 03 00 48 8b 00 a8 08 75 0c 66 90 0f 00 2d 81 d0 44 00 fb f4 <fa> c3 0f 1f 00 89 fa ec 48 8b 05 ee 88 ed 00 a9 00 00 00 80 75 11
+[  844.028900] RSP: 0018:ffffc90000533e70 EFLAGS: 00000246
+[  844.031725] RAX: 0000000000004000 RBX: 0000000000000001 RCX: 0000000000000000
+[  844.034553] RDX: ffff889ffffc0000 RSI: ffffffff828b7f20 RDI: ffff88a090f45c64
+[  844.037368] RBP: ffff88a0901a2800 R08: ffff88a090f45c00 R09: 00000000000317c0
+[  844.040155] R10: 00ec812281150475 R11: ffff889fffff0e04 R12: ffffffff828b7fa0
+[  844.042962] R13: ffffffff828b7f20 R14: 0000000000000001 R15: 0000000000000000
+[  844.045819]  acpi_idle_enter+0x7b/0xc0
+[  844.048621]  cpuidle_enter_state+0x7f/0x430
+[  844.051451]  cpuidle_enter+0x2d/0x40
+[  844.054279]  do_idle+0x1d4/0x240
+[  844.057096]  cpu_startup_entry+0x2a/0x30
+[  844.059934]  start_secondary+0x104/0x130
+[  844.062787]  secondary_startup_64_no_verify+0x16b/0x16b
+[  844.065674]  </TASK>
+
+Fixes: b57dc7c13ea9 ("net/sched: Introduce action ct")
+Signed-off-by: Tao Liu <taoliu828@163.com>
+Link: https://lore.kernel.org/r/20231228081457.936732-1-taoliu828@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/bpf.h       |  3 +++
- kernel/bpf/stackmap.c          | 11 ++++++++++-
- tools/include/uapi/linux/bpf.h |  3 +++
- 3 files changed, 16 insertions(+), 1 deletion(-)
+ net/sched/act_ct.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index 0448700890f7..ada7acb91a1b 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -4490,6 +4490,8 @@ union bpf_attr {
-  * long bpf_get_task_stack(struct task_struct *task, void *buf, u32 size, u64 flags)
-  *	Description
-  *		Return a user or a kernel stack in bpf program provided buffer.
-+ *		Note: the user stack will only be populated if the *task* is
-+ *		the current task; all other tasks will return -EOPNOTSUPP.
-  *		To achieve this, the helper needs *task*, which is a valid
-  *		pointer to **struct task_struct**. To store the stacktrace, the
-  *		bpf program provides *buf* with a nonnegative *size*.
-@@ -4501,6 +4503,7 @@ union bpf_attr {
-  *
-  *		**BPF_F_USER_STACK**
-  *			Collect a user space stack instead of a kernel stack.
-+ *			The *task* must be the current task.
-  *		**BPF_F_USER_BUILD_ID**
-  *			Collect buildid+offset instead of ips for user stack,
-  *			only valid if **BPF_F_USER_STACK** is also specified.
-diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
-index 458bb80b14d5..36775c4bc33f 100644
---- a/kernel/bpf/stackmap.c
-+++ b/kernel/bpf/stackmap.c
-@@ -388,6 +388,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- {
- 	u32 trace_nr, copy_len, elem_size, num_elem, max_depth;
- 	bool user_build_id = flags & BPF_F_USER_BUILD_ID;
-+	bool crosstask = task && task != current;
- 	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
- 	bool user = flags & BPF_F_USER_STACK;
- 	struct perf_callchain_entry *trace;
-@@ -410,6 +411,14 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- 	if (task && user && !user_mode(regs))
- 		goto err_fault;
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index f69c47945175..3d50215985d5 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -850,7 +850,6 @@ static int tcf_ct_handle_fragments(struct net *net, struct sk_buff *skb,
+ 	if (err || !frag)
+ 		return err;
  
-+	/* get_perf_callchain does not support crosstask user stack walking
-+	 * but returns an empty stack instead of NULL.
-+	 */
-+	if (crosstask && user) {
-+		err = -EOPNOTSUPP;
-+		goto clear;
-+	}
+-	skb_get(skb);
+ 	err = nf_ct_handle_fragments(net, skb, zone, family, &proto, &mru);
+ 	if (err)
+ 		return err;
+@@ -999,12 +998,8 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
+ 	nh_ofs = skb_network_offset(skb);
+ 	skb_pull_rcsum(skb, nh_ofs);
+ 	err = tcf_ct_handle_fragments(net, skb, family, p->zone, &defrag);
+-	if (err == -EINPROGRESS) {
+-		retval = TC_ACT_STOLEN;
+-		goto out_clear;
+-	}
+ 	if (err)
+-		goto drop;
++		goto out_frag;
+ 
+ 	err = nf_ct_skb_network_trim(skb, family);
+ 	if (err)
+@@ -1091,6 +1086,11 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
+ 		qdisc_skb_cb(skb)->pkt_len = skb->len;
+ 	return retval;
+ 
++out_frag:
++	if (err != -EINPROGRESS)
++		tcf_action_inc_drop_qstats(&c->common);
++	return TC_ACT_CONSUMED;
 +
- 	num_elem = size / elem_size;
- 	max_depth = num_elem + skip;
- 	if (sysctl_perf_event_max_stack < max_depth)
-@@ -421,7 +430,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- 		trace = get_callchain_entry_for_task(task, max_depth);
- 	else
- 		trace = get_perf_callchain(regs, 0, kernel, user, max_depth,
--					   false, false);
-+					   crosstask, false);
- 	if (unlikely(!trace))
- 		goto err_fault;
- 
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index 0448700890f7..ada7acb91a1b 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -4490,6 +4490,8 @@ union bpf_attr {
-  * long bpf_get_task_stack(struct task_struct *task, void *buf, u32 size, u64 flags)
-  *	Description
-  *		Return a user or a kernel stack in bpf program provided buffer.
-+ *		Note: the user stack will only be populated if the *task* is
-+ *		the current task; all other tasks will return -EOPNOTSUPP.
-  *		To achieve this, the helper needs *task*, which is a valid
-  *		pointer to **struct task_struct**. To store the stacktrace, the
-  *		bpf program provides *buf* with a nonnegative *size*.
-@@ -4501,6 +4503,7 @@ union bpf_attr {
-  *
-  *		**BPF_F_USER_STACK**
-  *			Collect a user space stack instead of a kernel stack.
-+ *			The *task* must be the current task.
-  *		**BPF_F_USER_BUILD_ID**
-  *			Collect buildid+offset instead of ips for user stack,
-  *			only valid if **BPF_F_USER_STACK** is also specified.
+ drop:
+ 	tcf_action_inc_drop_qstats(&c->common);
+ 	return TC_ACT_SHOT;
 -- 
 2.43.0
 
