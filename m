@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A1F838143
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:07:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED1C837F09
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFA241F2229A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD33429BDC6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A731514900A;
-	Tue, 23 Jan 2024 01:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1533F605B9;
+	Tue, 23 Jan 2024 00:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vY4LpqR9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfjJUUzx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BBC149006;
-	Tue, 23 Jan 2024 01:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60D560261;
+	Tue, 23 Jan 2024 00:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972088; cv=none; b=q+5i+pPNnzoEqo/0oDh8Q8C8gpm/RRxd5HiWABzl68gLRU+nNmEKBIA8fF/8VY1CwuTzRa5TLupLamlL2P9WqWR8v9NtHVmX4jZwGJRGJqTwaeObjZK5qB/Gw4QDyAfmM4+SU2j3CwLLSGCVZyDqpmoToVw2lW9VurLJSNk+Frc=
+	t=1705970896; cv=none; b=r1bfHWLp1x6U5OIRRX/Q/Wo0y6nqlyyGAGOjB8gzOMFDBgxEyIUpHV/GOgEF2mH/9CtvmLTLXFkvZPhQVEqBhxaEA+ltT0jQT0vb+9qnkvFuim51jRNS7/Z6PZOc5aInmuJkx3OQVHN4W1HUTH4rqmlzhu+Mk5Ts97qjrgTm7fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972088; c=relaxed/simple;
-	bh=rqWKkAnvHnqqaDpmO4LlmWUMcSgh7Li0hD3vzwc3/nY=;
+	s=arc-20240116; t=1705970896; c=relaxed/simple;
+	bh=SRha3E4JDEaq5CM0UWosQoFBR9YGPKldaoxUf+QAy94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t9yDVE+nFDUUWXlh88JFZ0qoD5N4NirUDY8q3DLGxF3UwleEkFkf37zyQysv1ygJnmFbxKGxod/P8hPpVlTKvPQknx9EeHF+zzCVTTq7gndu1rVZK9fVkxJ2jtbD816ENIbm3aCtJHMZSH2Z+k1YBFifI40Tvg8i7n4waRAwgjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vY4LpqR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 259FEC43390;
-	Tue, 23 Jan 2024 01:08:08 +0000 (UTC)
+	 MIME-Version; b=uoNMxamfpUQlHFSbtwCN/X10WlKF/nbBkr2l7vFWU46YlJppq/tAq9/TlI4WZqhpKbB9w48fiuDHTn5axhoP2mx4sdbeuXYBR9RZmfAIR71Mr7JAuL9EfvL1Lhv5XmkDAsRgT1F9DIK10XAbPCNsDq7TpS3HKB1QkXyr7fiNb9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfjJUUzx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0BDC43390;
+	Tue, 23 Jan 2024 00:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972088;
-	bh=rqWKkAnvHnqqaDpmO4LlmWUMcSgh7Li0hD3vzwc3/nY=;
+	s=korg; t=1705970896;
+	bh=SRha3E4JDEaq5CM0UWosQoFBR9YGPKldaoxUf+QAy94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vY4LpqR9mPIYq03s4ZKDmv2dVTW4flEBeu4ttmgp9xm0To00Xc2W6jbZdLE6uh8Ok
-	 8KND5xt/9WTroyTtmZCQ/ewFZqPcQK0oMGcSsxHcxjIWtD3Qc3xxwtPyan7Hazr33M
-	 eKRmUzGn02LStMYVaY/W7JnsnGbxNHLnDr3JrxBg=
+	b=rfjJUUzxFAWRNuc8VeyjabVRNWYVgcpMyKxV4rkG8ta983GKPs4w0I/eObJOTy3YJ
+	 TI6P60yQvbv66Gnb6YMGPbDOTgGUmmulJTXS4Qur3HCNmNeLOAmclBZDOhPDmyLqPq
+	 sHSqx0/35EWlUUxx0RNUzSUmHrRKb4PQpOySeyS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnold Gozum <arngozum@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Yihang Li <liyihang9@huawei.com>,
+	Xiang Chen <chenxiang66@hisilicon.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 029/374] platform/x86: intel-vbtn: Fix missing tablet-mode-switch events
+Subject: [PATCH 6.1 117/417] scsi: hisi_sas: Rollback some operations if FLR failed
 Date: Mon, 22 Jan 2024 15:54:45 -0800
-Message-ID: <20240122235745.653161666@linuxfoundation.org>
+Message-ID: <20240122235755.833011436@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Yihang Li <liyihang9@huawei.com>
 
-[ Upstream commit 14c200b7ca46b9a9f4af9e81d258a58274320b6f ]
+[ Upstream commit 7ea3e7763c50b20a8bd25cf524ea0c6463de69be ]
 
-2 issues have been reported on the Dell Inspiron 7352:
+We obtain the semaphore and set HISI_SAS_RESETTING_BIT in
+hisi_sas_reset_prepare_v3_hw(), block the scsi host and set
+HISI_SAS_REJECT_CMD_BIT in hisi_sas_controller_reset_prepare(), released
+them in hisi_sas_controller_reset_done(). However, if the HW reset failure
+in FLR results in early return, the semaphore and flag bits will not be
+release.
 
-1. Sometimes the tablet-mode-switch stops reporting tablet-mode
-   change events.
+Rollback some operations including clearing flags / releasing semaphore
+when FLR is failed.
 
-   Add a "VBDL" call to notify_handler() to work around this.
-
-2. Sometimes the tablet-mode is incorrect after suspend/resume
-
-   Add a detect_tablet_mode() to resume() to fix this.
-
-Reported-by: Arnold Gozum <arngozum@gmail.com>
-Closes: https://lore.kernel.org/platform-driver-x86/87271a74-c831-4eec-b7a4-1371d0e42471@gmail.com/
-Tested-by: Arnold Gozum <arngozum@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://lore.kernel.org/r/20231204150601.46976-1-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: e5ea48014adc ("scsi: hisi_sas: Implement handlers of PCIe FLR for v3 hw")
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+Link: https://lore.kernel.org/r/1702525516-51258-5-git-send-email-chenxiang66@hisilicon.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/vbtn.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
-index 15f013af9e62..f5e020840d94 100644
---- a/drivers/platform/x86/intel/vbtn.c
-+++ b/drivers/platform/x86/intel/vbtn.c
-@@ -73,10 +73,10 @@ struct intel_vbtn_priv {
- 	bool wakeup_mode;
- };
- 
--static void detect_tablet_mode(struct platform_device *device)
-+static void detect_tablet_mode(struct device *dev)
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index 4f816b2cfa49..ee2065e83f9b 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -4946,6 +4946,7 @@ static void hisi_sas_reset_done_v3_hw(struct pci_dev *pdev)
  {
--	struct intel_vbtn_priv *priv = dev_get_drvdata(&device->dev);
--	acpi_handle handle = ACPI_HANDLE(&device->dev);
-+	struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
-+	acpi_handle handle = ACPI_HANDLE(dev);
- 	unsigned long long vgbs;
- 	acpi_status status;
- 	int m;
-@@ -89,6 +89,8 @@ static void detect_tablet_mode(struct platform_device *device)
- 	input_report_switch(priv->switches_dev, SW_TABLET_MODE, m);
- 	m = (vgbs & VGBS_DOCK_MODE_FLAG) ? 1 : 0;
- 	input_report_switch(priv->switches_dev, SW_DOCK, m);
-+
-+	input_sync(priv->switches_dev);
- }
+ 	struct sas_ha_struct *sha = pci_get_drvdata(pdev);
+ 	struct hisi_hba *hisi_hba = sha->lldd_ha;
++	struct Scsi_Host *shost = hisi_hba->shost;
+ 	struct device *dev = hisi_hba->dev;
+ 	int rc;
  
- /*
-@@ -134,7 +136,7 @@ static int intel_vbtn_input_setup(struct platform_device *device)
- 	priv->switches_dev->id.bustype = BUS_HOST;
- 
- 	if (priv->has_switches) {
--		detect_tablet_mode(device);
-+		detect_tablet_mode(&device->dev);
- 
- 		ret = input_register_device(priv->switches_dev);
- 		if (ret)
-@@ -198,6 +200,9 @@ static void notify_handler(acpi_handle handle, u32 event, void *context)
- 	autorelease = val && (!ke_rel || ke_rel->type == KE_IGNORE);
- 
- 	sparse_keymap_report_event(input_dev, event, val, autorelease);
-+
-+	/* Some devices need this to report further events */
-+	acpi_evaluate_object(handle, "VBDL", NULL, NULL);
- }
- 
- /*
-@@ -358,7 +363,13 @@ static void intel_vbtn_pm_complete(struct device *dev)
- 
- static int intel_vbtn_pm_resume(struct device *dev)
- {
-+	struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
-+
- 	intel_vbtn_pm_complete(dev);
-+
-+	if (priv->has_switches)
-+		detect_tablet_mode(dev);
-+
- 	return 0;
- }
+@@ -4954,6 +4955,10 @@ static void hisi_sas_reset_done_v3_hw(struct pci_dev *pdev)
+ 	rc = hw_init_v3_hw(hisi_hba);
+ 	if (rc) {
+ 		dev_err(dev, "FLR: hw init failed rc=%d\n", rc);
++		clear_bit(HISI_SAS_REJECT_CMD_BIT, &hisi_hba->flags);
++		scsi_unblock_requests(shost);
++		clear_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags);
++		up(&hisi_hba->sem);
+ 		return;
+ 	}
  
 -- 
 2.43.0
