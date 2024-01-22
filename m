@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-14570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72A3838171
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F16E837CC4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DB08281588
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FAA51C2525C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FE6137C55;
-	Tue, 23 Jan 2024 01:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B838D157E9F;
+	Tue, 23 Jan 2024 00:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrS3P/kn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHdYomr1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD4F37C;
-	Tue, 23 Jan 2024 01:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BE01586F1;
+	Tue, 23 Jan 2024 00:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972133; cv=none; b=OomgAqsmot3A6vVdtAntHgDMOx6SaEAtep4NXFx+RQSkwCjPRHxmWT0rJ2iosoKDJySjr4hTXSlhe2GJAds8qbMSLLMFWpjFzGb3VsxQpgNPvxN5JWyEV/FCpYDXrNwebHNjpHPFqweTwH885Wp7VkEMglCAl8DNBads7CM8EAU=
+	t=1705969737; cv=none; b=qtEBYxB3OFBPIfCOFIR9b34o3AhL7YW0CpkLN142epoeLnsTimAO+HVYTwtlMYfNqYh+j95QzseccbCq9nnnqLUrx3rfXyeUNfTummohEw9nq4hwkyScsbSIWt3o5kWcbJtQx+czNcEUF/sKUWHNAd1toQY52VHGl96KM1VKWpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972133; c=relaxed/simple;
-	bh=pIZ/sU1C98VZefvGYgy6LOTx6SX3va0+gu+mC6mZsSE=;
+	s=arc-20240116; t=1705969737; c=relaxed/simple;
+	bh=vErsPezn2LFkpmlUhUuPO6s+jT9xKm7MFAuYjbxajZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0cu2gDwzVKjnRSqXTMj3kTHVnQnLbgnjZsGHuDErxv+ueRTXzc9tisVOr3C7d3qEygsiuxNTyQViLLRb5d4YloxuTzFXnBcIjcWiuCUfmLSjVIo2LzYP53A3an/DAjjASr/jHqsUQI194dq3hafy2sxYZT8PW7eek3X6e3LQ3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrS3P/kn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CEF2C43394;
-	Tue, 23 Jan 2024 01:08:53 +0000 (UTC)
+	 MIME-Version; b=csPyHDY6kbRLF9DDT0CQxPt8xYrObUBQKODK/gk6EKKvc5ScaLTAndi1TxTZ7l4SFwwXRNlBqdxCV72n2l9qYCPgEp/6HsXwcvCZUqi61XtFV4zDLab9SpVbH1GS0tmcyvdyzLq3l5f6yBZdUyDNh+hKNT4aU//0PhuC3xd7qdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHdYomr1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06EFAC43399;
+	Tue, 23 Jan 2024 00:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972133;
-	bh=pIZ/sU1C98VZefvGYgy6LOTx6SX3va0+gu+mC6mZsSE=;
+	s=korg; t=1705969737;
+	bh=vErsPezn2LFkpmlUhUuPO6s+jT9xKm7MFAuYjbxajZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xrS3P/kn9xaVRGLC1oHhsaRI4miEM1JS7oo/F6g6tJZ+peEl27rmH/xl3hDvAZ1r0
-	 3LpJo/d0uwVnLWWa5T5KUOeKDhTHJdXGh/JieJZpg4wVX22CxNmplKJrSyXGORHYWV
-	 MNh3+41QwZxOM1Zh5S11ehxc3C3orl6bPBQALyjY=
+	b=jHdYomr1m7FhokdY2XvqflYft1xzYOoLsUF87lRAkGAofN3YNwM04Jo25vDgm25Ig
+	 Qc+mmPB/kJU0vRAqEVTJTy6f5nh25Lpr0DHRpArEgG4PA5X2kFhTCoKZsAr0xKDuXn
+	 AzvMg4tFnZVXO4/CnMOTuYNSpzMGMTNXhsn1QWUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 048/374] ARM: sun9i: smp: fix return code check of of_property_match_string
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.7 400/641] Revert "usb: dwc3: dont reset device side if dwc3 was configured as host-only"
 Date: Mon, 22 Jan 2024 15:55:04 -0800
-Message-ID: <20240122235746.279888281@linuxfoundation.org>
+Message-ID: <20240122235830.485902647@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 643fe70e7bcdcc9e2d96952f7fc2bab56385cce5 ]
+commit afe28cd686aeb77e8d9140d50fb1cf06a7ecb731 upstream.
 
-of_property_match_string returns an int; either an index from 0 or
-greater if successful or negative on failure. Even it's very
-unlikely that the DT CPU node contains multiple enable-methods
-these checks should be fixed.
+This reverts commit e835c0a4e23c38531dcee5ef77e8d1cf462658c7.
 
-This patch was inspired by the work of Nick Desaulniers.
+Don't omit soft-reset. During initialization, the driver may need to
+perform a soft reset to ensure the phy is ready when the controller
+updates the GCTL.PRTCAPDIR or other settings by issuing phy soft-reset.
+Many platforms often have access to DCTL register for soft-reset despite
+being host-only. If there are actual reported issues from the platforms
+that don't expose DCTL registers, then we will need to revisit (perhaps
+to teach dwc3 to perform xhci's soft-reset USBCMD.HCRST).
 
-Link: https://lore.kernel.org/lkml/20230516-sunxi-v1-1-ac4b9651a8c1@google.com/T/
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20231228193903.9078-2-wahrenst@gmx.net
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Fixes: e835c0a4e23c ("usb: dwc3: don't reset device side if dwc3 was configured as host-only")
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/7668ab11a48f260820825274976eb41fec7f54d1.1703282469.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-sunxi/mc_smp.c | 4 ++--
+ drivers/usb/dwc3/core.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-sunxi/mc_smp.c b/arch/arm/mach-sunxi/mc_smp.c
-index b2f5f4f28705..f779e386b6e7 100644
---- a/arch/arm/mach-sunxi/mc_smp.c
-+++ b/arch/arm/mach-sunxi/mc_smp.c
-@@ -804,12 +804,12 @@ static int __init sunxi_mc_smp_init(void)
- 	for (i = 0; i < ARRAY_SIZE(sunxi_mc_smp_data); i++) {
- 		ret = of_property_match_string(node, "enable-method",
- 					       sunxi_mc_smp_data[i].enable_method);
--		if (!ret)
-+		if (ret >= 0)
- 			break;
- 	}
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -277,9 +277,9 @@ int dwc3_core_soft_reset(struct dwc3 *dw
+ 	/*
+ 	 * We're resetting only the device side because, if we're in host mode,
+ 	 * XHCI driver will reset the host block. If dwc3 was configured for
+-	 * host-only mode or current role is host, then we can return early.
++	 * host-only mode, then we can return early.
+ 	 */
+-	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
++	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
+ 		return 0;
  
- 	of_node_put(node);
--	if (ret)
-+	if (ret < 0)
- 		return -ENODEV;
- 
- 	is_a83t = sunxi_mc_smp_data[i].is_a83t;
--- 
-2.43.0
-
+ 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
 
 
 
