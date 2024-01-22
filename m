@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-14215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2E6838001
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F2A838060
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E36F1F2B938
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB8611C29521
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2129C12DD95;
-	Tue, 23 Jan 2024 00:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006B867749;
+	Tue, 23 Jan 2024 01:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTg8Nolg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5mFsd/j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D423912DD89;
-	Tue, 23 Jan 2024 00:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B347166B52;
+	Tue, 23 Jan 2024 01:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971492; cv=none; b=s7PLDF3pneTcu4eBIY6zk9GH//R7/HWqC7ui1N0vhbumK0Qh0cy68h7B3hy0+9vyrE8uuc3YbESAYJpwHbzf0uawnksRN3VZpyJ9UuNb2Bx1mBAd9tbipLvY12NErRFl3UXD7Np/eqjFCXVOu56U1YoNvAyfzIdqi+Te/7Op0ro=
+	t=1705971692; cv=none; b=me3aJj6rHukn67Qm5PcF5AnsoMq3KRseDkbkOE8MfGgpwMm+eqCcGuCsY6Jum7hqkDuVB1TJz3EnmW7AwDNfV1Huu/qHa6I2t7AHJues/nq/zdrPjKChI/nW7VwXxl5JzB50v1OQCdo0oGzjBlbc1+eYDiMmdd6b+b8jYMaBfM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971492; c=relaxed/simple;
-	bh=+sK3TonfcDxfIrM0RrdBhN4wrKS8vjCYJmjJIbZXywE=;
+	s=arc-20240116; t=1705971692; c=relaxed/simple;
+	bh=eZN7VyBFepHO5ONq+niQBqnknaQHyd1QeCdmSkzyO1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d8wMHEOJNwN5RuzJLcGYaK0Kxq1bzxvT14r+gHSabYqr0tyAsArR/pMR2rY7pWQncb6tcvnJ2kwBppyCCLMnA1yiJwJG6nrmyXZCD+GPOq+h+RxDBPfpKXsyhwTEi4FbAHiUWDHyytfPHTtCQrqI0qepcFTwqOe6/9oXuYp875M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTg8Nolg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8D5C43390;
-	Tue, 23 Jan 2024 00:58:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mcjJOufcBUNhnaBolohBKLOuvNX5ll2d/hXpeC9eVMe5WDWagX2X/9FREV5r06esSJCzwkiTJnZMPzRqZSWBc4NxsVqZF1s1Wl8/MI0c0rjue9dutTyTaJy2tz2THVPIZY4MXJUk4JMZCAXyZaXsln1AwLWHi1tIU7stQYALkdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5mFsd/j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E74AC433C7;
+	Tue, 23 Jan 2024 01:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971492;
-	bh=+sK3TonfcDxfIrM0RrdBhN4wrKS8vjCYJmjJIbZXywE=;
+	s=korg; t=1705971692;
+	bh=eZN7VyBFepHO5ONq+niQBqnknaQHyd1QeCdmSkzyO1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rTg8NolgNEh38MOYciGpV7rwMlhiC4k7RtBcvdvN2yypTt2yFQD1zjagFE4f3tn3/
-	 sqhaYyWLqnusumne/4v+YZUf70CtLtHHYiRbuCCTR0Nc/tioqmGNZaMS5lb2cjfYFF
-	 +viDjonqQdK4Vk2AR5YdyroxwAXvG5zUTBHh+Q68=
+	b=R5mFsd/jqF6ndscGBmnmj5T55iOFg288oXCUVCf9qrVuPuZefTjp/xSj9eT+i79Jz
+	 ntCHYA3fy3lrXcD3k2+PynW45lX0fyXJDCJwGDDKilsy9Ym+mijy1ASmKz07OtvLpE
+	 Qc96yCRpJ0ZIIaoI3gfKhqp0OkUqdBiLN9kw1a2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 160/286] drm/radeon: check the alloc_workqueue return value in radeon_crtc_init()
-Date: Mon, 22 Jan 2024 15:57:46 -0800
-Message-ID: <20240122235738.339082515@linuxfoundation.org>
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 6.1 299/417] pwm: Fix out-of-bounds access in of_pwm_single_xlate()
+Date: Mon, 22 Jan 2024 15:57:47 -0800
+Message-ID: <20240122235802.185648308@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +58,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 7a2464fac80d42f6f8819fed97a553e9c2f43310 ]
+commit a297d07b9a1e4fb8cda25a4a2363a507d294b7c9 upstream.
 
-check the alloc_workqueue return value in radeon_crtc_init()
-to avoid null-ptr-deref.
+With args->args_count == 2 args->args[2] is not defined. Actually the
+flags are contained in args->args[1].
 
-Fixes: fa7f517cb26e ("drm/radeon: rework page flip handling v4")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3ab7b6ac5d82 ("pwm: Introduce single-PWM of_xlate function")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/243908750d306e018a3d4bf2eb745d53ab50f663.1704835845.git.u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/radeon_display.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/pwm/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_display.c b/drivers/gpu/drm/radeon/radeon_display.c
-index 71bdafac9210..07d23a1e62a0 100644
---- a/drivers/gpu/drm/radeon/radeon_display.c
-+++ b/drivers/gpu/drm/radeon/radeon_display.c
-@@ -689,11 +689,16 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
- 	if (radeon_crtc == NULL)
- 		return;
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -171,7 +171,7 @@ of_pwm_single_xlate(struct pwm_chip *pc,
+ 	pwm->args.period = args->args[0];
+ 	pwm->args.polarity = PWM_POLARITY_NORMAL;
  
-+	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
-+	if (!radeon_crtc->flip_queue) {
-+		kfree(radeon_crtc);
-+		return;
-+	}
-+
- 	drm_crtc_init(dev, &radeon_crtc->base, &radeon_crtc_funcs);
+-	if (args->args_count == 2 && args->args[2] & PWM_POLARITY_INVERTED)
++	if (args->args_count == 2 && args->args[1] & PWM_POLARITY_INVERTED)
+ 		pwm->args.polarity = PWM_POLARITY_INVERSED;
  
- 	drm_mode_crtc_set_gamma_size(&radeon_crtc->base, 256);
- 	radeon_crtc->crtc_id = index;
--	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
- 	rdev->mode_info.crtcs[index] = radeon_crtc;
- 
- 	if (rdev->family >= CHIP_BONAIRE) {
--- 
-2.43.0
-
+ 	return pwm;
 
 
 
