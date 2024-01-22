@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-14338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC27F83807E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16ADF8384DF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B9111C29792
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2C1F290AA9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96AB012F5A7;
-	Tue, 23 Jan 2024 01:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C2777F01;
+	Tue, 23 Jan 2024 02:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyGlLa7K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RRm3lzaR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D4612F59C;
-	Tue, 23 Jan 2024 01:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2580F768F6;
+	Tue, 23 Jan 2024 02:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971763; cv=none; b=DaeWWOeiBSHBhHi6OXbKywImOhEW+CuxD9efs4YRgMvEcvOBV6WYI2BatwcHHbKS2CYPX55/38lYkgBGurHd5Uxu5q7SN8FUGM/9QIgf+XFV5Y6CWe0IX5AaJMaCIg4u3BXf8I3ZGD00kXdNE+h97FMrvAYpJounB9FXboLOoG8=
+	t=1705975524; cv=none; b=lchULEGp+ja6lD3CxRmuKLCWSCaU9ZC7FcF7S2bbb1tvY6HbgX60966w+FXJPmoUWKh9StXJ1H83goqpOlbzIO3UWCYsdL5gs6EcNRCgnOLxOowwP8t+ZSQacsZ2m3j2NFLRtmst3XGqPti2BYAAahQY+VNvW7qNXco9RDM0RPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971763; c=relaxed/simple;
-	bh=PWoxXgIq8WkWCVmYh7CYBmcxvsc4Xo+JF0V//Q6MmSg=;
+	s=arc-20240116; t=1705975524; c=relaxed/simple;
+	bh=/8777Ancit4khwf1AMQmWJsRB67PYGm5Q+sdztVoj4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S+XkkMbBlo/jcDogAnft+XTmuXwdeSuYe78hI4HW3rRNWwYovPx8dc6mmVJHyP6uHAUeuouvpBALPRdIZWjZ+79A5Q9t9/cwvkd7o/s0mfIIWfhRs8GqYCHH684+qG/lyncsdbh6TQriS+/Z/kJv5kT2ohrs1FE4iBSVAiLmoR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyGlLa7K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B70C433C7;
-	Tue, 23 Jan 2024 01:02:42 +0000 (UTC)
+	 MIME-Version; b=eHYE+7yUiqxhQ4EBgiLk6fuN/HQs3x433lS6SYbfS4G22RtZJd8hUpSW3e29ad1oVf9gRhSmeBEQ/lfg3B2apJPxD+6d2ydR1AnALH7b54YPinxlGAsY2cZYbWC9K0HFOdiaJBcwQF03QK0mQ21s/NFf0hGC3fHXhTf7Ok6xPmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RRm3lzaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03CAC433B2;
+	Tue, 23 Jan 2024 02:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971763;
-	bh=PWoxXgIq8WkWCVmYh7CYBmcxvsc4Xo+JF0V//Q6MmSg=;
+	s=korg; t=1705975524;
+	bh=/8777Ancit4khwf1AMQmWJsRB67PYGm5Q+sdztVoj4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jyGlLa7K24oepkF4357H6FsYFDdgmjNgoIJCeKxAeNKaBOWbetHcEZOFvytAEkXGe
-	 BDiX4N+lFN4+CzEDUqgKSIRGc3weeOlO2zK1cfXeTSnI1YMClWvdJMKip+oZeWqyOV
-	 9B6lYtHr+tAvE9ho6vtuLyAwcGbyZQE5cJuW0tC4=
+	b=RRm3lzaRdbllO8SwwdaRbdjszPDbaEF0JO1LNsFANM6YXJ5zm5S3OYoQtJpGKdgG0
+	 v5kKXzKmK/0jSa1g13gqm5FausPASC1Ef5bGgAln8lOOricYk1uOmtdKCY1zZi59nX
+	 QJMCKnRoMk71v8iRmusb8sI3FbwiD8mjHTCyfMbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C3=87a=C4=9Fhan=20Demir?= <caghandemir@marun.edu.tr>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 221/286] ALSA: hda/relatek: Enable Mute LED on HP Laptop 15s-fq2xxx
+	Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 476/583] selftests/sgx: Fix uninitialized pointer dereferences in encl_get_entry
 Date: Mon, 22 Jan 2024 15:58:47 -0800
-Message-ID: <20240122235740.583415823@linuxfoundation.org>
+Message-ID: <20240122235826.551657905@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Çağhan Demir <caghandemir@marun.edu.tr>
+From: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
 
-commit bc7863d18677df66b2c7a0e172c91296ff380f11 upstream.
+[ Upstream commit b84fc2e0139ba4b23b8039bd7cfd242894fe8f8b ]
 
-This HP Laptop uses ALC236 codec with COEF 0x07 idx 1 controlling
-the mute LED. This patch enables the already existing quirk for
-this device.
+Ensure sym_tab and sym_names are zero-initialized and add an early-out
+condition in the unlikely (erroneous) case that the enclave ELF file would
+not contain a symbol table.
 
-Signed-off-by: Çağhan Demir <caghandemir@marun.edu.tr>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240115172303.4718-1-caghandemir@marun.edu.tr
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This addresses -Werror=maybe-uninitialized compiler warnings for gcc -O2.
+
+Fixes: 33c5aac3bf32 ("selftests/sgx: Test complete changing of page type flow")
+Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lore.kernel.org/all/20231005153854.25566-3-jo.vanbulck%40cs.kuleuven.be
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/sgx/load.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9034,6 +9034,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x87f5, "HP", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87f6, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
- 	SND_PCI_QUIRK(0x103c, 0x87f7, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
-+	SND_PCI_QUIRK(0x103c, 0x87fe, "HP Laptop 15s-fq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8805, "HP ProBook 650 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x880d, "HP EliteBook 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8811, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+diff --git a/tools/testing/selftests/sgx/load.c b/tools/testing/selftests/sgx/load.c
+index 94bdeac1cf04..c9f658e44de6 100644
+--- a/tools/testing/selftests/sgx/load.c
++++ b/tools/testing/selftests/sgx/load.c
+@@ -136,11 +136,11 @@ static bool encl_ioc_add_pages(struct encl *encl, struct encl_segment *seg)
+  */
+ uint64_t encl_get_entry(struct encl *encl, const char *symbol)
+ {
++	Elf64_Sym *symtab = NULL;
++	char *sym_names = NULL;
+ 	Elf64_Shdr *sections;
+-	Elf64_Sym *symtab;
+ 	Elf64_Ehdr *ehdr;
+-	char *sym_names;
+-	int num_sym;
++	int num_sym = 0;
+ 	int i;
+ 
+ 	ehdr = encl->bin;
+@@ -161,6 +161,9 @@ uint64_t encl_get_entry(struct encl *encl, const char *symbol)
+ 		}
+ 	}
+ 
++	if (!symtab || !sym_names)
++		return 0;
++
+ 	for (i = 0; i < num_sym; i++) {
+ 		Elf64_Sym *sym = &symtab[i];
+ 
+-- 
+2.43.0
+
 
 
 
