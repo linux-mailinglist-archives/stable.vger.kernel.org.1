@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0BE1837F0B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD658381F0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A37A29BD2B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 741852858A3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFCA8604B1;
-	Tue, 23 Jan 2024 00:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8CA55C21;
+	Tue, 23 Jan 2024 01:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwC2iTZ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWOSmbyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBB760257;
-	Tue, 23 Jan 2024 00:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE9E54BD6;
+	Tue, 23 Jan 2024 01:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970900; cv=none; b=pwzo7yRJ4HhHzBDga6krPPAKTjVvd0VuVR/Xk69wqGdiZCYG/N9QmptIwY+eUhstvjN62miDGo2GaSxlPG9wlHbK84STTqFQpBYoHJsNliiTekRwlMEunjodDd02G5qndma5D2unX3eoHBPq3e2iLUH8H3Xt3EPVLvmghzCD3AI=
+	t=1705974010; cv=none; b=cs+gkOmuoWvgajCuhteh3dXxb2HJ3lUCTsr50MlwUCYhAssh6Lk2XysGHK5NXHvaCQAH1IOOnESGWLKmo+uR/c3E57Y9YAjuEqEDTYIyE6ykqKQoduOWNiRY+ZsOlAruD6yV6ScZ346B4DkEbOTEqNXZnGiqJ1MDcsbr2pklpV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970900; c=relaxed/simple;
-	bh=M+A2ZSJf3s8Jdd3Ojzf/2tWd7q7eDK5hbN0qC0ZMqoc=;
+	s=arc-20240116; t=1705974010; c=relaxed/simple;
+	bh=3+JlpAmvAkSq+MW17aoTy4sXDF/bUrjnH0FcsEp5CkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+zdpkAKNjmzyBVa6nICrmVd6iX4qToK8Dc0tMyOJ993lFuNrBcEy08Eyzkp4WY7kICDa7HfcxDvAOmKMBbllYXDbMcEy6CJsowWdQYhAxce+dpJ7jgi34wHF1VOcw6HLjwfViNHIw+xkCQdJQUcFx1UdCpEuQ+Vd7IDG8h1Fmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwC2iTZ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4722DC433C7;
-	Tue, 23 Jan 2024 00:48:19 +0000 (UTC)
+	 MIME-Version; b=GHVYG961i95ryiL5hgurwyuAkd7JNccil5Borc+FkrCi3cNTJJr5b2mjaPqHghaCu+0btCU1+LEY6zBWtQENORc+pF5ewOe6piG02y0fzKRDx/9gxj6NuN0IotkrTshZBrINx2XXfVRXiF2p+sLCiSekqSo3J1byqfk63omUulA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWOSmbyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05DA5C433C7;
+	Tue, 23 Jan 2024 01:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970900;
-	bh=M+A2ZSJf3s8Jdd3Ojzf/2tWd7q7eDK5hbN0qC0ZMqoc=;
+	s=korg; t=1705974010;
+	bh=3+JlpAmvAkSq+MW17aoTy4sXDF/bUrjnH0FcsEp5CkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UwC2iTZ1CBE8R7Vy7AaI1FGMqxNvBXzVgdscTsVw4yFfFcOWjlujlVMMcrRsyrMcN
-	 wcf/g7rLz4ylBa77CbgSkhri10ZUb/zndjRsJCfTk1rp/CL+IWOpdoT2uNHPAkiEvL
-	 Gsi+l3NeiZe7J4i0MDT46SbA/CITsSaIjyIkX+zI=
+	b=HWOSmbyYL4BYLZp9d38igIVTYF9uzofx2h2zvhqJlt0RR0KmnH9glJiIMEpUjTvsO
+	 8vJH1l0B9Lv/1B/3bK2ugaBAsBz0qLpZJn/lGAhKCU76WkkuiR/u3EJMPMrrCpnKdQ
+	 99JGMSDm/m3CL0lbpa/Y7BJ0PdBH4FRkjzFoji7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.10 041/286] binder: use EPOLLERR from eventpoll.h
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Rae Moar <rmoar@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 091/374] kunit: debugfs: Fix unchecked dereference in debugfs_print_results()
 Date: Mon, 22 Jan 2024 15:55:47 -0800
-Message-ID: <20240122235733.591406582@linuxfoundation.org>
+Message-ID: <20240122235747.776563604@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-commit 6ac061db9c58ca5b9270b1b3940d2464fb3ff183 upstream.
+[ Upstream commit 34dfd5bb2e5507e69d9b6d6c90f546600c7a4977 ]
 
-Use EPOLLERR instead of POLLERR to make sure it is cast to the correct
-__poll_t type. This fixes the following sparse issue:
+Move the call to kunit_suite_has_succeeded() after the check that
+the kunit_suite pointer is valid.
 
-  drivers/android/binder.c:5030:24: warning: incorrect type in return expression (different base types)
-  drivers/android/binder.c:5030:24:    expected restricted __poll_t
-  drivers/android/binder.c:5030:24:    got int
+This was found by smatch:
 
-Fixes: f88982679f54 ("binder: check for binder_thread allocation failure in binder_poll()")
-Cc: stable@vger.kernel.org
-Cc: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-2-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ lib/kunit/debugfs.c:66 debugfs_print_results() warn: variable
+ dereferenced before check 'suite' (see line 63)
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: 38289a26e1b8 ("kunit: fix debugfs code to use enum kunit_status, not bool")
+Reviewed-by: Rae Moar <rmoar@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/kunit/debugfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -5173,7 +5173,7 @@ static __poll_t binder_poll(struct file
+diff --git a/lib/kunit/debugfs.c b/lib/kunit/debugfs.c
+index 1048ef1b8d6e..4c4b84db8f4a 100644
+--- a/lib/kunit/debugfs.c
++++ b/lib/kunit/debugfs.c
+@@ -52,12 +52,14 @@ static void debugfs_print_result(struct seq_file *seq,
+ static int debugfs_print_results(struct seq_file *seq, void *v)
+ {
+ 	struct kunit_suite *suite = (struct kunit_suite *)seq->private;
+-	enum kunit_status success = kunit_suite_has_succeeded(suite);
++	enum kunit_status success;
+ 	struct kunit_case *test_case;
  
- 	thread = binder_get_thread(proc);
- 	if (!thread)
--		return POLLERR;
-+		return EPOLLERR;
+ 	if (!suite || !suite->log)
+ 		return 0;
  
- 	binder_inner_proc_lock(thread->proc);
- 	thread->looper |= BINDER_LOOPER_STATE_POLL;
++	success = kunit_suite_has_succeeded(suite);
++
+ 	seq_printf(seq, "%s", suite->log);
+ 
+ 	kunit_suite_for_each_test_case(suite, test_case)
+-- 
+2.43.0
+
 
 
 
