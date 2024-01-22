@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-13709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8ED0837D80
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E62C838573
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:42:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FCE6286E84
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE2C7B2CB4B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0C65C8EF;
-	Tue, 23 Jan 2024 00:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FF5745DB;
+	Tue, 23 Jan 2024 02:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CdGagPN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ld2lySJ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26434E1D8;
-	Tue, 23 Jan 2024 00:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FE1745D6;
+	Tue, 23 Jan 2024 02:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969988; cv=none; b=EGOE3oiKmnqaCR5Be3ZayDw2fPCxcDjF4dVLcinNpI+FS1sx/Qt6dxErmTJToc1fteC9yrbL80GkKxaE0SPoJ+Znmwy2TzX8TbPIbIrROqawuZny2nc/Z5P7NIFu/aquzCGwAGxOYeYjNX/rObs71HtgZYKQPV2Y1Md2vymghqo=
+	t=1705975449; cv=none; b=Vy3vqTBHTlk+CFOCX2HhBSdvt1jUxmzmv5pX8GiAeNdzO3xB0CmFy5dbNLDeGhvtaTHn525XTBAIgdmHzk0YztM3iEFTqqvVRiAagpCfWW0smJv0znkGHPY28mXE8yk2bCGoN+ICpuwNvRA2b7y1ZB8qqrUCDs5G9IRtxHGe6CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969988; c=relaxed/simple;
-	bh=iWkH9lJynFBQlr4UE20U8wFdygMYEhlnRX2b9Tg/wrc=;
+	s=arc-20240116; t=1705975449; c=relaxed/simple;
+	bh=2/gvAl3UEdzOPzk4WWVliygXXOZiW19hFI08S2xRjTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sz43MuDgKQvs7FcbVgSQrWcdXIMZal7MUr0E3DM15t0ckgEQBp68+rYtWdGtnqVz76qee9v+1PfxKc7aGUMBtB+GIFYWzkbjg8SKpazY6YpwfcdiYfqbU1zw2ht2TgFMpIjy+hkgcZKqH41KbuAhIfInG+hf/l/SOupRahF+v9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CdGagPN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75093C433F1;
-	Tue, 23 Jan 2024 00:33:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EmdDubRUL0QtMVrkB0nlbPSqkvYjEUgaeHYHqVdkAIcbuEFHuCVdYlmWplWhwM3+Cr+421+QQVPMSULOXld50v9zqrGcWU9oY3ZtmIeDYvAju2RTDSB9sQA7FgJttND+kX7IycTuvFGRUjVobPOj8qiTNeEtlP5/XLZjPk50rgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ld2lySJ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2595CC433F1;
+	Tue, 23 Jan 2024 02:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969987;
-	bh=iWkH9lJynFBQlr4UE20U8wFdygMYEhlnRX2b9Tg/wrc=;
+	s=korg; t=1705975449;
+	bh=2/gvAl3UEdzOPzk4WWVliygXXOZiW19hFI08S2xRjTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0CdGagPNzKbaJBgrsayJpEzGnWNKR9uctF07Faay3lQdSXI0nhkugFACpqa24lQuU
-	 jEdKtr/0qnBZ//zVBZFwIx29i5b7bBVjU1mII7AqMDZjgma1acSBgICXucXh2UkZwI
-	 tlpDmPM375QqqOnmBWoFrePcahmW63NncQNmMdcU=
+	b=ld2lySJ0qx/pzIPMGvLPQXhJ9oY4nv10KPWSLPmfAc9n/NTtH6Cfb1oG1a21wBiml
+	 5n3mnCLoJXdbkNXMWHD7dPrXcPO6OPeV6Ek6Xm92cVmbPHQrwE/VIQ2JHqnmQJL5+9
+	 01efVcpbPAWKfalHme6+fv4UUdCN6zLt8vbq/5jY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Johansen <john.johansen@canonical.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 552/641] apparmor: Fix ref count leak in task_kill
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 6.6 405/583] pwm: jz4740: Dont use dev_err_probe() in .request()
 Date: Mon, 22 Jan 2024 15:57:36 -0800
-Message-ID: <20240122235835.420872938@linuxfoundation.org>
+Message-ID: <20240122235824.373882644@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +59,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 2cb54a19ac7153b9a26a72098c495187f64c2276 ]
+commit 9320fc509b87b4d795fb37112931e2f4f8b5c55f upstream.
 
-apparmor_task_kill was not putting the task_cred reference tc, or the
-cred_label reference tc when dealing with a passed in cred, fix this
-by using a single fn exit.
+dev_err_probe() is only supposed to be used in probe functions. While it
+probably doesn't hurt, both the EPROBE_DEFER handling and calling
+device_set_deferred_probe_reason() are conceptually wrong in the request
+callback. So replace the call by dev_err() and a separate return
+statement.
 
-Fixes: 90c436a64a6e ("apparmor: pass cred through to audit info.")
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This effectively reverts commit c0bfe9606e03 ("pwm: jz4740: Simplify
+with dev_err_probe()").
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240106141302.1253365-2-u.kleine-koenig@pengutronix.de
+Fixes: c0bfe9606e03 ("pwm: jz4740: Simplify with dev_err_probe()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/lsm.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/pwm/pwm-jz4740.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index 4981bdf02993..608a849a7468 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -954,7 +954,6 @@ static int apparmor_task_kill(struct task_struct *target, struct kernel_siginfo
- 		cl = aa_get_newest_cred_label(cred);
- 		error = aa_may_signal(cred, cl, tc, tl, sig);
- 		aa_put_label(cl);
--		return error;
- 	} else {
- 		cl = __begin_current_label_crit_section();
- 		error = aa_may_signal(current_cred(), cl, tc, tl, sig);
--- 
-2.43.0
-
+--- a/drivers/pwm/pwm-jz4740.c
++++ b/drivers/pwm/pwm-jz4740.c
+@@ -60,9 +60,10 @@ static int jz4740_pwm_request(struct pwm
+ 	snprintf(name, sizeof(name), "timer%u", pwm->hwpwm);
+ 
+ 	clk = clk_get(chip->dev, name);
+-	if (IS_ERR(clk))
+-		return dev_err_probe(chip->dev, PTR_ERR(clk),
+-				     "Failed to get clock\n");
++	if (IS_ERR(clk)) {
++		dev_err(chip->dev, "error %pe: Failed to get clock\n", clk);
++		return PTR_ERR(clk);
++	}
+ 
+ 	err = clk_prepare_enable(clk);
+ 	if (err < 0) {
 
 
 
