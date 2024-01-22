@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9B4A837BA2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5AB6837D88
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4319B2399D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:52:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 251651C23A0F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC33612C544;
-	Tue, 23 Jan 2024 00:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA715D90B;
+	Tue, 23 Jan 2024 00:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GlZSV0bJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tle8LWbf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9F212BF3D;
-	Tue, 23 Jan 2024 00:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA435D75B;
+	Tue, 23 Jan 2024 00:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968935; cv=none; b=l8eUpfdPWPb8CoO6WXg6VeG9oTIgRti7z2gf3iTYid3ZArsb3qIx2qBYxuQVQjpy68iwgxE4KHUKfQzCLbzAxZZICL9gGIQust9FIyLRvU10DfPv9lPTuXhL66yCDL1hV+pqJYKvNq19S+mRRfcMHrKo0RbO1MWQdVBP1lBgMxc=
+	t=1705970006; cv=none; b=majcAN4hVItjGgfEGqDvFYA+fYI6SpQoHbfrEnmSgZ23SfVjp9mbgVq+uA8KaBS4JckWw5JQC7HGdEtC+3x5sTCrRmjG+0bkz9iN1dbd5eeUEM3WGPJe91U+/m+mPL/JEHW2fYSUF1s366Ge0rWPqqQSVo20NMMtooxoOXj1iwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968935; c=relaxed/simple;
-	bh=Al1aTldJ9bJZFZCq45/Ig4vl2wNwT2MJ4CPofb/F9SY=;
+	s=arc-20240116; t=1705970006; c=relaxed/simple;
+	bh=NPnoMZeDHsv3vbjiguIZi8UUteSQWNmtPjefrKDPgrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=py6v+6Kr5EChN1nNuxnv4vEe/qCbWWOMYsSOI+LRnMI/Zvr6k7h2by1Z8HsLcOAJsjeBBmjWhLi41akPEb+Umf0pgLXHoz68+qIM31qSpKhzvFjDfJCSYvgufkDC8Sn7foixYpmxK0S6B0KsQUmcmVdjBSBECnSdYdFfdEkmwCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GlZSV0bJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA46C433C7;
-	Tue, 23 Jan 2024 00:15:35 +0000 (UTC)
+	 MIME-Version; b=cPnP5Y7fBxBNsKZOn1Ing1AR6m4uBSFt6/XBJ+vzPT4xOj7yRlGoDidZ1ElXxa5We0xBBZ7TrHcRxBXOUfH0pzMH9Yp8wx3GiqEtMk9hKCCN0BKyVu2tg2bWTuWrVuFvGAr3es2OAUjthNUGHZb13+5wageUNj9IE2BZWFD11UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tle8LWbf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0E3C433C7;
+	Tue, 23 Jan 2024 00:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968935;
-	bh=Al1aTldJ9bJZFZCq45/Ig4vl2wNwT2MJ4CPofb/F9SY=;
+	s=korg; t=1705970006;
+	bh=NPnoMZeDHsv3vbjiguIZi8UUteSQWNmtPjefrKDPgrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GlZSV0bJSwXDSN2rHrKs3VcqHzI2W9D2C0JYdeKHLpWvKYWaehLd+BSsLRVortSzR
-	 EYL6cSLUGM5yBXpyzroeshBuO9VauLTIfaf3ksC4KWszTXHiVzVY/LsUObUC6l5pjy
-	 VSUNoFcJFhJyFo7OQQ+L4Hg3JLNsLkQFryadpC/s=
+	b=tle8LWbfeoFIhYjaNtvM7qnz6blC43QKVuvVQn9g+5+HeO0fPRkq/98RAyBaQxY7l
+	 Kr9XUimmid/KL8mUsM8NKSohoXNe4ZCf2PsladzKPaeyJtyZtkzSLghnHzQfZIrm92
+	 kXmgmaqa/l3y3FfNEX00BGAUAWPUWDyuy/iD1AJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Zhao Mengmeng <zhaomengmeng@kylinos.cn>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 101/194] wifi: rtlwifi: rtl8192de: using calculate_bit_shift()
+Subject: [PATCH 6.7 527/641] selftests/sgx: Skip non X86_64 platform
 Date: Mon, 22 Jan 2024 15:57:11 -0800
-Message-ID: <20240122235723.569347561@linuxfoundation.org>
+Message-ID: <20240122235834.588278643@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
 
-[ Upstream commit b8b2baad2e652042cf8b6339939ac2f4e6f53de4 ]
+[ Upstream commit 981cf568a8644161c2f15c02278ebc2834b51ba6 ]
 
-Using calculate_bit_shift() to replace _rtl92d_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+When building whole selftests on arm64, rsync gives an erorr about sgx:
 
-Fixes: 7274a8c22980 ("rtlwifi: rtl8192de: Merge phy routines")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-8-suhui@nfschina.com
+rsync: [sender] link_stat "/root/linux-next/tools/testing/selftests/sgx/test_encl.elf" failed: No such file or directory (2)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1327) [sender=3.2.5]
+
+The root casue is sgx only used on X86_64, and shall be skipped on other
+platforms.
+
+Fix this by moving TEST_CUSTOM_PROGS and TEST_FILES inside the if check,
+then the build result will be "Skipping non-existent dir: sgx".
+
+Fixes: 2adcba79e69d ("selftests/x86: Add a selftest for SGX")
+Signed-off-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lore.kernel.org/all/20231206025605.3965302-1-zhaomzhao%40126.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/realtek/rtlwifi/rtl8192de/phy.c  | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ tools/testing/selftests/sgx/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-index 7ba2aeaf071f..fb9355b2f6be 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -169,13 +169,6 @@ static const u8 channel_all[59] = {
- 	157, 159, 161, 163, 165
- };
+diff --git a/tools/testing/selftests/sgx/Makefile b/tools/testing/selftests/sgx/Makefile
+index 50aab6b57da3..01abe4969b0f 100644
+--- a/tools/testing/selftests/sgx/Makefile
++++ b/tools/testing/selftests/sgx/Makefile
+@@ -16,10 +16,10 @@ HOST_CFLAGS := -Wall -Werror -g $(INCLUDES) -fPIC -z noexecstack
+ ENCL_CFLAGS := -Wall -Werror -static -nostdlib -nostartfiles -fPIC \
+ 	       -fno-stack-protector -mrdrnd $(INCLUDES)
  
--static u32 _rtl92d_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
--
- u32 rtl92d_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
-@@ -198,7 +191,7 @@ u32 rtl92d_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- 	} else {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
- 	}
--	bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
- 	RT_TRACE(rtlpriv, COMP_RF, DBG_TRACE,
- 		 "BBR MASK=0x%x Addr[0x%x]=0x%x\n",
-@@ -230,7 +223,7 @@ void rtl92d_phy_set_bb_reg(struct ieee80211_hw *hw,
- 					dbi_direct);
- 		else
- 			originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
- 	}
- 	if (rtlhal->during_mac1init_radioa || rtlhal->during_mac0init_radiob)
-@@ -318,7 +311,7 @@ u32 rtl92d_phy_query_rf_reg(struct ieee80211_hw *hw,
- 		 regaddr, rfpath, bitmask);
- 	spin_lock_irqsave(&rtlpriv->locks.rf_lock, flags);
- 	original_value = _rtl92d_phy_rf_serial_read(hw, rfpath, regaddr);
--	bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 	spin_unlock_irqrestore(&rtlpriv->locks.rf_lock, flags);
- 	RT_TRACE(rtlpriv, COMP_RF, DBG_TRACE,
-@@ -345,7 +338,7 @@ void rtl92d_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
- 		if (bitmask != RFREG_OFFSET_MASK) {
- 			original_value = _rtl92d_phy_rf_serial_read(hw,
- 				rfpath, regaddr);
--			bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data = ((original_value & (~bitmask)) |
- 				(data << bitshift));
- 		}
++ifeq ($(CAN_BUILD_X86_64), 1)
+ TEST_CUSTOM_PROGS := $(OUTPUT)/test_sgx
+ TEST_FILES := $(OUTPUT)/test_encl.elf
+ 
+-ifeq ($(CAN_BUILD_X86_64), 1)
+ all: $(TEST_CUSTOM_PROGS) $(OUTPUT)/test_encl.elf
+ endif
+ 
 -- 
 2.43.0
 
