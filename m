@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58A59838354
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7D6C837C2C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F65928E4F0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52585295FF6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E177F61674;
-	Tue, 23 Jan 2024 01:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A1E155310;
+	Tue, 23 Jan 2024 00:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWWZNwu4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFKUmg76"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F259612D1;
-	Tue, 23 Jan 2024 01:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1733423D6;
+	Tue, 23 Jan 2024 00:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974937; cv=none; b=dJx+r9BIhKhlaZWKbfY16edgB3FjcCNmrxPVhkZB0Ppe16dNzCHom/XnV194gdLDHeNol2aTZK8kibtNCDMkQCukjpcA2p21vA/QuSq/5EOKot7aJr7cDCBQE4DHg4fnBjE9gAgKYqDcNMVYBFQ2GtjZM24rYeqsR/OvNHnBM1E=
+	t=1705969524; cv=none; b=qxuDO0pQdhCjdAgxYfOYsIUxYeqz4p3c01xKde36jF55awRX5aEFtpfB5jzoIhkAw45D6OWpwQj3fpBd4LvDYrF0pJBULVtXsBoys7a6k+rNvaYoOtLQNDVjEHLXA57BaVxV5BJb6jxl2MHXGCu4R2bKzLudZkMUmX/Zxsdssb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974937; c=relaxed/simple;
-	bh=7NvYO46M9iIyoSA4MoM9RPX7gpfOUK3qJ7mI5siC9nc=;
+	s=arc-20240116; t=1705969524; c=relaxed/simple;
+	bh=bpZJk6ZuMbOWU2y2UynCErRiVUSLHm7OLgwql3K1s0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gOSDs+3LWROy09ZeHGUj7uoMloxeWKSxTP8Fft0HeLPh8vJxPOoTegLiVX+y2NSak1ptzoQrllVnRDbmXe01dAZXX2JprnVEX+cWQy2Y55cQXCobkLxjlh2QZ3UHdRA/Skb6w7q9+wTIu1g4zF/pTPmg8BTNriFMcwfJQGahAJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWWZNwu4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD62C433C7;
-	Tue, 23 Jan 2024 01:55:37 +0000 (UTC)
+	 MIME-Version; b=WlmOJUvfhP6HIsJnn2jZbflgduVz3h9sLVf/MejDw6hTL8JR1uHjPHMmIXGG+WtuJGkPLTX1dhMWYJTxxiycgQ3rodJDShOz8Vr44+LlJLPKCj55dRmYt827igCILuQWxSm3I7EeCJF3RpfLm849zD0H7xooQxZQBJLvD9NSbBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFKUmg76; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49EF4C433B1;
+	Tue, 23 Jan 2024 00:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974937;
-	bh=7NvYO46M9iIyoSA4MoM9RPX7gpfOUK3qJ7mI5siC9nc=;
+	s=korg; t=1705969523;
+	bh=bpZJk6ZuMbOWU2y2UynCErRiVUSLHm7OLgwql3K1s0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWWZNwu4go3KfJrFI5SvmWb9rWyG7uBHJartwLwfJWN38bw6StQ3j64ZGBdOmDuvN
-	 cM9dtx9QVdcmtg+k3Ral6yjEGm/OQeiwqqQPystVTdMbE7Fkpjaaq8VnZiTseo/9Wi
-	 qLPd1EdRTtgZs/qo+7iVzrEV/C6I9+1m0fWXTGfs=
+	b=aFKUmg76ugOPE1t4c3nAypkt87ARATNLsSIWuFYc2STvzp/J01k9HlGXtHm6gzSQu
+	 2Q91s23u+kXUI4RoddDvps8N0h2L7Usp8rgu3RgbzzGYuQZkaH+zGT755Rv/VTfT7l
+	 TT9RP4o/ybUWycaVIN954FPpc2t/Bt8v2JNGUP3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 157/583] arm64: dts: imx8mm: Reduce GPU to nominal speed
+Subject: [PATCH 6.7 304/641] media: bttv: start_streaming should return a proper error code
 Date: Mon, 22 Jan 2024 15:53:28 -0800
-Message-ID: <20240122235816.853793691@linuxfoundation.org>
+Message-ID: <20240122235827.424210389@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 1f794d3eed5345413c2b0cf1bcccc92d77681220 ]
+[ Upstream commit 0d75bb6ae127f5e3fd0e2239714908fd2038193d ]
 
-When the GPU nodes were added, the GPU_PLL_OUT was configured
-for 1000MHz, but this requires the SoC to run in overdrive mode
-which requires an elevated voltage operating point.
+The start_streaming callback returned 0 or 1 instead of a
+proper error code. Fix that.
 
-Since this may run some boards out of spec, the default clock
-should be set to 800MHz for nominal operating mode. Boards
-that run at the higher voltage can update their clocks
-accordingly.
-
-Fixes: 4523be8e46be ("arm64: dts: imx8mm: Add GPU nodes for 2D and 3D core")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: b7ec3212a73a ("media: bttv: convert to vb2")
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/pci/bt8xx/bttv-driver.c | 6 ++----
+ drivers/media/pci/bt8xx/bttv-vbi.c    | 8 +++-----
+ 2 files changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-index 738024baaa57..54faf83cb436 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-@@ -1408,7 +1408,7 @@ gpu_3d: gpu@38000000 {
- 			assigned-clocks = <&clk IMX8MM_CLK_GPU3D_CORE>,
- 					  <&clk IMX8MM_GPU_PLL_OUT>;
- 			assigned-clock-parents = <&clk IMX8MM_GPU_PLL_OUT>;
--			assigned-clock-rates = <0>, <1000000000>;
-+			assigned-clock-rates = <0>, <800000000>;
- 			power-domains = <&pgc_gpu>;
- 		};
+diff --git a/drivers/media/pci/bt8xx/bttv-driver.c b/drivers/media/pci/bt8xx/bttv-driver.c
+index 09a193bb87df..8e8c9dada67a 100644
+--- a/drivers/media/pci/bt8xx/bttv-driver.c
++++ b/drivers/media/pci/bt8xx/bttv-driver.c
+@@ -1536,13 +1536,11 @@ static void buf_cleanup(struct vb2_buffer *vb)
  
-@@ -1423,7 +1423,7 @@ gpu_2d: gpu@38008000 {
- 			assigned-clocks = <&clk IMX8MM_CLK_GPU2D_CORE>,
- 					  <&clk IMX8MM_GPU_PLL_OUT>;
- 			assigned-clock-parents = <&clk IMX8MM_GPU_PLL_OUT>;
--			assigned-clock-rates = <0>, <1000000000>;
-+			assigned-clock-rates = <0>, <800000000>;
- 			power-domains = <&pgc_gpu>;
- 		};
+ static int start_streaming(struct vb2_queue *q, unsigned int count)
+ {
+-	int ret = 1;
+ 	int seqnr = 0;
+ 	struct bttv_buffer *buf;
+ 	struct bttv *btv = vb2_get_drv_priv(q);
  
+-	ret = check_alloc_btres_lock(btv, RESOURCE_VIDEO_STREAM);
+-	if (ret == 0) {
++	if (!check_alloc_btres_lock(btv, RESOURCE_VIDEO_STREAM)) {
+ 		if (btv->field_count)
+ 			seqnr++;
+ 		while (!list_empty(&btv->capture)) {
+@@ -1553,7 +1551,7 @@ static int start_streaming(struct vb2_queue *q, unsigned int count)
+ 			vb2_buffer_done(&buf->vbuf.vb2_buf,
+ 					VB2_BUF_STATE_QUEUED);
+ 		}
+-		return !ret;
++		return -EBUSY;
+ 	}
+ 	if (!vb2_is_streaming(&btv->vbiq)) {
+ 		init_irqreg(btv);
+diff --git a/drivers/media/pci/bt8xx/bttv-vbi.c b/drivers/media/pci/bt8xx/bttv-vbi.c
+index ab213e51ec95..e489a3acb4b9 100644
+--- a/drivers/media/pci/bt8xx/bttv-vbi.c
++++ b/drivers/media/pci/bt8xx/bttv-vbi.c
+@@ -123,14 +123,12 @@ static void buf_cleanup_vbi(struct vb2_buffer *vb)
+ 
+ static int start_streaming_vbi(struct vb2_queue *q, unsigned int count)
+ {
+-	int ret;
+ 	int seqnr = 0;
+ 	struct bttv_buffer *buf;
+ 	struct bttv *btv = vb2_get_drv_priv(q);
+ 
+ 	btv->framedrop = 0;
+-	ret = check_alloc_btres_lock(btv, RESOURCE_VBI);
+-	if (ret == 0) {
++	if (!check_alloc_btres_lock(btv, RESOURCE_VBI)) {
+ 		if (btv->field_count)
+ 			seqnr++;
+ 		while (!list_empty(&btv->vcapture)) {
+@@ -141,13 +139,13 @@ static int start_streaming_vbi(struct vb2_queue *q, unsigned int count)
+ 			vb2_buffer_done(&buf->vbuf.vb2_buf,
+ 					VB2_BUF_STATE_QUEUED);
+ 		}
+-		return !ret;
++		return -EBUSY;
+ 	}
+ 	if (!vb2_is_streaming(&btv->capq)) {
+ 		init_irqreg(btv);
+ 		btv->field_count = 0;
+ 	}
+-	return !ret;
++	return 0;
+ }
+ 
+ static void stop_streaming_vbi(struct vb2_queue *q)
 -- 
 2.43.0
 
