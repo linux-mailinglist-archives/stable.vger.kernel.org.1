@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B16837D94
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02F38384B9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCCE71F226FA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FC181C22A24
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A747A5B1FE;
-	Tue, 23 Jan 2024 00:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830BE74E1A;
+	Tue, 23 Jan 2024 02:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUDIkQTA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5r7AEw9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6591756B68;
-	Tue, 23 Jan 2024 00:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41809745D6;
+	Tue, 23 Jan 2024 02:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970038; cv=none; b=PA66wvVb77cddDSCiahDb9a08XwhyNzkwoVcKl2VrIdfe9ZoDBGrhFBO7KtA1dV9vGUGRJBGLo/k7rpJ3s6ijRyY6/Lf+NrqLuS51ltHhuzVN9apRlY4G1whlXKo1zSZtWtjz7l2kjtq4lH0OjhqaN6vdu6RfBgI1FmacHlLoqU=
+	t=1705975468; cv=none; b=YNJgJwXyqHe4L2ERp9xZeaWgQRWnyLClYcXZEMHn50MzSr+Ikvsjw3ZsCb05yXpfXtFrq7IPnC1WPE0U9L/JqHp0fZ1bhsv3aFiovyAOl72lUcea7bA4RBZSPej3D+92yY5kWsvDSzrBiS2PW0O2dAROZgmfMjKIBqjiWOBKaHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970038; c=relaxed/simple;
-	bh=uOjbrtXcvWNsROkAqS5BKyNR0SwhzVzrUvmvtOoe9ko=;
+	s=arc-20240116; t=1705975468; c=relaxed/simple;
+	bh=CF1Iklns0f7s2QXse2H+mGEaNPbTB/2rDmyPt1MqfBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WAsuqGqS2R4ZJdIrl2Mj2Nvqvr1C06mMMLxthuscP4TEEIDmSX4gasEWx8MC6Fd5UkwxBa/VrssD1VTKxQ9xX9i4x8k9tAbo3qCCk+fgqQWaB4zRKQi8OeOCMV1BKJy2jU4XrII0NuiGC8EUEScUMDdk3jsvwkY4+fZn4SvKqXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUDIkQTA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1CCC433F1;
-	Tue, 23 Jan 2024 00:33:57 +0000 (UTC)
+	 MIME-Version; b=o5hHUsUJIbsh5quYSlLTcoIy2ZcbAJyQm/1PqhLSbJaaVSKDIgFLNrM3fXFhxix/XatmEqdTnj8UU34mvyVM1cCxnEpylMDzQ9gZZhdZ02hkOkkLLzwgucV0Z/GXWmWnj/t9sxrgbyOlG7Bu9NuYt4fQmAmGkXYkJhPx9XwQ0j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5r7AEw9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D958AC433F1;
+	Tue, 23 Jan 2024 02:04:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970038;
-	bh=uOjbrtXcvWNsROkAqS5BKyNR0SwhzVzrUvmvtOoe9ko=;
+	s=korg; t=1705975468;
+	bh=CF1Iklns0f7s2QXse2H+mGEaNPbTB/2rDmyPt1MqfBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NUDIkQTAMib1upRC+m/9VnqJEsmUhXEUNOkeXyuVJq4LoOI+KkiASCI6inyDl642J
-	 wnRKdCZPAnpeOOQUyi6OXQIFYilYdsyTut8z2tutygDywsZ7UAsN0PYaJNmB9Lb0cc
-	 kXfCwYH+F+jA2nEOrw/od8XEEbl4gKqP2Pq4loNw=
+	b=j5r7AEw9zL6XAEsyPqh0VbgRaE4jNzy8n1z7P6oRl0ZMJr2LBuRlree0RlXFIUCk5
+	 +R5PXsAMc76eyXV2jnLkgiugMY8bBQCirszEmxvU+A3Od48EzZW5qNoudFzMUoWCXd
+	 CNv32BVTpQAs3gslHgD7MloGq77G4u63g5HuPUnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 571/641] nvmet: re-fix tracing strncpy() warning
+	Tomasz Pala <gotar@polanet.pl>,
+	Sebastian Manciulea <manciuleas@protonmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.6 424/583] x86/pci: Reserve ECAM if BIOS didnt include it in PNP0C02 _CRS
 Date: Mon, 22 Jan 2024 15:57:55 -0800
-Message-ID: <20240122235836.027911132@linuxfoundation.org>
+Message-ID: <20240122235824.959762250@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 4ee7ffeb4ce50c80bc4504db6f39b25a2df6bcf4 ]
+commit 070909e56a7d65fd0b4aad6e808966b7c634befe upstream.
 
-An earlier patch had tried to address a warning about a string copy with
-missing zero termination:
+Tomasz, Sebastian, and some Proxmox users reported problems initializing
+ixgbe NICs.
 
-drivers/nvme/target/trace.h:52:3: warning: ‘strncpy’ specified bound 32 equals destination size [-Wstringop-truncation]
+I think the problem is that ECAM space described in the ACPI MCFG table is
+not reserved via a PNP0C02 _CRS method as required by the PCI Firmware spec
+(r3.3, sec 4.1.2), but it *is* included in the PNP0A03 host bridge _CRS as
+part of the MMIO aperture.
 
-The new version causes a different warning with some compiler versions, notably
-gcc-9 and gcc-10, and also misses the zero padding that was apparently done
-intentionally in the original code:
+If we allocate space for a PCI BAR, we're likely to allocate it from that
+ECAM space, which obviously cannot work.
 
-drivers/nvme/target/trace.h:56:2: error: 'strncpy' specified bound depends on the length of the source argument [-Werror=stringop-overflow=]
+This could happen for any device, but in the ixgbe case it happens because
+it's an SR-IOV device and the BIOS didn't allocate space for the VF BARs,
+so Linux reallocated the bridge window leading to ixgbe and put it on top
+of the ECAM space.  From Tomasz' system:
 
-Change it to use strscpy_pad() with the original length, which will give
-a properly padded and zero-terminated string as well as avoiding the warning.
+  PCI: MMCONFIG for domain 0000 [bus 00-ff] at [mem 0x80000000-0x8fffffff] (base 0x80000000)
+  PCI: MMCONFIG at [mem 0x80000000-0x8fffffff] not reserved in ACPI motherboard resources
+  pci_bus 0000:00: root bus resource [mem 0x80000000-0xfbffffff window]
 
-Fixes: d86481e924a7 ("nvmet: use min of device_path and disk len")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  pci 0000:00:01.1: PCI bridge to [bus 02-03]
+  pci 0000:00:01.1:   bridge window [mem 0xfb900000-0xfbbfffff]
+  pci 0000:02:00.0: [8086:10fb] type 00 class 0x020000  # ixgbe
+  pci 0000:02:00.0: reg 0x10: [mem 0xfba80000-0xfbafffff 64bit]
+  pci 0000:02:00.0: VF(n) BAR0 space: [mem 0x00000000-0x000fffff 64bit] (contains BAR0 for 64 VFs)
+  pci 0000:02:00.0: BAR 7: no space for [mem size 0x00100000 64bit]   # VF BAR 0
+
+  pci_bus 0000:00: No. 2 try to assign unassigned res
+  pci 0000:00:01.1: resource 14 [mem 0xfb900000-0xfbbfffff] released
+  pci 0000:00:01.1: BAR 14: assigned [mem 0x80000000-0x806fffff]
+  pci 0000:02:00.0: BAR 0: assigned [mem 0x80000000-0x8007ffff 64bit]
+  pci 0000:02:00.0: BAR 7: assigned [mem 0x80204000-0x80303fff 64bit] # VF BAR 0
+
+Fixes: 07eab0901ede ("efi/x86: Remove EfiMemoryMappedIO from E820 map")
+Fixes: fd3a8cff4d4a ("x86/pci: Treat EfiMemoryMappedIO as reservation of ECAM space")
+Reported-by: Tomasz Pala <gotar@polanet.pl>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218050
+Reported-by: Sebastian Manciulea <manciuleas@protonmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218107
+Link: https://forum.proxmox.com/threads/proxmox-8-kernel-6-2-16-4-pve-ixgbe-driver-fails-to-load-due-to-pci-device-probing-failure.131203/
+Link: https://lore.kernel.org/r/20231121183643.249006-2-helgaas@kernel.org
+Tested-by: Tomasz Pala <gotar@polanet.pl>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org	# v6.2+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/trace.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/pci/mmconfig-shared.c |   13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/trace.h b/drivers/nvme/target/trace.h
-index 6109b3806b12..155334ddc13f 100644
---- a/drivers/nvme/target/trace.h
-+++ b/drivers/nvme/target/trace.h
-@@ -53,8 +53,7 @@ static inline void __assign_req_name(char *name, struct nvmet_req *req)
- 		return;
+--- a/arch/x86/pci/mmconfig-shared.c
++++ b/arch/x86/pci/mmconfig-shared.c
+@@ -525,6 +525,8 @@ static bool __ref is_mmconf_reserved(che
+ static bool __ref
+ pci_mmcfg_check_reserved(struct device *dev, struct pci_mmcfg_region *cfg, int early)
+ {
++	struct resource *conflict;
++
+ 	if (!early && !acpi_disabled) {
+ 		if (is_mmconf_reserved(is_acpi_reserved, cfg, dev,
+ 				       "ACPI motherboard resource"))
+@@ -542,8 +544,17 @@ pci_mmcfg_check_reserved(struct device *
+ 			       &cfg->res);
+ 
+ 		if (is_mmconf_reserved(is_efi_mmio, cfg, dev,
+-				       "EfiMemoryMappedIO"))
++				       "EfiMemoryMappedIO")) {
++			conflict = insert_resource_conflict(&iomem_resource,
++							    &cfg->res);
++			if (conflict)
++				pr_warn("MMCONFIG %pR conflicts with %s %pR\n",
++					&cfg->res, conflict->name, conflict);
++			else
++				pr_info("MMCONFIG %pR reserved to work around lack of ACPI motherboard _CRS\n",
++					&cfg->res);
+ 			return true;
++		}
  	}
  
--	strncpy(name, req->ns->device_path,
--		min_t(size_t, DISK_NAME_LEN, strlen(req->ns->device_path)));
-+	strscpy_pad(name, req->ns->device_path, DISK_NAME_LEN);
- }
- #endif
- 
--- 
-2.43.0
-
+ 	/*
 
 
 
