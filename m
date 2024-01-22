@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-13012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3FD0837A2E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA1D8378B8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B8E81F289AE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D797D28BD0E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A83612AAE1;
-	Tue, 23 Jan 2024 00:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9FB187A;
+	Tue, 23 Jan 2024 00:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fv6J7607"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IApNRtzy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B2112A17F;
-	Tue, 23 Jan 2024 00:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAB31869;
+	Tue, 23 Jan 2024 00:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968782; cv=none; b=Joj/qXccUKEj5HrP1H4pfgUE1BeLMp/o6RVxfFjrwAtKU7L/tMDGZyjnHES4358zHi984Sc2oxMmOKabHf4IPxtd33CZRYq+9WBYl7mkEd5HwLZSupBiaCyAEIBpBJdJldxdCvuVerpef4ThgFPih/qqFmHBEpX3KjBC+vmOQU4=
+	t=1705968219; cv=none; b=VhTGpxwEdgb8Mh+2br6LP7iaXuH02Lh/tQe9vt6RGNpjjaRDLcKphRf2XDhmbAkhwEFLtuXS416QP4bBLYC8ezGCbaf/WseqrmuYn9/f8wbZTW8IhwNcYeG+w91utRFAqDxs32d3ZXy5Jxsb7KDDDVHyXLBR1AmgcauaqDPA9f4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968782; c=relaxed/simple;
-	bh=BEExfRLLbv0pKZR6GhZclYae3Amv2cR+VG6syLd0hnc=;
+	s=arc-20240116; t=1705968219; c=relaxed/simple;
+	bh=fZ11druE/PQzYoSj8y0eBQ87l88mrgWtRVHFNV5DQAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j39mUYkoZN8LbbXJExgxzAULY0kypt0hVcu4wiLfkvUXsokAueaWBlgRaEZlQVvwmHIddrLXCHQzMWP/9fTlZ73N1ksDJkeU+ObDYWZfqnW0tcti37QYeQCdDTbc24fYKAqjSpNuzbEM9tK0gWCFAmHMBM7ALX0d6unvZHebnSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fv6J7607; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A53C43390;
-	Tue, 23 Jan 2024 00:13:01 +0000 (UTC)
+	 MIME-Version; b=nnylJKtOM/LKwY/uRahZjqMvDiOPfhtqZcANf19uQU3dKfu4/OvQlwDLZyd/97kECG2MnbfpjcW01rOQyw1MXn5xxoAs3FBbEq/xwQSgFmwBubHK0LmlKFHVzgwwYSRsVMbsu7642hKiGEllTIuGlemBrR0QsuA/SU0m+1XSbJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IApNRtzy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75933C433F1;
+	Tue, 23 Jan 2024 00:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968781;
-	bh=BEExfRLLbv0pKZR6GhZclYae3Amv2cR+VG6syLd0hnc=;
+	s=korg; t=1705968218;
+	bh=fZ11druE/PQzYoSj8y0eBQ87l88mrgWtRVHFNV5DQAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fv6J7607XbqHK/nIEuzWDFWXmAXvzPh2A7Ow3luuoSQK1X9toTBxz/605xjz5BruC
-	 IaXAKHEeCXi4Ubl0FezjfQAHXmsa1xqfGYmoDq5MVovjfK21Z8fP8GhwzqYyOJUeo+
-	 2gG4bIFLwrDe+svu3seTx/OZfDH6ORqKUq3N+qsA=
+	b=IApNRtzyqzEzRKSE7Wl01Rw0AdgjURNhho/FM+0zkF+0wWDaL8hVF6xQHqIRL76Zz
+	 jZ5ecV6eRxsl0k9MVdogPhoX+HwxvbwBSbweCLcIGKD2doJnsWgfvP/ix+CR1TVvLP
+	 YfOohbIkKxoeqgVCUrVtWcP6jsZJbXQmzw4otzBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com,
+	Ziqi Zhao <astrajoan@yahoo.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 048/194] powerpc/powernv: Add a null pointer check in opal_event_init()
+Subject: [PATCH 4.19 022/148] drm/crtc: fix uninitialized variable use
 Date: Mon, 22 Jan 2024 15:56:18 -0800
-Message-ID: <20240122235721.273332041@linuxfoundation.org>
+Message-ID: <20240122235713.328891909@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +66,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 8649829a1dd25199bbf557b2621cedb4bf9b3050 ]
+[ Upstream commit 6e455f5dcdd15fa28edf0ffb5b44d3508512dccf ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+Commit 3823119b9c2b ("drm/crtc: Fix uninit-value bug in
+drm_mode_setcrtc") was supposed to fix use of an uninitialized variable,
+but introduced another.
 
-Fixes: 2717a33d6074 ("powerpc/opal-irqchip: Use interrupt names if present")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231127030755.1546750-1-chentao@kylinos.cn
+num_connectors is only initialized if crtc_req->count_connectors > 0,
+but it's used regardless. Fix it.
+
+Fixes: 3823119b9c2b ("drm/crtc: Fix uninit-value bug in drm_mode_setcrtc")
+Cc: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
+Cc: Ziqi Zhao <astrajoan@yahoo.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231208131238.2924571-1-jani.nikula@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/opal-irqchip.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/drm_crtc.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-irqchip.c b/arch/powerpc/platforms/powernv/opal-irqchip.c
-index c164419e254d..dcec0f760c8f 100644
---- a/arch/powerpc/platforms/powernv/opal-irqchip.c
-+++ b/arch/powerpc/platforms/powernv/opal-irqchip.c
-@@ -278,6 +278,8 @@ int __init opal_event_init(void)
- 		else
- 			name = kasprintf(GFP_KERNEL, "opal");
+--- a/drivers/gpu/drm/drm_crtc.c
++++ b/drivers/gpu/drm/drm_crtc.c
+@@ -573,7 +573,7 @@ int drm_mode_setcrtc(struct drm_device *
+ 	struct drm_mode_set set;
+ 	uint32_t __user *set_connectors_ptr;
+ 	struct drm_modeset_acquire_ctx ctx;
+-	int ret, i, num_connectors;
++	int ret, i, num_connectors = 0;
  
-+		if (!name)
-+			continue;
- 		/* Install interrupt handler */
- 		rc = request_irq(r->start, opal_interrupt, r->flags & IRQD_TRIGGER_MASK,
- 				 name, NULL);
--- 
-2.43.0
-
+ 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
+ 		return -EINVAL;
+@@ -718,7 +718,6 @@ retry:
+ 			goto out;
+ 		}
+ 
+-		num_connectors = 0;
+ 		for (i = 0; i < crtc_req->count_connectors; i++) {
+ 			connector_set[i] = NULL;
+ 			set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req->set_connectors_ptr;
 
 
 
