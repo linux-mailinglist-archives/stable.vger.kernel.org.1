@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9818C838068
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54648837FCB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA1CDB21342
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C0251F2A9B4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DEF657D5;
-	Tue, 23 Jan 2024 00:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393A012BE9B;
+	Tue, 23 Jan 2024 00:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMmYmLxm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0T8TCPYX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00F9651A1;
-	Tue, 23 Jan 2024 00:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0BA64CDA;
+	Tue, 23 Jan 2024 00:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971552; cv=none; b=lcFUn4ihvNKsbhS7BCkPIhOkbTiR1gdmucrHmfuAO8r6qvCJCiQuBKYO56P91YEOmz2wJiafE0+NrcHaVt4ewDRXmPFOE1Gky/bqQdSYHl9U+rmgfSv+W09KoJI289SrgWcQdV7C7tAHeylJ0zYo55P1UPm5EFI9qFVL2KTdgxI=
+	t=1705971352; cv=none; b=VTprhIDouoFu7x6B3IvHNQO5bTe9vOUoJxATFjMG0gkWC11o37O/Bx4UA/bxM5qpNNDSYdJiFms+eTjswXjgbyukNmLzQhpTzZNXq1RckyLCQ+0KnG4JiFrBzNIoHdAiHPNPnDRh1NwYnfzzhG+H7p9i507aFwS9V1etI260a+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971552; c=relaxed/simple;
-	bh=ThTUD1BmyT1LzThahKUbvNJq0dkRG2EPAvoMuCrRy0w=;
+	s=arc-20240116; t=1705971352; c=relaxed/simple;
+	bh=+psj2OCeobZLFsF4iDD5m8lGQFE2kVyuDf0xfsogGvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pfNVC0VFISWzWEn8AULAmJn8Vnr0FbUN5tjPFSe+M1dZm7tBZrD3Wwc/howsoNydkOXllCMTAKhMedKQOZH/3YMS5Lp3rNj9eX3Zhr9hlZb52giuE2U8l3W3W9O37HZrYz49CDG/r49mqpZt5AdWIM2J7bBjyywMq9lCq/JYE2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMmYmLxm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED8B4C433F1;
-	Tue, 23 Jan 2024 00:59:11 +0000 (UTC)
+	 MIME-Version; b=YR9S5Q+DkgyJBMdI58wMi+rMYAjPad2l17DuI6LCcHAlclWZeC2TdJ8lDspw3IVCl7QM4hOoA5a+pGjS27U48AMbrAuRVI/gBPOp492MQP0x80s/uJXW1q4xwyNCJnW+KEzwpwzbYjx0tHK8JqvXLrz2FoGtJEmDhONiCifTn5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0T8TCPYX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F6D8C43390;
+	Tue, 23 Jan 2024 00:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971552;
-	bh=ThTUD1BmyT1LzThahKUbvNJq0dkRG2EPAvoMuCrRy0w=;
+	s=korg; t=1705971351;
+	bh=+psj2OCeobZLFsF4iDD5m8lGQFE2kVyuDf0xfsogGvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UMmYmLxm+8p1KxyU72ew1bMzR0P7f8AqHsfmkc9WvhFFmrGFQnmLuzXT53SHL6R6P
-	 b/JJk5jxLfhg4BB7BwmoJqb5Eo1rKZId54JGE9I+bRsQuUzl5mJzaCU8tZrVOoclEu
-	 plXXBmAyeCH9XQ8TuPOLkkSx3OcmO9Nh8a8ZXzeU=
+	b=0T8TCPYXetQc+GlAbdRMfixiTAtJ+bKvrKAr9mMOROzdRg1REZBMWtOnozKrOXuns
+	 Ii79Lbmz1rb1OQBPZovtmdGz8zgGIUyEhN4BA/3iU9Vw0jhl3Lzg1ciONwcXIRrHOE
+	 /KR/CLvcMWWNdbZut12keLazN9sGo0Wc0Eoo2JqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chen <peter.chen@kernel.org>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Li Jun <jun.li@nxp.com>
-Subject: [PATCH 6.1 263/417] usb: chipidea: wait controller resume finished for wakeup irq
+	Yihang Li <liyihang9@huawei.com>,
+	Xiang Chen <chenxiang66@hisilicon.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 125/286] scsi: hisi_sas: Replace with standard error code return value
 Date: Mon, 22 Jan 2024 15:57:11 -0800
-Message-ID: <20240122235800.977661775@linuxfoundation.org>
+Message-ID: <20240122235736.941961690@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Yihang Li <liyihang9@huawei.com>
 
-commit 128d849074d05545becf86e713715ce7676fc074 upstream.
+[ Upstream commit d34ee535705eb43885bc0f561c63046f697355ad ]
 
-After the chipidea driver introduce extcon for id and vbus, it's able
-to wakeup from another irq source, in case the system with extcon ID
-cable, wakeup from usb ID cable and device removal, the usb device
-disconnect irq may come firstly before the extcon notifier while system
-resume, so we will get 2 "wakeup" irq, one for usb device disconnect;
-and one for extcon ID cable change(real wakeup event), current driver
-treat them as 2 successive wakeup irq so can't handle it correctly, then
-finally the usb irq can't be enabled. This patch adds a check to bypass
-further usb events before controller resume finished to fix it.
+In function hisi_sas_controller_prereset(), -ENOSYS (Function not
+implemented) should be returned if the driver does not support .soft_reset.
+Returns -EPERM (Operation not permitted) if HISI_SAS_RESETTING_BIT is
+already be set.
 
-Fixes: 1f874edcb731 ("usb: chipidea: add runtime power management support")
-cc:  <stable@vger.kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Signed-off-by: Li Jun <jun.li@nxp.com>
-Link: https://lore.kernel.org/r/20231228110753.1755756-2-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In function _suspend_v3_hw(), returns -EPERM (Operation not permitted) if
+HISI_SAS_RESETTING_BIT is already be set.
+
+Fixes: 4522204ab218 ("scsi: hisi_sas: tidy host controller reset function a bit")
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+Link: https://lore.kernel.org/r/1702525516-51258-3-git-send-email-chenxiang66@hisilicon.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/core.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/scsi/hisi_sas/hisi_sas_main.c  | 4 ++--
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/chipidea/core.c
-+++ b/drivers/usb/chipidea/core.c
-@@ -523,6 +523,13 @@ static irqreturn_t ci_irq_handler(int ir
- 	u32 otgsc = 0;
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
+index e5b9229310a0..8e5d23c6b8de 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_main.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
+@@ -1584,10 +1584,10 @@ static int hisi_sas_controller_reset(struct hisi_hba *hisi_hba)
+ 		queue_work(hisi_hba->wq, &hisi_hba->debugfs_work);
  
- 	if (ci->in_lpm) {
-+		/*
-+		 * If we already have a wakeup irq pending there,
-+		 * let's just return to wait resume finished firstly.
-+		 */
-+		if (ci->wakeup_int)
-+			return IRQ_HANDLED;
-+
- 		disable_irq_nosync(irq);
- 		ci->wakeup_int = true;
- 		pm_runtime_get(ci->dev);
+ 	if (!hisi_hba->hw->soft_reset)
+-		return -1;
++		return -ENOENT;
+ 
+ 	if (test_and_set_bit(HISI_SAS_RESET_BIT, &hisi_hba->flags))
+-		return -1;
++		return -EPERM;
+ 
+ 	dev_info(dev, "controller resetting...\n");
+ 	hisi_sas_controller_reset_prepare(hisi_hba);
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index 0d21c64efa81..f03a09c9e865 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -3479,7 +3479,7 @@ static int _suspend_v3_hw(struct device *device)
+ 	}
+ 
+ 	if (test_and_set_bit(HISI_SAS_RESET_BIT, &hisi_hba->flags))
+-		return -1;
++		return -EPERM;
+ 
+ 	scsi_block_requests(shost);
+ 	set_bit(HISI_SAS_REJECT_CMD_BIT, &hisi_hba->flags);
+-- 
+2.43.0
+
 
 
 
