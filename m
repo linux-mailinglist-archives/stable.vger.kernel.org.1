@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38A1E838305
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7393683806A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E671D28A700
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 102E61F2CD07
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7FE605AB;
-	Tue, 23 Jan 2024 01:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CD966B52;
+	Tue, 23 Jan 2024 01:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqpDaqu/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GA+HuP9e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B482604CD;
-	Tue, 23 Jan 2024 01:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E47612DDAA;
+	Tue, 23 Jan 2024 01:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974683; cv=none; b=cQqaxshjv6Eaz0AN8RsRMj51fjsxk4d19fS/4ZEZ+gM8gYEtQTb9C/gko2ZYy0lB3Naq0nOiESbvSYzX3k0Iz5Z3CVOZBnevvxv33bXuUXhHPZslF+qZOG2NO1fH8TSrcYNhy7FAMRTxPBk7Dae3P14nAC7tvpfAhT32oUMjIvY=
+	t=1705971707; cv=none; b=CgFotmyXaW/pmsM8U9JuUKEhcYmnAB3566j/y0eVpd9jr3Gn2TdG0Si6WOXhra7ASCJj7UJG0ctIQq3zDgbSls/TD8iNFmztn4ZSMUQytaFnGK16dGUZjCirARoUTOrlNrQe4Nkp3+vw8bAjYJRT4vaDUSnA+Vw7o7GB/eF/ZRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974683; c=relaxed/simple;
-	bh=KS6vjBVyVGRd3s7yssDH6zjXF7Sk4u4ZDCTTiAkgj7Q=;
+	s=arc-20240116; t=1705971707; c=relaxed/simple;
+	bh=hGp7eyFscusuLwGSpVM0qH8ciEtoPbBQF+iFe6Ij/Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RW4X1GV+wNF8uCp74ofYtbhEETUl76uJydVBiNU1rIHKNBW6e36/VZHDlVzIdpGv9MNVgF1G6zv0y422BKbC13A+Lz691EY6lksetMT5LXXNeb+YBGcYwsu8xMEvG+b8R04myjtT0JGGKNrO7Wj7JvGu3nFCw6fkiarPdCJrwJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqpDaqu/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3328C433F1;
-	Tue, 23 Jan 2024 01:51:22 +0000 (UTC)
+	 MIME-Version; b=jGvtBHQcvjIH9tmxfEBlpPkoZmoWZrmsfFc1JazjCWiu01e21VpwiPtMvns+w0Qw/rUgnSlwkpsTsI216hTZarvsVOQvZ+cGfH7NUpUOSPylhsVb+tzXN1x/e+OenKNWUPQoVO5JzGkwBOtwiI7isbWFLnTaJQxvcK+Hv/jyB5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GA+HuP9e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0456C433C7;
+	Tue, 23 Jan 2024 01:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974683;
-	bh=KS6vjBVyVGRd3s7yssDH6zjXF7Sk4u4ZDCTTiAkgj7Q=;
+	s=korg; t=1705971707;
+	bh=hGp7eyFscusuLwGSpVM0qH8ciEtoPbBQF+iFe6Ij/Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lqpDaqu/qDXxzPj4m2uZkaWMUB89NKRjBBb/QCgkvRbIeoJ5Uzgfnt8SuikzgdMa4
-	 yIlxwshz4WYJuE1vbKamQ5s86BwgQiKbbpfhpLlq4gLD250BXwLTepngK8TNnpL83D
-	 M8YeiyiycK0a3AmZavGbmyxYhQ0QzcVqNof8ZpAc=
+	b=GA+HuP9eYK+yG0MYCwi+5ZOWQOTomBfW3IhgwU8Kiwp5+Efg2E0GGFADLZV2BXNFH
+	 Iop9c7cJ35bJLaHe88wOBCpIqmr2keBdESRkqkXqK99Hu4BmEFVOXr62rkfDRiY9X7
+	 UbI9OyORzGKgzVrsFLpP/6CKlaFuDm5eGbJpeAYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hulk Robot <hulkci@huawei.com>,
-	Ren Zhijie <renzhijie2@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 5.15 248/374] dma-mapping: Fix build error unused-value
+	Alice Ryhl <aliceryhl@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 5.10 198/286] binder: fix async space check for 0-sized buffers
 Date: Mon, 22 Jan 2024 15:58:24 -0800
-Message-ID: <20240122235753.397200045@linuxfoundation.org>
+Message-ID: <20240122235739.741638894@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ren Zhijie <renzhijie2@huawei.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-commit 50d6281ce9b8412f7ef02d1bc9d23aa62ae0cf98 upstream.
+commit 3091c21d3e9322428691ce0b7a0cfa9c0b239eeb upstream.
 
-If CONFIG_DMA_DECLARE_COHERENT is not set,
-make ARCH=x86_64 CROSS_COMPILE=x86_64-linux-gnu- will be failed, like this:
+Move the padding of 0-sized buffers to an earlier stage to account for
+this round up during the alloc->free_async_space check.
 
-drivers/remoteproc/remoteproc_core.c: In function ‘rproc_rvdev_release’:
-./include/linux/dma-map-ops.h:182:42: error: statement with no effect [-Werror=unused-value]
- #define dma_release_coherent_memory(dev) (0)
-                                          ^
-drivers/remoteproc/remoteproc_core.c:464:2: note: in expansion of macro ‘dma_release_coherent_memory’
-  dma_release_coherent_memory(dev);
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-
-The return type of function dma_release_coherent_memory in CONFIG_DMA_DECLARE_COHERENT area is void, so in !CONFIG_DMA_DECLARE_COHERENT area it should neither return any value nor be defined as zero.
-
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Fixes: e61c451476e6 ("dma-mapping: Add dma_release_coherent_memory to DMA API")
-Signed-off-by: Ren Zhijie <renzhijie2@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20220630123528.251181-1-renzhijie2@huawei.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-5-cmllamas@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/dma-map-ops.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/android/binder_alloc.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/include/linux/dma-map-ops.h
-+++ b/include/linux/dma-map-ops.h
-@@ -179,10 +179,10 @@ static inline int dma_declare_coherent_m
- 	return -ENOSYS;
- }
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -415,6 +415,10 @@ static struct binder_buffer *binder_allo
+ 				alloc->pid, extra_buffers_size);
+ 		return ERR_PTR(-EINVAL);
+ 	}
++
++	/* Pad 0-size buffers so they get assigned unique addresses */
++	size = max(size, sizeof(void *));
++
+ 	if (is_async &&
+ 	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
+@@ -423,9 +427,6 @@ static struct binder_buffer *binder_allo
+ 		return ERR_PTR(-ENOSPC);
+ 	}
  
--#define dma_release_coherent_memory(dev) (0)
- #define dma_alloc_from_dev_coherent(dev, size, handle, ret) (0)
- #define dma_release_from_dev_coherent(dev, order, vaddr) (0)
- #define dma_mmap_from_dev_coherent(dev, vma, vaddr, order, ret) (0)
-+static inline void dma_release_coherent_memory(struct device *dev) { }
- #endif /* CONFIG_DMA_DECLARE_COHERENT */
- 
- #ifdef CONFIG_DMA_GLOBAL_POOL
+-	/* Pad 0-size buffers so they get assigned unique addresses */
+-	size = max(size, sizeof(void *));
+-
+ 	while (n) {
+ 		buffer = rb_entry(n, struct binder_buffer, rb_node);
+ 		BUG_ON(!buffer->free);
 
 
 
