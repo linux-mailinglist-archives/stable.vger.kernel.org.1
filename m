@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BBEB837E4C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB03F838340
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:27:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEA051C2877E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:38:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 707AC28FD65
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1FF5F844;
-	Tue, 23 Jan 2024 00:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B9960BBB;
+	Tue, 23 Jan 2024 01:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tsh1kcE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWO5Yz5U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9FD50A8F;
-	Tue, 23 Jan 2024 00:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EF529403;
+	Tue, 23 Jan 2024 01:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970504; cv=none; b=jfuBop+sJJulnoIOxMv+Z+b2aDWcZaJAmeYJ2sp5OMW5n1nmCpjhVO8vTGeoNJyRBzWFV2gYBmUPERDqdAXBHJJTju0QtsIl7KKS5QWvQnkRkAQEYIhO0FpZATJxd5d/Udg8mofx/aTp2Bi7X/A3ahBcxkQuJrNM3G8CJ4BQF9w=
+	t=1705974749; cv=none; b=ow6LFEjWnXfsYN+ZEX8MvXWtRYpBUPKbJA8i2dMfBFOiV21en1VbYi+CwNW3MWUibXQJqxvbmAJTeEPc7eJp3LXLuDREifRZz5/M3wBlWMk+W00wYd1uZ8mKB0t3jSM9GqZHW/X99NG9RtpjTSjzfOKhyMhGUQQpbozttGbzfNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970504; c=relaxed/simple;
-	bh=o3AU3xcroDuuuVHujeb69GDmndxu/EsQdIlnVl1bK7o=;
+	s=arc-20240116; t=1705974749; c=relaxed/simple;
+	bh=J39zBbUDAzxslJBVoj1Enz16+7P3BUiH1ObnGqlXTtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqqOG/mg0M5WKXHvcQ61IuSNFjb9XH3wlLBnArUj7bdLf/0xgTP6ujBy48DnjLPyCAy6S0w/VeNcNXMxIDB8km6UJcyqIgQKTCMjeeH6o0CFnOAmADVCk1G1IA2Vvp7hLN9MYqe6T/PYGX5SFDN2h2g65B+Gj/Yo57RsxIBCgh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tsh1kcE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAB7C433C7;
-	Tue, 23 Jan 2024 00:41:43 +0000 (UTC)
+	 MIME-Version; b=GyyNUDAkpwTty0pcdJs7awW46qjL2iZQT0p8DE4W6BfH+FP5ZgFeZ7bYMB1mUHDU59nv7MNgXpe8V7BAKoZ93gvueHxWajwMVwqB7uxIgGuTL7jwNrQ4ZmizeWoKA4yziiu28HzZkyvArSiA2qjKKb17gilBQTPfLJfJyQsf2C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWO5Yz5U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 118DBC433C7;
+	Tue, 23 Jan 2024 01:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970504;
-	bh=o3AU3xcroDuuuVHujeb69GDmndxu/EsQdIlnVl1bK7o=;
+	s=korg; t=1705974749;
+	bh=J39zBbUDAzxslJBVoj1Enz16+7P3BUiH1ObnGqlXTtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tsh1kcE6TYnHLGUREeuaXHV9Bt8ZGdXlEkjl57xce/8bXEun71n0nyc94dFW+mlI8
-	 aTzWFmEmz9Y4YszPVbrmksZrkhItYaMY9R7C9nzmn18mGL1T5UVHZfSPMNWllnCY2U
-	 mPin5h5/afzNAE+UxfbL9cibBpzWTznmWOkkJNzI=
+	b=RWO5Yz5UgzZbwzIyMXddUxjSMKRfd7w38AlJvPLkVh6SuXcX1UV9fwpchyTXs2yNy
+	 gq3sNZ983NR/x7QPjZX9PHt0zMVrL8YfWsu9R+tvEPN4+P6xroYPTxp0lwkw3TFQRQ
+	 yWfIDJQl+P0Qt5++FoEIPi/bFIwQGIDOA8oHuGmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Rob Herring <robh@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/417] crypto: af_alg - Disallow multiple in-flight AIO requests
-Date: Mon, 22 Jan 2024 15:53:25 -0800
-Message-ID: <20240122235752.901321180@linuxfoundation.org>
+Subject: [PATCH 6.6 155/583] arm64: dts: xilinx: Apply overlays to base dtbs
+Date: Mon, 22 Jan 2024 15:53:26 -0800
+Message-ID: <20240122235816.796210226@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit 67b164a871af1d736f131fd6fe78a610909f06f3 ]
+[ Upstream commit 23b697ec85f3e7beed271b9f344c54821de2251e ]
 
-Having multiple in-flight AIO requests results in unpredictable
-output because they all share the same IV.  Fix this by only allowing
-one request at a time.
+DT overlays in tree need to be applied to a base DTB to validate they
+apply, to run schema checks on them, and to catch any errors at compile
+time. Defining the "-dtbs" variable is not enough as the combined DT must
+be added to dtbs-y.
 
-Fixes: 83094e5e9e49 ("crypto: af_alg - add async support to algif_aead")
-Fixes: a596999b7ddf ("crypto: algif - change algif_skcipher to be asynchronous")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+zynqmp-sck-kr-g-revA.dtso and zynqmp-sck-kr-g-revB.dtso don't exist, so drop
+them.
+
+Signed-off-by: Rob Herring <robh@kernel.org>
+Fixes: 45fe0dc4ea2e ("arm64: xilinx: Use zynqmp prefix for SOM dt overlays")
+Link: https://lore.kernel.org/r/20230911214751.2202913-1-robh@kernel.org
+Signed-off-by: Michal Simek <michal.simek@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/af_alg.c         | 14 +++++++++++++-
- include/crypto/if_alg.h |  3 +++
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/xilinx/Makefile | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index e893c0f6c879..fef69d2a6b18 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -1045,9 +1045,13 @@ EXPORT_SYMBOL_GPL(af_alg_sendpage);
- void af_alg_free_resources(struct af_alg_async_req *areq)
- {
- 	struct sock *sk = areq->sk;
-+	struct af_alg_ctx *ctx;
+diff --git a/arch/arm64/boot/dts/xilinx/Makefile b/arch/arm64/boot/dts/xilinx/Makefile
+index 5e40c0b4fa0a..1068b0fa8e98 100644
+--- a/arch/arm64/boot/dts/xilinx/Makefile
++++ b/arch/arm64/boot/dts/xilinx/Makefile
+@@ -22,11 +22,10 @@ dtb-$(CONFIG_ARCH_ZYNQMP) += zynqmp-sm-k26-revA.dtb
+ dtb-$(CONFIG_ARCH_ZYNQMP) += zynqmp-smk-k26-revA.dtb
  
- 	af_alg_free_areq_sgls(areq);
- 	sock_kfree_s(sk, areq, areq->areqlen);
-+
-+	ctx = alg_sk(sk)->private;
-+	ctx->inflight = false;
- }
- EXPORT_SYMBOL_GPL(af_alg_free_resources);
- 
-@@ -1117,11 +1121,19 @@ EXPORT_SYMBOL_GPL(af_alg_poll);
- struct af_alg_async_req *af_alg_alloc_areq(struct sock *sk,
- 					   unsigned int areqlen)
- {
--	struct af_alg_async_req *areq = sock_kmalloc(sk, areqlen, GFP_KERNEL);
-+	struct af_alg_ctx *ctx = alg_sk(sk)->private;
-+	struct af_alg_async_req *areq;
-+
-+	/* Only one AIO request can be in flight. */
-+	if (ctx->inflight)
-+		return ERR_PTR(-EBUSY);
- 
-+	areq = sock_kmalloc(sk, areqlen, GFP_KERNEL);
- 	if (unlikely(!areq))
- 		return ERR_PTR(-ENOMEM);
- 
-+	ctx->inflight = true;
-+
- 	areq->areqlen = areqlen;
- 	areq->sk = sk;
- 	areq->last_rsgl = NULL;
-diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
-index a5db86670bdf..a406e281ae57 100644
---- a/include/crypto/if_alg.h
-+++ b/include/crypto/if_alg.h
-@@ -138,6 +138,7 @@ struct af_alg_async_req {
-  *			recvmsg is invoked.
-  * @init:		True if metadata has been sent.
-  * @len:		Length of memory allocated for this data structure.
-+ * @inflight:		Non-zero when AIO requests are in flight.
-  */
- struct af_alg_ctx {
- 	struct list_head tsgl_list;
-@@ -156,6 +157,8 @@ struct af_alg_ctx {
- 	bool init;
- 
- 	unsigned int len;
-+
-+	unsigned int inflight;
- };
- 
- int af_alg_register_type(const struct af_alg_type *type);
+ zynqmp-sm-k26-revA-sck-kv-g-revA-dtbs := zynqmp-sm-k26-revA.dtb zynqmp-sck-kv-g-revA.dtbo
++dtb-$(CONFIG_ARCH_ZYNQMP) += zynqmp-sm-k26-revA-sck-kv-g-revA.dtb
+ zynqmp-sm-k26-revA-sck-kv-g-revB-dtbs := zynqmp-sm-k26-revA.dtb zynqmp-sck-kv-g-revB.dtbo
++dtb-$(CONFIG_ARCH_ZYNQMP) += zynqmp-sm-k26-revA-sck-kv-g-revB.dtb
+ zynqmp-smk-k26-revA-sck-kv-g-revA-dtbs := zynqmp-smk-k26-revA.dtb zynqmp-sck-kv-g-revA.dtbo
++dtb-$(CONFIG_ARCH_ZYNQMP) += zynqmp-smk-k26-revA-sck-kv-g-revA.dtb
+ zynqmp-smk-k26-revA-sck-kv-g-revB-dtbs := zynqmp-smk-k26-revA.dtb zynqmp-sck-kv-g-revB.dtbo
+-
+-zynqmp-sm-k26-revA-sck-kr-g-revA-dtbs := zynqmp-sm-k26-revA.dtb zynqmp-sck-kr-g-revA.dtbo
+-zynqmp-sm-k26-revA-sck-kr-g-revB-dtbs := zynqmp-sm-k26-revA.dtb zynqmp-sck-kr-g-revB.dtbo
+-zynqmp-smk-k26-revA-sck-kr-g-revA-dtbs := zynqmp-smk-k26-revA.dtb zynqmp-sck-kr-g-revA.dtbo
+-zynqmp-smk-k26-revA-sck-kr-g-revB-dtbs := zynqmp-smk-k26-revA.dtb zynqmp-sck-kr-g-revB.dtbo
++dtb-$(CONFIG_ARCH_ZYNQMP) += zynqmp-smk-k26-revA-sck-kv-g-revB.dtb
 -- 
 2.43.0
 
