@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-15054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F3A83842E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5849F8380E3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4EB8B236A8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD31C1F25320
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB6764A9F;
-	Tue, 23 Jan 2024 01:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8CE1350D8;
+	Tue, 23 Jan 2024 01:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgHcX1ci"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ubr/0rfk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B847634F8;
-	Tue, 23 Jan 2024 01:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C4E1350CA;
+	Tue, 23 Jan 2024 01:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975040; cv=none; b=JGYCDSN8ZwE+noD+ATRu5OraV17F8MEuwlYFLQxCFhByHIM9wP2DP5btRc6m8ZaHlNPPQ7Kutk74456fkzhcRlbfspratnGGwUO/m8DN1KJIbf6nKUCCyHaeLQaKZZbItubIxFAoKHmWNjVtL+CYBEhj5GeBjLzjUEaO1WPII2o=
+	t=1705971940; cv=none; b=iy8yBCpy7Cx9n74mkT/llMu6r1roIs3wVVcXH3+/r/B89oy7V3bnu0q5RKawiqgihF5+wC263JsmjGO+e9AJNKLlHzKO8eEtQlWZQs5FMLTVNcDiXkUaik4fgOopxKX8mV5KVKh9T/+pYvc2WMZgk9T5gD/j3qeYT6GeGEm8PyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975040; c=relaxed/simple;
-	bh=NDu/FtKrRFRNR/rX0bFt77sI8nB6bH7+cHDzYE+tEzI=;
+	s=arc-20240116; t=1705971940; c=relaxed/simple;
+	bh=lwuJ03xo6N88D/scfQGgAgYJSRjSmhn+zU9vzG2RuNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FwmB69DHqelRd9KTmrGLXBihKXlkBT6ihVa9A0vcmDM+SRqpzODxYJLQP4C2mqSKLWwN8uOpVL4LlQ/bD105A1JJqihMt6h6UZmOoVcMwcfA/1oW6rdNHtAdX2eZ/uLKpSQInf67fnHWVqwMKi55P+Mw0gZ3Ooc4NMCOrRysTMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgHcX1ci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E734AC43394;
-	Tue, 23 Jan 2024 01:57:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CsLBc2BsOuy8qo6R0S00AtnLdH30DowtkQOJB54PVYKsZPSRt8OXUM2w8e9FlVgL0hC/G+k362SDJZOLvDwe8C+sHAyQ3XCjAcnahrP1w89TKqthdDyKDZjWUkqFmsNX4a324Pm7pRLScN2KsAnTYx/WwemDo+UUBr8wDUEkXRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ubr/0rfk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7461BC43390;
+	Tue, 23 Jan 2024 01:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975040;
-	bh=NDu/FtKrRFRNR/rX0bFt77sI8nB6bH7+cHDzYE+tEzI=;
+	s=korg; t=1705971939;
+	bh=lwuJ03xo6N88D/scfQGgAgYJSRjSmhn+zU9vzG2RuNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wgHcX1ciHsITa8ry8Vb2mGeUGuntZAozI4PiXJjxq0eWrkOYv0ksuH8sxdl6nbKqr
-	 PcUVwHS/29iYjC4Ag5h2bSQTeQOw3Qs7Yh+LCxlOoFvpmMFztPAO1ASiUGwluIQAxZ
-	 7Y4sAA/dtRzv2oFNdHf58D92jMQaaTRxshmQ6g40=
+	b=Ubr/0rfkqNY9YVNq5ibuOTqDJHKHrTqG+4ZqkeIvAkgjyxw350Q6uTp1faXCvtPDV
+	 TAp6db6vW9Xg+BW6OJxO2xr/BkXxCLfApGkPqBiU5T65xJPk3WBOv8nnl8D8P4YwR9
+	 RHyhD2VUAcmZBXTyy8wrUgrFBMSXVD6oO8HEkkIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 318/374] tty: dont check for signal_pending() in send_break()
-Date: Mon, 22 Jan 2024 15:59:34 -0800
-Message-ID: <20240122235755.947218695@linuxfoundation.org>
+Subject: [PATCH 5.10 269/286] net: ravb: Fix dma_addr_t truncation in error case
+Date: Mon, 22 Jan 2024 15:59:35 -0800
+Message-ID: <20240122235742.406796243@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +63,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-[ Upstream commit fd99392b643b824813df2edbaebe26a2136d31e6 ]
+[ Upstream commit e327b2372bc0f18c30433ac40be07741b59231c5 ]
 
-msleep_interruptible() will check on its own. So no need to do the check
-in send_break() before calling the above.
+In ravb_start_xmit(), ravb driver uses u32 variable to store result of
+dma_map_single() call. Since ravb hardware has 32-bit address fields in
+descriptors, this works properly when mapping is successful - it is
+platform's job to provide mapping addresses that fit into hardware
+limitations.
 
-Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20230919085156.1578-15-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 66aad7d8d3ec ("usb: cdc-acm: return correct error code on unsupported break")
+However, in failure case dma_map_single() returns DMA_MAPPING_ERROR
+constant that is 64-bit when dma_addr_t is 64-bit. Storing this constant
+in u32 leads to truncation, and further call to dma_mapping_error()
+fails to notice the error.
+
+Fix that by storing result of dma_map_single() in a dma_addr_t
+variable.
+
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty_io.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
-index a18138ce67b2..cdbf05e76bc7 100644
---- a/drivers/tty/tty_io.c
-+++ b/drivers/tty/tty_io.c
-@@ -2513,8 +2513,7 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
- 	retval = tty->ops->break_ctl(tty, -1);
- 	if (retval)
- 		goto out;
--	if (!signal_pending(current))
--		msleep_interruptible(duration);
-+	msleep_interruptible(duration);
- 	retval = tty->ops->break_ctl(tty, 0);
- out:
- 	tty_write_unlock(tty);
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index f092f468016b..8a4dff0566f7 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1500,7 +1500,7 @@ static netdev_tx_t ravb_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 	struct ravb_tstamp_skb *ts_skb;
+ 	struct ravb_tx_desc *desc;
+ 	unsigned long flags;
+-	u32 dma_addr;
++	dma_addr_t dma_addr;
+ 	void *buffer;
+ 	u32 entry;
+ 	u32 len;
 -- 
 2.43.0
 
