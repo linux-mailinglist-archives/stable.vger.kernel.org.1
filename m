@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F135837FA5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 973BF837D62
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB2411F2A015
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9B151C24E7A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3925963511;
-	Tue, 23 Jan 2024 00:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E788756B60;
+	Tue, 23 Jan 2024 00:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P64VGROx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkcVbmoG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0BE634F8;
-	Tue, 23 Jan 2024 00:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EF452F7C;
+	Tue, 23 Jan 2024 00:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971262; cv=none; b=F9XnyY7LUsdZB9HFL7oPTnwI3qH6YXVjT9FFF7sX/C6qz+Tq651VaJKW3BPxbQU2u2CPgcr1pbg3CYh7o/iQC0OcTlTTMH1uoeoqZUr2m5FheKmYmsRaAIoqpquU2GOWp/hBMxQODD5DW3uzxr2h33wINCysn0dpPWCbdNLFpgs=
+	t=1705969918; cv=none; b=dc1xAoIDgFJYvhMNFxsXB+7HguoXTo+WCVM2HAzmSXJTQGT5RSGLIJPwJyxX8IjSLWK/0C+VWVBd8LT5iPgAvpCDlf13vxmbU5TSJvpjWcXDbWdEaQ2o5nx8I3aQLFbNVkoKOluwiTaYdFzOqnBBOe1szo7dmcnYEOW7ZBqobCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971262; c=relaxed/simple;
-	bh=7F7EouEGhJtKZCMCPtmnN9eKkHm7zvO07RxMgrPMti4=;
+	s=arc-20240116; t=1705969918; c=relaxed/simple;
+	bh=XHKgBQN5STb+Sk/8YSJ6T4llW7VhJxpCxYywqyS3GdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BFxibD/fUOV7Ia0+YeidHlQAmLZbskBv4urT+LxSBP2l7RVCGCoEpTi/Xh5ID6bntgJqu/dZ+Y0HM964erYG7+W/Y+Rf5a0cfqDXcvKNFgrpvZpd76i1dfD9LFkP1SAY3Yg9sEiaLIEi/7cDL6ZtYpfVzXuHbG3XZSasrO+7E5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P64VGROx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73AD6C433F1;
-	Tue, 23 Jan 2024 00:54:21 +0000 (UTC)
+	 MIME-Version; b=Y5rwUPxMfS1jgbFs+R11YS1i9+7BR/caBmzn8vETP4waTH2u1lwHGnnF9K8J03dzM0U/C8NXBX8g6ghwxKuOOZlS8uHasrX2V9HQGeAEgukpyf3UC0ic0rbE6s1nDfrH0/Qml15dGu7Lm4GHDp9IlbIr2UYd6fNHYXQlmFJydZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkcVbmoG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D27C433C7;
+	Tue, 23 Jan 2024 00:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971261;
-	bh=7F7EouEGhJtKZCMCPtmnN9eKkHm7zvO07RxMgrPMti4=;
+	s=korg; t=1705969918;
+	bh=XHKgBQN5STb+Sk/8YSJ6T4llW7VhJxpCxYywqyS3GdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P64VGROx3pupNOJQ/NyVzCK6WvZ8ROBHTFfIK8EfDC9w+pumofblnmBUlmilFYhVC
-	 tJ8SA6ZmANPTzEArSzyMB2Lvu+7KinSUBbXcM3/E2yhcXh99kDJ56KclKPQt6AcE81
-	 Rbcf6ba0mlVyCD/MWwLoBGBxUExO4c2b6Fwek/U4=
+	b=qkcVbmoGe+3SVDybHXeXOQX3R0wEnRqgjS4eRqCHo44oLRzPOYuxncEpkypGKEvTc
+	 /a+APwVMk+3/i4xCKHGMLHQtS04BIE7jDyoaHhuo5M8sMCSUEm9jzZXSuvQwbe2/zK
+	 WCz4dDIrFmLLVd9MVBhW8RdL/Dgnkmvs9dd8xHwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Paul Geurts <paul_geurts@live.nl>,
+	Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
+	Eberhard Stoll <eberhard.stoll@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 120/286] bpf: fix check for attempt to corrupt spilled pointer
-Date: Mon, 22 Jan 2024 15:57:06 -0800
-Message-ID: <20240122235736.753139278@linuxfoundation.org>
+Subject: [PATCH 6.7 523/641] serial: imx: fix tx statemachine deadlock
+Date: Mon, 22 Jan 2024 15:57:07 -0800
+Message-ID: <20240122235834.452698591@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Paul Geurts <paul_geurts@live.nl>
 
-[ Upstream commit ab125ed3ec1c10ccc36bc98c7a4256ad114a3dae ]
+[ Upstream commit 78d60dae9a0c9f09aa3d6477c94047df2fe6f7b0 ]
 
-When register is spilled onto a stack as a 1/2/4-byte register, we set
-slot_type[BPF_REG_SIZE - 1] (plus potentially few more below it,
-depending on actual spill size). So to check if some stack slot has
-spilled register we need to consult slot_type[7], not slot_type[0].
+When using the serial port as RS485 port, the tx statemachine is used to
+control the RTS pin to drive the RS485 transceiver TX_EN pin. When the
+TTY port is closed in the middle of a transmission (for instance during
+userland application crash), imx_uart_shutdown disables the interface
+and disables the Transmission Complete interrupt. afer that,
+imx_uart_stop_tx bails on an incomplete transmission, to be retriggered
+by the TC interrupt. This interrupt is disabled and therefore the tx
+statemachine never transitions out of SEND. The statemachine is in
+deadlock now, and the TX_EN remains low, making the interface useless.
 
-To avoid the need to remember and double-check this in the future, just
-use is_spilled_reg() helper.
+imx_uart_stop_tx now checks for incomplete transmission AND whether TC
+interrupts are enabled before bailing to be retriggered. This makes sure
+the state machine handling is reached, and is properly set to
+WAIT_AFTER_SEND.
 
-Fixes: 27113c59b6d0 ("bpf: Check the other end of slot_type for STACK_SPILL")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20231205184248.1502704-4-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: cb1a60923609 ("serial: imx: implement rts delaying for rs485")
+Signed-off-by: Paul Geurts <paul_geurts@live.nl>
+Tested-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
+Tested-by: Eberhard Stoll <eberhard.stoll@gmx.de>
+Link: https://lore.kernel.org/r/AM0PR09MB26758F651BC1B742EB45775995B8A@AM0PR09MB2675.eurprd09.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/imx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 45c50ee9b037..ddfd33703f4d 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -2493,7 +2493,7 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- 	 * so it's aligned access and [off, off + size) are within stack limits
- 	 */
- 	if (!env->allow_ptr_leaks &&
--	    state->stack[spi].slot_type[0] == STACK_SPILL &&
-+	    is_spilled_reg(&state->stack[spi]) &&
- 	    size != BPF_REG_SIZE) {
- 		verbose(env, "attempt to corrupt spilled pointer on stack\n");
- 		return -EACCES;
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 4cecc097408e..16207b9a8c81 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -415,13 +415,13 @@ static void imx_uart_stop_tx(struct uart_port *port)
+ 	ucr1 = imx_uart_readl(sport, UCR1);
+ 	imx_uart_writel(sport, ucr1 & ~UCR1_TRDYEN, UCR1);
+ 
++	ucr4 = imx_uart_readl(sport, UCR4);
+ 	usr2 = imx_uart_readl(sport, USR2);
+-	if (!(usr2 & USR2_TXDC)) {
++	if ((!(usr2 & USR2_TXDC)) && (ucr4 & UCR4_TCEN)) {
+ 		/* The shifter is still busy, so retry once TC triggers */
+ 		return;
+ 	}
+ 
+-	ucr4 = imx_uart_readl(sport, UCR4);
+ 	ucr4 &= ~UCR4_TCEN;
+ 	imx_uart_writel(sport, ucr4, UCR4);
+ 
 -- 
 2.43.0
 
