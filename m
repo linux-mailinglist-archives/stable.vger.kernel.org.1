@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-14682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5891838288
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C64838222
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41E22B28FA5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 611D12890F9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E3A58AA9;
-	Tue, 23 Jan 2024 01:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5927D58AB6;
+	Tue, 23 Jan 2024 01:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOw1f/yY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="foqzr/gL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72A26127;
-	Tue, 23 Jan 2024 01:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198206AA6;
+	Tue, 23 Jan 2024 01:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974069; cv=none; b=VTzGJ6JJbsnujnY7booMrr13r/X9PhUersu+qTvPlw28fw5rU2ZH7aRDgRJxzK0so+gqezJCX0ewyyzvYVfJuD04DorrcXGZdji3vy5Bwb0jmr//YQSVTgQGwZJX7X8YmqdZmo4Kne7XUZljGdtFa2iEE0KYdJ0USVSjbf+pl9M=
+	t=1705974072; cv=none; b=L9RmEi40eXbV80O5cRAlUqz+hc+GQHAIdDISxWhGSbATChDr5xpfVNF/dMCZEh+XcW3HnT3yMok2yCn1EKKBexmRs2KA0sOyF1oCYG9J2HatZaoWVGGuuYg6sLUmge9wg5i3GpTufid8PSVuaVyVF3MalmTMYEfmNWuflG69rcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974069; c=relaxed/simple;
-	bh=+xeTQm+deYW6chccU7qTI7fq4nk1LIdtwjbwcqRU7jw=;
+	s=arc-20240116; t=1705974072; c=relaxed/simple;
+	bh=K/T8+aLoHHH01xsiYVUADmcC4KN2/VIM8yxH1yvkbh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HKIK42sSpUVsdZ/7DXGI+1pwj+t8kYACEniTKimG06A06ajaAhQ6unyBISn8myF4nF/E5a9ksA76A5K8D6+hrp/9eXmSo4xY3Y4maAosq8T7g/TjZSwXSnPF0lzGTgEEJcMFiGzrSsxpjrndDghgMJ6LFyHHoUrG35B+BYjC0Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOw1f/yY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C667C433C7;
-	Tue, 23 Jan 2024 01:41:09 +0000 (UTC)
+	 MIME-Version; b=i3vihgb8CJncyDgE0UTlsgz73JxhVVhUu5ztjezuSoyhm4D2jqe8xKLMhHI9ToYbkkw/I4D9eMeqd1clJDfVsqaYD7XMWFmaW6lq2NUCP/8knlo2mWRgi/TKe4nx/XhHaZYOxJwyoX2IyLZDzTISpYqLnXTvjQCre/kiAojEyQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=foqzr/gL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75844C43390;
+	Tue, 23 Jan 2024 01:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974069;
-	bh=+xeTQm+deYW6chccU7qTI7fq4nk1LIdtwjbwcqRU7jw=;
+	s=korg; t=1705974071;
+	bh=K/T8+aLoHHH01xsiYVUADmcC4KN2/VIM8yxH1yvkbh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tOw1f/yYEG4n7DE7myEB/Qlo48tEb8Jq/SE2fH6mYM2lEgRJXL6pwUnoJEf7AkPgh
-	 lobnrkZmZnw+EqAbk4PP7ZeL7TChHzOF/OohFKExOouZUflXZIFKsHdNX7v3unbvyt
-	 Ok9vT54Xd9LcTRUgYGrFKqjN3V6W/jnOTwI2SQK0=
+	b=foqzr/gL4Whv7BFSBABVfvLfBu1PE/C9YGPmdzvK+lUPe5USS/8MmMffazPcERF51
+	 m/IcQkiPDSW11xJRLOFr+eUoO67I1tEkT2LQDphRz/9bS0W8vHrBpOf0CHw+QYhRiX
+	 IunD6Ya9F7C1MraWPN/knZBEadbKJzj8ilD4+uwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Mimi Zohar <zohar@linux.ibm.com>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/583] KEYS: encrypted: Add check for strsep
-Date: Mon, 22 Jan 2024 15:51:17 -0800
-Message-ID: <20240122235812.995169411@linuxfoundation.org>
+Subject: [PATCH 6.6 027/583] spi: cadence-quadspi: add missing clk_disable_unprepare() in cqspi_probe()
+Date: Mon, 22 Jan 2024 15:51:18 -0800
+Message-ID: <20240122235813.022604180@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -66,35 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit b4af096b5df5dd131ab796c79cedc7069d8f4882 ]
+[ Upstream commit 5cb475174cce1bfedf1025b6e235e2c43d81144f ]
 
-Add check for strsep() in order to transfer the error.
+cqspi_jh7110_clk_init() is called after clk_prepare_enable(cqspi->clk),
+if it fails, it should goto label 'probe_reset_failed' to disable
+cqspi->clk.
 
-Fixes: cd3bc044af48 ("KEYS: encrypted: Instantiate key with user-provided decrypted data")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+In the error path after calling cqspi_jh7110_clk_init(),
+cqspi_jh7110_disable_clk() need be called.
+
+Fixes: 33f1ef6d4eb6 ("spi: cadence-quadspi: Add clock configuration for StarFive JH7110 QSPI")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Link: https://lore.kernel.org/r/20231129081147.628004-1-yangyingliang@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/keys/encrypted-keys/encrypted.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-cadence-quadspi.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
-index 1e313982af02..fea7e0937150 100644
---- a/security/keys/encrypted-keys/encrypted.c
-+++ b/security/keys/encrypted-keys/encrypted.c
-@@ -237,6 +237,10 @@ static int datablob_parse(char *datablob, const char **format,
- 			break;
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index b50db71ac4cc..2064dc4ea935 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1825,7 +1825,7 @@ static int cqspi_probe(struct platform_device *pdev)
+ 		if (ddata->jh7110_clk_init) {
+ 			ret = cqspi_jh7110_clk_init(pdev, cqspi);
+ 			if (ret)
+-				goto probe_clk_failed;
++				goto probe_reset_failed;
  		}
- 		*decrypted_data = strsep(&datablob, " \t");
-+		if (!*decrypted_data) {
-+			pr_info("encrypted_key: decrypted_data is missing\n");
-+			break;
-+		}
- 		ret = 0;
- 		break;
- 	case Opt_load:
+ 
+ 		if (of_device_is_compatible(pdev->dev.of_node,
+@@ -1872,6 +1872,8 @@ static int cqspi_probe(struct platform_device *pdev)
+ probe_setup_failed:
+ 	cqspi_controller_enable(cqspi, 0);
+ probe_reset_failed:
++	if (cqspi->is_jh7110)
++		cqspi_jh7110_disable_clk(pdev, cqspi);
+ 	clk_disable_unprepare(cqspi->clk);
+ probe_clk_failed:
+ 	pm_runtime_put_sync(dev);
 -- 
 2.43.0
 
