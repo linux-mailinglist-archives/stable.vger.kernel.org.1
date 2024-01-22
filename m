@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16ADF8384DF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 018E38380BF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2C1F290AA9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABECF1F29A16
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C2777F01;
-	Tue, 23 Jan 2024 02:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E9B013398E;
+	Tue, 23 Jan 2024 01:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RRm3lzaR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwFpjRgs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2580F768F6;
-	Tue, 23 Jan 2024 02:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B41A133435;
+	Tue, 23 Jan 2024 01:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975524; cv=none; b=lchULEGp+ja6lD3CxRmuKLCWSCaU9ZC7FcF7S2bbb1tvY6HbgX60966w+FXJPmoUWKh9StXJ1H83goqpOlbzIO3UWCYsdL5gs6EcNRCgnOLxOowwP8t+ZSQacsZ2m3j2NFLRtmst3XGqPti2BYAAahQY+VNvW7qNXco9RDM0RPE=
+	t=1705971875; cv=none; b=n27scCk9BVyw8gpu8RNeEwGZzf/eHphAwrYh0bPcSWKz789mzOqdztz5BUqkYDapiWbZzDvcFbxkJPis+OfmtOwls0nha60IuKrWIkPkTCaYJSHnr2LBWpmtfb4sYTmUrBynsOqE0DeT818SW6BqVkPFLcbjH8yLaUTKq2X7AT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975524; c=relaxed/simple;
-	bh=/8777Ancit4khwf1AMQmWJsRB67PYGm5Q+sdztVoj4s=;
+	s=arc-20240116; t=1705971875; c=relaxed/simple;
+	bh=0W7gLgHlBiR9lIAddxdGHl+nAVQJBLGgmGa2p01PsJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eHYE+7yUiqxhQ4EBgiLk6fuN/HQs3x433lS6SYbfS4G22RtZJd8hUpSW3e29ad1oVf9gRhSmeBEQ/lfg3B2apJPxD+6d2ydR1AnALH7b54YPinxlGAsY2cZYbWC9K0HFOdiaJBcwQF03QK0mQ21s/NFf0hGC3fHXhTf7Ok6xPmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RRm3lzaR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03CAC433B2;
-	Tue, 23 Jan 2024 02:05:23 +0000 (UTC)
+	 MIME-Version; b=pzNoNZ5/cCOuW7yJZ92swMIGqLYzgmKlpF/bX6+63yn1YqdyzGOQSHfYhLNAQR9s2TRVxQuUPjYTasEJXLzLbj6VWpSyLHHRgPnRHC9hOed8txFz8hLvzzD1474uosYOSCjkTUEZj2Omq1Rup+rj9LbPRoO2hYEjcHuickLB5WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwFpjRgs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E156CC43390;
+	Tue, 23 Jan 2024 01:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975524;
-	bh=/8777Ancit4khwf1AMQmWJsRB67PYGm5Q+sdztVoj4s=;
+	s=korg; t=1705971875;
+	bh=0W7gLgHlBiR9lIAddxdGHl+nAVQJBLGgmGa2p01PsJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RRm3lzaRdbllO8SwwdaRbdjszPDbaEF0JO1LNsFANM6YXJ5zm5S3OYoQtJpGKdgG0
-	 v5kKXzKmK/0jSa1g13gqm5FausPASC1Ef5bGgAln8lOOricYk1uOmtdKCY1zZi59nX
-	 QJMCKnRoMk71v8iRmusb8sI3FbwiD8mjHTCyfMbQ=
+	b=lwFpjRgs3HCMuYq6Lwv9oco1cj1VZ1lF8+Us8mTJFHZvPf8GGhcF6MRV7vRDTL2nE
+	 MTOXpB6f1GekJa3rTpHE0ql4WQApGPsuvidwXUZ+YVzMgeSYQgzB0Wn8EbJ+jS467J
+	 +OO20G3zOOUNVf78q8bN3phzb/NRG1FvOCPzYx4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 476/583] selftests/sgx: Fix uninitialized pointer dereferences in encl_get_entry
-Date: Mon, 22 Jan 2024 15:58:47 -0800
-Message-ID: <20240122235826.551657905@linuxfoundation.org>
+	Nam Cao <namcao@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 222/286] fbdev: flush deferred work in fb_deferred_io_fsync()
+Date: Mon, 22 Jan 2024 15:58:48 -0800
+Message-ID: <20240122235740.627717544@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit b84fc2e0139ba4b23b8039bd7cfd242894fe8f8b ]
+commit 15e4c1f462279b4e128f27de48133e0debe9e0df upstream.
 
-Ensure sym_tab and sym_names are zero-initialized and add an early-out
-condition in the unlikely (erroneous) case that the enclave ELF file would
-not contain a symbol table.
+The driver's fsync() is supposed to flush any pending operation to
+hardware. It is implemented in this driver by cancelling the queued
+deferred IO first, then schedule it for "immediate execution" by calling
+schedule_delayed_work() again with delay=0. However, setting delay=0
+only means the work is scheduled immediately, it does not mean the work
+is executed immediately. There is no guarantee that the work is finished
+after schedule_delayed_work() returns. After this driver's fsync()
+returns, there can still be pending work. Furthermore, if close() is
+called by users immediately after fsync(), the pending work gets
+cancelled and fsync() may do nothing.
 
-This addresses -Werror=maybe-uninitialized compiler warnings for gcc -O2.
+To ensure that the deferred IO completes, use flush_delayed_work()
+instead. Write operations to this driver either write to the device
+directly, or invoke schedule_delayed_work(); so by flushing the
+workqueue, it can be guaranteed that all previous writes make it to the
+device.
 
-Fixes: 33c5aac3bf32 ("selftests/sgx: Test complete changing of page type flow")
-Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lore.kernel.org/all/20231005153854.25566-3-jo.vanbulck%40cs.kuleuven.be
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5e841b88d23d ("fb: fsync() method for deferred I/O flush.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/sgx/load.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/core/fb_defio.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/sgx/load.c b/tools/testing/selftests/sgx/load.c
-index 94bdeac1cf04..c9f658e44de6 100644
---- a/tools/testing/selftests/sgx/load.c
-+++ b/tools/testing/selftests/sgx/load.c
-@@ -136,11 +136,11 @@ static bool encl_ioc_add_pages(struct encl *encl, struct encl_segment *seg)
-  */
- uint64_t encl_get_entry(struct encl *encl, const char *symbol)
- {
-+	Elf64_Sym *symtab = NULL;
-+	char *sym_names = NULL;
- 	Elf64_Shdr *sections;
--	Elf64_Sym *symtab;
- 	Elf64_Ehdr *ehdr;
--	char *sym_names;
--	int num_sym;
-+	int num_sym = 0;
- 	int i;
+--- a/drivers/video/fbdev/core/fb_defio.c
++++ b/drivers/video/fbdev/core/fb_defio.c
+@@ -78,11 +78,7 @@ int fb_deferred_io_fsync(struct file *fi
+ 		return 0;
  
- 	ehdr = encl->bin;
-@@ -161,6 +161,9 @@ uint64_t encl_get_entry(struct encl *encl, const char *symbol)
- 		}
- 	}
+ 	inode_lock(inode);
+-	/* Kill off the delayed work */
+-	cancel_delayed_work_sync(&info->deferred_work);
+-
+-	/* Run it immediately */
+-	schedule_delayed_work(&info->deferred_work, 0);
++	flush_delayed_work(&info->deferred_work);
+ 	inode_unlock(inode);
  
-+	if (!symtab || !sym_names)
-+		return 0;
-+
- 	for (i = 0; i < num_sym; i++) {
- 		Elf64_Sym *sym = &symtab[i];
- 
--- 
-2.43.0
-
+ 	return 0;
 
 
 
