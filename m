@@ -1,74 +1,125 @@
-Return-Path: <stable+bounces-12769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B55E88372E0
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:44:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F588372B7
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:37:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10233B2A98D
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:37:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 440291C2771C
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6548F3F8D4;
-	Mon, 22 Jan 2024 19:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqyYbrtQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A5B3F8D2;
+	Mon, 22 Jan 2024 19:37:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234C93E49E
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 19:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9791E1EF07;
+	Mon, 22 Jan 2024 19:37:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705952215; cv=none; b=ANGiFMq8gFyC604Hzl/qLe780hyL46Yw1dIZPhS/qj9/xbMRVGlHVMBUmy0GwLVY8XmKbDj7oPgUVXvAvXnrYi8CYOww07GS/eIZCOGXUoSgFh84lJREgcKslvIxtKD0+T6mHFGDDOjcA/mkI03AGO8Q/0GeSqQ8gkcUKIHCorg=
+	t=1705952246; cv=none; b=Q+aLq2dng5m4yxEARRlbGPkhq+mPH5UNMM+H+6Ku4yD1jEZJvCZ+8YwpRmPo57yqKmn5E1WlEtX+dZLY9ahEZ2sohjRkzDphY/Z2DunMA0phQpgmjpE/GqeXW0q85zU5eWETIhoddj9NQkXMleAvmq/954qD82U2huxCW9tQAIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705952215; c=relaxed/simple;
-	bh=4Bxaet9Xsqz0cMK7c9bsrgD+aWduBxjuEicF/JFr5YY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aQHKX5ynoUBpUrSb7e4gMmJmvAJS/tCeOcsVpuV2MOQxF/S/L3tvHktMksAQAkxGOkEYMqOSxPtCVCLvOjRuSoV4IwZ9RiRTQC56PUXROlHaafhERDTEpRFyRLyCR+peLDh4dqAK5eNgRrSofzu/wBImPheGdOZMN/1ywOb1kVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqyYbrtQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E2AC43390;
-	Mon, 22 Jan 2024 19:36:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705952214;
-	bh=4Bxaet9Xsqz0cMK7c9bsrgD+aWduBxjuEicF/JFr5YY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=wqyYbrtQ6pRYO0GmJIxk9woEoSicio6zxOpq6PHkgUuZFUJ0/sjGnUJ8AsdLra+1/
-	 DqpNu/iawDCeSqc9JP/vKvPPmO9Rz0innpnQxHPAYp1Iu4FiFdCkstVamACCQ8V7uv
-	 X6YcUgpFoSWSMnqUA5c/bK2B+ppdOkjJfKaizx90=
-Date: Mon, 22 Jan 2024 11:36:52 -0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: xrivendell7@gmail.com, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] io_uring/rw: ensure io->bytes_done is
- always initialized" failed to apply to 5.15-stable tree
-Message-ID: <2024012243-suitor-shorts-255d@gregkh>
-References: <2024012216-depth-bartender-bc38@gregkh>
- <9326c0e9-fa64-4082-a577-c9c5b6f01917@kernel.dk>
+	s=arc-20240116; t=1705952246; c=relaxed/simple;
+	bh=RoIkcs5ey0VmVT8DRVQBY+Ice/V2Jk6D5ruHVfHqb6I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sUG9ZSZykP0Fa36paAJxEOp75We4mw+qZwJz3nyNgZysJfAf8oEZz0Vuwrl9dPDeZBlvQqEzwmwzD0LfsAfqx2ia/3QY3US6w5YGPTN+89Nv5ithFs4KRousWHHnNunwgAYXlVvhx1ov8QdENLoM6NP9rRL7ZyPX9LoCAOF9MDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5958d3f2d8aso225975eaf.1;
+        Mon, 22 Jan 2024 11:37:25 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705952244; x=1706557044;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nesK9y4qWZhrNCSiCMAkJgfEGumzzvprEvfcz7ekwg4=;
+        b=pFkB8C6kfiJ+Dkx0yQHLZ6JdwXEsXOb/OJiJSOY2tknnvnaDXFZBqWi+Z4TEuWUCjQ
+         jHJAfW0C+qEdbCfY/2jiNTXKld0czbD7zpJ/sfvSXdYu76FjLkrT8OwY6oKpoLf1Xa5N
+         KaE75jNGvPiYozIJUSlxxBptOdAzT+hJcTOGuBwqXxokIsGNhKI9APVPyYsehwHZi6BK
+         AOclO3QYnGpXhz4q17Mp8WxdvbUPeHvDUuwhePjwnhPPN8BN2gM8iXY8uLEyxycC5GuP
+         toCL3CKrdeI0FPR1fManrajl3KPXG5F5T24e6dVkh5zxg0K+coe5T9IucSIvk3hHfh8G
+         pkJg==
+X-Gm-Message-State: AOJu0YzIo8JZU82fXKkWJyR0Iwjnu82GtZ7CN7CoWOv6M+h/1QQWiq+Q
+	0PFcAynTXlh57ZlsusOwJsLU6CrydzjW97+uKhfw34Nac7MYq1GLheCloTJpE3qLh46yzwv7kYK
+	QeHVK6y8bsoA/FtZkTySLUHMmf9A=
+X-Google-Smtp-Source: AGHT+IH0fdGswoQ6uEC4cc+D2uB7ejqea2Nnj7UmJc5iLidGGpOGUvopdRgTpzEh6BeeFThhHzHcXlUkMCieOABJ27k=
+X-Received: by 2002:a4a:d744:0:b0:598:e709:7620 with SMTP id
+ h4-20020a4ad744000000b00598e7097620mr7318381oot.1.1705952244669; Mon, 22 Jan
+ 2024 11:37:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9326c0e9-fa64-4082-a577-c9c5b6f01917@kernel.dk>
+References: <20240119113319.54158-1-mario.limonciello@amd.com> <CAAE01kHEperoassBmLwM3pWhJmWpjRS2fcE8VPkLAgvz7yAuQA@mail.gmail.com>
+In-Reply-To: <CAAE01kHEperoassBmLwM3pWhJmWpjRS2fcE8VPkLAgvz7yAuQA@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Mon, 22 Jan 2024 20:37:13 +0100
+Message-ID: <CAJZ5v0jXvjaC5niHqSxQyc+QnEj=gf+vgKrjjhdFkTgQrPHb3Q@mail.gmail.com>
+Subject: Re: [PATCH] cpufreq/amd-pstate: Fix setting scaling max/min freq values
+To: Wyes Karny <wkarny@gmail.com>, Mario Limonciello <mario.limonciello@amd.com>
+Cc: ray.huang@amd.com, rafael@kernel.org, viresh.kumar@linaro.org, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 22, 2024 at 12:32:06PM -0700, Jens Axboe wrote:
-> On 1/22/24 12:27 PM, gregkh@linuxfoundation.org wrote:
-> > 
-> > The patch below does not apply to the 5.15-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> 
-> This one applies to 5.10 and 5.15 stable, it should go into both.
-> It's the same patch, just in the older bigger unified file.
+On Mon, Jan 22, 2024 at 3:57=E2=80=AFPM Wyes Karny <wkarny@gmail.com> wrote=
+:
+>
+> On Sat, Jan 20, 2024 at 5:49=E2=80=AFAM Mario Limonciello
+> <mario.limonciello@amd.com> wrote:
+> >
+> > Scaling min/max freq values were being cached and lagging a setting
+> > each time.  Fix the ordering of the clamp call to ensure they work.
+> >
+> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217931
+> > Cc: stable@vger.kernel.org
+> > Cc: wkarny@gmail.com
+> > Fixes: febab20caeba ("cpufreq/amd-pstate: Fix scaling_min_freq and scal=
+ing_max_freq update")
+> > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+>
+> Reviewed-by: Wyes Karny <wkarny@gmail.com>
+>
+> > ---
+> >  drivers/cpufreq/amd-pstate.c | 7 +++----
+> >  1 file changed, 3 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.=
+c
+> > index 1f6186475715..1791d37fbc53 100644
+> > --- a/drivers/cpufreq/amd-pstate.c
+> > +++ b/drivers/cpufreq/amd-pstate.c
+> > @@ -1232,14 +1232,13 @@ static void amd_pstate_epp_update_limit(struct =
+cpufreq_policy *policy)
+> >         max_limit_perf =3D div_u64(policy->max * cpudata->highest_perf,=
+ cpudata->max_freq);
+> >         min_limit_perf =3D div_u64(policy->min * cpudata->highest_perf,=
+ cpudata->max_freq);
+> >
+> > +       WRITE_ONCE(cpudata->max_limit_perf, max_limit_perf);
+> > +       WRITE_ONCE(cpudata->min_limit_perf, min_limit_perf);
+> > +
+> >         max_perf =3D clamp_t(unsigned long, max_perf, cpudata->min_limi=
+t_perf,
+> >                         cpudata->max_limit_perf);
+> >         min_perf =3D clamp_t(unsigned long, min_perf, cpudata->min_limi=
+t_perf,
+> >                         cpudata->max_limit_perf);
+> > -
+> > -       WRITE_ONCE(cpudata->max_limit_perf, max_limit_perf);
+> > -       WRITE_ONCE(cpudata->min_limit_perf, min_limit_perf);
+> > -
+> >         value =3D READ_ONCE(cpudata->cppc_req_cached);
+> >
+> >         if (cpudata->policy =3D=3D CPUFREQ_POLICY_PERFORMANCE)
+> > --
 
-Now queued up, thanks.
-
-greg k-h
+Applied as 6.8-rc material, thanks!
 
