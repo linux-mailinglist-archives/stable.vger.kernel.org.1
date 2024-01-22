@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB12837E8E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4435283839E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50FF11C21D61
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:40:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE7EA1F28D18
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307F04EB2A;
-	Tue, 23 Jan 2024 00:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22126341D;
+	Tue, 23 Jan 2024 01:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBEdNZw8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDb+B2yr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B172F4A;
-	Tue, 23 Jan 2024 00:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720146313F;
+	Tue, 23 Jan 2024 01:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970666; cv=none; b=qMsIGZbukdVhDb84Nz9j8eHufT7JpysZp5H4gfVH+D6w/CesptJ6sIm+WpN+yMPAV+Vf7TWbDOt32mjGMH95Wj0U/JuWrAlGP6smztaj2o12Uy/xZpHp9y66R71FdUH3D1XzN0ZB8vBj7LCIx9bsRId6UPivQnt/pcJEQEqjT1g=
+	t=1705975023; cv=none; b=ehKGiDdevh1/OfxFVbTvlU/gw+lzdq3XnquE2yHikEggTQqKATD8oJbfJm4MpFEtbdcf468aQqejr5AmBXFuwv72VRYm2rFNMe/O9pRYGFRf/mMnnXpicLv+B4kAGj7NAcCIR/LXaXLGpF9OLFYBBaw86AVk+r13wVFkwiI2ISo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970666; c=relaxed/simple;
-	bh=dFhj9PvsMSaWlbi+3pIMSC34T4ej3fsSyOPMoOUEDFo=;
+	s=arc-20240116; t=1705975023; c=relaxed/simple;
+	bh=XPfTA+i3GHvfhF7NBB/wYJWva0qowgjgMlxbg2+3xfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MhCdtQqfG5rdeWCsf4PhqhRxCzbjgty5NbeGzKUXjOmTu5ywH/sZaMKPlXO4rSAJlUl1uRzR+hhusNLZiNL3y0dTf9nJVAb54N8fIyPiO2Tn3xDgknZRvONjr81f3xF2ueaiqEV6svM32T1nvmJvzxM9i/dgaZDiJ3a0cWqIb2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBEdNZw8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6EA4C433C7;
-	Tue, 23 Jan 2024 00:44:24 +0000 (UTC)
+	 MIME-Version; b=FUzl9sSdzLE1ffpW9HJ0q444FvF5l68kk8D8d3izWisBAkuJbeva9MGW2I9Sp5BvPqU2pJxjSyIzliyNIm7z0rjbyu9sjH6SWNyT5YvqG8YOc7BHvqLcszOADsnXaR2XpDcX8bNmF8kcjSPDiOeAUbj6ybt1euO8TA8jGXwT1jA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDb+B2yr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC710C43390;
+	Tue, 23 Jan 2024 01:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970665;
-	bh=dFhj9PvsMSaWlbi+3pIMSC34T4ej3fsSyOPMoOUEDFo=;
+	s=korg; t=1705975022;
+	bh=XPfTA+i3GHvfhF7NBB/wYJWva0qowgjgMlxbg2+3xfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IBEdNZw8rX8QdhUAbW6YBFfWvF0CDmThK96jbepFoas+ItW/aSSoxvvRaGgz2beaQ
-	 WxSv8S9iYYfQtV+Hj8mAlvoPca5NSSTgzl+Qaxs+QbJ91s+M91OqCCy4B7iluDaRXd
-	 Erqvr6/FRd04LyNr75vsFIfD6W1/tD03TRejRJBw=
+	b=xDb+B2yr6w+Z+58aXwzD9DN/k7Cel10UCligH/C0BE05cSvqjHj+hkejDCiEBfH7f
+	 8itkJs2s1FZVolKgqhxqYVCBAj/Q74IZPHrIsPdpB+U2Z5PukkbRkwl91Vmje+0tZm
+	 Vd2QIX69l1T8/kt7+qRUE2fqpKV+kAFAgGxibiK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/417] bpf: enforce precision of R0 on callback return
+Subject: [PATCH 6.6 200/583] wifi: iwlwifi: mvm: send TX path flush in rfkill
 Date: Mon, 22 Jan 2024 15:54:11 -0800
-Message-ID: <20240122235754.579408564@linuxfoundation.org>
+Message-ID: <20240122235818.099906747@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 0acd03a5bd188b0c501d285d938439618bd855c4 ]
+[ Upstream commit 2afc3dad39ea84a072d04ff40a417234326adc47 ]
 
-Given verifier checks actual value, r0 has to be precise, so we need to
-propagate precision properly. r0 also has to be marked as read,
-otherwise subsequent state comparisons will ignore such register as
-unimportant and precision won't really help here.
+If we want to drop packets, that's surely a good thing to
+do when we want to enter rfkill. Send this command despite
+rfkill so we can successfully clean up everything, we need
+to handle it separately since it has CMD_WANT_SKB, so it's
+not going to automatically return success when in rfkill.
 
-Fixes: 69c087ba6225 ("bpf: Add bpf_for_each_map_elem() helper")
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20231202175705.885270-4-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: d4e3a341b87b ("iwlwifi: mvm: add support for new flush queue response")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231219215605.c528a6fa6cec.Ibe5e9560359ccc0fba60c35e01de285c376748a2@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 142e10d49fd8..024a2393613f 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -7284,6 +7284,13 @@ static int prepare_func_exit(struct bpf_verifier_env *env, int *insn_idx)
- 			verbose(env, "R0 not a scalar value\n");
- 			return -EACCES;
- 		}
-+
-+		/* we are going to rely on register's precise value */
-+		err = mark_reg_read(env, r0, r0->parent, REG_LIVE_READ64);
-+		err = err ?: mark_chain_precision(env, BPF_REG_0);
-+		if (err)
-+			return err;
-+
- 		if (!tnum_in(range, r0->var_off)) {
- 			verbose_invalid_scalar(env, r0, &range, "callback return", "R0");
- 			return -EINVAL;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index 177a4628a913..6fdb2c38518e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -2236,7 +2236,7 @@ int iwl_mvm_flush_sta_tids(struct iwl_mvm *mvm, u32 sta_id, u16 tids)
+ 	WARN_ON(!iwl_mvm_has_new_tx_api(mvm));
+ 
+ 	if (iwl_fw_lookup_notif_ver(mvm->fw, LONG_GROUP, TXPATH_FLUSH, 0) > 0)
+-		cmd.flags |= CMD_WANT_SKB;
++		cmd.flags |= CMD_WANT_SKB | CMD_SEND_IN_RFKILL;
+ 
+ 	IWL_DEBUG_TX_QUEUES(mvm, "flush for sta id %d tid mask 0x%x\n",
+ 			    sta_id, tids);
 -- 
 2.43.0
 
