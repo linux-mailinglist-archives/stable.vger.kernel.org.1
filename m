@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA07383817B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B890838369
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0009B2C84B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CC6C1C29C50
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F191339BD;
-	Tue, 23 Jan 2024 01:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFB762818;
+	Tue, 23 Jan 2024 01:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XiVYthK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auQWZq1A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B761339A8;
-	Tue, 23 Jan 2024 01:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C90522060;
+	Tue, 23 Jan 2024 01:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971895; cv=none; b=nKIaXxC8pSb3t4l8scKboK0AzMwnOQUwjxzZRgf3VrjWR7pWvL7yOLw0CQdOuQqpQjciGUd0VAd9uOgKm/jEdV1/2p2l8seqNCx9nfcnrI3UM3/9p4beOFBPbGnXY5gsVbKoL1G23UWhbJ9kIki491ZBTPqg7OSF5SX1BVza/2o=
+	t=1705974965; cv=none; b=B/jUQig6+uavKXA8EyBnFxCI2QMTkqAm/ObWutiNd2WNMVouhvCveVW3KLJ44C/aPTXcPNllInDGEuVW6wG2g6UxP8ORUZGPn7sBGKHIh6Ygyvf+JQipZ71LMxN7kovUN5TJGDNw+kQihQdSf/H9W/MFjIJAd6rSAmiMyjd6Sgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971895; c=relaxed/simple;
-	bh=uazdqqdFf6P99vvG0NUiCBxsHVHK0jGy8nUM4I0VwN0=;
+	s=arc-20240116; t=1705974965; c=relaxed/simple;
+	bh=OKA44jgN0UnmuAlrnSf9HtxEHlNukVU/wEu73vl3hh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kiu5vmEMZfwJWhLZmnBLYvL61+/zE9FF49qOD/7pGwz/R86E2iRWKi8QrhQAatMzJCSrW4/xruI9EHVrKP94wbrk5F/rXfdU2bd3NMQLdHruu3Y5wDM0+bQrQ99/7svugBfdYo/kXpViuWHf/Ta/nZKrbvfXUnkN7L8Oinz5v5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XiVYthK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F53CC433C7;
-	Tue, 23 Jan 2024 01:04:55 +0000 (UTC)
+	 MIME-Version; b=LmclwqjXTFdZgdxjwBGUuAtAUQx6V1wA/oRpqEyRaIRzsRb4L5VgvNknn4nTQ+vt9JH8mOYYF7jLo1QQ+VVQP25Wyaisyl1EPsdmSAtLHSwofVfJ1HCKFsUNeGUu4AFQSzsEgIWo1zk+yiuegqGXhDRp1RNvhEB6pR0K2gnsnxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auQWZq1A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50FA2C43399;
+	Tue, 23 Jan 2024 01:56:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971895;
-	bh=uazdqqdFf6P99vvG0NUiCBxsHVHK0jGy8nUM4I0VwN0=;
+	s=korg; t=1705974965;
+	bh=OKA44jgN0UnmuAlrnSf9HtxEHlNukVU/wEu73vl3hh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1XiVYthKK5EIgMIktBSB/ln/mlCJ9q6TeUdpJI/w3Dp9B0yZesJrGu2MENks0dJVL
-	 XlqJ+5VVjRLRj7UH85Q70cdl4pa/SYgXc6ejzZg0ktWEb397WQwBvIKlvP6qFbIQWd
-	 a+VLWgD+0almnun2CWyBJL0LtMGnlH08L0J/9b+I=
+	b=auQWZq1AmAw1yjcg660qFREGtBkjLjL6KYlwUEscD4K3STtU/6KrrzOEfceu/H3fy
+	 W6vaDQ6fRjv0opYCbJi6N3hB/Hs6tZyol1vbUzDXbU+0XWTvBgBUzazveOy2ZELGly
+	 UZpthPBIKC7NqRae2K3yjZBDAB6jBTRBE1JWtFOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 248/286] iio: adc: ad9467: Benefit from devm_clk_get_enabled() to simplify
-Date: Mon, 22 Jan 2024 15:59:14 -0800
-Message-ID: <20240122235741.623296657@linuxfoundation.org>
+Subject: [PATCH 5.15 299/374] MIPS: Alchemy: Fix an out-of-bound access in db1200_dev_setup()
+Date: Mon, 22 Jan 2024 15:59:15 -0800
+Message-ID: <20240122235755.191869971@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit cdd07b3ab94a020570132558442a26e74b70bc42 ]
+[ Upstream commit 89c4b588d11e9acf01d604de4b0c715884f59213 ]
 
-Make use of devm_clk_get_enabled() to replace some code that effectively
-open codes this new function.
+When calling spi_register_board_info(), we should pass the number of
+elements in 'db1200_spi_devs', not 'db1200_i2c_devs'.
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20220808204740.307667-3-u.kleine-koenig@pengutronix.de
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 76f028539cf3 ("iio: adc: ad9467: fix reset gpio handling")
+Fixes: 63323ec54a7e ("MIPS: Alchemy: Extended DB1200 board support.")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad9467.c | 17 +----------------
- 1 file changed, 1 insertion(+), 16 deletions(-)
+ arch/mips/alchemy/devboards/db1200.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-index 19a45dd43796..92837dcbc170 100644
---- a/drivers/iio/adc/ad9467.c
-+++ b/drivers/iio/adc/ad9467.c
-@@ -378,13 +378,6 @@ static int ad9467_preenable_setup(struct adi_axi_adc_conv *conv)
- 	return ad9467_outputmode_set(st->spi, st->output_mode);
- }
+diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
+index f521874ebb07..67f067706af2 100644
+--- a/arch/mips/alchemy/devboards/db1200.c
++++ b/arch/mips/alchemy/devboards/db1200.c
+@@ -847,7 +847,7 @@ int __init db1200_dev_setup(void)
+ 	i2c_register_board_info(0, db1200_i2c_devs,
+ 				ARRAY_SIZE(db1200_i2c_devs));
+ 	spi_register_board_info(db1200_spi_devs,
+-				ARRAY_SIZE(db1200_i2c_devs));
++				ARRAY_SIZE(db1200_spi_devs));
  
--static void ad9467_clk_disable(void *data)
--{
--	struct ad9467_state *st = data;
--
--	clk_disable_unprepare(st->clk);
--}
--
- static int ad9467_probe(struct spi_device *spi)
- {
- 	const struct ad9467_chip_info *info;
-@@ -404,18 +397,10 @@ static int ad9467_probe(struct spi_device *spi)
- 	st = adi_axi_adc_conv_priv(conv);
- 	st->spi = spi;
- 
--	st->clk = devm_clk_get(&spi->dev, "adc-clk");
-+	st->clk = devm_clk_get_enabled(&spi->dev, "adc-clk");
- 	if (IS_ERR(st->clk))
- 		return PTR_ERR(st->clk);
- 
--	ret = clk_prepare_enable(st->clk);
--	if (ret < 0)
--		return ret;
--
--	ret = devm_add_action_or_reset(&spi->dev, ad9467_clk_disable, st);
--	if (ret)
--		return ret;
--
- 	st->pwrdown_gpio = devm_gpiod_get_optional(&spi->dev, "powerdown",
- 						   GPIOD_OUT_LOW);
- 	if (IS_ERR(st->pwrdown_gpio))
+ 	/* SWITCHES:	S6.8 I2C/SPI selector  (OFF=I2C	 ON=SPI)
+ 	 *		S6.7 AC97/I2S selector (OFF=AC97 ON=I2S)
 -- 
 2.43.0
 
