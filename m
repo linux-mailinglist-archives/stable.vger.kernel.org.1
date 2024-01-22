@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-13986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6690E837F0F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53705838426
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CFDB1C28F1C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 844891C2A1B1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1254160257;
-	Tue, 23 Jan 2024 00:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA62B67E79;
+	Tue, 23 Jan 2024 02:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjcKKHbN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fcv5cDaL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68CE3FE0;
-	Tue, 23 Jan 2024 00:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95DB67E81;
+	Tue, 23 Jan 2024 02:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970910; cv=none; b=s8bCi25Oqu+XqUUO9iTXO1SltDpIggpzeuVspvz2ucJsX2TUJ0350MsyyUqRcggSJyrtSASqQJ1DQxJXJPf3wHOSbCEnmKPSqMn+09hVmmYiCqrACSCr8Zb1z5zCfdYpA+N4l3SqM0eyYbjfR3pw80JVUjr7aBaET9m4dD1B4NU=
+	t=1705975314; cv=none; b=F7SC5cT6LJ+CYfOR0uwWkcIw0Eht3P6Pln1WgT1EOebzuVStbPEeuXdkbg8w8Ty1DtvgLxjxNF8ii4kZpZ7zf+AiQk7+lwY//UBI5zA2KQaNeR1R9j9ljXozx7J5BblAytdCY/yZ3V2OjxueyM4CjlG/kPMMl71/On3ieohKpuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970910; c=relaxed/simple;
-	bh=X0e9Qf40vtV4wW42QLwQEUV151j6PDZWAZDun4XhoS8=;
+	s=arc-20240116; t=1705975314; c=relaxed/simple;
+	bh=CAVaCXjzW35KLT7iEfKhL0YoszXa/9JE7pEUIKSxDGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQWNtAFJg84EotoCHeiseRIF9tt9fq42k+0NvLWo8+BbElIjQjZtBDoyB7yWa/JOz5oxqGpfIJjtiWHOS8rZKORoJuTZ4M1cFKfdMfFhgX0QRZdxnhTAeO2lE/bbvapvhlFZHcawXwpxYrwI225UulserGzy2Hn5xMfZX3Ba5H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BjcKKHbN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901ECC43390;
-	Tue, 23 Jan 2024 00:48:29 +0000 (UTC)
+	 MIME-Version; b=DFDpZWrR0XFU2xZQACH6oZgeL/9CtojeN+VLHkojdtmiFq1TmRqOiIdW/EXfFoN8pa8xksICt3r10xGCLplmGPgmAOzLFzgdLGINqS6hZKfxoMB19/dMyGPjwosw2oL8AdWhTyw45l6sv3Ve8RUy8tPeCpMEXBHeC8VyOG7wArg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fcv5cDaL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACA6C433C7;
+	Tue, 23 Jan 2024 02:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970910;
-	bh=X0e9Qf40vtV4wW42QLwQEUV151j6PDZWAZDun4XhoS8=;
+	s=korg; t=1705975314;
+	bh=CAVaCXjzW35KLT7iEfKhL0YoszXa/9JE7pEUIKSxDGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BjcKKHbNJx2APZqR1l0FpcNCpGTLGJBBkMhVJGTX93NhYCOu1YNwgs2Bkh0s/prRS
-	 OmbZK0+5yd9UNlYWq/lj93V4BYAvar/vYVAk1r0LoaU9Lowv9hMku2amXTe8xtsHl+
-	 bmdXU1D6+eRb8PO2+izn1iyJ9EDWYKVNS+YO4gsc=
+	b=Fcv5cDaLnoTnQ+iCu0CypU9wXpAxoYSXdBd1L9MKpHkgakv7NVf5ogI8rh8CYQCPd
+	 S+uEq3aCzmq1BWckQ53l1GS50U+2DHEoLvbaA2wF2YjFswythqIxNjN8SSRbR9BLDd
+	 mEyIgVaM4FgPYakf3OW6SA7HJ5XC5H8j/uYiBJow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Curtis Malainey <cujomalainey@chromium.org>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Brent Lu <brent.lu@intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/417] wifi: rtlwifi: rtl8192de: using calculate_bit_shift()
+Subject: [PATCH 6.6 255/583] ASoC: Intel: glk_rt5682_max98357a: fix board id mismatch
 Date: Mon, 22 Jan 2024 15:55:06 -0800
-Message-ID: <20240122235756.607042435@linuxfoundation.org>
+Message-ID: <20240122235819.809851574@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Brent Lu <brent.lu@intel.com>
 
-[ Upstream commit b8b2baad2e652042cf8b6339939ac2f4e6f53de4 ]
+[ Upstream commit 486ede0df82dd74472c6f5651e38ff48f7f766c1 ]
 
-Using calculate_bit_shift() to replace _rtl92d_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+The drv_name in enumeration table for ALC5682I-VS codec does not match
+the board id string in machine driver. Modify the entry of "10EC5682"
+to enumerate "RTL5682" as well and remove invalid entry.
 
-Fixes: 7274a8c22980 ("rtlwifi: rtl8192de: Merge phy routines")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-8-suhui@nfschina.com
+Fixes: 88b4d77d6035 ("ASoC: Intel: glk_rt5682_max98357a: support ALC5682I-VS codec")
+Reported-by: Curtis Malainey <cujomalainey@chromium.org>
+Reviewed-by: Curtis Malainey <cujomalainey@chromium.org>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Brent Lu <brent.lu@intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20231204214200.203100-4-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/realtek/rtlwifi/rtl8192de/phy.c  | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ sound/soc/intel/common/soc-acpi-intel-glk-match.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-index d18c092b6142..d835a27429f0 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -169,13 +169,6 @@ static const u8 channel_all[59] = {
- 	157, 159, 161, 163, 165
+diff --git a/sound/soc/intel/common/soc-acpi-intel-glk-match.c b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
+index 387e73100884..8911c90bbaf6 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-glk-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
+@@ -19,6 +19,11 @@ static const struct snd_soc_acpi_codecs glk_codecs = {
+ 	.codecs = {"MX98357A"}
  };
  
--static u32 _rtl92d_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
--
- u32 rtl92d_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
-@@ -198,7 +191,7 @@ u32 rtl92d_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- 	} else {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
- 	}
--	bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
- 		"BBR MASK=0x%x Addr[0x%x]=0x%x\n",
-@@ -230,7 +223,7 @@ void rtl92d_phy_set_bb_reg(struct ieee80211_hw *hw,
- 					dbi_direct);
- 		else
- 			originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
- 	}
- 	if (rtlhal->during_mac1init_radioa || rtlhal->during_mac0init_radiob)
-@@ -317,7 +310,7 @@ u32 rtl92d_phy_query_rf_reg(struct ieee80211_hw *hw,
- 		regaddr, rfpath, bitmask);
- 	spin_lock(&rtlpriv->locks.rf_lock);
- 	original_value = _rtl92d_phy_rf_serial_read(hw, rfpath, regaddr);
--	bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 	spin_unlock(&rtlpriv->locks.rf_lock);
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
-@@ -343,7 +336,7 @@ void rtl92d_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
- 		if (bitmask != RFREG_OFFSET_MASK) {
- 			original_value = _rtl92d_phy_rf_serial_read(hw,
- 				rfpath, regaddr);
--			bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data = ((original_value & (~bitmask)) |
- 				(data << bitshift));
- 		}
++static const struct snd_soc_acpi_codecs glk_rt5682_rt5682s_hp = {
++	.num_codecs = 2,
++	.codecs = {"10EC5682", "RTL5682"},
++};
++
+ struct snd_soc_acpi_mach snd_soc_acpi_intel_glk_machines[] = {
+ 	{
+ 		.id = "INT343A",
+@@ -35,20 +40,13 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_glk_machines[] = {
+ 		.sof_tplg_filename = "sof-glk-da7219.tplg",
+ 	},
+ 	{
+-		.id = "10EC5682",
++		.comp_ids = &glk_rt5682_rt5682s_hp,
+ 		.drv_name = "glk_rt5682_mx98357a",
+ 		.fw_filename = "intel/dsp_fw_glk.bin",
+ 		.machine_quirk = snd_soc_acpi_codec_list,
+ 		.quirk_data = &glk_codecs,
+ 		.sof_tplg_filename = "sof-glk-rt5682.tplg",
+ 	},
+-	{
+-		.id = "RTL5682",
+-		.drv_name = "glk_rt5682_max98357a",
+-		.machine_quirk = snd_soc_acpi_codec_list,
+-		.quirk_data = &glk_codecs,
+-		.sof_tplg_filename = "sof-glk-rt5682.tplg",
+-	},
+ 	{
+ 		.id = "10134242",
+ 		.drv_name = "glk_cs4242_mx98357a",
 -- 
 2.43.0
 
