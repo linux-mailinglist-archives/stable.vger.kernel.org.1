@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC2683816C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44160838469
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A561E1F23841
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C44A2B288B7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC9C3C0C;
-	Tue, 23 Jan 2024 01:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9168967E65;
+	Tue, 23 Jan 2024 02:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cp0Sspzt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtsVAkAU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF092B9BC;
-	Tue, 23 Jan 2024 01:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5048B6775D;
+	Tue, 23 Jan 2024 02:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972129; cv=none; b=I7hP+OGSJhlWC3phdvv3uFva8VkUBQ0Mk+Rd27jLsrULhavsmxliAFSyuUenPqI5MpLjTBDTRoo0saiH2DHUcbvvDnRu5CLNQ9Uqa0oTap1GRCUHjr7eFdRxthPnaB6hM7vMinkB6z4SS4UIq4+k0/X2/wOEjgRaxJqMn2Sy0Mg=
+	t=1705975302; cv=none; b=f26UKLTfZhSgi5S6y3S6jVIaiUaFP3NJyMc/Mo12bN0tnjlMxsvoaMzZyysYvZNKof6ZbfmW4LsChlAYq6NMZ8ulcmNapdP3ZQsc7BISLvZVHeXkY4rw7zHyhXiT5KY0cQuOYEv/cHMFragIT0r7QIxFg6DJVV60dbhE+spv1V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972129; c=relaxed/simple;
-	bh=GN21wtElZQ1qiwcEgiMpMQKAF39p+GEXX3Jt0/klQRY=;
+	s=arc-20240116; t=1705975302; c=relaxed/simple;
+	bh=e9UAed4bJarMeRhC9hkIBm3gkw9GhCdY69S3twQAVMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YW9Fc5NEoAnuu6gUbSXKqhbcH/EsxWitJSzEwXlrafNYAP5ExfMU+Wsx0VisOwuSlbXSGyBA22FpvESlGeE1sR1YrcGutCTOcQKvaDCmLDThXKHylA1YAWvVTvB8zaMkhLI2aCGT03J4IX0Nz03UWFi2lorcuGXYzbnqCbeHEoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cp0Sspzt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A35C433B2;
-	Tue, 23 Jan 2024 01:08:49 +0000 (UTC)
+	 MIME-Version; b=kS+ydB8K83b1PeL01uQ8P5KTdXfx/tbh1uobrhAnzTvvIZK0o0QbyYspj6M+asQ0THBoi0JssBPcgunhtAaPPS74p0V42rUW/pWhnUnFtuOqy6oGH5N8HypOBPl2etq49jFTKj77thV/M5pu1Q++HZazTTOmkiXh+tP8RMP1kEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtsVAkAU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D0E6C43394;
+	Tue, 23 Jan 2024 02:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972129;
-	bh=GN21wtElZQ1qiwcEgiMpMQKAF39p+GEXX3Jt0/klQRY=;
+	s=korg; t=1705975302;
+	bh=e9UAed4bJarMeRhC9hkIBm3gkw9GhCdY69S3twQAVMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cp0Sspztndz0dxh4dkiTLUQwPBUcAovAKRo0GNQ9FShDtHeXd2epvChpQxlwM20j9
-	 8G55BkUKSV+XeIqcTqNNAKcIhy8meGFXrhraxqqrSBz5mkcMdFhXkIstEx9QVX7q4z
-	 SFOPPD4VaTxZp1bjA+5FQg0G4Tgfi7YGSrInNjqQ=
+	b=CtsVAkAU2zCU331PrDc7+sUZe/NrAU80tNNiCHWeqVmBRO7PUWTJTlCpmyNWAQNZq
+	 cn9IwLJe6kyEKc2C/69qQQWvLmaHDakc2uG1vlkKTa7XK+nX0sh1JpK1YhdYb3EDe8
+	 1xvpOwQOpJ45fvSgVmb0AePX2u6up3v08Toa+urY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Eckert <fe@dev.tdt.de>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 5.15 062/374] leds: ledtrig-tty: Free allocated ttyname buffer on deactivate
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 267/583] clk: qcom: gpucc-sm8150: Update the gpu_cc_pll1 config
 Date: Mon, 22 Jan 2024 15:55:18 -0800
-Message-ID: <20240122235746.775325227@linuxfoundation.org>
+Message-ID: <20240122235820.172396405@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Eckert <fe@dev.tdt.de>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-commit 25054b232681c286fca9c678854f56494d1352cc upstream.
+[ Upstream commit 6ebd9a4f8b8d2b35cf965a04849c4ba763722f13 ]
 
-The ttyname buffer for the ledtrig_tty_data struct is allocated in the
-sysfs ttyname_store() function. This buffer must be released on trigger
-deactivation. This was missing and is thus a memory leak.
+Update the test_ctl_hi_val and test_ctl_hi1_val of gpu_cc_pll1
+as per latest HW recommendation.
 
-While we are at it, the TTY handler in the ledtrig_tty_data struct should
-also be returned in case of the trigger deactivation call.
-
-Cc: stable@vger.kernel.org
-Fixes: fd4a641ac88f ("leds: trigger: implement a tty trigger")
-Signed-off-by: Florian Eckert <fe@dev.tdt.de>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20231127081621.774866-1-fe@dev.tdt.de
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0cef71f2ccc8 ("clk: qcom: Add graphics clock controller driver for SM8150")
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231122042814.4158076-1-quic_skakitap@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/trigger/ledtrig-tty.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/clk/qcom/gpucc-sm8150.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/leds/trigger/ledtrig-tty.c
-+++ b/drivers/leds/trigger/ledtrig-tty.c
-@@ -168,6 +168,10 @@ static void ledtrig_tty_deactivate(struc
- 
- 	cancel_delayed_work_sync(&trigger_data->dwork);
- 
-+	kfree(trigger_data->ttyname);
-+	tty_kref_put(trigger_data->tty);
-+	trigger_data->tty = NULL;
-+
- 	kfree(trigger_data);
- }
- 
+diff --git a/drivers/clk/qcom/gpucc-sm8150.c b/drivers/clk/qcom/gpucc-sm8150.c
+index 8422fd047493..c89a5b59ddb7 100644
+--- a/drivers/clk/qcom/gpucc-sm8150.c
++++ b/drivers/clk/qcom/gpucc-sm8150.c
+@@ -37,8 +37,8 @@ static struct alpha_pll_config gpu_cc_pll1_config = {
+ 	.config_ctl_hi_val = 0x00002267,
+ 	.config_ctl_hi1_val = 0x00000024,
+ 	.test_ctl_val = 0x00000000,
+-	.test_ctl_hi_val = 0x00000002,
+-	.test_ctl_hi1_val = 0x00000000,
++	.test_ctl_hi_val = 0x00000000,
++	.test_ctl_hi1_val = 0x00000020,
+ 	.user_ctl_val = 0x00000000,
+ 	.user_ctl_hi_val = 0x00000805,
+ 	.user_ctl_hi1_val = 0x000000d0,
+-- 
+2.43.0
+
 
 
 
