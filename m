@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD958384D0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0023837DB2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74CE01F22C0B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9405A28A949
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0195276915;
-	Tue, 23 Jan 2024 02:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDDA4EB34;
+	Tue, 23 Jan 2024 00:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MYmIdJ/1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcFRvp6H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E9F76908;
-	Tue, 23 Jan 2024 02:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE18D33C8;
+	Tue, 23 Jan 2024 00:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975497; cv=none; b=ezq3CpI4b0m4apIUmthp80mexpA9+p8dyU0ri+kaYO7/pSO91sR2vGaSIxN57t4ZUPa0Je0Z/veDmbD0Zr8XnqagJs5pn9gS5SYgI31YGryandElLnMjMZB5cf1hB9g3DJkXfRgHeSplb8DMVzCScAVfwsM1f2f5fKLzo9c6n4k=
+	t=1705970148; cv=none; b=TCeUjvPSGpXJY74wgzObbLjfEOl71zR7sBv/9dPf9KjhgkliBPQF+O+pQhRugh88tD6dUO715RvQx+VAzdyHVoGNGwbh/chBPCOjNCfnKTqSoH8m4jdYievzYOyK1owhus5JYbNn44npgaV/ewYzo1iPXzD4RhtbgM75wSJIOx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975497; c=relaxed/simple;
-	bh=ggJ5nGFoUqqxI1vhcYh4ZI9rT90RKij07svmrGVtH3I=;
+	s=arc-20240116; t=1705970148; c=relaxed/simple;
+	bh=VlBxsSmEMe4XRrh9rNCcUxAZr454fYjhOH5P4AY1Cy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHKlUq40/8IDqPhSlXuqcJvPLH1Wy0xW92hDOD+OmouhacLPvBfMdS7BiWnr/HKMrT+vIiD5LEjViJ48nrsrABG1wcdEDiTsUzuB9IWv5877yJ4hRvPN8VfaF8rF/J4oj/KekOc6cvHzr0+STCYlv3TuX9pAXUuyjHuNuQsCLB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MYmIdJ/1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFBEC433F1;
-	Tue, 23 Jan 2024 02:04:57 +0000 (UTC)
+	 MIME-Version; b=Ckj1zdV3nRsWD5p+O1ZSlsDD8ik5yhAL28q6K6kfJRBfq1ddEckupygXb42iwsFfTjs2E3xnILKOeHFsBlR3pus6xAmxRlMy7V3syGABzpvPZyaQ/utP8A90WMsabR9fBF+aZnX/CVRNUiEJhXkOnGDMS8vXGi+Nutgqqxvb6w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcFRvp6H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1653C433F1;
+	Tue, 23 Jan 2024 00:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975497;
-	bh=ggJ5nGFoUqqxI1vhcYh4ZI9rT90RKij07svmrGVtH3I=;
+	s=korg; t=1705970148;
+	bh=VlBxsSmEMe4XRrh9rNCcUxAZr454fYjhOH5P4AY1Cy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MYmIdJ/1GXqR3CRrSdyX+K5n/unNr4AI07GyOGf2qX3Aas1uAXRW70v0b9dq0xXSq
-	 Z/6hS2f10T6Yg4ihHCyFwp5xUENdXWSoOqU7U0pDetPhW4Ezj2WA6et4I0KK3jG35b
-	 vDIivKK9F2o9LcQc2YeMXhS2MiDwPxkJIbDHhDWM=
+	b=RcFRvp6HGhLPdMoCCbYaYVTbr31xRLjsDjikijosiqFQWkwzeYF+ckv8dXEQOIVZ8
+	 rj8JE+n0ffzP0QmfqbXX0QpglN0UP0m3iFsk/+n36aw3A825k5kUxeM4JLJyvGM8TN
+	 1xEi+fwBa8UjBM2EEFdSnzGXYRoX5j6yhmWEpS0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	bugreport@ubisectech.com,
+	Yue Hu <huyue2@coolpad.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 452/583] riscv: Fix set_direct_map_default_noflush() to reset _PAGE_EXEC
+Subject: [PATCH 6.7 599/641] erofs: fix inconsistent per-file compression format
 Date: Mon, 22 Jan 2024 15:58:23 -0800
-Message-ID: <20240122235825.801065882@linuxfoundation.org>
+Message-ID: <20240122235836.957048728@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit b8b2711336f03ece539de61479d6ffc44fb603d3 ]
+[ Upstream commit 118a8cf504d7dfa519562d000f423ee3ca75d2c4 ]
 
-When resetting the linear mapping permissions, we must make sure that we
-clear the X bit so that do not end up with WX mappings (since we set
-PAGE_KERNEL).
+EROFS can select compression algorithms on a per-file basis, and each
+per-file compression algorithm needs to be marked in the on-disk
+superblock for initialization.
 
-Fixes: 395a21ff859c ("riscv: add ARCH_HAS_SET_DIRECT_MAP support")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20231213134027.155327-3-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+However, syzkaller can generate inconsistent crafted images that use
+an unsupported algorithmtype for specific inodes, e.g. use MicroLZMA
+algorithmtype even it's not set in `sbi->available_compr_algs`.  This
+can lead to an unexpected "BUG: kernel NULL pointer dereference" if
+the corresponding decompressor isn't built-in.
+
+Fix this by checking against `sbi->available_compr_algs` for each
+m_algorithmformat request.  Incorrect !erofs_sb_has_compr_cfgs preset
+bitmap is now fixed together since it was harmless previously.
+
+Reported-by: <bugreport@ubisectech.com>
+Fixes: 8f89926290c4 ("erofs: get compression algorithms directly on mapping")
+Fixes: 622ceaddb764 ("erofs: lzma compression support")
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Link: https://lore.kernel.org/r/20240113150602.1471050-1-hsiangkao@linux.alibaba.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/pageattr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/erofs/decompressor.c |  2 +-
+ fs/erofs/zmap.c         | 23 +++++++++++++----------
+ 2 files changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
-index fc5fc4f785c4..e703a9b59fc3 100644
---- a/arch/riscv/mm/pageattr.c
-+++ b/arch/riscv/mm/pageattr.c
-@@ -378,7 +378,7 @@ int set_direct_map_invalid_noflush(struct page *page)
- int set_direct_map_default_noflush(struct page *page)
- {
- 	return __set_memory((unsigned long)page_address(page), 1,
--			    PAGE_KERNEL, __pgprot(0));
-+			    PAGE_KERNEL, __pgprot(_PAGE_EXEC));
- }
+diff --git a/fs/erofs/decompressor.c b/fs/erofs/decompressor.c
+index 021be5feb1bc..af98e88908ee 100644
+--- a/fs/erofs/decompressor.c
++++ b/fs/erofs/decompressor.c
+@@ -398,7 +398,7 @@ int z_erofs_parse_cfgs(struct super_block *sb, struct erofs_super_block *dsb)
+ 	int size, ret = 0;
  
- #ifdef CONFIG_DEBUG_PAGEALLOC
+ 	if (!erofs_sb_has_compr_cfgs(sbi)) {
+-		sbi->available_compr_algs = Z_EROFS_COMPRESSION_LZ4;
++		sbi->available_compr_algs = 1 << Z_EROFS_COMPRESSION_LZ4;
+ 		return z_erofs_load_lz4_config(sb, dsb, NULL, 0);
+ 	}
+ 
+diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
+index 7b55111fd533..7a1a24ae4a2d 100644
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -458,7 +458,7 @@ static int z_erofs_do_map_blocks(struct inode *inode,
+ 		.map = map,
+ 	};
+ 	int err = 0;
+-	unsigned int lclusterbits, endoff;
++	unsigned int lclusterbits, endoff, afmt;
+ 	unsigned long initial_lcn;
+ 	unsigned long long ofs, end;
+ 
+@@ -547,17 +547,20 @@ static int z_erofs_do_map_blocks(struct inode *inode,
+ 			err = -EFSCORRUPTED;
+ 			goto unmap_out;
+ 		}
+-		if (vi->z_advise & Z_EROFS_ADVISE_INTERLACED_PCLUSTER)
+-			map->m_algorithmformat =
+-				Z_EROFS_COMPRESSION_INTERLACED;
+-		else
+-			map->m_algorithmformat =
+-				Z_EROFS_COMPRESSION_SHIFTED;
+-	} else if (m.headtype == Z_EROFS_LCLUSTER_TYPE_HEAD2) {
+-		map->m_algorithmformat = vi->z_algorithmtype[1];
++		afmt = vi->z_advise & Z_EROFS_ADVISE_INTERLACED_PCLUSTER ?
++			Z_EROFS_COMPRESSION_INTERLACED :
++			Z_EROFS_COMPRESSION_SHIFTED;
+ 	} else {
+-		map->m_algorithmformat = vi->z_algorithmtype[0];
++		afmt = m.headtype == Z_EROFS_LCLUSTER_TYPE_HEAD2 ?
++			vi->z_algorithmtype[1] : vi->z_algorithmtype[0];
++		if (!(EROFS_I_SB(inode)->available_compr_algs & (1 << afmt))) {
++			erofs_err(inode->i_sb, "inconsistent algorithmtype %u for nid %llu",
++				  afmt, vi->nid);
++			err = -EFSCORRUPTED;
++			goto unmap_out;
++		}
+ 	}
++	map->m_algorithmformat = afmt;
+ 
+ 	if ((flags & EROFS_GET_BLOCKS_FIEMAP) ||
+ 	    ((flags & EROFS_GET_BLOCKS_READMORE) &&
 -- 
 2.43.0
 
