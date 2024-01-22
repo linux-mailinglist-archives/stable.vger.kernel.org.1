@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-14894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247AF83830F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A52378380C3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5709F1C2662D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D4C228CF41
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B87604C1;
-	Tue, 23 Jan 2024 01:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16CE13399E;
+	Tue, 23 Jan 2024 01:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZYJbuyN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1vhuZJK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893BD5FF0E;
-	Tue, 23 Jan 2024 01:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815AF133435;
+	Tue, 23 Jan 2024 01:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974694; cv=none; b=P9ftf5ym5e7cRLXO1iBrCg7W8sY7sS7rTFghH2kFfkGhRv+M+j+hvl2OwqbNMZXHrhVn3kQKbn3JY1mFxTLq7nE1rcJ3POjs6M56KTjhNoW3a7NVzw8kxg8rhBsswGdVjfzxJQtC4q0rC13HDnP2xzxBczoOtKDDPV9PFw9Pkzs=
+	t=1705971887; cv=none; b=Ha9zGyVbDr5XGm1L5qx9ipI97S4eXm4cu6mq9Mb2Sm2inkOdG0CeQAXjHNcyJ47EGtDgyX5kGlB+E3Hxvg8yWobZhtaqVqgn9iJxLOysxRrcqPdB24Gwu4qw4lCUlNAx/yLtfgoBWNDE8CSKPJVdAcgZuuHF8JqIldvlXCRMzak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974694; c=relaxed/simple;
-	bh=jvNSDZCN4ui0DaDfbKQhy/Fon32EYTjJvU2qh11nsG0=;
+	s=arc-20240116; t=1705971887; c=relaxed/simple;
+	bh=9GrjlRiWWpiQJMgTwDV76Ocd8Iv1pxOY8jRyQAVPjLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=esrD9LTTnckGLPynIRM7Rd0SpvnyEiJfZypf2A1bRos2fiJYEMejsyJnxPof2jOUicGebucJ99aJlLWXdVLj9KZEJQ5O0iIXcaI7ffhQBaDTj2VXT9ZhSU+C1kRkomLzCHgszMG71dsZiBcwD6ld42/ccQLr59m2IjitNX84ruk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZYJbuyN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1F1C433F1;
-	Tue, 23 Jan 2024 01:51:34 +0000 (UTC)
+	 MIME-Version; b=T51qEHz73ovo8CC3Cq3Y/tUcSPBHjp9CqIwbcWSWl+NMxim/8OZYlADhoAzwsZg+PqyMxLOBM+iMYMTG4kRpY/HSWeOiDC/QTGiqwqzD/ePbx5eSEo0VJyVU7LKX4oQWpdoaKGXdz8gARVyMEvVqQu4G0b5vpdIKsijIJoGcLfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1vhuZJK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20129C433F1;
+	Tue, 23 Jan 2024 01:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974694;
-	bh=jvNSDZCN4ui0DaDfbKQhy/Fon32EYTjJvU2qh11nsG0=;
+	s=korg; t=1705971887;
+	bh=9GrjlRiWWpiQJMgTwDV76Ocd8Iv1pxOY8jRyQAVPjLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZYJbuyNi6rzVz31XIyoHgK3wU14JCgl5syMfokqon6pBLzEF4RI3K9Rodc13FpKe
-	 JQJ2AMXfUXF0Yz2LY06bj9zQ3JumiGhP6hu03tVuVPXYFMqH8ofxUxDCojT9lbpAJf
-	 trJYfb0eJtjj9OtAiH9s9tMxHtLfeh+0oQj4JqCQ=
+	b=T1vhuZJKPdqYAOwhaUKNAXTv4nJCa2i2zFnwen1WVXTcEkuE0VzyokzRINk1bLYqT
+	 sfQgRQHi/5Bhe57sqSPiJRGXqGNArYwbuhM0i6pQqndT5DkTT0gjS+fmQERE6b1Q2Q
+	 R55y4jn8rcXhV/fAHvYuUk5mbbC7NEb+1RIIW8/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chen <peter.chen@kernel.org>,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 5.15 253/374] usb: phy: mxs: remove CONFIG_USB_OTG condition for mxs_phy_is_otg_host()
-Date: Mon, 22 Jan 2024 15:58:29 -0800
-Message-ID: <20240122235753.567883039@linuxfoundation.org>
+	Gregory Price <gregory.price@memverge.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 342/417] base/node.c: initialize the accessor list before registering
+Date: Mon, 22 Jan 2024 15:58:30 -0800
+Message-ID: <20240122235803.642421722@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Gregory Price <gourry.memverge@gmail.com>
 
-commit ff2b89de471da942a4d853443688113a44fd35ed upstream.
+[ Upstream commit 48b5928e18dc27e05cab3dc4c78cd8a15baaf1e5 ]
 
-When CONFIG_USB_OTG is not set, mxs_phy_is_otg_host() will always return
-false. This behaviour is wrong. Since phy.last_event will always be set
-for either host or device mode. Therefore, CONFIG_USB_OTG condition
-can be removed.
+The current code registers the node as available in the node array
+before initializing the accessor list.  This makes it so that
+anything which might access the accessor list as a result of
+allocations will cause an undefined memory access.
 
-Fixes: 5eda42aebb76 ("usb: phy: mxs: fix getting wrong state with mxs_phy_is_otg_host()")
-cc:  <stable@vger.kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20231228110753.1755756-3-xu.yang_2@nxp.com
+In one example, an extension to access hmat data during interleave
+caused this undefined access as a result of a bulk allocation
+that occurs during node initialization but before the accessor
+list is initialized.
+
+Initialize the accessor list before making the node generally
+available to the global system.
+
+Fixes: 08d9dbe72b1f ("node: Link memory nodes to their compute nodes")
+Signed-off-by: Gregory Price <gregory.price@memverge.com>
+Link: https://lore.kernel.org/r/20231030044239.971756-1-gregory.price@memverge.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy-mxs-usb.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/base/node.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/phy/phy-mxs-usb.c
-+++ b/drivers/usb/phy/phy-mxs-usb.c
-@@ -388,8 +388,7 @@ static void __mxs_phy_disconnect_line(st
- 
- static bool mxs_phy_is_otg_host(struct mxs_phy *mxs_phy)
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index faf3597a96da..a4141b57b147 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -859,11 +859,15 @@ int __register_one_node(int nid)
  {
--	return IS_ENABLED(CONFIG_USB_OTG) &&
--		mxs_phy->phy.last_event == USB_EVENT_ID;
-+	return mxs_phy->phy.last_event == USB_EVENT_ID;
- }
+ 	int error;
+ 	int cpu;
++	struct node *node;
  
- static void mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool on)
+-	node_devices[nid] = kzalloc(sizeof(struct node), GFP_KERNEL);
+-	if (!node_devices[nid])
++	node = kzalloc(sizeof(struct node), GFP_KERNEL);
++	if (!node)
+ 		return -ENOMEM;
+ 
++	INIT_LIST_HEAD(&node->access_list);
++	node_devices[nid] = node;
++
+ 	error = register_node(node_devices[nid], nid);
+ 
+ 	/* link cpu under this node */
+@@ -872,7 +876,6 @@ int __register_one_node(int nid)
+ 			register_cpu_under_node(cpu, nid);
+ 	}
+ 
+-	INIT_LIST_HEAD(&node_devices[nid]->access_list);
+ 	node_init_caches(nid);
+ 
+ 	return error;
+-- 
+2.43.0
+
 
 
 
