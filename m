@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-13109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01478837A8A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 593A78379C4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:45:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9389F1F2104F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 087DD1F27D3D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5A512F58F;
-	Tue, 23 Jan 2024 00:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE14F1272AB;
+	Tue, 23 Jan 2024 00:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDhfua/c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zf1s7pas"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E29C12CDB0;
-	Tue, 23 Jan 2024 00:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693E050272;
+	Tue, 23 Jan 2024 00:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968990; cv=none; b=p+1nbtg/9Dtfr8LRiqtB/Th3QFBtOVYQuibL0XtWcHochdBxWAMbXK1aE0F4atyT67kn7JFktXEJ9Puy5DCwgZFcBFd9XigJdE9FbR/S/CZKs0nBFM8hxQEgjkGDRv30UHG4pxYdP3toUeTWwh4E7fIy9ZSxsECi1Tfk+rWGbgU=
+	t=1705968482; cv=none; b=cThtHty+tQ2MK+8e4hbvRWdcRV5q67yNledJ+qZlSyD88ay0rBD6u6/iWaXttcjKDkNN53NgWHkM3y9hjqQ5bcB91tGv+vAbR7q5nWpLYF0qQl+U5djA08baFkAnnkaPWzzd7gEFIz/zASaLOrP+B6t/JmGK2NCrgK7bp4/3xco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968990; c=relaxed/simple;
-	bh=xUICHjfPCATftUiSjeCsUte35LI0SEMvLEOo0KGhidI=;
+	s=arc-20240116; t=1705968482; c=relaxed/simple;
+	bh=+OXnnsxoW5QP4M4lRSyi+kISu3x1cQRT5QnstLmzgrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xw2f2GUo9onjamJib/qm0uXzia/Hhiit6Ufa4HlCvtxwxoIifFwckCcHN8/CXYebiKlK98EWrt2HfMuqwxGzc8ksDB1nqk6zKO21Djsm8WT8WFBmQ5pDPll5TIBaqyaAAkfA2Zp2sOfq+K0lK6TmwX8Hi6NUrH6+2kpiK8EKShU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDhfua/c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09B2C43394;
-	Tue, 23 Jan 2024 00:16:29 +0000 (UTC)
+	 MIME-Version; b=WmAs0PD5D7XfSns2WEG66gZcwnRA6gKgB7QRn6X8nW3VvNwP2T2TweuSmYJvMAy6nzF5p1QDo5v9gi/pqQK14h9fEqNS14/50041f9FaZUpkGzmC382STEzwmE/5wEe1yExJINudBw+xdNiYrNJmLEOjvZliVdz3AEv0R8M4KI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zf1s7pas; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8ACC433C7;
+	Tue, 23 Jan 2024 00:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968990;
-	bh=xUICHjfPCATftUiSjeCsUte35LI0SEMvLEOo0KGhidI=;
+	s=korg; t=1705968482;
+	bh=+OXnnsxoW5QP4M4lRSyi+kISu3x1cQRT5QnstLmzgrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DDhfua/cLgnLdDmWjxAttWAdEDpn5EcS3OVogWsio/TOZ4ledlSRiIA0vyRb51ndd
-	 6OIr/DO+cyFhDq82sKOMNXNpxfEfP+xQTHJALYatVjCKtr4e8xjtNjW4b+mxDM5ED4
-	 cMEKBjyGqeuxLqvwdXqg2yIsvryHgo4Cs9hsm52s=
+	b=Zf1s7pasT7svErpEuPrp/hhwPLRENPNRBOE7lT0vonTc304Y5E4PjR62p9jwMsun7
+	 mxFkz884A0b6j54xZ4aUGVP3BTpof4iWrQYWiNNL0lkeVbYNdjZmSV8dzdXQ/b8Nvz
+	 Ju1AeP6sWhjT9nD7LTgYncYUmWsbhKxIyQ/WaFXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 5.4 145/194] binder: fix unused alloc->free_async_space
-Date: Mon, 22 Jan 2024 15:57:55 -0800
-Message-ID: <20240122235725.449688589@linuxfoundation.org>
+	Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Subject: [PATCH 4.19 120/148] usb: dwc: ep0: Update request status in dwc3_ep0_stall_restart
+Date: Mon, 22 Jan 2024 15:57:56 -0800
+Message-ID: <20240122235717.355288389@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
 
-commit c6d05e0762ab276102246d24affd1e116a46aa0c upstream.
+commit e9d40b215e38480fd94c66b06d79045717a59e9c upstream.
 
-Each transaction is associated with a 'struct binder_buffer' that stores
-the metadata about its buffer area. Since commit 74310e06be4d ("android:
-binder: Move buffer out of area shared with user space") this struct is
-no longer embedded within the buffer itself but is instead allocated on
-the heap to prevent userspace access to this driver-exclusive info.
+Current implementation blocks the running operations when Plug-out and
+Plug-In is performed continuously, process gets stuck in
+dwc3_thread_interrupt().
 
-Unfortunately, the space of this struct is still being accounted for in
-the total buffer size calculation, specifically for async transactions.
-This results in an additional 104 bytes added to every async buffer
-request, and this area is never used.
+Code Flow:
 
-This wasted space can be substantial. If we consider the maximum mmap
-buffer space of SZ_4M, the driver will reserve half of it for async
-transactions, or 0x200000. This area should, in theory, accommodate up
-to 262,144 buffers of the minimum 8-byte size. However, after adding
-the extra 'sizeof(struct binder_buffer)', the total number of buffers
-drops to only 18,724, which is a sad 7.14% of the actual capacity.
+	CPU1
 
-This patch fixes the buffer size calculation to enable the utilization
-of the entire async buffer space. This is expected to reduce the number
-of -ENOSPC errors that are seen on the field.
+	->Gadget_start
+	->dwc3_interrupt
+	->dwc3_thread_interrupt
+	->dwc3_process_event_buf
+	->dwc3_process_event_entry
+	->dwc3_endpoint_interrupt
+	->dwc3_ep0_interrupt
+	->dwc3_ep0_inspect_setup
+	->dwc3_ep0_stall_and_restart
 
-Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-6-cmllamas@google.com
-[cmllamas: fix trivial conflict with missing 261e7818f06e.]
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
+By this time if pending_list is not empty, it will get the next request
+on the given list and calls dwc3_gadget_giveback which will unmap request
+and call its complete() callback to notify upper layers that it has
+completed. Currently dwc3_gadget_giveback status is set to -ECONNRESET,
+whereas it should be -ESHUTDOWN based on condition if not dwc->connected
+is true.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: d742220b3577 ("usb: dwc3: ep0: giveback requests on stall_and_restart")
+Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Link: https://lore.kernel.org/r/20231222094704.20276-1-quic_uaggarwa@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder_alloc.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/usb/dwc3/ep0.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -382,8 +382,7 @@ static struct binder_buffer *binder_allo
- 	/* Pad 0-size buffers so they get assigned unique addresses */
- 	size = max(size, sizeof(void *));
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -236,7 +236,10 @@ static void dwc3_ep0_stall_and_restart(s
+ 		struct dwc3_request	*req;
  
--	if (is_async &&
--	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
-+	if (is_async && alloc->free_async_space < size) {
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
- 			     "%d: binder_alloc_buf size %zd failed, no async space left\n",
- 			      alloc->pid, size);
-@@ -489,7 +488,7 @@ static struct binder_buffer *binder_allo
- 	buffer->async_transaction = is_async;
- 	buffer->extra_buffers_size = extra_buffers_size;
- 	if (is_async) {
--		alloc->free_async_space -= size + sizeof(struct binder_buffer);
-+		alloc->free_async_space -= size;
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
- 			     "%d: binder_alloc_buf size %zd async free %zd\n",
- 			      alloc->pid, size, alloc->free_async_space);
-@@ -614,8 +613,7 @@ static void binder_free_buf_locked(struc
- 	BUG_ON(buffer->user_data > alloc->buffer + alloc->buffer_size);
+ 		req = next_request(&dep->pending_list);
+-		dwc3_gadget_giveback(dep, req, -ECONNRESET);
++		if (!dwc->connected)
++			dwc3_gadget_giveback(dep, req, -ESHUTDOWN);
++		else
++			dwc3_gadget_giveback(dep, req, -ECONNRESET);
+ 	}
  
- 	if (buffer->async_transaction) {
--		alloc->free_async_space += buffer_size + sizeof(struct binder_buffer);
--
-+		alloc->free_async_space += buffer_size;
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
- 			     "%d: binder_free_buf size %zd async free %zd\n",
- 			      alloc->pid, size, alloc->free_async_space);
+ 	dwc->ep0state = EP0_SETUP_PHASE;
 
 
 
