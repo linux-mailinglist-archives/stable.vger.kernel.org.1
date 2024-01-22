@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD1E7837E99
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 824C5838479
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77AE128B87A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA42CB2BCDA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3066AB9;
-	Tue, 23 Jan 2024 00:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2B26311B;
+	Tue, 23 Jan 2024 01:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UirQeuQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiNPfmDw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD7F6134;
-	Tue, 23 Jan 2024 00:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D20262A1F;
+	Tue, 23 Jan 2024 01:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970687; cv=none; b=MM7eYd2nl61tWMRJFvc5zsLdmvCo/scYt7vxzmmtckWiZYXeVqTS8hmTjm7pDBxHI825y8O0a3Z4d81tI72+BYWI0rCGaUhPYKsksks+cQG81m91cthA+eDi2Ji3hOxU3Q8HxBfGXnGFVX2iv0EahbVn2ZfMvCbnGAQOxsbjHgU=
+	t=1705974988; cv=none; b=ob3KHfi31yCQXR9s9WLYzokzdln6CsWGwNiapVYAMOTPERECeJsUaSxF5h2HgMvW4J43I3hz0/x9G9w+DIRKljKv8y/nBr611byFbH27TAXE7xE7450mFscyKLl7IhNbeeQRogaINCUtzFOkJTRQjhR7/rJx5UyAq9LbbkqMsA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970687; c=relaxed/simple;
-	bh=GTdM8Pn4JsW8511jd1sbvDdlmYGz0yuKUo7LlqXVXoU=;
+	s=arc-20240116; t=1705974988; c=relaxed/simple;
+	bh=GwcU2pSIbydwbJiU6IuHormamlt/mT09dfYLqMj4oWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u2Dj6sYBBJeX5zEFaIZr6eXatnZorVftSVydDJTOEiRpcfF7KbR6BgV4lBaZAUCVvBODPWfiajUfzJtSN8VKoOi7rlDi8B+u9p7QUdlFpdoM/EEA/meHgivYrseSteGFw4C1jXWyx8+zwbawrtUy4Uc+3oe1ztEE6Dl3aMxi7d4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UirQeuQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B997BC433F1;
-	Tue, 23 Jan 2024 00:44:46 +0000 (UTC)
+	 MIME-Version; b=prwQ/jIg5XdHMPo7DQWoZMjZbQ3mJ8ErHhpXk/m5wx9c/mReNCpWjn0m0fs2MJ92gDLhB7FGE2s9jBZnBuw8oqeF7SywzpQcuD0Igp9GJ47nspwikyy1l0b8is2+aZ0+03ocdVwAo9KnxSGKY4WEoRtNMXE73hHuTwdD/EmlTxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiNPfmDw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5DDC433F1;
+	Tue, 23 Jan 2024 01:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970687;
-	bh=GTdM8Pn4JsW8511jd1sbvDdlmYGz0yuKUo7LlqXVXoU=;
+	s=korg; t=1705974987;
+	bh=GwcU2pSIbydwbJiU6IuHormamlt/mT09dfYLqMj4oWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UirQeuQvDqlUlUum0i2Z9uK8cv3U3ln7BL0SbNEUK94fnokwne5W0CQOfOtXs1udB
-	 uI0qbmF9CYkP8f9X6jupj1u2wM47eNN5WGW6ss8Owj/5bLB39LqvOQ+5HooGZJAG0b
-	 /Y8PyZINeq5hmpSWrqpPW2m8Mtxbhm9Kg0kxMDPo=
+	b=HiNPfmDw7U6uNQsYu3vi43mcVCMYZ/nhTYgPIgPo9sb4NudIB8+juueCfQvQoU1G7
+	 tJIkWXJuWZrMFSX6HBTP00HQ3Wz8HDFz2Wvqt2887nzijFeT26iH8vHHeN7t6dG3PO
+	 P4VDJuWHz/MXPgf4uwE8LYqCD9u1B4giFZ8wBo+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Chukun Pan <amadeus@jmu.edu.cn>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/417] blocklayoutdriver: Fix reference leak of pnfs_device_node
-Date: Mon, 22 Jan 2024 15:53:52 -0800
-Message-ID: <20240122235753.923817997@linuxfoundation.org>
+Subject: [PATCH 6.6 182/583] arm64: dts: qcom: ipq6018: fix clock rates for GCC_USB0_MOCK_UTMI_CLK
+Date: Mon, 22 Jan 2024 15:53:53 -0800
+Message-ID: <20240122235817.579636443@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Chukun Pan <amadeus@jmu.edu.cn>
 
-[ Upstream commit 1530827b90025cdf80c9b0d07a166d045a0a7b81 ]
+[ Upstream commit 5c0dbe8b058436ad5daecb19c60869f832607ea3 ]
 
-The error path for blocklayout's device lookup is missing a reference drop
-for the case where a lookup finds the device, but the device is marked with
-NFS_DEVICEID_UNAVAILABLE.
+The downstream QSDK kernel [1] and GCC_USB1_MOCK_UTMI_CLK are both 24MHz.
+Adjust GCC_USB0_MOCK_UTMI_CLK to 24MHz to avoid the following error:
 
-Fixes: b3dce6a2f060 ("pnfs/blocklayout: handle transient devices")
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+clk: couldn't set gcc_usb0_mock_utmi_clk clk rate to 20000000 (-22), current rate: 24000000
+
+1. https://git.codelinaro.org/clo/qsdk/oss/kernel/linux-ipq-5.4/-/commit/486c8485f59
+
+Fixes: 5726079cd486 ("arm64: dts: ipq6018: Use reference clock to set dwc3 period")
+Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
+Link: https://lore.kernel.org/r/20231218150805.1228160-1-amadeus@jmu.edu.cn
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/blocklayout/blocklayout.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
-index 943aeea1eb16..1d1d7abc3205 100644
---- a/fs/nfs/blocklayout/blocklayout.c
-+++ b/fs/nfs/blocklayout/blocklayout.c
-@@ -580,6 +580,8 @@ bl_find_get_deviceid(struct nfs_server *server,
- 		nfs4_delete_deviceid(node->ld, node->nfs_client, id);
- 		goto retry;
- 	}
-+
-+	nfs4_put_deviceid_node(node);
- 	return ERR_PTR(-ENODEV);
- }
+diff --git a/arch/arm64/boot/dts/qcom/ipq6018.dtsi b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+index 264845cecf92..fc907afe5174 100644
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -565,7 +565,7 @@ usb3: usb@8af8800 {
+ 					  <&gcc GCC_USB0_MOCK_UTMI_CLK>;
+ 			assigned-clock-rates = <133330000>,
+ 					       <133330000>,
+-					       <20000000>;
++					       <24000000>;
  
+ 			resets = <&gcc GCC_USB0_BCR>;
+ 			status = "disabled";
 -- 
 2.43.0
 
