@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 214F48382CE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FEA983801C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5533B1C2952A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02E59288301
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F4C27452;
-	Tue, 23 Jan 2024 01:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E94664A1;
+	Tue, 23 Jan 2024 00:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0y3jfhkm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5MQZVIi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEBD2B9C7;
-	Tue, 23 Jan 2024 01:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F9A651A1;
+	Tue, 23 Jan 2024 00:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974630; cv=none; b=rpkiQiROmmL5ssast7zJsDvBgatrBfxNYSF2kEGMF5rAn2oBYvBCDu6k0t/Qh3SHBPREqc578t5xXymrTJ8DFOZ9HSeu1sagD7iQUPGYptMkAqhruF+WhgZBdc8Mry9Zo9JUfzFt5MBair9aawIkhGdeBiMN2zBQjIuYif/Hkac=
+	t=1705971554; cv=none; b=mI5uBs+eiQDhE/KUYELGI9YKWdEWIi2Lv6MOu7uYCF1j5WBUPsh7GQLuPnZ3L4S4MmJEiTf9IwtFCLoCBzZ+2He9dWdeJSD//xV1KcF769SSKopPvP8z4TzmTNCncaGry5y35/GjweBcRaI6VViJuiQ0u23jFZdhU+lEcJGUBSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974630; c=relaxed/simple;
-	bh=MTGkow184q6lEoKxtUcFK3zI5RTx+ftsVA/F+0JLtRE=;
+	s=arc-20240116; t=1705971554; c=relaxed/simple;
+	bh=mMOyQomBlqu/VYgddwV515FyJ7v48h/CrDWMqCLwmj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B0zCT7A21ED8WKjZLyHv0r4MkPrgzr6YYwKqsTRJencF7+D04KIrlJQe/DrnzizQap6e8vx3ueOOMLRH0O8XUiaPsT/8H9sJKy88xjcikJcJfzm9o+1ctn16jVv0Jr1HYoPxYbC5eZclEn70qAETrtuLwzDG23VtnZXcWD+0tac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0y3jfhkm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB189C433C7;
-	Tue, 23 Jan 2024 01:50:29 +0000 (UTC)
+	 MIME-Version; b=BrLZwKU7zebm1EbJxLgANRXVx9ta8d0pLRFv127DwAyBp5ezRepM1YfFGtSTlbWI2C4mnqsJDjBnR+3No6Bhzg2OSk8wsF5lc+iGMCIwh7v+oUyV5uVcPmkZLFumgw70bPg3MtV1z36ewFAvoBM9T8dB7D65nWXrH5iy+7Ar4U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5MQZVIi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19227C433C7;
+	Tue, 23 Jan 2024 00:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974630;
-	bh=MTGkow184q6lEoKxtUcFK3zI5RTx+ftsVA/F+0JLtRE=;
+	s=korg; t=1705971554;
+	bh=mMOyQomBlqu/VYgddwV515FyJ7v48h/CrDWMqCLwmj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0y3jfhkmWpTnmYvcaaBWmIW7rXbhxGK9LmjxO/BvbXk08NSDf84bgrBwBSw/h/GP6
-	 voeFi4knScs1AUdd32NFePa7Le71yT8+wQgeUTY41JNu3gXTjS4Rg3Szv8D0MUi8NE
-	 xvZ4mg4+5iVbC5u6MGIW8Uz+P68wquXoGHEMnA7w=
+	b=F5MQZVIicgr3jbhlUAmynJSoCuVbyAxklSFRdaSxP2txh94oACKmxAbZuc/fvFzmM
+	 RLuX5RIgJnzkp2gL/nuY9hdmk/mu1vOEKO9MiFktQJ5uPPvrB8NDmussGV/je+Xz/h
+	 fULeSSI4XYC25ODmhYRe1x0uJuhgM2n54ZWwgnhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 221/374] watchdog: bcm2835_wdt: Fix WDIOC_SETTIMEOUT handling
-Date: Mon, 22 Jan 2024 15:57:57 -0800
-Message-ID: <20240122235752.350925568@linuxfoundation.org>
+Subject: [PATCH 5.10 172/286] drm/amd/pm: fix a double-free in si_dpm_init
+Date: Mon, 22 Jan 2024 15:57:58 -0800
+Message-ID: <20240122235738.796848771@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit f33f5b1fd1be5f5106d16f831309648cb0f1c31d ]
+[ Upstream commit ac16667237a82e2597e329eb9bc520d1cf9dff30 ]
 
-Users report about the unexpected behavior for setting timeouts above
-15 sec on Raspberry Pi. According to watchdog-api.rst the ioctl
-WDIOC_SETTIMEOUT shouldn't fail because of hardware limitations.
-But looking at the code shows that max_timeout based on the
-register value PM_WDOG_TIME_SET, which is the maximum.
+When the allocation of
+adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries fails,
+amdgpu_free_extended_power_table is called to free some fields of adev.
+However, when the control flow returns to si_dpm_sw_init, it goes to
+label dpm_failed and calls si_dpm_fini, which calls
+amdgpu_free_extended_power_table again and free those fields again. Thus
+a double-free is triggered.
 
-Since 664a39236e71 ("watchdog: Introduce hardware maximum heartbeat
-in watchdog core") the watchdog core is able to handle this problem.
-
-This fix has been tested with watchdog-test from selftests.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217374
-Fixes: 664a39236e71 ("watchdog: Introduce hardware maximum heartbeat in watchdog core")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231112173251.4827-1-wahrenst@gmx.net
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/bcm2835_wdt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/si_dpm.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/watchdog/bcm2835_wdt.c b/drivers/watchdog/bcm2835_wdt.c
-index 94907176a0e4..55c0f7b0e8fb 100644
---- a/drivers/watchdog/bcm2835_wdt.c
-+++ b/drivers/watchdog/bcm2835_wdt.c
-@@ -42,6 +42,7 @@
- 
- #define SECS_TO_WDOG_TICKS(x) ((x) << 16)
- #define WDOG_TICKS_TO_SECS(x) ((x) >> 16)
-+#define WDOG_TICKS_TO_MSECS(x) ((x) * 1000 >> 16)
- 
- struct bcm2835_wdt {
- 	void __iomem		*base;
-@@ -140,7 +141,7 @@ static struct watchdog_device bcm2835_wdt_wdd = {
- 	.info =		&bcm2835_wdt_info,
- 	.ops =		&bcm2835_wdt_ops,
- 	.min_timeout =	1,
--	.max_timeout =	WDOG_TICKS_TO_SECS(PM_WDOG_TIME_SET),
-+	.max_hw_heartbeat_ms =	WDOG_TICKS_TO_MSECS(PM_WDOG_TIME_SET),
- 	.timeout =	WDOG_TICKS_TO_SECS(PM_WDOG_TIME_SET),
- };
- 
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c b/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c
+index d6544a6dabc7..6f0653c81f8f 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c
+@@ -7349,10 +7349,9 @@ static int si_dpm_init(struct amdgpu_device *adev)
+ 		kcalloc(4,
+ 			sizeof(struct amdgpu_clock_voltage_dependency_entry),
+ 			GFP_KERNEL);
+-	if (!adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries) {
+-		amdgpu_free_extended_power_table(adev);
++	if (!adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries)
+ 		return -ENOMEM;
+-	}
++
+ 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.count = 4;
+ 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[0].clk = 0;
+ 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[0].v = 0;
 -- 
 2.43.0
 
