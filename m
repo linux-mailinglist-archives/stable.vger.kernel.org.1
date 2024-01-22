@@ -1,67 +1,55 @@
-Return-Path: <stable+bounces-15366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A15A8384EA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B21A2838089
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 205D41F26E0D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5200C1F2CDA5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748B577F27;
-	Tue, 23 Jan 2024 02:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C3D12FF66;
+	Tue, 23 Jan 2024 01:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEQuAHF3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00n2OETn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3363277F23;
-	Tue, 23 Jan 2024 02:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534ED12F5BC;
+	Tue, 23 Jan 2024 01:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975534; cv=none; b=ZZrxYX1NagpNHFjUK676hUCXFL/hmeGEKBQNjvy0nn3xqKLTNPwiAAaqDIMVof3vxJV1sx3XZuxHWu0jATocaJgUpq6RGFx/3KJCaGPBAKrwcKg2wEG1XUMAtqeBV07+Ci3FpV9H2u/dEsadz2VOEa4wdHidQ7p64GZOuyjx6Vw=
+	t=1705971781; cv=none; b=dHBNNKsUtFj292E1Z8noockeaN1oNrHucAbpV2SLxRg0NT8LdmC+slPZ8glXqg/or81uIU7mYhpEPIHRLIkLMBDAnMMPMyfQ4uFUDL4qHFAE4EpHuylNfGm7CDH3IAvjsxuoR2Tta4rXGsg5EpMgFwG3ZP3I0BNSThl3EYzWy7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975534; c=relaxed/simple;
-	bh=k8SrcaUi8yz025xytcjJu2TNcXoc5JEBpyl985XPKJc=;
+	s=arc-20240116; t=1705971781; c=relaxed/simple;
+	bh=Wy8LiaWRQLaYGkWQjaIMNjG6GsOjhD6iXmDiU+cDcG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p3izmusBdOdVZE30FEhZgWy1k1szPrKYxiUVOj4iZC0MFmP7FH76sHbwwTS1KS8oCy3dsdTl3/4gxLMsl6R+6bBJ7o4tEV4mauuV1Q7kfwbpfTfKdeliapN9PxT7AX3RsKmw3mp5TJdMsRk/hPZXTDv9hgT1cnpPuhRDBgobnG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEQuAHF3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8098C43399;
-	Tue, 23 Jan 2024 02:05:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FmvLxK96n6GYLOw6mQh6qaXn/ivJI//AvJDtJ5YAmgC3wO28RmT60IYKVaqC3jv9kwPq+nwTLwZvJcTeeC/cEdnj+qAkKGsUT2luUczWV1tMvWpp4KmjL+OpjZp+m8A6sIP2bMSAKLhXl5lx9zJdK49fQ/Uvh8VcgEmwUvl68eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00n2OETn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D3BC433F1;
+	Tue, 23 Jan 2024 01:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975534;
-	bh=k8SrcaUi8yz025xytcjJu2TNcXoc5JEBpyl985XPKJc=;
+	s=korg; t=1705971781;
+	bh=Wy8LiaWRQLaYGkWQjaIMNjG6GsOjhD6iXmDiU+cDcG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QEQuAHF3uRMxhl/vaRvhpKy5E7RdCOBMtPVrNs/8PQyBz1hDz99xTW3+aH1+6rwT6
-	 pS/tWPYreTv9Ktj0EwgZdDumfb9Ym26EsELB+qNYsIvbgR/kMsw6xsVaL1AjODjfW4
-	 vPnnRariop/A1lJvyLG2fj7e/2tGqW/4pXJQs5G0=
+	b=00n2OETnLNofncHLUenEubziuFY6NjM3Qa7r4PA1Tr9hrQmZZEJ6G8YpPH0sPR+54
+	 LvcroyPEKFKPsRvSkPEzQehJDNOIuc9Y8YMJRGLQKZtDx/nbQp4dVP6YHGPNSMoOdu
+	 ri1qX9/dIa36RXHZqRBWYt5xoEhqPcYA3/XlUN1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Namhyung Kim <Namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Junhao He <hejunhao3@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Qi Liu <liuqi115@huawei.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 484/583] perf hisi-ptt: Fix one memory leakage in hisi_ptt_process_auxtrace_event()
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 5.10 229/286] wifi: rtlwifi: Convert LNKCTL change to PCIe cap RMW accessors
 Date: Mon, 22 Jan 2024 15:58:55 -0800
-Message-ID: <20240122235826.816023919@linuxfoundation.org>
+Message-ID: <20240122235740.888064378@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,56 +59,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 1bc479d665bc25a9a4e8168d5b400a47491511f9 ]
+commit 5894d0089cbc146063dcc0239a78ede0a8142efb upstream.
 
-ASan complains a memory leakage in hisi_ptt_process_auxtrace_event()
-that the data buffer is not freed. Since currently we only support the
-raw dump trace mode, the data buffer is used only within this function.
-So fix this by freeing the data buffer before going out.
+The rtlwifi driver comes with custom code to write into PCIe Link
+Control register. RMW access for the Link Control register requires
+locking that is already provided by the standard PCIe capability
+accessors.
 
-Fixes: 5e91e57e68090c0e ("perf auxtrace arm64: Add support for parsing HiSilicon PCIe Trace packet")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Acked-by: Namhyung Kim <Namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Junhao He <hejunhao3@huawei.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Qi Liu <liuqi115@huawei.com>
-Link: https://lore.kernel.org/r/20231207081635.8427-3-yangyicong@huawei.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Convert the custom RMW code writing into LNKCTL register to standard
+RMW capability accessors. The accesses are changed to cover the full
+LNKCTL register instead of touching just a single byte of the register.
+
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231124084725.12738-3-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/hisi-ptt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtlwifi/pci.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/util/hisi-ptt.c b/tools/perf/util/hisi-ptt.c
-index 45b614bb73bf..764d660d30e2 100644
---- a/tools/perf/util/hisi-ptt.c
-+++ b/tools/perf/util/hisi-ptt.c
-@@ -121,6 +121,7 @@ static int hisi_ptt_process_auxtrace_event(struct perf_session *session,
- 	if (dump_trace)
- 		hisi_ptt_dump_event(ptt, data, size);
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -164,21 +164,29 @@ static bool _rtl_pci_platform_switch_dev
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+ 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
  
-+	free(data);
- 	return 0;
++	value &= PCI_EXP_LNKCTL_ASPMC;
++
+ 	if (rtlhal->hw_type != HARDWARE_TYPE_RTL8192SE)
+-		value |= 0x40;
++		value |= PCI_EXP_LNKCTL_CCC;
+ 
+-	pci_write_config_byte(rtlpci->pdev, 0x80, value);
++	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_ASPMC | value,
++					   value);
+ 
+ 	return false;
  }
  
--- 
-2.43.0
-
+-/*When we set 0x01 to enable clk request. Set 0x0 to disable clk req.*/
+-static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u8 value)
++/* @value is PCI_EXP_LNKCTL_CLKREQ_EN or 0 to enable/disable clk request. */
++static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u16 value)
+ {
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+ 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+ 
+-	pci_write_config_byte(rtlpci->pdev, 0x81, value);
++	value &= PCI_EXP_LNKCTL_CLKREQ_EN;
++
++	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_CLKREQ_EN,
++					   value);
+ 
+ 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192SE)
+ 		udelay(100);
+@@ -259,7 +267,8 @@ static void rtl_pci_enable_aspm(struct i
+ 
+ 	if (ppsc->reg_rfps_level & RT_RF_OFF_LEVL_CLK_REQ) {
+ 		_rtl_pci_switch_clk_req(hw, (ppsc->reg_rfps_level &
+-					     RT_RF_OFF_LEVL_CLK_REQ) ? 1 : 0);
++					     RT_RF_OFF_LEVL_CLK_REQ) ?
++					     PCI_EXP_LNKCTL_CLKREQ_EN : 0);
+ 		RT_SET_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_CLK_REQ);
+ 	}
+ 	udelay(100);
 
 
 
