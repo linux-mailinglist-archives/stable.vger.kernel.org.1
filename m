@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F27E8382A1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0C3837DA1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5C6D2876E7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 410C91F260F1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3111B5DF03;
-	Tue, 23 Jan 2024 01:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6636851014;
+	Tue, 23 Jan 2024 00:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlT9swUB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqAm/m83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50235D91E;
-	Tue, 23 Jan 2024 01:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2626A537F7;
+	Tue, 23 Jan 2024 00:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974396; cv=none; b=mdOHa5e1qGxihmGOpjdeNuv/TPZZeogKcLQk1PwSDyr3f6u8UcBqX4xmjOecsxkcvuhybPIBJnHD6iYjuHJEx3wdMSyEtzCSl/WRMdF+1R+8lW22XD0rV3gYUtpPZINN2OGxQZLrE5+zzMuckl9Min0HzXQYWHOPXhGpm3jvyzA=
+	t=1705970088; cv=none; b=i7DYNYx1lQ1u4TAlVAFRjgJmr3PL+2bidKyT7rCZI4wMUlqOFO1hV+fV6bQwWrqjYOR3VewKx+pwTLuiDedgOwu9ct1CPbhGQMzGuwGOBK77VNsjwyYht0ppbN5zYtXx8QZnLEGm3rTs1siUswpCpn9IvoZ0xmKWiC43tL2j2QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974396; c=relaxed/simple;
-	bh=CwdlLSWJiYReus6B9PRV5np+PddEmp8suyIw/a+sj74=;
+	s=arc-20240116; t=1705970088; c=relaxed/simple;
+	bh=JiXRcifdb6dg7GHtC3VImIZ2Lsxz7dRff6VlRQcyE8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tDmwYqROU/9a8mBKUOuTkujTe+Z1YwCCfFMX03EEDRSLUFCvSLhE8lBlQrIGdF6dIhKFYGCltT08mRloPuByc3TIdBohV392lV27oi1vdVoqe8gjBLFEk4qljgXi2RYGZPycIu3u1pw66DBbK8kUpa/4pNJBeP/60tOrOW6c3JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlT9swUB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA631C433F1;
-	Tue, 23 Jan 2024 01:46:35 +0000 (UTC)
+	 MIME-Version; b=c8V9v9fSdLAOOYWzvjQ3euPa73zwJkYEHaruUr2STp3Wr2/NasGuNr7vB70gSK3ulPNp4g7LVYyaX+haA0Ow+Ab1XRaXY565JZfoBLjKqR3jQwPvq818QL3+NpG6MTdujB1Zr0agtVhs70CHTM0L4joi0Z3DsNcn/FrNjJBu8cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqAm/m83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86651C433C7;
+	Tue, 23 Jan 2024 00:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974395;
-	bh=CwdlLSWJiYReus6B9PRV5np+PddEmp8suyIw/a+sj74=;
+	s=korg; t=1705970088;
+	bh=JiXRcifdb6dg7GHtC3VImIZ2Lsxz7dRff6VlRQcyE8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SlT9swUBWC+S+ZROO8fLwZ93k1ke1Eekg8RDKpsiy35LGjPSkJIdSaSL1a4+WoY3C
-	 YZF4reT4iS/8VSttnXnVjxiP6GCJ/5btjNLpUC/s1I6/iHw9ZBb33uUqpD2UdiTEMl
-	 HfZVsga7mLK02WCjZYZhnQIXM/y2is5gBlTJH2Ac=
+	b=EqAm/m83Lkdk4f9KvOVCry9p7IbakiU5CHHeP2MFEGlTjUPxudn42rV+pb2q3lmJr
+	 NnxGgBFEKOMCmwsYgeYQ1EldSCrovu5eaHlQ7c1faB5Qhxu/LSCQy42T3BYogyIO7g
+	 n6RhHza2G/3XwGK0fVacqEwNCbt3tC2ZM+gr3BtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 208/374] drm/amdgpu/debugfs: fix error code when smc register accessors are NULL
+Subject: [PATCH 6.7 560/641] apparmor: fix possible memory leak in unpack_trans_table
 Date: Mon, 22 Jan 2024 15:57:44 -0800
-Message-ID: <20240122235751.862924709@linuxfoundation.org>
+Message-ID: <20240122235835.670949826@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit afe58346d5d3887b3e49ff623d2f2e471f232a8d ]
+[ Upstream commit 1342ad786073e96fa813ad943c19f586157ae297 ]
 
-Should be -EOPNOTSUPP.
+If we fail to unpack the transition table then the table elements which
+have been already allocated are not freed on error path.
 
-Fixes: 5104fdf50d32 ("drm/amdgpu: Fix a null pointer access when the smc_rreg pointer is NULL")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+unreferenced object 0xffff88802539e000 (size 128):
+  comm "apparmor_parser", pid 903, jiffies 4294914938 (age 35.085s)
+  hex dump (first 32 bytes):
+    20 73 6f 6d 65 20 6e 61 73 74 79 20 73 74 72 69   some nasty stri
+    6e 67 20 73 6f 6d 65 20 6e 61 73 74 79 20 73 74  ng some nasty st
+  backtrace:
+    [<ffffffff81ddb312>] __kmem_cache_alloc_node+0x1e2/0x2d0
+    [<ffffffff81c47194>] __kmalloc_node_track_caller+0x54/0x170
+    [<ffffffff81c225b9>] kmemdup+0x29/0x60
+    [<ffffffff83e1ee65>] aa_unpack_strdup+0xe5/0x1b0
+    [<ffffffff83e20808>] unpack_pdb+0xeb8/0x2700
+    [<ffffffff83e23567>] unpack_profile+0x1507/0x4a30
+    [<ffffffff83e27bfa>] aa_unpack+0x36a/0x1560
+    [<ffffffff83e194c3>] aa_replace_profiles+0x213/0x33c0
+    [<ffffffff83de9461>] policy_update+0x261/0x370
+    [<ffffffff83de978e>] profile_replace+0x20e/0x2a0
+    [<ffffffff81eac8bf>] vfs_write+0x2af/0xe00
+    [<ffffffff81eaddd6>] ksys_write+0x126/0x250
+    [<ffffffff88f34fb6>] do_syscall_64+0x46/0xf0
+    [<ffffffff890000ea>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+Call aa_free_str_table() on error path as was done before the blamed
+commit. It implements all necessary checks, frees str_table if it is
+available and nullifies the pointers.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: a0792e2ceddc ("apparmor: make transition table unpack generic so it can be reused")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ security/apparmor/lib.c           | 1 +
+ security/apparmor/policy_unpack.c | 7 +++----
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-index 632d8df04ef4..aa057ceecf06 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-@@ -465,7 +465,7 @@ static ssize_t amdgpu_debugfs_regs_smc_read(struct file *f, char __user *buf,
- 	int r;
+diff --git a/security/apparmor/lib.c b/security/apparmor/lib.c
+index 4c198d273f09..cd569fbbfe36 100644
+--- a/security/apparmor/lib.c
++++ b/security/apparmor/lib.c
+@@ -41,6 +41,7 @@ void aa_free_str_table(struct aa_str_table *t)
+ 			kfree_sensitive(t->table[i]);
+ 		kfree_sensitive(t->table);
+ 		t->table = NULL;
++		t->size = 0;
+ 	}
+ }
  
- 	if (!adev->smc_rreg)
--		return -EPERM;
-+		return -EOPNOTSUPP;
+diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
+index 47ec097d6741..9575da5fd4cb 100644
+--- a/security/apparmor/policy_unpack.c
++++ b/security/apparmor/policy_unpack.c
+@@ -478,6 +478,8 @@ static bool unpack_trans_table(struct aa_ext *e, struct aa_str_table *strs)
+ 		if (!table)
+ 			goto fail;
  
- 	if (size & 0x3 || *pos & 0x3)
- 		return -EINVAL;
-@@ -527,7 +527,7 @@ static ssize_t amdgpu_debugfs_regs_smc_write(struct file *f, const char __user *
- 	int r;
++		strs->table = table;
++		strs->size = size;
+ 		for (i = 0; i < size; i++) {
+ 			char *str;
+ 			int c, j, pos, size2 = aa_unpack_strdup(e, &str, NULL);
+@@ -520,14 +522,11 @@ static bool unpack_trans_table(struct aa_ext *e, struct aa_str_table *strs)
+ 			goto fail;
+ 		if (!aa_unpack_nameX(e, AA_STRUCTEND, NULL))
+ 			goto fail;
+-
+-		strs->table = table;
+-		strs->size = size;
+ 	}
+ 	return true;
  
- 	if (!adev->smc_wreg)
--		return -EPERM;
-+		return -EOPNOTSUPP;
- 
- 	if (size & 0x3 || *pos & 0x3)
- 		return -EINVAL;
+ fail:
+-	kfree_sensitive(table);
++	aa_free_str_table(strs);
+ 	e->pos = saved_pos;
+ 	return false;
+ }
 -- 
 2.43.0
 
