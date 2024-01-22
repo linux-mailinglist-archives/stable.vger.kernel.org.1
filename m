@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D41F6838138
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2FA837C73
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12DEA1C26C14
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AC551C2883A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81EC1487CB;
-	Tue, 23 Jan 2024 01:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4F033CCA;
+	Tue, 23 Jan 2024 00:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kg1We5ac"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvcdUMva"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DC91487C0;
-	Tue, 23 Jan 2024 01:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195A633097;
+	Tue, 23 Jan 2024 00:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972068; cv=none; b=YGGTLSM/H/+2eOkBP6Q1bPWOiVwJnNYUrbXg5HcmruQ6FFH/fvDsF96tt08CaKxyo4O6Kx3zgDYk8zf8fju4FVBDcUjdF4KSvzLdAmluCN74/Yc5T62imQLtD/rNFQjXAqX1Vojwj+RgG/4fnWWevxt5tSTAajowFErkzIa6k9s=
+	t=1705969623; cv=none; b=Zz3qkkcj2TLxTa19IFyMcjQ7bVk6vjn4kmD4i9V1XNAk58Q6k4uveSA0lPrQ6CSTPPuLLCojloViEB60mDY7Ts9+NcOn0mfxnynjkOWiPw6bUNlDREFfo4OUUbIR5nueTuBQaNU+FwHNyzHv6Ssy3gLHpLTFrLNQg2F6IwueP9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972068; c=relaxed/simple;
-	bh=bGBRij4Ntwr3uHqdpOZe12BM50xJELoX1uvv1AwyInQ=;
+	s=arc-20240116; t=1705969623; c=relaxed/simple;
+	bh=ozadYcz0StpP42jzhHa5S81FsutVyrXMixC1vRu8FmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aMtaof87Oq3jvQONWwmZpyQzh5ByWr3snLqB5gfq9RyeeVljjOg1W3IT+lhgw+xDDWDPW3z9vxZN8xyeY+fPPC8+wxcFWdP4MMSV5zbsw5KLlYYlYt4rP129Wbf70jWa6OVHNHsr+xDidH+wbTwQx4fdAjNPul9JIhZpgXhb/1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kg1We5ac; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DEF3C43390;
-	Tue, 23 Jan 2024 01:07:48 +0000 (UTC)
+	 MIME-Version; b=cGk21yPbqi/lnBDDkk1XUMSgxyOV9PV4vksmMbBJD7x9DJLdha70aidn/TABPXmCg+9cX71A0gPftdavihRkvrsxKqcGP5n2GeEnBz34MxCbI+12i4YgciBP/xQbfBsQs3keq4VscFs7uq92zKsg9MAcwavT2kEOpXbaCPq0yPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mvcdUMva; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7E3C433F1;
+	Tue, 23 Jan 2024 00:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972068;
-	bh=bGBRij4Ntwr3uHqdpOZe12BM50xJELoX1uvv1AwyInQ=;
+	s=korg; t=1705969622;
+	bh=ozadYcz0StpP42jzhHa5S81FsutVyrXMixC1vRu8FmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kg1We5acGawNciREKht2CYUIPT3XZT3VLnbTIf56Li2paD86aa8Ors4ERoHtsxdBE
-	 2+DIzDAiRiCrS7BJToqxhYbWGBUl/w5bJubk53L4dGrVLKCu/1kB+tQf+HMm/QhR3T
-	 J/+NH/p4MwUzKmycJenQzF5zbS55tSJZNW9ydxpQ=
+	b=mvcdUMva5aY8GqU9OQA4J1ODGouFfaHYFUR+Zdpg5cyTC8Hk4qtV4G2Tx48aHCmsD
+	 W8gqC+dSGZbUK+fjL2o6AEFQfQA+ZQBg3sRLsxJjHj87XCmdY1H3pWFwMA9fcwOuOb
+	 LQ1Mo9pPd2K2JgJhxGmQ9vCz5JmjHBLVJ90u4qRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamil Duljas <kamil.duljas@gmail.com>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Peter Robinson <pbrobinson@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 012/374] ASoC: Intel: Skylake: mem leak in skl register function
+Subject: [PATCH 6.7 364/641] mmc: sdhci_omap: Fix TI SoC dependencies
 Date: Mon, 22 Jan 2024 15:54:28 -0800
-Message-ID: <20240122235745.054280793@linuxfoundation.org>
+Message-ID: <20240122235829.330725185@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamil Duljas <kamil.duljas@gmail.com>
+From: Peter Robinson <pbrobinson@gmail.com>
 
-[ Upstream commit f8ba14b780273fd290ddf7ee0d7d7decb44cc365 ]
+[ Upstream commit 09f164d393a6671e5ff8342ba6b3cb7fe3f20208 ]
 
-skl_platform_register() uses krealloc. When krealloc is fail,
-then previous memory is not freed. The leak is also when soc
-component registration failed.
+The sdhci_omap is specific to  older TI SoCs, update the
+dependencies for those SoCs and compile testing. While we're
+at it update the text to reflect the wider range of
+supported TI SoCS the driver now supports.
 
-Signed-off-by: Kamil Duljas <kamil.duljas@gmail.com>
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20231116224112.2209-2-kamil.duljas@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 7d326930d352 ("mmc: sdhci-omap: Add OMAP SDHCI driver")
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+Link: https://lore.kernel.org/r/20231220135950.433588-2-pbrobinson@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/skylake/skl-pcm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/mmc/host/Kconfig | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/intel/skylake/skl-pcm.c b/sound/soc/intel/skylake/skl-pcm.c
-index 0d08b0269a66..af5af5be42f6 100644
---- a/sound/soc/intel/skylake/skl-pcm.c
-+++ b/sound/soc/intel/skylake/skl-pcm.c
-@@ -1467,6 +1467,7 @@ int skl_platform_register(struct device *dev)
- 		dais = krealloc(skl->dais, sizeof(skl_fe_dai) +
- 				sizeof(skl_platform_dai), GFP_KERNEL);
- 		if (!dais) {
-+			kfree(skl->dais);
- 			ret = -ENOMEM;
- 			goto err;
- 		}
-@@ -1479,8 +1480,10 @@ int skl_platform_register(struct device *dev)
+diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+index 24ce5576b61a..81f2c4e05287 100644
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -1026,14 +1026,15 @@ config MMC_SDHCI_XENON
  
- 	ret = devm_snd_soc_register_component(dev, &skl_component,
- 					 skl->dais, num_dais);
--	if (ret)
-+	if (ret) {
-+		kfree(skl->dais);
- 		dev_err(dev, "soc component registration failed %d\n", ret);
-+	}
- err:
- 	return ret;
- }
+ config MMC_SDHCI_OMAP
+ 	tristate "TI SDHCI Controller Support"
++	depends on ARCH_OMAP2PLUS || ARCH_KEYSTONE || COMPILE_TEST
+ 	depends on MMC_SDHCI_PLTFM && OF
+ 	select THERMAL
+ 	imply TI_SOC_THERMAL
+ 	select MMC_SDHCI_EXTERNAL_DMA if DMA_ENGINE
+ 	help
+ 	  This selects the Secure Digital Host Controller Interface (SDHCI)
+-	  support present in TI's DRA7 SOCs. The controller supports
+-	  SD/MMC/SDIO devices.
++	  support present in TI's Keystone/OMAP2+/DRA7 SOCs. The controller
++	  supports SD/MMC/SDIO devices.
+ 
+ 	  If you have a controller with this interface, say Y or M here.
+ 
 -- 
 2.43.0
 
