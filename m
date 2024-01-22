@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-13416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6D8837BF9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CDDA838347
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:27:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA41B1F2AC3A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84892B2A22C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3413C0C;
-	Tue, 23 Jan 2024 00:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475FA5FEFF;
+	Tue, 23 Jan 2024 01:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edheryGw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBdw5vcS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1423C24;
-	Tue, 23 Jan 2024 00:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037DD5FDBB;
+	Tue, 23 Jan 2024 01:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969459; cv=none; b=IxLDFd9OgQggkRQJlsV4uKJKRDAi85h28m83J8pbV9OPkPrO/yiEST1xxXaU4WGwQX+luVIHCXgzGj8mGWUIndEK+CD+bOa0HGOccZzJzxSHef3RpUcMRa3cjad7LONkgX75zMRLJnKjbkP+gNDGryom87lplG5RlKEMh0sxgEg=
+	t=1705974663; cv=none; b=CjvBHQO1XSkC1BzaoWzE4Gn5SLWKCiqBCTceBAwCmXTU8ihZ8mwTDc2tcyVhzYPOIiWqPRZ7LA81dJ0hUiI8ROazFHKgo+VAxfcjWAEZZ8J3run08KZ1JaxbcsvDI6pAvm1LM+sIWnbZqVrJK1/u4HzX70MxLRuJIRAApi792cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969459; c=relaxed/simple;
-	bh=PdAMRBuZeIh8yDnAcXX34z3E9kNlJCcSevDaUdHrYXY=;
+	s=arc-20240116; t=1705974663; c=relaxed/simple;
+	bh=TqPd3W6oqqMVDeWvphtlljEtXwHoztKxgMVKUj/Xlgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JKB1D8Rz9iGeAn2PxUliAaG0QxaAXH+Z4MOkHgnL4bb4MHoeqWPmdtlBymYZ+hDsO8zQL9/ac2hY5Io3TAJJ4dDXekONjqeQJhQXA5Z6LkFd4tDyC+7OwbDuGfxjQbR9j6klN5vOm7N6WtyagOLk8BLnf2P4053a+NouJXJ7gsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edheryGw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7F8C43390;
-	Tue, 23 Jan 2024 00:24:18 +0000 (UTC)
+	 MIME-Version; b=XYX1UNe5DFctFvOyUXN/FpGMCKVWfZebuTKtrt57vYY8PQ9VCUXvNIIlAOuR3E0zI37EIhlsk1AStEtAiofMBHQXlBufWwAjwYUU/7lEX+r+0YcZJA+RVjQ4Pe4qJ4PXsE3hOqy8BIwwrXYjuX0TpT4AkxbeN8fZuw6kiWKaXV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBdw5vcS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFCFC43394;
+	Tue, 23 Jan 2024 01:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969458;
-	bh=PdAMRBuZeIh8yDnAcXX34z3E9kNlJCcSevDaUdHrYXY=;
+	s=korg; t=1705974662;
+	bh=TqPd3W6oqqMVDeWvphtlljEtXwHoztKxgMVKUj/Xlgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=edheryGwpGcMreH4vmrpe6nMu20ZgtZfEM4H8eS5EWDihEW+T5fnd59+ktET5nceG
-	 T2wvO4pbUmoeQ4GNtPfSob9Lza8nkW04mz9+RH76ExOsWqr2GPfJDa3SZWZvLEtEKf
-	 0//USqzzBwABFlvdeFe5Ao+dfaLMyUaM21IHkYcI=
+	b=VBdw5vcSOa5iTs0Rkfr24pmhjeBW9s/uyNgc8gOvV6OtXqcWLa16o1JQIhpzOruwF
+	 mPdr7je2JbjmLMeVCI8SR+avWD7zDHxibsMliVofafuz//f6wV9tycUK5wpD3CoJIz
+	 4tWWomLVEqNo64raPv6EsoMM+EX6G32lFhwwpQ7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 258/641] media: rkvdec: Hook the (TRY_)DECODER_CMD stateless ioctls
-Date: Mon, 22 Jan 2024 15:52:42 -0800
-Message-ID: <20240122235826.003283258@linuxfoundation.org>
+Subject: [PATCH 6.6 112/583] arm64: dts: qcom: sc7280: Make watchdog bark interrupt edge triggered
+Date: Mon, 22 Jan 2024 15:52:43 -0800
+Message-ID: <20240122235815.590984442@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 1fb7b5ab62113b29ce331464048d8c39e58fd08a ]
+[ Upstream commit 6897fac411db7b43243f67d4fd4d3f95abf7f656 ]
 
-The (TRY_)DECODER_CMD ioctls are used to support flushing when holding
-capture buffers is supported. This is the case of this driver but the
-ioctls were never hooked to the ioctl ops.
+As described in the patch ("arm64: dts: qcom: sc7180: Make watchdog
+bark interrupt edge triggered"), the Qualcomm watchdog timer's bark
+interrupt should be configured as edge triggered. Make the change.
 
-Add them to correctly support flushing.
-
-Fixes: ed7bb87d3d03 ("media: rkvdec: Enable capture buffer holding for H264")
-Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 0e51f883daa9 ("arm64: dts: qcom: sc7280: Add APSS watchdog node")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20231106144335.v2.2.I11f77956d2492c88aca0ef5462123f225caf4fb4@changeid
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/rkvdec/rkvdec.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/qcom/sc7280.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
-index 84a41792cb4b..ac398b5a9736 100644
---- a/drivers/staging/media/rkvdec/rkvdec.c
-+++ b/drivers/staging/media/rkvdec/rkvdec.c
-@@ -461,6 +461,9 @@ static const struct v4l2_ioctl_ops rkvdec_ioctl_ops = {
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index 6f2a8f60856d..95c35892fb85 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -5204,7 +5204,7 @@ watchdog: watchdog@17c10000 {
+ 			compatible = "qcom,apss-wdt-sc7280", "qcom,kpss-wdt";
+ 			reg = <0 0x17c10000 0 0x1000>;
+ 			clocks = <&sleep_clk>;
+-			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
+ 			status = "reserved"; /* Owned by Gunyah hyp */
+ 		};
  
- 	.vidioc_streamon = v4l2_m2m_ioctl_streamon,
- 	.vidioc_streamoff = v4l2_m2m_ioctl_streamoff,
-+
-+	.vidioc_decoder_cmd = v4l2_m2m_ioctl_stateless_decoder_cmd,
-+	.vidioc_try_decoder_cmd = v4l2_m2m_ioctl_stateless_try_decoder_cmd,
- };
- 
- static int rkvdec_queue_setup(struct vb2_queue *vq, unsigned int *num_buffers,
 -- 
 2.43.0
 
