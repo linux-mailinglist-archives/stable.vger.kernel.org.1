@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-14927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6191283835C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3913E83807B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7179FB24AA3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E013D28C02A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5846089B;
-	Tue, 23 Jan 2024 01:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7FE12BF34;
+	Tue, 23 Jan 2024 01:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9aup4Z/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m04GrtfM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F00D4E1CC;
-	Tue, 23 Jan 2024 01:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2A112F59C;
+	Tue, 23 Jan 2024 01:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974728; cv=none; b=pkKjKCRtnzRWmQCQUSYnwaTSfkEGop1ETDaaRD5XNjWXJVvjmy7fS2PagJiwJVFL5TXfSrzucSZsaK/pxxNujlrtaKPCAHIOjmLJ5VZN6q8KjzQEoF4nNinB7Mvb5o/nrJpbDAhZtnRgI52vSGOqG3U75VNpuy0n1W6ix4YtNFM=
+	t=1705971758; cv=none; b=Ed1iRZHRL/ysmRzOKyNFevf6QyUXuAPo0J4nkDOv2kwm6zGftKqRMbkyskN1bxa+ouKgIVEWdYMRwNBiJ1RWNxTJPif7iK1VuMVFEOBPqdZYh/fq+wcGNqbzRUuQnqRLXgPkioNpT0UgUg1Ih3nwS+zpLb21t3kWp6NreSP5tQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974728; c=relaxed/simple;
-	bh=Ky5jjM0BezW6cZVGdc4i7VhbN2Rj5TwjsoFpr9cYoEI=;
+	s=arc-20240116; t=1705971758; c=relaxed/simple;
+	bh=a8AzFp5d5/5w8NaD93HmPyzhUjZpkVWNId3QZLCyHFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FlNqqyryH5z51doFQiZlqtG1BEoptHuv1uRJtitwabtFyWto+D9i40AMnXxZopFBdTCnA9nDyyDOuePFT1QtSz6oF5O5WRpVDYAvZ3NPAEsmAKBgXdwLLe0qxmO87e+wUcPUAv40Vn1PgiQXsfCoziBbqRbETIZsxbrghYVWDBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9aup4Z/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157DFC433F1;
-	Tue, 23 Jan 2024 01:52:08 +0000 (UTC)
+	 MIME-Version; b=uvC+iKcz0LTrNEN5RbzD0FS30ZUzboQnmifpbYG6G5r8y5nytMv2QVAiTYVitYJVkPxZozstO3edTmrzfsT8DdxqVxmOEqHMcdoIMrGImSgQz8iHtzCll6zEAI/yaHDu5h31TSQvdhpKkhR/Si4w51Nf2D6+1zfxI1cjydEJmcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m04GrtfM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A650FC433C7;
+	Tue, 23 Jan 2024 01:02:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974728;
-	bh=Ky5jjM0BezW6cZVGdc4i7VhbN2Rj5TwjsoFpr9cYoEI=;
+	s=korg; t=1705971757;
+	bh=a8AzFp5d5/5w8NaD93HmPyzhUjZpkVWNId3QZLCyHFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J9aup4Z/X3eE0+RjLUi5Hv8gDWZiXaTCKGD3YqcCSyMB4wFISv3WzsXpsiVidyQuv
-	 vtiD9WEYOsIpx6IXaXPuluLWPDa1UeRwfEzTYZ5Tr88k+EhBTFrLSQ5++R4VjMFT3S
-	 TDJwULEvoW5sIOQVDgY8oCShpSTGT9gNBEeKMUWY=
+	b=m04GrtfMau33PrlM8KG9OEAGQTrxgMUstqiF9TkNwFw/eNZwbKwNeZ/IQr3YB0fUb
+	 iZd6kxf5bEXEXyzM/xVzhy11JqKZ+bowSagEwlNxuc5bpb1oGJxFUJ4vffI5yrYqlm
+	 CJ0bUOguPLbyM1fE1COJ5Ik4774UnlWWVDw5nDUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lonial con <kongln9170@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 270/374] netfilter: nf_tables: check if catch-all set element is active in next generation
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 220/286] ALSA: oxygen: Fix right channel of capture volume mixer
 Date: Mon, 22 Jan 2024 15:58:46 -0800
-Message-ID: <20240122235754.163956903@linuxfoundation.org>
+Message-ID: <20240122235740.544557991@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit b1db244ffd041a49ecc9618e8feb6b5c1afcdaa7 upstream.
+commit a03cfad512ac24a35184d7d87ec0d5489e1cb763 upstream.
 
-When deactivating the catch-all set element, check the state in the next
-generation that represents this transaction.
+There was a typo in oxygen mixer code that didn't update the right
+channel value properly for the capture volume.  Let's fix it.
 
-This bug uncovered after the recent removal of the element busy mark
-a2dd0233cbc4 ("netfilter: nf_tables: remove busy mark and gc batch API").
+This trivial fix was originally reported on Bugzilla.
 
-Fixes: aaa31047a6d2 ("netfilter: nftables: add catch-all set element support")
-Cc: stable@vger.kernel.org
-Reported-by: lonial con <kongln9170@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: a3601560496d ("[ALSA] oxygen: add front panel controls")
+Cc: <stable@vger.kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=156561
+Link: https://lore.kernel.org/r/20240112111023.6208-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |    2 +-
+ sound/pci/oxygen/oxygen_mixer.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6034,7 +6034,7 @@ static int nft_setelem_catchall_deactiva
- 
- 	list_for_each_entry(catchall, &set->catchall_list, list) {
- 		ext = nft_set_elem_ext(set, catchall->elem);
--		if (!nft_is_active(net, ext))
-+		if (!nft_is_active_next(net, ext))
- 			continue;
- 
- 		kfree(elem->priv);
+--- a/sound/pci/oxygen/oxygen_mixer.c
++++ b/sound/pci/oxygen/oxygen_mixer.c
+@@ -718,7 +718,7 @@ static int ac97_fp_rec_volume_put(struct
+ 	oldreg = oxygen_read_ac97(chip, 1, AC97_REC_GAIN);
+ 	newreg = oldreg & ~0x0707;
+ 	newreg = newreg | (value->value.integer.value[0] & 7);
+-	newreg = newreg | ((value->value.integer.value[0] & 7) << 8);
++	newreg = newreg | ((value->value.integer.value[1] & 7) << 8);
+ 	change = newreg != oldreg;
+ 	if (change)
+ 		oxygen_write_ac97(chip, 1, AC97_REC_GAIN, newreg);
 
 
 
