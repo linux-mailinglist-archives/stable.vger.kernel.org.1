@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-13156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27FB2837AB9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E15837C3A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE84E1F2483E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E98FB2BF9B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:55:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CEF130E54;
-	Tue, 23 Jan 2024 00:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975FF132C0A;
+	Tue, 23 Jan 2024 00:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUTuTtck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="juBcJiKf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451AC130E42;
-	Tue, 23 Jan 2024 00:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5778E131E54;
+	Tue, 23 Jan 2024 00:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969067; cv=none; b=H1d1i/V0fBbFUiJqfuoJOOtYDu88MinAC5q6CR7LNkmuBNvcatqVOHP/vHQEJG0jZQjz6S8YgNr83YAWPuOPLrDt0scmFfWV8VK7CEJmHB6TvZAOsXBQ3xiq59aMDhInaMtXM21bSPMghpHAqxcsgXU29yO6wT1UuUCQv885odk=
+	t=1705969110; cv=none; b=PwMOW50WUd12CFfRXpjzye/CqjdOQnSyD7/RRcsKymzuFXduFd31CHXdJvntrSxwZhKnMptEINgjkcPUG8n2R42KTf7SuRSldNUzfkmV+m43GbkVyXlmZG66tt3TZfEw6X6//UdmC5n933bLxwsk8mnBOuGEKEpMGOCVm0Rwg70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969067; c=relaxed/simple;
-	bh=0BxysecvMJUz0eJjzO9DKzkzou+3djF2U696aJ9wrxA=;
+	s=arc-20240116; t=1705969110; c=relaxed/simple;
+	bh=UcoWoxZDHrtr8SUBTliTqDhQiYRPd7fPguPO9SIeBaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XTuiqnTllYcylmMxifIC/BfH3CoFUdqVPWAuaXUsiVUZEKQt++TBVsbYEi2g9TFgQCukNaYEeisI5wY2DJh1J6mdo2BXSvQdZIiN755jMAlZ/v7IufCcCjZw5B0OeMW99DXV8bzgmRqwu22NogslEltW9ILiNFvabyEWWPNceDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUTuTtck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08661C43390;
-	Tue, 23 Jan 2024 00:17:46 +0000 (UTC)
+	 MIME-Version; b=JJhtrf7itZD3qrts6gyero1jiQTbFpA9uQiid1VtlBtg4/XgwQlXee1LfqyzY8Vot8Nm2zoA0WXHUsMcfHMsbaRWXoj+fSxt19RftRtp/GljO9vXyUjFlDyUVZLmDJLYU3iQdysvrqILCNB+Zrk0x5XM39szs0Bz8Y8IHQ+XRNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=juBcJiKf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E07D4C433F1;
+	Tue, 23 Jan 2024 00:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969067;
-	bh=0BxysecvMJUz0eJjzO9DKzkzou+3djF2U696aJ9wrxA=;
+	s=korg; t=1705969110;
+	bh=UcoWoxZDHrtr8SUBTliTqDhQiYRPd7fPguPO9SIeBaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iUTuTtckQJoaDTG60+5s8LONosgersHCz2rf5nl58L5QO253b37ayc3XLX6i0iylD
-	 1l7MqXeEyJw8heXDZe99Gx7DBAWuskxtwpUkCuVLWb9pNimcC6zUGFQfXqfciP3qP+
-	 IRBP5GJPXKuHrCuqHcAntY/sk7hqfE8hjgycu/vk=
+	b=juBcJiKfOxQOGkTA+F6V7FAi+cF2HBpacf+Ik1yU4dtJyF9YPv7mSvB8CvLcSar+h
+	 D8Kxe+5Yw2UW/rqD2r5K70gAr9b/wHm0XFOC5+/R6QCprO/ErFnSXDMMu9SASMkP50
+	 ONMP0JWcDiUwIxwr5khOWyVmlfBul2zAeZLjtqWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@redhat.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Xuefeng Li <lixuefeng@loongson.cn>
-Subject: [PATCH 5.4 194/194] perf top: Skip side-band event setup if HAVE_LIBBPF_SUPPORT is not set
-Date: Mon, 22 Jan 2024 15:58:44 -0800
-Message-ID: <20240122235727.540585480@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 003/641] EDAC/thunderx: Fix possible out-of-bounds string access
+Date: Mon, 22 Jan 2024 15:48:27 -0800
+Message-ID: <20240122235818.204775343@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,99 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 0c5f1acc2a14416bf30023f373558d369afdbfc8 upstream.
+[ Upstream commit 475c58e1a471e9b873e3e39958c64a2d278275c8 ]
 
-When I execute 'perf top' without HAVE_LIBBPF_SUPPORT, there exists the
-following segmentation fault, skip the side-band event setup to fix it,
-this is similar with commit 1101c872c8c7 ("perf record: Skip side-band
-event setup if HAVE_LIBBPF_SUPPORT is not set").
+Enabling -Wstringop-overflow globally exposes a warning for a common bug
+in the usage of strncat():
 
-  [yangtiezhu@linux perf]$ ./perf top
-  <SNIP>
-  perf: Segmentation fault
-  Obtained 6 stack frames.
-  ./perf(sighandler_dump_stack+0x5c) [0x12011b604]
-  [0xffffffc010]
-  ./perf(perf_mmap__read_init+0x3e) [0x1201feeae]
-  ./perf() [0x1200d715c]
-  /lib64/libpthread.so.0(+0xab9c) [0xffee10ab9c]
-  /lib64/libc.so.6(+0x128f4c) [0xffedc08f4c]
-  Segmentation fault
-  [yangtiezhu@linux perf]$
+  drivers/edac/thunderx_edac.c: In function 'thunderx_ocx_com_threaded_isr':
+  drivers/edac/thunderx_edac.c:1136:17: error: 'strncat' specified bound 1024 equals destination size [-Werror=stringop-overflow=]
+   1136 |                 strncat(msg, other, OCX_MESSAGE_SIZE);
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   ...
+   1145 |                                 strncat(msg, other, OCX_MESSAGE_SIZE);
+   ...
+   1150 |                                 strncat(msg, other, OCX_MESSAGE_SIZE);
 
-I use git bisect to find commit b38d85ef49cf ("perf bpf: Decouple
-creating the evlist from adding the SB event") is the first bad commit,
-so also add the Fixes tag.
+   ...
 
-Committer testing:
+Apparently the author of this driver expected strncat() to behave the
+way that strlcat() does, which uses the size of the destination buffer
+as its third argument rather than the length of the source buffer. The
+result is that there is no check on the size of the allocated buffer.
 
-First build perf explicitely disabling libbpf:
+Change it to strlcat().
 
-  $ make NO_LIBBPF=1 O=/tmp/build/perf -C tools/perf install-bin && perf test python
+  [ bp: Trim compiler output, fixup commit message. ]
 
-Now make sure it isn't linked:
-
-  $ perf -vv | grep -w bpf
-                   bpf: [ OFF ]  # HAVE_LIBBPF_SUPPORT
-  $
-  $ nm ~/bin/perf | grep libbpf
-  $
-
-And now try to run 'perf top':
-
-  # perf top
-  perf: Segmentation fault
-  -------- backtrace --------
-  perf[0x5bcd6d]
-  /lib64/libc.so.6(+0x3ca6f)[0x7fd0f5a66a6f]
-  perf(perf_mmap__read_init+0x1e)[0x5e1afe]
-  perf[0x4cc468]
-  /lib64/libpthread.so.0(+0x9431)[0x7fd0f645a431]
-  /lib64/libc.so.6(clone+0x42)[0x7fd0f5b2b912]
-  #
-
-Applying this patch fixes the issue.
-
-Fixes: b38d85ef49cf ("perf bpf: Decouple creating the evlist from adding the SB event")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Xuefeng Li <lixuefeng@loongson.cn>
-Link: http://lore.kernel.org/lkml/1597753837-16222-1-git-send-email-yangtiezhu@loongson.cn
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 41003396f932 ("EDAC, thunderx: Add Cavium ThunderX EDAC driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20231122222007.3199885-1-arnd@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-top.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/edac/thunderx_edac.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/tools/perf/builtin-top.c
-+++ b/tools/perf/builtin-top.c
-@@ -1682,6 +1682,7 @@ int cmd_top(int argc, const char **argv)
- 		goto out_delete_evlist;
- 	}
+diff --git a/drivers/edac/thunderx_edac.c b/drivers/edac/thunderx_edac.c
+index b9c5772da959..90d46e5c4ff0 100644
+--- a/drivers/edac/thunderx_edac.c
++++ b/drivers/edac/thunderx_edac.c
+@@ -1133,7 +1133,7 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(int irq, void *irq_id)
+ 		decode_register(other, OCX_OTHER_SIZE,
+ 				ocx_com_errors, ctx->reg_com_int);
  
-+#ifdef HAVE_LIBBPF_SUPPORT
- 	if (!top.record_opts.no_bpf_event) {
- 		top.sb_evlist = evlist__new();
+-		strncat(msg, other, OCX_MESSAGE_SIZE);
++		strlcat(msg, other, OCX_MESSAGE_SIZE);
  
-@@ -1695,6 +1696,7 @@ int cmd_top(int argc, const char **argv)
- 			goto out_delete_evlist;
- 		}
- 	}
-+#endif
+ 		for (lane = 0; lane < OCX_RX_LANES; lane++)
+ 			if (ctx->reg_com_int & BIT(lane)) {
+@@ -1142,12 +1142,12 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(int irq, void *irq_id)
+ 					 lane, ctx->reg_lane_int[lane],
+ 					 lane, ctx->reg_lane_stat11[lane]);
  
- 	if (perf_evlist__start_sb_thread(top.sb_evlist, target)) {
- 		pr_debug("Couldn't start the BPF side band thread:\nBPF programs starting from now on won't be annotatable\n");
+-				strncat(msg, other, OCX_MESSAGE_SIZE);
++				strlcat(msg, other, OCX_MESSAGE_SIZE);
+ 
+ 				decode_register(other, OCX_OTHER_SIZE,
+ 						ocx_lane_errors,
+ 						ctx->reg_lane_int[lane]);
+-				strncat(msg, other, OCX_MESSAGE_SIZE);
++				strlcat(msg, other, OCX_MESSAGE_SIZE);
+ 			}
+ 
+ 		if (ctx->reg_com_int & OCX_COM_INT_CE)
+@@ -1217,7 +1217,7 @@ static irqreturn_t thunderx_ocx_lnk_threaded_isr(int irq, void *irq_id)
+ 		decode_register(other, OCX_OTHER_SIZE,
+ 				ocx_com_link_errors, ctx->reg_com_link_int);
+ 
+-		strncat(msg, other, OCX_MESSAGE_SIZE);
++		strlcat(msg, other, OCX_MESSAGE_SIZE);
+ 
+ 		if (ctx->reg_com_link_int & OCX_COM_LINK_INT_UE)
+ 			edac_device_handle_ue(ocx->edac_dev, 0, 0, msg);
+@@ -1896,7 +1896,7 @@ static irqreturn_t thunderx_l2c_threaded_isr(int irq, void *irq_id)
+ 
+ 		decode_register(other, L2C_OTHER_SIZE, l2_errors, ctx->reg_int);
+ 
+-		strncat(msg, other, L2C_MESSAGE_SIZE);
++		strlcat(msg, other, L2C_MESSAGE_SIZE);
+ 
+ 		if (ctx->reg_int & mask_ue)
+ 			edac_device_handle_ue(l2c->edac_dev, 0, 0, msg);
+-- 
+2.43.0
+
 
 
 
