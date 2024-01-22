@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A3748384A6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C2AA838230
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A60D1B259FB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45CE11F2501D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF546D1D8;
-	Tue, 23 Jan 2024 02:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15E958AD4;
+	Tue, 23 Jan 2024 01:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2aMU35N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gA72h0Td"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEEF6BB56;
-	Tue, 23 Jan 2024 02:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFEA58AD2;
+	Tue, 23 Jan 2024 01:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975390; cv=none; b=RtSVooZgTdE6NLi0D8zhTS5dIA2HLNVKdAGsFygNxk2B0i5C5g7LvyE+2sXYBmiHDN/o0tj+l8hbnxb75/lo8/o1UzTa2DU1mk/DrRwRuP+lt0XuQ2Y30kT5kKXvOAeMBAq5rfAI5MHjIdmMwWf/BX87nc1Ae5+4El0uI4ba17o=
+	t=1705974088; cv=none; b=Ccpc8VOYVwUEnnKv99Ea3NXQiRPeLn4Fsi7LHj3BaaikFuzyslQu3R+bAs+VWlwV/dLngUerfYvD+Fyw3T8pdGTQkS3tds1ta35lI7b6bRWLOrOEKnjcWUq7BX4VPvNCUjy5A3X8bGQOPgk1s6cre9S/9M/C4aCc1+h/zDMXtDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975390; c=relaxed/simple;
-	bh=oE46ogXbzCGExEnS1Rr9T3UloIPdyLt4Y+7xein2BdU=;
+	s=arc-20240116; t=1705974088; c=relaxed/simple;
+	bh=xn7a7C4SC3tT9QLuiNkv92T5npghZuuypjXdYPt/6gU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tOoQVBxxt9/clir/7vvjXc3M/RQ1N0w7QPDpqa/FfDzYYqcoC6X3s6fWRtou/tDHwjBoVaN0Xg0seHesH3peefNGZhLk5DrYqO71yqbPERJI7GRAASJptWJwVoaugeaGAHouPn5epTYVACXoFWbPyDp8cbD14xMWS6Hkm7mGhyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2aMU35N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C550FC433A6;
-	Tue, 23 Jan 2024 02:03:09 +0000 (UTC)
+	 MIME-Version; b=OqBuEc3U9PuV5h70pN5TsRF0HGr8DrwfTp2XjKbENlT1RBZEEh6K0Y05H6wmqc1BjLkEkUQ9mEThItXvWDTLyVf9zTuvRUFPFii1aJM1wXP3K822pyRm2soEgeesZhmbbK8VnOdWHFKtKeI7SwUstbhDu7Qg4uM+7jrPw7cVI5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gA72h0Td; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463F9C43399;
+	Tue, 23 Jan 2024 01:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975389;
-	bh=oE46ogXbzCGExEnS1Rr9T3UloIPdyLt4Y+7xein2BdU=;
+	s=korg; t=1705974087;
+	bh=xn7a7C4SC3tT9QLuiNkv92T5npghZuuypjXdYPt/6gU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2aMU35Nc6TZodlbFBofN0kucjXGwcUDM/G2AVlG6adahOW/yj1GlNh2B2tuEYMd4
-	 tVs1WElllra0G4g59e1dP47yJ+y2mP8jTc9Y+P8KXBWHMje8Faq0TNJ6yMep6CYvzj
-	 pIcHrIjiNlc0jrWeFJOSQEw9phd0bBfp08KDhDDc=
+	b=gA72h0TdapklBYiQOPzRVOPoHDrOJf7ES3IHPyPI9nPnY3obibOnIj2pIHPSqz8P6
+	 Lpop6TpwyJA3e8585dVg/m38BHTbXXaMOukW0HGvHIRpn3BRPvypfOt/Xec1wI9TQt
+	 4VlaYsToI6cOAXdpp/dqAWuh+mxm6dpCrOaY+UfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Maurer <mmaurer@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.6 350/583] rust: Ignore preserve-most functions
+	Yihang Li <liyihang9@huawei.com>,
+	Xiang Chen <chenxiang66@hisilicon.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 145/374] scsi: hisi_sas: Rollback some operations if FLR failed
 Date: Mon, 22 Jan 2024 15:56:41 -0800
-Message-ID: <20240122235822.731854401@linuxfoundation.org>
+Message-ID: <20240122235749.675446256@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Maurer <mmaurer@google.com>
+From: Yihang Li <liyihang9@huawei.com>
 
-commit bad098d76835c1379e1cf6afc935f8a7e050f83c upstream.
+[ Upstream commit 7ea3e7763c50b20a8bd25cf524ea0c6463de69be ]
 
-Neither bindgen nor Rust know about the preserve-most calling
-convention, and Clang describes it as unstable. Since we aren't using
-functions with this calling convention from Rust, blocklist them.
+We obtain the semaphore and set HISI_SAS_RESETTING_BIT in
+hisi_sas_reset_prepare_v3_hw(), block the scsi host and set
+HISI_SAS_REJECT_CMD_BIT in hisi_sas_controller_reset_prepare(), released
+them in hisi_sas_controller_reset_done(). However, if the HW reset failure
+in FLR results in early return, the semaphore and flag bits will not be
+release.
 
-These functions are only added to the build when list hardening is
-enabled, which is likely why others didn't notice this yet.
+Rollback some operations including clearing flags / releasing semaphore
+when FLR is failed.
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20231031201945.1412345-1-mmaurer@google.com
-[ Used Markdown for consistency with the other comments in the file. ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e5ea48014adc ("scsi: hisi_sas: Implement handlers of PCIe FLR for v3 hw")
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+Link: https://lore.kernel.org/r/1702525516-51258-5-git-send-email-chenxiang66@hisilicon.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/bindgen_parameters |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/rust/bindgen_parameters
-+++ b/rust/bindgen_parameters
-@@ -20,3 +20,7 @@
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index 88af529ab100..4505310c0c3c 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -4948,6 +4948,7 @@ static void hisi_sas_reset_done_v3_hw(struct pci_dev *pdev)
+ {
+ 	struct sas_ha_struct *sha = pci_get_drvdata(pdev);
+ 	struct hisi_hba *hisi_hba = sha->lldd_ha;
++	struct Scsi_Host *shost = hisi_hba->shost;
+ 	struct device *dev = hisi_hba->dev;
+ 	int rc;
  
- # `seccomp`'s comment gets understood as a doctest
- --no-doc-comments
-+
-+# These functions use the `__preserve_most` calling convention, which neither bindgen
-+# nor Rust currently understand, and which Clang currently declares to be unstable.
-+--blocklist-function __list_.*_report
+@@ -4956,6 +4957,10 @@ static void hisi_sas_reset_done_v3_hw(struct pci_dev *pdev)
+ 	rc = hw_init_v3_hw(hisi_hba);
+ 	if (rc) {
+ 		dev_err(dev, "FLR: hw init failed rc=%d\n", rc);
++		clear_bit(HISI_SAS_REJECT_CMD_BIT, &hisi_hba->flags);
++		scsi_unblock_requests(shost);
++		clear_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags);
++		up(&hisi_hba->sem);
+ 		return;
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
