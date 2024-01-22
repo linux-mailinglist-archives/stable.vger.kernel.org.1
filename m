@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-15419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8250C838561
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E46A8383AA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B154B2DEF9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36595294B13
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D532574B;
-	Tue, 23 Jan 2024 02:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD9863508;
+	Tue, 23 Jan 2024 01:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+Y5tQA9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyK6CLa8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220BA811;
-	Tue, 23 Jan 2024 02:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800DA634F8;
+	Tue, 23 Jan 2024 01:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975755; cv=none; b=N8VqufkiG3lX64X7l4RZdSHnrqhp55LTVIy4a+3GLc5NmMAd+PI3gNNeWI4/+R8Ze7SZ7KWuBcTmNr9k+i46XD845XGzQhaIvoggSMmMxI6I1qAjaTzaZcdd3m+hSdJXUfiVbW0fmsCYaIiK2AoJE6V9XEmpXGyXq/MHZGN/sr8=
+	t=1705975034; cv=none; b=uNWxYCHRgvvn1GOabfFGs4ayKaHg0TPWEAYUKTTds8s42bpUUoo9LjgwIPe2+LObn+nJ+0/osWjtph9shFmdxbR9+QrBVkUg6ZcKHd/XW4PMPGmYZjE13iqXgJ8eLLsf2YhXNQeEMmhq4xIj+XVyRM03/ncGhdnVT9t47/3VLSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975755; c=relaxed/simple;
-	bh=G7FmfiFr3TNFy8FNmDiG+qF0/LrsN25G/rPILIyNGUs=;
+	s=arc-20240116; t=1705975034; c=relaxed/simple;
+	bh=JIU0XhtJjoQe0nczUdSZVeG3MVr9mlahzyA5uC0EXTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FinUcKHf9AHjmMQ0ZteK8eecMTpw9oK7itjvJ26DggUiamfHwoDcF+XKbrMfrq8ausWVpFYHUN6F+jY4XvSkk2hyCxXvwMbwV2fq7fExUYWe8JoSSBeYARA3o6b8kLgdngGO1/d1TcgweaVdZ0j0jPdTAUpfSr73LHNrj90jxdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+Y5tQA9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4505C433F1;
-	Tue, 23 Jan 2024 02:09:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K8+fD3ZkrgLvWRAFb7VhK0N3AvHUgtZQK6nxHYqNQBPdfRAbwVqEbyg5UBPnILIXZsiGWS8nqGxLPlUrdKHkkm4cxLPStn0ggX/Dq7Y+Tzj6l252+KlIRvX2xYSkoHZbvfqHwI5gevATT3TeZsWfwt0zayu0Jik0S/WmaWH05dU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DyK6CLa8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05C6C433F1;
+	Tue, 23 Jan 2024 01:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975755;
-	bh=G7FmfiFr3TNFy8FNmDiG+qF0/LrsN25G/rPILIyNGUs=;
+	s=korg; t=1705975033;
+	bh=JIU0XhtJjoQe0nczUdSZVeG3MVr9mlahzyA5uC0EXTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+Y5tQA9kNvgZdSaSibID8/ckOEl0bn4Mh+vnpk5xBObg4zCamBFindTIug8+bUTR
-	 tlBBOt9EN7vYZazybn2O6ipXNZ/0fD5kovnj4VNLK2xx5VBZgnQLRxUsipGW/1s07x
-	 zSL9kwSKm83w8jIJXfafVudOdARwxatfOLYljQg4=
+	b=DyK6CLa8FLdUbohhNmBjh5o/ODaeVODkbPhzOVt/weXT9Z7GmQTV6Z/rUEg2QZ/6T
+	 JLx6vG4wnBfDlUUIOGnL2KL7CXUsOimcx1UXbj6jxqxZNxEYUKrxRKpLnWDHCynQqx
+	 ZrOtmDp0YN1cyBnR9oqrtKUHoEFJMC1Auedvtssc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sneh Shah <quic_snehshah@quicinc.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	Andrew Halaney <ahalaney@redhat.com>
-Subject: [PATCH 6.6 538/583] net: stmmac: Fix ethool link settings ops for integrated PCS
+	Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 333/374] net: ethernet: ti: am65-cpsw: Fix max mtu to fit ethernet frames
 Date: Mon, 22 Jan 2024 15:59:49 -0800
-Message-ID: <20240122235828.581138548@linuxfoundation.org>
+Message-ID: <20240122235756.485917015@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sneh Shah <quic_snehshah@quicinc.com>
+From: Sanjuán García, Jorge <Jorge.SanjuanGarcia@duagon.com>
 
-[ Upstream commit 08300adac3b8dab9e2fd3be0155c7d3093c755f4 ]
+[ Upstream commit 64e47d8afb5ca533b27efc006405e5bcae2c4a7b ]
 
-Currently get/set_link_ksettings ethtool ops are dependent on PCS.
-When PCS is integrated, it will not have separate link config.
-Bypass configuring and checking PCS for integrated PCS.
+The value of AM65_CPSW_MAX_PACKET_SIZE represents the maximum length
+of a received frame. This value is written to the register
+AM65_CPSW_PORT_REG_RX_MAXLEN.
 
-Fixes: aa571b6275fb ("net: stmmac: add new switch to struct plat_stmmacenet_data")
-Tested-by: Andrew Halaney <ahalaney@redhat.com> # sa8775p-ride
-Signed-off-by: Sneh Shah <quic_snehshah@quicinc.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The maximum MTU configured on the network device should then leave
+some room for the ethernet headers and frame check. Otherwise, if
+the network interface is configured to its maximum mtu possible,
+the frames will be larger than AM65_CPSW_MAX_PACKET_SIZE and will
+get dropped as oversized.
+
+The switch supports ethernet frame sizes between 64 and 2024 bytes
+(including VLAN) as stated in the technical reference manual, so
+define AM65_CPSW_MAX_PACKET_SIZE with that maximum size.
+
+Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://lore.kernel.org/r/20240105085530.14070-2-jorge.sanjuangarcia@duagon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-index aea5f898ebf4..419efe43951e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-@@ -311,8 +311,9 @@ static int stmmac_ethtool_get_link_ksettings(struct net_device *dev,
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 4aa9477ac597..1fa6f0dacd2d 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -53,7 +53,7 @@
+ #define AM65_CPSW_MAX_PORTS	8
  
--	if (priv->hw->pcs & STMMAC_PCS_RGMII ||
--	    priv->hw->pcs & STMMAC_PCS_SGMII) {
-+	if (!(priv->plat->flags & STMMAC_FLAG_HAS_INTEGRATED_PCS) &&
-+	    (priv->hw->pcs & STMMAC_PCS_RGMII ||
-+	     priv->hw->pcs & STMMAC_PCS_SGMII)) {
- 		struct rgmii_adv adv;
- 		u32 supported, advertising, lp_advertising;
+ #define AM65_CPSW_MIN_PACKET_SIZE	VLAN_ETH_ZLEN
+-#define AM65_CPSW_MAX_PACKET_SIZE	(VLAN_ETH_FRAME_LEN + ETH_FCS_LEN)
++#define AM65_CPSW_MAX_PACKET_SIZE	2024
  
-@@ -397,8 +398,9 @@ stmmac_ethtool_set_link_ksettings(struct net_device *dev,
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
+ #define AM65_CPSW_REG_CTL		0x004
+ #define AM65_CPSW_REG_STAT_PORT_EN	0x014
+@@ -1985,7 +1985,8 @@ am65_cpsw_nuss_init_port_ndev(struct am65_cpsw_common *common, u32 port_idx)
+ 	eth_hw_addr_set(port->ndev, port->slave.mac_addr);
  
--	if (priv->hw->pcs & STMMAC_PCS_RGMII ||
--	    priv->hw->pcs & STMMAC_PCS_SGMII) {
-+	if (!(priv->plat->flags & STMMAC_FLAG_HAS_INTEGRATED_PCS) &&
-+	    (priv->hw->pcs & STMMAC_PCS_RGMII ||
-+	     priv->hw->pcs & STMMAC_PCS_SGMII)) {
- 		/* Only support ANE */
- 		if (cmd->base.autoneg != AUTONEG_ENABLE)
- 			return -EINVAL;
+ 	port->ndev->min_mtu = AM65_CPSW_MIN_PACKET_SIZE;
+-	port->ndev->max_mtu = AM65_CPSW_MAX_PACKET_SIZE;
++	port->ndev->max_mtu = AM65_CPSW_MAX_PACKET_SIZE -
++			      (VLAN_ETH_HLEN + ETH_FCS_LEN);
+ 	port->ndev->hw_features = NETIF_F_SG |
+ 				  NETIF_F_RXCSUM |
+ 				  NETIF_F_HW_CSUM |
 -- 
 2.43.0
 
