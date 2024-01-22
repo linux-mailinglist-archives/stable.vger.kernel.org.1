@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-12963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A28B837A00
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE2E837AA8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D5FA1C28248
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:48:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8E7D1F243C0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BED12839F;
-	Tue, 23 Jan 2024 00:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA08512FF8C;
+	Tue, 23 Jan 2024 00:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2CpEitRN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oDdSR4E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A5F27456;
-	Tue, 23 Jan 2024 00:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999F312F5A7;
+	Tue, 23 Jan 2024 00:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968699; cv=none; b=kTmtkrYWF4ji2ra98pvQMnPSpPlAu0Z8gSLPOqLZXpd6t0B2OFDMIKR1AL0vlM2tjtB41dus9slupM2F5Og6FtcXxwV4RLWuMmpxTwDbk8e6SQJ5wou6BKzQghvqA43YV/7tkwarnLmouKMxOg5Sd4BGFYpmI/OCmoJot6BEswo=
+	t=1705969040; cv=none; b=keI9MH2gGt8cIq179tJta4vJmuAKiX3f0E+pwKyPJsc+BcEAm8QntTVl2FlUPkN4t8geJXLRltbtpWtPyWPhy2Nlw2IqSBBnzlF+rngzCmVpDJK0CY4XnjGBTRecsV4KJ8fpjyVIWCewXtJIjcQn85GVk5oC822HiP1S8KEYbWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968699; c=relaxed/simple;
-	bh=KmmyPVdnqknwd200f15r45DvozXxj0oj2bn5wNgpEWM=;
+	s=arc-20240116; t=1705969040; c=relaxed/simple;
+	bh=jp9j6qBgtIkMcTuxE0QwCtTvwdQJNcdHnTS4ujV9ln0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k2pBHnJC5/6FHZMGqmK3Ck4KnM9YVeHTGCUxKqK5HwQC+XDEkNAVyx9m5J1HBo+18BYqWgcZy8igj+jbCK7vrWUrpqtfFa5CPakCzVBKkwmGIjLYI7z5+Or7uZ+a5b/baFxCyuTMJEfOXJR3T1k7+2ZBRwpG8pIAGfZeJ0NYetg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2CpEitRN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87667C433F1;
-	Tue, 23 Jan 2024 00:11:39 +0000 (UTC)
+	 MIME-Version; b=IgyRIUCAOTrUhmKfOv4TcioYSXSOs98omco54x0JEWuH2cHWDqkZV7kTdK8MW74UFpXZtr+drHI+Nc0KPxSwn3WVYJBy6BYNwMfmJHF4FCH0HhT11z6mUUy/vlYmemZn1CzydlfOeD27lv3eCLr1MO8lJVeDa6l/EvwuHElOWB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oDdSR4E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F5C4C433F1;
+	Tue, 23 Jan 2024 00:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968699;
-	bh=KmmyPVdnqknwd200f15r45DvozXxj0oj2bn5wNgpEWM=;
+	s=korg; t=1705969040;
+	bh=jp9j6qBgtIkMcTuxE0QwCtTvwdQJNcdHnTS4ujV9ln0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2CpEitRNk/SpcVOPJi2nNmT5yMQf1qELRK40yBxO++oAXDLrFPvroDq8I3jrBdVsl
-	 NNxCZBGc0e4v7kIDtHXgaJdq8jjBi9H94jtlwRZJxQLd09dcdPY07cvqXyiETbcikI
-	 a5OPP90kIdwkV9MLwzeOcTT4XtRbTyEnddMjaIJQ=
+	b=0oDdSR4E97QBVEH+kFMIb8b1veKnTFPltbYYePMZzq3KPkI/X2FNWiIt4GUhIw1dg
+	 R5dLwnX3PZC3KgTEKEob7J1mruLk90vP1+iU4J3XI676e6qvXUncesi22pcnxCFzJH
+	 B23+cHZYA04XvXYHYDt1XDpRpN+vUldauu2EL4Gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 4.19 148/148] crypto: scompress - initialize per-CPU variables on each CPU
-Date: Mon, 22 Jan 2024 15:58:24 -0800
-Message-ID: <20240122235718.618961241@linuxfoundation.org>
+	Jiri Olsa <jolsa@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Song Liu <songliubraving@fb.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 175/194] perf top: Move sb_evlist to struct perf_top
+Date: Mon, 22 Jan 2024 15:58:25 -0800
+Message-ID: <20240122235726.722918189@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-commit 8c3fffe3993b06dd1955a79bd2f0f3b143d259b3 upstream.
+[ Upstream commit ca6c9c8b107f9788662117587cd24bbb19cea94d ]
 
-In commit 71052dcf4be70 ("crypto: scompress - Use per-CPU struct instead
-multiple variables") I accidentally initialized multiple times the memory on a
-random CPU. I should have initialize the memory on every CPU like it has
-been done earlier. I didn't notice this because the scheduler didn't
-move the task to another CPU.
-Guenter managed to do that and the code crashed as expected.
+Where state related to a 'perf top' session is grouped.
 
-Allocate / free per-CPU memory on each CPU.
-
-Fixes: 71052dcf4be70 ("crypto: scompress - Use per-CPU struct instead multiple variables")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Jiri Olsa <jolsa@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Song Liu <songliubraving@fb.com>
+Link: http://lore.kernel.org/lkml/20200429131106.27974-3-acme@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 9c51f8788b5d ("perf env: Avoid recursively taking env->bpf_progs.lock")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/scompress.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/builtin-top.c | 7 +++----
+ tools/perf/util/top.h    | 2 +-
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
---- a/crypto/scompress.c
-+++ b/crypto/scompress.c
-@@ -79,7 +79,7 @@ static void crypto_scomp_free_scratches(
- 	int i;
+diff --git a/tools/perf/builtin-top.c b/tools/perf/builtin-top.c
+index b83a861fab2e..d83954f75557 100644
+--- a/tools/perf/builtin-top.c
++++ b/tools/perf/builtin-top.c
+@@ -1542,7 +1542,6 @@ int cmd_top(int argc, const char **argv)
+ 	OPTS_EVSWITCH(&top.evswitch),
+ 	OPT_END()
+ 	};
+-	struct evlist *sb_evlist = NULL;
+ 	const char * const top_usage[] = {
+ 		"perf top [<options>]",
+ 		NULL
+@@ -1684,9 +1683,9 @@ int cmd_top(int argc, const char **argv)
+ 	}
  
- 	for_each_possible_cpu(i) {
--		scratch = raw_cpu_ptr(&scomp_scratch);
-+		scratch = per_cpu_ptr(&scomp_scratch, i);
+ 	if (!top.record_opts.no_bpf_event)
+-		bpf_event__add_sb_event(&sb_evlist, &perf_env);
++		bpf_event__add_sb_event(&top.sb_evlist, &perf_env);
  
- 		vfree(scratch->src);
- 		vfree(scratch->dst);
-@@ -96,7 +96,7 @@ static int crypto_scomp_alloc_scratches(
- 	for_each_possible_cpu(i) {
- 		void *mem;
+-	if (perf_evlist__start_sb_thread(sb_evlist, target)) {
++	if (perf_evlist__start_sb_thread(top.sb_evlist, target)) {
+ 		pr_debug("Couldn't start the BPF side band thread:\nBPF programs starting from now on won't be annotatable\n");
+ 		opts->no_bpf_event = true;
+ 	}
+@@ -1694,7 +1693,7 @@ int cmd_top(int argc, const char **argv)
+ 	status = __cmd_top(&top);
  
--		scratch = raw_cpu_ptr(&scomp_scratch);
-+		scratch = per_cpu_ptr(&scomp_scratch, i);
+ 	if (!opts->no_bpf_event)
+-		perf_evlist__stop_sb_thread(sb_evlist);
++		perf_evlist__stop_sb_thread(top.sb_evlist);
  
- 		mem = vmalloc_node(SCOMP_SCRATCH_SIZE, cpu_to_node(i));
- 		if (!mem)
+ out_delete_evlist:
+ 	evlist__delete(top.evlist);
+diff --git a/tools/perf/util/top.h b/tools/perf/util/top.h
+index f117d4f4821e..7bea36a61645 100644
+--- a/tools/perf/util/top.h
++++ b/tools/perf/util/top.h
+@@ -18,7 +18,7 @@ struct perf_session;
+ 
+ struct perf_top {
+ 	struct perf_tool   tool;
+-	struct evlist *evlist;
++	struct evlist *evlist, *sb_evlist;
+ 	struct record_opts record_opts;
+ 	struct annotation_options annotation_opts;
+ 	struct evswitch	   evswitch;
+-- 
+2.43.0
+
 
 
 
