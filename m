@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-14802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5373C838380
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E03F8837CD5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:19:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 017A7B2AD9B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30916B2177A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3965DF33;
-	Tue, 23 Jan 2024 01:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52934132C11;
+	Tue, 23 Jan 2024 00:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8cx2E0Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tY4AQHQT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3055DF2F;
-	Tue, 23 Jan 2024 01:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A45131741;
+	Tue, 23 Jan 2024 00:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974399; cv=none; b=QZpzngyyanNrkccwqrw8zQi2096CCYpg7rYiwcgj0visCIc4+pfEP25pNEK2AluUPQuHfGq4tbF/UsY3zgLJNZDivHFpNfB9OLI+xmUAy8qrHBtnQxW6vGOUaInH+rS4BrcWJOzr3nIhKZzY3nyG0pDrt3LQ38abOp/pYy3mjE4=
+	t=1705969419; cv=none; b=dOsrL5mB4SrhVXlRulbZPp3KQtK5icpKwjE3fckG8hqMYWe8nIP9HQJUG6cn89yXIooNsuQnf8onHyo2KPH2Bc8YUB27Ezvrh6MzLQ3SkoYWRcbDzEC3cNBsIa5GLKvpnTBIC+hCy7TkXav6UpDvjn8Te5WvWSYdIibLVra02E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974399; c=relaxed/simple;
-	bh=9plvsaCSy508dlM/BMjAuVJ7zdwVy8j2V7r4wqcjcG4=;
+	s=arc-20240116; t=1705969419; c=relaxed/simple;
+	bh=MrGB/PxYrKLjdWnbZdYS0Um86Ot/uI7Mzzz+7yYyu4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=djXPV1Oq3XaWMYE6unBmU3nmwsiEC1heDDjdnH4R86PPUu2BVo6CKh3TnGtcFqHU8Zapz5JrIL+H9IKLPnU7BxNGMkcTX6AOrJoZ02a0Tp7jpkvSwEixjQ9414ACX7A77PmoU/G8gzJSZD6XSnX+3NlryuWnJIByIXQ1l34G0r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8cx2E0Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23814C43390;
-	Tue, 23 Jan 2024 01:46:39 +0000 (UTC)
+	 MIME-Version; b=mMWc4c5eC9QRIz/OTbr3Ff/mI9905cqFN6O97IxRWgGmQDJZY6kHiMYlLPnz+bno4QweqBjdDWOpl7MEeFMUjmLgXaUSZv8XfDT+Di9LE3psZpp9lrnIYF8v/mPT0VFtZxXdpdh8Mo5kxYbIAt2JLivwwaA5wQISPfdkh4x1+oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tY4AQHQT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A10EC433B1;
+	Tue, 23 Jan 2024 00:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974399;
-	bh=9plvsaCSy508dlM/BMjAuVJ7zdwVy8j2V7r4wqcjcG4=;
+	s=korg; t=1705969418;
+	bh=MrGB/PxYrKLjdWnbZdYS0Um86Ot/uI7Mzzz+7yYyu4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U8cx2E0Q0H4T+v4hBYZJEHY0JP6kjKMfERkOHJdWYXR26X6xKgMx5V29r6TsvXKLZ
-	 I/xKTLLpstdVyHCH1uajj4Icz8SUYnxnkJMiTj/VlJ9XA3fK+Hx1UsbhCdShd1gk5L
-	 UAuQV1Fdwp1/bKLiqjQ5OQUg5G4wFlcFsB3j9id0=
+	b=tY4AQHQTp+Z4JP1mY15gpyzVFcxTSQL5nNxUJCJw7WAEakPE5irpY1y6UX/oExuYS
+	 Es/drA4BvD9JOqGOC+EsUWXY1e/4ZUrVjwHc0b0+XCTFGjc92m07xAK3im+Xb1LU2m
+	 hTS04369eqTAh6xqopIuB3fI3WpeNzzUTEPPtkik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca@z3ntu.xyz>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jacob Moroni <jmoroni@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/583] ARM: dts: qcom: msm8226: provide dsi phy clocks to mmcc
-Date: Mon, 22 Jan 2024 15:52:16 -0800
-Message-ID: <20240122235814.765296981@linuxfoundation.org>
+Subject: [PATCH 6.7 233/641] sctp: fix busy polling
+Date: Mon, 22 Jan 2024 15:52:17 -0800
+Message-ID: <20240122235825.215196554@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca@z3ntu.xyz>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 836d083524888069cd358776a4e6c4ceec04962e ]
+[ Upstream commit a562c0a2d651e040681b0bfce9b4d229ac3b0b8c ]
 
-Some mmcc clocks have dsi0pll & dsi0pllbyte as clock parents so we
-should provide them in the dt, which I missed in the commit adding the
-mdss nodes.
+Busy polling while holding the socket lock makes litle sense,
+because incoming packets wont reach our receive queue.
 
-Fixes: d5fb01ad5eb4 ("ARM: dts: qcom: msm8226: Add mdss nodes")
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230712-msm8226-dsi-clock-fixup-v1-1-71010b0b89ca@z3ntu.xyz
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 8465a5fcd1ce ("sctp: add support for busy polling to sctp protocol")
+Reported-by: Jacob Moroni <jmoroni@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Cc: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom/qcom-msm8226.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sctp/socket.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
-index 44f3f0127fd7..78738371f634 100644
---- a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
-@@ -404,8 +404,8 @@ mmcc: clock-controller@fd8c0000 {
- 				 <&gcc GPLL0_VOTE>,
- 				 <&gcc GPLL1_VOTE>,
- 				 <&rpmcc RPM_SMD_GFX3D_CLK_SRC>,
--				 <0>,
--				 <0>;
-+				 <&mdss_dsi0_phy 1>,
-+				 <&mdss_dsi0_phy 0>;
- 			clock-names = "xo",
- 				      "mmss_gpll0_vote",
- 				      "gpll0_vote",
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 5fb02bbb4b34..6b9fcdb0952a 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -2102,6 +2102,10 @@ static int sctp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	if (unlikely(flags & MSG_ERRQUEUE))
+ 		return inet_recv_error(sk, msg, len, addr_len);
+ 
++	if (sk_can_busy_loop(sk) &&
++	    skb_queue_empty_lockless(&sk->sk_receive_queue))
++		sk_busy_loop(sk, flags & MSG_DONTWAIT);
++
+ 	lock_sock(sk);
+ 
+ 	if (sctp_style(sk, TCP) && !sctp_sstate(sk, ESTABLISHED) &&
+@@ -9046,12 +9050,6 @@ struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags, int *err)
+ 		if (sk->sk_shutdown & RCV_SHUTDOWN)
+ 			break;
+ 
+-		if (sk_can_busy_loop(sk)) {
+-			sk_busy_loop(sk, flags & MSG_DONTWAIT);
+-
+-			if (!skb_queue_empty_lockless(&sk->sk_receive_queue))
+-				continue;
+-		}
+ 
+ 		/* User doesn't want to wait.  */
+ 		error = -EAGAIN;
 -- 
 2.43.0
 
