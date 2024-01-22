@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9630E837E74
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 406D8838333
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCC261C28F23
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4D9D28B653
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FA713A263;
-	Tue, 23 Jan 2024 00:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CDB60B84;
+	Tue, 23 Jan 2024 01:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0oqxMag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SY2899yE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7325E54BD2;
-	Tue, 23 Jan 2024 00:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3976C4E1CC;
+	Tue, 23 Jan 2024 01:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970596; cv=none; b=h5+fZHmcVYejYek2IeuVEfV5XeJmB2OI86JPlRPz/pvcv+ONqkTiz4q7Jr3hK1cGVhF7iRm8iWCdq7aSZbd+C/tD7y9uTyGdL0gm34amH5dM0pQyjyvjLTxahDeBnPGoUOcIYvTzWZz5qza94o+QLEjMd8nq+wfR2B3W67va0iE=
+	t=1705974734; cv=none; b=hJaCLgrQ7HtnVpqjVZjaq/B880XMj6lSGw/zZDv+pkiLAtTYMx2j1DpIqzbrRIW11vCFfhKq9BXBN5cRiZrA3xNE2yDhtvipFrccRUL/HM0oi1WN85c6eB4T/bJlu3TZUIM7p0vO2x5q2gSBH9PLUyt/pNUtKZOLrQXUeP6FTbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970596; c=relaxed/simple;
-	bh=AU6dsrJE8sc+pnzP3lEEGtx7nwpjyAsWyOVVyz/gFdM=;
+	s=arc-20240116; t=1705974734; c=relaxed/simple;
+	bh=dvAIVtDxnXNb0Pom64tRPUKGrv0xuZNAWbxFgkV/Dq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BsFIAl4g4RM8MFYSrb4P4JRJhp9AVpot09iQEqKrPq8VT/qPU0LRbkudLoYy94qzWeULnTVIEk1IuJCBcnXJu68ipJy8vdBcoYVUc6NSVe4ShdITPiUAQJw0ZVlAB9bhxsbm4780tVtGijmdEbX8608f/FoJgo2jxtKfpBKOHXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0oqxMag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48D5C433C7;
-	Tue, 23 Jan 2024 00:43:15 +0000 (UTC)
+	 MIME-Version; b=A+iMteaFpUA9yo/mHcLtIzNd5YtsSKvK/o60JOKif2vCl0YBcK3UqCACipiKm3W74HHR52dUHIFYZsqT87zBzQiJ4ZuzMI7M/Qm7sGSalXStsD9hZ4W0uGplmZolkvBDWxdZP/tf6xCXzu9Sx31/u4EunSEGJgX6fWM8Ca9Zs10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SY2899yE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF09AC433C7;
+	Tue, 23 Jan 2024 01:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970596;
-	bh=AU6dsrJE8sc+pnzP3lEEGtx7nwpjyAsWyOVVyz/gFdM=;
+	s=korg; t=1705974734;
+	bh=dvAIVtDxnXNb0Pom64tRPUKGrv0xuZNAWbxFgkV/Dq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0oqxMagaFJTC64cH2Q1uabZkiYlPobgRS6qsaoUO+SM/eaF9A6/raRKvDvX81Lb7
-	 Sjm7v96q7T1fwKctgqYtFqf+Qm9QfzM4+5E3eiWsiFgf/SM34Jy/YrIuAswE/DzyVX
-	 ML3uyrzPoHwz27ePyy+xrE7e6EclVKHNwG2KapzQ=
+	b=SY2899yEagOKxpDFQdMBJYgoUzaWjkGotPQPUjQd+IyWSgJBbqbwdGW9bzNa9merq
+	 Kt+veHBUNBiRzBLvqMPQKDW4oKhYROMCfjDcnQgLQ53XNpcFyjqfwSnA6dVI+GRipb
+	 Jg8USGy8eo+1HXWXNmvfFkLiyPrZLIOeFvk9MEVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Rae Moar <rmoar@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Moudy Ho <moudy.ho@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 031/417] kunit: debugfs: Fix unchecked dereference in debugfs_print_results()
+Subject: [PATCH 6.6 148/583] arm64: dts: mediatek: mt8195: revise VDOSYS RDMA node name
 Date: Mon, 22 Jan 2024 15:53:19 -0800
-Message-ID: <20240122235752.670994222@linuxfoundation.org>
+Message-ID: <20240122235816.609169333@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Moudy Ho <moudy.ho@mediatek.com>
 
-[ Upstream commit 34dfd5bb2e5507e69d9b6d6c90f546600c7a4977 ]
+[ Upstream commit 52f4a10f2a860402c130c5c21d055e721d63a7e9 ]
 
-Move the call to kunit_suite_has_succeeded() after the check that
-the kunit_suite pointer is valid.
+DMA-related nodes have their own standardized naming. Therefore,
+the MT8195 VDOSYS RDMA has been unified and corrected.
+Additionally, these modifications will facilitate the further
+integration of bindings.
 
-This was found by smatch:
-
- lib/kunit/debugfs.c:66 debugfs_print_results() warn: variable
- dereferenced before check 'suite' (see line 63)
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: 38289a26e1b8 ("kunit: fix debugfs code to use enum kunit_status, not bool")
-Reviewed-by: Rae Moar <rmoar@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 92d2c23dc269 ("arm64: dts: mt8195: add display node for vdosys1")
+Signed-off-by: Moudy Ho <moudy.ho@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kunit/debugfs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/lib/kunit/debugfs.c b/lib/kunit/debugfs.c
-index b08bb1fba106..de5e71458358 100644
---- a/lib/kunit/debugfs.c
-+++ b/lib/kunit/debugfs.c
-@@ -52,12 +52,14 @@ static void debugfs_print_result(struct seq_file *seq,
- static int debugfs_print_results(struct seq_file *seq, void *v)
- {
- 	struct kunit_suite *suite = (struct kunit_suite *)seq->private;
--	enum kunit_status success = kunit_suite_has_succeeded(suite);
-+	enum kunit_status success;
- 	struct kunit_case *test_case;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+index e0ac2e9f5b72..6708c4d21abf 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+@@ -2873,7 +2873,7 @@ larb3: larb@1c103000 {
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS1>;
+ 		};
  
- 	if (!suite)
- 		return 0;
+-		vdo1_rdma0: rdma@1c104000 {
++		vdo1_rdma0: dma-controller@1c104000 {
+ 			compatible = "mediatek,mt8195-vdo1-rdma";
+ 			reg = <0 0x1c104000 0 0x1000>;
+ 			interrupts = <GIC_SPI 495 IRQ_TYPE_LEVEL_HIGH 0>;
+@@ -2881,9 +2881,10 @@ vdo1_rdma0: rdma@1c104000 {
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS1>;
+ 			iommus = <&iommu_vdo M4U_PORT_L2_MDP_RDMA0>;
+ 			mediatek,gce-client-reg = <&gce0 SUBSYS_1c10XXXX 0x4000 0x1000>;
++			#dma-cells = <1>;
+ 		};
  
-+	success = kunit_suite_has_succeeded(suite);
-+
- 	/* Print KTAP header so the debugfs log can be parsed as valid KTAP. */
- 	seq_puts(seq, "KTAP version 1\n");
- 	seq_puts(seq, "1..1\n");
+-		vdo1_rdma1: rdma@1c105000 {
++		vdo1_rdma1: dma-controller@1c105000 {
+ 			compatible = "mediatek,mt8195-vdo1-rdma";
+ 			reg = <0 0x1c105000 0 0x1000>;
+ 			interrupts = <GIC_SPI 496 IRQ_TYPE_LEVEL_HIGH 0>;
+@@ -2891,9 +2892,10 @@ vdo1_rdma1: rdma@1c105000 {
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS1>;
+ 			iommus = <&iommu_vpp M4U_PORT_L3_MDP_RDMA1>;
+ 			mediatek,gce-client-reg = <&gce0 SUBSYS_1c10XXXX 0x5000 0x1000>;
++			#dma-cells = <1>;
+ 		};
+ 
+-		vdo1_rdma2: rdma@1c106000 {
++		vdo1_rdma2: dma-controller@1c106000 {
+ 			compatible = "mediatek,mt8195-vdo1-rdma";
+ 			reg = <0 0x1c106000 0 0x1000>;
+ 			interrupts = <GIC_SPI 497 IRQ_TYPE_LEVEL_HIGH 0>;
+@@ -2901,9 +2903,10 @@ vdo1_rdma2: rdma@1c106000 {
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS1>;
+ 			iommus = <&iommu_vdo M4U_PORT_L2_MDP_RDMA2>;
+ 			mediatek,gce-client-reg = <&gce0 SUBSYS_1c10XXXX 0x6000 0x1000>;
++			#dma-cells = <1>;
+ 		};
+ 
+-		vdo1_rdma3: rdma@1c107000 {
++		vdo1_rdma3: dma-controller@1c107000 {
+ 			compatible = "mediatek,mt8195-vdo1-rdma";
+ 			reg = <0 0x1c107000 0 0x1000>;
+ 			interrupts = <GIC_SPI 498 IRQ_TYPE_LEVEL_HIGH 0>;
+@@ -2911,9 +2914,10 @@ vdo1_rdma3: rdma@1c107000 {
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS1>;
+ 			iommus = <&iommu_vpp M4U_PORT_L3_MDP_RDMA3>;
+ 			mediatek,gce-client-reg = <&gce0 SUBSYS_1c10XXXX 0x7000 0x1000>;
++			#dma-cells = <1>;
+ 		};
+ 
+-		vdo1_rdma4: rdma@1c108000 {
++		vdo1_rdma4: dma-controller@1c108000 {
+ 			compatible = "mediatek,mt8195-vdo1-rdma";
+ 			reg = <0 0x1c108000 0 0x1000>;
+ 			interrupts = <GIC_SPI 499 IRQ_TYPE_LEVEL_HIGH 0>;
+@@ -2921,9 +2925,10 @@ vdo1_rdma4: rdma@1c108000 {
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS1>;
+ 			iommus = <&iommu_vdo M4U_PORT_L2_MDP_RDMA4>;
+ 			mediatek,gce-client-reg = <&gce0 SUBSYS_1c10XXXX 0x8000 0x1000>;
++			#dma-cells = <1>;
+ 		};
+ 
+-		vdo1_rdma5: rdma@1c109000 {
++		vdo1_rdma5: dma-controller@1c109000 {
+ 			compatible = "mediatek,mt8195-vdo1-rdma";
+ 			reg = <0 0x1c109000 0 0x1000>;
+ 			interrupts = <GIC_SPI 500 IRQ_TYPE_LEVEL_HIGH 0>;
+@@ -2931,9 +2936,10 @@ vdo1_rdma5: rdma@1c109000 {
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS1>;
+ 			iommus = <&iommu_vpp M4U_PORT_L3_MDP_RDMA5>;
+ 			mediatek,gce-client-reg = <&gce0 SUBSYS_1c10XXXX 0x9000 0x1000>;
++			#dma-cells = <1>;
+ 		};
+ 
+-		vdo1_rdma6: rdma@1c10a000 {
++		vdo1_rdma6: dma-controller@1c10a000 {
+ 			compatible = "mediatek,mt8195-vdo1-rdma";
+ 			reg = <0 0x1c10a000 0 0x1000>;
+ 			interrupts = <GIC_SPI 501 IRQ_TYPE_LEVEL_HIGH 0>;
+@@ -2941,9 +2947,10 @@ vdo1_rdma6: rdma@1c10a000 {
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS1>;
+ 			iommus = <&iommu_vdo M4U_PORT_L2_MDP_RDMA6>;
+ 			mediatek,gce-client-reg = <&gce0 SUBSYS_1c10XXXX 0xa000 0x1000>;
++			#dma-cells = <1>;
+ 		};
+ 
+-		vdo1_rdma7: rdma@1c10b000 {
++		vdo1_rdma7: dma-controller@1c10b000 {
+ 			compatible = "mediatek,mt8195-vdo1-rdma";
+ 			reg = <0 0x1c10b000 0 0x1000>;
+ 			interrupts = <GIC_SPI 502 IRQ_TYPE_LEVEL_HIGH 0>;
+@@ -2951,6 +2958,7 @@ vdo1_rdma7: rdma@1c10b000 {
+ 			power-domains = <&spm MT8195_POWER_DOMAIN_VDOSYS1>;
+ 			iommus = <&iommu_vpp M4U_PORT_L3_MDP_RDMA7>;
+ 			mediatek,gce-client-reg = <&gce0 SUBSYS_1c10XXXX 0xb000 0x1000>;
++			#dma-cells = <1>;
+ 		};
+ 
+ 		merge1: vpp-merge@1c10c000 {
 -- 
 2.43.0
 
