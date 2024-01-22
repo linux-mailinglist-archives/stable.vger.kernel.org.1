@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-14753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6045B83826B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0C658384B1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14AA61F27836
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F1361C22069
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50F25BAE7;
-	Tue, 23 Jan 2024 01:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4EC4745F8;
+	Tue, 23 Jan 2024 02:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFaM5r4v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ethd118l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639755A7B8;
-	Tue, 23 Jan 2024 01:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94047745F2;
+	Tue, 23 Jan 2024 02:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974349; cv=none; b=KhbXthbmRLUhyxMkJeE+MICPVTNoTo5qa9rhd5ZHp2dwb5L4ushfTSWhFITqlrcnU3ls0aRfDZF7HT03rrI4QeJKOVomvxFUgoa6bR/1ZrrQkQ7AD//qY5BFRVp/HtnzkoDObt8Z3PUE4f4kPbGDt5kSQxf4SHd52iY0ugpVP7s=
+	t=1705975459; cv=none; b=X/Ueb4FCcWjheglbZbxcHT/AKTzFpMjbeRNFfExgcEAmN23dS2ixDeoYfb3JV7pkODMcXgPDwMl5J/UHW4eC3Lrh25zmCOSGNYV3T8ENAyxG/9oprXbXp7FxNAtimduF+Vx7nrHj7Avk/b0ikSeR3ig6/6I3ED1v308X2vnjMRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974349; c=relaxed/simple;
-	bh=6SBgCHWrvdlz43g7ab+lcdEPzc5VVlMUZu1pF/e1Jm0=;
+	s=arc-20240116; t=1705975459; c=relaxed/simple;
+	bh=GddwwWqm0IUKPK4DexHPrcYIVr1EnJPaAyeldVgOWEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pu5wevapA+jm8uODSAXdJR+5pahz5Qb3EY/ti7UUtFvwAcGvegC9pRcI2aLxZQiDe37QiWFTeU/FtkMQGNgIsxZxwsQIdndgsigVgLxEjfsHFK8K49NqBARUNZX11OBpAAHsOE2ZSLusoluF6Ko1bjHuE8nq5Sd8EGDyVJjXFAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFaM5r4v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4287C43394;
-	Tue, 23 Jan 2024 01:45:48 +0000 (UTC)
+	 MIME-Version; b=ukubhXZKlMrp3BekX+NsKe8FMDV7Ck0vyOf8UKhu14yv0T1QluXD9QO2tFimcVWRjbK12ni5ERhygPEiQrwg5qNGptZyoNiyTzkQcbMZcUGtwB2QXNab1iX3iudOzWLT3/FoVBGULELq0BE27xi1nJdgrjJIC2BaLZyiMKwGdvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ethd118l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59736C43390;
+	Tue, 23 Jan 2024 02:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974348;
-	bh=6SBgCHWrvdlz43g7ab+lcdEPzc5VVlMUZu1pF/e1Jm0=;
+	s=korg; t=1705975459;
+	bh=GddwwWqm0IUKPK4DexHPrcYIVr1EnJPaAyeldVgOWEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TFaM5r4v7tS2KaJDuV+VE3xAwUjBHDuZqvWMBU7rNSNJIP6r02hoq1YnglHml9w5o
-	 vI5GpHm26yBUKU6DnVU0pb5/GAfsCtvkBXSraG0ap41vB9R9rdWkXGPBaypCui+kgr
-	 024c3Wfe90RbQZ06bTH6KGhx3uy3oC0dEg/AN5nE=
+	b=Ethd118lxDtLdXKaM5TOiKnZREsM90nr/rOypRPJUoa36Aqz5hwx+2ZrTfCcwSXCT
+	 9zhYyiOtqiluEWaZjUbaThIhWVs7/GMHXf+NtRrUxaiRL6zPDFXj5NUxXeD0BpXaCL
+	 Au45Auz5cePxBEXF8sPHGXwBnS0deXMYxoeSkXx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 186/374] f2fs: fix to avoid dirent corruption
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Helge Deller <deller@gmx.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.6 391/583] fbdev/acornfb: Fix name of fb_ops initializer macro
 Date: Mon, 22 Jan 2024 15:57:22 -0800
-Message-ID: <20240122235751.092292114@linuxfoundation.org>
+Message-ID: <20240122235823.948797650@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 53edb549565f55ccd0bdf43be3d66ce4c2d48b28 ]
+commit b48807788e7a2bd93044fe84cfe8ff64b85ec15e upstream.
 
-As Al reported in link[1]:
+Fix build by using the correct name for the initializer macro
+for struct fb_ops.
 
-f2fs_rename()
-...
-	if (old_dir != new_dir && !whiteout)
-		f2fs_set_link(old_inode, old_dir_entry,
-					old_dir_page, new_dir);
-	else
-		f2fs_put_page(old_dir_page, 0);
-
-You want correct inumber in the ".." link.  And cross-directory
-rename does move the source to new parent, even if you'd been asked
-to leave a whiteout in the old place.
-
-[1] https://lore.kernel.org/all/20231017055040.GN800259@ZenIV/
-
-With below testcase, it may cause dirent corruption, due to it missed
-to call f2fs_set_link() to update ".." link to new directory.
-- mkdir -p dir/foo
-- renameat2 -w dir/foo bar
-
-[ASSERT] (__chk_dots_dentries:1421)  --> Bad inode number[0x4] for '..', parent parent ino is [0x3]
-[FSCK] other corrupted bugs                           [Fail]
-
-Fixes: 7e01e7ad746b ("f2fs: support RENAME_WHITEOUT")
-Cc: Jan Kara <jack@suse.cz>
-Reported-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 9037afde8b9d ("fbdev/acornfb: Use fbdev I/O helpers")
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: <stable@vger.kernel.org> # v6.6+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231127131655.4020-2-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/namei.c | 2 +-
+ drivers/video/fbdev/acornfb.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
-index 7a86a8dcf4f1..0d6906644feb 100644
---- a/fs/f2fs/namei.c
-+++ b/fs/f2fs/namei.c
-@@ -1088,7 +1088,7 @@ static int f2fs_rename(struct inode *old_dir, struct dentry *old_dentry,
- 	}
+--- a/drivers/video/fbdev/acornfb.c
++++ b/drivers/video/fbdev/acornfb.c
+@@ -605,7 +605,7 @@ acornfb_pan_display(struct fb_var_screen
  
- 	if (old_dir_entry) {
--		if (old_dir != new_dir && !whiteout)
-+		if (old_dir != new_dir)
- 			f2fs_set_link(old_inode, old_dir_entry,
- 						old_dir_page, new_dir);
- 		else
--- 
-2.43.0
-
+ static const struct fb_ops acornfb_ops = {
+ 	.owner		= THIS_MODULE,
+-	FB_IOMEM_DEFAULT_OPS,
++	FB_DEFAULT_IOMEM_OPS,
+ 	.fb_check_var	= acornfb_check_var,
+ 	.fb_set_par	= acornfb_set_par,
+ 	.fb_setcolreg	= acornfb_setcolreg,
 
 
 
