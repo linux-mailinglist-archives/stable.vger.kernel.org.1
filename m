@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFC2838167
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AAE4838414
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8145F1F23A49
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DD2E1C26427
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87FE814A4D9;
-	Tue, 23 Jan 2024 01:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A8F679E4;
+	Tue, 23 Jan 2024 02:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BtY1JzJp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbDe/enZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450BC14A4D1;
-	Tue, 23 Jan 2024 01:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AAA67726;
+	Tue, 23 Jan 2024 02:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972124; cv=none; b=MTm7xee8K5vox+sVudl/0WmMPL9a3sk5Kozd1AKoofVbuzY8kb9B9sVpqMsEuogxpBtYmwZYrYBjvVpTuxzwfBfT2dHvQp1uShUo3pZexuNiG7vDSkK8uWOlTAqljDlQEbZbsK+d3rtKH5sfliT3LOEQOaE4I/aw7t8qB3yTRVo=
+	t=1705975298; cv=none; b=g496CjeQgxl6jzCRfcRHwiGDNATh4FVMhwpjmXvk57LlJqL3F1FBkhnHeYKLvDoFOlyxo6tp1BKJZbVlEh1XEaURnFfGSmn6DfAZNx6+XLqOVesu/2INolW3gmoFViYyviC+WDaTrouAzTArmgj3qyg2HqiF6LVzoazmuvK69tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972124; c=relaxed/simple;
-	bh=enyAiGWjVonO4xp5jDGQdGoTliFAn8nyZAzIUJk4yHQ=;
+	s=arc-20240116; t=1705975298; c=relaxed/simple;
+	bh=nsv8z8uKuVFcJK9V4IfHESHdS5RZz+R/2jtesWo5h8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C9bPEMJB7Y7mxASbKmo16cZ43olrGGhc0oHUK/c4UdKqKO1j80t3HpYHN9OSun6U5goFhtCAqLW4KfiWId8iaplwGk4Xdne0++VEKqd5nJgS1pRFGaD6PbMMmYglsyWrxW/5igpF80Hs43ELZDXuwpF9wVQ/X5KC2q2rieXFEZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BtY1JzJp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C23C43390;
-	Tue, 23 Jan 2024 01:08:43 +0000 (UTC)
+	 MIME-Version; b=fX9MXXL6xt+IcGuVuU0gXccraUwzWBYTfB3j+nAkwlcYmbfUPfq4jgsib5NQDFm+PqI19syyUfO4FwJgkaWWiy4jRJtN6ZM2s5+jfd9Ek7tz0Ut6fFqFAwzO27jR5lOSJPd7DmxQIxYE7PsGUozO39wX+EXGNK34rqvbJwpntM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbDe/enZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CC5C433C7;
+	Tue, 23 Jan 2024 02:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972124;
-	bh=enyAiGWjVonO4xp5jDGQdGoTliFAn8nyZAzIUJk4yHQ=;
+	s=korg; t=1705975297;
+	bh=nsv8z8uKuVFcJK9V4IfHESHdS5RZz+R/2jtesWo5h8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BtY1JzJpKhTNhacJnt8ABrZk65yw9pIQtc7ososeqMyjMh59RmFaiWMvKYf0Jbz4x
-	 hy4vtnlQdV68lkJKRbDpzAt+AnzIRT+L9qkAa/Avfo0U/PVxeZWssNGxtUxTuctssF
-	 gvY+wKF3kFKnkrLZyU8uaJjUfGk9efOyW/S3Y3Bg=
+	b=rbDe/enZLLbNcY3shmpCzqomWpFwChQ3ONZlvHtPcSAfHEKRhTHr0e/16jpP8Xqn2
+	 o607bNrl++jN2ElP5SfrxhMfFDhIogihZ53P3X0WXz7VHN3OvkuLEr5qIZPcUbORUh
+	 LkcpUWt535FJkS4AYBDnylmZ1i5a2fmMtD31ka2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.15 057/374] binder: fix trivial typo of binder_free_buf_locked()
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 262/583] drm/radeon/trinity_dpm: fix a memleak in trinity_parse_power_table
 Date: Mon, 22 Jan 2024 15:55:13 -0800
-Message-ID: <20240122235746.592025677@linuxfoundation.org>
+Message-ID: <20240122235820.019526241@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-commit 122a3c1cb0ff304c2b8934584fcfea4edb2fe5e3 upstream.
+[ Upstream commit 28c28d7f77c06ac2c0b8f9c82bc04eba22912b3b ]
 
-Fix minor misspelling of the function in the comment section.
+The rdev->pm.dpm.ps allocated by kcalloc should be freed in every
+following error-handling path. However, in the error-handling of
+rdev->pm.power_state[i].clock_info the rdev->pm.dpm.ps is not freed,
+resulting in a memleak in this function.
 
-No functional changes in this patch.
-
-Cc: stable@vger.kernel.org
-Fixes: 0f966cba95c7 ("binder: add flag to clear buffer on txn complete")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-7-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d70229f70447 ("drm/radeon/kms: add dpm support for trinity asics")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/trinity_dpm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -706,7 +706,7 @@ void binder_alloc_free_buf(struct binder
- 	/*
- 	 * We could eliminate the call to binder_alloc_clear_buf()
- 	 * from binder_alloc_deferred_release() by moving this to
--	 * binder_alloc_free_buf_locked(). However, that could
-+	 * binder_free_buf_locked(). However, that could
- 	 * increase contention for the alloc mutex if clear_on_free
- 	 * is used frequently for large buffers. The mutex is not
- 	 * needed for correctness here.
+diff --git a/drivers/gpu/drm/radeon/trinity_dpm.c b/drivers/gpu/drm/radeon/trinity_dpm.c
+index 08ea1c864cb2..ef1cc7bad20a 100644
+--- a/drivers/gpu/drm/radeon/trinity_dpm.c
++++ b/drivers/gpu/drm/radeon/trinity_dpm.c
+@@ -1726,8 +1726,10 @@ static int trinity_parse_power_table(struct radeon_device *rdev)
+ 		non_clock_array_index = power_state->v2.nonClockInfoIndex;
+ 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
+ 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
+-		if (!rdev->pm.power_state[i].clock_info)
++		if (!rdev->pm.power_state[i].clock_info) {
++			kfree(rdev->pm.dpm.ps);
+ 			return -EINVAL;
++		}
+ 		ps = kzalloc(sizeof(struct sumo_ps), GFP_KERNEL);
+ 		if (ps == NULL) {
+ 			kfree(rdev->pm.dpm.ps);
+-- 
+2.43.0
+
 
 
 
