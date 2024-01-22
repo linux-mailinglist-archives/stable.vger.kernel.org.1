@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-12742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9973E8371BE
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:03:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD748371BF
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:03:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDC401C2A3C3
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:03:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D95C51F32748
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051455B5D6;
-	Mon, 22 Jan 2024 18:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18ADF5B5D8;
+	Mon, 22 Jan 2024 18:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J51TwgrN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zs+Zrwgg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16AB56777
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 18:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE4055C1E
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 18:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705949082; cv=none; b=JJhZ+kbPlHvOwFa8mJQ8Ng0cqoSX0FPVSnBH5ad12NkbjgWHYfJXbGXPTTb/G7XOujdWSdzpgFGgTHB7400TXvoHEv3BeopAMbt2trwzZmBxw6nXqcFp2eZQPYkiQrFQloFabfEevIuhjk7/7qW5o9rIJkGvRnA/7dQY5R5qouI=
+	t=1705949109; cv=none; b=oZIRyCy+NepRyMT49xM5voO/cShnHJD4YiT+FB+h2erDRPGFLrJDtnXr9wuAOBYRw0UjVnie8cbxfZph4okzEqwGTkq3J0E/0Yh0YtuJRXYjS7TszUKugTXtlKOqHPSYrwKUXu68UG6m/mhtJ/TTUWqxv2kGpGcaTHeDgkMcWjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705949082; c=relaxed/simple;
-	bh=Lyd0Ch92oIkU0R1Ss3F2mIKuIR6M2b1epF0gJcebrPw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZmJuulsr5AK6zWqYIJTJ/q4hfjgRMP03ihjsxWtXDDypjsU03VEzoY5fJzWI0H0qxiX6xnk8cIcwcUj3wgX+ufpjHTHOEWmH/bjDPLB7gR3LvEKq5PGs9/VSYVat5wj0SmeKb9FdJm9VuzINgzTF/as45PMC4nv8rjVx5S9j/1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J51TwgrN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5F8C43390;
-	Mon, 22 Jan 2024 18:44:41 +0000 (UTC)
+	s=arc-20240116; t=1705949109; c=relaxed/simple;
+	bh=gbbPA79cZ8JJPyMxS14sn7Ih2jJbJ50EcAJ4mEK+980=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=s0FZvGu4MMiXjnG0JD9V4iqs54DTaEz1HTrNiLf5cBzdHRxTCNJ8atYoM1peP4kXwsDrnyuYigx6d7l2NfwVJpEamLdwtliekfoUtHdhLtPuULKAIfj++qhEG9qX5RaLAjtQCyluaUeMAVvhu48ESKb8GdzUV43Pocgvc21qkeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zs+Zrwgg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D156C433C7;
+	Mon, 22 Jan 2024 18:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705949082;
-	bh=Lyd0Ch92oIkU0R1Ss3F2mIKuIR6M2b1epF0gJcebrPw=;
+	s=korg; t=1705949109;
+	bh=gbbPA79cZ8JJPyMxS14sn7Ih2jJbJ50EcAJ4mEK+980=;
 	h=Subject:To:Cc:From:Date:From;
-	b=J51TwgrN54p7bHxezhMEqf+nvdqeKbrMFYdTd2SFhygz6AxcmYw0boQbWciV3KtL6
-	 0SKazKlfisvy+rKZh0xrIafoTcNFaUeO86+zy0tbRX6WHxceK4qbjm0p0W564gtRbF
-	 tMjJShlY6cu9vxeAnqOEUVtKZJNXt7wbQR5l3WRs=
-Subject: FAILED: patch "[PATCH] usb: cdns3: fix uvc failure work since sg support enabled" failed to apply to 5.4-stable tree
+	b=Zs+ZrwgglsPoWf6VSqptz7XbjLf6Bj8Zl0r9M6dFOQmMnv8ZdaQmIKJVU7TxLMdj3
+	 xz99Ru/+nkgq3KZWhUi5rbghprt+ZYJC+Jx58ISd2/4vvbS5DZaPWTIBLNcFDW+rbq
+	 6tg/IWcAEdCHi1JXhCMRW7mvvphmRAoQ30YG+5xE=
+Subject: FAILED: patch "[PATCH] usb: cdns3: fix iso transfer error when mult is not zero" failed to apply to 5.4-stable tree
 To: Frank.Li@nxp.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 22 Jan 2024 10:44:40 -0800
-Message-ID: <2024012239-crusader-abrasive-5405@gregkh>
+Date: Mon, 22 Jan 2024 10:45:05 -0800
+Message-ID: <2024012205-reload-daunting-acff@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,16 +62,17 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1b8be5ecff26201bafb0a554c74e91571299fb94
+git cherry-pick -x 92f02efa1d86d7dcaef7f38a5fe3396c4e88a93c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012239-crusader-abrasive-5405@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012205-reload-daunting-acff@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-1b8be5ecff26 ("usb: cdns3: fix uvc failure work since sg support enabled")
-387c2b6ba197 ("usb: cdns3: gadget: fix new urb never complete if ep cancel previous requests")
-fba8701baed7 ("usb: cdns3: Fixes for sparse warnings")
+92f02efa1d86 ("usb: cdns3: fix iso transfer error when mult is not zero")
+2627335a1329 ("usb: cdns3: fix incorrect calculation of ep_buf_size when more than one config")
+dbe678f6192f ("usb: cdns3: fix NCM gadget RX speed 20x slow than expection at iMX8QM")
+dce49449e04f ("usb: cdns3: allocate TX FIFO size according to composite EP number")
 64b558f597d1 ("usb: cdns3: Change file names for cdns3 driver.")
 118b2a3237cf ("usb: cdnsp: Add tracepoints for CDNSP driver")
 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
@@ -88,153 +89,173 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1b8be5ecff26201bafb0a554c74e91571299fb94 Mon Sep 17 00:00:00 2001
+From 92f02efa1d86d7dcaef7f38a5fe3396c4e88a93c Mon Sep 17 00:00:00 2001
 From: Frank Li <Frank.Li@nxp.com>
-Date: Sun, 24 Dec 2023 10:38:13 -0500
-Subject: [PATCH] usb: cdns3: fix uvc failure work since sg support enabled
+Date: Sun, 24 Dec 2023 10:38:14 -0500
+Subject: [PATCH] usb: cdns3: fix iso transfer error when mult is not zero
 
-When IP version >= DEV_VER_V2, gadget:sg_supported is true. So uvc gadget
-function driver will use sg to equeue data, first is 8bytes header, the
-second is 1016bytes data.
+ISO basic transfer is
+	ITP(SOF) Package_0 Package_1 ... Package_n
 
-    cdns3_prepare_trb: ep2in: trb 0000000000ac755f, dma buf: 0xbf455000, size: 8, burst: 128 ctrl: 0x00000415 (C=1, T=0, ISP, CHAIN, Normal)
-    cdns3_prepare_trb: ep2in: trb 00000000a574e693, dma buf: 0xc0200fe0, size: 1016, burst: 128 ctrl: 0x00000405 (C=1, T=0, ISP, Normal)
+CDNS3 DMA start dma transfer from memmory to internal FIFO when get SOF,
+controller will transfer data to usb bus from internal FIFO when get IN
+token.
 
-But cdns3_ep_run_transfer() can't correctly handle this case, which only
-support one TRB for ISO transfer.
+According USB spec defination:
+	Maximum number of packets = (bMaxBurst + 1) * (Mult + 1)
 
-The controller requires duplicate the TD for each SOF if priv_ep->interval
-is not 1. DMA will read data from DDR to internal FIFO when get SOF. Send
-data to bus when receive IN token. DMA always refill FIFO when get SOF
-regardless host send IN token or not. If host send IN token later, some
-frames data will be lost.
+Internal memory should be the same as (bMaxBurst + 1) * (Mult + 1). DMA
+don't fetch data advance when ISO transfer, so only reserve
+(bMaxBurst + 1) * (Mult + 1) internal memory for ISO transfer.
 
-Fixed it by below major steps:
-
-1. Calculate numembers of TRB base on sg_nums and priv_ep->interval.
-2. Remove CHAIN flags for each end TRB of TD when duplicate TD.
-3. The controller requires LINK TRB must be first TRB of TD. When check
-there are not enough TRBs lefts, just fill LINK TRB for left TRBs.
-
-.... CHAIN_TRB DATA_TRB, CHAIN_TRB DATA_TRB,  LINK_TRB ... LINK_TRB
-                                                           ^End of TRB List
+Need save Mult and bMaxBurst information and set it into EP_CFG register,
+otherwise only 1 package is sent by controller, other package will be
+lost.
 
 Cc:  <stable@vger.kernel.org>
 Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231224153816.1664687-2-Frank.Li@nxp.com
+Link: https://lore.kernel.org/r/20231224153816.1664687-3-Frank.Li@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
-index 15463b7cddd2..22a31ffa6942 100644
+index 22a31ffa6942..4c6893af22dd 100644
 --- a/drivers/usb/cdns3/cdns3-gadget.c
 +++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -1119,6 +1119,7 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
- 	dma_addr_t trb_dma;
- 	u32 togle_pcs = 1;
- 	int sg_iter = 0;
-+	int num_trb_req;
- 	int num_trb;
- 	int address;
- 	u32 control;
-@@ -1128,15 +1129,13 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
- 	bool sg_supported = !!(request->num_mapped_sgs);
- 	u32 ioc = request->no_interrupt ? 0 : TRB_IOC;
+@@ -2065,11 +2065,10 @@ int cdns3_ep_config(struct cdns3_endpoint *priv_ep, bool enable)
+ 	bool is_iso_ep = (priv_ep->type == USB_ENDPOINT_XFER_ISOC);
+ 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
+ 	u32 bEndpointAddress = priv_ep->num | priv_ep->dir;
+-	u32 max_packet_size = 0;
+-	u8 maxburst = 0;
++	u32 max_packet_size = priv_ep->wMaxPacketSize;
++	u8 maxburst = priv_ep->bMaxBurst;
+ 	u32 ep_cfg = 0;
+ 	u8 buffering;
+-	u8 mult = 0;
+ 	int ret;
  
-+	num_trb_req = sg_supported ? request->num_mapped_sgs : 1;
-+
-+	/* ISO transfer require each SOF have a TD, each TD include some TRBs */
- 	if (priv_ep->type == USB_ENDPOINT_XFER_ISOC)
--		num_trb = priv_ep->interval;
-+		num_trb = priv_ep->interval * num_trb_req;
- 	else
--		num_trb = sg_supported ? request->num_mapped_sgs : 1;
--
--	if (num_trb > priv_ep->free_trbs) {
--		priv_ep->flags |= EP_RING_FULL;
--		return -ENOBUFS;
--	}
-+		num_trb = num_trb_req;
- 
- 	priv_req = to_cdns3_request(request);
- 	address = priv_ep->endpoint.desc->bEndpointAddress;
-@@ -1185,14 +1184,31 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
- 
- 		link_trb->control = cpu_to_le32(((priv_ep->pcs) ? TRB_CYCLE : 0) |
- 				    TRB_TYPE(TRB_LINK) | TRB_TOGGLE | ch_bit);
-+
-+		if (priv_ep->type == USB_ENDPOINT_XFER_ISOC) {
-+			/*
-+			 * ISO require LINK TRB must be first one of TD.
-+			 * Fill LINK TRBs for left trb space to simply software process logic.
-+			 */
-+			while (priv_ep->enqueue) {
-+				*trb = *link_trb;
-+				trace_cdns3_prepare_trb(priv_ep, trb);
-+
-+				cdns3_ep_inc_enq(priv_ep);
-+				trb = priv_ep->trb_pool + priv_ep->enqueue;
-+				priv_req->trb = trb;
-+			}
-+		}
-+	}
-+
-+	if (num_trb > priv_ep->free_trbs) {
-+		priv_ep->flags |= EP_RING_FULL;
-+		return -ENOBUFS;
+ 	buffering = priv_dev->ep_buf_size - 1;
+@@ -2091,8 +2090,7 @@ int cdns3_ep_config(struct cdns3_endpoint *priv_ep, bool enable)
+ 		break;
+ 	default:
+ 		ep_cfg = EP_CFG_EPTYPE(USB_ENDPOINT_XFER_ISOC);
+-		mult = priv_dev->ep_iso_burst - 1;
+-		buffering = mult + 1;
++		buffering = (priv_ep->bMaxBurst + 1) * (priv_ep->mult + 1) - 1;
  	}
  
- 	if (priv_dev->dev_ver <= DEV_VER_V2)
- 		togle_pcs = cdns3_wa1_update_guard(priv_ep, trb);
- 
--	if (sg_supported)
--		s = request->sg;
+ 	switch (priv_dev->gadget.speed) {
+@@ -2103,17 +2101,8 @@ int cdns3_ep_config(struct cdns3_endpoint *priv_ep, bool enable)
+ 		max_packet_size = is_iso_ep ? 1024 : 512;
+ 		break;
+ 	case USB_SPEED_SUPER:
+-		/* It's limitation that driver assumes in driver. */
+-		mult = 0;
+-		max_packet_size = 1024;
+-		if (priv_ep->type == USB_ENDPOINT_XFER_ISOC) {
+-			maxburst = priv_dev->ep_iso_burst - 1;
+-			buffering = (mult + 1) *
+-				    (maxburst + 1);
 -
- 	/* set incorrect Cycle Bit for first trb*/
- 	control = priv_ep->pcs ? 0 : TRB_CYCLE;
- 	trb->length = 0;
-@@ -1210,6 +1226,9 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
- 	do {
- 		u32 length;
+-			if (priv_ep->interval > 1)
+-				buffering++;
+-		} else {
++		if (priv_ep->type != USB_ENDPOINT_XFER_ISOC) {
++			max_packet_size = 1024;
+ 			maxburst = priv_dev->ep_buf_size - 1;
+ 		}
+ 		break;
+@@ -2142,7 +2131,6 @@ int cdns3_ep_config(struct cdns3_endpoint *priv_ep, bool enable)
+ 	if (priv_dev->dev_ver < DEV_VER_V2)
+ 		priv_ep->trb_burst_size = 16;
  
-+		if (!(sg_iter % num_trb_req) && sg_supported)
-+			s = request->sg;
-+
- 		/* fill TRB */
- 		control |= TRB_TYPE(TRB_NORMAL);
- 		if (sg_supported) {
-@@ -1251,7 +1270,7 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
- 		if (sg_supported) {
- 			trb->control |= cpu_to_le32(TRB_ISP);
- 			/* Don't set chain bit for last TRB */
--			if (sg_iter < num_trb - 1)
-+			if ((sg_iter % num_trb_req) < num_trb_req - 1)
- 				trb->control |= cpu_to_le32(TRB_CHAIN);
+-	mult = min_t(u8, mult, EP_CFG_MULT_MAX);
+ 	buffering = min_t(u8, buffering, EP_CFG_BUFFERING_MAX);
+ 	maxburst = min_t(u8, maxburst, EP_CFG_MAXBURST_MAX);
  
- 			s = sg_next(s);
-@@ -1509,6 +1528,12 @@ static void cdns3_transfer_completed(struct cdns3_device *priv_dev,
+@@ -2176,7 +2164,7 @@ int cdns3_ep_config(struct cdns3_endpoint *priv_ep, bool enable)
+ 	}
  
- 		/* The TRB was changed as link TRB, and the request was handled at ep_dequeue */
- 		while (TRB_FIELD_TO_TYPE(le32_to_cpu(trb->control)) == TRB_LINK) {
-+
-+			/* ISO ep_traddr may stop at LINK TRB */
-+			if (priv_ep->dequeue == cdns3_get_dma_pos(priv_dev, priv_ep) &&
-+			    priv_ep->type == USB_ENDPOINT_XFER_ISOC)
-+				break;
-+
- 			trace_cdns3_complete_trb(priv_ep, trb);
- 			cdns3_ep_inc_deq(priv_ep);
- 			trb = priv_ep->trb_pool + priv_ep->dequeue;
-@@ -1541,6 +1566,10 @@ static void cdns3_transfer_completed(struct cdns3_device *priv_dev,
- 			}
+ 	ep_cfg |= EP_CFG_MAXPKTSIZE(max_packet_size) |
+-		  EP_CFG_MULT(mult) |
++		  EP_CFG_MULT(priv_ep->mult) |			/* must match EP setting */
+ 		  EP_CFG_BUFFERING(buffering) |
+ 		  EP_CFG_MAXBURST(maxburst);
  
- 			if (request_handled) {
-+				/* TRBs are duplicated by priv_ep->interval time for ISO IN */
-+				if (priv_ep->type == USB_ENDPOINT_XFER_ISOC && priv_ep->dir)
-+					request->actual /= priv_ep->interval;
+@@ -2266,6 +2254,13 @@ usb_ep *cdns3_gadget_match_ep(struct usb_gadget *gadget,
+ 	priv_ep->type = usb_endpoint_type(desc);
+ 	priv_ep->flags |= EP_CLAIMED;
+ 	priv_ep->interval = desc->bInterval ? BIT(desc->bInterval - 1) : 0;
++	priv_ep->wMaxPacketSize =  usb_endpoint_maxp(desc);
++	priv_ep->mult = USB_EP_MAXP_MULT(priv_ep->wMaxPacketSize);
++	priv_ep->wMaxPacketSize &= USB_ENDPOINT_MAXP_MASK;
++	if (priv_ep->type == USB_ENDPOINT_XFER_ISOC && comp_desc) {
++		priv_ep->mult =  USB_SS_MULT(comp_desc->bmAttributes) - 1;
++		priv_ep->bMaxBurst = comp_desc->bMaxBurst;
++	}
+ 
+ 	spin_unlock_irqrestore(&priv_dev->lock, flags);
+ 	return &priv_ep->endpoint;
+@@ -3049,22 +3044,40 @@ static int cdns3_gadget_check_config(struct usb_gadget *gadget)
+ 	struct cdns3_endpoint *priv_ep;
+ 	struct usb_ep *ep;
+ 	int n_in = 0;
++	int iso = 0;
++	int out = 1;
+ 	int total;
++	int n;
+ 
+ 	list_for_each_entry(ep, &gadget->ep_list, ep_list) {
+ 		priv_ep = ep_to_cdns3_ep(ep);
+-		if ((priv_ep->flags & EP_CLAIMED) && (ep->address & USB_DIR_IN))
+-			n_in++;
++		if (!(priv_ep->flags & EP_CLAIMED))
++			continue;
 +
- 				cdns3_gadget_giveback(priv_ep, priv_req, 0);
- 				request_handled = false;
- 				transfer_end = false;
++		n = (priv_ep->mult + 1) * (priv_ep->bMaxBurst + 1);
++		if (ep->address & USB_DIR_IN) {
++			/*
++			 * ISO transfer: DMA start move data when get ISO, only transfer
++			 * data as min(TD size, iso). No benefit for allocate bigger
++			 * internal memory than 'iso'.
++			 */
++			if (priv_ep->type == USB_ENDPOINT_XFER_ISOC)
++				iso += n;
++			else
++				n_in++;
++		} else {
++			if (priv_ep->type == USB_ENDPOINT_XFER_ISOC)
++				out = max_t(int, out, n);
++		}
+ 	}
+ 
+ 	/* 2KB are reserved for EP0, 1KB for out*/
+-	total = 2 + n_in + 1;
++	total = 2 + n_in + out + iso;
+ 
+ 	if (total > priv_dev->onchip_buffers)
+ 		return -ENOMEM;
+ 
+-	priv_dev->ep_buf_size = priv_dev->ep_iso_burst =
+-			(priv_dev->onchip_buffers - 2) / (n_in + 1);
++	priv_dev->ep_buf_size = (priv_dev->onchip_buffers - 2 - iso) / (n_in + out);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/usb/cdns3/cdns3-gadget.h b/drivers/usb/cdns3/cdns3-gadget.h
+index fbe4a8e3aa89..086a7bb83897 100644
+--- a/drivers/usb/cdns3/cdns3-gadget.h
++++ b/drivers/usb/cdns3/cdns3-gadget.h
+@@ -1168,6 +1168,9 @@ struct cdns3_endpoint {
+ 	u8			dir;
+ 	u8			num;
+ 	u8			type;
++	u8			mult;
++	u8			bMaxBurst;
++	u16			wMaxPacketSize;
+ 	int			interval;
+ 
+ 	int			free_trbs;
 
 
