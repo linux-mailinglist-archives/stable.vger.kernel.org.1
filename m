@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-15064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27562838401
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCB7837C70
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EB03B21ABB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A21561F22906
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64A664CC6;
-	Tue, 23 Jan 2024 01:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3291A290;
+	Tue, 23 Jan 2024 00:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOkbVK28"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkLJhTIS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B9864AB3;
-	Tue, 23 Jan 2024 01:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E812443E;
+	Tue, 23 Jan 2024 00:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975049; cv=none; b=H2P0MXyVzloTTAIOfXr8GVnYO9C6BaW9s7vELQVUWNJeMsnI7O+9GFfGCKTu57CPLfZZ8nMGlYKTHjZjwzLQMqsTj1l46yUKtqRtElrQL6uHpLk8arlpyVFMjODICTdjQC6VLrnQn+b8te7b2DU/s8qmny6yErKXcxTugA30SN0=
+	t=1705969619; cv=none; b=UObq97Jj5ayxqq3aahefXsYmkIKbz8nW8aGQ+FE01ZnLwlqeGHyzdyXbJI6JSYlK/h0ZLpiqS44or9PxWF7+g0t+XFIuC/LLMv00fSsEzgDh7et1o2GI4gsdRtBdlWInsV2Qr7FA/fn7bLbrlEtW4eSA2U0htI4BG55tc32JW0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975049; c=relaxed/simple;
-	bh=eqpFdUvn4p2IzkXJ8MPBt9ubVMwpAQ3Fsygaugz75jg=;
+	s=arc-20240116; t=1705969619; c=relaxed/simple;
+	bh=umJuhacjH/wP7sqlmW+XLK+BIXOvDbEQ1PUK/eUo9Y0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GczgsTbJ8VDiSJzuHat26onPi0t4QuvLLPqsaw82L25j6T7hmmz3qu4Umr8c7Y90Qaje/yvUO1YI7OkZzQ2Hxs/BNljS93beDbPdxbGRCx/AxHHSI7zD8I7u4K7YCyn2Si8iZjH6iELyEqWR4hdnQ6zYX5npQn2BRZMtrpLTYhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOkbVK28; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E03FC433C7;
-	Tue, 23 Jan 2024 01:57:29 +0000 (UTC)
+	 MIME-Version; b=PwkkvMyuFgp9R4ZvEgwQUkoaLLjEjslwowH86cLB2Q6M0mDjwj83IvD/7aXiHNqFw2vzopRNSi107LFHXR5migmlE1G/hbyF90k7CVUnwnYDgXWDvYNv4UKRnDeFmIjJ56tguLt+/F/m8WCRI5VX2UadSz1ho2AEO/Zpsc/SqGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkLJhTIS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E77BC43390;
+	Tue, 23 Jan 2024 00:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975049;
-	bh=eqpFdUvn4p2IzkXJ8MPBt9ubVMwpAQ3Fsygaugz75jg=;
+	s=korg; t=1705969619;
+	bh=umJuhacjH/wP7sqlmW+XLK+BIXOvDbEQ1PUK/eUo9Y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IOkbVK28N8Y8JG81y/EqiYPRPanwMF4Z0A4eXOsxySaDDiG6h3UTnWLTzAHZutvza
-	 e5nY3/n2BNp97tYrHGSNruXDB6hutNXq3+G1xcIBErVAX4ZlcCVqkwDzOKF1ghq0zM
-	 gekv2207jeUzzPvws6NDc3dJtti71rmYv9trRYNo=
+	b=XkLJhTISu6IUvWxkfECOPfZOlE+ljb4dzrvcd0AtO2qVA/npv5ybXjRoqJnvu8p0F
+	 OwKLxmNBW74HipmhP8VXvEZQls7iSo+7wb8p1bxSbAQr1KWOqTLMcpoyPsX+BUV0FR
+	 ue4SHGopyQ0ifbvNtBDK27+ZFf4NpzbdNzBOK5ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 213/583] sctp: support MSG_ERRQUEUE flag in recvmsg()
-Date: Mon, 22 Jan 2024 15:54:24 -0800
-Message-ID: <20240122235818.530586721@linuxfoundation.org>
+Subject: [PATCH 6.7 361/641] ALSA: scarlett2: Add clamp() in scarlett2_mixer_ctl_put()
+Date: Mon, 22 Jan 2024 15:54:25 -0800
+Message-ID: <20240122235829.228292218@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-[ Upstream commit 4746b36b1abe11ca32987b2d21e1e770deab17cc ]
+[ Upstream commit 04f8f053252b86c7583895c962d66747ecdc61b7 ]
 
-For some reason sctp_poll() generates EPOLLERR if sk->sk_error_queue
-is not empty but recvmsg() can not drain the error queue yet.
+Ensure the value passed to scarlett2_mixer_ctl_put() is between 0 and
+SCARLETT2_MIXER_MAX_VALUE so we don't attempt to access outside
+scarlett2_mixer_values[].
 
-This is needed to better support timestamping.
-
-I had to export inet_recv_error(), since sctp
-can be compiled as a module.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://lore.kernel.org/r/20231212145550.3872051-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: a562c0a2d651 ("sctp: fix busy polling")
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
+Link: https://lore.kernel.org/r/3b19fb3da641b587749b85fe1daa1b4e696c0c1b.1703001053.git.g@b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/af_inet.c | 1 +
- net/sctp/socket.c  | 3 +++
- 2 files changed, 4 insertions(+)
+ sound/usb/mixer_scarlett2.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 2713c9b06c4c..b0a5de1303b5 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -1632,6 +1632,7 @@ int inet_recv_error(struct sock *sk, struct msghdr *msg, int len, int *addr_len)
- #endif
- 	return -EINVAL;
- }
-+EXPORT_SYMBOL(inet_recv_error);
+diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
+index f4351900fbbd..cdaf0470e62b 100644
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -3663,7 +3663,8 @@ static int scarlett2_mixer_ctl_put(struct snd_kcontrol *kctl,
+ 	mutex_lock(&private->data_mutex);
  
- int inet_gro_complete(struct sk_buff *skb, int nhoff)
- {
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 7f89e43154c0..5fb02bbb4b34 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -2099,6 +2099,9 @@ static int sctp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 	pr_debug("%s: sk:%p, msghdr:%p, len:%zd, flags:0x%x, addr_len:%p)\n",
- 		 __func__, sk, msg, len, flags, addr_len);
+ 	oval = private->mix[index];
+-	val = ucontrol->value.integer.value[0];
++	val = clamp(ucontrol->value.integer.value[0],
++		    0L, (long)SCARLETT2_MIXER_MAX_VALUE);
+ 	num_mixer_in = port_count[SCARLETT2_PORT_TYPE_MIX][SCARLETT2_PORT_OUT];
+ 	mix_num = index / num_mixer_in;
  
-+	if (unlikely(flags & MSG_ERRQUEUE))
-+		return inet_recv_error(sk, msg, len, addr_len);
-+
- 	lock_sock(sk);
- 
- 	if (sctp_style(sk, TCP) && !sctp_sstate(sk, ESTABLISHED) &&
 -- 
 2.43.0
 
