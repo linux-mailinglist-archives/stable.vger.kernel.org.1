@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-15123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C62B48383FD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DE8837EAF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7621B296BCE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D378F28C307
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE573664BB;
-	Tue, 23 Jan 2024 01:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8F360EFF;
+	Tue, 23 Jan 2024 00:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOXpxTQ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9tQGdAS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E49565BB4;
-	Tue, 23 Jan 2024 01:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E449A60BAC;
+	Tue, 23 Jan 2024 00:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975111; cv=none; b=RCAR1QmGSVElPT2/kQ4wRNh5on3CDBFKrJUBUzZUVEM/dg4m0d3dEZ6574QC7tAr4gsPg0lf5Foq3cIfooWzZTXe/mrmqDFVQrBvyZiP4DPdwfQNwHke0axhM9G1Qzdbva5xUFy8bBvCAXsjtWHOd0bXPkPpKiNrMOV1P/ofQu0=
+	t=1705970750; cv=none; b=q9Rf7Ggz2CqM5DyfflceJQv8uGlH9Mfy963zq7kID8mqDdFHT7GCMqAPJoLnqk9dWR7rgT1ieZVuL7WAgGVmdV665ztY8o2GAIPI+tFjXgS3XS/uqQYj89za5zhWTBL/Y2AjqqLLfLMVAgo3QmMshiZLXeLKG7Xt76Bhw7iZtg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975111; c=relaxed/simple;
-	bh=yoFvbJPDDmU4xjW8N5hY+q4/MucVKUCpfo1FiTifhkI=;
+	s=arc-20240116; t=1705970750; c=relaxed/simple;
+	bh=iV57wsX90Zc6WcBB5+cOfWADT6+OszjirUCkxWoPeX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WMYA/SdnvFSy8lh4ar2ou+UEYKx/F3WJROJUkOwnZ/VmEOJ3avzp6PYkqO2amznVZ6HSJrUgMZ9v+yBiuaBpfHHz1A5XrVe5wRrZxCD1UutKE25rmDkIYp1UHd0pgAo8DSgiaR0kVXMyaVMC7WpQrm9JaB6xJP5GcWcvL7TtIEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOXpxTQ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41C6C433F1;
-	Tue, 23 Jan 2024 01:58:30 +0000 (UTC)
+	 MIME-Version; b=QjNUhL6ZaeOVTCKMMG0NXLjkZIRQgtUrvTw1XaB4VrAzFkZU1HYyQfuEuY9EwIt+V2woejpGnmv8JtHDwxtVgPq4T2a5QHzkUcLu6mKgnQCNq5IxlL1QYr8G+0u7VA9E8W1HqRfs2VKWdVGslt8rgLiMlxJFPK5twOKSzI+XbQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9tQGdAS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DCF5C433F1;
+	Tue, 23 Jan 2024 00:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975111;
-	bh=yoFvbJPDDmU4xjW8N5hY+q4/MucVKUCpfo1FiTifhkI=;
+	s=korg; t=1705970749;
+	bh=iV57wsX90Zc6WcBB5+cOfWADT6+OszjirUCkxWoPeX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oOXpxTQ010LtJTwc0nAlgTrM5beACGB3Xok+7CUYoA9FdCNgLhrdgjqpHgJwuE5xc
-	 oVXTQ30yHJPWS37W0Ne0OiOGbgqKD/xnPxSnJm+wxTvG0/KvDxEWyt/6vnKx41wJYW
-	 8TeuKO2pTZLWEyxYaR0TrcCUqGUXpTArfcSeXFZs=
+	b=A9tQGdASyl//PSRl9U+bLjE125BKZ0JDELfu7EAb63sAJ42P5ZKdAIDCOPWiNF8Lm
+	 VQ1erW67MDQSsyG9xCMyTVXJLR4+Cp+7KOM/HlmwTXtm/yOc1OQWSGLh9G9p/YpqAV
+	 kCqON+MdM660KxXRq/60InfvzIA3HH53rwqEug7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 220/583] ip6_tunnel: fix NEXTHDR_FRAGMENT handling in ip6_tnl_parse_tlv_enc_lim()
+Subject: [PATCH 6.1 103/417] arm64: dts: qcom: sc7280: Fix up GPU SIDs
 Date: Mon, 22 Jan 2024 15:54:31 -0800
-Message-ID: <20240122235818.733131677@linuxfoundation.org>
+Message-ID: <20240122235755.263415878@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,174 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit d375b98e0248980681e5e56b712026174d617198 ]
+[ Upstream commit 94085049fdad7a36fe14dd55e72e712fe55d6bca ]
 
-syzbot pointed out [1] that NEXTHDR_FRAGMENT handling is broken.
+GPU_SMMU SID 1 is meant for Adreno LPAC (Low Priority Async Compute).
+On platforms that support it (in firmware), it is necessary to
+describe that link, or Adreno register access will hang the board.
 
-Reading frag_off can only be done if we pulled enough bytes
-to skb->head. Currently we might access garbage.
+The current settings are functionally identical, *but* due to what is
+likely hardcoded security policies, the secure firmware rejects them,
+resulting in the board hanging. To avoid that, alter the settings such
+that SID 0 and 1 are described separately.
 
-[1]
-BUG: KMSAN: uninit-value in ip6_tnl_parse_tlv_enc_lim+0x94f/0xbb0
-ip6_tnl_parse_tlv_enc_lim+0x94f/0xbb0
-ipxip6_tnl_xmit net/ipv6/ip6_tunnel.c:1326 [inline]
-ip6_tnl_start_xmit+0xab2/0x1a70 net/ipv6/ip6_tunnel.c:1432
-__netdev_start_xmit include/linux/netdevice.h:4940 [inline]
-netdev_start_xmit include/linux/netdevice.h:4954 [inline]
-xmit_one net/core/dev.c:3548 [inline]
-dev_hard_start_xmit+0x247/0xa10 net/core/dev.c:3564
-__dev_queue_xmit+0x33b8/0x5130 net/core/dev.c:4349
-dev_queue_xmit include/linux/netdevice.h:3134 [inline]
-neigh_connected_output+0x569/0x660 net/core/neighbour.c:1592
-neigh_output include/net/neighbour.h:542 [inline]
-ip6_finish_output2+0x23a9/0x2b30 net/ipv6/ip6_output.c:137
-ip6_finish_output+0x855/0x12b0 net/ipv6/ip6_output.c:222
-NF_HOOK_COND include/linux/netfilter.h:303 [inline]
-ip6_output+0x323/0x610 net/ipv6/ip6_output.c:243
-dst_output include/net/dst.h:451 [inline]
-ip6_local_out+0xe9/0x140 net/ipv6/output_core.c:155
-ip6_send_skb net/ipv6/ip6_output.c:1952 [inline]
-ip6_push_pending_frames+0x1f9/0x560 net/ipv6/ip6_output.c:1972
-rawv6_push_pending_frames+0xbe8/0xdf0 net/ipv6/raw.c:582
-rawv6_sendmsg+0x2b66/0x2e70 net/ipv6/raw.c:920
-inet_sendmsg+0x105/0x190 net/ipv4/af_inet.c:847
-sock_sendmsg_nosec net/socket.c:730 [inline]
-__sock_sendmsg net/socket.c:745 [inline]
-____sys_sendmsg+0x9c2/0xd60 net/socket.c:2584
-___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
-__sys_sendmsg net/socket.c:2667 [inline]
-__do_sys_sendmsg net/socket.c:2676 [inline]
-__se_sys_sendmsg net/socket.c:2674 [inline]
-__x64_sys_sendmsg+0x307/0x490 net/socket.c:2674
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Uninit was created at:
-slab_post_alloc_hook+0x129/0xa70 mm/slab.h:768
-slab_alloc_node mm/slub.c:3478 [inline]
-__kmem_cache_alloc_node+0x5c9/0x970 mm/slub.c:3517
-__do_kmalloc_node mm/slab_common.c:1006 [inline]
-__kmalloc_node_track_caller+0x118/0x3c0 mm/slab_common.c:1027
-kmalloc_reserve+0x249/0x4a0 net/core/skbuff.c:582
-pskb_expand_head+0x226/0x1a00 net/core/skbuff.c:2098
-__pskb_pull_tail+0x13b/0x2310 net/core/skbuff.c:2655
-pskb_may_pull_reason include/linux/skbuff.h:2673 [inline]
-pskb_may_pull include/linux/skbuff.h:2681 [inline]
-ip6_tnl_parse_tlv_enc_lim+0x901/0xbb0 net/ipv6/ip6_tunnel.c:408
-ipxip6_tnl_xmit net/ipv6/ip6_tunnel.c:1326 [inline]
-ip6_tnl_start_xmit+0xab2/0x1a70 net/ipv6/ip6_tunnel.c:1432
-__netdev_start_xmit include/linux/netdevice.h:4940 [inline]
-netdev_start_xmit include/linux/netdevice.h:4954 [inline]
-xmit_one net/core/dev.c:3548 [inline]
-dev_hard_start_xmit+0x247/0xa10 net/core/dev.c:3564
-__dev_queue_xmit+0x33b8/0x5130 net/core/dev.c:4349
-dev_queue_xmit include/linux/netdevice.h:3134 [inline]
-neigh_connected_output+0x569/0x660 net/core/neighbour.c:1592
-neigh_output include/net/neighbour.h:542 [inline]
-ip6_finish_output2+0x23a9/0x2b30 net/ipv6/ip6_output.c:137
-ip6_finish_output+0x855/0x12b0 net/ipv6/ip6_output.c:222
-NF_HOOK_COND include/linux/netfilter.h:303 [inline]
-ip6_output+0x323/0x610 net/ipv6/ip6_output.c:243
-dst_output include/net/dst.h:451 [inline]
-ip6_local_out+0xe9/0x140 net/ipv6/output_core.c:155
-ip6_send_skb net/ipv6/ip6_output.c:1952 [inline]
-ip6_push_pending_frames+0x1f9/0x560 net/ipv6/ip6_output.c:1972
-rawv6_push_pending_frames+0xbe8/0xdf0 net/ipv6/raw.c:582
-rawv6_sendmsg+0x2b66/0x2e70 net/ipv6/raw.c:920
-inet_sendmsg+0x105/0x190 net/ipv4/af_inet.c:847
-sock_sendmsg_nosec net/socket.c:730 [inline]
-__sock_sendmsg net/socket.c:745 [inline]
-____sys_sendmsg+0x9c2/0xd60 net/socket.c:2584
-___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
-__sys_sendmsg net/socket.c:2667 [inline]
-__do_sys_sendmsg net/socket.c:2676 [inline]
-__se_sys_sendmsg net/socket.c:2674 [inline]
-__x64_sys_sendmsg+0x307/0x490 net/socket.c:2674
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-CPU: 0 PID: 7345 Comm: syz-executor.3 Not tainted 6.7.0-rc8-syzkaller-00024-gac865f00af29 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-
-Fixes: fbfa743a9d2a ("ipv6: fix ip6_tnl_parse_tlv_enc_lim()")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 96c471970b7b ("arm64: dts: qcom: sc7280: Add gpu support")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230926-topic-a643-v2-2-06fa3d899c0a@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_tunnel.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ arch/arm64/boot/dts/qcom/sc7280.dtsi | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 5e80e517f071..46c19bd48990 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -399,7 +399,7 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff *skb, __u8 *raw)
- 	const struct ipv6hdr *ipv6h = (const struct ipv6hdr *)raw;
- 	unsigned int nhoff = raw - skb->data;
- 	unsigned int off = nhoff + sizeof(*ipv6h);
--	u8 next, nexthdr = ipv6h->nexthdr;
-+	u8 nexthdr = ipv6h->nexthdr;
- 
- 	while (ipv6_ext_hdr(nexthdr) && nexthdr != NEXTHDR_NONE) {
- 		struct ipv6_opt_hdr *hdr;
-@@ -410,25 +410,25 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff *skb, __u8 *raw)
- 
- 		hdr = (struct ipv6_opt_hdr *)(skb->data + off);
- 		if (nexthdr == NEXTHDR_FRAGMENT) {
--			struct frag_hdr *frag_hdr = (struct frag_hdr *) hdr;
--			if (frag_hdr->frag_off)
--				break;
- 			optlen = 8;
- 		} else if (nexthdr == NEXTHDR_AUTH) {
- 			optlen = ipv6_authlen(hdr);
- 		} else {
- 			optlen = ipv6_optlen(hdr);
- 		}
--		/* cache hdr->nexthdr, since pskb_may_pull() might
--		 * invalidate hdr
--		 */
--		next = hdr->nexthdr;
--		if (nexthdr == NEXTHDR_DEST) {
--			u16 i = 2;
- 
--			/* Remember : hdr is no longer valid at this point. */
--			if (!pskb_may_pull(skb, off + optlen))
-+		if (!pskb_may_pull(skb, off + optlen))
-+			break;
-+
-+		hdr = (struct ipv6_opt_hdr *)(skb->data + off);
-+		if (nexthdr == NEXTHDR_FRAGMENT) {
-+			struct frag_hdr *frag_hdr = (struct frag_hdr *)hdr;
-+
-+			if (frag_hdr->frag_off)
- 				break;
-+		}
-+		if (nexthdr == NEXTHDR_DEST) {
-+			u16 i = 2;
- 
- 			while (1) {
- 				struct ipv6_tlv_tnl_enc_lim *tel;
-@@ -449,7 +449,7 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff *skb, __u8 *raw)
- 					i++;
- 			}
- 		}
--		nexthdr = next;
-+		nexthdr = hdr->nexthdr;
- 		off += optlen;
- 	}
- 	return 0;
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index b1016ccdf032..30e18ce54921 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -2533,7 +2533,8 @@ gpu: gpu@3d00000 {
+ 				    "cx_mem",
+ 				    "cx_dbgc";
+ 			interrupts = <GIC_SPI 300 IRQ_TYPE_LEVEL_HIGH>;
+-			iommus = <&adreno_smmu 0 0x401>;
++			iommus = <&adreno_smmu 0 0x400>,
++				 <&adreno_smmu 1 0x400>;
+ 			operating-points-v2 = <&gpu_opp_table>;
+ 			qcom,gmu = <&gmu>;
+ 			interconnects = <&gem_noc MASTER_GFX3D 0 &mc_virt SLAVE_EBI1 0>;
 -- 
 2.43.0
 
