@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4716E83820B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:17:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3326838502
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:38:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE883287981
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E9A5B28ADF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3323057332;
-	Tue, 23 Jan 2024 01:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AF36D1BB;
+	Tue, 23 Jan 2024 02:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flGCzJoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mj4F5bbc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E272351C44;
-	Tue, 23 Jan 2024 01:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1FD6A354;
+	Tue, 23 Jan 2024 02:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974043; cv=none; b=PEaMxQbT4h80O4ETF5pfqybKpUtYQ1ePTAaLNrXcQS8CD4bwRnTEfVav8fzxdVYF9Wybjgu+1/L8QdoIqkIpsblBo9XQqR5GV+xarfTqtN/IT4Gy2iR8+1ToDWG499bArsfMfZv0amnIBBVcmDQgdNO3creBG5tZChNwLqFxcIE=
+	t=1705975384; cv=none; b=aqDOGZGrlrWcrR6WJVqa6OQCKSBfnmwNmuW7TA1ZEk/MvRjfepY2GTvGWbrj2mWRhNfs4A7P7FnfklSVT9BRWx0KIwP2lANXAJKEgWV4pTnUNW7C+ZYVMU2s+C6S5w7ShJPk2NHLMqy5srG9WKLgyDufFLaaKZ6LyphAvYns+8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974043; c=relaxed/simple;
-	bh=+iFnuB3Z1acTQWdjwVuB4kkVwBVxbx4VPpyYBHoyBNA=;
+	s=arc-20240116; t=1705975384; c=relaxed/simple;
+	bh=YKnyTpkxEz5tIdx0zhphyusDi25TKhWYSvUE6+o3J5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHitbUHQHEHwotJoaOViD84/7LJxv69M53n2ZT1qknU8piyjLfISRx7/hfO1gQLpuEkor6F3U+exgf782135DOUbaqmA45HK7rigRDVN8WpxgWiEQN9fD0jsZ9YJhxgNmXJi74SzgUmsCXG8q0TBlaoWAPtXMi1Cu4EChpYspGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flGCzJoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F8C3C43390;
-	Tue, 23 Jan 2024 01:40:42 +0000 (UTC)
+	 MIME-Version; b=IYy/J1WoHQtuVAPG2msii50W5kmjx/VraA2dHtvIU5Uc34T5PqyV1cVBWx8IHHUB/4iycGL2JMKInG69/s7Arl0bLtSY87+eV+ryj1GeeW5tqxN2iB5oIsdf+lomjs8GT7KZtqFDnBNPU+R/e9/bM1p+VjBKB6x+YvCpadMIZ1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mj4F5bbc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68BC6C43394;
+	Tue, 23 Jan 2024 02:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974042;
-	bh=+iFnuB3Z1acTQWdjwVuB4kkVwBVxbx4VPpyYBHoyBNA=;
+	s=korg; t=1705975383;
+	bh=YKnyTpkxEz5tIdx0zhphyusDi25TKhWYSvUE6+o3J5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=flGCzJoQNl73yMSiqdJCrIetiZ/UhkiKm+GM29+pR1Do58Lorud9HZbuCvwcHsR1+
-	 SPx28b0QDBsWMhErNICs2lpxrMehtft09uHLY4PYbvCfejWKsxrsU7PU504hiwiloz
-	 nnJocIqY4xD88grVIdy+FxX53KmOWacJ8Z70U+bQ=
+	b=Mj4F5bbc8D5UIgvEIIo5wdH2WABcizAfiIRgrSCFCOELiJIwrZcyFhOSVVCBPKTvX
+	 1y/L8SZnVRjiNex+TMcz5IpMCWcM4brHKraijUYPmThedzh5sz++DgPQXiLbuHduH6
+	 YPx9v2yvrYFBAxY0rbJYEt5C/iHNioKxawQXG2Ro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/374] arm64: dts: qcom: sdm845-db845c: correct LED panic indicator
-Date: Mon, 22 Jan 2024 15:56:34 -0800
-Message-ID: <20240122235749.438867631@linuxfoundation.org>
+	Jordan Rome <linux@jordanrome.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Stanislav Fomichev <sdf@google.com>
+Subject: [PATCH 6.6 344/583] selftests/bpf: Add assert for user stacks in test_task_stack
+Date: Mon, 22 Jan 2024 15:56:35 -0800
+Message-ID: <20240122235822.557898040@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jordan Rome <linux@jordanrome.com>
 
-[ Upstream commit 0c90c75e663246203a2b7f6dd9e08a110f4c3c43 ]
+commit 727a92d62fd6a382b4c5972008e45667e707b0e4 upstream.
 
-There is no "panic-indicator" default trigger but a property with that
-name:
+This is a follow up to:
+commit b8e3a87a627b ("bpf: Add crosstask check to __bpf_get_stack").
 
-  sdm845-db845c.dtb: leds: led-0: Unevaluated properties are not allowed ('linux,default-trigger' was unexpected)
+This test ensures that the task iterator only gets a single
+user stack (for the current task).
 
-Fixes: 3f72e2d3e682 ("arm64: dts: qcom: Add Dragonboard 845c")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231111095617.16496-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jordan Rome <linux@jordanrome.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Stanislav Fomichev <sdf@google.com>
+Link: https://lore.kernel.org/bpf/20231112023010.144675-1-linux@jordanrome.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-db845c.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/bpf_iter.c       |    2 ++
+ tools/testing/selftests/bpf/progs/bpf_iter_task_stack.c |    5 +++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
-index 5ce270f0b2ec..62877311e5c2 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
-@@ -55,8 +55,8 @@ leds {
- 		user4 {
- 			label = "green:user4";
- 			gpios = <&pm8998_gpio 13 GPIO_ACTIVE_HIGH>;
--			linux,default-trigger = "panic-indicator";
- 			default-state = "off";
-+			panic-indicator;
- 		};
+--- a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
++++ b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
+@@ -334,6 +334,8 @@ static void test_task_stack(void)
+ 	do_dummy_read(skel->progs.dump_task_stack);
+ 	do_dummy_read(skel->progs.get_task_user_stacks);
  
- 		wlan {
--- 
-2.43.0
-
++	ASSERT_EQ(skel->bss->num_user_stacks, 1, "num_user_stacks");
++
+ 	bpf_iter_task_stack__destroy(skel);
+ }
+ 
+--- a/tools/testing/selftests/bpf/progs/bpf_iter_task_stack.c
++++ b/tools/testing/selftests/bpf/progs/bpf_iter_task_stack.c
+@@ -35,6 +35,8 @@ int dump_task_stack(struct bpf_iter__tas
+ 	return 0;
+ }
+ 
++int num_user_stacks = 0;
++
+ SEC("iter/task")
+ int get_task_user_stacks(struct bpf_iter__task *ctx)
+ {
+@@ -51,6 +53,9 @@ int get_task_user_stacks(struct bpf_iter
+ 	if (res <= 0)
+ 		return 0;
+ 
++	/* Only one task, the current one, should succeed */
++	++num_user_stacks;
++
+ 	buf_sz += res;
+ 
+ 	/* If the verifier doesn't refine bpf_get_task_stack res, and instead
 
 
 
