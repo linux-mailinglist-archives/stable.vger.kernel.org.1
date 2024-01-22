@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-14310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F2A838060
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 237BA838004
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB8611C29521
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA4151F2B998
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006B867749;
-	Tue, 23 Jan 2024 01:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9BDD12DD98;
+	Tue, 23 Jan 2024 00:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5mFsd/j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxyEPfSi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B347166B52;
-	Tue, 23 Jan 2024 01:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9878212DD97;
+	Tue, 23 Jan 2024 00:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971692; cv=none; b=me3aJj6rHukn67Qm5PcF5AnsoMq3KRseDkbkOE8MfGgpwMm+eqCcGuCsY6Jum7hqkDuVB1TJz3EnmW7AwDNfV1Huu/qHa6I2t7AHJues/nq/zdrPjKChI/nW7VwXxl5JzB50v1OQCdo0oGzjBlbc1+eYDiMmdd6b+b8jYMaBfM0=
+	t=1705971497; cv=none; b=i+3yHGAn2pZttO7NE7IXfdiWzdVW/LpcuEy+d45vU2aUMbnNpvGtFG9dDyHjLMpJiZOPDdrPCMC9DbyMP69uNaz29Gl5ZZ6S/G05llg+M7iP9y13YDaUy2mM+TSoObBXG9leQFO9PA6Ic1bKgdEWyYEnKIqAyTVlRZdUdoRhDdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971692; c=relaxed/simple;
-	bh=eZN7VyBFepHO5ONq+niQBqnknaQHyd1QeCdmSkzyO1c=;
+	s=arc-20240116; t=1705971497; c=relaxed/simple;
+	bh=fsTz/IzbLsg0/J1MKWx6NpUML/6fJmz6CTmwWHKMTkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mcjJOufcBUNhnaBolohBKLOuvNX5ll2d/hXpeC9eVMe5WDWagX2X/9FREV5r06esSJCzwkiTJnZMPzRqZSWBc4NxsVqZF1s1Wl8/MI0c0rjue9dutTyTaJy2tz2THVPIZY4MXJUk4JMZCAXyZaXsln1AwLWHi1tIU7stQYALkdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5mFsd/j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E74AC433C7;
-	Tue, 23 Jan 2024 01:01:32 +0000 (UTC)
+	 MIME-Version; b=eTh9jUvVn214ZnJmL2DBo5btbqJDtXmDKwxi2opgOaaHsbqBVU9pBxTWMV3Jvh1RWbIYHYeBBM4GOD3zTp3n9sRrNRj/3Z7V6ptW6n+tem8W2lq5wDwbxNiH1q6bt7cAZrOEjR5bVA7L+M56a5YZWvw6dH7QNQkjvGHHHAXtYxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oxyEPfSi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31724C433F1;
+	Tue, 23 Jan 2024 00:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971692;
-	bh=eZN7VyBFepHO5ONq+niQBqnknaQHyd1QeCdmSkzyO1c=;
+	s=korg; t=1705971497;
+	bh=fsTz/IzbLsg0/J1MKWx6NpUML/6fJmz6CTmwWHKMTkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5mFsd/jqF6ndscGBmnmj5T55iOFg288oXCUVCf9qrVuPuZefTjp/xSj9eT+i79Jz
-	 ntCHYA3fy3lrXcD3k2+PynW45lX0fyXJDCJwGDDKilsy9Ym+mijy1ASmKz07OtvLpE
-	 Qc96yCRpJ0ZIIaoI3gfKhqp0OkUqdBiLN9kw1a2E=
+	b=oxyEPfSi8vXizqMMLr1WL0qm9KFavcDidAycaMwg7MOi8A9k964CBWoIcZQQ2SlRF
+	 CRYs/g+vNMiN9RkELZztIQyTxikP44UFrPNlhEz0TpSBNGrz246s+fLMdRmx5T0qUh
+	 MzuA4W4o1vdC7JG0GQiY63EtzOJZJdGvZIVmjSjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: [PATCH 6.1 299/417] pwm: Fix out-of-bounds access in of_pwm_single_xlate()
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 161/286] drm/radeon/dpm: fix a memleak in sumo_parse_power_table
 Date: Mon, 22 Jan 2024 15:57:47 -0800
-Message-ID: <20240122235802.185648308@linuxfoundation.org>
+Message-ID: <20240122235738.369812300@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,40 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-commit a297d07b9a1e4fb8cda25a4a2363a507d294b7c9 upstream.
+[ Upstream commit 0737df9ed0997f5b8addd6e2b9699a8c6edba2e4 ]
 
-With args->args_count == 2 args->args[2] is not defined. Actually the
-flags are contained in args->args[1].
+The rdev->pm.dpm.ps allocated by kcalloc should be freed in every
+following error-handling path. However, in the error-handling of
+rdev->pm.power_state[i].clock_info the rdev->pm.dpm.ps is not freed,
+resulting in a memleak in this function.
 
-Fixes: 3ab7b6ac5d82 ("pwm: Introduce single-PWM of_xlate function")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/243908750d306e018a3d4bf2eb745d53ab50f663.1704835845.git.u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 80ea2c129c76 ("drm/radeon/kms: add dpm support for sumo asics (v2)")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/sumo_dpm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/pwm/core.c
-+++ b/drivers/pwm/core.c
-@@ -171,7 +171,7 @@ of_pwm_single_xlate(struct pwm_chip *pc,
- 	pwm->args.period = args->args[0];
- 	pwm->args.polarity = PWM_POLARITY_NORMAL;
- 
--	if (args->args_count == 2 && args->args[2] & PWM_POLARITY_INVERTED)
-+	if (args->args_count == 2 && args->args[1] & PWM_POLARITY_INVERTED)
- 		pwm->args.polarity = PWM_POLARITY_INVERSED;
- 
- 	return pwm;
+diff --git a/drivers/gpu/drm/radeon/sumo_dpm.c b/drivers/gpu/drm/radeon/sumo_dpm.c
+index b95d5d390caf..45d04996adf5 100644
+--- a/drivers/gpu/drm/radeon/sumo_dpm.c
++++ b/drivers/gpu/drm/radeon/sumo_dpm.c
+@@ -1493,8 +1493,10 @@ static int sumo_parse_power_table(struct radeon_device *rdev)
+ 		non_clock_array_index = power_state->v2.nonClockInfoIndex;
+ 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
+ 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
+-		if (!rdev->pm.power_state[i].clock_info)
++		if (!rdev->pm.power_state[i].clock_info) {
++			kfree(rdev->pm.dpm.ps);
+ 			return -EINVAL;
++		}
+ 		ps = kzalloc(sizeof(struct sumo_ps), GFP_KERNEL);
+ 		if (ps == NULL) {
+ 			kfree(rdev->pm.dpm.ps);
+-- 
+2.43.0
+
 
 
 
