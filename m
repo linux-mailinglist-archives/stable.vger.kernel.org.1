@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-13992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61CB1837F14
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A8DB83845F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95A581C2896A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D5651C2A160
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A348C60876;
-	Tue, 23 Jan 2024 00:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465B86D1AB;
+	Tue, 23 Jan 2024 02:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="en7USdTD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+owQZYA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617AE2A1AA;
-	Tue, 23 Jan 2024 00:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FEA6BB56;
+	Tue, 23 Jan 2024 02:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970925; cv=none; b=qUj/gDztKo0mC/nNcwtB8vZyMa6XxPbsr037ihG+Wa1vJYqFXz4POwoxq7M/RuvCNyBTKIz/iKgUWirrOILAi/tMpvS13ZpDE2jzgkHSfQXI2ZupmOY+twmuyqoYTiHO12mp8W+zvWLGkm/cHoLGjCXTK3K3DmfBiuHVZRMysIA=
+	t=1705975374; cv=none; b=ozVESRqgIlr0ZGhKqQPKV+S36RxspTJpwrqm19IRtOpr4gXbSC0ZpATmJ9fUeMKijqve97ELh7uqwaQ3RQVfgTKzizg/DrWv+lF1h5DvDMJODrSdP/mobDXayeytq5l1x1twP87KphOrPuR2136cLbjGQu5wD6XxJ441zcyfx3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970925; c=relaxed/simple;
-	bh=ZRwtnAB1m4Pes1L4jwNVT6a15TgmFOV714fFEZyT0RA=;
+	s=arc-20240116; t=1705975374; c=relaxed/simple;
+	bh=xh9X1SVwAgyye3nEqvfMTz5PS26iUAPWX4VFm8KkMRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WUrBCc2+6SZxA9CowJ74KxfEh60OOWEikU+rPMCIVGop/8wo6NbFN56VWMA37SmfQvko7NAfRYpuLf5mDte0TIawVQXbiEhZhN6i5+qu1jGBDwpovfA9DO6Y4vYjPosQlrVmlGwzgBoQMV+a3QCJivpTnFiRVJS18ev0mfJL3Rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=en7USdTD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9CC1C433C7;
-	Tue, 23 Jan 2024 00:48:44 +0000 (UTC)
+	 MIME-Version; b=FNCkNtvYOSeIp+8w2g5sgV/FftF0NdhOHXbEjAKcPnC7WBnioBh8wXhoen2ee4JI8/25fJnRhS7Q8vS9ydZ2LKK2Ju0r9ebOwMwrVJpdGvfePgj80aX7wACmGoe2QXO9vMD2ijO5os27SCCkrj0++3xJiTvvl4StaZ/W9dTSPP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+owQZYA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF67DC433A6;
+	Tue, 23 Jan 2024 02:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970925;
-	bh=ZRwtnAB1m4Pes1L4jwNVT6a15TgmFOV714fFEZyT0RA=;
+	s=korg; t=1705975373;
+	bh=xh9X1SVwAgyye3nEqvfMTz5PS26iUAPWX4VFm8KkMRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=en7USdTDDAhfnd3ZEE/S7w9UJf8Uor3pXrY/lcqia8ccnQRTxDg7pIhLE6Q/lg0oO
-	 t3u1wSNOo74JuKDUVnqRcW3CzFU8M/LeSorjIAeieczbXvb0V441h82esibtDjHhvo
-	 J0Z1KGKJRXWp7uqFDc/TdvPZYV7LXtpKnPxxig/I=
+	b=c+owQZYAW7sfA3vP5zVbWvZiRPgDn1UrylRLi/xkd4YZzBTow0pSB9d8OWztSZEs0
+	 deVCOcRW6/lo2a7PJeowqhpzmfE0bWvAMvCLnEOzrqIr0in8lLO6fYPYduo2tHqg4l
+	 C0o5wdh6S8LjwfemP8Ov25298HwkHysdOOVuJLIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cameron Williams <cang1@live.co.uk>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH 5.10 046/286] parport: parport_serial: Add Brainboxes device IDs and geometry
+	Jerry Hoemann <jerry.hoemann@hpe.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 301/583] watchdog/hpwdt: Only claim UNKNOWN NMI if from iLO
 Date: Mon, 22 Jan 2024 15:55:52 -0800
-Message-ID: <20240122235733.805746276@linuxfoundation.org>
+Message-ID: <20240122235821.225910633@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Jerry Hoemann <jerry.hoemann@hpe.com>
 
-commit 6aa1fc5a8085bbc01687aa708dcf2dbe637a5ee3 upstream.
+[ Upstream commit dced0b3e51dd2af3730efe14dd86b5e3173f0a65 ]
 
-Add device IDs for the Brainboxes UC-203, UC-257, UC-414, UC-475,
-IS-300/IS-500 and PX-263/PX-295 and define the relevant "geometry"
-for the cards.
-This patch requires part 1 of this series.
+Avoid unnecessary crashes by claiming only NMIs that are due to
+ERROR signalling or generated by the hpwdt hardware device.
 
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Link: https://lore.kernel.org/r/AS4PR02MB7903A4094564BE28F1F926A6C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The code does this, but only for iLO5.
+
+The intent was to preserve legacy, Gen9 and earlier, semantics of
+using hpwdt for error containtment as hardware/firmware would signal
+fatal IO errors as an NMI with the expectation of hpwdt crashing
+the system.  Howerver, these IO errors should be received by hpwdt
+as an NMI_IO_CHECK.  So the test is overly permissive and should
+not be limited to only ilo5.
+
+We need to enable this protection for future iLOs not matching the
+current PCI IDs.
+
+Fixes: 62290a5c194b ("watchdog: hpwdt: Claim NMIs generated by iLO5")
+Signed-off-by: Jerry Hoemann <jerry.hoemann@hpe.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20231213215340.495734-2-jerry.hoemann@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parport/parport_serial.c |   56 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ drivers/watchdog/hpwdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/parport/parport_serial.c
-+++ b/drivers/parport/parport_serial.c
-@@ -285,6 +285,38 @@ static struct pci_device_id parport_seri
- 	{ PCI_VENDOR_ID_SUNIX, PCI_DEVICE_ID_SUNIX_1999, PCI_VENDOR_ID_SUNIX,
- 	  0x0104, 0, 0, sunix_5099a },
+diff --git a/drivers/watchdog/hpwdt.c b/drivers/watchdog/hpwdt.c
+index f79f932bca14..79ed1626d8ea 100644
+--- a/drivers/watchdog/hpwdt.c
++++ b/drivers/watchdog/hpwdt.c
+@@ -178,7 +178,7 @@ static int hpwdt_pretimeout(unsigned int ulReason, struct pt_regs *regs)
+ 		"3. OA Forward Progress Log\n"
+ 		"4. iLO Event Log";
  
-+	/* Brainboxes UC-203 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc1,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc2,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+
-+	/* Brainboxes UC-257 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0861,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0862,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0863,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+
-+	/* Brainboxes UC-414 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0e61,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc414 },
-+
-+	/* Brainboxes UC-475 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0981,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0982,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+
-+	/* Brainboxes IS-300/IS-500 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0da0,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_is300 },
-+
-+	/* Brainboxes PX-263/PX-295 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x402c,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_px263 },
-+
- 	{ 0, } /* terminate list */
- };
- MODULE_DEVICE_TABLE(pci,parport_serial_pci_tbl);
-@@ -550,6 +582,30 @@ static struct pciserial_board pci_parpor
- 		.base_baud      = 921600,
- 		.uart_offset	= 0x8,
- 	},
-+	[brainboxes_uc257] = {
-+		.flags		= FL_BASE2,
-+		.num_ports	= 2,
-+		.base_baud	= 115200,
-+		.uart_offset	= 8,
-+	},
-+	[brainboxes_is300] = {
-+		.flags		= FL_BASE2,
-+		.num_ports	= 1,
-+		.base_baud	= 115200,
-+		.uart_offset	= 8,
-+	},
-+	[brainboxes_uc414] = {
-+		.flags		= FL_BASE2,
-+		.num_ports	= 4,
-+		.base_baud	= 115200,
-+		.uart_offset	= 8,
-+	},
-+	[brainboxes_px263] = {
-+		.flags		= FL_BASE2,
-+		.num_ports	= 4,
-+		.base_baud	= 921600,
-+		.uart_offset	= 8,
-+	},
- };
+-	if (ilo5 && ulReason == NMI_UNKNOWN && !mynmi)
++	if (ulReason == NMI_UNKNOWN && !mynmi)
+ 		return NMI_DONE;
  
- struct parport_serial_private {
+ 	if (ilo5 && !pretimeout && !mynmi)
+-- 
+2.43.0
+
 
 
 
