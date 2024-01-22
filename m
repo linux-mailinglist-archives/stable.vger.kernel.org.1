@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8CEA838364
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88D6483855D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ECC11F27631
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B953B2E294
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E36A62808;
-	Tue, 23 Jan 2024 01:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8177A710;
+	Tue, 23 Jan 2024 02:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6atLUkl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylVjtb2L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB74627EB;
-	Tue, 23 Jan 2024 01:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8AD7A705;
+	Tue, 23 Jan 2024 02:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974956; cv=none; b=aPwd4GEoJKKuiy1WchVyFa0I7/qHaH+70FHhqr9fQDbD/nxedA3pHKqoFkFN3s5aPZ5v5Isd/SIyUaFQKBSAXr/uaZEJKk4kxiLiqNavdbrTWldHgDwL1wvpm6nCN7PMEHKH89EernZXAXMaNsIMTy+TYnUEJHm+n9SvaTK3PLU=
+	t=1705975549; cv=none; b=i8lFQ0qU/LVaFc/st6Yd1v5IoMAppq9gfcH/z07ZPLxM/jmt+zZ+T0yRY7CrbjN4FmIeGQ4PTSj70sQY4lS3U+776Tcmz7eZ8GWKbkaXkYu5fG0riqhCGuG5uceRjLQIqB90RgwDGbf6pqtSrV5dDBrZ7F69KUcCbbNWvXAcUSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974956; c=relaxed/simple;
-	bh=5dC63xg5skpxfFm1oUtqzTpZj7bbWponPypZl8YJ/XU=;
+	s=arc-20240116; t=1705975549; c=relaxed/simple;
+	bh=evH1+6OjTDYSW0MtpfK18ZcUyKR3SzPc6zwBiFR4Kzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VO2ohU+iufcKU3SPc29nA+1xsjhBgvvJpim6zs4Yi7e+s+F6mqI/jJbivvGVBZTWuVFl9UzStDpfQn47IG7GNoWRiW2cUU6LXePynNlajHNCURUyT6HvFGXHpLvQ0acZMg/4yuygpkEiyJ0mkbv4BryR+bOp9bZ07QdKs8vCWcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6atLUkl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA41C433B2;
-	Tue, 23 Jan 2024 01:55:55 +0000 (UTC)
+	 MIME-Version; b=Q9WLXyRB7728mBkDj3dsazPLv+Ti3WUr2An9ty03SXzCkRnwJ/AlvdPVx24Vpif95INJPLdEd1vlLLPLMEyQPAR9Nd+uIToJuNfehTi1WRLVulnp8kx4pu9xgevhAgCOAn0MlErmx/impqhPK66wExS6qC0y7ZoM6nR8kBN8wrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylVjtb2L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B2DC433B1;
+	Tue, 23 Jan 2024 02:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974955;
-	bh=5dC63xg5skpxfFm1oUtqzTpZj7bbWponPypZl8YJ/XU=;
+	s=korg; t=1705975549;
+	bh=evH1+6OjTDYSW0MtpfK18ZcUyKR3SzPc6zwBiFR4Kzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t6atLUkl9rz6hRKfluELlg02pXQy2wxMaqrl1bbhMeLJbPCK2AC+CkNQNGR2YKlRF
-	 R7mcoIypQh1R59JedBzTJBgnVAD2L9j4gv0ktpKwSRVufRbbZzYbqLbf//vzX5kVm5
-	 BzOF1soBqlx7bqwqUnrHfmfKSyGymLnwnFikKjtM=
+	b=ylVjtb2LpVY39M6lb97YEK7RjBm746XJxMIBzc6a6uw+W5jF3jH9/p4KI89gB5W0v
+	 waFHS573ZjnduR18plalNZoScn8d4DpZFtIF9kd1P6SQmUAvgtmtT9/AspjaURf/LB
+	 13KU1YPYvlhUIbQdrVckTH4/lFPgxzGyylUnc4kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 295/374] mips: dmi: Fix early remap on MIPS32
+Subject: [PATCH 6.6 500/583] power: supply: Fix null pointer dereference in smb2_probe
 Date: Mon, 22 Jan 2024 15:59:11 -0800
-Message-ID: <20240122235755.044482226@linuxfoundation.org>
+Message-ID: <20240122235827.335886353@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Serge Semin <fancer.lancer@gmail.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 0d0a3748a2cb38f9da1f08d357688ebd982eb788 ]
+[ Upstream commit 88f04bc3e737155e13caddf0ba8ed19db87f0212 ]
 
-dmi_early_remap() has been defined as ioremap_cache() which on MIPS32 gets
-to be converted to the VM-based mapping. DMI early remapping is performed
-at the setup_arch() stage with no VM available. So calling the
-dmi_early_remap() for MIPS32 causes the system to crash at the early boot
-time. Fix that by converting dmi_early_remap() to the uncached remapping
-which is always available on both 32 and 64-bits MIPS systems.
+devm_kasprintf and devm_kzalloc return a pointer to dynamically
+allocated memory which can be NULL upon failure.
 
-Note this change shall not cause any regressions on the current DMI
-support implementation because on the early boot-up stage neither MIPS32
-nor MIPS64 has the cacheable ioremapping support anyway.
-
-Fixes: be8fa1cb444c ("MIPS: Add support for Desktop Management Interface (DMI)")
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 8648aeb5d7b7 ("power: supply: add Qualcomm PMI8998 SMB2 Charger driver")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Link: https://lore.kernel.org/r/20231124075021.1335289-1-chentao@kylinos.cn
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/dmi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/qcom_pmi8998_charger.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/mips/include/asm/dmi.h b/arch/mips/include/asm/dmi.h
-index 27415a288adf..dc397f630c66 100644
---- a/arch/mips/include/asm/dmi.h
-+++ b/arch/mips/include/asm/dmi.h
-@@ -5,7 +5,7 @@
- #include <linux/io.h>
- #include <linux/memblock.h>
+diff --git a/drivers/power/supply/qcom_pmi8998_charger.c b/drivers/power/supply/qcom_pmi8998_charger.c
+index 10f4dd0caca1..22c7c0e7c522 100644
+--- a/drivers/power/supply/qcom_pmi8998_charger.c
++++ b/drivers/power/supply/qcom_pmi8998_charger.c
+@@ -973,10 +973,14 @@ static int smb2_probe(struct platform_device *pdev)
+ 	supply_config.of_node = pdev->dev.of_node;
  
--#define dmi_early_remap(x, l)		ioremap_cache(x, l)
-+#define dmi_early_remap(x, l)		ioremap(x, l)
- #define dmi_early_unmap(x, l)		iounmap(x)
- #define dmi_remap(x, l)			ioremap_cache(x, l)
- #define dmi_unmap(x)			iounmap(x)
+ 	desc = devm_kzalloc(chip->dev, sizeof(smb2_psy_desc), GFP_KERNEL);
++	if (!desc)
++		return -ENOMEM;
+ 	memcpy(desc, &smb2_psy_desc, sizeof(smb2_psy_desc));
+ 	desc->name =
+ 		devm_kasprintf(chip->dev, GFP_KERNEL, "%s-charger",
+ 			       (const char *)device_get_match_data(chip->dev));
++	if (!desc->name)
++		return -ENOMEM;
+ 
+ 	chip->chg_psy =
+ 		devm_power_supply_register(chip->dev, desc, &supply_config);
 -- 
 2.43.0
 
