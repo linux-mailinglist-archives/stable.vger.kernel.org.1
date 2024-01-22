@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-13714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890C8837D84
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67BBF837FB6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 402061F221A6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92E1C1C29280
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A291751003;
-	Tue, 23 Jan 2024 00:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50E864CD5;
+	Tue, 23 Jan 2024 00:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7q0//p0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3uZNyc1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619E94E1D8;
-	Tue, 23 Jan 2024 00:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C0064CD2;
+	Tue, 23 Jan 2024 00:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969999; cv=none; b=BHO8QN3/eqo9o88PVCmwIQvOGjBfsR1WQ0+fv6IL55YVl0rkbIXkynRlJmbNFOGkBgkpmPjVuRb3bTo5jxBMQyeSW3cnoCEubindo8/oUXhp2rNGFSiJnD8TZZFGZ5zM2YpAm+D7m+F8lUM7QzYD9RTJsbnDd+3y1tFy2APgqd0=
+	t=1705971309; cv=none; b=XKvhSym3CnMhNPy9Q0znrWGCvoeuveWkn14N45yynVe0NFvAxyrwxJgEani8UBtSxQE4F7hYQZgLIaZ3fEeBgnhaTsvVHnPW42kFqGYtL1XXG0X7/tiIdZ/oi78AadKvlrx973OizDDBa/Yvzr4d7+SJlvESX0KmH3vUW2xelPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969999; c=relaxed/simple;
-	bh=fLymaInPtAAwgoeZ5VsdNsz2ncoVA5YtzUPECDyXJiY=;
+	s=arc-20240116; t=1705971309; c=relaxed/simple;
+	bh=iSojQnEz6nOn8dYQ5+tZvBTUvS1mgrkgbqneY2jE8sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ManCQGqahdLWrpeiAnkVAxLPuz1FHWNdMQIz8z9MwWI99qfG3exwlQK4s2+FvQMJ20RDHmrpbkKL9EHBq1Nkq5wmAMczdPc14mQ9HmIO5AX69jKxT9pqR7/Z4Aar4ynrEyKn+k6kuhIinkr95mbJH0T+MoXsOySWRYqQJfI+hSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7q0//p0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25B9C433C7;
-	Tue, 23 Jan 2024 00:33:18 +0000 (UTC)
+	 MIME-Version; b=eHAdDx5WHgZsdNnPOtUuuetyRGXdqTbink7nVkrkxYsRCIw3m4hqoLGa9UNqNpHTxFlio2dLdIw+VOD0cPraqJ+Lb5FtQC62eirKUSU7XDISUYQNbswdkVD9IjknmHquEV1k/jCRDGAmBqLg9ze+4BEMovbxsqPt4FViXzD8h7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3uZNyc1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D837C433C7;
+	Tue, 23 Jan 2024 00:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969999;
-	bh=fLymaInPtAAwgoeZ5VsdNsz2ncoVA5YtzUPECDyXJiY=;
+	s=korg; t=1705971309;
+	bh=iSojQnEz6nOn8dYQ5+tZvBTUvS1mgrkgbqneY2jE8sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7q0//p0A+BPoI++MIWnq1VOE1DkL1P+SEAFIRUvr9QyHxTGSfIMyP10/6j1nBa8v
-	 M3ieD9UU6TgkMIPYV21UTmQd2l1Tkv3CzxmOAGEy97O8Ao0EpIBOBrFPND449muzvV
-	 mAXe6B/87ccghWotQSjPR2oaIIKSCEtNb1ZvAiyk=
+	b=l3uZNyc1Emu2uRzQgkW10J5D1nHAdOavvaRib548JPextXlABNdPh+9Zt0Je9/UYT
+	 qfUiRjI7OrwCFmKWzzjE5ZTQuCzk5TEudGnEjQFrllRNQeBlyp5WIt387TyiB//F1i
+	 ocv6rRxX7Mfjori2GN8xYuAqlAvfD508u19rVxpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Fangrui Song <maskray@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Lieven Hey <lieven.hey@kdab.com>,
-	Milian Wolff <milian.wolff@kdab.com>,
-	Pablo Galindo <pablogsal@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 534/641] perf genelf: Set ELF program header addresses properly
+Subject: [PATCH 5.10 132/286] wifi: rtlwifi: rtl8192c: using calculate_bit_shift()
 Date: Mon, 22 Jan 2024 15:57:18 -0800
-Message-ID: <20240122235834.826824581@linuxfoundation.org>
+Message-ID: <20240122235737.237659922@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,52 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 1af478903fc48c1409a8dd6b698383b62387adf1 ]
+[ Upstream commit 1dedc3a6699d827d345019e921b8d8f37f694333 ]
 
-The text section starts after the ELF headers so PHDR.p_vaddr and
-others should have the correct addresses.
+Using calculate_bit_shift() to replace _rtl92c_phy_calculate_bit_shift().
+And fix the undefined bitwise shift behavior problem.
 
-Fixes: babd04386b1df8c3 ("perf jit: Include program header in ELF files")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Fangrui Song <maskray@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Lieven Hey <lieven.hey@kdab.com>
-Cc: Milian Wolff <milian.wolff@kdab.com>
-Cc: Pablo Galindo <pablogsal@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231212070547.612536-2-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 4295cd254af3 ("rtlwifi: Move common parts of rtl8192ce/phy.c")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-5-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/genelf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../wireless/realtek/rtlwifi/rtl8192c/phy_common.c   | 12 ++----------
+ .../wireless/realtek/rtlwifi/rtl8192c/phy_common.h   |  1 -
+ 2 files changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/tools/perf/util/genelf.c b/tools/perf/util/genelf.c
-index fefc72066c4e..ac17a3cb59dc 100644
---- a/tools/perf/util/genelf.c
-+++ b/tools/perf/util/genelf.c
-@@ -293,9 +293,9 @@ jit_write_elf(int fd, uint64_t load_addr, const char *sym,
- 	 */
- 	phdr = elf_newphdr(e, 1);
- 	phdr[0].p_type = PT_LOAD;
--	phdr[0].p_offset = 0;
--	phdr[0].p_vaddr = 0;
--	phdr[0].p_paddr = 0;
-+	phdr[0].p_offset = GEN_ELF_TEXT_OFFSET;
-+	phdr[0].p_vaddr = GEN_ELF_TEXT_OFFSET;
-+	phdr[0].p_paddr = GEN_ELF_TEXT_OFFSET;
- 	phdr[0].p_filesz = csize;
- 	phdr[0].p_memsz = csize;
- 	phdr[0].p_flags = PF_X | PF_R;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
+index 3d29c8dbb255..144ee780e1b6 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
+@@ -17,7 +17,7 @@ u32 rtl92c_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE, "regaddr(%#x), bitmask(%#x)\n",
+ 		regaddr, bitmask);
+ 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	returnvalue = (originalvalue & bitmask) >> bitshift;
+ 
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+@@ -40,7 +40,7 @@ void rtl92c_phy_set_bb_reg(struct ieee80211_hw *hw,
+ 
+ 	if (bitmask != MASKDWORD) {
+ 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-		bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
+ 	}
+ 
+@@ -143,14 +143,6 @@ void _rtl92c_phy_rf_serial_write(struct ieee80211_hw *hw,
+ }
+ EXPORT_SYMBOL(_rtl92c_phy_rf_serial_write);
+ 
+-u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask)
+-{
+-	u32 i = ffs(bitmask);
+-
+-	return i ? i - 1 : 32;
+-}
+-EXPORT_SYMBOL(_rtl92c_phy_calculate_bit_shift);
+-
+ static void _rtl92c_phy_bb_config_1t(struct ieee80211_hw *hw)
+ {
+ 	rtl_set_bbreg(hw, RFPGA0_TXINFO, 0x3, 0x2);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h
+index 75afa6253ad0..e64d377dfe9e 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h
+@@ -196,7 +196,6 @@ bool rtl92c_phy_set_rf_power_state(struct ieee80211_hw *hw,
+ void rtl92ce_phy_set_rf_on(struct ieee80211_hw *hw);
+ void rtl92c_phy_set_io(struct ieee80211_hw *hw);
+ void rtl92c_bb_block_on(struct ieee80211_hw *hw);
+-u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask);
+ long _rtl92c_phy_txpwr_idx_to_dbm(struct ieee80211_hw *hw,
+ 				  enum wireless_mode wirelessmode,
+ 				  u8 txpwridx);
 -- 
 2.43.0
 
