@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2838383D0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4449838154
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C93A1C295CA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D72781C2917B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A03564CE9;
-	Tue, 23 Jan 2024 01:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7143214A0BD;
+	Tue, 23 Jan 2024 01:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x61emzHs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veL8+8jA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BC7651BC;
-	Tue, 23 Jan 2024 01:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319A014A0B5;
+	Tue, 23 Jan 2024 01:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975071; cv=none; b=hL3vEPintNf/LL92nrVNj3n2z90gUaS2kQdC7hgSYb9ntwSaWpnAOoW3CkL3jltoShTTtFPh27YhzwYbNyK/B/a+xT9fkg9p5CK3KmNeRIvVepz7Px4hERr/YfFB91yi+WBGoSRBEXQ+Y2Rw5GDp1MCsS7mJJP5kokAcKLKWnVE=
+	t=1705972102; cv=none; b=OT7wI+d3tIZUdvP4XfoOdqN9Jo67IhZhaFxfzk76lS28S2uNzbUT6zpxjzFgeRS7NS1tleiIPg7t1AT0u2PI7qW09DCy5Pj3PuBIsk22gpkMRsph0PWXNZU63WXBJxpe9jcUstWwlbayAd8PxMhNO9aRwe3DbGeBWYf6AxXv7BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975071; c=relaxed/simple;
-	bh=EU/2OLK3hhfPiS5Gi+r78raRDDiOXywCJDc4e/RmXy4=;
+	s=arc-20240116; t=1705972102; c=relaxed/simple;
+	bh=x2F03w3h0EO7EnuiM24/ncnyVO5+UpoMkDTkoBU1rdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yz/axlKA9waL1BQ0SppVZdKuE0WnI3grlg9XZnK234BzXQQKCBYc8TgadnB9cAXydhL0XyLz564CKhWvdhPcVHGqYJMkxaeHAjh9yOuGaF/K68snTOOB0YurQIutXEmSuBca6LicgJ1GP7Ri36hTiGLXc6KjDyil4d6Tjj6A+T0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x61emzHs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E023CC43394;
-	Tue, 23 Jan 2024 01:57:50 +0000 (UTC)
+	 MIME-Version; b=POBfa11ZZP+ggvwuL/asYKmM4eBm0S1auF6Q2xoV08tzoqrOvyrZM52N/O1HinguBS6sQnrRsYVtM+8YGxQV+9cK6I6OqVTe6SK4x14nwUE8eagCQ6p3tZuhsZ4cP8WBdcBiCS7s3Muvmh86eQulS4K15687XBaxF61S9Y6TM1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veL8+8jA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17798C43399;
+	Tue, 23 Jan 2024 01:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975071;
-	bh=EU/2OLK3hhfPiS5Gi+r78raRDDiOXywCJDc4e/RmXy4=;
+	s=korg; t=1705972101;
+	bh=x2F03w3h0EO7EnuiM24/ncnyVO5+UpoMkDTkoBU1rdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x61emzHsIgVTwlrECMfLLui3q+VD3f0iprK9TWgDnyoCAsbJxxTE4sxTLEqoOBOJr
-	 RRUanz09a6+DQag+JXnT//hZ+Uz3AaYF2HyEJBUw44yj6/z2SLjRVfs8TjTVGHLbhp
-	 F4YqyUdJ7KJuIxsqv+4QdEfy6NX451xBKookReRc=
+	b=veL8+8jANauTpw4w+0/4mvEWCkVIs7w9WWOfVhU7hiAqCrJJQOTOJg6srZh3tBJ9r
+	 tiy+4ZgcwkE2MNPTfJumZCupsu+34VpVQQifv1Db/chI120FXpjkwxb6xqewIHMqos
+	 VAIvp7h4ClRGhU8YwM3yMTfVHVHBf2LJVlLH23eQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Steven Price <steven.price@arm.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 225/583] drm/panfrost: Really power off GPU cores in panfrost_gpu_power_off()
-Date: Mon, 22 Jan 2024 15:54:36 -0800
-Message-ID: <20240122235818.890074201@linuxfoundation.org>
+Subject: [PATCH 5.15 021/374] drm/amdgpu: Add NULL checks for function pointers
+Date: Mon, 22 Jan 2024 15:54:37 -0800
+Message-ID: <20240122235745.362171641@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 22aa1a209018dc2eca78745f7666db63637cd5dc ]
+[ Upstream commit 81577503efb49f4ad76af22f9941d72900ef4aab ]
 
-The layout of the registers {TILER,SHADER,L2}_PWROFF_LO, used to request
-powering off cores, is the same as the {TILER,SHADER,L2}_PWRON_LO ones:
-this means that in order to request poweroff of cores, we are supposed
-to write a bitmask of cores that should be powered off!
-This means that the panfrost_gpu_power_off() function has always been
-doing nothing.
+Check if function is implemented before making the call.
 
-Fix powering off the GPU by writing a bitmask of the cores to poweroff
-to the relevant PWROFF_LO registers and then check that the transition
-(from ON to OFF) has finished by polling the relevant PWRTRANS_LO
-registers.
-
-While at it, in order to avoid code duplication, move the core mask
-logic from panfrost_gpu_power_on() to a new panfrost_get_core_mask()
-function, used in both poweron and poweroff.
-
-Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: Steven Price <steven.price@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231102141507.73481-1-angelogioacchino.delregno@collabora.com
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panfrost/panfrost_gpu.c | 64 ++++++++++++++++++-------
- 1 file changed, 46 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/soc15.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/panfrost/panfrost_gpu.c b/drivers/gpu/drm/panfrost/panfrost_gpu.c
-index d28b99732dde..e20619169fe1 100644
---- a/drivers/gpu/drm/panfrost/panfrost_gpu.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_gpu.c
-@@ -321,28 +321,38 @@ static void panfrost_gpu_init_features(struct panfrost_device *pfdev)
- 		 pfdev->features.shader_present, pfdev->features.l2_present);
+diff --git a/drivers/gpu/drm/amd/amdgpu/soc15.c b/drivers/gpu/drm/amd/amdgpu/soc15.c
+index 529bb6c6ac6f..e8c0e77e1b01 100644
+--- a/drivers/gpu/drm/amd/amdgpu/soc15.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
+@@ -1615,9 +1615,11 @@ static void soc15_common_get_clockgating_state(void *handle, u32 *flags)
+ 	if (amdgpu_sriov_vf(adev))
+ 		*flags = 0;
+ 
+-	adev->nbio.funcs->get_clockgating_state(adev, flags);
++	if (adev->nbio.funcs && adev->nbio.funcs->get_clockgating_state)
++		adev->nbio.funcs->get_clockgating_state(adev, flags);
+ 
+-	adev->hdp.funcs->get_clock_gating_state(adev, flags);
++	if (adev->hdp.funcs && adev->hdp.funcs->get_clock_gating_state)
++		adev->hdp.funcs->get_clock_gating_state(adev, flags);
+ 
+ 	if (adev->asic_type != CHIP_ALDEBARAN) {
+ 
+@@ -1633,9 +1635,11 @@ static void soc15_common_get_clockgating_state(void *handle, u32 *flags)
+ 	}
+ 
+ 	/* AMD_CG_SUPPORT_ROM_MGCG */
+-	adev->smuio.funcs->get_clock_gating_state(adev, flags);
++	if (adev->smuio.funcs && adev->smuio.funcs->get_clock_gating_state)
++		adev->smuio.funcs->get_clock_gating_state(adev, flags);
+ 
+-	adev->df.funcs->get_clockgating_state(adev, flags);
++	if (adev->df.funcs && adev->df.funcs->get_clockgating_state)
++		adev->df.funcs->get_clockgating_state(adev, flags);
  }
  
-+static u64 panfrost_get_core_mask(struct panfrost_device *pfdev)
-+{
-+	u64 core_mask;
-+
-+	if (pfdev->features.l2_present == 1)
-+		return U64_MAX;
-+
-+	/*
-+	 * Only support one core group now.
-+	 * ~(l2_present - 1) unsets all bits in l2_present except
-+	 * the bottom bit. (l2_present - 2) has all the bits in
-+	 * the first core group set. AND them together to generate
-+	 * a mask of cores in the first core group.
-+	 */
-+	core_mask = ~(pfdev->features.l2_present - 1) &
-+		     (pfdev->features.l2_present - 2);
-+	dev_info_once(pfdev->dev, "using only 1st core group (%lu cores from %lu)\n",
-+		      hweight64(core_mask),
-+		      hweight64(pfdev->features.shader_present));
-+
-+	return core_mask;
-+}
-+
- void panfrost_gpu_power_on(struct panfrost_device *pfdev)
- {
- 	int ret;
- 	u32 val;
--	u64 core_mask = U64_MAX;
-+	u64 core_mask;
- 
- 	panfrost_gpu_init_quirks(pfdev);
-+	core_mask = panfrost_get_core_mask(pfdev);
- 
--	if (pfdev->features.l2_present != 1) {
--		/*
--		 * Only support one core group now.
--		 * ~(l2_present - 1) unsets all bits in l2_present except
--		 * the bottom bit. (l2_present - 2) has all the bits in
--		 * the first core group set. AND them together to generate
--		 * a mask of cores in the first core group.
--		 */
--		core_mask = ~(pfdev->features.l2_present - 1) &
--			     (pfdev->features.l2_present - 2);
--		dev_info_once(pfdev->dev, "using only 1st core group (%lu cores from %lu)\n",
--			      hweight64(core_mask),
--			      hweight64(pfdev->features.shader_present));
--	}
- 	gpu_write(pfdev, L2_PWRON_LO, pfdev->features.l2_present & core_mask);
- 	ret = readl_relaxed_poll_timeout(pfdev->iomem + L2_READY_LO,
- 		val, val == (pfdev->features.l2_present & core_mask),
-@@ -367,9 +377,27 @@ void panfrost_gpu_power_on(struct panfrost_device *pfdev)
- 
- void panfrost_gpu_power_off(struct panfrost_device *pfdev)
- {
--	gpu_write(pfdev, TILER_PWROFF_LO, 0);
--	gpu_write(pfdev, SHADER_PWROFF_LO, 0);
--	gpu_write(pfdev, L2_PWROFF_LO, 0);
-+	u64 core_mask = panfrost_get_core_mask(pfdev);
-+	int ret;
-+	u32 val;
-+
-+	gpu_write(pfdev, SHADER_PWROFF_LO, pfdev->features.shader_present & core_mask);
-+	ret = readl_relaxed_poll_timeout(pfdev->iomem + SHADER_PWRTRANS_LO,
-+					 val, !val, 1, 1000);
-+	if (ret)
-+		dev_err(pfdev->dev, "shader power transition timeout");
-+
-+	gpu_write(pfdev, TILER_PWROFF_LO, pfdev->features.tiler_present);
-+	ret = readl_relaxed_poll_timeout(pfdev->iomem + TILER_PWRTRANS_LO,
-+					 val, !val, 1, 1000);
-+	if (ret)
-+		dev_err(pfdev->dev, "tiler power transition timeout");
-+
-+	gpu_write(pfdev, L2_PWROFF_LO, pfdev->features.l2_present & core_mask);
-+	ret = readl_poll_timeout(pfdev->iomem + L2_PWRTRANS_LO,
-+				 val, !val, 0, 1000);
-+	if (ret)
-+		dev_err(pfdev->dev, "l2 power transition timeout");
- }
- 
- int panfrost_gpu_init(struct panfrost_device *pfdev)
+ static int soc15_common_set_powergating_state(void *handle,
 -- 
 2.43.0
 
