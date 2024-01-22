@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-12873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF3BA8378C5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5DA8837A4D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8899C28D992
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A0D71F22AC8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E1FA3FDB;
-	Tue, 23 Jan 2024 00:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F7612BF09;
+	Tue, 23 Jan 2024 00:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XeMD4qEy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gTC83Jh0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E5B3D7A;
-	Tue, 23 Jan 2024 00:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D1B12A17F;
+	Tue, 23 Jan 2024 00:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968244; cv=none; b=G1t2yTMSm7eWlD9ogoiWncYThMwgq+1MWMRCdb29wasXY803bnrYLA0fnGyGpMUeVUmogjKz9OVjrnr/uvm4xMzls9vQaqV40KCbZLZn04oaQvOUV96nB+wh+SXnXZm8awRH5phBc55al+py6pgkWFmAdOwerpHqNDB/vIVaY/g=
+	t=1705968887; cv=none; b=U345/gO2iGH31R983uAPRugZ4DRCFeLhzfrkAS+TU5B0aNrXafFvMY0+KvbkYkWTSrX2iduMBSHk/R/gWLEdv2FVNmxyLvkcpQ4BZwzpRVUXtth3YDZx5skzSU9V1JsXjb+wVsGDQIbx++xPZbvk6Q2DQyJh/mVwur2bPz/xRcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968244; c=relaxed/simple;
-	bh=WH9MsZWF+eJoEoqtxP1dCpMpQVxCsd+gbd0hD0UlZP0=;
+	s=arc-20240116; t=1705968887; c=relaxed/simple;
+	bh=PoOes07kUKASt+lewHiH05Yi0MIGG0GdayQMBibxD5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QaCpSoX4Ifn69pOMqywCzOGWTLDKJ/9ffiVjhKtPCthu9FB1dt0F+S1tj/GBtjbspcze46JmAteZUbIpdT0B8HHblvqkdWf7lIm5YerEphCO+pw6jpz7IpTV5+kjeRFSY1Nt4QKnB01Jq9cODLehTjPqAPpHN1ZYX/j68/bFL2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeMD4qEy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142C0C433C7;
-	Tue, 23 Jan 2024 00:04:04 +0000 (UTC)
+	 MIME-Version; b=dCF6mGfBnJLt2iyC05wXaEhMUovT4DFFvWAyaUuZbLjDFyzw1Qb447R9YlgeO+n0kPik53TrwTStT2wmV61BrFKu1efLtgcCiACTYzrt/W8gCm4WT5o3OzTZ8iFC5oGhkultSMbYKWsP7yhncSjNOj6eoKngLGGpxn6G6PFq2To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gTC83Jh0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26949C43390;
+	Tue, 23 Jan 2024 00:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968244;
-	bh=WH9MsZWF+eJoEoqtxP1dCpMpQVxCsd+gbd0hD0UlZP0=;
+	s=korg; t=1705968887;
+	bh=PoOes07kUKASt+lewHiH05Yi0MIGG0GdayQMBibxD5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XeMD4qEyojD57m2kYgRsolqqeF9zgO9Izq4PZu7WOVMa3tfmEzz3cnRku+1yOTAp/
-	 DWRWpJ63jehTKT7iIG0Fx5Z61p5IJH7XfSt5x3pMjwTB8hv2XH1Bf/osOFhftUA22N
-	 29VeI85HKt3d0ukvvQjL/4ExGKr6SyOhhzmtk1jE=
+	b=gTC83Jh0P5v2mvgLOfBIUF6n3MNpdnpF/3eL6SXdfXLrmCenRVFzMxx36rsoSr0Nj
+	 gCraD4GM7iC9cs93UbHvr1XbTTGy833GN4oWIfOJJjI/Zq01D43GqnkU7oi+klIUq8
+	 sCz8PnCXnYmD/Jwr0GgAl5Ptra9ahNd9IADQ0jLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Florian Lehner <dev@der-flo.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 055/148] crypto: sahara - fix wait_for_completion_timeout() error handling
+Subject: [PATCH 5.4 081/194] bpf, lpm: Fix check prefixlen before walking trie
 Date: Mon, 22 Jan 2024 15:56:51 -0800
-Message-ID: <20240122235714.640359941@linuxfoundation.org>
+Message-ID: <20240122235722.718197623@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Florian Lehner <dev@der-flo.net>
 
-[ Upstream commit 2dba8e1d1a7957dcbe7888846268538847b471d1 ]
+[ Upstream commit 9b75dbeb36fcd9fc7ed51d370310d0518a387769 ]
 
-The sg lists are not unmapped in case of timeout errors. Fix this.
+When looking up an element in LPM trie, the condition 'matchlen ==
+trie->max_prefixlen' will never return true, if key->prefixlen is larger
+than trie->max_prefixlen. Consequently all elements in the LPM trie will
+be visited and no element is returned in the end.
 
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+To resolve this, check key->prefixlen first before walking the LPM trie.
+
+Fixes: b95a5c4db09b ("bpf: add a longest prefix match trie map implementation")
+Signed-off-by: Florian Lehner <dev@der-flo.net>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20231105085801.3742-1-dev@der-flo.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ kernel/bpf/lpm_trie.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index a9359b0ed045..96cb77abbabb 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -583,16 +583,17 @@ static int sahara_aes_process(struct ablkcipher_request *req)
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index 56e6c75d354d..d78c1afe1273 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -230,6 +230,9 @@ static void *trie_lookup_elem(struct bpf_map *map, void *_key)
+ 	struct lpm_trie_node *node, *found = NULL;
+ 	struct bpf_lpm_trie_key *key = _key;
  
- 	timeout = wait_for_completion_timeout(&dev->dma_completion,
- 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
--	if (!timeout) {
--		dev_err(dev->device, "AES timeout\n");
--		return -ETIMEDOUT;
--	}
- 
- 	dma_unmap_sg(dev->device, dev->out_sg, dev->nb_out_sg,
- 		DMA_FROM_DEVICE);
- 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
- 		DMA_TO_DEVICE);
- 
-+	if (!timeout) {
-+		dev_err(dev->device, "AES timeout\n");
-+		return -ETIMEDOUT;
-+	}
++	if (key->prefixlen > trie->max_prefixlen)
++		return NULL;
 +
- 	return 0;
- }
+ 	/* Start walking the trie from the root node ... */
  
-@@ -1027,15 +1028,16 @@ static int sahara_sha_process(struct ahash_request *req)
- 
- 	timeout = wait_for_completion_timeout(&dev->dma_completion,
- 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
--	if (!timeout) {
--		dev_err(dev->device, "SHA timeout\n");
--		return -ETIMEDOUT;
--	}
- 
- 	if (rctx->sg_in_idx)
- 		dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
- 			     DMA_TO_DEVICE);
- 
-+	if (!timeout) {
-+		dev_err(dev->device, "SHA timeout\n");
-+		return -ETIMEDOUT;
-+	}
-+
- 	memcpy(rctx->context, dev->context_base, rctx->context_size);
- 
- 	if (req->result && rctx->last)
+ 	for (node = rcu_dereference(trie->root); node;) {
 -- 
 2.43.0
 
