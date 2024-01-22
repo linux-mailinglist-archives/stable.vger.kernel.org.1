@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-13600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D477837D0C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:23:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9398D83843A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80D3C1C27E36
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C594C1C2A176
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E954F212;
-	Tue, 23 Jan 2024 00:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4F36A32C;
+	Tue, 23 Jan 2024 02:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o8cUimKq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XI/+tBqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CB94EB4A;
-	Tue, 23 Jan 2024 00:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2266A328;
+	Tue, 23 Jan 2024 02:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969777; cv=none; b=uzn6JinjdN+NKii86ydX8gbtkybsgB3qnStAIRs/1NJVUohF8p5n6SAZZHHKVbUXR4QMhv1IqBLg6FLRMlq0pGLBsbBVwyPIgmbXzpvE//WyiMsMd8vuQUpHfX6ZLuArEVkxhakdgiUw2w9Co9mRgNt0YLNgviAgZYSFgFGHq84=
+	t=1705975332; cv=none; b=gQvp/LTw0Xxk4y1xkZ0xLWwbVU4mGH57HKQrOLiqG8yrS5vuGQ1fRnaz59V7eOJJOFe+3ZULHJb+9PlFZosnWWN1gpGHgiezgF091EC+STJ7OlI+RO1HpA1pyhyBw5yeJq2MZ4GRnXoXpP0CEbpffZvaZ3a7y5OAxhq2Oi1NJPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969777; c=relaxed/simple;
-	bh=3taIzJyi/OiMhSII2V3/V4Wnmct3I4wJsKvOD02Hq3o=;
+	s=arc-20240116; t=1705975332; c=relaxed/simple;
+	bh=mgMfkIKP7DHR2e/y32ZKo+Qfxla+bRVAgWOvkGAgmJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VVgG8jy3KZRtRDnnEcAK+HFvvugFAMD76xGFKtqgzvadPpNxW72zGGlXFpuH+E7BERhfRNdw/9/0s9bMIdzj6ohhLyIdVydrDdSqKHKT0HWmy9MC8Bjww+Rf6Yq4sKytUje9wFOSaM9/ArRfppT0cyvyfXIqAPgR+M8yswpraJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8cUimKq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC69C433F1;
-	Tue, 23 Jan 2024 00:29:36 +0000 (UTC)
+	 MIME-Version; b=e0l7Fz7GYd13BSTXsXzprM5Xoimlda503DVev3gLM0BM8xey9DFdyiDKtMsXuCE0BdbT0+pVPwKEnJpsvgFxGHmpSg9uk6FRtKzZSCfZQXeYidDuDaIpp8Ur1oXztF0WFH2ptUrDO2v086rcUUIokfOLrzFFSzUbLmSfzEW6NEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XI/+tBqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35B1C43390;
+	Tue, 23 Jan 2024 02:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969776;
-	bh=3taIzJyi/OiMhSII2V3/V4Wnmct3I4wJsKvOD02Hq3o=;
+	s=korg; t=1705975332;
+	bh=mgMfkIKP7DHR2e/y32ZKo+Qfxla+bRVAgWOvkGAgmJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o8cUimKqQmFWmd6L5q8rLHnITL2EsgDAdK76TETqJl6uuQv3AWYUB/R8A3403lNp6
-	 JUtZUM859JhYLtojcII6IqRwrhgvGJrvhR2y6Gfi5sg5A3+rWb7lUg57qoouh6WyuT
-	 lkAbdZAUro7nJwZ8gaLI6rg9ahnhstV+dHPkFQE8=
+	b=XI/+tBqmk2DWui2PSYouiJ5N03EiX8RyB4upUCiMvszr2het9iLCVnegua+yYuxIH
+	 ESk9/gOgD5WNuwa9cJA8HzNzfzds0MUiazSrwNaxRg+vQbryvMDcJc4Weg9n8sQLaf
+	 6bUHJgDLSX1voq6Xu6Ye8bCAn6g1p++MaK3nAVnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.7 442/641] block: Remove special-casing of compound pages
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 295/583] clk: qcom: videocc-sm8150: Update the videocc resets
 Date: Mon, 22 Jan 2024 15:55:46 -0800
-Message-ID: <20240122235831.855984997@linuxfoundation.org>
+Message-ID: <20240122235821.044344920@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,139 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-commit 1b151e2435fc3a9b10c8946c6aebe9f3e1938c55 upstream.
+[ Upstream commit 1fd9a939db24d2f66e48f8bca3e3654add3fa205 ]
 
-The special casing was originally added in pre-git history; reproducing
-the commit log here:
+Add all the available resets for the video clock controller
+on sm8150.
 
-> commit a318a92567d77
-> Author: Andrew Morton <akpm@osdl.org>
-> Date:   Sun Sep 21 01:42:22 2003 -0700
->
->     [PATCH] Speed up direct-io hugetlbpage handling
->
->     This patch short-circuits all the direct-io page dirtying logic for
->     higher-order pages.  Without this, we pointlessly bounce BIOs up to
->     keventd all the time.
-
-In the last twenty years, compound pages have become used for more than
-just hugetlb.  Rewrite these functions to operate on folios instead
-of pages and remove the special case for hugetlbfs; I don't think
-it's needed any more (and if it is, we can put it back in as a call
-to folio_test_hugetlb()).
-
-This was found by inspection; as far as I can tell, this bug can lead
-to pages used as the destination of a direct I/O read not being marked
-as dirty.  If those pages are then reclaimed by the MM without being
-dirtied for some other reason, they won't be written out.  Then when
-they're faulted back in, they will not contain the data they should.
-It'll take a pretty unusual setup to produce this problem with several
-races all going the wrong way.
-
-This problem predates the folio work; it could for example have been
-triggered by mmaping a THP in tmpfs and using that as the target of an
-O_DIRECT read.
-
-Fixes: 800d8c63b2e98 ("shmem: add huge pages support")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5658e8cf1a8a ("clk: qcom: add video clock controller driver for SM8150")
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231201-videocc-8150-v3-2-56bec3a5e443@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio.c |   46 ++++++++++++++++++++++++----------------------
- 1 file changed, 24 insertions(+), 22 deletions(-)
+ drivers/clk/qcom/videocc-sm8150.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -1145,13 +1145,22 @@ EXPORT_SYMBOL(bio_add_folio);
+diff --git a/drivers/clk/qcom/videocc-sm8150.c b/drivers/clk/qcom/videocc-sm8150.c
+index 1afdbe4a249d..6a5f89f53da8 100644
+--- a/drivers/clk/qcom/videocc-sm8150.c
++++ b/drivers/clk/qcom/videocc-sm8150.c
+@@ -214,6 +214,10 @@ static const struct regmap_config video_cc_sm8150_regmap_config = {
  
- void __bio_release_pages(struct bio *bio, bool mark_dirty)
- {
--	struct bvec_iter_all iter_all;
--	struct bio_vec *bvec;
-+	struct folio_iter fi;
+ static const struct qcom_reset_map video_cc_sm8150_resets[] = {
+ 	[VIDEO_CC_MVSC_CORE_CLK_BCR] = { 0x850, 2 },
++	[VIDEO_CC_INTERFACE_BCR] = { 0x8f0 },
++	[VIDEO_CC_MVS0_BCR] = { 0x870 },
++	[VIDEO_CC_MVS1_BCR] = { 0x8b0 },
++	[VIDEO_CC_MVSC_BCR] = { 0x810 },
+ };
  
--	bio_for_each_segment_all(bvec, bio, iter_all) {
--		if (mark_dirty && !PageCompound(bvec->bv_page))
--			set_page_dirty_lock(bvec->bv_page);
--		bio_release_page(bio, bvec->bv_page);
-+	bio_for_each_folio_all(fi, bio) {
-+		struct page *page;
-+		size_t done = 0;
-+
-+		if (mark_dirty) {
-+			folio_lock(fi.folio);
-+			folio_mark_dirty(fi.folio);
-+			folio_unlock(fi.folio);
-+		}
-+		page = folio_page(fi.folio, fi.offset / PAGE_SIZE);
-+		do {
-+			bio_release_page(bio, page++);
-+			done += PAGE_SIZE;
-+		} while (done < fi.length);
- 	}
- }
- EXPORT_SYMBOL_GPL(__bio_release_pages);
-@@ -1439,18 +1448,12 @@ EXPORT_SYMBOL(bio_free_pages);
-  * bio_set_pages_dirty() and bio_check_pages_dirty() are support functions
-  * for performing direct-IO in BIOs.
-  *
-- * The problem is that we cannot run set_page_dirty() from interrupt context
-+ * The problem is that we cannot run folio_mark_dirty() from interrupt context
-  * because the required locks are not interrupt-safe.  So what we can do is to
-  * mark the pages dirty _before_ performing IO.  And in interrupt context,
-  * check that the pages are still dirty.   If so, fine.  If not, redirty them
-  * in process context.
-  *
-- * We special-case compound pages here: normally this means reads into hugetlb
-- * pages.  The logic in here doesn't really work right for compound pages
-- * because the VM does not uniformly chase down the head page in all cases.
-- * But dirtiness of compound pages is pretty meaningless anyway: the VM doesn't
-- * handle them at all.  So we skip compound pages here at an early stage.
-- *
-  * Note that this code is very hard to test under normal circumstances because
-  * direct-io pins the pages with get_user_pages().  This makes
-  * is_page_cache_freeable return false, and the VM will not clean the pages.
-@@ -1466,12 +1469,12 @@ EXPORT_SYMBOL(bio_free_pages);
-  */
- void bio_set_pages_dirty(struct bio *bio)
- {
--	struct bio_vec *bvec;
--	struct bvec_iter_all iter_all;
-+	struct folio_iter fi;
- 
--	bio_for_each_segment_all(bvec, bio, iter_all) {
--		if (!PageCompound(bvec->bv_page))
--			set_page_dirty_lock(bvec->bv_page);
-+	bio_for_each_folio_all(fi, bio) {
-+		folio_lock(fi.folio);
-+		folio_mark_dirty(fi.folio);
-+		folio_unlock(fi.folio);
- 	}
- }
- EXPORT_SYMBOL_GPL(bio_set_pages_dirty);
-@@ -1515,12 +1518,11 @@ static void bio_dirty_fn(struct work_str
- 
- void bio_check_pages_dirty(struct bio *bio)
- {
--	struct bio_vec *bvec;
-+	struct folio_iter fi;
- 	unsigned long flags;
--	struct bvec_iter_all iter_all;
- 
--	bio_for_each_segment_all(bvec, bio, iter_all) {
--		if (!PageDirty(bvec->bv_page) && !PageCompound(bvec->bv_page))
-+	bio_for_each_folio_all(fi, bio) {
-+		if (!folio_test_dirty(fi.folio))
- 			goto defer;
- 	}
- 
+ static const struct qcom_cc_desc video_cc_sm8150_desc = {
+-- 
+2.43.0
+
 
 
 
