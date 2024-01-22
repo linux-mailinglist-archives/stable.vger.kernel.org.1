@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-12831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D87837891
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE424837A28
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B024928C71D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E07991C23F6D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C8B1353FA;
-	Tue, 23 Jan 2024 00:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C7212AACF;
+	Tue, 23 Jan 2024 00:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHFPW4TF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8gJevGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F491353EC;
-	Tue, 23 Jan 2024 00:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A157C12A17F;
+	Tue, 23 Jan 2024 00:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968116; cv=none; b=LyrQc321VLRCqqn2AyXZ6RTtzLghP7+Z9YBc/zkundpT/9SZ15Ks2+XS3WPIL863vhN7SfW3JpguCMLe7iYThQBMc+LK8h3ghGGSUru61Ndn23dyT83X/qU44dJoyW2coDGti06/EEaUu+ZQjq+LMp7oasEUaqIxO5KbGOo2lEU=
+	t=1705968771; cv=none; b=rq0VDONBRtcxwO+LZFKVSUR0CZNbfNZ9ox9Uhec1wcE3TptMH29f3d6vyrRMvlgIGOunbukIoWAPMX3UhYhlmtvW/Du+JInQP56E5Sly6UizU6pE9a6/qJOzZfjzfR7EPZoHk+r/MkV2dCH/GgsvjvZTLbrd8CbnqCqfJLB+RHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968116; c=relaxed/simple;
-	bh=t7gkXPMCo7zKHcONsBhjOi7DUZ0QEwjRCJ6hRhxR0IY=;
+	s=arc-20240116; t=1705968771; c=relaxed/simple;
+	bh=UXGTZ2FiQVjANxXwV51h37mN4mC11wm7qJAm1N69/ZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CqQwwuJVaLMTvQjrmjbCfv1e19AnPXAW43IXknm+Ex8vwZFETSubdy50KU8M9bIjSc2F+4BtiDsyX8lVszeHw5ETydEFeiVWaafDW9UrFvQzpq/0sH+7IxCB5Y/WQUTY+dN0mO40PfYgr08ifAiuynjPrKWULyO/QW/uA/JG+JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHFPW4TF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EFCC433C7;
-	Tue, 23 Jan 2024 00:01:55 +0000 (UTC)
+	 MIME-Version; b=I9pKIGzevkZGPV6rl3ksxh/FNKWDmNiLsgrnTirHm+eLMnGF4D31XgKlcjiccnyrBMvMJgbdAsE+PhRGjvRqi46Kb/AjT9wzHW/t4GPoLdplig16du3zHpUmsSPrkC3SYsw7au6zehCuoGqUyX64Jud/TQQwWSMUx/4r1wWJxxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8gJevGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5279FC433F1;
+	Tue, 23 Jan 2024 00:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968116;
-	bh=t7gkXPMCo7zKHcONsBhjOi7DUZ0QEwjRCJ6hRhxR0IY=;
+	s=korg; t=1705968771;
+	bh=UXGTZ2FiQVjANxXwV51h37mN4mC11wm7qJAm1N69/ZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHFPW4TF4g2fKX1ZOdBbEl3bf60Fvd6ajp92aNEc/8Uz8504Ey9MkY3okTTjMiFHb
-	 IaV0XQwzes0fGYgqhI/SpP6zdid2h0F9jdDb3F+0xxHiAqIC4LoDrz8/6jHCh8+pes
-	 ygbG8jGnASCR7X15zqPmEnpX53wjXhFZetFlFsjc=
+	b=A8gJevGD9+IUjH4Tt0zmdsQ8haFD4pVV9alJbmvwtNLyVmwSWigP3Q2nybp7XwDPx
+	 XFLl/Po6QleV0T0n9BNJXG1XsWrRL6MEZbz2L9QOJN1uSCa2cTwCj9EFe0aV10/p/7
+	 sc6sVf6DK000WfX2Vrhc40Ean+ReZcz2TQ2Ekc0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 015/148] reset: hisilicon: hi6220: fix Wvoid-pointer-to-enum-cast warning
-Date: Mon, 22 Jan 2024 15:56:11 -0800
-Message-ID: <20240122235713.046758331@linuxfoundation.org>
+Subject: [PATCH 5.4 042/194] powerpc: add crtsavres.o to always-y instead of extra-y
+Date: Mon, 22 Jan 2024 15:56:12 -0800
+Message-ID: <20240122235721.032070764@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit b5ec294472794ed9ecba0cb4b8208372842e7e0d ]
+[ Upstream commit 1b1e38002648819c04773647d5242990e2824264 ]
 
-'type' is an enum, thus cast of pointer on 64-bit compile test with W=1
-causes:
+crtsavres.o is linked to modules. However, as explained in commit
+d0e628cd817f ("kbuild: doc: clarify the difference between extra-y
+and always-y"), 'make modules' does not build extra-y.
 
-  hi6220_reset.c:166:9: error: cast to smaller integer type 'enum hi6220_reset_ctrl_type' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
+For example, the following command fails:
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230810091300.70197-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+  $ make ARCH=powerpc LLVM=1 KBUILD_MODPOST_WARN=1 mrproper ps3_defconfig modules
+    [snip]
+    LD [M]  arch/powerpc/platforms/cell/spufs/spufs.ko
+  ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such file or directory
+  make[3]: *** [scripts/Makefile.modfinal:56: arch/powerpc/platforms/cell/spufs/spufs.ko] Error 1
+  make[2]: *** [Makefile:1844: modules] Error 2
+  make[1]: *** [/home/masahiro/workspace/linux-kbuild/Makefile:350: __build_one_by_one] Error 2
+  make: *** [Makefile:234: __sub-make] Error 2
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: baa25b571a16 ("powerpc/64: Do not link crtsavres.o in vmlinux")
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231120232332.4100288-1-masahiroy@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/reset/hisilicon/hi6220_reset.c | 2 +-
+ arch/powerpc/lib/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/reset/hisilicon/hi6220_reset.c b/drivers/reset/hisilicon/hi6220_reset.c
-index d5e5229308f2..d77a7ad7e57a 100644
---- a/drivers/reset/hisilicon/hi6220_reset.c
-+++ b/drivers/reset/hisilicon/hi6220_reset.c
-@@ -107,7 +107,7 @@ static int hi6220_reset_probe(struct platform_device *pdev)
- 	if (!data)
- 		return -ENOMEM;
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index 8656b8d2ce55..7c603839fe28 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -35,7 +35,7 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)	+= error-inject.o
+ # so it is only needed for modules, and only for older linkers which
+ # do not support --save-restore-funcs
+ ifeq ($(call ld-ifversion, -lt, 225000000, y),y)
+-extra-$(CONFIG_PPC64)	+= crtsavres.o
++always-$(CONFIG_PPC64)	+= crtsavres.o
+ endif
  
--	type = (enum hi6220_reset_ctrl_type)of_device_get_match_data(dev);
-+	type = (uintptr_t)of_device_get_match_data(dev);
- 
- 	regmap = syscon_node_to_regmap(np);
- 	if (IS_ERR(regmap)) {
+ obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
 -- 
 2.43.0
 
