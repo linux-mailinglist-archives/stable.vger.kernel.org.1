@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-12864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E4D8378B6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB0A5837B9C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE95E28D3B3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89D30B238E1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745E2186B;
-	Tue, 23 Jan 2024 00:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C3C12C53C;
+	Tue, 23 Jan 2024 00:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SI+P2nd9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjfP+Hwv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329531852;
-	Tue, 23 Jan 2024 00:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816EF12BF3D;
+	Tue, 23 Jan 2024 00:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968213; cv=none; b=Au9E8zgBB70mvXgdSmNDnbM1QSI0MJmsF3wXMwsyrBkT6hl88eELOU7Soo3w7FUEom1l0gaIFxPcnD4hCoc2WxjuWnWliFmntibUssc3R4xQRgNdRGa+mi4gb1Usri9GSQWwi2qnNtAwE6P5MUBmZAfJzaGlNEnwZuoXOXd4ekE=
+	t=1705968932; cv=none; b=jz2h9YHXJnTnVW1d44R8mSS73KDFFJjSRw20It0KjAK1J3gBDDIEFQfe/xNgGd7cC5keMWWdRfKfAQ2XjUx0Dx8Tt6R4pKIp59jt2BDg9uRVJtNOjd8d+KB+jonx6Vo1KVKfb7mn54CKZ28fX4boSgETEA8hBtg1CWhRxRN5AYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968213; c=relaxed/simple;
-	bh=UvgAqhcCx7D/KgncZCJeCLPeWqdQpA4EjpSbDeKvibE=;
+	s=arc-20240116; t=1705968932; c=relaxed/simple;
+	bh=hs6PH4WQwvjzE+ANGRBoy0NfYFMcTpZ+WCaGuOmPARY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FQgptcGVs9hL3DxWvBWOwXqXf7+wA8bZ+gBX2G+C7D9tTCa6qmb6MVOZOCo6VW2DOjBfpyEtBy47fLSL3WL9IReIjiagxcLR08pEkDFWDrSpPFIMHuvW7UgVP0qvqRRBFSxU/9p7Tf9KytyswdsTzw55Q9ksP0zQeYOIlL0WjPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SI+P2nd9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB41C433F1;
-	Tue, 23 Jan 2024 00:03:32 +0000 (UTC)
+	 MIME-Version; b=jFsKCpSDB2PeEcNFhX5PlyFzMsAYyCnTyz2zRU7pUwnU45aAtMeF/jUstmBXeEKdNQHyByevUuHDL4xOHt20V6RfgF4vOGvxHmRsbdhuLsKA6XGkB+CYn/C+lFZy2e0HwCSkLne9BEfv1I4Qn42WR73E76LqIKs89tKnGSoxRTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjfP+Hwv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A48C43394;
+	Tue, 23 Jan 2024 00:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968213;
-	bh=UvgAqhcCx7D/KgncZCJeCLPeWqdQpA4EjpSbDeKvibE=;
+	s=korg; t=1705968932;
+	bh=hs6PH4WQwvjzE+ANGRBoy0NfYFMcTpZ+WCaGuOmPARY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SI+P2nd9sFUOhj/g8Ib9z42BSoGRhYETgdQZNyp58E7hbuSwaFLz8VMz9+LJ+w1s2
-	 PUdU/PzsdEvfz9P7Hvq1QwPZSEt64TO2Pm4LsFCOGrhj7lyIHnYJW/SnjljtvexWS3
-	 AunIyVGlgNjnsFqScKmHd7WzsHUteaOF/C+jxYIA=
+	b=kjfP+HwvUdHQ5bCwqx6lpLK9U3n9GSek7okibj3Nkm8LQ+J6BhTEKqGod/adqMn6D
+	 fAQt5c4ChBEZ6Ia7fh0668LT1jAxG2QSP3ehu0Y3+Kye2N/eiugChRat7tFDF7Q9Y5
+	 MQcKD1do0aUYffEzIvLfimtcd2MpZ6MUWL1js3oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 047/148] crypto: af_alg - Disallow multiple in-flight AIO requests
+Subject: [PATCH 5.4 073/194] crypto: sahara - fix wait_for_completion_timeout() error handling
 Date: Mon, 22 Jan 2024 15:56:43 -0800
-Message-ID: <20240122235714.333413283@linuxfoundation.org>
+Message-ID: <20240122235722.366782752@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 67b164a871af1d736f131fd6fe78a610909f06f3 ]
+[ Upstream commit 2dba8e1d1a7957dcbe7888846268538847b471d1 ]
 
-Having multiple in-flight AIO requests results in unpredictable
-output because they all share the same IV.  Fix this by only allowing
-one request at a time.
+The sg lists are not unmapped in case of timeout errors. Fix this.
 
-Fixes: 83094e5e9e49 ("crypto: af_alg - add async support to algif_aead")
-Fixes: a596999b7ddf ("crypto: algif - change algif_skcipher to be asynchronous")
+Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
+Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/af_alg.c         | 14 +++++++++++++-
- include/crypto/if_alg.h |  3 +++
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/crypto/sahara.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index d0276a4ed987..914496b184a9 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -1032,9 +1032,13 @@ EXPORT_SYMBOL_GPL(af_alg_sendpage);
- void af_alg_free_resources(struct af_alg_async_req *areq)
- {
- 	struct sock *sk = areq->sk;
-+	struct af_alg_ctx *ctx;
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 1284991cd40d..7d24e802d382 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -580,16 +580,17 @@ static int sahara_aes_process(struct ablkcipher_request *req)
  
- 	af_alg_free_areq_sgls(areq);
- 	sock_kfree_s(sk, areq, areq->areqlen);
+ 	timeout = wait_for_completion_timeout(&dev->dma_completion,
+ 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
+-	if (!timeout) {
+-		dev_err(dev->device, "AES timeout\n");
+-		return -ETIMEDOUT;
+-	}
+ 
+ 	dma_unmap_sg(dev->device, dev->out_sg, dev->nb_out_sg,
+ 		DMA_FROM_DEVICE);
+ 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
+ 		DMA_TO_DEVICE);
+ 
++	if (!timeout) {
++		dev_err(dev->device, "AES timeout\n");
++		return -ETIMEDOUT;
++	}
 +
-+	ctx = alg_sk(sk)->private;
-+	ctx->inflight = false;
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(af_alg_free_resources);
  
-@@ -1098,11 +1102,19 @@ EXPORT_SYMBOL_GPL(af_alg_poll);
- struct af_alg_async_req *af_alg_alloc_areq(struct sock *sk,
- 					   unsigned int areqlen)
- {
--	struct af_alg_async_req *areq = sock_kmalloc(sk, areqlen, GFP_KERNEL);
-+	struct af_alg_ctx *ctx = alg_sk(sk)->private;
-+	struct af_alg_async_req *areq;
+@@ -1023,15 +1024,16 @@ static int sahara_sha_process(struct ahash_request *req)
+ 
+ 	timeout = wait_for_completion_timeout(&dev->dma_completion,
+ 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
+-	if (!timeout) {
+-		dev_err(dev->device, "SHA timeout\n");
+-		return -ETIMEDOUT;
+-	}
+ 
+ 	if (rctx->sg_in_idx)
+ 		dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
+ 			     DMA_TO_DEVICE);
+ 
++	if (!timeout) {
++		dev_err(dev->device, "SHA timeout\n");
++		return -ETIMEDOUT;
++	}
 +
-+	/* Only one AIO request can be in flight. */
-+	if (ctx->inflight)
-+		return ERR_PTR(-EBUSY);
+ 	memcpy(rctx->context, dev->context_base, rctx->context_size);
  
-+	areq = sock_kmalloc(sk, areqlen, GFP_KERNEL);
- 	if (unlikely(!areq))
- 		return ERR_PTR(-ENOMEM);
- 
-+	ctx->inflight = true;
-+
- 	areq->areqlen = areqlen;
- 	areq->sk = sk;
- 	areq->last_rsgl = NULL;
-diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
-index 11f107df78dc..2c1748dc6640 100644
---- a/include/crypto/if_alg.h
-+++ b/include/crypto/if_alg.h
-@@ -141,6 +141,7 @@ struct af_alg_async_req {
-  * @enc:		Cryptographic operation to be performed when
-  *			recvmsg is invoked.
-  * @len:		Length of memory allocated for this data structure.
-+ * @inflight:		Non-zero when AIO requests are in flight.
-  */
- struct af_alg_ctx {
- 	struct list_head tsgl_list;
-@@ -158,6 +159,8 @@ struct af_alg_ctx {
- 	bool enc;
- 
- 	unsigned int len;
-+
-+	unsigned int inflight;
- };
- 
- int af_alg_register_type(const struct af_alg_type *type);
+ 	if (req->result && rctx->last)
 -- 
 2.43.0
 
