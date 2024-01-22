@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-12968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FFFC837A05
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EEF6837AB1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 726721C28337
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:48:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 929C01C25568
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DE11292E7;
-	Tue, 23 Jan 2024 00:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD48130E3E;
+	Tue, 23 Jan 2024 00:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxwclgCt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUuajNMl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543B81292F3;
-	Tue, 23 Jan 2024 00:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090B512FF86;
+	Tue, 23 Jan 2024 00:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968708; cv=none; b=fRaffHVnw6UISvIzcraRtatT7glNXUsXsHWCwoGyCE4p4CMTdx5Xe4jXDtT6hX2ZRE85Zatgm6TED2jDkVypk/MJ88ig7G8q10IuUU6l3euCTUBdhQttZ3EM+dSb/AWGNXLdP8HQWwi2hsbRU+YukqP9cTwy+s7DilK4ghOzKKM=
+	t=1705969059; cv=none; b=dXRYC1QgP+K5k+rcVH1MQVNMBzOca75ViOQlWnCMQ6qWfCg18PfrWyQYYDCgS0EO6DsNgL+EvLfTQMpabUhxNMLPKWzcZ2z3d+hT5UsftEzS9pZ6acKu9gqmwvvxJ+uvC6oYo266kgpCEVkYa/nkTuQ/DB8PnDKrXXwcCsS9pGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968708; c=relaxed/simple;
-	bh=/msEkxcnJSjp1fTSBzuJbXU9Xvchs6YpVm2y3YGaH9M=;
+	s=arc-20240116; t=1705969059; c=relaxed/simple;
+	bh=/t/knAq6OKAu9gT+72C5z/53mNexMv6pbHnmh3H0Gr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cc6VNP0Xc96xeHtqIIYdrX4OHSbY8T8vOoPx7d9+UPep3NiJgjn0RKutGiG38pO3AU3mz9aodlMe+tHxj20lG6gIknesNEqH4Y9133UcnJaX7UUbZniREXRdC7+C1rcWjCqsElQGIvoqau1KM4DoYkN98Sk3CVuUSpiMQFC/ha4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxwclgCt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA65DC433C7;
-	Tue, 23 Jan 2024 00:11:47 +0000 (UTC)
+	 MIME-Version; b=ha6gHQT8Z/K1dakKVRX41C8Ywhjf+JRnJsiFl8wLRX8Zw9jcUSUHwQJL4EgLYLMu8KBDzvgmiWxsbOFI/sW941nEkfVv1oK5Tu99QKwETIokBfXLOAMOfqS3jzqkS6COhtzmAyBA3L55ryBYIewd7G7NWtkf9OOJwcObWVjT1Rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUuajNMl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4973C43390;
+	Tue, 23 Jan 2024 00:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968708;
-	bh=/msEkxcnJSjp1fTSBzuJbXU9Xvchs6YpVm2y3YGaH9M=;
+	s=korg; t=1705969058;
+	bh=/t/knAq6OKAu9gT+72C5z/53mNexMv6pbHnmh3H0Gr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UxwclgCtG0J7HOqwIzvU3sYZqZBevPzHzSyH7GKyCYmHCTPBB9UGzDuOoqxckIr6O
-	 FK/KWomypctlMyVQQDawTrdr6KQLCVSpO7FMkDQfkqVWtnJNfS+jt08rZE59cohowh
-	 hIk7Ih+xZNeoq7enk9/Z/bJdQdIgwm7njPK9Qv/Q=
+	b=xUuajNMl9pYOawzGwJ+PfgjTBSXHkoCNZkPCMy5KmuvjyulFbgBJcQd4AY9t7Xa48
+	 uv5v5jETghNaF874mMzXYOUmeh+3Po5OFGZ2X2vpbPRN5ChcMaD06ZrccXyaag76Wr
+	 8ccJxJzpSL/sV5hV0MvQp2ivNv3AXKl59Tm/tMR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	John Johansen <john.johansen@canonical.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 137/148] apparmor: avoid crash when parsed profile name is empty
+Subject: [PATCH 5.4 163/194] mips: Fix incorrect max_low_pfn adjustment
 Date: Mon, 22 Jan 2024 15:58:13 -0800
-Message-ID: <20240122235718.108986851@linuxfoundation.org>
+Message-ID: <20240122235726.185528021@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-[ Upstream commit 55a8210c9e7d21ff2644809699765796d4bfb200 ]
+[ Upstream commit 0f5cc249ff73552d3bd864e62f85841dafaa107d ]
 
-When processing a packed profile in unpack_profile() described like
+max_low_pfn variable is incorrectly adjusted if the kernel is built with
+high memory support and the later is detected in a running system, so the
+memory which actually can be directly mapped is getting into the highmem
+zone. See the ZONE_NORMAL range on my MIPS32r5 system:
 
- "profile :ns::samba-dcerpcd /usr/lib*/samba/{,samba/}samba-dcerpcd {...}"
+> Zone ranges:
+>   DMA      [mem 0x0000000000000000-0x0000000000ffffff]
+>   Normal   [mem 0x0000000001000000-0x0000000007ffffff]
+>   HighMem  [mem 0x0000000008000000-0x000000020fffffff]
 
-a string ":samba-dcerpcd" is unpacked as a fully-qualified name and then
-passed to aa_splitn_fqname().
+while the zones are supposed to look as follows:
 
-aa_splitn_fqname() treats ":samba-dcerpcd" as only containing a namespace.
-Thus it returns NULL for tmpname, meanwhile tmpns is non-NULL. Later
-aa_alloc_profile() crashes as the new profile name is NULL now.
+> Zone ranges:
+>   DMA      [mem 0x0000000000000000-0x0000000000ffffff]
+>   Normal   [mem 0x0000000001000000-0x000000001fffffff]
+>   HighMem  [mem 0x0000000020000000-0x000000020fffffff]
 
-general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 6 PID: 1657 Comm: apparmor_parser Not tainted 6.7.0-rc2-dirty #16
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-RIP: 0010:strlen+0x1e/0xa0
-Call Trace:
- <TASK>
- ? strlen+0x1e/0xa0
- aa_policy_init+0x1bb/0x230
- aa_alloc_profile+0xb1/0x480
- unpack_profile+0x3bc/0x4960
- aa_unpack+0x309/0x15e0
- aa_replace_profiles+0x213/0x33c0
- policy_update+0x261/0x370
- profile_replace+0x20e/0x2a0
- vfs_write+0x2af/0xe00
- ksys_write+0x126/0x250
- do_syscall_64+0x46/0xf0
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
- </TASK>
----[ end trace 0000000000000000 ]---
-RIP: 0010:strlen+0x1e/0xa0
+Even though the physical memory within the range [0x08000000;0x20000000]
+belongs to MMIO on our system, we don't really want it to be considered as
+high memory since on MIPS32 that range still can be directly mapped.
 
-It seems such behaviour of aa_splitn_fqname() is expected and checked in
-other places where it is called (e.g. aa_remove_profiles). Well, there
-is an explicit comment "a ns name without a following profile is allowed"
-inside.
+Note there might be other problems caused by the max_low_pfn variable
+misconfiguration. For instance high_memory variable is initialize with
+virtual address corresponding to the max_low_pfn PFN, and by design it
+must define the upper bound on direct map memory, then end of the normal
+zone. That in its turn potentially may cause problems in accessing the
+memory by means of the /dev/mem and /dev/kmem devices.
 
-AFAICS, nothing can prevent unpacked "name" to be in form like
-":samba-dcerpcd" - it is passed from userspace.
+Let's fix the discovered misconfiguration then. It turns out the commit
+a94e4f24ec83 ("MIPS: init: Drop boot_mem_map") didn't introduce the
+max_low_pfn adjustment quite correct. If the kernel is built with high
+memory support and the system is equipped with high memory, the
+max_low_pfn variable will need to be initialized with PFN of the most
+upper directly reachable memory address so the zone normal would be
+correctly setup. On MIPS that PFN corresponds to PFN_DOWN(HIGHMEM_START).
+If the system is built with no high memory support and one is detected in
+the running system, we'll just need to adjust the max_pfn variable to
+discard the found high memory from the system and leave the max_low_pfn as
+is, since the later will be less than PFN_DOWN(HIGHMEM_START) anyway by
+design of the for_each_memblock() loop performed a bit early in the
+bootmem_init() method.
 
-Deny the whole profile set replacement in such case and inform user with
-EPROTO and an explaining message.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 04dc715e24d0 ("apparmor: audit policy ns specified in policy load")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: a94e4f24ec83 ("MIPS: init: Drop boot_mem_map")
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/policy_unpack.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/mips/kernel/setup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
-index 41da5ccc3f3e..683f551ec33b 100644
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -635,6 +635,10 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 1c4114f8f9aa..0419629aee60 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -362,11 +362,11 @@ static void __init bootmem_init(void)
+ 		panic("Incorrect memory mapping !!!");
  
- 	tmpname = aa_splitn_fqname(name, strlen(name), &tmpns, &ns_len);
- 	if (tmpns) {
-+		if (!tmpname) {
-+			info = "empty profile name";
-+			goto fail;
-+		}
- 		*ns_name = kstrndup(tmpns, ns_len, GFP_KERNEL);
- 		if (!*ns_name) {
- 			info = "out of memory";
+ 	if (max_pfn > PFN_DOWN(HIGHMEM_START)) {
++		max_low_pfn = PFN_DOWN(HIGHMEM_START);
+ #ifdef CONFIG_HIGHMEM
+-		highstart_pfn = PFN_DOWN(HIGHMEM_START);
++		highstart_pfn = max_low_pfn;
+ 		highend_pfn = max_pfn;
+ #else
+-		max_low_pfn = PFN_DOWN(HIGHMEM_START);
+ 		max_pfn = max_low_pfn;
+ #endif
+ 	}
 -- 
 2.43.0
 
