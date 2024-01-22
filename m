@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-13927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EBB7837ED9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E5E4837C94
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FC381C2836B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D20001C2890C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3282605C0;
-	Tue, 23 Jan 2024 00:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97DC013666A;
+	Tue, 23 Jan 2024 00:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1lYlYbcG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJN51Ni9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A174260268;
-	Tue, 23 Jan 2024 00:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F331136658;
+	Tue, 23 Jan 2024 00:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970781; cv=none; b=GGVOtcmTh1Ng0aTmk+mjho56TO/vZDTT5eZf/mKNC/ceOb/2UL2HRoaEUTs89uWIYQlakQ1/61HiaPOP99quGx8+fOxWaHJwTkfVfm/qmJfrmhFWLKbmpPQrCD0u2ncHgSZ6epUZRDm51/tqHdjy3RvH4GaLDq6ah112k5YeKU0=
+	t=1705969674; cv=none; b=hetXgYHW/WsGeOGe6MAKZCbagT5ejr5Xvsz5BiQrOnIKCs/jfuizRljsgRbl2qq4hTCDjA+JbcvJr4zR7TWKKS0K21W58lsAL9DUd+cOT+T4NAM/+8uZ8PqPiO57lGbJPq1lurd48b+a39D9nAMr1elkLbs52eAHsh+2jw529pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970781; c=relaxed/simple;
-	bh=jtj3eVd7HCTqQNWS+egAtziw8CVYjU5RjW1IOa49suc=;
+	s=arc-20240116; t=1705969674; c=relaxed/simple;
+	bh=8ldTsHBR8+UfMAM9Ms8ceIPB+37tzxc7GRSf9YnjQDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gXP7f8uXOXuJzu5NqyqY9KCCUjiLc/ZN1yDNxj1WRaX8ha0JV/E+xL8KpkVwhsaZUiv4pHWyXvSC+at5a6nlVVGjyiB0Vv9OhRlLZcPQuG4InkK1+sYMJP/t1JEtb1XWJAVUFHBwhzjWByZsNj5oeSifGlHFmKeMsfiEIKz7Pu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1lYlYbcG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A760C433F1;
-	Tue, 23 Jan 2024 00:46:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s4ZQtN+t1WpEY2cNPZPoq6x9Y8xVgZ0bScj6dJ5nJ9Py+G3jNuVbsThrMQyNjWn5ODPh6H7RRbdDCkJw3q7y/BJQp6kSeRzySF+Bpu5jq3XV6axxJf7ynSMqQ/SFbpTh+JHV17+clRxZZZa5lP1H6sfzlrYquIVI9tS0QvTBwp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJN51Ni9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068CCC433C7;
+	Tue, 23 Jan 2024 00:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970781;
-	bh=jtj3eVd7HCTqQNWS+egAtziw8CVYjU5RjW1IOa49suc=;
+	s=korg; t=1705969674;
+	bh=8ldTsHBR8+UfMAM9Ms8ceIPB+37tzxc7GRSf9YnjQDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1lYlYbcGZ3obU+36VY6sfyThv27lmrjTX/R/Sdh3I1PHAaKNzbCwXsxL1nGYwHgf8
-	 ciTNkrvWJOhpIs8db54d/KdltWdSMC6h3VQ1b2u/6AMGP/d83NTVIplKlpz1gyEHp2
-	 8dAW1YFJvEgMHnhVoFmVWI2M+7NxfxeO9/vYFQfU=
+	b=nJN51Ni9B+a8VNDjAlYPFoclpZMk5EnvfuuL717Ddy1ut6wtJrhZzCwi1sdTvTi1/
+	 f6xKFMoicuhEW2DRfUkFPiNqRKpJzmpPbHIt8hQ8Th2f+OYScUSCUelIxiTWrlAN7N
+	 GSWV0lvLuSYVgoYH61aBuY2ophht1bDLwT7WoAaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Wei Xu <xuwei5@hisilicon.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-sound@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/417] arm64: dts: hisilicon: hikey970-pmic: fix regulator cells properties
+Subject: [PATCH 6.7 372/641] kselftest/alsa - conf: Stringify the printed errno in sysfs_get()
 Date: Mon, 22 Jan 2024 15:54:36 -0800
-Message-ID: <20240122235755.477439624@linuxfoundation.org>
+Message-ID: <20240122235829.600410402@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +67,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
 
-[ Upstream commit 44ab3ee76a5a977864ba0bb6c352dcf6206804e0 ]
+[ Upstream commit fd38dd6abda589a8771e7872e4dea28c99c6a6ef ]
 
-The Hi6421 PMIC regulator child nodes do not have unit addresses so drop
-the incorrect '#address-cells' and '#size-cells' properties.
+GCC 13.2.0 reported the warning of the print format specifier:
 
-Fixes: 6219b20e1ecd ("arm64: dts: hisilicon: Add support for Hikey 970 PMIC")
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Wei Xu <xuwei5@hisilicon.com>
+conf.c: In function ‘sysfs_get’:
+conf.c:181:72: warning: format ‘%s’ expects argument of type ‘char *’, \
+			but argument 3 has type ‘int’ [-Wformat=]
+  181 |                 ksft_exit_fail_msg("sysfs: unable to read value '%s': %s\n",
+      |                                                                       ~^
+      |                                                                        |
+      |                                                                        char *
+      |                                                                       %d
+
+The fix passes strerror(errno) as it was intended, like in the sibling error
+exit message.
+
+Fixes: aba51cd0949ae ("selftests: alsa - add PCM test")
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: linux-sound@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240107173704.937824-5-mirsad.todorovac@alu.unizg.hr
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/hisilicon/hikey970-pmic.dtsi | 3 ---
- 1 file changed, 3 deletions(-)
+ tools/testing/selftests/alsa/conf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/hisilicon/hikey970-pmic.dtsi b/arch/arm64/boot/dts/hisilicon/hikey970-pmic.dtsi
-index 970047f2dabd..c06e011a6c3f 100644
---- a/arch/arm64/boot/dts/hisilicon/hikey970-pmic.dtsi
-+++ b/arch/arm64/boot/dts/hisilicon/hikey970-pmic.dtsi
-@@ -25,9 +25,6 @@ pmic: pmic@0 {
- 			gpios = <&gpio28 0 0>;
- 
- 			regulators {
--				#address-cells = <1>;
--				#size-cells = <0>;
--
- 				ldo3: ldo3 { /* HDMI */
- 					regulator-name = "ldo3";
- 					regulator-min-microvolt = <1500000>;
+diff --git a/tools/testing/selftests/alsa/conf.c b/tools/testing/selftests/alsa/conf.c
+index 00925eb8d9f4..89e3656a042d 100644
+--- a/tools/testing/selftests/alsa/conf.c
++++ b/tools/testing/selftests/alsa/conf.c
+@@ -179,7 +179,7 @@ static char *sysfs_get(const char *sysfs_root, const char *id)
+ 	close(fd);
+ 	if (len < 0)
+ 		ksft_exit_fail_msg("sysfs: unable to read value '%s': %s\n",
+-				   path, errno);
++				   path, strerror(errno));
+ 	while (len > 0 && path[len-1] == '\n')
+ 		len--;
+ 	path[len] = '\0';
 -- 
 2.43.0
 
