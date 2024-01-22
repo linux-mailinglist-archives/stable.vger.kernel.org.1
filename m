@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-13783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A8B837E03
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6720838338
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA0201C23D6B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F36628F779
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8779956B8F;
-	Tue, 23 Jan 2024 00:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD54604BA;
+	Tue, 23 Jan 2024 01:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvheVa4U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kYhkjJBY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BCE56470;
-	Tue, 23 Jan 2024 00:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B86D29434;
+	Tue, 23 Jan 2024 01:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970297; cv=none; b=m56PboAUTTAuUXJbFu3nWjEWpy0zGbAf2X4lzDO33ancaW0lyXS0jHIH4dGKkQAls8HBDK4O+v2R+yAxv4GlO6GpfxlK/u646l9MDLtZFF1YeC8fkZ7/HBwr/EIhLbx2PhovsGvt6KVDuc28F+8lS/1tIbqvv7jfouLgdcXWOms=
+	t=1705974739; cv=none; b=o1Ajn5hR5psrqGyaBLyv4WNanoU0we/0BmtNv/OCgkQ+i3OogWLwCiCqW1u0Jq9PLbgi9oKmseFEIweMLnAduQNc9tuj+Ho0LZQI9o9mfcg+VPqR4LEXrIWKbH2nWm5/xJQuqoR4176yj1Blr5EcqL22GKaHeaR0/6VwxDPFSIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970297; c=relaxed/simple;
-	bh=tK/WrD0i6Ta9kiVUPq3/3b5bZ0ZtmVBjSODvdM7VFM0=;
+	s=arc-20240116; t=1705974739; c=relaxed/simple;
+	bh=jQ3m6GuxYsKbON+5hMxNjp+Eaf0t1kIIUHP7JOpod7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=da0MTYbZ2qbVT36HuSQ9LpXa2IKoS6Yw25ew8pvhjxpKb2RYpw94IUbmaf+0VDPoVJNz6Kgdu+30OXofky3HJnEJA0rrY41K2R9M4q74eBkcX/aEcw1/fLh74Kmdvj59w8jmZKx3LmCj4sliby9WG9vx6lqwzskhBn020fO4mks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvheVa4U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71810C43390;
-	Tue, 23 Jan 2024 00:38:16 +0000 (UTC)
+	 MIME-Version; b=V8ZV5XkelDcpYV8R+khPGkHFnAgCn33kHhR1uV7ex2M0R1WiS6VNkRhQIKeSUSS3L5PiI5M9trIDDSUlkY0DnLHc9daesOKkA1JTdjMO0M3s6mCFy7yG7B6zPE6GycG3pmjnLwmJHaYyAJkfXp5C6LgGorehG07ulhca9klEWOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kYhkjJBY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F2AC433A6;
+	Tue, 23 Jan 2024 01:52:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970296;
-	bh=tK/WrD0i6Ta9kiVUPq3/3b5bZ0ZtmVBjSODvdM7VFM0=;
+	s=korg; t=1705974739;
+	bh=jQ3m6GuxYsKbON+5hMxNjp+Eaf0t1kIIUHP7JOpod7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VvheVa4Uh5C9PPspNkD5SI4hEyNzPmNlrv98GAbhI8S+h2M6GEaXz6TOFrhguKC2V
-	 bQiOoIfoO0NLpT7RwzoZRY45rZrlnwnPG/+Pd5akbbf0j+p46vNYS/uFmLSMtTFHB2
-	 SuOl2oLQoG2uNosF60gRmVP3FFSzgcV4L294ET74=
+	b=kYhkjJBYl9w9T2lY6NhOvQRtHe1WJjnwbm9cR47SWb/4sABaKOPZcb4z/P3mWDIRP
+	 LngxaGyWUHNac9GapqXmfoICRYDv91ZVjPjr8wUGk0kOtPaFWH0XoEHFJAX8JdRXl3
+	 yYCL57sgo6WdVjIfenHBPzCRyTX2vt45xwSPUT2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 627/641] netfilter: nf_tables: reject NFT_SET_CONCAT with not field length description
+	Jiri Olsa <olsajiri@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Dmitrii Dolgov <9erthalion6@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 5.15 275/374] bpf: Fix re-attachment branch in bpf_tracing_prog_attach
 Date: Mon, 22 Jan 2024 15:58:51 -0800
-Message-ID: <20240122235837.879259350@linuxfoundation.org>
+Message-ID: <20240122235754.337113701@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jiri Olsa <olsajiri@gmail.com>
 
-[ Upstream commit 113661e07460a6604aacc8ae1b23695a89e7d4b3 ]
+commit 715d82ba636cb3629a6e18a33bb9dbe53f9936ee upstream.
 
-It is still possible to set on the NFT_SET_CONCAT flag by specifying a
-set size and no field description, report EINVAL in such case.
+The following case can cause a crash due to missing attach_btf:
 
-Fixes: 1b6345d4160e ("netfilter: nf_tables: check NFT_SET_CONCAT flag if field_count is specified")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1) load rawtp program
+2) load fentry program with rawtp as target_fd
+3) create tracing link for fentry program with target_fd = 0
+4) repeat 3
+
+In the end we have:
+
+- prog->aux->dst_trampoline == NULL
+- tgt_prog == NULL (because we did not provide target_fd to link_create)
+- prog->aux->attach_btf == NULL (the program was loaded with attach_prog_fd=X)
+- the program was loaded for tgt_prog but we have no way to find out which one
+
+    BUG: kernel NULL pointer dereference, address: 0000000000000058
+    Call Trace:
+     <TASK>
+     ? __die+0x20/0x70
+     ? page_fault_oops+0x15b/0x430
+     ? fixup_exception+0x22/0x330
+     ? exc_page_fault+0x6f/0x170
+     ? asm_exc_page_fault+0x22/0x30
+     ? bpf_tracing_prog_attach+0x279/0x560
+     ? btf_obj_id+0x5/0x10
+     bpf_tracing_prog_attach+0x439/0x560
+     __sys_bpf+0x1cf4/0x2de0
+     __x64_sys_bpf+0x1c/0x30
+     do_syscall_64+0x41/0xf0
+     entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+Return -EINVAL in this situation.
+
+Fixes: f3a95075549e0 ("bpf: Allow trampoline re-attach for tracing and lsm programs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiri Olsa <olsajiri@gmail.com>
+Acked-by: Jiri Olsa <olsajiri@gmail.com>
+Acked-by: Song Liu <song@kernel.org>
+Signed-off-by: Dmitrii Dolgov <9erthalion6@gmail.com>
+Link: https://lore.kernel.org/r/20240103190559.14750-4-9erthalion6@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/bpf/syscall.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 47ffb9e4c353..f032c29f1da6 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5068,8 +5068,12 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
- 		if (err < 0)
- 			return err;
- 
--		if (desc.field_count > 1 && !(flags & NFT_SET_CONCAT))
-+		if (desc.field_count > 1) {
-+			if (!(flags & NFT_SET_CONCAT))
-+				return -EINVAL;
-+		} else if (flags & NFT_SET_CONCAT) {
- 			return -EINVAL;
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -2761,6 +2761,10 @@ static int bpf_tracing_prog_attach(struc
+ 	 *
+ 	 * - if prog->aux->dst_trampoline and tgt_prog is NULL, the program
+ 	 *   was detached and is going for re-attachment.
++	 *
++	 * - if prog->aux->dst_trampoline is NULL and tgt_prog and prog->aux->attach_btf
++	 *   are NULL, then program was already attached and user did not provide
++	 *   tgt_prog_fd so we have no way to find out or create trampoline
+ 	 */
+ 	if (!prog->aux->dst_trampoline && !tgt_prog) {
+ 		/*
+@@ -2774,6 +2778,11 @@ static int bpf_tracing_prog_attach(struc
+ 			err = -EINVAL;
+ 			goto out_unlock;
+ 		}
++		/* We can allow re-attach only if we have valid attach_btf. */
++		if (!prog->aux->attach_btf) {
++			err = -EINVAL;
++			goto out_unlock;
 +		}
- 	} else if (flags & NFT_SET_CONCAT) {
- 		return -EINVAL;
+ 		btf_id = prog->aux->attach_btf_id;
+ 		key = bpf_trampoline_compute_key(NULL, prog->aux->attach_btf, btf_id);
  	}
--- 
-2.43.0
-
 
 
 
