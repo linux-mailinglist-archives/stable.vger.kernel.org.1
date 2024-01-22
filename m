@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-13800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5360E837E17
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C68838516
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7404E1C22229
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 154A41C2A508
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66AF58ABE;
-	Tue, 23 Jan 2024 00:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430A17A735;
+	Tue, 23 Jan 2024 02:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTcwRwrm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcSm/EET"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8460A53E16;
-	Tue, 23 Jan 2024 00:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41037CF37;
+	Tue, 23 Jan 2024 02:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970367; cv=none; b=amKaIFGnhQGq4CLHuBsbFXpyOgJznltsgSpjG0GU1CXoJXJrUSXbSvjbosKnWinTezTWq51BvbykX8D8cdHiIhcJ7v2ZjPk/7veYYWheCCe8v+xpwOy8y9BzQw/YGIdfbLHqw9nnKQfTSPxMTKjTuZWsRCHhDPgs839aX1quuzU=
+	t=1705975739; cv=none; b=k1xjvN7cfmNKqYtUTMNjSyXSbKyy4VDeEfi7ntNvlZ8C2gR4SSNaeVm6TlK6JGh4efOQ0yvqaaEcdzIc+tmYGSH6dXq1QCpPlx8PEXfeghELbBmkTrTLygXgxJdmiV3mEzfBCMnbwIP0zYEYlSeI6LxgJkG8uFns2CrCL+ej/mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970367; c=relaxed/simple;
-	bh=HIwQPb6kEYUqFr8sJkA72PNXLnd8qhiI2wrhQGFMOu0=;
+	s=arc-20240116; t=1705975739; c=relaxed/simple;
+	bh=nXzC0a/8eqWfBFIbQCFOz1ZUH25F4Cfc/41Jgsl68QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=plFgIh7W6jEBliJG/CVEphRk1B2QgUSS8jrk1jxSC8k++8KaZweL1iMzM38rakjb/GDW94mdYlPjmZdkHVd3vSk43wqF9TjvKsRVR0U2NiqWO7kSb56WJBWGQBt4/2jqYWUmZEnE0WsWE+W2i9QjazAJF3TTJg+UhAPpfonO3Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTcwRwrm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8842DC433C7;
-	Tue, 23 Jan 2024 00:39:25 +0000 (UTC)
+	 MIME-Version; b=TnZXCk3d5OfX0zM2uTwP6dFXYjKh79u32sYO/3fM5CdNeDSQBJV2/ftlBEE4i+egohN0ijw6eZq5WMI5RmAbKhlh/mt4Z1RwdB6Y+r0vG117mini+rrAiVWiKFTI7ynLBnNkugJW6/juKDONE/EsqdvoIIOVJ9ZhbbKCJO+GXSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcSm/EET; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CCBC43390;
+	Tue, 23 Jan 2024 02:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970367;
-	bh=HIwQPb6kEYUqFr8sJkA72PNXLnd8qhiI2wrhQGFMOu0=;
+	s=korg; t=1705975738;
+	bh=nXzC0a/8eqWfBFIbQCFOz1ZUH25F4Cfc/41Jgsl68QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yTcwRwrmJBI1wnaqogAMzY/PPJ9ENjSnHSn0XfRmoXn1TrTKp8crCsA1DxHzYhIK9
-	 GntmRSSJTLXAc0NVhWIpNh5Hea+TjlTRpCFX/CrAXMDKArHrM43hb+0gUHybGi7xH3
-	 CzUCPsmDeyUu70oJK04GTnDOcC+yBhSiyuq9fO0k=
+	b=QcSm/EETiq/0c/TgSuckcsxExH9XxWo1T+IBQ+DylqVaNMuWX5zF9sc6RlZUlmurU
+	 kFGXQ3JC44+lCdr95cTR4NPlS0YFrpJ75yA5Fqm1MXDinKS6XbXZobYNDev7lIToKW
+	 fxKwuMS1AEhlDCkrt9xqX7K3/uYzgn3OZ65oDCro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maksym Yaremchuk <maksymy@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 637/641] mlxsw: spectrum_router: Register netdevice notifier before nexthop
+Subject: [PATCH 6.6 490/583] bus: mhi: ep: Pass mhi_ep_buf_info struct to read/write APIs
 Date: Mon, 22 Jan 2024 15:59:01 -0800
-Message-ID: <20240122235838.209034309@linuxfoundation.org>
+Message-ID: <20240122235827.019885197@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,116 +61,408 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 62bef63646c194e0f82b40304a0f2d060b28687b ]
+[ Upstream commit b08ded2ef2e98768d5ee5f71da8fe768b1f7774b ]
 
-If there are IPIP nexthops at the time when the driver is loaded (or the
-devlink instance reloaded), the driver looks up the corresponding IPIP
-entry. But IPIP entries are only created as a result of netdevice
-notifications. Since the netdevice notifier is registered after the nexthop
-notifier, mlxsw_sp_nexthop_type_init() never finds the IPIP entry,
-registers the nexthop MLXSW_SP_NEXTHOP_TYPE_ETH, and fails to assign a CRIF
-to the nexthop. Later on when the CRIF is necessary, the WARN_ON in
-mlxsw_sp_nexthop_rif() triggers, causing the splat [1].
+In the preparation of DMA async support, let's pass the parameters to
+read_from_host() and write_to_host() APIs using mhi_ep_buf_info structure.
 
-In order to fix the issue, reorder the netdevice notifier to be registered
-before the nexthop one.
+No functional change.
 
-[1] (edited for clarity):
-
-    WARNING: CPU: 1 PID: 1364 at drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:3245 mlxsw_sp_nexthop_rif (drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:3246 (discriminator 1)) mlxsw_spectrum
-    Hardware name: Mellanox Technologies Ltd. MSN4410/VMOD0010, BIOS 5.11 01/06/2019
-    Call Trace:
-    ? mlxsw_sp_nexthop_rif (drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:3246 (discriminator 1)) mlxsw_spectrum
-    __mlxsw_sp_nexthop_eth_update (drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:3637) mlxsw_spectrum
-    mlxsw_sp_nexthop_update (drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:3679 drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:3727) mlxsw_spectrum
-    mlxsw_sp_nexthop_group_update (drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:3757) mlxsw_spectrum
-    mlxsw_sp_nexthop_group_refresh (drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:4112) mlxsw_spectrum
-    mlxsw_sp_nexthop_obj_event (drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:5118 drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:5191 drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:5315 drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:5500) mlxsw_spectrum
-    nexthops_dump (net/ipv4/nexthop.c:217 net/ipv4/nexthop.c:440 net/ipv4/nexthop.c:3609)
-    register_nexthop_notifier (net/ipv4/nexthop.c:3624)
-    mlxsw_sp_router_init (drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:11486) mlxsw_spectrum
-    mlxsw_sp_init (drivers/net/ethernet/mellanox/mlxsw/spectrum.c:3267) mlxsw_spectrum
-    __mlxsw_core_bus_device_register (drivers/net/ethernet/mellanox/mlxsw/core.c:2202) mlxsw_core
-    mlxsw_devlink_core_bus_device_reload_up (drivers/net/ethernet/mellanox/mlxsw/core.c:2265 drivers/net/ethernet/mellanox/mlxsw/core.c:1603) mlxsw_core
-    devlink_reload (net/devlink/dev.c:314 net/devlink/dev.c:475)
-    [...]
-
-Fixes: 9464a3d68ea9 ("mlxsw: spectrum_router: Track next hops at CRIFs")
-Reported-by: Maksym Yaremchuk <maksymy@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/74edb8d45d004e8d8f5318eede6ccc3d786d8ba9.1705502064.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Stable-dep-of: 327ec5f70609 ("PCI: epf-mhi: Fix the DMA data direction of dma_unmap_single()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlxsw/spectrum_router.c | 24 +++++++++----------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/bus/mhi/ep/main.c                    | 23 +++----
+ drivers/bus/mhi/ep/ring.c                    | 41 ++++++------
+ drivers/pci/endpoint/functions/pci-epf-mhi.c | 66 +++++++++++---------
+ include/linux/mhi_ep.h                       | 16 ++++-
+ 4 files changed, 84 insertions(+), 62 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-index 82a95125d9ca..39e6d941fd91 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-@@ -11458,6 +11458,13 @@ int mlxsw_sp_router_init(struct mlxsw_sp *mlxsw_sp,
- 	if (err)
- 		goto err_register_netevent_notifier;
+diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
+index 517279600645..582d5c166a75 100644
+--- a/drivers/bus/mhi/ep/main.c
++++ b/drivers/bus/mhi/ep/main.c
+@@ -324,10 +324,9 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
+ 	struct mhi_ep_chan *mhi_chan = &mhi_cntrl->mhi_chan[ring->ch_id];
+ 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
+ 	size_t tr_len, read_offset, write_offset;
++	struct mhi_ep_buf_info buf_info = {};
+ 	struct mhi_ring_element *el;
+ 	bool tr_done = false;
+-	void *write_addr;
+-	u64 read_addr;
+ 	u32 buf_left;
+ 	int ret;
  
-+	mlxsw_sp->router->netdevice_nb.notifier_call =
-+		mlxsw_sp_router_netdevice_event;
-+	err = register_netdevice_notifier_net(mlxsw_sp_net(mlxsw_sp),
-+					      &mlxsw_sp->router->netdevice_nb);
-+	if (err)
-+		goto err_register_netdev_notifier;
+@@ -356,11 +355,13 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
+ 
+ 		read_offset = mhi_chan->tre_size - mhi_chan->tre_bytes_left;
+ 		write_offset = len - buf_left;
+-		read_addr = mhi_chan->tre_loc + read_offset;
+-		write_addr = result->buf_addr + write_offset;
 +
- 	mlxsw_sp->router->nexthop_nb.notifier_call =
- 		mlxsw_sp_nexthop_obj_event;
- 	err = register_nexthop_notifier(mlxsw_sp_net(mlxsw_sp),
-@@ -11473,22 +11480,15 @@ int mlxsw_sp_router_init(struct mlxsw_sp *mlxsw_sp,
- 	if (err)
- 		goto err_register_fib_notifier;
++		buf_info.host_addr = mhi_chan->tre_loc + read_offset;
++		buf_info.dev_addr = result->buf_addr + write_offset;
++		buf_info.size = tr_len;
  
--	mlxsw_sp->router->netdevice_nb.notifier_call =
--		mlxsw_sp_router_netdevice_event;
--	err = register_netdevice_notifier_net(mlxsw_sp_net(mlxsw_sp),
--					      &mlxsw_sp->router->netdevice_nb);
--	if (err)
--		goto err_register_netdev_notifier;
+ 		dev_dbg(dev, "Reading %zd bytes from channel (%u)\n", tr_len, ring->ch_id);
+-		ret = mhi_cntrl->read_from_host(mhi_cntrl, read_addr, write_addr, tr_len);
++		ret = mhi_cntrl->read_from_host(mhi_cntrl, &buf_info);
+ 		if (ret < 0) {
+ 			dev_err(&mhi_chan->mhi_dev->dev, "Error reading from channel\n");
+ 			return ret;
+@@ -483,12 +484,11 @@ int mhi_ep_queue_skb(struct mhi_ep_device *mhi_dev, struct sk_buff *skb)
+ 	struct mhi_ep_cntrl *mhi_cntrl = mhi_dev->mhi_cntrl;
+ 	struct mhi_ep_chan *mhi_chan = mhi_dev->dl_chan;
+ 	struct device *dev = &mhi_chan->mhi_dev->dev;
++	struct mhi_ep_buf_info buf_info = {};
+ 	struct mhi_ring_element *el;
+ 	u32 buf_left, read_offset;
+ 	struct mhi_ep_ring *ring;
+ 	enum mhi_ev_ccs code;
+-	void *read_addr;
+-	u64 write_addr;
+ 	size_t tr_len;
+ 	u32 tre_len;
+ 	int ret;
+@@ -517,11 +517,13 @@ int mhi_ep_queue_skb(struct mhi_ep_device *mhi_dev, struct sk_buff *skb)
+ 
+ 		tr_len = min(buf_left, tre_len);
+ 		read_offset = skb->len - buf_left;
+-		read_addr = skb->data + read_offset;
+-		write_addr = MHI_TRE_DATA_GET_PTR(el);
++
++		buf_info.dev_addr = skb->data + read_offset;
++		buf_info.host_addr = MHI_TRE_DATA_GET_PTR(el);
++		buf_info.size = tr_len;
+ 
+ 		dev_dbg(dev, "Writing %zd bytes to channel (%u)\n", tr_len, ring->ch_id);
+-		ret = mhi_cntrl->write_to_host(mhi_cntrl, read_addr, write_addr, tr_len);
++		ret = mhi_cntrl->write_to_host(mhi_cntrl, &buf_info);
+ 		if (ret < 0) {
+ 			dev_err(dev, "Error writing to the channel\n");
+ 			goto err_exit;
+@@ -1429,7 +1431,6 @@ int mhi_ep_register_controller(struct mhi_ep_cntrl *mhi_cntrl,
+ 		ret = -ENOMEM;
+ 		goto err_destroy_tre_buf_cache;
+ 	}
 -
- 	return 0;
- 
--err_register_netdev_notifier:
--	unregister_fib_notifier(mlxsw_sp_net(mlxsw_sp),
--				&mlxsw_sp->router->fib_nb);
- err_register_fib_notifier:
- 	unregister_nexthop_notifier(mlxsw_sp_net(mlxsw_sp),
- 				    &mlxsw_sp->router->nexthop_nb);
- err_register_nexthop_notifier:
-+	unregister_netdevice_notifier_net(mlxsw_sp_net(mlxsw_sp),
-+					  &router->netdevice_nb);
-+err_register_netdev_notifier:
- 	unregister_netevent_notifier(&mlxsw_sp->router->netevent_nb);
- err_register_netevent_notifier:
- 	unregister_inet6addr_validator_notifier(&router->inet6addr_valid_nb);
-@@ -11536,11 +11536,11 @@ void mlxsw_sp_router_fini(struct mlxsw_sp *mlxsw_sp)
+ 	INIT_WORK(&mhi_cntrl->state_work, mhi_ep_state_worker);
+ 	INIT_WORK(&mhi_cntrl->reset_work, mhi_ep_reset_worker);
+ 	INIT_WORK(&mhi_cntrl->cmd_ring_work, mhi_ep_cmd_ring_worker);
+diff --git a/drivers/bus/mhi/ep/ring.c b/drivers/bus/mhi/ep/ring.c
+index 115518ec76a4..c673d7200b3e 100644
+--- a/drivers/bus/mhi/ep/ring.c
++++ b/drivers/bus/mhi/ep/ring.c
+@@ -30,7 +30,8 @@ static int __mhi_ep_cache_ring(struct mhi_ep_ring *ring, size_t end)
  {
- 	struct mlxsw_sp_router *router = mlxsw_sp->router;
+ 	struct mhi_ep_cntrl *mhi_cntrl = ring->mhi_cntrl;
+ 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
+-	size_t start, copy_size;
++	struct mhi_ep_buf_info buf_info = {};
++	size_t start;
+ 	int ret;
  
--	unregister_netdevice_notifier_net(mlxsw_sp_net(mlxsw_sp),
--					  &router->netdevice_nb);
- 	unregister_fib_notifier(mlxsw_sp_net(mlxsw_sp), &router->fib_nb);
- 	unregister_nexthop_notifier(mlxsw_sp_net(mlxsw_sp),
- 				    &router->nexthop_nb);
-+	unregister_netdevice_notifier_net(mlxsw_sp_net(mlxsw_sp),
-+					  &router->netdevice_nb);
- 	unregister_netevent_notifier(&router->netevent_nb);
- 	unregister_inet6addr_validator_notifier(&router->inet6addr_valid_nb);
- 	unregister_inetaddr_validator_notifier(&router->inetaddr_valid_nb);
+ 	/* Don't proceed in the case of event ring. This happens during mhi_ep_ring_start(). */
+@@ -43,30 +44,34 @@ static int __mhi_ep_cache_ring(struct mhi_ep_ring *ring, size_t end)
+ 
+ 	start = ring->wr_offset;
+ 	if (start < end) {
+-		copy_size = (end - start) * sizeof(struct mhi_ring_element);
+-		ret = mhi_cntrl->read_from_host(mhi_cntrl, ring->rbase +
+-						(start * sizeof(struct mhi_ring_element)),
+-						&ring->ring_cache[start], copy_size);
++		buf_info.size = (end - start) * sizeof(struct mhi_ring_element);
++		buf_info.host_addr = ring->rbase + (start * sizeof(struct mhi_ring_element));
++		buf_info.dev_addr = &ring->ring_cache[start];
++
++		ret = mhi_cntrl->read_from_host(mhi_cntrl, &buf_info);
+ 		if (ret < 0)
+ 			return ret;
+ 	} else {
+-		copy_size = (ring->ring_size - start) * sizeof(struct mhi_ring_element);
+-		ret = mhi_cntrl->read_from_host(mhi_cntrl, ring->rbase +
+-						(start * sizeof(struct mhi_ring_element)),
+-						&ring->ring_cache[start], copy_size);
++		buf_info.size = (ring->ring_size - start) * sizeof(struct mhi_ring_element);
++		buf_info.host_addr = ring->rbase + (start * sizeof(struct mhi_ring_element));
++		buf_info.dev_addr = &ring->ring_cache[start];
++
++		ret = mhi_cntrl->read_from_host(mhi_cntrl, &buf_info);
+ 		if (ret < 0)
+ 			return ret;
+ 
+ 		if (end) {
+-			ret = mhi_cntrl->read_from_host(mhi_cntrl, ring->rbase,
+-							&ring->ring_cache[0],
+-							end * sizeof(struct mhi_ring_element));
++			buf_info.host_addr = ring->rbase;
++			buf_info.dev_addr = &ring->ring_cache[0];
++			buf_info.size = end * sizeof(struct mhi_ring_element);
++
++			ret = mhi_cntrl->read_from_host(mhi_cntrl, &buf_info);
+ 			if (ret < 0)
+ 				return ret;
+ 		}
+ 	}
+ 
+-	dev_dbg(dev, "Cached ring: start %zu end %zu size %zu\n", start, end, copy_size);
++	dev_dbg(dev, "Cached ring: start %zu end %zu size %zu\n", start, end, buf_info.size);
+ 
+ 	return 0;
+ }
+@@ -102,6 +107,7 @@ int mhi_ep_ring_add_element(struct mhi_ep_ring *ring, struct mhi_ring_element *e
+ {
+ 	struct mhi_ep_cntrl *mhi_cntrl = ring->mhi_cntrl;
+ 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
++	struct mhi_ep_buf_info buf_info = {};
+ 	size_t old_offset = 0;
+ 	u32 num_free_elem;
+ 	__le64 rp;
+@@ -133,12 +139,11 @@ int mhi_ep_ring_add_element(struct mhi_ep_ring *ring, struct mhi_ring_element *e
+ 	rp = cpu_to_le64(ring->rd_offset * sizeof(*el) + ring->rbase);
+ 	memcpy_toio((void __iomem *) &ring->ring_ctx->generic.rp, &rp, sizeof(u64));
+ 
+-	ret = mhi_cntrl->write_to_host(mhi_cntrl, el, ring->rbase + (old_offset * sizeof(*el)),
+-				       sizeof(*el));
+-	if (ret < 0)
+-		return ret;
++	buf_info.host_addr = ring->rbase + (old_offset * sizeof(*el));
++	buf_info.dev_addr = el;
++	buf_info.size = sizeof(*el);
+ 
+-	return 0;
++	return mhi_cntrl->write_to_host(mhi_cntrl, &buf_info);
+ }
+ 
+ void mhi_ep_ring_init(struct mhi_ep_ring *ring, enum mhi_ep_ring_type type, u32 id)
+diff --git a/drivers/pci/endpoint/functions/pci-epf-mhi.c b/drivers/pci/endpoint/functions/pci-epf-mhi.c
+index b7b9d3e21f97..ec5f4a38178b 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-mhi.c
++++ b/drivers/pci/endpoint/functions/pci-epf-mhi.c
+@@ -209,28 +209,28 @@ static void pci_epf_mhi_raise_irq(struct mhi_ep_cntrl *mhi_cntrl, u32 vector)
+ 			  vector + 1);
+ }
+ 
+-static int pci_epf_mhi_iatu_read(struct mhi_ep_cntrl *mhi_cntrl, u64 from,
+-				 void *to, size_t size)
++static int pci_epf_mhi_iatu_read(struct mhi_ep_cntrl *mhi_cntrl,
++				 struct mhi_ep_buf_info *buf_info)
+ {
+ 	struct pci_epf_mhi *epf_mhi = to_epf_mhi(mhi_cntrl);
+-	size_t offset = get_align_offset(epf_mhi, from);
++	size_t offset = get_align_offset(epf_mhi, buf_info->host_addr);
+ 	void __iomem *tre_buf;
+ 	phys_addr_t tre_phys;
+ 	int ret;
+ 
+ 	mutex_lock(&epf_mhi->lock);
+ 
+-	ret = __pci_epf_mhi_alloc_map(mhi_cntrl, from, &tre_phys, &tre_buf,
+-				      offset, size);
++	ret = __pci_epf_mhi_alloc_map(mhi_cntrl, buf_info->host_addr, &tre_phys,
++				      &tre_buf, offset, buf_info->size);
+ 	if (ret) {
+ 		mutex_unlock(&epf_mhi->lock);
+ 		return ret;
+ 	}
+ 
+-	memcpy_fromio(to, tre_buf, size);
++	memcpy_fromio(buf_info->dev_addr, tre_buf, buf_info->size);
+ 
+-	__pci_epf_mhi_unmap_free(mhi_cntrl, from, tre_phys, tre_buf, offset,
+-				 size);
++	__pci_epf_mhi_unmap_free(mhi_cntrl, buf_info->host_addr, tre_phys,
++				 tre_buf, offset, buf_info->size);
+ 
+ 	mutex_unlock(&epf_mhi->lock);
+ 
+@@ -238,27 +238,27 @@ static int pci_epf_mhi_iatu_read(struct mhi_ep_cntrl *mhi_cntrl, u64 from,
+ }
+ 
+ static int pci_epf_mhi_iatu_write(struct mhi_ep_cntrl *mhi_cntrl,
+-				  void *from, u64 to, size_t size)
++				  struct mhi_ep_buf_info *buf_info)
+ {
+ 	struct pci_epf_mhi *epf_mhi = to_epf_mhi(mhi_cntrl);
+-	size_t offset = get_align_offset(epf_mhi, to);
++	size_t offset = get_align_offset(epf_mhi, buf_info->host_addr);
+ 	void __iomem *tre_buf;
+ 	phys_addr_t tre_phys;
+ 	int ret;
+ 
+ 	mutex_lock(&epf_mhi->lock);
+ 
+-	ret = __pci_epf_mhi_alloc_map(mhi_cntrl, to, &tre_phys, &tre_buf,
+-				      offset, size);
++	ret = __pci_epf_mhi_alloc_map(mhi_cntrl, buf_info->host_addr, &tre_phys,
++				      &tre_buf, offset, buf_info->size);
+ 	if (ret) {
+ 		mutex_unlock(&epf_mhi->lock);
+ 		return ret;
+ 	}
+ 
+-	memcpy_toio(tre_buf, from, size);
++	memcpy_toio(tre_buf, buf_info->dev_addr, buf_info->size);
+ 
+-	__pci_epf_mhi_unmap_free(mhi_cntrl, to, tre_phys, tre_buf, offset,
+-				 size);
++	__pci_epf_mhi_unmap_free(mhi_cntrl, buf_info->host_addr, tre_phys,
++				 tre_buf, offset, buf_info->size);
+ 
+ 	mutex_unlock(&epf_mhi->lock);
+ 
+@@ -270,8 +270,8 @@ static void pci_epf_mhi_dma_callback(void *param)
+ 	complete(param);
+ }
+ 
+-static int pci_epf_mhi_edma_read(struct mhi_ep_cntrl *mhi_cntrl, u64 from,
+-				 void *to, size_t size)
++static int pci_epf_mhi_edma_read(struct mhi_ep_cntrl *mhi_cntrl,
++				 struct mhi_ep_buf_info *buf_info)
+ {
+ 	struct pci_epf_mhi *epf_mhi = to_epf_mhi(mhi_cntrl);
+ 	struct device *dma_dev = epf_mhi->epf->epc->dev.parent;
+@@ -284,13 +284,13 @@ static int pci_epf_mhi_edma_read(struct mhi_ep_cntrl *mhi_cntrl, u64 from,
+ 	dma_addr_t dst_addr;
+ 	int ret;
+ 
+-	if (size < SZ_4K)
+-		return pci_epf_mhi_iatu_read(mhi_cntrl, from, to, size);
++	if (buf_info->size < SZ_4K)
++		return pci_epf_mhi_iatu_read(mhi_cntrl, buf_info);
+ 
+ 	mutex_lock(&epf_mhi->lock);
+ 
+ 	config.direction = DMA_DEV_TO_MEM;
+-	config.src_addr = from;
++	config.src_addr = buf_info->host_addr;
+ 
+ 	ret = dmaengine_slave_config(chan, &config);
+ 	if (ret) {
+@@ -298,14 +298,16 @@ static int pci_epf_mhi_edma_read(struct mhi_ep_cntrl *mhi_cntrl, u64 from,
+ 		goto err_unlock;
+ 	}
+ 
+-	dst_addr = dma_map_single(dma_dev, to, size, DMA_FROM_DEVICE);
++	dst_addr = dma_map_single(dma_dev, buf_info->dev_addr, buf_info->size,
++				  DMA_FROM_DEVICE);
+ 	ret = dma_mapping_error(dma_dev, dst_addr);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to map remote memory\n");
+ 		goto err_unlock;
+ 	}
+ 
+-	desc = dmaengine_prep_slave_single(chan, dst_addr, size, DMA_DEV_TO_MEM,
++	desc = dmaengine_prep_slave_single(chan, dst_addr, buf_info->size,
++					   DMA_DEV_TO_MEM,
+ 					   DMA_CTRL_ACK | DMA_PREP_INTERRUPT);
+ 	if (!desc) {
+ 		dev_err(dev, "Failed to prepare DMA\n");
+@@ -332,15 +334,15 @@ static int pci_epf_mhi_edma_read(struct mhi_ep_cntrl *mhi_cntrl, u64 from,
+ 	}
+ 
+ err_unmap:
+-	dma_unmap_single(dma_dev, dst_addr, size, DMA_FROM_DEVICE);
++	dma_unmap_single(dma_dev, dst_addr, buf_info->size, DMA_FROM_DEVICE);
+ err_unlock:
+ 	mutex_unlock(&epf_mhi->lock);
+ 
+ 	return ret;
+ }
+ 
+-static int pci_epf_mhi_edma_write(struct mhi_ep_cntrl *mhi_cntrl, void *from,
+-				  u64 to, size_t size)
++static int pci_epf_mhi_edma_write(struct mhi_ep_cntrl *mhi_cntrl,
++				  struct mhi_ep_buf_info *buf_info)
+ {
+ 	struct pci_epf_mhi *epf_mhi = to_epf_mhi(mhi_cntrl);
+ 	struct device *dma_dev = epf_mhi->epf->epc->dev.parent;
+@@ -353,13 +355,13 @@ static int pci_epf_mhi_edma_write(struct mhi_ep_cntrl *mhi_cntrl, void *from,
+ 	dma_addr_t src_addr;
+ 	int ret;
+ 
+-	if (size < SZ_4K)
+-		return pci_epf_mhi_iatu_write(mhi_cntrl, from, to, size);
++	if (buf_info->size < SZ_4K)
++		return pci_epf_mhi_iatu_write(mhi_cntrl, buf_info);
+ 
+ 	mutex_lock(&epf_mhi->lock);
+ 
+ 	config.direction = DMA_MEM_TO_DEV;
+-	config.dst_addr = to;
++	config.dst_addr = buf_info->host_addr;
+ 
+ 	ret = dmaengine_slave_config(chan, &config);
+ 	if (ret) {
+@@ -367,14 +369,16 @@ static int pci_epf_mhi_edma_write(struct mhi_ep_cntrl *mhi_cntrl, void *from,
+ 		goto err_unlock;
+ 	}
+ 
+-	src_addr = dma_map_single(dma_dev, from, size, DMA_TO_DEVICE);
++	src_addr = dma_map_single(dma_dev, buf_info->dev_addr, buf_info->size,
++				  DMA_TO_DEVICE);
+ 	ret = dma_mapping_error(dma_dev, src_addr);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to map remote memory\n");
+ 		goto err_unlock;
+ 	}
+ 
+-	desc = dmaengine_prep_slave_single(chan, src_addr, size, DMA_MEM_TO_DEV,
++	desc = dmaengine_prep_slave_single(chan, src_addr, buf_info->size,
++					   DMA_MEM_TO_DEV,
+ 					   DMA_CTRL_ACK | DMA_PREP_INTERRUPT);
+ 	if (!desc) {
+ 		dev_err(dev, "Failed to prepare DMA\n");
+@@ -401,7 +405,7 @@ static int pci_epf_mhi_edma_write(struct mhi_ep_cntrl *mhi_cntrl, void *from,
+ 	}
+ 
+ err_unmap:
+-	dma_unmap_single(dma_dev, src_addr, size, DMA_FROM_DEVICE);
++	dma_unmap_single(dma_dev, src_addr, buf_info->size, DMA_FROM_DEVICE);
+ err_unlock:
+ 	mutex_unlock(&epf_mhi->lock);
+ 
+diff --git a/include/linux/mhi_ep.h b/include/linux/mhi_ep.h
+index ce85d42b685d..96f3a133540d 100644
+--- a/include/linux/mhi_ep.h
++++ b/include/linux/mhi_ep.h
+@@ -49,6 +49,18 @@ struct mhi_ep_db_info {
+ 	u32 status;
+ };
+ 
++/**
++ * struct mhi_ep_buf_info - MHI Endpoint transfer buffer info
++ * @dev_addr: Address of the buffer in endpoint
++ * @host_addr: Address of the bufffer in host
++ * @size: Size of the buffer
++ */
++struct mhi_ep_buf_info {
++	void *dev_addr;
++	u64 host_addr;
++	size_t size;
++};
++
+ /**
+  * struct mhi_ep_cntrl - MHI Endpoint controller structure
+  * @cntrl_dev: Pointer to the struct device of physical bus acting as the MHI
+@@ -137,8 +149,8 @@ struct mhi_ep_cntrl {
+ 			 void __iomem **virt, size_t size);
+ 	void (*unmap_free)(struct mhi_ep_cntrl *mhi_cntrl, u64 pci_addr, phys_addr_t phys,
+ 			   void __iomem *virt, size_t size);
+-	int (*read_from_host)(struct mhi_ep_cntrl *mhi_cntrl, u64 from, void *to, size_t size);
+-	int (*write_to_host)(struct mhi_ep_cntrl *mhi_cntrl, void *from, u64 to, size_t size);
++	int (*read_from_host)(struct mhi_ep_cntrl *mhi_cntrl, struct mhi_ep_buf_info *buf_info);
++	int (*write_to_host)(struct mhi_ep_cntrl *mhi_cntrl, struct mhi_ep_buf_info *buf_info);
+ 
+ 	enum mhi_state mhi_state;
+ 
 -- 
 2.43.0
 
