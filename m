@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9133837E2F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67DCB837C0F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CC2B1F277FC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:36:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D5C11F2AFD0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDA95C8E5;
-	Tue, 23 Jan 2024 00:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E352905;
+	Tue, 23 Jan 2024 00:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPT4eRIL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGAmejgy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2C7EAE8;
-	Tue, 23 Jan 2024 00:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F4223C2;
+	Tue, 23 Jan 2024 00:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970422; cv=none; b=aU9OTeohsLE+36g4D4DsLkZjychKNok1on9AW1pRG3Hk5MDrXpS4KBFgLwGZ8zxm8h3L1KJFPS+/qtLp4L9BwT+iPWrcIxXc/h0cfpJhovgS0ml4iS+Tc/4UwjP4rw0nfJT/H+alHngtRWv3hhiKLQQs08F0d4+QB3oxMqM3ZYk=
+	t=1705969491; cv=none; b=sBjmHTvzohHMlKBIkVvjTpz25OreuBAoOte7jPaw0XKNEI/xku61E1R2Ixz7pbT/4shp6UtCnenguWoY4BeFqeNN6YRxmqSvHouev5rIdvo8yWJ0Q/5PQFrl+khmKgNp92cJkaoR3ABe4G6RtRJr3VnAL9ABJwZkeNOmnOTLV2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970422; c=relaxed/simple;
-	bh=YIgznOFsPImxZcK4QacEACSw5o01yBUcfUOHOVx5xRE=;
+	s=arc-20240116; t=1705969491; c=relaxed/simple;
+	bh=BaigVRjzedoVCx0vlxWK+f5Lr4EaRUQTvcpNOHLdKhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bRyv15JsIhQrz0shnilHJ+Z+C/NHKAAkK8/UViT1C0wP3holv7nZKVH26lJwKPtX1IlEqiSfatk5v9DcswwEToqZBlg4AgEAs3AXVz4VVsOKCGIP8myTEY6z3UlyDwFqs2qfeH3kOoUAMW8Xc7wepGs6pW4st2hDcZw/sxWPlys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPT4eRIL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29977C43394;
-	Tue, 23 Jan 2024 00:40:21 +0000 (UTC)
+	 MIME-Version; b=UAXJGWcoynustLrEgtsJzRTVSq34V5y+LI/eMGCtNZjls2NC5s9NRKwQhyMkGOGYvkXkKovkK5vAcC7//OE1sCjoUFONccmFmWmSotDJIMzy01M8g0R+kSGjpMnrRtLHZNE5WQ9rOLQCNE/Y3SaPs6Tqb0WyDEoJtgXqfPFLO/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YGAmejgy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F17C43390;
+	Tue, 23 Jan 2024 00:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970421;
-	bh=YIgznOFsPImxZcK4QacEACSw5o01yBUcfUOHOVx5xRE=;
+	s=korg; t=1705969490;
+	bh=BaigVRjzedoVCx0vlxWK+f5Lr4EaRUQTvcpNOHLdKhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gPT4eRILCGUR2q0zFljkDLF8576Kcjhi94J5hc/3T1CY9x6hhdhUUfct9S+ura72q
-	 oVqHlGKUgdsNIoFlhn4aQ0u1ArG+YeoIIG1siSTPy0IzYDidrrdlPxO6lidMrMLhwx
-	 Ln1a4N+rdgFwGW1cC0qy5f0Ck8DjHTm1vO28att8=
+	b=YGAmejgytDMYI4Ird3J3Uxt7UFwrLT8I+pNjn55asnNes0vNM7pP2VW9EGo2wnnsY
+	 /DxbybHIGwVi+nZw5OK3K7uWrFGQCZIGGZLTi8L4+nhPTAw9aHbeUsGHCssNKOzkwa
+	 H67HZrSIs0V6C2cXVrtwEMq90TbGUDYOS63n1DRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Kiryushin <kiryushin@ancud.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Anton Bambura <jenneron@postmarketos.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/417] ACPI: LPIT: Avoid u32 multiplication overflow
+Subject: [PATCH 6.7 280/641] drm/msm/dpu: Add missing safe_lut_tbl in sc8180x catalog
 Date: Mon, 22 Jan 2024 15:53:04 -0800
-Message-ID: <20240122235752.087435482@linuxfoundation.org>
+Message-ID: <20240122235826.675606485@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Kiryushin <kiryushin@ancud.ru>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-[ Upstream commit 56d2eeda87995245300836ee4dbd13b002311782 ]
+[ Upstream commit 7cc2621f16b644bb7af37987cb471311641a9e56 ]
 
-In lpit_update_residency() there is a possibility of overflow
-in multiplication, if tsc_khz is large enough (> UINT_MAX/1000).
+Similar to SC8280XP, the misconfigured SAFE logic causes rather
+significant delays in __arm_smmu_tlb_sync(), resulting in poor
+performance for things such as USB.
 
-Change multiplication to mul_u32_u32().
+Introduce appropriate SAFE values for SC8180X to correct this.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: eeb2d80d502a ("ACPI / LPIT: Add Low Power Idle Table (LPIT) support")
-Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: f3af2d6ee9ab ("drm/msm/dpu: Add SC8180x to hw catalog")
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reported-by: Anton Bambura <jenneron@postmarketos.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/569840/
+Link: https://lore.kernel.org/r/20231130-sc8180x-dpu-safe-lut-v1-1-a8a6bbac36b8@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_lpit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
-index 50540d4d4948..2c015ecf7185 100644
---- a/drivers/acpi/acpi_lpit.c
-+++ b/drivers/acpi/acpi_lpit.c
-@@ -98,7 +98,7 @@ static void lpit_update_residency(struct lpit_residency_info *info,
- 				 struct acpi_lpit_native *lpit_native)
- {
- 	info->frequency = lpit_native->counter_frequency ?
--				lpit_native->counter_frequency : tsc_khz * 1000;
-+				lpit_native->counter_frequency : mul_u32_u32(tsc_khz, 1000U);
- 	if (!info->frequency)
- 		info->frequency = 1;
- 
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+index e07f4c8c25b9..9ffc8804a6fc 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+@@ -367,6 +367,7 @@ static const struct dpu_perf_cfg sc8180x_perf_data = {
+ 	.min_llcc_ib = 800000,
+ 	.min_dram_ib = 800000,
+ 	.danger_lut_tbl = {0xf, 0xffff, 0x0},
++	.safe_lut_tbl = {0xfff0, 0xf000, 0xffff},
+ 	.qos_lut_tbl = {
+ 		{.nentry = ARRAY_SIZE(sc7180_qos_linear),
+ 		.entries = sc7180_qos_linear
 -- 
 2.43.0
 
