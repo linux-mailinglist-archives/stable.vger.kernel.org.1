@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2AEF8384BA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D20C4838018
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2231C1C28DF1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F8B71C29587
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314E974E16;
-	Tue, 23 Jan 2024 02:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B2D65BDD;
+	Tue, 23 Jan 2024 00:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QiPi/DaG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtVRxwX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5534745D6;
-	Tue, 23 Jan 2024 02:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E5E64CF1;
+	Tue, 23 Jan 2024 00:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975470; cv=none; b=oDB1QWjBjQc71v14ESn+9oZZBnCjagznxXMdsM3CZGrMPo7/VTlqkgY3nwDW+vQKg+YqVwvR79Fqep/LnI9qdjPY3uBAcOFZAIj1QJ5Tdurr/lqNHDj2e+dlLyEd1duo0n5uqSNRvFBemEYI9iFurp1AymQ6//FsUMQXPLvO9gQ=
+	t=1705971544; cv=none; b=mFTzN6O0r59gvkwD6KQNrHm6dN1BM5XiQE+KVqYlUDYcb1OVWjR1WpiIQbBnCqHB2Ern+CYpqsIShcUu1c6kn+/MVlbGMuUvWj3JVDWPHKMaMesWGP578cZhCtdnY4TlCFq32Z0KENj8atQYeHnssvM3UdrEhtGkCkBPi03ICa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975470; c=relaxed/simple;
-	bh=GpqWp0C4RbMQtzOZzZfATpaX/Z1N4R1DQ/EjswjtRYw=;
+	s=arc-20240116; t=1705971544; c=relaxed/simple;
+	bh=MJQX4VeSDMtVYaVY+BbdvSD+7i+YVVQLYIHu4AgP89Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sr0b1IIqRSRr32toXwnzb4yitarLBef3UdU5eGx2Z7nC9bgTuusyCDR58uStk7jt55DU4bbTvqBHvVZ7mJLbxMBtiznTr0CwgYXncWm9IEGKfVJkruIyh/vvxAQyoLD4sGQK1x8+Im7wjypTR2Ln9M7P+8lm9EYSmcttnQyZzXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QiPi/DaG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1AAC433F1;
-	Tue, 23 Jan 2024 02:04:29 +0000 (UTC)
+	 MIME-Version; b=jUXzdJmWpqvpn1Cfu/IYA6UyfC9z8ieoOuGW1EUxd0L9LZuHPplECU5vjhrZnIH6qHdvIfsIIb+ScxZ4GqVFQ2BEK2n7Bh0UyphWbK7h4Y3GdCOQgkXEdLosEO7ZhORcbNuQOQcFYncZ/X5KYPYTc986l40GQX7M0qTX7YoCdLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtVRxwX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F1CC433C7;
+	Tue, 23 Jan 2024 00:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975469;
-	bh=GpqWp0C4RbMQtzOZzZfATpaX/Z1N4R1DQ/EjswjtRYw=;
+	s=korg; t=1705971543;
+	bh=MJQX4VeSDMtVYaVY+BbdvSD+7i+YVVQLYIHu4AgP89Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QiPi/DaGJGTUD+rGcan565DyEPWuHCp44PwTfobGOulGvDTYDgE63I2ovPssAbotD
-	 TElLcnH6bxWtfZVvlSe9WLUeZ0uDZZEFK7oR1k5HiR43xBABG+PqThom3YeU+CFmxQ
-	 fWINcDt+4XsSdJhV6wJ+cup9+ZN+vFaW+R5OIN7k=
+	b=GtVRxwX6YvqfPyhvTD6cWsgQvuwlnU9kapoCotDGB12LlgujE/IYzU1WRRbGgtIdQ
+	 1s5yp5NN8btjXOzZW50rx2GGp/ejEQ6M52FFKLmldHTnxTvI8HbXfzvIUWk0dXEBo0
+	 8T+mroPOLblbpO0pFaMrw2N6R1UdC0spGD5jTV7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <niklas.cassel@wdc.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>
-Subject: [PATCH 6.6 425/583] PCI: dwc: endpoint: Fix dw_pcie_ep_raise_msix_irq() alignment support
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 170/286] media: dvb-frontends: m88ds3103: Fix a memory leak in an error handling path of m88ds3103_probe()
 Date: Mon, 22 Jan 2024 15:57:56 -0800
-Message-ID: <20240122235824.991665077@linuxfoundation.org>
+Message-ID: <20240122235738.722336830@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <niklas.cassel@wdc.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 2217fffcd63f86776c985d42e76daa43a56abdf1 upstream.
+[ Upstream commit 5b2f885e2f6f482d05c23f04c8240f7b4fc5bdb5 ]
 
-Commit 6f5e193bfb55 ("PCI: dwc: Fix dw_pcie_ep_raise_msix_irq() to get
-correct MSI-X table address") modified dw_pcie_ep_raise_msix_irq() to
-support iATUs which require a specific alignment.
+If an error occurs after a successful i2c_mux_add_adapter(), then
+i2c_mux_del_adapters() should be called to free some resources, as
+already done in the remove function.
 
-However, this support cannot have been properly tested.
-
-The whole point is for the iATU to map an address that is aligned,
-using dw_pcie_ep_map_addr(), and then let the writel() write to
-ep->msi_mem + aligned_offset.
-
-Thus, modify the address that is mapped such that it is aligned.
-With this change, dw_pcie_ep_raise_msix_irq() matches the logic in
-dw_pcie_ep_raise_msi_irq().
-
-Link: https://lore.kernel.org/linux-pci/20231128132231.2221614-1-nks@flawful.org
-Fixes: 6f5e193bfb55 ("PCI: dwc: Fix dw_pcie_ep_raise_msix_irq() to get correct MSI-X table address")
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: stable@vger.kernel.org # 5.7
-Cc: Kishon Vijay Abraham I <kishon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e6089feca460 ("media: m88ds3103: Add support for ds3103b demod")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/dvb-frontends/m88ds3103.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -598,6 +598,7 @@ int dw_pcie_ep_raise_msix_irq(struct dw_
+diff --git a/drivers/media/dvb-frontends/m88ds3103.c b/drivers/media/dvb-frontends/m88ds3103.c
+index ff106d6ece68..94c6cc59372c 100644
+--- a/drivers/media/dvb-frontends/m88ds3103.c
++++ b/drivers/media/dvb-frontends/m88ds3103.c
+@@ -1898,7 +1898,7 @@ static int m88ds3103_probe(struct i2c_client *client,
+ 		/* get frontend address */
+ 		ret = regmap_read(dev->regmap, 0x29, &utmp);
+ 		if (ret)
+-			goto err_kfree;
++			goto err_del_adapters;
+ 		dev->dt_addr = ((utmp & 0x80) == 0) ? 0x42 >> 1 : 0x40 >> 1;
+ 		dev_dbg(&client->dev, "dt addr is 0x%02x\n", dev->dt_addr);
+ 
+@@ -1906,11 +1906,14 @@ static int m88ds3103_probe(struct i2c_client *client,
+ 						      dev->dt_addr);
+ 		if (IS_ERR(dev->dt_client)) {
+ 			ret = PTR_ERR(dev->dt_client);
+-			goto err_kfree;
++			goto err_del_adapters;
+ 		}
  	}
  
- 	aligned_offset = msg_addr & (epc->mem->window.page_size - 1);
-+	msg_addr &= ~aligned_offset;
- 	ret = dw_pcie_ep_map_addr(epc, func_no, 0, ep->msi_mem_phys, msg_addr,
- 				  epc->mem->window.page_size);
- 	if (ret)
+ 	return 0;
++
++err_del_adapters:
++	i2c_mux_del_adapters(dev->muxc);
+ err_kfree:
+ 	kfree(dev);
+ err:
+-- 
+2.43.0
+
 
 
 
