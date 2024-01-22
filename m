@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-15156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840EE838421
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B386837EDF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C2E61F2913B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B48631F2B838
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D37167E7B;
-	Tue, 23 Jan 2024 02:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DE45392;
+	Tue, 23 Jan 2024 00:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lD7ieYzZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MASaJQdP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C37F67E69;
-	Tue, 23 Jan 2024 02:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB3C5384;
+	Tue, 23 Jan 2024 00:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975310; cv=none; b=QND/qPG6Z2Us9dh8RT9PiVqqCHXIhZ885lV0SsgxCGb/d5KLCoWj5iqkDUXbXPTA4I7P9O0N2+nis70DVSY9DshuHHpfpcbsevIgdlO10oNpuhk3R2VnlkmvNiNde4+qh/phLndW3WdemyQykW6t4ZniY/BeMr4eMCOW57ztqZE=
+	t=1705970795; cv=none; b=h2wklDiSq0fgpByNLjV1ZVCozgQO/HiGkZoX2osf4lsQxLQ30srPAEUTru/Ngacs1LN4nOOxKYk7KGl4/ITrwRTFZ1ic3FGywlBTBq9V4NvEzQCTjzobq1HesTLgf51cyzLK6fnuFqh4KMlIqwq13z7kyN4+nrjZYbOvYAJOYLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975310; c=relaxed/simple;
-	bh=BmEPPigl4hcuSCOwe8F7DdvIUMgdMVhoFPM3X9VZNsA=;
+	s=arc-20240116; t=1705970795; c=relaxed/simple;
+	bh=N2c+abrP7ilTsTZLZJw2UusklnrZuyYMqhSkcoRzBj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tx+bUHXolztBw3z4PJiw7WUsrqxTXc41otgNrg94ZdFgf+bV9arVPPvGWv8UXEKgC+2Cc+RjFiK5XzphtWtAXW1DWekklV8ma1U8OhCmh1+11p9Uf3sfK4GPTxFWIBADObKICAgsiAv5ccQAIvOb/H+FqRoYKqqBK3lvtKrHQkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lD7ieYzZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F161CC43390;
-	Tue, 23 Jan 2024 02:01:49 +0000 (UTC)
+	 MIME-Version; b=nH6cYk2b94iEwB8/4G8f4ke37Epdy6RbBfpJdMio0orkfjK6jJrP10DLtj4KO+XFla2Z1hurfJbsrPPPAS94G7BM4N3stgHiQmzuNJsyqG0/ze6/JKJ1iOo7VMrEJVuovHuU8HgGdx7+H14Ka/kZFQe4S/fiIAU1/Ke68nOzFy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MASaJQdP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0695EC43390;
+	Tue, 23 Jan 2024 00:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975310;
-	bh=BmEPPigl4hcuSCOwe8F7DdvIUMgdMVhoFPM3X9VZNsA=;
+	s=korg; t=1705970795;
+	bh=N2c+abrP7ilTsTZLZJw2UusklnrZuyYMqhSkcoRzBj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lD7ieYzZCQYXlySy+swqb1uMZWbY6pZEoC0AftHy31/WL8Kn3RoKEgCQW71/JJnPo
-	 Kv2CmQd767ZUILAfpeAENHXrfqP+zDIqFkwNys2GpGI+nN6jhKwQXny+0BlTgaqjUz
-	 IGz82HZWiJYGaJ+4sxXemZfnpgbkhzb6PB4MPhE8=
+	b=MASaJQdPe0nC/W4/WopOBLTacd2RwO4A1WWTmKvUW/Z67bo9tnYGoJVzYLlK8W3BI
+	 qVeXAhSwldfhjm/ZFJwyp1HKivANJkZpw+5qU9v9rpOeEwlw81ge+sFDWNPgRvAFrm
+	 uYAVHGJ19bMbPToLbhacr1Ucpa2qA/HOeZADl3Z0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tommaso Merciai <tomm.merciai@gmail.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 273/583] media: rkisp1: Fix media device memory leak
+Subject: [PATCH 5.10 018/286] nvme: introduce helper function to get ctrl state
 Date: Mon, 22 Jan 2024 15:55:24 -0800
-Message-ID: <20240122235820.349567406@linuxfoundation.org>
+Message-ID: <20240122235732.727419692@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 452f604a4683654f4d9472b3126d8da61d748443 ]
+[ Upstream commit 5c687c287c46fadb14644091823298875a5216aa ]
 
-Add missing calls to media_device_cleanup() to fix memory leak.
+The controller state is typically written by another CPU, so reading it
+should ensure no optimizations are taken. This is a repeated pattern in
+the driver, so start with adding a convenience function that returns the
+controller state with READ_ONCE().
 
-Link: https://lore.kernel.org/r/20231122-rkisp-fixes-v2-1-78bfb63cdcf8@ideasonboard.com
-
-Fixes: d65dd85281fb ("media: staging: rkisp1: add Rockchip ISP1 base driver")
-Reviewed-by: Tommaso Merciai <tomm.merciai@gmail.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/nvme/host/nvme.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-index c41abd2833f1..894d5afaff4e 100644
---- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-+++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-@@ -582,7 +582,7 @@ static int rkisp1_probe(struct platform_device *pdev)
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index c3e4d9b6f9c0..1e56fe8e8157 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -354,6 +354,11 @@ struct nvme_ctrl {
+ 	struct nvme_fault_inject fault_inject;
+ };
  
- 	ret = v4l2_device_register(rkisp1->dev, &rkisp1->v4l2_dev);
- 	if (ret)
--		goto err_pm_runtime_disable;
-+		goto err_media_dev_cleanup;
- 
- 	ret = media_device_register(&rkisp1->media_dev);
- 	if (ret) {
-@@ -617,6 +617,8 @@ static int rkisp1_probe(struct platform_device *pdev)
- 	media_device_unregister(&rkisp1->media_dev);
- err_unreg_v4l2_dev:
- 	v4l2_device_unregister(&rkisp1->v4l2_dev);
-+err_media_dev_cleanup:
-+	media_device_cleanup(&rkisp1->media_dev);
- err_pm_runtime_disable:
- 	pm_runtime_disable(&pdev->dev);
- 	return ret;
-@@ -637,6 +639,8 @@ static void rkisp1_remove(struct platform_device *pdev)
- 	media_device_unregister(&rkisp1->media_dev);
- 	v4l2_device_unregister(&rkisp1->v4l2_dev);
- 
-+	media_device_cleanup(&rkisp1->media_dev);
++static inline enum nvme_ctrl_state nvme_ctrl_state(struct nvme_ctrl *ctrl)
++{
++	return READ_ONCE(ctrl->state);
++}
 +
- 	pm_runtime_disable(&pdev->dev);
- }
- 
+ enum nvme_iopolicy {
+ 	NVME_IOPOLICY_NUMA,
+ 	NVME_IOPOLICY_RR,
 -- 
 2.43.0
 
