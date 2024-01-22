@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-13700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44749837E11
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11515838056
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7B1FB25831
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E463DB267BA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD1A59B4F;
-	Tue, 23 Jan 2024 00:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEDC2657B9;
+	Tue, 23 Jan 2024 01:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5FTYqxl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNNEsD09"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA41758AD8;
-	Tue, 23 Jan 2024 00:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F79A4E1AD;
+	Tue, 23 Jan 2024 01:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969971; cv=none; b=T5SYl1LvjpMXse8fKUnQSQuqi6T0J9CD6s5OAHEpmsrAztR+KgFKNXav4PwrT959ZUesJ8G+wgT1jTIEbL2alONvPo5t7z4yIeyD2oq3YGudOlFXyDFL/dUl4NM10JXg6osq5KIgry/TTNJkWQBpDHq0E012rvbzduAqXSB2WVI=
+	t=1705971623; cv=none; b=ZPRg6l6cOfZ5Dp9Ec0IRMG2Rouj7RYiW5tdbED1EeFH93R0jJWMXHy/eRRBS8RUf/XN4PbAVQwEP83rIdoUFUjyRIPV5DD6jFwpKTRjn9cw9a+XECRcOkjMjPaWJ48ppbdsGF03/aYMSNXj2vMBIHrfZKWOi4OHGOAUhG0El8Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969971; c=relaxed/simple;
-	bh=iFkvGjZ331CD6TaUmXR5mMFBD+aBzM9Kr2Q2eCBcMMk=;
+	s=arc-20240116; t=1705971623; c=relaxed/simple;
+	bh=HUqte7NVpcjRd9R9taCA/2B+KpS0bhmzwT2UUi50TGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pKTUqkxcTdH8EEzwByUNwI7Bl9o/ePHeKXSDrfDi9JWpCSZgLWVsMz6yE42jK9JrYYCM2W6nA8/qxzggRmfTYlIMdvIGYqpc5zx12J1uh9oPS/8JuGPQTZTPbovQ0zNS49OT8bYT76NWenHyqxHtfeDKnNGhAKTxRfQvRhpwK6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5FTYqxl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBAF4C433C7;
-	Tue, 23 Jan 2024 00:32:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qtxssOn0JnVU9OfzgDFO4qD9DAOhH+ExUGzkZZuHCY3V/ZY27UiPN1HVhAQDGAGF4BHUvZ6VwbhsT8gUiHk95pqfPfHGQE/FIi0cujOtFBeR4zku9LWcS4e4mbW+C+Y9UDyaNS4eeamIlegeHyEjRLRxEkM48Yp6RC/cSMVJLAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNNEsD09; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F342C433C7;
+	Tue, 23 Jan 2024 01:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969971;
-	bh=iFkvGjZ331CD6TaUmXR5mMFBD+aBzM9Kr2Q2eCBcMMk=;
+	s=korg; t=1705971623;
+	bh=HUqte7NVpcjRd9R9taCA/2B+KpS0bhmzwT2UUi50TGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n5FTYqxlYL9eKvQkB76n+fPMvuvIyMT9ra3KuyA9vpdZ1t7CPCbX/4nOphW01Fkw4
-	 Y4r7deh0ipcaEW30k89DBzM1bO/zyRDUL+OQEgZb5iHBz8MQU2Rb+L66mmfX37uTSk
-	 gg+9MdtBv5Bkj9a/zEojaP/KHC8E97z+kDBul4Vc=
+	b=DNNEsD09MzVDRVSO1UFyanDJtvCPBa7dlAmLs3mkdPdBDv1aE58AIk2QLFlVAqFUq
+	 0wu43TxZjBeKH9VLJ6/yAcXC67oeL2J7+CDgn+I6Yeus3+1NVlE3VVV4EJLtKB66N5
+	 L03IGqJCyjzeQJMT2q+hWaNL662Brfiwd0l6GS7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Nikhil Agarwal <Nikhil.agarwal@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 544/641] cdx: Explicitly include correct DT includes, again
+	=?UTF-8?q?=C3=87a=C4=9Fhan=20Demir?= <caghandemir@marun.edu.tr>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 280/417] ALSA: hda/relatek: Enable Mute LED on HP Laptop 15s-fq2xxx
 Date: Mon, 22 Jan 2024 15:57:28 -0800
-Message-ID: <20240122235835.165671685@linuxfoundation.org>
+Message-ID: <20240122235801.545592045@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Çağhan Demir <caghandemir@marun.edu.tr>
 
-[ Upstream commit aaee477e3e2c7305a95ffc528bf831a13da3dacb ]
+commit bc7863d18677df66b2c7a0e172c91296ff380f11 upstream.
 
-The DT of_device.h and of_platform.h date back to the separate
-of_platform_bus_type before it was merged into the regular platform bus.
-As part of that merge prepping Arm DT support 13 years ago, they
-"temporarily" include each other. They also include platform_device.h
-and of.h. As a result, there's a pretty much random mix of those include
-files used throughout the tree. In order to detangle these headers and
-replace the implicit includes with struct declarations, users need to
-explicitly include the correct includes.
+This HP Laptop uses ALC236 codec with COEF 0x07 idx 1 controlling
+the mute LED. This patch enables the already existing quirk for
+this device.
 
-CDX was fixed once, but commit ("cdx: Remove cdx controller list from cdx
-bus system") added another occurrence.
-
-Fixes: 54b406e10f03 ("cdx: Remove cdx controller list from cdx bus system")
-Signed-off-by: Rob Herring <robh@kernel.org>
-Acked-by: Nikhil Agarwal <Nikhil.agarwal@amd.com>
-Link: https://lore.kernel.org/r/20231207163128.2707993-2-robh@kernel.org
+Signed-off-by: Çağhan Demir <caghandemir@marun.edu.tr>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240115172303.4718-1-caghandemir@marun.edu.tr
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cdx/cdx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/cdx/cdx.c b/drivers/cdx/cdx.c
-index 4461c6c9313f..d84d153078d7 100644
---- a/drivers/cdx/cdx.c
-+++ b/drivers/cdx/cdx.c
-@@ -57,7 +57,10 @@
- 
- #include <linux/init.h>
- #include <linux/kernel.h>
-+#include <linux/of.h>
- #include <linux/of_device.h>
-+#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/mm.h>
- #include <linux/idr.h>
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9626,6 +9626,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x87f5, "HP", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87f6, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
+ 	SND_PCI_QUIRK(0x103c, 0x87f7, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
++	SND_PCI_QUIRK(0x103c, 0x87fe, "HP Laptop 15s-fq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8805, "HP ProBook 650 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x880d, "HP EliteBook 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8811, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
 
 
 
