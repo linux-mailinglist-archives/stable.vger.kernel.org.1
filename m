@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C77FE8384AF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88211837FD2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C938B2C4B9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D0BB1F2A9E1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663FC6D1D5;
-	Tue, 23 Jan 2024 02:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B0812BEB5;
+	Tue, 23 Jan 2024 00:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Ib8jTZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lP7It/Zb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250786BB56;
-	Tue, 23 Jan 2024 02:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955D34E1AD;
+	Tue, 23 Jan 2024 00:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975389; cv=none; b=E74F5mpdLGxZDoH89L1d9MBCdmzKEwOV41IVS24yzBPiryrGMRXGdIo3gT8USjJQLG0Vvd3marNKyhnHDGbT931n/cbB3wntcPyl2lciEG+zFgkmqlNJNeBufTM5AFBoutNKJz2OTFwjsOruCyuL5+IMfYRt9GP+uSp3W9LlXRA=
+	t=1705971378; cv=none; b=uysUunE0rpwYqAUnvBQ0P1zl8/l3CV8Tf6kXYB7RmaDg8Yckoaw410AhGcUBad19bvgB4weeeHknxGb3cJm7stvcIzQxfj3HO45aPWyNsY71UKRFGUv44CUxO0r5nXeKwhxXl7Mcl/ZCsQATepmfPkf3SfEbrnU9xeL2RVDdGdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975389; c=relaxed/simple;
-	bh=R4vnmwiKlCkkrm8zdZCTW1yhPwJdYlf0y3ebEuaYCqc=;
+	s=arc-20240116; t=1705971378; c=relaxed/simple;
+	bh=nnlUs+Y1gDU2N7OvXpDz4wdXa7c8yyXNFUSblKQhBJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RfZgghJHeaG6HZWD3/+7CCUI8+n2dwhcOdNCSYBKmzSf0MlGv3yaztXhwP5DIX98Khk7yA9TGf3Cq37k6IPk1UzoRHR5s6L7NbhJs10xsFQVN8VJOVk9vt3uqnmOzEhN2BnS+oceaHbrTZPru8wouUGVPaUhNsu7BOybh3KrPXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Ib8jTZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B60C43394;
-	Tue, 23 Jan 2024 02:03:08 +0000 (UTC)
+	 MIME-Version; b=EQBtr+Daq6tbdki947HyyIf0TyschKZura4pULsBtsJKXIAODPyqUrJscmFjLVtsI8NRnAgpwEwzF3ti0uV8axjMq7kXX364//YDfa68b0A+hALyPLUb1Qeg3ytU4oJQ/nmnmRMxqQCDhwOM9FQvpOW4Ky71+Fp9WqU3p6Rb+G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lP7It/Zb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78E0C433C7;
+	Tue, 23 Jan 2024 00:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975389;
-	bh=R4vnmwiKlCkkrm8zdZCTW1yhPwJdYlf0y3ebEuaYCqc=;
+	s=korg; t=1705971378;
+	bh=nnlUs+Y1gDU2N7OvXpDz4wdXa7c8yyXNFUSblKQhBJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Ib8jTZywcCbb3XK6CS6jXMznY9Rc4H2jmWOxoHJJdfham6m/QEC5/qamB3iYIiMa
-	 fzn90Qit4zv4Axq9L9JnDRs0sHqCseSDm1FvOltjLYsENhprzc7Gt0F9CBTwk/uKN0
-	 QlU82bf8D0e4Ivdif1lCQkZwbeeVn1nYotcMmM+s=
+	b=lP7It/Zbio9fxAjOUL+XXFuYW9D+tc6ZuwYHllcwkOkcLjyagUgsczrB8VEKvhlVw
+	 AqtD3qA43qga0wXZeJe18qtgCA+jhV6UAZ/ItgTDVc/ntyHQs72dJnsNVE9qKMW5A3
+	 5AwURYkgr7NoKnUIufrHZrxFy3BDGbPSFzEweSnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <pobrn@protonmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 349/583] Input: atkbd - use ab83 as id when skipping the getid command
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 232/417] ALSA: scarlett2: Add missing error check to scarlett2_config_save()
 Date: Mon, 22 Jan 2024 15:56:40 -0800
-Message-ID: <20240122235822.703066161@linuxfoundation.org>
+Message-ID: <20240122235759.934462160@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-commit 58f65f9db7e0de366a5a115c2e2c0703858bba69 upstream.
+[ Upstream commit 5f6ff6931a1c0065a55448108940371e1ac8075f ]
 
-Barnabás reported that the change to skip the getid command
-when the controller is in translated mode on laptops caused
-the Version field of his "AT Translated Set 2 keyboard"
-input device to change from ab83 to abba, breaking a custom
-hwdb entry for this keyboard.
+scarlett2_config_save() was ignoring the return value from
+scarlett2_usb(). As this function is not called from user-space we
+can't return the error, so call usb_audio_err() instead.
 
-Use the standard ab83 id for keyboards when getid is skipped
-(rather then that getid fails) to avoid reporting a different
-Version to userspace then before skipping the getid.
-
-Fixes: 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in translated mode")
-Reported-by: Barnabás Pőcze <pobrn@protonmail.com>
-Closes: https://lore.kernel.org/linux-input/W1ydwoG2fYv85Z3C3yfDOJcVpilEvGge6UGa9kZh8zI2-qkHXp7WLnl2hSkFz63j-c7WupUWI5TLL6n7Lt8DjRuU-yJBwLYWrreb1hbnd6A=@protonmail.com/
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240116204325.7719-1-hdegoede@redhat.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
+Link: https://lore.kernel.org/r/bf0a15332d852d7825fa6da87d2a0d9c0b702053.1703001053.git.g@b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/keyboard/atkbd.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ sound/usb/mixer_scarlett_gen2.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/input/keyboard/atkbd.c
-+++ b/drivers/input/keyboard/atkbd.c
-@@ -791,9 +791,9 @@ static bool atkbd_is_portable_device(voi
-  * not work. So in this case simply assume a keyboard is connected to avoid
-  * confusing some laptop keyboards.
-  *
-- * Skipping ATKBD_CMD_GETID ends up using a fake keyboard id. Using a fake id is
-- * ok in translated mode, only atkbd_select_set() checks atkbd->id and in
-- * translated mode that is a no-op.
-+ * Skipping ATKBD_CMD_GETID ends up using a fake keyboard id. Using the standard
-+ * 0xab83 id is ok in translated mode, only atkbd_select_set() checks atkbd->id
-+ * and in translated mode that is a no-op.
-  */
- static bool atkbd_skip_getid(struct atkbd *atkbd)
+diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
+index 9d11bb08667e..3da0d3167ebf 100644
+--- a/sound/usb/mixer_scarlett_gen2.c
++++ b/sound/usb/mixer_scarlett_gen2.c
+@@ -1337,9 +1337,11 @@ static void scarlett2_config_save(struct usb_mixer_interface *mixer)
  {
-@@ -811,6 +811,7 @@ static int atkbd_probe(struct atkbd *atk
- {
- 	struct ps2dev *ps2dev = &atkbd->ps2dev;
- 	unsigned char param[2];
-+	bool skip_getid;
+ 	__le32 req = cpu_to_le32(SCARLETT2_USB_CONFIG_SAVE);
  
- /*
-  * Some systems, where the bit-twiddling when testing the io-lines of the
-@@ -832,7 +833,8 @@ static int atkbd_probe(struct atkbd *atk
-  */
+-	scarlett2_usb(mixer, SCARLETT2_USB_DATA_CMD,
+-		      &req, sizeof(u32),
+-		      NULL, 0);
++	int err = scarlett2_usb(mixer, SCARLETT2_USB_DATA_CMD,
++				&req, sizeof(u32),
++				NULL, 0);
++	if (err < 0)
++		usb_audio_err(mixer->chip, "config save failed: %d\n", err);
+ }
  
- 	param[0] = param[1] = 0xa5;	/* initialize with invalid values */
--	if (atkbd_skip_getid(atkbd) || ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
-+	skip_getid = atkbd_skip_getid(atkbd);
-+	if (skip_getid || ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
- 
- /*
-  * If the get ID command was skipped or failed, we check if we can at least set
-@@ -842,7 +844,7 @@ static int atkbd_probe(struct atkbd *atk
- 		param[0] = 0;
- 		if (ps2_command(ps2dev, param, ATKBD_CMD_SETLEDS))
- 			return -1;
--		atkbd->id = 0xabba;
-+		atkbd->id = skip_getid ? 0xab83 : 0xabba;
- 		return 0;
- 	}
- 
+ /* Delayed work to save config */
+-- 
+2.43.0
+
 
 
 
