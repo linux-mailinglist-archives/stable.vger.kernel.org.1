@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF320837F47
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9D2837FA2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E7131C28ACA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FCAC1C29179
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3561212A168;
-	Tue, 23 Jan 2024 00:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D386350E;
+	Tue, 23 Jan 2024 00:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igEyQzGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kb0KTVuN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E952712A16D;
-	Tue, 23 Jan 2024 00:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EE06350A;
+	Tue, 23 Jan 2024 00:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971034; cv=none; b=M2h9WY8yaZB9cJnD1xfrcWHlggQQ676oFeQrP9R6dTaF/yrnQ8NWipQtYCwRujjFnQ1fZn91Upg4mRGo3LkFqMcLcgwQDuTjSSG5hGN0U3XyOEnSbLXLQ+r1V6sEXiXULW27xwD0o/mBdaUMAUDvTw/Xd1Ah23T1/e4oH6MFxd8=
+	t=1705971255; cv=none; b=jBCgZOaxO2QzG6w4Zwy+6lSiMry6Qlbdv3Es/HOWYIC212kv3X8fSd6HC0hhP7n/s34lx2R8BicsD9sZt9xmB4Nb0VaMiioCKYHkjIedWRj4oGjcR2Kz1pHkGU01YhHxk/8yCdhjpREIX2Pk9Mqkm1WmAARI/1UfNx3obLSV+yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971034; c=relaxed/simple;
-	bh=rBTGz7WDcc4qwZOywEh+VLNqlgQ2FK4yyAKJskIjv6A=;
+	s=arc-20240116; t=1705971255; c=relaxed/simple;
+	bh=+58vjNGq8i6PvO1YQewNGgie8AJQjWo/d6YKAiZtvec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R6qGR0KD8EwqI68EIi0IODuk9issC2EEGRKn5Zi8Gyyc7jD2zZ6B1i1CqWRuWPsdLnv7CwiO617sdox5BooQRydl6dVlJMlz3uPajkB5rRuSToFChHnPX0oa8xEfaVQEyKm3Yge7IUjSTLQAH6wDKs4Y4biWOW2H2SH7rICwgmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igEyQzGx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370D8C43390;
-	Tue, 23 Jan 2024 00:50:33 +0000 (UTC)
+	 MIME-Version; b=TaSIxd/gv/FSSlXly+1YzxPm7yEwFCl1a6g9T0ybN/DkNAprMOLMd6GhI4y9AD8GJR3Z1Ibe6N6vUALZZ6tYpc+yIs2YV3QkR1PTTQnCPo1WwDc08twjZ5vaa4hblCKSSbMt40tIKL5P8sKl5h3oySNX3GkA9q66/nC7tuthCTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kb0KTVuN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02436C433C7;
+	Tue, 23 Jan 2024 00:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971033;
-	bh=rBTGz7WDcc4qwZOywEh+VLNqlgQ2FK4yyAKJskIjv6A=;
+	s=korg; t=1705971255;
+	bh=+58vjNGq8i6PvO1YQewNGgie8AJQjWo/d6YKAiZtvec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=igEyQzGxAkLbHcIyWOFMbSAFMobHc+J9DTcobCfdk4kloQS0OnUeFd6xO6Gx31C2p
-	 DeaqAQSm/St6ikIRtmWCApOsLxhOKTs2Pd4sEGj69GUaoC2uvbpZYCKUMgWbXkCNHI
-	 gWaF/p6TE6ji0gQ17Mt85uCSEPhjNR8T+VhZff2k=
+	b=kb0KTVuNmtiocYHSOgW1MlN0NqAaeGEdOTtVdvlno3jHTCRKOxS+t0cyoiGFU1h6W
+	 +5ikJ6R9txTzPZzM3ArWXlAwmjVwJTz5OhwDIpiHziOS3r9gPnIk+2qThALkRILoW4
+	 XeVByp1nRPqjSosPo3XJcXPJZb7dFEglf9SShwm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 073/286] spi: sh-msiof: Enforce fixed DTDL for R-Car H3
+Subject: [PATCH 6.1 211/417] drivers/amd/pm: fix a use-after-free in kv_parse_power_table
 Date: Mon, 22 Jan 2024 15:56:19 -0800
-Message-ID: <20240122235734.834242698@linuxfoundation.org>
+Message-ID: <20240122235759.230407843@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit e5c7bcb499840551cfbe85c6df177ebc50432bf0 ]
+[ Upstream commit 28dd788382c43b330480f57cd34cde0840896743 ]
 
-Documentation says only DTDL of 200 is allowed for this SoC.
+When ps allocated by kzalloc equals to NULL, kv_parse_power_table
+frees adev->pm.dpm.ps that allocated before. However, after the control
+flow goes through the following call chains:
 
-Fixes: 4286db8456f4 ("spi: sh-msiof: Add R-Car Gen 2 and 3 fallback bindings")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Link: https://msgid.link/r/20231212081239.14254-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+kv_parse_power_table
+  |-> kv_dpm_init
+        |-> kv_dpm_sw_init
+	      |-> kv_dpm_fini
+
+The adev->pm.dpm.ps is used in the for loop of kv_dpm_fini after its
+first free in kv_parse_power_table and causes a use-after-free bug.
+
+Fixes: a2e73f56fa62 ("drm/amdgpu: Add support for CIK parts")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sh-msiof.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index b2579af0e3eb..35d30378256f 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -30,12 +30,15 @@
- 
- #include <asm/unaligned.h>
- 
-+#define SH_MSIOF_FLAG_FIXED_DTDL_200	BIT(0)
-+
- struct sh_msiof_chipdata {
- 	u32 bits_per_word_mask;
- 	u16 tx_fifo_size;
- 	u16 rx_fifo_size;
- 	u16 ctlr_flags;
- 	u16 min_div_pow;
-+	u32 flags;
- };
- 
- struct sh_msiof_spi_priv {
-@@ -1069,6 +1072,16 @@ static const struct sh_msiof_chipdata rcar_gen3_data = {
- 	.min_div_pow = 1,
- };
- 
-+static const struct sh_msiof_chipdata rcar_r8a7795_data = {
-+	.bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16) |
-+			      SPI_BPW_MASK(24) | SPI_BPW_MASK(32),
-+	.tx_fifo_size = 64,
-+	.rx_fifo_size = 64,
-+	.ctlr_flags = SPI_CONTROLLER_MUST_TX,
-+	.min_div_pow = 1,
-+	.flags = SH_MSIOF_FLAG_FIXED_DTDL_200,
-+};
-+
- static const struct of_device_id sh_msiof_match[] = {
- 	{ .compatible = "renesas,sh-mobile-msiof", .data = &sh_data },
- 	{ .compatible = "renesas,msiof-r8a7743",   .data = &rcar_gen2_data },
-@@ -1079,6 +1092,7 @@ static const struct of_device_id sh_msiof_match[] = {
- 	{ .compatible = "renesas,msiof-r8a7793",   .data = &rcar_gen2_data },
- 	{ .compatible = "renesas,msiof-r8a7794",   .data = &rcar_gen2_data },
- 	{ .compatible = "renesas,rcar-gen2-msiof", .data = &rcar_gen2_data },
-+	{ .compatible = "renesas,msiof-r8a7795",   .data = &rcar_r8a7795_data },
- 	{ .compatible = "renesas,msiof-r8a7796",   .data = &rcar_gen3_data },
- 	{ .compatible = "renesas,rcar-gen3-msiof", .data = &rcar_gen3_data },
- 	{ .compatible = "renesas,sh-msiof",        .data = &sh_data }, /* Deprecated */
-@@ -1274,6 +1288,9 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 		return -ENXIO;
- 	}
- 
-+	if (chipdata->flags & SH_MSIOF_FLAG_FIXED_DTDL_200)
-+		info->dtdl = 200;
-+
- 	if (info->mode == MSIOF_SPI_SLAVE)
- 		ctlr = spi_alloc_slave(&pdev->dev,
- 				       sizeof(struct sh_msiof_spi_priv));
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
+index f5e08b60f66e..d17bfa111aa7 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
+@@ -2748,10 +2748,8 @@ static int kv_parse_power_table(struct amdgpu_device *adev)
+ 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
+ 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
+ 		ps = kzalloc(sizeof(struct kv_ps), GFP_KERNEL);
+-		if (ps == NULL) {
+-			kfree(adev->pm.dpm.ps);
++		if (ps == NULL)
+ 			return -ENOMEM;
+-		}
+ 		adev->pm.dpm.ps[i].ps_priv = ps;
+ 		k = 0;
+ 		idx = (u8 *)&power_state->v2.clockInfoIndex[0];
 -- 
 2.43.0
 
