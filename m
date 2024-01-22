@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-14507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05DA1838130
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0F4838382
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B218A289209
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E65F928713B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C6A1419BC;
-	Tue, 23 Jan 2024 01:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9F363106;
+	Tue, 23 Jan 2024 01:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SiTSSufC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukBDlNgS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1366A1419AD;
-	Tue, 23 Jan 2024 01:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9941B62A0B;
+	Tue, 23 Jan 2024 01:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972058; cv=none; b=jI+5z8otpRSK0IEGywLnI/zvYxUqjSBWSQAqJl+PCI2X88VDaOFC57qhrRVMJz0dWenN2IM+uI93cG3ASXQApX5is3HDfV1aB4FQgSNu28+GIV6/MtRbsFu9gSfMHtD4hHlUhL/z7IEWUzmQh/ZxMm9GZXRQFEajkgfhtZRkOx8=
+	t=1705974993; cv=none; b=p5wY8OM76PJpIFx8WLIr5cfOpDe91dUREXAGqYNHGpm017STFQQKOMFdGN7HXZr+aGtsGqcWr3BL0hrkhg33A2BrcJ/QN4S+g4Gb/zrsEprrGJN7J/uL6F8cqzkd16jCkIWZnvf7dUBvPi591DEeMI4xRsFeIDWGS/RASsrPTTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972058; c=relaxed/simple;
-	bh=bMcRjTehjk873Z69lCUrQOvrxRYepr67bl/3ChVgltA=;
+	s=arc-20240116; t=1705974993; c=relaxed/simple;
+	bh=M1AV4xrjqaiVQUb6tuLbab5yK2H8GL0eMpBr48/vdi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lm3Ds9KjHuDKioPO61dVjUQon2/9FH2qlfLBJENbcSpvm29iObrXn/ySFq8A8G0MoSIfs+QKzXyLtmXImTaPCMhWj5z/pRT3G6/C6RX/QzqwxdyILdLgwS/RyC8a+zFx+IhIHzize7MHlx9fOMXPdSGNHmjkwM99PxFTm6C7r9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SiTSSufC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1428C433C7;
-	Tue, 23 Jan 2024 01:07:37 +0000 (UTC)
+	 MIME-Version; b=EHAmaYTVcJOLnatueOCBl3fC+gfCiN7Y1exCZemntFjRgh5klUeYVO7SKxsS5CQ0FAGDgrgieukqaVob78WSaIN3D8eRNZQpppdkUgNvnRyojXJ0xuafjya4rr7bDclSDpz8cMhhCnWdVzZacaQyNb7eeoLGuDdqK5enztqtaeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukBDlNgS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01052C43394;
+	Tue, 23 Jan 2024 01:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972057;
-	bh=bMcRjTehjk873Z69lCUrQOvrxRYepr67bl/3ChVgltA=;
+	s=korg; t=1705974993;
+	bh=M1AV4xrjqaiVQUb6tuLbab5yK2H8GL0eMpBr48/vdi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SiTSSufCCq9tnlAyjrqAR9b0d1mkL9KLTduyWZQg4aJTKO+ZI1nQjZaPtRstm2LB1
-	 Q1u29qiNds1OdjkXRZ1zuSZBv2eDCo7NUV0qh4DbUgAAPvboy7fmZLTp45H0MAEXu0
-	 YgL4zu3joX1dpoCPcT73i2n2CTN8DbKQg8XUrIgk=
+	b=ukBDlNgSER91IEKxPir53Omi/yEbvG6YYAf/FKWtq3friymCM2vbvzzgh5AInUBmc
+	 jT95DS4brwuSeCrIkIHvD/hiBE2XSJpB7RwcpMVakgh4gOeYzsdFM8mynM2VOgqxHp
+	 V39ZV/iI6kq9EEGCxZcXrvTzB45/hcT4HYvCY9/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 399/417] netfilter: nft_limit: do not ignore unsupported flags
-Date: Mon, 22 Jan 2024 15:59:27 -0800
-Message-ID: <20240122235805.558142063@linuxfoundation.org>
+Subject: [PATCH 5.15 312/374] iio: adc: ad9467: fix reset gpio handling
+Date: Mon, 22 Jan 2024 15:59:28 -0800
+Message-ID: <20240122235755.729371120@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit 91a139cee1202a4599a380810d93c69b5bac6197 ]
+[ Upstream commit 76f028539cf360f750efd8cde560edda298e4c6b ]
 
-Bail out if userspace provides unsupported flags, otherwise future
-extensions to the limit expression will be silently ignored by the
-kernel.
+The reset gpio was being handled with inverted polarity. This means that
+as far as gpiolib is concerned we were actually leaving the pin asserted
+(in theory, this would mean reset). However, inverting the polarity in
+devicetree made things work. Fix it by doing it the proper way and how
+gpiolib expects it to be done.
 
-Fixes: c7862a5f0de5 ("netfilter: nft_limit: allow to invert matching criteria")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+While at it, moved the handling to it's own function and dropped
+'reset_gpio' from the 'struct ad9467_state' as we only need it during
+probe. On top of that, refactored things so that we now request the gpio
+asserted (i.e in reset) and then de-assert it. Also note that we now use
+gpiod_set_value_cansleep() instead of gpiod_direction_output() as we
+already request the pin as output.
+
+Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20231207-iio-backend-prep-v2-1-a4a33bc4d70e@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_limit.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/iio/adc/ad9467.c | 31 ++++++++++++++++++-------------
+ 1 file changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/net/netfilter/nft_limit.c b/net/netfilter/nft_limit.c
-index 981addb2d051..75c05ef885a9 100644
---- a/net/netfilter/nft_limit.c
-+++ b/net/netfilter/nft_limit.c
-@@ -58,6 +58,7 @@ static inline bool nft_limit_eval(struct nft_limit_priv *priv, u64 cost)
- static int nft_limit_init(struct nft_limit_priv *priv,
- 			  const struct nlattr * const tb[], bool pkts)
+diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+index a07df0fd3329..46c85748a07e 100644
+--- a/drivers/iio/adc/ad9467.c
++++ b/drivers/iio/adc/ad9467.c
+@@ -121,7 +121,6 @@ struct ad9467_state {
+ 	unsigned int			output_mode;
+ 
+ 	struct gpio_desc		*pwrdown_gpio;
+-	struct gpio_desc		*reset_gpio;
+ };
+ 
+ static int ad9467_spi_read(struct spi_device *spi, unsigned int reg)
+@@ -378,6 +377,21 @@ static int ad9467_preenable_setup(struct adi_axi_adc_conv *conv)
+ 	return ad9467_outputmode_set(st->spi, st->output_mode);
+ }
+ 
++static int ad9467_reset(struct device *dev)
++{
++	struct gpio_desc *gpio;
++
++	gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR_OR_NULL(gpio))
++		return PTR_ERR_OR_ZERO(gpio);
++
++	fsleep(1);
++	gpiod_set_value_cansleep(gpio, 0);
++	fsleep(10 * USEC_PER_MSEC);
++
++	return 0;
++}
++
+ static int ad9467_probe(struct spi_device *spi)
  {
-+	bool invert = false;
- 	u64 unit, tokens;
+ 	const struct ad9467_chip_info *info;
+@@ -406,18 +420,9 @@ static int ad9467_probe(struct spi_device *spi)
+ 	if (IS_ERR(st->pwrdown_gpio))
+ 		return PTR_ERR(st->pwrdown_gpio);
  
- 	if (tb[NFTA_LIMIT_RATE] == NULL ||
-@@ -90,19 +91,23 @@ static int nft_limit_init(struct nft_limit_priv *priv,
- 				 priv->rate);
- 	}
- 
-+	if (tb[NFTA_LIMIT_FLAGS]) {
-+		u32 flags = ntohl(nla_get_be32(tb[NFTA_LIMIT_FLAGS]));
-+
-+		if (flags & ~NFT_LIMIT_F_INV)
-+			return -EOPNOTSUPP;
-+
-+		if (flags & NFT_LIMIT_F_INV)
-+			invert = true;
-+	}
-+
- 	priv->limit = kmalloc(sizeof(*priv->limit), GFP_KERNEL_ACCOUNT);
- 	if (!priv->limit)
- 		return -ENOMEM;
- 
- 	priv->limit->tokens = tokens;
- 	priv->tokens_max = priv->limit->tokens;
+-	st->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset",
+-						 GPIOD_OUT_LOW);
+-	if (IS_ERR(st->reset_gpio))
+-		return PTR_ERR(st->reset_gpio);
 -
--	if (tb[NFTA_LIMIT_FLAGS]) {
--		u32 flags = ntohl(nla_get_be32(tb[NFTA_LIMIT_FLAGS]));
--
--		if (flags & NFT_LIMIT_F_INV)
--			priv->invert = true;
+-	if (st->reset_gpio) {
+-		udelay(1);
+-		ret = gpiod_direction_output(st->reset_gpio, 1);
+-		if (ret)
+-			return ret;
+-		mdelay(10);
 -	}
-+	priv->invert = invert;
- 	priv->limit->last = ktime_get_ns();
- 	spin_lock_init(&priv->limit->lock);
++	ret = ad9467_reset(&spi->dev);
++	if (ret)
++		return ret;
+ 
+ 	conv->chip_info = &info->axi_adc_info;
  
 -- 
 2.43.0
