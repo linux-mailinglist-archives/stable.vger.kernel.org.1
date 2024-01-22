@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B82838241
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D52D5837BCF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F7DA283DA7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BD131C27A5A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDECB59B7A;
-	Tue, 23 Jan 2024 01:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07752154BF4;
+	Tue, 23 Jan 2024 00:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMRfxFC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEzCH+Cs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9B24EB52;
-	Tue, 23 Jan 2024 01:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE5E15445E;
+	Tue, 23 Jan 2024 00:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974112; cv=none; b=bF720NKl4CEXcSP/xipAYIrjxbzWIir8M4uR0v+77Bhk387dnZv05YAL9744pznOgMXBkr14qcqX6FS/KeAqLnXf4/VyNrlNPBtgKx+QrEAwtSUHe6ZmWYCW+bG2XCpH5IauS09xiScBOWaH02/aU7tW3RIE4BPFCdWH8Q43wz8=
+	t=1705969390; cv=none; b=ojGx7Hsy1LPOy3A0OkTvs1bGJ36ZnCxAwGiDKI/h6Hvni/JK2wBiDNUBgiHdJ2NkIvD6aHvtTwLA0Nk2wCSsIj988rrkY9NzpPc/ugwSUjhGsXh8cvWw53w/Rlf9OdYgdYGpbMN8oF6CPOgJWWUAcnCQV11a01gL4qvZy11G6GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974112; c=relaxed/simple;
-	bh=8cimbuj8ofjgfkd6+jIACAKIzsMQo8WX+YRE6VcpHgc=;
+	s=arc-20240116; t=1705969390; c=relaxed/simple;
+	bh=MgtB7bihR3OiTkIbUgwRHPvuHw5WEyfquR9zLkoyGHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QZxbAmL7BpWuwpW2NMLOXdw5xP+CItVkhu5zQ3C0cxKcNLQiHxOUAQUJzz31uDK1RVbmyepk08Sd93mZBCUJZ0PJdmw21Q2Nu/nqgYDBGq02K935zE13+Nq3461aI1EDJFOSKeEtn86X3YhygVXdAHgV6s9ujCssLn3mAdGiffU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMRfxFC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FE3C433C7;
-	Tue, 23 Jan 2024 01:41:51 +0000 (UTC)
+	 MIME-Version; b=btZyddTu1/ustUHTOue2Nmpkx7FnXeokMLCQbNQ7CHviuU8+MhwMAsVqfIIjdztvB7Vdgz/xmgtGtHWxLGzZm+IcODMljD+HvKWksDEyIbTTKp1/MdqwAzD5TGb77UlEYstoEwktP+PioACwl3G8z4mnyNf2YiJtxapoy8zKAHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEzCH+Cs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 357F7C433F1;
+	Tue, 23 Jan 2024 00:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974112;
-	bh=8cimbuj8ofjgfkd6+jIACAKIzsMQo8WX+YRE6VcpHgc=;
+	s=korg; t=1705969390;
+	bh=MgtB7bihR3OiTkIbUgwRHPvuHw5WEyfquR9zLkoyGHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sMRfxFC+L47+oNQ3P3AxKlIH/CQvQACwQZkIubY8HDlofXn6PE7rxnzW3V7TJons/
-	 FgVIb0QnZlJZ9AmfvWHZqjEHZuHLexgY6gm1/B/R9Q4VawC4MN5B5Wtfl3e6JJzfVV
-	 Hini09M9r74A26TAppTe4j86vJDQaNDwiFcOxSsU=
+	b=NEzCH+CsIpMcF7E4swszI055/LsU1o57mo9cNE5EZnfpVP3pvQZt3rOTSJNAFsI0J
+	 HuC3tTl4Et23IQP8AlP2FXci14ZbzujHjuS03K0yAVpOsOadtpV15NoeWY6s8DXmQ4
+	 3iPYqH9csrfl63jr393vLk04wkbL0sKXZ644DGmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chanho Park <chanho61.park@samsung.com>,
-	Jia Jie Ho <jiajie.ho@starfivetech.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Nikita Travkin <nikita@trvn.ru>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/583] crypto: jh7110 - Correct deferred probe return
-Date: Mon, 22 Jan 2024 15:51:34 -0800
-Message-ID: <20240122235813.462205211@linuxfoundation.org>
+Subject: [PATCH 6.7 191/641] arm64: dts: qcom: acer-aspire1: Correct audio codec definition
+Date: Mon, 22 Jan 2024 15:51:35 -0800
+Message-ID: <20240122235823.950725409@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chanho Park <chanho61.park@samsung.com>
+From: Nikita Travkin <nikita@trvn.ru>
 
-[ Upstream commit d57343022b71b9f41e731282dbe0baf0cff6ada8 ]
+[ Upstream commit feec9f0add432a867f23e29afcd2f7088889b8e2 ]
 
-This fixes list_add corruption error when the driver is returned
-with -EPROBE_DEFER. It is also required to roll back the previous
-probe sequences in case of deferred_probe. So, this removes
-'err_probe_defer" goto label and just use err_dma_init instead.
+When initially added, a mistake was made in the definition of the codec.
 
-Fixes: 42ef0e944b01 ("crypto: starfive - Add crypto engine support")
-Signed-off-by: Chanho Park <chanho61.park@samsung.com>
-Reviewed-by: Jia Jie Ho <jiajie.ho@starfivetech.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Despite the fact that the DMIC line is connected on the side of the
+codec chip, and relevant passive components, including 0-ohm resistors
+connecting the dmics, are present, the dmic line is still cut in
+another place on the board, which was overlooked.
+
+Correct this by replacing the dmic configuration with a comment
+describing this hardware detail.
+
+While at it, also add missing regulators definitions. This is not a
+functional change as all the relevant regulators were already added via
+the other rail supplies.
+
+Fixes: 4a9f8f8f2ada ("arm64: dts: qcom: Add Acer Aspire 1")
+Signed-off-by: Nikita Travkin <nikita@trvn.ru>
+Link: https://lore.kernel.org/r/20231205-aspire1-sound-v2-2-443b7ac0a06f@trvn.ru
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/starfive/jh7110-cryp.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ .../arm64/boot/dts/qcom/sc7180-acer-aspire1.dts | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/starfive/jh7110-cryp.c b/drivers/crypto/starfive/jh7110-cryp.c
-index 08e974e0dd12..3a67ddc4d936 100644
---- a/drivers/crypto/starfive/jh7110-cryp.c
-+++ b/drivers/crypto/starfive/jh7110-cryp.c
-@@ -180,12 +180,8 @@ static int starfive_cryp_probe(struct platform_device *pdev)
- 	spin_unlock(&dev_list.lock);
- 
- 	ret = starfive_dma_init(cryp);
--	if (ret) {
--		if (ret == -EPROBE_DEFER)
--			goto err_probe_defer;
--		else
--			goto err_dma_init;
--	}
-+	if (ret)
-+		goto err_dma_init;
- 
- 	/* Initialize crypto engine */
- 	cryp->engine = crypto_engine_alloc_init(&pdev->dev, 1);
-@@ -233,7 +229,7 @@ static int starfive_cryp_probe(struct platform_device *pdev)
- 
- 	tasklet_kill(&cryp->aes_done);
- 	tasklet_kill(&cryp->hash_done);
--err_probe_defer:
+diff --git a/arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts b/arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts
+index dbb48934d499..3342cb048038 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts
++++ b/arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts
+@@ -209,9 +209,22 @@ alc5682: codec@1a {
+ 		AVDD-supply = <&vreg_l15a_1p8>;
+ 		MICVDD-supply = <&reg_codec_3p3>;
+ 		VBAT-supply = <&reg_codec_3p3>;
++		DBVDD-supply = <&vreg_l15a_1p8>;
++		LDO1-IN-supply = <&vreg_l15a_1p8>;
 +
- 	return ret;
- }
++		/*
++		 * NOTE: The board has a path from this codec to the
++		 * DMIC microphones in the lid, however some of the option
++		 * resistors are absent and the microphones are connected
++		 * to the SoC instead.
++		 *
++		 * If the resistors were to be changed by the user to
++		 * connect the codec, the following could be used:
++		 *
++		 * realtek,dmic1-data-pin = <1>;
++		 * realtek,dmic1-clk-pin = <1>;
++		 */
  
+-		realtek,dmic1-data-pin = <1>;
+-		realtek,dmic1-clk-pin = <1>;
+ 		realtek,jd-src = <1>;
+ 	};
+ };
 -- 
 2.43.0
 
