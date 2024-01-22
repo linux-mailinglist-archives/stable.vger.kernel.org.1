@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BBC18380BE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22617837E09
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 227FD1F25871
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5406E1C28D54
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1A2133988;
-	Tue, 23 Jan 2024 01:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D26D5A104;
+	Tue, 23 Jan 2024 00:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1MqxQ3gR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkzD3lBC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADA712F59D;
-	Tue, 23 Jan 2024 01:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7D359B5E;
+	Tue, 23 Jan 2024 00:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971870; cv=none; b=ES14bj8gsvpJgazUqbUIRmkLZx1fWMAfWeTkA7w1lhY53BrIuAmLbOOmEv7V/6c5GAtOFCslIZFuFBLbuZmSx2VK3hdX73xU0R9uuCQMPDm3WZgyZyfTYtfHbjk1kcE3gD5tJLxltt+b+hEf8e8PJAcnoV1l4c3DaPMdoZnoS5g=
+	t=1705970307; cv=none; b=ki1HZ140jA3OIRTBPyFzgh2dVsoX/HrvzOA3GmXs+6g/vS1ljSTNi1WQQ2J4DCFQBUhr3OiRr6ZbvcCVn0Ux5G54xpu6k0EeHx16d1ADCRIpAjYMeeGtuejLIy52Eq1tUI6hhYhZ/iHq/kBTkfVG1GNYWGiEiYKe9TewpaDnH38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971870; c=relaxed/simple;
-	bh=EsWGJTWFIIU3vjNucytyAqgeF9g/LYJgb4PFADgbqEU=;
+	s=arc-20240116; t=1705970307; c=relaxed/simple;
+	bh=e4wIeT6YRzjjGDw4zpAZhQiLMMpTLKAq7pEf2ShSg9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bzBSeJyr4YgK3LoWs38SjRFThLyE+DrEnMiqVHWOVN16BHgqfcIbZKWPi9t3HjkM+dXI+48zjeawZB2I/xIjnKH2FQwsxMMi2g0x/IA2JFpV+6kPBC/ZT1jvd+UTlZ5d2M2mBALnnICIoz4rV6vrul/9rE7BnRbrPzbn5yo7a/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1MqxQ3gR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A793C433F1;
-	Tue, 23 Jan 2024 01:04:30 +0000 (UTC)
+	 MIME-Version; b=khMjEJMzYjVN5qqVNrLv5NZiiGmzyvFMEQjcCmyZVvX1MdVm/AymhcbQIkzyDD5VaWXbAzhARIA2rGI82eCFCmsAaTrGjs4Mtl4mA0u9dGgceBoDAMjSpZXTl3CNo+FLlOiPkWYtSfNMR77M3pDbmYjXlp2X8hW14wPydKjoMo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkzD3lBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E95FC433F1;
+	Tue, 23 Jan 2024 00:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971870;
-	bh=EsWGJTWFIIU3vjNucytyAqgeF9g/LYJgb4PFADgbqEU=;
+	s=korg; t=1705970307;
+	bh=e4wIeT6YRzjjGDw4zpAZhQiLMMpTLKAq7pEf2ShSg9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1MqxQ3gRrN8N9Fnv0iQRCeoUK6gFeVJKRKRjx7tfOFUZmt5o6+wubz7vYQoU82xsq
-	 69XBK7OUyynkWT/eH2+ja924eIaJV87TyiX0DNhp1cRTzZOiUBE2JVLhBL1Ug20rEi
-	 5dbD2pxaKONdz/rRpkQ75tYb5y11XYnpvNIvAKvc=
+	b=fkzD3lBCFtvdK2BjK2WEGPVH0POE9mtb2e9P0nOBrXo7BgxIgZHW0JA/aiKdlT8Lz
+	 c8qUUP5bJWP7AT4H5tFvhkQGq+gKvEoZcEH9TBga2aFCrg88v5AITNlfLf6ZOtnflv
+	 5RFrsPjHAw07CiYSev0x8vxomSl3CT73oh9AUPiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 5.10 227/286] iommu/arm-smmu-qcom: Add missing GMU entry to match table
-Date: Mon, 22 Jan 2024 15:58:53 -0800
-Message-ID: <20240122235740.817334403@linuxfoundation.org>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Douglas Anderson <dianders@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 630/641] kdb: Fix a potential buffer overflow in kdb_local()
+Date: Mon, 22 Jan 2024 15:58:54 -0800
+Message-ID: <20240122235837.983177958@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit afc95681c3068956fed1241a1ff1612c066c75ac upstream.
+[ Upstream commit 4f41d30cd6dc865c3cbc1a852372321eba6d4e4c ]
 
-In some cases the firmware expects cbndx 1 to be assigned to the GMU,
-so we also want the default domain for the GMU to be an identy domain.
-This way it does not get a context bank assigned.  Without this, both
-of_dma_configure() and drm/msm's iommu_domain_attach() will trigger
-allocating and configuring a context bank.  So GMU ends up attached to
-both cbndx 1 and later cbndx 2.  This arrangement seemingly confounds
-and surprises the firmware if the GPU later triggers a translation
-fault, resulting (on sc8280xp / lenovo x13s, at least) in the SMMU
-getting wedged and the GPU stuck without memory access.
+When appending "[defcmd]" to 'kdb_prompt_str', the size of the string
+already in the buffer should be taken into account.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/20231210180655.75542-1-robdclark@gmail.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+An option could be to switch from strncat() to strlcat() which does the
+correct test to avoid such an overflow.
+
+However, this actually looks as dead code, because 'defcmd_in_progress'
+can't be true here.
+See a more detailed explanation at [1].
+
+[1]: https://lore.kernel.org/all/CAD=FV=WSh7wKN7Yp-3wWiDgX4E3isQ8uh0LCzTmd1v9Cg9j+nQ@mail.gmail.com/
+
+Fixes: 5d5314d6795f ("kdb: core for kgdb back end (1 of 2)")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/debug/kdb/kdb_main.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -21,6 +21,7 @@ static struct qcom_smmu *to_qcom_smmu(st
+diff --git a/kernel/debug/kdb/kdb_main.c b/kernel/debug/kdb/kdb_main.c
+index 6b213c8252d6..d05066cb40b2 100644
+--- a/kernel/debug/kdb/kdb_main.c
++++ b/kernel/debug/kdb/kdb_main.c
+@@ -1348,8 +1348,6 @@ static int kdb_local(kdb_reason_t reason, int error, struct pt_regs *regs,
+ 		/* PROMPT can only be set if we have MEM_READ permission. */
+ 		snprintf(kdb_prompt_str, CMD_BUFLEN, kdbgetenv("PROMPT"),
+ 			 raw_smp_processor_id());
+-		if (defcmd_in_progress)
+-			strncat(kdb_prompt_str, "[defcmd]", CMD_BUFLEN);
  
- static const struct of_device_id qcom_smmu_client_of_match[] __maybe_unused = {
- 	{ .compatible = "qcom,adreno" },
-+	{ .compatible = "qcom,adreno-gmu" },
- 	{ .compatible = "qcom,mdp4" },
- 	{ .compatible = "qcom,mdss" },
- 	{ .compatible = "qcom,sc7180-mdss" },
+ 		/*
+ 		 * Fetch command from keyboard
+-- 
+2.43.0
+
 
 
 
