@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14EDB837E78
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E70E83836F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFC251F276AE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBAC8285C1E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7815BAD7;
-	Tue, 23 Jan 2024 00:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A30629F1;
+	Tue, 23 Jan 2024 01:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CroVjhk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5ElJB2n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9017354BD2;
-	Tue, 23 Jan 2024 00:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0707522060;
+	Tue, 23 Jan 2024 01:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970608; cv=none; b=TSET9aQD+IDDTzETI55VANTXvUliA0GSswcI5JxZsqHOW/RDKMlUDinuQBMT5JlWgqqaEKEiLdEap7OLxKiFGEokyQ7SiCySy0o2DMmirpgcUiMg3Cq0+vU8oPQODRQ/UfhQtkWdCcdYYbs4fytGMgVlJEtsbfoGar7ki7wGa98=
+	t=1705974973; cv=none; b=Ui1GRfOYyXKxHB2AcJGui3ZyLycJzX4ChwzTVsXZhCp5VA60lPJ6Pjsi+tnwE3iCpQLkY2JE5mhDOu6GJYOVqy1uauh+VetClDzivfSIG4sUmnbt3PXz2XRt5xN+gXkz1cd57yYSVxU4zF8GHjzv1HZSsIcjq65Idp26frd022Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970608; c=relaxed/simple;
-	bh=G3BiIG52XVO5siNsVfY/WTlXx19nVFk35PVipeWs+50=;
+	s=arc-20240116; t=1705974973; c=relaxed/simple;
+	bh=IHOWvM5SewBVf5gLUqxhUfyS5g8nqn/GtdCSMTiRT4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ITJbGvgmpf6ue7xaRAQ3i4+SJ+sYheiNXZ7Y0x4PnabF1wGot5sy4JILyOMAkMYe98Ia86mRuhcKWGImj8dCjzBxnV4s4c9Uk7zGoZjRo5VzlOhRpbI+3+famQtbOtXR/pR13NlaDjiJIdgJLXg7/MTeg8iAGG8Pr6m76Tn4EEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CroVjhk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C6C5C433F1;
-	Tue, 23 Jan 2024 00:43:27 +0000 (UTC)
+	 MIME-Version; b=AAeGubS0aOyqkq0zIT1zLFD67MuXUBqvGQERnX2Nzg2zSvlEvWKp/P5fqEmA1t8bLnf50OSxZS2LEF3Mz9SCWk7TjRlFNGlaHks5v5PtR07xtwEjdt+DN12CqiK8QC3JBNPws7ZgXdlKqSGrpWqBPZWnowXKjp3a7eqFbvPPx7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5ElJB2n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62AE5C43390;
+	Tue, 23 Jan 2024 01:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970608;
-	bh=G3BiIG52XVO5siNsVfY/WTlXx19nVFk35PVipeWs+50=;
+	s=korg; t=1705974972;
+	bh=IHOWvM5SewBVf5gLUqxhUfyS5g8nqn/GtdCSMTiRT4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0CroVjhkOf4LoTIfNJ7nbOJ46gcgCRylaiS7wa7+4sCVjMMLY7me8JCjeRPxMtxtG
-	 Hz2sXJtJZFw/V9O0c36BOWkqnXqCokGcj9Qr5b4MA8SmX0eyWWuwDw9z4Xy7hzv9JP
-	 LRU4x6AA1bFPwqMhtaBAInGHDf4V1R6HDC07ULNw=
+	b=J5ElJB2nzPzXrYFtO+YGnQRoUUhQ8E5HRmoKg3WKxfeo6cO5dyBDn++tiafHHLcu+
+	 whipcTnDYsRv9rj8LcoP+sPfIlzKJLQ1xircZMyXuf1KIuqpk4jD3/46OMOkKmzHmZ
+	 yRtwv0nWYPwuB+KJuniYuuI+2MpaIsecNrCOQ1jQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/417] crypto: sahara - fix wait_for_completion_timeout() error handling
+Subject: [PATCH 6.6 175/583] arm64: dts: qcom: sm6375: fix USB wakeup interrupt types
 Date: Mon, 22 Jan 2024 15:53:46 -0800
-Message-ID: <20240122235753.715796088@linuxfoundation.org>
+Message-ID: <20240122235817.379658937@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 2dba8e1d1a7957dcbe7888846268538847b471d1 ]
+[ Upstream commit 41952be6661b20f56c2c5b06c431880dd975b747 ]
 
-The sg lists are not unmapped in case of timeout errors. Fix this.
+The DP/DM wakeup interrupts are edge triggered and which edge to trigger
+on depends on use-case and whether a Low speed or Full/High speed device
+is connected.
 
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 59d34ca97f91 ("arm64: dts: qcom: Add initial device tree for SM6375")
+Cc: stable@vger.kernel.org      # 6.2
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231120164331.8116-10-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: d3246a0cf43f ("arm64: dts: qcom: sm6375: Hook up MPM")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6375.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 6e87b108df19..e2b1880ddeb0 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -608,16 +608,17 @@ static int sahara_aes_process(struct skcipher_request *req)
+diff --git a/arch/arm64/boot/dts/qcom/sm6375.dtsi b/arch/arm64/boot/dts/qcom/sm6375.dtsi
+index e7ff55443da7..b479f3d9a3a8 100644
+--- a/arch/arm64/boot/dts/qcom/sm6375.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6375.dtsi
+@@ -1362,8 +1362,8 @@ usb_1: usb@4ef8800 {
  
- 	timeout = wait_for_completion_timeout(&dev->dma_completion,
- 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
--	if (!timeout) {
--		dev_err(dev->device, "AES timeout\n");
--		return -ETIMEDOUT;
--	}
- 
- 	dma_unmap_sg(dev->device, dev->out_sg, dev->nb_out_sg,
- 		DMA_FROM_DEVICE);
- 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
- 		DMA_TO_DEVICE);
- 
-+	if (!timeout) {
-+		dev_err(dev->device, "AES timeout\n");
-+		return -ETIMEDOUT;
-+	}
-+
- 	if ((dev->flags & FLAGS_CBC) && req->iv)
- 		sahara_aes_cbc_update_iv(req);
- 
-@@ -1008,15 +1009,16 @@ static int sahara_sha_process(struct ahash_request *req)
- 
- 	timeout = wait_for_completion_timeout(&dev->dma_completion,
- 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
--	if (!timeout) {
--		dev_err(dev->device, "SHA timeout\n");
--		return -ETIMEDOUT;
--	}
- 
- 	if (rctx->sg_in_idx)
- 		dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
- 			     DMA_TO_DEVICE);
- 
-+	if (!timeout) {
-+		dev_err(dev->device, "SHA timeout\n");
-+		return -ETIMEDOUT;
-+	}
-+
- 	memcpy(rctx->context, dev->context_base, rctx->context_size);
- 
- 	if (req->result && rctx->last)
+ 			interrupts = <GIC_SPI 302 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
++				     <GIC_SPI 93 IRQ_TYPE_EDGE_BOTH>,
++				     <GIC_SPI 94 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq",
+ 					  "ss_phy_irq",
+ 					  "dm_hs_phy_irq",
 -- 
 2.43.0
 
