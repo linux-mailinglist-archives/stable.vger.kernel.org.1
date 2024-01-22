@@ -1,181 +1,104 @@
-Return-Path: <stable+bounces-12349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 174FD835CCA
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 09:38:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC304835D7F
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 10:00:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FCA41F23D1A
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 08:38:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 731611F2651E
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 09:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CA721353;
-	Mon, 22 Jan 2024 08:38:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EbXOj8Vr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB1436AEF;
+	Mon, 22 Jan 2024 09:00:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0C639843;
-	Mon, 22 Jan 2024 08:38:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBC639FD1;
+	Mon, 22 Jan 2024 08:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705912695; cv=none; b=JPMQ/Ca+n9QQz9CZVO+zP3q3vEneUmN0sCINJboy/OkKlVoM4bJS8wnSM7eJUvxFP8akxiSOcQr3UY6I8YQArT/Q+Z7GMnOykOD2M4QOa2yWWLflbxnr+XzLOw8cgq+4+go0Or7VKqrUm6ckj+fsSAkcFTl+4Ojz8UGFIF21c8c=
+	t=1705914001; cv=none; b=LGfkHPLpnBjN1JLCQPxu/oKgBx4O+ciFJ85kFL3xhz/0RHr1eec5Tf45Ycn7sFRoJLkSUQJuGMtCLsHp100Ldj2hSUZECPA243nKI9xproz+WrIFcgOSiMQD8MYZJ5C777DAQMjkg7pYOEPzE4RaFLnv8IxTRHbIL6u3LFUx6fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705912695; c=relaxed/simple;
-	bh=xxSWNMBN0ZR751Z7G6tfKZnRRQoV/sVm3qfNAVT2cOg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wy4jgGygrsHhgaTBUe+IGB0dw8uZXnRPA8/4rAyquBEJnuRQa3lJDXV84dDqM2GNmaaZD3XKDiEFk6BOtqkdn+orkJD8UEwlxbhgcr7Jvo85yyhD1I3pQdeeJxMidBCPkHw2LCMUm3PcwzOP6TgvsdSS5d+GNreCAbojTzLqEKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EbXOj8Vr; arc=none smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-78329cb6742so194498285a.0;
-        Mon, 22 Jan 2024 00:38:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705912693; x=1706517493; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TYslVcdkxN8a4Q7ghB4ymZ6NUOCDG3LuVvw8IjLgvsU=;
-        b=EbXOj8Vr76eNyGUeQ3Maw+nGJsvmWaLdlJR44SC6Xz7aDvkz1wpTUudyOgqjsrpgOe
-         CT/PBnaA0+doV3WnVxczmMa4y0SPvYS8gmID2DPpJpbisi9L0H2zZ3m8QfA/5hKVNXlw
-         t94UJUqdUi03/3jxgiKXtIMoQMHgc1w8dC1pE5GTBAYxwU/9KUcl2cQQcR7cLbAK6gIc
-         MsWr46g4CQ2CDHeuyxz5h0vjLMFR4wEViXKuUfW9mlHSfecG24KuNqXIZdGtemc22j6c
-         7wF60zKbZyy2yBe/ZE8wwHBJ5YsCFOQWZYLT6J7g+QBMgXMBvV//7WvB+y9FmnkTXg+M
-         ZCXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705912693; x=1706517493;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TYslVcdkxN8a4Q7ghB4ymZ6NUOCDG3LuVvw8IjLgvsU=;
-        b=tTm+OL7oUc0y3bT88Uz4uZwpkHDEkazZV/RCv4nEVFj5gF2+g4iIts7ncQqmt3gj9b
-         H2EsaFZAKFO/yt7nB86daDsNHbmbDUQJlM6+rU9dHq4MiHfRAXierai1GpYmNnxwgU42
-         qq0cTad775inOoGfUbf6KZRMbmrZbx9TUrE1wH/ZkbSimCKnxo1uZIR64xBC9S2LZd2b
-         J2wnx81vf9psp1f3MdQQvbL1eqMT8y+6CzXPV6Y6IdjIfJCBaeUHt6jmDieOrnvGs2RM
-         gv4kVh7oJTQvH4BjYqM75Slcb+CTW7oqjKadlMSZfMAfD8VGaiF+FOaFUQ4rYGJa7blb
-         7Nkw==
-X-Gm-Message-State: AOJu0Yy0mBHRfXqGqx/WlOwe4LBx9BTGfsdqFRH4JFxN8HpFutXBeqCq
-	5wZP9KWNMU0lOUeYmBf3E6igXFHcAHLkQPfYqjN3zLxwXIKNrU+ufM6SxpTJL28SaK/boMhz/No
-	HrnqJ3kHI0GpBRQ85L/9r8+Ut0Q4=
-X-Google-Smtp-Source: AGHT+IG43zNnKxodwV2s4LGG55IGBHYkOXghKaHxhJj2hriU35RlEVPl/GMDuXaNuWmy15NfFQfUNOgS3802HwoARoA=
-X-Received: by 2002:a0c:e312:0:b0:680:fb20:202f with SMTP id
- s18-20020a0ce312000000b00680fb20202fmr3046897qvl.127.1705912693195; Mon, 22
- Jan 2024 00:38:13 -0800 (PST)
+	s=arc-20240116; t=1705914001; c=relaxed/simple;
+	bh=Z2QO+ZNbexrvCNmBOmbx82ARDt5b9Gh1U8R95xFIBzk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nOpKENIod5Liynu41q3CGz/QtfuKU+P04yLdWuzWxdz1wbDPUkGqEXSh/fG9MTrxZgXvj64wB+faOSnS4J3CbBMr03QfZsxpB00khiY2yp+g5E7dXnNNnvhshxfXYmLKo7OVPs1zAiy76dy8Ctw5aVltM0RtpFBcJGjaLVvwLk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass smtp.mailfrom=shingroup.cn; arc=none smtp.client-ip=15.184.224.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shingroup.cn
+X-QQ-mid: bizesmtp69t1705913968t4x91ja8
+X-QQ-Originating-IP: gUy0qjJACJmrxRTWjfX/xlWmCxQVo4qzhx3gV7F419E=
+Received: from localhost ( [183.209.108.228])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 22 Jan 2024 16:59:26 +0800 (CST)
+X-QQ-SSF: 01400000000000504000000A0000000
+X-QQ-FEAT: IcCSTr/hHjNrGNwJGBhoO6iQm9TbZEJVmwOVI/u90M+u6dL3vPHrcIcOGVpYE
+	3xnlu/yVMyOGkIJ66R4R6neq8C/BM94XzIVAWppJE1t5/EBTlH16aGVL2ZG2Cuq7ti6EHEl
+	dICnf+4WHwFK2FYyeN5SAYUWxzfnnyd+Y4EdNv/RTyv4+OwaNrW5RuUvfC6oPlrh6jOAj9g
+	Jjv0kMj4f2l6sbW8lZtbreylbZqv4IS/lw4sRpztsh+MVPGhtuBoaJdGFTIH8IYChJnPA+I
+	Uc0R9vTKFF4jdMVoEjWkQYeAHzWOAoP2dWvlvtCtRlQFgdM62WGIZ0CiL1H/D39d3hcp37b
+	2vO55zzySM78h8yB8PZ6DQ34ZuhIanlAE9x6s82ulILRUbuhe0MPtyJk47ESPwippLBb2of
+	wwXoP/E3Xepk6H1MgSGFig==
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 16519766725060776921
+From: Dawei Li <dawei.li@shingroup.cn>
+To: tglx@linutronix.de,
+	maz@kernel.org
+Cc: sdonthineni@nvidia.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	dawei.li@shingroup.cn,
+	set_pte_at@outlook.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2 4/5] genirq: Initialize resend_node hlist for all irq_desc
+Date: Mon, 22 Jan 2024 16:57:15 +0800
+Message-Id: <20240122085716.2999875-5-dawei.li@shingroup.cn>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20240122085716.2999875-1-dawei.li@shingroup.cn>
+References: <20240122085716.2999875-1-dawei.li@shingroup.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240119101454.532809-1-mszeredi@redhat.com> <CAOQ4uxiWtdgCQ+kBJemAYbwNR46ogP7DhjD29cqAw0qqLvQn4A@mail.gmail.com>
- <5ee3a210f8f4fc89cb750b3d1a378a0ff0187c9f.camel@redhat.com>
-In-Reply-To: <5ee3a210f8f4fc89cb750b3d1a378a0ff0187c9f.camel@redhat.com>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Mon, 22 Jan 2024 10:38:01 +0200
-Message-ID: <CAOQ4uxj_EWqa716+9xxu0zEd-ziEFpoGsv2OggUrb8_eGGkDDw@mail.gmail.com>
-Subject: Re: [PATCH v2] ovl: require xwhiteout feature flag on layer roots
-To: Alexander Larsson <alexl@redhat.com>
-Cc: Miklos Szeredi <mszeredi@redhat.com>, linux-unionfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-1
 
-On Fri, Jan 19, 2024 at 6:35=E2=80=AFPM Alexander Larsson <alexl@redhat.com=
-> wrote:
->
-> On Fri, 2024-01-19 at 13:08 +0200, Amir Goldstein wrote:
-> > On Fri, Jan 19, 2024 at 12:14=E2=80=AFPM Miklos Szeredi <mszeredi@redha=
-t.com>
-> > wrote:
-> >
-> >
-> > Do you want me to fix/test and send this to Linus?
-> >
-> > Alex, can we add your RVB to v2?
->
-> I ran into an issue converting composefs to use this.
->
-> Suppose we have a chroot of files containing some upper dirs and we
-> want to make a composefs of this. For example, say
-> /foo/lower/dir/whiteout is a traditional whiteout.
->
-> Previously, what happened is that I marked the whiteout file with
-> trusted.overlay.overlay.whiteout, and the /foo/lower/dir with
-> trusted.overlay.overlay.whiteouts.
->
-> Them when I mounted then entire chroot with overlayfs these xattrs
-> would get unescaped and I would get a $mnt/foo/lower/dir/whiteout with
-> a trusted.overlay.whiteout xattr, and a $mnt/foo/lower/dir with a
-> trusted.overlay.whiteout. When I then mounted another overlayfs with a
-> lowerdir of $mnt/foo/lower it would treat the whiteout as a xwhiteout.
->
-> However, now I need the lowerdir toplevel dir to also have a
-> trusted.overlay.whiteouts xattr. But when I'm converting the entire
-> chroot I do not know which of the directories is going to be used as
-> the toplevel lower dir, so I don't know where to put this marker.
->
-> The only solution I see is to put it on *all* parent directories. Is
-> there a better approach here?
->
+For !CONFIG_SPARSE_IRQ kernel, early_irq_init() is supposed to
+initialize all the desc entries in system, desc->resend_node
+included.
 
-Alex,
+Thus, initialize desc->resend_node for all irq_desc entries, rather
+than irq_desc[0] only, which is the current implementation is about.
 
-As you can see, I posted v3 with an alternative approach that would not
-require marking all possible lower layer roots.
+Fixes: bc06a9e08742 ("genirq: Use hlist for managing resend handlers")
+Cc: stable@vger.kernel.org
 
-However, I cannot help wondering if it wouldn't be better practice, when
-composing layers, to always be explicit, per-directory about whether the
-composed directory is a "base" or a "diff" layer.
+Acked-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
+---
+ kernel/irq/irqdesc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Isn't this information always known at composing time?
+diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
+index 27ca1c866f29..371eb1711d34 100644
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -600,7 +600,7 @@ int __init early_irq_init(void)
+ 		mutex_init(&desc[i].request_mutex);
+ 		init_waitqueue_head(&desc[i].wait_for_threads);
+ 		desc_set_defaults(i, &desc[i], node, NULL, NULL);
+-		irq_resend_init(desc);
++		irq_resend_init(&desc[i]);
+ 	}
+ 	return arch_early_irq_init();
+ }
+-- 
+2.27.0
 
-In legacy overlayfs, there is an explicit mark for "this is a base dir" -
-namely, the opaque xattr, but there is no such explicit mark on
-directories without an entry with the same name in layers below them.
-
-The lack of explicit mark "merge" vs. "opaque" in all directories in all
-the layers had led to problems in the past, for example, this is the
-reason that this fix was needed:
-
-  b79e05aaa166 ovl: no direct iteration for dir with origin xattr
-
-In conclusion, since composefs is the first tool, that I know of, to
-compose "non-legacy" overlayfs layers (i.e. with overlay xattrs),
-I think the correct design decision would mark every directory in
-every layer explicitly as at exactly one of "merge"/"opaque".
-
-Note that non-dir are always marked explicitly as "metacopy",
-so there is no ambiguity with non-dirs and we also error out
-if a non-dir stack does not end with an "opaque" entry.
-
-Additionally, when composing layers, since all the children of
-a directory should be explicitly marked as "merge" vs. "opaque"
-then the parent's "impure" (meaning contains "merge" children)
-can also be set at composing time.
-
-Failing to set "impure" correctly when composing layers could
-result in wrong readdir d_ino results.
-
-My proposition in v3 for an explicit mark was to
-"reinterpret the opaque xattr from boolean to enum".
-My proposal included only the states 'y' (opaque) and 'x' (contains
-xwhiteouts), but for composefs, I would extend this to also mark
-a merge dir explicitly with opaque=3D'n' and explicitly mark all the
-directories in a "base layer" with opaque=3D'y'.
-
-Implementation-wise, composefs could start by marking each directory
-with either 'y'/'n' state based on the lowerstack, and if xwhiteout entries
-are added, 'n' state could be changed to 'x' state.
-
-What do you think?
-
-Does it make sense from composefs POV?
-Am I correct to assume that at composing time, every directory
-state is known (base 'y' vs. diff 'n')?
-
-Thanks,
-Amir.
 
