@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-13791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B15F6837E0D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 313A7838064
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67FBB1F29BB9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D51021F2CC66
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13485524DB;
-	Tue, 23 Jan 2024 00:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4AC6775D;
+	Tue, 23 Jan 2024 01:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qv5WNjHZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="id9F4y0i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C6E4F204;
-	Tue, 23 Jan 2024 00:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6F46774B;
+	Tue, 23 Jan 2024 01:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970331; cv=none; b=jkd8tVaAStFjTqLH9OYE1LuY10WDvAdY2x94nnYeqzLIEiat9xb+shhBAZosTkPYorXNa54okJQbPWc+062kYnpRDpYpIBZG+6CHKl7YbHEuO3ZiKNV4nnkOUJtk+foAZMIKmTymjAT0O6RCw7I4rm02dNrd6TuGs0F5EWzQcrQ=
+	t=1705971696; cv=none; b=ak7w2TwQGPyGTyg6BDAbtgPYDYHGV6e+r/DfY3EWi+rSZLKwqNXbXZ+ZVqufNDoCZV2WMlxeb50bvTxsOfBRYUSmnaEi2NYA+awzTmB4YKxZGB/YcKTL+u8PvxKPMqz1iaurhJbBJ5qNvMvsWv+wlnDhjUPh4jPXGY+CFQ+yJ14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970331; c=relaxed/simple;
-	bh=lEVHxmMnhjU5QpmujW5on1hVKV60t9bjCiS5WqfFVF0=;
+	s=arc-20240116; t=1705971696; c=relaxed/simple;
+	bh=0m0bBbL/f8mqGwnFR2Xz4uSYkeiw2c1NhO1HaY3Rebc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YfIe3ixllknHC7TY49xO022qleCmoRZ8r1N4lLLSU3bfg2/winvgVNJVm5o2StbZ7ED1pu+QtfLUhMKowca2jE+G5uz+XZbDBcOyOazlijBSLNIJzQGBbmZtVUsEmHdqzxnfm61wObKw3vawuptBjUtRHp6+3e5ZCVcIehvDGhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qv5WNjHZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F47DC433F1;
-	Tue, 23 Jan 2024 00:38:51 +0000 (UTC)
+	 MIME-Version; b=XrUIRw+9tuWDEo4YDQbuFImbO+mSMa9ol1ixItp/lp7Yz8JDdcQPdYwaOGcceyOPV0+1POUmLsiH2A/OSu5mO4rrYpnAaZq4fe2p9pEUIt0YBpuzeacS5zSfcwjFKapw7IiDlH8y0mEwc/iBMejPcQchdjmE2+qAThvWiwbENOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=id9F4y0i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E79C43390;
+	Tue, 23 Jan 2024 01:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970331;
-	bh=lEVHxmMnhjU5QpmujW5on1hVKV60t9bjCiS5WqfFVF0=;
+	s=korg; t=1705971696;
+	bh=0m0bBbL/f8mqGwnFR2Xz4uSYkeiw2c1NhO1HaY3Rebc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qv5WNjHZcZkm4WHczJkvSS1sBYaDKYHWaZMwJCYvqmwaXozradCkMVzRgvUWIGvHU
-	 Q3WklcBrgNegjJ6dBBAMZtZP9ks95nIPjIJ5Dx57qFk3bOA0TwQXTO5kMmaRtqDQoc
-	 GVeOq+Y5b33g5b44V7N6r2uocdEMjuHn2R9chtxs=
+	b=id9F4y0ik1xaCGRmOni61tAGsCSSVFe6wZ6gQByCEiwbhzzts7PaxYz09k6YhLDhU
+	 W4Cjnlf5lx/CUSdGU55RC0lb3864JmY3JuSJk9T4g7Tx06NjVhtXoTmwimShRPf7pE
+	 4g9MuR09S1qz6YQcZ89AyfA57qQ3ornDDANpsg88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 611/641] drm/amdgpu: fall back to INPUT power for AVG power via INFO IOCTL
+	Alice Ryhl <aliceryhl@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 5.10 209/286] binder: fix race between mmput() and do_exit()
 Date: Mon, 22 Jan 2024 15:58:35 -0800
-Message-ID: <20240122235837.347890171@linuxfoundation.org>
+Message-ID: <20240122235740.147072632@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit d02069850fc102b07ae923535d5e212f2c8a34e9 ]
+commit 9a9ab0d963621d9d12199df9817e66982582d5a5 upstream.
 
-For backwards compatibility with userspace.
+Task A calls binder_update_page_range() to allocate and insert pages on
+a remote address space from Task B. For this, Task A pins the remote mm
+via mmget_not_zero() first. This can race with Task B do_exit() and the
+final mmput() refcount decrement will come from Task A.
 
-Fixes: 47f1724db4fe ("drm/amd: Introduce `AMDGPU_PP_SENSOR_GPU_INPUT_POWER`")
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2897
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  Task A            | Task B
+  ------------------+------------------
+  mmget_not_zero()  |
+                    |  do_exit()
+                    |    exit_mm()
+                    |      mmput()
+  mmput()           |
+    exit_mmap()     |
+      remove_vma()  |
+        fput()      |
+
+In this case, the work of ____fput() from Task B is queued up in Task A
+as TWA_RESUME. So in theory, Task A returns to userspace and the cleanup
+work gets executed. However, Task A instead sleep, waiting for a reply
+from Task B that never comes (it's dead).
+
+This means the binder_deferred_release() is blocked until an unrelated
+binder event forces Task A to go back to userspace. All the associated
+death notifications will also be delayed until then.
+
+In order to fix this use mmput_async() that will schedule the work in
+the corresponding mm->async_put_work WQ instead of Task A.
+
+Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-4-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/android/binder_alloc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-index 583cf03950cd..598867919c4f 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-@@ -1105,7 +1105,12 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
- 			if (amdgpu_dpm_read_sensor(adev,
- 						   AMDGPU_PP_SENSOR_GPU_AVG_POWER,
- 						   (void *)&ui32, &ui32_size)) {
--				return -EINVAL;
-+				/* fall back to input power for backwards compat */
-+				if (amdgpu_dpm_read_sensor(adev,
-+							   AMDGPU_PP_SENSOR_GPU_INPUT_POWER,
-+							   (void *)&ui32, &ui32_size)) {
-+					return -EINVAL;
-+				}
- 			}
- 			ui32 >>= 8;
- 			break;
--- 
-2.43.0
-
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -271,7 +271,7 @@ static int binder_update_page_range(stru
+ 	}
+ 	if (mm) {
+ 		mmap_write_unlock(mm);
+-		mmput(mm);
++		mmput_async(mm);
+ 	}
+ 	return 0;
+ 
+@@ -304,7 +304,7 @@ err_page_ptr_cleared:
+ err_no_vma:
+ 	if (mm) {
+ 		mmap_write_unlock(mm);
+-		mmput(mm);
++		mmput_async(mm);
+ 	}
+ 	return vma ? -ENOMEM : -ESRCH;
+ }
 
 
 
