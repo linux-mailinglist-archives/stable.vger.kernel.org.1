@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-15032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E991F83839A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5448380E0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C1551F28A80
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC8FA28CB42
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39AFD63412;
-	Tue, 23 Jan 2024 01:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B6513475B;
+	Tue, 23 Jan 2024 01:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obPCGzW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zx4w5chV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4286313F;
-	Tue, 23 Jan 2024 01:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0527E13473B;
+	Tue, 23 Jan 2024 01:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975018; cv=none; b=JymU4dsnmXRbJFZIW67+3cYqy9YePRGOarDMFdRvNrKUPrK7d6S1gbtINsRDEiN+Lpn4/MgRfl1xdSq+bRa+HsahB3B1RCKOPo5wUtwc/T2zndCsjL2yLi3QuCQX+ez0DYpYg4wq4Q/GiZFAlIGpQuyCvZLEoWF3xMp+JrWKN/U=
+	t=1705971934; cv=none; b=r7pVRVxY9JGYU9vOEvoFeJxOjNg5IR2TcUdIO/gpRfvTh5UqITjfu2PVE5X5MXSfOF6JT3x4c2snFpgS8fhE0zkQG7NKF6RriYkXFUF8m7JX21rxgvf67xk2F35+fb0Ne+nW/M7YXW+ji4K8JksOiIpQdUhf1coJbSPEd2CRgeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975018; c=relaxed/simple;
-	bh=ghEQhmhZPdqjYl8DW2op/ZZOR6fyKEl0lFbBjMPiTmo=;
+	s=arc-20240116; t=1705971934; c=relaxed/simple;
+	bh=LcoBS0TYU4mswpTzjJirOeMMNSkoRyu0XkYENFH2T08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OsgwBd6ghO/ARVCNcRemv5xjHJFdL6/UQz1LMoupjrvN3stm+SDwJ2uL7vrm74nScDqVpTNrw7CYTNowAIu7lNyr01W6lT9kOe46hwVahK4AK3fvVm1lGzUZXV7ROFlQWTIt4bQssOQeGZJ2Zgf8q1gE0WK/ja4wlsJHjmVCDgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obPCGzW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63EBCC433C7;
-	Tue, 23 Jan 2024 01:56:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pNyw7ulZTX7CcR/ecdOwDucfv099wkNmYLyc/p4ctHStOyiH13oymqWpwOiAht/aRPg/FbNO0A9UR4qNox6XSoDpGgfS+WT91sEcvSdVx87IBQMjRTBH4YoaRsuc3ng3XBUIjwT/3sxuEwTTW3hpmO77bir6boz/0mywdLxsgrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zx4w5chV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52E4C433F1;
+	Tue, 23 Jan 2024 01:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975017;
-	bh=ghEQhmhZPdqjYl8DW2op/ZZOR6fyKEl0lFbBjMPiTmo=;
+	s=korg; t=1705971933;
+	bh=LcoBS0TYU4mswpTzjJirOeMMNSkoRyu0XkYENFH2T08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=obPCGzW/AaoSnh6+7awHjHaZBUTOkyjeLYMRs/+rw/LABkWLKCZzu03W154C795xD
-	 Yh5TOlRlE+brwq3gMhxPMr9zJ9+FiPMt7aRJEPSkNsPVI1q/So3S5SpgciMDPG6Bdu
-	 QMbzujBzR7t/R9hXP2zn+HhrE7cYFuTPhl1W8CL4=
+	b=Zx4w5chVbKAqu/aRqWKDCrdhvchWYmsG26E4sKjpACfJJOnnJDNInAuanO7QtKIlm
+	 F/z+vnQTcPLF2kQ8o5YrnF+Vm6vhwNvPiWX4IgGqHAGx/M8LzAxBXuXuYyO084fkik
+	 TF7CL+787v1dAhSwv1PZmbi5fTDw3a/cB02ISWD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 317/374] tty: early return from send_break() on TTY_DRIVER_HARDWARE_BREAK
+Subject: [PATCH 5.10 267/286] net: ethernet: ti: am65-cpsw: Fix max mtu to fit ethernet frames
 Date: Mon, 22 Jan 2024 15:59:33 -0800
-Message-ID: <20240122235755.904100414@linuxfoundation.org>
+Message-ID: <20240122235742.325183706@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,78 +62,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Sanjuán García, Jorge <Jorge.SanjuanGarcia@duagon.com>
 
-[ Upstream commit 66619686d187b4a6395316b7f39881e945dce4bc ]
+[ Upstream commit 64e47d8afb5ca533b27efc006405e5bcae2c4a7b ]
 
-If the driver sets TTY_DRIVER_HARDWARE_BREAK, we leave ops->break_ctl()
-to the driver and return from send_break(). But we do it using a local
-variable and keep the code flowing through the end of the function.
-Instead, do 'return' immediately with the ops->break_ctl()'s return
-value.
+The value of AM65_CPSW_MAX_PACKET_SIZE represents the maximum length
+of a received frame. This value is written to the register
+AM65_CPSW_PORT_REG_RX_MAXLEN.
 
-This way, we don't have to stuff the 'else' branch of the 'if' with the
-software break handling. And we can re-indent the function too.
+The maximum MTU configured on the network device should then leave
+some room for the ethernet headers and frame check. Otherwise, if
+the network interface is configured to its maximum mtu possible,
+the frames will be larger than AM65_CPSW_MAX_PACKET_SIZE and will
+get dropped as oversized.
 
-Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20230919085156.1578-14-jirislaby@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 66aad7d8d3ec ("usb: cdc-acm: return correct error code on unsupported break")
+The switch supports ethernet frame sizes between 64 and 2024 bytes
+(including VLAN) as stated in the technical reference manual, so
+define AM65_CPSW_MAX_PACKET_SIZE with that maximum size.
+
+Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://lore.kernel.org/r/20240105085530.14070-2-jorge.sanjuangarcia@duagon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty_io.c | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
-index 12f6ef8d0f45..a18138ce67b2 100644
---- a/drivers/tty/tty_io.c
-+++ b/drivers/tty/tty_io.c
-@@ -2504,22 +2504,24 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
- 		return 0;
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index d10324431354..94e36deefe88 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -51,7 +51,7 @@
+ #define AM65_CPSW_MAX_PORTS	8
  
- 	if (tty->driver->flags & TTY_DRIVER_HARDWARE_BREAK)
--		retval = tty->ops->break_ctl(tty, duration);
--	else {
--		/* Do the work ourselves */
--		if (tty_write_lock(tty, false) < 0)
--			return -EINTR;
--		retval = tty->ops->break_ctl(tty, -1);
--		if (retval)
--			goto out;
--		if (!signal_pending(current))
--			msleep_interruptible(duration);
--		retval = tty->ops->break_ctl(tty, 0);
-+		return tty->ops->break_ctl(tty, duration);
-+
-+	/* Do the work ourselves */
-+	if (tty_write_lock(tty, false) < 0)
-+		return -EINTR;
-+
-+	retval = tty->ops->break_ctl(tty, -1);
-+	if (retval)
-+		goto out;
-+	if (!signal_pending(current))
-+		msleep_interruptible(duration);
-+	retval = tty->ops->break_ctl(tty, 0);
- out:
--		tty_write_unlock(tty);
--		if (signal_pending(current))
--			retval = -EINTR;
--	}
-+	tty_write_unlock(tty);
-+
-+	if (signal_pending(current))
-+		retval = -EINTR;
-+
- 	return retval;
- }
+ #define AM65_CPSW_MIN_PACKET_SIZE	VLAN_ETH_ZLEN
+-#define AM65_CPSW_MAX_PACKET_SIZE	(VLAN_ETH_FRAME_LEN + ETH_FCS_LEN)
++#define AM65_CPSW_MAX_PACKET_SIZE	2024
  
+ #define AM65_CPSW_REG_CTL		0x004
+ #define AM65_CPSW_REG_STAT_PORT_EN	0x014
+@@ -1853,7 +1853,8 @@ static int am65_cpsw_nuss_init_ndev_2g(struct am65_cpsw_common *common)
+ 	ether_addr_copy(port->ndev->dev_addr, port->slave.mac_addr);
+ 
+ 	port->ndev->min_mtu = AM65_CPSW_MIN_PACKET_SIZE;
+-	port->ndev->max_mtu = AM65_CPSW_MAX_PACKET_SIZE;
++	port->ndev->max_mtu = AM65_CPSW_MAX_PACKET_SIZE -
++			      (VLAN_ETH_HLEN + ETH_FCS_LEN);
+ 	port->ndev->hw_features = NETIF_F_SG |
+ 				  NETIF_F_RXCSUM |
+ 				  NETIF_F_HW_CSUM |
 -- 
 2.43.0
 
