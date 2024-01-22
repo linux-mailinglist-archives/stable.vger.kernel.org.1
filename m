@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19BD4837FAC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C6E9838446
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A92A51F2A1A4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D06851C2A25F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF89E64AA0;
-	Tue, 23 Jan 2024 00:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1364E6BB21;
+	Tue, 23 Jan 2024 02:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xO5kMobW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zp5Zt9gG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6A464A80;
-	Tue, 23 Jan 2024 00:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AF46A354;
+	Tue, 23 Jan 2024 02:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971279; cv=none; b=WjxNq4jcEYLOmNx5+93Mst0rxPm9xalv2tI4BR4gE+CzxnHKdyc6m+fMQJLKgjN5soCVD44J+Kjgg1aa7Y4NMW3CPt6ER2/RkZwEM5N23Xl/jSm1Obd0efWuu6i/Ppz/n/Jo/NlXmxINwp5IOArlmpB1kWerwiZy/AVrZhWmk2U=
+	t=1705975350; cv=none; b=tTt09PKwEiOKMN8zJeoB2EsI/LhE0d33RcM8iWLgyMW0cZxxMYlThbPhffxUmPh7lKIOl0L16D5sEArVlHOAxdYRcdH1tEoUwlVgQNiQ3Y509qNpAopsF4tkxt3gHu83cjbtCksq2TDNWajN+KkT+hr1D+EDTPtdjTNYL3p0Bl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971279; c=relaxed/simple;
-	bh=AJk5x1KbsVSiI+ByeRHLXWxYwlUcnNjbWzkjpZIFMm4=;
+	s=arc-20240116; t=1705975350; c=relaxed/simple;
+	bh=fjYN60atLbsyutMG5sOWPs99csFJGyHrXneY7lpUkTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n5QffkH1WbiqqZNQMPaV94ucV+LsaukAB1G4YKIODR2ypr/aiZfk4vojiyTMG3UGZgd/KbKMn58CXJPjhSJm8xuWCDFtVOmxl5stPw5TCNZ7ucAOnlsMBu/KV5xMh9IbXgBW5FNRY3Hp4M+RfgBO4pY3r7fQSYSXL8u15lgP/OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xO5kMobW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA15CC433C7;
-	Tue, 23 Jan 2024 00:54:38 +0000 (UTC)
+	 MIME-Version; b=qzq7YxumHa+ssuy3BzDLBYTfs0D1NTce3P40Ike5agcja6+kTVz1zzaTCUrevqi5vMw8kyH+BOyVbIDmsVw4PwQQfYUnYq7RwthucfusOeG0MxztQVnj9pMxc3AoFiHd5kyVxpGXmS0hM5HtyStnNSeyZGu4DDtD9MGf+T5FbnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zp5Zt9gG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320E1C433C7;
+	Tue, 23 Jan 2024 02:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971279;
-	bh=AJk5x1KbsVSiI+ByeRHLXWxYwlUcnNjbWzkjpZIFMm4=;
+	s=korg; t=1705975350;
+	bh=fjYN60atLbsyutMG5sOWPs99csFJGyHrXneY7lpUkTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xO5kMobWvFpEGFSuTAdEkw8k/YE9ulcrjqsO4DMaMU3w7G1ki5iYafcrL9dm2Lx9t
-	 fYQjFISzcvitTXL2gqk0Je1lQl9DfWBKe9VeI5MndErL6g6Njw7N2MtRwWaVtHm2hC
-	 ed56JsF4nA0o7qeXwMKWI/HncdUTYZh895VU1jPw=
+	b=Zp5Zt9gG4+wSdzGWqFMugg15W9pVuVZZ9jJ/WeEB8nqBX6sMJOm2CuWgJhFZ3/gck
+	 Xjw0UngM1O6ASswJdFiSpd8R6yskZzPLTkcozzpCFjmzIG+9n1j1ZC4+Mr7uip/B7l
+	 NyTulOe4xX68jJO6i2ts612q1aXP/P5EqjGnf63M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mehdi Djait <mehdi.djait@bootlin.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 195/417] media: dt-bindings: media: rkisp1: Fix the port description for the parallel interface
+Subject: [PATCH 6.6 312/583] clk: qcom: gcc-sm8550: use collapse-voting for PCIe GDSCs
 Date: Mon, 22 Jan 2024 15:56:03 -0800
-Message-ID: <20240122235758.686465331@linuxfoundation.org>
+Message-ID: <20240122235821.573464826@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mehdi Djait <mehdi.djait@bootlin.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 25bf28b25a2afa1864b7143259443160d9163ea0 ]
+[ Upstream commit 7e77a39265293ea4f05e20fff180755503c49918 ]
 
-The bus-type belongs to the endpoint's properties and should therefore
-be moved.
+The PCIe GDSCs can be shared with other masters and should use the APCS
+collapse-vote register when updating the power state.
 
-Link: https://lore.kernel.org/r/20231115164407.99876-1-mehdi.djait@bootlin.com
+This is specifically also needed to be able to disable power domains
+that have been enabled by boot firmware using the vote register.
 
-Fixes: 6a0eaa25bf36 ("media: dt-bindings: media: rkisp1: Add port for parallel interface")
-Signed-off-by: Mehdi Djait <mehdi.djait@bootlin.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Following other recent Qualcomm platforms, describe this register and
+the corresponding mask for the PCIe (and _phy) GDSCs.
+
+Fixes: 955f2ea3b9e9 ("clk: qcom: Add GCC driver for SM8550")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231218-topic-8550_fixes-v1-5-ce1272d77540@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/media/rockchip-isp1.yaml      | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/clk/qcom/gcc-sm8550.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/media/rockchip-isp1.yaml b/Documentation/devicetree/bindings/media/rockchip-isp1.yaml
-index b3661d7d4357..2a0ad332f5ce 100644
---- a/Documentation/devicetree/bindings/media/rockchip-isp1.yaml
-+++ b/Documentation/devicetree/bindings/media/rockchip-isp1.yaml
-@@ -90,15 +90,16 @@ properties:
-         description: connection point for input on the parallel interface
+diff --git a/drivers/clk/qcom/gcc-sm8550.c b/drivers/clk/qcom/gcc-sm8550.c
+index a16d07426b71..73bda0d03aa7 100644
+--- a/drivers/clk/qcom/gcc-sm8550.c
++++ b/drivers/clk/qcom/gcc-sm8550.c
+@@ -2998,6 +2998,8 @@ static struct clk_branch gcc_video_axi1_clk = {
  
-         properties:
--          bus-type:
--            enum: [5, 6]
--
-           endpoint:
-             $ref: video-interfaces.yaml#
-             unevaluatedProperties: false
+ static struct gdsc pcie_0_gdsc = {
+ 	.gdscr = 0x6b004,
++	.collapse_ctrl = 0x52020,
++	.collapse_mask = BIT(0),
+ 	.pd = {
+ 		.name = "pcie_0_gdsc",
+ 	},
+@@ -3007,6 +3009,8 @@ static struct gdsc pcie_0_gdsc = {
  
--        required:
--          - bus-type
-+            properties:
-+              bus-type:
-+                enum: [5, 6]
-+
-+            required:
-+              - bus-type
+ static struct gdsc pcie_0_phy_gdsc = {
+ 	.gdscr = 0x6c000,
++	.collapse_ctrl = 0x52020,
++	.collapse_mask = BIT(3),
+ 	.pd = {
+ 		.name = "pcie_0_phy_gdsc",
+ 	},
+@@ -3016,6 +3020,8 @@ static struct gdsc pcie_0_phy_gdsc = {
  
-     anyOf:
-       - required:
+ static struct gdsc pcie_1_gdsc = {
+ 	.gdscr = 0x8d004,
++	.collapse_ctrl = 0x52020,
++	.collapse_mask = BIT(1),
+ 	.pd = {
+ 		.name = "pcie_1_gdsc",
+ 	},
+@@ -3025,6 +3031,8 @@ static struct gdsc pcie_1_gdsc = {
+ 
+ static struct gdsc pcie_1_phy_gdsc = {
+ 	.gdscr = 0x8e000,
++	.collapse_ctrl = 0x52020,
++	.collapse_mask = BIT(4),
+ 	.pd = {
+ 		.name = "pcie_1_phy_gdsc",
+ 	},
 -- 
 2.43.0
 
