@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F75C838273
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E0A2837BDB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5425E1F26E17
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D90C52945DD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FCA5C5E6;
-	Tue, 23 Jan 2024 01:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9CCC1552E9;
+	Tue, 23 Jan 2024 00:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ez+JjbCV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1SwrU1fh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81E85BAD4;
-	Tue, 23 Jan 2024 01:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A38C154C05;
+	Tue, 23 Jan 2024 00:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974355; cv=none; b=imasq8rjXWgEd6QJ2k9/GaxZpVIRw+05pv0mx0IfcTgsXaLwKgpB6okHVAW+ZioW919pt54QvPTdKUb4uJTW5uLJ36gIOKoREljgVLFS1yUydhOoovMMOLCnML3erB7Q1Ff2fNWhSd2OCYQHNjtUwtiBNfWHYG3M9lXKca9SjTI=
+	t=1705969412; cv=none; b=dGQHLCesV9KGEC1NQp/weMfxWrdxaGh83Ffw3vbeOlGq2ANVLnOqiTHxcx5w7uvTQugahCWNO1y6cWpz3xL34759aHXdzBrqFcdqDQkcKHo34G7rpGc6t3RUetblMAPbLpAEFm7iA/KwlSot2gAt+XMl43Y5c+di5TRF8F55FqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974355; c=relaxed/simple;
-	bh=5UNcvUkbZ65Dk+hdk05bB516W8S8h6KhyYRVzCjR/xg=;
+	s=arc-20240116; t=1705969412; c=relaxed/simple;
+	bh=s2syy1WKvaf4ypntMHD3csEpDTjRoMrhYOs4UnltFfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJB+N2msPcSx26eBbhP1Jp59TGuNqMOXWrlERS6H/rsaBnjbKCV9YS/5DkDxNqGHjcm/MaEjTFyoUt96em0BIUtJJcdAHGHl6fj5eK9jbjwkOBjwmNychep3UHAUhq6IQxDFO0ce0agn6Z/uqPBX8kTN6ojGSn8dgEEayheX34M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ez+JjbCV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7B0C433C7;
-	Tue, 23 Jan 2024 01:45:55 +0000 (UTC)
+	 MIME-Version; b=gLbfJIHJk1W9qqsnlIJFhw3/4a5HQmrxeshsgq63R5pmJm8JosJ7SMGeMyWiiLNPHdPYg8Cd7VLTJlJMxb+qqQDuELhYcQZZ/fjQ6kq/UlcsE7c7wDxpNYzHVlLsoaxnhGFRFBHrdt0ZO+GYWJStzNRBBBMaq4Nba2rkFnXim8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1SwrU1fh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF179C43390;
+	Tue, 23 Jan 2024 00:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974355;
-	bh=5UNcvUkbZ65Dk+hdk05bB516W8S8h6KhyYRVzCjR/xg=;
+	s=korg; t=1705969412;
+	bh=s2syy1WKvaf4ypntMHD3csEpDTjRoMrhYOs4UnltFfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ez+JjbCVI7Z2f8uGQu86RPkclhNpv4rqI9RIVc3Asn/P6+zjU3Fb+Qx1fNP4rwvSU
-	 w12thJJOJinlNZyLxvQFIsaDOhmCLwdLzaLxyFHI1jb8xv1QEASi7IUyti2Qd3TRcg
-	 9HX9t68FiGd9Lsg6fY+tFEEujhISxcAKOX67J96I=
+	b=1SwrU1fhIwB34GtCpVAiIizdV0D5C3xDORUKt2aBaRgUFgs90gHbmIVeRFfQOduid
+	 WlYUm1St3ro2LH91DYE6zKr/btRFQF+SbUYd5L4tiaIAU2Be+/C4aBgm7gGHCvolHm
+	 l9qO8OXZ44J1q5aT/3Lfm+x5MCeWz1G5z0iMhQvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Osama Muhammad <osmtendev@gmail.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+da0fc229cc1ff4bb2e6d@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 063/583] gfs2: Fix kernel NULL pointer dereference in gfs2_rgrp_dump
-Date: Mon, 22 Jan 2024 15:51:54 -0800
-Message-ID: <20240122235814.061400284@linuxfoundation.org>
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 211/641] wifi: rtlwifi: rtl8192ce: using calculate_bit_shift()
+Date: Mon, 22 Jan 2024 15:51:55 -0800
+Message-ID: <20240122235824.550866141@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Osama Muhammad <osmtendev@gmail.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 8877243beafa7c6bfc42022cbfdf9e39b25bd4fa ]
+[ Upstream commit 3d03e8231031bcc65a48cd88ef9c71b6524ce70b ]
 
-Syzkaller has reported a NULL pointer dereference when accessing
-rgd->rd_rgl in gfs2_rgrp_dump().  This can happen when creating
-rgd->rd_gl fails in read_rindex_entry().  Add a NULL pointer check in
-gfs2_rgrp_dump() to prevent that.
+Using calculate_bit_shift() to replace _rtl92c_phy_calculate_bit_shift().
+And fix the undefined bitwise shift behavior problem.
 
-Reported-and-tested-by: syzbot+da0fc229cc1ff4bb2e6d@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=da0fc229cc1ff4bb2e6d
-Fixes: 72244b6bc752 ("gfs2: improve debug information when lvb mismatches are found")
-Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-7-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/rgrp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c | 6 +++---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h | 1 -
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
-index 9308190895c8..307b952a41f8 100644
---- a/fs/gfs2/rgrp.c
-+++ b/fs/gfs2/rgrp.c
-@@ -2306,7 +2306,7 @@ void gfs2_rgrp_dump(struct seq_file *seq, struct gfs2_rgrpd *rgd,
- 		       (unsigned long long)rgd->rd_addr, rgd->rd_flags,
- 		       rgd->rd_free, rgd->rd_free_clone, rgd->rd_dinodes,
- 		       rgd->rd_requested, rgd->rd_reserved, rgd->rd_extfail_pt);
--	if (rgd->rd_sbd->sd_args.ar_rgrplvb) {
-+	if (rgd->rd_sbd->sd_args.ar_rgrplvb && rgd->rd_rgl) {
- 		struct gfs2_rgrp_lvb *rgl = rgd->rd_rgl;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
+index da54e51badd3..fa70a7d5539f 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
+@@ -39,7 +39,7 @@ u32 rtl92c_phy_query_rf_reg(struct ieee80211_hw *hw,
+ 							       rfpath, regaddr);
+ 	}
  
- 		gfs2_print_dbg(seq, "%s  L: f:%02x b:%u i:%u\n", fs_id_buf,
+-	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
+ 
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -110,7 +110,7 @@ void rtl92ce_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = _rtl92c_phy_rf_serial_read(hw,
+ 								    rfpath,
+ 								    regaddr);
+-			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+@@ -122,7 +122,7 @@ void rtl92ce_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = _rtl92c_phy_fw_rf_serial_read(hw,
+ 								       rfpath,
+ 								       regaddr);
+-			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
+index 7582a162bd11..c7a0d4c776f0 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
+@@ -94,7 +94,6 @@ u32 _rtl92c_phy_rf_serial_read(struct ieee80211_hw *hw, enum radio_path rfpath,
+ 			       u32 offset);
+ u32 _rtl92c_phy_fw_rf_serial_read(struct ieee80211_hw *hw,
+ 				  enum radio_path rfpath, u32 offset);
+-u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask);
+ void _rtl92c_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 				 enum radio_path rfpath, u32 offset, u32 data);
+ void _rtl92c_phy_fw_rf_serial_write(struct ieee80211_hw *hw,
 -- 
 2.43.0
 
