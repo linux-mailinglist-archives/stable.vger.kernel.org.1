@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-15168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F43838523
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 089B9837EF7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 295C2B24364
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B631329BCCF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609B26A026;
-	Tue, 23 Jan 2024 02:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1922560254;
+	Tue, 23 Jan 2024 00:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zh4JVp95"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqfF5khf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDC366B3C;
-	Tue, 23 Jan 2024 02:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDE460252;
+	Tue, 23 Jan 2024 00:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975323; cv=none; b=gMA3RIsVVYTDyHP1OKxroQvfQYLkIXO6Jnps/jgfTR/NNIo/9puiOgTaN4Z4nkZ2XvqErSSisLSiPXfQs64utaGPrYjuFfvjRhsyOKjv/M8hdLtj8YX/C5HXbVqLoFLGSb6dOQEpmXku1J2dxus+Z7p9HifnG0z5hsJ5g+h1Ujo=
+	t=1705970855; cv=none; b=Hn0AurJSUYpnmSTbD0jravowrWH/66HJrTFUEXsQkjeT7FuIsK+nfkONTFpqqJzzZeH32XI1KTgpck30usncMpFM/Qkex9d/EU1YDrpqVGgJuSoH7mxQe1ukxyB3K7aebZ4qXBuoReunMTsSKYhsffYjt4Zw8h1tpt95vnaj0D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975323; c=relaxed/simple;
-	bh=Qbgne7BT6uT5aUIU584P0HrFU80ueunn+DumU2/x5Ho=;
+	s=arc-20240116; t=1705970855; c=relaxed/simple;
+	bh=Szby5sHJsyWSqC3RibumbK9HR7pqGf1Xf7CWgbNoXHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ksVAV+NYoks/p8ZPW/OZn2oju1sBgWoaYv1H+kCcBsrPtNCC9XlnaVPuiy9Pc4nJmdbMBq+4W+6NI9P0dTHlfAhKinFvM+MADc7pEshaQBMDfUyqbXdywYRk8qiAgksE6gm0jBUtQA7l1Tfq3y7gGTJDdJ93V+OGbu9smJACAvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zh4JVp95; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2355C433C7;
-	Tue, 23 Jan 2024 02:02:02 +0000 (UTC)
+	 MIME-Version; b=oBEQao4pZ4qBEtQLv/QQRd5mLgPb47EDNfKJzbUjp4/gqM06m/qqo9kOjZ1g5TgaohvGOBs8wdeGk/UfnHVJj+NLwLjpZmZlEUne2PufhtgrBoRvXqOudAwo3qABNJ4GjNUyyFkbRvLW+KkFYZ9wVLfJnY9ghd3w1RKoDD39fcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqfF5khf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B8CC43399;
+	Tue, 23 Jan 2024 00:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975323;
-	bh=Qbgne7BT6uT5aUIU584P0HrFU80ueunn+DumU2/x5Ho=;
+	s=korg; t=1705970855;
+	bh=Szby5sHJsyWSqC3RibumbK9HR7pqGf1Xf7CWgbNoXHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zh4JVp95IcXJMW3kyGd7rYnNoZhkho9xR+cUXyw3gp8bz+inSpZnskchHjohm27wN
-	 vZA/DWdNmzLtIL9sBcQlJOLm8TBP5vmqKuETjF2hUPI7e564oG23IuI9AtFWE7fLsb
-	 lmfnVXesfvgP2P21Xenx1xNafOBHtbdu4RClHm0k=
+	b=KqfF5khfYHRCS20a/muKYLPENp9mxpF24q52sQb30Lt8Zs9T/3dA7E+eJfQ+YjCPI
+	 MBsUdA37nKH/6Q+8g4Ynkofdged/1k0WvccqsXOBGnX7LNVsic1T93oAC7P+WNN5Sw
+	 sMBnQ2k8vwzealduajKVg/szGXDU1k2eWnFWEmF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Hsiao Chien Sung <shawn.sung@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Esther Shimanovich <eshimanovich@chromium.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 286/583] drm/mediatek: Remove the redundant driver data for DPI
+Subject: [PATCH 5.10 031/286] Input: i8042 - add nomux quirk for Acer P459-G2-M
 Date: Mon, 22 Jan 2024 15:55:37 -0800
-Message-ID: <20240122235820.757411585@linuxfoundation.org>
+Message-ID: <20240122235733.221720540@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsiao Chien Sung <shawn.sung@mediatek.com>
+From: Esther Shimanovich <eshimanovich@chromium.org>
 
-[ Upstream commit 8ac6935e5689a491f0bec78fec732722b3dad094 ]
+[ Upstream commit 335fe00319e030d481a54d5e0e68d50c5e672c0e ]
 
-DPI input is in 1T2P mode on both MT8195 and MT8188.
-Remove the redundant driver data to align the settings, or
-the screen will glitch.
+After the laptop lid is opened, and the device resumes from S3 deep
+sleep, if the user presses a keyboard key while the screen is still black,
+the mouse and keyboard become unusable.
 
-Fixes: 2847cd7e6403 ("drm/mediatek: Add mt8188 dpi compatibles and platform data")
+Enabling this quirk prevents this behavior from occurring.
 
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20231214055847.4936-22-shawn.sung@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Esther Shimanovich <eshimanovich@chromium.org>
+Link: https://lore.kernel.org/r/20231130195615.v2.1.Ibe78a9df97ecd18dc227a5cff67d3029631d9c11@changeid
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dpi.c | 16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
-index 2f931e4e2b60..bc073a6b367e 100644
---- a/drivers/gpu/drm/mediatek/mtk_dpi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
-@@ -957,20 +957,6 @@ static const struct mtk_dpi_conf mt8186_conf = {
- 	.csc_enable_bit = CSC_ENABLE,
- };
- 
--static const struct mtk_dpi_conf mt8188_dpintf_conf = {
--	.cal_factor = mt8195_dpintf_calculate_factor,
--	.max_clock_khz = 600000,
--	.output_fmts = mt8195_output_fmts,
--	.num_output_fmts = ARRAY_SIZE(mt8195_output_fmts),
--	.pixels_per_iter = 4,
--	.input_2pixel = false,
--	.dimension_mask = DPINTF_HPW_MASK,
--	.hvsize_mask = DPINTF_HSIZE_MASK,
--	.channel_swap_shift = DPINTF_CH_SWAP,
--	.yuv422_en_bit = DPINTF_YUV422_EN,
--	.csc_enable_bit = DPINTF_CSC_ENABLE,
--};
--
- static const struct mtk_dpi_conf mt8192_conf = {
- 	.cal_factor = mt8183_calculate_factor,
- 	.reg_h_fre_con = 0xe0,
-@@ -1094,7 +1080,7 @@ static const struct of_device_id mtk_dpi_of_ids[] = {
- 	{ .compatible = "mediatek,mt8173-dpi", .data = &mt8173_conf },
- 	{ .compatible = "mediatek,mt8183-dpi", .data = &mt8183_conf },
- 	{ .compatible = "mediatek,mt8186-dpi", .data = &mt8186_conf },
--	{ .compatible = "mediatek,mt8188-dp-intf", .data = &mt8188_dpintf_conf },
-+	{ .compatible = "mediatek,mt8188-dp-intf", .data = &mt8195_dpintf_conf },
- 	{ .compatible = "mediatek,mt8192-dpi", .data = &mt8192_conf },
- 	{ .compatible = "mediatek,mt8195-dp-intf", .data = &mt8195_dpintf_conf },
- 	{ /* sentinel */ },
+diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
+index 09528c0a8a34..124ab98ea43a 100644
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -351,6 +351,14 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_DRITEK)
+ 	},
++	{
++		/* Acer TravelMate P459-G2-M */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "TravelMate P459-G2-M"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
++	},
+ 	{
+ 		/* Amoi M636/A737 */
+ 		.matches = {
 -- 
 2.43.0
 
