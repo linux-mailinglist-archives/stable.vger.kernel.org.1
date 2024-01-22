@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-15199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50AF183844A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 797D6837F8D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 037572990D6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28CAE1F292A7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543DC6BB2D;
-	Tue, 23 Jan 2024 02:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17598629F5;
+	Tue, 23 Jan 2024 00:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x90JDowZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bA75d6N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C5D6A354;
-	Tue, 23 Jan 2024 02:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB69C627E3;
+	Tue, 23 Jan 2024 00:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975355; cv=none; b=F46vILv4lNVrezzADoCQ57CPNaD8Ops6PxPM+fPJetSOuK26+Opm1rqaj4D0/IWszTnnuzqT64JqZ8zcM8SnLGexqY1jwpxYdqw4GlIq0A382NBNcZVgdngDP2Ej6xYg2whI7C7dDAw3bvCJWh2Ck6Habcal1Cxq/5a9JhQ9jMc=
+	t=1705971186; cv=none; b=sT8TajWcztALTEL/v4VktLuVEJF/gDrT63eqJBsFjsvXQSBid8PKvKqYTK8iLC25CeZEUBSN8ix8we4JRewVsfTR890bXI+NquaAAhB1XLu9b/zHfbXVKFrbqgiveKaQ5xQVlp2mTlNugkQBVkMMXXovdJvFwyjdQGL5iO0EjdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975355; c=relaxed/simple;
-	bh=et0oL1IOcslLAEbQs0YlCWqn85zSzII0E/nusRw08jQ=;
+	s=arc-20240116; t=1705971186; c=relaxed/simple;
+	bh=Gh4kLQs15xIFjoA+pGkvkFgnY6XdacilJpG4VwXndIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ejDt8MEDseJ/EtB1WKHSeP3LdUgeq07HAyYaUArg6R7Bqn6Cp9IklgTKoIuijx+k4yvrQn2vnPIywYRBMtuJj4GgvVVozUPQ3vO/DcKHUGtemcxbLUD/buTftmNWDQ/pdOa3B6gF+WMgUnIRj01scsA1vVo+25R7FBmXdy7wOPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x90JDowZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E7DC43394;
-	Tue, 23 Jan 2024 02:02:34 +0000 (UTC)
+	 MIME-Version; b=hrrviUqF3mGahPPbeN8lIj6+hnVcYYZs0fPbf3XKmVC1lsnYGICHdYth47Rfk/B6UuN53fRf5HUhxNNPtgzXZgmBLPdUySfMNB0yfH53SqpeUa2Q5pZzEaUDovoHErRshrAJr3Dr3iugr4Z93DiWPcjwfySJh21eEx0rzGJUMSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bA75d6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB1EC433F1;
+	Tue, 23 Jan 2024 00:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975354;
-	bh=et0oL1IOcslLAEbQs0YlCWqn85zSzII0E/nusRw08jQ=;
+	s=korg; t=1705971186;
+	bh=Gh4kLQs15xIFjoA+pGkvkFgnY6XdacilJpG4VwXndIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x90JDowZwmJ/Co13VWvArY6yovXEfEuHdt4mfHzqiAWSqKC6bvcV7o2v/STNByy5d
-	 DTIKHROizfTqilHm7kfu33Wj7EPAwdhkx8Jp+x70NrNwS6dawaMXXtBmxeRBnEgWs2
-	 btzKlZ2MdWfnFvKkSGypF3U+KKIvnFSyYFNzenEU=
+	b=0bA75d6NzhXjdr2UU11DBhkQtrBP7cbPurVJeTv1DIUU5xUzo6Lkl2egDT6oUXNcP
+	 +48AVmwfeJO9MkZryLHu6D8mLbfTbpIjfVwI4M26shEDQerJdbanSjLmQfldVT1nPr
+	 GV60mkl1FjBShppXWdUqkqOg2Scut5LTRaZGfNHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 317/583] pwm: stm32: Fix enable count for clk in .probe()
+Subject: [PATCH 6.1 200/417] f2fs: fix to update iostat correctly in f2fs_filemap_fault()
 Date: Mon, 22 Jan 2024 15:56:08 -0800
-Message-ID: <20240122235821.740433530@linuxfoundation.org>
+Message-ID: <20240122235758.861062614@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Zabel <p.zabel@pengutronix.de>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 19f1016ea9600ed89bc24247c36ff5934ad94fbb ]
+[ Upstream commit bb34cc6ca87ff78f9fb5913d7619dc1389554da6 ]
 
-Make the driver take over hardware state without disabling in .probe()
-and enable the clock for each enabled channel.
+In f2fs_filemap_fault(), it fixes to update iostat info only if
+VM_FAULT_LOCKED is tagged in return value of filemap_fault().
 
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-[ukleinek: split off from a patch that also implemented .get_state()]
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Fixes: 8b83ac81f428 ("f2fs: support read iostat")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ fs/f2fs/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index 0c7781f17805..dd2ee5d9ca06 100644
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -579,17 +579,21 @@ static void stm32_pwm_detect_complementary(struct stm32_pwm *priv)
- 	priv->have_complementary_output = (ccer != 0);
- }
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 3f2c55b9aa8a..fd22854dbeae 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -42,7 +42,7 @@ static vm_fault_t f2fs_filemap_fault(struct vm_fault *vmf)
+ 	vm_fault_t ret;
  
--static unsigned int stm32_pwm_detect_channels(struct stm32_pwm *priv)
-+static unsigned int stm32_pwm_detect_channels(struct stm32_pwm *priv,
-+					      unsigned int *num_enabled)
- {
--	u32 ccer;
-+	u32 ccer, ccer_backup;
+ 	ret = filemap_fault(vmf);
+-	if (!ret)
++	if (ret & VM_FAULT_LOCKED)
+ 		f2fs_update_iostat(F2FS_I_SB(inode), inode,
+ 					APP_MAPPED_READ_IO, F2FS_BLKSIZE);
  
- 	/*
- 	 * If channels enable bits don't exist writing 1 will have no
- 	 * effect so we can detect and count them.
- 	 */
-+	regmap_read(priv->regmap, TIM_CCER, &ccer_backup);
- 	regmap_set_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
- 	regmap_read(priv->regmap, TIM_CCER, &ccer);
--	regmap_clear_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
-+	regmap_write(priv->regmap, TIM_CCER, ccer_backup);
-+
-+	*num_enabled = hweight32(ccer_backup & TIM_CCER_CCXE);
- 
- 	return hweight32(ccer & TIM_CCER_CCXE);
- }
-@@ -600,6 +604,8 @@ static int stm32_pwm_probe(struct platform_device *pdev)
- 	struct device_node *np = dev->of_node;
- 	struct stm32_timers *ddata = dev_get_drvdata(pdev->dev.parent);
- 	struct stm32_pwm *priv;
-+	unsigned int num_enabled;
-+	unsigned int i;
- 	int ret;
- 
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-@@ -622,7 +628,11 @@ static int stm32_pwm_probe(struct platform_device *pdev)
- 
- 	priv->chip.dev = dev;
- 	priv->chip.ops = &stm32pwm_ops;
--	priv->chip.npwm = stm32_pwm_detect_channels(priv);
-+	priv->chip.npwm = stm32_pwm_detect_channels(priv, &num_enabled);
-+
-+	/* Initialize clock refcount to number of enabled PWM channels. */
-+	for (i = 0; i < num_enabled; i++)
-+		clk_enable(priv->clk);
- 
- 	ret = devm_pwmchip_add(dev, &priv->chip);
- 	if (ret < 0)
 -- 
 2.43.0
 
