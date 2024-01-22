@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D327837CE5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C46283838D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71E2BB27CBA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E0491C29CBA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26517144605;
-	Tue, 23 Jan 2024 00:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93E9633E7;
+	Tue, 23 Jan 2024 01:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwRqyAGC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jde8Y4XD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5814500F;
-	Tue, 23 Jan 2024 00:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DA46313F;
+	Tue, 23 Jan 2024 01:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969529; cv=none; b=f7DVIRCxa5xi3eV5emOrSenEPxhGEW83l5Q0IcyklWnJXHXthaTpPmT7kPbHoznXE/QCtYR/cvqO7fVZV/Ej3PLOMXFJ1LGqAGnwioC+yHwY1O1xsGGrFCmc1TZc/GGVkNUqlk//VfEFkPR+A9yQC05TunpPl10SB7TQ35K8JJs=
+	t=1705975003; cv=none; b=fwQyKCBJmdsEMj9z+VK2ejS+TfUgj0m8ckVuu0VeLrjjH3prjzrO9rOMpIuD1lkcOH/hyrogx3ZR4J40JiEHK/bh7LeUtAADByXGI6wIKEeSvmxN50HgepfGwJKkE7Zhx8Sx8rl7l6a4aGFCnqb3yKnNqCV2eEK80jRggfNXX0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969529; c=relaxed/simple;
-	bh=C59Hm4u9B2esjic0HoEBLtI6XcIWWOT9gL9pogO6ee8=;
+	s=arc-20240116; t=1705975003; c=relaxed/simple;
+	bh=POqX8qOvHrWJMaOIdtsJFXbW7QjP5IO8jTqTQD1/ytA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XmkMgfXvZWx0vp7gY1dWuaprlX7tBsKDPv85jp8lsMeHEiXRFOwbVIiIVbF+62bbORv67iShdQobp2DYBa/trIPe+PytdTq0ibpGlQlE961Zv/lGB5tF5Am5t7FKH5ESZPJlbmt1ksE9L9zyobwTZPeSrFKg9HVakv9iJS54U2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwRqyAGC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C38C433B1;
-	Tue, 23 Jan 2024 00:25:29 +0000 (UTC)
+	 MIME-Version; b=AoiXQU752dAfL405R3YBq0kk2fs01gQjFMMdcY0EUbdCtTRlmT6dpSxTy4JjS6UgdTRM0kqroHetIwXaW/dytu/DsQ8LJzyr1q/F8ufEoDn4t3nsjBpS32gLlwXsG96Jcjf8zuBKphtD6/dJpSnbUwvyIj5DmrdOSB/D7yPE2UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jde8Y4XD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4ABC433C7;
+	Tue, 23 Jan 2024 01:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969529;
-	bh=C59Hm4u9B2esjic0HoEBLtI6XcIWWOT9gL9pogO6ee8=;
+	s=korg; t=1705975003;
+	bh=POqX8qOvHrWJMaOIdtsJFXbW7QjP5IO8jTqTQD1/ytA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zwRqyAGClYsWBgIwWPtLQDIbgQMuQGJBQy7OO+nCdVoMEFx6Vpir8K6BIUyEUIcg3
-	 chPOuuAprAbjTYmZkrv32czSiP9LY5NEgP8JZvRqL7D2EAgis9QKzr4s+fG/WSVtg8
-	 LrsepVPtGuXm61wJhMvuT0x9zh1gzbX7YQPeLOic=
+	b=jde8Y4XDDvnv/TIhN46fe3MxBHCsn20Gabnl8pPQL9etGjMBh4P/tbjiqkMyQBLMe
+	 eDvmezgoK4W1PTcqpK2Y84NwzWo5ZHRTrqkNO07bOzhD0BcL/iOVqO8xI/64gprxRU
+	 ypqr/4MlnehgyOrN17NBgXIAr6Iaxc3R15wrBbM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Yihang Li <liyihang9@huawei.com>,
+	Xiang Chen <chenxiang66@hisilicon.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 307/641] media: imx-mipi-csis: Fix clock handling in remove()
-Date: Mon, 22 Jan 2024 15:53:31 -0800
-Message-ID: <20240122235827.525649517@linuxfoundation.org>
+Subject: [PATCH 6.6 161/583] scsi: hisi_sas: Check before using pointer variables
+Date: Mon, 22 Jan 2024 15:53:32 -0800
+Message-ID: <20240122235816.968696344@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Yihang Li <liyihang9@huawei.com>
 
-[ Upstream commit 5705b0e0eb550ff834125a46a4ef99b62093d83d ]
+[ Upstream commit 8dd10296be8562a45c6c6794dd492a2b7dccede8 ]
 
-The driver always calls mipi_csis_runtime_suspend() and
-mipi_csis_clk_disable() in remove(). This causes multiple WARNs from the
-kernel, as the clocks get disabled too many times.
+In commit 4b329abc9180 ("scsi: hisi_sas: Move slot variable definition in
+hisi_sas_abort_task()"), we move the variables slot to the function head.
+However, the variable slot may be NULL, we should check it in each branch.
 
-Fix the remove() to call mipi_csis_runtime_suspend() and
-mipi_csis_clk_disable() in a way that reverses what is done in probe().
-
-Link: https://lore.kernel.org/r/20231122-imx-csis-v2-1-e44b8dc4cb66@ideasonboard.com
-
-Fixes: 7807063b862b ("media: staging/imx7: add MIPI CSI-2 receiver subdev for i.MX7")
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 4b329abc9180 ("scsi: hisi_sas: Move slot variable definition in hisi_sas_abort_task()")
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+Link: https://lore.kernel.org/r/1702525516-51258-4-git-send-email-chenxiang66@hisilicon.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/nxp/imx-mipi-csis.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/hisi_sas/hisi_sas_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-index 6cb20b45e0a1..b39d7aeba750 100644
---- a/drivers/media/platform/nxp/imx-mipi-csis.c
-+++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-@@ -1502,8 +1502,10 @@ static void mipi_csis_remove(struct platform_device *pdev)
- 	v4l2_async_nf_cleanup(&csis->notifier);
- 	v4l2_async_unregister_subdev(&csis->sd);
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
+index 6dfa8be17ea4..b155ac800979 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_main.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
+@@ -1641,7 +1641,10 @@ static int hisi_sas_abort_task(struct sas_task *task)
+ 	task->task_state_flags |= SAS_TASK_STATE_ABORTED;
+ 	spin_unlock_irqrestore(&task->task_state_lock, flags);
  
-+	if (!pm_runtime_enabled(&pdev->dev))
-+		mipi_csis_runtime_suspend(&pdev->dev);
+-	if (slot && task->task_proto & SAS_PROTOCOL_SSP) {
++	if (!slot)
++		goto out;
 +
- 	pm_runtime_disable(&pdev->dev);
--	mipi_csis_runtime_suspend(&pdev->dev);
- 	mipi_csis_clk_disable(csis);
- 	v4l2_subdev_cleanup(&csis->sd);
- 	media_entity_cleanup(&csis->sd.entity);
++	if (task->task_proto & SAS_PROTOCOL_SSP) {
+ 		u16 tag = slot->idx;
+ 		int rc2;
+ 
+@@ -1688,7 +1691,7 @@ static int hisi_sas_abort_task(struct sas_task *task)
+ 				rc = hisi_sas_softreset_ata_disk(device);
+ 			}
+ 		}
+-	} else if (slot && task->task_proto & SAS_PROTOCOL_SMP) {
++	} else if (task->task_proto & SAS_PROTOCOL_SMP) {
+ 		/* SMP */
+ 		u32 tag = slot->idx;
+ 		struct hisi_sas_cq *cq = &hisi_hba->cq[slot->dlvry_queue];
 -- 
 2.43.0
 
