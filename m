@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B87AC8380CF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BBC4837D99
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 866C8B2AE25
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 241621F2517E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C265112F59F;
-	Tue, 23 Jan 2024 01:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FBF5A0FE;
+	Tue, 23 Jan 2024 00:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7rxlWHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QomAitF6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B3812F59C;
-	Tue, 23 Jan 2024 01:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62ED34EB24;
+	Tue, 23 Jan 2024 00:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971755; cv=none; b=XUuQap0UhOpKEqPwFLdfwV+DmxLqzMCMxdwf9WrZff6BPe9qZshag6CrvlTn4FrkBEDJNXi20S7zhYuu3AOCTsyS15PazU9k5P3g/1r62GAdVMkC34YHy6Py6QSwS5yFZGCI7OOxHCGhP37HdXwfsUOWCu6bzDdSgwL3MFzkLDU=
+	t=1705970060; cv=none; b=QeFaxcl8dIRIn3mSnpm3RgQNXbiB43NfvOAMMGEizNNqScoqRSnQ5yNE9cEkR6gra7iOBVL0z05GsVq+mtkK+KKN5bzik/AIfuxq0W2ENlUB1FEwYS9ZJ3ZmgsdvjuE9GP5+XCaqyeUzhXK6YNvbEUuxvqaN5K+BHGKOGyFr75s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971755; c=relaxed/simple;
-	bh=NOxBVvxjkrQZfHiHcZej9nfsT5V4SfuT/23gYgh1OKg=;
+	s=arc-20240116; t=1705970060; c=relaxed/simple;
+	bh=YpSnthyu7FYlNVxa0ewBwZiA0OwbikCbrm78ODeiJSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EeoNjhAnUw8zD6cj9KFIkEADsT3pPoOf2BK+yViyBFvzGEX1FZE3iUzydn/zJoimADmqmsXnE6NQHCrqhyDfZeWaBIex+Lz/lstgaTpWy3sqU3otC076TM0ijVbJ8oEb7V2eWXMDNm/RZUEqCm6y8BYawd+lkO/tcQujUcGr9JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7rxlWHt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4306C433F1;
-	Tue, 23 Jan 2024 01:02:34 +0000 (UTC)
+	 MIME-Version; b=kXVwtXStehp+1iSlKanp6peotNGuVBHSBxE04/e/5vBWnyrtAmL9HdSRYn0x9N1fRu9zV0NAUbzUZARPfbJvXP9vPItrpWSXhibdJvSdDYK4TkelAuqoxx94cgxSh3mrgFYdDYRtHBxPJSy/73O8+dPeSh5sSWIf3KJoK+CR/6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QomAitF6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 030CFC433F1;
+	Tue, 23 Jan 2024 00:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971755;
-	bh=NOxBVvxjkrQZfHiHcZej9nfsT5V4SfuT/23gYgh1OKg=;
+	s=korg; t=1705970060;
+	bh=YpSnthyu7FYlNVxa0ewBwZiA0OwbikCbrm78ODeiJSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s7rxlWHtKUmyQcM+AzQQhXOPh+PWmorUpK9R4b328UICCVUvRL12EljwPXsk6xITU
-	 c5NZEiXlB5tsxcuw/MsTZFFhPTIvwVvzLAbKBm6zSKUts1UE32dgV3LW1C+3uTKIbj
-	 UsdUKcXQ+7tNK5Cejb4chLISFPrvigbHHS8qtnrI=
+	b=QomAitF6XOI/f76GsFGges3MZuZsBQpWDn1988G+NO0laPMmWsETB8W1kY6dY0kjW
+	 /RAyEs+wudJKVD+zGXy0x6kn2BAdwubQCsSyymEGxPU0En01sGxM+3SUxC+zxXzuIR
+	 Zy70ubxjRJAnbmCBlNGPHbrNCT2f3VePrMgUrtbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 311/417] Revert "net: rtnetlink: Enslave device before bringing it up"
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 575/641] nvmet-tcp: Fix the H2C expected PDU len calculation
 Date: Mon, 22 Jan 2024 15:57:59 -0800
-Message-ID: <20240122235802.600186498@linuxfoundation.org>
+Message-ID: <20240122235836.154484544@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-commit ec4ffd100ffb396eca13ebe7d18938ea80f399c3 upstream.
+[ Upstream commit 9a1abc24850eb759e36a2f8869161c3b7254c904 ]
 
-This reverts commit a4abfa627c3865c37e036bccb681619a50d3d93c.
+The nvmet_tcp_handle_h2c_data_pdu() function should take into
+consideration the possibility that the header digest and/or the data
+digests are enabled when calculating the expected PDU length, before
+comparing it to the value stored in cmd->pdu_len.
 
-The patch broke:
-> ip link set dummy0 up
-> ip link set dummy0 master bond0 down
-
-This last command is useful to be able to enslave an interface with only
-one netlink message.
-
-After discussion, there is no good reason to support:
-> ip link set dummy0 down
-> ip link set dummy0 master bond0 up
-because the bond interface already set the slave up when it is up.
-
-Cc: stable@vger.kernel.org
-Fixes: a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20240108094103.2001224-2-nicolas.dichtel@6wind.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: efa56305908b ("nvmet-tcp: Fix a kernel panic when host sends an invalid H2C PDU length")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/nvme/target/tcp.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -2797,13 +2797,6 @@ static int do_setlink(const struct sk_bu
- 		call_netdevice_notifiers(NETDEV_CHANGEADDR, dev);
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index e5a2cd9e8c13..80db64a4b09f 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -979,7 +979,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
+ {
+ 	struct nvme_tcp_data_pdu *data = &queue->pdu.data;
+ 	struct nvmet_tcp_cmd *cmd;
+-	unsigned int plen;
++	unsigned int exp_data_len;
+ 
+ 	if (likely(queue->nr_cmds)) {
+ 		if (unlikely(data->ttag >= queue->nr_cmds)) {
+@@ -1002,9 +1002,13 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
+ 		return -EPROTO;
  	}
  
--	if (tb[IFLA_MASTER]) {
--		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
--		if (err)
--			goto errout;
--		status |= DO_SETLINK_MODIFIED;
--	}
--
- 	if (ifm->ifi_flags || ifm->ifi_change) {
- 		err = dev_change_flags(dev, rtnl_dev_combine_flags(dev, ifm),
- 				       extack);
-@@ -2811,6 +2804,13 @@ static int do_setlink(const struct sk_bu
- 			goto errout;
- 	}
- 
-+	if (tb[IFLA_MASTER]) {
-+		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
-+		if (err)
-+			goto errout;
-+		status |= DO_SETLINK_MODIFIED;
-+	}
+-	plen = le32_to_cpu(data->hdr.plen);
++	exp_data_len = le32_to_cpu(data->hdr.plen) -
++			nvmet_tcp_hdgst_len(queue) -
++			nvmet_tcp_ddgst_len(queue) -
++			sizeof(*data);
 +
- 	if (tb[IFLA_CARRIER]) {
- 		err = dev_change_carrier(dev, nla_get_u8(tb[IFLA_CARRIER]));
- 		if (err)
+ 	cmd->pdu_len = le32_to_cpu(data->data_length);
+-	if (unlikely(cmd->pdu_len != (plen - sizeof(*data)) ||
++	if (unlikely(cmd->pdu_len != exp_data_len ||
+ 		     cmd->pdu_len == 0 ||
+ 		     cmd->pdu_len > NVMET_TCP_MAXH2CDATA)) {
+ 		pr_err("H2CData PDU len %u is invalid\n", cmd->pdu_len);
+-- 
+2.43.0
+
 
 
 
