@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-13539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 793F6837C83
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD9A8383E8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC4F01C28891
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38C141F243D9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D132113541D;
-	Tue, 23 Jan 2024 00:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8158365BA7;
+	Tue, 23 Jan 2024 01:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JBpl46LA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMsEzkSb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC1433097;
-	Tue, 23 Jan 2024 00:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4167B65BA3;
+	Tue, 23 Jan 2024 01:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969649; cv=none; b=HGk43lzGL/09RMBluF/M3yH/oNViIxlU4JdFCkq0fBlfMjxdRYYL+YnTGZQHaOavU6brU2PDJNFIHUHxq07MVfBAEy2o4ZjtsfwEOp+a0jneWTVZCJ3+P4vF5aTaCzXWgbJnWO5y8Qt4Uiv5M5zXrcX55EetnzHAWUCPmKKg3O8=
+	t=1705975093; cv=none; b=WImL3a+7+8FnY/WPbr1nPJK7sXDhMCjmPzG42Uw5Nl+ovspIc+T8Khl7QlsRQAVAr4vhFW7IqNp1x3bkVmOCsW+//qJNSpLxiPGi4iyjHtR/cMxU6G7WgTDvZpNHczryLsnWwqzXmkCFiNJNJmNyAGxk5z8VgxwFHog3aFijJ+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969649; c=relaxed/simple;
-	bh=wgn140Goj3vjQqW7jIw9cKkGWzJBaSc4CORzPeCpZlo=;
+	s=arc-20240116; t=1705975093; c=relaxed/simple;
+	bh=ydX8np908U5JJqI7uD+MIhtZiYgorYFWgVI+woFwgRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iFgyJHlhwdmH5YwvD5+V26SrgLLByMiZXqhZVF8WF78cizutJWzcVH5QRI04MCngH+ZxtelwHg/QpGsck622YvE4gpwmFeSb+0fvjblea/OJUPAf3ukG9KKT5F0yzK87IS+ie0rOH8KfO0YXgJyXzQp3p4aVQBvoQdEziyzNTkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JBpl46LA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DEB2C43390;
-	Tue, 23 Jan 2024 00:27:29 +0000 (UTC)
+	 MIME-Version; b=Q/ntZ3Ibd0FRyJWKbD9Zf1S/clElU4XSD1J3VdU23VogaMltU2EihJVf1azyEpT2UcxLcZ/jhoF+LsUO7DJCz2cmweUuFq7bLgXGbNk0AmKtKBGF3JaOBg701EfLD5Z/RorS0EYA0shi7R8P3zmp0ZVwzAGgEHtaMLFeAFVHw1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMsEzkSb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5765C433C7;
+	Tue, 23 Jan 2024 01:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969649;
-	bh=wgn140Goj3vjQqW7jIw9cKkGWzJBaSc4CORzPeCpZlo=;
+	s=korg; t=1705975093;
+	bh=ydX8np908U5JJqI7uD+MIhtZiYgorYFWgVI+woFwgRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JBpl46LAVNowjwbRTIaST+Gsx73EOMvqVD6xuydEZtN/sQj5wpCtAjLrgN6nkhnUV
-	 qUk5H7SMnPtvbnyLpOD9+xJJ/5J3h9tJ/lLsYvnWUkpXghbWuinQwMrPizNWklZGU9
-	 dhgRosPH3M2CPO30dR/5gHUTEyJ5192/av5s+IKk=
+	b=rMsEzkSbj4dxZ3kHUcjwsaDSg7eruHzKeW7KIrJ1ZpDmxQUDU677OAX7zGQ8aIl9c
+	 VqqM8/6amoKOZHAIsnFgMgaCcbM0cQdY+U7f/E7I7mygf+STJsDqBPqQNRKe3TyBT+
+	 w+K1F9pQXy9AcV/Z8XRQBY0mpEaxWBbKQsiBrXoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 6.7 382/641] binder: fix unused alloc->free_async_space
+	Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 235/583] media: visl: Hook the (TRY_)DECODER_CMD stateless ioctls
 Date: Mon, 22 Jan 2024 15:54:46 -0800
-Message-ID: <20240122235829.911526574@linuxfoundation.org>
+Message-ID: <20240122235819.180679860@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
 
-commit c6d05e0762ab276102246d24affd1e116a46aa0c upstream.
+[ Upstream commit 3907f6ef8e0d55a88cdb0f7238363d24e26790ca ]
 
-Each transaction is associated with a 'struct binder_buffer' that stores
-the metadata about its buffer area. Since commit 74310e06be4d ("android:
-binder: Move buffer out of area shared with user space") this struct is
-no longer embedded within the buffer itself but is instead allocated on
-the heap to prevent userspace access to this driver-exclusive info.
+The (TRY_)DECODER_CMD ioctls are used to support flushing when holding
+capture buffers is supported. This is the case of this driver but the
+ioctls were never hooked to the ioctl ops.
 
-Unfortunately, the space of this struct is still being accounted for in
-the total buffer size calculation, specifically for async transactions.
-This results in an additional 104 bytes added to every async buffer
-request, and this area is never used.
+Add them to correctly support flushing.
 
-This wasted space can be substantial. If we consider the maximum mmap
-buffer space of SZ_4M, the driver will reserve half of it for async
-transactions, or 0x200000. This area should, in theory, accommodate up
-to 262,144 buffers of the minimum 8-byte size. However, after adding
-the extra 'sizeof(struct binder_buffer)', the total number of buffers
-drops to only 18,724, which is a sad 7.14% of the actual capacity.
-
-This patch fixes the buffer size calculation to enable the utilization
-of the entire async buffer space. This is expected to reduce the number
-of -ENOSPC errors that are seen on the field.
-
-Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-6-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0c078e310b6d ("media: visl: add virtual stateless decoder driver")
+Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/media/test-drivers/visl/visl-video.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -344,8 +344,7 @@ static bool debug_low_async_space_locked
- 			continue;
- 		if (!buffer->async_transaction)
- 			continue;
--		total_alloc_size += binder_alloc_buffer_size(alloc, buffer)
--			+ sizeof(struct binder_buffer);
-+		total_alloc_size += binder_alloc_buffer_size(alloc, buffer);
- 		num_buffers++;
- 	}
+diff --git a/drivers/media/test-drivers/visl/visl-video.c b/drivers/media/test-drivers/visl/visl-video.c
+index 7cac6a6456eb..9303a3e118d7 100644
+--- a/drivers/media/test-drivers/visl/visl-video.c
++++ b/drivers/media/test-drivers/visl/visl-video.c
+@@ -525,6 +525,9 @@ const struct v4l2_ioctl_ops visl_ioctl_ops = {
+ 	.vidioc_streamon		= v4l2_m2m_ioctl_streamon,
+ 	.vidioc_streamoff		= v4l2_m2m_ioctl_streamoff,
  
-@@ -411,8 +410,7 @@ static struct binder_buffer *binder_allo
- 	/* Pad 0-size buffers so they get assigned unique addresses */
- 	size = max(size, sizeof(void *));
- 
--	if (is_async &&
--	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
-+	if (is_async && alloc->free_async_space < size) {
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
- 			     "%d: binder_alloc_buf size %zd failed, no async space left\n",
- 			      alloc->pid, size);
-@@ -520,7 +518,7 @@ static struct binder_buffer *binder_allo
- 	buffer->pid = pid;
- 	buffer->oneway_spam_suspect = false;
- 	if (is_async) {
--		alloc->free_async_space -= size + sizeof(struct binder_buffer);
-+		alloc->free_async_space -= size;
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
- 			     "%d: binder_alloc_buf size %zd async free %zd\n",
- 			      alloc->pid, size, alloc->free_async_space);
-@@ -658,8 +656,7 @@ static void binder_free_buf_locked(struc
- 	BUG_ON(buffer->user_data > alloc->buffer + alloc->buffer_size);
- 
- 	if (buffer->async_transaction) {
--		alloc->free_async_space += buffer_size + sizeof(struct binder_buffer);
--
-+		alloc->free_async_space += buffer_size;
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
- 			     "%d: binder_free_buf size %zd async free %zd\n",
- 			      alloc->pid, size, alloc->free_async_space);
++	.vidioc_decoder_cmd		= v4l2_m2m_ioctl_stateless_decoder_cmd,
++	.vidioc_try_decoder_cmd		= v4l2_m2m_ioctl_stateless_try_decoder_cmd,
++
+ 	.vidioc_subscribe_event		= v4l2_ctrl_subscribe_event,
+ 	.vidioc_unsubscribe_event	= v4l2_event_unsubscribe,
+ };
+-- 
+2.43.0
+
 
 
 
