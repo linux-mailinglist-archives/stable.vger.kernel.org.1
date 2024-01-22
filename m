@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46772837D52
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B6383846D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A22F1C245F2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C65B299926
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42DD150279;
-	Tue, 23 Jan 2024 00:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76FB6DCEC;
+	Tue, 23 Jan 2024 02:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o953yPq6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXp/C+TP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B984F5E9;
-	Tue, 23 Jan 2024 00:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775E76D1D7;
+	Tue, 23 Jan 2024 02:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969891; cv=none; b=aTp5u0fnHwmuDIZ1AU51pQWF6oRNgcLtrum+GkdrelhTCRFrOUjkLtNbkXAOTNg8RcjE/S9TH1IOomqr91h9tOKIz/1o55ytBwHS3+pSfZh2kAOodLgun1TBcC2RaiLF7XJGD4/HMPViVsJVCnDeaYsqRr8zUqNK0m761BvyAks=
+	t=1705975394; cv=none; b=c3oNr8R/+3IdqsZmTjJyuJccrik2lbGjBh2u1yHqA3yu8bN7WZQjhf+5KFrWivtb+aalPdjreVNTIZUyI90za2ZaMzuoXaoHhZ8X2ja9GxbhCyU6SgttmiqhPed15TVhuNVKEpV0Cnmmm1iJfDz/AlgJ34Y03oorjnm8z4xZjPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969891; c=relaxed/simple;
-	bh=jTxn9D4BO2w2pM7YHT7a9kRYOjJFqS2DMTP5Iuyzsd4=;
+	s=arc-20240116; t=1705975394; c=relaxed/simple;
+	bh=vmvwwYz6/zvlpZHdbq+nAnjE4Mbm8uKc/iQyao4qFuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jkewkimD4GHslAXGlq6dfpJnAVveYXtsvQaqoA0mnJjopH9BKre6qtx+GjRNZY+RL0EAZx4kDyTzu8xEUziKlWBnDvSNhVN7AjzXiqxVfxXjzmD+OQr5LZ00vYBBuMQeMjGYrUF7G6EMhIL8X0gmsc7xby9yDeGUgdSJLLEPwbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o953yPq6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C69C433F1;
-	Tue, 23 Jan 2024 00:31:30 +0000 (UTC)
+	 MIME-Version; b=MOa2Fol1DAK7/YZUoiytq/cMijfGvgygnsvlyqD/E/0xuU5BvOiDdUBNsQIGJkCzGfU/XpKhafwR0oSAqVhDDACWfSEUFwejrXrdD1Kroy+7NyOHvM+STbg9mOVRoeeHkJ7ujzaBiCMLe625n8VQqVPCmYMonki8eivdaZxkkQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXp/C+TP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E17C433C7;
+	Tue, 23 Jan 2024 02:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969890;
-	bh=jTxn9D4BO2w2pM7YHT7a9kRYOjJFqS2DMTP5Iuyzsd4=;
+	s=korg; t=1705975394;
+	bh=vmvwwYz6/zvlpZHdbq+nAnjE4Mbm8uKc/iQyao4qFuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o953yPq6Xh1uONYKWsMHSXmTjGZwO/Bui88IZtxgf/TN491O3z755n2srsiJjLflA
-	 YPZ7uOiagYnN9AZYuJ0wO4JkO07KEyQmd8Eap2f3cmtIva+wmZMCTGwt6laC5a7DAN
-	 yk3qQwf3MB5llD513d54qlYYdzf8+qgXOVntDlc8=
+	b=XXp/C+TPfKo3C/UGMc/3iinC0KE/p5sEKdF2G+liGmBMPfEohJ/bazgUwyPk/0Ted
+	 yJxbCFVOAbDyvr7AVIjqO/2jfsMhCAE/kSTeyr/Apum0c9Ap8Z9Vc2LjapIYQIDWl8
+	 hjq4wF+PA9aJVkMditL9B8RxImhnSUx61GHAo4sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 501/641] MIPS: Alchemy: Fix an out-of-bound access in db1550_dev_setup()
+	kernel test robot <lkp@intel.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.6 354/583] clocksource/drivers/timer-ti-dm: Fix make W=n kerneldoc warnings
 Date: Mon, 22 Jan 2024 15:56:45 -0800
-Message-ID: <20240122235833.741985983@linuxfoundation.org>
+Message-ID: <20240122235822.851830721@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 3c1e5abcda64bed0c7bffa65af2316995f269a61 ]
+commit b99a212a7697c542b460adaa15d4a98abf8223f0 upstream.
 
-When calling spi_register_board_info(),
+Kernel test robot reports of kerneldoc related warnings that happen with
+make W=n for "parameter or member not described".
 
-Fixes: f869d42e580f ("MIPS: Alchemy: Improved DB1550 support, with audio and serial busses.")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+These were caused by changes to function parameter names with
+earlier commits where the kerneldoc parts were not updated.
+
+Fixes: 49cd16bb573e ("clocksource/drivers/timer-ti-dm: Simplify register writes with dmtimer_write()")
+Fixes: a6e543f61531 ("clocksource/drivers/timer-ti-dm: Move struct omap_dm_timer fields to driver")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311040403.DzIiBuwU-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202311040606.XL5OcR9O-lkp@intel.com/
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20231114072930.40615-1-tony@atomide.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/alchemy/devboards/db1550.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clocksource/timer-ti-dm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/alchemy/devboards/db1550.c b/arch/mips/alchemy/devboards/db1550.c
-index fd91d9c9a252..6c6837181f55 100644
---- a/arch/mips/alchemy/devboards/db1550.c
-+++ b/arch/mips/alchemy/devboards/db1550.c
-@@ -589,7 +589,7 @@ int __init db1550_dev_setup(void)
- 	i2c_register_board_info(0, db1550_i2c_devs,
- 				ARRAY_SIZE(db1550_i2c_devs));
- 	spi_register_board_info(db1550_spi_devs,
--				ARRAY_SIZE(db1550_i2c_devs));
-+				ARRAY_SIZE(db1550_spi_devs));
+--- a/drivers/clocksource/timer-ti-dm.c
++++ b/drivers/clocksource/timer-ti-dm.c
+@@ -183,7 +183,7 @@ static inline u32 dmtimer_read(struct dm
+  * dmtimer_write - write timer registers in posted and non-posted mode
+  * @timer:      timer pointer over which write operation is to perform
+  * @reg:        lowest byte holds the register offset
+- * @value:      data to write into the register
++ * @val:        data to write into the register
+  *
+  * The posted mode bit is encoded in reg. Note that in posted mode, the write
+  * pending bit must be checked. Otherwise a write on a register which has a
+@@ -949,7 +949,7 @@ static int omap_dm_timer_set_int_enable(
  
- 	c = clk_get(NULL, "psc0_intclk");
- 	if (!IS_ERR(c)) {
--- 
-2.43.0
-
+ /**
+  * omap_dm_timer_set_int_disable - disable timer interrupts
+- * @timer:	pointer to timer handle
++ * @cookie:	pointer to timer cookie
+  * @mask:	bit mask of interrupts to be disabled
+  *
+  * Disables the specified timer interrupts for a timer.
 
 
 
