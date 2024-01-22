@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-13790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76EF6837E19
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9788385A5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:46:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46F8E283E29
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4318CB2DF9A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481CD50A85;
-	Tue, 23 Jan 2024 00:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED4B77640;
+	Tue, 23 Jan 2024 02:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkh+UIQJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ho0gm5Af"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055764F204;
-	Tue, 23 Jan 2024 00:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E99E77638;
+	Tue, 23 Jan 2024 02:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970329; cv=none; b=g+q4u/lBxMek9a63bXGmOzv6I0aBoqxiev//0ljbPAM5NLRURBrTveLmgu25E0JQnbKc/5tB8ktciK+8CsgYT/EiA+aKIO4z+Ry132lWpO55cwo6JzK19Jyatsdq2Kk2GMkfOxcP7pRfJwwRre5BHfoWCiMyyRbLhRAqtVH15YM=
+	t=1705975511; cv=none; b=XryuOJ+/hRfRRM2Nzgboo02Yl7aIQofxqHcZ7E6xP5XReFyGXX34eb74W5aB94EeKuy6eJ7Z4pF5BFgnht3+q62LA8Lb1v86PHwJM5OyfzwEXksW6O/hAAa6nyMGo/ENgC5o240ooAO0i/zJqo2PNwk9VGCnAr8folqwum1UU6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970329; c=relaxed/simple;
-	bh=yNj3eO+prH+xoJSIMmYUFtKEsLhWu6oCATHyqriDFhw=;
+	s=arc-20240116; t=1705975511; c=relaxed/simple;
+	bh=SwyqXmuOoQW6FJPMjn3b7CWo7FJrRw/8eOMMvwiXwS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PHHfvEMsUrHzzMT604w91o7qeyHgji9GPsAPZbqGU/1zQOw8few7jb/JLFARb3o3PBIAJUlkQMJtyOEuXJwjOqWROqMJLc41m+MHBelqw7JCoGXKPiLnn22ndEf3xAZCulKkDh/AoOwXDCwbrw4lNyvsCN5ysUeSgtJ74eMj5EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkh+UIQJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3DEC433C7;
-	Tue, 23 Jan 2024 00:38:47 +0000 (UTC)
+	 MIME-Version; b=Iz0P/nLx8FcibU8J3fbzG7IZWZ9LyK8tOlzRkjJ4G4XSBy1Y57OQHJro53rOPc8F0ulNCtvz9jTCr3cnoaoQj/gwLUyV8z4t8AUs1LyU7kL5Qe5E5sP8/2Dst/g9Gydlmhmpe2trIVEG0qawaNcPfR3gDgF181xjTpKJuBb8sVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ho0gm5Af; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D76BFC43390;
+	Tue, 23 Jan 2024 02:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970328;
-	bh=yNj3eO+prH+xoJSIMmYUFtKEsLhWu6oCATHyqriDFhw=;
+	s=korg; t=1705975511;
+	bh=SwyqXmuOoQW6FJPMjn3b7CWo7FJrRw/8eOMMvwiXwS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mkh+UIQJJgBAk4++7MmI08FK6F2yZ2BqAE5yRDFbL6I4yGieyTssRUduuw9olCa8i
-	 dBNbod+Jg6Sr7KYz4/eCdx5jlscrSa2sz7YnUBl844k48+CgJ5KNNXCVtSxLcGX6lu
-	 k3O3a4fx5Cl3FtxS01Jh3EpXBWVoyOW/sto2c6W0=
+	b=ho0gm5AfwOeu+IGXLqbIWIVfsyM+jTn2ipn/QDZjLDn87XeGqft4Bbq0aIkZf+ZD2
+	 GFeROP97+n1kMUJrTDazpJFmmBHtM2jdfx2faVNylfmxIT/GruqXV6cSbaXyArzwwj
+	 nrVKXoiw4oob3rLztPlqulijQLtjj6Nrlu3yqFIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Dafna Hirschfeld <dhirschfeld@habana.ai>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 610/641] drm/amdkfd: fixes for HMM mem allocation
+Subject: [PATCH 6.6 463/583] libapi: Add missing linux/types.h header to get the __u64 type on io.h
 Date: Mon, 22 Jan 2024 15:58:34 -0800
-Message-ID: <20240122235837.321719710@linuxfoundation.org>
+Message-ID: <20240122235826.141485234@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dafna Hirschfeld <dhirschfeld@habana.ai>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 02eed83abc1395a1207591aafad9bcfc5cb1abcb ]
+[ Upstream commit af76b2dec0984a079d8497bfa37d29a9b55932e1 ]
 
-Fix err return value and reset pgmap->type after checking it.
+There are functions using __u64, so we need to have the linux/types.h
+header otherwise we'll break when its not included before api/io.h.
 
-Fixes: c83dee9b6394 ("drm/amdkfd: add SPM support for SVM")
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Dafna Hirschfeld <dhirschfeld@habana.ai>
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: e95770af4c4a280f ("tools api: Add a lightweight buffered reading api")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/lkml/ZWjDPL+IzPPsuC3X@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/lib/api/io.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-index 6c25dab051d5..b8680e0753ca 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
-@@ -1021,7 +1021,7 @@ int kgd2kfd_init_zone_device(struct amdgpu_device *adev)
- 	} else {
- 		res = devm_request_free_mem_region(adev->dev, &iomem_resource, size);
- 		if (IS_ERR(res))
--			return -ENOMEM;
-+			return PTR_ERR(res);
- 		pgmap->range.start = res->start;
- 		pgmap->range.end = res->end;
- 		pgmap->type = MEMORY_DEVICE_PRIVATE;
-@@ -1037,10 +1037,10 @@ int kgd2kfd_init_zone_device(struct amdgpu_device *adev)
- 	r = devm_memremap_pages(adev->dev, pgmap);
- 	if (IS_ERR(r)) {
- 		pr_err("failed to register HMM device memory\n");
--		/* Disable SVM support capability */
--		pgmap->type = 0;
- 		if (pgmap->type == MEMORY_DEVICE_PRIVATE)
- 			devm_release_mem_region(adev->dev, res->start, resource_size(res));
-+		/* Disable SVM support capability */
-+		pgmap->type = 0;
- 		return PTR_ERR(r);
- 	}
+diff --git a/tools/lib/api/io.h b/tools/lib/api/io.h
+index 9fc429d2852d..f4a9328035bd 100644
+--- a/tools/lib/api/io.h
++++ b/tools/lib/api/io.h
+@@ -12,6 +12,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
++#include <linux/types.h>
  
+ struct io {
+ 	/* File descriptor being read/ */
 -- 
 2.43.0
 
