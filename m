@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D46837F29
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD53838448
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80A4329BE1E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FC801F24876
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2AE6A008;
-	Tue, 23 Jan 2024 00:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743CA6BB27;
+	Tue, 23 Jan 2024 02:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8aGOlnj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcNBhvqv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E262B128394;
-	Tue, 23 Jan 2024 00:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C816A352;
+	Tue, 23 Jan 2024 02:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970973; cv=none; b=bfP2aunsmo/gHIwCkduTNNMgPWQEVtnAgvHy9+2PmAEKCcKK+qFTzzgIQoNJwQ8yWMu5RsRsf/p/jF6IrQVn5/4u5H79c80A9CRXDOMoQQBHmumbYSyKRS5LIF4n1Bv0zuqia7jBstIaaPpzLS+bFZWvxxBMtOig0+CnwL8jwkQ=
+	t=1705975353; cv=none; b=OY2/uZeHjH1+DfFK1Z7R9JNWRKjh6qjmUnecW/7dtg+ZFueKSwrAVbGNpXWRKta+TYbFYo7VDebdWLwaLUWcOnV1wsn0gKMxkLx+Vm9b5MC2gVtonwdEQ0rhSKMNH0EdMOJa09CObxDMMh8oJRwRfW3MinIYw9qLFgFGBvvHUbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970973; c=relaxed/simple;
-	bh=n5KKsXnqQYkfKQy7qeRoFKYw70NSKh1uIfU5mZLKgcw=;
+	s=arc-20240116; t=1705975353; c=relaxed/simple;
+	bh=BwffI4f7ZNhuqRLHTswFHMPIzj7g/xH28/cG/8ec1EI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vrrtx+E+xP4VMl0M/wt/KG132VI/8ZcfwCR0RqzqQ2FbftkNa417hdKPF+6ywaCIFYZ5xT1aZHbTrVPSemv7dBXEOw1Q3tESAfHZZi0bllcXZ5fffYhFKUW0b/qLlnyqqGhrXdVgTwXHYFRZWUYviN5eIdcuAnPn6LqjfTefXRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8aGOlnj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596B4C433C7;
-	Tue, 23 Jan 2024 00:49:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X9x0w/L88NlYcD1XMUEx/d5h5QJQB0AsNIMXk3zLqWCihJsnJNlgq2pvNNWKV3g1pXv0UhJMF8dvBJu75C/o/bgZOC6HfhfSBWnYB1cgtuURIeiz3CIMcwt+Te5+n1/PyuV/3imrHdN4rgu9rvJ2LlAtf/MRebKS/RXk8u1DsQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcNBhvqv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08FDC43390;
+	Tue, 23 Jan 2024 02:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970972;
-	bh=n5KKsXnqQYkfKQy7qeRoFKYw70NSKh1uIfU5mZLKgcw=;
+	s=korg; t=1705975353;
+	bh=BwffI4f7ZNhuqRLHTswFHMPIzj7g/xH28/cG/8ec1EI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J8aGOlnj3lE52Gly1RNVV9XTp5N20BRD2NgUoMfE8lK0PY3JHFaEDsuSc1LqNc8tr
-	 QTILW0aZBf4O/bKGpXTcsgJ4AwueH6SxmJWo4+cinWbqPj6g3NNxoFY1nPAgfUm7s6
-	 PsDS5CkZFbVRWQgY7rWsaHhSdBwmRQ5unGA1c+L0=
+	b=BcNBhvqvuGCUF/FjCTYD3kINxT2SoO34NvZw0eKks+bS0M9o/wLQMkE4RgZ7sJBNI
+	 Pq8DnPnjFiiyJkk9z73NE1bWJWNxUbmy6DaVDqdos3MbVvgoH0wlKydFTmVsK4Jmt/
+	 BlZoGfWzRhwx/wQ1M2DfXn4XfygqTKsaz1aMbuOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 060/286] powerpc/imc-pmu: Add a null pointer check in update_events_in_group()
+Subject: [PATCH 6.6 315/583] clk: fixed-rate: fix clk_hw_register_fixed_rate_with_accuracy_parent_hw
 Date: Mon, 22 Jan 2024 15:56:06 -0800
-Message-ID: <20240122235734.342465150@linuxfoundation.org>
+Message-ID: <20240122235821.677957225@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Théo Lebrun <theo.lebrun@bootlin.com>
 
-[ Upstream commit 0a233867a39078ebb0f575e2948593bbff5826b3 ]
+[ Upstream commit ee0cf5e07f44a10fce8f1bfa9db226c0b5ecf880 ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+Add missing comma and remove extraneous NULL argument. The macro is
+currently used by no one which explains why the typo slipped by.
 
-Fixes: 885dcd709ba9 ("powerpc/perf: Add nest IMC PMU support")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231126093719.1440305-1-chentao@kylinos.cn
+Fixes: 2d34f09e79c9 ("clk: fixed-rate: Add support for specifying parents via DT/pointers")
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://lore.kernel.org/r/20231218-mbly-clk-v1-1-44ce54108f06@bootlin.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/imc-pmu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/clk-provider.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-index 3e15d0d054b2..5464c87511fa 100644
---- a/arch/powerpc/perf/imc-pmu.c
-+++ b/arch/powerpc/perf/imc-pmu.c
-@@ -292,6 +292,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
- 	attr_group->attrs = attrs;
- 	do {
- 		ev_val_str = kasprintf(GFP_KERNEL, "event=0x%x", pmu->events[i].value);
-+		if (!ev_val_str)
-+			continue;
- 		dev_str = device_str_attr_create(pmu->events[i].name, ev_val_str);
- 		if (!dev_str)
- 			continue;
-@@ -299,6 +301,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
- 		attrs[j++] = dev_str;
- 		if (pmu->events[i].scale) {
- 			ev_scale_str = kasprintf(GFP_KERNEL, "%s.scale", pmu->events[i].name);
-+			if (!ev_scale_str)
-+				continue;
- 			dev_str = device_str_attr_create(ev_scale_str, pmu->events[i].scale);
- 			if (!dev_str)
- 				continue;
-@@ -308,6 +312,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
- 
- 		if (pmu->events[i].unit) {
- 			ev_unit_str = kasprintf(GFP_KERNEL, "%s.unit", pmu->events[i].name);
-+			if (!ev_unit_str)
-+				continue;
- 			dev_str = device_str_attr_create(ev_unit_str, pmu->events[i].unit);
- 			if (!dev_str)
- 				continue;
+diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
+index ace3a4ce2fc9..1293c38ddb7f 100644
+--- a/include/linux/clk-provider.h
++++ b/include/linux/clk-provider.h
+@@ -448,8 +448,8 @@ struct clk *clk_register_fixed_rate(struct device *dev, const char *name,
+  */
+ #define clk_hw_register_fixed_rate_with_accuracy_parent_hw(dev, name,	      \
+ 		parent_hw, flags, fixed_rate, fixed_accuracy)		      \
+-	__clk_hw_register_fixed_rate((dev), NULL, (name), NULL, (parent_hw)   \
+-				     NULL, NULL, (flags), (fixed_rate),	      \
++	__clk_hw_register_fixed_rate((dev), NULL, (name), NULL, (parent_hw),  \
++				     NULL, (flags), (fixed_rate),	      \
+ 				     (fixed_accuracy), 0, false)
+ /**
+  * clk_hw_register_fixed_rate_with_accuracy_parent_data - register fixed-rate
 -- 
 2.43.0
 
