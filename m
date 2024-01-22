@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 694A8837DC3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DFBA837F38
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F61BB3131E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:19:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15BA1B2A71B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B3A15A4B3;
-	Tue, 23 Jan 2024 00:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1EF4604D9;
+	Tue, 23 Jan 2024 00:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOUGw7TV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GT+/mtwP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB1E15A4A9;
-	Tue, 23 Jan 2024 00:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B012B60252;
+	Tue, 23 Jan 2024 00:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969747; cv=none; b=E/v0pEXa41xm/P7d3A3H2Rv9JhOBigrOz6V1xMVHmkJ0Tu7X+qhHieb4YhUIEukhcM6F2dKaeNkKcoJilReFCo25NiNAnHkGvENmtKpFlI2gHo7U2FdnREE45SGZIh9xg1dKR8F7XBnFV2nvu+ESgQccj4iXLKYSX0ZDzva/2Ug=
+	t=1705970879; cv=none; b=Wmq5zW2oWzq2vcI3zBi3fnbhYKHl+QPyk+12pf1ablR40EjLCl3a9coe5vWRFZMrtJZHL9KnY4DU/GwT9+PnKWi36y6ExnOr8Y/0P2ohOgNq2KH3bTD0QwJnAAXvU2VkLQqsdlqpt69kiwkzue8PmBr8LdcR2twtHcS8wa21kpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969747; c=relaxed/simple;
-	bh=KeSrit1J9rEMH6pDaCBkSqQ5qlb8RgZSXDCvr1usmPk=;
+	s=arc-20240116; t=1705970879; c=relaxed/simple;
+	bh=lopkVP+6henOSVIMKxW0Um9e76X+W1BYsBEe9A3NeXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dMZc4gOxR6t3wz7XDCPOG2QrIFJIyH47+KImIyGExSQShoAFa827IvNwayDwLzGmQZLQyUtCJudDb03atTmbQ1h/HgK3XZtl0XcDF+WtfsbpakSjFFUDyVxNkkevzmIt5qkyCZzfOIaXnkhoS+7nU5CrQvFgsb13kKhNG/Yt0MM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOUGw7TV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700B5C43399;
-	Tue, 23 Jan 2024 00:29:06 +0000 (UTC)
+	 MIME-Version; b=RAwHIyLz8bs1/n5lfDdyJUxj+Kt4rq+lXwvGeOSgDFTPWqQ6Jft4220ZsEJSu88BEimSFZqgDMC49d3hh8ND9KHD5U9UO8ilsxhHOPXmO7DJ8xs+bwEwCX27tRk7fjP24VOrc859BVZb8oOpNRwmFedA5QqlMLFApwlW7z+fN/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GT+/mtwP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E67C433C7;
+	Tue, 23 Jan 2024 00:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969746;
-	bh=KeSrit1J9rEMH6pDaCBkSqQ5qlb8RgZSXDCvr1usmPk=;
+	s=korg; t=1705970879;
+	bh=lopkVP+6henOSVIMKxW0Um9e76X+W1BYsBEe9A3NeXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOUGw7TVxcSbP50HoygN+VncO0lv6yf7apKRze+W7ffKUl4bbfOU7Y91WIpJ7tOLu
-	 NeqaY3DAdRp/jtZjvnC+N1IYVWtOT3Ls6xMUsJBW96JEDcIOPGQJLU/xKRk2NldM7M
-	 KR2DMUD+2atLOFF47Sh64ogad21L4+EbxTghYh/E=
+	b=GT+/mtwPT7TDuAikP47jNsomnvgLgy6oc6wXFu7DAHWoNRIHPcXXnSzDoUVnBvtPo
+	 LvuDlXTNgJzbJXnVRKlOK7YpnhPZduCrvkAa75Ut+R+k4ursWCOJMvy0Rz8ixX+4bl
+	 ZVrSEFxZnAZ3fkEZio06EfDHXL7W/tgkDQ6D6g+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Richard Acayan <mailingradian@gmail.com>,
-	Luca Weiss <luca@z3ntu.xyz>,
-	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Subject: [PATCH 6.7 394/641] usb: gadget: u_ether: Re-attach netif device to mirror detachment
-Date: Mon, 22 Jan 2024 15:54:58 -0800
-Message-ID: <20240122235830.290967202@linuxfoundation.org>
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 131/417] arm64: dts: qcom: ipq6018: Pad addresses to 8 hex digits
+Date: Mon, 22 Jan 2024 15:54:59 -0800
+Message-ID: <20240122235756.352063063@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +60,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Acayan <mailingradian@gmail.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-commit 76c945730cdffb572c7767073cc6515fd3f646b4 upstream.
+[ Upstream commit 647380e41520c7dbd651ebf0d9fd7dfa4928f42d ]
 
-In 6.7-rc1, there was a netif_device_detach call added to the
-gether_disconnect function. This clears the __LINK_STATE_PRESENT bit of
-the netif device and suppresses pings (ICMP messages) and TCP connection
-requests from the connected host. If userspace temporarily disconnects
-the gadget, such as by temporarily removing configuration in the gadget
-configfs interface, network activity should continue to be processed
-when the gadget is re-connected. Mirror the netif_device_detach call
-with a netif_device_attach call in gether_connect to fix re-connecting
-gadgets.
+Some addresses were 7-hex-digits long, or less. Fix that.
 
-Link: https://gitlab.com/postmarketOS/pmaports/-/tree/6002e51b7090aeeb42947e0ca7ec22278d7227d0/main/postmarketos-base-ui/rootfs-usr-lib-NetworkManager-dispatcher.d-50-tethering.sh
-Cc: stable <stable@kernel.org>
-Fixes: f49449fbc21e ("usb: gadget: u_ether: Replace netif_stop_queue with netif_device_detach")
-Signed-off-by: Richard Acayan <mailingradian@gmail.com>
-Tested-by: Luca Weiss <luca@z3ntu.xyz>
-Tested-by: Duje Mihanović <duje.mihanovic@skole.hr>
-Link: https://lore.kernel.org/r/20231218164532.411125-2-mailingradian@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230102094642.74254-2-konrad.dybcio@linaro.org
+Stable-dep-of: 5c0dbe8b0584 ("arm64: dts: qcom: ipq6018: fix clock rates for GCC_USB0_MOCK_UTMI_CLK")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_ether.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
-index 9d1c40c152d8..3c5a6f6ac341 100644
---- a/drivers/usb/gadget/function/u_ether.c
-+++ b/drivers/usb/gadget/function/u_ether.c
-@@ -1163,6 +1163,8 @@ struct net_device *gether_connect(struct gether *link)
- 		if (netif_running(dev->net))
- 			eth_start(dev, GFP_ATOMIC);
+diff --git a/arch/arm64/boot/dts/qcom/ipq6018.dtsi b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+index 55f685f51c71..43a948b64007 100644
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -146,7 +146,7 @@ reserved-memory {
+ 		ranges;
  
-+		netif_device_attach(dev->net);
-+
- 	/* on error, disable any endpoints  */
- 	} else {
- 		(void) usb_ep_disable(link->out_ep);
+ 		rpm_msg_ram: memory@60000 {
+-			reg = <0x0 0x60000 0x0 0x6000>;
++			reg = <0x0 0x00060000 0x0 0x6000>;
+ 			no-map;
+ 		};
+ 
+@@ -181,7 +181,7 @@ soc: soc {
+ 
+ 		prng: qrng@e1000 {
+ 			compatible = "qcom,prng-ee";
+-			reg = <0x0 0xe3000 0x0 0x1000>;
++			reg = <0x0 0x000e3000 0x0 0x1000>;
+ 			clocks = <&gcc GCC_PRNG_AHB_CLK>;
+ 			clock-names = "core";
+ 		};
+@@ -388,7 +388,7 @@ v2m@0 {
+ 
+ 		pcie_phy: phy@84000 {
+ 			compatible = "qcom,ipq6018-qmp-pcie-phy";
+-			reg = <0x0 0x84000 0x0 0x1bc>; /* Serdes PLL */
++			reg = <0x0 0x00084000 0x0 0x1bc>; /* Serdes PLL */
+ 			status = "disabled";
+ 			#address-cells = <2>;
+ 			#size-cells = <2>;
+@@ -404,10 +404,10 @@ pcie_phy: phy@84000 {
+ 				      "common";
+ 
+ 			pcie_phy0: phy@84200 {
+-				reg = <0x0 0x84200 0x0 0x16c>, /* Serdes Tx */
+-				      <0x0 0x84400 0x0 0x200>, /* Serdes Rx */
+-				      <0x0 0x84800 0x0 0x1f0>, /* PCS: Lane0, COM, PCIE */
+-				      <0x0 0x84c00 0x0 0xf4>; /* pcs_misc */
++				reg = <0x0 0x00084200 0x0 0x16c>, /* Serdes Tx */
++				      <0x0 0x00084400 0x0 0x200>, /* Serdes Rx */
++				      <0x0 0x00084800 0x0 0x1f0>, /* PCS: Lane0, COM, PCIE */
++				      <0x0 0x00084c00 0x0 0xf4>; /* pcs_misc */
+ 				#phy-cells = <0>;
+ 
+ 				clocks = <&gcc GCC_PCIE0_PIPE_CLK>;
+@@ -629,7 +629,7 @@ mdio: mdio@90000 {
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+ 			compatible = "qcom,ipq6018-mdio", "qcom,ipq4019-mdio";
+-			reg = <0x0 0x90000 0x0 0x64>;
++			reg = <0x0 0x00090000 0x0 0x64>;
+ 			clocks = <&gcc GCC_MDIO_AHB_CLK>;
+ 			clock-names = "gcc_mdio_ahb_clk";
+ 			status = "disabled";
+@@ -637,7 +637,7 @@ mdio: mdio@90000 {
+ 
+ 		qusb_phy_1: qusb@59000 {
+ 			compatible = "qcom,ipq6018-qusb2-phy";
+-			reg = <0x0 0x059000 0x0 0x180>;
++			reg = <0x0 0x00059000 0x0 0x180>;
+ 			#phy-cells = <0>;
+ 
+ 			clocks = <&gcc GCC_USB1_PHY_CFG_AHB_CLK>,
+@@ -670,7 +670,7 @@ usb2: usb@70f8800 {
+ 
+ 			dwc_1: usb@7000000 {
+ 			       compatible = "snps,dwc3";
+-			       reg = <0x0 0x7000000 0x0 0xcd00>;
++			       reg = <0x0 0x07000000 0x0 0xcd00>;
+ 			       interrupts = <GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>;
+ 			       phys = <&qusb_phy_1>;
+ 			       phy-names = "usb2-phy";
+@@ -685,7 +685,7 @@ dwc_1: usb@7000000 {
+ 
+ 		ssphy_0: ssphy@78000 {
+ 			compatible = "qcom,ipq6018-qmp-usb3-phy";
+-			reg = <0x0 0x78000 0x0 0x1c4>;
++			reg = <0x0 0x00078000 0x0 0x1c4>;
+ 			#address-cells = <2>;
+ 			#size-cells = <2>;
+ 			ranges;
+@@ -714,7 +714,7 @@ usb0_ssphy: phy@78200 {
+ 
+ 		qusb_phy_0: qusb@79000 {
+ 			compatible = "qcom,ipq6018-qusb2-phy";
+-			reg = <0x0 0x079000 0x0 0x180>;
++			reg = <0x0 0x00079000 0x0 0x180>;
+ 			#phy-cells = <0>;
+ 
+ 			clocks = <&gcc GCC_USB0_PHY_CFG_AHB_CLK>,
 -- 
 2.43.0
 
