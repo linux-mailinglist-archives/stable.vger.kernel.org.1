@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-14917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 376CC8383B5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC198838339
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3117B262A2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF34B1C298A4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440DA60875;
-	Tue, 23 Jan 2024 01:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667E360B9F;
+	Tue, 23 Jan 2024 01:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecTVijXM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MorrnOXH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FAA50253;
-	Tue, 23 Jan 2024 01:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2427260B99;
+	Tue, 23 Jan 2024 01:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974717; cv=none; b=SBaIk9CV5FqJCJdbF+vBJZVh1NXMVTCPIS7Uf9xctxdsQ4L+wm5O12gSXfEiR6BQ7rioA7yg4PUE63DzzeDjLDWGArj/4eGLqWxVoAj5R1x0wq0aIDnYD6QmhsyPea0CB+fWAbyxyQvjJ/2K4/UHi7yBgFZQFEsvEV+EYQanzHc=
+	t=1705974740; cv=none; b=SlJtndfLTRAs+9yNIx6gYLZeoWFIfrVJQWMZn3HmVHRANSkhX6q5oOa+GRNxGD1OYEkzuLOQt8DZx7y9N9FX4s8kydVjzSsk1kiVbZ41IRjjdFExFjsuUZi69Q3HUvWV8KvYztj1GraGKMQ1wTyL2OmM4LzOUxLlghv7uSFOzyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974717; c=relaxed/simple;
-	bh=N/2ttepHxksBeoTFm1FrCHSp8Ego7qsV6ChgefDQpfw=;
+	s=arc-20240116; t=1705974740; c=relaxed/simple;
+	bh=ou3pOO4qFxBfxNdXuG1Wq5Y4IoRJ0EPTNe9SAeETZ/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JLbT/jpDVMuoJGGzz4H39+kJ8NpvIoFvxI3DvXZraWi3V+Cux+f8c8KoteMjV6dl8oGWmuWT07tsYSaGX2muwqXoiQhjf4BU7a+nUIk+SF7DacNvNWpMZH1dI38fBGi+HMmKkq0ybkY6T4ZuqTs898AyW3Ae0I1D/WP8sLPaWFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecTVijXM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFDAC43390;
-	Tue, 23 Jan 2024 01:51:56 +0000 (UTC)
+	 MIME-Version; b=Hq+45nca3C9VT25fWXHAP5vR8sZDCbmNMM6N2fi+QDxPoT4bRSsFB7lrp0Y0ABqavgWK3EIDQAQ7QwNzXN8zQJzt3IywiwmXQSE3fp7k37Ag1wstobr3lSYW5ZTKCktti635sak+N2MMT/mi1rHwWLAhB1gwXHQ+8wOebzcr2AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MorrnOXH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED55C43390;
+	Tue, 23 Jan 2024 01:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974716;
-	bh=N/2ttepHxksBeoTFm1FrCHSp8Ego7qsV6ChgefDQpfw=;
+	s=korg; t=1705974740;
+	bh=ou3pOO4qFxBfxNdXuG1Wq5Y4IoRJ0EPTNe9SAeETZ/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ecTVijXML1WyHycvQ8xK+TopW4WgHEw9Pce3GKUcxSWx1Y5+RR6vYLXWZUEwAtlqN
-	 TPQ3ueo1kRDdPjd+CL9KI58Qwtzzb0/nzwhTreVVLoW5oXwNTIXuEPFqFhic9ffDSF
-	 P8/P83Bdzi+Mx+wZ+Xkq+fBdeRU0aWmSOuFnASkw=
+	b=MorrnOXHHFRuhXyIfhhiI9a5hakNfEjnTwTienmW8LhmzmCp/FgNnpt9vCADQ9bvq
+	 teX1/pwBKTkLq/XKXigF0dBfTpnbl3hNzbU2MpgRN8MDtvGKUxeVihzzoli3/t8c6k
+	 NsgfJ+rwAKCxRLBFZVMSz02Bg74lOy7JJAkFcVi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shazad Hussain <quic_shazhuss@quicinc.com>,
 	Johan Hovold <johan+linaro@kernel.org>,
-	Andrew Halaney <ahalaney@redhat.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/583] arm64: dts: qcom: sa8775p: fix USB wakeup interrupt types
-Date: Mon, 22 Jan 2024 15:53:03 -0800
-Message-ID: <20240122235816.165849775@linuxfoundation.org>
+Subject: [PATCH 6.6 133/583] arm64: dts: qcom: sc7280: fix usb_2 wakeup interrupt types
+Date: Mon, 22 Jan 2024 15:53:04 -0800
+Message-ID: <20240122235816.193361260@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -70,7 +68,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 0984bc0165f7c5203dfffe8cdb5186995f628a80 ]
+[ Upstream commit 24f8aba9a7c77c7e9d814a5754798e8346c7dd28 ]
 
 The DP/DM wakeup interrupts are edge triggered and which edge to trigger
 on depends on use-case and whether a Low speed or Full/High speed device
@@ -79,52 +77,28 @@ is connected.
 Note that only triggering on rising edges can be used to detect resume
 events but not disconnect events.
 
-Fixes: de1001525c1a ("arm64: dts: qcom: sa8775p: add USB nodes")
-Cc: Shazad Hussain <quic_shazhuss@quicinc.com>
+Fixes: bb9efa59c665 ("arm64: dts: qcom: sc7280: Add USB related nodes")
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20231120164331.8116-3-johan+linaro@kernel.org
+Link: https://lore.kernel.org/r/20231120164331.8116-6-johan+linaro@kernel.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sa8775p.dtsi | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/qcom/sc7280.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sa8775p.dtsi b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-index be31ef35dfe8..d4ca92b98c7d 100644
---- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-@@ -1602,8 +1602,8 @@ usb_0: usb@a6f8800 {
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index 1fa1a615109a..e6798447b29a 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -3411,8 +3411,8 @@ usb_2: usb@8cf8800 {
  			assigned-clock-rates = <19200000>, <200000000>;
  
- 			interrupts-extended = <&intc GIC_SPI 287 IRQ_TYPE_LEVEL_HIGH>,
--					      <&pdc 14 IRQ_TYPE_EDGE_RISING>,
--					      <&pdc 15 IRQ_TYPE_EDGE_RISING>,
-+					      <&pdc 14 IRQ_TYPE_EDGE_BOTH>,
-+					      <&pdc 15 IRQ_TYPE_EDGE_BOTH>,
- 					      <&pdc 12 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "pwr_event",
- 					  "dp_hs_phy_irq",
-@@ -1689,8 +1689,8 @@ usb_1: usb@a8f8800 {
- 			assigned-clock-rates = <19200000>, <200000000>;
- 
- 			interrupts-extended = <&intc GIC_SPI 352 IRQ_TYPE_LEVEL_HIGH>,
--					      <&pdc 8 IRQ_TYPE_EDGE_RISING>,
--					      <&pdc 7 IRQ_TYPE_EDGE_RISING>,
-+					      <&pdc 8 IRQ_TYPE_EDGE_BOTH>,
-+					      <&pdc 7 IRQ_TYPE_EDGE_BOTH>,
- 					      <&pdc 13 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "pwr_event",
- 					  "dp_hs_phy_irq",
-@@ -1752,8 +1752,8 @@ usb_2: usb@a4f8800 {
- 			assigned-clock-rates = <19200000>, <200000000>;
- 
- 			interrupts-extended = <&intc GIC_SPI 444 IRQ_TYPE_LEVEL_HIGH>,
--					      <&pdc 10 IRQ_TYPE_EDGE_RISING>,
--					      <&pdc 9 IRQ_TYPE_EDGE_RISING>;
-+					      <&pdc 10 IRQ_TYPE_EDGE_BOTH>,
-+					      <&pdc 9 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "pwr_event",
+ 			interrupts-extended = <&intc GIC_SPI 240 IRQ_TYPE_LEVEL_HIGH>,
+-					      <&pdc 12 IRQ_TYPE_EDGE_RISING>,
+-					      <&pdc 13 IRQ_TYPE_EDGE_RISING>;
++					      <&pdc 12 IRQ_TYPE_EDGE_BOTH>,
++					      <&pdc 13 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq",
  					  "dp_hs_phy_irq",
  					  "dm_hs_phy_irq";
 -- 
