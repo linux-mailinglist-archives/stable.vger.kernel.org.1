@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3237883841C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 242EA83816E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C792A1F27093
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57C6A1C288D3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D2667E6A;
-	Tue, 23 Jan 2024 02:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CCD1420D0;
+	Tue, 23 Jan 2024 01:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ksVqWCvc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8WcmHjC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965F16775D;
-	Tue, 23 Jan 2024 02:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF7E45009;
+	Tue, 23 Jan 2024 01:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975305; cv=none; b=OxLPwSGXBVqt3UrvKB3Cop1cMj24k5q/gLwbu9YpT5R13eSdZgxARsT9kxnP1GG7TXrHwUV73Al4ZP7DDQ1j7p/lZ1CKJ8ErgKpD/mnk4mvUghKWS5Ckm6JIL8m/6OV5OhpxwR/AWhHywQ74j9l9jPadzBHlrt30uUDyCFAJkKI=
+	t=1705972132; cv=none; b=UvHTVRWt32VOBx7bcCtVq+xvn0eTAduE/FJVMA4TNZ629jQmoHa54WaksdpW825u8eGQjE5a+RjN3hd/G+I1zMfHFUdpo5LjWeXHMigkmC3apX+T1Z1ES8glb9qBgtvkqcW8LGO7ZcFAiT0fnhX5E3+WRUcTf1gmCZrKzDGVB5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975305; c=relaxed/simple;
-	bh=4HfOw+1VPwyCo8OUQ5m+5xXFTDTGtGm8OPRiHrcfZwM=;
+	s=arc-20240116; t=1705972132; c=relaxed/simple;
+	bh=744mpl4BtgO+X9c6q1ns7RLM8MzRu/hgidQVAspAcT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bEYxgU/VLWDuXh1GASbBIxjNCrotz7uT9nyyR00gke+IuHRbISpDHxv2Pz8WauBsJ5qG+dG6MAKZ5C5ErtapGF0TAYc8u3B2o8mFHuqJ6PJcD2oFsnUtILX3xl98dwl75RIQvxhkS6D8IZBynf8Hswc52KAtWNjb/9gCXmIwXqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ksVqWCvc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFCBC433C7;
-	Tue, 23 Jan 2024 02:01:45 +0000 (UTC)
+	 MIME-Version; b=hh62lyCNtejngZbWq9hTz+uUnlpAy2AEweST6ngkjuW+9+1RT42tMI6UVNo3BkfHS3F1DAxrhljbptEXlguyM9BBNqUkjK6bykrFrbpi5nalUFxz3vLSJM1GcfL7QruoxFg5ry/68IYjL2tZ0asZCWsfIuOL2OvQXhZQ+Y/LBcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8WcmHjC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF29C43390;
+	Tue, 23 Jan 2024 01:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975305;
-	bh=4HfOw+1VPwyCo8OUQ5m+5xXFTDTGtGm8OPRiHrcfZwM=;
+	s=korg; t=1705972131;
+	bh=744mpl4BtgO+X9c6q1ns7RLM8MzRu/hgidQVAspAcT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ksVqWCvcKQkhUI0WfFIfJHRlcbAjGME4ot7bM0xpydHBAm4on/PTVPMC6ott98uMf
-	 LeFjyd+QOM3o/T1V1+zNyD/b8/f4ThFmDIfUzyp/k9qCgt2TlkkQgpvezTd3QC/z/N
-	 /N8zMRj84oQetOSNesXH5d94QpVqsnMZjmHOKVA0=
+	b=l8WcmHjCqB8HMnHC/kaeQcFGnGo29BgsS8rUhVS6Yi4SxWUYR1hI7qqFM6ewRceF2
+	 /lMd0rGsF9JIfX9n0U0rvAldzdK/AP7nOKV/iIxY582tnXGx1EWW26+pAxvZWGjzBO
+	 kidciQWrTJw0bHv5fJEyJGzxZbJzNzHqObWVzlW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 268/583] media: bttv: start_streaming should return a proper error code
-Date: Mon, 22 Jan 2024 15:55:19 -0800
-Message-ID: <20240122235820.201572322@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH 5.15 064/374] coresight: etm4x: Fix width of CCITMIN field
+Date: Mon, 22 Jan 2024 15:55:20 -0800
+Message-ID: <20240122235746.842473087@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit 0d75bb6ae127f5e3fd0e2239714908fd2038193d ]
+commit cc0271a339cc70cae914c3ec20edc2a8058407da upstream.
 
-The start_streaming callback returned 0 or 1 instead of a
-proper error code. Fix that.
+CCITMIN is a 12 bit field and doesn't fit in a u8, so extend it to u16.
+This probably wasn't an issue previously because values higher than 255
+never occurred.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Fixes: b7ec3212a73a ("media: bttv: convert to vb2")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But since commit 4aff040bcc8d ("coresight: etm: Override TRCIDR3.CCITMIN
+on errata affected cpus"), a comparison with 256 was done to enable the
+errata, generating the following W=1 build error:
+
+  coresight-etm4x-core.c:1188:24: error: result of comparison of
+  constant 256 with expression of type 'u8' (aka 'unsigned char') is
+  always false [-Werror,-Wtautological-constant-out-of-range-compare]
+
+   if (drvdata->ccitmin == 256)
+
+Cc: stable@vger.kernel.org
+Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310302043.as36UFED-lkp@intel.com/
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Signed-off-by: James Clark <james.clark@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20231101115206.70810-1-james.clark@arm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/bt8xx/bttv-driver.c | 6 ++----
- drivers/media/pci/bt8xx/bttv-vbi.c    | 8 +++-----
- 2 files changed, 5 insertions(+), 9 deletions(-)
+ drivers/hwtracing/coresight/coresight-etm4x.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/pci/bt8xx/bttv-driver.c b/drivers/media/pci/bt8xx/bttv-driver.c
-index 09a193bb87df..8e8c9dada67a 100644
---- a/drivers/media/pci/bt8xx/bttv-driver.c
-+++ b/drivers/media/pci/bt8xx/bttv-driver.c
-@@ -1536,13 +1536,11 @@ static void buf_cleanup(struct vb2_buffer *vb)
- 
- static int start_streaming(struct vb2_queue *q, unsigned int count)
- {
--	int ret = 1;
- 	int seqnr = 0;
- 	struct bttv_buffer *buf;
- 	struct bttv *btv = vb2_get_drv_priv(q);
- 
--	ret = check_alloc_btres_lock(btv, RESOURCE_VIDEO_STREAM);
--	if (ret == 0) {
-+	if (!check_alloc_btres_lock(btv, RESOURCE_VIDEO_STREAM)) {
- 		if (btv->field_count)
- 			seqnr++;
- 		while (!list_empty(&btv->capture)) {
-@@ -1553,7 +1551,7 @@ static int start_streaming(struct vb2_queue *q, unsigned int count)
- 			vb2_buffer_done(&buf->vbuf.vb2_buf,
- 					VB2_BUF_STATE_QUEUED);
- 		}
--		return !ret;
-+		return -EBUSY;
- 	}
- 	if (!vb2_is_streaming(&btv->vbiq)) {
- 		init_irqreg(btv);
-diff --git a/drivers/media/pci/bt8xx/bttv-vbi.c b/drivers/media/pci/bt8xx/bttv-vbi.c
-index ab213e51ec95..e489a3acb4b9 100644
---- a/drivers/media/pci/bt8xx/bttv-vbi.c
-+++ b/drivers/media/pci/bt8xx/bttv-vbi.c
-@@ -123,14 +123,12 @@ static void buf_cleanup_vbi(struct vb2_buffer *vb)
- 
- static int start_streaming_vbi(struct vb2_queue *q, unsigned int count)
- {
--	int ret;
- 	int seqnr = 0;
- 	struct bttv_buffer *buf;
- 	struct bttv *btv = vb2_get_drv_priv(q);
- 
- 	btv->framedrop = 0;
--	ret = check_alloc_btres_lock(btv, RESOURCE_VBI);
--	if (ret == 0) {
-+	if (!check_alloc_btres_lock(btv, RESOURCE_VBI)) {
- 		if (btv->field_count)
- 			seqnr++;
- 		while (!list_empty(&btv->vcapture)) {
-@@ -141,13 +139,13 @@ static int start_streaming_vbi(struct vb2_queue *q, unsigned int count)
- 			vb2_buffer_done(&buf->vbuf.vb2_buf,
- 					VB2_BUF_STATE_QUEUED);
- 		}
--		return !ret;
-+		return -EBUSY;
- 	}
- 	if (!vb2_is_streaming(&btv->capq)) {
- 		init_irqreg(btv);
- 		btv->field_count = 0;
- 	}
--	return !ret;
-+	return 0;
- }
- 
- static void stop_streaming_vbi(struct vb2_queue *q)
--- 
-2.43.0
-
+--- a/drivers/hwtracing/coresight/coresight-etm4x.h
++++ b/drivers/hwtracing/coresight/coresight-etm4x.h
+@@ -944,7 +944,7 @@ struct etmv4_drvdata {
+ 	u8				ctxid_size;
+ 	u8				vmid_size;
+ 	u8				ccsize;
+-	u8				ccitmin;
++	u16				ccitmin;
+ 	u8				s_ex_level;
+ 	u8				ns_ex_level;
+ 	u8				q_support;
 
 
 
