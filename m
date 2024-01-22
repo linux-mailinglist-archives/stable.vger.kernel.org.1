@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F585837F83
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE33838447
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DCA21F24853
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDFA61C2A0A9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D667D62815;
-	Tue, 23 Jan 2024 00:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924A26BB25;
+	Tue, 23 Jan 2024 02:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rM4hxMVz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6qq+Wz5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D8063119;
-	Tue, 23 Jan 2024 00:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516D26A354;
+	Tue, 23 Jan 2024 02:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971170; cv=none; b=ZmrhJaCQdY40nHIIpL/SN9u2NMmGl6ZusRYBDzki9rGll2nf5N+Y9rkMWip4JF3tUw6AXBKogotWFAtEE/YeLjQEVDP/u4AQajyFFvPYdauWTfhXR/Tr/M8hhcNbOqiOHUX4Y9lCj2xZXqplRffc/F5HwIzVk4f1aTZjgW9+erE=
+	t=1705975352; cv=none; b=SHP85qrC1kV7uYc/vMmJ9ydKELKKe23J5FpoYTmgVoKGCH+GLgzLFkfGNwNrq78RvI4RO5vwOUmCIXJ0J0IDivs/h8nkuEdt+vUgrctIMVUXAWE9wp9O5KjrPVwBO4HzEaHMSF35HK3KIvgWe3ZXmxAiULJzC3aeTnifttn3pA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971170; c=relaxed/simple;
-	bh=L0NGbkEPsA9BFJe0e9nxPOeOJvFiAyITp+iRjzzwrP4=;
+	s=arc-20240116; t=1705975352; c=relaxed/simple;
+	bh=ohtxyMAl2UIa7dFqqu8Xo8dp2zQ3jq5XOsvrL4mK9N4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PRx+x0hod7XBx8xZX3Cu6xqETfaS5HifrrncfOrOF/miTjZ0QufagIV5wV7KXq+NYe62pfLEYZdQRa4VZXDfJn5esIsMxA/B6Zsk1nuX4rZsjnmRk7mSTHV/XqY6OboWAimC89R3YUKBbONx6txHABMYBO0AKI6xxG5pog6xO8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rM4hxMVz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B382C43390;
-	Tue, 23 Jan 2024 00:52:50 +0000 (UTC)
+	 MIME-Version; b=GZSBdASRBxfEcawZ6DXCWj09HIoZscOCcfm6NHREMJAr6Ux9w2pyfs2j/JKKrCKFvTBERRpuvOFlrV+Pty2HIbP3ghlL5ZnYg4KxoQG9/KucXcC1Zmycf30uXgiSAdDK3KiBwhtRWzWqHplXBihP7yIVu3Ls9CW/Gh6tCyxq1X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6qq+Wz5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17030C43399;
+	Tue, 23 Jan 2024 02:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971170;
-	bh=L0NGbkEPsA9BFJe0e9nxPOeOJvFiAyITp+iRjzzwrP4=;
+	s=korg; t=1705975352;
+	bh=ohtxyMAl2UIa7dFqqu8Xo8dp2zQ3jq5XOsvrL4mK9N4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rM4hxMVz2qvBq0w472UpodPa1PdmtB8IrMf7QXrsR6w8olvUW6HDPzwS8fBg6iDtf
-	 yVnv7BoePkx5szwWvtqUA5em+uEBW7ctUCXUx0ijvdOEsbAF62cVbpjX1bThjPZbEY
-	 QtiwU+22PsW6o0xeuUGmWa+cAWWNkg+Q8MXOV7S0=
+	b=Y6qq+Wz5VItGxSOtVmTNXVPyocBrHf5uwiHXrXwFnNazFbnEUMANqVLdT+yTx0g3p
+	 /LxP2GvwfHHkdr01RnGmyeP8uirj0ewT++y9dpt9FXQdP/KppWGFygOY4qYKcgPilX
+	 0govjZSeEiPkVEoisEs+7og2vThuT+Wbwdg7iJ0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tommaso Merciai <tomm.merciai@gmail.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 196/417] media: rkisp1: Fix media device memory leak
-Date: Mon, 22 Jan 2024 15:56:04 -0800
-Message-ID: <20240122235758.728161519@linuxfoundation.org>
+Subject: [PATCH 6.6 314/583] clk: qcom: dispcc-sm8550: Update disp PLL settings
+Date: Mon, 22 Jan 2024 15:56:05 -0800
+Message-ID: <20240122235821.644834907@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 452f604a4683654f4d9472b3126d8da61d748443 ]
+[ Upstream commit febd251d8775c4fb6e4acd6b5d7b0ed707f4611f ]
 
-Add missing calls to media_device_cleanup() to fix memory leak.
+The settings in the driver seem to have been taken from an older
+release. Update them to match the latest values.
 
-Link: https://lore.kernel.org/r/20231122-rkisp-fixes-v2-1-78bfb63cdcf8@ideasonboard.com
-
-Fixes: d65dd85281fb ("media: staging: rkisp1: add Rockchip ISP1 base driver")
-Reviewed-by: Tommaso Merciai <tomm.merciai@gmail.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 90114ca11476 ("clk: qcom: add SM8550 DISPCC driver")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231218-topic-8550_fixes-v1-8-ce1272d77540@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/dispcc-sm8550.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-index f2475c6235ea..2b76339f9381 100644
---- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-+++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-@@ -582,7 +582,7 @@ static int rkisp1_probe(struct platform_device *pdev)
- 
- 	ret = v4l2_device_register(rkisp1->dev, &rkisp1->v4l2_dev);
- 	if (ret)
--		goto err_pm_runtime_disable;
-+		goto err_media_dev_cleanup;
- 
- 	ret = media_device_register(&rkisp1->media_dev);
- 	if (ret) {
-@@ -617,6 +617,8 @@ static int rkisp1_probe(struct platform_device *pdev)
- 	media_device_unregister(&rkisp1->media_dev);
- err_unreg_v4l2_dev:
- 	v4l2_device_unregister(&rkisp1->v4l2_dev);
-+err_media_dev_cleanup:
-+	media_device_cleanup(&rkisp1->media_dev);
- err_pm_runtime_disable:
- 	pm_runtime_disable(&pdev->dev);
- 	return ret;
-@@ -637,6 +639,8 @@ static int rkisp1_remove(struct platform_device *pdev)
- 	media_device_unregister(&rkisp1->media_dev);
- 	v4l2_device_unregister(&rkisp1->v4l2_dev);
- 
-+	media_device_cleanup(&rkisp1->media_dev);
-+
- 	pm_runtime_disable(&pdev->dev);
- 
- 	return 0;
+diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
+index aefa19f3c2c5..0b8f0904b339 100644
+--- a/drivers/clk/qcom/dispcc-sm8550.c
++++ b/drivers/clk/qcom/dispcc-sm8550.c
+@@ -81,6 +81,10 @@ static const struct alpha_pll_config disp_cc_pll0_config = {
+ 	.config_ctl_val = 0x20485699,
+ 	.config_ctl_hi_val = 0x00182261,
+ 	.config_ctl_hi1_val = 0x82aa299c,
++	.test_ctl_val = 0x00000000,
++	.test_ctl_hi_val = 0x00000003,
++	.test_ctl_hi1_val = 0x00009000,
++	.test_ctl_hi2_val = 0x00000034,
+ 	.user_ctl_val = 0x00000000,
+ 	.user_ctl_hi_val = 0x00000005,
+ };
+@@ -108,6 +112,10 @@ static const struct alpha_pll_config disp_cc_pll1_config = {
+ 	.config_ctl_val = 0x20485699,
+ 	.config_ctl_hi_val = 0x00182261,
+ 	.config_ctl_hi1_val = 0x82aa299c,
++	.test_ctl_val = 0x00000000,
++	.test_ctl_hi_val = 0x00000003,
++	.test_ctl_hi1_val = 0x00009000,
++	.test_ctl_hi2_val = 0x00000034,
+ 	.user_ctl_val = 0x00000000,
+ 	.user_ctl_hi_val = 0x00000005,
+ };
 -- 
 2.43.0
 
