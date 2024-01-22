@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D1E8382F8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32124837C12
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD3311F27F2A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDFAD295443
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0050560279;
-	Tue, 23 Jan 2024 01:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77DAF3C0D;
+	Tue, 23 Jan 2024 00:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgBDvekL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuF4Obmz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8E66026F;
-	Tue, 23 Jan 2024 01:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FE42114;
+	Tue, 23 Jan 2024 00:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974672; cv=none; b=RPLy6trEmxOSFOP6CwAu/pKBTtywqbhUo3ubBCGssqqnjaoOft8MGlZzTGgNGNE/1fIF4RLeSuzU0/J6iRLp5bFgHojhLPu1wnKO00zw/uZSnUPCRL0jNpD2cPZYOnm888w0Ho5uknkRwbPppJoY6STW/nGNuIJefJ5uuOPeR2E=
+	t=1705969493; cv=none; b=Y1G0VVu2PyR2ScgkZo2+e7Mwhkw/Q95ptwwPDUJekztUEWUbTQ4MtFk0g9dYmv7IOKlj4GtWKDLRLHYm8KQQheEkxjYj35a/qMQ2wTxSErjZj88XEWxr7Vy2nbEiQF6hluEsWDVOhFOh6mNSViN4+9tuNLZAtOMFkpErSjDpzrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974672; c=relaxed/simple;
-	bh=8m1yNl+p0e3mDVSU4sfSjfXQ+MRFJsXaSs7pj990XU4=;
+	s=arc-20240116; t=1705969493; c=relaxed/simple;
+	bh=bYr5SI3DL8Pi4VmQJnTkmGcW+Xc7y8sHf2jVWKpy22Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JIv7jXHZdcIgnN7BjHFxU6M4QxJFG9uMTvkjOo91eIvP0FONrPlQPFEKrGZUhtkQW4SLjo1SQJXG6PSxQTif5L2AcigZMMiYtX5R8mEBwB4QME17WsM9C++eDkBmnTyOLT6M4DXjdYsxihVvl/GNuLW4VpgqY4qufRMS/dlhc2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgBDvekL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F32C433C7;
-	Tue, 23 Jan 2024 01:51:12 +0000 (UTC)
+	 MIME-Version; b=h+BHZtvck54PeVlMq4oDFDdK96Qb0DeHcwXl553HBXLdLpwaA76bstDvfOSBvE7pWohrNY77q4htLumlELaccrX44L2qAm5ng86G2+V7L0ozzVUwEo3guVmaIRqKmPM4grSZO2O8LyZU3nS/KVfc2+GpEOtM9hdhfOjq+FFDdHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuF4Obmz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC059C43390;
+	Tue, 23 Jan 2024 00:24:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974672;
-	bh=8m1yNl+p0e3mDVSU4sfSjfXQ+MRFJsXaSs7pj990XU4=;
+	s=korg; t=1705969493;
+	bh=bYr5SI3DL8Pi4VmQJnTkmGcW+Xc7y8sHf2jVWKpy22Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LgBDvekLx6XGXXR53NTNx96gZ+bqR/aQnY7Hy2QwhQLUc7CMrh7zUFZT9CiWILm/0
-	 vto6yWO8GzukuS8u8UKOlRx6cvMjZMSvhxxTPjRAdw9sWUrPSTMOx25UBS7XE542lt
-	 JuOoFM+bKprNkUdAWWyGa0pDn+JSsfXEPkXwaFTg=
+	b=uuF4ObmzLjeHItjmDkm23/vi1z04N7W5BR1F9zQotJTQosuHhQ7AmFzobknCybzcf
+	 PO12JPhXNCr5XgTttKn4lhnFbs8qL7HG6KWVYKWGa19iQjYQu5TcKzIJPTZsEeFRzj
+	 IWwAXx7SWTtGm3BfLNXmGMA9dJlFloIkKxhtVKbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Xin Ji <xji@analogixsemi.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/583] arm64: dts: qcom: sc8280xp: Make watchdog bark interrupt edge triggered
+Subject: [PATCH 6.7 264/641] Revert "drm/bridge: Add 200ms delay to wait FW HPD status stable"
 Date: Mon, 22 Jan 2024 15:52:48 -0800
-Message-ID: <20240122235815.729738894@linuxfoundation.org>
+Message-ID: <20240122235826.188201133@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Xin Ji <xji@analogixsemi.com>
 
-[ Upstream commit 6c4a9c7ea486da490400c84ba2768c90d228c283 ]
+[ Upstream commit af3145aa142c92409d3b123ff87ff0b5fd0bf849 ]
 
-As described in the patch ("arm64: dts: qcom: sc7180: Make watchdog
-bark interrupt edge triggered"), the Qualcomm watchdog timer's bark
-interrupt should be configured as edge triggered. Make the change.
+This reverts commit 330140d7319fcc4ec68bd924ea212e476bf12275
 
-Fixes: 152d1faf1e2f ("arm64: dts: qcom: add SC8280XP platform")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20231106144335.v2.7.I1c8ab71570f6906fd020decb80675f05fbe1fe74@changeid
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+200ms delay will cause panel display image later than backlight
+turn on, revert this patch.
+
+Fixes: 330140d7319fcc ("drm/bridge: Add 200ms delay to wait FW HPD status stable")
+Signed-off-by: Xin Ji <xji@analogixsemi.com>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231120091038.284825-1-xji@analogixsemi.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-index cad59af7ccef..b8081513176a 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-@@ -4225,7 +4225,7 @@ watchdog@17c10000 {
- 			compatible = "qcom,apss-wdt-sc8280xp", "qcom,kpss-wdt";
- 			reg = <0 0x17c10000 0 0x1000>;
- 			clocks = <&sleep_clk>;
--			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
- 		};
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index 8f740154707d..51abe42c639e 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -1464,9 +1464,6 @@ static int _anx7625_hpd_polling(struct anx7625_data *ctx,
+ 	if (ctx->pdata.intp_irq)
+ 		return 0;
  
- 		timer@17c20000 {
+-	/* Delay 200ms for FW HPD de-bounce */
+-	msleep(200);
+-
+ 	ret = readx_poll_timeout(anx7625_read_hpd_status_p0,
+ 				 ctx, val,
+ 				 ((val & HPD_STATUS) || (val < 0)),
 -- 
 2.43.0
 
