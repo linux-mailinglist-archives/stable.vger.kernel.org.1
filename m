@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-12641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32239836A80
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 17:29:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2857A836A82
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 17:29:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCB9F1F2446C
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 16:29:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D360C2859EE
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 16:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1D813F004;
-	Mon, 22 Jan 2024 15:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE430140775;
+	Mon, 22 Jan 2024 15:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MUZ2qGCC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kFZQpZfM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A8055C21;
-	Mon, 22 Jan 2024 15:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759B5140772;
+	Mon, 22 Jan 2024 15:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705936562; cv=none; b=JtfX+HAnnaKXHGzEN/MjWGFxdxbFG2ga9g3fTglOyiYzHt369hN9IcYy5c/PMfGttK3nNfMOZGoxoUFbwvXSWCyq1sby9iYghS2SQqh7fKMG9VsrrS1YTsGACCNslQDxeRbCe+oNFtP+3mbRPr75mSCEBGbMGEVRgGxYmpNLmKA=
+	t=1705936565; cv=none; b=OJktyk8vdBKZw0ovbJVUOyftdpyGDtRFM3XYmb7v+9bzP8HhnBDGOIo4KMTPRAlwSA+w8NJxvNB74khyKDQqqgzWBM8wqFEWUOZoJCJY8rcAU9pNxLhpFggUU+itIjEV3E5KsbRrR+WZdzgKTa/UV6J5RtKN8TY34G9FhrucyCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705936562; c=relaxed/simple;
-	bh=WiYXzJd0JDu8rWXm9STY/IpJs9ytTiV80vMi0kcGlMc=;
+	s=arc-20240116; t=1705936565; c=relaxed/simple;
+	bh=Co1hU6h6+FfNMHYhM0Md9CxnsIPY+jOY59OLGlmZ50w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KJP6uPWo7sKtJ7XHF+nA6TXVnHJyrvj10iUISzAsg4s8Sz0d4RoX3j8MX5ZrCo3EUvTVnOLeiAhN+Elf2U89BAM9o9uzTMpV6ZjMsOEz7bIm572WcJaxfwSdk6NLkeDw8wT1T9U9ZO2NYpbTrFi9N6aEsbclndqBOlcGXwWNZgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MUZ2qGCC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C96C433C7;
-	Mon, 22 Jan 2024 15:15:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Cj1w+sWaNZIyAkBkb22pKu+2a0SQGJl5KQB4OUHvqyiYc242l8S/jRoMTZYR3Vg9Zi8PY2mG2AYxaz/5/Qt8oa6M11xSdAdGtCqRygRoiJDj5C0dk7hGnuSSsZjsaqUK2Xhn6frRB5tevhM8T4UYZf5CpBmH32yDHYrSUZ6lRnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kFZQpZfM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05475C43390;
+	Mon, 22 Jan 2024 15:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705936561;
-	bh=WiYXzJd0JDu8rWXm9STY/IpJs9ytTiV80vMi0kcGlMc=;
+	s=k20201202; t=1705936565;
+	bh=Co1hU6h6+FfNMHYhM0Md9CxnsIPY+jOY59OLGlmZ50w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MUZ2qGCCE5owtBWSgANAKSw7oTqakEI4ImSNaxKnz6WvjJVMlUwPblsGIq30hBsa+
-	 PxiCVhcUTl9uSAfsctaIXOyHc1Cziv1/lFhkTV2mtZAxV1A8oBB9J8Kr+xxtt9+X9a
-	 5BLpgWbjMWqhBf2nUgLN7qBLj+IsjdGK1Jbe6TPvEqG+IGI4zN4mER2uU8Fs3byc6G
-	 CYFYS8RxKdsQRiMg3Wv/XTFkNolfioZme5mTzY/GyA2axMtUSa0PXYyg9htQbQkVj7
-	 pRaQWlqcva7rYCREaQG6ASBk4icfEy8WNaMkAVGYLCUU2zUppcHvC+KvSM/cG14c8m
-	 24dRMoGQDR/Rg==
+	b=kFZQpZfMFi94Kk8P6hSYVRMN78MpurDwVwMK3dekw9A/tELvavEK7X+rofiQ88Bnd
+	 fJFMv5xqCkSwWropP2eqtYghUdSm1Kd6FWYJUMvVDcC3GdTi3WgqjecL3nWdCP1QG+
+	 eWi3ycwW5+0QDdhVVCLarC2Mt9c3YL0fE9vdCdiok02HQ/+Sq6JItSRERDHJho9SpH
+	 BTI9Pnipy6gS57VR5FhSzT5vnGQX81M0iT4ZIOoe93Lob16yBKzwSuWxRZy/oT8rbC
+	 yLtgsyzJQ2dX9BeBfU/+/o3gVoZoCv8eqotf+tkDPGRKFmefwV6TDLXN1Bsm+Mq8G2
+	 t2UPKDDzM1wyw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -52,14 +52,15 @@ Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	perex@perex.cz,
 	tiwai@suse.com,
-	maarten.lankhorst@linux.intel.com,
-	siyanteng@loongson.cn,
+	yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
 	amadeuszx.slawinski@linux.intel.com,
-	jasontao@glenfly.com,
+	markhas@chromium.org,
+	bradynorander@gmail.com,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 16/28] ALSA: hda: Intel: add HDA_ARL PCI ID support
-Date: Mon, 22 Jan 2024 10:14:42 -0500
-Message-ID: <20240122151521.996443-16-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 17/28] ALSA: hda: intel-dspcfg: add filters for ARL-S and ARL
+Date: Mon, 22 Jan 2024 10:14:43 -0500
+Message-ID: <20240122151521.996443-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122151521.996443-1-sashal@kernel.org>
 References: <20240122151521.996443-1-sashal@kernel.org>
@@ -77,34 +78,42 @@ Content-Transfer-Encoding: 8bit
 
 From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit a31014ebad617868c246d3985ff80d891f03711e ]
+[ Upstream commit 7a9d6bbe8a663c817080be55d9fecf19a4a8fd8f ]
 
-Yet another PCI ID.
+Same usual filters, SOF is required for DMIC and/or SoundWire support.
 
 Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
 Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20231204212710.185976-3-pierre-louis.bossart@linux.intel.com
+Link: https://lore.kernel.org/r/20231204212710.185976-4-pierre-louis.bossart@linux.intel.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/hda/intel-dsp-config.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index 12c6eb76fca3..a3c6a5eeba3a 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2581,6 +2581,8 @@ static const struct pci_device_id azx_ids[] = {
- 	  .driver_data = AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE},
- 	{ PCI_DEVICE(0x8086, 0x4b58),
- 	  .driver_data = AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE},
-+	/* Arrow Lake */
-+	{ PCI_DEVICE_DATA(INTEL, HDA_ARL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE) },
- 	/* Broxton-P(Apollolake) */
- 	{ PCI_DEVICE(0x8086, 0x5a98),
- 	  .driver_data = AZX_DRIVER_SKL | AZX_DCAPS_INTEL_BROXTON },
+diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
+index 48c78388c1d2..ea0a2b1d23a3 100644
+--- a/sound/hda/intel-dsp-config.c
++++ b/sound/hda/intel-dsp-config.c
+@@ -372,6 +372,16 @@ static const struct config_entry config_table[] = {
+ 		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
+ 		.device = 0x7e28,
+ 	},
++	/* ArrowLake-S */
++	{
++		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
++		.device = PCI_DEVICE_ID_INTEL_HDA_ARL_S,
++	},
++	/* ArrowLake */
++	{
++		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
++		.device = PCI_DEVICE_ID_INTEL_HDA_ARL,
++	},
+ #endif
+ 
+ /* Lunar Lake */
 -- 
 2.43.0
 
