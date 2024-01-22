@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-13288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26814837C55
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07A63837CA8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:13:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DFB8B2BB69
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:59:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B36ACB27304
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:00:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211F114AD3D;
-	Tue, 23 Jan 2024 00:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C3F1339B5;
+	Tue, 23 Jan 2024 00:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="un0aaYXM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylmHJP9t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F0E14AD2B;
-	Tue, 23 Jan 2024 00:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF4B13398C;
+	Tue, 23 Jan 2024 00:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969263; cv=none; b=SyKfZW/KbpU1T+kX8XGxcR00PU5P5sYQRpdRadaNme1nnSl1fzB21T6UZe+4x6dEcgCZBd4Fv/2xTL4FrFQWbRqI51S6peOBg37uw1WCj9R6qLjFz1+2S+/m5PpqlFuH7Ue7ujZTm/+8dMWs1hxwA73ryyymsIhr7CNHg9qaFhc=
+	t=1705969302; cv=none; b=K+vrVqeuA4SjBQ08wWYOHWf9VHkEw48P2FDasSvYf96YlENVz3f0FasA6PzUyikylZrpqGGzgb2xpbJccM5VzViRFHbAZov8vSgYYNHsG+w2hIHLHxeI4ElgWzfdlSw+XVwgcsQ9ZogcM4jSuq+DMjd0NbnqpLUxuzAOIoOQw8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969263; c=relaxed/simple;
-	bh=zDeMVOWDR6CS5pU5RabdRj813Vp2cU3EBvnyRXxGTKg=;
+	s=arc-20240116; t=1705969302; c=relaxed/simple;
+	bh=rfEkE1D5ElLO5bG0VJGZ0dSh71pvxXN+rvAIq/IMToc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WHFRlJcy4hAAQM4qLfdks2hUJ0zmztUVunHYfij4mZAON6R+3Y2w8WmddathAoYje5c3eQvAovbR3B6mr0i3SDNBbg21nN8okmeZ/ES8QhEvki7QoIohqomGAcBEHsc36YHAsrUiJbxascBbfITBCR6u7ON37oDvAemw5MlpCik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=un0aaYXM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973CBC433F1;
-	Tue, 23 Jan 2024 00:21:03 +0000 (UTC)
+	 MIME-Version; b=M/+RwzEfP/76aLWAl4xX+DXPsRsv81SdsfxNZBepy+lz7iqiwmfhq6KAj4zz1z9bMjKw/j/bnALalgCRjfeQzzxlKDqZsPsPOK5AvxVTk5kQiKm5woKQeOa1iutiOhCnYzySG8zNEd08dNxShejQU3+l+dP1JbubbLVAt9i7tjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylmHJP9t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AF6C433F1;
+	Tue, 23 Jan 2024 00:21:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969263;
-	bh=zDeMVOWDR6CS5pU5RabdRj813Vp2cU3EBvnyRXxGTKg=;
+	s=korg; t=1705969302;
+	bh=rfEkE1D5ElLO5bG0VJGZ0dSh71pvxXN+rvAIq/IMToc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=un0aaYXMvFVc7CC43xfZgiUiZkWRrXZlVV7BzNdrrWUTbZZNBG3lBGEtfiE/KFDtr
-	 yyE7+NPUoC6UsKOocnjwe2XJoioWAAZ5sKa0HZMvW6kytnOioGJcKpFMVD2AM/zIgu
-	 GkM25WnLTdC7LMqsjjs8e+clpHVvvs0ngOZ1+8aE=
+	b=ylmHJP9tdwc6jA3PONHV6wKy8SQjaVxp0zXStFXa+nlaxW/Xn+3XE6mqvTmb2R/Mb
+	 6k18J+9G76H1PhH+Fv0tZ3pwLBqx1380yzJRniJrWFH3xWh6HDK+KrtlJt/fhb3oiz
+	 sBxZ6xZelv5ujiCUgEFNV3ko9s+sNWHKGspau4w0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+	Karan Tilak Kumar <kartilak@cisco.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 130/641] arm64: dts: qcom: sm6350: Make watchdog bark interrupt edge triggered
-Date: Mon, 22 Jan 2024 15:50:34 -0800
-Message-ID: <20240122235822.116142798@linuxfoundation.org>
+Subject: [PATCH 6.7 135/641] scsi: fnic: Return error if vmalloc() failed
+Date: Mon, 22 Jan 2024 15:50:39 -0800
+Message-ID: <20240122235822.275576228@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -68,38 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-[ Upstream commit 5b84bb2b8d86595544fc8272364b0f1a34b68a4f ]
+[ Upstream commit f5f27a332a14f43463aa0075efa3a0c662c0f4a8 ]
 
-As described in the patch ("arm64: dts: qcom: sc7180: Make watchdog
-bark interrupt edge triggered"), the Qualcomm watchdog timer's bark
-interrupt should be configured as edge triggered. Make the change.
+In fnic_init_module() exists redundant check for return value from
+fnic_debugfs_init(), because at moment it only can return zero. It make
+sense to process theoretical vmalloc() failure.
 
-Fixes: 5f82b9cda61e ("arm64: dts: qcom: Add SM6350 device tree")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20231106144335.v2.8.Ic1d4402e99c70354d501ccd98105e908a902f671@changeid
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 9730ddfb123d ("scsi: fnic: remove redundant assignment of variable rc")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Link: https://lore.kernel.org/r/20231128111008.2280507-1-artem.chernyshev@red-soft.ru
+Reviewed-by: Karan Tilak Kumar <kartilak@cisco.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm6350.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/fnic/fnic_debugfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-index 8fd6f4d03490..6464e144c228 100644
---- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-@@ -2524,7 +2524,7 @@ watchdog@17c10000 {
- 			compatible = "qcom,apss-wdt-sm6350", "qcom,kpss-wdt";
- 			reg = <0 0x17c10000 0 0x1000>;
- 			clocks = <&sleep_clk>;
--			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
- 		};
+diff --git a/drivers/scsi/fnic/fnic_debugfs.c b/drivers/scsi/fnic/fnic_debugfs.c
+index c4d9ed0d7d75..2619a2d4f5f1 100644
+--- a/drivers/scsi/fnic/fnic_debugfs.c
++++ b/drivers/scsi/fnic/fnic_debugfs.c
+@@ -52,9 +52,10 @@ int fnic_debugfs_init(void)
+ 		fc_trc_flag->fnic_trace = 2;
+ 		fc_trc_flag->fc_trace = 3;
+ 		fc_trc_flag->fc_clear = 4;
++		return 0;
+ 	}
  
- 		timer@17c20000 {
+-	return 0;
++	return -ENOMEM;
+ }
+ 
+ /*
 -- 
 2.43.0
 
