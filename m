@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1383F838489
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A14AF838252
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:19:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 477A71C21C85
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D25A286E55
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362E76EB7A;
-	Tue, 23 Jan 2024 02:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469685B5C2;
+	Tue, 23 Jan 2024 01:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9YnBRF8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkfcIeRL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2276EB67;
-	Tue, 23 Jan 2024 02:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2495B5C8;
+	Tue, 23 Jan 2024 01:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975418; cv=none; b=kEqevNsz2u9kBYY8HZr8zM1sy+6AbwtN9K+sJd5j55s7kV4a3A307rlOh802uht4WmJMil8aK8GzJI+uPRzhE8pYHH7/rSOXu0HuszZQvrh6rALzP4uhKrJwE/TeR/UakDyGMsZIpUEdXpNyYEgUFYdqrsR7fPysMmudtXNdVuc=
+	t=1705974323; cv=none; b=k+XuPfF6gCknID3edRoCFgnSbeKXmYAr0LsFA5AAf1yl6RDhZwVr8AGCRtgJivsAcXjVylJ4YbzqV6BJBeUpXl8bokhFYevoSvswR8WvJc2goWgid90qU70cPsarUWYl0fNMqyYa7KIqV8mVkUHd28/6jqw1kokifeJxxr+bsqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975418; c=relaxed/simple;
-	bh=69W/GtYNyW4FFBoDD3rh8vrXI/DvPIeNzKLF3aSJ/9o=;
+	s=arc-20240116; t=1705974323; c=relaxed/simple;
+	bh=vasDXmm8TejDYihH+5URWOWNRqSleo7TY/UqPq5reLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSNyjORjbe+Owx7lQtQye3RgowGXjyZgp11PKstahuO8+2/SumIQeouL/5KT/sY1ZM71xUvQdQRb9xfgxSmWlIr0NBMDfjjV0KTw1igTgUkthxjVw+dxsctOOeLmDG+Qzi5e4Tz87GomUxY8eH3t6AFHVJx7pfPSVTanJ46tBpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9YnBRF8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA23C433C7;
-	Tue, 23 Jan 2024 02:03:37 +0000 (UTC)
+	 MIME-Version; b=rWPLxyD0eV0ml8n1mwrNxj1wgx2dVh7qwNds7LAA+q1g+Qx5NopTq0VQjg66Ir4+R+1hArMLiapLOZtOnqAVZOr8+KiudLu74/BpFLFlRImUlFkS4DUuMbYY5cqIkRxuSF5qRfmHq5OI8yWjloHFldn6L+dosQQsQn1voXd2TYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkfcIeRL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7FE4C43390;
+	Tue, 23 Jan 2024 01:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975417;
-	bh=69W/GtYNyW4FFBoDD3rh8vrXI/DvPIeNzKLF3aSJ/9o=;
+	s=korg; t=1705974323;
+	bh=vasDXmm8TejDYihH+5URWOWNRqSleo7TY/UqPq5reLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H9YnBRF8LK8mY88GvGHUXMZY7lLAwRMZ13P2D1jzdnwlOE0MCRW+vbrNl1GNxPCfj
-	 og1t57YYFvITIUk17byOF/hP1XNJ4KtuRP2z6WXb+XZ80s80NHoF96xiKGvaBXadSs
-	 SU+79BrwiDxgg4J+odbv63d0gzZAnQdaCFDTE/jE=
+	b=qkfcIeRLOAq/KBmhmY3Dn+AXcaCooNdXfkbKcrvpZl/zsNrLm591ZyF7TBdL+TrFs
+	 2pxUhtRAP2Efo5RiXFea1UQfP7zNrJlV4FdBb6vkX8fuy/EcwbNI9Td2PYjqxCLAu/
+	 VFOJUCqiu7f3fsZEDIs1qJDtTuJSocxq9XFrrfIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH 6.6 376/583] serial: imx: Ensure that imx_uart_rs485_config() is called with enabled clock
+	David Thompson <davthompson@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 171/374] mlxbf_gige: Fix intermittent no ip issue
 Date: Mon, 22 Jan 2024 15:57:07 -0800
-Message-ID: <20240122235823.524747864@linuxfoundation.org>
+Message-ID: <20240122235750.581267073@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+From: Asmaa Mnebhi <asmaa@nvidia.com>
 
-commit 7c45eaa813476bd195ac1227a64b52f9cf2e2030 upstream.
+[ Upstream commit ef210ef85d5cb543ce34a57803ed856d0c8c08c2 ]
 
-There are register accesses in the function imx_uart_rs485_config(). The
-clock must be enabled for these accesses. This was ensured by calling it
-via the function uart_rs485_config() in the probe() function within the
-range where the clock is enabled. With the commit 7c7f9bc986e6 ("serial:
-Deassert Transmit Enable on probe in driver-specific way") it was removed
-from the probe() function and is now only called through the function
-uart_add_one_port() which is located at the end of the probe() function.
-But the clock is already switched off in this area. To ensure that the
-clock is enabled during register access, move the disabling of the clock
-to the very end of the probe() function. To avoid leaking enabled clocks
-on error also add an error path for exiting with disabling the clock.
+Although the link is up, there is no ip assigned on setups with high background
+traffic. Nothing is transmitted nor received. The RX error count keeps on
+increasing. After several minutes, the RX error count stagnates and the
+GigE interface finally gets an ip.
 
-Fixes: 7c7f9bc986e6 ("serial: Deassert Transmit Enable on probe in driver-specific way")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Link: https://lore.kernel.org/r/20231226113647.39376-1-cniedermaier@dh-electronics.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The issue is that mlxbf_gige_rx_init() is called before phy_start().
+As soon as the RX DMA is enabled in mlxbf_gige_rx_init(), the RX CI reaches the max
+of 128, and becomes equal to RX PI. RX CI doesn't decrease since the code hasn't
+ran phy_start yet.
+Bring the PHY up before starting the RX.
+
+Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c |   23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c | 14 +++++++-------
+ .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c   |  6 +++---
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -2328,10 +2328,8 @@ static int imx_uart_probe(struct platfor
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+index b990782c1eb1..2cbe0daafd41 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+@@ -149,14 +149,14 @@ static int mlxbf_gige_open(struct net_device *netdev)
+ 	 */
+ 	priv->valid_polarity = 0;
  
- 	ret = uart_get_rs485_mode(&sport->port);
--	if (ret) {
--		clk_disable_unprepare(sport->clk_ipg);
--		return ret;
--	}
-+	if (ret)
-+		goto err_clk;
- 
- 	/*
- 	 * If using the i.MX UART RTS/CTS control then the RTS (CTS_B)
-@@ -2411,8 +2409,6 @@ static int imx_uart_probe(struct platfor
- 		imx_uart_writel(sport, ucr3, UCR3);
- 	}
- 
--	clk_disable_unprepare(sport->clk_ipg);
+-	err = mlxbf_gige_rx_init(priv);
++	phy_start(phydev);
++
++	err = mlxbf_gige_tx_init(priv);
+ 	if (err)
+ 		goto free_irqs;
+-	err = mlxbf_gige_tx_init(priv);
++	err = mlxbf_gige_rx_init(priv);
+ 	if (err)
+-		goto rx_deinit;
 -
- 	hrtimer_init(&sport->trigger_start_tx, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
- 	hrtimer_init(&sport->trigger_stop_tx, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
- 	sport->trigger_start_tx.function = imx_trigger_start_tx;
-@@ -2428,7 +2424,7 @@ static int imx_uart_probe(struct platfor
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request rx irq: %d\n",
- 				ret);
--			return ret;
-+			goto err_clk;
- 		}
+-	phy_start(phydev);
++		goto tx_deinit;
  
- 		ret = devm_request_irq(&pdev->dev, txirq, imx_uart_txint, 0,
-@@ -2436,7 +2432,7 @@ static int imx_uart_probe(struct platfor
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request tx irq: %d\n",
- 				ret);
--			return ret;
-+			goto err_clk;
- 		}
+ 	netif_napi_add(netdev, &priv->napi, mlxbf_gige_poll, NAPI_POLL_WEIGHT);
+ 	napi_enable(&priv->napi);
+@@ -178,8 +178,8 @@ static int mlxbf_gige_open(struct net_device *netdev)
  
- 		ret = devm_request_irq(&pdev->dev, rtsirq, imx_uart_rtsint, 0,
-@@ -2444,14 +2440,14 @@ static int imx_uart_probe(struct platfor
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request rts irq: %d\n",
- 				ret);
--			return ret;
-+			goto err_clk;
- 		}
- 	} else {
- 		ret = devm_request_irq(&pdev->dev, rxirq, imx_uart_int, 0,
- 				       dev_name(&pdev->dev), sport);
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request irq: %d\n", ret);
--			return ret;
-+			goto err_clk;
- 		}
- 	}
+ 	return 0;
  
-@@ -2459,7 +2455,12 @@ static int imx_uart_probe(struct platfor
+-rx_deinit:
+-	mlxbf_gige_rx_deinit(priv);
++tx_deinit:
++	mlxbf_gige_tx_deinit(priv);
  
- 	platform_set_drvdata(pdev, sport);
+ free_irqs:
+ 	mlxbf_gige_free_irqs(priv);
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
+index 227d01cace3f..699984358493 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
+@@ -142,6 +142,9 @@ int mlxbf_gige_rx_init(struct mlxbf_gige *priv)
+ 	writeq(MLXBF_GIGE_RX_MAC_FILTER_COUNT_PASS_EN,
+ 	       priv->base + MLXBF_GIGE_RX_MAC_FILTER_COUNT_PASS);
  
--	return uart_add_one_port(&imx_uart_uart_driver, &sport->port);
-+	ret = uart_add_one_port(&imx_uart_uart_driver, &sport->port);
++	writeq(ilog2(priv->rx_q_entries),
++	       priv->base + MLXBF_GIGE_RX_WQE_SIZE_LOG2);
 +
-+err_clk:
-+	clk_disable_unprepare(sport->clk_ipg);
-+
-+	return ret;
- }
+ 	/* Clear MLXBF_GIGE_INT_MASK 'receive pkt' bit to
+ 	 * indicate readiness to receive interrupts
+ 	 */
+@@ -154,9 +157,6 @@ int mlxbf_gige_rx_init(struct mlxbf_gige *priv)
+ 	data |= MLXBF_GIGE_RX_DMA_EN;
+ 	writeq(data, priv->base + MLXBF_GIGE_RX_DMA);
  
- static int imx_uart_remove(struct platform_device *pdev)
+-	writeq(ilog2(priv->rx_q_entries),
+-	       priv->base + MLXBF_GIGE_RX_WQE_SIZE_LOG2);
+-
+ 	return 0;
+ 
+ free_wqe_and_skb:
+-- 
+2.43.0
+
 
 
 
