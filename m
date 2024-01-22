@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A71AC838173
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0673A837F2E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5906A286109
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABA7A29BD9D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8A21420DD;
-	Tue, 23 Jan 2024 01:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E029B1292F0;
+	Tue, 23 Jan 2024 00:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMpgpq4Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLirciPs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFDC7F4;
-	Tue, 23 Jan 2024 01:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DAB1292EC;
+	Tue, 23 Jan 2024 00:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972138; cv=none; b=cV/LOZEbBHvolXYngCPlh8RfIX0BXJoKQCBD9fTNojRbYx3a+sYypNQjbY5HLPqNcIbR6mMGYhPOASteGV9fcNsR4RW32WSkcNstJZ9ay1MkA6I+0oNx8s3xoWWJ1CHyFykzEjDdmI9QO2s4EdnhIzeHxiMI6TEnU7LJtcycD50=
+	t=1705970986; cv=none; b=dBU4zp0sk80Z1hsYmEbao3rguC/0BLXiNA+v2KjxnbZbvYCQJHatadmNWO2yFWgBXXHgM/1bNOzMcKxT9vtJequuF4z4WlXOHQIY0EpYidaav9ik3YFG7NfGqPqfGVXj67Fw1Ue1Zn6asDwb8w6jrfUG8yBm79kqlagOW9AxBus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972138; c=relaxed/simple;
-	bh=1bHV/rnTE+n6arVxuanytWXKJVqqJMgwsztHT6lIi3o=;
+	s=arc-20240116; t=1705970986; c=relaxed/simple;
+	bh=B+5ySjDHbSfDc6VFp7P8zB1jO3I5dZdYcvNqn7nHXfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZuHEuhRp6jAztq7W8HHvCq7amb/aYER7pVTMK3zA+OHy719CdiU/KEABWJq4f7295FV8NXLggPpaDeZSC8mVHu+a5oadCM0Ke2+NYmsTdEk2+qaIjUKmo1XkvHvPTrtFY8+HV1t8puOGA3om5DIJeVVtPqQ9c/hMenrNsZrZpL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMpgpq4Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AC0C433C7;
-	Tue, 23 Jan 2024 01:08:58 +0000 (UTC)
+	 MIME-Version; b=YxeAHlgIHWg63m/NBEC/dg80Ww3af8p1bYM6sdvS6ocErxELu3vtDhlpU71sM0rAc8HGaxX0o3qhJGUpgpe1Gv4Yku/2N34thUDvE99yWXnlQ1FiymW+mNOlF5dVZXyWns9juDFqJqpYh8s4rwuB+EeytTpfRuP+x9gSGJA49vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLirciPs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C76C43390;
+	Tue, 23 Jan 2024 00:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972138;
-	bh=1bHV/rnTE+n6arVxuanytWXKJVqqJMgwsztHT6lIi3o=;
+	s=korg; t=1705970986;
+	bh=B+5ySjDHbSfDc6VFp7P8zB1jO3I5dZdYcvNqn7nHXfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uMpgpq4QnUpXE9+8pxoqWwFQGd5J1ZdUyBMfnihAm2R579fP2vO33RYyKxFraYIkv
-	 1657g63wIXDpWRrEoBk5nY05cqT1bOoiNt2MWoPx1HwmYMvWh202mIvc6DGbSbUAhC
-	 l0kPF8YWK5oIvs2CVXjSYHOi4K6RpxRn9bF9LLQQ=
+	b=JLirciPsgcZW2ytq71mZoxyzlxz/g0LZz0nS9N2Wr1eN+I88FqtYApqc233n+TbrP
+	 X6bBkcKAnTXeWFXGCqwxr48fMMGQG0f9vnvJQexw74GGHC0vXRx/rOZmljgcMkRCRL
+	 Z2RKzeIPgM3gc8y5nXEnP+4TEcGAhtxa63pwv9/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Modra <amodra@au1.ibm.com>,
-	Alexey Kardashevskiy <aik@ozlabs.ru>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 068/374] powerpc/toc: Future proof kernel toc
+Subject: [PATCH 6.1 156/417] Revert "drm/tidss: Annotate dma-fence critical section in commit path"
 Date: Mon, 22 Jan 2024 15:55:24 -0800
-Message-ID: <20240122235746.980007102@linuxfoundation.org>
+Message-ID: <20240122235757.249008073@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,212 +62,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Modra <amodra@au1.ibm.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit a3ad84da076009c94969fa97f604257667e2980f ]
+[ Upstream commit ca34d816558c3e4c3f8fe037b5a6b16c944693de ]
 
-This patch future-proofs the kernel against linker changes that might
-put the toc pointer at some location other than .got+0x8000, by
-replacing __toc_start+0x8000 with .TOC. throughout.  If the kernel's
-idea of the toc pointer doesn't agree with the linker, bad things
-happen.
+This reverts commit 4d56a4f08391857ba93465de489707b66adad114.
 
-prom_init.c code relocating its toc is also changed so that a symbolic
-__prom_init_toc_start toc-pointer relative address is calculated
-rather than assuming that it is always at toc-pointer - 0x8000.  The
-length calculations loading values from the toc are also avoided.
-It's a little incestuous to do that with unreloc_toc picking up
-adjusted values (which is fine in practice, they both adjust by the
-same amount if all goes well).
+The DMA-fence annotations cause a lockdep warning (see below). As per
+https://patchwork.freedesktop.org/patch/462170/ it sounds like the
+annotations don't work correctly.
 
-I've also changed the way .got is aligned in vmlinux.lds and
-zImage.lds, mostly so that dumping out section info by objdump or
-readelf plainly shows the alignment is 256.  This linker script
-feature was added 2005-09-27, available in FSF binutils releases from
-2.17 onwards.  Should be safe to use in the kernel, I think.
+======================================================
+WARNING: possible circular locking dependency detected
+6.6.0-rc2+ #1 Not tainted
+------------------------------------------------------
+kmstest/733 is trying to acquire lock:
+ffff8000819377f0 (fs_reclaim){+.+.}-{0:0}, at: __kmem_cache_alloc_node+0x58/0x2d4
 
-Finally, put *(.got) before the prom_init.o entry which only needs
-*(.toc), so that the GOT header goes in the correct place.  I don't
-believe this makes any difference for the kernel as it would for
-dynamic objects being loaded by ld.so.  That change is just to stop
-lusers who blindly copy kernel scripts being led astray.  Of course,
-this change needs the prom_init.c changes.
+but task is already holding lock:
+ffff800081a06aa0 (dma_fence_map){++++}-{0:0}, at: tidss_atomic_commit_tail+0x20/0xc0 [tidss]
 
-Some notes on .toc and .got.
+which lock already depends on the new lock.
 
-.toc is a compiler generated section of addresses.  .got is a linker
-generated section of addresses, generally built when the linker sees
-R_*_*GOT* relocations.  In the case of powerpc64 ld.bfd, there are
-multiple generated .got sections, one per input object file.  So you
-can somewhat reasonably write in a linker script an input section
-statement like *prom_init.o(.got .toc) to mean "the .got and .toc
-section for files matching *prom_init.o".  On other architectures that
-doesn't make sense, because the linker generally has just one .got
-section.  Even on powerpc64, note well that the GOT entries for
-prom_init.o may be merged with GOT entries from other objects.  That
-means that if prom_init.o references, say, _end via some GOT
-relocation, and some other object also references _end via a GOT
-relocation, the GOT entry for _end may be in the range
-__prom_init_toc_start to __prom_init_toc_end and if the kernel does
-something special to GOT/TOC entries in that range then the value of
-_end as seen by objects other than prom_init.o will be affected.  On
-the other hand the GOT entry for _end may not be in the range
-__prom_init_toc_start to __prom_init_toc_end.  Which way it turns out
-is deterministic but a detail of linker operation that should not be
-relied on.
+the existing dependency chain (in reverse order) is:
 
-A feature of ld.bfd is that input .toc (and .got) sections matching
-one linker input section statement may be sorted, to put entries used
-by small-model code first, near the toc base.  This is why scripts for
-powerpc64 normally use *(.got .toc) rather than *(.got) *(.toc), since
-the first form allows more freedom to sort.
+-> #2 (dma_fence_map){++++}-{0:0}:
+       __dma_fence_might_wait+0x5c/0xd0
+       dma_resv_lockdep+0x1a4/0x32c
+       do_one_initcall+0x84/0x2fc
+       kernel_init_freeable+0x28c/0x4c4
+       kernel_init+0x24/0x1dc
+       ret_from_fork+0x10/0x20
 
-Another feature of ld.bfd is that indirect addressing sequences using
-the GOT/TOC may be edited by the linker to relative addressing.  In
-many cases relative addressing would be emitted by gcc for
--mcmodel=medium if you appropriately decorate variable declarations
-with non-default visibility.
+-> #1 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}:
+       fs_reclaim_acquire+0x70/0xe4
+       __kmem_cache_alloc_node+0x58/0x2d4
+       kmalloc_trace+0x38/0x78
+       __kthread_create_worker+0x3c/0x150
+       kthread_create_worker+0x64/0x8c
+       workqueue_init+0x1e8/0x2f0
+       kernel_init_freeable+0x11c/0x4c4
+       kernel_init+0x24/0x1dc
+       ret_from_fork+0x10/0x20
 
-The original patch is here:
-https://lore.kernel.org/linuxppc-dev/20210310034813.GM6042@bubble.grove.modra.org/
+-> #0 (fs_reclaim){+.+.}-{0:0}:
+       __lock_acquire+0x1370/0x20d8
+       lock_acquire+0x1e8/0x308
+       fs_reclaim_acquire+0xd0/0xe4
+       __kmem_cache_alloc_node+0x58/0x2d4
+       __kmalloc_node_track_caller+0x58/0xf0
+       kmemdup+0x34/0x60
+       regmap_bulk_write+0x64/0x2c0
+       tc358768_bridge_pre_enable+0x8c/0x12d0 [tc358768]
+       drm_atomic_bridge_call_pre_enable+0x68/0x80 [drm]
+       drm_atomic_bridge_chain_pre_enable+0x50/0x158 [drm]
+       drm_atomic_helper_commit_modeset_enables+0x164/0x264 [drm_kms_helper]
+       tidss_atomic_commit_tail+0x58/0xc0 [tidss]
+       commit_tail+0xa0/0x188 [drm_kms_helper]
+       drm_atomic_helper_commit+0x1a8/0x1c0 [drm_kms_helper]
+       drm_atomic_commit+0xa8/0xe0 [drm]
+       drm_mode_atomic_ioctl+0x9ec/0xc80 [drm]
+       drm_ioctl_kernel+0xc4/0x170 [drm]
+       drm_ioctl+0x234/0x4b0 [drm]
+       drm_compat_ioctl+0x110/0x12c [drm]
+       __arm64_compat_sys_ioctl+0x128/0x150
+       invoke_syscall+0x48/0x110
+       el0_svc_common.constprop.0+0x40/0xe0
+       do_el0_svc_compat+0x1c/0x38
+       el0_svc_compat+0x48/0xb4
+       el0t_32_sync_handler+0xb0/0x138
+       el0t_32_sync+0x194/0x198
 
-Signed-off-by: Alan Modra <amodra@au1.ibm.com>
-[aik: removed non-relocatable which is gone in 24d33ac5b8ffb]
-[aik: added <=2.24 check]
-[aik: because of llvm-as, kernel_toc_addr() uses "mr" instead of global register variable]
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20211221055904.555763-2-aik@ozlabs.ru
-Stable-dep-of: 1b1e38002648 ("powerpc: add crtsavres.o to always-y instead of extra-y")
+other info that might help us debug this:
+
+Chain exists of:
+  fs_reclaim --> mmu_notifier_invalidate_range_start --> dma_fence_map
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  rlock(dma_fence_map);
+                               lock(mmu_notifier_invalidate_range_start);
+                               lock(dma_fence_map);
+  lock(fs_reclaim);
+
+ *** DEADLOCK ***
+
+3 locks held by kmstest/733:
+ #0: ffff800082e5bba0 (crtc_ww_class_acquire){+.+.}-{0:0}, at: drm_mode_atomic_ioctl+0x118/0xc80 [drm]
+ #1: ffff000004224c88 (crtc_ww_class_mutex){+.+.}-{3:3}, at: modeset_lock+0xdc/0x1a0 [drm]
+ #2: ffff800081a06aa0 (dma_fence_map){++++}-{0:0}, at: tidss_atomic_commit_tail+0x20/0xc0 [tidss]
+
+stack backtrace:
+CPU: 0 PID: 733 Comm: kmstest Not tainted 6.6.0-rc2+ #1
+Hardware name: Toradex Verdin AM62 on Verdin Development Board (DT)
+Call trace:
+ dump_backtrace+0x98/0x118
+ show_stack+0x18/0x24
+ dump_stack_lvl+0x60/0xac
+ dump_stack+0x18/0x24
+ print_circular_bug+0x288/0x368
+ check_noncircular+0x168/0x17c
+ __lock_acquire+0x1370/0x20d8
+ lock_acquire+0x1e8/0x308
+ fs_reclaim_acquire+0xd0/0xe4
+ __kmem_cache_alloc_node+0x58/0x2d4
+ __kmalloc_node_track_caller+0x58/0xf0
+ kmemdup+0x34/0x60
+ regmap_bulk_write+0x64/0x2c0
+ tc358768_bridge_pre_enable+0x8c/0x12d0 [tc358768]
+ drm_atomic_bridge_call_pre_enable+0x68/0x80 [drm]
+ drm_atomic_bridge_chain_pre_enable+0x50/0x158 [drm]
+ drm_atomic_helper_commit_modeset_enables+0x164/0x264 [drm_kms_helper]
+ tidss_atomic_commit_tail+0x58/0xc0 [tidss]
+ commit_tail+0xa0/0x188 [drm_kms_helper]
+ drm_atomic_helper_commit+0x1a8/0x1c0 [drm_kms_helper]
+ drm_atomic_commit+0xa8/0xe0 [drm]
+ drm_mode_atomic_ioctl+0x9ec/0xc80 [drm]
+ drm_ioctl_kernel+0xc4/0x170 [drm]
+ drm_ioctl+0x234/0x4b0 [drm]
+ drm_compat_ioctl+0x110/0x12c [drm]
+ __arm64_compat_sys_ioctl+0x128/0x150
+ invoke_syscall+0x48/0x110
+ el0_svc_common.constprop.0+0x40/0xe0
+ do_el0_svc_compat+0x1c/0x38
+ el0_svc_compat+0x48/0xb4
+ el0t_32_sync_handler+0xb0/0x138
+ el0t_32_sync+0x194/0x198
+
+Fixes: 4d56a4f08391 ("drm/tidss: Annotate dma-fence critical section in commit path")
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230920-dma-fence-annotation-revert-v1-1-7ebf6f7f5bf6@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/Makefile               |  5 +++--
- arch/powerpc/boot/crt0.S            |  2 +-
- arch/powerpc/boot/zImage.lds.S      |  7 ++-----
- arch/powerpc/include/asm/sections.h | 16 ++++++++--------
- arch/powerpc/kernel/head_64.S       |  2 +-
- arch/powerpc/kernel/vmlinux.lds.S   |  8 +++-----
- 6 files changed, 18 insertions(+), 22 deletions(-)
+ drivers/gpu/drm/tidss/tidss_kms.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 3dc75040a756..41604a37b385 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -437,10 +437,11 @@ PHONY += checkbin
- # Check toolchain versions:
- # - gcc-4.6 is the minimum kernel-wide version so nothing required.
- checkbin:
--	@if test "x${CONFIG_CPU_LITTLE_ENDIAN}" = "xy" \
--	    && $(LD) --version | head -1 | grep ' 2\.24$$' >/dev/null ; then \
-+	@if test "x${CONFIG_LD_IS_LLD}" != "xy" -a \
-+		"x$(call ld-ifversion, -le, 22400, y)" = "xy" ; then \
- 		echo -n '*** binutils 2.24 miscompiles weak symbols ' ; \
- 		echo 'in some circumstances.' ; \
-+		echo    '*** binutils 2.23 do not define the TOC symbol ' ; \
- 		echo -n '*** Please use a different binutils version.' ; \
- 		false ; \
- 	fi
-diff --git a/arch/powerpc/boot/crt0.S b/arch/powerpc/boot/crt0.S
-index e8f10a599659..feadee18e271 100644
---- a/arch/powerpc/boot/crt0.S
-+++ b/arch/powerpc/boot/crt0.S
-@@ -28,7 +28,7 @@ p_etext:	.8byte	_etext
- p_bss_start:	.8byte	__bss_start
- p_end:		.8byte	_end
+diff --git a/drivers/gpu/drm/tidss/tidss_kms.c b/drivers/gpu/drm/tidss/tidss_kms.c
+index afb2879980c6..995bac488392 100644
+--- a/drivers/gpu/drm/tidss/tidss_kms.c
++++ b/drivers/gpu/drm/tidss/tidss_kms.c
+@@ -4,8 +4,6 @@
+  * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
+  */
  
--p_toc:		.8byte	__toc_start + 0x8000 - p_base
-+p_toc:		.8byte	.TOC. - p_base
- p_dyn:		.8byte	__dynamic_start - p_base
- p_rela:		.8byte	__rela_dyn_start - p_base
- p_prom:		.8byte	0
-diff --git a/arch/powerpc/boot/zImage.lds.S b/arch/powerpc/boot/zImage.lds.S
-index d6f072865627..d65cd55a6f38 100644
---- a/arch/powerpc/boot/zImage.lds.S
-+++ b/arch/powerpc/boot/zImage.lds.S
-@@ -36,12 +36,9 @@ SECTIONS
-   }
- 
- #ifdef CONFIG_PPC64_BOOT_WRAPPER
--  . = ALIGN(256);
--  .got :
-+  .got : ALIGN(256)
-   {
--    __toc_start = .;
--    *(.got)
--    *(.toc)
-+    *(.got .toc)
-   }
- #endif
- 
-diff --git a/arch/powerpc/include/asm/sections.h b/arch/powerpc/include/asm/sections.h
-index e92d39c0cd1d..34d82ae1774c 100644
---- a/arch/powerpc/include/asm/sections.h
-+++ b/arch/powerpc/include/asm/sections.h
-@@ -26,16 +26,16 @@ extern char start_virt_trampolines[];
- extern char end_virt_trampolines[];
- #endif
- 
-+/*
-+ * This assumes the kernel is never compiled -mcmodel=small or
-+ * the total .toc is always less than 64k.
-+ */
- static inline unsigned long kernel_toc_addr(void)
- {
--	/* Defined by the linker, see vmlinux.lds.S */
--	extern unsigned long __toc_start;
+-#include <linux/dma-fence.h>
 -
--	/*
--	 * The TOC register (r2) points 32kB into the TOC, so that 64kB of
--	 * the TOC can be addressed using a single machine instruction.
--	 */
--	return (unsigned long)(&__toc_start) + 0x8000UL;
-+	unsigned long toc_ptr;
-+
-+	asm volatile("mr %0, 2" : "=r" (toc_ptr));
-+	return toc_ptr;
- }
+ #include <drm/drm_atomic.h>
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_bridge.h>
+@@ -27,7 +25,6 @@ static void tidss_atomic_commit_tail(struct drm_atomic_state *old_state)
+ {
+ 	struct drm_device *ddev = old_state->dev;
+ 	struct tidss_device *tidss = to_tidss(ddev);
+-	bool fence_cookie = dma_fence_begin_signalling();
  
- static inline int overlaps_interrupt_vector_text(unsigned long start,
-diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
-index f17ae2083733..a08c050ff645 100644
---- a/arch/powerpc/kernel/head_64.S
-+++ b/arch/powerpc/kernel/head_64.S
-@@ -904,7 +904,7 @@ _GLOBAL(relative_toc)
- 	blr
+ 	dev_dbg(ddev->dev, "%s\n", __func__);
  
- .balign 8
--p_toc:	.8byte	__toc_start + 0x8000 - 0b
-+p_toc:	.8byte	.TOC. - 0b
+@@ -38,7 +35,6 @@ static void tidss_atomic_commit_tail(struct drm_atomic_state *old_state)
+ 	drm_atomic_helper_commit_modeset_enables(ddev, old_state);
  
- /*
-  * This is where the main kernel code starts.
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index d8301ce7c675..70bf67ed87b5 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -352,15 +352,13 @@ SECTIONS
- 		*(.branch_lt)
- 	}
+ 	drm_atomic_helper_commit_hw_done(old_state);
+-	dma_fence_end_signalling(fence_cookie);
+ 	drm_atomic_helper_wait_for_flip_done(ddev, old_state);
  
--	. = ALIGN(256);
--	.got : AT(ADDR(.got) - LOAD_OFFSET) {
--		__toc_start = .;
-+	.got : AT(ADDR(.got) - LOAD_OFFSET) ALIGN(256) {
-+		*(.got)
- #ifndef CONFIG_RELOCATABLE
- 		__prom_init_toc_start = .;
--		arch/powerpc/kernel/prom_init.o*(.toc .got)
-+		arch/powerpc/kernel/prom_init.o*(.toc)
- 		__prom_init_toc_end = .;
- #endif
--		*(.got)
- 		*(.toc)
- 	}
- #endif
+ 	drm_atomic_helper_cleanup_planes(ddev, old_state);
 -- 
 2.43.0
 
