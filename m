@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515F283818B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61CB1837F14
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E24D91F2430C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95A581C2896A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA30E2CA6;
-	Tue, 23 Jan 2024 01:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A348C60876;
+	Tue, 23 Jan 2024 00:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEXR4rr2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="en7USdTD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B33184;
-	Tue, 23 Jan 2024 01:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617AE2A1AA;
+	Tue, 23 Jan 2024 00:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972170; cv=none; b=gXm6/rvcjhdTp/KvhWFZV7LsMoEvtMWQdQISNI4Re5SdaRT9upiEn/1dzsyHTsSuwqhJQoM3TnL1JMKwHQvkK3ZOrG7V5fE4b2PiyXUPuQgdJOnjQmf0ry7iaa99Hokj3Gm1+Zh40qIjpYndmDsoVdERULzUQtV90qt39NUS9co=
+	t=1705970925; cv=none; b=qUj/gDztKo0mC/nNcwtB8vZyMa6XxPbsr037ihG+Wa1vJYqFXz4POwoxq7M/RuvCNyBTKIz/iKgUWirrOILAi/tMpvS13ZpDE2jzgkHSfQXI2ZupmOY+twmuyqoYTiHO12mp8W+zvWLGkm/cHoLGjCXTK3K3DmfBiuHVZRMysIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972170; c=relaxed/simple;
-	bh=NaXztnZaYQ7c26l080pQCu2Igr2ozjmNO0XvYTSkrus=;
+	s=arc-20240116; t=1705970925; c=relaxed/simple;
+	bh=ZRwtnAB1m4Pes1L4jwNVT6a15TgmFOV714fFEZyT0RA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bi5ITJKwGkIpEBrcjQMlrQBpjnbZqkRsBhuvNWUMOENwwQjWflZQL2IHUrhRINAWOf+akyqDiORvpb8seFYVXSN1EwAjNNPe1fSFdrfI/ezJJQxPcGq5G16BzIO0aNVdzIL1mbKn1etErlXkVm7Z2vqJgsmVvaAHfcCbqhCqRS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEXR4rr2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F3E4C43394;
-	Tue, 23 Jan 2024 01:09:30 +0000 (UTC)
+	 MIME-Version; b=WUrBCc2+6SZxA9CowJ74KxfEh60OOWEikU+rPMCIVGop/8wo6NbFN56VWMA37SmfQvko7NAfRYpuLf5mDte0TIawVQXbiEhZhN6i5+qu1jGBDwpovfA9DO6Y4vYjPosQlrVmlGwzgBoQMV+a3QCJivpTnFiRVJS18ev0mfJL3Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=en7USdTD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9CC1C433C7;
+	Tue, 23 Jan 2024 00:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972170;
-	bh=NaXztnZaYQ7c26l080pQCu2Igr2ozjmNO0XvYTSkrus=;
+	s=korg; t=1705970925;
+	bh=ZRwtnAB1m4Pes1L4jwNVT6a15TgmFOV714fFEZyT0RA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QEXR4rr2BcmnyRkWFv95IQwqt1gDqtkr/PVsxUUAcOZzlvI53b1+k+4YLkwExID4j
-	 wnEQk4NDdesTygxfmBlcmjbph8EGM8o7BLgpVa3k3s/kOZeu1XCeYUNFmg/d/3T+wx
-	 f/OSsit6Oa6Y5q1vyPdoqRAxtPNSz85yISfzOWhE=
+	b=en7USdTDDAhfnd3ZEE/S7w9UJf8Uor3pXrY/lcqia8ccnQRTxDg7pIhLE6Q/lg0oO
+	 t3u1wSNOo74JuKDUVnqRcW3CzFU8M/LeSorjIAeieczbXvb0V441h82esibtDjHhvo
+	 J0Z1KGKJRXWp7uqFDc/TdvPZYV7LXtpKnPxxig/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 096/374] crypto: ccp - fix memleak in ccp_init_dm_workarea
+	Cameron Williams <cang1@live.co.uk>,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Subject: [PATCH 5.10 046/286] parport: parport_serial: Add Brainboxes device IDs and geometry
 Date: Mon, 22 Jan 2024 15:55:52 -0800
-Message-ID: <20240122235747.942985226@linuxfoundation.org>
+Message-ID: <20240122235733.805746276@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Cameron Williams <cang1@live.co.uk>
 
-[ Upstream commit a1c95dd5bc1d6a5d7a75a376c2107421b7d6240d ]
+commit 6aa1fc5a8085bbc01687aa708dcf2dbe637a5ee3 upstream.
 
-When dma_map_single() fails, wa->address is supposed to be freed
-by the callers of ccp_init_dm_workarea() through ccp_dm_free().
-However, many of the call spots don't expect to have to call
-ccp_dm_free() on failure of ccp_init_dm_workarea(), which may
-lead to a memleak. Let's free wa->address in ccp_init_dm_workarea()
-when dma_map_single() fails.
+Add device IDs for the Brainboxes UC-203, UC-257, UC-414, UC-475,
+IS-300/IS-500 and PX-263/PX-295 and define the relevant "geometry"
+for the cards.
+This patch requires part 1 of this series.
 
-Fixes: 63b945091a07 ("crypto: ccp - CCP device driver and interface support")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Link: https://lore.kernel.org/r/AS4PR02MB7903A4094564BE28F1F926A6C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/ccp/ccp-ops.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/parport/parport_serial.c |   56 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
-diff --git a/drivers/crypto/ccp/ccp-ops.c b/drivers/crypto/ccp/ccp-ops.c
-index aa4e1a500691..cb8e99936abb 100644
---- a/drivers/crypto/ccp/ccp-ops.c
-+++ b/drivers/crypto/ccp/ccp-ops.c
-@@ -179,8 +179,11 @@ static int ccp_init_dm_workarea(struct ccp_dm_workarea *wa,
+--- a/drivers/parport/parport_serial.c
++++ b/drivers/parport/parport_serial.c
+@@ -285,6 +285,38 @@ static struct pci_device_id parport_seri
+ 	{ PCI_VENDOR_ID_SUNIX, PCI_DEVICE_ID_SUNIX_1999, PCI_VENDOR_ID_SUNIX,
+ 	  0x0104, 0, 0, sunix_5099a },
  
- 		wa->dma.address = dma_map_single(wa->dev, wa->address, len,
- 						 dir);
--		if (dma_mapping_error(wa->dev, wa->dma.address))
-+		if (dma_mapping_error(wa->dev, wa->dma.address)) {
-+			kfree(wa->address);
-+			wa->address = NULL;
- 			return -ENOMEM;
-+		}
++	/* Brainboxes UC-203 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc1,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc2,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++
++	/* Brainboxes UC-257 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0861,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0862,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0863,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++
++	/* Brainboxes UC-414 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0e61,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc414 },
++
++	/* Brainboxes UC-475 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0981,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0982,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++
++	/* Brainboxes IS-300/IS-500 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0da0,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_is300 },
++
++	/* Brainboxes PX-263/PX-295 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x402c,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_px263 },
++
+ 	{ 0, } /* terminate list */
+ };
+ MODULE_DEVICE_TABLE(pci,parport_serial_pci_tbl);
+@@ -550,6 +582,30 @@ static struct pciserial_board pci_parpor
+ 		.base_baud      = 921600,
+ 		.uart_offset	= 0x8,
+ 	},
++	[brainboxes_uc257] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 2,
++		.base_baud	= 115200,
++		.uart_offset	= 8,
++	},
++	[brainboxes_is300] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 1,
++		.base_baud	= 115200,
++		.uart_offset	= 8,
++	},
++	[brainboxes_uc414] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 4,
++		.base_baud	= 115200,
++		.uart_offset	= 8,
++	},
++	[brainboxes_px263] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 4,
++		.base_baud	= 921600,
++		.uart_offset	= 8,
++	},
+ };
  
- 		wa->dma.length = len;
- 	}
--- 
-2.43.0
-
+ struct parport_serial_private {
 
 
 
