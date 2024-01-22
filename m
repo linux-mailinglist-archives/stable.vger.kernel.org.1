@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-15046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E10A8383A8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15CE88380FD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E169C294A19
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AAA81C291AF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0020463500;
-	Tue, 23 Jan 2024 01:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF5513E210;
+	Tue, 23 Jan 2024 01:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhr7e5c+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WD6t0usK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41DB634F8;
-	Tue, 23 Jan 2024 01:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF0D13E204;
+	Tue, 23 Jan 2024 01:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975031; cv=none; b=jpn1Y/jF9qPBNw5gHTell5dS5BiuF7ZNxaSP397PKekHemd1qUhfPN+l0KPSxgsaNRjB4lfJ6jyAxTrv0uWYlD8qOsLUWoJHTo66QBzt+TYFt1kgEuhlLG+uwzCOTYelNQf6W+qk6bRnq1/D5k1qPVbyU8HrEeGbG2rJmnvn+FU=
+	t=1705971987; cv=none; b=aqXeJmntnjTy3G0WfB+fOL95e6G98d9hN7/ruaPmqd3r0GRkb83WJ/JASWwGE7LDjC8F1rsxqDJbD+oQBbbP2r4pSatKQSwSaVBwvjhTndYQcb8wxdDt/BASCjXypG4YLuVEcZ29n9BsrYkpwncR3dpkGzfYAOO1ZByJBa5NiIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975031; c=relaxed/simple;
-	bh=sqv1v18TwIbQRKKoq8uxMHP+UpEXtdhqfHXwRvMFA0U=;
+	s=arc-20240116; t=1705971987; c=relaxed/simple;
+	bh=E+hzTcFH5oS9UBh0bd2UbK0lrAJkEObkR2/vePHNQbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N8H+6+UEuu6CRF+lcPuRrWNA/iYAZSgXwwCRRjU9c7XYbe+g9ltjlSXBujcU4tclOQEGrP7QFEK3PxK8brzNESkboGBUxT/1W4q8xQWjveQifFbEYrTir/oBMElDUYo28ID5HTNr8UNsFg9fHuhlgi26CCgZFGAI1EL7kx4Jl6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhr7e5c+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C55C43390;
-	Tue, 23 Jan 2024 01:57:11 +0000 (UTC)
+	 MIME-Version; b=lh5XdiB5x7yZIT9XyHAU53IJe/PHt5cREysDRc3IQYa9KJsIsz8f4/fShozXhtBHrDZ8AgqDR4nxqTjJO9VmX8xG7Z3nIi9hhHcicwbBwVtExjhQ0VHdYo4P2wD5n/dO5bUc1Z8HAv51A/LfDLD0S4Fyu8k4+eAEvLO5iFl6YLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WD6t0usK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA722C433F1;
+	Tue, 23 Jan 2024 01:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975031;
-	bh=sqv1v18TwIbQRKKoq8uxMHP+UpEXtdhqfHXwRvMFA0U=;
+	s=korg; t=1705971987;
+	bh=E+hzTcFH5oS9UBh0bd2UbK0lrAJkEObkR2/vePHNQbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zhr7e5c+fo84XZr/OVUPIUDAuEem14U1OwJsxyOKFKg/WDnCH3RoO52sQEeejjnQB
-	 3/6usidxveCDDLTTfo1Ew+VPo2uVDxj22ARQ4IAbvRBCwrOXdTa4VR4GwDCdlDxHon
-	 DotBQ2kH3d/p85B5f0Q33GzaOpIHkJ5RHwY4oyj0=
+	b=WD6t0usKSJ62w8OtknFgVircC9NpFPxGC3a/Z7z8nPFSXAIrJQL35DmElXjWBNStG
+	 ueCTphyeDrQcnfZJQnvwhKqfB7S1KYUoawEY1oFPdy7c6FLOCWS5LrCrWGAXtdHDOg
+	 +rBMOgTiiQHKAFL2Jeqwo0rZXQP7HRe/c8TTve/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Subash Abhinov Kasiviswanathan <quic_subashab@quicinc.com>,
-	Simon Horman <horms@kernel.org>,
-	Jiri Pirko <jiri@nvidia.com>,
+	Orel Hagag <orelh@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 332/374] net: qualcomm: rmnet: fix global oob in rmnet_policy
+Subject: [PATCH 5.10 282/286] mlxsw: spectrum_acl_tcam: Fix stack corruption
 Date: Mon, 22 Jan 2024 15:59:48 -0800
-Message-ID: <20240122235756.451162488@linuxfoundation.org>
+Message-ID: <20240122235742.917080613@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +66,164 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit b33fb5b801c6db408b774a68e7c8722796b59ecc ]
+[ Upstream commit 483ae90d8f976f8339cf81066312e1329f2d3706 ]
 
-The variable rmnet_link_ops assign a *bigger* maxtype which leads to a
-global out-of-bounds read when parsing the netlink attributes. See bug
-trace below:
+When tc filters are first added to a net device, the corresponding local
+port gets bound to an ACL group in the device. The group contains a list
+of ACLs. In turn, each ACL points to a different TCAM region where the
+filters are stored. During forwarding, the ACLs are sequentially
+evaluated until a match is found.
 
-==================================================================
-BUG: KASAN: global-out-of-bounds in validate_nla lib/nlattr.c:386 [inline]
-BUG: KASAN: global-out-of-bounds in __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
-Read of size 1 at addr ffffffff92c438d0 by task syz-executor.6/84207
+One reason to place filters in different regions is when they are added
+with decreasing priorities and in an alternating order so that two
+consecutive filters can never fit in the same region because of their
+key usage.
 
-CPU: 0 PID: 84207 Comm: syz-executor.6 Tainted: G                 N 6.1.0 #3
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x8b/0xb3 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:284 [inline]
- print_report+0x172/0x475 mm/kasan/report.c:395
- kasan_report+0xbb/0x1c0 mm/kasan/report.c:495
- validate_nla lib/nlattr.c:386 [inline]
- __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
- __nla_parse+0x3e/0x50 lib/nlattr.c:697
- nla_parse_nested_deprecated include/net/netlink.h:1248 [inline]
- __rtnl_newlink+0x50a/0x1880 net/core/rtnetlink.c:3485
- rtnl_newlink+0x64/0xa0 net/core/rtnetlink.c:3594
- rtnetlink_rcv_msg+0x43c/0xd70 net/core/rtnetlink.c:6091
- netlink_rcv_skb+0x14f/0x410 net/netlink/af_netlink.c:2540
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x54e/0x800 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x930/0xe50 net/netlink/af_netlink.c:1921
- sock_sendmsg_nosec net/socket.c:714 [inline]
- sock_sendmsg+0x154/0x190 net/socket.c:734
- ____sys_sendmsg+0x6df/0x840 net/socket.c:2482
- ___sys_sendmsg+0x110/0x1b0 net/socket.c:2536
- __sys_sendmsg+0xf3/0x1c0 net/socket.c:2565
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7fdcf2072359
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fdcf13e3168 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007fdcf219ff80 RCX: 00007fdcf2072359
-RDX: 0000000000000000 RSI: 0000000020000200 RDI: 0000000000000003
-RBP: 00007fdcf20bd493 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fffbb8d7bdf R14: 00007fdcf13e3300 R15: 0000000000022000
- </TASK>
+In Spectrum-2 and newer ASICs the firmware started to report that the
+maximum number of ACLs in a group is more than 16, but the layout of the
+register that configures ACL groups (PAGT) was not updated to account
+for that. It is therefore possible to hit stack corruption [1] in the
+rare case where more than 16 ACLs in a group are required.
 
-The buggy address belongs to the variable:
- rmnet_policy+0x30/0xe0
+Fix by limiting the maximum ACL group size to the minimum between what
+the firmware reports and the maximum ACLs that fit in the PAGT register.
 
-The buggy address belongs to the physical page:
-page:0000000065bdeb3c refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x155243
-flags: 0x200000000001000(reserved|node=0|zone=2)
-raw: 0200000000001000 ffffea00055490c8 ffffea00055490c8 0000000000000000
-raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
+Add a test case to make sure the machine does not crash when this
+condition is hit.
 
-Memory state around the buggy address:
- ffffffff92c43780: f9 f9 f9 f9 00 00 00 02 f9 f9 f9 f9 00 00 00 07
- ffffffff92c43800: f9 f9 f9 f9 00 00 00 05 f9 f9 f9 f9 06 f9 f9 f9
->ffffffff92c43880: f9 f9 f9 f9 00 00 00 00 00 00 f9 f9 f9 f9 f9 f9
-                                                 ^
- ffffffff92c43900: 00 00 00 00 00 00 00 00 07 f9 f9 f9 f9 f9 f9 f9
- ffffffff92c43980: 00 00 00 07 f9 f9 f9 f9 00 00 00 05 f9 f9 f9 f9
+[1]
+Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: mlxsw_sp_acl_tcam_group_update+0x116/0x120
+[...]
+ dump_stack_lvl+0x36/0x50
+ panic+0x305/0x330
+ __stack_chk_fail+0x15/0x20
+ mlxsw_sp_acl_tcam_group_update+0x116/0x120
+ mlxsw_sp_acl_tcam_group_region_attach+0x69/0x110
+ mlxsw_sp_acl_tcam_vchunk_get+0x492/0xa20
+ mlxsw_sp_acl_tcam_ventry_add+0x25/0xe0
+ mlxsw_sp_acl_rule_add+0x47/0x240
+ mlxsw_sp_flower_replace+0x1a9/0x1d0
+ tc_setup_cb_add+0xdc/0x1c0
+ fl_hw_replace_filter+0x146/0x1f0
+ fl_change+0xc17/0x1360
+ tc_new_tfilter+0x472/0xb90
+ rtnetlink_rcv_msg+0x313/0x3b0
+ netlink_rcv_skb+0x58/0x100
+ netlink_unicast+0x244/0x390
+ netlink_sendmsg+0x1e4/0x440
+ ____sys_sendmsg+0x164/0x260
+ ___sys_sendmsg+0x9a/0xe0
+ __sys_sendmsg+0x7a/0xc0
+ do_syscall_64+0x40/0xe0
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-According to the comment of `nla_parse_nested_deprecated`, the maxtype
-should be len(destination array) - 1. Hence use `IFLA_RMNET_MAX` here.
-
-Fixes: 14452ca3b5ce ("net: qualcomm: rmnet: Export mux_id and flags to netlink")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Subash Abhinov Kasiviswanathan <quic_subashab@quicinc.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20240110061400.3356108-1-linma@zju.edu.cn
+Fixes: c3ab435466d5 ("mlxsw: spectrum: Extend to support Spectrum-2 ASIC")
+Reported-by: Orel Hagag <orelh@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Amit Cohen <amcohen@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/2d91c89afba59c22587b444994ae419dbea8d876.1705502064.git.petrm@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../mellanox/mlxsw/spectrum_acl_tcam.c        |  2 +
+ .../drivers/net/mlxsw/spectrum-2/tc_flower.sh | 56 ++++++++++++++++++-
+ 2 files changed, 57 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-index 27b1663c476e..64b209a0ad21 100644
---- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-+++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-@@ -391,7 +391,7 @@ static int rmnet_fill_info(struct sk_buff *skb, const struct net_device *dev)
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index ab897b8be39f..483c8b75bebb 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -1519,6 +1519,8 @@ int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
+ 	tcam->max_groups = max_groups;
+ 	tcam->max_group_size = MLXSW_CORE_RES_GET(mlxsw_sp->core,
+ 						  ACL_MAX_GROUP_SIZE);
++	tcam->max_group_size = min_t(unsigned int, tcam->max_group_size,
++				     MLXSW_REG_PAGT_ACL_MAX_NUM);
  
- struct rtnl_link_ops rmnet_link_ops __read_mostly = {
- 	.kind		= "rmnet",
--	.maxtype	= __IFLA_RMNET_MAX,
-+	.maxtype	= IFLA_RMNET_MAX,
- 	.priv_size	= sizeof(struct rmnet_priv),
- 	.setup		= rmnet_vnd_setup,
- 	.validate	= rmnet_rtnl_validate,
+ 	err = ops->init(mlxsw_sp, tcam->priv, tcam);
+ 	if (err)
+diff --git a/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/tc_flower.sh b/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/tc_flower.sh
+index 7bf56ea161e3..616d3581419c 100755
+--- a/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/tc_flower.sh
++++ b/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/tc_flower.sh
+@@ -11,7 +11,7 @@ ALL_TESTS="single_mask_test identical_filters_test two_masks_test \
+ 	multiple_masks_test ctcam_edge_cases_test delta_simple_test \
+ 	delta_two_masks_one_key_test delta_simple_rehash_test \
+ 	bloom_simple_test bloom_complex_test bloom_delta_test \
+-	max_erp_entries_test"
++	max_erp_entries_test max_group_size_test"
+ NUM_NETIFS=2
+ source $lib_dir/lib.sh
+ source $lib_dir/tc_common.sh
+@@ -1033,6 +1033,60 @@ max_erp_entries_test()
+ 		"max chain $chain_failed, mask $mask_failed"
+ }
+ 
++max_group_size_test()
++{
++	# The number of ACLs in an ACL group is limited. Once the maximum
++	# number of ACLs has been reached, filters cannot be added. This test
++	# verifies that when this limit is reached, insertion fails without
++	# crashing.
++
++	RET=0
++
++	local num_acls=32
++	local max_size
++	local ret
++
++	if [[ "$tcflags" != "skip_sw" ]]; then
++		return 0;
++	fi
++
++	for ((i=1; i < $num_acls; i++)); do
++		if [[ $(( i % 2 )) == 1 ]]; then
++			tc filter add dev $h2 ingress pref $i proto ipv4 \
++				flower $tcflags dst_ip 198.51.100.1/32 \
++				ip_proto tcp tcp_flags 0x01/0x01 \
++				action drop &> /dev/null
++		else
++			tc filter add dev $h2 ingress pref $i proto ipv6 \
++				flower $tcflags dst_ip 2001:db8:1::1/128 \
++				action drop &> /dev/null
++		fi
++
++		ret=$?
++		[[ $ret -ne 0 ]] && max_size=$((i - 1)) && break
++	done
++
++	# We expect to exceed the maximum number of ACLs in a group, so that
++	# insertion eventually fails. Otherwise, the test should be adjusted to
++	# add more filters.
++	check_fail $ret "expected to exceed number of ACLs in a group"
++
++	for ((; i >= 1; i--)); do
++		if [[ $(( i % 2 )) == 1 ]]; then
++			tc filter del dev $h2 ingress pref $i proto ipv4 \
++				flower $tcflags dst_ip 198.51.100.1/32 \
++				ip_proto tcp tcp_flags 0x01/0x01 \
++				action drop &> /dev/null
++		else
++			tc filter del dev $h2 ingress pref $i proto ipv6 \
++				flower $tcflags dst_ip 2001:db8:1::1/128 \
++				action drop &> /dev/null
++		fi
++	done
++
++	log_test "max ACL group size test ($tcflags). max size $max_size"
++}
++
+ setup_prepare()
+ {
+ 	h1=${NETIFS[p1]}
 -- 
 2.43.0
 
