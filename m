@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E72837BE0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4176E8382AC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 583E01F2A814
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 744CC1C237AE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA4C154C05;
-	Tue, 23 Jan 2024 00:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908E95D8F8;
+	Tue, 23 Jan 2024 01:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ir3oUwyi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6uydr9v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C00131741;
-	Tue, 23 Jan 2024 00:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAF44F8AE;
+	Tue, 23 Jan 2024 01:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969420; cv=none; b=iUvEfgy1N4usjAcrtVTkRo/Ope7Juve/+PCwk4yncl/xFHjwySrJeN5napSP2Acrx6UuqNdI4Su41aYwmtPCSaPSmMuQDpzd46N1sxxMdYQPATvd/dN7Bc5ol8BgrFSajSsqoMj9+ixT9zj1VcWcm8xljv6nOLB8gUgt1kHh6FA=
+	t=1705974406; cv=none; b=ugDHaemo0vqiNNvRk3QqL7dHuNGPUB6IeLmaTdtkGIA4wOWIo/9d0mjjK+lgcTKTD5RBSpgtXFwwMZZ4LPbpjPOU0pXZ2bBc3xDmqmMKXvF2TdwgVROVagZx9uDCo2e1D9c/ZeZfRBN7Lj80HyONrJ8pAfZRDcNZJD2QcLQGUzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969420; c=relaxed/simple;
-	bh=FC+ddltwdPhEoGWlL+Jiwwmf6eOG5zzdAnCR+elJXws=;
+	s=arc-20240116; t=1705974406; c=relaxed/simple;
+	bh=uYgevHvhF9iyFnKVdjrQbFUZhScWt/xXu1V/ErO76eI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAwNiodVrRweOvoxLHeMYIxsGtZow78razn5A01oT4FwGg1Ydib+VdvXMHTisi6TDDxS2SzJIeK9AwEHyhrI7jAWmBEKRrCTMH8tdIhmnwgdOsH9NKxAod5O/WJUmYtZR5yE0pr58+63ND/+BdGqlIOmTCXyvOugMEmP6NwsfVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ir3oUwyi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7326C433F1;
-	Tue, 23 Jan 2024 00:23:39 +0000 (UTC)
+	 MIME-Version; b=e0cIg47Kv87PNvszU0jA96JDV/r5ivaQX06D5Dx/gBL/V4gc5a8ntzOoYq8enPGV2Lfzv1YSdSQhyFkMAgxNn8CaUWv+7n3teR0h2kVGR7K0wWu52Ef6Qa5SX9pBdi32M1P5z0rDwQZEaPYsEV3vrzAutEfT0VjMBl02Hp3KYDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6uydr9v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC751C433F1;
+	Tue, 23 Jan 2024 01:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969419;
-	bh=FC+ddltwdPhEoGWlL+Jiwwmf6eOG5zzdAnCR+elJXws=;
+	s=korg; t=1705974406;
+	bh=uYgevHvhF9iyFnKVdjrQbFUZhScWt/xXu1V/ErO76eI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ir3oUwyiBcdYsmdCf/Cj046wHjA7iLjaghJ4DDRCQE9UbAz2+LIyEYLuuHnOyMSpp
-	 iYr926DfgGDHJ0RABI5duX1HAqN4AJCFBIWzAJyk2EM5qKRq8wydLRR2dt+ugOefRC
-	 rmetC6HRChaGx+uvXUkfRLbgS1/coiNcG1j/ghpo=
+	b=p6uydr9v0XUqFx/0zsuu33Vmr1Pl8TMOd6MI2c73XFKV4HJ9F1JoN87HDimMf4FOX
+	 jH1s2YFk72rYZNslSJPifBHfbZjblLgjtjfFnds7cLBXN9Vn1fid3uiLxgL8V2GMMB
+	 cpY89wTU68j7YpqB0fG1k2Q5C+DrB8XA6h9ZHe4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Florian Lehner <dev@der-flo.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 234/641] s390/bpf: Fix gotol with large offsets
-Date: Mon, 22 Jan 2024 15:52:18 -0800
-Message-ID: <20240122235825.251983845@linuxfoundation.org>
+Subject: [PATCH 6.6 088/583] bpf, lpm: Fix check prefixlen before walking trie
+Date: Mon, 22 Jan 2024 15:52:19 -0800
+Message-ID: <20240122235814.861431869@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Florian Lehner <dev@der-flo.net>
 
-[ Upstream commit ecba66cb36e3428e9f0c2362b45e213ad43ba8d0 ]
+[ Upstream commit 9b75dbeb36fcd9fc7ed51d370310d0518a387769 ]
 
-The gotol implementation uses a wrong data type for the offset: it
-should be s32, not s16.
+When looking up an element in LPM trie, the condition 'matchlen ==
+trie->max_prefixlen' will never return true, if key->prefixlen is larger
+than trie->max_prefixlen. Consequently all elements in the LPM trie will
+be visited and no element is returned in the end.
 
-Fixes: c690191e23d8 ("s390/bpf: Implement unconditional jump with 32-bit offset")
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20240102193531.3169422-2-iii@linux.ibm.com
+To resolve this, check key->prefixlen first before walking the LPM trie.
+
+Fixes: b95a5c4db09b ("bpf: add a longest prefix match trie map implementation")
+Signed-off-by: Florian Lehner <dev@der-flo.net>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20231105085801.3742-1-dev@der-flo.net
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/net/bpf_jit_comp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/lpm_trie.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
-index bf06b7283f0c..c7fbeedeb0a4 100644
---- a/arch/s390/net/bpf_jit_comp.c
-+++ b/arch/s390/net/bpf_jit_comp.c
-@@ -779,7 +779,7 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
- 				 int i, bool extra_pass, u32 stack_depth)
- {
- 	struct bpf_insn *insn = &fp->insnsi[i];
--	s16 branch_oc_off = insn->off;
-+	s32 branch_oc_off = insn->off;
- 	u32 dst_reg = insn->dst_reg;
- 	u32 src_reg = insn->src_reg;
- 	int last, insn_count = 1;
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index 17c7e7782a1f..b32be680da6c 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -231,6 +231,9 @@ static void *trie_lookup_elem(struct bpf_map *map, void *_key)
+ 	struct lpm_trie_node *node, *found = NULL;
+ 	struct bpf_lpm_trie_key *key = _key;
+ 
++	if (key->prefixlen > trie->max_prefixlen)
++		return NULL;
++
+ 	/* Start walking the trie from the root node ... */
+ 
+ 	for (node = rcu_dereference_check(trie->root, rcu_read_lock_bh_held());
 -- 
 2.43.0
 
