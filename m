@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F14837D10
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F34CF837F67
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5368E1F294BF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 324371C28FE0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E6A15E28B;
-	Tue, 23 Jan 2024 00:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF8163103;
+	Tue, 23 Jan 2024 00:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAEk1Sva"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qFAknlBl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D825FF12;
-	Tue, 23 Jan 2024 00:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E5662800;
+	Tue, 23 Jan 2024 00:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969782; cv=none; b=KFcd1Rd2NOn2x+VVsArK4Wy1H06fz4EXzALgXhMEH1aOygzFVLqNSKhUyL2R8s7zsi4NXI3tDaolkIdXgjh9mxeJG6KoOAbekB2NMgrwaksfuTohrLYWDYNVUFZa1oto4QLFWKBSaXcv9RuEDgd3vvGf3w/F3F1g7f4fMvrjgS4=
+	t=1705971110; cv=none; b=AtH8d8jt62vC/xrwkApQSqdUQi89pkAW9wzboRrTqVDgG4x6iMfxaUMF+HplAxZYQ6EtI8x0Jr5f+9FKq/OF0hEy+P2QjvkxEQVVDrNcdHOS8nRCtaav7Vdb1JHysOPCWeYb0R/ObYOZsw8/qbJaT6fxvV9A8pfLZK45Q7Xk0Gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969782; c=relaxed/simple;
-	bh=k2e18aVFUmi+wyB5JaKx29VpxczWzy1MO4JKJErp8I0=;
+	s=arc-20240116; t=1705971110; c=relaxed/simple;
+	bh=C6Wmht93B6zvxvZlVLhW6jaimtIrVuq2sSiOBaG9P7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZnjnADEVgn/MI5fxWbe8XjSxJNmrR4WNYCELRLHhxymyOVGptpVDuyWxfIP1MMDY6KlSjCj6L6CfiIdiwGf/rYCjZec0r3u9IoApN06FQoksavIuVzNIVQ1Sf71VnFJnqwxrW2vUNNOhxvR80izDdI1VENkQuOPCJT4M6myGBSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAEk1Sva; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53F4C433C7;
-	Tue, 23 Jan 2024 00:29:41 +0000 (UTC)
+	 MIME-Version; b=QvVm1Rwxqouyv08CMtJPlxy3753el7ovKHFtkOmw/tyUZ2JOEIbQZ2m7RYonDgR6JYPp1v3MEE5tqdYiNqdMNDMqARaiLRT2dwlYmBXhxHDxStktp8nY2wkjokPkCONrD3AAnc65NgIjI0yZsIjlJtxwxAiJkmJWCh9xgE6bbsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qFAknlBl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE78AC43390;
+	Tue, 23 Jan 2024 00:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969782;
-	bh=k2e18aVFUmi+wyB5JaKx29VpxczWzy1MO4JKJErp8I0=;
+	s=korg; t=1705971109;
+	bh=C6Wmht93B6zvxvZlVLhW6jaimtIrVuq2sSiOBaG9P7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mAEk1SvaxcrKtbn0UxsLsp/I1ljeTSdVlWECXqv1hmLarI8w/pDx707U8ELGzk9p7
-	 mcs+Gvcrc3rW/Gaz+/5OcHroGJHYAwbAAG9t8dKoqoOhzST6YS0qSRDtGTZRdsr5yK
-	 rAowa+a5GhbBfeRYsp1gk0oYEXCUkU8kS0IZ/Gn8=
+	b=qFAknlBlpDCk2q+wgNdEkj8aL0TTEqPZFwXQHsyxN4CceCIvIA9R0qRhEiacxEaW5
+	 agbGFJiLykRYIf4HUuB8ikUrDDttDCImX4Bh1otGmlXycuMjoL80FfB0wtmCdxduex
+	 JaE5JZNb8PlC9Op9Y801pED6niroL25Hryns4QIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: [PATCH 6.7 445/641] pwm: jz4740: Dont use dev_err_probe() in .request()
-Date: Mon, 22 Jan 2024 15:55:49 -0800
-Message-ID: <20240122235831.948366986@linuxfoundation.org>
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 182/417] drm/msm/dsi: Use pm_runtime_resume_and_get to prevent refcnt leaks
+Date: Mon, 22 Jan 2024 15:55:50 -0800
+Message-ID: <20240122235758.177336268@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-commit 9320fc509b87b4d795fb37112931e2f4f8b5c55f upstream.
+[ Upstream commit 3d07a411b4faaf2b498760ccf12888f8de529de0 ]
 
-dev_err_probe() is only supposed to be used in probe functions. While it
-probably doesn't hurt, both the EPROBE_DEFER handling and calling
-device_set_deferred_probe_reason() are conceptually wrong in the request
-callback. So replace the call by dev_err() and a separate return
-statement.
+This helper has been introduced to avoid programmer errors (missing
+_put calls leading to dangling refcnt) when using pm_runtime_get, use it.
 
-This effectively reverts commit c0bfe9606e03 ("pwm: jz4740: Simplify
-with dev_err_probe()").
+While at it, start checking the return value.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240106141302.1253365-2-u.kleine-koenig@pengutronix.de
-Fixes: c0bfe9606e03 ("pwm: jz4740: Simplify with dev_err_probe()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 5c8290284402 ("drm/msm/dsi: Split PHY drivers to separate files")
+Patchwork: https://patchwork.freedesktop.org/patch/543350/
+Link: https://lore.kernel.org/r/20230620-topic-dsiphy_rpm-v2-1-a11a751f34f0@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-jz4740.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/pwm/pwm-jz4740.c
-+++ b/drivers/pwm/pwm-jz4740.c
-@@ -61,9 +61,10 @@ static int jz4740_pwm_request(struct pwm
- 	snprintf(name, sizeof(name), "timer%u", pwm->hwpwm);
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+index 7fc0975cb869..62bc3756f2e2 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+@@ -512,7 +512,9 @@ static int dsi_phy_enable_resource(struct msm_dsi_phy *phy)
+ 	struct device *dev = &phy->pdev->dev;
+ 	int ret;
  
- 	clk = clk_get(chip->dev, name);
--	if (IS_ERR(clk))
--		return dev_err_probe(chip->dev, PTR_ERR(clk),
--				     "Failed to get clock\n");
-+	if (IS_ERR(clk)) {
-+		dev_err(chip->dev, "error %pe: Failed to get clock\n", clk);
-+		return PTR_ERR(clk);
-+	}
+-	pm_runtime_get_sync(dev);
++	ret = pm_runtime_resume_and_get(dev);
++	if (ret)
++		return ret;
  
- 	err = clk_prepare_enable(clk);
- 	if (err < 0) {
+ 	ret = clk_prepare_enable(phy->ahb_clk);
+ 	if (ret) {
+-- 
+2.43.0
+
 
 
 
