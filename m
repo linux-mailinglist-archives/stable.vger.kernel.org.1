@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-14569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8FFF838170
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 955F4837CB2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:14:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5453E1F239EF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D82028CA97
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:14:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581D02B9CA;
-	Tue, 23 Jan 2024 01:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC59F14830D;
+	Tue, 23 Jan 2024 00:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9kz88z8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8SXY8oJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161322B9CD;
-	Tue, 23 Jan 2024 01:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811C8155A4F;
+	Tue, 23 Jan 2024 00:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972133; cv=none; b=Lm+mY83IQkNzXw2yVYozQ38rNQsvYhEQTflJQjgJotUhou9nQQsF2fkN84kn2F9AlR5o703bdBeinHvNAPIrvONYCJ+ln+ipsdC/USWIU19pHt7RsW5L9XsTbgYSfOYEWqlA/h62dJJy6+2wnhG3UaBkSZf+/k90U4SwT7YAbk0=
+	t=1705969723; cv=none; b=msez9r7zkgeGP6sommJm0YBec8HubY5MupFRghBV/V4Sx9OSRpyValRtsWa4Xb4OxflAOHqG59YAVNJOLME2W6cxxkYPtuJjX+Cit4ytJTJt+qWdSpLvFcRdo8DA4lZDTaJl/VrTEINpLxIq78kA+r84qzWdlqaYlsdkC7PndTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972133; c=relaxed/simple;
-	bh=ba45qjmJYUhoaYlU2F5DOjNhG8rECexJKGY8qwZ5LQ0=;
+	s=arc-20240116; t=1705969723; c=relaxed/simple;
+	bh=u9ljyTHM5Q6b+LIOVwyCEUQry0C9NdhtMJZV8T1INuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lA7ZUjjL+JYYxnslWbFJNNZt+1tehYA19Abd2H1ycFmLhKuYaWgj+pfxkizy83jwDuPfsEJ9l7S08Bj7eP47VoBYs1hpCw1SQZ5KtgaxLVCykIs/i/6ImSKoDrbGB1CkYjwXMvA/wqEl2sTnvoeAZiGwOF2S9vpQeZEZkv1ZZKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9kz88z8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94061C433A6;
-	Tue, 23 Jan 2024 01:08:52 +0000 (UTC)
+	 MIME-Version; b=XNzi9bDaY1RPmw/+XDsTkwwYw7ObKS3q22xF7ubXUzpsfNy3eo0X/IwNDmu/CpJ4yqn9B+x5c2jRVURozzQwcQTDJeZBLoGddkJeRa2CYNLji2CQoLGsp+iHLyEn2XmBDQXoMDnqb4NSHB5EugMhePfWkNMCX+os9OYKrfVsd4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8SXY8oJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7927AC433C7;
+	Tue, 23 Jan 2024 00:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972132;
-	bh=ba45qjmJYUhoaYlU2F5DOjNhG8rECexJKGY8qwZ5LQ0=;
+	s=korg; t=1705969723;
+	bh=u9ljyTHM5Q6b+LIOVwyCEUQry0C9NdhtMJZV8T1INuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z9kz88z8rbfJmaFqMMiL9U+dJwAYMeUlfuDAxf/tOXuFgs7ND7uyRnvl7qPBUgAjR
-	 3Ojd/8c7LcpVkJJbZKkp2pmxJMeAnvRfhU7rO5D6eNrSy9n0vftIsAfaynAu1uFEzZ
-	 6ZSDS+bsxyHue4CbkWNZSqIEwQWgPr66UxTeDckw=
+	b=z8SXY8oJ/WqLux/dJ9JFgqhVI6EjKvcg5r37FDgMhThPQTXAxLMBmLplzNOhs0Wn0
+	 9OH8PBxGwFbVrPkyJcVo5WSi/Guq0ogVMoT27DCNuKqGigA73WTSjhrVu9yqn4apTH
+	 zGW1ARxvvOHVqi/9qWUgOdvZ/zN2imvpcO5glIao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 065/374] x86/lib: Fix overflow when counting digits
-Date: Mon, 22 Jan 2024 15:55:21 -0800
-Message-ID: <20240122235746.879108700@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.7 418/641] ALSA: oxygen: Fix right channel of capture volume mixer
+Date: Mon, 22 Jan 2024 15:55:22 -0800
+Message-ID: <20240122235831.067319298@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit a24d61c609813963aacc9f6ec8343f4fcaac7243 ]
+commit a03cfad512ac24a35184d7d87ec0d5489e1cb763 upstream.
 
-tl;dr: The num_digits() function has a theoretical overflow issue.
-But it doesn't affect any actual in-tree users.  Fix it by using
-a larger type for one of the local variables.
+There was a typo in oxygen mixer code that didn't update the right
+channel value properly for the capture volume.  Let's fix it.
 
-Long version:
+This trivial fix was originally reported on Bugzilla.
 
-There is an overflow in variable m in function num_digits when val
-is >= 1410065408 which leads to the digit calculation loop to
-iterate more times than required. This results in either more
-digits being counted or in some cases (for example where val is
-1932683193) the value of m eventually overflows to zero and the
-while loop spins forever).
-
-Currently the function num_digits is currently only being used for
-small values of val in the SMP boot stage for digit counting on the
-number of cpus and NUMA nodes, so the overflow is never encountered.
-However it is useful to fix the overflow issue in case the function
-is used for other purposes in the future. (The issue was discovered
-while investigating the digit counting performance in various
-kernel helper functions rather than any real-world use-case).
-
-The simplest fix is to make m a long long, the overhead in
-multiplication speed for a long long is very minor for small values
-of val less than 10000 on modern processors. The alternative
-fix is to replace the multiplication with a constant division
-by 10 loop (this compiles down to an multiplication and shift)
-without needing to make m a long long, but this is slightly slower
-than the fix in this commit when measured on a range of x86
-processors).
-
-[ dhansen: subject and changelog tweaks ]
-
-Fixes: 646e29a1789a ("x86: Improve the printout of the SMP bootup CPU table")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20231102174901.2590325-1-colin.i.king%40gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a3601560496d ("[ALSA] oxygen: add front panel controls")
+Cc: <stable@vger.kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=156561
+Link: https://lore.kernel.org/r/20240112111023.6208-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/lib/misc.c | 2 +-
+ sound/pci/oxygen/oxygen_mixer.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/lib/misc.c b/arch/x86/lib/misc.c
-index a018ec4fba53..c97be9a1430a 100644
---- a/arch/x86/lib/misc.c
-+++ b/arch/x86/lib/misc.c
-@@ -6,7 +6,7 @@
-  */
- int num_digits(int val)
- {
--	int m = 10;
-+	long long m = 10;
- 	int d = 1;
- 
- 	if (val < 0) {
--- 
-2.43.0
-
+--- a/sound/pci/oxygen/oxygen_mixer.c
++++ b/sound/pci/oxygen/oxygen_mixer.c
+@@ -718,7 +718,7 @@ static int ac97_fp_rec_volume_put(struct
+ 	oldreg = oxygen_read_ac97(chip, 1, AC97_REC_GAIN);
+ 	newreg = oldreg & ~0x0707;
+ 	newreg = newreg | (value->value.integer.value[0] & 7);
+-	newreg = newreg | ((value->value.integer.value[0] & 7) << 8);
++	newreg = newreg | ((value->value.integer.value[1] & 7) << 8);
+ 	change = newreg != oldreg;
+ 	if (change)
+ 		oxygen_write_ac97(chip, 1, AC97_REC_GAIN, newreg);
 
 
 
