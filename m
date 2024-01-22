@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B9688380EA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DD4838081
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6ABB28C960
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A76EE28C516
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767211350F9;
-	Tue, 23 Jan 2024 01:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFB912F5B2;
+	Tue, 23 Jan 2024 01:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qoH0nVNP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFV+PO8p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363801350CA;
-	Tue, 23 Jan 2024 01:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3D9657B3;
+	Tue, 23 Jan 2024 01:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971959; cv=none; b=A3oXJWChSnuiWL+GGxadaeHc29ivuaAjyFYCIODtM0oMSBHs5oIbdYrD7wbDUSaDDNE77Sz9DcHMxEJ9x6qgB8+LEoweYla1knWncOdOdNQnITTZjYnIEA0qsPEeHkzKfqWW2EQUBvjHlBg2eEccZfJZDEuEPgayAv3mcWg3r0w=
+	t=1705971769; cv=none; b=F1zq+SI5vtizZD5nGxjopvdftRUAr1rfnceflvmLSIaEYgpqAJtnTQKO8PSVAWSvkCZNG7neK6AmOMQe9lSiUo3CnmkMNRqipJhSfQwl8XgT9P5qfL+FaEMBAozaHstsyySPsEh/i6XdT7R3Rld6knLGVLdNLJj84FkAStirkEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971959; c=relaxed/simple;
-	bh=ElnARam4Qa6uUpC+PyEWcS8037QE6nNpitE3WXo3gY8=;
+	s=arc-20240116; t=1705971769; c=relaxed/simple;
+	bh=K42lcmuLTGlj2YMH9OPxvTTrM8FSo8LRBmR7VKOCc6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YaQ5szBJon+tez/tkp+x1ytycrkIrhKipNLVcos7HHvLljPAGz2d+Z7K8DXCPZh5DtuofUQfsu8rdvMhmrLvyevfjC5an7vyYxI3579/f2cT7BdwKHYKSt3OJd6oor5LdhHN3uTK8vumtGneSKKg1s7vPCo1vdT/zqMvxHXTl0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qoH0nVNP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBABC433F1;
-	Tue, 23 Jan 2024 01:05:58 +0000 (UTC)
+	 MIME-Version; b=eDMFNJ2bi4FtqscvoJJeg/vMVpYaOqf420K0LmMNslqzB/IistDnQ5Px5XcDkfmXKgXQ8LZLr/0DJgNwwpSKX4m3hOK2CjnLyq5/RZw/yiVwt33Ec18e1rPAcOWV8ztfCrcMRpj980BBY3kSDUawpmgkbKyQBaj8DX62q2NzL1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFV+PO8p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A10C433F1;
+	Tue, 23 Jan 2024 01:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971959;
-	bh=ElnARam4Qa6uUpC+PyEWcS8037QE6nNpitE3WXo3gY8=;
+	s=korg; t=1705971768;
+	bh=K42lcmuLTGlj2YMH9OPxvTTrM8FSo8LRBmR7VKOCc6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qoH0nVNPd09qFVgJUWBvCeGiEjYpTktD13jQU3s301pEyoebhfnC0kj9nke7nUiXp
-	 4UcM+hv1Pq231QgebRf7HK1MsPHlLjWtl5NCzMCcO/QxJW9qgFEFccIrQihjGSPcIT
-	 F3uwhhhTMP60IOkGNw+xkq40Jx/BCruq6VT6Ia2s=
+	b=VFV+PO8p8lh0v2SZ2F5/ZUF2iFK8Zi/kkuW6LzymJ17DZKrg87PQy95/A3eHTSg0r
+	 0I5Lkehjq5brMkEO96WvLEO9Ecb8pUFiIBeVSxr/yHj9ISV1nqpRK3aaikqZD+mMJ5
+	 41MA8/Ayiv1cCNjfriEt3wM4z7O9zkjvftdWgYkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 338/417] serial: 8250: omap: Dont skip resource freeing if pm_runtime_resume_and_get() failed
+	Liam Howlett <liam.howlett@oracle.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 5.10 200/286] binder: fix use-after-free in shinkers callback
 Date: Mon, 22 Jan 2024 15:58:26 -0800
-Message-ID: <20240122235803.498702702@linuxfoundation.org>
+Message-ID: <20240122235739.815261205@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +61,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit ad90d0358bd3b4554f243a425168fc7cebe7d04e ]
+commit 3f489c2067c5824528212b0fc18b28d51332d906 upstream.
 
-Returning an error code from .remove() makes the driver core emit the
-little helpful error message:
+The mmap read lock is used during the shrinker's callback, which means
+that using alloc->vma pointer isn't safe as it can race with munmap().
+As of commit dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in
+munmap") the mmap lock is downgraded after the vma has been isolated.
 
-	remove callback returned a non-zero value. This will be ignored.
+I was able to reproduce this issue by manually adding some delays and
+triggering page reclaiming through the shrinker's debug sysfs. The
+following KASAN report confirms the UAF:
 
-and then remove the device anyhow. So all resources that were not freed
-are leaked in this case. Skipping serial8250_unregister_port() has the
-potential to keep enough of the UART around to trigger a use-after-free.
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in zap_page_range_single+0x470/0x4b8
+  Read of size 8 at addr ffff356ed50e50f0 by task bash/478
 
-So replace the error return (and with it the little helpful error
-message) by a more useful error message and continue to cleanup.
+  CPU: 1 PID: 478 Comm: bash Not tainted 6.6.0-rc5-00055-g1c8b86a3799f-dirty #70
+  Hardware name: linux,dummy-virt (DT)
+  Call trace:
+   zap_page_range_single+0x470/0x4b8
+   binder_alloc_free_page+0x608/0xadc
+   __list_lru_walk_one+0x130/0x3b0
+   list_lru_walk_node+0xc4/0x22c
+   binder_shrink_scan+0x108/0x1dc
+   shrinker_debugfs_scan_write+0x2b4/0x500
+   full_proxy_write+0xd4/0x140
+   vfs_write+0x1ac/0x758
+   ksys_write+0xf0/0x1dc
+   __arm64_sys_write+0x6c/0x9c
 
-Fixes: e3f0c638f428 ("serial: 8250: omap: Fix unpaired pm_runtime_put_sync() in omap8250_remove()")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20231110152927.70601-2-u.kleine-koenig@pengutronix.de
+  Allocated by task 492:
+   kmem_cache_alloc+0x130/0x368
+   vm_area_alloc+0x2c/0x190
+   mmap_region+0x258/0x18bc
+   do_mmap+0x694/0xa60
+   vm_mmap_pgoff+0x170/0x29c
+   ksys_mmap_pgoff+0x290/0x3a0
+   __arm64_sys_mmap+0xcc/0x144
+
+  Freed by task 491:
+   kmem_cache_free+0x17c/0x3c8
+   vm_area_free_rcu_cb+0x74/0x98
+   rcu_core+0xa38/0x26d4
+   rcu_core_si+0x10/0x1c
+   __do_softirq+0x2fc/0xd24
+
+  Last potentially related work creation:
+   __call_rcu_common.constprop.0+0x6c/0xba0
+   call_rcu+0x10/0x1c
+   vm_area_free+0x18/0x24
+   remove_vma+0xe4/0x118
+   do_vmi_align_munmap.isra.0+0x718/0xb5c
+   do_vmi_munmap+0xdc/0x1fc
+   __vm_munmap+0x10c/0x278
+   __arm64_sys_munmap+0x58/0x7c
+
+Fix this issue by performing instead a vma_lookup() which will fail to
+find the vma that was isolated before the mmap lock downgrade. Note that
+this option has better performance than upgrading to a mmap write lock
+which would increase contention. Plus, mmap_write_trylock() has been
+recently removed anyway.
+
+Fixes: dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in munmap")
+Cc: stable@vger.kernel.org
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-3-cmllamas@google.com
+[cmllamas: use find_vma() instead of vma_lookup() as commit ce6d42f2e4a2
+ is missing in v5.10. This only works because we check the vma against
+ our cached alloc->vma pointer.]
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_omap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/android/binder_alloc.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index 0b04d810b3e6..037d613006f5 100644
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -1476,7 +1476,7 @@ static int omap8250_remove(struct platform_device *pdev)
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -1000,7 +1000,9 @@ enum lru_status binder_alloc_free_page(s
+ 		goto err_mmget;
+ 	if (!mmap_read_trylock(mm))
+ 		goto err_mmap_read_lock_failed;
+-	vma = binder_alloc_get_vma(alloc);
++	vma = find_vma(mm, page_addr);
++	if (vma && vma != binder_alloc_get_vma(alloc))
++		goto err_invalid_vma;
  
- 	err = pm_runtime_resume_and_get(&pdev->dev);
- 	if (err)
--		return err;
-+		dev_err(&pdev->dev, "Failed to resume hardware\n");
+ 	list_lru_isolate(lru, item);
+ 	spin_unlock(lock);
+@@ -1026,6 +1028,8 @@ enum lru_status binder_alloc_free_page(s
+ 	mutex_unlock(&alloc->mutex);
+ 	return LRU_REMOVED_RETRY;
  
- 	serial8250_unregister_port(priv->line);
- 	priv->line = -ENODEV;
--- 
-2.43.0
-
++err_invalid_vma:
++	mmap_read_unlock(mm);
+ err_mmap_read_lock_failed:
+ 	mmput_async(mm);
+ err_mmget:
 
 
 
