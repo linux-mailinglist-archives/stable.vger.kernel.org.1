@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-14018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A15C9837F81
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F8E837EDD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B384B2B1BB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BD2729BBFB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22871292C9;
-	Tue, 23 Jan 2024 00:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44455251;
+	Tue, 23 Jan 2024 00:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="woridvLx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8M4AjrW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725B0128394;
-	Tue, 23 Jan 2024 00:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E112570;
+	Tue, 23 Jan 2024 00:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970977; cv=none; b=CyKGYtXgG4tBgMHljwE0PoovEOhNmXRtdpmlfjQYM7QTZsZHd+biCr5BvVG2Dk7pjl7AsaeOWmhdW5S4vw4R74lr983e2kxruUH9zMwvCMAnrffBaQKltotyrvQzf5XmPnkUGfEBRZ6d1bkWHxMf0bMceoT0hydKQ2NbR/MLrSw=
+	t=1705970791; cv=none; b=qAwPtJjHQ8v7O21SUUcx//6FipYvb5/fLbUNbEZRu6xkbcMJ89NgJeNkmtDEfrBkplru3HfIOEcQtyDKZs3GAI97tIdanNZeUK1re3aPQZW5zcIEkKdOdCAHEda3i+RzTwiWk/KI5WD7MBQQFggonGtAhmFVl4EhHS9x03wukXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970977; c=relaxed/simple;
-	bh=kMm5vfkyO1F3HGFI4lXGd3RZYPL5+owFpK7fkY7r+0I=;
+	s=arc-20240116; t=1705970791; c=relaxed/simple;
+	bh=A3B4ApZwZRc3AMbZ4Td8sPT9rFUo0rd/lLdIQ14RPRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tV/Nop/PakY3kBaCXvdKW1cJ49/4wJyz4vqcUv1Oo9OxWN+6T09cZkPoXURhyIrjIcgPtwHn43+SQeTdfnsZlvWAvpIMerd0BXrtXEU0viEbBsHOFMpvOXuPNy4hxJKFZe7aBUCBDcxOAMv+eTUdVulkPC5XJr0DiKuBys06Vb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=woridvLx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B0E0C433C7;
-	Tue, 23 Jan 2024 00:49:37 +0000 (UTC)
+	 MIME-Version; b=elwXTMzMFZrR4mJWVdiuhscjEEryifm3LjQFz153ak7i4H28tMPBuobStxankbawXqLW4Hx0svA8CTXtjbFrozK3oz0LbEZU6RuuxjjbHl+2lguwb6CPVKfsrsIgfFuGfB3cSxZ40cNauF/bfU+S+1wdvPo/xep/TV5xytiuZaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8M4AjrW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BE1C433F1;
+	Tue, 23 Jan 2024 00:46:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970977;
-	bh=kMm5vfkyO1F3HGFI4lXGd3RZYPL5+owFpK7fkY7r+0I=;
+	s=korg; t=1705970791;
+	bh=A3B4ApZwZRc3AMbZ4Td8sPT9rFUo0rd/lLdIQ14RPRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=woridvLxW0hGUKzawjY0y3V2CxQegPaviaw+U4q+JpyrxldrzRbSrYJx2s5TUYo+9
-	 pT8NnqAlOkNDt1izU5GS1hpuTUiaiZhoOfX30rZZnVVI3oKDUcYReL7r1EpCOHpBcq
-	 75T0x+9N6pRhm2ZnMTIZ8JE1Ge7pV/vuIOlaQSQY=
+	b=A8M4AjrW5QQq0sF7tUyw2ogxUAKBJBBrXhVQGOq+p/mlXM1ZOYc5IbClpQIP2dyP+
+	 doO7ReD7JLk1xdbNjc16CbdZxHLpLkT7di3t8NS2hnlQAvHdgZKx0S7f7EsiN5/yB5
+	 4HZOqungqWxOwZ/HBPawF6A6XxjcNdBx87y+DGUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	David Rau <David.Rau.opensource@dm.renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 154/417] ip6_tunnel: fix NEXTHDR_FRAGMENT handling in ip6_tnl_parse_tlv_enc_lim()
-Date: Mon, 22 Jan 2024 15:55:22 -0800
-Message-ID: <20240122235757.174404908@linuxfoundation.org>
+Subject: [PATCH 5.10 017/286] ASoC: da7219: Support low DC impedance headset
+Date: Mon, 22 Jan 2024 15:55:23 -0800
+Message-ID: <20240122235732.687713265@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,174 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: David Rau <David.Rau.opensource@dm.renesas.com>
 
-[ Upstream commit d375b98e0248980681e5e56b712026174d617198 ]
+[ Upstream commit 5f44de697383fcc9a9a1a78f99e09d1838704b90 ]
 
-syzbot pointed out [1] that NEXTHDR_FRAGMENT handling is broken.
+Change the default MIC detection impedance threshold to 200ohm
+to support low mic DC impedance headset.
 
-Reading frag_off can only be done if we pulled enough bytes
-to skb->head. Currently we might access garbage.
-
-[1]
-BUG: KMSAN: uninit-value in ip6_tnl_parse_tlv_enc_lim+0x94f/0xbb0
-ip6_tnl_parse_tlv_enc_lim+0x94f/0xbb0
-ipxip6_tnl_xmit net/ipv6/ip6_tunnel.c:1326 [inline]
-ip6_tnl_start_xmit+0xab2/0x1a70 net/ipv6/ip6_tunnel.c:1432
-__netdev_start_xmit include/linux/netdevice.h:4940 [inline]
-netdev_start_xmit include/linux/netdevice.h:4954 [inline]
-xmit_one net/core/dev.c:3548 [inline]
-dev_hard_start_xmit+0x247/0xa10 net/core/dev.c:3564
-__dev_queue_xmit+0x33b8/0x5130 net/core/dev.c:4349
-dev_queue_xmit include/linux/netdevice.h:3134 [inline]
-neigh_connected_output+0x569/0x660 net/core/neighbour.c:1592
-neigh_output include/net/neighbour.h:542 [inline]
-ip6_finish_output2+0x23a9/0x2b30 net/ipv6/ip6_output.c:137
-ip6_finish_output+0x855/0x12b0 net/ipv6/ip6_output.c:222
-NF_HOOK_COND include/linux/netfilter.h:303 [inline]
-ip6_output+0x323/0x610 net/ipv6/ip6_output.c:243
-dst_output include/net/dst.h:451 [inline]
-ip6_local_out+0xe9/0x140 net/ipv6/output_core.c:155
-ip6_send_skb net/ipv6/ip6_output.c:1952 [inline]
-ip6_push_pending_frames+0x1f9/0x560 net/ipv6/ip6_output.c:1972
-rawv6_push_pending_frames+0xbe8/0xdf0 net/ipv6/raw.c:582
-rawv6_sendmsg+0x2b66/0x2e70 net/ipv6/raw.c:920
-inet_sendmsg+0x105/0x190 net/ipv4/af_inet.c:847
-sock_sendmsg_nosec net/socket.c:730 [inline]
-__sock_sendmsg net/socket.c:745 [inline]
-____sys_sendmsg+0x9c2/0xd60 net/socket.c:2584
-___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
-__sys_sendmsg net/socket.c:2667 [inline]
-__do_sys_sendmsg net/socket.c:2676 [inline]
-__se_sys_sendmsg net/socket.c:2674 [inline]
-__x64_sys_sendmsg+0x307/0x490 net/socket.c:2674
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Uninit was created at:
-slab_post_alloc_hook+0x129/0xa70 mm/slab.h:768
-slab_alloc_node mm/slub.c:3478 [inline]
-__kmem_cache_alloc_node+0x5c9/0x970 mm/slub.c:3517
-__do_kmalloc_node mm/slab_common.c:1006 [inline]
-__kmalloc_node_track_caller+0x118/0x3c0 mm/slab_common.c:1027
-kmalloc_reserve+0x249/0x4a0 net/core/skbuff.c:582
-pskb_expand_head+0x226/0x1a00 net/core/skbuff.c:2098
-__pskb_pull_tail+0x13b/0x2310 net/core/skbuff.c:2655
-pskb_may_pull_reason include/linux/skbuff.h:2673 [inline]
-pskb_may_pull include/linux/skbuff.h:2681 [inline]
-ip6_tnl_parse_tlv_enc_lim+0x901/0xbb0 net/ipv6/ip6_tunnel.c:408
-ipxip6_tnl_xmit net/ipv6/ip6_tunnel.c:1326 [inline]
-ip6_tnl_start_xmit+0xab2/0x1a70 net/ipv6/ip6_tunnel.c:1432
-__netdev_start_xmit include/linux/netdevice.h:4940 [inline]
-netdev_start_xmit include/linux/netdevice.h:4954 [inline]
-xmit_one net/core/dev.c:3548 [inline]
-dev_hard_start_xmit+0x247/0xa10 net/core/dev.c:3564
-__dev_queue_xmit+0x33b8/0x5130 net/core/dev.c:4349
-dev_queue_xmit include/linux/netdevice.h:3134 [inline]
-neigh_connected_output+0x569/0x660 net/core/neighbour.c:1592
-neigh_output include/net/neighbour.h:542 [inline]
-ip6_finish_output2+0x23a9/0x2b30 net/ipv6/ip6_output.c:137
-ip6_finish_output+0x855/0x12b0 net/ipv6/ip6_output.c:222
-NF_HOOK_COND include/linux/netfilter.h:303 [inline]
-ip6_output+0x323/0x610 net/ipv6/ip6_output.c:243
-dst_output include/net/dst.h:451 [inline]
-ip6_local_out+0xe9/0x140 net/ipv6/output_core.c:155
-ip6_send_skb net/ipv6/ip6_output.c:1952 [inline]
-ip6_push_pending_frames+0x1f9/0x560 net/ipv6/ip6_output.c:1972
-rawv6_push_pending_frames+0xbe8/0xdf0 net/ipv6/raw.c:582
-rawv6_sendmsg+0x2b66/0x2e70 net/ipv6/raw.c:920
-inet_sendmsg+0x105/0x190 net/ipv4/af_inet.c:847
-sock_sendmsg_nosec net/socket.c:730 [inline]
-__sock_sendmsg net/socket.c:745 [inline]
-____sys_sendmsg+0x9c2/0xd60 net/socket.c:2584
-___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
-__sys_sendmsg net/socket.c:2667 [inline]
-__do_sys_sendmsg net/socket.c:2676 [inline]
-__se_sys_sendmsg net/socket.c:2674 [inline]
-__x64_sys_sendmsg+0x307/0x490 net/socket.c:2674
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-CPU: 0 PID: 7345 Comm: syz-executor.3 Not tainted 6.7.0-rc8-syzkaller-00024-gac865f00af29 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-
-Fixes: fbfa743a9d2a ("ipv6: fix ip6_tnl_parse_tlv_enc_lim()")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: David Rau <David.Rau.opensource@dm.renesas.com>
+Link: https://lore.kernel.org/r/20231201042933.26392-1-David.Rau.opensource@dm.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_tunnel.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ sound/soc/codecs/da7219-aad.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index afc922c88d17..9125e92d9917 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -399,7 +399,7 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff *skb, __u8 *raw)
- 	const struct ipv6hdr *ipv6h = (const struct ipv6hdr *)raw;
- 	unsigned int nhoff = raw - skb->data;
- 	unsigned int off = nhoff + sizeof(*ipv6h);
--	u8 next, nexthdr = ipv6h->nexthdr;
-+	u8 nexthdr = ipv6h->nexthdr;
+diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
+index b316d613a709..b6030709b6b6 100644
+--- a/sound/soc/codecs/da7219-aad.c
++++ b/sound/soc/codecs/da7219-aad.c
+@@ -654,7 +654,7 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct device *dev)
+ 		aad_pdata->mic_det_thr =
+ 			da7219_aad_fw_mic_det_thr(dev, fw_val32);
+ 	else
+-		aad_pdata->mic_det_thr = DA7219_AAD_MIC_DET_THR_500_OHMS;
++		aad_pdata->mic_det_thr = DA7219_AAD_MIC_DET_THR_200_OHMS;
  
- 	while (ipv6_ext_hdr(nexthdr) && nexthdr != NEXTHDR_NONE) {
- 		struct ipv6_opt_hdr *hdr;
-@@ -410,25 +410,25 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff *skb, __u8 *raw)
- 
- 		hdr = (struct ipv6_opt_hdr *)(skb->data + off);
- 		if (nexthdr == NEXTHDR_FRAGMENT) {
--			struct frag_hdr *frag_hdr = (struct frag_hdr *) hdr;
--			if (frag_hdr->frag_off)
--				break;
- 			optlen = 8;
- 		} else if (nexthdr == NEXTHDR_AUTH) {
- 			optlen = ipv6_authlen(hdr);
- 		} else {
- 			optlen = ipv6_optlen(hdr);
- 		}
--		/* cache hdr->nexthdr, since pskb_may_pull() might
--		 * invalidate hdr
--		 */
--		next = hdr->nexthdr;
--		if (nexthdr == NEXTHDR_DEST) {
--			u16 i = 2;
- 
--			/* Remember : hdr is no longer valid at this point. */
--			if (!pskb_may_pull(skb, off + optlen))
-+		if (!pskb_may_pull(skb, off + optlen))
-+			break;
-+
-+		hdr = (struct ipv6_opt_hdr *)(skb->data + off);
-+		if (nexthdr == NEXTHDR_FRAGMENT) {
-+			struct frag_hdr *frag_hdr = (struct frag_hdr *)hdr;
-+
-+			if (frag_hdr->frag_off)
- 				break;
-+		}
-+		if (nexthdr == NEXTHDR_DEST) {
-+			u16 i = 2;
- 
- 			while (1) {
- 				struct ipv6_tlv_tnl_enc_lim *tel;
-@@ -449,7 +449,7 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff *skb, __u8 *raw)
- 					i++;
- 			}
- 		}
--		nexthdr = next;
-+		nexthdr = hdr->nexthdr;
- 		off += optlen;
- 	}
- 	return 0;
+ 	if (fwnode_property_read_u32(aad_np, "dlg,jack-ins-deb", &fw_val32) >= 0)
+ 		aad_pdata->jack_ins_deb =
 -- 
 2.43.0
 
