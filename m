@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F037F837E57
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA87838329
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BC2A2834C6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:38:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E78AB28C904
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CAF58202;
-	Tue, 23 Jan 2024 00:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA7B60887;
+	Tue, 23 Jan 2024 01:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X79Q7GzV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9kC9rqc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435AB56773;
-	Tue, 23 Jan 2024 00:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB2E605DF;
+	Tue, 23 Jan 2024 01:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970524; cv=none; b=nqNbDW2QSsGZbv+J9xEVjK/4HT5z4+GMpnsMHj3gmvEcOX+qgJKf26tUraKT/qGq8Kio9FGdOWw6D7TioJN42OMiTZieVi3cmHRl3uetNr+hWmz4xyN04ArxcvLRPb00eaeFJZpctEdWNKk7Ln80huAsEvY+FsvcySgO4K8bhmc=
+	t=1705974721; cv=none; b=fQtH2u8AtXWxpEnxUu4fofx5nGwHAp/Oc5eG/E5wi+Q9SSW1hEuvIaCWn/0mMyheNeV/12eM6PI37mMcyu0Jg+zHi0KTtNBZ++AZjPSvZfFla4FHRicv7OP2zynGijxKk98st7lcientHf3p8bfIgPZp5b8TBaX6ydkdZTpaeEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970524; c=relaxed/simple;
-	bh=pJ7UocyB/xp37waoHFFYz6+lPm6kEOGPRMZa1agf1Lc=;
+	s=arc-20240116; t=1705974721; c=relaxed/simple;
+	bh=8y9k9m6o7D45Qgsw8N5iLdquAsZk/z6eg9UPBDOYzo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pVeK9LhEwCEd3WMOFcG3yu3LdEfZSJdhsasXT7hu4GTBmO1Knz+7JZzMViB1uSXSCDMYic0k+JYzpvwKIu6m4lA0CZxOgtNWDFuDZ7VZTKRZKRO07kJqg8UFETxhrCW3gxTDT+7Pi92hVbEHuGS4r+auKLeEijKIjJoXGKu6nnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X79Q7GzV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C73C43390;
-	Tue, 23 Jan 2024 00:42:03 +0000 (UTC)
+	 MIME-Version; b=kEVfE9qSgIpMdVSV9fO5I0ZDQSn8Q1A9ld4dS3c4FtgIzNoCS8FIz88tFMXz2FeTd0Q2Z4OwFQWtmGrkdEQ1oKo4lcJZfvglsQ9N2Az1PSnUUkNdw/XOf6eHkgFVhGbzACBREmimiZBwglHVc3p8EWy0dBBvT6zgEbdvmvm8K+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9kC9rqc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C778FC433F1;
+	Tue, 23 Jan 2024 01:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970524;
-	bh=pJ7UocyB/xp37waoHFFYz6+lPm6kEOGPRMZa1agf1Lc=;
+	s=korg; t=1705974721;
+	bh=8y9k9m6o7D45Qgsw8N5iLdquAsZk/z6eg9UPBDOYzo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X79Q7GzVQ/70fHPG8HzsaurtqAget4Bj2Fe5Ezefr0LfaCW0U+pfN/RCAMfwRU8pA
-	 jaU36rYcYbBRdklkA67TBQzzfv7SYzvXNin1waOwpQXBVyjqBl5Uvd132nApz55kXR
-	 plfHCwewsaWM0kWrS2hyh4HlUpDnOQip1pHf/cwQ=
+	b=I9kC9rqcS/u9e9fn5p7tvf2bYC7m8hE3ZZwmzcN6LYFoDhCfrjcFl+tDqCFugzMlp
+	 oCQ7SAo2zJUFOmp7ibqIYLfzPU+4VYp332EZmgod19jg7gLnwXmhu8JXGHI5EYdddt
+	 wzZ84HXmNJPyobTL0CmKcnjsTNLJYByHoRw+tfzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
-	Paul Moore <paul@paul-moore.com>,
+	Hao Sun <sunhao.th@gmail.com>,
+	Andrei Matei <andreimatei1@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/417] calipso: fix memory leak in netlbl_calipso_add_pass()
+Subject: [PATCH 6.6 142/583] bpf: Fix verification of indirect var-off stack access
 Date: Mon, 22 Jan 2024 15:53:13 -0800
-Message-ID: <20240122235752.432343558@linuxfoundation.org>
+Message-ID: <20240122235816.448534467@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+From: Andrei Matei <andreimatei1@gmail.com>
 
-[ Upstream commit ec4e9d630a64df500641892f4e259e8149594a99 ]
+[ Upstream commit a833a17aeac73b33f79433d7cee68d5cafd71e4f ]
 
-If IPv6 support is disabled at boot (ipv6.disable=1),
-the calipso_init() -> netlbl_calipso_ops_register() function isn't called,
-and the netlbl_calipso_ops_get() function always returns NULL.
-In this case, the netlbl_calipso_add_pass() function allocates memory
-for the doi_def variable but doesn't free it with the calipso_doi_free().
+This patch fixes a bug around the verification of possibly-zero-sized
+stack accesses. When the access was done through a var-offset stack
+pointer, check_stack_access_within_bounds was incorrectly computing the
+maximum-offset of a zero-sized read to be the same as the register's min
+offset. Instead, we have to take in account the register's maximum
+possible value. The patch also simplifies how the max offset is checked;
+the check is now simpler than for min offset.
 
-BUG: memory leak
-unreferenced object 0xffff888011d68180 (size 64):
-  comm "syz-executor.1", pid 10746, jiffies 4295410986 (age 17.928s)
-  hex dump (first 32 bytes):
-    00 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<...>] kmalloc include/linux/slab.h:552 [inline]
-    [<...>] netlbl_calipso_add_pass net/netlabel/netlabel_calipso.c:76 [inline]
-    [<...>] netlbl_calipso_add+0x22e/0x4f0 net/netlabel/netlabel_calipso.c:111
-    [<...>] genl_family_rcv_msg_doit+0x22f/0x330 net/netlink/genetlink.c:739
-    [<...>] genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
-    [<...>] genl_rcv_msg+0x341/0x5a0 net/netlink/genetlink.c:800
-    [<...>] netlink_rcv_skb+0x14d/0x440 net/netlink/af_netlink.c:2515
-    [<...>] genl_rcv+0x29/0x40 net/netlink/genetlink.c:811
-    [<...>] netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
-    [<...>] netlink_unicast+0x54b/0x800 net/netlink/af_netlink.c:1339
-    [<...>] netlink_sendmsg+0x90a/0xdf0 net/netlink/af_netlink.c:1934
-    [<...>] sock_sendmsg_nosec net/socket.c:651 [inline]
-    [<...>] sock_sendmsg+0x157/0x190 net/socket.c:671
-    [<...>] ____sys_sendmsg+0x712/0x870 net/socket.c:2342
-    [<...>] ___sys_sendmsg+0xf8/0x170 net/socket.c:2396
-    [<...>] __sys_sendmsg+0xea/0x1b0 net/socket.c:2429
-    [<...>] do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
-    [<...>] entry_SYSCALL_64_after_hwframe+0x61/0xc6
+The bug was allowing accesses to erroneously pass the
+check_stack_access_within_bounds() checks, only to later crash in
+check_stack_range_initialized() when all the possibly-affected stack
+slots are iterated (this time with a correct max offset).
+check_stack_range_initialized() is relying on
+check_stack_access_within_bounds() for its accesses to the
+stack-tracking vector to be within bounds; in the case of zero-sized
+accesses, we were essentially only verifying that the lowest possible
+slot was within bounds. We would crash when the max-offset of the stack
+pointer was >= 0 (which shouldn't pass verification, and hopefully is
+not something anyone's code attempts to do in practice).
 
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with Syzkaller
+Thanks Hao for reporting!
 
-Fixes: cb72d38211ea ("netlabel: Initial support for the CALIPSO netlink protocol.")
-Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-[PM: merged via the LSM tree at Jakub Kicinski request]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Fixes: 01f810ace9ed3 ("bpf: Allow variable-offset stack access")
+Reported-by: Hao Sun <sunhao.th@gmail.com>
+Signed-off-by: Andrei Matei <andreimatei1@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20231207041150.229139-2-andreimatei1@gmail.com
+
+Closes: https://lore.kernel.org/bpf/CACkBjsZGEUaRCHsmaX=h-efVogsRfK1FPxmkgb0Os_frnHiNdw@mail.gmail.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlabel/netlabel_calipso.c | 49 +++++++++++++++++----------------
- 1 file changed, 26 insertions(+), 23 deletions(-)
+ kernel/bpf/verifier.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/net/netlabel/netlabel_calipso.c b/net/netlabel/netlabel_calipso.c
-index f1d5b8465217..a07c2216d28b 100644
---- a/net/netlabel/netlabel_calipso.c
-+++ b/net/netlabel/netlabel_calipso.c
-@@ -54,6 +54,28 @@ static const struct nla_policy calipso_genl_policy[NLBL_CALIPSO_A_MAX + 1] = {
- 	[NLBL_CALIPSO_A_MTYPE] = { .type = NLA_U32 },
- };
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 24152ac6a393..76834ecc59a9 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -6414,10 +6414,7 @@ static int check_stack_access_within_bounds(
  
-+static const struct netlbl_calipso_ops *calipso_ops;
-+
-+/**
-+ * netlbl_calipso_ops_register - Register the CALIPSO operations
-+ * @ops: ops to register
-+ *
-+ * Description:
-+ * Register the CALIPSO packet engine operations.
-+ *
-+ */
-+const struct netlbl_calipso_ops *
-+netlbl_calipso_ops_register(const struct netlbl_calipso_ops *ops)
-+{
-+	return xchg(&calipso_ops, ops);
-+}
-+EXPORT_SYMBOL(netlbl_calipso_ops_register);
-+
-+static const struct netlbl_calipso_ops *netlbl_calipso_ops_get(void)
-+{
-+	return READ_ONCE(calipso_ops);
-+}
-+
- /* NetLabel Command Handlers
-  */
- /**
-@@ -96,15 +118,18 @@ static int netlbl_calipso_add_pass(struct genl_info *info,
-  *
-  */
- static int netlbl_calipso_add(struct sk_buff *skb, struct genl_info *info)
--
- {
- 	int ret_val = -EINVAL;
- 	struct netlbl_audit audit_info;
-+	const struct netlbl_calipso_ops *ops = netlbl_calipso_ops_get();
+ 	if (tnum_is_const(reg->var_off)) {
+ 		min_off = reg->var_off.value + off;
+-		if (access_size > 0)
+-			max_off = min_off + access_size - 1;
+-		else
+-			max_off = min_off;
++		max_off = min_off + access_size;
+ 	} else {
+ 		if (reg->smax_value >= BPF_MAX_VAR_OFF ||
+ 		    reg->smin_value <= -BPF_MAX_VAR_OFF) {
+@@ -6426,15 +6423,12 @@ static int check_stack_access_within_bounds(
+ 			return -EACCES;
+ 		}
+ 		min_off = reg->smin_value + off;
+-		if (access_size > 0)
+-			max_off = reg->smax_value + off + access_size - 1;
+-		else
+-			max_off = min_off;
++		max_off = reg->smax_value + off + access_size;
+ 	}
  
- 	if (!info->attrs[NLBL_CALIPSO_A_DOI] ||
- 	    !info->attrs[NLBL_CALIPSO_A_MTYPE])
- 		return -EINVAL;
+ 	err = check_stack_slot_within_bounds(min_off, state, type);
+-	if (!err)
+-		err = check_stack_slot_within_bounds(max_off, state, type);
++	if (!err && max_off > 0)
++		err = -EINVAL; /* out of stack access into non-negative offsets */
  
-+	if (!ops)
-+		return -EOPNOTSUPP;
-+
- 	netlbl_netlink_auditinfo(&audit_info);
- 	switch (nla_get_u32(info->attrs[NLBL_CALIPSO_A_MTYPE])) {
- 	case CALIPSO_MAP_PASS:
-@@ -363,28 +388,6 @@ int __init netlbl_calipso_genl_init(void)
- 	return genl_register_family(&netlbl_calipso_gnl_family);
- }
- 
--static const struct netlbl_calipso_ops *calipso_ops;
--
--/**
-- * netlbl_calipso_ops_register - Register the CALIPSO operations
-- * @ops: ops to register
-- *
-- * Description:
-- * Register the CALIPSO packet engine operations.
-- *
-- */
--const struct netlbl_calipso_ops *
--netlbl_calipso_ops_register(const struct netlbl_calipso_ops *ops)
--{
--	return xchg(&calipso_ops, ops);
--}
--EXPORT_SYMBOL(netlbl_calipso_ops_register);
--
--static const struct netlbl_calipso_ops *netlbl_calipso_ops_get(void)
--{
--	return READ_ONCE(calipso_ops);
--}
--
- /**
-  * calipso_doi_add - Add a new DOI to the CALIPSO protocol engine
-  * @doi_def: the DOI structure
+ 	if (err) {
+ 		if (tnum_is_const(reg->var_off)) {
 -- 
 2.43.0
 
