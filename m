@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-15286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DAF68384A7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A910837D83
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45898299CEB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13FC2289BB4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5CA745C6;
-	Tue, 23 Jan 2024 02:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05995BAFE;
+	Tue, 23 Jan 2024 00:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7SLZOCG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdHj/JWB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB28E6A024;
-	Tue, 23 Jan 2024 02:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F49A4E1D8;
+	Tue, 23 Jan 2024 00:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975447; cv=none; b=ezf/536xM3qfEb/i1/CXCfAeE6hyq4e485Uk63WREXSwfVTEMG23zVTg6oWoy9pStExqW019QnMEg1N7pgcByBVCYhrKit6cCvf176kn67GlMNlqmXw2RiikUDHvZOiBMML6FegtmKtvAA6BePCxna5qBj3+y6XxfKFzuIK0BQM=
+	t=1705969997; cv=none; b=uN3ax+cby0quKzpE4auZ/vbG+CEvgcM8F1qpbghc4zgMgdBbWuGTA8PtaOQcIAoNOUKV7oCCOp8gNk3qn5r5I1amYq5HOpHeOTEqqeplISUJnoiRWt2WrNdK2Elw8VB1+cS1SEQ2ahdpm6zVgNsPZy01TtIVEL+KdqxSNs8bE5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975447; c=relaxed/simple;
-	bh=tg2LH/Vo6NVw2R8btikxTL25eXkPvnWDzAMfWHtuhfc=;
+	s=arc-20240116; t=1705969997; c=relaxed/simple;
+	bh=uRdk2SjVigecFue9NNIYsBpKdJ53n5EaoPp6zJSlEMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ouDAUn86qCX3SzhU/p6pcAa1vcnQ5lnNRN81Tp2Vrfub2wVmHHz8jC42vxcTfQNU9kpAT9AnwX06gA9//DbyfcTu8ldqQUdAO5Qzn/aHa1MddVQxPEn/DPNNU2sET9RCBOCpw8kz9zOlQRQGTInPlC8hwxIaai67ilR9M/g9om0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7SLZOCG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1A6C433F1;
-	Tue, 23 Jan 2024 02:04:07 +0000 (UTC)
+	 MIME-Version; b=uot6r+hrioB6wOGWWoWobqfqlK2e8v5lePFkh6gg/1IZLX0QzhqzBjmK2SjWD5YNJVgjy7nzwPp92shjHEA2Qj0KKp4y6Ab6KrvRE5YpnBxgxNUIGg40pNEdc5nVkp8Sa3jbZ/pjJSVVMeLUhVu85sSsHGySjEIsJE8baw7jJXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdHj/JWB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C07C433F1;
+	Tue, 23 Jan 2024 00:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975447;
-	bh=tg2LH/Vo6NVw2R8btikxTL25eXkPvnWDzAMfWHtuhfc=;
+	s=korg; t=1705969997;
+	bh=uRdk2SjVigecFue9NNIYsBpKdJ53n5EaoPp6zJSlEMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x7SLZOCGysSL/e8ttbriJqqEBGOCnRD+ajaCktSJZ3J3wWTbrFxlJxqtUWlFCTJar
-	 zeZxQDfWuRdOsJoA1KrQYmAfWlRFWKbG0i7s3Uw0Oqdoc6vrWN+PSUhNq82QnDw+bU
-	 25nfJHs0XtIj6UoGKfsyNI0o9eaRYX3nXJYzk9js=
+	b=xdHj/JWBPQXmNfUZX66vNzcwj0jOnts0yspniY0qkEOSMKx1VLRB2uHj9G64zaEps
+	 7Ev/WNKCMUance4ZvAv6IdmeKBdZf4MX0Zpe91krV/DwHswQQxNY5+MwdayeoGJzRs
+	 u7oP7TQ8tKzXxqmrfHXE7TIfKXLaZvwe1XQSUToM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.6 386/583] ceph: select FS_ENCRYPTION_ALGS if FS_ENCRYPTION
+	Ian Rogers <irogers@google.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Namhyung Kim <Namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Junhao He <hejunhao3@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Qi Liu <liuqi115@huawei.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 533/641] perf hisi-ptt: Fix one memory leakage in hisi_ptt_process_auxtrace_event()
 Date: Mon, 22 Jan 2024 15:57:17 -0800
-Message-ID: <20240122235823.807209578@linuxfoundation.org>
+Message-ID: <20240122235834.794703799@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +73,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-commit 9c896d6bc3dfef86659a6a1fb25ccdea5dbef6a3 upstream.
+[ Upstream commit 1bc479d665bc25a9a4e8168d5b400a47491511f9 ]
 
-The kconfig options for filesystems that support FS_ENCRYPTION are
-supposed to select FS_ENCRYPTION_ALGS.  This is needed to ensure that
-required crypto algorithms get enabled as loadable modules or builtin as
-is appropriate for the set of enabled filesystems.  Do this for CEPH_FS
-so that there aren't any missing algorithms if someone happens to have
-CEPH_FS as their only enabled filesystem that supports encryption.
+ASan complains a memory leakage in hisi_ptt_process_auxtrace_event()
+that the data buffer is not freed. Since currently we only support the
+raw dump trace mode, the data buffer is used only within this function.
+So fix this by freeing the data buffer before going out.
 
-Cc: stable@vger.kernel.org
-Fixes: f061feda6c54 ("ceph: add fscrypt ioctls and ceph.fscrypt.auth vxattr")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5e91e57e68090c0e ("perf auxtrace arm64: Add support for parsing HiSilicon PCIe Trace packet")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Acked-by: Namhyung Kim <Namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Junhao He <hejunhao3@huawei.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Qi Liu <liuqi115@huawei.com>
+Link: https://lore.kernel.org/r/20231207081635.8427-3-yangyicong@huawei.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/Kconfig | 1 +
+ tools/perf/util/hisi-ptt.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/fs/ceph/Kconfig b/fs/ceph/Kconfig
-index 94df854147d3..7249d70e1a43 100644
---- a/fs/ceph/Kconfig
-+++ b/fs/ceph/Kconfig
-@@ -7,6 +7,7 @@ config CEPH_FS
- 	select CRYPTO_AES
- 	select CRYPTO
- 	select NETFS_SUPPORT
-+	select FS_ENCRYPTION_ALGS if FS_ENCRYPTION
- 	default n
- 	help
- 	  Choose Y or M here to include support for mounting the
+diff --git a/tools/perf/util/hisi-ptt.c b/tools/perf/util/hisi-ptt.c
+index 43bd1ca62d58..52d0ce302ca0 100644
+--- a/tools/perf/util/hisi-ptt.c
++++ b/tools/perf/util/hisi-ptt.c
+@@ -123,6 +123,7 @@ static int hisi_ptt_process_auxtrace_event(struct perf_session *session,
+ 	if (dump_trace)
+ 		hisi_ptt_dump_event(ptt, data, size);
+ 
++	free(data);
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
