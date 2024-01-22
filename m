@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC66837E96
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC4F837C45
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62967B21870
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71B5B1C2191B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4557B63B7;
-	Tue, 23 Jan 2024 00:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA981FA3;
+	Tue, 23 Jan 2024 00:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Jr9u9D1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I83vm6af"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037465683;
-	Tue, 23 Jan 2024 00:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0A623C6;
+	Tue, 23 Jan 2024 00:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970679; cv=none; b=C/h/UB7KDoM3BefPZWkvoFd3IsfMfJmotLQvNA6uv4jWH5bST0+lhck50PdiBR9QVm3Pq8m1nD/tEt5Nzlrmqgq85od89YVz056rJDYmxTn/+j7b5oVs/DrPvKHrpceOe7LIeSNNZ+WWEzHdvTg7EAatwvYV2WFxR5vkXC76lL0=
+	t=1705969563; cv=none; b=dNZtS805OWz44w0tWLT8d3NHvgi06wunnve5jAgaXIm4FuPMFCVnEeEcXnJPqKdz/O7DwdD8RPL0Vg5gZaZd7quIS1T8x3D1WJV3p3/TeuDLCI0bMj2wEHpfa1qxMUlQ7aDlp72UOS2Gxq7QUsP2Y33Vn43pHRWM9XOF3rTJaoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970679; c=relaxed/simple;
-	bh=ScplOs+kzZNmzuj/sbUe4O7OHim6l0oIUgdCSRjgoaw=;
+	s=arc-20240116; t=1705969563; c=relaxed/simple;
+	bh=91WF/WxJZebtgC8r9HfOFoPdw5QeCsLBHqCptg0N+MQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRkA1036uyW6mQWpPp+sapQUcUKpsQhDndfDf8UbBe5odo7SgOXeX9mFAL6tKnn0VBVTmXViLu9DSDQzPWVLdV3bO67/PqMv/OpnnSYLKptWZqzV1zjbeIWL/Z+F+gY/tv03mgjBwMoAreilupv3zd/CkrV2Vc8vllmex0/qhNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Jr9u9D1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE5DC433C7;
-	Tue, 23 Jan 2024 00:44:38 +0000 (UTC)
+	 MIME-Version; b=pi+Qjm4u3tEoe/vNUta4WwsIDgXTpXBXZZu25W+azwQQ7C40zW2KMSnUB+iDrXh4t1CB9WpAG6OkUwhc7rvHHF+OPxEcpyYK/OYwsvRNw2kW53FJ3XnIx3A44NlJHXzWvc1/AxkNvYrvEl2HAi+u3cwjvnl4XT2MEcYWdg8detc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I83vm6af; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFAE0C433F1;
+	Tue, 23 Jan 2024 00:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970678;
-	bh=ScplOs+kzZNmzuj/sbUe4O7OHim6l0oIUgdCSRjgoaw=;
+	s=korg; t=1705969563;
+	bh=91WF/WxJZebtgC8r9HfOFoPdw5QeCsLBHqCptg0N+MQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Jr9u9D16OIl/Kqar3W+YGP6w8mTkkJ32UvdNPNj6l5XgWjpR/zF22ObfzEbUGT6J
-	 1QU/1YVbfN/fzVGrJ9QJAgxtkXO4sdRU3Y6JPTDW/unlgPqT8IqLSSFwdajmL3wwS/
-	 xWyP5RqDxpUHVkz4Ysacsr59eojXi7RHmovBaaRo=
+	b=I83vm6afyhYw8OiuaR6KZBmdKS3Vu9rTvnkjYHd0FfN+M0LCBvdmPdeZU5DP9N+Pd
+	 QZ/Zxv94k8/0JlEiafPBw4fhJ4cmeZ42JOHMLjJBmzN+7z2sZht8AI2UHVZSkGSSC3
+	 H9PSid+1BWJg0UPaLD2YavWTmZjRUDXdHWb77FnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hsiao Chien Sung <shawn.sung@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/417] crypto: sahara - do not resize req->src when doing hash operations
+Subject: [PATCH 6.7 325/641] drm/mediatek: Remove the redundant driver data for DPI
 Date: Mon, 22 Jan 2024 15:53:49 -0800
-Message-ID: <20240122235753.834041362@linuxfoundation.org>
+Message-ID: <20240122235828.061864653@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Hsiao Chien Sung <shawn.sung@mediatek.com>
 
-[ Upstream commit a3c6f4f4d249cecaf2f34471aadbfb4f4ef57298 ]
+[ Upstream commit 8ac6935e5689a491f0bec78fec732722b3dad094 ]
 
-When testing sahara sha256 speed performance with tcrypt (mode=404) on
-imx53-qsrb board, multiple "Invalid numbers of src SG." errors are
-reported. This was traced to sahara_walk_and_recalc() resizing req->src
-and causing the subsequent dma_map_sg() call to fail.
+DPI input is in 1T2P mode on both MT8195 and MT8188.
+Remove the redundant driver data to align the settings, or
+the screen will glitch.
 
-Now that the previous commit fixed sahara_sha_hw_links_create() to take
-into account the actual request size, rather than relying on sg->length
-values, the resize operation is no longer necessary.
+Fixes: 2847cd7e6403 ("drm/mediatek: Add mt8188 dpi compatibles and platform data")
 
-Therefore, remove sahara_walk_and_recalc() and simplify associated logic.
-
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20231214055847.4936-22-shawn.sung@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 38 ++------------------------------------
- 1 file changed, 2 insertions(+), 36 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dpi.c | 16 +---------------
+ 1 file changed, 1 insertion(+), 15 deletions(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index b167f92279ad..3b946f1313ed 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -887,24 +887,6 @@ static int sahara_sha_hw_context_descriptor_create(struct sahara_dev *dev,
- 	return 0;
- }
+diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
+index 4e3d9f7b4d8c..beb7d9d08e97 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dpi.c
++++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
+@@ -966,20 +966,6 @@ static const struct mtk_dpi_conf mt8186_conf = {
+ 	.csc_enable_bit = CSC_ENABLE,
+ };
  
--static int sahara_walk_and_recalc(struct scatterlist *sg, unsigned int nbytes)
--{
--	if (!sg || !sg->length)
--		return nbytes;
+-static const struct mtk_dpi_conf mt8188_dpintf_conf = {
+-	.cal_factor = mt8195_dpintf_calculate_factor,
+-	.max_clock_khz = 600000,
+-	.output_fmts = mt8195_output_fmts,
+-	.num_output_fmts = ARRAY_SIZE(mt8195_output_fmts),
+-	.pixels_per_iter = 4,
+-	.input_2pixel = false,
+-	.dimension_mask = DPINTF_HPW_MASK,
+-	.hvsize_mask = DPINTF_HSIZE_MASK,
+-	.channel_swap_shift = DPINTF_CH_SWAP,
+-	.yuv422_en_bit = DPINTF_YUV422_EN,
+-	.csc_enable_bit = DPINTF_CSC_ENABLE,
+-};
 -
--	while (nbytes && sg) {
--		if (nbytes <= sg->length) {
--			sg->length = nbytes;
--			sg_mark_end(sg);
--			break;
--		}
--		nbytes -= sg->length;
--		sg = sg_next(sg);
--	}
--
--	return nbytes;
--}
--
- static int sahara_sha_prepare_request(struct ahash_request *req)
- {
- 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
-@@ -941,36 +923,20 @@ static int sahara_sha_prepare_request(struct ahash_request *req)
- 					hash_later, 0);
- 	}
- 
--	/* nbytes should now be multiple of blocksize */
--	req->nbytes = req->nbytes - hash_later;
--
--	sahara_walk_and_recalc(req->src, req->nbytes);
--
-+	rctx->total = len - hash_later;
- 	/* have data from previous operation and current */
- 	if (rctx->buf_cnt && req->nbytes) {
- 		sg_init_table(rctx->in_sg_chain, 2);
- 		sg_set_buf(rctx->in_sg_chain, rctx->rembuf, rctx->buf_cnt);
--
- 		sg_chain(rctx->in_sg_chain, 2, req->src);
--
--		rctx->total = req->nbytes + rctx->buf_cnt;
- 		rctx->in_sg = rctx->in_sg_chain;
--
--		req->src = rctx->in_sg_chain;
- 	/* only data from previous operation */
- 	} else if (rctx->buf_cnt) {
--		if (req->src)
--			rctx->in_sg = req->src;
--		else
--			rctx->in_sg = rctx->in_sg_chain;
--		/* buf was copied into rembuf above */
-+		rctx->in_sg = rctx->in_sg_chain;
- 		sg_init_one(rctx->in_sg, rctx->rembuf, rctx->buf_cnt);
--		rctx->total = rctx->buf_cnt;
- 	/* no data from previous operation */
- 	} else {
- 		rctx->in_sg = req->src;
--		rctx->total = req->nbytes;
--		req->src = rctx->in_sg;
- 	}
- 
- 	/* on next call, we only have the remaining data in the buffer */
+ static const struct mtk_dpi_conf mt8192_conf = {
+ 	.cal_factor = mt8183_calculate_factor,
+ 	.reg_h_fre_con = 0xe0,
+@@ -1103,7 +1089,7 @@ static const struct of_device_id mtk_dpi_of_ids[] = {
+ 	{ .compatible = "mediatek,mt8173-dpi", .data = &mt8173_conf },
+ 	{ .compatible = "mediatek,mt8183-dpi", .data = &mt8183_conf },
+ 	{ .compatible = "mediatek,mt8186-dpi", .data = &mt8186_conf },
+-	{ .compatible = "mediatek,mt8188-dp-intf", .data = &mt8188_dpintf_conf },
++	{ .compatible = "mediatek,mt8188-dp-intf", .data = &mt8195_dpintf_conf },
+ 	{ .compatible = "mediatek,mt8192-dpi", .data = &mt8192_conf },
+ 	{ .compatible = "mediatek,mt8195-dp-intf", .data = &mt8195_dpintf_conf },
+ 	{ /* sentinel */ },
 -- 
 2.43.0
 
