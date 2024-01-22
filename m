@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82F8E837EDD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CFB58381DA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:14:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BD2729BBFB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6019AB238CA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44455251;
-	Tue, 23 Jan 2024 00:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06FD1420D9;
+	Tue, 23 Jan 2024 01:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8M4AjrW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwXx3yFT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E112570;
-	Tue, 23 Jan 2024 00:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCDA811;
+	Tue, 23 Jan 2024 01:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970791; cv=none; b=qAwPtJjHQ8v7O21SUUcx//6FipYvb5/fLbUNbEZRu6xkbcMJ89NgJeNkmtDEfrBkplru3HfIOEcQtyDKZs3GAI97tIdanNZeUK1re3aPQZW5zcIEkKdOdCAHEda3i+RzTwiWk/KI5WD7MBQQFggonGtAhmFVl4EhHS9x03wukXc=
+	t=1705972136; cv=none; b=hEusK7V9tjndLg1jc9f66AOdEP/+XALUWf9vJSH4OsUsm+mT1AQStPSwWSKgNljWGFwW068RxVQGMk7GlAqjgNbYgXbdL77E0nQIGX7YcaMVkzdHs/B4kByTTsSlXeOQI4fKhQb1wx59tP0YYolX4nTlxVoxVCJ0qVQsQTsZXs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970791; c=relaxed/simple;
-	bh=A3B4ApZwZRc3AMbZ4Td8sPT9rFUo0rd/lLdIQ14RPRk=;
+	s=arc-20240116; t=1705972136; c=relaxed/simple;
+	bh=os+ABS+x3eGK53OQ3TQedJMZwjYh6u9F6aIbMLa6JLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=elwXTMzMFZrR4mJWVdiuhscjEEryifm3LjQFz153ak7i4H28tMPBuobStxankbawXqLW4Hx0svA8CTXtjbFrozK3oz0LbEZU6RuuxjjbHl+2lguwb6CPVKfsrsIgfFuGfB3cSxZ40cNauF/bfU+S+1wdvPo/xep/TV5xytiuZaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8M4AjrW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BE1C433F1;
-	Tue, 23 Jan 2024 00:46:31 +0000 (UTC)
+	 MIME-Version; b=PlOHOCP4snDwJMTd+WiqphYf5Mnpj8kdgRYlqw0tsoTOW84TG6R1WoYd4yBMNxWUvtXEFlUOwmUqagPr2/OHCp1V1zhIhLQB0hSSG1P3KSuCSElsk1F25KKW6T2OOiqlzJwsKaq1xfi5P27LrV+kABD9nkSmKjIqDTc717SshJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwXx3yFT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F394C433C7;
+	Tue, 23 Jan 2024 01:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970791;
-	bh=A3B4ApZwZRc3AMbZ4Td8sPT9rFUo0rd/lLdIQ14RPRk=;
+	s=korg; t=1705972136;
+	bh=os+ABS+x3eGK53OQ3TQedJMZwjYh6u9F6aIbMLa6JLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A8M4AjrW5QQq0sF7tUyw2ogxUAKBJBBrXhVQGOq+p/mlXM1ZOYc5IbClpQIP2dyP+
-	 doO7ReD7JLk1xdbNjc16CbdZxHLpLkT7di3t8NS2hnlQAvHdgZKx0S7f7EsiN5/yB5
-	 4HZOqungqWxOwZ/HBPawF6A6XxjcNdBx87y+DGUw=
+	b=QwXx3yFTR5VAoLquTsNN3jBlI63WQKPfcKXPAlle8ZlnOWICZpgOR92t1Amq/NmyX
+	 hxRNaZRnNWutIMQNYqdVVvao+3yH3rTJolEXPGaS/GN/3p15eAJuTj0076gO+FdBV3
+	 N9c6Z+AWbDe3sw1TRAQ/ZBdDOetwhUTIZqFLPC+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Rau <David.Rau.opensource@dm.renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 017/286] ASoC: da7219: Support low DC impedance headset
+Subject: [PATCH 5.15 067/374] powerpc: Mark .opd section read-only
 Date: Mon, 22 Jan 2024 15:55:23 -0800
-Message-ID: <20240122235732.687713265@linuxfoundation.org>
+Message-ID: <20240122235746.942965373@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Rau <David.Rau.opensource@dm.renesas.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 5f44de697383fcc9a9a1a78f99e09d1838704b90 ]
+[ Upstream commit 3091f5fc5f1df7741ddf326561384e0997eca2a1 ]
 
-Change the default MIC detection impedance threshold to 200ohm
-to support low mic DC impedance headset.
+.opd section contains function descriptors used to locate
+functions in the kernel. If someone is able to modify a
+function descriptor he will be able to run arbitrary
+kernel function instead of another.
 
-Signed-off-by: David Rau <David.Rau.opensource@dm.renesas.com>
-Link: https://lore.kernel.org/r/20231201042933.26392-1-David.Rau.opensource@dm.renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+To avoid that, move .opd section inside read-only memory.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/3cd40b682fb6f75bb40947b55ca0bac20cb3f995.1634136222.git.christophe.leroy@csgroup.eu
+Stable-dep-of: 1b1e38002648 ("powerpc: add crtsavres.o to always-y instead of extra-y")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/da7219-aad.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/vmlinux.lds.S | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
-index b316d613a709..b6030709b6b6 100644
---- a/sound/soc/codecs/da7219-aad.c
-+++ b/sound/soc/codecs/da7219-aad.c
-@@ -654,7 +654,7 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct device *dev)
- 		aad_pdata->mic_det_thr =
- 			da7219_aad_fw_mic_det_thr(dev, fw_val32);
- 	else
--		aad_pdata->mic_det_thr = DA7219_AAD_MIC_DET_THR_500_OHMS;
-+		aad_pdata->mic_det_thr = DA7219_AAD_MIC_DET_THR_200_OHMS;
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index d4531902d8c6..d8301ce7c675 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -148,6 +148,12 @@ SECTIONS
+ 	SOFT_MASK_TABLE(8)
+ 	RESTART_TABLE(8)
  
- 	if (fwnode_property_read_u32(aad_np, "dlg,jack-ins-deb", &fw_val32) >= 0)
- 		aad_pdata->jack_ins_deb =
++	.opd : AT(ADDR(.opd) - LOAD_OFFSET) {
++		__start_opd = .;
++		KEEP(*(.opd))
++		__end_opd = .;
++	}
++
+ 	. = ALIGN(8);
+ 	__stf_entry_barrier_fixup : AT(ADDR(__stf_entry_barrier_fixup) - LOAD_OFFSET) {
+ 		__start___stf_entry_barrier_fixup = .;
+@@ -346,12 +352,6 @@ SECTIONS
+ 		*(.branch_lt)
+ 	}
+ 
+-	.opd : AT(ADDR(.opd) - LOAD_OFFSET) {
+-		__start_opd = .;
+-		KEEP(*(.opd))
+-		__end_opd = .;
+-	}
+-
+ 	. = ALIGN(256);
+ 	.got : AT(ADDR(.got) - LOAD_OFFSET) {
+ 		__toc_start = .;
 -- 
 2.43.0
 
