@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67BBF837FB6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7D83838265
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92E1C1C29280
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAEF21C27EAF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D50E864CD5;
-	Tue, 23 Jan 2024 00:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96F05BAD0;
+	Tue, 23 Jan 2024 01:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3uZNyc1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZzMRqkO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C0064CD2;
-	Tue, 23 Jan 2024 00:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880BC5A7B8;
+	Tue, 23 Jan 2024 01:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971309; cv=none; b=XKvhSym3CnMhNPy9Q0znrWGCvoeuveWkn14N45yynVe0NFvAxyrwxJgEani8UBtSxQE4F7hYQZgLIaZ3fEeBgnhaTsvVHnPW42kFqGYtL1XXG0X7/tiIdZ/oi78AadKvlrx973OizDDBa/Yvzr4d7+SJlvESX0KmH3vUW2xelPM=
+	t=1705974341; cv=none; b=St9SfEjvsRZp4LiWOPULYmVw0vFO9N0tKOqPXUO56W/0lOl/QPmGzbaIUtr+Rzb+N9D5SAIYpNOqsdX6NLmMJw9acVbSm6OEmypBIe9/JnvXWD8/s3Wz4PVw687pFMdvLMj08le89a6HchV1M2eVFarXHct9eRhwdTOsvzQC+UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971309; c=relaxed/simple;
-	bh=iSojQnEz6nOn8dYQ5+tZvBTUvS1mgrkgbqneY2jE8sc=;
+	s=arc-20240116; t=1705974341; c=relaxed/simple;
+	bh=IouHy77Gizj3sU4uRru1AfoZzh6r7idgawc50D60vog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eHAdDx5WHgZsdNnPOtUuuetyRGXdqTbink7nVkrkxYsRCIw3m4hqoLGa9UNqNpHTxFlio2dLdIw+VOD0cPraqJ+Lb5FtQC62eirKUSU7XDISUYQNbswdkVD9IjknmHquEV1k/jCRDGAmBqLg9ze+4BEMovbxsqPt4FViXzD8h7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3uZNyc1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D837C433C7;
-	Tue, 23 Jan 2024 00:55:09 +0000 (UTC)
+	 MIME-Version; b=aUMWiTW/FeusVQ95EjrOpnnDgYXu/fkF6uq4dUGCtItE1e5nWIif1EDxWIprCCMKsTz/R1IsUdThh7V3zBuvcOcA+F0J955Y+wb2GFGNitN8uN2BowqPFhKiGt6hC+TQkS6MAx1/xDYmcDQhkKX9gPPvGbHbploeWuDCSgkCBFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZzMRqkO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D808C43390;
+	Tue, 23 Jan 2024 01:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971309;
-	bh=iSojQnEz6nOn8dYQ5+tZvBTUvS1mgrkgbqneY2jE8sc=;
+	s=korg; t=1705974341;
+	bh=IouHy77Gizj3sU4uRru1AfoZzh6r7idgawc50D60vog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3uZNyc1Emu2uRzQgkW10J5D1nHAdOavvaRib548JPextXlABNdPh+9Zt0Je9/UYT
-	 qfUiRjI7OrwCFmKWzzjE5ZTQuCzk5TEudGnEjQFrllRNQeBlyp5WIt387TyiB//F1i
-	 ocv6rRxX7Mfjori2GN8xYuAqlAvfD508u19rVxpE=
+	b=0ZzMRqkOqEjfarwSJKUYiaCLDlroprqES4Cuqw+yAe69pLERMVV62K6cXO774nLPC
+	 NUl5DKM7r2+EGswLhTo/lX7jDgPigzHRgbwG+scPr/AIj8PtRmTkP4rt3VUxLFBUUU
+	 gyy88lK6wOpTkHn5eBo4oYbGa2lz/ZVdiK8umTFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 132/286] wifi: rtlwifi: rtl8192c: using calculate_bit_shift()
-Date: Mon, 22 Jan 2024 15:57:18 -0800
-Message-ID: <20240122235737.237659922@linuxfoundation.org>
+Subject: [PATCH 5.15 183/374] drm/tilcdc: Fix irq free on unload
+Date: Mon, 22 Jan 2024 15:57:19 -0800
+Message-ID: <20240122235750.996378314@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 1dedc3a6699d827d345019e921b8d8f37f694333 ]
+[ Upstream commit 38360bf96d816e175bc602c4ee76953cd303b71d ]
 
-Using calculate_bit_shift() to replace _rtl92c_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+The driver only frees the reserved irq if priv->irq_enabled is set to
+true. However, the driver mistakenly sets priv->irq_enabled to false,
+instead of true, in tilcdc_irq_install(), and thus the driver never
+frees the irq, causing issues on loading the driver a second time.
 
-Fixes: 4295cd254af3 ("rtlwifi: Move common parts of rtl8192ce/phy.c")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-5-suhui@nfschina.com
+Fixes: b6366814fa77 ("drm/tilcdc: Convert to Linux IRQ interfaces")
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230919-lcdc-v1-1-ba60da7421e1@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/realtek/rtlwifi/rtl8192c/phy_common.c   | 12 ++----------
- .../wireless/realtek/rtlwifi/rtl8192c/phy_common.h   |  1 -
- 2 files changed, 2 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/tilcdc/tilcdc_drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
-index 3d29c8dbb255..144ee780e1b6 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
-@@ -17,7 +17,7 @@ u32 rtl92c_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE, "regaddr(%#x), bitmask(%#x)\n",
- 		regaddr, bitmask);
- 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
--	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
+diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.c b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
+index 6b03f89a98d4..6924488274dd 100644
+--- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
++++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
+@@ -140,7 +140,7 @@ static int tilcdc_irq_install(struct drm_device *dev, unsigned int irq)
+ 	if (ret)
+ 		return ret;
  
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
-@@ -40,7 +40,7 @@ void rtl92c_phy_set_bb_reg(struct ieee80211_hw *hw,
+-	priv->irq_enabled = false;
++	priv->irq_enabled = true;
  
- 	if (bitmask != MASKDWORD) {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
- 	}
- 
-@@ -143,14 +143,6 @@ void _rtl92c_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 	return 0;
  }
- EXPORT_SYMBOL(_rtl92c_phy_rf_serial_write);
- 
--u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
--EXPORT_SYMBOL(_rtl92c_phy_calculate_bit_shift);
--
- static void _rtl92c_phy_bb_config_1t(struct ieee80211_hw *hw)
- {
- 	rtl_set_bbreg(hw, RFPGA0_TXINFO, 0x3, 0x2);
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h
-index 75afa6253ad0..e64d377dfe9e 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h
-@@ -196,7 +196,6 @@ bool rtl92c_phy_set_rf_power_state(struct ieee80211_hw *hw,
- void rtl92ce_phy_set_rf_on(struct ieee80211_hw *hw);
- void rtl92c_phy_set_io(struct ieee80211_hw *hw);
- void rtl92c_bb_block_on(struct ieee80211_hw *hw);
--u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask);
- long _rtl92c_phy_txpwr_idx_to_dbm(struct ieee80211_hw *hw,
- 				  enum wireless_mode wirelessmode,
- 				  u8 txpwridx);
 -- 
 2.43.0
 
