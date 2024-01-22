@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-13499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75383837C5B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C78AB8383B1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8FAD1C242AE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56002B255A7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764A4442F;
-	Tue, 23 Jan 2024 00:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE89B6281C;
+	Tue, 23 Jan 2024 01:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9gFJ/dW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZGSS2Zh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D84442E;
-	Tue, 23 Jan 2024 00:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1B722060;
+	Tue, 23 Jan 2024 01:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969591; cv=none; b=IoUZTWAMXGdEW2a1BGNwGAxGyqhrwRUK8hVHCqv1Nd4kkivNagZl1pGcF0uZHjQAYq6yLx+xWh/l/q+4pBmzrmmX/qIUnXXQHL3OWQUPebZ1zvqt/yVfDodoYWw6IH3b6Vi5PUSbrgd3TUXsfyceHGzFSLLyLmNeauJGGbvqFCw=
+	t=1705974964; cv=none; b=HsdHNDL2TABlV53q/MvSIlGBLm8fTFdP0nb+BhC4fPR1y5WQBOAptI5fqjKHAyu1IoRBAYkxZVZcTLAGbA2mvIFTjIuMa1F6QCchrGtsdpfWzOHa5oJ+D9NZJzCBC14En0HKGQzdSO9KT7Yl9X+g6xw19G0JHwgQj+SC9X/8P/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969591; c=relaxed/simple;
-	bh=EVZ2VrUJuios9yHW31Lt+ySYvNDg3pMxW0N5FcWzoio=;
+	s=arc-20240116; t=1705974964; c=relaxed/simple;
+	bh=q6KSqTh68k3oDq51Iiw217elzCcVT47w9CcXN7oRSMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tn/+8kYhnAMWkqgCzANxRRk9ZrUeGwhiB/6yg3qIsiR9ach0xVMSEusvH44RsIfUuiJgNZdxQJgj2FrkBWKkK+eRotkk7E0xX3nedExcYNXCFeuC2+vF2dO5EP7FFXRH5UkLy7x/jGcqg0n+FVxhsJvkySrJsn5PbH24vCXQCLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9gFJ/dW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7344C43390;
-	Tue, 23 Jan 2024 00:26:30 +0000 (UTC)
+	 MIME-Version; b=Tv6duw4Lr800QVaxdeHgD+9r41pFipafSEp4pVegxRwTxCn97JQVrSNOjkl2LMnZwnHS32eJVX/DrInK/e7Lk5o8UD4Suq7ltm8oiqiiop8a20m08XGBDDxaR1OSKOHAX7auk9vQNAnEsL2uK8QxLBpGRouU+HotEGHgNmI6WcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZGSS2Zh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6910DC433C7;
+	Tue, 23 Jan 2024 01:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969591;
-	bh=EVZ2VrUJuios9yHW31Lt+ySYvNDg3pMxW0N5FcWzoio=;
+	s=korg; t=1705974964;
+	bh=q6KSqTh68k3oDq51Iiw217elzCcVT47w9CcXN7oRSMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w9gFJ/dW4n82H+634AY+SobIqFMcgTyeJDV814GsD7jh+9m2ALtkctvf7vtCEfluT
-	 cq6aQj0ufrVlsL/xbPjs6t4IbyKvqPG40UWjYHpqn/Duypjioi/ICY8uS84mwbiYAK
-	 wevP5WteaWYmzs17glMlc1Djcy1elKxTHrTQWrtA=
+	b=lZGSS2ZhcwX4jC2BhXDaA43O5/LRVvkk+pSEi3N1YtrUhvEzdY9DK3LjS8kBMKcXy
+	 eYjF/17txBeMF7ht8Bk24bFyKR+mtwtpW+v38XmS+5CYXHMyRcN6eqgzLnkAeqwGSl
+	 SvKYPNg9kXlxHfDjivJ3imcvBiufSnLcxKBAJTw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Xingwei Lee <xrivendell7@gmail.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 318/641] media: dvb-frontends: m88ds3103: Fix a memory leak in an error handling path of m88ds3103_probe()
+Subject: [PATCH 6.6 171/583] bpf: Limit the number of uprobes when attaching program to multiple uprobes
 Date: Mon, 22 Jan 2024 15:53:42 -0800
-Message-ID: <20240122235827.831294549@linuxfoundation.org>
+Message-ID: <20240122235817.262954608@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 5b2f885e2f6f482d05c23f04c8240f7b4fc5bdb5 ]
+[ Upstream commit 8b2efe51ba85ca83460941672afac6fca4199df6 ]
 
-If an error occurs after a successful i2c_mux_add_adapter(), then
-i2c_mux_del_adapters() should be called to free some resources, as
-already done in the remove function.
+An abnormally big cnt may be passed to link_create.uprobe_multi.cnt,
+and it will trigger the following warning in kvmalloc_node():
 
-Fixes: e6089feca460 ("media: m88ds3103: Add support for ds3103b demod")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+	if (unlikely(size > INT_MAX)) {
+		WARN_ON_ONCE(!(flags & __GFP_NOWARN));
+		return NULL;
+	}
+
+Fix the warning by limiting the maximal number of uprobes in
+bpf_uprobe_multi_link_attach(). If the number of uprobes is greater than
+MAX_UPROBE_MULTI_CNT, the attachment will return -E2BIG.
+
+Fixes: 89ae89f53d20 ("bpf: Add multi uprobe link")
+Reported-by: Xingwei Lee <xrivendell7@gmail.com>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Closes: https://lore.kernel.org/bpf/CABOYnLwwJY=yFAGie59LFsUsBAgHfroVqbzZ5edAXbFE3YiNVA@mail.gmail.com
+Link: https://lore.kernel.org/bpf/20231215100708.2265609-2-houtao@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/m88ds3103.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ kernel/trace/bpf_trace.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/media/dvb-frontends/m88ds3103.c b/drivers/media/dvb-frontends/m88ds3103.c
-index 26c67ef05d13..e0272054fca5 100644
---- a/drivers/media/dvb-frontends/m88ds3103.c
-+++ b/drivers/media/dvb-frontends/m88ds3103.c
-@@ -1894,7 +1894,7 @@ static int m88ds3103_probe(struct i2c_client *client)
- 		/* get frontend address */
- 		ret = regmap_read(dev->regmap, 0x29, &utmp);
- 		if (ret)
--			goto err_kfree;
-+			goto err_del_adapters;
- 		dev->dt_addr = ((utmp & 0x80) == 0) ? 0x42 >> 1 : 0x40 >> 1;
- 		dev_dbg(&client->dev, "dt addr is 0x%02x\n", dev->dt_addr);
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 868008f56fec..39c4cef98b95 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -41,6 +41,8 @@
+ #define bpf_event_rcu_dereference(p)					\
+ 	rcu_dereference_protected(p, lockdep_is_held(&bpf_event_mutex))
  
-@@ -1902,11 +1902,14 @@ static int m88ds3103_probe(struct i2c_client *client)
- 						      dev->dt_addr);
- 		if (IS_ERR(dev->dt_client)) {
- 			ret = PTR_ERR(dev->dt_client);
--			goto err_kfree;
-+			goto err_del_adapters;
- 		}
- 	}
- 
- 	return 0;
++#define MAX_UPROBE_MULTI_CNT (1U << 20)
 +
-+err_del_adapters:
-+	i2c_mux_del_adapters(dev->muxc);
- err_kfree:
- 	kfree(dev);
- err:
+ #ifdef CONFIG_MODULES
+ struct bpf_trace_module {
+ 	struct module *module;
+@@ -3198,6 +3200,8 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 
+ 	if (!upath || !uoffsets || !cnt)
+ 		return -EINVAL;
++	if (cnt > MAX_UPROBE_MULTI_CNT)
++		return -E2BIG;
+ 
+ 	uref_ctr_offsets = u64_to_user_ptr(attr->link_create.uprobe_multi.ref_ctr_offsets);
+ 	ucookies = u64_to_user_ptr(attr->link_create.uprobe_multi.cookies);
 -- 
 2.43.0
 
