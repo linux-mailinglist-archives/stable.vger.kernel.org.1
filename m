@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33BDF837D2C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1F2837F97
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1706291DC9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 997331F29BE1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008C73B1AC;
-	Tue, 23 Jan 2024 00:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1496963413;
+	Tue, 23 Jan 2024 00:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1yI0zt7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPjtRXRE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59F947A53;
-	Tue, 23 Jan 2024 00:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C631762806;
+	Tue, 23 Jan 2024 00:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969822; cv=none; b=NZXrFyx6mx/yZGN5sAjMDOMuhSqXwcV5/zYkNKLuB/3Fr+l0BQZBWWIuzwj2AEH4vNM7BRAFFx6HFqJRKlCPjTTzp6YUfPrb1+SYpLUXGAVCg5qq9qhA9Q5baWg2S1rHp9YwCT/QKa6CWtA2tZADwtvXvW0VMaCY2PxM5JmCYUk=
+	t=1705971224; cv=none; b=e6Q6tWtO2ka5hBTHpFIqjZkM34gFNAWZTi/yX7XqXXzl0FxW88mpZ+6q1HVCquVUgRAkDQRUoKsjivkGEkbcZ6qM1XJHWK/0jtWu6k7m1k8j4PfBe63gX4X7KnhnvLlvkBZJfNyln9AJ6IlpNw+5Yf40Idv8aUeI85tpjeRJNII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969822; c=relaxed/simple;
-	bh=RFlxzlC3GSmyAKF+d4JTTk2KvdN8/OytA33Zc/HFGjA=;
+	s=arc-20240116; t=1705971224; c=relaxed/simple;
+	bh=7eyMmtMHOUIlTa67Qf0FWLuOQ5/p+eclpS5GCGtyemY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lqv1aPa+vjQa2xZHPJ/g3ymxoVAAQTKdLqTry6GfikI7EO74LPXeuH70aNRDLGHIyzhKM72PCvrheLmwMW/yqasZsguYeZui9k/R1DJB5h38ZBzy20vUxCF0vHHkJen7vAuOSBv3RYvc5ifVvwWGU0UqDtnAaJRYjPV+FHnICtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1yI0zt7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4EBC43390;
-	Tue, 23 Jan 2024 00:30:22 +0000 (UTC)
+	 MIME-Version; b=BLwSAuSxgcI1FS0VRFv3nsHqDM1tORGV2POMNpjTp8ZkYXVRpswSldmowRJ1Ev/wdpbM5uJOpMlwOHy1tF+HYkrrsIzGZVo5vXsv5SCyXOg7TbArcFEeYSW//MNhO65x63VaVdVuusMCxCr7SKAvseXVYgVqNqI7V8avBtjbG1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPjtRXRE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61412C43390;
+	Tue, 23 Jan 2024 00:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969822;
-	bh=RFlxzlC3GSmyAKF+d4JTTk2KvdN8/OytA33Zc/HFGjA=;
+	s=korg; t=1705971224;
+	bh=7eyMmtMHOUIlTa67Qf0FWLuOQ5/p+eclpS5GCGtyemY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q1yI0zt7YTamuXpY24ymj+tNZzh9lU5Gr7gqlYDkqwRn7A1KoeJKt+xB4W+5wSrSq
-	 UAVW1GtjtAslBypO+DzFDuOpC4VVHuh+lz3CkaPC3fKgagWM04b1Tl/RIb2vIkm6Sq
-	 WQp3g4omo+mSMpuy1P1NgzFUECmh43BwzbdNRFd4=
+	b=PPjtRXREq3ed5gTwugwTUgo0q8/QrVhtFxcR7BolnXFCtpQBHgBlx0zDxhQqFin7v
+	 ri+BmIAaYVUAzKL5Sd9OISfbXAFT41Z7N36vHdJeUshuJNlyb6t7BQswSj/jAHnJ/6
+	 obcSxll56TN44ETo/868pit5/Qr5tVs/6KMzuoIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.7 470/641] ARM: dts: qcom: sdx55: Fix the base address of PCIe PHY
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 206/417] drm/msm/dpu: Drop enable and frame_count parameters from dpu_hw_setup_misr()
 Date: Mon, 22 Jan 2024 15:56:14 -0800
-Message-ID: <20240122235832.753027106@linuxfoundation.org>
+Message-ID: <20240122235759.068006652@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,250 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
 
-commit cc6fc55c7ae04ab19b3972f78d3a8b1be32bf533 upstream.
+[ Upstream commit 3313c23f3eab698bc6b904520ee608fc0f7b03d0 ]
 
-While convering the binding to new format, serdes address specified in the
-old binding was used as the base address. This causes a boot hang as the
-driver tries to access memory region outside of the specified address. Fix
-it!
+Drop the enable and frame_count parameters from dpu_hw_setup_misr() as they
+are always set to the same values.
 
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: stable@vger.kernel.org # 6.6
-Fixes: bb56cff4ac03 ("ARM: dts: qcom-sdx55: switch PCIe QMP PHY to new style of bindings")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+In addition, replace MISR_FRAME_COUNT_MASK with MISR_FRAME_COUNT as
+frame_count is always set to the same value.
+
+Fixes: 7b37523fb1d1 ("drm/msm/dpu: Move MISR methods to dpu_hw_util")
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20231211172411.141289-1-manivannan.sadhasivam@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Patchwork: https://patchwork.freedesktop.org/patch/572009/
+Link: https://lore.kernel.org/r/20231213-encoder-fixup-v4-2-6da6cd1bf118@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom/qcom-sdx55.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c    |  4 ++--
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c |  4 ++--
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c |  6 +++---
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.h |  4 ++--
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.c   |  6 +++---
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.h   |  3 ++-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.c | 19 +++++--------------
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h |  9 +++------
+ 8 files changed, 22 insertions(+), 33 deletions(-)
 
---- a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
-@@ -436,9 +436,9 @@
- 			status = "disabled";
- 		};
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
+index 6c0ffe8e4adb..5a5821e59dc1 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_crtc.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+  * Copyright (c) 2014-2021 The Linux Foundation. All rights reserved.
+  * Copyright (C) 2013 Red Hat
+  * Author: Rob Clark <robdclark@gmail.com>
+@@ -124,7 +124,7 @@ static void dpu_crtc_setup_lm_misr(struct dpu_crtc_state *crtc_state)
+ 			continue;
  
--		pcie_phy: phy@1c07000 {
-+		pcie_phy: phy@1c06000 {
- 			compatible = "qcom,sdx55-qmp-pcie-phy";
--			reg = <0x01c07000 0x2000>;
-+			reg = <0x01c06000 0x2000>;
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges;
+ 		/* Calculate MISR over 1 frame */
+-		m->hw_lm->ops.setup_misr(m->hw_lm, true, 1);
++		m->hw_lm->ops.setup_misr(m->hw_lm);
+ 	}
+ }
+ 
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+index 547f9f2b9fcb..b0eb881f8af1 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+@@ -2,7 +2,7 @@
+ /*
+  * Copyright (C) 2013 Red Hat
+  * Copyright (c) 2014-2018, 2020-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+  *
+  * Author: Rob Clark <robdclark@gmail.com>
+  */
+@@ -257,7 +257,7 @@ void dpu_encoder_setup_misr(const struct drm_encoder *drm_enc)
+ 		if (!phys->hw_intf || !phys->hw_intf->ops.setup_misr)
+ 			continue;
+ 
+-		phys->hw_intf->ops.setup_misr(phys->hw_intf, true, 1);
++		phys->hw_intf->ops.setup_misr(phys->hw_intf);
+ 	}
+ }
+ 
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
+index 7e210ba0b104..384558d2f960 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+  * Copyright (c) 2015-2018, The Linux Foundation. All rights reserved.
+  */
+ 
+@@ -322,9 +322,9 @@ static u32 dpu_hw_intf_get_line_count(struct dpu_hw_intf *intf)
+ 	return DPU_REG_READ(c, INTF_LINE_COUNT);
+ }
+ 
+-static void dpu_hw_intf_setup_misr(struct dpu_hw_intf *intf, bool enable, u32 frame_count)
++static void dpu_hw_intf_setup_misr(struct dpu_hw_intf *intf)
+ {
+-	dpu_hw_setup_misr(&intf->hw, INTF_MISR_CTRL, enable, frame_count, 0x1);
++	dpu_hw_setup_misr(&intf->hw, INTF_MISR_CTRL, 0x1);
+ }
+ 
+ static int dpu_hw_intf_collect_misr(struct dpu_hw_intf *intf, u32 *misr_value)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.h
+index 643dd10bc030..e75339b96a1d 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+ /*
+- * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+  * Copyright (c) 2015-2018, The Linux Foundation. All rights reserved.
+  */
+ 
+@@ -80,7 +80,7 @@ struct dpu_hw_intf_ops {
+ 	void (*bind_pingpong_blk)(struct dpu_hw_intf *intf,
+ 			bool enable,
+ 			const enum dpu_pingpong pp);
+-	void (*setup_misr)(struct dpu_hw_intf *intf, bool enable, u32 frame_count);
++	void (*setup_misr)(struct dpu_hw_intf *intf);
+ 	int (*collect_misr)(struct dpu_hw_intf *intf, u32 *misr_value);
+ };
+ 
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.c
+index 2dd9f9185cfc..cc04fb979fb5 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+  * Copyright (c) 2015-2021, The Linux Foundation. All rights reserved.
+  */
+ 
+@@ -99,9 +99,9 @@ static void dpu_hw_lm_setup_border_color(struct dpu_hw_mixer *ctx,
+ 	}
+ }
+ 
+-static void dpu_hw_lm_setup_misr(struct dpu_hw_mixer *ctx, bool enable, u32 frame_count)
++static void dpu_hw_lm_setup_misr(struct dpu_hw_mixer *ctx)
+ {
+-	dpu_hw_setup_misr(&ctx->hw, LM_MISR_CTRL, enable, frame_count, 0x0);
++	dpu_hw_setup_misr(&ctx->hw, LM_MISR_CTRL, 0x0);
+ }
+ 
+ static int dpu_hw_lm_collect_misr(struct dpu_hw_mixer *ctx, u32 *misr_value)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.h
+index 652ddfdedec3..0a050eb247b9 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.h
+@@ -1,5 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+ /*
++ * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+  * Copyright (c) 2015-2021, The Linux Foundation. All rights reserved.
+  */
+ 
+@@ -57,7 +58,7 @@ struct dpu_hw_lm_ops {
+ 	/**
+ 	 * setup_misr: Enable/disable MISR
+ 	 */
+-	void (*setup_misr)(struct dpu_hw_mixer *ctx, bool enable, u32 frame_count);
++	void (*setup_misr)(struct dpu_hw_mixer *ctx);
+ 
+ 	/**
+ 	 * collect_misr: Read MISR signature
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.c
+index 119dc07d6ab5..1b7439ae686a 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+  * Copyright (c) 2015-2018, The Linux Foundation. All rights reserved.
+  */
+ #define pr_fmt(fmt)	"[drm:%s:%d] " fmt, __func__, __LINE__
+@@ -454,9 +454,7 @@ u64 _dpu_hw_get_qos_lut(const struct dpu_qos_lut_tbl *tbl,
+  * note: Aside from encoders, input_sel should be set to 0x0 by default
+  */
+ void dpu_hw_setup_misr(struct dpu_hw_blk_reg_map *c,
+-		u32 misr_ctrl_offset,
+-		bool enable, u32 frame_count,
+-		u8 input_sel)
++		u32 misr_ctrl_offset, u8 input_sel)
+ {
+ 	u32 config = 0;
+ 
+@@ -465,16 +463,9 @@ void dpu_hw_setup_misr(struct dpu_hw_blk_reg_map *c,
+ 	/* Clear old MISR value (in case it's read before a new value is calculated)*/
+ 	wmb();
+ 
+-	if (enable) {
+-		config = (frame_count & MISR_FRAME_COUNT_MASK) |
+-			MISR_CTRL_ENABLE | MISR_CTRL_FREE_RUN_MASK |
+-			((input_sel & 0xF) << 24);
+-
+-		DPU_REG_WRITE(c, misr_ctrl_offset, config);
+-	} else {
+-		DPU_REG_WRITE(c, misr_ctrl_offset, 0);
+-	}
+-
++	config = MISR_FRAME_COUNT | MISR_CTRL_ENABLE | MISR_CTRL_FREE_RUN_MASK |
++		((input_sel & 0xF) << 24);
++	DPU_REG_WRITE(c, misr_ctrl_offset, config);
+ }
+ 
+ int dpu_hw_collect_misr(struct dpu_hw_blk_reg_map *c,
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h
+index dffad0a83781..4ae2a434372c 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+ /*
+- * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+  * Copyright (c) 2015-2021, The Linux Foundation. All rights reserved.
+  */
+ 
+@@ -13,7 +13,7 @@
+ #include "dpu_hw_catalog.h"
+ 
+ #define REG_MASK(n)                     ((BIT(n)) - 1)
+-#define MISR_FRAME_COUNT_MASK           0xFF
++#define MISR_FRAME_COUNT                0x1
+ #define MISR_CTRL_ENABLE                BIT(8)
+ #define MISR_CTRL_STATUS                BIT(9)
+ #define MISR_CTRL_STATUS_CLEAR          BIT(10)
+@@ -350,10 +350,7 @@ u64 _dpu_hw_get_qos_lut(const struct dpu_qos_lut_tbl *tbl,
+ 		u32 total_fl);
+ 
+ void dpu_hw_setup_misr(struct dpu_hw_blk_reg_map *c,
+-		u32 misr_ctrl_offset,
+-		bool enable,
+-		u32 frame_count,
+-		u8 input_sel);
++		u32 misr_ctrl_offset, u8 input_sel);
+ 
+ int dpu_hw_collect_misr(struct dpu_hw_blk_reg_map *c,
+ 		u32 misr_ctrl_offset,
+-- 
+2.43.0
+
 
 
 
