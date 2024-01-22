@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082B38384FD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:38:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F61B838370
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B3381C2A474
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21D5B1F26F1B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AAE7A72D;
-	Tue, 23 Jan 2024 02:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C4B62A04;
+	Tue, 23 Jan 2024 01:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azciX958"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6LiAjos"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1ED77A719;
-	Tue, 23 Jan 2024 02:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7697C62A00;
+	Tue, 23 Jan 2024 01:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975556; cv=none; b=IyTjd2snvMjB1ub0242nIGZCftoCZG4X3aV0uSdTTOSKrUNDCJMnByrBXdADWmrvWWXQ4q+AejAJQNwoK0LC/uyNnfdiktNdrtlmBnpBO0k8DE6VvC9z8haBWBefavAACHh/ZV1rG/Q1zKqAsXwxWv0cwdZm+/yLdFfTjKARoNo=
+	t=1705974974; cv=none; b=jKLz61ha4NVrV1C6duU2BUGcc9SEFXC6SxgGElDNQoEG5c7jBsdeUIDxkrWZYA/fx0JA9ExLGQ0ouGew/rx6qqdFE6EGZUNJmL10OuxaWWKME2NbvgND30hIdMAyDv9LSAopVg0dN/GQhdPSu1q5yz59FnLleMHPMMl9ELLEadU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975556; c=relaxed/simple;
-	bh=RxE+E5vxRWlvsdy5dib/t2fsCMCZgcebCCJk+U53btQ=;
+	s=arc-20240116; t=1705974974; c=relaxed/simple;
+	bh=m8w1lHjG7Yd5A9DQuk8VVbhlFEIEiHnlqcRoaTWZcPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c2qrc8gRgXmNpDhTLinp958/siCN4fXdy+ZEe7R3EE42sTwHuBVHVfLlHeOmO/J97Lbtms9fSbwozHmYajogJBe5f9ITC2NKU6GgeIVk/r5HcxyMYRBWF4XkmI6S7mG0k926z1rEGsnuaUgt73HfwKFhjwx0VkhPWl85eTE7Wu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azciX958; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D2EC43390;
-	Tue, 23 Jan 2024 02:05:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=M2whmHKgPtjP/nQktoKmfit6SYcZUgwmD+l6DbHrARXeuvG5txZJjVP6+uylY3r4NmHvjke9d0sjGa5eUVpzJ5n6j4PW/JqR81aDdOOHOlE5KaS0XGJsnkduqG9eR8sE5tPvvBUstFbBPA52p3wmfA9mINSuuVTO7OIIrd2Hs00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6LiAjos; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFB6C433F1;
+	Tue, 23 Jan 2024 01:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975556;
-	bh=RxE+E5vxRWlvsdy5dib/t2fsCMCZgcebCCJk+U53btQ=;
+	s=korg; t=1705974973;
+	bh=m8w1lHjG7Yd5A9DQuk8VVbhlFEIEiHnlqcRoaTWZcPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azciX958FYIGmApwbkbPRpWeN2KXwbJ10ZMnW8vUD6hhbtQ4a1db7iG16wz2jB9n8
-	 tw9tlZy9cjToJr8vFYEeMbharGkNZ0HgldJvaT5rgjrfUA/F4Rb3I/jzp+BhBLJAWG
-	 gwuduoQv/kF4jWUvU2a6iYRHsnfEsDe6osaeEqxA=
+	b=h6LiAjos77Cz3a6DU+ZR3ZCwqnxQYlkwbtQtiEzis/VXrPP2CxQoJ7RkACPe/+CJD
+	 V+bL3zyLt5iLpgJh5aK/I3NOa4wUltGCGrviDZ6wv5/uZo7SD4ce5TW1a3pPB2L9uk
+	 c0BiMVHpq0YckM7fNmXnPZLDY+Pop+s//+LA9Aq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	John Johansen <john.johansen@canonical.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Tony Lindgren <tony@atomide.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 508/583] apparmor: fix possible memory leak in unpack_trans_table
+Subject: [PATCH 5.15 303/374] serial: 8250: omap: Dont skip resource freeing if pm_runtime_resume_and_get() failed
 Date: Mon, 22 Jan 2024 15:59:19 -0800
-Message-ID: <20240122235827.595502129@linuxfoundation.org>
+Message-ID: <20240122235755.340325799@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,96 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 1342ad786073e96fa813ad943c19f586157ae297 ]
+[ Upstream commit ad90d0358bd3b4554f243a425168fc7cebe7d04e ]
 
-If we fail to unpack the transition table then the table elements which
-have been already allocated are not freed on error path.
+Returning an error code from .remove() makes the driver core emit the
+little helpful error message:
 
-unreferenced object 0xffff88802539e000 (size 128):
-  comm "apparmor_parser", pid 903, jiffies 4294914938 (age 35.085s)
-  hex dump (first 32 bytes):
-    20 73 6f 6d 65 20 6e 61 73 74 79 20 73 74 72 69   some nasty stri
-    6e 67 20 73 6f 6d 65 20 6e 61 73 74 79 20 73 74  ng some nasty st
-  backtrace:
-    [<ffffffff81ddb312>] __kmem_cache_alloc_node+0x1e2/0x2d0
-    [<ffffffff81c47194>] __kmalloc_node_track_caller+0x54/0x170
-    [<ffffffff81c225b9>] kmemdup+0x29/0x60
-    [<ffffffff83e1ee65>] aa_unpack_strdup+0xe5/0x1b0
-    [<ffffffff83e20808>] unpack_pdb+0xeb8/0x2700
-    [<ffffffff83e23567>] unpack_profile+0x1507/0x4a30
-    [<ffffffff83e27bfa>] aa_unpack+0x36a/0x1560
-    [<ffffffff83e194c3>] aa_replace_profiles+0x213/0x33c0
-    [<ffffffff83de9461>] policy_update+0x261/0x370
-    [<ffffffff83de978e>] profile_replace+0x20e/0x2a0
-    [<ffffffff81eac8bf>] vfs_write+0x2af/0xe00
-    [<ffffffff81eaddd6>] ksys_write+0x126/0x250
-    [<ffffffff88f34fb6>] do_syscall_64+0x46/0xf0
-    [<ffffffff890000ea>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+	remove callback returned a non-zero value. This will be ignored.
 
-Call aa_free_str_table() on error path as was done before the blamed
-commit. It implements all necessary checks, frees str_table if it is
-available and nullifies the pointers.
+and then remove the device anyhow. So all resources that were not freed
+are leaked in this case. Skipping serial8250_unregister_port() has the
+potential to keep enough of the UART around to trigger a use-after-free.
 
-Found by Linux Verification Center (linuxtesting.org).
+So replace the error return (and with it the little helpful error
+message) by a more useful error message and continue to cleanup.
 
-Fixes: a0792e2ceddc ("apparmor: make transition table unpack generic so it can be reused")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: e3f0c638f428 ("serial: 8250: omap: Fix unpaired pm_runtime_put_sync() in omap8250_remove()")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20231110152927.70601-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/lib.c           | 1 +
- security/apparmor/policy_unpack.c | 7 +++----
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/tty/serial/8250/8250_omap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/apparmor/lib.c b/security/apparmor/lib.c
-index c87bccafff44..7182a8b821fb 100644
---- a/security/apparmor/lib.c
-+++ b/security/apparmor/lib.c
-@@ -41,6 +41,7 @@ void aa_free_str_table(struct aa_str_table *t)
- 			kfree_sensitive(t->table[i]);
- 		kfree_sensitive(t->table);
- 		t->table = NULL;
-+		t->size = 0;
- 	}
- }
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+index 20e0703f1def..770c4cabdf9b 100644
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -1492,7 +1492,7 @@ static int omap8250_remove(struct platform_device *pdev)
  
-diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
-index dbc83455d900..a904bca24026 100644
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -478,6 +478,8 @@ static bool unpack_trans_table(struct aa_ext *e, struct aa_str_table *strs)
- 		if (!table)
- 			goto fail;
+ 	err = pm_runtime_resume_and_get(&pdev->dev);
+ 	if (err)
+-		return err;
++		dev_err(&pdev->dev, "Failed to resume hardware\n");
  
-+		strs->table = table;
-+		strs->size = size;
- 		for (i = 0; i < size; i++) {
- 			char *str;
- 			int c, j, pos, size2 = aa_unpack_strdup(e, &str, NULL);
-@@ -520,14 +522,11 @@ static bool unpack_trans_table(struct aa_ext *e, struct aa_str_table *strs)
- 			goto fail;
- 		if (!aa_unpack_nameX(e, AA_STRUCTEND, NULL))
- 			goto fail;
--
--		strs->table = table;
--		strs->size = size;
- 	}
- 	return true;
- 
- fail:
--	kfree_sensitive(table);
-+	aa_free_str_table(strs);
- 	e->pos = saved_pos;
- 	return false;
- }
+ 	serial8250_unregister_port(priv->line);
+ 	priv->line = -ENODEV;
 -- 
 2.43.0
 
