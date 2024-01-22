@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2984A838100
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD1B2838044
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EB04B2BAD2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:00:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B8612831A3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877E0130E2F;
-	Tue, 23 Jan 2024 01:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386FD65BCB;
+	Tue, 23 Jan 2024 01:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eES1u/nI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epQ+T+N3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF7312FF73;
-	Tue, 23 Jan 2024 01:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF9565BA0;
+	Tue, 23 Jan 2024 01:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971819; cv=none; b=Gi9hMHTGhL4pzJfflJAPHad6ipwCAY7xpkMIGk7RvfjzKjUdtJSKGVxZVGjAVCMb36tTXGLDhtQ5XsLJgSgXYBI9Mk1MAE1IaoKa5GnUoMq/aCXBCWuuTK1xq5Lm0kgMocJtjffDmLWo3MSGY/zlf6dfboZw+IMtqn5mX0TulWQ=
+	t=1705971633; cv=none; b=EefugwN6RwjB5+S8EDt14Uf09HIijQB9nqtR69VY4hBQAoKAhlftyTRmx6DVJ4zim5mpQKQB4AMXHNdzFR1KMXj3OvOK1y64z7zWo/hEGScabdOgLIeI978xHcOzoxmygbqt4kN04klVp29/BVN8iWP3F2NqOAW/dh5su7+yGHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971819; c=relaxed/simple;
-	bh=VrvLtvi34/In1AFG0heVUT3dH8ETtflgMzRrxKyg/iA=;
+	s=arc-20240116; t=1705971633; c=relaxed/simple;
+	bh=gJJ2ChqjU6DT3e7YMHGgzn14HIIkrRhk7j63ssQBIWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nBmSFxvLHpQT4NvIN/ozZWRbW4Dklu0EIdRjbp9C6EmbzPoW5W5QSTnaDN8oCWWeHg1057VLn9/XIXGCm/wbfEeC5qZfichFr5ByO6Y9QfGVROuO8dPVywsznMkdzWUZ9uOVxY7EJVhHUOue9x2I9wSjNAQ5iUSJAJqNSq6j48c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eES1u/nI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1A6C433F1;
-	Tue, 23 Jan 2024 01:03:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=T4rgCKkoqRQ2+55Xx1oCR9tYwPQRKdmrbNq85zE4jn5DiXeKgADwEIKI04GhMcWavP2cYiunZLZIB9thyHZ4APFnVFWdLC9Or+McAa9yPBW2Er2nlYTF6ge/r57NYnK5b6GMApYN00JtSHHVIjFqj1fq60dmd3L+y/UCsZsd9Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epQ+T+N3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A191FC433C7;
+	Tue, 23 Jan 2024 01:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971819;
-	bh=VrvLtvi34/In1AFG0heVUT3dH8ETtflgMzRrxKyg/iA=;
+	s=korg; t=1705971632;
+	bh=gJJ2ChqjU6DT3e7YMHGgzn14HIIkrRhk7j63ssQBIWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eES1u/nIV8V3cQ9le2LIdKcTxahOyAwviUzPZL2/wq8gmfbDqUR9Gjj2hiJ2GSs6p
-	 MgTimpsVFJ8B7v9kll2eufigR3tgz3W6TrTSmsskYEIK62wYTunYq8UONSsSR9fT/f
-	 8wieSrVGzzkm0OAyV+ERWm3+d+rK7VbrKa8X2KPo=
+	b=epQ+T+N3Q6XDDnU68K0Izj/xrU6QLbJhJRo1oWKPzAzDpK53JMKx80wN6V5+VYutR
+	 tGjiUO+8LlpuKVtIAnEe/hTTdWUx8iAAxpx6JoaKtIH2lBo3L+ahwTpRzpEDGNoMPS
+	 z/JrrQu6xldpgBDOh7gKSk5NAcBGMBgkaE/Js5/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 328/417] mips: Fix incorrect max_low_pfn adjustment
+Subject: [PATCH 5.10 190/286] pwm: stm32: Use hweight32 in stm32_pwm_detect_channels
 Date: Mon, 22 Jan 2024 15:58:16 -0800
-Message-ID: <20240122235803.159487302@linuxfoundation.org>
+Message-ID: <20240122235739.437341399@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,84 +62,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Serge Semin <fancer.lancer@gmail.com>
+From: Philipp Zabel <p.zabel@pengutronix.de>
 
-[ Upstream commit 0f5cc249ff73552d3bd864e62f85841dafaa107d ]
+[ Upstream commit 41fa8f57c0d269243fe3bde2bce71e82c884b9ad ]
 
-max_low_pfn variable is incorrectly adjusted if the kernel is built with
-high memory support and the later is detected in a running system, so the
-memory which actually can be directly mapped is getting into the highmem
-zone. See the ZONE_NORMAL range on my MIPS32r5 system:
+Use hweight32() to count the CCxE bits in stm32_pwm_detect_channels().
+Since the return value is assigned to chip.npwm, change it to unsigned
+int as well.
 
-> Zone ranges:
->   DMA      [mem 0x0000000000000000-0x0000000000ffffff]
->   Normal   [mem 0x0000000001000000-0x0000000007ffffff]
->   HighMem  [mem 0x0000000008000000-0x000000020fffffff]
-
-while the zones are supposed to look as follows:
-
-> Zone ranges:
->   DMA      [mem 0x0000000000000000-0x0000000000ffffff]
->   Normal   [mem 0x0000000001000000-0x000000001fffffff]
->   HighMem  [mem 0x0000000020000000-0x000000020fffffff]
-
-Even though the physical memory within the range [0x08000000;0x20000000]
-belongs to MMIO on our system, we don't really want it to be considered as
-high memory since on MIPS32 that range still can be directly mapped.
-
-Note there might be other problems caused by the max_low_pfn variable
-misconfiguration. For instance high_memory variable is initialize with
-virtual address corresponding to the max_low_pfn PFN, and by design it
-must define the upper bound on direct map memory, then end of the normal
-zone. That in its turn potentially may cause problems in accessing the
-memory by means of the /dev/mem and /dev/kmem devices.
-
-Let's fix the discovered misconfiguration then. It turns out the commit
-a94e4f24ec83 ("MIPS: init: Drop boot_mem_map") didn't introduce the
-max_low_pfn adjustment quite correct. If the kernel is built with high
-memory support and the system is equipped with high memory, the
-max_low_pfn variable will need to be initialized with PFN of the most
-upper directly reachable memory address so the zone normal would be
-correctly setup. On MIPS that PFN corresponds to PFN_DOWN(HIGHMEM_START).
-If the system is built with no high memory support and one is detected in
-the running system, we'll just need to adjust the max_pfn variable to
-discard the found high memory from the system and leave the max_low_pfn as
-is, since the later will be less than PFN_DOWN(HIGHMEM_START) anyway by
-design of the for_each_memblock() loop performed a bit early in the
-bootmem_init() method.
-
-Fixes: a94e4f24ec83 ("MIPS: init: Drop boot_mem_map")
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Stable-dep-of: 19f1016ea960 ("pwm: stm32: Fix enable count for clk in .probe()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/setup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pwm/pwm-stm32.c | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 7c540572f1f7..e46e7ec76b4f 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -326,11 +326,11 @@ static void __init bootmem_init(void)
- 		panic("Incorrect memory mapping !!!");
+diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
+index 945eed3ffb81..31843cc4ca76 100644
+--- a/drivers/pwm/pwm-stm32.c
++++ b/drivers/pwm/pwm-stm32.c
+@@ -575,10 +575,9 @@ static void stm32_pwm_detect_complementary(struct stm32_pwm *priv)
+ 	priv->have_complementary_output = (ccer != 0);
+ }
  
- 	if (max_pfn > PFN_DOWN(HIGHMEM_START)) {
-+		max_low_pfn = PFN_DOWN(HIGHMEM_START);
- #ifdef CONFIG_HIGHMEM
--		highstart_pfn = PFN_DOWN(HIGHMEM_START);
-+		highstart_pfn = max_low_pfn;
- 		highend_pfn = max_pfn;
- #else
--		max_low_pfn = PFN_DOWN(HIGHMEM_START);
- 		max_pfn = max_low_pfn;
- #endif
- 	}
+-static int stm32_pwm_detect_channels(struct stm32_pwm *priv)
++static unsigned int stm32_pwm_detect_channels(struct stm32_pwm *priv)
+ {
+ 	u32 ccer;
+-	int npwm = 0;
+ 
+ 	/*
+ 	 * If channels enable bits don't exist writing 1 will have no
+@@ -588,19 +587,7 @@ static int stm32_pwm_detect_channels(struct stm32_pwm *priv)
+ 	regmap_read(priv->regmap, TIM_CCER, &ccer);
+ 	regmap_clear_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
+ 
+-	if (ccer & TIM_CCER_CC1E)
+-		npwm++;
+-
+-	if (ccer & TIM_CCER_CC2E)
+-		npwm++;
+-
+-	if (ccer & TIM_CCER_CC3E)
+-		npwm++;
+-
+-	if (ccer & TIM_CCER_CC4E)
+-		npwm++;
+-
+-	return npwm;
++	return hweight32(ccer & TIM_CCER_CCXE);
+ }
+ 
+ static int stm32_pwm_probe(struct platform_device *pdev)
 -- 
 2.43.0
 
