@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D597E83835D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 248EC8380B6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FED728EE55
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3EE028409E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4B7627EE;
-	Tue, 23 Jan 2024 01:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1171133423;
+	Tue, 23 Jan 2024 01:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kQ0Y0z3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiDO2sCz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBC461673;
-	Tue, 23 Jan 2024 01:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CF713341F;
+	Tue, 23 Jan 2024 01:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974950; cv=none; b=qCjA9N7OEfl7ZKh8BNYx7Hi4BEwZxdFthmfvuPw70dlAdziZ9ePtQg8CoLESPNPL6V3F+ok/MIm1Yw8H2VF2PMZ7Z8y4IrHhhlZT/ZvUK5r+PIx8ac4RRxwDWJvBTvsj4hlUH5xcHO+fFW4peBln2YjjlbJ3yZqyz4dg4/JbDr0=
+	t=1705971842; cv=none; b=nab+vYmTT765BxLgqKbIqPd6tfQ6lb3IIYpuPlMi2CLU9Mr18F3qbkaZa7YVJGWL1g31gktPLyP9o54wHSpebeicJNNnFYYqp6ARaBhAZfybGo/D5w42okaB+Jd5NHIVnzi/LOuEl8HTzUbKBCXg+n33bVr2l4qfJ4kGhHvLTTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974950; c=relaxed/simple;
-	bh=RkffaHa+FuoEImnKQ75hzZYsZjvyHYpUlvj23FbLCis=;
+	s=arc-20240116; t=1705971842; c=relaxed/simple;
+	bh=ej2ZxhO0qwZo5E2EDZ913QAuEfjpms5qDY6LSgCsgTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iTdHVumvT9uU0MLCZSprlMFob0/V93kEY9LBEiycfA3PLgK93Mo1c4lk0QdUz/wD8B2Z9/zaHIa4bSOqv8+aGmYLLHkQ0Wu6p7ngBuFRWqmO6Thxc+R3QlGDN8+GOuXgYmLQvgH+FP3Rzz2dxXllHO7rDHvddSp4fpPVPg0QoO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kQ0Y0z3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66E3C43390;
-	Tue, 23 Jan 2024 01:55:49 +0000 (UTC)
+	 MIME-Version; b=GXhpgY/Eyi1JsP0o0x0WbsBmh7JiVk3RuAob3YkF7dzAUFSMl8QsC0cMys2V2ecH/raHO/NactHBna90980okhssKGq9GZi1p5tPJ7Ggilt6pEohs16qQORifO3SWNsPhMiphxr+zKsi+nLER4btUa7E5eLymrNSeFotEj/CRVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iiDO2sCz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD22C433F1;
+	Tue, 23 Jan 2024 01:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974949;
-	bh=RkffaHa+FuoEImnKQ75hzZYsZjvyHYpUlvj23FbLCis=;
+	s=korg; t=1705971842;
+	bh=ej2ZxhO0qwZo5E2EDZ913QAuEfjpms5qDY6LSgCsgTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2kQ0Y0z39LYifnv7zinwoU0gU06w6FuzHp/D1UHe4Noqtai9xrcoCJghnWYcsbyMw
-	 zetBWbCddcc7ckUlXvdkqn+BOOw5v3Tw9mKkcrdECDCMGFwUcxIfVrpnNeSkJcRsTN
-	 pc7sRw1ssS28/RrkSFXj0xmuvqAAH3VtK2aSaioY=
+	b=iiDO2sCzC5GhhhnSvJRopMHgKV9gy2lTJ+KPu3fo4o+Qju0Bxtpx6K5iB74JqMfTl
+	 XamvwJfqak5q/Yi63Li0njyvZFmDoPPj5V22SttI+6gJpYQeyHe7tN8DvI3dp9dThm
+	 7qpzSZPhgKxB/bNob2ub5dJ5dXgrUHzmLZ/Mui7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Lee Jones <lee@kernel.org>,
+	Jan Palus <jpalus@fastmail.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 292/374] mfd: syscon: Fix null pointer dereference in of_syscon_register()
+Subject: [PATCH 5.10 242/286] power: supply: cw2015: correct time_to_empty units in sysfs
 Date: Mon, 22 Jan 2024 15:59:08 -0800
-Message-ID: <20240122235754.943550411@linuxfoundation.org>
+Message-ID: <20240122235741.388163187@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Jan Palus <jpalus@fastmail.com>
 
-[ Upstream commit 41673c66b3d0c09915698fec5c13b24336f18dd1 ]
+[ Upstream commit f37669119423ca852ca855b24732f25c0737aa57 ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+RRT_ALRT register holds remaining battery time in minutes therefore it
+needs to be scaled accordingly when exposing TIME_TO_EMPTY via sysfs
+expressed in seconds
 
-Fixes: e15d7f2b81d2 ("mfd: syscon: Use a unique name with regmap_config")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20231204092443.2462115-1-chentao@kylinos.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: b4c7715c10c1 ("power: supply: add CellWise cw2015 fuel gauge driver")
+Signed-off-by: Jan Palus <jpalus@fastmail.com>
+Link: https://lore.kernel.org/r/20231111221704.5579-1-jpalus@fastmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/syscon.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/power/supply/cw2015_battery.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 191fdb87c424..552b1861adad 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -103,6 +103,10 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
+diff --git a/drivers/power/supply/cw2015_battery.c b/drivers/power/supply/cw2015_battery.c
+index de1fa71be1e8..d1071dbb904e 100644
+--- a/drivers/power/supply/cw2015_battery.c
++++ b/drivers/power/supply/cw2015_battery.c
+@@ -490,7 +490,7 @@ static int cw_battery_get_property(struct power_supply *psy,
  
- 	syscon_config.name = kasprintf(GFP_KERNEL, "%pOFn@%llx", np,
- 				       (u64)res.start);
-+	if (!syscon_config.name) {
-+		ret = -ENOMEM;
-+		goto err_regmap;
-+	}
- 	syscon_config.reg_stride = reg_io_width;
- 	syscon_config.val_bits = reg_io_width * 8;
- 	syscon_config.max_register = resource_size(&res) - reg_io_width;
+ 	case POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW:
+ 		if (cw_battery_valid_time_to_empty(cw_bat))
+-			val->intval = cw_bat->time_to_empty;
++			val->intval = cw_bat->time_to_empty * 60;
+ 		else
+ 			val->intval = 0;
+ 		break;
 -- 
 2.43.0
 
