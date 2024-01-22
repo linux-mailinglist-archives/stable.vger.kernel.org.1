@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-12994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9271A837B36
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF38837898
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28CAFB2C631
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:49:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 172CBB24C74
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E486512A168;
-	Tue, 23 Jan 2024 00:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8EB013B783;
+	Tue, 23 Jan 2024 00:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOc1Hvvc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWU7XBI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CBE129A63;
-	Tue, 23 Jan 2024 00:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77C313AA52;
+	Tue, 23 Jan 2024 00:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968749; cv=none; b=pWBZnBcHKHVqsJQpZL2x4PadVo4d/mmn+brp8I4X+uP9af7Aro3CflUuV421BNn0B9qwdqxPBlzPcmGE7ms+7l3ZwIg1xDoQ+rxdsi0zD437sWU5SUaeWfDvdkSrzRcTwHUa4W7r0n8CBJWj4WkZP8HuJv0EuYT3Bob2kmhVJws=
+	t=1705968131; cv=none; b=eXiom5pf1g9q/JRnN+BpB/Q1WljNkC+V8aj6XoxwHOIGiilb7J9NdvF5evfhsWbeJQ7tXE2M/mdD8jNLOcW5hUViiCUYDjpDVKR5H1prHBon6rLxpsTLtRcLnZ93Ol6ppl/C2NV4d4+D9cm6gl7MgnqpdauK0PlYnQF7TwX/Dp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968749; c=relaxed/simple;
-	bh=4lp5WUkMjwZyjxuPzuGAW8fWzXadgukGlFIdm9lUpRk=;
+	s=arc-20240116; t=1705968131; c=relaxed/simple;
+	bh=H5hxi/9iN32AWmr2tGuibiDNemnd5MesdfXUDGE+xH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o9L7p2cqdvRvDhxM4GXvnKMMvw+GitR7JXhr3uopUSJ/hQ4EnzWNsQ/zUbzpxvIlOF+HIfwUqultYY37c43YLtkrJrcL6QYeOSezb9vJAv88AltW3jErf0OstH9MvGBaEiJFHA8YeVyabYHchqnfyOrx3rZFiDzBs6pASno6k7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOc1Hvvc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA71C433C7;
-	Tue, 23 Jan 2024 00:12:29 +0000 (UTC)
+	 MIME-Version; b=UT7FUIcOpomX4POgb4JAQg0rYG4n4hoFw6/Z9KXaDslliymRzrC+bkoxa29iocMODz0V8CSAxbceIsNL6H3Wdp38d2QQXq+vy2ae8VGfjjPDD98TnZ5B5CAWCs5njaA8UOjeXg86NR0zlyQROwuazK1xYJZxO3kWwx07hxaxi+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWU7XBI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2642EC433F1;
+	Tue, 23 Jan 2024 00:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968749;
-	bh=4lp5WUkMjwZyjxuPzuGAW8fWzXadgukGlFIdm9lUpRk=;
+	s=korg; t=1705968131;
+	bh=H5hxi/9iN32AWmr2tGuibiDNemnd5MesdfXUDGE+xH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOc1Hvvc70K/CkOhqFL9e8JZYT8XnB0eklu8Fk1wTifpmbEWqgR2XiyVuOXPjGQEI
-	 cGbPNT/WMRFOKJNt6gnZSeRk2FTbGd6GERBTeb1TZS7NfULPs+Z3Qd+QdQiDOJHFvZ
-	 vHsQfwFnk1sWlrolarUIPmWW7QYQR/q2KdDCtzw4=
+	b=MWU7XBI7c9RNWANspiFho27vcTi3xQ9a7utxd/RPUcQg2qoQ6b31Mo+uDFo+4ShQp
+	 IQOi9l8CYq65JEHvFd2ooJuu/hmbGbds5N3jTvWztJZUuvKrDSsLhgSrzGGndyz3kp
+	 tHQ1bqV2v6JbZ6JBk/KZttTNTP8nx001w6djGSrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenghan Wang <wzhmmmmm@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Maciej Strozek <mstrozek@opensource.cirrus.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 029/194] ida: Fix crash in ida_free when the bitmap is empty
+Subject: [PATCH 4.19 003/148] ASoC: cs43130: Fix the position of const qualifier
 Date: Mon, 22 Jan 2024 15:55:59 -0800
-Message-ID: <20240122235720.465127254@linuxfoundation.org>
+Message-ID: <20240122235712.576993559@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Maciej Strozek <mstrozek@opensource.cirrus.com>
 
-[ Upstream commit af73483f4e8b6f5c68c9aa63257bdd929a9c194a ]
+[ Upstream commit e7f289a59e76a5890a57bc27b198f69f175f75d9 ]
 
-The IDA usually detects double-frees, but that detection failed to
-consider the case when there are no nearby IDs allocated and so we have a
-NULL bitmap rather than simply having a clear bit.  Add some tests to the
-test-suite to be sure we don't inadvertently reintroduce this problem.
-Unfortunately they're quite noisy so include a message to disregard
-the warnings.
-
-Reported-by: Zhenghan Wang <wzhmmmmm@gmail.com>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20231117141344.64320-2-mstrozek@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/idr.c      |  2 +-
- lib/test_ida.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 41 insertions(+), 1 deletion(-)
+ sound/soc/codecs/cs43130.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/idr.c b/lib/idr.c
-index a91ca1dfe143..a90bd348ba03 100644
---- a/lib/idr.c
-+++ b/lib/idr.c
-@@ -506,7 +506,7 @@ void ida_free(struct ida *ida, unsigned int id)
- 			goto delete;
- 		xas_store(&xas, xa_mk_value(v));
- 	} else {
--		if (!test_bit(bit, bitmap->bitmap))
-+		if (!bitmap || !test_bit(bit, bitmap->bitmap))
- 			goto err;
- 		__clear_bit(bit, bitmap->bitmap);
- 		xas_set_mark(&xas, XA_FREE_MARK);
-diff --git a/lib/test_ida.c b/lib/test_ida.c
-index b06880625961..55105baa19da 100644
---- a/lib/test_ida.c
-+++ b/lib/test_ida.c
-@@ -150,6 +150,45 @@ static void ida_check_conv(struct ida *ida)
- 	IDA_BUG_ON(ida, !ida_is_empty(ida));
+diff --git a/sound/soc/codecs/cs43130.c b/sound/soc/codecs/cs43130.c
+index cf29dec28b5e..95060ae7dbb4 100644
+--- a/sound/soc/codecs/cs43130.c
++++ b/sound/soc/codecs/cs43130.c
+@@ -1686,7 +1686,7 @@ static ssize_t cs43130_show_dc_r(struct device *dev,
+ 	return cs43130_show_dc(dev, buf, HP_RIGHT);
  }
  
-+/*
-+ * Check various situations where we attempt to free an ID we don't own.
-+ */
-+static void ida_check_bad_free(struct ida *ida)
-+{
-+	unsigned long i;
-+
-+	printk("vvv Ignore \"not allocated\" warnings\n");
-+	/* IDA is empty; all of these will fail */
-+	ida_free(ida, 0);
-+	for (i = 0; i < 31; i++)
-+		ida_free(ida, 1 << i);
-+
-+	/* IDA contains a single value entry */
-+	IDA_BUG_ON(ida, ida_alloc_min(ida, 3, GFP_KERNEL) != 3);
-+	ida_free(ida, 0);
-+	for (i = 0; i < 31; i++)
-+		ida_free(ida, 1 << i);
-+
-+	/* IDA contains a single bitmap */
-+	IDA_BUG_ON(ida, ida_alloc_min(ida, 1023, GFP_KERNEL) != 1023);
-+	ida_free(ida, 0);
-+	for (i = 0; i < 31; i++)
-+		ida_free(ida, 1 << i);
-+
-+	/* IDA contains a tree */
-+	IDA_BUG_ON(ida, ida_alloc_min(ida, (1 << 20) - 1, GFP_KERNEL) != (1 << 20) - 1);
-+	ida_free(ida, 0);
-+	for (i = 0; i < 31; i++)
-+		ida_free(ida, 1 << i);
-+	printk("^^^ \"not allocated\" warnings over\n");
-+
-+	ida_free(ida, 3);
-+	ida_free(ida, 1023);
-+	ida_free(ida, (1 << 20) - 1);
-+
-+	IDA_BUG_ON(ida, !ida_is_empty(ida));
-+}
-+
- static DEFINE_IDA(ida);
+-static u16 const cs43130_ac_freq[CS43130_AC_FREQ] = {
++static const u16 cs43130_ac_freq[CS43130_AC_FREQ] = {
+ 	24,
+ 	43,
+ 	93,
+@@ -2365,7 +2365,7 @@ static const struct regmap_config cs43130_regmap = {
+ 	.use_single_rw		= true, /* needed for regcache_sync */
+ };
  
- static int ida_checks(void)
-@@ -162,6 +201,7 @@ static int ida_checks(void)
- 	ida_check_leaf(&ida, 1024 * 64);
- 	ida_check_max(&ida);
- 	ida_check_conv(&ida);
-+	ida_check_bad_free(&ida);
- 
- 	printk("IDA: %u of %u tests passed\n", tests_passed, tests_run);
- 	return (tests_run != tests_passed) ? 0 : -EINVAL;
+-static u16 const cs43130_dc_threshold[CS43130_DC_THRESHOLD] = {
++static const u16 cs43130_dc_threshold[CS43130_DC_THRESHOLD] = {
+ 	50,
+ 	120,
+ };
 -- 
 2.43.0
 
