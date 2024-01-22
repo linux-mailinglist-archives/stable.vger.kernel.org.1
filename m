@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-13912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69156837EB3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:42:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CE448383C9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3144B25264
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 904F91C2551C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EED760DF5;
-	Tue, 23 Jan 2024 00:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F1664CFD;
+	Tue, 23 Jan 2024 01:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4e63MpG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2dJoQEJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFE460DF0;
-	Tue, 23 Jan 2024 00:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EEE64CE8;
+	Tue, 23 Jan 2024 01:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970738; cv=none; b=g8N9q/AEwDvz3jMy4egsSyDe9l7dxGIuSkZlugFrmhcyRir34HdxN9fKJ9O7bTqS+4lj2QJnx1meoYwyAeeMqYmKZd+u3pCzFkaaoiZ0PEUFNEkYjBbc0bnHEWT9alYp84zpo8PiiKlAdJGgOKh3LcTdZGaEBI4HJQiyBQqGTgk=
+	t=1705975064; cv=none; b=JPLZNtM4Jc+O69wIhYjCe0C+MQlpFLvKAZULEiJMjZGxknTZ4kF1u9Qfv22Z7eZ1eS3FQrIGQ2BsTcLOOxASxayLr4vnD6oGzuaoTeaG8nkcMbYUlYG3zKuojuw0Y3jjnEC+ynwbHHGIERDGNUsLhJWFGGkt2fC6NdBUaBJkN9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970738; c=relaxed/simple;
-	bh=MhA5E9B1FfaHfmogYH92Jr1xkI/3bSS3bHwKwN1uFlc=;
+	s=arc-20240116; t=1705975064; c=relaxed/simple;
+	bh=+ch1KoI5E01CykkHAhw2DoV91SMqNRoe/OUQcQJvThw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCfuo4Q4T/fEnTJWaIxr0jzoaFGMi3/RCx2wFhf9tQjvOhihruowSl6wDGxGG50q5Z1RvBsD72N7Pdg592uhZ/w6s8HCiITsI8MOzX908LhcGSAiPi5jZJPTNkkB5ALSbDlPGN9btM+/VzQiRsx0avKvyzc3HBYt7i5eSFEZT8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4e63MpG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251DBC433F1;
-	Tue, 23 Jan 2024 00:45:37 +0000 (UTC)
+	 MIME-Version; b=kn3B2+JfmA9ztnCrC195N9k1v0spoRCsWFGuv39fgbYHvHovtggNzjEjmBtWrWvtN0Rv+EKbKGvmVdgo4lT/t253qWnC86qE8ykhM3YwiU1jGNKpv080HZrIaWrgaYKEwdRAwqPFQwrKFaG5SdvXaDbFtHjXwmpokLoe+1yErd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2dJoQEJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4416DC433C7;
+	Tue, 23 Jan 2024 01:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970737;
-	bh=MhA5E9B1FfaHfmogYH92Jr1xkI/3bSS3bHwKwN1uFlc=;
+	s=korg; t=1705975064;
+	bh=+ch1KoI5E01CykkHAhw2DoV91SMqNRoe/OUQcQJvThw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S4e63MpGAc1M1hc1hcQHVHoyyxIyAVhIQRHyAzuglZn6vavCS8xICOIBukKZKWZ0T
-	 lrbPx7dpUcMvr54YDpz5gQb9KPTqbUUin+dFqst9KCg+ikBrcNC/cxXd/NtnSva0O0
-	 BnQxVoN/3Al3jqZ5CayiQItuVeCr2hQD5DG4HCBc=
+	b=U2dJoQEJy6O8gWbGvhoVWCKlHKAfZkAz4xa2KLoJLAzJ8uF1YdQrMm4NYqb/ZPb9Z
+	 gXXkaAPl+ulXQlQ3HMl96YIJLuIVFxvFgJr89KWqA3H7qjg6/pwTzOTGgm57LGZzmR
+	 m6AAA1NmChb16PsT7HCAoZdX1fzUkbAXdgiZUvIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	David Thompson <davthompson@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 101/417] arm64: dts: qcom: sdm845-db845c: correct LED panic indicator
+Subject: [PATCH 6.6 218/583] mlxbf_gige: Enable the GigE port in mlxbf_gige_open
 Date: Mon, 22 Jan 2024 15:54:29 -0800
-Message-ID: <20240122235755.199927099@linuxfoundation.org>
+Message-ID: <20240122235818.675806438@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Asmaa Mnebhi <asmaa@nvidia.com>
 
-[ Upstream commit 0c90c75e663246203a2b7f6dd9e08a110f4c3c43 ]
+[ Upstream commit a460f4a684511e007bbf1700758a41f05d9981e6 ]
 
-There is no "panic-indicator" default trigger but a property with that
-name:
+At the moment, the GigE port is enabled in the mlxbf_gige_probe
+function. If the mlxbf_gige_open is not executed, this could cause
+pause frames to increase in the case where there is high backgroud
+traffic. This results in clogging the port.
+So move enabling the OOB port to mlxbf_gige_open.
 
-  sdm845-db845c.dtb: leds: led-0: Unevaluated properties are not allowed ('linux,default-trigger' was unexpected)
-
-Fixes: 3f72e2d3e682 ("arm64: dts: qcom: Add Dragonboard 845c")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231111095617.16496-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-db845c.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c   | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
-index 8c9ccf5b4ea4..135ff4368c4a 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
-@@ -66,8 +66,8 @@ led-0 {
- 			function = LED_FUNCTION_INDICATOR;
- 			color = <LED_COLOR_ID_GREEN>;
- 			gpios = <&pm8998_gpio 13 GPIO_ACTIVE_HIGH>;
--			linux,default-trigger = "panic-indicator";
- 			default-state = "off";
-+			panic-indicator;
- 		};
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+index 7d132a132a29..aaf1faed4133 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+@@ -130,9 +130,15 @@ static int mlxbf_gige_open(struct net_device *netdev)
+ {
+ 	struct mlxbf_gige *priv = netdev_priv(netdev);
+ 	struct phy_device *phydev = netdev->phydev;
++	u64 control;
+ 	u64 int_en;
+ 	int err;
  
- 		led-1 {
++	/* Perform general init of GigE block */
++	control = readq(priv->base + MLXBF_GIGE_CONTROL);
++	control |= MLXBF_GIGE_CONTROL_PORT_EN;
++	writeq(control, priv->base + MLXBF_GIGE_CONTROL);
++
+ 	err = mlxbf_gige_request_irqs(priv);
+ 	if (err)
+ 		return err;
+@@ -365,7 +371,6 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
+ 	void __iomem *plu_base;
+ 	void __iomem *base;
+ 	int addr, phy_irq;
+-	u64 control;
+ 	int err;
+ 
+ 	base = devm_platform_ioremap_resource(pdev, MLXBF_GIGE_RES_MAC);
+@@ -380,11 +385,6 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
+ 	if (IS_ERR(plu_base))
+ 		return PTR_ERR(plu_base);
+ 
+-	/* Perform general init of GigE block */
+-	control = readq(base + MLXBF_GIGE_CONTROL);
+-	control |= MLXBF_GIGE_CONTROL_PORT_EN;
+-	writeq(control, base + MLXBF_GIGE_CONTROL);
+-
+ 	netdev = devm_alloc_etherdev(&pdev->dev, sizeof(*priv));
+ 	if (!netdev)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
