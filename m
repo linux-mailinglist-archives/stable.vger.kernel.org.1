@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-12875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70B738378C9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9471C837A32
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A30E01C27556
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:25:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C68128A45C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1545243;
-	Tue, 23 Jan 2024 00:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D1612AAE9;
+	Tue, 23 Jan 2024 00:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5IPh2qd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJeET49p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AA21078B;
-	Tue, 23 Jan 2024 00:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243F312A17F;
+	Tue, 23 Jan 2024 00:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968249; cv=none; b=E2AuoLc6qgT7Fo+9nR9YQX46fbWhpvycYLjijNmftykXuibWr5xaj9ze2+P5UdpmLvRKyQ3piI9jSE0LHAM6PsVCxECRIupSOW4nSmLo0cOPMASlqMxnvfyRSKHdXO+etAGZEUcn/Uu4S9yQ4ogHtE4z7x0C3cefEKjt/9npTXQ=
+	t=1705968788; cv=none; b=icNOiX6zMa6vqtvG7mJV9BRkyb9X4TuGfMukRNPwN1RNDSa96cMfDn4UlM7JLp2Kpols3mk2KNI3XfN+7QX2UNn0reyMZdTbimPPRwQKrU6mPZeZ033Vmb28Xc5Wzs4fnh0+0lzS3BvXZ7EYbcsju2B0VO0w7zNNOQukfFjzLnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968249; c=relaxed/simple;
-	bh=oiLn084h36rL4VahC4EwflRdtdt0DGIaGlaWDCNb2ok=;
+	s=arc-20240116; t=1705968788; c=relaxed/simple;
+	bh=yXiW5vkOl9UoQzxRx0zvbX9pUujuquKHX5Nbp6pF6qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=leXUQ6qulhIF5Ahbb58mZWF7p/LXGvUNUNfuS5A+79BN9aMR0uIdcAh9vioEg7cdJMBfBUMueKul1mu/tPle8GngVve/KOLShIILqy51D49TGjzeSeSQcWsHZeNKI0Xi/Jt7QRMXnQF+Hbm0v16dsnGSRuAMeaj+2XCNHhaUZos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5IPh2qd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C49C433C7;
-	Tue, 23 Jan 2024 00:04:09 +0000 (UTC)
+	 MIME-Version; b=u633fGKXezCLb1e+NJoYGqBw5Lc6zZLo9iigapxJtbbTr8LV2Rzr7M2x7kIPFC326f9wo5dJVDJyrDd4FaenE5ttpx/0v2afXcmC9NXmM9XIrrn+oK5hvLANV/Ngyygn2rM2qQuXrQVI5MXF6SYPjVNEEfOXmys91B0rPbqZVY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJeET49p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA97AC433F1;
+	Tue, 23 Jan 2024 00:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968249;
-	bh=oiLn084h36rL4VahC4EwflRdtdt0DGIaGlaWDCNb2ok=;
+	s=korg; t=1705968787;
+	bh=yXiW5vkOl9UoQzxRx0zvbX9pUujuquKHX5Nbp6pF6qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5IPh2qdrpHKYB2ye5OmD6nrW727R5fulkDthKXVBoXj3BXAnLE7l2qcoc9Et8/q0
-	 CZDuyHEipLDy9qeAAG9ICPPthOyZq27/dGtUigUTM6fJFyhkybxPa/nLiSImQ1Ux5Z
-	 YYorNSGqd5uPjFSWnb3mVwIp5FadAmw63qlAAsfw=
+	b=hJeET49pOGqxHG+Mq62Ugb7DuZaUNpA9/L5bKkU7Ie7u9XMzY6Ov9TvChAPBCJHpK
+	 3RHtfkx7COTeTV1e0jz7DuXVZzZGh09/sHqmrQ+wxj3envTGPovNqWHYiAfPXFWGgi
+	 Oi5L1662gQMH9cGH24IMWdPr1FxBj34Z/y1rNHmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 4.19 024/148] binder: fix comment on binder_alloc_new_buf() return value
+	Kunwu Chan <chentao@kylinos.cn>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 050/194] powerpc/imc-pmu: Add a null pointer check in update_events_in_group()
 Date: Mon, 22 Jan 2024 15:56:20 -0800
-Message-ID: <20240122235713.409184501@linuxfoundation.org>
+Message-ID: <20240122235721.349194522@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-commit e1090371e02b601cbfcea175c2a6cc7c955fa830 upstream.
+[ Upstream commit 0a233867a39078ebb0f575e2948593bbff5826b3 ]
 
-Update the comments of binder_alloc_new_buf() to reflect that the return
-value of the function is now ERR_PTR(-errno) on failure.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-No functional changes in this patch.
-
-Cc: stable@vger.kernel.org
-Fixes: 57ada2fb2250 ("binder: add log information for binder transaction failures")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-8-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 885dcd709ba9 ("powerpc/perf: Add nest IMC PMU support")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231126093719.1440305-1-chentao@kylinos.cn
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/perf/imc-pmu.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -535,7 +535,7 @@ err_alloc_buf_struct_failed:
-  * is the sum of the three given sizes (each rounded up to
-  * pointer-sized boundary)
-  *
-- * Return:	The allocated buffer or %NULL if error
-+ * Return:	The allocated buffer or %ERR_PTR(-errno) if error
-  */
- struct binder_buffer *binder_alloc_new_buf(struct binder_alloc *alloc,
- 					   size_t data_size,
+diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
+index 872313021eaa..565dc073ceca 100644
+--- a/arch/powerpc/perf/imc-pmu.c
++++ b/arch/powerpc/perf/imc-pmu.c
+@@ -292,6 +292,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
+ 	attr_group->attrs = attrs;
+ 	do {
+ 		ev_val_str = kasprintf(GFP_KERNEL, "event=0x%x", pmu->events[i].value);
++		if (!ev_val_str)
++			continue;
+ 		dev_str = device_str_attr_create(pmu->events[i].name, ev_val_str);
+ 		if (!dev_str)
+ 			continue;
+@@ -299,6 +301,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
+ 		attrs[j++] = dev_str;
+ 		if (pmu->events[i].scale) {
+ 			ev_scale_str = kasprintf(GFP_KERNEL, "%s.scale", pmu->events[i].name);
++			if (!ev_scale_str)
++				continue;
+ 			dev_str = device_str_attr_create(ev_scale_str, pmu->events[i].scale);
+ 			if (!dev_str)
+ 				continue;
+@@ -308,6 +312,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
+ 
+ 		if (pmu->events[i].unit) {
+ 			ev_unit_str = kasprintf(GFP_KERNEL, "%s.unit", pmu->events[i].name);
++			if (!ev_unit_str)
++				continue;
+ 			dev_str = device_str_attr_create(ev_unit_str, pmu->events[i].unit);
+ 			if (!dev_str)
+ 				continue;
+-- 
+2.43.0
+
 
 
 
