@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-13551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A39837C8D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C87838408
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B74E1C2890D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77BD31C29FFD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067E633097;
-	Tue, 23 Jan 2024 00:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC3767731;
+	Tue, 23 Jan 2024 02:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ljp3KzNJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7F3XxKS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACFF135A5D;
-	Tue, 23 Jan 2024 00:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9706775D;
+	Tue, 23 Jan 2024 02:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969669; cv=none; b=Fbdvls/TtqXfzsQNlFBbAMc2ov70pB50Ic1LOfgoSTQknjd1KDaKnSHgpbEShzvyxIeGr3Gwguu41MnLjTRJXHDeMzj4kqdJgd5u4CLo0rdlCR/XJmSr8HEMXtMH5Urz1jZ9U3617c4kNeEPOo60M8cPhGq9L61nJ5FWiiOXeoo=
+	t=1705975284; cv=none; b=AYpEhkra8W4VnRMX3UFp/F5xq3peaRLdBzLsH2jlUmEKo9ZOo77azicpYcyAL1LW/+dzXvd2QxWRjwTPXW4ccuI7zliIzPZPBcN0F0BTxRlHTibZ41UG3yt7YNdLla0oYB4JJAS2qyv1xNTxFhdMtN+3k29LuP+vGcaTuL4jTfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969669; c=relaxed/simple;
-	bh=5a78W5Im1W2+xc+sAQv41tfzSwvuMVqpejVftvB82gQ=;
+	s=arc-20240116; t=1705975284; c=relaxed/simple;
+	bh=qZm7xf8O7L+NZrPtpsaf4r7YCjDJPZ66h4Z9GF+2uNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tkHjzaCZ9daLkAuhAfT0UuR/22CmWAQwStkYOur3c/Ek5XBftMdD11JQ1ahVtLaSNC1YiMnyhQSuVxmS5vPRVhZE1hpf9g49f5j0TKFNqKXiQ/jMnxaYIfcMc7KcN35/0HLtR9Sl9/Y1l5SZ1J45FLueVmRpXwMoj0iAQpczDEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ljp3KzNJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69986C433C7;
-	Tue, 23 Jan 2024 00:27:49 +0000 (UTC)
+	 MIME-Version; b=HqkdMmoF93A2l+2EHNxQu2vDIMSxVFvH/b01g7uTgrjCqSRJrNIdLvGVe9+bHv1OkrhD4AUJkdMitEvOju/s8YqkAZSk3re0BxRKZTEI4K3JwGp86HmBpP1dauB+Y06xV85S4z7RBiIeIAK+OtiDIDuLZtFBW+ihw3l1zwcxiOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7F3XxKS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C014C43390;
+	Tue, 23 Jan 2024 02:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969669;
-	bh=5a78W5Im1W2+xc+sAQv41tfzSwvuMVqpejVftvB82gQ=;
+	s=korg; t=1705975284;
+	bh=qZm7xf8O7L+NZrPtpsaf4r7YCjDJPZ66h4Z9GF+2uNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ljp3KzNJaAC6s/9UKZazpIjKNXB5RqysffceznpyJRl70GUCB8ComOMTrFqzYid3+
-	 jGrLpyg5pYAJ1TGxjp11NsvKLlDd2xQPwxgnnF1uGUKYBCKQHVgkaohpS2ie8yyLBr
-	 tL5xE/47FHuXksDf3x31DmHEkm8M4Z+cOUyEzEkM=
+	b=F7F3XxKSw/qaN5OYthRGSVWwd9cOVdB9xF0aVeDX/Dy5M6OgfRkI5BXM5iFeLR7Da
+	 w6Wzn6T6OSy4M8bU4hMG/6nhLSfDvqatyEIbMdxrUoLlmuRhZeVN08BJlrETgfDR7f
+	 KYePBk1ieA3TU4L5asmDEvaYZGcxzoZX4sHuSQ24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.7 393/641] Revert "usb: gadget: f_uvc: change endpoint allocation in uvc_function_bind()"
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 246/583] drm/tidss: Check for K2G in in dispc_softreset()
 Date: Mon, 22 Jan 2024 15:54:57 -0800
-Message-ID: <20240122235830.254702478@linuxfoundation.org>
+Message-ID: <20240122235819.525363785@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit 895ee5aefb7e24203de5dffae7ce9a02d78fa3d1 upstream.
+[ Upstream commit 151825150cf9c2e9fb90763d35b9dff3783628ac ]
 
-This reverts commit 3c5b006f3ee800b4bd9ed37b3a8f271b8560126e.
+K2G doesn't have softreset feature. Instead of having every caller of
+dispc_softreset() check for K2G, move the check into dispc_softreset(),
+and make dispc_softreset() return 0 in case of K2G.
 
-gadget_is_{super|dual}speed() API check UDC controller capitblity. It
-should pass down highest speed endpoint descriptor to UDC controller. So
-UDC controller driver can reserve enough resource at check_config(),
-especially mult and maxburst. So UDC driver (such as cdns3) can know need
-at least (mult + 1) * (maxburst + 1) * wMaxPacketSize internal memory for
-this uvc functions.
-
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231224153816.1664687-5-Frank.Li@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-6-ac91b5ea35c0@ideasonboard.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Stable-dep-of: bc288a927815 ("drm/tidss: Fix dss reset")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_uvc.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tidss/tidss_dispc.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/gadget/function/f_uvc.c
-+++ b/drivers/usb/gadget/function/f_uvc.c
-@@ -722,13 +722,29 @@ uvc_function_bind(struct usb_configurati
- 	}
- 	uvc->enable_interrupt_ep = opts->enable_interrupt_ep;
+diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
+index 9a29f5fa8453..2af623842cfb 100644
+--- a/drivers/gpu/drm/tidss/tidss_dispc.c
++++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+@@ -2707,6 +2707,10 @@ static int dispc_softreset(struct dispc_device *dispc)
+ 	u32 val;
+ 	int ret = 0;
  
--	ep = usb_ep_autoconfig(cdev->gadget, &uvc_fs_streaming_ep);
-+	/*
-+	 * gadget_is_{super|dual}speed() API check UDC controller capitblity. It should pass down
-+	 * highest speed endpoint descriptor to UDC controller. So UDC controller driver can reserve
-+	 * enough resource at check_config(), especially mult and maxburst. So UDC driver (such as
-+	 * cdns3) can know need at least (mult + 1) * (maxburst + 1) * wMaxPacketSize internal
-+	 * memory for this uvc functions. This is the only straightforward method to resolve the UDC
-+	 * resource allocation issue in the current gadget framework.
-+	 */
-+	if (gadget_is_superspeed(c->cdev->gadget))
-+		ep = usb_ep_autoconfig_ss(cdev->gadget, &uvc_ss_streaming_ep,
-+					  &uvc_ss_streaming_comp);
-+	else if (gadget_is_dualspeed(cdev->gadget))
-+		ep = usb_ep_autoconfig(cdev->gadget, &uvc_hs_streaming_ep);
-+	else
-+		ep = usb_ep_autoconfig(cdev->gadget, &uvc_fs_streaming_ep);
++	/* K2G display controller does not support soft reset */
++	if (dispc->feat->subrev == DISPC_K2G)
++		return 0;
 +
- 	if (!ep) {
- 		uvcg_info(f, "Unable to allocate streaming EP\n");
- 		goto error;
- 	}
- 	uvc->video.ep = ep;
+ 	/* Soft reset */
+ 	REG_FLD_MOD(dispc, DSS_SYSCONFIG, 1, 1, 1);
+ 	/* Wait for reset to complete */
+@@ -2829,12 +2833,9 @@ int dispc_init(struct tidss_device *tidss)
+ 	of_property_read_u32(dispc->dev->of_node, "max-memory-bandwidth",
+ 			     &dispc->memory_bandwidth_limit);
  
-+	uvc_fs_streaming_ep.bEndpointAddress = uvc->video.ep->address;
- 	uvc_hs_streaming_ep.bEndpointAddress = uvc->video.ep->address;
- 	uvc_ss_streaming_ep.bEndpointAddress = uvc->video.ep->address;
+-	/* K2G display controller does not support soft reset */
+-	if (feat->subrev != DISPC_K2G) {
+-		r = dispc_softreset(dispc);
+-		if (r)
+-			return r;
+-	}
++	r = dispc_softreset(dispc);
++	if (r)
++		return r;
  
+ 	tidss->dispc = dispc;
+ 
+-- 
+2.43.0
+
 
 
 
