@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-13750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B263837DAD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BDD18380B7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01FA6284DD7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F5C61C23835
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085A950A6D;
-	Tue, 23 Jan 2024 00:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B93133424;
+	Tue, 23 Jan 2024 01:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umHLIGQ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KaaAL9YE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB554EB34;
-	Tue, 23 Jan 2024 00:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8672133416;
+	Tue, 23 Jan 2024 01:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970131; cv=none; b=bHyeCMeOEH6+thsM+kr5wC20Ozo+HvfBtiSOu+dhoqWZnskJN4SUPSIIJiegVhsJbLmYvRPVN1UUkZUfkhyy+kNpbzcbIuU8LkNO29u38dd63WZUuDKeCN+HYQhP9KvCKBJ2n3Mlisoj5yvuc8bXHEUI/oglL/bgkblRzl12SYM=
+	t=1705971844; cv=none; b=dfQZNU43ljP4z1BgRrII0jT2+o4vjELfh1EMp3db3r7Ua7F4TLMK0o9l844Y1EAYeFYk+Puiz4JxayMwrd0mOc2+0XKngKF2z9IrHSyUCFpZD5Vk33CsVrvNlEXoKs6fsk9pxv9t3Rjh4r5U3E2L9CoFnUrXKc7sxklMEgcJHS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970131; c=relaxed/simple;
-	bh=gT6Et5ZgdQ2ncZTHtr+9VYUK1YdApEaUXPkiwhlTtkc=;
+	s=arc-20240116; t=1705971844; c=relaxed/simple;
+	bh=2ShETt64QWZVqMPpdXZLvwMzFKcAcGgeDWueEUJmH7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ahz/FuA7x0nqHT6+8JR+2dwLB/sYdpB+uLWbj0MfUDN29D/gRcbZeqM4+ToQ+6L4NSnvuUvqbzDPA4JAtQTFptmj8GdhIRZZvdbDjOY9N1JHAnF76N8AF/iA7zJuM5MkdCvQruAsItXQL7XTdhHnQIAXQ6C2YzC5TJdL3j5+9aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umHLIGQ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B90FEC433C7;
-	Tue, 23 Jan 2024 00:35:30 +0000 (UTC)
+	 MIME-Version; b=jocAPnWrVCzbGVp+pNiEYtTYctPW4Gw/lxS0u8Y28kLcTTN9lwk1srHjElk+qyYHRI3jL0ZwhQfFGW/k+Vb4st3Vwtqmg8EO7oLPHnriespBHb7vCVHiPUIyU4K/KzNYuQPUgTc2ZI5tX+9N6fhnWYoYvkK6QJyV02zhZNs0/Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KaaAL9YE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0734C433C7;
+	Tue, 23 Jan 2024 01:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970131;
-	bh=gT6Et5ZgdQ2ncZTHtr+9VYUK1YdApEaUXPkiwhlTtkc=;
+	s=korg; t=1705971843;
+	bh=2ShETt64QWZVqMPpdXZLvwMzFKcAcGgeDWueEUJmH7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=umHLIGQ1WegsHmjVWzl970j6Vfr+TFh2PitUNAQCHvoHh49gqcnJSmWdMerrECmhu
-	 CaZOxfHTJGh3FMlYNh6WZNjgmYQsWNccAL0a5e8mzUIxpwQicLVqXw9VqMS3yqQKF5
-	 z+2Kbwk6tVyE3FIV96MpQnSHgpka8W0iige9Mg3o=
+	b=KaaAL9YEEvjwri+d14GlhSlnMaVKZkg69/OiQ8cV3XxXU0sMH8jSvPbki4Oc10UAH
+	 XxlwL9FOwjeGGSjYi7OyvSzlOnyEFsc8eqquAfxSJRcxWOEnspUpczDbjNzMyygOua
+	 29yQmLSAF2Q0gGX0491WNP5oYdu+NKJ6sfqmggUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 595/641] mptcp: refine opt_mp_capable determination
-Date: Mon, 22 Jan 2024 15:58:19 -0800
-Message-ID: <20240122235836.825924486@linuxfoundation.org>
+Subject: [PATCH 6.1 332/417] riscv: Fix set_direct_map_default_noflush() to reset _PAGE_EXEC
+Date: Mon, 22 Jan 2024 15:58:20 -0800
+Message-ID: <20240122235803.290995480@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 724b00c12957973656d312dce2a110c75ae2c680 ]
+[ Upstream commit b8b2711336f03ece539de61479d6ffc44fb603d3 ]
 
-OPTIONS_MPTCP_MPC is a combination of three flags.
+When resetting the linear mapping permissions, we must make sure that we
+clear the X bit so that do not end up with WX mappings (since we set
+PAGE_KERNEL).
 
-It would be better to be strict about testing what
-flag is expected, at least for code readability.
-
-mptcp_parse_option() already makes the distinction.
-
-- subflow_check_req() should use OPTION_MPTCP_MPC_SYN.
-
-- mptcp_subflow_init_cookie_req() should use OPTION_MPTCP_MPC_ACK.
-
-- subflow_finish_connect() should use OPTION_MPTCP_MPC_SYNACK
-
-- subflow_syn_recv_sock should use OPTION_MPTCP_MPC_ACK
-
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Fixes: 74c7dfbee3e1 ("mptcp: consolidate in_opt sub-options fields in a bitmask")
-Link: https://lore.kernel.org/r/20240111194917.4044654-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 395a21ff859c ("riscv: add ARCH_HAS_SET_DIRECT_MAP support")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20231213134027.155327-3-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/subflow.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/riscv/mm/pageattr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 09312d619018..91c1cda4228f 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -157,7 +157,7 @@ static int subflow_check_req(struct request_sock *req,
+diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
+index 62a9219686cd..43a0b6b69579 100644
+--- a/arch/riscv/mm/pageattr.c
++++ b/arch/riscv/mm/pageattr.c
+@@ -377,7 +377,7 @@ int set_direct_map_invalid_noflush(struct page *page)
+ int set_direct_map_default_noflush(struct page *page)
+ {
+ 	return __set_memory((unsigned long)page_address(page), 1,
+-			    PAGE_KERNEL, __pgprot(0));
++			    PAGE_KERNEL, __pgprot(_PAGE_EXEC));
+ }
  
- 	mptcp_get_options(skb, &mp_opt);
- 
--	opt_mp_capable = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPC);
-+	opt_mp_capable = !!(mp_opt.suboptions & OPTION_MPTCP_MPC_SYN);
- 	opt_mp_join = !!(mp_opt.suboptions & OPTION_MPTCP_MPJ_SYN);
- 	if (opt_mp_capable) {
- 		SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_MPCAPABLEPASSIVE);
-@@ -254,7 +254,7 @@ int mptcp_subflow_init_cookie_req(struct request_sock *req,
- 	subflow_init_req(req, sk_listener);
- 	mptcp_get_options(skb, &mp_opt);
- 
--	opt_mp_capable = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPC);
-+	opt_mp_capable = !!(mp_opt.suboptions & OPTION_MPTCP_MPC_ACK);
- 	opt_mp_join = !!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK);
- 	if (opt_mp_capable && opt_mp_join)
- 		return -EINVAL;
-@@ -486,7 +486,7 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
- 
- 	mptcp_get_options(skb, &mp_opt);
- 	if (subflow->request_mptcp) {
--		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPC)) {
-+		if (!(mp_opt.suboptions & OPTION_MPTCP_MPC_SYNACK)) {
- 			MPTCP_INC_STATS(sock_net(sk),
- 					MPTCP_MIB_MPCAPABLEACTIVEFALLBACK);
- 			mptcp_do_fallback(sk);
-@@ -783,7 +783,7 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
- 		 * options.
- 		 */
- 		mptcp_get_options(skb, &mp_opt);
--		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPC))
-+		if (!(mp_opt.suboptions & OPTION_MPTCP_MPC_ACK))
- 			fallback = true;
- 
- 	} else if (subflow_req->mp_join) {
+ #ifdef CONFIG_DEBUG_PAGEALLOC
 -- 
 2.43.0
 
