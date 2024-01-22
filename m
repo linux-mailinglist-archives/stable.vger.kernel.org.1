@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FE48380CA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5578583837B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E255E1F2A3D6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 879321C29C7F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5123D134726;
-	Tue, 23 Jan 2024 01:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB580629E1;
+	Tue, 23 Jan 2024 01:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjMbd3rt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYkzBpKJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7B3133435;
-	Tue, 23 Jan 2024 01:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405E46310D;
+	Tue, 23 Jan 2024 01:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971901; cv=none; b=VrcFqnZx4KJhzhenjvKG0HkZY9GwKX4oT5ZljGAZSgslwWg75yVqJwx4I1ldo4VCbK5AW0GE1/laaQ67FA/xHkmktJr//RA+NGvZ1lvMgntThQiAtpZ0gLQQ5Vezusm22JRMIscf9WfCfQI6s75y/RAYVd3eyT4QNNJWziTfz10=
+	t=1705974986; cv=none; b=UHIY420hzz9xrolok4shnRSoxBSaCLPnV/TcAophLuWHhLSxMi6mVg7MvFO7FGLoB2wZMGA0Nw0zlVCpODE4eGUWm2lF68QhVwbKbolyws2Eml/UFf1d+Emo8mmSZGObyi9oQEl9uzF7nCzEzI62yBLj8X9UWM+/KISsoq7NyNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971901; c=relaxed/simple;
-	bh=wIdV8DdJCHA2JmQ8t0ZFQfNo9ZjVD1wtwbf9IUzjjWs=;
+	s=arc-20240116; t=1705974986; c=relaxed/simple;
+	bh=e9OQs14uXUaveVA5ICKUlyLmIjeoDZnCqRoFBuf5/uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bz9nmWbjI9kU5DCrR2II4ZuwhgBaemnP2loKFiSfJqNulMdN5CJrry8lOEdxbIP3W14slvpP9d3WNxZ5wLRYQ3Z4Tsmk2xtpD79JGh3Fl0SgAr/Q9Ge7tQsJ+SOWIhguaIM/T5S7aCERQXyaWmLJYJTwiM1flJY7Y9PMGmg+/Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjMbd3rt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4FD1C433C7;
-	Tue, 23 Jan 2024 01:05:00 +0000 (UTC)
+	 MIME-Version; b=SLhTqRJwpEPYwyzxBY3BGbtsvP6ex6bwaseCr/8pkrbMCJpGoQQj6kjdaIBb6pC8mFbgoyykqXEfZWLTHjyeXfA6p4nJZBuGf1lZ51ObNo7XpmOjHUMhgEXf+OhzVr1UneahhqscCgVn79q8gzXoLR3cwwPsajxQSBfvAH+7tW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYkzBpKJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7E3C433C7;
+	Tue, 23 Jan 2024 01:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971900;
-	bh=wIdV8DdJCHA2JmQ8t0ZFQfNo9ZjVD1wtwbf9IUzjjWs=;
+	s=korg; t=1705974986;
+	bh=e9OQs14uXUaveVA5ICKUlyLmIjeoDZnCqRoFBuf5/uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GjMbd3rtFkCCVSpQrhAPUUrUHThA1Cs6QOtHPtoRsBRiPNwug0yGzap/ifmCDVhM0
-	 TVUmTneVFLU/HkIUm0zwKHRjlZEs3wOn6qZ6puuTUk5qQXQnWtC4Vbflvo31UXTwhk
-	 +SGhk4DmQOjze6YkncWJ8iPYi725Ntl9Emwyaitc=
+	b=LYkzBpKJErECTc66KQme7akO50Ygl4Qd1tkUu0zPqBMiOMNILL3CkZ8tuayR/stI1
+	 pNYWPw/fNTmA01E1eIMYuOgWJ0sVZn/A/PfWmM+cU/IyhHjOTMBQPfYrBIBb5hKfSb
+	 eXzmHp6Bvpf5FGJ0rEhZHT1tJ5drq2u1ljgwYDFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Kai Huang <kai.huang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 258/286] nvmet-tcp: Fix a kernel panic when host sends an invalid H2C PDU length
-Date: Mon, 22 Jan 2024 15:59:24 -0800
-Message-ID: <20240122235741.967671252@linuxfoundation.org>
+Subject: [PATCH 5.15 309/374] selftests/sgx: Fix uninitialized pointer dereference in error path
+Date: Mon, 22 Jan 2024 15:59:25 -0800
+Message-ID: <20240122235755.607438732@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
 
-[ Upstream commit efa56305908ba20de2104f1b8508c6a7401833be ]
+[ Upstream commit 79eba8c924f7decfa71ddf187d38cb9f5f2cd7b3 ]
 
-If the host sends an H2CData command with an invalid DATAL,
-the kernel may crash in nvmet_tcp_build_pdu_iovec().
+Ensure ctx is zero-initialized, such that the encl_measure function will
+not call EVP_MD_CTX_destroy with an uninitialized ctx pointer in case of an
+early error during key generation.
 
-Unable to handle kernel NULL pointer dereference at
-virtual address 0000000000000000
-lr : nvmet_tcp_io_work+0x6ac/0x718 [nvmet_tcp]
-Call trace:
-  process_one_work+0x174/0x3c8
-  worker_thread+0x2d0/0x3e8
-  kthread+0x104/0x110
-
-Fix the bug by raising a fatal error if DATAL isn't coherent
-with the packet size.
-Also, the PDU length should never exceed the MAXH2CDATA parameter which
-has been communicated to the host in nvmet_tcp_handle_icreq().
-
-Fixes: 872d26a391da ("nvmet-tcp: add NVMe over TCP target driver")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 2adcba79e69d ("selftests/x86: Add a selftest for SGX")
+Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Link: https://lore.kernel.org/all/20231005153854.25566-2-jo.vanbulck%40cs.kuleuven.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ tools/testing/selftests/sgx/sigstruct.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 7ce22d173fc7..153150e8beb9 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -18,6 +18,7 @@
- #include "nvmet.h"
+diff --git a/tools/testing/selftests/sgx/sigstruct.c b/tools/testing/selftests/sgx/sigstruct.c
+index 92bbc5a15c39..a201d64f9b49 100644
+--- a/tools/testing/selftests/sgx/sigstruct.c
++++ b/tools/testing/selftests/sgx/sigstruct.c
+@@ -310,9 +310,9 @@ bool encl_measure(struct encl *encl)
+ 	struct sgx_sigstruct *sigstruct = &encl->sigstruct;
+ 	struct sgx_sigstruct_payload payload;
+ 	uint8_t digest[SHA256_DIGEST_LENGTH];
++	EVP_MD_CTX *ctx = NULL;
+ 	unsigned int siglen;
+ 	RSA *key = NULL;
+-	EVP_MD_CTX *ctx;
+ 	int i;
  
- #define NVMET_TCP_DEF_INLINE_DATA_SIZE	(4 * PAGE_SIZE)
-+#define NVMET_TCP_MAXH2CDATA		0x400000 /* 16M arbitrary limit */
+ 	memset(sigstruct, 0, sizeof(*sigstruct));
+@@ -376,7 +376,8 @@ bool encl_measure(struct encl *encl)
+ 	return true;
  
- /* Define the socket priority to use for connections were it is desirable
-  * that the NIC consider performing optimized packet processing or filtering.
-@@ -872,7 +873,7 @@ static int nvmet_tcp_handle_icreq(struct nvmet_tcp_queue *queue)
- 	icresp->hdr.pdo = 0;
- 	icresp->hdr.plen = cpu_to_le32(icresp->hdr.hlen);
- 	icresp->pfv = cpu_to_le16(NVME_TCP_PFV_1_0);
--	icresp->maxdata = cpu_to_le32(0x400000); /* 16M arbitrary limit */
-+	icresp->maxdata = cpu_to_le32(NVMET_TCP_MAXH2CDATA);
- 	icresp->cpda = 0;
- 	if (queue->hdr_digest)
- 		icresp->digest |= NVME_TCP_HDR_DIGEST_ENABLE;
-@@ -918,6 +919,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- {
- 	struct nvme_tcp_data_pdu *data = &queue->pdu.data;
- 	struct nvmet_tcp_cmd *cmd;
-+	unsigned int plen;
- 
- 	if (likely(queue->nr_cmds)) {
- 		if (unlikely(data->ttag >= queue->nr_cmds)) {
-@@ -941,7 +943,16 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		return -EPROTO;
- 	}
- 
-+	plen = le32_to_cpu(data->hdr.plen);
- 	cmd->pdu_len = le32_to_cpu(data->data_length);
-+	if (unlikely(cmd->pdu_len != (plen - sizeof(*data)) ||
-+		     cmd->pdu_len == 0 ||
-+		     cmd->pdu_len > NVMET_TCP_MAXH2CDATA)) {
-+		pr_err("H2CData PDU len %u is invalid\n", cmd->pdu_len);
-+		/* FIXME: use proper transport errors */
-+		nvmet_tcp_fatal_error(queue);
-+		return -EPROTO;
-+	}
- 	cmd->pdu_recv = 0;
- 	nvmet_tcp_map_pdu_iovec(cmd);
- 	queue->cmd = cmd;
+ err:
+-	EVP_MD_CTX_destroy(ctx);
++	if (ctx)
++		EVP_MD_CTX_destroy(ctx);
+ 	RSA_free(key);
+ 	return false;
+ }
 -- 
 2.43.0
 
