@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766A7837E3F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A451837CF8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8F291C23895
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:37:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88EF1B2A00D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574BD5BADA;
-	Tue, 23 Jan 2024 00:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6041D134C2;
+	Tue, 23 Jan 2024 00:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhbFkgcW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gkde0/AB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170434F207;
-	Tue, 23 Jan 2024 00:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1262A23BD;
+	Tue, 23 Jan 2024 00:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970468; cv=none; b=pJOM8XB413oyvhBz6ZM3UN7pwp97MhsHV6GHe5EomJkykrooKde0S7/3kWTTPYyJd2mt0hT/P4joMjTFWnQDCz00+7p9/on+1ZR1h0R3PXtR4SK1oGAWFFUmqatwPMd+SqVvP+lltJlLb6oCfAF0exdNavuZLechqs859orVt6c=
+	t=1705969510; cv=none; b=Cx0PJE1uuh8ebwL07McBWuJ2ulb+1dxun7uCZZ4pnA11sjl1e8OjGvQovQl0n8ql1JMBnQZgR17imgl91RnpaGBKKkvcbvoxCBgvFVCNSHAc3+DBx3T2V9y+heWfkAviGmbXWvET4m/hkJ6MqWX0TaoRq1636BgYuJut6rE3xZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970468; c=relaxed/simple;
-	bh=8OOs4flRJmYJWlSKpakrRvwRBvrq07qOSXg/Esuvsvw=;
+	s=arc-20240116; t=1705969510; c=relaxed/simple;
+	bh=2EVzQju/kqnPcfeZ52LjgHEWlk6C07DE96Xtxf/3Zeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n5hnNkfm5eTSh6SPVgurtk8OaKh2W0+JDZ48nJ+k8lpW1Sk0Tc4OgaL5Wtr0XzVfBhQxHQ9urhA/ICYx3ktU1XUi5zRJS3aOHCwKnX/pqIf29OCVKWSBruXa2T0dBEOfjmiupmJF49byJdLMVglJoCnDek7K7NN4osuDpWCz5c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhbFkgcW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8CDC433F1;
-	Tue, 23 Jan 2024 00:41:06 +0000 (UTC)
+	 MIME-Version; b=i+u120ePEZadwCwjPh6a6Gt0TFG3rv9bttKpwUrqZsmTn3GyzQwKZx7eMAhhIDTofUJY9lUlYGLETYFfD4HUbz8YqAL0s1n/e60I8RnLBR4slWwxBu/Y1D4A5YGDMISJrPDC/lG/b9U3HgZONMyrbeityeB5i3pNPoey2AmkxAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gkde0/AB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE47C43399;
+	Tue, 23 Jan 2024 00:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970467;
-	bh=8OOs4flRJmYJWlSKpakrRvwRBvrq07qOSXg/Esuvsvw=;
+	s=korg; t=1705969509;
+	bh=2EVzQju/kqnPcfeZ52LjgHEWlk6C07DE96Xtxf/3Zeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AhbFkgcWYx0vpmLwtVMTJTL8xAb3Ia0NZ3ZHbzpVYNIaa0R5nrA1FB+UG53c37y+K
-	 ZpcqltQF8F92TBfBhJlJredI1vs/+rOpAA1jAo1QM4JDYdHAy1A/+M4nUD5hAHvCbl
-	 5a2xzGJcTbCIgDT4+VoXWcvQjQ4m+7WehwrK+b4E=
+	b=Gkde0/ABvi6gtE8uixLcuE0IU8uBK+BmqvtX2pt6wasfHc/ucKcsTn8/lm6kOUS9T
+	 ZvhdoltNPeP1VRGo0QUitj8s23cZknZc0XeiAESCCUihqyh5icTAFo2phppKTDZ7nS
+	 6WXMl5+VN7c6tUazxq6dL0O9tc6Dyud1y4AnP+WM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	kernel test robot <lkp@intel.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/417] powerpc/44x: select I2C for CURRITUCK
+Subject: [PATCH 6.7 270/641] drm/amd/display: Fix NULL pointer dereference at hibernate
 Date: Mon, 22 Jan 2024 15:52:54 -0800
-Message-ID: <20240122235751.706521708@linuxfoundation.org>
+Message-ID: <20240122235826.366473565@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 4a74197b65e69c46fe6e53f7df2f4d6ce9ffe012 ]
+[ Upstream commit b719a9c15d52d4f56bdea8241a5d90fd9197ce99 ]
 
-Fix build errors when CURRITUCK=y and I2C is not builtin (=m or is
-not set). Fixes these build errors:
+During hibernate sequence the source context might not have a clk_mgr.
+So don't use it to look for DML2 support.
 
-powerpc-linux-ld: arch/powerpc/platforms/44x/ppc476.o: in function `avr_halt_system':
-ppc476.c:(.text+0x58): undefined reference to `i2c_smbus_write_byte_data'
-powerpc-linux-ld: arch/powerpc/platforms/44x/ppc476.o: in function `ppc47x_device_probe':
-ppc476.c:(.init.text+0x18): undefined reference to `i2c_register_driver'
-
-Fixes: 2a2c74b2efcb ("IBM Akebono: Add the Akebono platform")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: lore.kernel.org/r/202312010820.cmdwF5X9-lkp@intel.com
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231201055159.8371-1-rdunlap@infradead.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2980
+Fixes: 7966f319c66d ("drm/amd/display: Introduce DML2")
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/44x/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/44x/Kconfig b/arch/powerpc/platforms/44x/Kconfig
-index 25b80cd558f8..fc79f8466933 100644
---- a/arch/powerpc/platforms/44x/Kconfig
-+++ b/arch/powerpc/platforms/44x/Kconfig
-@@ -173,6 +173,7 @@ config ISS4xx
- config CURRITUCK
- 	bool "IBM Currituck (476fpe) Support"
- 	depends on PPC_47x
-+	select I2C
- 	select SWIOTLB
- 	select 476FPE
- 	select FORCE_PCI
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index a1f1d1003992..e4bb1e25ee3b 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -4512,7 +4512,7 @@ void dc_resource_state_copy_construct(
+ 	struct dml2_context *dml2 = NULL;
+ 
+ 	// Need to preserve allocated dml2 context
+-	if (src_ctx->clk_mgr->ctx->dc->debug.using_dml2)
++	if (src_ctx->clk_mgr && src_ctx->clk_mgr->ctx->dc->debug.using_dml2)
+ 		dml2 = dst_ctx->bw_ctx.dml2;
+ #endif
+ 
+@@ -4520,7 +4520,7 @@ void dc_resource_state_copy_construct(
+ 
+ #ifdef CONFIG_DRM_AMD_DC_FP
+ 	// Preserve allocated dml2 context
+-	if (src_ctx->clk_mgr->ctx->dc->debug.using_dml2)
++	if (src_ctx->clk_mgr && src_ctx->clk_mgr->ctx->dc->debug.using_dml2)
+ 		dst_ctx->bw_ctx.dml2 = dml2;
+ #endif
+ 
 -- 
 2.43.0
 
