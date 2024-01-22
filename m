@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 424BE83802D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F6DF8384AD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3601283CF5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2B3F1C23A5C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04C0657DD;
-	Tue, 23 Jan 2024 00:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A51745EC;
+	Tue, 23 Jan 2024 02:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWK9DCoB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/6tlpds"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9CC651AD;
-	Tue, 23 Jan 2024 00:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84170745E1;
+	Tue, 23 Jan 2024 02:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971573; cv=none; b=DjC59kUBa9u1Br23nMP+mB5vO2neSNNoUHLvHcifK+NRLVLWX/GmoWFy67w+SYnIE8c8V4qjBWJN0ZFxFKmXJF0aGWpPq6x4CRwhODwB9ALFNtA73o7th2Z0xHwQafJE67cWtDSamaBULaJylUGGYo5ikCzFf6Um/psktm3KQJs=
+	t=1705975456; cv=none; b=iZA7KElQU+pHRYF7UjlVgsHu9C7NV+vZj1+cEBQciNVW3S28y4CPGirVQQpbLW457LNJUp39XISGtwUJdIw6FMXW1YmfCC9OmELAqG5PzywBJqU6zjyFJMOA/rJ01TJcaOoGujNF23LevNXVuUiU7kdKntUUqpadJAOvSBLzs2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971573; c=relaxed/simple;
-	bh=+oNPItChcscsU4la6nUQvieAtFd3P4sp+nvXIKKfZiw=;
+	s=arc-20240116; t=1705975456; c=relaxed/simple;
+	bh=M4oDbmg97T14C2cjrqb/BirNF3JBnT3AVMlOXdwK7B4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MfYaKfBhKLEE2AVq7Ad8l+UBJ62VgcudRyscWn5DWGc9Bq6E+WkO3G8+TCWiA7vpBPNM6VjibT4dqjD/Xngz1NPCAsIgKGhLb5PGfOAIAne0oIBDXn3xtlttXsRgZoYFodZxYb4HSLbyRKZTQO6TIf/c9b7XWD53ReLkyYEgD20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWK9DCoB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7146BC433C7;
-	Tue, 23 Jan 2024 00:59:33 +0000 (UTC)
+	 MIME-Version; b=qRl2f1fowmRMZztvLfjvRbaF2T2437MeGSLrdmQUqVu067XaHIrLRx5szBAE2AmvWYqn/m8rUibBntXr+8ztdlFpEJCwhRYYm6SQsqAiiD3LBHkEL1ch82ecM9PQRentEZ0Se2QrHokvDDM6I3AmFDfmHqdx06G2696/2StDEuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/6tlpds; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D915C433F1;
+	Tue, 23 Jan 2024 02:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971573;
-	bh=+oNPItChcscsU4la6nUQvieAtFd3P4sp+nvXIKKfZiw=;
+	s=korg; t=1705975456;
+	bh=M4oDbmg97T14C2cjrqb/BirNF3JBnT3AVMlOXdwK7B4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vWK9DCoBVr6mZdRG47X3+FQrMMv9jI9Fj479BOXpjoRRoHqyFS52uQsxhVKZvthuU
-	 wmYAY+wayCiB3hqbyTDw0f7AkpXdCp3MDU6EDX965nLOSejL5FsyRBhgeFCOdvjb4p
-	 a4lSVGc5O8RAaBqTGibaDg0ZagLpgpB6RjNcuAxU=
+	b=w/6tlpdssUdBQJ4pd/Rq06SGOqvBYP6SDhqgiRv7mMTCMMqy93CF5HD/vldXnv2Pt
+	 7ELBhi21ajMUWX48pOKoZQkXNy99dS2X9aIb3a+A5rVbHR8sTG+H7tDtzVCqc6bvI3
+	 Hst7JreHmxGgTBBSg7j+IUSNb9zBoDAr8NNTUldk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Subject: [PATCH 6.1 271/417] serial: core: make sure RS485 cannot be enabled when it is not supported
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 388/583] io_uring: dont check iopoll if request completes
 Date: Mon, 22 Jan 2024 15:57:19 -0800
-Message-ID: <20240122235801.239732478@linuxfoundation.org>
+Message-ID: <20240122235823.863631824@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit c73986913fa47e71e0b1ad7f039f6444915e8810 upstream.
+commit 9b43ef3d52532a0175ed6654618f7db61d390d2e upstream.
 
-Some uart drivers specify a rs485_config() function and then decide later
-to disable RS485 support for some reason (e.g. imx and ar933).
+IOPOLL request should never return IOU_OK, so the following iopoll
+queueing check in io_issue_sqe() after getting IOU_OK doesn't make any
+sense as would never turn true. Let's optimise on that and return a bit
+earlier. It's also much more resilient to potential bugs from
+mischieving iopoll implementations.
 
-In these cases userspace may be able to activate RS485 via TIOCSRS485
-nevertheless, since in uart_set_rs485_config() an existing rs485_config()
-function indicates that RS485 is supported.
-
-Make sure that this is not longer possible by checking the uarts
-rs485_supported.flags instead and bailing out if SER_RS485_ENABLED is not
-set.
-
-Furthermore instead of returning an empty structure return -ENOTTY if the
-RS485 configuration is requested via TIOCGRS485 but RS485 is not supported.
-This has a small impact on userspace visibility but it is consistent with
-the -ENOTTY error for TIOCGRS485.
-
-Fixes: e849145e1fdd ("serial: ar933x: Fill in rs485_supported")
-Fixes: 55e18c6b6d42 ("serial: imx: Remove serial_rs485 sanitization")
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
 Cc:  <stable@vger.kernel.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Link: https://lore.kernel.org/r/20240103061818.564-5-l.sanfilippo@kunbus.com
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/2f8690e2fa5213a2ff292fac29a7143c036cdd60.1701390926.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/serial_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/io_uring.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -1436,7 +1436,7 @@ static int uart_set_rs485_config(struct
- 	int ret;
- 	unsigned long flags;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1891,7 +1891,11 @@ static int io_issue_sqe(struct io_kiocb
+ 			io_req_complete_defer(req);
+ 		else
+ 			io_req_complete_post(req, issue_flags);
+-	} else if (ret != IOU_ISSUE_SKIP_COMPLETE)
++
++		return 0;
++	}
++
++	if (ret != IOU_ISSUE_SKIP_COMPLETE)
+ 		return ret;
  
--	if (!port->rs485_config)
-+	if (!(port->rs485_supported.flags & SER_RS485_ENABLED))
- 		return -ENOTTY;
- 
- 	if (copy_from_user(&rs485, rs485_user, sizeof(*rs485_user)))
+ 	/* If the op doesn't have a file, we're not polling for it */
 
 
 
