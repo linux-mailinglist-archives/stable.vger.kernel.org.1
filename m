@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88986837F48
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A03F0837EF1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F1ED29C05E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D375F1C287A1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE24C12A173;
-	Tue, 23 Jan 2024 00:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305A6604C9;
+	Tue, 23 Jan 2024 00:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6XZRRxY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdtC15vU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D18C12A155;
-	Tue, 23 Jan 2024 00:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FB060274;
+	Tue, 23 Jan 2024 00:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971036; cv=none; b=KKgITF3r4Ej5VBiZH7UDcFXts5AkwQS2kbV6FlRvbhmZscHRqC0fnyV1DVoNVkJjkZxc4NiQCP3J9jrd4Vlb49tI5EYnvCBpiUcahkoIvwBChy4GeBk2a7LkX4mc0994Wt0+Oq/bpnV0X03FFFTip5zamqfAazWB/Sccc1MkY5U=
+	t=1705970840; cv=none; b=Y83kYMnSsuSf5uWvnmR43jeeEZ9ufk2p1Myxx5+X1vxiZqrKFOk89o0xrqrlGXEG4T3cmgiFXGI+funftNsa+SOWlcmwKEhx8FeXiG7oonoKuOAx00N5PTAFkZzQnaOMwpHSy7+alxBvZnoSfqv2eOXznsvMvcf+GmKyZPWplTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971036; c=relaxed/simple;
-	bh=OV9+KbSCEItFRSZvKrp94vTWd5hYmF+k7F7MxsP3Tb8=;
+	s=arc-20240116; t=1705970840; c=relaxed/simple;
+	bh=xJftf8uC3FtjOh/a64h3E1lwmJL3yaz7xDABHJXm5ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4sycxi3DckaylGulxIaW3d4NHQlPRBSakWHXYUMazqcOuGCzBF+BZrfS0fKtsYErVouVaBYsu80DXLtZO9ofJs7t/z8xlJ5NuSpAeSMoczxbVY5X1wNXezw1FaibL+U7Ug2NjZjg3USeycY6uGBfURRvxYE/XEbROQVwxgWpr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6XZRRxY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7D6C43390;
-	Tue, 23 Jan 2024 00:50:35 +0000 (UTC)
+	 MIME-Version; b=CenO8/VHuF01T2r4sOpjypXe4ShYk2+3w2Kr13AJmZsjdK7WfAJ0igSJw+4oFVoX2fe2Bm5vpFc+RQJnIGH700uWhnbnix/UeEEGZQ3/iSsdA3xiHU9EUA7it9RsZgTlEwmeNn0WCdGg1vXRuP1vuuAJgvQQFY5Evp0IsgqTiL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdtC15vU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56CB0C43390;
+	Tue, 23 Jan 2024 00:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971036;
-	bh=OV9+KbSCEItFRSZvKrp94vTWd5hYmF+k7F7MxsP3Tb8=;
+	s=korg; t=1705970839;
+	bh=xJftf8uC3FtjOh/a64h3E1lwmJL3yaz7xDABHJXm5ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u6XZRRxYYDFcGWJetZmTfMd4iYvdjBGsjrAmFBhJhXKDef09cWUar6O+LNOQgxZTJ
-	 lmYHms94++ZvNcQL9PFqRCz9aL2vmnRlNN3dlORmxvOD3RnGVj1Rgqf/XMXjOee1Ax
-	 XdwFR0q65F3QMPQoxU7ScsfQHeLzf9WERlORA89M=
+	b=bdtC15vUA2qgM1SaSOIFj9iOn8oh0lMK6UnDhMX5mEO6Rixx4IufAZFfZ2J2GNjnz
+	 23MncJwUMVWDwM175+5Dsvv8Qm/63pTOel/shEamsURli0YgfdCmhFTYuzBUPmexwx
+	 5jbkJr802hPlehC6PSDhwuj73urMGauFyrEhN068=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kyrie wu <kyrie.wu@mediatek.com>,
-	irui wang <irui.wang@mediatek.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 166/417] media: mtk-jpegdec: export jpeg decoder functions
+Subject: [PATCH 5.10 028/286] ring-buffer: Do not record in NMI if the arch does not support cmpxchg in NMI
 Date: Mon, 22 Jan 2024 15:55:34 -0800
-Message-ID: <20240122235757.591528705@linuxfoundation.org>
+Message-ID: <20240122235733.100356614@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: kyrie wu <kyrie.wu@mediatek.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 08d530a8da706f157e9dcb4d9b7b4f0eff908ab9 ]
+[ Upstream commit 712292308af2265cd9b126aedfa987f10f452a33 ]
 
-mtk jpeg decoder is built as a module, export some functions to make them
-visible by other modules.
+As the ring buffer recording requires cmpxchg() to work, if the
+architecture does not support cmpxchg in NMI, then do not do any recording
+within an NMI.
 
-Signed-off-by: kyrie wu <kyrie.wu@mediatek.com>
-Signed-off-by: irui wang <irui.wang@mediatek.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: d8212c5c87c1 ("media: mtk-jpeg: Remove cancel worker in mtk_jpeg_remove to avoid the crash of multi-core JPEG devices")
+Link: https://lore.kernel.org/linux-trace-kernel/20231213175403.6fc18540@gandalf.local.home
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_dec_hw.c | 6 ++++++
+ kernel/trace/ring_buffer.c | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_dec_hw.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_dec_hw.c
-index afbbfd5d02bc..6d200e23754e 100644
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_dec_hw.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_dec_hw.c
-@@ -188,6 +188,7 @@ int mtk_jpeg_dec_fill_param(struct mtk_jpeg_dec_param *param)
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 5abe88091803..041b91c2ba10 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -3444,6 +3444,12 @@ rb_reserve_next_event(struct trace_buffer *buffer,
+ 	int nr_loops = 0;
+ 	int add_ts_default;
  
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(mtk_jpeg_dec_fill_param);
++	/* ring buffer does cmpxchg, make sure it is safe in NMI context */
++	if (!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) &&
++	    (unlikely(in_nmi()))) {
++		return NULL;
++	}
++
+ 	rb_start_commit(cpu_buffer);
+ 	/* The commit page can not change after this */
  
- u32 mtk_jpeg_dec_get_int_status(void __iomem *base)
- {
-@@ -199,6 +200,7 @@ u32 mtk_jpeg_dec_get_int_status(void __iomem *base)
- 
- 	return ret;
- }
-+EXPORT_SYMBOL_GPL(mtk_jpeg_dec_get_int_status);
- 
- u32 mtk_jpeg_dec_enum_result(u32 irq_result)
- {
-@@ -215,11 +217,13 @@ u32 mtk_jpeg_dec_enum_result(u32 irq_result)
- 
- 	return MTK_JPEG_DEC_RESULT_ERROR_UNKNOWN;
- }
-+EXPORT_SYMBOL_GPL(mtk_jpeg_dec_enum_result);
- 
- void mtk_jpeg_dec_start(void __iomem *base)
- {
- 	writel(0, base + JPGDEC_REG_TRIG);
- }
-+EXPORT_SYMBOL_GPL(mtk_jpeg_dec_start);
- 
- static void mtk_jpeg_dec_soft_reset(void __iomem *base)
- {
-@@ -239,6 +243,7 @@ void mtk_jpeg_dec_reset(void __iomem *base)
- 	mtk_jpeg_dec_soft_reset(base);
- 	mtk_jpeg_dec_hard_reset(base);
- }
-+EXPORT_SYMBOL_GPL(mtk_jpeg_dec_reset);
- 
- static void mtk_jpeg_dec_set_brz_factor(void __iomem *base, u8 yscale_w,
- 					u8 yscale_h, u8 uvscale_w, u8 uvscale_h)
-@@ -407,3 +412,4 @@ void mtk_jpeg_dec_set_config(void __iomem *base,
- 				   config->dma_last_mcu);
- 	mtk_jpeg_dec_set_pause_mcu_idx(base, config->total_mcu);
- }
-+EXPORT_SYMBOL_GPL(mtk_jpeg_dec_set_config);
 -- 
 2.43.0
 
