@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-13961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458E3837EF9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A43838432
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78C931C289CF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B4042988F7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF06A604CC;
-	Tue, 23 Jan 2024 00:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65FDC6A027;
+	Tue, 23 Jan 2024 02:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziSkNLLs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ambBDts5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE1A60252;
-	Tue, 23 Jan 2024 00:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BB466B3C;
+	Tue, 23 Jan 2024 02:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970858; cv=none; b=LDjMgHyVcNDL/hdujP7yxbMHjL8XmYWa5RtSrG0RgXq9BArCP491qdzoKVH50D5ncKAy10ksQmtV5Jwl1fKnLiMaN3EQzvZhTkdEX0uY1QbQqSVBaB9ypg0fEPeIQp19l1dFMGdUmarsW47LdsMwNXjSQNqqLPQZ09GkKoZ9E8w=
+	t=1705975324; cv=none; b=kUGHyoCNt3qUK7V82YugRTVE3s5MhmtHnds3Jcrgv5t2ViWZ9YQk4c/Bgl/hKXKCTsh83mUGm0yfCAfbDrFXIMzXK3XCZ72as8WdWrf5d3ldmrGpJwLAiWvg/2sj5ETlf6BOUKGVYJP0xeUVk8fcrgLFebE0yoXR4TvP8EYD140=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970858; c=relaxed/simple;
-	bh=WMYlOjXJIsboZTQrVqK3u+DeiYlBNkw0rdFk8HY7SSc=;
+	s=arc-20240116; t=1705975324; c=relaxed/simple;
+	bh=VyfPP3V95l8jAqOplMdKzILCbwhWJ468zsoQOq45VTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qwxAssjgh77W1/+vPDIonKJI/yw9nHUor4Y5dAh4NJPgp6h2dNt5WD765Mzn7Y8fiuzU3zYofhkkFnfHlUI9CNIIUwz2y+Ho/hOnxPWap0Z64+L9Ne5g/jgBAY9pffi+tSL6bNsX01+c7g6mYBdJuH7XhjJ/pA7YTOh9oumnXrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziSkNLLs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D9EC433B1;
-	Tue, 23 Jan 2024 00:47:38 +0000 (UTC)
+	 MIME-Version; b=EenmfOPs+CgF6i8T/wFmHDgKHCQP0RD2AnYMhb1I/nAgVQJZYTtcltsQsabsJKSdso3dfCWWiamx21TnY/u15btPxRB3+yLl+5xlVE5kvKsFknyhMxikqdOAl6Dv4kdqxS3ZWu2SX/pHFU1Q1XOQxRbuzWIlKF4N1866f2l+PPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ambBDts5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CD4C43390;
+	Tue, 23 Jan 2024 02:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970858;
-	bh=WMYlOjXJIsboZTQrVqK3u+DeiYlBNkw0rdFk8HY7SSc=;
+	s=korg; t=1705975324;
+	bh=VyfPP3V95l8jAqOplMdKzILCbwhWJ468zsoQOq45VTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ziSkNLLsmB5chKEtaXoogFC+JavA6UQo+CgbPYX7Wpopgd2t9bLHKSXkuTDbTYjF4
-	 1siYqcwKDd5UEbE4iysuYcRNWb9kTML6B+ZtRimPSABK1yjuYvZdPv4pG2BCBCz+jB
-	 RIFzBanjDhGg1Y6rf5/Thwxt0L/NXEROPIRVGNoY=
+	b=ambBDts5L6U8sKrqz312oPLwlD6R3NE/JHqr1YDZ3KASXEK1R1OOEd2YxCO12ikfA
+	 44c87s2JmNPCjgH9uQ3lSQ0ISsOmvlDEmjpYhepW8AQiclc+p0ucCN6e+RPPQsT/A3
+	 K6+ppFv1u6aFpkVOpdyGBVZn6jtDLidI/nrVfp98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hsiao Chien Sung <shawn.sung@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 032/286] s390/scm: fix virtual vs physical address confusion
+Subject: [PATCH 6.6 287/583] drm/mediatek: Fix underrun in VDO1 when switches off the layer
 Date: Mon, 22 Jan 2024 15:55:38 -0800
-Message-ID: <20240122235733.256599214@linuxfoundation.org>
+Message-ID: <20240122235820.793408212@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vineeth Vijayan <vneethv@linux.ibm.com>
+From: Hsiao Chien Sung <shawn.sung@mediatek.com>
 
-[ Upstream commit b1a6a1a77f0666a5a6dc0893ab6ec8fcae46f24c ]
+[ Upstream commit 73b5ab27ab2ee616f2709dc212c2b0007894a12e ]
 
-Fix virtual vs physical address confusion (which currently are the same).
+Do not reset Merge while using CMDQ because reset API doesn't
+wait for frame done event as CMDQ does and could lead to
+underrun when the layer is switching off.
 
-Signed-off-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: aaf94f7c3ae6 ("drm/mediatek: Add display merge async reset control")
+
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20231214055847.4936-23-shawn.sung@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/block/scm_blk.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_disp_merge.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/s390/block/scm_blk.c b/drivers/s390/block/scm_blk.c
-index a4f6f2e62b1d..b5b36217b15e 100644
---- a/drivers/s390/block/scm_blk.c
-+++ b/drivers/s390/block/scm_blk.c
-@@ -18,6 +18,7 @@
- #include <linux/genhd.h>
- #include <linux/slab.h>
- #include <linux/list.h>
-+#include <linux/io.h>
- #include <asm/eadm.h>
- #include "scm_blk.h"
+diff --git a/drivers/gpu/drm/mediatek/mtk_disp_merge.c b/drivers/gpu/drm/mediatek/mtk_disp_merge.c
+index e525a6b9e5b0..22f768d923d5 100644
+--- a/drivers/gpu/drm/mediatek/mtk_disp_merge.c
++++ b/drivers/gpu/drm/mediatek/mtk_disp_merge.c
+@@ -103,7 +103,7 @@ void mtk_merge_stop_cmdq(struct device *dev, struct cmdq_pkt *cmdq_pkt)
+ 	mtk_ddp_write(cmdq_pkt, 0, &priv->cmdq_reg, priv->regs,
+ 		      DISP_REG_MERGE_CTRL);
  
-@@ -131,7 +132,7 @@ static void scm_request_done(struct scm_request *scmrq)
- 
- 	for (i = 0; i < nr_requests_per_io && scmrq->request[i]; i++) {
- 		msb = &scmrq->aob->msb[i];
--		aidaw = msb->data_addr;
-+		aidaw = (u64)phys_to_virt(msb->data_addr);
- 
- 		if ((msb->flags & MSB_FLAG_IDA) && aidaw &&
- 		    IS_ALIGNED(aidaw, PAGE_SIZE))
-@@ -196,12 +197,12 @@ static int scm_request_prepare(struct scm_request *scmrq)
- 	msb->scm_addr = scmdev->address + ((u64) blk_rq_pos(req) << 9);
- 	msb->oc = (rq_data_dir(req) == READ) ? MSB_OC_READ : MSB_OC_WRITE;
- 	msb->flags |= MSB_FLAG_IDA;
--	msb->data_addr = (u64) aidaw;
-+	msb->data_addr = (u64)virt_to_phys(aidaw);
- 
- 	rq_for_each_segment(bv, req, iter) {
- 		WARN_ON(bv.bv_offset);
- 		msb->blk_count += bv.bv_len >> 12;
--		aidaw->data_addr = (u64) page_address(bv.bv_page);
-+		aidaw->data_addr = virt_to_phys(page_address(bv.bv_page));
- 		aidaw++;
- 	}
+-	if (priv->async_clk)
++	if (!cmdq_pkt && priv->async_clk)
+ 		reset_control_reset(priv->reset_ctl);
+ }
  
 -- 
 2.43.0
