@@ -1,137 +1,109 @@
-Return-Path: <stable+bounces-12809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA77B8373FE
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 21:39:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C6483743E
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 21:45:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09EA21C2638B
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:39:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D6A41C276A3
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9FA47772;
-	Mon, 22 Jan 2024 20:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC7D481CD;
+	Mon, 22 Jan 2024 20:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEAsZvEY"
-X-Original-To: Stable@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gI/lmstp"
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E15840BE2
-	for <Stable@vger.kernel.org>; Mon, 22 Jan 2024 20:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBF0481BA;
+	Mon, 22 Jan 2024 20:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705955944; cv=none; b=rxagjoych+o9Vf2G+YgYhlLHGrxz4xCAxbaTXNI9pWrWs59/P4EP1Wh9uZ1Bu6+vxDfLI3C2RkN8Ivwi3Q9P7J3otcZrIgC8ra5wQo4dzZslwc7hayjpkB5c9Ky+uNYj8l75ReuqEhkGz8u3+y8TnP+Qht3YrYxeuvuAPHbU+Dg=
+	t=1705956265; cv=none; b=RQ5XR/HmVGqZrk5TDqSgyiKpmn9s661duc5nekzzDuTXpyTQlv2npLhzxWKNmEGmQWlElhaFA8uldn2QCV0ICebwIxETu8zHX9YfiyehcWe+iCi84+2H6iIBTxvHRrZcUULvJDVlWNOve0vCYeivqTW/sUsc67iY+r02H/Tqxzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705955944; c=relaxed/simple;
-	bh=lNgLUQ8TmtgIzt9JwlxPjpRkBHfHWVKEmkLBTa01Ji8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bvZ2/bcRbrnFEhDvDFywecsXRYfS5C0ngBhY/kQeYfguPN1/jWP825QfA6if4iwJXljlrnAKTEedUcSPcaVCQrLnmKjlVpqatromddSwAF7mohNgEA1aW5ZUGPjh+0L4RliSk7FEQUNQy9eDXRcsBhMDqbIrncVH6wjGQi7VeOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEAsZvEY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3AE6C433F1;
-	Mon, 22 Jan 2024 20:39:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705955944;
-	bh=lNgLUQ8TmtgIzt9JwlxPjpRkBHfHWVKEmkLBTa01Ji8=;
-	h=Subject:To:Cc:From:Date:From;
-	b=wEAsZvEY2yml3zYOQzgoR9Uja1D82u2JllWC6u0EI/HHItf2tdLPpB/MbBOHUlbf9
-	 4c4S5fp+RTnwNxivudj1Wzax/dxvjRq9MRg3LvYFFJLsPjLUZRgEyY/P9UQYhKXaGL
-	 LKZwm1LJw088R7C9YxNzRUSvhso9OhFBSDIjwNNk=
-Subject: FAILED: patch "[PATCH] iio: adc: ad7091r: Enable internal vref if external vref is" failed to apply to 5.10-stable tree
-To: marcelo.schmitt@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 22 Jan 2024 12:38:53 -0800
-Message-ID: <2024012253-undergrad-audacity-d8b6@gregkh>
+	s=arc-20240116; t=1705956265; c=relaxed/simple;
+	bh=oDkDT6iAXlV0QIqN+s4z7Li/nnh1PW76mppCWWK9Ehk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=qT/Az4viXBsoo9miKeYfadMEHrGBElTnX2jGfXbywWV5GZqM0yTTssZcimSnlM5ucJ1tBuZPWvnuv//UsnlVjQn82dsn+ee3UK8CoTx2La4Tc25Xelmb8w4q/qzz5HUK0LokLnznaqqFLrGUeEc3idTQerrOos1cY9j7WShuX9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gI/lmstp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1BFC43394;
+	Mon, 22 Jan 2024 20:44:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705956265;
+	bh=oDkDT6iAXlV0QIqN+s4z7Li/nnh1PW76mppCWWK9Ehk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=gI/lmstp97c7THLe+3ZeoFa1fdCoCYuCqw3e2APufzr4P/JzjRHnd6oVP9vxDuENT
+	 CVHAv/jEAh7HF4zj8nTkoYQ5ljYDADdVe5Lm6WGDTASMC6prANqpFavK4NMYfpFF2d
+	 JULnpC0DgFoHeWBvUkzgUN1f1Uv2X3/2gBhu/oOE5DGJ3RperrqaIh0sRJnC1p5mot
+	 DkfzHwzUGtQVNOxJnh1VBWrUEnTB+/DvDlFDKcaKBmBkTuZlbGlSPkEzASUVJIB+8S
+	 R5P19Dn6H3HQSIGIKRJ1dJgQ4cNsfh2L4MoGD3BhZlFA/9QMZiWQsX06APuTbR5aUO
+	 o813355Aa2dyg==
+From: Mark Brown <broonie@kernel.org>
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
+ Banajit Goswami <bgoswami@quicinc.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ alsa-devel@alsa-project.org, linux-sound@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: stable@vger.kernel.org
+In-Reply-To: <20240117151208.1219755-1-krzysztof.kozlowski@linaro.org>
+References: <20240117151208.1219755-1-krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH 1/3] ASoC: codecs: wcd938x: handle deferred probe
+Message-Id: <170595626282.145475.12611674756831880298.b4-ty@kernel.org>
+Date: Mon, 22 Jan 2024 20:44:22 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-5c066
 
+On Wed, 17 Jan 2024 16:12:06 +0100, Krzysztof Kozlowski wrote:
+> WCD938x sound codec driver ignores return status of getting regulators
+> and returns EINVAL instead of EPROBE_DEFER.  If regulator provider
+> probes after the codec, system is left without probed audio:
+> 
+>   wcd938x_codec audio-codec: wcd938x_probe: Fail to obtain platform data
+>   wcd938x_codec: probe of audio-codec failed with error -22
+> 
+> [...]
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Applied to
 
-To reproduce the conflict and resubmit, you may use the following commands:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x e71c5c89bcb165a02df35325aa13d1ee40112401
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012253-undergrad-audacity-d8b6@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+Thanks!
 
-Possible dependencies:
+[1/3] ASoC: codecs: wcd938x: handle deferred probe
+      commit: 086df711d9b886194481b4fbe525eb43e9ae7403
+[2/3] ASoC: codecs: wcd938x: skip printing deferred probe failuers
+      commit: 22221b13d0c20a9791dec33121df73fe0b2ac226
+[3/3] ASoC: codecs: wcd934x: drop unneeded regulator include
+      commit: 35314e39dabcfb256832654ad0e856a9fba744bd
 
-e71c5c89bcb1 ("iio: adc: ad7091r: Enable internal vref if external vref is not supplied")
-020e71c7ffc2 ("iio: adc: ad7091r: Allow users to configure device events")
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-thanks,
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-greg k-h
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------------------- original commit in Linus's tree ------------------
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-From e71c5c89bcb165a02df35325aa13d1ee40112401 Mon Sep 17 00:00:00 2001
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Date: Tue, 19 Dec 2023 17:26:27 -0300
-Subject: [PATCH] iio: adc: ad7091r: Enable internal vref if external vref is
- not supplied
-
-The ADC needs a voltage reference to work correctly.
-Users can provide an external voltage reference or use the chip internal
-reference to operate the ADC.
-The availability of an in chip reference for the ADC saves the user from
-having to supply an external voltage reference, which makes the external
-reference an optional property as described in the device tree
-documentation.
-Though, to use the internal reference, it must be enabled by writing to
-the configuration register.
-Enable AD7091R internal voltage reference if no external vref is supplied.
-
-Fixes: 260442cc5be4 ("iio: adc: ad7091r5: Add scale and external VREF support")
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Link: https://lore.kernel.org/r/b865033fa6a4fc4bf2b4a98ec51a6144e0f64f77.1703013352.git.marcelo.schmitt1@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-index 6d93da154810..7ccc9b44dcd8 100644
---- a/drivers/iio/adc/ad7091r-base.c
-+++ b/drivers/iio/adc/ad7091r-base.c
-@@ -406,7 +406,14 @@ int ad7091r_probe(struct device *dev, const char *name,
- 	if (IS_ERR(st->vref)) {
- 		if (PTR_ERR(st->vref) == -EPROBE_DEFER)
- 			return -EPROBE_DEFER;
-+
- 		st->vref = NULL;
-+		/* Enable internal vref */
-+		ret = regmap_set_bits(st->map, AD7091R_REG_CONF,
-+				      AD7091R_REG_CONF_INT_VREF);
-+		if (ret)
-+			return dev_err_probe(st->dev, ret,
-+					     "Error on enable internal reference\n");
- 	} else {
- 		ret = regulator_enable(st->vref);
- 		if (ret)
-diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
-index 7a78976a2f80..b9e1c8bf3440 100644
---- a/drivers/iio/adc/ad7091r-base.h
-+++ b/drivers/iio/adc/ad7091r-base.h
-@@ -8,6 +8,8 @@
- #ifndef __DRIVERS_IIO_ADC_AD7091R_BASE_H__
- #define __DRIVERS_IIO_ADC_AD7091R_BASE_H__
- 
-+#define AD7091R_REG_CONF_INT_VREF	BIT(0)
-+
- /* AD7091R_REG_CH_LIMIT */
- #define AD7091R_HIGH_LIMIT		0xFFF
- #define AD7091R_LOW_LIMIT		0x0
+Thanks,
+Mark
 
 
