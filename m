@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90DD3837BDD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E9A8382D5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 473902941F5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD0EAB2B073
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD3B1552F0;
-	Tue, 23 Jan 2024 00:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2BD85DF26;
+	Tue, 23 Jan 2024 01:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Vhl9eja"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuvEdDJO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C07D154C05;
-	Tue, 23 Jan 2024 00:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914625DF19;
+	Tue, 23 Jan 2024 01:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969415; cv=none; b=cfe1x+rSIeINKbT2+rgS4qZjfTXhKAfKJ1Deu7Rn6YcuiFuLXs/u/DauIKXHSUr++Gmd7vpGP/X9607rXi1NQHtwz+9VwJO12Q7rUB68XXG7P5VPhe7+1FqmqsfQqMTHlSVIEuQsV2QVfRH9IgzQn4OnlzcxVNN0I7ptoOFWPBU=
+	t=1705974397; cv=none; b=EtQUP6pVyl3Dee+VziSdHp2X7yPUDluv4KL/oWkw4vEixEazbytunPHZGdNXnu+MPm0gX7VO99fu4dCiUcdRWMKCNgLOXEy9EJoKKlHd+fNjrag/rupqx/KQhiuV4QoFDshipErCTYYakwYm6sVZA4OSVDh4B+5nIgtJHqohucI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969415; c=relaxed/simple;
-	bh=Yfom9pyzJaigB/on7uXwN00R7P3N2RzHxCHjFvAbsFY=;
+	s=arc-20240116; t=1705974397; c=relaxed/simple;
+	bh=NGnFmn9BAeXpVzWDWZMLhxJwYHfsPvurquAmPybd2QM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dof2tiCYVNz6vwCU6cGRRbO3dSksVgPoN/lNvm0AIkHHEsWxx0YYm0LGTKO0/Fnsi/rs0uPpqwaNjxeReF3lsMNltFAe4YtjDV3CJupFxcE6Si5j1yECXqk8A9dYghwaTNk0sIy8v1yVnJZm0SA9a0Z4S6Y8eApxKgXd/C8pRkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Vhl9eja; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E153CC433B1;
-	Tue, 23 Jan 2024 00:23:34 +0000 (UTC)
+	 MIME-Version; b=DCx74HT8huT65spRmQ81B6ugEAZ+Oe+1kgGGU3X36bRHVvLIaDNcJlDsGmidL1/x6+wxm59LeVOKEfN9HbJwGES0gTQ7ZIbQhMvGJLetazRbghxvCv9E8uKgGjmM6GYw2fyuGXmRg49RBI0GcYPfbPdhotlfctp3YMfSQERZsAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuvEdDJO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B3EC43394;
+	Tue, 23 Jan 2024 01:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969415;
-	bh=Yfom9pyzJaigB/on7uXwN00R7P3N2RzHxCHjFvAbsFY=;
+	s=korg; t=1705974397;
+	bh=NGnFmn9BAeXpVzWDWZMLhxJwYHfsPvurquAmPybd2QM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Vhl9ejaPlcqOtNK+oPkFmKoGcDCdgBJH8iw7+a97BH7JOokD+QnqGA8JuSppcPtH
-	 zPsc5kCsAE1SL5woM6Eu3sfIOEp0YkGFfq84eBINFrTa+TCZFrvoDFkGkW9AiJTLAY
-	 ZTJsrXHn0vOqfZMP6ZFF970z2u4AhyXiip2j/IXw=
+	b=XuvEdDJOBleXUIx/vMxgY3kSKVkgvKylhd6pB27oBFdz7dEG9sVTcZ5UDHXpdxoH4
+	 1qk20bGTxu2OsGjw/Wg9b1KnAGihF2nFnk/NncLzTGLZ1xiFLbTlNbyaDHtr7+zdPe
+	 kQ7iVF7WlCXouUvI/8vSL++EfraBzrHqp29fyD4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 230/641] wifi: cfg80211: parse all ML elements in an ML probe response
-Date: Mon, 22 Jan 2024 15:52:14 -0800
-Message-ID: <20240122235825.130452175@linuxfoundation.org>
+Subject: [PATCH 6.6 084/583] arm64: dts: qcom: sc8280xp-x13s: add missing camera LED pin config
+Date: Mon, 22 Jan 2024 15:52:15 -0800
+Message-ID: <20240122235814.730832881@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit d18125b640309e925441ce49559be33867ae6b29 ]
+[ Upstream commit a3457cc5bc30ad053c90ae9f14e9b7723d204a98 ]
 
-A probe response from a transmitting AP in an Multi-BSSID setup will
-contain more than one Multi-Link element. Most likely, only one of these
-elements contains per-STA profiles.
+Add the missing pin configuration for the recently added camera
+indicator LED.
 
-Fixes: 2481b5da9c6b ("wifi: cfg80211: handle BSS data contained in ML probe responses")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240102213313.6635eb152735.I94289002d4a2f7b6b44dfa428344854e37b0b29c@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 1c63dd1c5fda ("arm64: dts: qcom: sc8280xp-x13s: Add camera activity LED")
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231003093647.3840-1-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 40 ++++++++++++++++++++++++++--------------
- 1 file changed, 26 insertions(+), 14 deletions(-)
+ .../boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts    | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 8cd3eef76f2b..0d6c3fc1238a 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -2591,10 +2591,12 @@ cfg80211_tbtt_info_for_mld_ap(const u8 *ie, size_t ielen, u8 mld_id, u8 link_id,
- 	return false;
- }
+diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+index 6a4c6cc19c09..f2055899ae7a 100644
+--- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
++++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
+@@ -82,6 +82,9 @@ switch-lid {
+ 	leds {
+ 		compatible = "gpio-leds";
  
--static void cfg80211_parse_ml_sta_data(struct wiphy *wiphy,
--				       struct cfg80211_inform_single_bss_data *tx_data,
--				       struct cfg80211_bss *source_bss,
--				       gfp_t gfp)
-+static void
-+cfg80211_parse_ml_elem_sta_data(struct wiphy *wiphy,
-+				struct cfg80211_inform_single_bss_data *tx_data,
-+				struct cfg80211_bss *source_bss,
-+				const struct element *elem,
-+				gfp_t gfp)
- {
- 	struct cfg80211_inform_single_bss_data data = {
- 		.drv_data = tx_data->drv_data,
-@@ -2603,7 +2605,6 @@ static void cfg80211_parse_ml_sta_data(struct wiphy *wiphy,
- 		.bss_source = BSS_SOURCE_STA_PROFILE,
++		pinctrl-names = "default";
++		pinctrl-0 = <&cam_indicator_en>;
++
+ 		led-camera-indicator {
+ 			label = "white:camera-indicator";
+ 			function = LED_FUNCTION_INDICATOR;
+@@ -1278,6 +1281,13 @@ hstp-sw-ctrl-pins {
+ 		};
  	};
- 	struct ieee80211_multi_link_elem *ml_elem;
--	const struct element *elem;
- 	struct cfg80211_mle *mle;
- 	u16 control;
- 	u8 *new_ie;
-@@ -2613,15 +2614,7 @@ static void cfg80211_parse_ml_sta_data(struct wiphy *wiphy,
- 	const u8 *pos;
- 	u8 i;
  
--	if (!source_bss)
--		return;
--
--	if (tx_data->ftype != CFG80211_BSS_FTYPE_PRESP)
--		return;
--
--	elem = cfg80211_find_ext_elem(WLAN_EID_EXT_EHT_MULTI_LINK,
--				      tx_data->ie, tx_data->ielen);
--	if (!elem || !ieee80211_mle_size_ok(elem->data + 1, elem->datalen - 1))
-+	if (!ieee80211_mle_size_ok(elem->data + 1, elem->datalen - 1))
- 		return;
- 
- 	ml_elem = (void *)elem->data + 1;
-@@ -2756,6 +2749,25 @@ static void cfg80211_parse_ml_sta_data(struct wiphy *wiphy,
- 	kfree(mle);
- }
- 
-+static void cfg80211_parse_ml_sta_data(struct wiphy *wiphy,
-+				       struct cfg80211_inform_single_bss_data *tx_data,
-+				       struct cfg80211_bss *source_bss,
-+				       gfp_t gfp)
-+{
-+	const struct element *elem;
++	cam_indicator_en: cam-indicator-en-state {
++		pins = "gpio28";
++		function = "gpio";
++		drive-strength = <2>;
++		bias-disable;
++	};
 +
-+	if (!source_bss)
-+		return;
-+
-+	if (tx_data->ftype != CFG80211_BSS_FTYPE_PRESP)
-+		return;
-+
-+	for_each_element_extid(elem, WLAN_EID_EXT_EHT_MULTI_LINK,
-+			       tx_data->ie, tx_data->ielen)
-+		cfg80211_parse_ml_elem_sta_data(wiphy, tx_data, source_bss,
-+						elem, gfp);
-+}
-+
- struct cfg80211_bss *
- cfg80211_inform_bss_data(struct wiphy *wiphy,
- 			 struct cfg80211_inform_bss *data,
+ 	edp_reg_en: edp-reg-en-state {
+ 		pins = "gpio25";
+ 		function = "gpio";
 -- 
 2.43.0
 
