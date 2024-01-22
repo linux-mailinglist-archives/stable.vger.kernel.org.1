@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7CC683801F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8ED0837D80
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05A3D1C2950F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FCE6286E84
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89C566B29;
-	Tue, 23 Jan 2024 00:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0C65C8EF;
+	Tue, 23 Jan 2024 00:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jodx5Hcw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CdGagPN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691D8664C3;
-	Tue, 23 Jan 2024 00:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26434E1D8;
+	Tue, 23 Jan 2024 00:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971557; cv=none; b=etsTsrSctK+EPhZEXEkr1RVu0LHZWCubH1mOB7HbKrIZ8Emb9ddJAtGSrmNb+pYG+3oXqz9dtJPYy5TzAAgcD4j6Wf9spFS3781sw+x3M7h1MRgIWZrxu5LUB/xTEk8BI1+UVdq16jEGWYaSv+YYepC+4G4pNlK6Jn0M/U00aH8=
+	t=1705969988; cv=none; b=EGOE3oiKmnqaCR5Be3ZayDw2fPCxcDjF4dVLcinNpI+FS1sx/Qt6dxErmTJToc1fteC9yrbL80GkKxaE0SPoJ+Znmwy2TzX8TbPIbIrROqawuZny2nc/Z5P7NIFu/aquzCGwAGxOYeYjNX/rObs71HtgZYKQPV2Y1Md2vymghqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971557; c=relaxed/simple;
-	bh=UbXDQztOKQYSffYz0U8IfJgBbpEbYGSMgpBGRXEQ2yQ=;
+	s=arc-20240116; t=1705969988; c=relaxed/simple;
+	bh=iWkH9lJynFBQlr4UE20U8wFdygMYEhlnRX2b9Tg/wrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aNWpRS01hdJwZBRFELFEk2DbkDH8MZAeR+SWvJHKKvnwi4sD+VTXcuSrdYWPNMyPf90+H7/OEmLsG/M7O6V1YD5Edk2WpzC9J/6a7Ymd3zDVQJnKq+SkqQ8E6ZztzBLyBy/JRN2189WgD0CX3fiRcJaNF1H5t+dRVT4ZjiJc10c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jodx5Hcw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58B0C433C7;
-	Tue, 23 Jan 2024 00:59:16 +0000 (UTC)
+	 MIME-Version; b=sz43MuDgKQvs7FcbVgSQrWcdXIMZal7MUr0E3DM15t0ckgEQBp68+rYtWdGtnqVz76qee9v+1PfxKc7aGUMBtB+GIFYWzkbjg8SKpazY6YpwfcdiYfqbU1zw2ht2TgFMpIjy+hkgcZKqH41KbuAhIfInG+hf/l/SOupRahF+v9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CdGagPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75093C433F1;
+	Tue, 23 Jan 2024 00:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971557;
-	bh=UbXDQztOKQYSffYz0U8IfJgBbpEbYGSMgpBGRXEQ2yQ=;
+	s=korg; t=1705969987;
+	bh=iWkH9lJynFBQlr4UE20U8wFdygMYEhlnRX2b9Tg/wrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jodx5HcwAkShikf5F3tZL6oxESnL+kBepcH3WM4Apuno5VlLgNpgkgiz6LqUZOJz3
-	 /6iL2QB+G6jhtA1fsmKqtZGEo3cFgqptZ3tC426KIl0gJFeSYzfTEhx4dJGcdSDQdP
-	 8xRockiHTJWqi+NoCK1fZY5s2Ii2uD9kBAVdwbgA=
+	b=0CdGagPNzKbaJBgrsayJpEzGnWNKR9uctF07Faay3lQdSXI0nhkugFACpqa24lQuU
+	 jEdKtr/0qnBZ//zVBZFwIx29i5b7bBVjU1mII7AqMDZjgma1acSBgICXucXh2UkZwI
+	 tlpDmPM375QqqOnmBWoFrePcahmW63NncQNmMdcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Robert Foss <rfoss@kernel.org>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 150/286] drm/bridge: Fix typo in post_disable() description
+Subject: [PATCH 6.7 552/641] apparmor: Fix ref count leak in task_kill
 Date: Mon, 22 Jan 2024 15:57:36 -0800
-Message-ID: <20240122235737.932129858@linuxfoundation.org>
+Message-ID: <20240122235835.420872938@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: John Johansen <john.johansen@canonical.com>
 
-[ Upstream commit 288b039db225676e0c520c981a1b5a2562d893a3 ]
+[ Upstream commit 2cb54a19ac7153b9a26a72098c495187f64c2276 ]
 
-s/singals/signals/
+apparmor_task_kill was not putting the task_cred reference tc, or the
+cred_label reference tc when dealing with a passed in cred, fix this
+by using a single fn exit.
 
-Fixes: 199e4e967af4 ("drm: Extract drm_bridge.h")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231124094253.658064-1-dario.binacchi@amarulasolutions.com
+Fixes: 90c436a64a6e ("apparmor: pass cred through to audit info.")
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/drm_bridge.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/apparmor/lsm.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/drm/drm_bridge.h b/include/drm/drm_bridge.h
-index 055486e35e68..3826cf9553c0 100644
---- a/include/drm/drm_bridge.h
-+++ b/include/drm/drm_bridge.h
-@@ -186,7 +186,7 @@ struct drm_bridge_funcs {
- 	 * or &drm_encoder_helper_funcs.dpms hook.
- 	 *
- 	 * The bridge must assume that the display pipe (i.e. clocks and timing
--	 * singals) feeding it is no longer running when this callback is
-+	 * signals) feeding it is no longer running when this callback is
- 	 * called.
- 	 *
- 	 * The @post_disable callback is optional.
+diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
+index 4981bdf02993..608a849a7468 100644
+--- a/security/apparmor/lsm.c
++++ b/security/apparmor/lsm.c
+@@ -954,7 +954,6 @@ static int apparmor_task_kill(struct task_struct *target, struct kernel_siginfo
+ 		cl = aa_get_newest_cred_label(cred);
+ 		error = aa_may_signal(cred, cl, tc, tl, sig);
+ 		aa_put_label(cl);
+-		return error;
+ 	} else {
+ 		cl = __begin_current_label_crit_section();
+ 		error = aa_may_signal(current_cred(), cl, tc, tl, sig);
 -- 
 2.43.0
 
