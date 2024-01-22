@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 937758382E1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D49FD837BD3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54134286E84
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D16A29437B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C085FDC7;
-	Tue, 23 Jan 2024 01:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C594154C0A;
+	Tue, 23 Jan 2024 00:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1swg/kQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbxiKW3j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437565FDBB;
-	Tue, 23 Jan 2024 01:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF6B154C05;
+	Tue, 23 Jan 2024 00:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974649; cv=none; b=WxyAl34q1e2BamnaLbj77nSwSzEnaRJi8TMv01Nw1q0Z5Oolbe0GLVp7L8KH07mXtgYkxmYlin7AYECJJm9SwwxMJ0Cv7FkaCipoZcXeKAbUoy3qnINo2hadJFWRs29dO3ea4/hck58r5DE5LV3F2NgnkhePxiylYMtgnlJ8sb0=
+	t=1705969400; cv=none; b=N6Dm0GdOQlP3kIcsrXXTxRyIGym+pdJooK6zWVuhTDQOZ/Ycs9a9HufmveS1aWoKQqaOw40XU3x5CDxCW557XWioKhS0CoKJ4yDP+FPyV+i2pDIdaszyX+QHuObRABM22/fJPrMBd8HRqSXMTSy+IuDYlHSsyk0X+cdovExeBmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974649; c=relaxed/simple;
-	bh=EEcn7JEHHpqjS7Gg50C1DxDu/1a/j+3TBFcwpXnJj5I=;
+	s=arc-20240116; t=1705969400; c=relaxed/simple;
+	bh=kOhOY8KJqGM+w7yXvKBe3SFRA8x1BzFKCmoHfmiXWek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JeG1ZdsVskJeAHedo9ANqZxPPmIkL7ziENkm8tLJvGCQhD/IoenYM6s/0cHX6DvumVebtA0Ma936zv4xhlNNm73I+HKeqiwdae4/ZbC35y8erZbigdLA+PibdPDHSW61fzjSkMh0g3xmUi3Fdl1n+H5E4zEyRPNNfCE1Ar1BY+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1swg/kQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C31C433F1;
-	Tue, 23 Jan 2024 01:50:48 +0000 (UTC)
+	 MIME-Version; b=rohshSfNww4Qp269ijLpzeppLdc+xpBjd9ldrLINw2TpXTxrjm+2FTKGaesqU7Ksmd7QvsttWp2xw0scqGk16ZmPodnIPU2hvxxIqT3ZkhHi+vhsdzLPMHIbuh8jU0E7QNVs95mfbmTpTEj3sKznpwsQ0ShRrueKWMwxTOiHAuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbxiKW3j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC47BC43394;
+	Tue, 23 Jan 2024 00:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974649;
-	bh=EEcn7JEHHpqjS7Gg50C1DxDu/1a/j+3TBFcwpXnJj5I=;
+	s=korg; t=1705969400;
+	bh=kOhOY8KJqGM+w7yXvKBe3SFRA8x1BzFKCmoHfmiXWek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z1swg/kQBEqgkSBWXsiOzNYzlo0p4cGNK0Xj12L3R2p0tJj0WiruuyHMTyc15DG5Q
-	 NJYlPiCZCdBz4kVB8yvMbOsqEfyZnCN+6+0iRi9N7KMjwxEYn0NS/h9fuYGwAynY7O
-	 fBFaJgGG+rNrRxGGkM8hDm1dYIIoVWdXKQ3j/Gms=
+	b=NbxiKW3jMHkBvwkhzGGuWzd0UsPmI/0fg3UaP+TKpknQsJ75Ij9MMaBpwLBZUBbep
+	 fE3FDt8C1FnBtxxnEZZQ2MJHTQRZ2A0fZ6mNID366klrauazzb+R4028Fp3EIZzHG5
+	 nKFQeWhxmFumTmM16UfmDTHeeOv1/u5kexKtsfLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/583] crypto: sahara - do not resize req->src when doing hash operations
-Date: Mon, 22 Jan 2024 15:52:04 -0800
-Message-ID: <20240122235814.388678943@linuxfoundation.org>
+Subject: [PATCH 6.7 221/641] netfilter: nf_tables: mark newset as dead on transaction abort
+Date: Mon, 22 Jan 2024 15:52:05 -0800
+Message-ID: <20240122235824.857558492@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit a3c6f4f4d249cecaf2f34471aadbfb4f4ef57298 ]
+[ Upstream commit 08e4c8c5919fd405a4d709b4ba43d836894a26eb ]
 
-When testing sahara sha256 speed performance with tcrypt (mode=404) on
-imx53-qsrb board, multiple "Invalid numbers of src SG." errors are
-reported. This was traced to sahara_walk_and_recalc() resizing req->src
-and causing the subsequent dma_map_sg() call to fail.
+If a transaction is aborted, we should mark the to-be-released NEWSET dead,
+just like commit path does for DEL and DESTROYSET commands.
 
-Now that the previous commit fixed sahara_sha_hw_links_create() to take
-into account the actual request size, rather than relying on sg->length
-values, the resize operation is no longer necessary.
+In both cases all remaining elements will be released via
+set->ops->destroy().
 
-Therefore, remove sahara_walk_and_recalc() and simplify associated logic.
+The existing abort code does NOT post the actual release to the work queue.
+Also the entire __nf_tables_abort() function is wrapped in gc_seq
+begin/end pair.
 
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Therefore, async gc worker will never try to release the pending set
+elements, as gc sequence is always stale.
+
+It might be possible to speed up transaction aborts via work queue too,
+this would result in a race and a possible use-after-free.
+
+So fix this before it becomes an issue.
+
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 38 ++------------------------------------
- 1 file changed, 2 insertions(+), 36 deletions(-)
+ net/netfilter/nf_tables_api.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 477b4d8b450d..8e84dd98a273 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -886,24 +886,6 @@ static int sahara_sha_hw_context_descriptor_create(struct sahara_dev *dev,
- 	return 0;
- }
- 
--static int sahara_walk_and_recalc(struct scatterlist *sg, unsigned int nbytes)
--{
--	if (!sg || !sg->length)
--		return nbytes;
--
--	while (nbytes && sg) {
--		if (nbytes <= sg->length) {
--			sg->length = nbytes;
--			sg_mark_end(sg);
--			break;
--		}
--		nbytes -= sg->length;
--		sg = sg_next(sg);
--	}
--
--	return nbytes;
--}
--
- static int sahara_sha_prepare_request(struct ahash_request *req)
- {
- 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
-@@ -940,36 +922,20 @@ static int sahara_sha_prepare_request(struct ahash_request *req)
- 					hash_later, 0);
- 	}
- 
--	/* nbytes should now be multiple of blocksize */
--	req->nbytes = req->nbytes - hash_later;
--
--	sahara_walk_and_recalc(req->src, req->nbytes);
--
-+	rctx->total = len - hash_later;
- 	/* have data from previous operation and current */
- 	if (rctx->buf_cnt && req->nbytes) {
- 		sg_init_table(rctx->in_sg_chain, 2);
- 		sg_set_buf(rctx->in_sg_chain, rctx->rembuf, rctx->buf_cnt);
--
- 		sg_chain(rctx->in_sg_chain, 2, req->src);
--
--		rctx->total = req->nbytes + rctx->buf_cnt;
- 		rctx->in_sg = rctx->in_sg_chain;
--
--		req->src = rctx->in_sg_chain;
- 	/* only data from previous operation */
- 	} else if (rctx->buf_cnt) {
--		if (req->src)
--			rctx->in_sg = req->src;
--		else
--			rctx->in_sg = rctx->in_sg_chain;
--		/* buf was copied into rembuf above */
-+		rctx->in_sg = rctx->in_sg_chain;
- 		sg_init_one(rctx->in_sg, rctx->rembuf, rctx->buf_cnt);
--		rctx->total = rctx->buf_cnt;
- 	/* no data from previous operation */
- 	} else {
- 		rctx->in_sg = req->src;
--		rctx->total = req->nbytes;
--		req->src = rctx->in_sg;
- 	}
- 
- 	/* on next call, we only have the remaining data in the buffer */
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index be04af433988..bbb8d8533f77 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -10383,6 +10383,7 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 				nft_trans_destroy(trans);
+ 				break;
+ 			}
++			nft_trans_set(trans)->dead = 1;
+ 			list_del_rcu(&nft_trans_set(trans)->list);
+ 			break;
+ 		case NFT_MSG_DELSET:
 -- 
 2.43.0
 
