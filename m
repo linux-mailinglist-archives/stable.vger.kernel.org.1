@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-13798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E83837E16
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA958384EE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 308901F29C12
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AA6228FB49
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A67F57892;
-	Tue, 23 Jan 2024 00:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C537A77F32;
+	Tue, 23 Jan 2024 02:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xz+LM/4h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3Rxmm4z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492B053E16;
-	Tue, 23 Jan 2024 00:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8571B77636;
+	Tue, 23 Jan 2024 02:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970358; cv=none; b=oSSwORXIXCebdiAChLUa6Asppy1StXDKecn8UIJYRjYtllH5B2oYG2ceM7EWOv/YAvieIecWrwPsu0XnTFRDT98ZFfWQpEFT2xW1glnOP8kShqIbsEt9B7Eh1Y5FADz40YpAk0qc2KXo00ViCeg6aVD/QW+Chg82xe2vckMPVSI=
+	t=1705975537; cv=none; b=Y1WgUwbScM+cN7QuwsFfgqEYx5xqFVuQ7Qynhit7uAKHxbEQe62h95ylQ2/5MjM0yWp2TEUOwWSpeQr5wyuXOf0uQ/K0j8at3NwuJjdzNCWqmTVH1lsm3ct8rvMT5Gi5daMQ7+TJOZLD2VPuKt8Y1svhFlKKxqE+ZmULGCJ0MTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970358; c=relaxed/simple;
-	bh=XY2K4NPXoPZUh8LPI8rlzrVIJb5lLviO+6GbJpdmMuk=;
+	s=arc-20240116; t=1705975537; c=relaxed/simple;
+	bh=/1CB3NlRCu+Io3azAindz4MaA0SUiqe8vppuMiYHgQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z9LliPhEUGlZneduxa7dwzpegmNaQs2zXS0OWF7zKGC2xzao6oGi6B6u3jjsWoOn9EfzXiYaCXkGA50dcaIkTk2Yj34EXPdGfjSmAhVtPJLKa85ETpdywRgFmJw9Sp5NBx3ajZNyLKtzksCY0rd/GA/dU5Yup4Fw14l3JTmJ9g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xz+LM/4h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB540C433F1;
-	Tue, 23 Jan 2024 00:39:17 +0000 (UTC)
+	 MIME-Version; b=dq00tKec0Jz97raPXOhMFLySJwu4khfyu4TgQd4ghhPS0XU/R36Wyxd6E2BxezddJ5bz1qon4MzHOROk0RGVwXR0ksenuZowVly2UGEwjqVB1/Ssyfiu0wuxmcXhHdVtm2emiC7EzGhlt7jPAHUDjA1V/DHa7Mbv2AA/FE08PMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3Rxmm4z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B481C43390;
+	Tue, 23 Jan 2024 02:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970358;
-	bh=XY2K4NPXoPZUh8LPI8rlzrVIJb5lLviO+6GbJpdmMuk=;
+	s=korg; t=1705975537;
+	bh=/1CB3NlRCu+Io3azAindz4MaA0SUiqe8vppuMiYHgQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xz+LM/4hrfC3RohHyyLL8sGK0d94izqTFnezND5S7ZvIIwvON/0L/2Fb70HStHCij
-	 yFqf1bWXgwQZ6I1h6FMMF/LvJ3hiwkLiL1C3XkCclhi6D42dxqLLf6KSuc+WEOzzJE
-	 nP4puPTKaJMt/zpBoka1kOa7BGG56aDLazdQWBAU=
+	b=i3Rxmm4zksB1r5ArcAoKm76BDZR1N3PuVv0IYDtGxGUVQzk1bLB0+a6FTmZkTjzoY
+	 0oOvAuBhaVlgndTBvbCtBKEI2mHH2E/seA7KlGgXxCRfzcIkCahAnOpSbkmS9IS0YY
+	 hu7EnsSwCd0zknQyVP6oScnbv9CAu2lvgogXQOeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Amit Cohen <amcohen@nvidia.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 635/641] mlxsw: spectrum_acl_tcam: Fix NULL pointer dereference in error path
+Subject: [PATCH 6.6 488/583] bus: mhi: ep: Do not allocate event ring element on stack
 Date: Mon, 22 Jan 2024 15:58:59 -0800
-Message-ID: <20240122235838.140684257@linuxfoundation.org>
+Message-ID: <20240122235826.951982123@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +61,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit efeb7dfea8ee10cdec11b6b6ba4e405edbe75809 ]
+[ Upstream commit 987fdb5a43a66764808371b54e6047834170d565 ]
 
-When calling mlxsw_sp_acl_tcam_region_destroy() from an error path after
-failing to attach the region to an ACL group, we hit a NULL pointer
-dereference upon 'region->group->tcam' [1].
+It is possible that the host controller driver would use DMA framework to
+write the event ring element. So avoid allocating event ring element on the
+stack as DMA cannot work on vmalloc memory.
 
-Fix by retrieving the 'tcam' pointer using mlxsw_sp_acl_to_tcam().
-
-[1]
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-[...]
-RIP: 0010:mlxsw_sp_acl_tcam_region_destroy+0xa0/0xd0
-[...]
-Call Trace:
- mlxsw_sp_acl_tcam_vchunk_get+0x88b/0xa20
- mlxsw_sp_acl_tcam_ventry_add+0x25/0xe0
- mlxsw_sp_acl_rule_add+0x47/0x240
- mlxsw_sp_flower_replace+0x1a9/0x1d0
- tc_setup_cb_add+0xdc/0x1c0
- fl_hw_replace_filter+0x146/0x1f0
- fl_change+0xc17/0x1360
- tc_new_tfilter+0x472/0xb90
- rtnetlink_rcv_msg+0x313/0x3b0
- netlink_rcv_skb+0x58/0x100
- netlink_unicast+0x244/0x390
- netlink_sendmsg+0x1e4/0x440
- ____sys_sendmsg+0x164/0x260
- ___sys_sendmsg+0x9a/0xe0
- __sys_sendmsg+0x7a/0xc0
- do_syscall_64+0x40/0xe0
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Fixes: 22a677661f56 ("mlxsw: spectrum: Introduce ACL core with simple TCAM implementation")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Amit Cohen <amcohen@nvidia.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/fb6a4542bbc9fcab5a523802d97059bffbca7126.1705502064.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 961aeb689224 ("bus: mhi: ep: Add support for sending events to the host")
+Link: https://lore.kernel.org/r/20230901073502.69385-1-manivannan.sadhasivam@linaro.org
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Stable-dep-of: 327ec5f70609 ("PCI: epf-mhi: Fix the DMA data direction of dma_unmap_single()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/bus/mhi/ep/main.c | 68 ++++++++++++++++++++++++++++-----------
+ 1 file changed, 50 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index d50786b0a6ce..7d1e91196e94 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -681,13 +681,13 @@ static void
- mlxsw_sp_acl_tcam_region_destroy(struct mlxsw_sp *mlxsw_sp,
- 				 struct mlxsw_sp_acl_tcam_region *region)
+diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
+index 600881808982..e2513f5f47a6 100644
+--- a/drivers/bus/mhi/ep/main.c
++++ b/drivers/bus/mhi/ep/main.c
+@@ -71,45 +71,77 @@ static int mhi_ep_send_event(struct mhi_ep_cntrl *mhi_cntrl, u32 ring_idx,
+ static int mhi_ep_send_completion_event(struct mhi_ep_cntrl *mhi_cntrl, struct mhi_ep_ring *ring,
+ 					struct mhi_ring_element *tre, u32 len, enum mhi_ev_ccs code)
  {
-+	struct mlxsw_sp_acl_tcam *tcam = mlxsw_sp_acl_to_tcam(mlxsw_sp->acl);
- 	const struct mlxsw_sp_acl_tcam_ops *ops = mlxsw_sp->acl_tcam_ops;
+-	struct mhi_ring_element event = {};
++	struct mhi_ring_element *event;
++	int ret;
++
++	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
++	if (!event)
++		return -ENOMEM;
  
- 	ops->region_fini(mlxsw_sp, region->priv);
- 	mlxsw_sp_acl_tcam_region_disable(mlxsw_sp, region);
- 	mlxsw_sp_acl_tcam_region_free(mlxsw_sp, region);
--	mlxsw_sp_acl_tcam_region_id_put(region->group->tcam,
--					region->id);
-+	mlxsw_sp_acl_tcam_region_id_put(tcam, region->id);
- 	kfree(region);
+-	event.ptr = cpu_to_le64(ring->rbase + ring->rd_offset * sizeof(*tre));
+-	event.dword[0] = MHI_TRE_EV_DWORD0(code, len);
+-	event.dword[1] = MHI_TRE_EV_DWORD1(ring->ch_id, MHI_PKT_TYPE_TX_EVENT);
++	event->ptr = cpu_to_le64(ring->rbase + ring->rd_offset * sizeof(*tre));
++	event->dword[0] = MHI_TRE_EV_DWORD0(code, len);
++	event->dword[1] = MHI_TRE_EV_DWORD1(ring->ch_id, MHI_PKT_TYPE_TX_EVENT);
+ 
+-	return mhi_ep_send_event(mhi_cntrl, ring->er_index, &event, MHI_TRE_DATA_GET_BEI(tre));
++	ret = mhi_ep_send_event(mhi_cntrl, ring->er_index, event, MHI_TRE_DATA_GET_BEI(tre));
++	kfree(event);
++
++	return ret;
  }
  
+ int mhi_ep_send_state_change_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_state state)
+ {
+-	struct mhi_ring_element event = {};
++	struct mhi_ring_element *event;
++	int ret;
++
++	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
++	if (!event)
++		return -ENOMEM;
+ 
+-	event.dword[0] = MHI_SC_EV_DWORD0(state);
+-	event.dword[1] = MHI_SC_EV_DWORD1(MHI_PKT_TYPE_STATE_CHANGE_EVENT);
++	event->dword[0] = MHI_SC_EV_DWORD0(state);
++	event->dword[1] = MHI_SC_EV_DWORD1(MHI_PKT_TYPE_STATE_CHANGE_EVENT);
+ 
+-	return mhi_ep_send_event(mhi_cntrl, 0, &event, 0);
++	ret = mhi_ep_send_event(mhi_cntrl, 0, event, 0);
++	kfree(event);
++
++	return ret;
+ }
+ 
+ int mhi_ep_send_ee_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_ee_type exec_env)
+ {
+-	struct mhi_ring_element event = {};
++	struct mhi_ring_element *event;
++	int ret;
++
++	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
++	if (!event)
++		return -ENOMEM;
+ 
+-	event.dword[0] = MHI_EE_EV_DWORD0(exec_env);
+-	event.dword[1] = MHI_SC_EV_DWORD1(MHI_PKT_TYPE_EE_EVENT);
++	event->dword[0] = MHI_EE_EV_DWORD0(exec_env);
++	event->dword[1] = MHI_SC_EV_DWORD1(MHI_PKT_TYPE_EE_EVENT);
+ 
+-	return mhi_ep_send_event(mhi_cntrl, 0, &event, 0);
++	ret = mhi_ep_send_event(mhi_cntrl, 0, event, 0);
++	kfree(event);
++
++	return ret;
+ }
+ 
+ static int mhi_ep_send_cmd_comp_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_ev_ccs code)
+ {
+ 	struct mhi_ep_ring *ring = &mhi_cntrl->mhi_cmd->ring;
+-	struct mhi_ring_element event = {};
++	struct mhi_ring_element *event;
++	int ret;
++
++	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
++	if (!event)
++		return -ENOMEM;
+ 
+-	event.ptr = cpu_to_le64(ring->rbase + ring->rd_offset * sizeof(struct mhi_ring_element));
+-	event.dword[0] = MHI_CC_EV_DWORD0(code);
+-	event.dword[1] = MHI_CC_EV_DWORD1(MHI_PKT_TYPE_CMD_COMPLETION_EVENT);
++	event->ptr = cpu_to_le64(ring->rbase + ring->rd_offset * sizeof(struct mhi_ring_element));
++	event->dword[0] = MHI_CC_EV_DWORD0(code);
++	event->dword[1] = MHI_CC_EV_DWORD1(MHI_PKT_TYPE_CMD_COMPLETION_EVENT);
+ 
+-	return mhi_ep_send_event(mhi_cntrl, 0, &event, 0);
++	ret = mhi_ep_send_event(mhi_cntrl, 0, event, 0);
++	kfree(event);
++
++	return ret;
+ }
+ 
+ static int mhi_ep_process_cmd_ring(struct mhi_ep_ring *ring, struct mhi_ring_element *el)
 -- 
 2.43.0
 
