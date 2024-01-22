@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-14481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA19838117
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:05:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39BA183851E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C91D1F23D66
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:05:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CF691C2A557
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDC814077C;
-	Tue, 23 Jan 2024 01:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2527E562;
+	Tue, 23 Jan 2024 02:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXua9zh8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSpMslKc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7D2140778;
-	Tue, 23 Jan 2024 01:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C86145009;
+	Tue, 23 Jan 2024 02:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972021; cv=none; b=USVEYzjs/1c4t5bfHyj+qYXv5TRiMstc/QdDTVX+4MUbfQUeFKIJE3K21EzCGhPh6pUBH8o+J3QW0u0tVB5MdUIsftEGsCW/3HfcPn3T1x0BUq49qLMTZ/fnsv79fUGO83prreN/vcVrTi/fYPBS34zDcnPhZqMFhyq0FWUlhZs=
+	t=1705975745; cv=none; b=i53Nr6yr5eOxJFfDfdpfhwV4i/bdiODbpPoj0zW64vRDUMIvuE4IUIMG9cLzJkprNl2ftBwv6FKDwp2MSjqUArVtbuGQfIECyBVhNpSnATlAghQEssj0SoiGXBJo5X9e6c2u7gSQsvKGvEQLcTZcXLA6rQl0tpI9+nNRyBN86mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972021; c=relaxed/simple;
-	bh=MzbIJw0wNavkHuXlzR5guxSQ0gf6VJPi1EkZR1CBC5A=;
+	s=arc-20240116; t=1705975745; c=relaxed/simple;
+	bh=F6bfMXTEUDtYJ/LxVsfNSADiAh2UqrfLs9EFbZN135E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZ/xx8VFhOfmdSF7eWqyMC5lEuHJ40EP9LDDn6h4XVw3wRcV1arRcnAzPramck732+1wXTiEx83UShb92odew/z4KH6zawcLHtTpkJBkuBMKkVRHcRzo8QE7NWH6j9cb4kgk2TqWs7F0uFzmN7hI/stlDKSbIEC03yGPFiyC2Ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXua9zh8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D439C43390;
-	Tue, 23 Jan 2024 01:07:01 +0000 (UTC)
+	 MIME-Version; b=itKy2DgMv25BK6qZB3DitmHS47mGwxqsKYGNDor1oB3ToWEX+YSzf3SMADH+wco+uzDF+jpV+uewvKKKnUE9aGne8rbjWDU37IQwPIScy4W3oprJLtiLDu0+Jfkm/+DfPt2OnM9hvyn/UrL/9md8EbODf+luuF45gk+pIkqnw6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSpMslKc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5384C433F1;
+	Tue, 23 Jan 2024 02:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972021;
-	bh=MzbIJw0wNavkHuXlzR5guxSQ0gf6VJPi1EkZR1CBC5A=;
+	s=korg; t=1705975744;
+	bh=F6bfMXTEUDtYJ/LxVsfNSADiAh2UqrfLs9EFbZN135E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nXua9zh8oZ+SXXOiOiFRAy6nRtAlxes6LKCn0Gt53Sy5CvzyCyU9I9PAMC7t3LaOK
-	 SKx7Rklvt0HE+0379u/Nizwhrjci20bKzO0QtJ4UcldIIv3UdH3uBgfv+tHyugaH6O
-	 ZTH4XuXdVKo9p0O4WkDvlsl4Fs1VEbeAtscJDiHI=
+	b=DSpMslKc4FJommTXTeFBOz1ihxacPU5TaHSSTV92cdIpJcm3qDOoSKSCU+gwg4A1A
+	 QSh1SNzKWGhXvS9KfGca+d2xBGwBJTQ6aE8Hwd+FCg8anSkU3Ct4+Ko44UV7EGnKVa
+	 79dRPh7xJQVePgj54BwX1+askSZ1T7chzY4WlBig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Julian Anastasov <ja@ssi.bg>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Divya Koppera <divya.koppera@microchip.com>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 274/286] ipvs: avoid stat macros calls from preemptible context
+Subject: [PATCH 6.6 529/583] net: micrel: Fix PTP frame parsing for lan8841
 Date: Mon, 22 Jan 2024 15:59:40 -0800
-Message-ID: <20240122235742.596534534@linuxfoundation.org>
+Message-ID: <20240122235828.291867165@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit d6938c1c76c64f42363d0d1f051e1b4641c2ad40 ]
+[ Upstream commit acd66c2126eb9b5da2d89ae07dbcd73b909c2111 ]
 
-Inside decrement_ttl() upon discovering that the packet ttl has exceeded,
-__IP_INC_STATS and __IP6_INC_STATS macros can be called from preemptible
-context having the following backtrace:
+The HW has the capability to check each frame if it is a PTP frame,
+which domain it is, which ptp frame type it is, different ip address in
+the frame. And if one of these checks fail then the frame is not
+timestamp. Most of these checks were disabled except checking the field
+minorVersionPTP inside the PTP header. Meaning that once a partner sends
+a frame compliant to 8021AS which has minorVersionPTP set to 1, then the
+frame was not timestamp because the HW expected by default a value of 0
+in minorVersionPTP.
+Fix this issue by removing this check so the userspace can decide on this.
 
-check_preemption_disabled: 48 callbacks suppressed
-BUG: using __this_cpu_add() in preemptible [00000000] code: curl/1177
-caller is decrement_ttl+0x217/0x830
-CPU: 5 PID: 1177 Comm: curl Not tainted 6.7.0+ #34
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xbd/0xe0
- check_preemption_disabled+0xd1/0xe0
- decrement_ttl+0x217/0x830
- __ip_vs_get_out_rt+0x4e0/0x1ef0
- ip_vs_nat_xmit+0x205/0xcd0
- ip_vs_in_hook+0x9b1/0x26a0
- nf_hook_slow+0xc2/0x210
- nf_hook+0x1fb/0x770
- __ip_local_out+0x33b/0x640
- ip_local_out+0x2a/0x490
- __ip_queue_xmit+0x990/0x1d10
- __tcp_transmit_skb+0x288b/0x3d10
- tcp_connect+0x3466/0x5180
- tcp_v4_connect+0x1535/0x1bb0
- __inet_stream_connect+0x40d/0x1040
- inet_stream_connect+0x57/0xa0
- __sys_connect_file+0x162/0x1a0
- __sys_connect+0x137/0x160
- __x64_sys_connect+0x72/0xb0
- do_syscall_64+0x6f/0x140
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
-RIP: 0033:0x7fe6dbbc34e0
-
-Use the corresponding preemption-aware variants: IP_INC_STATS and
-IP6_INC_STATS.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 8d8e20e2d7bb ("ipvs: Decrement ttl")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Acked-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: cafc3662ee3f ("net: micrel: Add PHC support for lan8841")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Divya Koppera <divya.koppera@microchip.com>
+Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_xmit.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/phy/micrel.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
-index cd2130e98836..c87dbc897002 100644
---- a/net/netfilter/ipvs/ip_vs_xmit.c
-+++ b/net/netfilter/ipvs/ip_vs_xmit.c
-@@ -271,7 +271,7 @@ static inline bool decrement_ttl(struct netns_ipvs *ipvs,
- 			skb->dev = dst->dev;
- 			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
- 				    ICMPV6_EXC_HOPLIMIT, 0);
--			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
-+			IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 927d3d54658e..a345d02a9edf 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -3313,8 +3313,10 @@ static int lan8814_probe(struct phy_device *phydev)
+ #define LAN8841_ADC_CHANNEL_MASK		198
+ #define LAN8841_PTP_RX_PARSE_L2_ADDR_EN		370
+ #define LAN8841_PTP_RX_PARSE_IP_ADDR_EN		371
++#define LAN8841_PTP_RX_VERSION			374
+ #define LAN8841_PTP_TX_PARSE_L2_ADDR_EN		434
+ #define LAN8841_PTP_TX_PARSE_IP_ADDR_EN		435
++#define LAN8841_PTP_TX_VERSION			438
+ #define LAN8841_PTP_CMD_CTL			256
+ #define LAN8841_PTP_CMD_CTL_PTP_ENABLE		BIT(2)
+ #define LAN8841_PTP_CMD_CTL_PTP_DISABLE		BIT(1)
+@@ -3358,6 +3360,12 @@ static int lan8841_config_init(struct phy_device *phydev)
+ 	phy_write_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG,
+ 		      LAN8841_PTP_RX_PARSE_IP_ADDR_EN, 0);
  
- 			return false;
- 		}
-@@ -286,7 +286,7 @@ static inline bool decrement_ttl(struct netns_ipvs *ipvs,
- 	{
- 		if (ip_hdr(skb)->ttl <= 1) {
- 			/* Tell the sender its packet died... */
--			__IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
-+			IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
- 			icmp_send(skb, ICMP_TIME_EXCEEDED, ICMP_EXC_TTL, 0);
- 			return false;
- 		}
++	/* Disable checking for minorVersionPTP field */
++	phy_write_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG,
++		      LAN8841_PTP_RX_VERSION, 0xff00);
++	phy_write_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG,
++		      LAN8841_PTP_TX_VERSION, 0xff00);
++
+ 	/* 100BT Clause 40 improvenent errata */
+ 	phy_write_mmd(phydev, LAN8841_MMD_ANALOG_REG,
+ 		      LAN8841_ANALOG_CONTROL_1,
 -- 
 2.43.0
 
