@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-12825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE33C837ED2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:47:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9814837F37
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0AB71C239AD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:47:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1AB029BF7D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F71F130E30;
-	Tue, 23 Jan 2024 00:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45396129A77;
+	Tue, 23 Jan 2024 00:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JgogFwXX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ox/BE0iU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC79130E2B;
-	Tue, 23 Jan 2024 00:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A10129A73;
+	Tue, 23 Jan 2024 00:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968090; cv=none; b=ISt/HeihVCrlaK854SyxTdLcaApBmGvbl6PEGpDfNzhDVhthZpVbspVk6uiEnrPVBBwqR5bmS+sl4F1p56mih9/dfbIYLO/w5OFxYyF0YQ93/1S9reYbSP4Y0FXMdOtibEYs9BOEc5xnPWixXpZTP+kpH/4Nn+Z5sKsxQUe5zOA=
+	t=1705971006; cv=none; b=j1bKmfEc0aIiIKbyjGTOAlwrB0JF18HtVflUHyfpHCpy5fhgNhuJH0JvXFjn3iWt2KcC0gcA/LxY1kz5GltTBTZCvnFnvX70YegmgtH4EpFQ2Zv0Ox6+x/G6bazh6mKory93hxqZ44zBeS74opB50el266gN6EV/qCqT1ykeH2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968090; c=relaxed/simple;
-	bh=FQ0Seh4IFclKNQIrt4jxR5RENdiZ+VGOIedcVhvHs1Y=;
+	s=arc-20240116; t=1705971006; c=relaxed/simple;
+	bh=JplukBa+PsSMnq9Xa6ba5EsGTzc9CnB+dZ1torIFjEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UlarWPgTXVT/P8vLjPRqXIco+njQ8gzyEwovU7cWlzMT5ku95qkO+B2Q4/Wp2zvQ9eQ+rI4pZW2oCs399s0MtNiL+wdBpQPlzRZhiKY1I5MGsqwG3mB3Rg4aZac32JZXPkOU+UUl9hhpBWCv5THqlr5Ze23Os3KjFmiyOtmK2Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JgogFwXX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3851DC433F1;
-	Tue, 23 Jan 2024 00:01:29 +0000 (UTC)
+	 MIME-Version; b=r28ZpszCs+PlSEVMueygEYtnGRQPmbBuBOXd9FsFG4V2Do2KSnNIBXmPQEoQP6qYRRhHinVgopP+wl6y6mQ7Vx3LDDjaU2rUlrtZUgORr8TYOJ8X2KoeU984et1OqHwS6s9uSJdMw8nDC8WnJm5hvjMrQaa47TFSXmObi/PNROs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ox/BE0iU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B687DC43390;
+	Tue, 23 Jan 2024 00:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968090;
-	bh=FQ0Seh4IFclKNQIrt4jxR5RENdiZ+VGOIedcVhvHs1Y=;
+	s=korg; t=1705971005;
+	bh=JplukBa+PsSMnq9Xa6ba5EsGTzc9CnB+dZ1torIFjEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JgogFwXXQ43rZhBxcX9I9pFeEA58c5GVRlSBhFhFU4QdwGrwczXC/zGIi+CG/8Uc/
-	 vAje4ghYqBeDRY9zdV6OQoJtk4uoBS5d4Jx/YkfUT8UcNpPmuOLfgsli9yGtRYw9Gz
-	 8OtfbbC1gTEI6SycmIdf0JeNxIeEYuysFsu06VzQ=
+	b=ox/BE0iUTtqOftxvZIp+MHdRhHBwVPpjvPkD68mLMWE++s/hNBMOyiAgT4FrmMJ47
+	 30DOMaAseSKJ3JbisNfLg3x9RUutpHzaAITXRRo5qKzjqeELmpGqhyXg+wrnvbrEM6
+	 2rEiUWl2MEB1SsJD9SOuFQa8V/8DH3uep7y9WxCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 4.19 001/148] f2fs: explicitly null-terminate the xattr list
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 051/286] powerpc: add crtsavres.o to always-y instead of extra-y
 Date: Mon, 22 Jan 2024 15:55:57 -0800
-Message-ID: <20240122235712.492047719@linuxfoundation.org>
+Message-ID: <20240122235733.998653498@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit e26b6d39270f5eab0087453d9b544189a38c8564 upstream.
+[ Upstream commit 1b1e38002648819c04773647d5242990e2824264 ]
 
-When setting an xattr, explicitly null-terminate the xattr list.  This
-eliminates the fragile assumption that the unused xattr space is always
-zeroed.
+crtsavres.o is linked to modules. However, as explained in commit
+d0e628cd817f ("kbuild: doc: clarify the difference between extra-y
+and always-y"), 'make modules' does not build extra-y.
 
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For example, the following command fails:
+
+  $ make ARCH=powerpc LLVM=1 KBUILD_MODPOST_WARN=1 mrproper ps3_defconfig modules
+    [snip]
+    LD [M]  arch/powerpc/platforms/cell/spufs/spufs.ko
+  ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such file or directory
+  make[3]: *** [scripts/Makefile.modfinal:56: arch/powerpc/platforms/cell/spufs/spufs.ko] Error 1
+  make[2]: *** [Makefile:1844: modules] Error 2
+  make[1]: *** [/home/masahiro/workspace/linux-kbuild/Makefile:350: __build_one_by_one] Error 2
+  make: *** [Makefile:234: __sub-make] Error 2
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: baa25b571a16 ("powerpc/64: Do not link crtsavres.o in vmlinux")
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231120232332.4100288-1-masahiroy@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/xattr.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/powerpc/lib/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/f2fs/xattr.c
-+++ b/fs/f2fs/xattr.c
-@@ -717,6 +717,12 @@ static int __f2fs_setxattr(struct inode
- 		memcpy(pval, value, size);
- 		last->e_value_size = cpu_to_le16(size);
- 		new_hsize += newsize;
-+		/*
-+		 * Explicitly add the null terminator.  The unused xattr space
-+		 * is supposed to always be zeroed, which would make this
-+		 * unnecessary, but don't depend on that.
-+		 */
-+		*(u32 *)((u8 *)last + newsize) = 0;
- 	}
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index 0697a0e014ae..321cab5c3ea0 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -38,7 +38,7 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)	+= error-inject.o
+ # so it is only needed for modules, and only for older linkers which
+ # do not support --save-restore-funcs
+ ifeq ($(call ld-ifversion, -lt, 225000000, y),y)
+-extra-$(CONFIG_PPC64)	+= crtsavres.o
++always-$(CONFIG_PPC64)	+= crtsavres.o
+ endif
  
- 	error = write_all_xattrs(inode, new_hsize, base_addr, ipage);
+ obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
+-- 
+2.43.0
+
 
 
 
