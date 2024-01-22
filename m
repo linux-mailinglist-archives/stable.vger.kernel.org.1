@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DFFB837D3C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7453B8384E5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57F7A292040
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0CC3B22551
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C06E4F897;
-	Tue, 23 Jan 2024 00:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83DF6D1B9;
+	Tue, 23 Jan 2024 02:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPdVWVcJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJCQiYAW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB3148CCD;
-	Tue, 23 Jan 2024 00:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851F46D1B3;
+	Tue, 23 Jan 2024 02:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969856; cv=none; b=pJJldxBh6XX+oQAmZL/TSHZrchahmetlBB1W9vYFp0ro1PrjRZtgc/BZk3NJSxdFdessc3NsJ+OKLqzssg/T2Di8Gie9qcou0BM+sL906OiH5wj+7SbrFSI3v7l+QcdHCtWn4pyDyKorWlV2GQqDbg/Nd+zyq1UfAQHvwmAc7x4=
+	t=1705975379; cv=none; b=LownTp/DHS7kKnCFxhyZO9gqvvgTdHaS0I8X2vgLcrurys0/iRwOw+TK1NhVGAPuHo8Xi3FS5owJnQbKvs61PF7UAsWyyegkNi0yNijbCJIeEEPN/S29Ex5g1u8xehGQFxHDHyETg1WTlmBkfVAIXF5UwqeWfTRItzYTebALnxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969856; c=relaxed/simple;
-	bh=/zOZPwGvZWhe/cDPfHM8G77s3PBCUOs89JIS1j6cy44=;
+	s=arc-20240116; t=1705975379; c=relaxed/simple;
+	bh=5I++2Xdk+nct1G4jbSKF9jf6ZjMJVk4iBv6grXojD34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mlQ6820v2RCL4/EPEoT+C3MXF5okt6HRq/f8XSwCQ//E2kVJ9msXObuT6t2RltwjdbcgjbUcSYXeseExB7/lzKNuSvxDI1I7oa4uxgvJAjfYfaTbC8qGQOgfbtqdn+p/JK73rYwHmEaTRoamvBXe6qkTBKmy4Oo0doVBneb/gTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPdVWVcJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92744C433C7;
-	Tue, 23 Jan 2024 00:30:55 +0000 (UTC)
+	 MIME-Version; b=OyS5rG64+mCntdiZ2k0Ir0mUhTcTKVxKHpoejOwMI7jhu2HyjCdek7G8rYn94dotgAU50ocG/vziGcex43WGwyn6a9eZASEN19M9nGkZODayvc6Ka5ckR/Ec7ZXhq2Yb+3iw8L5JcdzrRRgiKb9yEIUSLzNjZoHqhMz36UKmva0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJCQiYAW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ABECC433C7;
+	Tue, 23 Jan 2024 02:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969855;
-	bh=/zOZPwGvZWhe/cDPfHM8G77s3PBCUOs89JIS1j6cy44=;
+	s=korg; t=1705975379;
+	bh=5I++2Xdk+nct1G4jbSKF9jf6ZjMJVk4iBv6grXojD34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FPdVWVcJ+9KJZ4XF/c3sInm36kA+dBUj80Ap80TnUg8ICGRzK0LTbMSFfQKwBAY/0
-	 x0O9LpgzNumGLgPPCBYXiYM3GrmxuDKdfZm2/Hg3ZedCiT5Yd/z3gq5hqHUShE3kw+
-	 s7p4F3AHsrCU/8KxvZUxz0hrjX4qAcgWZCvmsxGM=
+	b=PJCQiYAW9M+4QRbDrVsN7cjaraD1Cm9Ubuz/WMj/6SiV6LXyxQoeJQT52Ebcc+t2j
+	 L9WjH4BJJOB871ByZoZBSZVQ/txw86cU9mwv8CO0AHCsc9TWxzLnk/5bqOONS9p3Wy
+	 bIy9TMjKNUx0v/cTC932Ap7F9suozENwFs71kLtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 488/641] mfd: tps6594: Add null pointer check to tps6594_device_init()
+	stable <stable@kernel.org>,
+	Jing Xia <jing.xia@unisoc.com>,
+	Xuewen Yan <xuewen.yan@unisoc.com>
+Subject: [PATCH 6.6 341/583] class: fix use-after-free in class_register()
 Date: Mon, 22 Jan 2024 15:56:32 -0800
-Message-ID: <20240122235833.352000098@linuxfoundation.org>
+Message-ID: <20240122235822.460941963@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Jing Xia <jing.xia@unisoc.com>
 
-[ Upstream commit 825906f2ebe83977d747d8bce61675dddd72485d ]
+commit 93ec4a3b76404bce01bd5c9032bef5df6feb1d62 upstream.
 
-devm_kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+The lock_class_key is still registered and can be found in
+lock_keys_hash hlist after subsys_private is freed in error
+handler path.A task who iterate over the lock_keys_hash
+later may cause use-after-free.So fix that up and unregister
+the lock_class_key before kfree(cp).
 
-Fixes: 325bec7157b3 ("mfd: tps6594: Add driver for TI TPS6594 PMIC")
-Suggested-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Link: https://lore.kernel.org/r/20231208033320.49345-1-chentao@kylinos.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On our platform, a driver fails to kset_register because of
+creating duplicate filename '/class/xxx'.With Kasan enabled,
+it prints a invalid-access bug report.
+
+KASAN bug report:
+
+BUG: KASAN: invalid-access in lockdep_register_key+0x19c/0x1bc
+Write of size 8 at addr 15ffff808b8c0368 by task modprobe/252
+Pointer tag: [15], memory tag: [fe]
+
+CPU: 7 PID: 252 Comm: modprobe Tainted: G        W
+ 6.6.0-mainline-maybe-dirty #1
+
+Call trace:
+dump_backtrace+0x1b0/0x1e4
+show_stack+0x2c/0x40
+dump_stack_lvl+0xac/0xe0
+print_report+0x18c/0x4d8
+kasan_report+0xe8/0x148
+__hwasan_store8_noabort+0x88/0x98
+lockdep_register_key+0x19c/0x1bc
+class_register+0x94/0x1ec
+init_module+0xbc/0xf48 [rfkill]
+do_one_initcall+0x17c/0x72c
+do_init_module+0x19c/0x3f8
+...
+Memory state around the buggy address:
+ffffff808b8c0100: 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a
+ffffff808b8c0200: 8a 8a 8a 8a 8a 8a 8a 8a fe fe fe fe fe fe fe fe
+>ffffff808b8c0300: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
+                                     ^
+ffffff808b8c0400: 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03
+
+As CONFIG_KASAN_GENERIC is not set, Kasan reports invalid-access
+not use-after-free here.In this case, modprobe is manipulating
+the corrupted lock_keys_hash hlish where lock_class_key is already
+freed before.
+
+It's worth noting that this only can happen if lockdep is enabled,
+which is not true for normal system.
+
+Fixes: dcfbb67e48a2 ("driver core: class: use lock_class_key already present in struct subsys_private")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jing Xia <jing.xia@unisoc.com>
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Link: https://lore.kernel.org/r/20231220024603.186078-1-jing.xia@unisoc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/tps6594-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/base/class.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/tps6594-core.c b/drivers/mfd/tps6594-core.c
-index 0fb9c5cf213a..783ee59901e8 100644
---- a/drivers/mfd/tps6594-core.c
-+++ b/drivers/mfd/tps6594-core.c
-@@ -433,6 +433,9 @@ int tps6594_device_init(struct tps6594 *tps, bool enable_crc)
- 	tps6594_irq_chip.name = devm_kasprintf(dev, GFP_KERNEL, "%s-%ld-0x%02x",
- 					       dev->driver->name, tps->chip_id, tps->reg);
+--- a/drivers/base/class.c
++++ b/drivers/base/class.c
+@@ -215,6 +215,7 @@ int class_register(const struct class *c
+ 	return 0;
  
-+	if (!tps6594_irq_chip.name)
-+		return -ENOMEM;
-+
- 	ret = devm_regmap_add_irq_chip(dev, tps->regmap, tps->irq, IRQF_SHARED | IRQF_ONESHOT,
- 				       0, &tps6594_irq_chip, &tps->irq_data);
- 	if (ret)
--- 
-2.43.0
-
+ err_out:
++	lockdep_unregister_key(key);
+ 	kfree(cp);
+ 	return error;
+ }
 
 
 
