@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3326838502
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:38:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97AEB837F65
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E9A5B28ADF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA8351C25B92
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AF36D1BB;
-	Tue, 23 Jan 2024 02:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FDB63102;
+	Tue, 23 Jan 2024 00:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mj4F5bbc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBStRmk+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1FD6A354;
-	Tue, 23 Jan 2024 02:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCEA2940A;
+	Tue, 23 Jan 2024 00:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975384; cv=none; b=aqDOGZGrlrWcrR6WJVqa6OQCKSBfnmwNmuW7TA1ZEk/MvRjfepY2GTvGWbrj2mWRhNfs4A7P7FnfklSVT9BRWx0KIwP2lANXAJKEgWV4pTnUNW7C+ZYVMU2s+C6S5w7ShJPk2NHLMqy5srG9WKLgyDufFLaaKZ6LyphAvYns+8o=
+	t=1705971107; cv=none; b=ewT6ReTF+vLIeRDhGRg3ol/jfnyCHTBhOv6WGfUZ97zIzN9+wMLY14M8lCEqCNVsySgGfCPEETfERd/8v2Xs94IyyhivHj1dN1xcwjnaSJpxTfnJYOZQ8jW4IYzAtyuzI2irQXQOAh3tvjMLMK2ekCgS991TNF6CEe9ZeAOBXnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975384; c=relaxed/simple;
-	bh=YKnyTpkxEz5tIdx0zhphyusDi25TKhWYSvUE6+o3J5g=;
+	s=arc-20240116; t=1705971107; c=relaxed/simple;
+	bh=APgeTZxuXDCenUxD23Jc1RBV5Y7nfCZSQfUpuVDWl5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IYy/J1WoHQtuVAPG2msii50W5kmjx/VraA2dHtvIU5Uc34T5PqyV1cVBWx8IHHUB/4iycGL2JMKInG69/s7Arl0bLtSY87+eV+ryj1GeeW5tqxN2iB5oIsdf+lomjs8GT7KZtqFDnBNPU+R/e9/bM1p+VjBKB6x+YvCpadMIZ1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mj4F5bbc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68BC6C43394;
-	Tue, 23 Jan 2024 02:03:03 +0000 (UTC)
+	 MIME-Version; b=jgup4AGGpIfxp0X903idrCXp4APwAOg5KZmN6NyADPNKALmdhjqsL3ZQS8dTv+JQwEGM4xydogevIcanBTS4tQ/vuNPWX8nVVYcrD3mdrDssDAh5CxmEFMdkUdDStMnNzmgOaDrq3sbMbPPjojA/js3z0A8ShndgNGdZl1ZRMY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBStRmk+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92C4C433F1;
+	Tue, 23 Jan 2024 00:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975383;
-	bh=YKnyTpkxEz5tIdx0zhphyusDi25TKhWYSvUE6+o3J5g=;
+	s=korg; t=1705971107;
+	bh=APgeTZxuXDCenUxD23Jc1RBV5Y7nfCZSQfUpuVDWl5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mj4F5bbc8D5UIgvEIIo5wdH2WABcizAfiIRgrSCFCOELiJIwrZcyFhOSVVCBPKTvX
-	 1y/L8SZnVRjiNex+TMcz5IpMCWcM4brHKraijUYPmThedzh5sz++DgPQXiLbuHduH6
-	 YPx9v2yvrYFBAxY0rbJYEt5C/iHNioKxawQXG2Ro=
+	b=nBStRmk+5023MzYjGCNNKjJAEjEeweP3IBRHOtZObmYE4nmIfBq5QWeIeQuKQCxJt
+	 bA1dCe+AtVmMGGrvCThVSNFUokydHia1qBnD/lZJjEITl97plDfjlcFGi/fnUVEvA0
+	 /vNhqUQlDhOu/EGGx3YokD4ThkLsJysRp8bVWP+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordan Rome <linux@jordanrome.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Stanislav Fomichev <sdf@google.com>
-Subject: [PATCH 6.6 344/583] selftests/bpf: Add assert for user stacks in test_task_stack
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 089/286] crypto: sahara - fix ahash selftest failure
 Date: Mon, 22 Jan 2024 15:56:35 -0800
-Message-ID: <20240122235822.557898040@linuxfoundation.org>
+Message-ID: <20240122235735.455188630@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rome <linux@jordanrome.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-commit 727a92d62fd6a382b4c5972008e45667e707b0e4 upstream.
+[ Upstream commit afffcf3db98b9495114b79d5381f8cc3f69476fb ]
 
-This is a follow up to:
-commit b8e3a87a627b ("bpf: Add crosstask check to __bpf_get_stack").
+update() calls should not modify the result buffer, so add an additional
+check for "rctx->last" to make sure that only the final hash value is
+copied into the buffer.
 
-This test ensures that the task iterator only gets a single
-user stack (for the current task).
+Fixes the following selftest failure:
+alg: ahash: sahara-sha256 update() used result buffer on test vector 3,
+cfg="init+update+final aligned buffer"
 
-Signed-off-by: Jordan Rome <linux@jordanrome.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Link: https://lore.kernel.org/bpf/20231112023010.144675-1-linux@jordanrome.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/bpf_iter.c       |    2 ++
- tools/testing/selftests/bpf/progs/bpf_iter_task_stack.c |    5 +++++
- 2 files changed, 7 insertions(+)
+ drivers/crypto/sahara.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
-@@ -334,6 +334,8 @@ static void test_task_stack(void)
- 	do_dummy_read(skel->progs.dump_task_stack);
- 	do_dummy_read(skel->progs.get_task_user_stacks);
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 0b6e63a763ca..2ef177680b2f 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -1047,7 +1047,7 @@ static int sahara_sha_process(struct ahash_request *req)
  
-+	ASSERT_EQ(skel->bss->num_user_stacks, 1, "num_user_stacks");
-+
- 	bpf_iter_task_stack__destroy(skel);
- }
+ 	memcpy(rctx->context, dev->context_base, rctx->context_size);
  
---- a/tools/testing/selftests/bpf/progs/bpf_iter_task_stack.c
-+++ b/tools/testing/selftests/bpf/progs/bpf_iter_task_stack.c
-@@ -35,6 +35,8 @@ int dump_task_stack(struct bpf_iter__tas
+-	if (req->result)
++	if (req->result && rctx->last)
+ 		memcpy(req->result, rctx->context, rctx->digest_size);
+ 
  	return 0;
- }
- 
-+int num_user_stacks = 0;
-+
- SEC("iter/task")
- int get_task_user_stacks(struct bpf_iter__task *ctx)
- {
-@@ -51,6 +53,9 @@ int get_task_user_stacks(struct bpf_iter
- 	if (res <= 0)
- 		return 0;
- 
-+	/* Only one task, the current one, should succeed */
-+	++num_user_stacks;
-+
- 	buf_sz += res;
- 
- 	/* If the verifier doesn't refine bpf_get_task_stack res, and instead
+-- 
+2.43.0
+
 
 
 
