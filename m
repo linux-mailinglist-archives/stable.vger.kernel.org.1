@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C87F838289
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D0E837BE8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C7EC1F276B4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FA7729464C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD9A5C912;
-	Tue, 23 Jan 2024 01:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B056813DBBC;
+	Tue, 23 Jan 2024 00:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BG+CD0mQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvrNZcZA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3115BAFD;
-	Tue, 23 Jan 2024 01:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DED813A27F;
+	Tue, 23 Jan 2024 00:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974374; cv=none; b=FZs4HV/8IE6eeHQSHRNcwXmKnu6Te0nf8QSyUPRBhCTVP8r2ydHn6i1REnYGjLCD3cMNxLVZovISa+QaWb+EX099nGixmuR7uy5pq8KpgzUcKYkwVyTcX7maKMIUFhhKcuj0pXEOeLD1QSQL9BzUUA9kvOVbso/FlJf6Ptr7DFU=
+	t=1705969433; cv=none; b=cOW+VeztPJZcNTBICm/3gbCDfaJ0k3Inv1Ke13/mMJsLtNfzdBWZ+pU4jaSfWP0GSFYNjIzDaxBkxN8LDSJNrMDScr/dYSanxgvmK4vOd7yzGEDU9GnD4VqF1pRGWdjnFyOkDs0X7y7+y3A4MxRkpeoZ1phzE1e9s95yM1IbHjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974374; c=relaxed/simple;
-	bh=xqBhWhFpgNEugVu7Q1fvNGG6jrJfT2gzDn9evWPbZh4=;
+	s=arc-20240116; t=1705969433; c=relaxed/simple;
+	bh=wtNJDXpbk1pmv6nCQOCoQaeTBdGiYR9qNSbms0WATgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kUd2/3lGPOc8vCGQQXnX7u6Zmr5BjFWj7MUO+wKkzppLFIOGnmO7/z2S56INg6mobYw5X2QsqMxEEsR8p1uy9vpiA6I04rzbbLqxLVUsHnnuFXEZ6XnAwXhnCwUseWk2HpsB+B0ZxV+2kIgjpjK+1l/L/AV4C7/lSoJczsJuj1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BG+CD0mQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15ECFC433C7;
-	Tue, 23 Jan 2024 01:46:14 +0000 (UTC)
+	 MIME-Version; b=FA4FEiAMwSLdq9WSdhsn6FT37AKnvrRUEA8jjizqVAjmqELVaSVKHifioQ/8w94v6CPu9XS5XFSeQpd7/Rf/a/96KNYXhUw7+gce4/U6H+AgTej9Blo7v/HlYIJaYEvLB9x6rxobw68CSUmt9yYv/EACLBLTfbbv1d1pit0i7yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvrNZcZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F47AC433F1;
+	Tue, 23 Jan 2024 00:23:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974374;
-	bh=xqBhWhFpgNEugVu7Q1fvNGG6jrJfT2gzDn9evWPbZh4=;
+	s=korg; t=1705969433;
+	bh=wtNJDXpbk1pmv6nCQOCoQaeTBdGiYR9qNSbms0WATgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BG+CD0mQOmvvWlMiYtGQvpLxHolKycQFBFF5rQqKvD9GM6BSotkU2rfrdYZob8jG2
-	 hBTxu5YYIY2jItsvUQ6Av+Sp8DYw7Z5KBJaEbGS5aTqYugaaU/wnRBp9ukq7eC6tUo
-	 TE3XY4HXI39kkmPvIfCoZLkKWmovZCrLYzncrFbQ=
+	b=QvrNZcZAvppa1tPqrLCTqd07B/4sRoRz5vCF2u5VtVoIJwS6Ezp+e6NaB4ieS7kDm
+	 1WERESiGQvcyiP5DwXTr6/oGIGp42mQnC/+GvoSjrncLykg+KhvbBaPv1WjfoxHMwr
+	 EEyRQGMSdgJ53ygG8nB4B+1O1uKbeXj+pWYDkQYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/583] crypto: sahara - improve error handling in sahara_sha_process()
+Subject: [PATCH 6.7 218/641] wifi: iwlwifi: mvm: Do not warn if valid link pair was not found
 Date: Mon, 22 Jan 2024 15:52:02 -0800
-Message-ID: <20240122235814.328227766@linuxfoundation.org>
+Message-ID: <20240122235824.760799702@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 5deff027fca49a1eb3b20359333cf2ae562a2343 ]
+[ Upstream commit c5bfdb46636a2ea7f0678243c6d3e9f8d26b027a ]
 
-sahara_sha_hw_data_descriptor_create() returns negative error codes on
-failure, so make sure the errors are correctly handled / propagated.
+It is possible that though multiple links are enabled we cannot enabled
+EMLSR enable more than a single link, e.g., all valid links are on the
+same band etc. Thus, do not warn in case no valid link pair is found.
 
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: b9be67fb4207 ("wifi: iwlwifi: mvm: Add basic link selection logic")
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231219215605.142e57a05230.I7cfe78c94c3d15c4c744bccadd8f187e43594932@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 86ff5add2e15..117aa4296c2a 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -987,7 +987,10 @@ static int sahara_sha_process(struct ahash_request *req)
- 		return ret;
- 
- 	if (rctx->first) {
--		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
-+		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
-+		if (ret)
-+			return ret;
-+
- 		dev->hw_desc[0]->next = 0;
- 		rctx->first = 0;
- 	} else {
-@@ -995,7 +998,10 @@ static int sahara_sha_process(struct ahash_request *req)
- 
- 		sahara_sha_hw_context_descriptor_create(dev, rctx, req, 0);
- 		dev->hw_desc[0]->next = dev->hw_phys_desc[1];
--		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
-+		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
-+		if (ret)
-+			return ret;
-+
- 		dev->hw_desc[1]->next = 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index ff6cb064051b..8e263acbc763 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -716,7 +716,7 @@ void iwl_mvm_mld_select_links(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 		}
  	}
  
+-	if (WARN_ON(!new_active_links))
++	if (!new_active_links)
+ 		return;
+ 
+ 	if (vif->active_links != new_active_links)
 -- 
 2.43.0
 
