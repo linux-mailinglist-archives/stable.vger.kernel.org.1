@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-12829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0064583788F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 206A6837A45
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A05E81F24D9A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FEB91C2395B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FDE51339A6;
-	Tue, 23 Jan 2024 00:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724F312BEAA;
+	Tue, 23 Jan 2024 00:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8FGF+xk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yo8K8hg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E9113399C;
-	Tue, 23 Jan 2024 00:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3248C12A17F;
+	Tue, 23 Jan 2024 00:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968110; cv=none; b=ZoGUGMSJxnpwnXwCObj+F5YtxXZwTi9m1HEgUyiqDwOmW2t1DqNB2pWa2I54JMBIwfmio3nqPuT6HjpDgk6nXZVlnPwI2ZthryrdEoywbcFdXwOOJXPkMSdzEx0XVqoEcIXQUITAWvDRyTO3gVGhjRx6NXzDZQ30DZdnWi/ejWA=
+	t=1705968850; cv=none; b=NdocXyn9mv03lqbq/zYA63LKqoZEYXishrwTZHcKXRhX7CGMNXAbqX9yR76VbJ8oFYuxdl9w27Vds1lHHglZksRr/bcrZttmtAclBLXtir6LB4pzcSzXaapaAg1dGwLtTpGWYJGI5oOqil3y3x0O46cOMxEJCqtpd4x+goGPzsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968110; c=relaxed/simple;
-	bh=7ttjiP3Sdpb+YT35kEUQD8wva32e70JN8mCP8ePXQoM=;
+	s=arc-20240116; t=1705968850; c=relaxed/simple;
+	bh=TSWgq/abMZL0c0ApWnNe+KLUeT7x4DXHKqwnLCg/ga8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVl2EujFdGhj63zQ/KEZTuhjwPCsnZ4PRabIIyofCaqJUwro+HlFqT+pX+CblUP/xCQsoAe8PmbA1/4xeingcEYtTyB1NgxE3vF2xeLlb1waDFBp9K52MmsTYmAV/Zc4Suj2Ue4oP1e8toGCfuUHNO0b4rGnNJGYQiegyGRDWNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8FGF+xk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88042C433C7;
-	Tue, 23 Jan 2024 00:01:48 +0000 (UTC)
+	 MIME-Version; b=N9pi9EBpukn3tZeYM2C0hTUMCXnmdf1fbn0/pgX/Zk4a4MSTT/nYVacaYQWp2WSq87sKbrIUUsary++dpE+GwfaaLMHmoNkX5XTboYcS3DKdf8u6IbQkM9yLpiiJ7GzYe//klPcgkhSh2Bl+79wAM/omgpX5zQpBXRvXLsAYquQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yo8K8hg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7948EC433F1;
+	Tue, 23 Jan 2024 00:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968110;
-	bh=7ttjiP3Sdpb+YT35kEUQD8wva32e70JN8mCP8ePXQoM=;
+	s=korg; t=1705968849;
+	bh=TSWgq/abMZL0c0ApWnNe+KLUeT7x4DXHKqwnLCg/ga8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A8FGF+xkV0d+j4KtbbQVyl74zabmgo6Uh2WFRFSmNP8tm7BPmjvov0rdJBIZie1Fj
-	 +9vJQbpsnclrnga97XSAGuYSAXknm1uiWpylDXQs/yexVYkvDad5Ynij1HhTIusSin
-	 km7pwfK1vB/a8ieM/9BmlL/iKZmCdbtv5819wbfc=
+	b=Yo8K8hg62kvtAwADVOaSA5VSNJMRRdZff5oyHN1deBOXt0IxeWkVEBKFj/N1L4b79
+	 Q5upVRyaJ/rvLpLrA0DWEkFr8OKny9mQrdWfC5A23ZuwcLoHO2SX0y8YOwDR4TTYDl
+	 pdeoL66txTeRbK//9R5gBAbKAQyegzUCFRfcICtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 013/148] tracing: Add size check when printing trace_marker output
+	kernel test robot <lkp@intel.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH 5.4 039/194] coresight: etm4x: Fix width of CCITMIN field
 Date: Mon, 22 Jan 2024 15:56:09 -0800
-Message-ID: <20240122235712.976149522@linuxfoundation.org>
+Message-ID: <20240122235720.884477222@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit 60be76eeabb3d83858cc6577fc65c7d0f36ffd42 ]
+commit cc0271a339cc70cae914c3ec20edc2a8058407da upstream.
 
-If for some reason the trace_marker write does not have a nul byte for the
-string, it will overflow the print:
+CCITMIN is a 12 bit field and doesn't fit in a u8, so extend it to u16.
+This probably wasn't an issue previously because values higher than 255
+never occurred.
 
-  trace_seq_printf(s, ": %s", field->buf);
+But since commit 4aff040bcc8d ("coresight: etm: Override TRCIDR3.CCITMIN
+on errata affected cpus"), a comparison with 256 was done to enable the
+errata, generating the following W=1 build error:
 
-The field->buf could be missing the nul byte. To prevent overflow, add the
-max size that the buf can be by using the event size and the field
-location.
+  coresight-etm4x-core.c:1188:24: error: result of comparison of
+  constant 256 with expression of type 'u8' (aka 'unsigned char') is
+  always false [-Werror,-Wtautological-constant-out-of-range-compare]
 
-  int max = iter->ent_size - offsetof(struct print_entry, buf);
+   if (drvdata->ccitmin == 256)
 
-  trace_seq_printf(s, ": %*.s", max, field->buf);
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231212084444.4619b8ce@gandalf.local.home
-
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310302043.as36UFED-lkp@intel.com/
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Signed-off-by: James Clark <james.clark@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20231101115206.70810-1-james.clark@arm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_output.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/hwtracing/coresight/coresight-etm4x.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_output.c b/kernel/trace/trace_output.c
-index 62015d62dd6f..43fb832d26d2 100644
---- a/kernel/trace/trace_output.c
-+++ b/kernel/trace/trace_output.c
-@@ -1320,11 +1320,12 @@ static enum print_line_t trace_print_print(struct trace_iterator *iter,
- {
- 	struct print_entry *field;
- 	struct trace_seq *s = &iter->seq;
-+	int max = iter->ent_size - offsetof(struct print_entry, buf);
- 
- 	trace_assign_type(field, iter->ent);
- 
- 	seq_print_ip_sym(s, field->ip, flags);
--	trace_seq_printf(s, ": %s", field->buf);
-+	trace_seq_printf(s, ": %.*s", max, field->buf);
- 
- 	return trace_handle_return(s);
- }
-@@ -1333,10 +1334,11 @@ static enum print_line_t trace_print_raw(struct trace_iterator *iter, int flags,
- 					 struct trace_event *event)
- {
- 	struct print_entry *field;
-+	int max = iter->ent_size - offsetof(struct print_entry, buf);
- 
- 	trace_assign_type(field, iter->ent);
- 
--	trace_seq_printf(&iter->seq, "# %lx %s", field->ip, field->buf);
-+	trace_seq_printf(&iter->seq, "# %lx %.*s", field->ip, max, field->buf);
- 
- 	return trace_handle_return(&iter->seq);
- }
--- 
-2.43.0
-
+--- a/drivers/hwtracing/coresight/coresight-etm4x.h
++++ b/drivers/hwtracing/coresight/coresight-etm4x.h
+@@ -361,7 +361,7 @@ struct etmv4_drvdata {
+ 	u8				ctxid_size;
+ 	u8				vmid_size;
+ 	u8				ccsize;
+-	u8				ccitmin;
++	u16				ccitmin;
+ 	u8				s_ex_level;
+ 	u8				ns_ex_level;
+ 	u8				q_support;
 
 
 
