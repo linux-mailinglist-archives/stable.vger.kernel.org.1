@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-12736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7324F83725F
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:22:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF49583720E
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:12:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D98BBB2D1A4
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:02:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68DE9B20AA6
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72CD5676C;
-	Mon, 22 Jan 2024 18:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D6E56773;
+	Mon, 22 Jan 2024 18:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mib0ikpA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lam8qyJc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941C456767
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 18:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672235B5D5
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 18:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705948982; cv=none; b=AgEliWYXTz1KC9XVuISPdWCm7TerbgN2lQQtR2UvnLc7rakOmmzpNnYyP7p8Z1Bu9KbQXnBCh//Up4l7An58IjY+XWSjRfNmtp28gtEmDp7f/QJU1nwMAPNpmDzfGaRNpz5QU82OPM2o+/jO2CXL/68OO1gNCq/rYEaRw4Zc6+E=
+	t=1705949080; cv=none; b=gQDElISNF6B+CFz5mOWxky0RLcJKwKuyJjxtNoQVldugEGt8disQaE8SKhl/7QEu8NtFnyEDHU0qYqcV7U2pcAhkVrs3wlNhg/Q1955NC15FlXaQFGIhejj5BIYh2cWR2WU9OByzXE3KL58ETb14Fm0ceowF6IDVrFBu9WYnEl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705948982; c=relaxed/simple;
-	bh=CKVslO/zstXmHVEYZfSHblvViZroty2O1sXDue2geng=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qdieAzTBhsqCyizgxjnCgxtdCk2+w193qsjp0l0mfj1Ntd+jWXSRHqVNd8dZdOx2fkWlHOuKQg9fzCX+EqrKNI+AovwulYDo7eT8zXPZnIKJu9qMzlzc6KdbMmcAgeDo4z6GkfWcl0m6D0ScfW+SCmXtJs1cpe7FAxssACxuziE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mib0ikpA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E482FC43399;
-	Mon, 22 Jan 2024 18:43:01 +0000 (UTC)
+	s=arc-20240116; t=1705949080; c=relaxed/simple;
+	bh=T3CvUyfZqRCcK3EaoXpOi5RpiXLv5Gk/vWgLzTTm2xg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ND2ADPdNyIepSA/LgwzFVCLgey0+hkM2Ci5aiACc2WQ4gjctyXYLgDZBZ0brtpC/VuYqPRFh9eoEQbsxwsG/sc/wGAw9kBwV/g80eVU9LABZ9AHpm0JrQSNg8uPyZf4bAWjTfZZpftI8jwFggUWUY0cFRq55ziA15GVukIFds1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lam8qyJc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C453AC43390;
+	Mon, 22 Jan 2024 18:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705948982;
-	bh=CKVslO/zstXmHVEYZfSHblvViZroty2O1sXDue2geng=;
+	s=korg; t=1705949079;
+	bh=T3CvUyfZqRCcK3EaoXpOi5RpiXLv5Gk/vWgLzTTm2xg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Mib0ikpAooN8u9tKONK0Vqk8NQIrnrEIdJWqVYI5YMUcDqQTliHQBb0IDR4WJ8lF+
-	 KXC50ec08Hk+8+Rq0gG8H7UMX21PtG0aSzh3oJmSXF237ytWnfAveKtv+MSzO3wS4P
-	 SEoOmB0nqyRrovDW0nmArityT2yver89yc2aQ+Q8=
-Subject: FAILED: patch "[PATCH] usb: dwc3: gadget: Queue PM runtime idle on disconnect event" failed to apply to 6.1-stable tree
-To: quic_wcheng@quicinc.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
+	b=lam8qyJcsQ7QpmkwT8Hkd2KTnPs1uPdt6edzOF56b0yxFfSMnQJ8IcvzZDZ5n/hLo
+	 p5MGDrRcm29F/2z5bRh/YpqHSN9czMcGeRUuiLxAqojKVBbVgJN4LEJERz9p/2RXLG
+	 oUldAqV1OV9f8USfYTTMl32o2CXgJUhOaVOmAEII=
+Subject: FAILED: patch "[PATCH] usb: cdns3: fix uvc failure work since sg support enabled" failed to apply to 5.10-stable tree
+To: Frank.Li@nxp.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 22 Jan 2024 10:43:00 -0800
-Message-ID: <2024012200-bobbing-scotch-3ddc@gregkh>
+Date: Mon, 22 Jan 2024 10:44:37 -0800
+Message-ID: <2024012237-reprise-overbuilt-884e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3c7af52c7616c3aa6dacd2336ec748d4a65df8f4
+git cherry-pick -x 1b8be5ecff26201bafb0a554c74e91571299fb94
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012200-bobbing-scotch-3ddc@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012237-reprise-overbuilt-884e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-3c7af52c7616 ("usb: dwc3: gadget: Queue PM runtime idle on disconnect event")
-8f40fc080813 ("usb: dwc3: gadget: Refactor EP0 forced stall/restart into a separate API")
-02435a739b81 ("usb: dwc3: gadget: Stall and restart EP0 if host is unresponsive")
+1b8be5ecff26 ("usb: cdns3: fix uvc failure work since sg support enabled")
+387c2b6ba197 ("usb: cdns3: gadget: fix new urb never complete if ep cancel previous requests")
+fba8701baed7 ("usb: cdns3: Fixes for sparse warnings")
 
 thanks,
 
@@ -79,56 +79,153 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3c7af52c7616c3aa6dacd2336ec748d4a65df8f4 Mon Sep 17 00:00:00 2001
-From: Wesley Cheng <quic_wcheng@quicinc.com>
-Date: Wed, 3 Jan 2024 13:49:46 -0800
-Subject: [PATCH] usb: dwc3: gadget: Queue PM runtime idle on disconnect event
+From 1b8be5ecff26201bafb0a554c74e91571299fb94 Mon Sep 17 00:00:00 2001
+From: Frank Li <Frank.Li@nxp.com>
+Date: Sun, 24 Dec 2023 10:38:13 -0500
+Subject: [PATCH] usb: cdns3: fix uvc failure work since sg support enabled
 
-There is a scenario where DWC3 runtime suspend is blocked due to the
-dwc->connected flag still being true while PM usage_count is zero after
-DWC3 giveback is completed and the USB gadget session is being terminated.
-This leads to a case where nothing schedules a PM runtime idle for the
-device.
+When IP version >= DEV_VER_V2, gadget:sg_supported is true. So uvc gadget
+function driver will use sg to equeue data, first is 8bytes header, the
+second is 1016bytes data.
 
-The exact condition is seen with the following sequence:
-  1.  USB bus reset is issued by the host
-  2.  Shortly after, or concurrently, a USB PD DR SWAP request is received
-      (sink->source)
-  3.  USB bus reset event handler runs and issues
-      dwc3_stop_active_transfers(), and pending transfer are stopped
-  4.  DWC3 usage_count decremented to 0, and runtime idle occurs while
-      dwc->connected == true, returns -EBUSY
-  5.  DWC3 disconnect event seen, dwc->connected set to false due to DR
-      swap handling
-  6.  No runtime idle after this point
+    cdns3_prepare_trb: ep2in: trb 0000000000ac755f, dma buf: 0xbf455000, size: 8, burst: 128 ctrl: 0x00000415 (C=1, T=0, ISP, CHAIN, Normal)
+    cdns3_prepare_trb: ep2in: trb 00000000a574e693, dma buf: 0xc0200fe0, size: 1016, burst: 128 ctrl: 0x00000405 (C=1, T=0, ISP, Normal)
 
-Address this by issuing an asynchronous PM runtime idle call after the
-disconnect event is completed, as it modifies the dwc->connected flag,
-which is what blocks the initial runtime idle.
+But cdns3_ep_run_transfer() can't correctly handle this case, which only
+support one TRB for ISO transfer.
 
-Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
+The controller requires duplicate the TD for each SOF if priv_ep->interval
+is not 1. DMA will read data from DDR to internal FIFO when get SOF. Send
+data to bus when receive IN token. DMA always refill FIFO when get SOF
+regardless host send IN token or not. If host send IN token later, some
+frames data will be lost.
+
+Fixed it by below major steps:
+
+1. Calculate numembers of TRB base on sg_nums and priv_ep->interval.
+2. Remove CHAIN flags for each end TRB of TD when duplicate TD.
+3. The controller requires LINK TRB must be first TRB of TD. When check
+there are not enough TRBs lefts, just fill LINK TRB for left TRBs.
+
+.... CHAIN_TRB DATA_TRB, CHAIN_TRB DATA_TRB,  LINK_TRB ... LINK_TRB
+                                                           ^End of TRB List
+
 Cc:  <stable@vger.kernel.org>
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Link: https://lore.kernel.org/r/20240103214946.2596-1-quic_wcheng@quicinc.com
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231224153816.1664687-2-Frank.Li@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index c15e965ea95a..019368f8e9c4 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -3989,6 +3989,13 @@ static void dwc3_gadget_disconnect_interrupt(struct dwc3 *dwc)
- 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
+diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
+index 15463b7cddd2..22a31ffa6942 100644
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -1119,6 +1119,7 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
+ 	dma_addr_t trb_dma;
+ 	u32 togle_pcs = 1;
+ 	int sg_iter = 0;
++	int num_trb_req;
+ 	int num_trb;
+ 	int address;
+ 	u32 control;
+@@ -1128,15 +1129,13 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
+ 	bool sg_supported = !!(request->num_mapped_sgs);
+ 	u32 ioc = request->no_interrupt ? 0 : TRB_IOC;
  
- 	dwc3_ep0_reset_state(dwc);
++	num_trb_req = sg_supported ? request->num_mapped_sgs : 1;
 +
-+	/*
-+	 * Request PM idle to address condition where usage count is
-+	 * already decremented to zero, but waiting for the disconnect
-+	 * interrupt to set dwc->connected to FALSE.
-+	 */
-+	pm_request_idle(dwc->dev);
- }
++	/* ISO transfer require each SOF have a TD, each TD include some TRBs */
+ 	if (priv_ep->type == USB_ENDPOINT_XFER_ISOC)
+-		num_trb = priv_ep->interval;
++		num_trb = priv_ep->interval * num_trb_req;
+ 	else
+-		num_trb = sg_supported ? request->num_mapped_sgs : 1;
+-
+-	if (num_trb > priv_ep->free_trbs) {
+-		priv_ep->flags |= EP_RING_FULL;
+-		return -ENOBUFS;
+-	}
++		num_trb = num_trb_req;
  
- static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
+ 	priv_req = to_cdns3_request(request);
+ 	address = priv_ep->endpoint.desc->bEndpointAddress;
+@@ -1185,14 +1184,31 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
+ 
+ 		link_trb->control = cpu_to_le32(((priv_ep->pcs) ? TRB_CYCLE : 0) |
+ 				    TRB_TYPE(TRB_LINK) | TRB_TOGGLE | ch_bit);
++
++		if (priv_ep->type == USB_ENDPOINT_XFER_ISOC) {
++			/*
++			 * ISO require LINK TRB must be first one of TD.
++			 * Fill LINK TRBs for left trb space to simply software process logic.
++			 */
++			while (priv_ep->enqueue) {
++				*trb = *link_trb;
++				trace_cdns3_prepare_trb(priv_ep, trb);
++
++				cdns3_ep_inc_enq(priv_ep);
++				trb = priv_ep->trb_pool + priv_ep->enqueue;
++				priv_req->trb = trb;
++			}
++		}
++	}
++
++	if (num_trb > priv_ep->free_trbs) {
++		priv_ep->flags |= EP_RING_FULL;
++		return -ENOBUFS;
+ 	}
+ 
+ 	if (priv_dev->dev_ver <= DEV_VER_V2)
+ 		togle_pcs = cdns3_wa1_update_guard(priv_ep, trb);
+ 
+-	if (sg_supported)
+-		s = request->sg;
+-
+ 	/* set incorrect Cycle Bit for first trb*/
+ 	control = priv_ep->pcs ? 0 : TRB_CYCLE;
+ 	trb->length = 0;
+@@ -1210,6 +1226,9 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
+ 	do {
+ 		u32 length;
+ 
++		if (!(sg_iter % num_trb_req) && sg_supported)
++			s = request->sg;
++
+ 		/* fill TRB */
+ 		control |= TRB_TYPE(TRB_NORMAL);
+ 		if (sg_supported) {
+@@ -1251,7 +1270,7 @@ static int cdns3_ep_run_transfer(struct cdns3_endpoint *priv_ep,
+ 		if (sg_supported) {
+ 			trb->control |= cpu_to_le32(TRB_ISP);
+ 			/* Don't set chain bit for last TRB */
+-			if (sg_iter < num_trb - 1)
++			if ((sg_iter % num_trb_req) < num_trb_req - 1)
+ 				trb->control |= cpu_to_le32(TRB_CHAIN);
+ 
+ 			s = sg_next(s);
+@@ -1509,6 +1528,12 @@ static void cdns3_transfer_completed(struct cdns3_device *priv_dev,
+ 
+ 		/* The TRB was changed as link TRB, and the request was handled at ep_dequeue */
+ 		while (TRB_FIELD_TO_TYPE(le32_to_cpu(trb->control)) == TRB_LINK) {
++
++			/* ISO ep_traddr may stop at LINK TRB */
++			if (priv_ep->dequeue == cdns3_get_dma_pos(priv_dev, priv_ep) &&
++			    priv_ep->type == USB_ENDPOINT_XFER_ISOC)
++				break;
++
+ 			trace_cdns3_complete_trb(priv_ep, trb);
+ 			cdns3_ep_inc_deq(priv_ep);
+ 			trb = priv_ep->trb_pool + priv_ep->dequeue;
+@@ -1541,6 +1566,10 @@ static void cdns3_transfer_completed(struct cdns3_device *priv_dev,
+ 			}
+ 
+ 			if (request_handled) {
++				/* TRBs are duplicated by priv_ep->interval time for ISO IN */
++				if (priv_ep->type == USB_ENDPOINT_XFER_ISOC && priv_ep->dir)
++					request->actual /= priv_ep->interval;
++
+ 				cdns3_gadget_giveback(priv_ep, priv_req, 0);
+ 				request_handled = false;
+ 				transfer_end = false;
 
 
