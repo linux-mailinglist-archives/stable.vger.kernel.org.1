@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-14050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C970C837F4E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2EF4837EA9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 077EA1C28349
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BDA428CCCB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E8812AAC6;
-	Tue, 23 Jan 2024 00:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4692860B95;
+	Tue, 23 Jan 2024 00:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnUE65z6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="msKfTkOp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A398E12A167;
-	Tue, 23 Jan 2024 00:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A0B60BA3;
+	Tue, 23 Jan 2024 00:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971051; cv=none; b=hJiw2Sm+HoEa22mfNVDKUxNOX0mTqWJ/MlEU9cH+uv0d/lCYieL/oXLW0vosjDO4bFjnaoSiZuTjsgxf9d7I3QbXgXxOSIJ0DPc/tFthapADnOM7QzYXq/Ldw1UFFDlZaoarX6uU0vZKfo2kC07nv/MJjUF5u0yB1OzNVuRjA0M=
+	t=1705970734; cv=none; b=A3Lop2VVWz+U1iwlimw2DQ1KmbGQ/+zmILvwi4F27QchRu6xMdVa3nt5xU5+UQc4g4AyAYnP8ykQVeB2Wszk3BJV4aPD6H9m5NyrUkWGtHCsTjT7hKIjGq1r2hyO2s3Pw6pttWeY9rH93AcJKoORz8DiWWUHiYRRtCbtHCay7tI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971051; c=relaxed/simple;
-	bh=IOBWHO3VngJql3svVgdiyiMWT/uWal6UpYkEKXsYyP8=;
+	s=arc-20240116; t=1705970734; c=relaxed/simple;
+	bh=q4eRnfS0p1wYjEpynUfzpp4ewMR1eU74HGbbNIm7Mag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QzskLTBEp+yFDF5lZJ8a3/k3KeK6MUhve64BRCahGclzRn552JY2x8Kq98t9K91amr00aMjg4SpNN6FwjD+Kziehkox95MUZXdUN6nkRMyWo6BqmHZolStzTJDW2Pja47Pgfvy5wplDGnEA9N1uhekRtpxQX2l17jYcYZG+Sn14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnUE65z6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05905C43399;
-	Tue, 23 Jan 2024 00:50:50 +0000 (UTC)
+	 MIME-Version; b=tzdZnv8u65AeJOSX7bYtmH3x9WPLI7wj4N3ydWFXhopOcB6eUefplH3bZXxG7VZ82NtG1h4b2wsS/jrD/XkpmM6to7n4cG8iOdqU7tlNBmkkH7M69IpTozM1A474s9lZgp2M/Wco9gcShtnTWLfnpHdK8udpt5JH7JSp+fTYec8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=msKfTkOp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DEBEC433F1;
+	Tue, 23 Jan 2024 00:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971051;
-	bh=IOBWHO3VngJql3svVgdiyiMWT/uWal6UpYkEKXsYyP8=;
+	s=korg; t=1705970733;
+	bh=q4eRnfS0p1wYjEpynUfzpp4ewMR1eU74HGbbNIm7Mag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lnUE65z6UrLk1fDQ20vJTP9b3r6+ytTwYcy4ncbXtPYJk56/5oCznqoxsxUBPslgl
-	 ZHkGTYr7seYH9+NEvS6N1H94+YUNAOu1Zg/fQjZq/gFkT6LwbGmiGgyvMRqN0rTxfE
-	 5MQxkMWNhQbd+2xvbpTKfEH2pD9N5ruN9LeUDn+k=
+	b=msKfTkOp0rTapcbY6F8eXJHGcW7LSZUw5+LXLLCecYzjF8H9XC0/zYi81A554d1PC
+	 AKFOOchVeHgP8th69hGJcJsXJ9FyLThsXolNNDFbxWjjVXsodhcbbzvp+FXwKQsWB3
+	 MXOgPpWMWBiCxkpuMbvfYBTJA1QDnO6wgTdA1UDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 146/417] block: make BLK_DEF_MAX_SECTORS unsigned
+Subject: [PATCH 5.10 008/286] ASoC: wm8974: Correct boost mixer inputs
 Date: Mon, 22 Jan 2024 15:55:14 -0800
-Message-ID: <20240122235756.887287730@linuxfoundation.org>
+Message-ID: <20240122235732.332766258@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 0a26f327e46c203229e72c823dfec71a2b405ec5 ]
+[ Upstream commit 37e6fd0cebf0b9f71afb38fd95b10408799d1f0b ]
 
-This is used as an unsigned value, so define it that way to avoid
-having to cast it.
+Bit 6 of INPPGA (INPPGAMUTE) does not control the Aux path, it controls
+the input PGA path, as can been seen from Figure 8 Input Boost Stage in
+the datasheet. Update the naming of things in the driver to match this
+and update the routing to also reflect this.
 
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/20230105205146.3610282-2-kbusch@meta.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 9a9525de8654 ("null_blk: don't cap max_hw_sectors to BLK_DEF_MAX_SECTORS")
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20231113155916.1741027-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c          | 2 +-
- drivers/block/null_blk/main.c | 3 +--
- include/linux/blkdev.h        | 3 ++-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/codecs/wm8974.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 86ff375c00ce..bbca4ce77a2d 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -135,7 +135,7 @@ void blk_queue_max_hw_sectors(struct request_queue *q, unsigned int max_hw_secto
- 	limits->max_hw_sectors = max_hw_sectors;
+diff --git a/sound/soc/codecs/wm8974.c b/sound/soc/codecs/wm8974.c
+index c86231dfcf4f..600e93d61a90 100644
+--- a/sound/soc/codecs/wm8974.c
++++ b/sound/soc/codecs/wm8974.c
+@@ -186,7 +186,7 @@ SOC_DAPM_SINGLE("PCM Playback Switch", WM8974_MONOMIX, 0, 1, 0),
  
- 	max_sectors = min_not_zero(max_hw_sectors, limits->max_dev_sectors);
--	max_sectors = min_t(unsigned int, max_sectors, BLK_DEF_MAX_SECTORS);
-+	max_sectors = min(max_sectors, BLK_DEF_MAX_SECTORS);
- 	max_sectors = round_down(max_sectors,
- 				 limits->logical_block_size >> SECTOR_SHIFT);
- 	limits->max_sectors = max_sectors;
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index e9f38eba2f13..d921653b096b 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -2116,8 +2116,7 @@ static int null_add_dev(struct nullb_device *dev)
- 	blk_queue_physical_block_size(nullb->q, dev->blocksize);
- 	if (!dev->max_sectors)
- 		dev->max_sectors = queue_max_hw_sectors(nullb->q);
--	dev->max_sectors = min_t(unsigned int, dev->max_sectors,
--				 BLK_DEF_MAX_SECTORS);
-+	dev->max_sectors = min(dev->max_sectors, BLK_DEF_MAX_SECTORS);
- 	blk_queue_max_hw_sectors(nullb->q, dev->max_sectors);
- 
- 	if (dev->virt_boundary)
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 07a7eeef47d3..e255674a9ee7 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1109,11 +1109,12 @@ static inline bool bdev_is_partition(struct block_device *bdev)
- enum blk_default_limits {
- 	BLK_MAX_SEGMENTS	= 128,
- 	BLK_SAFE_MAX_SECTORS	= 255,
--	BLK_DEF_MAX_SECTORS	= 2560,
- 	BLK_MAX_SEGMENT_SIZE	= 65536,
- 	BLK_SEG_BOUNDARY_MASK	= 0xFFFFFFFFUL,
+ /* Boost mixer */
+ static const struct snd_kcontrol_new wm8974_boost_mixer[] = {
+-SOC_DAPM_SINGLE("Aux Switch", WM8974_INPPGA, 6, 1, 1),
++SOC_DAPM_SINGLE("PGA Switch", WM8974_INPPGA, 6, 1, 1),
  };
  
-+#define BLK_DEF_MAX_SECTORS 2560u
-+
- static inline unsigned long queue_segment_boundary(const struct request_queue *q)
- {
- 	return q->limits.seg_boundary_mask;
+ /* Input PGA */
+@@ -246,8 +246,8 @@ static const struct snd_soc_dapm_route wm8974_dapm_routes[] = {
+ 
+ 	/* Boost Mixer */
+ 	{"ADC", NULL, "Boost Mixer"},
+-	{"Boost Mixer", "Aux Switch", "Aux Input"},
+-	{"Boost Mixer", NULL, "Input PGA"},
++	{"Boost Mixer", NULL, "Aux Input"},
++	{"Boost Mixer", "PGA Switch", "Input PGA"},
+ 	{"Boost Mixer", NULL, "MICP"},
+ 
+ 	/* Input PGA */
 -- 
 2.43.0
 
