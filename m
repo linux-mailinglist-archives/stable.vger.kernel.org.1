@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-14581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD6B83817E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D7E838425
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D292C1F23DAB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B81D2981B9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64306144601;
-	Tue, 23 Jan 2024 01:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1771B67E83;
+	Tue, 23 Jan 2024 02:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acd/I/4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSs8slJV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE3437C;
-	Tue, 23 Jan 2024 01:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DED67E81;
+	Tue, 23 Jan 2024 02:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972147; cv=none; b=L4dkAGWz+aTFkGO8hpFqnYkodfOg6jeIJWCeTuEz45PaFoSe59eyJBc6E5OQ1WdyctDaCVHeYYanNGVKgk91ropP4alQAFJrNtMi+MKljZYKEtIHa0GWe6dh+r9t00sjUgoDvMDjsHsyqfacutw7APhOrLu0v1fj9SKnbN2vR24=
+	t=1705975313; cv=none; b=Lw18f0Qm4s7NQ0jiyCdRs8PY1wE+yVsThIGw7wslf4UfOQrbZ1iA2F1wbk+Uy6wPp9M9pc91UlF/SFBOw8CLEXeFPBnz8HkP4TT2tVaEAhw1p3mT4snfTVljxB0WEPwuzq/fNEXl9YpDTERNkgzpoPc96r/XGCAfBu3bG7REuNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972147; c=relaxed/simple;
-	bh=Vvc6bxipxAHMUEfFFsOmgQOSZwyAY5ALbP9+9IniLu0=;
+	s=arc-20240116; t=1705975313; c=relaxed/simple;
+	bh=6faO5ETKWNj6CLGa0Gv1OkNfGp2rSghOy4EFU6E5Ip4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T8bZcokhlnx8yD+g/1zqj10fqs3IOnp4SFIfhL7/49/p7rfZozxQviygDKeJQq3sKqX4VpkLX1eVVJ8/yIZDS8Rt851ItgInwy4SwUL65b8ct35MFA98pmq+P3euls/bp/NDW1KhNiLOi011j5HiI2NdnxNqHHVH+89YX8kOy00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acd/I/4p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A22C43399;
-	Tue, 23 Jan 2024 01:09:06 +0000 (UTC)
+	 MIME-Version; b=djJ42k50WuXIeW4NFWpSRi5lRRa5nxtlHNzcO5xq2F6aAsY7Jweg5tBC1kTECKk3q+1PXVVSe2k5JejJ/q5JlEc4DwljSsTM/O1HnwFDJda96Oi9y+CuZ+uLBU4Mm4oFU3+WmRIbQVrEf8xv25AHh7di43Il8FwLC0Q6sBDqedI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSs8slJV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D353C433C7;
+	Tue, 23 Jan 2024 02:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972147;
-	bh=Vvc6bxipxAHMUEfFFsOmgQOSZwyAY5ALbP9+9IniLu0=;
+	s=korg; t=1705975313;
+	bh=6faO5ETKWNj6CLGa0Gv1OkNfGp2rSghOy4EFU6E5Ip4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=acd/I/4pezRTPwo2DpKkaedObjD8ToLx1ZB5I5wT45y8HxrSndml2MycNxdjYs17n
-	 waYICaSwlFWHsVe8r1OaRcarmK1BdefvU1ffrF37peZBCYcH6AfkIiXw81kgFzX0WF
-	 g3wqLvDJivJJkRIcXQB10Q1aGYKY8P555c63WzOY=
+	b=BSs8slJVoGT+8oUV4O4rgDEbmv2Gm2J20fyFXFa9QUySvk1wk//5oxxejZkYr87sa
+	 65ZyBP8gkkNLL/3ji+HGpDPIJbY20oFs/+1OyxGjdqqgSBHhy0YNLarAZBC2btzQRa
+	 p6tCaG+2qZQykd3r2cU/vM+UmDib/F44zkfMIcBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com,
-	Ziqi Zhao <astrajoan@yahoo.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Sebastian Reichel <sre@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 049/374] drm/crtc: fix uninitialized variable use
+Subject: [PATCH 6.6 254/583] media: v4l: async: Fix duplicated list deletion
 Date: Mon, 22 Jan 2024 15:55:05 -0800
-Message-ID: <20240122235746.308877187@linuxfoundation.org>
+Message-ID: <20240122235819.773721006@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,56 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Sebastian Reichel <sre@kernel.org>
 
-[ Upstream commit 6e455f5dcdd15fa28edf0ffb5b44d3508512dccf ]
+[ Upstream commit 3de6ee94aae701fa949cd3b5df6b6a440ddfb8f2 ]
 
-Commit 3823119b9c2b ("drm/crtc: Fix uninit-value bug in
-drm_mode_setcrtc") was supposed to fix use of an uninitialized variable,
-but introduced another.
+The list deletion call dropped here is already called from the
+helper function in the line before. Having a second list_del()
+call results in either a warning (with CONFIG_DEBUG_LIST=y):
 
-num_connectors is only initialized if crtc_req->count_connectors > 0,
-but it's used regardless. Fix it.
+list_del corruption, c46c8198->next is LIST_POISON1 (00000100)
 
-Fixes: 3823119b9c2b ("drm/crtc: Fix uninit-value bug in drm_mode_setcrtc")
-Cc: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
-Cc: Ziqi Zhao <astrajoan@yahoo.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231208131238.2924571-1-jani.nikula@intel.com
+If CONFIG_DEBUG_LIST is disabled the operation results in a
+kernel error due to NULL pointer dereference.
+
+Fixes: 28a1295795d8 ("media: v4l: async: Allow multiple connections between entities")
+Signed-off-by: Sebastian Reichel <sre@kernel.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_crtc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/v4l2-core/v4l2-async.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_crtc.c b/drivers/gpu/drm/drm_crtc.c
-index 8b50ab4c5581..c5e0c652766c 100644
---- a/drivers/gpu/drm/drm_crtc.c
-+++ b/drivers/gpu/drm/drm_crtc.c
-@@ -643,7 +643,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 	struct drm_mode_set set;
- 	uint32_t __user *set_connectors_ptr;
- 	struct drm_modeset_acquire_ctx ctx;
--	int ret, i, num_connectors;
-+	int ret, i, num_connectors = 0;
+diff --git a/drivers/media/v4l2-core/v4l2-async.c b/drivers/media/v4l2-core/v4l2-async.c
+index 091e8cf4114b..8cfd593d293d 100644
+--- a/drivers/media/v4l2-core/v4l2-async.c
++++ b/drivers/media/v4l2-core/v4l2-async.c
+@@ -880,7 +880,6 @@ void v4l2_async_unregister_subdev(struct v4l2_subdev *sd)
+ 				  &asc->notifier->waiting_list);
  
- 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
- 		return -EOPNOTSUPP;
-@@ -778,7 +778,6 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 			goto out;
+ 			v4l2_async_unbind_subdev_one(asc->notifier, asc);
+-			list_del(&asc->asc_subdev_entry);
  		}
+ 	}
  
--		num_connectors = 0;
- 		for (i = 0; i < crtc_req->count_connectors; i++) {
- 			connector_set[i] = NULL;
- 			set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req->set_connectors_ptr;
 -- 
 2.43.0
 
