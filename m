@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9D3837A85
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86F038379BE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:45:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62EA028F59B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99FA51C27359
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E545212F584;
-	Tue, 23 Jan 2024 00:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3631882D76;
+	Tue, 23 Jan 2024 00:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8AdAWPi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RT8z4Kjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A569C12CDB0;
-	Tue, 23 Jan 2024 00:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E938250278;
+	Tue, 23 Jan 2024 00:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968983; cv=none; b=L9XrfsQVBIavQO5XCNifKCkxwZn97X9wn/ByRrloCIUVKiELWmgiYG5Nt6inAtFEeg42dVSgOHdRs/7CREgtBRGYWiwMNErQ7TgSt8IOkRQlYB9k6ngbB2soEXeu+mXV3vQj2bLZ/DCEqHhxS3YAOYLZc6pijuYq9uLfcZfdGno=
+	t=1705968463; cv=none; b=hKxOoV+rtuTh5QN7o+UQmV5zu4kSckJ6eEBjnScSBKY/DLnVRPGB2AE994ggXZf7TcwihYbpxfNPyNVgXyXHdQv+qF7e39TcgerRzwKVvQSjOtdZRQAAxXwszCEG05xOK14cB3QjuxwM6SiMAx0QDDQy8Ml59Cjz2AQnTn7ZCK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968983; c=relaxed/simple;
-	bh=FDqvTkAAZ/5XalZm5nXJJkIKik6ojauBxaWwH01AuVg=;
+	s=arc-20240116; t=1705968463; c=relaxed/simple;
+	bh=eOhEN1MZ5TSsEeriQZc6Zlumwswls/i9cCP0kmPADV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pnir25kFkYdsvYDmpAQ+0fjfDG5yhlMFxK3EpChuVZBDzKKeDJ6446qcgl6E8KEHxbP67V2hXY6YLGuDFwAxg1eUxp7FMruIC+u9aOT3ilquPU+0pZn8ncbRxA50y8FdJijchLMicMxw0YqT2QL0moRE7ZG5VIrK9Nd8lCAkP/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8AdAWPi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55532C433F1;
-	Tue, 23 Jan 2024 00:16:23 +0000 (UTC)
+	 MIME-Version; b=krQJfkmAcZYtro5cJUnPJVlYgPyJpxjk7OHfp2Yl+2dpsk4gT8FF0ZYrVAQ/Rw7Vi37teMQiQQpUxiNFNxUTTWaKkS9AwN5y5tULJD/Y+58Ux3s3l9YvBegEVJDMxtWN/b81LRuNL+o0/2MMnh7Td/3EUhRMYr3hTjbaLHU5uZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RT8z4Kjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E000C433F1;
+	Tue, 23 Jan 2024 00:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968983;
-	bh=FDqvTkAAZ/5XalZm5nXJJkIKik6ojauBxaWwH01AuVg=;
+	s=korg; t=1705968462;
+	bh=eOhEN1MZ5TSsEeriQZc6Zlumwswls/i9cCP0kmPADV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l8AdAWPiOVYDzksAGqHrbJHFSuwGSBXfaHIOEit4FCJHOtD9btXs7ZRR6Z3GGEX4w
-	 CZtZ3BzWBBeILcsgLfTk5issKGlGfZBtaJ1b7SzWUcfNcchNztOz+4yxKkKnml2I14
-	 WKvHkP4n0M7uV1Hb2JhdjvoxbAeozRNS9mI/G0oA=
+	b=RT8z4Kjji7c0leZhTsnCO7GfsssBQkjrjEYObXGZu1sRvMnyRRfq9vyx6T73S7TH6
+	 5GT984t+IxUaOEkK01/Ro3hVblR94JpwJNci2UQp5/E8OiM45zn9eJRRUFQIXhMOOI
+	 sNx0Xy/exHWBGqu8Q4E/iYDiTcpLYOgeD04ZfXo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <pobrn@protonmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.4 141/194] Input: atkbd - use ab83 as id when skipping the getid command
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>,
+	Paul Durrant <paul@xen.org>
+Subject: [PATCH 4.19 115/148] xen-netback: dont produce zero-size SKB frags
 Date: Mon, 22 Jan 2024 15:57:51 -0800
-Message-ID: <20240122235725.285896835@linuxfoundation.org>
+Message-ID: <20240122235717.127396423@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +60,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Jan Beulich <jbeulich@suse.com>
 
-commit 58f65f9db7e0de366a5a115c2e2c0703858bba69 upstream.
+commit c7ec4f2d684e17d69bbdd7c4324db0ef5daac26a upstream.
 
-Barnabás reported that the change to skip the getid command
-when the controller is in translated mode on laptops caused
-the Version field of his "AT Translated Set 2 keyboard"
-input device to change from ab83 to abba, breaking a custom
-hwdb entry for this keyboard.
+While frontends may submit zero-size requests (wasting a precious slot),
+core networking code as of at least 3ece782693c4b ("sock: skb_copy_ubufs
+support for compound pages") can't deal with SKBs when they have all
+zero-size fragments. Respond to empty requests right when populating
+fragments; all further processing is fragment based and hence won't
+encounter these empty requests anymore.
 
-Use the standard ab83 id for keyboards when getid is skipped
-(rather then that getid fails) to avoid reporting a different
-Version to userspace then before skipping the getid.
+In a way this should have been that way from the beginning: When no data
+is to be transferred for a particular request, there's not even a point
+in validating the respective grant ref. That's no different from e.g.
+passing NULL into memcpy() when at the same time the size is 0.
 
-Fixes: 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in translated mode")
-Reported-by: Barnabás Pőcze <pobrn@protonmail.com>
-Closes: https://lore.kernel.org/linux-input/W1ydwoG2fYv85Z3C3yfDOJcVpilEvGge6UGa9kZh8zI2-qkHXp7WLnl2hSkFz63j-c7WupUWI5TLL6n7Lt8DjRuU-yJBwLYWrreb1hbnd6A=@protonmail.com/
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240116204325.7719-1-hdegoede@redhat.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+This is XSA-448 / CVE-2023-46838.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Paul Durrant <paul@xen.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/atkbd.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/xen-netback/netback.c |   44 ++++++++++++++++++++++++++++++++------
+ 1 file changed, 38 insertions(+), 6 deletions(-)
 
---- a/drivers/input/keyboard/atkbd.c
-+++ b/drivers/input/keyboard/atkbd.c
-@@ -741,9 +741,9 @@ static bool atkbd_is_portable_device(voi
-  * not work. So in this case simply assume a keyboard is connected to avoid
-  * confusing some laptop keyboards.
-  *
-- * Skipping ATKBD_CMD_GETID ends up using a fake keyboard id. Using a fake id is
-- * ok in translated mode, only atkbd_select_set() checks atkbd->id and in
-- * translated mode that is a no-op.
-+ * Skipping ATKBD_CMD_GETID ends up using a fake keyboard id. Using the standard
-+ * 0xab83 id is ok in translated mode, only atkbd_select_set() checks atkbd->id
-+ * and in translated mode that is a no-op.
-  */
- static bool atkbd_skip_getid(struct atkbd *atkbd)
- {
-@@ -761,6 +761,7 @@ static int atkbd_probe(struct atkbd *atk
- {
- 	struct ps2dev *ps2dev = &atkbd->ps2dev;
- 	unsigned char param[2];
-+	bool skip_getid;
- 
- /*
-  * Some systems, where the bit-twiddling when testing the io-lines of the
-@@ -782,7 +783,8 @@ static int atkbd_probe(struct atkbd *atk
-  */
- 
- 	param[0] = param[1] = 0xa5;	/* initialize with invalid values */
--	if (atkbd_skip_getid(atkbd) || ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
-+	skip_getid = atkbd_skip_getid(atkbd);
-+	if (skip_getid || ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
- 
- /*
-  * If the get ID command was skipped or failed, we check if we can at least set
-@@ -792,7 +794,7 @@ static int atkbd_probe(struct atkbd *atk
- 		param[0] = 0;
- 		if (ps2_command(ps2dev, param, ATKBD_CMD_SETLEDS))
- 			return -1;
--		atkbd->id = 0xabba;
-+		atkbd->id = skip_getid ? 0xab83 : 0xabba;
- 		return 0;
+--- a/drivers/net/xen-netback/netback.c
++++ b/drivers/net/xen-netback/netback.c
+@@ -456,12 +456,25 @@ static void xenvif_get_requests(struct x
  	}
  
+ 	for (shinfo->nr_frags = 0; nr_slots > 0 && shinfo->nr_frags < MAX_SKB_FRAGS;
+-	     shinfo->nr_frags++, gop++, nr_slots--) {
++	     nr_slots--) {
++		if (unlikely(!txp->size)) {
++			unsigned long flags;
++
++			spin_lock_irqsave(&queue->response_lock, flags);
++			make_tx_response(queue, txp, 0, XEN_NETIF_RSP_OKAY);
++			push_tx_responses(queue);
++			spin_unlock_irqrestore(&queue->response_lock, flags);
++			++txp;
++			continue;
++		}
++
+ 		index = pending_index(queue->pending_cons++);
+ 		pending_idx = queue->pending_ring[index];
+ 		xenvif_tx_create_map_op(queue, pending_idx, txp,
+ 				        txp == first ? extra_count : 0, gop);
+ 		frag_set_pending_idx(&frags[shinfo->nr_frags], pending_idx);
++		++shinfo->nr_frags;
++		++gop;
+ 
+ 		if (txp == first)
+ 			txp = txfrags;
+@@ -474,20 +487,39 @@ static void xenvif_get_requests(struct x
+ 		shinfo = skb_shinfo(nskb);
+ 		frags = shinfo->frags;
+ 
+-		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots;
+-		     shinfo->nr_frags++, txp++, gop++) {
++		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots; ++txp) {
++			if (unlikely(!txp->size)) {
++				unsigned long flags;
++
++				spin_lock_irqsave(&queue->response_lock, flags);
++				make_tx_response(queue, txp, 0,
++						 XEN_NETIF_RSP_OKAY);
++				push_tx_responses(queue);
++				spin_unlock_irqrestore(&queue->response_lock,
++						       flags);
++				continue;
++			}
++
+ 			index = pending_index(queue->pending_cons++);
+ 			pending_idx = queue->pending_ring[index];
+ 			xenvif_tx_create_map_op(queue, pending_idx, txp, 0,
+ 						gop);
+ 			frag_set_pending_idx(&frags[shinfo->nr_frags],
+ 					     pending_idx);
++			++shinfo->nr_frags;
++			++gop;
+ 		}
+ 
+-		skb_shinfo(skb)->frag_list = nskb;
+-	} else if (nskb) {
++		if (shinfo->nr_frags) {
++			skb_shinfo(skb)->frag_list = nskb;
++			nskb = NULL;
++		}
++	}
++
++	if (nskb) {
+ 		/* A frag_list skb was allocated but it is no longer needed
+-		 * because enough slots were converted to copy ops above.
++		 * because enough slots were converted to copy ops above or some
++		 * were empty.
+ 		 */
+ 		kfree_skb(nskb);
+ 	}
 
 
 
