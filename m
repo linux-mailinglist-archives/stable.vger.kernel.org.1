@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B40D1838324
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F514838072
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69DF51F218C4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D30931C29767
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B78A60873;
-	Tue, 23 Jan 2024 01:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E2712F584;
+	Tue, 23 Jan 2024 01:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qjg0y2Kd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWOQicdd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6666025E;
-	Tue, 23 Jan 2024 01:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CA112F581;
+	Tue, 23 Jan 2024 01:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974714; cv=none; b=W6LxD2cWVr+ooKb3ibqckLWIqtzCfqwaZHvqNUUP4XjjUXycfBW+HUU8afqLv7WjYu7JYnFRe3qChNAcQNFF6YR3UIcQpkdyWaOA8XRxWWK+4H+zdoObQ1a7vwnXezrihr35HtKhq8lZibXd1n/LcjHVhP3AJNcQFDi10VBlGcY=
+	t=1705971727; cv=none; b=WmUaM3CDlhbPRq4v8PXuI5rCHrTzD2hHgcQHQHwkyK0z0ND8byH23pbGoXbxC0lFXlhv/4E1JmUo1vjwoEt2WzMy6+Eu43GfHA1vCKV5q/WbE8mOqY3SgWZyklaINv/aAF/6SRi6B13kwoz4MUkzuWl9xukmGsue/eA0MRsV5Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974714; c=relaxed/simple;
-	bh=EDhKHoMAegZ9/F6Nc3LQxQ6XhWb+gUaUYVHjQoS5ppQ=;
+	s=arc-20240116; t=1705971727; c=relaxed/simple;
+	bh=l04qzBxT8b5YkdKn0xnnbiOdTBkghPPu9oMY20m3LdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CBhV6zlgDWOCfIOmdD68JizN+mh3MIgstTskv7lpXawaG0pMSSfsunbKWJiJeG09bLWlvx0tcI02cHpKfudFbGOmQc1yC/d3P8i42hVT+cOdLdXYQMZB/zgBkucc19ETFCelRjpuM1LjMXnfaDc2gdHqEXCetQkxYyFAQgoS1cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qjg0y2Kd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC1BC43390;
-	Tue, 23 Jan 2024 01:51:54 +0000 (UTC)
+	 MIME-Version; b=fU0WUg+7rRof0XuTdeiS98KaAUPG3z0oA5jXd7kc/fd+9/lTsQUMACoioaP6aOl9+S4KCQqPn0tFIlyFuOC7YN4TbdCW8kWs4+el7j5V11EIMx4xjm1j6ZvgLfx+ugPs7kur5/1ggPI59gFiVfUU7xqmT+8ifB+TE0xjDs7gnrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWOQicdd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC6DC433C7;
+	Tue, 23 Jan 2024 01:02:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974714;
-	bh=EDhKHoMAegZ9/F6Nc3LQxQ6XhWb+gUaUYVHjQoS5ppQ=;
+	s=korg; t=1705971726;
+	bh=l04qzBxT8b5YkdKn0xnnbiOdTBkghPPu9oMY20m3LdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qjg0y2KdJrjWc6pOVLFd8OCPF5xfFnvh6r8bwVyDhuFFkjD+ifNPCbyUQjCybIkPx
-	 SGU+ajr9ytzzrv7w5xtGh+R6oNAIAR04f1RADsgWbqY1B19/yWKxZ7IJ3lY7DgHc3T
-	 1G69wcgzTstr/PU43W9Gw5+Y7pr0rhtQe04UsU28=
+	b=BWOQicddMEsgTRwCD5ZUya5/EihGsslDRECm18CLxWMgvovKS0+WHa3v/JlRxanI/
+	 Mht5JEYWlIEWecZXbG0j8blrH3HK8Qt+XfQmcDpkS5xLIWqaZ3hiOIUvYPHQztlVdw
+	 WRT68mGGW19nUF0Gl4y9n70v2tvdbEnVKgk8vEH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH 5.15 264/374] serial: imx: Ensure that imx_uart_rs485_config() is called with enabled clock
-Date: Mon, 22 Jan 2024 15:58:40 -0800
-Message-ID: <20240122235753.958705338@linuxfoundation.org>
+	Peter Chen <peter.chen@kernel.org>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Li Jun <jun.li@nxp.com>
+Subject: [PATCH 5.10 215/286] usb: chipidea: wait controller resume finished for wakeup irq
+Date: Mon, 22 Jan 2024 15:58:41 -0800
+Message-ID: <20240122235740.362143762@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit 7c45eaa813476bd195ac1227a64b52f9cf2e2030 upstream.
+commit 128d849074d05545becf86e713715ce7676fc074 upstream.
 
-There are register accesses in the function imx_uart_rs485_config(). The
-clock must be enabled for these accesses. This was ensured by calling it
-via the function uart_rs485_config() in the probe() function within the
-range where the clock is enabled. With the commit 7c7f9bc986e6 ("serial:
-Deassert Transmit Enable on probe in driver-specific way") it was removed
-from the probe() function and is now only called through the function
-uart_add_one_port() which is located at the end of the probe() function.
-But the clock is already switched off in this area. To ensure that the
-clock is enabled during register access, move the disabling of the clock
-to the very end of the probe() function. To avoid leaking enabled clocks
-on error also add an error path for exiting with disabling the clock.
+After the chipidea driver introduce extcon for id and vbus, it's able
+to wakeup from another irq source, in case the system with extcon ID
+cable, wakeup from usb ID cable and device removal, the usb device
+disconnect irq may come firstly before the extcon notifier while system
+resume, so we will get 2 "wakeup" irq, one for usb device disconnect;
+and one for extcon ID cable change(real wakeup event), current driver
+treat them as 2 successive wakeup irq so can't handle it correctly, then
+finally the usb irq can't be enabled. This patch adds a check to bypass
+further usb events before controller resume finished to fix it.
 
-Fixes: 7c7f9bc986e6 ("serial: Deassert Transmit Enable on probe in driver-specific way")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Link: https://lore.kernel.org/r/20231226113647.39376-1-cniedermaier@dh-electronics.com
+Fixes: 1f874edcb731 ("usb: chipidea: add runtime power management support")
+cc:  <stable@vger.kernel.org>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Signed-off-by: Li Jun <jun.li@nxp.com>
+Link: https://lore.kernel.org/r/20231228110753.1755756-2-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/imx.c |   23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/usb/chipidea/core.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -2330,10 +2330,8 @@ static int imx_uart_probe(struct platfor
- 	sport->ufcr = readl(sport->port.membase + UFCR);
+--- a/drivers/usb/chipidea/core.c
++++ b/drivers/usb/chipidea/core.c
+@@ -516,6 +516,13 @@ static irqreturn_t ci_irq_handler(int ir
+ 	u32 otgsc = 0;
  
- 	ret = uart_get_rs485_mode(&sport->port);
--	if (ret) {
--		clk_disable_unprepare(sport->clk_ipg);
--		return ret;
--	}
-+	if (ret)
-+		goto err_clk;
- 
- 	if (sport->port.rs485.flags & SER_RS485_ENABLED &&
- 	    (!sport->have_rtscts && !sport->have_rtsgpio))
-@@ -2417,8 +2415,6 @@ static int imx_uart_probe(struct platfor
- 		imx_uart_writel(sport, ucr3, UCR3);
- 	}
- 
--	clk_disable_unprepare(sport->clk_ipg);
--
- 	hrtimer_init(&sport->trigger_start_tx, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
- 	hrtimer_init(&sport->trigger_stop_tx, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
- 	sport->trigger_start_tx.function = imx_trigger_start_tx;
-@@ -2434,7 +2430,7 @@ static int imx_uart_probe(struct platfor
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request rx irq: %d\n",
- 				ret);
--			return ret;
-+			goto err_clk;
- 		}
- 
- 		ret = devm_request_irq(&pdev->dev, txirq, imx_uart_txint, 0,
-@@ -2442,7 +2438,7 @@ static int imx_uart_probe(struct platfor
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request tx irq: %d\n",
- 				ret);
--			return ret;
-+			goto err_clk;
- 		}
- 
- 		ret = devm_request_irq(&pdev->dev, rtsirq, imx_uart_rtsint, 0,
-@@ -2450,14 +2446,14 @@ static int imx_uart_probe(struct platfor
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request rts irq: %d\n",
- 				ret);
--			return ret;
-+			goto err_clk;
- 		}
- 	} else {
- 		ret = devm_request_irq(&pdev->dev, rxirq, imx_uart_int, 0,
- 				       dev_name(&pdev->dev), sport);
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request irq: %d\n", ret);
--			return ret;
-+			goto err_clk;
- 		}
- 	}
- 
-@@ -2465,7 +2461,12 @@ static int imx_uart_probe(struct platfor
- 
- 	platform_set_drvdata(pdev, sport);
- 
--	return uart_add_one_port(&imx_uart_uart_driver, &sport->port);
-+	ret = uart_add_one_port(&imx_uart_uart_driver, &sport->port);
+ 	if (ci->in_lpm) {
++		/*
++		 * If we already have a wakeup irq pending there,
++		 * let's just return to wait resume finished firstly.
++		 */
++		if (ci->wakeup_int)
++			return IRQ_HANDLED;
 +
-+err_clk:
-+	clk_disable_unprepare(sport->clk_ipg);
-+
-+	return ret;
- }
- 
- static int imx_uart_remove(struct platform_device *pdev)
+ 		disable_irq_nosync(irq);
+ 		ci->wakeup_int = true;
+ 		pm_runtime_get(ci->dev);
 
 
 
