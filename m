@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CADC837C88
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E4BB8383F9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F17291F28D78
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8207A1C29E78
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7523F135A40;
-	Tue, 23 Jan 2024 00:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A03664B8;
+	Tue, 23 Jan 2024 01:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vkwns5RW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBb9kLa0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3371733097;
-	Tue, 23 Jan 2024 00:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F9065BB4;
+	Tue, 23 Jan 2024 01:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969657; cv=none; b=kXOe6dVBTrnxH/I+Dywvw3Y2vEqzgzfEKRbPy+Vf2IVOV0057Okv0uBSW+0MGAtJE+pIDiwv7Pw6XXX0zMG39rVTkgnWHUBQBqTBZCKDncWpLlo14l7AKfUq59USnMM9dSwXTtvqaA17E6A8edXlwVPeckNzli3UeuzlgvF6KLM=
+	t=1705975107; cv=none; b=et4iO8qB/77EDD5ZFW87fPZNB/thjU1o55783+q+DoFcxs5JCppJ/GNzYGTMgbDtmweHie4PPei0fO4y7OcDgMpnnKIhNSDgdY8+UnVu8mFwHqbALWMQI8xy/Btchw9ZoOiBggHvcH94DeLCigcGussrhFDJ92EEPJ8GJGStBi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969657; c=relaxed/simple;
-	bh=Xzl25RfW47QX1x725omJINM/YyAxzDMrkWoNQJ4OkNY=;
+	s=arc-20240116; t=1705975107; c=relaxed/simple;
+	bh=TW8rAdJsmQYYcokg36Bl4S75gl1JAV0xA56wvbFQ0vo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UG4bf6wekM1jyFWlpX4J4uQ7MkDXYxDQULrutDRs+VvKoqJx4bvH0WHiZRzIyMN+VKA7FIUxQnlhs92X5xivkg3ZsKB3VrooxOSg5zd2QHAtocv4dSztGLA5w7ExULT/qJTKIhQgiTvwEkRRyTDmmoJJr8EvlkfK7N4Vs4z9tpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vkwns5RW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E411AC43390;
-	Tue, 23 Jan 2024 00:27:36 +0000 (UTC)
+	 MIME-Version; b=ujsK5MImPi80hR2NJtH8LVunTxdR5lHvO6c8wb5rP3cytqWhG+7eCtEdDW+BW8aoRLxdg4fOf7fUW+bR/PvDLFQjIPzb8n32hBC5vf7gMCFNeuTG7MgdP9xN/BV5ndNDhJtGFbE39sSd0Ga3nguXVJZVsvpqL/jtFTx0OX3KpIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBb9kLa0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9476C433A6;
+	Tue, 23 Jan 2024 01:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969657;
-	bh=Xzl25RfW47QX1x725omJINM/YyAxzDMrkWoNQJ4OkNY=;
+	s=korg; t=1705975106;
+	bh=TW8rAdJsmQYYcokg36Bl4S75gl1JAV0xA56wvbFQ0vo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vkwns5RWMed5wouM2hIaEFLhOfOlLDP+UVTvf8oEmBxMWL2F+8OpQZpVaGM3EG7ES
-	 wCd0qErA6RUGI4HV6qOGc1gJybrM53dlvpKf52cMu573bWKTSWoYfJPXxaS4xsa2Ry
-	 X43lRjSpzdFmD+T9aBgLl+do9Gz/qXWOoCLXdQGI=
+	b=tBb9kLa0ksxjbNh9X0iLWLZ7s/pAS/WZxw5ra70vDo2351sleuttCWVMbmUnbewC8
+	 V+QjRab/+Wtgi9ebeRGzK7gdaomlcnH4cLVgx56m7vIugiL7eR4u0iwo/5qrS+MCGU
+	 xMU2KqXoO2y7RUbYbmIACv/w6K6kSWfarCy2VnYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.7 387/641] binder: fix race between mmput() and do_exit()
-Date: Mon, 22 Jan 2024 15:54:51 -0800
-Message-ID: <20240122235830.064272627@linuxfoundation.org>
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 241/583] drm/radeon/r600_cs: Fix possible int overflows in r600_cs_check_reg()
+Date: Mon, 22 Jan 2024 15:54:52 -0800
+Message-ID: <20240122235819.370073877@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 9a9ab0d963621d9d12199df9817e66982582d5a5 upstream.
+[ Upstream commit 39c960bbf9d9ea862398759e75736cfb68c3446f ]
 
-Task A calls binder_update_page_range() to allocate and insert pages on
-a remote address space from Task B. For this, Task A pins the remote mm
-via mmget_not_zero() first. This can race with Task B do_exit() and the
-final mmput() refcount decrement will come from Task A.
+While improbable, there may be a chance of hitting integer
+overflow when the result of radeon_get_ib_value() gets shifted
+left.
 
-  Task A            | Task B
-  ------------------+------------------
-  mmget_not_zero()  |
-                    |  do_exit()
-                    |    exit_mm()
-                    |      mmput()
-  mmput()           |
-    exit_mmap()     |
-      remove_vma()  |
-        fput()      |
+Avoid it by casting one of the operands to larger data type (u64).
 
-In this case, the work of ____fput() from Task B is queued up in Task A
-as TWA_RESUME. So in theory, Task A returns to userspace and the cleanup
-work gets executed. However, Task A instead sleep, waiting for a reply
-from Task B that never comes (it's dead).
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
 
-This means the binder_deferred_release() is blocked until an unrelated
-binder event forces Task A to go back to userspace. All the associated
-death notifications will also be delayed until then.
-
-In order to fix this use mmput_async() that will schedule the work in
-the corresponding mm->async_put_work WQ instead of Task A.
-
-Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-4-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1729dd33d20b ("drm/radeon/kms: r600 CS parser fixes")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc.c |    4 ++--
+ drivers/gpu/drm/radeon/r600_cs.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -271,7 +271,7 @@ static int binder_update_page_range(stru
- 	}
- 	if (mm) {
- 		mmap_write_unlock(mm);
--		mmput(mm);
-+		mmput_async(mm);
- 	}
- 	return 0;
- 
-@@ -304,7 +304,7 @@ err_page_ptr_cleared:
- err_no_vma:
- 	if (mm) {
- 		mmap_write_unlock(mm);
--		mmput(mm);
-+		mmput_async(mm);
- 	}
- 	return vma ? -ENOMEM : -ESRCH;
- }
+diff --git a/drivers/gpu/drm/radeon/r600_cs.c b/drivers/gpu/drm/radeon/r600_cs.c
+index 638f861af80f..6cf54a747749 100644
+--- a/drivers/gpu/drm/radeon/r600_cs.c
++++ b/drivers/gpu/drm/radeon/r600_cs.c
+@@ -1275,7 +1275,7 @@ static int r600_cs_check_reg(struct radeon_cs_parser *p, u32 reg, u32 idx)
+ 			return -EINVAL;
+ 		}
+ 		tmp = (reg - CB_COLOR0_BASE) / 4;
+-		track->cb_color_bo_offset[tmp] = radeon_get_ib_value(p, idx) << 8;
++		track->cb_color_bo_offset[tmp] = (u64)radeon_get_ib_value(p, idx) << 8;
+ 		ib[idx] += (u32)((reloc->gpu_offset >> 8) & 0xffffffff);
+ 		track->cb_color_base_last[tmp] = ib[idx];
+ 		track->cb_color_bo[tmp] = reloc->robj;
+@@ -1302,7 +1302,7 @@ static int r600_cs_check_reg(struct radeon_cs_parser *p, u32 reg, u32 idx)
+ 					"0x%04X\n", reg);
+ 			return -EINVAL;
+ 		}
+-		track->htile_offset = radeon_get_ib_value(p, idx) << 8;
++		track->htile_offset = (u64)radeon_get_ib_value(p, idx) << 8;
+ 		ib[idx] += (u32)((reloc->gpu_offset >> 8) & 0xffffffff);
+ 		track->htile_bo = reloc->robj;
+ 		track->db_dirty = true;
+-- 
+2.43.0
+
 
 
 
