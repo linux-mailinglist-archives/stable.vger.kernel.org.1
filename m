@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-13157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E93837BB2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:05:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7684838350
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57C87B2408F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECDCB1C299C3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98758130E58;
-	Tue, 23 Jan 2024 00:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479056166F;
+	Tue, 23 Jan 2024 01:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1l/0N9W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LueJne2o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570AA130E42;
-	Tue, 23 Jan 2024 00:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0546161668;
+	Tue, 23 Jan 2024 01:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969068; cv=none; b=Ji+zVdUQrteEv1hHspsgPuAsugcHOqklu834npk6xrA8ffqnCI+Dr5YV8dRfQMmBpw2aIDS5IG5MEkoWaWW+ZkQAFlQ+dcp0ouS1BLbuCvcLXHHzRK55qkj1Vcu68+SLgqWbXVqc8yq2ZaXSk4aSr0EaB+cpAotRcWfT0Gvx4I0=
+	t=1705974935; cv=none; b=QUpRROdcX41bXyujrhVyvQNr5rAwH/Us+cT7sBr9Cw5HMKRkTnGoy1azDlmSp34L+Kmr9cTn0nITCKdP3Ka9LbPhNzRMzBKy/fCnTMMmC+f2/RgomujUuEv1eTxtxQgOdkKsVHTiX4E6VRtM1HaozzaBS//s/0yYwFHuQdptVZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969068; c=relaxed/simple;
-	bh=z0YS0zlA4l4gCj8nccrEdsICrYd0su3DkgYw+/yay40=;
+	s=arc-20240116; t=1705974935; c=relaxed/simple;
+	bh=cTFoybfniZoNf41/mE30TSM5yki5Mpr+HC51pLG58kQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rom9mwxIWehtwgpa/jIQhgY2HzpjG721iR9q9Mlrk/veigvytDigffFS95/Ip7qtY06RQBLiz4SxxOBKMzusCcihjI6dy60Yo0oH4KQgpv9S2T4CNLozJcevfG7Las32ph6e8d0oUIagO+aPodYJ1prGvg39caHmyz1ejyMsZKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1l/0N9W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16281C433C7;
-	Tue, 23 Jan 2024 00:17:48 +0000 (UTC)
+	 MIME-Version; b=CFaU+MTTAAo9yV+smKzKFAAO9LXSjOYM7gm1KtNKjp8CrWcaB/1VdstJ8CrA6HWBgJ8tbevmPas6KN0NOWBxDlaQJXUeB+qeaYNhzntN45voVtIP4SGplaU7tO3lsMsWDHVlKoi58X5chUFVHDV+x5Oz2U/zVbLFTM1QKzWFIRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LueJne2o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB339C43399;
+	Tue, 23 Jan 2024 01:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969068;
-	bh=z0YS0zlA4l4gCj8nccrEdsICrYd0su3DkgYw+/yay40=;
+	s=korg; t=1705974934;
+	bh=cTFoybfniZoNf41/mE30TSM5yki5Mpr+HC51pLG58kQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E1l/0N9WVkqW+kW0gU82YsRZSL4Tgjd/++8ChelwCzRQ7ge4azOfrV3JhR5BxzkEy
-	 4801jQcGWlqzmqmYHdRRuJOgYPWjOV5CkprLHR7snrR3iQh0pao+UKccePRNi6O4O1
-	 i0Vp3rv+hroruun4HN7dg1H18Y3ja0IXpnRZBJJ0=
+	b=LueJne2owbaXQb1KpZxfNa5dz3KWBjTjfLdo2SWOUt5EHl0tpliNbdq4dDY8SorCt
+	 SbZgOxfLsYRitG5QMlXWkFjURFyDfgrvaTljjjvsq1u+NWtkifQGjXbiJYGgU3MFrC
+	 CPP/MkSihXfoIrOcWfRRDeWmUlAxcVMlZuSI0emg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 184/194] net: phy: micrel: populate .soft_reset for KSZ9131
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 5.15 258/374] usb: cdns3: fix uvc failure work since sg support enabled
 Date: Mon, 22 Jan 2024 15:58:34 -0800
-Message-ID: <20240122235727.113128061@linuxfoundation.org>
+Message-ID: <20240122235753.748674021@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +60,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit e398822c4751017fe401f57409488f5948d12fb5 ]
+commit 1b8be5ecff26201bafb0a554c74e91571299fb94 upstream.
 
-The RZ/G3S SMARC Module has 2 KSZ9131 PHYs. In this setup, the KSZ9131 PHY
-is used with the ravb Ethernet driver. It has been discovered that when
-bringing the Ethernet interface down/up continuously, e.g., with the
-following sh script:
+When IP version >= DEV_VER_V2, gadget:sg_supported is true. So uvc gadget
+function driver will use sg to equeue data, first is 8bytes header, the
+second is 1016bytes data.
 
-$ while :; do ifconfig eth0 down; ifconfig eth0 up; done
+    cdns3_prepare_trb: ep2in: trb 0000000000ac755f, dma buf: 0xbf455000, size: 8, burst: 128 ctrl: 0x00000415 (C=1, T=0, ISP, CHAIN, Normal)
+    cdns3_prepare_trb: ep2in: trb 00000000a574e693, dma buf: 0xc0200fe0, size: 1016, burst: 128 ctrl: 0x00000405 (C=1, T=0, ISP, Normal)
 
-the link speed and duplex are wrong after interrupting the bring down/up
-operation even though the Ethernet interface is up. To recover from this
-state the following configuration sequence is necessary (executed
-manually):
+But cdns3_ep_run_transfer() can't correctly handle this case, which only
+support one TRB for ISO transfer.
 
-$ ifconfig eth0 down
-$ ifconfig eth0 up
+The controller requires duplicate the TD for each SOF if priv_ep->interval
+is not 1. DMA will read data from DDR to internal FIFO when get SOF. Send
+data to bus when receive IN token. DMA always refill FIFO when get SOF
+regardless host send IN token or not. If host send IN token later, some
+frames data will be lost.
 
-The behavior has been identified also on the Microchip SAMA7G5-EK board
-which runs the macb driver and uses the same PHY.
+Fixed it by below major steps:
 
-The order of PHY-related operations in ravb_open() is as follows:
-ravb_open() ->
-  ravb_phy_start() ->
-    ravb_phy_init() ->
-      of_phy_connect() ->
-        phy_connect_direct() ->
-	  phy_attach_direct() ->
-	    phy_init_hw() ->
-	      phydev->drv->soft_reset()
-	      phydev->drv->config_init()
-	      phydev->drv->config_intr()
-	    phy_resume()
-	      kszphy_resume()
+1. Calculate numembers of TRB base on sg_nums and priv_ep->interval.
+2. Remove CHAIN flags for each end TRB of TD when duplicate TD.
+3. The controller requires LINK TRB must be first TRB of TD. When check
+there are not enough TRBs lefts, just fill LINK TRB for left TRBs.
 
-The order of PHY-related operations in ravb_close is as follows:
-ravb_close() ->
-  phy_stop() ->
-    phy_suspend() ->
-      kszphy_suspend() ->
-        genphy_suspend()
-	  // set BMCR_PDOWN bit in MII_BMCR
+.... CHAIN_TRB DATA_TRB, CHAIN_TRB DATA_TRB,  LINK_TRB ... LINK_TRB
+                                                           ^End of TRB List
 
-In genphy_suspend() setting the BMCR_PDWN bit in MII_BMCR switches the PHY
-to Software Power-Down (SPD) mode (according to the KSZ9131 datasheet).
-Thus, when opening the interface after it has been  previously closed (via
-ravb_close()), the phydev->drv->config_init() and
-phydev->drv->config_intr() reach the KSZ9131 PHY driver via the
-ksz9131_config_init() and kszphy_config_intr() functions.
-
-KSZ9131 specifies that the MII management interface remains operational
-during SPD (Software Power-Down), but (according to manual):
-- Only access to the standard registers (0 through 31) is supported.
-- Access to MMD address spaces other than MMD address space 1 is possible
-  if the spd_clock_gate_override bit is set.
-- Access to MMD address space 1 is not possible.
-
-The spd_clock_gate_override bit is not used in the KSZ9131 driver.
-
-ksz9131_config_init() configures RGMII delay, pad skews and LEDs by
-accessesing MMD registers other than those in address space 1.
-
-The datasheet for the KSZ9131 does not specify what happens if registers
-from an unsupported address space are accessed while the PHY is in SPD.
-
-To fix the issue the .soft_reset method has been instantiated for KSZ9131,
-too. This resets the PHY to the default state before doing any
-configurations to it, thus switching it out of SPD.
-
-Fixes: bff5b4b37372 ("net: phy: micrel: add Microchip KSZ9131 initial driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231224153816.1664687-2-Frank.Li@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/micrel.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/cdns3/cdns3-gadget.c |   51 ++++++++++++++++++++++++++++++---------
+ 1 file changed, 40 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 721153dcfd15..caaa51a70cbd 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -1156,6 +1156,7 @@ static struct phy_driver ksphy_driver[] = {
- 	/* PHY_GBIT_FEATURES */
- 	.driver_data	= &ksz9021_type,
- 	.probe		= kszphy_probe,
-+	.soft_reset	= genphy_soft_reset,
- 	.config_init	= ksz9131_config_init,
- 	.read_status	= genphy_read_status,
- 	.ack_interrupt	= kszphy_ack_interrupt,
--- 
-2.43.0
-
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -1117,6 +1117,7 @@ static int cdns3_ep_run_transfer(struct
+ 	dma_addr_t trb_dma;
+ 	u32 togle_pcs = 1;
+ 	int sg_iter = 0;
++	int num_trb_req;
+ 	int num_trb;
+ 	int address;
+ 	u32 control;
+@@ -1125,15 +1126,13 @@ static int cdns3_ep_run_transfer(struct
+ 	struct scatterlist *s = NULL;
+ 	bool sg_supported = !!(request->num_mapped_sgs);
+ 
++	num_trb_req = sg_supported ? request->num_mapped_sgs : 1;
++
++	/* ISO transfer require each SOF have a TD, each TD include some TRBs */
+ 	if (priv_ep->type == USB_ENDPOINT_XFER_ISOC)
+-		num_trb = priv_ep->interval;
++		num_trb = priv_ep->interval * num_trb_req;
+ 	else
+-		num_trb = sg_supported ? request->num_mapped_sgs : 1;
+-
+-	if (num_trb > priv_ep->free_trbs) {
+-		priv_ep->flags |= EP_RING_FULL;
+-		return -ENOBUFS;
+-	}
++		num_trb = num_trb_req;
+ 
+ 	priv_req = to_cdns3_request(request);
+ 	address = priv_ep->endpoint.desc->bEndpointAddress;
+@@ -1182,14 +1181,31 @@ static int cdns3_ep_run_transfer(struct
+ 
+ 		link_trb->control = cpu_to_le32(((priv_ep->pcs) ? TRB_CYCLE : 0) |
+ 				    TRB_TYPE(TRB_LINK) | TRB_TOGGLE | ch_bit);
++
++		if (priv_ep->type == USB_ENDPOINT_XFER_ISOC) {
++			/*
++			 * ISO require LINK TRB must be first one of TD.
++			 * Fill LINK TRBs for left trb space to simply software process logic.
++			 */
++			while (priv_ep->enqueue) {
++				*trb = *link_trb;
++				trace_cdns3_prepare_trb(priv_ep, trb);
++
++				cdns3_ep_inc_enq(priv_ep);
++				trb = priv_ep->trb_pool + priv_ep->enqueue;
++				priv_req->trb = trb;
++			}
++		}
++	}
++
++	if (num_trb > priv_ep->free_trbs) {
++		priv_ep->flags |= EP_RING_FULL;
++		return -ENOBUFS;
+ 	}
+ 
+ 	if (priv_dev->dev_ver <= DEV_VER_V2)
+ 		togle_pcs = cdns3_wa1_update_guard(priv_ep, trb);
+ 
+-	if (sg_supported)
+-		s = request->sg;
+-
+ 	/* set incorrect Cycle Bit for first trb*/
+ 	control = priv_ep->pcs ? 0 : TRB_CYCLE;
+ 	trb->length = 0;
+@@ -1207,6 +1223,9 @@ static int cdns3_ep_run_transfer(struct
+ 	do {
+ 		u32 length;
+ 
++		if (!(sg_iter % num_trb_req) && sg_supported)
++			s = request->sg;
++
+ 		/* fill TRB */
+ 		control |= TRB_TYPE(TRB_NORMAL);
+ 		if (sg_supported) {
+@@ -1248,7 +1267,7 @@ static int cdns3_ep_run_transfer(struct
+ 		if (sg_supported) {
+ 			trb->control |= cpu_to_le32(TRB_ISP);
+ 			/* Don't set chain bit for last TRB */
+-			if (sg_iter < num_trb - 1)
++			if ((sg_iter % num_trb_req) < num_trb_req - 1)
+ 				trb->control |= cpu_to_le32(TRB_CHAIN);
+ 
+ 			s = sg_next(s);
+@@ -1506,6 +1525,12 @@ static void cdns3_transfer_completed(str
+ 
+ 		/* The TRB was changed as link TRB, and the request was handled at ep_dequeue */
+ 		while (TRB_FIELD_TO_TYPE(le32_to_cpu(trb->control)) == TRB_LINK) {
++
++			/* ISO ep_traddr may stop at LINK TRB */
++			if (priv_ep->dequeue == cdns3_get_dma_pos(priv_dev, priv_ep) &&
++			    priv_ep->type == USB_ENDPOINT_XFER_ISOC)
++				break;
++
+ 			trace_cdns3_complete_trb(priv_ep, trb);
+ 			cdns3_ep_inc_deq(priv_ep);
+ 			trb = priv_ep->trb_pool + priv_ep->dequeue;
+@@ -1538,6 +1563,10 @@ static void cdns3_transfer_completed(str
+ 			}
+ 
+ 			if (request_handled) {
++				/* TRBs are duplicated by priv_ep->interval time for ISO IN */
++				if (priv_ep->type == USB_ENDPOINT_XFER_ISOC && priv_ep->dir)
++					request->actual /= priv_ep->interval;
++
+ 				cdns3_gadget_giveback(priv_ep, priv_req, 0);
+ 				request_handled = false;
+ 				transfer_end = false;
 
 
 
