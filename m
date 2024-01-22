@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831F1838183
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 458E3837EF9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A82941C292D0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78C931C289CF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547321860;
-	Tue, 23 Jan 2024 01:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF06A604CC;
+	Tue, 23 Jan 2024 00:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfWO3Kss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziSkNLLs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FAB1C3E;
-	Tue, 23 Jan 2024 01:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE1A60252;
+	Tue, 23 Jan 2024 00:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972156; cv=none; b=RMGScRVZ25WCIiKwKmjc7M4qTLC0YEvZsSvGzlrETjCdlGE9NDjUkgnbHvEoQq3VmCqDiHSCnIJ9uTdU5hV/Q6hZamaFKWocKTEe80DdvqafUO6wpu58QpZGxcWi0Rn6ZHSmR0rqGump6WS1XcieU/Ffc3BSNY/yojUBeIPO/LI=
+	t=1705970858; cv=none; b=LDjMgHyVcNDL/hdujP7yxbMHjL8XmYWa5RtSrG0RgXq9BArCP491qdzoKVH50D5ncKAy10ksQmtV5Jwl1fKnLiMaN3EQzvZhTkdEX0uY1QbQqSVBaB9ypg0fEPeIQp19l1dFMGdUmarsW47LdsMwNXjSQNqqLPQZ09GkKoZ9E8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972156; c=relaxed/simple;
-	bh=08HQt0W1M6CCN/LjL2NRV3WPri3FPrVXMKkeqQhHZpU=;
+	s=arc-20240116; t=1705970858; c=relaxed/simple;
+	bh=WMYlOjXJIsboZTQrVqK3u+DeiYlBNkw0rdFk8HY7SSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VPk8ogye6YPun+MxHpgh+wu/U/E3+2hSzhcLeSdBi68ahZkaB8kwvy3/WdtslFbmuVqKHAKJfEUN/qLB5JbP1O+iZtCFfNmBNlAQbPYhUjHEEU9HNHfWXsqtgfBIPl1whCiCXfqHH/CYloCW7ZJastcLRS5I/f6JUmCCcMUwRLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfWO3Kss; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA8BBC43390;
-	Tue, 23 Jan 2024 01:09:15 +0000 (UTC)
+	 MIME-Version; b=qwxAssjgh77W1/+vPDIonKJI/yw9nHUor4Y5dAh4NJPgp6h2dNt5WD765Mzn7Y8fiuzU3zYofhkkFnfHlUI9CNIIUwz2y+Ho/hOnxPWap0Z64+L9Ne5g/jgBAY9pffi+tSL6bNsX01+c7g6mYBdJuH7XhjJ/pA7YTOh9oumnXrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziSkNLLs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D9EC433B1;
+	Tue, 23 Jan 2024 00:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972155;
-	bh=08HQt0W1M6CCN/LjL2NRV3WPri3FPrVXMKkeqQhHZpU=;
+	s=korg; t=1705970858;
+	bh=WMYlOjXJIsboZTQrVqK3u+DeiYlBNkw0rdFk8HY7SSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dfWO3Kss0+zup2j8nTz9Y0cXdpZclqb4x0MuqG3uq5mgbx8EMNn2LJ7dOYz/T/APC
-	 5J6RHRb7TVhhiJMOie4142vSsTwrmUgm0g0lwhjRY7ECpjQ9zNcpRC2mrgH/2tILLV
-	 +Ts/mp5Quf4ZnorS2ArFk4alQSlbJdgczaKqXkW4=
+	b=ziSkNLLsmB5chKEtaXoogFC+JavA6UQo+CgbPYX7Wpopgd2t9bLHKSXkuTDbTYjF4
+	 1siYqcwKDd5UEbE4iysuYcRNWb9kTML6B+ZtRimPSABK1yjuYvZdPv4pG2BCBCz+jB
+	 RIFzBanjDhGg1Y6rf5/Thwxt0L/NXEROPIRVGNoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <michael@walle.cc>,
-	Rob Herring <robh@kernel.org>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 082/374] of: property: define of_property_read_u{8,16,32,64}_array() unconditionally
+Subject: [PATCH 5.10 032/286] s390/scm: fix virtual vs physical address confusion
 Date: Mon, 22 Jan 2024 15:55:38 -0800
-Message-ID: <20240122235747.475141936@linuxfoundation.org>
+Message-ID: <20240122235733.256599214@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,326 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <michael@walle.cc>
+From: Vineeth Vijayan <vneethv@linux.ibm.com>
 
-[ Upstream commit 2ca42c3ad9ed875b136065b010753a4caaaa1d38 ]
+[ Upstream commit b1a6a1a77f0666a5a6dc0893ab6ec8fcae46f24c ]
 
-We can get rid of all the empty stubs because all these functions call
-of_property_read_variable_u{8,16,32,64}_array() which already have an
-empty stub if CONFIG_OF is not defined.
+Fix virtual vs physical address confusion (which currently are the same).
 
-Signed-off-by: Michael Walle <michael@walle.cc>
-Signed-off-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20220118173504.2867523-3-michael@walle.cc
-Stable-dep-of: c4a5118a3ae1 ("cpufreq: scmi: process the result of devm_of_clk_add_hw_provider()")
+Signed-off-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/of.h | 274 ++++++++++++++++++++-------------------------
- 1 file changed, 124 insertions(+), 150 deletions(-)
+ drivers/s390/block/scm_blk.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/of.h b/include/linux/of.h
-index 6f15e8b0f9d1..4403e8fc764a 100644
---- a/include/linux/of.h
-+++ b/include/linux/of.h
-@@ -415,130 +415,6 @@ extern int of_detach_node(struct device_node *);
+diff --git a/drivers/s390/block/scm_blk.c b/drivers/s390/block/scm_blk.c
+index a4f6f2e62b1d..b5b36217b15e 100644
+--- a/drivers/s390/block/scm_blk.c
++++ b/drivers/s390/block/scm_blk.c
+@@ -18,6 +18,7 @@
+ #include <linux/genhd.h>
+ #include <linux/slab.h>
+ #include <linux/list.h>
++#include <linux/io.h>
+ #include <asm/eadm.h>
+ #include "scm_blk.h"
  
- #define of_match_ptr(_ptr)	(_ptr)
+@@ -131,7 +132,7 @@ static void scm_request_done(struct scm_request *scmrq)
  
--/**
-- * of_property_read_u8_array - Find and read an array of u8 from a property.
-- *
-- * @np:		device node from which the property value is to be read.
-- * @propname:	name of the property to be searched.
-- * @out_values:	pointer to return value, modified only if return value is 0.
-- * @sz:		number of array elements to read
-- *
-- * Search for a property in a device node and read 8-bit value(s) from
-- * it.
-- *
-- * dts entry of array should be like:
-- *  ``property = /bits/ 8 <0x50 0x60 0x70>;``
-- *
-- * Return: 0 on success, -EINVAL if the property does not exist,
-- * -ENODATA if property does not have a value, and -EOVERFLOW if the
-- * property data isn't large enough.
-- *
-- * The out_values is modified only if a valid u8 value can be decoded.
-- */
--static inline int of_property_read_u8_array(const struct device_node *np,
--					    const char *propname,
--					    u8 *out_values, size_t sz)
--{
--	int ret = of_property_read_variable_u8_array(np, propname, out_values,
--						     sz, 0);
--	if (ret >= 0)
--		return 0;
--	else
--		return ret;
--}
--
--/**
-- * of_property_read_u16_array - Find and read an array of u16 from a property.
-- *
-- * @np:		device node from which the property value is to be read.
-- * @propname:	name of the property to be searched.
-- * @out_values:	pointer to return value, modified only if return value is 0.
-- * @sz:		number of array elements to read
-- *
-- * Search for a property in a device node and read 16-bit value(s) from
-- * it.
-- *
-- * dts entry of array should be like:
-- *  ``property = /bits/ 16 <0x5000 0x6000 0x7000>;``
-- *
-- * Return: 0 on success, -EINVAL if the property does not exist,
-- * -ENODATA if property does not have a value, and -EOVERFLOW if the
-- * property data isn't large enough.
-- *
-- * The out_values is modified only if a valid u16 value can be decoded.
-- */
--static inline int of_property_read_u16_array(const struct device_node *np,
--					     const char *propname,
--					     u16 *out_values, size_t sz)
--{
--	int ret = of_property_read_variable_u16_array(np, propname, out_values,
--						      sz, 0);
--	if (ret >= 0)
--		return 0;
--	else
--		return ret;
--}
--
--/**
-- * of_property_read_u32_array - Find and read an array of 32 bit integers
-- * from a property.
-- *
-- * @np:		device node from which the property value is to be read.
-- * @propname:	name of the property to be searched.
-- * @out_values:	pointer to return value, modified only if return value is 0.
-- * @sz:		number of array elements to read
-- *
-- * Search for a property in a device node and read 32-bit value(s) from
-- * it.
-- *
-- * Return: 0 on success, -EINVAL if the property does not exist,
-- * -ENODATA if property does not have a value, and -EOVERFLOW if the
-- * property data isn't large enough.
-- *
-- * The out_values is modified only if a valid u32 value can be decoded.
-- */
--static inline int of_property_read_u32_array(const struct device_node *np,
--					     const char *propname,
--					     u32 *out_values, size_t sz)
--{
--	int ret = of_property_read_variable_u32_array(np, propname, out_values,
--						      sz, 0);
--	if (ret >= 0)
--		return 0;
--	else
--		return ret;
--}
--
--/**
-- * of_property_read_u64_array - Find and read an array of 64 bit integers
-- * from a property.
-- *
-- * @np:		device node from which the property value is to be read.
-- * @propname:	name of the property to be searched.
-- * @out_values:	pointer to return value, modified only if return value is 0.
-- * @sz:		number of array elements to read
-- *
-- * Search for a property in a device node and read 64-bit value(s) from
-- * it.
-- *
-- * Return: 0 on success, -EINVAL if the property does not exist,
-- * -ENODATA if property does not have a value, and -EOVERFLOW if the
-- * property data isn't large enough.
-- *
-- * The out_values is modified only if a valid u64 value can be decoded.
-- */
--static inline int of_property_read_u64_array(const struct device_node *np,
--					     const char *propname,
--					     u64 *out_values, size_t sz)
--{
--	int ret = of_property_read_variable_u64_array(np, propname, out_values,
--						      sz, 0);
--	if (ret >= 0)
--		return 0;
--	else
--		return ret;
--}
--
- /*
-  * struct property *prop;
-  * const __be32 *p;
-@@ -733,32 +609,6 @@ static inline int of_property_count_elems_of_size(const struct device_node *np,
- 	return -ENOSYS;
- }
+ 	for (i = 0; i < nr_requests_per_io && scmrq->request[i]; i++) {
+ 		msb = &scmrq->aob->msb[i];
+-		aidaw = msb->data_addr;
++		aidaw = (u64)phys_to_virt(msb->data_addr);
  
--static inline int of_property_read_u8_array(const struct device_node *np,
--			const char *propname, u8 *out_values, size_t sz)
--{
--	return -ENOSYS;
--}
--
--static inline int of_property_read_u16_array(const struct device_node *np,
--			const char *propname, u16 *out_values, size_t sz)
--{
--	return -ENOSYS;
--}
--
--static inline int of_property_read_u32_array(const struct device_node *np,
--					     const char *propname,
--					     u32 *out_values, size_t sz)
--{
--	return -ENOSYS;
--}
--
--static inline int of_property_read_u64_array(const struct device_node *np,
--					     const char *propname,
--					     u64 *out_values, size_t sz)
--{
--	return -ENOSYS;
--}
--
- static inline int of_property_read_u32_index(const struct device_node *np,
- 			const char *propname, u32 index, u32 *out_value)
- {
-@@ -1235,6 +1085,130 @@ static inline bool of_property_read_bool(const struct device_node *np,
- 	return prop ? true : false;
- }
+ 		if ((msb->flags & MSB_FLAG_IDA) && aidaw &&
+ 		    IS_ALIGNED(aidaw, PAGE_SIZE))
+@@ -196,12 +197,12 @@ static int scm_request_prepare(struct scm_request *scmrq)
+ 	msb->scm_addr = scmdev->address + ((u64) blk_rq_pos(req) << 9);
+ 	msb->oc = (rq_data_dir(req) == READ) ? MSB_OC_READ : MSB_OC_WRITE;
+ 	msb->flags |= MSB_FLAG_IDA;
+-	msb->data_addr = (u64) aidaw;
++	msb->data_addr = (u64)virt_to_phys(aidaw);
  
-+/**
-+ * of_property_read_u8_array - Find and read an array of u8 from a property.
-+ *
-+ * @np:		device node from which the property value is to be read.
-+ * @propname:	name of the property to be searched.
-+ * @out_values:	pointer to return value, modified only if return value is 0.
-+ * @sz:		number of array elements to read
-+ *
-+ * Search for a property in a device node and read 8-bit value(s) from
-+ * it.
-+ *
-+ * dts entry of array should be like:
-+ *  ``property = /bits/ 8 <0x50 0x60 0x70>;``
-+ *
-+ * Return: 0 on success, -EINVAL if the property does not exist,
-+ * -ENODATA if property does not have a value, and -EOVERFLOW if the
-+ * property data isn't large enough.
-+ *
-+ * The out_values is modified only if a valid u8 value can be decoded.
-+ */
-+static inline int of_property_read_u8_array(const struct device_node *np,
-+					    const char *propname,
-+					    u8 *out_values, size_t sz)
-+{
-+	int ret = of_property_read_variable_u8_array(np, propname, out_values,
-+						     sz, 0);
-+	if (ret >= 0)
-+		return 0;
-+	else
-+		return ret;
-+}
-+
-+/**
-+ * of_property_read_u16_array - Find and read an array of u16 from a property.
-+ *
-+ * @np:		device node from which the property value is to be read.
-+ * @propname:	name of the property to be searched.
-+ * @out_values:	pointer to return value, modified only if return value is 0.
-+ * @sz:		number of array elements to read
-+ *
-+ * Search for a property in a device node and read 16-bit value(s) from
-+ * it.
-+ *
-+ * dts entry of array should be like:
-+ *  ``property = /bits/ 16 <0x5000 0x6000 0x7000>;``
-+ *
-+ * Return: 0 on success, -EINVAL if the property does not exist,
-+ * -ENODATA if property does not have a value, and -EOVERFLOW if the
-+ * property data isn't large enough.
-+ *
-+ * The out_values is modified only if a valid u16 value can be decoded.
-+ */
-+static inline int of_property_read_u16_array(const struct device_node *np,
-+					     const char *propname,
-+					     u16 *out_values, size_t sz)
-+{
-+	int ret = of_property_read_variable_u16_array(np, propname, out_values,
-+						      sz, 0);
-+	if (ret >= 0)
-+		return 0;
-+	else
-+		return ret;
-+}
-+
-+/**
-+ * of_property_read_u32_array - Find and read an array of 32 bit integers
-+ * from a property.
-+ *
-+ * @np:		device node from which the property value is to be read.
-+ * @propname:	name of the property to be searched.
-+ * @out_values:	pointer to return value, modified only if return value is 0.
-+ * @sz:		number of array elements to read
-+ *
-+ * Search for a property in a device node and read 32-bit value(s) from
-+ * it.
-+ *
-+ * Return: 0 on success, -EINVAL if the property does not exist,
-+ * -ENODATA if property does not have a value, and -EOVERFLOW if the
-+ * property data isn't large enough.
-+ *
-+ * The out_values is modified only if a valid u32 value can be decoded.
-+ */
-+static inline int of_property_read_u32_array(const struct device_node *np,
-+					     const char *propname,
-+					     u32 *out_values, size_t sz)
-+{
-+	int ret = of_property_read_variable_u32_array(np, propname, out_values,
-+						      sz, 0);
-+	if (ret >= 0)
-+		return 0;
-+	else
-+		return ret;
-+}
-+
-+/**
-+ * of_property_read_u64_array - Find and read an array of 64 bit integers
-+ * from a property.
-+ *
-+ * @np:		device node from which the property value is to be read.
-+ * @propname:	name of the property to be searched.
-+ * @out_values:	pointer to return value, modified only if return value is 0.
-+ * @sz:		number of array elements to read
-+ *
-+ * Search for a property in a device node and read 64-bit value(s) from
-+ * it.
-+ *
-+ * Return: 0 on success, -EINVAL if the property does not exist,
-+ * -ENODATA if property does not have a value, and -EOVERFLOW if the
-+ * property data isn't large enough.
-+ *
-+ * The out_values is modified only if a valid u64 value can be decoded.
-+ */
-+static inline int of_property_read_u64_array(const struct device_node *np,
-+					     const char *propname,
-+					     u64 *out_values, size_t sz)
-+{
-+	int ret = of_property_read_variable_u64_array(np, propname, out_values,
-+						      sz, 0);
-+	if (ret >= 0)
-+		return 0;
-+	else
-+		return ret;
-+}
-+
- static inline int of_property_read_u8(const struct device_node *np,
- 				       const char *propname,
- 				       u8 *out_value)
+ 	rq_for_each_segment(bv, req, iter) {
+ 		WARN_ON(bv.bv_offset);
+ 		msb->blk_count += bv.bv_len >> 12;
+-		aidaw->data_addr = (u64) page_address(bv.bv_page);
++		aidaw->data_addr = virt_to_phys(page_address(bv.bv_page));
+ 		aidaw++;
+ 	}
+ 
 -- 
 2.43.0
 
