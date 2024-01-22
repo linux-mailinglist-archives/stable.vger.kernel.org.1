@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-15526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDF2838EC3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 13:49:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A37838ECC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 13:50:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 335D91C2251B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 12:49:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 787761F2546A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 12:50:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA8E5EE8F;
-	Tue, 23 Jan 2024 12:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72595EE7C;
+	Tue, 23 Jan 2024 12:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09cNl3S7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hg1fVGkX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E008B5C5FB;
-	Tue, 23 Jan 2024 12:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633921DFEF;
+	Tue, 23 Jan 2024 12:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706014177; cv=none; b=qMGXOPyH5vuOcTNMGyCTLWQCZfC4MVVHjW+QlKpARDv5UV4G56dDyjScNjRsXv0G/UE0sl2lTP2gGwjgwfZN6z24Us4ICh/3m9sabMpHyv96hxSWIBhUFarIlfmmoZuB7B7mAcq5k/y7csTlGvTK+cR9mbBuaaToNNUaEQHhiQA=
+	t=1706014223; cv=none; b=j+QJ1TspBPGMFI/y/sd+S5xWBP5OT2a4T4gcVKC0dU5NtsCchliyaGGDu4TlIj9FeK6+xSpM9mYlYpI44o9Nx8tZlMwwBRyOkGNOkmsTynhEhbY7WFfK+kfNudLwkw4WfZfILVkjFqo8fFKKxxei2DVmOQrqXU8WT5qhB7nNpyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706014177; c=relaxed/simple;
-	bh=h6JKwJmPKOy7vb6YbmOX8BEJYBh84k61kuSFpytqRsU=;
+	s=arc-20240116; t=1706014223; c=relaxed/simple;
+	bh=02NFEf3aVfW9LZO7jgaLmo8FSq8LShd9hyM8wZXVW7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nY6pN2xefHrxeHa2UJ1r/85VTjIsxaT46TPOgKp+y9m1g+MYG3Qs5UYUvmjgRgWSjP40dBCHPzsn1JUfSCE1qGejq1J7joyBMiMHC9WWtRUufhBnTCEMvIyMpII4On5HafkT8SyNt/xuAZdp8X8X56UmeV4bnfeNMn6cwFuCzb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09cNl3S7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA1FC433B1;
-	Tue, 23 Jan 2024 12:49:36 +0000 (UTC)
+	 MIME-Version; b=dmqeYvcLFjKsiurS6Iq3+vTdQr+Z7a/WWxEXLXFmpOea6V/AheW3osGmdmbGWhKX+ksiGR6ORrreRfJ7xlDWK+HKwf0ZSoaX1yYRfsov256QAXssdfYcxgz63PSl6P5oAlQM4bQ3z4325P135RwIsag343rDpvDFGuXNDChcsOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hg1fVGkX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE2DC43390;
+	Tue, 23 Jan 2024 12:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706014176;
-	bh=h6JKwJmPKOy7vb6YbmOX8BEJYBh84k61kuSFpytqRsU=;
+	s=korg; t=1706014223;
+	bh=02NFEf3aVfW9LZO7jgaLmo8FSq8LShd9hyM8wZXVW7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=09cNl3S7HyxpzvrNXfxtNDM2DcIJE0GwM0WwdxnoRMGHxyJeQYGtvC4Oi0zUnMqYE
-	 LtNMQhUVeLC9njZggTeBMK/rZXfnXgorI/SqFzbRKB6gyn5dsDlQ92tZBioflTpoJp
-	 8hIqc9CXmZpKuPSRHnEGN/X0svssgfl/4upLe1QI=
+	b=hg1fVGkXGHsRtFie935K/ydh+jp8+kq0z4FEqGH3gKW1ZQM+oCmdEnreoreI26hFL
+	 VgoxG6xFiWzUVuplj3vHnouAlBIBYvaQ0hBuHGzbESGtuP4jui/nfLua1qv5eIf3cq
+	 EC2WVRyhEfqNxRi9t135o+CoNqOuNxYbBLumanlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 5.10 228/286] wifi: rtlwifi: Remove bogus and dangerous ASPM disable/enable code
-Date: Mon, 22 Jan 2024 15:58:54 -0800
-Message-ID: <20240122235740.850314490@linuxfoundation.org>
+	Sagi Grimberg <sagi@grimberg.me>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 504/583] nvmet-tcp: fix a crash in nvmet_req_complete()
+Date: Mon, 22 Jan 2024 15:59:15 -0800
+Message-ID: <20240122235827.468485143@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,188 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-commit b3943b3c2971444364e03224cfc828c5789deada upstream.
+[ Upstream commit 0849a5441358cef02586fb2d60f707c0db195628 ]
 
-Ever since introduction in the commit 0c8173385e54 ("rtl8192ce: Add new
-driver") the rtlwifi code has, according to comments, attempted to
-disable/enable ASPM of the upstream bridge by writing into its LNKCTL
-register. However, the code has never been correct because it performs
-the writes to the device instead of the upstream bridge.
+in nvmet_tcp_handle_h2c_data_pdu(), if the host sends a data_offset
+different from rbytes_done, the driver ends up calling nvmet_req_complete()
+passing a status error.
+The problem is that at this point cmd->req is not yet initialized,
+the kernel will crash after dereferencing a NULL pointer.
 
-Worse yet, the offset where the PCIe capabilities reside is derived
-from the offset of the upstream bridge. As a result, the write will use
-an offset on the device that does not relate to the LNKCTL register
-making the ASPM disable/enable code outright dangerous.
+Fix the bug by replacing the call to nvmet_req_complete() with
+nvmet_tcp_fatal_error().
 
-Because of those problems, there is no indication that the driver needs
-disable/enable ASPM on the upstream bridge. As the Capabilities offset
-is not correctly calculated for the write to target device's LNKCTL
-register, the code is not disabling/enabling device's ASPM either.
-Therefore, just remove the upstream bridge related ASPM disable/enable
-code entirely.
-
-The upstream bridge related ASPM code was the only user of the struct
-mp_adapter members num4bytes, pcibridge_pciehdr_offset, and
-pcibridge_linkctrlreg so those are removed as well.
-
-Note: This change does not remove the code related to changing the
-device's ASPM on purpose (which is independent of this flawed code
-related to upstream bridge's ASPM).
-
-Suggested-by: Bjorn Helgaas <bhelgaas@kernel.org>
-Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-Fixes: 886e14b65a8f ("rtlwifi: Eliminate raw reads and writes from PCIe portion")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20231124084725.12738-2-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 872d26a391da ("nvmet-tcp: add NVMe over TCP target driver")
+Reviewed-by: Keith Busch <kbsuch@kernel.org>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c |   58 -----------------------------
- drivers/net/wireless/realtek/rtlwifi/pci.h |    5 --
- 2 files changed, 1 insertion(+), 62 deletions(-)
+ drivers/nvme/target/tcp.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -192,11 +192,8 @@ static void rtl_pci_disable_aspm(struct
- 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
- 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
- 	u8 pcibridge_vendor = pcipriv->ndis_adapter.pcibridge_vendor;
--	u8 num4bytes = pcipriv->ndis_adapter.num4bytes;
- 	/*Retrieve original configuration settings. */
- 	u8 linkctrl_reg = pcipriv->ndis_adapter.linkctrl_reg;
--	u16 pcibridge_linkctrlreg = pcipriv->ndis_adapter.
--				pcibridge_linkctrlreg;
- 	u16 aspmlevel = 0;
- 	u8 tmp_u1b = 0;
- 
-@@ -221,16 +218,8 @@ static void rtl_pci_disable_aspm(struct
- 	/*Set corresponding value. */
- 	aspmlevel |= BIT(0) | BIT(1);
- 	linkctrl_reg &= ~aspmlevel;
--	pcibridge_linkctrlreg &= ~(BIT(0) | BIT(1));
- 
- 	_rtl_pci_platform_switch_device_pci_aspm(hw, linkctrl_reg);
--	udelay(50);
--
--	/*4 Disable Pci Bridge ASPM */
--	pci_write_config_byte(rtlpci->pdev, (num4bytes << 2),
--			      pcibridge_linkctrlreg);
--
--	udelay(50);
- }
- 
- /*Enable RTL8192SE ASPM & Enable Pci Bridge ASPM for
-@@ -245,9 +234,7 @@ static void rtl_pci_enable_aspm(struct i
- 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
- 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
- 	u8 pcibridge_vendor = pcipriv->ndis_adapter.pcibridge_vendor;
--	u8 num4bytes = pcipriv->ndis_adapter.num4bytes;
- 	u16 aspmlevel;
--	u8 u_pcibridge_aspmsetting;
- 	u8 u_device_aspmsetting;
- 
- 	if (!ppsc->support_aspm)
-@@ -259,25 +246,6 @@ static void rtl_pci_enable_aspm(struct i
- 		return;
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index 3d171061cc0f..7f7fa78f0698 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -973,8 +973,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
+ 			data->ttag, le32_to_cpu(data->data_offset),
+ 			cmd->rbytes_done);
+ 		/* FIXME: use path and transport errors */
+-		nvmet_req_complete(&cmd->req,
+-			NVME_SC_INVALID_FIELD | NVME_SC_DNR);
++		nvmet_tcp_fatal_error(queue);
+ 		return -EPROTO;
  	}
  
--	/*4 Enable Pci Bridge ASPM */
--
--	u_pcibridge_aspmsetting =
--	    pcipriv->ndis_adapter.pcibridge_linkctrlreg |
--	    rtlpci->const_hostpci_aspm_setting;
--
--	if (pcibridge_vendor == PCI_BRIDGE_VENDOR_INTEL)
--		u_pcibridge_aspmsetting &= ~BIT(0);
--
--	pci_write_config_byte(rtlpci->pdev, (num4bytes << 2),
--			      u_pcibridge_aspmsetting);
--
--	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
--		"PlatformEnableASPM(): Write reg[%x] = %x\n",
--		(pcipriv->ndis_adapter.pcibridge_pciehdr_offset + 0x10),
--		u_pcibridge_aspmsetting);
--
--	udelay(50);
--
- 	/*Get ASPM level (with/without Clock Req) */
- 	aspmlevel = rtlpci->const_devicepci_aspm_setting;
- 	u_device_aspmsetting = pcipriv->ndis_adapter.linkctrl_reg;
-@@ -359,22 +327,6 @@ static bool rtl_pci_check_buddy_priv(str
- 	return find_buddy_priv;
- }
- 
--static void rtl_pci_get_linkcontrol_field(struct ieee80211_hw *hw)
--{
--	struct rtl_pci_priv *pcipriv = rtl_pcipriv(hw);
--	struct rtl_pci *rtlpci = rtl_pcidev(pcipriv);
--	u8 capabilityoffset = pcipriv->ndis_adapter.pcibridge_pciehdr_offset;
--	u8 linkctrl_reg;
--	u8 num4bbytes;
--
--	num4bbytes = (capabilityoffset + 0x10) / 4;
--
--	/*Read  Link Control Register */
--	pci_read_config_byte(rtlpci->pdev, (num4bbytes << 2), &linkctrl_reg);
--
--	pcipriv->ndis_adapter.pcibridge_linkctrlreg = linkctrl_reg;
--}
--
- static void rtl_pci_parse_configuration(struct pci_dev *pdev,
- 					struct ieee80211_hw *hw)
- {
-@@ -2035,12 +1987,6 @@ static bool _rtl_pci_find_adapter(struct
- 		    PCI_SLOT(bridge_pdev->devfn);
- 		pcipriv->ndis_adapter.pcibridge_funcnum =
- 		    PCI_FUNC(bridge_pdev->devfn);
--		pcipriv->ndis_adapter.pcibridge_pciehdr_offset =
--		    pci_pcie_cap(bridge_pdev);
--		pcipriv->ndis_adapter.num4bytes =
--		    (pcipriv->ndis_adapter.pcibridge_pciehdr_offset + 0x10) / 4;
--
--		rtl_pci_get_linkcontrol_field(hw);
- 
- 		if (pcipriv->ndis_adapter.pcibridge_vendor ==
- 		    PCI_BRIDGE_VENDOR_AMD) {
-@@ -2057,13 +2003,11 @@ static bool _rtl_pci_find_adapter(struct
- 		pdev->vendor, pcipriv->ndis_adapter.linkctrl_reg);
- 
- 	rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
--		"pci_bridge busnumber:devnumber:funcnumber:vendor:pcie_cap:link_ctl_reg:amd %d:%d:%d:%x:%x:%x:%x\n",
-+		"pci_bridge busnumber:devnumber:funcnumber:vendor:amd %d:%d:%d:%x:%x\n",
- 		pcipriv->ndis_adapter.pcibridge_busnum,
- 		pcipriv->ndis_adapter.pcibridge_devnum,
- 		pcipriv->ndis_adapter.pcibridge_funcnum,
- 		pcibridge_vendors[pcipriv->ndis_adapter.pcibridge_vendor],
--		pcipriv->ndis_adapter.pcibridge_pciehdr_offset,
--		pcipriv->ndis_adapter.pcibridge_linkctrlreg,
- 		pcipriv->ndis_adapter.amd_l1_patch);
- 
- 	rtl_pci_parse_configuration(pdev, hw);
---- a/drivers/net/wireless/realtek/rtlwifi/pci.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.h
-@@ -236,11 +236,6 @@ struct mp_adapter {
- 	u16 pcibridge_vendorid;
- 	u16 pcibridge_deviceid;
- 
--	u8 num4bytes;
--
--	u8 pcibridge_pciehdr_offset;
--	u8 pcibridge_linkctrlreg;
--
- 	bool amd_l1_patch;
- };
- 
+-- 
+2.43.0
+
 
 
 
