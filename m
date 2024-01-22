@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-13675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EAF5837D5D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2591838240
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1709E28453F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86E311F26501
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D216355E6C;
-	Tue, 23 Jan 2024 00:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82075A0E9;
+	Tue, 23 Jan 2024 01:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQg7+y+v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TusC+FhU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9173C52F7C;
-	Tue, 23 Jan 2024 00:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9753459B62;
+	Tue, 23 Jan 2024 01:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969907; cv=none; b=FJ1NcvGonFG0oNLAc7dvUcAJHEkgviHCv/8z8TJ22c5liq3zyvwNm7gdpuKsEOkh05wbUgJEH8itxa/LKTycejHyztfjGFMzbrf9TcB36+nyF2wwCti3eHsqhWYvQj1SSI/pX/QacxlhWgj8YK5A18PXOmuBRFu4Mtby6Ev8xRs=
+	t=1705974111; cv=none; b=aIoD/opKZXgUU64s8lY4slrHdEJoGUB3B54s5csB/Pa6CN3rn6vzdu/yv9C02HlWzlD/sW0xwpeWaDUYi42tCdqz5NXir1DRqiUELLkmNU59ztDWo3CVwKE/qOKjyOn0y6JRbwX5E1CODReWF7NwAWe9TVWKUyZwCONGzCHc0GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969907; c=relaxed/simple;
-	bh=hQAf0+OYJU7mThztzqfO4l9jMWCKVlrVunvoCMw2HA8=;
+	s=arc-20240116; t=1705974111; c=relaxed/simple;
+	bh=73MDIsAPft4HQX8jFLKQPHckBgeRwkx62YzsLMGXKtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=siBymXfB64MGEkeIrCPx4iaQuU7V1SuGAg6YI2KB0OpqrpxJKFiFw2FE1HSt7ezEbqWxZaCm49JnDbgeo3HLMF5w+nUybEJwHzD11kjoFvLhqPcd6rx+LSL3xwHR6FyUZ9P1LTLaegtB8I+FTFwqNMkD+IZ/a5zLj3FpRL6gpLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQg7+y+v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE1FC433F1;
-	Tue, 23 Jan 2024 00:31:46 +0000 (UTC)
+	 MIME-Version; b=M/uviGvq848QjmxZtFFvQXiA/oNj4VI0/Ik6RVnrvJsldUVJV6Gt7fwa6ZO0bpSRcFXMyuC9JtjkDLpTMlCcTS0SXOUMcdHXE7MHh9XWQSbMuyKp4XYps0tOVCyue5RnbFsKuS1VfNPzDg0NBcA1o/qnTdf3O0/TVGcztfV/QSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TusC+FhU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C22CC43394;
+	Tue, 23 Jan 2024 01:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969907;
-	bh=hQAf0+OYJU7mThztzqfO4l9jMWCKVlrVunvoCMw2HA8=;
+	s=korg; t=1705974111;
+	bh=73MDIsAPft4HQX8jFLKQPHckBgeRwkx62YzsLMGXKtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aQg7+y+vOqCRNLvneOgfRuUl0I4y+lGz5GBs0eaFPzlX9OFxrz8CFJ29Zvkh/OZEO
-	 f6w57PqewiyAtNpqAZqMAopSe7Wq4mSwC7Rkyp+R3GIPIkfnoae6s4sXeBVy2HNLxf
-	 YDxvdQSQqwaRJfRech8dgrry71cHn7BKxnOxU/wc=
+	b=TusC+FhUPn55kK6vHZ0hKZuboO9NYOJbyWN5JNgEI67Irvf358hgQsoEBx8IL0soR
+	 RVPYpV/hOs1HlxLN22isk1mJlH9us2iFjZsH4kXCDmckVpB8sEuVF5QtCMYJoDEET/
+	 q64+TU+nqXPy2+8hx8TBsZ9kBjE13U3cUSsTTEuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 519/641] perf stat: Exit perf stat if parse groups fails
+Subject: [PATCH 5.15 167/374] Bluetooth: btmtkuart: fix recv_buf() return value
 Date: Mon, 22 Jan 2024 15:57:03 -0800
-Message-ID: <20240122235834.337210499@linuxfoundation.org>
+Message-ID: <20240122235750.429483135@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,74 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-[ Upstream commit 0713ab3bd169da82c35eefd012b07b715e4ebcf7 ]
+[ Upstream commit 64057f051f20c2a2184b9db7f8037d928d68a4f4 ]
 
-Metrics were added by a callback but commit a4b8cfcabb1d90ec ("perf
-stat: Delay metric parsing") postponed this to allow optimizations based
-on the CPU configuration.
+Serdev recv_buf() callback is supposed to return the amount of bytes
+consumed, therefore an int in between 0 and count.
 
-In doing so it stopped errors in metric parsing from causing 'perf stat'
-termination.
+Do not return negative number in case of issue, just print an error and
+return count. This fixes a WARN in ttyport_receive_buf().
 
-This change adds the termination for bad metric names back in.
-
-Fixes: a4b8cfcabb1d90ec ("perf stat: Delay metric parsing")
-Reported-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Closes: https://lore.kernel.org/lkml/ZXByT1K6enTh2EHT@kernel.org/
-Link: https://lore.kernel.org/r/20231206183533.972028-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
+Fixes: 7237c4c9ec92 ("Bluetooth: mediatek: Add protocol support for MediaTek serial devices")
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-stat.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/bluetooth/btmtkuart.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
-index a3af805a1d57..78c104922181 100644
---- a/tools/perf/builtin-stat.c
-+++ b/tools/perf/builtin-stat.c
-@@ -2695,15 +2695,19 @@ int cmd_stat(int argc, const char **argv)
- 	 */
- 	if (metrics) {
- 		const char *pmu = parse_events_option_args.pmu_filter ?: "all";
-+		int ret = metricgroup__parse_groups(evsel_list, pmu, metrics,
-+						stat_config.metric_no_group,
-+						stat_config.metric_no_merge,
-+						stat_config.metric_no_threshold,
-+						stat_config.user_requested_cpu_list,
-+						stat_config.system_wide,
-+						&stat_config.metric_events);
+diff --git a/drivers/bluetooth/btmtkuart.c b/drivers/bluetooth/btmtkuart.c
+index 9ba22b13b4fa..a831d734cd9e 100644
+--- a/drivers/bluetooth/btmtkuart.c
++++ b/drivers/bluetooth/btmtkuart.c
+@@ -471,7 +471,7 @@ mtk_stp_split(struct btmtkuart_dev *bdev, const unsigned char *data, int count,
+ 	return data;
+ }
  
--		metricgroup__parse_groups(evsel_list, pmu, metrics,
--					stat_config.metric_no_group,
--					stat_config.metric_no_merge,
--					stat_config.metric_no_threshold,
--					stat_config.user_requested_cpu_list,
--					stat_config.system_wide,
--					&stat_config.metric_events);
- 		zfree(&metrics);
-+		if (ret) {
-+			status = ret;
-+			goto out;
-+		}
+-static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
++static void btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
+ {
+ 	struct btmtkuart_dev *bdev = hci_get_drvdata(hdev);
+ 	const unsigned char *p_left = data, *p_h4;
+@@ -510,25 +510,20 @@ static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
+ 			bt_dev_err(bdev->hdev,
+ 				   "Frame reassembly failed (%d)", err);
+ 			bdev->rx_skb = NULL;
+-			return err;
++			return;
+ 		}
+ 
+ 		sz_left -= sz_h4;
+ 		p_left += sz_h4;
  	}
+-
+-	return 0;
+ }
  
- 	if (add_default_attributes())
+ static int btmtkuart_receive_buf(struct serdev_device *serdev, const u8 *data,
+ 				 size_t count)
+ {
+ 	struct btmtkuart_dev *bdev = serdev_device_get_drvdata(serdev);
+-	int err;
+ 
+-	err = btmtkuart_recv(bdev->hdev, data, count);
+-	if (err < 0)
+-		return err;
++	btmtkuart_recv(bdev->hdev, data, count);
+ 
+ 	bdev->hdev->stat.byte_rx += count;
+ 
 -- 
 2.43.0
 
