@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-14420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D6348380DC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5680F837DF7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 809641C286F8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C15B1F29C14
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8219813475C;
-	Tue, 23 Jan 2024 01:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2903354BD0;
+	Tue, 23 Jan 2024 00:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBWSVTYG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SCeRJtX7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C1813474E;
-	Tue, 23 Jan 2024 01:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA4A524BD;
+	Tue, 23 Jan 2024 00:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971924; cv=none; b=Q1tgLKqxjPYA3oTDo1De9rxkpURDy4IXeNdC897hxCXRV1HXYfwkg6gxtlQXv/evmruxkhkGkXyLyfA89JJRj8f0IYIcOm4mfDCiHPNrzwsNA9u7wwhTdSR8x2XiD7xNK+a72zlbqTP9yKjt3J7V9258x11GKFu7gX/O0cn8/AU=
+	t=1705970220; cv=none; b=uJbrkKH8m1CbeXoTUiHtr0YvZq3vLtD6/40jyjCw2/csH+TZ0ezLg1BZUeJNxNoFuzmbPCkk4peGRB58EH9InUt2/5PEsyVq/xuqpZGGFPfFHM0iN8WXqy2zVkIN/XnCniz7T6g4G0aNweoP0Zk6zz9OPXGYnefv9Ke8vP5yDno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971924; c=relaxed/simple;
-	bh=Yt5qdZiLIBRoCjPkgVNWqDCZcw2dgVV4xYLP+ivJgtM=;
+	s=arc-20240116; t=1705970220; c=relaxed/simple;
+	bh=BvHLy71ZVHfVnRqjWtwfsMJt1wJ6wL/v46LPlqUzWeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WFRSUdZMDzB3iuJ1tjR6vNUyBq/NKwqzoWIxNxOXV66NP9IvoNn/jKNo1qN0juN1iF6apAHG+wh+l4iD7z6SB10gBu8jEIY5yTiFFQxcLzwJ0CBF5hf63SUCrqRB54EGGqDI0y3nip1Rx49qZ0W9hOt/tiNWTBZqYeXGbheKmGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBWSVTYG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D65C433F1;
-	Tue, 23 Jan 2024 01:05:23 +0000 (UTC)
+	 MIME-Version; b=rrSY1RpkDDt3HRwX15Unuiodh3zfiVRujO6wqYN+BJlgOmZ7ACogPhHuBAcYaasgHJOdKg+Yc32XoU45nbCveu6Nv2bFI404aEt2hCN6ZZwyRcftz1oWwAOXj4zj/NkSTU0w1wNyIqDSwwKwHPpjaXQYFbm6cCozMRqMJFL9qJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SCeRJtX7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8191EC433F1;
+	Tue, 23 Jan 2024 00:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971924;
-	bh=Yt5qdZiLIBRoCjPkgVNWqDCZcw2dgVV4xYLP+ivJgtM=;
+	s=korg; t=1705970220;
+	bh=BvHLy71ZVHfVnRqjWtwfsMJt1wJ6wL/v46LPlqUzWeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBWSVTYGrv1ufOpXl91gQqdeFvoGT+tAE0jySBlE6m5cxL6t1bvKkGB8SUU4Q2GP4
-	 avPWaYt2goqLV5LfPlteEFsZLtbr04Vn4dR8sbVdBqTBuh199At0ravjER67n1hXJU
-	 +td6qZswm/09Epu1Da88SRg080iqJpqHzvspz1As=
+	b=SCeRJtX7gOLTutwnHtMugYXMwlYHbYdnmv5GfXhw7Il0+wYjlocaPiET7muqby4CG
+	 7ZEoJ0K4KDSIgohHcXg2PJJUNeppGmerLaFS/mLnpNgm2w0mRni6dfaBKl0eqto5J1
+	 /5M2lx77Vu1uaPaWgpRIkOu0zqIHy9lNa3Bm89Gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Junhao He <hejunhao3@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	linuxarm@huawei.com,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 353/417] perf header: Fix one memory leakage in perf_event__fprintf_event_update()
+Subject: [PATCH 6.7 617/641] mptcp: relax check on MPC passive fallback
 Date: Mon, 22 Jan 2024 15:58:41 -0800
-Message-ID: <20240122235804.028433232@linuxfoundation.org>
+Message-ID: <20240122235837.554294848@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,58 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 813900d19b923fc1b241c1ce292472f68066092b ]
+[ Upstream commit c0f5aec28edf98906d28f08daace6522adf9ee7a ]
 
-When dump the raw trace by `perf report -D` ASan reports a memory
-leakage in perf_event__fprintf_event_update().
+While testing the blamed commit below, I was able to miss (!)
+packetdrill failures in the fastopen test-cases.
 
-It shows that we allocated a temporary cpumap for dumping the CPUs but
-doesn't release it and it's not used elsewhere. Fix this by free the
-cpumap after the dumping.
+On passive fastopen the child socket is created by incoming TCP MPC syn,
+allow for both MPC_SYN and MPC_ACK header.
 
-Fixes: c853f9394b7bc189 ("perf tools: Add perf_event__fprintf_event_update function")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Junhao He <hejunhao3@huawei.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: linuxarm@huawei.com
-Link: https://lore.kernel.org/r/20231207081635.8427-2-yangyicong@huawei.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 724b00c12957 ("mptcp: refine opt_mp_capable determination")
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/header.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/mptcp/subflow.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
-index 9e2dce70b130..eaeeba8d65ec 100644
---- a/tools/perf/util/header.c
-+++ b/tools/perf/util/header.c
-@@ -4314,9 +4314,10 @@ size_t perf_event__fprintf_event_update(union perf_event *event, FILE *fp)
- 		ret += fprintf(fp, "... ");
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index 91c1cda4228f..7785cda48e6b 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -783,7 +783,8 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
+ 		 * options.
+ 		 */
+ 		mptcp_get_options(skb, &mp_opt);
+-		if (!(mp_opt.suboptions & OPTION_MPTCP_MPC_ACK))
++		if (!(mp_opt.suboptions &
++		      (OPTION_MPTCP_MPC_SYN | OPTION_MPTCP_MPC_ACK)))
+ 			fallback = true;
  
- 		map = cpu_map__new_data(&ev->cpus.cpus);
--		if (map)
-+		if (map) {
- 			ret += cpu_map__fprintf(map, fp);
--		else
-+			perf_cpu_map__put(map);
-+		} else
- 			ret += fprintf(fp, "failed to get cpus\n");
- 		break;
- 	default:
+ 	} else if (subflow_req->mp_join) {
 -- 
 2.43.0
 
