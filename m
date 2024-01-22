@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-14269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A224A83806B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E6AC83849D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7F12B26CEC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AE7E299D12
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5AE657A0;
-	Tue, 23 Jan 2024 01:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99FF7319E;
+	Tue, 23 Jan 2024 02:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4imNfVq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPiXk6No"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68BBB4E1AD;
-	Tue, 23 Jan 2024 01:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D0C7318E;
+	Tue, 23 Jan 2024 02:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971615; cv=none; b=pKlc/vbT9dBYO491i2foQGUGfziVcn/fPufZCBLq/nlsoe22I4z6BIR70zmw2vSYLBp7Nx/5rqxTc6gXdNqT0J2cf15c+0A9ekpQpguxLV2bv6APjVVjThaS38VelKflCtk5ZY9dDuihHJAIgeNSdKwcbtXehKFYBpIENbaWwNE=
+	t=1705975438; cv=none; b=VK5OeIKZ7QTW4ovJf9wICVAVpsIfkjp08Gb5uyrqCfBNMxMnGzaWbuFHh+8EbA+MVH6oWG4aphMIhrrORdFeX2ERbFBmjlYsO3sAMQu3zf3Prjxo6zGV8CXgDXnJL+MVkqOWQZPykRsq2X03jPjaEO0KEhDAhGuw9Bud/dgOdv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971615; c=relaxed/simple;
-	bh=VX3MmpQkC75k6MkhjMp0FUfOFut7nTIlf6omCdnDSUw=;
+	s=arc-20240116; t=1705975438; c=relaxed/simple;
+	bh=BiVFR/sbAhciphhFjs1w0BygQ9GCm8idW60Elm4Hp5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IOQSEiNk+JLOhm+PCZ8F96hRk2wmFENcXWr7iAas8J6RME9raVkTXn/RkbINUAsakkMsJCTwfitsYdm6ycmCsZTY74ibsMKdrfNcGzO1X7PfHmRVONqtpFGsQ0qJqjAL6wmQWcN2grUqfee7hoKthw6y/L5b8MFsD7QuMSWQJD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4imNfVq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2833AC43390;
-	Tue, 23 Jan 2024 01:00:15 +0000 (UTC)
+	 MIME-Version; b=Sf4vyPE5x94D8kk3TwmeFR2IBDPm0jVxwzX8ZAAoSBIw08HHvXa+d92SJ8m3h6rz6apMRgWIr/ZZzrDCo5A4iyKUUbi3LMQf0I/8IlP/VeDGYoVEZ75CDwLJkAxqZYQr0GE2tqF6lb5vp43k+IfeUGkwwK0LM6HshIdOARfRspM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPiXk6No; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398B5C433C7;
+	Tue, 23 Jan 2024 02:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971615;
-	bh=VX3MmpQkC75k6MkhjMp0FUfOFut7nTIlf6omCdnDSUw=;
+	s=korg; t=1705975438;
+	bh=BiVFR/sbAhciphhFjs1w0BygQ9GCm8idW60Elm4Hp5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a4imNfVq6WHoLOck1mSjYnGfqly07MH6HnNAYTGPj3pzBmInmK2z8Qc6hJZ6dhFCa
-	 zfkkG5EU93B75r2SMTWk2u27BU0Wtg48Sn7LlNaKLp/6rliz3HOJyporjZRoNeqHtT
-	 0s3YkuIf6Jf+ZYCsk9//Zl5inYoJ4DhLpHDWFgVc=
+	b=ZPiXk6No4qWMRmUMdkNQvxupXWlZYqJZSYwG/gjeASKRdYBifnwBQzlgFkP4QX9J4
+	 EHk1VBMjNdYoui6iunOOgw/XZoBdxSQO+1j3N4EndExktniRZflnGgBSv6scaUgJCG
+	 8oISyXww/6APDpSqggDwL+XPnXcJzAYhvfYhq3XA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 279/417] ALSA: oxygen: Fix right channel of capture volume mixer
-Date: Mon, 22 Jan 2024 15:57:27 -0800
-Message-ID: <20240122235801.509215654@linuxfoundation.org>
+	Sathya Prakash <sathya.prakash@broadcom.com>,
+	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 397/583] scsi: mpi3mr: Clean up block devices post controller reset
+Date: Mon, 22 Jan 2024 15:57:28 -0800
+Message-ID: <20240122235824.132116443@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
 
-commit a03cfad512ac24a35184d7d87ec0d5489e1cb763 upstream.
+commit c01d515687e358b22aa8414d6dac60d7defa6eb9 upstream.
 
-There was a typo in oxygen mixer code that didn't update the right
-channel value properly for the capture volume.  Let's fix it.
+After a controller reset, if the firmware changes the state of devices to
+"hide", then remove those devices from the OS.
 
-This trivial fix was originally reported on Bugzilla.
-
-Fixes: a3601560496d ("[ALSA] oxygen: add front panel controls")
-Cc: <stable@vger.kernel.org>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=156561
-Link: https://lore.kernel.org/r/20240112111023.6208-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: <stable@vger.kernel.org> # v6.6+
+Co-developed-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+Link: https://lore.kernel.org/r/20231126053134.10133-3-chandrakanth.patil@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/oxygen/oxygen_mixer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/mpi3mr/mpi3mr_os.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/sound/pci/oxygen/oxygen_mixer.c
-+++ b/sound/pci/oxygen/oxygen_mixer.c
-@@ -718,7 +718,7 @@ static int ac97_fp_rec_volume_put(struct
- 	oldreg = oxygen_read_ac97(chip, 1, AC97_REC_GAIN);
- 	newreg = oldreg & ~0x0707;
- 	newreg = newreg | (value->value.integer.value[0] & 7);
--	newreg = newreg | ((value->value.integer.value[0] & 7) << 8);
-+	newreg = newreg | ((value->value.integer.value[1] & 7) << 8);
- 	change = newreg != oldreg;
- 	if (change)
- 		oxygen_write_ac97(chip, 1, AC97_REC_GAIN, newreg);
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index 561fe0857bc0..872d4b809d08 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -1047,8 +1047,9 @@ void mpi3mr_rfresh_tgtdevs(struct mpi3mr_ioc *mrioc)
+ 	list_for_each_entry_safe(tgtdev, tgtdev_next, &mrioc->tgtdev_list,
+ 	    list) {
+ 		if ((tgtdev->dev_handle == MPI3MR_INVALID_DEV_HANDLE) &&
+-		    tgtdev->host_exposed && tgtdev->starget &&
+-		    tgtdev->starget->hostdata) {
++		     tgtdev->is_hidden &&
++		     tgtdev->host_exposed && tgtdev->starget &&
++		     tgtdev->starget->hostdata) {
+ 			tgt_priv = tgtdev->starget->hostdata;
+ 			tgt_priv->dev_removed = 1;
+ 			atomic_set(&tgt_priv->block_io, 0);
+@@ -1064,6 +1065,10 @@ void mpi3mr_rfresh_tgtdevs(struct mpi3mr_ioc *mrioc)
+ 				mpi3mr_remove_tgtdev_from_host(mrioc, tgtdev);
+ 			mpi3mr_tgtdev_del_from_list(mrioc, tgtdev, true);
+ 			mpi3mr_tgtdev_put(tgtdev);
++		} else if (tgtdev->is_hidden & tgtdev->host_exposed) {
++			dprint_reset(mrioc, "hiding target device with perst_id(%d)\n",
++				     tgtdev->perst_id);
++			mpi3mr_remove_tgtdev_from_host(mrioc, tgtdev);
+ 		}
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
