@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-13570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99750837DBC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E46638381E7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:15:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD800B2CD1F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:13:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0C4DB22F25
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01DA21468E6;
-	Tue, 23 Jan 2024 00:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED29B1420D4;
+	Tue, 23 Jan 2024 01:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwjOOs66"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZZtha3U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66ED136658;
-	Tue, 23 Jan 2024 00:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6782B9BC;
+	Tue, 23 Jan 2024 01:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969703; cv=none; b=iar0wiBNpHP0OBrc0ireldY7lEVasqlzTsA5dnXkwf4RfZ+N+SyA8IreI06eeZX1whQ+oQRCU9L1wVBR21yc7ONgOUI2GLmZWokc4liBokD83qCT6tNSTJlqY/LeGbd6sWrXenCiTCyspgYN5/O4ZIalV4tg9Wi6SxcHkDa/AVg=
+	t=1705972128; cv=none; b=G5AIC6hXtd0W3CrXyh2V64N8jC3n230jdMXhtSssdVouVxOEwVDax044jvUU0oWyLec2UDpqakIBkLcUbwIEK8O5qRofTpIXIkdlgJ6+K5/LTwFE83wDVrg5V7WCmSPAm0Vg8IlzYNAIRZOPmOtvSMcmhq+X6NKloAIQK1JPG7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969703; c=relaxed/simple;
-	bh=5pIdF8HLwHJEDYqBPAWc8X+NuY31VWW6j+0HPZPTWMU=;
+	s=arc-20240116; t=1705972128; c=relaxed/simple;
+	bh=hEU1ln/764O/EuE7v4soC2GhtBYVKBNayYx6Tjl2mh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yzm+3Hsq3b8cBwbKL3hpZ7vIGkEiYFoR8zlrkfyj1tTiEi86o6E8gzE7aCJnDk4ycWNMq8sIgV9MqQvLvwPi5ZpyVrmKyDgih7dDEjqobZqpL0D4Qll9pLCGMSfjW82wfgFpuLHXZP+fDGoW44UBXiUf7hHoC7khXoYZaSwQag4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwjOOs66; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4070FC433F1;
-	Tue, 23 Jan 2024 00:28:23 +0000 (UTC)
+	 MIME-Version; b=FYIGGpg6QNONMkI/M/Arc5RAqZxUhH2GkSAq6Tl2+ykeoLnvx8GS1HWjtj5edG6xBEqecA6EpoHtvnkgInpa2JjztsgZbLxQAGzWFjHN1FH3VnDOqRzPfDIzwLv68Avj7EKdoq4xaj2f9fr9RQFVj8uupRoj039zFwmhePyFuCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZZtha3U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5581FC43394;
+	Tue, 23 Jan 2024 01:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969703;
-	bh=5pIdF8HLwHJEDYqBPAWc8X+NuY31VWW6j+0HPZPTWMU=;
+	s=korg; t=1705972128;
+	bh=hEU1ln/764O/EuE7v4soC2GhtBYVKBNayYx6Tjl2mh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pwjOOs66vqI7kCs1o3KX45yL7hZcIcKW9ArmHARF46BSRFBUHp1EljjAiS8vVQkjO
-	 amxnw7AanSLqLf0odViccOhh4A5Fzix+rwSWWOJ2OPBlT1L9aA6s9FtxOQnJokGfxs
-	 R6bUjc5vUnq977FunflXYlfSle9I2n7mEsj2TQRI=
+	b=DZZtha3UCyM+DAc15QX+fiTI1Z3++GM4a4BOzDZkZI5KRWKjE+LyrjCT8qnGH6NJS
+	 2xZN47Z+0470Us902J1JBAeKTRN9CaVR/ZO1yg0qIsyXsOefgWsuWgnk5eIPBPF+rB
+	 stj0Iuz/2Nrvrav/HSkk5bCYAozh0rS9d15+53WE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>
-Subject: [PATCH 6.7 413/641] serial: 8250_bcm2835aux: Restore clock error handling
+	Cameron Williams <cang1@live.co.uk>,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Subject: [PATCH 5.15 061/374] parport: parport_serial: Add Brainboxes device IDs and geometry
 Date: Mon, 22 Jan 2024 15:55:17 -0800
-Message-ID: <20240122235830.898809657@linuxfoundation.org>
+Message-ID: <20240122235746.738200256@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Cameron Williams <cang1@live.co.uk>
 
-commit 83e571f054cd742eb9a46d46ef05193904adf53f upstream.
+commit 6aa1fc5a8085bbc01687aa708dcf2dbe637a5ee3 upstream.
 
-The commit fcc446c8aa63 ("serial: 8250_bcm2835aux: Add ACPI support")
-dropped the error handling for clock acquiring. But even an optional
-clock needs this.
+Add device IDs for the Brainboxes UC-203, UC-257, UC-414, UC-475,
+IS-300/IS-500 and PX-263/PX-295 and define the relevant "geometry"
+for the cards.
+This patch requires part 1 of this series.
 
-Fixes: fcc446c8aa63 ("serial: 8250_bcm2835aux: Add ACPI support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20231220114334.4712-1-wahrenst@gmx.net
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Link: https://lore.kernel.org/r/AS4PR02MB7903A4094564BE28F1F926A6C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_bcm2835aux.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/parport/parport_serial.c |   56 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_bcm2835aux.c
-+++ b/drivers/tty/serial/8250/8250_bcm2835aux.c
-@@ -119,6 +119,8 @@ static int bcm2835aux_serial_probe(struc
+--- a/drivers/parport/parport_serial.c
++++ b/drivers/parport/parport_serial.c
+@@ -285,6 +285,38 @@ static struct pci_device_id parport_seri
+ 	{ PCI_VENDOR_ID_SUNIX, PCI_DEVICE_ID_SUNIX_1999, PCI_VENDOR_ID_SUNIX,
+ 	  0x0104, 0, 0, sunix_5099a },
  
- 	/* get the clock - this also enables the HW */
- 	data->clk = devm_clk_get_optional(&pdev->dev, NULL);
-+	if (IS_ERR(data->clk))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(data->clk), "could not get clk\n");
++	/* Brainboxes UC-203 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc1,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc2,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++
++	/* Brainboxes UC-257 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0861,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0862,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0863,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++
++	/* Brainboxes UC-414 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0e61,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc414 },
++
++	/* Brainboxes UC-475 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0981,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0982,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++
++	/* Brainboxes IS-300/IS-500 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0da0,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_is300 },
++
++	/* Brainboxes PX-263/PX-295 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x402c,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_px263 },
++
+ 	{ 0, } /* terminate list */
+ };
+ MODULE_DEVICE_TABLE(pci,parport_serial_pci_tbl);
+@@ -550,6 +582,30 @@ static struct pciserial_board pci_parpor
+ 		.base_baud      = 921600,
+ 		.uart_offset	= 0x8,
+ 	},
++	[brainboxes_uc257] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 2,
++		.base_baud	= 115200,
++		.uart_offset	= 8,
++	},
++	[brainboxes_is300] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 1,
++		.base_baud	= 115200,
++		.uart_offset	= 8,
++	},
++	[brainboxes_uc414] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 4,
++		.base_baud	= 115200,
++		.uart_offset	= 8,
++	},
++	[brainboxes_px263] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 4,
++		.base_baud	= 921600,
++		.uart_offset	= 8,
++	},
+ };
  
- 	/* get the interrupt */
- 	ret = platform_get_irq(pdev, 0);
+ struct parport_serial_private {
 
 
 
