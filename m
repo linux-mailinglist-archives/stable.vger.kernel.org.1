@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC9A183852B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E888383BC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94DC4288907
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1403CB2D698
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200931848;
-	Tue, 23 Jan 2024 02:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BB264AA3;
+	Tue, 23 Jan 2024 01:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7iCydo5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KISwYqYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A7810F1;
-	Tue, 23 Jan 2024 02:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E91A634F8;
+	Tue, 23 Jan 2024 01:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975758; cv=none; b=V8waeXKP7HW2M/8e63M2ojhk3Jcyg0KPwMLqr/vIAkjIsUSit5gWReTjnLqojrqbJm2gc/6dgn2wZ0FAvHuKWxlNWQ9PpoIdzwtREYAN1tXl62ueLUTZmPox3DD138Ds54rYVCKHlcce/zMdqFz10+llLF0dVPEu5Rr+gSBMDNM=
+	t=1705975041; cv=none; b=aFCR5jhBAQ61sJbdzbzrlJWvm3ZBySjmOV5x4W3LChmUbCZX35CFaFaTRgrw+55PAlXnPgECTLSKuxpKaP9+WtOsa6y6ztUeWOdjSia+sH1qXqpGpCdpxLGA3P5erQ4MB/V8MjrUfXJ58hXcpNuQocnHgGzo6Yuq6hjr111wOyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975758; c=relaxed/simple;
-	bh=AIySx+WIBp8NSegAp9sC6Iabpr22BdIVkcPTECtCOTA=;
+	s=arc-20240116; t=1705975041; c=relaxed/simple;
+	bh=FU6NHire4A+yS/0yNZBhHXgZtXL6ekuYio97YL9LIZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BeTDyfJgpPnTkTrqvnTBdPSp3WH/igrFFtPJnV8sHS9osSjeLi0oCi29Kv6s/IJibUCpfucMxQYkvfgZ0Wu+7j+Yujbej5O5T4PzAKhpejE2bUgAipg6tbc3h1SZf7e+tVeLIBXIBh30KpYI259uWb5slSR9c5cYiB/84yMR1bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7iCydo5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90195C433C7;
-	Tue, 23 Jan 2024 02:09:18 +0000 (UTC)
+	 MIME-Version; b=RqKNNE0mep7ydvT0qjijZimT+2X8QFvApjVWXa0HIoMl/bJF6xxB5OeCN67wvGcYaM/PKIN8vutp9w2Zy4rHAshvoJMtOTI7gbKLeAxJvDGHqdglNsJr9+PPQZ+j1rOHScWhNP+zsJ36sasrF1wQr65LuT9sMyvF3KHc0MGEWD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KISwYqYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78FBC433C7;
+	Tue, 23 Jan 2024 01:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975758;
-	bh=AIySx+WIBp8NSegAp9sC6Iabpr22BdIVkcPTECtCOTA=;
+	s=korg; t=1705975040;
+	bh=FU6NHire4A+yS/0yNZBhHXgZtXL6ekuYio97YL9LIZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e7iCydo5LxR0ITv1azqeZiUwgswFp2BmgkvHL3o8eY6aurI8DopqJOQtQOLtmvsTw
-	 YclL4OeUg4buPlrdOFXCzNziR+BOLW7LgZ5BoYLLGsJKOUMc+tk1epfynpKdYru2nX
-	 N3QhMZPSBqAyUmK0qAhPQnFZ1vj6K0wf6ekp+weg=
+	b=KISwYqYzPdAnSYOVl5n1R2BfbF77PLR+fjLttSO3xq9sN8e8luaEamb+/8Nnsnyxu
+	 AVzA4/KBt8rv3/Zf6IXV8mEtkDQUoAl1mQl8GubAFFIvsC3BnBLlpM9cgTo4nP2c23
+	 1xkzqY+8OrKEPLFeVTPiqYhDA7AaWbM1J/zHz/Bg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bugreport@ubisectech.com,
-	Yue Hu <huyue2@coolpad.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Geliang Tang <geliang.tang@suse.com>,
+	Matthieu Baerts <matthieu.baerts@tessares.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 541/583] erofs: fix inconsistent per-file compression format
+Subject: [PATCH 5.15 336/374] mptcp: drop unused sk in mptcp_get_options
 Date: Mon, 22 Jan 2024 15:59:52 -0800
-Message-ID: <20240122235828.681122817@linuxfoundation.org>
+Message-ID: <20240122235756.596413735@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Geliang Tang <geliang.tang@suse.com>
 
-[ Upstream commit 118a8cf504d7dfa519562d000f423ee3ca75d2c4 ]
+[ Upstream commit 0799e21b5a76d9f14d8a8f024d0b6b9847ad1a03 ]
 
-EROFS can select compression algorithms on a per-file basis, and each
-per-file compression algorithm needs to be marked in the on-disk
-superblock for initialization.
+The parameter 'sk' became useless since the code using it was dropped
+from mptcp_get_options() in the commit 8d548ea1dd15 ("mptcp: do not set
+unconditionally csum_reqd on incoming opt"). Let's drop it.
 
-However, syzkaller can generate inconsistent crafted images that use
-an unsupported algorithmtype for specific inodes, e.g. use MicroLZMA
-algorithmtype even it's not set in `sbi->available_compr_algs`.  This
-can lead to an unexpected "BUG: kernel NULL pointer dereference" if
-the corresponding decompressor isn't built-in.
-
-Fix this by checking against `sbi->available_compr_algs` for each
-m_algorithmformat request.  Incorrect !erofs_sb_has_compr_cfgs preset
-bitmap is now fixed together since it was harmless previously.
-
-Reported-by: <bugreport@ubisectech.com>
-Fixes: 8f89926290c4 ("erofs: get compression algorithms directly on mapping")
-Fixes: 622ceaddb764 ("erofs: lzma compression support")
-Reviewed-by: Yue Hu <huyue2@coolpad.com>
-Link: https://lore.kernel.org/r/20240113150602.1471050-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: c1665273bdc7 ("mptcp: strict validation before using mp_opt->hmac")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/decompressor.c |  2 +-
- fs/erofs/zmap.c         | 23 +++++++++++++----------
- 2 files changed, 14 insertions(+), 11 deletions(-)
+ net/mptcp/options.c  |  5 ++---
+ net/mptcp/protocol.h |  3 +--
+ net/mptcp/subflow.c  | 10 +++++-----
+ 3 files changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/fs/erofs/decompressor.c b/fs/erofs/decompressor.c
-index e75edc8f1753..8d1f86487d6e 100644
---- a/fs/erofs/decompressor.c
-+++ b/fs/erofs/decompressor.c
-@@ -399,7 +399,7 @@ int z_erofs_parse_cfgs(struct super_block *sb, struct erofs_super_block *dsb)
- 	int size, ret = 0;
+diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+index c7d6997b31c8..3b4ce8a06f99 100644
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -354,8 +354,7 @@ static void mptcp_parse_option(const struct sk_buff *skb,
+ 	}
+ }
  
- 	if (!erofs_sb_has_compr_cfgs(sbi)) {
--		sbi->available_compr_algs = Z_EROFS_COMPRESSION_LZ4;
-+		sbi->available_compr_algs = 1 << Z_EROFS_COMPRESSION_LZ4;
- 		return z_erofs_load_lz4_config(sb, dsb, NULL, 0);
+-void mptcp_get_options(const struct sock *sk,
+-		       const struct sk_buff *skb,
++void mptcp_get_options(const struct sk_buff *skb,
+ 		       struct mptcp_options_received *mp_opt)
+ {
+ 	const struct tcphdr *th = tcp_hdr(skb);
+@@ -1091,7 +1090,7 @@ bool mptcp_incoming_options(struct sock *sk, struct sk_buff *skb)
+ 		return true;
  	}
  
-diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
-index 7b55111fd533..7a1a24ae4a2d 100644
---- a/fs/erofs/zmap.c
-+++ b/fs/erofs/zmap.c
-@@ -458,7 +458,7 @@ static int z_erofs_do_map_blocks(struct inode *inode,
- 		.map = map,
- 	};
- 	int err = 0;
--	unsigned int lclusterbits, endoff;
-+	unsigned int lclusterbits, endoff, afmt;
- 	unsigned long initial_lcn;
- 	unsigned long long ofs, end;
+-	mptcp_get_options(sk, skb, &mp_opt);
++	mptcp_get_options(skb, &mp_opt);
  
-@@ -547,17 +547,20 @@ static int z_erofs_do_map_blocks(struct inode *inode,
- 			err = -EFSCORRUPTED;
- 			goto unmap_out;
- 		}
--		if (vi->z_advise & Z_EROFS_ADVISE_INTERLACED_PCLUSTER)
--			map->m_algorithmformat =
--				Z_EROFS_COMPRESSION_INTERLACED;
--		else
--			map->m_algorithmformat =
--				Z_EROFS_COMPRESSION_SHIFTED;
--	} else if (m.headtype == Z_EROFS_LCLUSTER_TYPE_HEAD2) {
--		map->m_algorithmformat = vi->z_algorithmtype[1];
-+		afmt = vi->z_advise & Z_EROFS_ADVISE_INTERLACED_PCLUSTER ?
-+			Z_EROFS_COMPRESSION_INTERLACED :
-+			Z_EROFS_COMPRESSION_SHIFTED;
- 	} else {
--		map->m_algorithmformat = vi->z_algorithmtype[0];
-+		afmt = m.headtype == Z_EROFS_LCLUSTER_TYPE_HEAD2 ?
-+			vi->z_algorithmtype[1] : vi->z_algorithmtype[0];
-+		if (!(EROFS_I_SB(inode)->available_compr_algs & (1 << afmt))) {
-+			erofs_err(inode->i_sb, "inconsistent algorithmtype %u for nid %llu",
-+				  afmt, vi->nid);
-+			err = -EFSCORRUPTED;
-+			goto unmap_out;
-+		}
- 	}
-+	map->m_algorithmformat = afmt;
+ 	/* The subflow can be in close state only if check_fully_established()
+ 	 * just sent a reset. If so, tell the caller to ignore the current packet.
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index e193b710b471..78aa6125eafb 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -636,8 +636,7 @@ int __init mptcp_proto_v6_init(void);
+ struct sock *mptcp_sk_clone(const struct sock *sk,
+ 			    const struct mptcp_options_received *mp_opt,
+ 			    struct request_sock *req);
+-void mptcp_get_options(const struct sock *sk,
+-		       const struct sk_buff *skb,
++void mptcp_get_options(const struct sk_buff *skb,
+ 		       struct mptcp_options_received *mp_opt);
  
- 	if ((flags & EROFS_GET_BLOCKS_FIEMAP) ||
- 	    ((flags & EROFS_GET_BLOCKS_READMORE) &&
+ void mptcp_finish_connect(struct sock *sk);
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index 666f6720db76..a1349c6eda46 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -152,7 +152,7 @@ static int subflow_check_req(struct request_sock *req,
+ 		return -EINVAL;
+ #endif
+ 
+-	mptcp_get_options(sk_listener, skb, &mp_opt);
++	mptcp_get_options(skb, &mp_opt);
+ 
+ 	opt_mp_capable = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPC);
+ 	opt_mp_join = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPJ);
+@@ -249,7 +249,7 @@ int mptcp_subflow_init_cookie_req(struct request_sock *req,
+ 	int err;
+ 
+ 	subflow_init_req(req, sk_listener);
+-	mptcp_get_options(sk_listener, skb, &mp_opt);
++	mptcp_get_options(skb, &mp_opt);
+ 
+ 	opt_mp_capable = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPC);
+ 	opt_mp_join = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPJ);
+@@ -407,7 +407,7 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
+ 	subflow->ssn_offset = TCP_SKB_CB(skb)->seq;
+ 	pr_debug("subflow=%p synack seq=%x", subflow, subflow->ssn_offset);
+ 
+-	mptcp_get_options(sk, skb, &mp_opt);
++	mptcp_get_options(skb, &mp_opt);
+ 	if (subflow->request_mptcp) {
+ 		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPC)) {
+ 			MPTCP_INC_STATS(sock_net(sk),
+@@ -687,7 +687,7 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
+ 		 * reordered MPC will cause fallback, but we don't have other
+ 		 * options.
+ 		 */
+-		mptcp_get_options(sk, skb, &mp_opt);
++		mptcp_get_options(skb, &mp_opt);
+ 		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPC)) {
+ 			fallback = true;
+ 			goto create_child;
+@@ -697,7 +697,7 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
+ 		if (!new_msk)
+ 			fallback = true;
+ 	} else if (subflow_req->mp_join) {
+-		mptcp_get_options(sk, skb, &mp_opt);
++		mptcp_get_options(skb, &mp_opt);
+ 		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPJ) ||
+ 		    !subflow_hmac_valid(req, &mp_opt) ||
+ 		    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
 -- 
 2.43.0
 
