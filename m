@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-15103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7CB18383E4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CB9837C82
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 162C81C29EF8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59B8E2875DB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A887D64CFF;
-	Tue, 23 Jan 2024 01:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CD813541A;
+	Tue, 23 Jan 2024 00:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqJkKq7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZsayEKVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D234E1AD;
-	Tue, 23 Jan 2024 01:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C5C33097;
+	Tue, 23 Jan 2024 00:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975089; cv=none; b=g0vNMJA/cvsSSlKQTC5KlGBN8uNrOho6LJrIMpdyCterVVUy28qWFvmruoI+6zP46w+SjE8BhM5F0s42Gv7UV+I2Epltwk2C6lVSePkJqdNvEedq1+DFviaoVnhPRHh3GD+CPXWdJEii+sWc+d59mc5UB+jc2AgowDeEiPe/uZk=
+	t=1705969648; cv=none; b=eBlI/Xb6A6ll7Mrc5Bv+n+6ymqnURK0x6FScCS6wrD9MK8UewmipCDbWA9QTNvkGuIh+VJJx7sGRkzBStJfDhOt+M7gsQf66HEIXmXl+CK1vX9RMKE2+gpyinPj3ZrW+Kqc0rQmWi0d0v1eRPGUr86TfTnyixCQ0VXccAOJSp8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975089; c=relaxed/simple;
-	bh=owmShYNwcaWJ462hD2bfGkLszbpbPG7EOaGx+2excMI=;
+	s=arc-20240116; t=1705969648; c=relaxed/simple;
+	bh=caD1ugqz5KYX3v+Ki7zLPscwtL9dJ4kF/zAeXa4UYgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NRDtpE51+lx4DSNICAd2FoDEQ6uZICQPFuptamYbvexEn2vodGGbcD1N2XG9RKhffqV2eKkvsg7vSjYULmA661/OiltAFPvmHzsuvvJJyMwqnYg7ZoYA1qP2wuvvPO5Pz3oXxYEon76BB10Vq44F7p/IV2vQwM9P+vMBQ7XXj0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqJkKq7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF1EC433C7;
-	Tue, 23 Jan 2024 01:58:09 +0000 (UTC)
+	 MIME-Version; b=UKhfsGo+DRibjh4f0sbAvcnI2WolEZ0S8kDvbZqoxXBbXvGrZOelW2t2nv21Vb4gPkoamTvTkiHnXkOhdLV5JMWDXJGbGM8NmYKCco9qxNuvQYTaaQG3p6HkWdjphuVv4BFBFupZG1rg+AWEXe59wQGfPHi6uFVGk0gjS66rk8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZsayEKVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53974C433F1;
+	Tue, 23 Jan 2024 00:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975089;
-	bh=owmShYNwcaWJ462hD2bfGkLszbpbPG7EOaGx+2excMI=;
+	s=korg; t=1705969647;
+	bh=caD1ugqz5KYX3v+Ki7zLPscwtL9dJ4kF/zAeXa4UYgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nqJkKq7lYrR4ryU6pUluBxbTuKPPG4dzNs5zsevvHgn8HKNJaIQ3NTqAh4vWFMxje
-	 pVNXoRqXuQdTJi9H8OPYvQyrPN5vZEYVESWMe3PCd4gsWeSsog2wlhqN9c+4B/4YrV
-	 2RYMzqsybXx49qGabACe7WohLA56mNW4aSDAcF1k=
+	b=ZsayEKVfB8Mm4kNZ66AQs8h7FaApxq2rrSzfocuPcoygO2bZ9An9rqXrPFcpQFs9X
+	 F7n0gG8nx0byV2nFZrkeVdWYbiYY112soTjWfe4UMBciJYFCs/4FKaEgPYcEz3vn2C
+	 LfKHDLzyu1BOB3o49fatn3q9sUOvNF6XdNBK8d9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ricardo B. Marliere" <ricardo@marliere.net>,
-	Mike Isely <isely@pobox.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+621409285c4156a009b3@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 233/583] media: pvrusb2: fix use after free on context disconnection
-Date: Mon, 22 Jan 2024 15:54:44 -0800
-Message-ID: <20240122235819.117359027@linuxfoundation.org>
+	Alice Ryhl <aliceryhl@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 6.7 381/641] binder: fix async space check for 0-sized buffers
+Date: Mon, 22 Jan 2024 15:54:45 -0800
+Message-ID: <20240122235829.882700601@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marliere <ricardo@marliere.net>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit ded85b0c0edd8f45fec88783d7555a5b982449c1 ]
+commit 3091c21d3e9322428691ce0b7a0cfa9c0b239eeb upstream.
 
-Upon module load, a kthread is created targeting the
-pvr2_context_thread_func function, which may call pvr2_context_destroy
-and thus call kfree() on the context object. However, that might happen
-before the usb hub_event handler is able to notify the driver. This
-patch adds a sanity check before the invalid read reported by syzbot,
-within the context disconnection call stack.
+Move the padding of 0-sized buffers to an earlier stage to account for
+this round up during the alloc->free_async_space check.
 
-Reported-and-tested-by: syzbot+621409285c4156a009b3@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000a02a4205fff8eb92@google.com/
-
-Fixes: e5be15c63804 ("V4L/DVB (7711): pvrusb2: Fix race on module unload")
-Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
-Acked-by: Mike Isely <isely@pobox.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-5-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/pvrusb2/pvrusb2-context.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/android/binder_alloc.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/usb/pvrusb2/pvrusb2-context.c b/drivers/media/usb/pvrusb2/pvrusb2-context.c
-index 14170a5d72b3..1764674de98b 100644
---- a/drivers/media/usb/pvrusb2/pvrusb2-context.c
-+++ b/drivers/media/usb/pvrusb2/pvrusb2-context.c
-@@ -268,7 +268,8 @@ void pvr2_context_disconnect(struct pvr2_context *mp)
- {
- 	pvr2_hdw_disconnect(mp->hdw);
- 	mp->disconnect_flag = !0;
--	pvr2_context_notify(mp);
-+	if (!pvr2_context_shutok())
-+		pvr2_context_notify(mp);
- }
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -407,6 +407,10 @@ static struct binder_buffer *binder_allo
+ 				alloc->pid, extra_buffers_size);
+ 		return ERR_PTR(-EINVAL);
+ 	}
++
++	/* Pad 0-size buffers so they get assigned unique addresses */
++	size = max(size, sizeof(void *));
++
+ 	if (is_async &&
+ 	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
+@@ -415,9 +419,6 @@ static struct binder_buffer *binder_allo
+ 		return ERR_PTR(-ENOSPC);
+ 	}
  
- 
--- 
-2.43.0
-
+-	/* Pad 0-size buffers so they get assigned unique addresses */
+-	size = max(size, sizeof(void *));
+-
+ 	while (n) {
+ 		buffer = rb_entry(n, struct binder_buffer, rb_node);
+ 		BUG_ON(!buffer->free);
 
 
 
