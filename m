@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-14144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 386CE837FAB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 345C483847D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8561C2937F7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D93601F29301
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBD564A9C;
-	Tue, 23 Jan 2024 00:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C47C6EB55;
+	Tue, 23 Jan 2024 02:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKqHNP/a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Po4vHaLb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C56064A80;
-	Tue, 23 Jan 2024 00:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2036EB50;
+	Tue, 23 Jan 2024 02:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971277; cv=none; b=b1Gr9k3UmYUDyEKOJppMffrv3lFX/UF8EXq8NLpBc4qvedCQnbly2SSePuyLUA3iyQFB804+3PcNZtvXvYtueMRb8MG+WK/h4CgNqOVk5XWazPJCmLk/JyxWiRPSasvA4qpSH+PP11IJZDkuB703Z4VCPSt+x472FJo+Ws5Qi5k=
+	t=1705975405; cv=none; b=EdIgSGBzgaxTghbyfrtTKZWunI/FL77WVRlFkZWFAQOeMuKXLs3AArDOsKXVMNomc8u9scpxQwUehx7OXLxTqjt4Mpepl8ctrYqZDYxFA5y+5uJDDDHO3JCxySiAAz5d/zyfHpVlaIeBjbc8pbJVxz3SBkZcna4uYgDqn4N0ZfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971277; c=relaxed/simple;
-	bh=jclE65WoMfMo6/EYEh4Oi3qlNMye/emCgEbec2zSiR0=;
+	s=arc-20240116; t=1705975405; c=relaxed/simple;
+	bh=uqeztJ24AhFFsjDvU+6leozVNIALYGP0rJpNkhkQYn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qw/cd9WhBnygOWpoNHQsnBQ+3g7FF3uPcRssKbl/TBkNCc7qHoj4/aXgcfL3SkiAIOr8+izy2lZrOufWTNg7Y32ZrGnD5eGuLmGzVcAsZChj7kEVdIL1SRo4QbFWriUDCoexYeNyD168MafCp3K7sBLhZCCc6QHUAgODn/8+Kz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKqHNP/a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C63FC433F1;
-	Tue, 23 Jan 2024 00:54:37 +0000 (UTC)
+	 MIME-Version; b=rpzlFNKgRdsQaZ0ysPBGK9hZpyPOf7KIUIIziXB4Xb3R7RpHLoUy5N+WDL6Sc2efAhov/W35YwDWMiGMwvwLXRQtatHNSI/nHrbNpsZRa4UqGu06bKUXprZ8AU6PujQndoTtcgzcu1FMW8FOJPYHJ7Ovx7gVaKyEEldmRCi5j6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Po4vHaLb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF23DC433C7;
+	Tue, 23 Jan 2024 02:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971277;
-	bh=jclE65WoMfMo6/EYEh4Oi3qlNMye/emCgEbec2zSiR0=;
+	s=korg; t=1705975405;
+	bh=uqeztJ24AhFFsjDvU+6leozVNIALYGP0rJpNkhkQYn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EKqHNP/aDHJZW5ybpNJUjz5QZz3W6hj+RfJmZeC1o5C5yF4/4q623W/U5d38aVJbV
-	 X+R543Tw+typZJ45gNB349NgsasVz0qvn1J4lt06FEroyO4fXxakilA77IywsFUNp0
-	 aF+lAZI95+tpJ13HInKZSUpDH1exHP/KGIPkfAlw=
+	b=Po4vHaLb2ltC3GzMiSKLF98k+gGf2/Jsk2HkcPnX9kSAN8BoOFVSt8oRsu2Olomla
+	 Gy3QJPEx6Sb96pLEcULFKaPv5nD5G4lUAUQvbZzskL8HMRKtr9b8jmLIVIZ1HkdbKI
+	 ctT5K7iXBDSTQ/e66y06gAw9cMfZlvIUuJJphvCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 102/286] crypto: sahara - improve error handling in sahara_sha_process()
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.6 357/583] Revert "usb: gadget: f_uvc: change endpoint allocation in uvc_function_bind()"
 Date: Mon, 22 Jan 2024 15:56:48 -0800
-Message-ID: <20240122235736.010609768@linuxfoundation.org>
+Message-ID: <20240122235822.943400434@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +60,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 5deff027fca49a1eb3b20359333cf2ae562a2343 ]
+commit 895ee5aefb7e24203de5dffae7ce9a02d78fa3d1 upstream.
 
-sahara_sha_hw_data_descriptor_create() returns negative error codes on
-failure, so make sure the errors are correctly handled / propagated.
+This reverts commit 3c5b006f3ee800b4bd9ed37b3a8f271b8560126e.
 
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+gadget_is_{super|dual}speed() API check UDC controller capitblity. It
+should pass down highest speed endpoint descriptor to UDC controller. So
+UDC controller driver can reserve enough resource at check_config(),
+especially mult and maxburst. So UDC driver (such as cdns3) can know need
+at least (mult + 1) * (maxburst + 1) * wMaxPacketSize internal memory for
+this uvc functions.
+
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231224153816.1664687-5-Frank.Li@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/sahara.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/f_uvc.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 67960acd786a..0ac793f03e28 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -987,7 +987,10 @@ static int sahara_sha_process(struct ahash_request *req)
- 		return ret;
- 
- 	if (rctx->first) {
--		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
-+		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
-+		if (ret)
-+			return ret;
-+
- 		dev->hw_desc[0]->next = 0;
- 		rctx->first = 0;
- 	} else {
-@@ -995,7 +998,10 @@ static int sahara_sha_process(struct ahash_request *req)
- 
- 		sahara_sha_hw_context_descriptor_create(dev, rctx, req, 0);
- 		dev->hw_desc[0]->next = dev->hw_phys_desc[1];
--		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
-+		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
-+		if (ret)
-+			return ret;
-+
- 		dev->hw_desc[1]->next = 0;
+--- a/drivers/usb/gadget/function/f_uvc.c
++++ b/drivers/usb/gadget/function/f_uvc.c
+@@ -719,13 +719,29 @@ uvc_function_bind(struct usb_configurati
  	}
+ 	uvc->enable_interrupt_ep = opts->enable_interrupt_ep;
  
--- 
-2.43.0
-
+-	ep = usb_ep_autoconfig(cdev->gadget, &uvc_fs_streaming_ep);
++	/*
++	 * gadget_is_{super|dual}speed() API check UDC controller capitblity. It should pass down
++	 * highest speed endpoint descriptor to UDC controller. So UDC controller driver can reserve
++	 * enough resource at check_config(), especially mult and maxburst. So UDC driver (such as
++	 * cdns3) can know need at least (mult + 1) * (maxburst + 1) * wMaxPacketSize internal
++	 * memory for this uvc functions. This is the only straightforward method to resolve the UDC
++	 * resource allocation issue in the current gadget framework.
++	 */
++	if (gadget_is_superspeed(c->cdev->gadget))
++		ep = usb_ep_autoconfig_ss(cdev->gadget, &uvc_ss_streaming_ep,
++					  &uvc_ss_streaming_comp);
++	else if (gadget_is_dualspeed(cdev->gadget))
++		ep = usb_ep_autoconfig(cdev->gadget, &uvc_hs_streaming_ep);
++	else
++		ep = usb_ep_autoconfig(cdev->gadget, &uvc_fs_streaming_ep);
++
+ 	if (!ep) {
+ 		uvcg_info(f, "Unable to allocate streaming EP\n");
+ 		goto error;
+ 	}
+ 	uvc->video.ep = ep;
+ 
++	uvc_fs_streaming_ep.bEndpointAddress = uvc->video.ep->address;
+ 	uvc_hs_streaming_ep.bEndpointAddress = uvc->video.ep->address;
+ 	uvc_ss_streaming_ep.bEndpointAddress = uvc->video.ep->address;
+ 
 
 
 
