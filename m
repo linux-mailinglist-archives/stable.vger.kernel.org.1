@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-13769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2C2837E06
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7966838314
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E1D4291BFD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AF941F27DA8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E57A653E00;
-	Tue, 23 Jan 2024 00:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA5D604BD;
+	Tue, 23 Jan 2024 01:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUj46WmI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1H8QHYet"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DA8524BD;
-	Tue, 23 Jan 2024 00:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD796025E;
+	Tue, 23 Jan 2024 01:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970199; cv=none; b=QVPEpcjt42Mpc4DtgFKir0Ew+lGaXi4yfnevGRsW3N2N77I+VyfUgyUdM+1LzLM26XAoQD1FxJkN5CJm06WeOav9b2tsK/pWilyhBDfPN1yeXtOAGM0n0yIwlPfCwXlsdjezNZee2pj7uzm777x9TIV5ZB+qkXJb29i+AozMU9Y=
+	t=1705974698; cv=none; b=mYb4+IQDJfJAxK04fEklu2aldNUFTWmCWS8fzvZa+Zh5bK1ZMMzHBBp0GZ0uWfeEiMELeo1oQjIh+zwDP8Smd0MQkytiva0F8EZUNxtKKobYfU5JVi8Kn/NQUXat0DVaAGaqbeVDRz5L+dm+J+rSoN3IEY0U8XlMgG8yAhXB6b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970199; c=relaxed/simple;
-	bh=2B1NXSw0dyx4bw7xGCslB3o5UDEqgaythDV/d2I0Cdc=;
+	s=arc-20240116; t=1705974698; c=relaxed/simple;
+	bh=NleCEMcPphWq0pbzd5QRPVd+KKmhQDyEaq1XgFycVPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QD5hV0Cw3cW/c6s0aLsrSZ0+NUYcMECNH4nErVCUT/wpJuELh/3P4LMBiBdmaTSBSypMl+qd4CdLSBL3QpIR57TK/M6EGJgsbGt7Y7pmJw1wknuxPPhrD5xzlp/jbyiOsK23SuVlIiYvKYfea1c2bQRQUlPYLkXOE5RYW4+NPto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUj46WmI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E519C43399;
-	Tue, 23 Jan 2024 00:36:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gDtjltkFg8R1gE9APwulKcME597hJNd3FLbW2dVHC2QDWfrWmN0/nze5BYlvbHrXoRDDwgH6d9xuQfUUDnKlXupxoqphgAKqvRKI7cfxcwuTZraoRxv8fE0XEXC9zew5eOCTdObgXQIXM5Ne2q8vlFQEqVXH6Z0JjlyyczapucA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1H8QHYet; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4DDCC433A6;
+	Tue, 23 Jan 2024 01:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970199;
-	bh=2B1NXSw0dyx4bw7xGCslB3o5UDEqgaythDV/d2I0Cdc=;
+	s=korg; t=1705974697;
+	bh=NleCEMcPphWq0pbzd5QRPVd+KKmhQDyEaq1XgFycVPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AUj46WmInS/PCJREqaCJwgcexYTzIORDVLOtYRMIQyPPNxWy1fle/PuO25YPL0yRj
-	 AFEJI1bSqzDZ0obE8BH3iXnGaqzpphvnXzpcME3S925D4XKRY0ng7/dGHSXGxgiccF
-	 IaBH6JiD/tjzUEhS1vdGPr/RaikDZPeHmdH1aRaA=
+	b=1H8QHYett8k3mhcpe6SGHS2jsP7x6zxpvXM2t6AdIas88SXmqOFooJdRDrCi8wix0
+	 47Ff33KbpoKqf+KMzqJU6v/fT3bfMi2GrHb4atqx5zhIO+gCta898bWawaM6jRQiRr
+	 P2n2zed7DJ4uv8MjUmbcJxFWriY3ONu4+qua6XEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Simek <michal.simek@amd.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 606/641] dt-bindings: gpio: xilinx: Fix node address in gpio
-Date: Mon, 22 Jan 2024 15:58:30 -0800
-Message-ID: <20240122235837.210134620@linuxfoundation.org>
+	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.15 255/374] Revert "usb: dwc3: Soft reset phy on probe for host"
+Date: Mon, 22 Jan 2024 15:58:31 -0800
+Message-ID: <20240122235753.640500041@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +59,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Simek <michal.simek@amd.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 314c020c4ed3de72b15603eb6892250bc4b51702 ]
+commit 7059fbebcb00554c3f31e5b5d93ef6d2d96dc7b4 upstream.
 
-Node address doesn't match reg property which is not correct.
+This reverts commit 8bea147dfdf823eaa8d3baeccc7aeb041b41944b.
 
-Fixes: ba96b2e7974b ("dt-bindings: gpio: gpio-xilinx: Convert Xilinx axi gpio binding to YAML")
-Signed-off-by: Michal Simek <michal.simek@amd.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The phy soft reset GUSB2PHYCFG.PHYSOFTRST only applies to UTMI phy, not
+ULPI. This fix is incomplete.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: 8bea147dfdf8 ("usb: dwc3: Soft reset phy on probe for host")
+Reported-by: Köry Maincent <kory.maincent@bootlin.com>
+Closes: https://lore.kernel.org/linux-usb/20231205151959.5236c231@kmaincent-XPS-13-7390
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/29a26593a60eba727de872a3e580a674807b3339.1703282469.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/core.c |   39 +--------------------------------------
+ 1 file changed, 1 insertion(+), 38 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml b/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
-index c1060e5fcef3..d3d8a2e143ed 100644
---- a/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
-+++ b/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
-@@ -126,7 +126,7 @@ examples:
-   - |
-     #include <dt-bindings/interrupt-controller/arm-gic.h>
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -277,46 +277,9 @@ int dwc3_core_soft_reset(struct dwc3 *dw
+ 	 * XHCI driver will reset the host block. If dwc3 was configured for
+ 	 * host-only mode or current role is host, then we can return early.
+ 	 */
+-	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
++	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
+ 		return 0;
  
--        gpio@e000a000 {
-+        gpio@a0020000 {
-             compatible = "xlnx,xps-gpio-1.00.a";
-             reg = <0xa0020000 0x10000>;
-             #gpio-cells = <2>;
--- 
-2.43.0
-
+-	/*
+-	 * If the dr_mode is host and the dwc->current_dr_role is not the
+-	 * corresponding DWC3_GCTL_PRTCAP_HOST, then the dwc3_core_init_mode
+-	 * isn't executed yet. Ensure the phy is ready before the controller
+-	 * updates the GCTL.PRTCAPDIR or other settings by soft-resetting
+-	 * the phy.
+-	 *
+-	 * Note: GUSB3PIPECTL[n] and GUSB2PHYCFG[n] are port settings where n
+-	 * is port index. If this is a multiport host, then we need to reset
+-	 * all active ports.
+-	 */
+-	if (dwc->dr_mode == USB_DR_MODE_HOST) {
+-		u32 usb3_port;
+-		u32 usb2_port;
+-
+-		usb3_port = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
+-		usb3_port |= DWC3_GUSB3PIPECTL_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
+-
+-		usb2_port = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
+-		usb2_port |= DWC3_GUSB2PHYCFG_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
+-
+-		/* Small delay for phy reset assertion */
+-		usleep_range(1000, 2000);
+-
+-		usb3_port &= ~DWC3_GUSB3PIPECTL_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
+-
+-		usb2_port &= ~DWC3_GUSB2PHYCFG_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
+-
+-		/* Wait for clock synchronization */
+-		msleep(50);
+-		return 0;
+-	}
+-
+ 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
+ 	reg |= DWC3_DCTL_CSFTRST;
+ 	reg &= ~DWC3_DCTL_RUN_STOP;
 
 
 
