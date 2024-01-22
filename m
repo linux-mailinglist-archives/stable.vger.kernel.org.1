@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A2F18382D2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC9F08384BD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D4611C29544
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66632299DBE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC0A4D13F;
-	Tue, 23 Jan 2024 01:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35B874E2C;
+	Tue, 23 Jan 2024 02:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SItgwUBJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ycjE83Ua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787B73FF4;
-	Tue, 23 Jan 2024 01:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A198174E25;
+	Tue, 23 Jan 2024 02:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974635; cv=none; b=Y2KeJ3cNG+I0yXEcdqJ6Cb2uI260fqgvFGiNtUkJw9sF7u8OPERUOqjVM7wqPo3rJzfKjS1Hr/zzkQMWMZdcuRERpO1jOyrgcwcBC81M0nC7+JBjld2wUENUU6vIEKH2x3k9HcKYOBr12wDOxzUWHlo3DrsVhbiu4lek5puvAF0=
+	t=1705975473; cv=none; b=GgGhR2z/dHxWHdhQohcyOhdpuZKU7Mv8IaJg/FMxxMLs7XAb2ZSt4mIENwmNIsa8dTx6cVr60XeJ2OPGygeONXl26Ge5vCnvae+D82sX+8HqiFzFKMMF8ZEWSK2FeM6od8TxyIs5Sz+AQzyDzncRiojPFPVP1beGudEi1MxPbWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974635; c=relaxed/simple;
-	bh=f/atErg02+hHUPemVezEHFdH3orHYMGyljYijJDCrNk=;
+	s=arc-20240116; t=1705975473; c=relaxed/simple;
+	bh=1H70l8E45MxcPJ0fIGBzxOLW7jRAhXTx0PSgOhoKX78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0t0HlRRM+7rlkusVsFn8Zbb7P4mkFBzqHxBShphjAykn+VAUm9ZH+6ox3Qok1MLBMvsfdxtlZHCS4GsbwkohE0gpZNnarU1UG7b5La1N1KHh4zaCjt+JYfCgN0I6Tz/D2gq9s3P4mNRYULRE3+WW//tJj6oszpL0XICebg6bAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SItgwUBJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396CBC43390;
-	Tue, 23 Jan 2024 01:50:35 +0000 (UTC)
+	 MIME-Version; b=iQDrWZSypDSHBWZq5sZBqWYMRe/xMQgKENErr7lrMEv1oTHpb8TZZkDVkuP6y2FvwsWZJga7h0T49e5JgKKuhCnBk2K/mDbUa5UL0y6dBdvgAd6l5dGufyL/QHgPhjwRl3Bd1dYkPhhCZmMT1hpmMtZ4mHByUc1mJdYR5szFL9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ycjE83Ua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F2B6C433C7;
+	Tue, 23 Jan 2024 02:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974635;
-	bh=f/atErg02+hHUPemVezEHFdH3orHYMGyljYijJDCrNk=;
+	s=korg; t=1705975473;
+	bh=1H70l8E45MxcPJ0fIGBzxOLW7jRAhXTx0PSgOhoKX78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SItgwUBJicPybPMvSEg0EscGP60Ywj67uTNq7TC0bm9pU7Yh17XngGAz2JWvZthIw
-	 9NUCjmYa5usrVsj308UMzykDhslBxaBdqA7Km5EhxysipCdF2tTc5Bk74RNMBwMAbs
-	 D03G8nzO0Ixgsxqv0rryzDhpMW0ZOsLELnIlKdgA=
+	b=ycjE83UahfTRqQzsAaZqHIs4PgzmFibIgZgBs4N2KMTqbf+XdMJZAIo7rQNMOJ8q5
+	 mUX8irKb7PQRetewO2/dyOaY7zDr24AKoK51W6sCzkpiAa7O+c+3VO+0paOawFuXJk
+	 uy/QpTFw3/imxxp7hiPwqcTAunqJFAQJKMBawY68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Su Hui <suhui@nfschina.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 223/374] clk: si5341: fix an error code problem in si5341_output_clk_set_rate
+	Kunkun Jiang <jiangkunkun@huawei.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: [PATCH 6.6 428/583] KVM: arm64: vgic-v4: Restore pending state on host userspace write
 Date: Mon, 22 Jan 2024 15:57:59 -0800
-Message-ID: <20240122235752.431524646@linuxfoundation.org>
+Message-ID: <20240122235825.077196709@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 5607068ae5ab02c3ac9cabc6859d36e98004c341 ]
+commit 7b95382f965133ef61ce44aaabc518c16eb46909 upstream.
 
-regmap_bulk_write() return zero or negative error code, return the value
-of regmap_bulk_write() rather than '0'.
+When the VMM writes to ISPENDR0 to set the state pending state of
+an SGI, we fail to convey this to the HW if this SGI is already
+backed by a GICv4.1 vSGI.
 
-Fixes: 3044a860fd09 ("clk: Add Si5341/Si5340 driver")
-Acked-by: Mike Looijmans <mike.looijmans@topic.nl>
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20231101031633.996124-1-suhui@nfschina.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is a bit of a corner case, as this would only occur if the
+vgic state is changed on an already running VM, but this can
+apparently happen across a guest reset driven by the VMM.
+
+Fix this by always writing out the pending_latch value to the
+HW, and reseting it to false.
+
+Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Cc: stable@vger.kernel.org # 5.10+
+Link: https://lore.kernel.org/r/7e7f2c0c-448b-10a9-8929-4b8f4f6e2a32@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk-si5341.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c |   27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/clk/clk-si5341.c b/drivers/clk/clk-si5341.c
-index 91a6bc74ebd5..cda5a0f4d9df 100644
---- a/drivers/clk/clk-si5341.c
-+++ b/drivers/clk/clk-si5341.c
-@@ -892,10 +892,8 @@ static int si5341_output_clk_set_rate(struct clk_hw *hw, unsigned long rate,
- 	r[0] = r_div ? (r_div & 0xff) : 1;
- 	r[1] = (r_div >> 8) & 0xff;
- 	r[2] = (r_div >> 16) & 0xff;
--	err = regmap_bulk_write(output->data->regmap,
-+	return regmap_bulk_write(output->data->regmap,
- 			SI5341_OUT_R_REG(output), r, 3);
--
--	return 0;
- }
+--- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+@@ -365,19 +365,26 @@ static int vgic_v3_uaccess_write_pending
+ 		struct vgic_irq *irq = vgic_get_irq(vcpu->kvm, vcpu, intid + i);
  
- static int si5341_output_reparent(struct clk_si5341_output *output, u8 index)
--- 
-2.43.0
-
+ 		raw_spin_lock_irqsave(&irq->irq_lock, flags);
+-		if (test_bit(i, &val)) {
+-			/*
+-			 * pending_latch is set irrespective of irq type
+-			 * (level or edge) to avoid dependency that VM should
+-			 * restore irq config before pending info.
+-			 */
+-			irq->pending_latch = true;
+-			vgic_queue_irq_unlock(vcpu->kvm, irq, flags);
+-		} else {
++
++		/*
++		 * pending_latch is set irrespective of irq type
++		 * (level or edge) to avoid dependency that VM should
++		 * restore irq config before pending info.
++		 */
++		irq->pending_latch = test_bit(i, &val);
++
++		if (irq->hw && vgic_irq_is_sgi(irq->intid)) {
++			irq_set_irqchip_state(irq->host_irq,
++					      IRQCHIP_STATE_PENDING,
++					      irq->pending_latch);
+ 			irq->pending_latch = false;
+-			raw_spin_unlock_irqrestore(&irq->irq_lock, flags);
+ 		}
+ 
++		if (irq->pending_latch)
++			vgic_queue_irq_unlock(vcpu->kvm, irq, flags);
++		else
++			raw_spin_unlock_irqrestore(&irq->irq_lock, flags);
++
+ 		vgic_put_irq(vcpu->kvm, irq);
+ 	}
+ 
 
 
 
