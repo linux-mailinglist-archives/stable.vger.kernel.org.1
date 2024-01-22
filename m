@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFAEC837E4A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D06B783833E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:27:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FEEB1F23388
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:37:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DB811F252AD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0E745F545;
-	Tue, 23 Jan 2024 00:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A897E60BB4;
+	Tue, 23 Jan 2024 01:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fLB6GzEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="da5mx2+p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905E25579C;
-	Tue, 23 Jan 2024 00:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690D329408;
+	Tue, 23 Jan 2024 01:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970498; cv=none; b=c537xgpaknTEP+XRnCj21Dkenjc0awosiq+kg5Rb19CtHGnARBuOBGDL17+7b8FXp9LeSiQv0BW7jn9AHqEbyNG+YGxLoK0JjVlbdQKfUBHLeoN9ZoM0ypkksxLHkhAvfzenJtESgiYGR09kyuEtUkTFq2BOlY5WisFzlnkxzMQ=
+	t=1705974744; cv=none; b=HvPN6ptAFYtphSEDPtj5mnQkARm2baUpZreVSIQIFQNL+lJjA4jVQEX9t8y5QdwR56SPYpmwRIYWZkC4j6BxTtoPLlzx2DMuZRfs4YJyLcHXv/MN3jsHjWOIXhox0Itqfnm1f42CqJKtGBm/C5Mu0HJFg9TismXssITuYbloDPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970498; c=relaxed/simple;
-	bh=Yil6hZuKy/n66FFxnb3ZIPkg/NSW8YapRjTpodSNsQI=;
+	s=arc-20240116; t=1705974744; c=relaxed/simple;
+	bh=qbFsM7nQcCuivhtYqLBVY8CntLP4Zw95fTZkeX8Ava0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P8e8t5Vyuq2GLrA8qtTGRzXZxwQRooWl4pRxGZYjMSu1SlRBirbwa20Q5tPKF6BLZ97IFrFXDvgQzB7vU0UvjEGAc5jYdNZbvueAYkIFoXgthomiiGHTE6axYrtlO6cuFTt8OS9vUo7dOL4TrX3AMJrg2AQByIXwzEohJnQKth0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fLB6GzEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15153C433C7;
-	Tue, 23 Jan 2024 00:41:37 +0000 (UTC)
+	 MIME-Version; b=dGwOZojgNpK2YqC9sqiqmy3RPO0qn2Gt9vIrK1Vhm9F36i3/s8tFb4DLNX2QK+m4dm5zEmjxNllS+qmf0+HXNtk5YtYu74T1iWa8fxe6ZeNfpzSchcuQb+0wRWDKbdGQxrRvQRuPueIer3WtqAy2HQfKJj9Owh7ZHOsVMLXaico=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=da5mx2+p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D63CC43390;
+	Tue, 23 Jan 2024 01:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970498;
-	bh=Yil6hZuKy/n66FFxnb3ZIPkg/NSW8YapRjTpodSNsQI=;
+	s=korg; t=1705974744;
+	bh=qbFsM7nQcCuivhtYqLBVY8CntLP4Zw95fTZkeX8Ava0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fLB6GzEgkmHj67YCKBOW3AzEMTsVA2+9yh7Gew9TOPYwMYf0mm6EB/g015mz6TKUo
-	 CWHYueTvLwQ3BknNKYiuRLCJ9dnZTBoJzX9E5YAux2XG36lhmstw8vjvLi9u1y3upN
-	 WFDQV+PAvjLQjWOryXjy1vv5IrYLmn1uuQ6pGQ54=
+	b=da5mx2+puIl9zMSSW9PAPg4dgJclvYahpcwGN0tzGwQNUKQAYrzBs5SXU3ex1nnRf
+	 7vvvu6JsJDA8Es/3FEby6CGnOIjCEkXW4hTQeSOLJvZVCHLB1g5OGbiz0e5J1GXUO8
+	 LoWHlhgTpZOM/ImiJ+VkWtRG6vk5PBAJDNWjbASM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	YiFei Zhu <zhuyifei@google.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/417] crypto: sa2ul - Return crypto_aead_setkey to transfer the error
-Date: Mon, 22 Jan 2024 15:53:23 -0800
-Message-ID: <20240122235752.825906035@linuxfoundation.org>
+Subject: [PATCH 6.6 153/583] selftests/bpf: Relax time_tai test for equal timestamps in tai_forward
+Date: Mon, 22 Jan 2024 15:53:24 -0800
+Message-ID: <20240122235816.748052917@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: YiFei Zhu <zhuyifei@google.com>
 
-[ Upstream commit ce852f1308ac738e61c5b2502517deea593a1554 ]
+[ Upstream commit e1ba7f64b192f083b4423644be03bb9e3dc8ae84 ]
 
-Return crypto_aead_setkey() in order to transfer the error if
-it fails.
+We're observing test flakiness on an arm64 platform which might not
+have timestamps as precise as x86. The test log looks like:
 
-Fixes: d2c8ac187fc9 ("crypto: sa2ul - Add AEAD algorithm support")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+  test_time_tai:PASS:tai_open 0 nsec
+  test_time_tai:PASS:test_run 0 nsec
+  test_time_tai:PASS:tai_ts1 0 nsec
+  test_time_tai:PASS:tai_ts2 0 nsec
+  test_time_tai:FAIL:tai_forward unexpected tai_forward: actual 1702348135471494160 <= expected 1702348135471494160
+  test_time_tai:PASS:tai_gettime 0 nsec
+  test_time_tai:PASS:tai_future_ts1 0 nsec
+  test_time_tai:PASS:tai_future_ts2 0 nsec
+  test_time_tai:PASS:tai_range_ts1 0 nsec
+  test_time_tai:PASS:tai_range_ts2 0 nsec
+  #199     time_tai:FAIL
+
+This patch changes ASSERT_GT to ASSERT_GE in the tai_forward assertion
+so that equal timestamps are permitted.
+
+Fixes: 64e15820b987 ("selftests/bpf: Add BPF-helper test for CLOCK_TAI access")
+Signed-off-by: YiFei Zhu <zhuyifei@google.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20231212182911.3784108-1-zhuyifei@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sa2ul.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/time_tai.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/sa2ul.c b/drivers/crypto/sa2ul.c
-index f4bc06c24ad8..e7efebf8127f 100644
---- a/drivers/crypto/sa2ul.c
-+++ b/drivers/crypto/sa2ul.c
-@@ -1868,9 +1868,8 @@ static int sa_aead_setkey(struct crypto_aead *authenc,
- 	crypto_aead_set_flags(ctx->fallback.aead,
- 			      crypto_aead_get_flags(authenc) &
- 			      CRYPTO_TFM_REQ_MASK);
--	crypto_aead_setkey(ctx->fallback.aead, key, keylen);
+diff --git a/tools/testing/selftests/bpf/prog_tests/time_tai.c b/tools/testing/selftests/bpf/prog_tests/time_tai.c
+index a31119823666..f45af1b0ef2c 100644
+--- a/tools/testing/selftests/bpf/prog_tests/time_tai.c
++++ b/tools/testing/selftests/bpf/prog_tests/time_tai.c
+@@ -56,7 +56,7 @@ void test_time_tai(void)
+ 	ASSERT_NEQ(ts2, 0, "tai_ts2");
  
--	return 0;
-+	return crypto_aead_setkey(ctx->fallback.aead, key, keylen);
- }
+ 	/* TAI is moving forward only */
+-	ASSERT_GT(ts2, ts1, "tai_forward");
++	ASSERT_GE(ts2, ts1, "tai_forward");
  
- static int sa_aead_setauthsize(struct crypto_aead *tfm, unsigned int authsize)
+ 	/* Check for future */
+ 	ret = clock_gettime(CLOCK_TAI, &now_tai);
 -- 
 2.43.0
 
