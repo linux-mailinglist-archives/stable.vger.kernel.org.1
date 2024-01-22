@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-13176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E76B3837AD1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D65A9837AD4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96A5E291820
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:55:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C8E21F246F3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B586131E41;
-	Tue, 23 Jan 2024 00:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E55B130E42;
+	Tue, 23 Jan 2024 00:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rs30aegn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NRIr2bB0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF805131E3A;
-	Tue, 23 Jan 2024 00:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E75C131E54;
+	Tue, 23 Jan 2024 00:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969097; cv=none; b=odtj07YOWdILAzriJ7XPgHBI0WOCp6Glhtz9nV3Xn1FcN5fEJG4BPM3EKuMBxaKZgaLjorjp/kcKuSdw0YNPo1zfRLxBI5ZxCrLO2lnPMQGgyUXdo5Pl4AyoyuJ19KFs+nh/t2xH5XeIiCVwZv6t63WbfeV8KwT8XOrtEUcNUG0=
+	t=1705969100; cv=none; b=BOyUIMb5l8DWo3ZtNtjjGYv4A7qBPQn0aE81BNXxqCsNF6b4x1KG6Drw1uChDrhRpPLNlMKesyR/TuxffF9GWjPJ5nYUzzDw6NedBQTJyn29l24UqZArCr6JyWCmCRbGuKeuwVNTYpvyEzz0CfFUeoDquxeddETgT2Yk0wSsSiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969097; c=relaxed/simple;
-	bh=fyXDzKqV/1L4tsjnlyagnNlJnvu8wadLbT73gvQfC9c=;
+	s=arc-20240116; t=1705969100; c=relaxed/simple;
+	bh=ZE7Wp5pnAbLmsQTI4d9FJ3BjKkJPpRn6TN8JYS1S9dA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+0omSjC3+kWgatKGxrn2LL1ERA3C1kwvRsrR8Nt4sharY/dxCiWju+VxcqcWIK+PCpGJ2q+3LTWBXwlKr65Bf9qf2/uHvXamtwddPBAkReg6T9ZTP5+Q6y2tgFTnappqq61osyxjI8nSpmKfGDJK3mOR3ePe4rMmx2e3Hblg6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rs30aegn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0AEFC433C7;
-	Tue, 23 Jan 2024 00:18:16 +0000 (UTC)
+	 MIME-Version; b=mcCrQVHj02YCnCZ6OPDTdrRHJ6Bgy3NeQdAVOIAGnF03FlJqs6WLIVVi8oJsncIYJRlt75NRG2QTzRA3kRBBtfX0DeviOPhKa89InmLAlQtGQq9dUxiwz2z5F6fU7jtScDft7TC9YsFbJHU/afxTg1i30jbVshB6bOjTzwkK/Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NRIr2bB0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22E5C433F1;
+	Tue, 23 Jan 2024 00:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969096;
-	bh=fyXDzKqV/1L4tsjnlyagnNlJnvu8wadLbT73gvQfC9c=;
+	s=korg; t=1705969100;
+	bh=ZE7Wp5pnAbLmsQTI4d9FJ3BjKkJPpRn6TN8JYS1S9dA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rs30aegnE2uSK6QfdBVw/SmPU3+gqvaoB8CsrOiVc0u/VEMI9Zs0p9g3+AJMKi4bd
-	 2orAPIB3EP91czw+SP5KAvMsF0iUKvdBSCKwRLX0fVdwhPJgm7b61H8IYw8XOjJys8
-	 xw7XBbEYpU+V6uSCTtmBCXPfvrO1Cc6U11DQVHQU=
+	b=NRIr2bB0AJD2/4uVRPPxdM6dSpU5pQbpvdZPKGbxWuXI3lMt1zWMSR52LAXY4Jr7D
+	 oNVRRYEBiNuubZfYgVOrkrohMi+R7aEqjhzqkBANz152CA+KoBF+/1xbDb0bJ1R7j3
+	 MEN2rayD9cyVDMCIprJHpbmwPdB9YyV+P4C5yxsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Yiwei Lin <s921975628@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Abel Wu <wuyun.abel@bytedance.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 019/641] powerpc/imc-pmu: Add a null pointer check in update_events_in_group()
-Date: Mon, 22 Jan 2024 15:48:43 -0800
-Message-ID: <20240122235818.707667681@linuxfoundation.org>
+Subject: [PATCH 6.7 020/641] sched/fair: Update min_vruntime for reweight_entity() correctly
+Date: Mon, 22 Jan 2024 15:48:44 -0800
+Message-ID: <20240122235818.735540995@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -66,53 +67,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Yiwei Lin <s921975628@gmail.com>
 
-[ Upstream commit 0a233867a39078ebb0f575e2948593bbff5826b3 ]
+[ Upstream commit 5068d84054b766efe7c6202fc71b2350d1c326f1 ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+Since reweight_entity() may have chance to change the weight of
+cfs_rq->curr entity, we should also update_min_vruntime() if
+this is the case
 
-Fixes: 885dcd709ba9 ("powerpc/perf: Add nest IMC PMU support")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231126093719.1440305-1-chentao@kylinos.cn
+Fixes: eab03c23c2a1 ("sched/eevdf: Fix vruntime adjustment on reweight")
+Signed-off-by: Yiwei Lin <s921975628@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Abel Wu <wuyun.abel@bytedance.com>
+Link: https://lore.kernel.org/r/20231117080106.12890-1-s921975628@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/imc-pmu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/sched/fair.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-index 5d12ca386c1f..8664a7d297ad 100644
---- a/arch/powerpc/perf/imc-pmu.c
-+++ b/arch/powerpc/perf/imc-pmu.c
-@@ -299,6 +299,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
- 	attr_group->attrs = attrs;
- 	do {
- 		ev_val_str = kasprintf(GFP_KERNEL, "event=0x%x", pmu->events[i].value);
-+		if (!ev_val_str)
-+			continue;
- 		dev_str = device_str_attr_create(pmu->events[i].name, ev_val_str);
- 		if (!dev_str)
- 			continue;
-@@ -306,6 +308,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
- 		attrs[j++] = dev_str;
- 		if (pmu->events[i].scale) {
- 			ev_scale_str = kasprintf(GFP_KERNEL, "%s.scale", pmu->events[i].name);
-+			if (!ev_scale_str)
-+				continue;
- 			dev_str = device_str_attr_create(ev_scale_str, pmu->events[i].scale);
- 			if (!dev_str)
- 				continue;
-@@ -315,6 +319,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index d7a3c63a2171..4182fb118ce9 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3811,17 +3811,17 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
+ 	enqueue_load_avg(cfs_rq, se);
+ 	if (se->on_rq) {
+ 		update_load_add(&cfs_rq->load, se->load.weight);
+-		if (!curr) {
+-			/*
+-			 * The entity's vruntime has been adjusted, so let's check
+-			 * whether the rq-wide min_vruntime needs updated too. Since
+-			 * the calculations above require stable min_vruntime rather
+-			 * than up-to-date one, we do the update at the end of the
+-			 * reweight process.
+-			 */
++		if (!curr)
+ 			__enqueue_entity(cfs_rq, se);
+-			update_min_vruntime(cfs_rq);
+-		}
++
++		/*
++		 * The entity's vruntime has been adjusted, so let's check
++		 * whether the rq-wide min_vruntime needs updated too. Since
++		 * the calculations above require stable min_vruntime rather
++		 * than up-to-date one, we do the update at the end of the
++		 * reweight process.
++		 */
++		update_min_vruntime(cfs_rq);
+ 	}
+ }
  
- 		if (pmu->events[i].unit) {
- 			ev_unit_str = kasprintf(GFP_KERNEL, "%s.unit", pmu->events[i].name);
-+			if (!ev_unit_str)
-+				continue;
- 			dev_str = device_str_attr_create(ev_unit_str, pmu->events[i].unit);
- 			if (!dev_str)
- 				continue;
 -- 
 2.43.0
 
