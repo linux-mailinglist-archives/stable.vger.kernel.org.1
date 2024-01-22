@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAAB0837D72
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4377837FCA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8C0E1C2105F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EB661C2943D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F2F52F86;
-	Tue, 23 Jan 2024 00:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612C712BE9C;
+	Tue, 23 Jan 2024 00:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrE48R4S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdXcqF2s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94F94E1D7;
-	Tue, 23 Jan 2024 00:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF1C12BE9A;
+	Tue, 23 Jan 2024 00:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969959; cv=none; b=X/rYlEI0aoAH9oN8BadH1E7YMQ1MDPLJZLKGodiAMqJZ9tqfb8ln52dpzdRrW1SZVQ1/pTWwnVBLDn8E0dHqjf+ase+nhRTLBpn5+Ex4rUR3DAjcUPEYHKUbMKhnR657xHdfU/poLqR/efp/9OM6fnMSyAfagTQIqU2U4YcyPbY=
+	t=1705971349; cv=none; b=pmF0npW1cBJY2eaIwNo/qb6UOhURPLaD5064r7hsD6JGr09Gn7GhAhJGothhM6Iv+A2/sSFPMDKi1oe3AiJAA9bIXvUfEWaXO+8Iqi+zu/YmbWqjOFiKBD4hFpa/k5E+Tqx252cmOwjEOANdrDJfvuE1c2h8MJss365LkJNszZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969959; c=relaxed/simple;
-	bh=5PuCZmfsHZXa9m0FZKxsMFeJANAMnA99r/y+9wv/Xww=;
+	s=arc-20240116; t=1705971349; c=relaxed/simple;
+	bh=V95U7RPQI4O3lFWGllgNkDCeSFv2jz3iaTi0yycKeVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z2vTHoxy4VIq5utAdgmcGIFHzQD/JJ/WwwmBrDsZ09Rzy4ho47xzzg2PsH/caF6/iuKqZZHpKpbDp/8pJRkQMQvngPaeyA7ckqNzfeZcV7gH7P+gPOtEqi2IOcsPed6VzmLME34Dy5cIAHufWEggmJBa4lZW1U6r1Bfl+s/ZR9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrE48R4S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA956C43390;
-	Tue, 23 Jan 2024 00:32:37 +0000 (UTC)
+	 MIME-Version; b=dwZYD2DyoMt9pvhCFtatbN9EycgZdSrvTWwgV+ywOZiQPAT96rVvQGDR52atFDcsGTuXUjp0ZCLdgOYv1qyX9dyHjPNgdBn/uO+PASOuHXWJytB4Mct66M0dJkk61h7nQGa+VPTR2CHSZrIXCZNdnxBsdqdhnTZuE3SlVVeyeJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdXcqF2s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE21C433F1;
+	Tue, 23 Jan 2024 00:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969958;
-	bh=5PuCZmfsHZXa9m0FZKxsMFeJANAMnA99r/y+9wv/Xww=;
+	s=korg; t=1705971348;
+	bh=V95U7RPQI4O3lFWGllgNkDCeSFv2jz3iaTi0yycKeVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrE48R4Sd+9Ld8loUpyLSmq9F2dENwBR9ahNU3PYjvbH2EDdyw3djoJhfqU8PA+ym
-	 XukfEYisz027lD2nn9ZI6wBRhjMokxILGbTfbGd3ZFjKw6zs4WolU34AHGLaJGO0nV
-	 ghU0MGTuKRzW+pYI9wQIr+XdQIIAHOg9fqPSv1sA=
+	b=gdXcqF2syCNSLHM3DxE3dVM48kMo2TUjQ8dNcoAWi1ncDYRxyazCGIoleXD/rmuw6
+	 6W9BzLWFh4L8vUQOtoDMT5xbtt/ruZjBGy+q8H5D1pkRtteoxi2vsc2vCaefG/5AYL
+	 5mzcpZkn8UWi55+3B34tGAePxIe3Dci+MXP5cq40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 539/641] bus: mhi: ep: Pass mhi_ep_buf_info struct to read/write APIs
-Date: Mon, 22 Jan 2024 15:57:23 -0800
-Message-ID: <20240122235834.998598752@linuxfoundation.org>
+Subject: [PATCH 5.10 138/286] wifi: rtlwifi: rtl8192se: using calculate_bit_shift()
+Date: Mon, 22 Jan 2024 15:57:24 -0800
+Message-ID: <20240122235737.451836676@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,407 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit b08ded2ef2e98768d5ee5f71da8fe768b1f7774b ]
+[ Upstream commit ac32b9317063b101a8ff3d3e885f76f87a280419 ]
 
-In the preparation of DMA async support, let's pass the parameters to
-read_from_host() and write_to_host() APIs using mhi_ep_buf_info structure.
+Using calculate_bit_shift() to replace _rtl92s_phy_calculate_bit_shift().
+And fix the undefined bitwise shift behavior problem.
 
-No functional change.
-
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Stable-dep-of: 327ec5f70609 ("PCI: epf-mhi: Fix the DMA data direction of dma_unmap_single()")
+Fixes: d15853163bea ("rtlwifi: rtl8192se: Merge phy routines")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-10-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/ep/main.c                    | 23 +++----
- drivers/bus/mhi/ep/ring.c                    | 41 ++++++------
- drivers/pci/endpoint/functions/pci-epf-mhi.c | 66 +++++++++++---------
- include/linux/mhi_ep.h                       | 16 ++++-
- 4 files changed, 84 insertions(+), 62 deletions(-)
+ .../net/wireless/realtek/rtlwifi/rtl8192se/phy.c  | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
-index 517279600645..582d5c166a75 100644
---- a/drivers/bus/mhi/ep/main.c
-+++ b/drivers/bus/mhi/ep/main.c
-@@ -324,10 +324,9 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
- 	struct mhi_ep_chan *mhi_chan = &mhi_cntrl->mhi_chan[ring->ch_id];
- 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
- 	size_t tr_len, read_offset, write_offset;
-+	struct mhi_ep_buf_info buf_info = {};
- 	struct mhi_ring_element *el;
- 	bool tr_done = false;
--	void *write_addr;
--	u64 read_addr;
- 	u32 buf_left;
- 	int ret;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
+index 63283d9e7485..cd735d61f630 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
+@@ -14,13 +14,6 @@
+ #include "hw.h"
+ #include "table.h"
  
-@@ -356,11 +355,13 @@ static int mhi_ep_read_channel(struct mhi_ep_cntrl *mhi_cntrl,
- 
- 		read_offset = mhi_chan->tre_size - mhi_chan->tre_bytes_left;
- 		write_offset = len - buf_left;
--		read_addr = mhi_chan->tre_loc + read_offset;
--		write_addr = result->buf_addr + write_offset;
-+
-+		buf_info.host_addr = mhi_chan->tre_loc + read_offset;
-+		buf_info.dev_addr = result->buf_addr + write_offset;
-+		buf_info.size = tr_len;
- 
- 		dev_dbg(dev, "Reading %zd bytes from channel (%u)\n", tr_len, ring->ch_id);
--		ret = mhi_cntrl->read_from_host(mhi_cntrl, read_addr, write_addr, tr_len);
-+		ret = mhi_cntrl->read_from_host(mhi_cntrl, &buf_info);
- 		if (ret < 0) {
- 			dev_err(&mhi_chan->mhi_dev->dev, "Error reading from channel\n");
- 			return ret;
-@@ -483,12 +484,11 @@ int mhi_ep_queue_skb(struct mhi_ep_device *mhi_dev, struct sk_buff *skb)
- 	struct mhi_ep_cntrl *mhi_cntrl = mhi_dev->mhi_cntrl;
- 	struct mhi_ep_chan *mhi_chan = mhi_dev->dl_chan;
- 	struct device *dev = &mhi_chan->mhi_dev->dev;
-+	struct mhi_ep_buf_info buf_info = {};
- 	struct mhi_ring_element *el;
- 	u32 buf_left, read_offset;
- 	struct mhi_ep_ring *ring;
- 	enum mhi_ev_ccs code;
--	void *read_addr;
--	u64 write_addr;
- 	size_t tr_len;
- 	u32 tre_len;
- 	int ret;
-@@ -517,11 +517,13 @@ int mhi_ep_queue_skb(struct mhi_ep_device *mhi_dev, struct sk_buff *skb)
- 
- 		tr_len = min(buf_left, tre_len);
- 		read_offset = skb->len - buf_left;
--		read_addr = skb->data + read_offset;
--		write_addr = MHI_TRE_DATA_GET_PTR(el);
-+
-+		buf_info.dev_addr = skb->data + read_offset;
-+		buf_info.host_addr = MHI_TRE_DATA_GET_PTR(el);
-+		buf_info.size = tr_len;
- 
- 		dev_dbg(dev, "Writing %zd bytes to channel (%u)\n", tr_len, ring->ch_id);
--		ret = mhi_cntrl->write_to_host(mhi_cntrl, read_addr, write_addr, tr_len);
-+		ret = mhi_cntrl->write_to_host(mhi_cntrl, &buf_info);
- 		if (ret < 0) {
- 			dev_err(dev, "Error writing to the channel\n");
- 			goto err_exit;
-@@ -1429,7 +1431,6 @@ int mhi_ep_register_controller(struct mhi_ep_cntrl *mhi_cntrl,
- 		ret = -ENOMEM;
- 		goto err_destroy_tre_buf_cache;
- 	}
+-static u32 _rtl92s_phy_calculate_bit_shift(u32 bitmask)
+-{
+-	u32 i = ffs(bitmask);
 -
- 	INIT_WORK(&mhi_cntrl->state_work, mhi_ep_state_worker);
- 	INIT_WORK(&mhi_cntrl->reset_work, mhi_ep_reset_worker);
- 	INIT_WORK(&mhi_cntrl->cmd_ring_work, mhi_ep_cmd_ring_worker);
-diff --git a/drivers/bus/mhi/ep/ring.c b/drivers/bus/mhi/ep/ring.c
-index 115518ec76a4..c673d7200b3e 100644
---- a/drivers/bus/mhi/ep/ring.c
-+++ b/drivers/bus/mhi/ep/ring.c
-@@ -30,7 +30,8 @@ static int __mhi_ep_cache_ring(struct mhi_ep_ring *ring, size_t end)
+-	return i ? i - 1 : 32;
+-}
+-
+ u32 rtl92s_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
  {
- 	struct mhi_ep_cntrl *mhi_cntrl = ring->mhi_cntrl;
- 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
--	size_t start, copy_size;
-+	struct mhi_ep_buf_info buf_info = {};
-+	size_t start;
- 	int ret;
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+@@ -30,7 +23,7 @@ u32 rtl92s_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
+ 		regaddr, bitmask);
  
- 	/* Don't proceed in the case of event ring. This happens during mhi_ep_ring_start(). */
-@@ -43,30 +44,34 @@ static int __mhi_ep_cache_ring(struct mhi_ep_ring *ring, size_t end)
+ 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-	bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	returnvalue = (originalvalue & bitmask) >> bitshift;
  
- 	start = ring->wr_offset;
- 	if (start < end) {
--		copy_size = (end - start) * sizeof(struct mhi_ring_element);
--		ret = mhi_cntrl->read_from_host(mhi_cntrl, ring->rbase +
--						(start * sizeof(struct mhi_ring_element)),
--						&ring->ring_cache[start], copy_size);
-+		buf_info.size = (end - start) * sizeof(struct mhi_ring_element);
-+		buf_info.host_addr = ring->rbase + (start * sizeof(struct mhi_ring_element));
-+		buf_info.dev_addr = &ring->ring_cache[start];
-+
-+		ret = mhi_cntrl->read_from_host(mhi_cntrl, &buf_info);
- 		if (ret < 0)
- 			return ret;
- 	} else {
--		copy_size = (ring->ring_size - start) * sizeof(struct mhi_ring_element);
--		ret = mhi_cntrl->read_from_host(mhi_cntrl, ring->rbase +
--						(start * sizeof(struct mhi_ring_element)),
--						&ring->ring_cache[start], copy_size);
-+		buf_info.size = (ring->ring_size - start) * sizeof(struct mhi_ring_element);
-+		buf_info.host_addr = ring->rbase + (start * sizeof(struct mhi_ring_element));
-+		buf_info.dev_addr = &ring->ring_cache[start];
-+
-+		ret = mhi_cntrl->read_from_host(mhi_cntrl, &buf_info);
- 		if (ret < 0)
- 			return ret;
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE, "BBR MASK=0x%x Addr[0x%x]=0x%x\n",
+@@ -52,7 +45,7 @@ void rtl92s_phy_set_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask,
  
- 		if (end) {
--			ret = mhi_cntrl->read_from_host(mhi_cntrl, ring->rbase,
--							&ring->ring_cache[0],
--							end * sizeof(struct mhi_ring_element));
-+			buf_info.host_addr = ring->rbase;
-+			buf_info.dev_addr = &ring->ring_cache[0];
-+			buf_info.size = end * sizeof(struct mhi_ring_element);
-+
-+			ret = mhi_cntrl->read_from_host(mhi_cntrl, &buf_info);
- 			if (ret < 0)
- 				return ret;
- 		}
+ 	if (bitmask != MASKDWORD) {
+ 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-		bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
  	}
  
--	dev_dbg(dev, "Cached ring: start %zu end %zu size %zu\n", start, end, copy_size);
-+	dev_dbg(dev, "Cached ring: start %zu end %zu size %zu\n", start, end, buf_info.size);
+@@ -160,7 +153,7 @@ u32 rtl92s_phy_query_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
  
- 	return 0;
- }
-@@ -102,6 +107,7 @@ int mhi_ep_ring_add_element(struct mhi_ep_ring *ring, struct mhi_ring_element *e
- {
- 	struct mhi_ep_cntrl *mhi_cntrl = ring->mhi_cntrl;
- 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
-+	struct mhi_ep_buf_info buf_info = {};
- 	size_t old_offset = 0;
- 	u32 num_free_elem;
- 	__le64 rp;
-@@ -133,12 +139,11 @@ int mhi_ep_ring_add_element(struct mhi_ep_ring *ring, struct mhi_ring_element *e
- 	rp = cpu_to_le64(ring->rd_offset * sizeof(*el) + ring->rbase);
- 	memcpy_toio((void __iomem *) &ring->ring_ctx->generic.rp, &rp, sizeof(u64));
+ 	original_value = _rtl92s_phy_rf_serial_read(hw, rfpath, regaddr);
  
--	ret = mhi_cntrl->write_to_host(mhi_cntrl, el, ring->rbase + (old_offset * sizeof(*el)),
--				       sizeof(*el));
--	if (ret < 0)
--		return ret;
-+	buf_info.host_addr = ring->rbase + (old_offset * sizeof(*el));
-+	buf_info.dev_addr = el;
-+	buf_info.size = sizeof(*el);
+-	bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
  
--	return 0;
-+	return mhi_cntrl->write_to_host(mhi_cntrl, &buf_info);
- }
- 
- void mhi_ep_ring_init(struct mhi_ep_ring *ring, enum mhi_ep_ring_type type, u32 id)
-diff --git a/drivers/pci/endpoint/functions/pci-epf-mhi.c b/drivers/pci/endpoint/functions/pci-epf-mhi.c
-index b7b9d3e21f97..ec5f4a38178b 100644
---- a/drivers/pci/endpoint/functions/pci-epf-mhi.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-mhi.c
-@@ -209,28 +209,28 @@ static void pci_epf_mhi_raise_irq(struct mhi_ep_cntrl *mhi_cntrl, u32 vector)
- 			  vector + 1);
- }
- 
--static int pci_epf_mhi_iatu_read(struct mhi_ep_cntrl *mhi_cntrl, u64 from,
--				 void *to, size_t size)
-+static int pci_epf_mhi_iatu_read(struct mhi_ep_cntrl *mhi_cntrl,
-+				 struct mhi_ep_buf_info *buf_info)
- {
- 	struct pci_epf_mhi *epf_mhi = to_epf_mhi(mhi_cntrl);
--	size_t offset = get_align_offset(epf_mhi, from);
-+	size_t offset = get_align_offset(epf_mhi, buf_info->host_addr);
- 	void __iomem *tre_buf;
- 	phys_addr_t tre_phys;
- 	int ret;
- 
- 	mutex_lock(&epf_mhi->lock);
- 
--	ret = __pci_epf_mhi_alloc_map(mhi_cntrl, from, &tre_phys, &tre_buf,
--				      offset, size);
-+	ret = __pci_epf_mhi_alloc_map(mhi_cntrl, buf_info->host_addr, &tre_phys,
-+				      &tre_buf, offset, buf_info->size);
- 	if (ret) {
- 		mutex_unlock(&epf_mhi->lock);
- 		return ret;
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -191,7 +184,7 @@ void rtl92s_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
+ 	if (bitmask != RFREG_OFFSET_MASK) {
+ 		original_value = _rtl92s_phy_rf_serial_read(hw, rfpath,
+ 							    regaddr);
+-		bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = ((original_value & (~bitmask)) | (data << bitshift));
  	}
- 
--	memcpy_fromio(to, tre_buf, size);
-+	memcpy_fromio(buf_info->dev_addr, tre_buf, buf_info->size);
- 
--	__pci_epf_mhi_unmap_free(mhi_cntrl, from, tre_phys, tre_buf, offset,
--				 size);
-+	__pci_epf_mhi_unmap_free(mhi_cntrl, buf_info->host_addr, tre_phys,
-+				 tre_buf, offset, buf_info->size);
- 
- 	mutex_unlock(&epf_mhi->lock);
- 
-@@ -238,27 +238,27 @@ static int pci_epf_mhi_iatu_read(struct mhi_ep_cntrl *mhi_cntrl, u64 from,
- }
- 
- static int pci_epf_mhi_iatu_write(struct mhi_ep_cntrl *mhi_cntrl,
--				  void *from, u64 to, size_t size)
-+				  struct mhi_ep_buf_info *buf_info)
- {
- 	struct pci_epf_mhi *epf_mhi = to_epf_mhi(mhi_cntrl);
--	size_t offset = get_align_offset(epf_mhi, to);
-+	size_t offset = get_align_offset(epf_mhi, buf_info->host_addr);
- 	void __iomem *tre_buf;
- 	phys_addr_t tre_phys;
- 	int ret;
- 
- 	mutex_lock(&epf_mhi->lock);
- 
--	ret = __pci_epf_mhi_alloc_map(mhi_cntrl, to, &tre_phys, &tre_buf,
--				      offset, size);
-+	ret = __pci_epf_mhi_alloc_map(mhi_cntrl, buf_info->host_addr, &tre_phys,
-+				      &tre_buf, offset, buf_info->size);
- 	if (ret) {
- 		mutex_unlock(&epf_mhi->lock);
- 		return ret;
- 	}
- 
--	memcpy_toio(tre_buf, from, size);
-+	memcpy_toio(tre_buf, buf_info->dev_addr, buf_info->size);
- 
--	__pci_epf_mhi_unmap_free(mhi_cntrl, to, tre_phys, tre_buf, offset,
--				 size);
-+	__pci_epf_mhi_unmap_free(mhi_cntrl, buf_info->host_addr, tre_phys,
-+				 tre_buf, offset, buf_info->size);
- 
- 	mutex_unlock(&epf_mhi->lock);
- 
-@@ -270,8 +270,8 @@ static void pci_epf_mhi_dma_callback(void *param)
- 	complete(param);
- }
- 
--static int pci_epf_mhi_edma_read(struct mhi_ep_cntrl *mhi_cntrl, u64 from,
--				 void *to, size_t size)
-+static int pci_epf_mhi_edma_read(struct mhi_ep_cntrl *mhi_cntrl,
-+				 struct mhi_ep_buf_info *buf_info)
- {
- 	struct pci_epf_mhi *epf_mhi = to_epf_mhi(mhi_cntrl);
- 	struct device *dma_dev = epf_mhi->epf->epc->dev.parent;
-@@ -284,13 +284,13 @@ static int pci_epf_mhi_edma_read(struct mhi_ep_cntrl *mhi_cntrl, u64 from,
- 	dma_addr_t dst_addr;
- 	int ret;
- 
--	if (size < SZ_4K)
--		return pci_epf_mhi_iatu_read(mhi_cntrl, from, to, size);
-+	if (buf_info->size < SZ_4K)
-+		return pci_epf_mhi_iatu_read(mhi_cntrl, buf_info);
- 
- 	mutex_lock(&epf_mhi->lock);
- 
- 	config.direction = DMA_DEV_TO_MEM;
--	config.src_addr = from;
-+	config.src_addr = buf_info->host_addr;
- 
- 	ret = dmaengine_slave_config(chan, &config);
- 	if (ret) {
-@@ -298,14 +298,16 @@ static int pci_epf_mhi_edma_read(struct mhi_ep_cntrl *mhi_cntrl, u64 from,
- 		goto err_unlock;
- 	}
- 
--	dst_addr = dma_map_single(dma_dev, to, size, DMA_FROM_DEVICE);
-+	dst_addr = dma_map_single(dma_dev, buf_info->dev_addr, buf_info->size,
-+				  DMA_FROM_DEVICE);
- 	ret = dma_mapping_error(dma_dev, dst_addr);
- 	if (ret) {
- 		dev_err(dev, "Failed to map remote memory\n");
- 		goto err_unlock;
- 	}
- 
--	desc = dmaengine_prep_slave_single(chan, dst_addr, size, DMA_DEV_TO_MEM,
-+	desc = dmaengine_prep_slave_single(chan, dst_addr, buf_info->size,
-+					   DMA_DEV_TO_MEM,
- 					   DMA_CTRL_ACK | DMA_PREP_INTERRUPT);
- 	if (!desc) {
- 		dev_err(dev, "Failed to prepare DMA\n");
-@@ -332,15 +334,15 @@ static int pci_epf_mhi_edma_read(struct mhi_ep_cntrl *mhi_cntrl, u64 from,
- 	}
- 
- err_unmap:
--	dma_unmap_single(dma_dev, dst_addr, size, DMA_FROM_DEVICE);
-+	dma_unmap_single(dma_dev, dst_addr, buf_info->size, DMA_FROM_DEVICE);
- err_unlock:
- 	mutex_unlock(&epf_mhi->lock);
- 
- 	return ret;
- }
- 
--static int pci_epf_mhi_edma_write(struct mhi_ep_cntrl *mhi_cntrl, void *from,
--				  u64 to, size_t size)
-+static int pci_epf_mhi_edma_write(struct mhi_ep_cntrl *mhi_cntrl,
-+				  struct mhi_ep_buf_info *buf_info)
- {
- 	struct pci_epf_mhi *epf_mhi = to_epf_mhi(mhi_cntrl);
- 	struct device *dma_dev = epf_mhi->epf->epc->dev.parent;
-@@ -353,13 +355,13 @@ static int pci_epf_mhi_edma_write(struct mhi_ep_cntrl *mhi_cntrl, void *from,
- 	dma_addr_t src_addr;
- 	int ret;
- 
--	if (size < SZ_4K)
--		return pci_epf_mhi_iatu_write(mhi_cntrl, from, to, size);
-+	if (buf_info->size < SZ_4K)
-+		return pci_epf_mhi_iatu_write(mhi_cntrl, buf_info);
- 
- 	mutex_lock(&epf_mhi->lock);
- 
- 	config.direction = DMA_MEM_TO_DEV;
--	config.dst_addr = to;
-+	config.dst_addr = buf_info->host_addr;
- 
- 	ret = dmaengine_slave_config(chan, &config);
- 	if (ret) {
-@@ -367,14 +369,16 @@ static int pci_epf_mhi_edma_write(struct mhi_ep_cntrl *mhi_cntrl, void *from,
- 		goto err_unlock;
- 	}
- 
--	src_addr = dma_map_single(dma_dev, from, size, DMA_TO_DEVICE);
-+	src_addr = dma_map_single(dma_dev, buf_info->dev_addr, buf_info->size,
-+				  DMA_TO_DEVICE);
- 	ret = dma_mapping_error(dma_dev, src_addr);
- 	if (ret) {
- 		dev_err(dev, "Failed to map remote memory\n");
- 		goto err_unlock;
- 	}
- 
--	desc = dmaengine_prep_slave_single(chan, src_addr, size, DMA_MEM_TO_DEV,
-+	desc = dmaengine_prep_slave_single(chan, src_addr, buf_info->size,
-+					   DMA_MEM_TO_DEV,
- 					   DMA_CTRL_ACK | DMA_PREP_INTERRUPT);
- 	if (!desc) {
- 		dev_err(dev, "Failed to prepare DMA\n");
-@@ -401,7 +405,7 @@ static int pci_epf_mhi_edma_write(struct mhi_ep_cntrl *mhi_cntrl, void *from,
- 	}
- 
- err_unmap:
--	dma_unmap_single(dma_dev, src_addr, size, DMA_FROM_DEVICE);
-+	dma_unmap_single(dma_dev, src_addr, buf_info->size, DMA_FROM_DEVICE);
- err_unlock:
- 	mutex_unlock(&epf_mhi->lock);
- 
-diff --git a/include/linux/mhi_ep.h b/include/linux/mhi_ep.h
-index ce85d42b685d..96f3a133540d 100644
---- a/include/linux/mhi_ep.h
-+++ b/include/linux/mhi_ep.h
-@@ -49,6 +49,18 @@ struct mhi_ep_db_info {
- 	u32 status;
- };
- 
-+/**
-+ * struct mhi_ep_buf_info - MHI Endpoint transfer buffer info
-+ * @dev_addr: Address of the buffer in endpoint
-+ * @host_addr: Address of the bufffer in host
-+ * @size: Size of the buffer
-+ */
-+struct mhi_ep_buf_info {
-+	void *dev_addr;
-+	u64 host_addr;
-+	size_t size;
-+};
-+
- /**
-  * struct mhi_ep_cntrl - MHI Endpoint controller structure
-  * @cntrl_dev: Pointer to the struct device of physical bus acting as the MHI
-@@ -137,8 +149,8 @@ struct mhi_ep_cntrl {
- 			 void __iomem **virt, size_t size);
- 	void (*unmap_free)(struct mhi_ep_cntrl *mhi_cntrl, u64 pci_addr, phys_addr_t phys,
- 			   void __iomem *virt, size_t size);
--	int (*read_from_host)(struct mhi_ep_cntrl *mhi_cntrl, u64 from, void *to, size_t size);
--	int (*write_to_host)(struct mhi_ep_cntrl *mhi_cntrl, void *from, u64 to, size_t size);
-+	int (*read_from_host)(struct mhi_ep_cntrl *mhi_cntrl, struct mhi_ep_buf_info *buf_info);
-+	int (*write_to_host)(struct mhi_ep_cntrl *mhi_cntrl, struct mhi_ep_buf_info *buf_info);
- 
- 	enum mhi_state mhi_state;
  
 -- 
 2.43.0
