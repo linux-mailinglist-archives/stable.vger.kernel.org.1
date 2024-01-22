@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98023837C18
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D908B837E39
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 514F42956D5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F5671F27462
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74395662;
-	Tue, 23 Jan 2024 00:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CFF55C3E;
+	Tue, 23 Jan 2024 00:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAjmi9Bj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCZDhBnj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AA1107A6;
-	Tue, 23 Jan 2024 00:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777DB4F207;
+	Tue, 23 Jan 2024 00:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969504; cv=none; b=IDiOu6mZs3txHNmKh6z5x7jT9fZEIvbXMEOZ2zN9u3C2Miadtp0Ti+wF661aq/aav9FlgsotBTmmPSPQbBTk8/3aUCjznsM+Po2z44nvuYPH5CUpnXfJWsjMvS3nMb3uKDQu4/Ks7XvrN+31mg2Zuqd1VqCtpJ46Nk3e+/peqEE=
+	t=1705970454; cv=none; b=NHmlGEfux96KunF+wGmugg15qAdCNCS2nD0pw0Rk2ZBS78zCFr1/aQrQLrhpMdoc7f5AudyhU7s3yBRjqo75sYuXrTynjTEyShO4dbvQZW2eBUeRIIMDdlTt3RUXNOJhus0Rgck2AmVZZjEkkOM5eahIAwgfEyiABRoglNeS3zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969504; c=relaxed/simple;
-	bh=d30NF0P8t3iI5MOORp/AN/C6bFFAWeDAGy7pu3AXXVk=;
+	s=arc-20240116; t=1705970454; c=relaxed/simple;
+	bh=kLXIJtlWhDVyLxh3RMdGqmKjoZAkR2bkVslwrPCh9AI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3WzteZrL3jJWwWZLpn9JeLGaYS8p9Iqoi9lP2q6r68/meCnNxwzcQ6JIzp4Pmxqh4rm6xsG6PfM0Ni1XPHFIxCNwk1yPBNFK5PPvyiCmXy9PW8axDBwuwZW21EixamEwWcS5JSOSOc9kT2yBDkRAKrxfrX9xvNwe3nFjg6z5g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAjmi9Bj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41947C43399;
-	Tue, 23 Jan 2024 00:25:04 +0000 (UTC)
+	 MIME-Version; b=pz1TGwF9h0GFNip9cYQ95FDC5rtidAYybYs5FQ4jL7OyUSjOyq+ozxAKb2vvLrhjzSmNIPR8qO7DhOzj7zygAGiVFfmpFU03C3/9rAG4Y8Fe/RNxEf/2B8jQ6UTaGNzPri1BK0g0R/diS/8p+alYV9mfePcREFqxjtr9ZSPrDDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCZDhBnj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CB6C433F1;
+	Tue, 23 Jan 2024 00:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969504;
-	bh=d30NF0P8t3iI5MOORp/AN/C6bFFAWeDAGy7pu3AXXVk=;
+	s=korg; t=1705970454;
+	bh=kLXIJtlWhDVyLxh3RMdGqmKjoZAkR2bkVslwrPCh9AI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iAjmi9BjAnKluixIew3J2aLe1ZCQiHlpa4akN3oHNsjuQFh7bEMaH4wVbN2oOc4HQ
-	 yq3F4gYMydazpVLytXXgHGHB7Lckp3BA0w7zLUv1/wWFPo6wI3GxK3kGbWwBdk3Tzi
-	 g9dUxScU7sSxNGSmp9HxtXg3y0UKV5fPLLMn92FA=
+	b=xCZDhBnja0H3H6UY1ouVFURlX8zdG9F+Ob4+5l7bWG2i8LavrggVif2K5rwj2qE4M
+	 0pkCmVFrsMYEuLy40c4qdbBrLPkdsItl60KHY++wd2v9JPQFi7tGUjCBGjNgTgR6sX
+	 Vg3LzDAOqlylpVtIty0loXTCv/Z28nwj4kV13YrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Arnd Bergmann <arnd@arndb.de>,
-	Mark Brown <broonie@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 266/641] ASoC: fsl_rpmsg: update Kconfig dependencies
-Date: Mon, 22 Jan 2024 15:52:50 -0800
-Message-ID: <20240122235826.245416045@linuxfoundation.org>
+Subject: [PATCH 6.1 003/417] EDAC/thunderx: Fix possible out-of-bounds string access
+Date: Mon, 22 Jan 2024 15:52:51 -0800
+Message-ID: <20240122235751.607478518@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 9cce9c4806a89439ea34aad2e382150d68c7ea95 ]
+[ Upstream commit 475c58e1a471e9b873e3e39958c64a2d278275c8 ]
 
-SND_SOC_IMX_RPMSG gained a new dependency and gets selected by SND_SOC_FSL_RPMSG,
-which as a result needs to have the same dependency, or produce a build failure
-based on that:
+Enabling -Wstringop-overflow globally exposes a warning for a common bug
+in the usage of strncat():
 
-WARNING: unmet direct dependencies detected for SND_SOC_IMX_RPMSG
-  Depends on [n]: SOUND [=y] && SND [=y] && SND_SOC [=y] && SND_IMX_SOC [=y] && RPMSG [=y] && OF [=y] && I2C [=n]
-  Selected by [y]:
-  - SND_SOC_FSL_RPMSG [=y] && SOUND [=y] && SND [=y] && SND_SOC [=y] && COMMON_CLK [=y] && RPMSG [=y] && (SND_IMX_SOC [=y] || SND_IMX_SOC [=y]=n) && SND_IMX_SOC [=y]!=n
-x86_64-linux-ld: sound/soc/fsl/imx-rpmsg.o: in function `imx_rpmsg_late_probe':
-imx-rpmsg.c:(.text+0x11e): undefined reference to `i2c_find_device_by_fwnode'
+  drivers/edac/thunderx_edac.c: In function 'thunderx_ocx_com_threaded_isr':
+  drivers/edac/thunderx_edac.c:1136:17: error: 'strncat' specified bound 1024 equals destination size [-Werror=stringop-overflow=]
+   1136 |                 strncat(msg, other, OCX_MESSAGE_SIZE);
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   ...
+   1145 |                                 strncat(msg, other, OCX_MESSAGE_SIZE);
+   ...
+   1150 |                                 strncat(msg, other, OCX_MESSAGE_SIZE);
 
-Fixes: f83d38def6b1 ("ASoC: imx-rpmsg: SND_SOC_IMX_RPMSG should depend on OF and I2C")
+   ...
+
+Apparently the author of this driver expected strncat() to behave the
+way that strlcat() does, which uses the size of the destination buffer
+as its third argument rather than the length of the source buffer. The
+result is that there is no check on the size of the allocated buffer.
+
+Change it to strlcat().
+
+  [ bp: Trim compiler output, fixup commit message. ]
+
+Fixes: 41003396f932 ("EDAC, thunderx: Add Cavium ThunderX EDAC driver")
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20231129113204.2869356-1-arnd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20231122222007.3199885-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/edac/thunderx_edac.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig
-index be342ee03fb9..d14061e88e58 100644
---- a/sound/soc/fsl/Kconfig
-+++ b/sound/soc/fsl/Kconfig
-@@ -121,6 +121,7 @@ config SND_SOC_FSL_UTILS
- config SND_SOC_FSL_RPMSG
- 	tristate "NXP Audio Base On RPMSG support"
- 	depends on COMMON_CLK
-+	depends on OF && I2C
- 	depends on RPMSG
- 	depends on SND_IMX_SOC || SND_IMX_SOC = n
- 	select SND_SOC_IMX_RPMSG if SND_IMX_SOC != n
+diff --git a/drivers/edac/thunderx_edac.c b/drivers/edac/thunderx_edac.c
+index f13674081cb6..4dca21b39bf7 100644
+--- a/drivers/edac/thunderx_edac.c
++++ b/drivers/edac/thunderx_edac.c
+@@ -1133,7 +1133,7 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(int irq, void *irq_id)
+ 		decode_register(other, OCX_OTHER_SIZE,
+ 				ocx_com_errors, ctx->reg_com_int);
+ 
+-		strncat(msg, other, OCX_MESSAGE_SIZE);
++		strlcat(msg, other, OCX_MESSAGE_SIZE);
+ 
+ 		for (lane = 0; lane < OCX_RX_LANES; lane++)
+ 			if (ctx->reg_com_int & BIT(lane)) {
+@@ -1142,12 +1142,12 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(int irq, void *irq_id)
+ 					 lane, ctx->reg_lane_int[lane],
+ 					 lane, ctx->reg_lane_stat11[lane]);
+ 
+-				strncat(msg, other, OCX_MESSAGE_SIZE);
++				strlcat(msg, other, OCX_MESSAGE_SIZE);
+ 
+ 				decode_register(other, OCX_OTHER_SIZE,
+ 						ocx_lane_errors,
+ 						ctx->reg_lane_int[lane]);
+-				strncat(msg, other, OCX_MESSAGE_SIZE);
++				strlcat(msg, other, OCX_MESSAGE_SIZE);
+ 			}
+ 
+ 		if (ctx->reg_com_int & OCX_COM_INT_CE)
+@@ -1217,7 +1217,7 @@ static irqreturn_t thunderx_ocx_lnk_threaded_isr(int irq, void *irq_id)
+ 		decode_register(other, OCX_OTHER_SIZE,
+ 				ocx_com_link_errors, ctx->reg_com_link_int);
+ 
+-		strncat(msg, other, OCX_MESSAGE_SIZE);
++		strlcat(msg, other, OCX_MESSAGE_SIZE);
+ 
+ 		if (ctx->reg_com_link_int & OCX_COM_LINK_INT_UE)
+ 			edac_device_handle_ue(ocx->edac_dev, 0, 0, msg);
+@@ -1896,7 +1896,7 @@ static irqreturn_t thunderx_l2c_threaded_isr(int irq, void *irq_id)
+ 
+ 		decode_register(other, L2C_OTHER_SIZE, l2_errors, ctx->reg_int);
+ 
+-		strncat(msg, other, L2C_MESSAGE_SIZE);
++		strlcat(msg, other, L2C_MESSAGE_SIZE);
+ 
+ 		if (ctx->reg_int & mask_ue)
+ 			edac_device_handle_ue(l2c->edac_dev, 0, 0, msg);
 -- 
 2.43.0
 
