@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-13504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9271837C61
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69CE6837E91
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC4AB1C28849
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1417D1F22B59
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071174C6C;
-	Tue, 23 Jan 2024 00:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1101A6127;
+	Tue, 23 Jan 2024 00:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RcRqdF7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDzW/WUE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA57B2581;
-	Tue, 23 Jan 2024 00:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21B5626;
+	Tue, 23 Jan 2024 00:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969596; cv=none; b=J07shCu9veTdbp7S5qPZXtRj9KErVXpUwv9pQKx7f2actvreamkBbscf5R4nW64RnS46LNfuAFa62i5+mxfPhcw69zg3tuYypREwgl3pqcQSM4SEVdchoDdsG+fdUGgcTdfDzzwCUZoxH4S7lYp7bvwt80g0SGAvhUagSIzZ/CY=
+	t=1705970675; cv=none; b=FY0Y4Ua3ErctoDqWxleE/GrDU5694V7e2jHW8rXAdpsA7srAiZoAPRKQ/IDGyC1mE5aRkkw3IvI1/Brqjss/rvgwokcmcQWxZ481E8GcmYpboPuys25tvArSSgHCMIwCkeV3q2kKaqGHZa3QR5pQNA00FGSIzVYuw+C67nknp4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969596; c=relaxed/simple;
-	bh=oQAc6/xZuERuMnDysxF/DdSO8T1WxuAVlowAI7tOOSs=;
+	s=arc-20240116; t=1705970675; c=relaxed/simple;
+	bh=nwaGyICvmlgYl3V58uOghi8r2ry9ikIa0uDsGkvbgCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f/aQsZynkJGK9/XkE+TqoKDlRiWv8Kb2/Rot+3VEhrZEZyUX/TnMtF9eJll+BeSYIubzJS2EfmUjkIXfXhWgY23tudpaSDTCnkO3feUGay9jX/S5Npulbn/UjG83FbEn7bAz/0/+Fb5I659QCEclvek7cBREa5V0qne6R7vDxNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RcRqdF7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E880C43390;
-	Tue, 23 Jan 2024 00:26:36 +0000 (UTC)
+	 MIME-Version; b=TXU6L/T2M0IpJWcWtSHRzPa4UJOjNpsh3X+YCX4WAF50s2dcKgI9cTC3a9BJ0vTe+s0guRqX2fIHbCalsgvcsDGsNacnApTJ4bTysmRyOQq9kI7Wp6klU9uHIWYNgIq+HyZO6eJxWwLSwuXPuNV8OUmu/K9VYD8u9BSKpsgULrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDzW/WUE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB027C433C7;
+	Tue, 23 Jan 2024 00:44:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969596;
-	bh=oQAc6/xZuERuMnDysxF/DdSO8T1WxuAVlowAI7tOOSs=;
+	s=korg; t=1705970675;
+	bh=nwaGyICvmlgYl3V58uOghi8r2ry9ikIa0uDsGkvbgCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2RcRqdF7wzosO83AKbwq6Aem2WN81SdCpxmEjtd+hTuxrIsUJOqUvnYuHdhG+LjeJ
-	 J7n048lJN6swNwC9YlO2qC32W37Q/yOGpSbjANbgMzB7HCPuhp+C6B6nvvIaVPqVWG
-	 kITj0r3mV6beZWEPRAVQwVXmk6KrHZOSQ2xUEXmw=
+	b=IDzW/WUESNZJNkPMwSLgkIWtSGZupD22vWdODrrFm5MHpCTi1ASJAvkKFRSnPQ+xE
+	 NqnWUYSeyPkPoW7fH3vGHdu+slM8bUsfKzgytGxDlwvmayHuzFUnm1u9Rbg1Jojd3g
+	 5pKH9P+WeVeFf09g86Q651s7CqJxdKHIDqbKW3PE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 323/641] media: i2c: mt9m114: use fsleep() in place of udelay()
-Date: Mon, 22 Jan 2024 15:53:47 -0800
-Message-ID: <20240122235828.001224639@linuxfoundation.org>
+Subject: [PATCH 6.1 060/417] crypto: sahara - fix processing hash requests with req->nbytes < sg->length
+Date: Mon, 22 Jan 2024 15:53:48 -0800
+Message-ID: <20240122235753.790918663@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 02d4e62ae2452c83e4a3e279b8e4cb4dcbad4b31 ]
+[ Upstream commit 7bafa74d1ba35dcc173e1ce915e983d65905f77e ]
 
-With clang-16, building without COMMON_CLK triggers a range check on
-udelay() because of a constant division-by-zero calculation:
+It's not always the case that the entire sg entry needs to be processed.
+Currently, when nbytes is less than sg->length, "Descriptor length" errors
+are encountered.
 
-ld.lld: error: undefined symbol: __bad_udelay
->>> referenced by mt9m114.c
->>>               drivers/media/i2c/mt9m114.o:(mt9m114_power_on) in archive vmlinux.a
+To fix this, take the actual request size into account when populating the
+hw links.
 
-In this configuration, the driver already fails to probe, before
-this function gets called, so it's enough to suppress the assertion.
-
-Do this by using fsleep(), which turns long delays into sleep() calls
-in place of the link failure.
-
-This is probably a good idea regardless to avoid overly long dynamic
-udelay() calls on a slow clock.
-
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
-Fixes: 24d756e914fc ("media: i2c: Add driver for onsemi MT9M114 camera sensor")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/mt9m114.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/sahara.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/mt9m114.c b/drivers/media/i2c/mt9m114.c
-index ac19078ceda3..1a535c098ded 100644
---- a/drivers/media/i2c/mt9m114.c
-+++ b/drivers/media/i2c/mt9m114.c
-@@ -2112,7 +2112,7 @@ static int mt9m114_power_on(struct mt9m114 *sensor)
- 		duration = DIV_ROUND_UP(2 * 50 * 1000000, freq);
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 6e112e41a0c7..b167f92279ad 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -777,6 +777,7 @@ static int sahara_sha_hw_links_create(struct sahara_dev *dev,
+ 				       int start)
+ {
+ 	struct scatterlist *sg;
++	unsigned int len;
+ 	unsigned int i;
+ 	int ret;
  
- 		gpiod_set_value(sensor->reset, 1);
--		udelay(duration);
-+		fsleep(duration);
- 		gpiod_set_value(sensor->reset, 0);
- 	} else {
- 		/*
+@@ -798,12 +799,14 @@ static int sahara_sha_hw_links_create(struct sahara_dev *dev,
+ 	if (!ret)
+ 		return -EFAULT;
+ 
++	len = rctx->total;
+ 	for (i = start; i < dev->nb_in_sg + start; i++) {
+-		dev->hw_link[i]->len = sg->length;
++		dev->hw_link[i]->len = min(len, sg->length);
+ 		dev->hw_link[i]->p = sg->dma_address;
+ 		if (i == (dev->nb_in_sg + start - 1)) {
+ 			dev->hw_link[i]->next = 0;
+ 		} else {
++			len -= min(len, sg->length);
+ 			dev->hw_link[i]->next = dev->hw_phys_link[i + 1];
+ 			sg = sg_next(sg);
+ 		}
 -- 
 2.43.0
 
