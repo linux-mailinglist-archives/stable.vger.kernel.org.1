@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43E5C838306
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA352837E46
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F386928A758
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33999B20F66
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68625605B6;
-	Tue, 23 Jan 2024 01:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096AC5A0ED;
+	Tue, 23 Jan 2024 00:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLD3Frbf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/m3Pgxk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE5D605AF;
-	Tue, 23 Jan 2024 01:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC2C5A0E7;
+	Tue, 23 Jan 2024 00:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974684; cv=none; b=QJ4BGJVVhicx7tgv86sZSjQmsi5ooDGPP0r/T7EhqHMfCDaJFVL9kGKrYFKQQB7sKW0TMO0MsNlhlkucBJxdr4wjucSEqmu3ZeLuoF2/v9oM/XZk5XqJ4aMlSiHtVa7DcDVbqn8zDXihcUPVEInJm0HfI+ncL6zWhXb1SLhrv3s=
+	t=1705970464; cv=none; b=qlHuRcf2xHKlguL8cKuugGnwmvERusFFiMbky9BuTVAQzdQEO9mHhI4+V0nMdb98muYuA4JpUag4UPKUWdhb+N/MX1hRB/DXiyWaN/3VmiKjjXP1nq52sa2XBIb2mlppuPcX72oy2p7CEqT3VsqQPMx371QaiJfLEttMZz9n0Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974684; c=relaxed/simple;
-	bh=w0VHpeha3wIwnMVWSypuSjZh4tcR+7GCF5Qqw8X5VRE=;
+	s=arc-20240116; t=1705970464; c=relaxed/simple;
+	bh=XyxWhuik/DbUhHr1it0+KzDgfNNsLZU7zRp4O4yegKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W2VplvLaQtbGz0y5SdQWuDoYGP0ui6VsuL13oCWNfzQK5rZoXyCOSv1AtRbuOxtTKDB5DyBBSK0n+R7L/oR5xJ6Le0d9J9IgSJjQJr+ZeXRsEehGEjR+VFiiHMbxncdUf6oKoBfnc4YBaugideI5CIjZxZ4d8dS0Lm8XPVFPd98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLD3Frbf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A8AC43390;
-	Tue, 23 Jan 2024 01:51:23 +0000 (UTC)
+	 MIME-Version; b=oTKR9t4WZpzwETPiXiVmXvWvhneQEofcJ48BXarcwD3zuztzoasbNcvoK1qLaFUFQ3MrffGLPMx1RnQzsJ9iT5oK+JA2KKIv9Dq0cq0OANde2PgyBBFwhtpZt4cMOkNXwqm0T/j8J1RBkeHTHGxsTXbQgKH/MN96VghqSMeyKaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/m3Pgxk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9D4C433C7;
+	Tue, 23 Jan 2024 00:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974683;
-	bh=w0VHpeha3wIwnMVWSypuSjZh4tcR+7GCF5Qqw8X5VRE=;
+	s=korg; t=1705970464;
+	bh=XyxWhuik/DbUhHr1it0+KzDgfNNsLZU7zRp4O4yegKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pLD3FrbfO1FlgWbbFyp6NDdOjCmKh0n0S2O/EW45ucSLShzwkRjhUaAood9cZbriz
-	 1fgZ9kgIgl2SCwSzzZqMzCisj47lE5XEBIJSIMlNIhMUUAXMuzrzm6R+e7RrdZDa4b
-	 NZIW4wf9VE8LNHah2dMklaHBzL+xk3giFkPIQn2U=
+	b=k/m3PgxkqFjJsiJnrTWDSHk3L8ZtrqoTPZZSBhQxv3ol/MLdqoKZjNEXCwBNmbvoV
+	 bX0SuhTBIj0tyib3dgnfPB/6eYX/mcIaf39iDZR98MbMvJI2sUvg7Q41n3TxmWNTbl
+	 jDZfArMS5Y5AAFHfBBF+7/KBZihAMIz6RPosOxIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/583] bpf: fix check for attempt to corrupt spilled pointer
+Subject: [PATCH 6.1 005/417] powerpc: add crtsavres.o to always-y instead of extra-y
 Date: Mon, 22 Jan 2024 15:52:53 -0800
-Message-ID: <20240122235815.875139114@linuxfoundation.org>
+Message-ID: <20240122235751.666442864@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit ab125ed3ec1c10ccc36bc98c7a4256ad114a3dae ]
+[ Upstream commit 1b1e38002648819c04773647d5242990e2824264 ]
 
-When register is spilled onto a stack as a 1/2/4-byte register, we set
-slot_type[BPF_REG_SIZE - 1] (plus potentially few more below it,
-depending on actual spill size). So to check if some stack slot has
-spilled register we need to consult slot_type[7], not slot_type[0].
+crtsavres.o is linked to modules. However, as explained in commit
+d0e628cd817f ("kbuild: doc: clarify the difference between extra-y
+and always-y"), 'make modules' does not build extra-y.
 
-To avoid the need to remember and double-check this in the future, just
-use is_spilled_reg() helper.
+For example, the following command fails:
 
-Fixes: 27113c59b6d0 ("bpf: Check the other end of slot_type for STACK_SPILL")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20231205184248.1502704-4-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+  $ make ARCH=powerpc LLVM=1 KBUILD_MODPOST_WARN=1 mrproper ps3_defconfig modules
+    [snip]
+    LD [M]  arch/powerpc/platforms/cell/spufs/spufs.ko
+  ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such file or directory
+  make[3]: *** [scripts/Makefile.modfinal:56: arch/powerpc/platforms/cell/spufs/spufs.ko] Error 1
+  make[2]: *** [Makefile:1844: modules] Error 2
+  make[1]: *** [/home/masahiro/workspace/linux-kbuild/Makefile:350: __build_one_by_one] Error 2
+  make: *** [Makefile:234: __sub-make] Error 2
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: baa25b571a16 ("powerpc/64: Do not link crtsavres.o in vmlinux")
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231120232332.4100288-1-masahiroy@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 2 +-
+ arch/powerpc/lib/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 2deae0db03e8..24152ac6a393 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -4330,7 +4330,7 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- 	 * so it's aligned access and [off, off + size) are within stack limits
- 	 */
- 	if (!env->allow_ptr_leaks &&
--	    state->stack[spi].slot_type[0] == STACK_SPILL &&
-+	    is_spilled_reg(&state->stack[spi]) &&
- 	    size != BPF_REG_SIZE) {
- 		verbose(env, "attempt to corrupt spilled pointer on stack\n");
- 		return -EACCES;
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index b705c89f3e21..9b394bab17eb 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -43,7 +43,7 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)	+= error-inject.o
+ # so it is only needed for modules, and only for older linkers which
+ # do not support --save-restore-funcs
+ ifndef CONFIG_LD_IS_BFD
+-extra-$(CONFIG_PPC64)	+= crtsavres.o
++always-$(CONFIG_PPC64)	+= crtsavres.o
+ endif
+ 
+ obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
 -- 
 2.43.0
 
