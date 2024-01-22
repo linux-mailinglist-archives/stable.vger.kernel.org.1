@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75ED838275
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 472F183849B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7BD81C2258E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2642299CF8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5415C5ED;
-	Tue, 23 Jan 2024 01:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D458E7319A;
+	Tue, 23 Jan 2024 02:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/0W8131"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtTYuJJS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC885BAD4;
-	Tue, 23 Jan 2024 01:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920567318E;
+	Tue, 23 Jan 2024 02:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974358; cv=none; b=saURySaommWMVKHqIC5Kh7rNHaLADUH3uu4lXSI3e4mEYchbKoJk2MRAAhO4TluysUZDi60opGovuUiyeDk6noTtNayTuTHzB5V5Herhjm24uExJ4bKnVjhoOx8UktiqEXRiBhVc/2UJ9Swq9MtLjPH/RaveRcuVm11C++LDJIw=
+	t=1705975437; cv=none; b=uVHTgb/ep49Lysho05aspPNQvf4c9IdMO0q6t6PGCC4MkrDQcstnrQQF0gmhoTs1B7GrGfIStheW2O6X5glU4SxyFc8kRWvVpXeCJT4i+Hanbz06eZY7JftfgvFDAGS183ZmFzNSxzNmYS2aBuHCb+zQ+0MjjY5z69y4Nj6Wchc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974358; c=relaxed/simple;
-	bh=Gz6BBOF19zRyfEZRh5o7xZt7HkhIZKRjRTuLU0MzuSY=;
+	s=arc-20240116; t=1705975437; c=relaxed/simple;
+	bh=LmWENgodePq7gIkeeLBgx4VtHiiVZiRRjYVar0zGIzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s0nXZlYPLD700RjFDwO7GlOJaDcciHAex6SLX2dReFifTWLreqwrLpxLLsGXqGBYoknSJojYXZNbyHRmFZjwsQq5dWXMNGVCp9YAaY9/g/ktWsgxLLLlCG+INYrmjYvvOOp9uRE5eMNw/n+PPEUgu3PGvZiVJU+LInjQE7L2UuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/0W8131; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDEFC433F1;
-	Tue, 23 Jan 2024 01:45:58 +0000 (UTC)
+	 MIME-Version; b=dRgXKiqF/pIg8JIlvfEoLhK4kTgsrm0gtp77vKr8zPTF4FqPabLqpUHuiU8mMyogxDDgoKTy93GeATCnNc97JPCcW9sikekNFEYx4eM86QRYrSdvdzQFQl2BI+yQ+tKYjRQBcuXEtE6bnQLTxjsTfq8gy6ok5QUoBZmrm7+DiZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtTYuJJS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EAAEC433C7;
+	Tue, 23 Jan 2024 02:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974358;
-	bh=Gz6BBOF19zRyfEZRh5o7xZt7HkhIZKRjRTuLU0MzuSY=;
+	s=korg; t=1705975437;
+	bh=LmWENgodePq7gIkeeLBgx4VtHiiVZiRRjYVar0zGIzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/0W8131OMhOubOrT9qq0dbXpqAywu64mbqOV7nsk+lzQl3x03bK9WiyEBFt1UFVQ
-	 ptlaBgS3I47K7igs0IGXfUpHldxxgwEbglBCJbta5eDoTDgL3mmPw4j2+0ZYZMsXuM
-	 OTZ3XW3sDQmzFmwFEUztvdZMAa8L0/c9RcrJEA2g=
+	b=rtTYuJJS91YZ8utfqwN1quorggn70RdIT3vF80nhdAhHqBl7POgGM6UhyRAY5i5eW
+	 BBx+W9d48HkVtMmmYL19PgoBBreDAfJ7w+NxlV40WNMrMoXTqzIlC3EYxjPFNMYCsS
+	 u3xiUrWnboC+KpHzeK2PHDwsB/MBhZhWpGkBG+UE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 191/374] ASoC: cs35l34: Fix GPIO name and drop legacy include
+	Sathya Prakash <sathya.prakash@broadcom.com>,
+	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 396/583] scsi: mpi3mr: Refresh sdev queue depth after controller reset
 Date: Mon, 22 Jan 2024 15:57:27 -0800
-Message-ID: <20240122235751.254891050@linuxfoundation.org>
+Message-ID: <20240122235824.099962415@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
 
-[ Upstream commit a6122b0b4211d132934ef99e7b737910e6d54d2f ]
+commit e5aab848dfdf7996d20ece4d28d2733c732c5e5a upstream.
 
-This driver includes the legacy GPIO APIs <linux/gpio.h> and
-<linux/of_gpio.h> but does not use any symbols from any of
-them.
+After a controller reset, the firmware may modify the device queue depth.
+Therefore, update the device queue depth accordingly.
 
-Drop the includes.
-
-Further the driver is requesting "reset-gpios" rather than
-just "reset" from the GPIO framework. This is wrong because
-the gpiolib core will add "-gpios" before processing the
-request from e.g. device tree. Drop the suffix.
-
-The last problem means that the optional RESET GPIO has
-never been properly retrieved and used even if it existed,
-but nobody noticed.
-
-Fixes: c1124c09e103 ("ASoC: cs35l34: Initial commit of the cs35l34 CODEC driver.")
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20231201-descriptors-sound-cirrus-v2-3-ee9f9d4655eb@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org> # v5.15+
+Co-developed-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+Link: https://lore.kernel.org/r/20231126053134.10133-2-chandrakanth.patil@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs35l34.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_os.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/cs35l34.c b/sound/soc/codecs/cs35l34.c
-index ed678241c22b..be0edeebddfe 100644
---- a/sound/soc/codecs/cs35l34.c
-+++ b/sound/soc/codecs/cs35l34.c
-@@ -20,14 +20,12 @@
- #include <linux/regulator/machine.h>
- #include <linux/pm_runtime.h>
- #include <linux/of_device.h>
--#include <linux/of_gpio.h>
- #include <linux/of_irq.h>
- #include <sound/core.h>
- #include <sound/pcm.h>
- #include <sound/pcm_params.h>
- #include <sound/soc.h>
- #include <sound/soc-dapm.h>
--#include <linux/gpio.h>
- #include <linux/gpio/consumer.h>
- #include <sound/initval.h>
- #include <sound/tlv.h>
-@@ -1063,7 +1061,7 @@ static int cs35l34_i2c_probe(struct i2c_client *i2c_client,
- 		dev_err(&i2c_client->dev, "Failed to request IRQ: %d\n", ret);
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -1070,8 +1070,14 @@ void mpi3mr_rfresh_tgtdevs(struct mpi3mr
+ 	tgtdev = NULL;
+ 	list_for_each_entry(tgtdev, &mrioc->tgtdev_list, list) {
+ 		if ((tgtdev->dev_handle != MPI3MR_INVALID_DEV_HANDLE) &&
+-		    !tgtdev->is_hidden && !tgtdev->host_exposed)
+-			mpi3mr_report_tgtdev_to_host(mrioc, tgtdev->perst_id);
++		    !tgtdev->is_hidden) {
++			if (!tgtdev->host_exposed)
++				mpi3mr_report_tgtdev_to_host(mrioc,
++							     tgtdev->perst_id);
++			else if (tgtdev->starget)
++				starget_for_each_device(tgtdev->starget,
++							(void *)tgtdev, mpi3mr_update_sdev);
++	}
+ 	}
+ }
  
- 	cs35l34->reset_gpio = devm_gpiod_get_optional(&i2c_client->dev,
--				"reset-gpios", GPIOD_OUT_LOW);
-+				"reset", GPIOD_OUT_LOW);
- 	if (IS_ERR(cs35l34->reset_gpio)) {
- 		ret = PTR_ERR(cs35l34->reset_gpio);
- 		goto err_regulator;
--- 
-2.43.0
-
 
 
 
