@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5ED837FA3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31CA9838012
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA9C41F29FD2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D070A28CBA8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C286350D;
-	Tue, 23 Jan 2024 00:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E22657CB;
+	Tue, 23 Jan 2024 00:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQzbiGro"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lyNXGFpg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935AB627F3;
-	Tue, 23 Jan 2024 00:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A86657C9;
+	Tue, 23 Jan 2024 00:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971257; cv=none; b=kzXlM+73Rzo4ukLS/HfuK4pQA7DozvKw4xH+KK9Gr34YWF9Z8Fc/x5htde2uweGgEEYGGKhdzbUyr8YTrs+qEa4k+HqeEBC6YRpIs5NqDDrJvCM325k8YFlcbv+0pOR/BLiQ4R5uIGepIbtgbuZ0vcFEVmJTXb72XUW4WCdLVO4=
+	t=1705971530; cv=none; b=Z3fuVG6giGPaJIgPQ2nTH8e8ShcVIiFA1X/3Msx8jaRsDNf/RnEF5XY7P79GXstBKZuEE9YG/Oq9tnr5PRcXrOV14ZXen8XOOmDosBkuFlWXpRyxhZYZt2RbCZK3ou8b/Y7PjwDmcDUAhmFse5rjrFz5zsQDmIzrfrM5LW6nHB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971257; c=relaxed/simple;
-	bh=PJ7LU4glwfvABsssfXQ5o/W29CMn+ByjfpR4hfcyoS4=;
+	s=arc-20240116; t=1705971530; c=relaxed/simple;
+	bh=oco1VLph4Nauhh9Y+nv/xnsmSps1Qr8K2XSpkpB9TDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I5MtmKz71b5geG8byIm8mwO6M+GZgWafTDPNxbTIcN2iWx8iGPi6dBtgbz5Yqr/Nh0vZ6OlpbsnLW8xLB1jG8EI8T4gzYL8p8BWZG/E+CvXTGjpJi4q5oXu3UuqpBDj6NcW+EP6E0B6tmKtnoTiHGskew2l1obpANpf9JPyaOJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQzbiGro; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49201C433F1;
-	Tue, 23 Jan 2024 00:54:17 +0000 (UTC)
+	 MIME-Version; b=u9QW6DQALbQXkabcZfi6CB4Li/qcd8b5XjAud40HQ6tAtw5snRln/6+pprLJY/rbCvpXt73voc59qt7roZ54c+b5DeKPGvtUrN/ivV3gtApyRDY5H6ZfTTbQj/iHuaQ1zTEX5t6hOurvFxlg/ostRrHVKQRycxVYHVmHLv5uh9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lyNXGFpg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E615AC433F1;
+	Tue, 23 Jan 2024 00:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971257;
-	bh=PJ7LU4glwfvABsssfXQ5o/W29CMn+ByjfpR4hfcyoS4=;
+	s=korg; t=1705971530;
+	bh=oco1VLph4Nauhh9Y+nv/xnsmSps1Qr8K2XSpkpB9TDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQzbiGroEqHe5Fb3caifsfVzAGe4Y5/3T0dTrgdyrXYlJhjfNLwE521eRgP10g4M3
-	 CnBKd4HCwTECmIJYAUQdHqio5QYUG7fmFeQwN5JRHwJo2/SF3Ak9pav0mB+p2HcFcO
-	 /wbxRGWyTSkX58DDt+DOq5bfO0P9fU2FpDisGmCg=
+	b=lyNXGFpgtPplR/h11iUFPprbZ7Te4/pFWIWk+4vcrkLfHH5w746GwCvpAWmSFuRJw
+	 pUM7MHqpccjjh7bXq8GTcV129ty2nAeXov9sOURUKhiLUJ1qj85XAssrpthTeTXczO
+	 WIcoimjSs5d0s/shhu6Fap34HdQZqjtf28a9qi5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Nishanth Menon <nm@ti.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/286] arm64: dts: ti: k3-am65-main: Fix DSS irq trigger type
-Date: Mon, 22 Jan 2024 15:57:05 -0800
-Message-ID: <20240122235736.710365180@linuxfoundation.org>
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>
+Subject: [PATCH 6.1 258/417] tick-sched: Fix idle and iowait sleeptime accounting vs CPU hotplug
+Date: Mon, 22 Jan 2024 15:57:06 -0800
+Message-ID: <20240122235800.805968244@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit b57160859263c083c49482b0d083a586b1517f78 ]
+commit 71fee48fb772ac4f6cfa63dbebc5629de8b4cc09 upstream.
 
-DSS irq trigger type is set to IRQ_TYPE_EDGE_RISING in the DT file, but
-the TRM says it is level triggered.
+When offlining and onlining CPUs the overall reported idle and iowait
+times as reported by /proc/stat jump backward and forward:
 
-For some reason triggering on rising edge results in double the amount
-of expected interrupts, e.g. for normal page flipping test the number of
-interrupts per second is 2 * fps. It is as if the IRQ triggers on both
-edges. There are no other side effects to this issue than slightly
-increased CPU & power consumption due to the extra interrupt.
+cpu  132 0 176 225249 47 6 6 21 0 0
+cpu0 80 0 115 112575 33 3 4 18 0 0
+cpu1 52 0 60 112673 13 3 1 2 0 0
 
-Switching to IRQ_TYPE_LEVEL_HIGH is correct and fixes the issue, so
-let's do that.
+cpu  133 0 177 226681 47 6 6 21 0 0
+cpu0 80 0 116 113387 33 3 4 18 0 0
 
-Fixes: fc539b90eda2 ("arm64: dts: ti: am654: Add DSS node")
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Link: https://lore.kernel.org/r/20231106-am65-dss-clk-edge-v1-1-4a959fec0e1e@ideasonboard.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+cpu  133 0 178 114431 33 6 6 21 0 0 <---- jump backward
+cpu0 80 0 116 114247 33 3 4 18 0 0
+cpu1 52 0 61 183 0 3 1 2 0 0        <---- idle + iowait start with 0
+
+cpu  133 0 178 228956 47 6 6 21 0 0 <---- jump forward
+cpu0 81 0 117 114929 33 3 4 18 0 0
+
+Reason for this is that get_idle_time() in fs/proc/stat.c has different
+sources for both values depending on if a CPU is online or offline:
+
+- if a CPU is online the values may be taken from its per cpu
+  tick_cpu_sched structure
+
+- if a CPU is offline the values are taken from its per cpu cpustat
+  structure
+
+The problem is that the per cpu tick_cpu_sched structure is set to zero on
+CPU offline. See tick_cancel_sched_timer() in kernel/time/tick-sched.c.
+
+Therefore when a CPU is brought offline and online afterwards both its idle
+and iowait sleeptime will be zero, causing a jump backward in total system
+idle and iowait sleeptime. In a similar way if a CPU is then brought
+offline again the total idle and iowait sleeptimes will jump forward.
+
+It looks like this behavior was introduced with commit 4b0c0f294f60
+("tick: Cleanup NOHZ per cpu data on cpu down").
+
+This was only noticed now on s390, since we switched to generic idle time
+reporting with commit be76ea614460 ("s390/idle: remove arch_cpu_idle_time()
+and corresponding code").
+
+Fix this by preserving the values of idle_sleeptime and iowait_sleeptime
+members of the per-cpu tick_sched structure on CPU hotplug.
+
+Fixes: 4b0c0f294f60 ("tick: Cleanup NOHZ per cpu data on cpu down")
+Reported-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20240115163555.1004144-1-hca@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am65-main.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/time/tick-sched.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-index 4265f627ca16..a3538279d710 100644
---- a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-@@ -865,7 +865,7 @@ dss: dss@4a00000 {
- 		assigned-clocks = <&k3_clks 67 2>;
- 		assigned-clock-parents = <&k3_clks 67 5>;
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -1556,13 +1556,18 @@ void tick_setup_sched_timer(void)
+ void tick_cancel_sched_timer(int cpu)
+ {
+ 	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
++	ktime_t idle_sleeptime, iowait_sleeptime;
  
--		interrupts = <GIC_SPI 166 IRQ_TYPE_EDGE_RISING>;
-+		interrupts = <GIC_SPI 166 IRQ_TYPE_LEVEL_HIGH>;
+ # ifdef CONFIG_HIGH_RES_TIMERS
+ 	if (ts->sched_timer.base)
+ 		hrtimer_cancel(&ts->sched_timer);
+ # endif
  
- 		status = "disabled";
++	idle_sleeptime = ts->idle_sleeptime;
++	iowait_sleeptime = ts->iowait_sleeptime;
+ 	memset(ts, 0, sizeof(*ts));
++	ts->idle_sleeptime = idle_sleeptime;
++	ts->iowait_sleeptime = iowait_sleeptime;
+ }
+ #endif
  
--- 
-2.43.0
-
 
 
 
