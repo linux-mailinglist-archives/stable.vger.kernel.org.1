@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-13690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B4CA837D6A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB862837F8E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 778C51C20F99
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66FE61F29417
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0144EB21;
-	Tue, 23 Jan 2024 00:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BEA629FA;
+	Tue, 23 Jan 2024 00:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSk659f8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVYO6E7s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E464E1D7;
-	Tue, 23 Jan 2024 00:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FFC627E3;
+	Tue, 23 Jan 2024 00:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969944; cv=none; b=dJLLijQoydX+Y1p4YnrcVng9zG9TC1d74bLqAVIX59JUOmkWqFBvEIkAzNyr8B1LaSGdWumaru2VgngR86hkRmwMDOUq1dCemA6vjS4ivUs5mC1ALjscmxw0Zwx2VVvEPj9xRfJc+5xuDLdZNvzEc1hNMBcRxZK2lG86iEgynL0=
+	t=1705971191; cv=none; b=s/5F5+gKa1GAFT+nrrO1SU9FzTaKyJ3Ne5avCsA6OyvV4tWhNd5d17wLVrqA8zqC4bwtoQO7ZQIARFwmO8EW0MPcEzPIaPq75NRAwk1iFy5O74nujWCIhFBscpPlewwhRgqHGMfrnaZDTszIBK1dLKdw3NCdlu48qpLBBnRbYJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969944; c=relaxed/simple;
-	bh=DIOghlFQ5/9LVrejV/h2ZzO2qf3p+qqfjR/j2w6L/m4=;
+	s=arc-20240116; t=1705971191; c=relaxed/simple;
+	bh=CaQ2B67DNqWl8DtBdpZKHB4K2X9JPrkCEuTssAtj/1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E1wcBkoLAbnVSfvkCAVdInUgax+EFmEsOLBZc9ZLN7Y0JXk5elXdYLoV3iHrDYwv/sa0VIr9WTbDbcbTUsxMbaVx0+UxfWAAOvCXNMcAnzusIr1QKgAwFSa45231I3pQsIX20/tkpKWxzdKCoboILChvstWoZlztIH44jzeDKMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSk659f8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F63C43390;
-	Tue, 23 Jan 2024 00:32:23 +0000 (UTC)
+	 MIME-Version; b=m07pfW/198+Fb0tg9F7kw1jHJWGsRXPGdA2XNg9sDafRr3SMVWZ1A8IbY//UECj5midENbjz+u+kbbhkYmTTkHPX0VJrJ8oATRkIL4qEfx7PrlbJ8LY+Bbx2JjkQJXqt+en9UPF8i38tJdX739lEUHB6ut2fr5gr8rrIVzMeXUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVYO6E7s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE203C433F1;
+	Tue, 23 Jan 2024 00:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969943;
-	bh=DIOghlFQ5/9LVrejV/h2ZzO2qf3p+qqfjR/j2w6L/m4=;
+	s=korg; t=1705971191;
+	bh=CaQ2B67DNqWl8DtBdpZKHB4K2X9JPrkCEuTssAtj/1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WSk659f8eqKwGhW7Sr74H4mi+DCTPN5uCz82lLEKNE1x/70XKzgxdva4+vXIhy7lK
-	 8DXy6DjOxLbTPfA90cDQr/e6EEZcSFIr/IouZ3lXA/rn+xUVzYwzvBAKeazHh6lko3
-	 FlFOMe6CxQaOeH8kM1wk4v9wnFHxnlYJJvFKqhgQ=
+	b=RVYO6E7sRLY68LI6NHj4CCk1k1+nTHg0JNJIROR/mdEZU0W7Jugjp7d7mlZ1rko7T
+	 UhROzbdU9Yz2A0Wzou6361gGQ1t2DFKVzQCuNPW1mdccSX1wUdAqXDXMkCMaboTK1+
+	 DbsakFTfV0ptcRLBF/An8litONGVZBf24IAZQztg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Chih-Kang Chang <gary.chang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 509/641] libapi: Add missing linux/types.h header to get the __u64 type on io.h
-Date: Mon, 22 Jan 2024 15:56:53 -0800
-Message-ID: <20240122235834.003977802@linuxfoundation.org>
+Subject: [PATCH 5.10 108/286] wifi: rtw88: fix RX filter in FIF_ALLMULTI flag
+Date: Mon, 22 Jan 2024 15:56:54 -0800
+Message-ID: <20240122235736.259468629@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,41 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-[ Upstream commit af76b2dec0984a079d8497bfa37d29a9b55932e1 ]
+[ Upstream commit 53ee0b3b99edc6a47096bffef15695f5a895386f ]
 
-There are functions using __u64, so we need to have the linux/types.h
-header otherwise we'll break when its not included before api/io.h.
+The broadcast packets will be filtered in the FIF_ALLMULTI flag in
+the original code, which causes beacon packets to be filtered out
+and disconnection. Therefore, we fix it.
 
-Fixes: e95770af4c4a280f ("tools api: Add a lightweight buffered reading api")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/lkml/ZWjDPL+IzPPsuC3X@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231103020851.102238-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/api/io.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw88/mac80211.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/lib/api/io.h b/tools/lib/api/io.h
-index a77b74c5fb65..2a7fe9758813 100644
---- a/tools/lib/api/io.h
-+++ b/tools/lib/api/io.h
-@@ -12,6 +12,7 @@
- #include <stdlib.h>
- #include <string.h>
- #include <unistd.h>
-+#include <linux/types.h>
+diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+index c92fba2fa480..0a3766781347 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -264,9 +264,9 @@ static void rtw_ops_configure_filter(struct ieee80211_hw *hw,
  
- struct io {
- 	/* File descriptor being read/ */
+ 	if (changed_flags & FIF_ALLMULTI) {
+ 		if (*new_flags & FIF_ALLMULTI)
+-			rtwdev->hal.rcr |= BIT_AM | BIT_AB;
++			rtwdev->hal.rcr |= BIT_AM;
+ 		else
+-			rtwdev->hal.rcr &= ~(BIT_AM | BIT_AB);
++			rtwdev->hal.rcr &= ~(BIT_AM);
+ 	}
+ 	if (changed_flags & FIF_FCSFAIL) {
+ 		if (*new_flags & FIF_FCSFAIL)
 -- 
 2.43.0
 
