@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D713837BEE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A408383AF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29279294B0A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26BD8B23CA1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A02D1420B3;
-	Tue, 23 Jan 2024 00:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAEF5FBA8;
+	Tue, 23 Jan 2024 01:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9WJf1K3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcsS0gnu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090B81420A7;
-	Tue, 23 Jan 2024 00:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD675FDB4;
+	Tue, 23 Jan 2024 01:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969443; cv=none; b=BzCAG+FJake8Bic8aheVf0Uq+J/SLchznGvv2pAFt8m2eDsG8sVoDAQK015EuH6gSvpJc5luz4sTWyK3ODl1TUkhuIpPOiP/jw/CsPL03IbdInvbWzwu/rSxFheRorSbq+Pl5hqWH7HKZtMFPFu1BvOHq9EnsqqNNsQZ/pcBl7A=
+	t=1705974642; cv=none; b=mISXch/udi1zFPxFb9CGiXuA5aRvJWZdg3WSY8xfgOvwqaHK7BmJofRHGaiClQitkPhOmZ/gotay06zDA4cdxHu6ZhWnhG+tjy74dEWovO2lDaYTkJB8r6VdUpmGGEhJdRFJcSBFq/B8cMbwjugCthdwuf2423cGIFjPDLIeSyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969443; c=relaxed/simple;
-	bh=NWYKlE7Wf+xMY4AkbaHxa8EruIogKEaCuU7h8RI9ezE=;
+	s=arc-20240116; t=1705974642; c=relaxed/simple;
+	bh=kV8NaC1iUrXG1DQiGUY43zHHpgWdCoYpXK3hpj+gJ3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUk0U7iIFGIqA7VhQLwaXw2N+kd9NxBMk6jZD2kLYJYwWqN1jGhhtaFVMe77VS/jcfWtXHkoCupZ4kZm8RL/WEwI0uW1eWuC11YgGd8HvUBs6OcdaxLuDbDj8C/aijGb5/lfDFuuuZZg9eMCpldJFy5rYfBlDW6AoTbxywhLep4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9WJf1K3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60108C43390;
-	Tue, 23 Jan 2024 00:24:02 +0000 (UTC)
+	 MIME-Version; b=CBfINwYB1pn+krlIuLyk0nQnece6M6O5qFjLUsvUJZxZJP+WZTNX5NuCOOcl1bbLM9l8SwkIDMshbRo90YBR8qMWXuB6OtN0eCtIpDW4Qmt+sbpfBmMjjSigBfxGlG9OjKsTyK1ynq+GcZslTL1WChd7xCiEKjZ3PyBRK6e6J2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcsS0gnu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AA9C433C7;
+	Tue, 23 Jan 2024 01:50:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969442;
-	bh=NWYKlE7Wf+xMY4AkbaHxa8EruIogKEaCuU7h8RI9ezE=;
+	s=korg; t=1705974642;
+	bh=kV8NaC1iUrXG1DQiGUY43zHHpgWdCoYpXK3hpj+gJ3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v9WJf1K3iSCrWTmZeeOPg/mKCX4CDB+3WENOD3Knz7ABthqxe1N/hnmf1xL8w+tNA
-	 jY+MQRt+jGwwIxU6PODrEiTKIRULhqFRlhaMCL7fBnr3aCWBOM2ohHXcEES+Zn1P/e
-	 vv/uYSYucVoTCo61ZmelkZCUDKN/+abJDn8sU6oY=
+	b=QcsS0gnuVGxZ2HrMAvJtvh7NOvI5BzC31kf4/8yxopd8ke6axzNMJ0KJYrzDL2BtT
+	 LbijZddJAcexyYn0bJt92bu99WxHA0jILJQrik+6x1Z3jWT0+72VtbUjIuZDJjFo6o
+	 rqiL44j8nPqZ/ENJCNHqlOSsSYptxrqcNxGYi4eY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 249/641] drm/panel: nv3051d: Hold panel in reset for unprepare
+Subject: [PATCH 6.6 102/583] md: synchronize flush io with array reconfiguration
 Date: Mon, 22 Jan 2024 15:52:33 -0800
-Message-ID: <20240122235825.710225389@linuxfoundation.org>
+Message-ID: <20240122235815.295828336@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Morgan <macromorgan@hotmail.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 697ebc319b942403a6fee894607fd2cd47cca069 ]
+[ Upstream commit fa2bbff7b0b4e211fec5e5686ef96350690597b5 ]
 
-Improve the panel's ability to restore from suspend by holding the
-panel in suspend after unprepare.
+Currently rcu is used to protect iterating rdev from submit_flushes():
 
-Fixes: b1d39f0f4264 ("drm/panel: Add NewVision NV3051D MIPI-DSI LCD panel")
-Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Link: https://lore.kernel.org/r/20231117202536.1387815-3-macroalpha82@gmail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231117202536.1387815-3-macroalpha82@gmail.com
+submit_flushes			remove_and_add_spares
+				synchronize_rcu
+				pers->hot_remove_disk()
+ rcu_read_lock()
+ rdev_for_each_rcu
+  if (rdev->raid_disk >= 0)
+				rdev->radi_disk = -1;
+   atomic_inc(&rdev->nr_pending)
+   rcu_read_unlock()
+   bi = bio_alloc_bioset()
+   bi->bi_end_io = md_end_flush
+   bi->private = rdev
+   submit_bio
+   // issue io for removed rdev
+
+Fix this problem by grabbing 'acive_io' before iterating rdev, make sure
+that remove_and_add_spares() won't concurrent with submit_flushes().
+
+Fixes: a2826aa92e2e ("md: support barrier requests on all personalities.")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20231129020234.1586910-1-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-newvision-nv3051d.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/md.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-newvision-nv3051d.c b/drivers/gpu/drm/panel/panel-newvision-nv3051d.c
-index 79de6c886292..c44c6945662f 100644
---- a/drivers/gpu/drm/panel/panel-newvision-nv3051d.c
-+++ b/drivers/gpu/drm/panel/panel-newvision-nv3051d.c
-@@ -261,6 +261,8 @@ static int panel_nv3051d_unprepare(struct drm_panel *panel)
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index b2ef6af8376a..8c40c1c3959c 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -494,6 +494,9 @@ static void md_end_flush(struct bio *bio)
+ 	rdev_dec_pending(rdev, mddev);
  
- 	usleep_range(10000, 15000);
- 
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
+ 	if (atomic_dec_and_test(&mddev->flush_pending)) {
++		/* The pair is percpu_ref_get() from md_flush_request() */
++		percpu_ref_put(&mddev->active_io);
 +
- 	regulator_disable(ctx->vdd);
- 
- 	return 0;
+ 		/* The pre-request flush has finished */
+ 		queue_work(md_wq, &mddev->flush_work);
+ 	}
+@@ -513,12 +516,8 @@ static void submit_flushes(struct work_struct *ws)
+ 	rdev_for_each_rcu(rdev, mddev)
+ 		if (rdev->raid_disk >= 0 &&
+ 		    !test_bit(Faulty, &rdev->flags)) {
+-			/* Take two references, one is dropped
+-			 * when request finishes, one after
+-			 * we reclaim rcu_read_lock
+-			 */
+ 			struct bio *bi;
+-			atomic_inc(&rdev->nr_pending);
++
+ 			atomic_inc(&rdev->nr_pending);
+ 			rcu_read_unlock();
+ 			bi = bio_alloc_bioset(rdev->bdev, 0,
+@@ -529,7 +528,6 @@ static void submit_flushes(struct work_struct *ws)
+ 			atomic_inc(&mddev->flush_pending);
+ 			submit_bio(bi);
+ 			rcu_read_lock();
+-			rdev_dec_pending(rdev, mddev);
+ 		}
+ 	rcu_read_unlock();
+ 	if (atomic_dec_and_test(&mddev->flush_pending))
+@@ -582,6 +580,18 @@ bool md_flush_request(struct mddev *mddev, struct bio *bio)
+ 	/* new request after previous flush is completed */
+ 	if (ktime_after(req_start, mddev->prev_flush_start)) {
+ 		WARN_ON(mddev->flush_bio);
++		/*
++		 * Grab a reference to make sure mddev_suspend() will wait for
++		 * this flush to be done.
++		 *
++		 * md_flush_reqeust() is called under md_handle_request() and
++		 * 'active_io' is already grabbed, hence percpu_ref_is_zero()
++		 * won't pass, percpu_ref_tryget_live() can't be used because
++		 * percpu_ref_kill() can be called by mddev_suspend()
++		 * concurrently.
++		 */
++		WARN_ON(percpu_ref_is_zero(&mddev->active_io));
++		percpu_ref_get(&mddev->active_io);
+ 		mddev->flush_bio = bio;
+ 		bio = NULL;
+ 	}
 -- 
 2.43.0
 
