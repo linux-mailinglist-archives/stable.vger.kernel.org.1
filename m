@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5D68382A6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3B028384C1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DEBD1C28A49
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 238CE1C254C1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7800C5DF2D;
-	Tue, 23 Jan 2024 01:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3EF5768F3;
+	Tue, 23 Jan 2024 02:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1LjFmMo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxHny05Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3629B5DF2F;
-	Tue, 23 Jan 2024 01:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3672768F0;
+	Tue, 23 Jan 2024 02:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974400; cv=none; b=gMvCNykDy/o7oYQaN1Aksz0VtzPMlT2OWN1re1OK61FnKJaznjw8JKuwPDkBz52Xjwq+SoUowKHpQNRk1LBIKT5DOn0YxAbQT4I2rYsaOmZE+haQpwcsnkvbJYKow6WfhD5zQ6n0RDUNQlRKE8ySPiHle4rtafElXVRiS/2qRdw=
+	t=1705975486; cv=none; b=DryhO+3iu1o9RqOLjZYGGA+0okkDCd8G6vJtnOTb3HszZuPPa1/tyggF2ja6bZ3uMNlw3IisAtCbrbpqEkE3ZWTGjYEtiA1bteuCYGnKLWBWs/PD0FQPvGZsWzz57XhZvMsCQbSZW3d4n+v5/aKF056T510b3Ico3RbAifwrpag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974400; c=relaxed/simple;
-	bh=OM3RlWDoXPxh4UIYFW44b5y9tf9jEoJYlBc/YM9mpRY=;
+	s=arc-20240116; t=1705975486; c=relaxed/simple;
+	bh=ot1jKDh9SOYmUvo8hb2OH/Mw+Le3orZaVQ7Lg5/zpf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DACX7hcjErFVZHrrVa5og8mDyTfjIl1xjYN95PLBgelqqqfnCUafzoDo8pFeYlpSINaW5ztexmLHDodEo8cAXnk4nLqmw0yPcSCaUCTX2Q+eTo/7l2ar3lfdpNVecdFuigOltrkIHHyPxlfg5lPDHU/D2hXL0h/qdJDehWNCM3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1LjFmMo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF86C433C7;
-	Tue, 23 Jan 2024 01:46:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JdMrLVaANdxMAiaW41/v1naG/5sESDVYQWg0tWZ9mbM8fNU/0RuMdUpO9bt/UxkS342RDGhRrXetVmbE12ghaHK3pd+lLl0915D53u7Mt52R8K+iZ4lnouxBYF8U1zWfv18BOp+sStbPJBGDVB3iwzNNLrbkotSWyvJXUC5b/lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxHny05Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F746C433C7;
+	Tue, 23 Jan 2024 02:04:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974400;
-	bh=OM3RlWDoXPxh4UIYFW44b5y9tf9jEoJYlBc/YM9mpRY=;
+	s=korg; t=1705975486;
+	bh=ot1jKDh9SOYmUvo8hb2OH/Mw+Le3orZaVQ7Lg5/zpf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z1LjFmMogkq0wPJTCWB1VEZH54RSSYW/YgbMGALxq1xT9Gp0vQ5Ya+bQOWokXMo+m
-	 BXWx8fneDxuyECnA9XJgskYKXSUU8psrVutQ4uOuyQRw8/hv65YsceKeGlZ4u39b3g
-	 SvVCLaNN+IWqm+/BhgUs3tZp0fDg/npRYmWk0U2M=
+	b=fxHny05ZdrzZWe/ppm6xH1PpPIRJLUyMwd6syvjO5hhPvzwvHlOFSM2KzyJoPhLtL
+	 2v0zfJqWtnC6wNTVlLe8DanLFpnnX4HiNb8cCabpNpcDtDD4OFbU4+esw9c7JYrsfQ
+	 MK/lsTMgN30Q4ztU5wFQjxVbWVBK/uD/aKoW5a1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 210/374] drivers/amd/pm: fix a use-after-free in kv_parse_power_table
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.6 415/583] wifi: rtlwifi: Convert LNKCTL change to PCIe cap RMW accessors
 Date: Mon, 22 Jan 2024 15:57:46 -0800
-Message-ID: <20240122235751.941642647@linuxfoundation.org>
+Message-ID: <20240122235824.666502259@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +59,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 28dd788382c43b330480f57cd34cde0840896743 ]
+commit 5894d0089cbc146063dcc0239a78ede0a8142efb upstream.
 
-When ps allocated by kzalloc equals to NULL, kv_parse_power_table
-frees adev->pm.dpm.ps that allocated before. However, after the control
-flow goes through the following call chains:
+The rtlwifi driver comes with custom code to write into PCIe Link
+Control register. RMW access for the Link Control register requires
+locking that is already provided by the standard PCIe capability
+accessors.
 
-kv_parse_power_table
-  |-> kv_dpm_init
-        |-> kv_dpm_sw_init
-	      |-> kv_dpm_fini
+Convert the custom RMW code writing into LNKCTL register to standard
+RMW capability accessors. The accesses are changed to cover the full
+LNKCTL register instead of touching just a single byte of the register.
 
-The adev->pm.dpm.ps is used in the for loop of kv_dpm_fini after its
-first free in kv_parse_power_table and causes a use-after-free bug.
-
-Fixes: a2e73f56fa62 ("drm/amdgpu: Add support for CIK parts")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231124084725.12738-3-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/pci.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c b/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c
-index 6ba4c2ae69a6..309c9f0b8f83 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c
-@@ -2731,10 +2731,8 @@ static int kv_parse_power_table(struct amdgpu_device *adev)
- 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
- 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
- 		ps = kzalloc(sizeof(struct kv_ps), GFP_KERNEL);
--		if (ps == NULL) {
--			kfree(adev->pm.dpm.ps);
-+		if (ps == NULL)
- 			return -ENOMEM;
--		}
- 		adev->pm.dpm.ps[i].ps_priv = ps;
- 		k = 0;
- 		idx = (u8 *)&power_state->v2.clockInfoIndex[0];
--- 
-2.43.0
-
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -164,21 +164,29 @@ static bool _rtl_pci_platform_switch_dev
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+ 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+ 
++	value &= PCI_EXP_LNKCTL_ASPMC;
++
+ 	if (rtlhal->hw_type != HARDWARE_TYPE_RTL8192SE)
+-		value |= 0x40;
++		value |= PCI_EXP_LNKCTL_CCC;
+ 
+-	pci_write_config_byte(rtlpci->pdev, 0x80, value);
++	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_ASPMC | value,
++					   value);
+ 
+ 	return false;
+ }
+ 
+-/*When we set 0x01 to enable clk request. Set 0x0 to disable clk req.*/
+-static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u8 value)
++/* @value is PCI_EXP_LNKCTL_CLKREQ_EN or 0 to enable/disable clk request. */
++static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u16 value)
+ {
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+ 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+ 
+-	pci_write_config_byte(rtlpci->pdev, 0x81, value);
++	value &= PCI_EXP_LNKCTL_CLKREQ_EN;
++
++	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_CLKREQ_EN,
++					   value);
+ 
+ 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192SE)
+ 		udelay(100);
+@@ -259,7 +267,8 @@ static void rtl_pci_enable_aspm(struct i
+ 
+ 	if (ppsc->reg_rfps_level & RT_RF_OFF_LEVL_CLK_REQ) {
+ 		_rtl_pci_switch_clk_req(hw, (ppsc->reg_rfps_level &
+-					     RT_RF_OFF_LEVL_CLK_REQ) ? 1 : 0);
++					     RT_RF_OFF_LEVL_CLK_REQ) ?
++					     PCI_EXP_LNKCTL_CLKREQ_EN : 0);
+ 		RT_SET_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_CLK_REQ);
+ 	}
+ 	udelay(100);
 
 
 
