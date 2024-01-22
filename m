@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-13775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA9C837DF9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F92E838101
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 879081F29C3E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A2F6B26C35
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42AE6524BD;
-	Tue, 23 Jan 2024 00:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE96A1350D6;
+	Tue, 23 Jan 2024 01:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ye+F2trp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVm3F2he"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E544E1D0;
-	Tue, 23 Jan 2024 00:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0F91350CA;
+	Tue, 23 Jan 2024 01:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970251; cv=none; b=Nfuuggh1RZdEE5R8sdH7TtJtqSFQCyNa2k8ZbroVYDbDzP7gtefyaesZqwYbRR0GHj/wubTR5pptz7WtHZCJiqhACg3P0O5SKex5iaHpcmZOEGdSj7roEqRYtIgsNXPEYE8gxV482Yc6/f3aQ4BgaGUAKjXsRZ+p1ruMgEaRUdc=
+	t=1705971938; cv=none; b=sZcx6+Cb9SmDfC//SRPHcT34PeqE1jUhjS0dawEiZin1nkqXR+jWtkjhua4dzuuIZg3hzOSHSJR4OQO+92CSztRQZYiZqe20tPj3YcUWBzFyxe8Q0ghesbCGiTXM+8ThntXU5vUdLYr5Tko5VpAiYBiApprBPqQvSmpUGhtHPUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970251; c=relaxed/simple;
-	bh=c8xfb0p2X7v2EC3uTsAGljthcyTWYohejugnV+cERN4=;
+	s=arc-20240116; t=1705971938; c=relaxed/simple;
+	bh=J7hyuUdyHtBM5X46H3cUanTRLME4igCwM26WT2qNOfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WRrbfhubONaQXFPogjrTxZKi7j8JPzFdoaSqYsQeTBtP93lV3TS2uUklDSxOyAF70I27Q1sawpDXKk5v5Yj2HOasHd5Q3QnBxQxFSuVi0PJ13bpOE+LaQWkzGkFIUiArkWC5YVjS1V5g1L3Oz19Qe0T/kVwnTM2hSMETJXC4uRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ye+F2trp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777E3C433C7;
-	Tue, 23 Jan 2024 00:37:30 +0000 (UTC)
+	 MIME-Version; b=nQzhWDUOpswWX7znKOLR4J3uW1o4vLxkllXEVwZbRYhqXDOU4kNqzBxtxmA+TVryjr9jHqtHDHlqx4pCHmdkAA9xe1fgH1iNIjnBDmmVy2O8grKL4ONQN+I0NVq5pLdk1Ja7/pMzuYZUs4rsWxdLiNuBUTC6p/H0pzsAP+Xp3Hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVm3F2he; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8EDC433F1;
+	Tue, 23 Jan 2024 01:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970250;
-	bh=c8xfb0p2X7v2EC3uTsAGljthcyTWYohejugnV+cERN4=;
+	s=korg; t=1705971938;
+	bh=J7hyuUdyHtBM5X46H3cUanTRLME4igCwM26WT2qNOfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ye+F2trpAjNIiGFNRzTcW8+w7qWWR1cSJW1NejpoOaoTgj5Q7VQPuBjE8JcdXF0HG
-	 a4lvlFpoii5Sl4L/uc1FYZovY3mLQ6TITDHc/2u17RFZeTLsy8L+ak7XCA/SYaCT+Y
-	 4/4SMYYfDZoKHx+4x6e33DPkh7Z8ZfqjuQ0eZRwE=
+	b=LVm3F2hegpE5F6OflQw65SZAlyjLowZo5WMfeaBuBu9ox1BnNsIOtvM4tJdsPYA54
+	 ZG1IiDaAKviKIAsEArG13SRkH+OA2LzeG8YEk9fSMCClKln5LkblxNUgol/J+aPlsp
+	 +HZPCc1/f6awFGRGx+V6CUTUm5FVbisDGtSpW+Sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 620/641] netfilter: nft_limit: do not ignore unsupported flags
+Subject: [PATCH 6.1 356/417] tty: change tty_write_lock()s ndelay parameter to bool
 Date: Mon, 22 Jan 2024 15:58:44 -0800
-Message-ID: <20240122235837.643903525@linuxfoundation.org>
+Message-ID: <20240122235804.142544683@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 91a139cee1202a4599a380810d93c69b5bac6197 ]
+[ Upstream commit af815336556df28f800669c58ab3bdad7d786b98 ]
 
-Bail out if userspace provides unsupported flags, otherwise future
-extensions to the limit expression will be silently ignored by the
-kernel.
+It's a yes-no parameter, so convert it to bool to be obvious.
 
-Fixes: c7862a5f0de5 ("netfilter: nft_limit: allow to invert matching criteria")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20230810091510.13006-6-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 66aad7d8d3ec ("usb: cdc-acm: return correct error code on unsupported break")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_limit.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/tty/tty.h       | 2 +-
+ drivers/tty/tty_io.c    | 6 +++---
+ drivers/tty/tty_ioctl.c | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nft_limit.c b/net/netfilter/nft_limit.c
-index 145dc62c6247..79039afde34e 100644
---- a/net/netfilter/nft_limit.c
-+++ b/net/netfilter/nft_limit.c
-@@ -58,6 +58,7 @@ static inline bool nft_limit_eval(struct nft_limit_priv *priv, u64 cost)
- static int nft_limit_init(struct nft_limit_priv *priv,
- 			  const struct nlattr * const tb[], bool pkts)
- {
-+	bool invert = false;
- 	u64 unit, tokens;
+diff --git a/drivers/tty/tty.h b/drivers/tty/tty.h
+index c5ee21912755..91515e1ebc8d 100644
+--- a/drivers/tty/tty.h
++++ b/drivers/tty/tty.h
+@@ -63,7 +63,7 @@ int tty_check_change(struct tty_struct *tty);
+ void __stop_tty(struct tty_struct *tty);
+ void __start_tty(struct tty_struct *tty);
+ void tty_write_unlock(struct tty_struct *tty);
+-int tty_write_lock(struct tty_struct *tty, int ndelay);
++int tty_write_lock(struct tty_struct *tty, bool ndelay);
+ void tty_vhangup_session(struct tty_struct *tty);
+ void tty_open_proc_set_tty(struct file *filp, struct tty_struct *tty);
+ int tty_signal_session_leader(struct tty_struct *tty, int exit_session);
+diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
+index 8fb6c6853556..860990719d14 100644
+--- a/drivers/tty/tty_io.c
++++ b/drivers/tty/tty_io.c
+@@ -939,7 +939,7 @@ void tty_write_unlock(struct tty_struct *tty)
+ 	wake_up_interruptible_poll(&tty->write_wait, EPOLLOUT);
+ }
  
- 	if (tb[NFTA_LIMIT_RATE] == NULL ||
-@@ -90,19 +91,23 @@ static int nft_limit_init(struct nft_limit_priv *priv,
- 				 priv->rate);
+-int tty_write_lock(struct tty_struct *tty, int ndelay)
++int tty_write_lock(struct tty_struct *tty, bool ndelay)
+ {
+ 	if (!mutex_trylock(&tty->atomic_write_lock)) {
+ 		if (ndelay)
+@@ -1153,7 +1153,7 @@ int tty_send_xchar(struct tty_struct *tty, char ch)
+ 		return 0;
  	}
  
-+	if (tb[NFTA_LIMIT_FLAGS]) {
-+		u32 flags = ntohl(nla_get_be32(tb[NFTA_LIMIT_FLAGS]));
-+
-+		if (flags & ~NFT_LIMIT_F_INV)
-+			return -EOPNOTSUPP;
-+
-+		if (flags & NFT_LIMIT_F_INV)
-+			invert = true;
-+	}
-+
- 	priv->limit = kmalloc(sizeof(*priv->limit), GFP_KERNEL_ACCOUNT);
- 	if (!priv->limit)
- 		return -ENOMEM;
+-	if (tty_write_lock(tty, 0) < 0)
++	if (tty_write_lock(tty, false) < 0)
+ 		return -ERESTARTSYS;
  
- 	priv->limit->tokens = tokens;
- 	priv->tokens_max = priv->limit->tokens;
--
--	if (tb[NFTA_LIMIT_FLAGS]) {
--		u32 flags = ntohl(nla_get_be32(tb[NFTA_LIMIT_FLAGS]));
--
--		if (flags & NFT_LIMIT_F_INV)
--			priv->invert = true;
--	}
-+	priv->invert = invert;
- 	priv->limit->last = ktime_get_ns();
- 	spin_lock_init(&priv->limit->lock);
+ 	down_read(&tty->termios_rwsem);
+@@ -2475,7 +2475,7 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
+ 		retval = tty->ops->break_ctl(tty, duration);
+ 	else {
+ 		/* Do the work ourselves */
+-		if (tty_write_lock(tty, 0) < 0)
++		if (tty_write_lock(tty, false) < 0)
+ 			return -EINTR;
+ 		retval = tty->ops->break_ctl(tty, -1);
+ 		if (retval)
+diff --git a/drivers/tty/tty_ioctl.c b/drivers/tty/tty_ioctl.c
+index ad1cf51ecd11..8767c504b95d 100644
+--- a/drivers/tty/tty_ioctl.c
++++ b/drivers/tty/tty_ioctl.c
+@@ -506,7 +506,7 @@ static int set_termios(struct tty_struct *tty, void __user *arg, int opt)
+ 		if (retval < 0)
+ 			return retval;
  
+-		if (tty_write_lock(tty, 0) < 0)
++		if (tty_write_lock(tty, false) < 0)
+ 			goto retry_write_wait;
+ 
+ 		/* Racing writer? */
 -- 
 2.43.0
 
