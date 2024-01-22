@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-15041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F2C48383A4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA58838524
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 628601C29E11
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA04A28934E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED41634EE;
-	Tue, 23 Jan 2024 01:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4EC7E57B;
+	Tue, 23 Jan 2024 02:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHRAU+3A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWFZu0r9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F026634EB;
-	Tue, 23 Jan 2024 01:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69207380;
+	Tue, 23 Jan 2024 02:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975027; cv=none; b=WbblfqD5BFoelmLvVAwUK1C6K/0xHuTDgYG5zqPmWEUoOEyt7Wdpgk4cU4dTQch2Sw+l2KMDOJY4+iIfWBFvYwDcuzuM8vOXUITVF2S++MEZqihgFcdlmmfbUdeu7R3Zk4fCHMLebBjlO4f1SMceQ+iLRNNpi1UVHWnLzchAOv0=
+	t=1705975750; cv=none; b=SS3rv2H+Xz/NW7pqOcKRZ6+z1+mno94RA8f2YkBfAbTYmF1Mr3+QUEWXQBnZ5hgzhxq9S4BaQbPQhmfD1aQGuIzmZ3i/H8Lo3PH3mioJTvacyVdzIOKMvGm0V9NOyCwyGUHisKEH7JWxFdz3gbp+fzB5H+GogEHh2+Wb6WPJTKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975027; c=relaxed/simple;
-	bh=VReD/P59Tgo42OXW2qPNepwMFPP9ONnYMx/zxlQWJeM=;
+	s=arc-20240116; t=1705975750; c=relaxed/simple;
+	bh=agy8DK6lJZi+6M/TYpWEyP+BUqsyc1JZfWEI5CKo/2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=McA/apC69+3eqMtqOU8OM9zuX/lbKFxOf0EQJ66GuAMIuJIHqN20ansBm0ZQFFRbcUHN41kMx+lYpb/RujwkroNq7BcVnMisJIjBdhSH68J4JDLfOXY9K349bhpIETfbqRA8kiv4oOw86msDq9tIBgqBhfy3Pi8ok5y0iasoz6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHRAU+3A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1605AC433F1;
-	Tue, 23 Jan 2024 01:57:07 +0000 (UTC)
+	 MIME-Version; b=WBAxezytocBDZv/yt/TMcnbLbGoqHZuu1yv2Gec2//TNBuVHCZBozNwJUJ87VaY465XbTT5ohOrLGrFOE5blD4bxAtq9YUOTTaPA69PJi984t4Ks/nEhEkRHIy1U9ku5OqyDn06b3ShfEFuS1Mx4EoGB631Ssn9pgcYjrd9hAlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWFZu0r9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2549FC433F1;
+	Tue, 23 Jan 2024 02:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975027;
-	bh=VReD/P59Tgo42OXW2qPNepwMFPP9ONnYMx/zxlQWJeM=;
+	s=korg; t=1705975750;
+	bh=agy8DK6lJZi+6M/TYpWEyP+BUqsyc1JZfWEI5CKo/2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gHRAU+3Ag1MKfdv57RKt2SUQ/9hTL4cOg0Vo3SJiJjWGwhAcEZv9eSjs1WNHUugz+
-	 PPB2Ws8Dcz01kGsTn0cQ6wX3mHZEQoO5TF5sEFaXhpaPbMt9UGBfXm2vycSNYUtdLq
-	 rIiLHe75DtQ0Nx0fo47Riqx57dadYyayU8ABz3qw=
+	b=lWFZu0r97pubj8D7OYyWoKH1jgS+mI6jd9rb1JFnFklxxT24AObJXvJ/Sn9iWE10H
+	 qu9ufMTSgaII1dPkKivTBp8UINSN3vMfwm7MwVOWx97VC9E/ZfQwJvCC/rX0HUdU3x
+	 pBs3Wrry+GtaUiZssCb4jpMBlKbrcZsM+lSA3fY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Westphal <fw@strlen.de>,
+	Peter Krystad <peter.krystad@linux.intel.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang.tang@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 330/374] PCI: keystone: Fix race condition when initializing PHYs
+Subject: [PATCH 6.6 535/583] mptcp: use OPTION_MPTCP_MPJ_SYN in subflow_check_req()
 Date: Mon, 22 Jan 2024 15:59:46 -0800
-Message-ID: <20240122235756.373040498@linuxfoundation.org>
+Message-ID: <20240122235828.489280410@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +68,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c12ca110c613a81cb0f0099019c839d078cd0f38 ]
+[ Upstream commit 66ff70df1a919a066942844bb095d6fcb748d78d ]
 
-The PCI driver invokes the PHY APIs using the ks_pcie_enable_phy()
-function. The PHY in this case is the Serdes. It is possible that the
-PCI instance is configured for two lane operation across two different
-Serdes instances, using one lane of each Serdes.
+syzbot reported that subflow_check_req() was using uninitialized data in
+subflow_check_req() [1]
 
-In such a configuration, if the reference clock for one Serdes is
-provided by the other Serdes, it results in a race condition. After the
-Serdes providing the reference clock is initialized by the PCI driver by
-invoking its PHY APIs, it is not guaranteed that this Serdes remains
-powered on long enough for the PHY APIs based initialization of the
-dependent Serdes. In such cases, the PLL of the dependent Serdes fails
-to lock due to the absence of the reference clock from the former Serdes
-which has been powered off by the PM Core.
+This is because mp_opt.token is only set when OPTION_MPTCP_MPJ_SYN is also set.
 
-Fix this by obtaining reference to the PHYs before invoking the PHY
-initialization APIs and releasing reference after the initialization is
-complete.
+While we are are it, fix mptcp_subflow_init_cookie_req()
+to test for OPTION_MPTCP_MPJ_ACK.
 
-Link: https://lore.kernel.org/linux-pci/20230927041845.1222080-1-s-vadapalli@ti.com
-Fixes: 49229238ab47 ("PCI: keystone: Cleanup PHY handling")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Acked-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+[1]
+
+BUG: KMSAN: uninit-value in subflow_token_join_request net/mptcp/subflow.c:91 [inline]
+ BUG: KMSAN: uninit-value in subflow_check_req+0x1028/0x15d0 net/mptcp/subflow.c:209
+  subflow_token_join_request net/mptcp/subflow.c:91 [inline]
+  subflow_check_req+0x1028/0x15d0 net/mptcp/subflow.c:209
+  subflow_v6_route_req+0x269/0x410 net/mptcp/subflow.c:367
+  tcp_conn_request+0x153a/0x4240 net/ipv4/tcp_input.c:7164
+ subflow_v6_conn_request+0x3ee/0x510
+  tcp_rcv_state_process+0x2e1/0x4ac0 net/ipv4/tcp_input.c:6659
+  tcp_v6_do_rcv+0x11bf/0x1fe0 net/ipv6/tcp_ipv6.c:1669
+  tcp_v6_rcv+0x480b/0x4fb0 net/ipv6/tcp_ipv6.c:1900
+  ip6_protocol_deliver_rcu+0xda6/0x2a60 net/ipv6/ip6_input.c:438
+  ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
+  NF_HOOK include/linux/netfilter.h:314 [inline]
+  ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
+  dst_input include/net/dst.h:461 [inline]
+  ip6_rcv_finish+0x5db/0x870 net/ipv6/ip6_input.c:79
+  NF_HOOK include/linux/netfilter.h:314 [inline]
+  ipv6_rcv+0xda/0x390 net/ipv6/ip6_input.c:310
+  __netif_receive_skb_one_core net/core/dev.c:5532 [inline]
+  __netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5646
+  netif_receive_skb_internal net/core/dev.c:5732 [inline]
+  netif_receive_skb+0x58/0x660 net/core/dev.c:5791
+  tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1555
+  tun_get_user+0x53af/0x66d0 drivers/net/tun.c:2002
+  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
+  call_write_iter include/linux/fs.h:2020 [inline]
+  new_sync_write fs/read_write.c:491 [inline]
+  vfs_write+0x8ef/0x1490 fs/read_write.c:584
+  ksys_write+0x20f/0x4c0 fs/read_write.c:637
+  __do_sys_write fs/read_write.c:649 [inline]
+  __se_sys_write fs/read_write.c:646 [inline]
+  __x64_sys_write+0x93/0xd0 fs/read_write.c:646
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+Local variable mp_opt created at:
+  subflow_check_req+0x6d/0x15d0 net/mptcp/subflow.c:145
+  subflow_v6_route_req+0x269/0x410 net/mptcp/subflow.c:367
+
+CPU: 1 PID: 5924 Comm: syz-executor.3 Not tainted 6.7.0-rc8-syzkaller-00055-g5eff55d725a4 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
+
+Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Florian Westphal <fw@strlen.de>
+Cc: Peter Krystad <peter.krystad@linux.intel.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>
+Cc: Geliang Tang <geliang.tang@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20240111194917.4044654-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/mptcp/subflow.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index eacdcb0a8771..09379e5f7724 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -1200,7 +1200,16 @@ static int ks_pcie_probe(struct platform_device *pdev)
- 		goto err_link;
- 	}
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index 5b37fee2a85a..93f43a5cce40 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -158,7 +158,7 @@ static int subflow_check_req(struct request_sock *req,
+ 	mptcp_get_options(skb, &mp_opt);
  
-+	/* Obtain references to the PHYs */
-+	for (i = 0; i < num_lanes; i++)
-+		phy_pm_runtime_get_sync(ks_pcie->phy[i]);
-+
- 	ret = ks_pcie_enable_phy(ks_pcie);
-+
-+	/* Release references to the PHYs */
-+	for (i = 0; i < num_lanes; i++)
-+		phy_pm_runtime_put_sync(ks_pcie->phy[i]);
-+
- 	if (ret) {
- 		dev_err(dev, "failed to enable phy\n");
- 		goto err_link;
+ 	opt_mp_capable = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPC);
+-	opt_mp_join = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPJ);
++	opt_mp_join = !!(mp_opt.suboptions & OPTION_MPTCP_MPJ_SYN);
+ 	if (opt_mp_capable) {
+ 		SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_MPCAPABLEPASSIVE);
+ 
+@@ -255,7 +255,7 @@ int mptcp_subflow_init_cookie_req(struct request_sock *req,
+ 	mptcp_get_options(skb, &mp_opt);
+ 
+ 	opt_mp_capable = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPC);
+-	opt_mp_join = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPJ);
++	opt_mp_join = !!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK);
+ 	if (opt_mp_capable && opt_mp_join)
+ 		return -EINVAL;
+ 
 -- 
 2.43.0
 
