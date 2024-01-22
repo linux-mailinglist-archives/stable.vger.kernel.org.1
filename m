@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1FF837F54
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EED4B837F03
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0492A287FDB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8A2229BD86
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534B912AAD9;
-	Tue, 23 Jan 2024 00:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5898B604A3;
+	Tue, 23 Jan 2024 00:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6s6iLxv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYF6lYE8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B3C12A167;
-	Tue, 23 Jan 2024 00:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151F660252;
+	Tue, 23 Jan 2024 00:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971066; cv=none; b=s/lvsmBznn/9doHDA2Lcx9MYRtWstlSw8EAcod6CQGTrmwCUEL8/pfOmUn3lsWpon6jpcpb+H8ZKr237gzSMYfn2yLeZkLwNg4dRSZegL5CDIE3nW3BAaPM6o0nfmhv/G/umSz/Ll1EIpglXRlSgjXeWHMxvlGfVbdytI9SfvoY=
+	t=1705970877; cv=none; b=TVfNMqeG+Ekt7h2pRO/eu5W4/+gJZJ4Jsd7+bxZdDYSEMhK7PKa1PmhA3HttDi4JyAkrPnreyR2HmjquvazAMHbRcMiZ7RLEDFyJb7HIUOfoHkJtiPY7t/hRdpg09o9gAZTMk2Tn63Y+JsGOe3qtQSy73UTjj/sQBt3shlwU4x8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971066; c=relaxed/simple;
-	bh=+FHn8ym5fnMJSOdXcFM/d+gVIf7Y/zxpg/Vs0epu68A=;
+	s=arc-20240116; t=1705970877; c=relaxed/simple;
+	bh=fHCAAqnPThFzpSjgupp7ZiWEv3S6rU3IBy6tTYj8ODQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pcWf2ntgZ8f4djSqANqMdzqa95vBkAioA6TsZW2cp5KUXHiWJJfadrSZkkONk7qPCVnQFNJtfPlSeqZwRZbpqS7CGbWCoFmvghYW/ObUSx8xpB8gTjtVF26Ha9pLSFjI19jfuj/RDRtTQ/73qtLh6/aDKWRGH9p+ghqZG0QRgWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6s6iLxv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A21C43390;
-	Tue, 23 Jan 2024 00:51:05 +0000 (UTC)
+	 MIME-Version; b=AsIbOrTIus9DIjK3/6HKJoZwE4m/HBuochvh+ZD6afCHdWy/GpbwhDBtBRHX0i3lC5HngfsV9alnw8xSlY/WTRlHULT/1BbumdK3v2u11azxTU646qXpMXsxvloT2AdItd14E9RIod7fhEh4hRNs6SIIAQRIt6S2yUZbMpuOY64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYF6lYE8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87399C43399;
+	Tue, 23 Jan 2024 00:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971065;
-	bh=+FHn8ym5fnMJSOdXcFM/d+gVIf7Y/zxpg/Vs0epu68A=;
+	s=korg; t=1705970876;
+	bh=fHCAAqnPThFzpSjgupp7ZiWEv3S6rU3IBy6tTYj8ODQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s6s6iLxvJVlIvn/5ansguKx8aMKMtVpPtfYiz0T0J2r+fkWcEYsx2c0R+MZ016VLF
-	 vq+VRQ3ZaxypohZGFOwWFIQFR1aeMM3BEld0eB3ujaaMJLamv/i53Erz1sVSXxV2K/
-	 KdqdC96fj8akMRm/tIDDjg202/cWzS1N8FDGxB2g=
+	b=aYF6lYE8iUVEwIWUDBJw6NcTohlU0dun1xj0UE0iBinRAV7INNuf36PC1RVDRC7jd
+	 j4WzANPh8zVbQ21r+f+vnp7jJGtd7Bcf7WVK/9R0FAM/oIa4eDaj6xiBMuz9V6su9O
+	 y723MbFGCOLgfN24tT2lBhFqpL7C4cazvfgx6Qc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Zhenghan Wang <wzhmmmmm@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 174/417] drm/radeon: check return value of radeon_ring_lock()
+Subject: [PATCH 5.10 036/286] ida: Fix crash in ida_free when the bitmap is empty
 Date: Mon, 22 Jan 2024 15:55:42 -0800
-Message-ID: <20240122235757.888153506@linuxfoundation.org>
+Message-ID: <20240122235733.408727691@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 71225e1c930942cb1e042fc08c5cc0c4ef30e95e ]
+[ Upstream commit af73483f4e8b6f5c68c9aa63257bdd929a9c194a ]
 
-In the unlikely event of radeon_ring_lock() failing, its errno return
-value should be processed. This patch checks said return value and
-prints a debug message in case of an error.
+The IDA usually detects double-frees, but that detection failed to
+consider the case when there are no nearby IDs allocated and so we have a
+NULL bitmap rather than simply having a clear bit.  Add some tests to the
+test-suite to be sure we don't inadvertently reintroduce this problem.
+Unfortunately they're quite noisy so include a message to disregard
+the warnings.
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 48c0c902e2e6 ("drm/radeon/kms: add support for CP setup on SI")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: Zhenghan Wang <wzhmmmmm@gmail.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/si.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ lib/idr.c      |  2 +-
+ lib/test_ida.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 41 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/radeon/si.c b/drivers/gpu/drm/radeon/si.c
-index a91012447b56..85e9cba49cec 100644
---- a/drivers/gpu/drm/radeon/si.c
-+++ b/drivers/gpu/drm/radeon/si.c
-@@ -3611,6 +3611,10 @@ static int si_cp_start(struct radeon_device *rdev)
- 	for (i = RADEON_RING_TYPE_GFX_INDEX; i <= CAYMAN_RING_TYPE_CP2_INDEX; ++i) {
- 		ring = &rdev->ring[i];
- 		r = radeon_ring_lock(rdev, ring, 2);
-+		if (r) {
-+			DRM_ERROR("radeon: cp failed to lock ring (%d).\n", r);
-+			return r;
-+		}
+diff --git a/lib/idr.c b/lib/idr.c
+index 13f2758c2377..da36054c3ca0 100644
+--- a/lib/idr.c
++++ b/lib/idr.c
+@@ -508,7 +508,7 @@ void ida_free(struct ida *ida, unsigned int id)
+ 			goto delete;
+ 		xas_store(&xas, xa_mk_value(v));
+ 	} else {
+-		if (!test_bit(bit, bitmap->bitmap))
++		if (!bitmap || !test_bit(bit, bitmap->bitmap))
+ 			goto err;
+ 		__clear_bit(bit, bitmap->bitmap);
+ 		xas_set_mark(&xas, XA_FREE_MARK);
+diff --git a/lib/test_ida.c b/lib/test_ida.c
+index b06880625961..55105baa19da 100644
+--- a/lib/test_ida.c
++++ b/lib/test_ida.c
+@@ -150,6 +150,45 @@ static void ida_check_conv(struct ida *ida)
+ 	IDA_BUG_ON(ida, !ida_is_empty(ida));
+ }
  
- 		/* clear the compute context state */
- 		radeon_ring_write(ring, PACKET3_COMPUTE(PACKET3_CLEAR_STATE, 0));
++/*
++ * Check various situations where we attempt to free an ID we don't own.
++ */
++static void ida_check_bad_free(struct ida *ida)
++{
++	unsigned long i;
++
++	printk("vvv Ignore \"not allocated\" warnings\n");
++	/* IDA is empty; all of these will fail */
++	ida_free(ida, 0);
++	for (i = 0; i < 31; i++)
++		ida_free(ida, 1 << i);
++
++	/* IDA contains a single value entry */
++	IDA_BUG_ON(ida, ida_alloc_min(ida, 3, GFP_KERNEL) != 3);
++	ida_free(ida, 0);
++	for (i = 0; i < 31; i++)
++		ida_free(ida, 1 << i);
++
++	/* IDA contains a single bitmap */
++	IDA_BUG_ON(ida, ida_alloc_min(ida, 1023, GFP_KERNEL) != 1023);
++	ida_free(ida, 0);
++	for (i = 0; i < 31; i++)
++		ida_free(ida, 1 << i);
++
++	/* IDA contains a tree */
++	IDA_BUG_ON(ida, ida_alloc_min(ida, (1 << 20) - 1, GFP_KERNEL) != (1 << 20) - 1);
++	ida_free(ida, 0);
++	for (i = 0; i < 31; i++)
++		ida_free(ida, 1 << i);
++	printk("^^^ \"not allocated\" warnings over\n");
++
++	ida_free(ida, 3);
++	ida_free(ida, 1023);
++	ida_free(ida, (1 << 20) - 1);
++
++	IDA_BUG_ON(ida, !ida_is_empty(ida));
++}
++
+ static DEFINE_IDA(ida);
+ 
+ static int ida_checks(void)
+@@ -162,6 +201,7 @@ static int ida_checks(void)
+ 	ida_check_leaf(&ida, 1024 * 64);
+ 	ida_check_max(&ida);
+ 	ida_check_conv(&ida);
++	ida_check_bad_free(&ida);
+ 
+ 	printk("IDA: %u of %u tests passed\n", tests_passed, tests_run);
+ 	return (tests_run != tests_passed) ? 0 : -EINVAL;
 -- 
 2.43.0
 
