@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBD7B837FFA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F3C8384C2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7273628CC35
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDFDA284C6C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B80A12DD8A;
-	Tue, 23 Jan 2024 00:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C1D768EE;
+	Tue, 23 Jan 2024 02:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+5qV1XD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejj654K0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF7A12CDB7;
-	Tue, 23 Jan 2024 00:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8374768EC;
+	Tue, 23 Jan 2024 02:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971480; cv=none; b=iVP3WFUXEeE2fW364ka/OnjstvRbyvUFRThG498ryelMWNYgdNR8jaPy7BiroQkmEPUnNdsTR2ygBl6LvEs2bLjbPe+cK5dl6Jv0XuRSLmt2No+myBSnpMTecTABaBU4m77iPO2hp4Mkrr0bH57b5fhjEeJ+ARzjztBEx5pbmBE=
+	t=1705975482; cv=none; b=Jubx9EIlDZP22AR5EEoT4FOKd8m67DZJXqCmWRIjXl29uY9Frstce6xtiTzrIP9lx2Kf83FxIgIgZVAraTcZ/984MNqMKMxvXjbV5wv+5E0s3sIB2Ov8xUIGRfFS2ZdHaWhbh1D1HtQIs7C1soM6e4ILQVfskKLQoqJMRJ548bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971480; c=relaxed/simple;
-	bh=OKdIKxi9zOge00vowgo/2fJ+zkijyWqjPlycb9f5oOQ=;
+	s=arc-20240116; t=1705975482; c=relaxed/simple;
+	bh=tDpEDVPfpApsiArWeOS6JoRZI3/T4SzPeE1ui/+lZHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mGbac9bHvIbviqtkqMy7nkTnoEInQT9+vPho1LtTHq+LhOJNozFDAC6aPbZx47h+vESfOvGS1GuFmDSxWVbjygUX/W63sUuIwQ2+VK7tmQ8rF0k7i2meSFkVyuQwngQ4rQ1KLtym+2TlxKPF3R6hdIHQIz63GKdyCswJT5k+3ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+5qV1XD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D95C433C7;
-	Tue, 23 Jan 2024 00:58:00 +0000 (UTC)
+	 MIME-Version; b=qhzuQdgtL9QIaTbGAbMXTcEGLPY4S4hVwPqY1GnS8he2ON80aWwOONawTzN1BB5vs+PaqLsfd0qgY/NAY/atIsU829KBH5F6JNZgF2G3aWY4bxIKmUdRAek43SPMd7io/Uyk3hvTEC3yHxrzhIgOuxS6YUrrOcWVWHPZcmT1dd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejj654K0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7957BC43399;
+	Tue, 23 Jan 2024 02:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971480;
-	bh=OKdIKxi9zOge00vowgo/2fJ+zkijyWqjPlycb9f5oOQ=;
+	s=korg; t=1705975482;
+	bh=tDpEDVPfpApsiArWeOS6JoRZI3/T4SzPeE1ui/+lZHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+5qV1XDqHvDcuGwwGV2V3DXTt6mzVdmzgDKrGq77ik8+RXMS+rTaOMvq2m78iTD6
-	 SRzqFJTbaoO+imJ50wo1tAMUoLT0+NDW17WTuwSBuUmmmXxygz9rTx5591ngdQVeTF
-	 wSQRo0k6eCZazuFr6iLNhhzFURMfk1K4klQ2Tq3g=
+	b=ejj654K0IfMpMgcYBtaJeeN4yAW6g2khQYbJ9PKwFsPndX546jMhJ7XMk20fUnRNZ
+	 qAiEryOOz8ir3dsg6c+g//l+IZpXoQaREqZ9a6NQkbbbTkZzjvu7FxknFv8dYMRfEg
+	 alUbGbymbh7cUJyW5Vze7DVCR/IWXeZ//QvPyY88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 158/286] drm/msm/dsi: Use pm_runtime_resume_and_get to prevent refcnt leaks
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.6 413/583] wifi: mt76: fix broken precal loading from MTD for mt7915
 Date: Mon, 22 Jan 2024 15:57:44 -0800
-Message-ID: <20240122235738.256550497@linuxfoundation.org>
+Message-ID: <20240122235824.608296928@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit 3d07a411b4faaf2b498760ccf12888f8de529de0 ]
+commit e874a79250b39447765ac13272b67ac36ccf2a75 upstream.
 
-This helper has been introduced to avoid programmer errors (missing
-_put calls leading to dangling refcnt) when using pm_runtime_get, use it.
+Commit 495184ac91bb ("mt76: mt7915: add support for applying
+pre-calibration data") was fundamentally broken and never worked.
 
-While at it, start checking the return value.
+The idea (before NVMEM support) was to expand the MTD function and pass
+an additional offset. For normal EEPROM load the offset would always be
+0. For the purpose of precal loading, an offset was passed that was
+internally the size of EEPROM, since precal data is right after the
+EEPROM.
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Fixes: 5c8290284402 ("drm/msm/dsi: Split PHY drivers to separate files")
-Patchwork: https://patchwork.freedesktop.org/patch/543350/
-Link: https://lore.kernel.org/r/20230620-topic-dsiphy_rpm-v2-1-a11a751f34f0@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Problem is that the offset value passed is never handled and is actually
+overwrite by
+
+	offset = be32_to_cpup(list);
+	ret = mtd_read(mtd, offset, len, &retlen, eep);
+
+resulting in the passed offset value always ingnored. (and even passing
+garbage data as precal as the start of the EEPROM is getting read)
+
+Fix this by adding to the current offset value, the offset from DT to
+correctly read the piece of data at the requested location.
+
+Cc: stable@vger.kernel.org
+Fixes: 495184ac91bb ("mt76: mt7915: add support for applying pre-calibration data")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/dsi/phy/dsi_phy.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/eeprom.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-index 2e0be85ec394..10eacfd95fb1 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-@@ -558,7 +558,9 @@ static int dsi_phy_enable_resource(struct msm_dsi_phy *phy)
- 	struct device *dev = &phy->pdev->dev;
- 	int ret;
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -67,7 +67,7 @@ static int mt76_get_of_epprom_from_mtd(s
+ 		goto out_put_node;
+ 	}
  
--	pm_runtime_get_sync(dev);
-+	ret = pm_runtime_resume_and_get(dev);
-+	if (ret)
-+		return ret;
- 
- 	ret = clk_prepare_enable(phy->ahb_clk);
- 	if (ret) {
--- 
-2.43.0
-
+-	offset = be32_to_cpup(list);
++	offset += be32_to_cpup(list);
+ 	ret = mtd_read(mtd, offset, len, &retlen, eep);
+ 	put_mtd_device(mtd);
+ 	if (mtd_is_bitflip(ret))
 
 
 
