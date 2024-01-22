@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-13723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0644837D91
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D06F683800F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C9162898F7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 708751F2BE6B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0EAD59B55;
-	Tue, 23 Jan 2024 00:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2221165BB6;
+	Tue, 23 Jan 2024 00:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ev6sqZvQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HK7VfH37"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E3D56B68;
-	Tue, 23 Jan 2024 00:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70B8657A2;
+	Tue, 23 Jan 2024 00:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970028; cv=none; b=i0GjOsz52/Ah7Bz3HasgwwuVldIS7PirV79u5Ml1XHGgPRV5lzq5xvS8XQmGUlGFfH7jSJVl/iCnyT614ns5W3evqo0/qLye1q9Qmpg3OZ9pQiAhIiaIKiv08YYgpHETJtI6HI29nr1bkO+i8gjDpCfPi9RZlKEDZVZWi1rYnHU=
+	t=1705971525; cv=none; b=mFoPwpuQvEXKhwW7yjiDH55EZCmaBiUXjus+1AuNPErx38NOSMmQQRgYYF6UFF+xWxMrIChc/kDuV58vHLeA/iQV4zMrCL9hAiRmDfd0UsHiF+6bu86k+WvvuOOYPtG0nR7ebkLhKW+lT2t6kb8L6HmcGwH6UGHqNwu6bCvMDmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970028; c=relaxed/simple;
-	bh=kBVhwdGRQhBoqBvfmp8Nd70XvSrKJCygc68WuEzlaE8=;
+	s=arc-20240116; t=1705971525; c=relaxed/simple;
+	bh=Oi3ey0wLX0QMs7AkVjVtbPkzRY+O8KWrwbh95ziD8mM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e973L00Nqm1KlHcfCF3DZZJ5WJBu7vYdYwEtTOBl7O0qziHolyY0dVp7J/yBIvYZhVOsu/co03GN6EE4rviYg2oMd59ZPlVhDCNUIbskenvkIAYzWqekeLIr6XBE1/CwXssrni+DT3SdK68CnMSIFW6n+4tTNW38ywRi+w2slb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ev6sqZvQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA1FC433C7;
-	Tue, 23 Jan 2024 00:33:47 +0000 (UTC)
+	 MIME-Version; b=bgACzJOhaI8iEzczDuLkLoUcusnLUH52xUSQSqeMjoTDoT5XKu09sYne9Ghd4oFHq8cnO6UrmdDoZSKKpbepJjdJPimtq7GNgqk0JYKN2pf12oxcYRSF6f+bG3tPAY9YSjPk+yPRjjG9ZE2Ah3p0jLkL9GyAEIgA9fsXVzeBczw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HK7VfH37; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F1BC433C7;
+	Tue, 23 Jan 2024 00:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970028;
-	bh=kBVhwdGRQhBoqBvfmp8Nd70XvSrKJCygc68WuEzlaE8=;
+	s=korg; t=1705971525;
+	bh=Oi3ey0wLX0QMs7AkVjVtbPkzRY+O8KWrwbh95ziD8mM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ev6sqZvQVCS+frwNHhmt7PZLXDKKQ74pcDyXEwnJb5LOHBM98v9/g7csI94F4YbL9
-	 wx8ooUWwEn90E4mZx4tCktSpj1aDkWlb2M2woi/cqnf9ukS7PS5/9UJXLQdfMuwgQr
-	 91MyUkE08KReZ1r5lfc9AO564PLGGQH/lvbbgTlQ=
+	b=HK7VfH37idZxbdECZCIGwOpLMBNGj5IfGpXj5vBs7PH5C1ZYLzhqWOXsk3wquiCjL
+	 +MYbPWhYP6CDRr8DJflzN4whJY5Gn9oB4E+TIFJSwV6DyY1ZzQsxp4PupJ5X+wV1N6
+	 fEBRLkkAGtN5aK9lPDoplIpgJwp+SbYd2zeU4VvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Dafna Hirschfeld <dafna@fastmail.com>,
+	Paul Elder <paul.elder@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 568/641] cxl/port: Fix missing target list lock
+Subject: [PATCH 5.10 166/286] media: rkisp1: Disable runtime PM in probe error path
 Date: Mon, 22 Jan 2024 15:57:52 -0800
-Message-ID: <20240122235835.935281636@linuxfoundation.org>
+Message-ID: <20240122235738.570450085@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-[ Upstream commit 5459e186a5c9f412334321cff58d70dcb0e48a04 ]
+[ Upstream commit 13c9810281f8b24af9b7712cd84a1fce61843e93 ]
 
-cxl_port_setup_targets() modifies the ->targets[] array of a switch
-decoder. target_list_show() expects to be able to emit a coherent
-snapshot of that array by "holding" ->target_lock for read. The
-target_lock is held for write during initialization of the ->targets[]
-array, but it is not held for write during cxl_port_setup_targets().
+If the v4l2_device_register() call fails, runtime PM is left enabled.
+Fix it.
 
-The ->target_lock() predates the introduction of @cxl_region_rwsem. That
-semaphore protects changes to host-physical-address (HPA) decode which
-is precisely what writes to a switch decoder's target list affects.
-
-Replace ->target_lock with @cxl_region_rwsem.
-
-Now the side-effect of snapshotting a unstable view of a decoder's
-target list is likely benign so the Fixes: tag is presumptive.
-
-Fixes: 27b3f8d13830 ("cxl/region: Program target lists")
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Dafna Hirschfeld <dafna@fastmail.com>
+Reviewed-by: Paul Elder <paul.elder@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Stable-dep-of: 452f604a4683 ("media: rkisp1: Fix media device memory leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/port.c | 22 +++++++---------------
- drivers/cxl/cxl.h       |  2 --
- 2 files changed, 7 insertions(+), 17 deletions(-)
+ drivers/staging/media/rkisp1/rkisp1-dev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-index 57495cdc181f..6b386771cc25 100644
---- a/drivers/cxl/core/port.c
-+++ b/drivers/cxl/core/port.c
-@@ -172,14 +172,10 @@ static ssize_t target_list_show(struct device *dev,
- {
- 	struct cxl_switch_decoder *cxlsd = to_cxl_switch_decoder(dev);
- 	ssize_t offset;
--	unsigned int seq;
- 	int rc;
+diff --git a/drivers/staging/media/rkisp1/rkisp1-dev.c b/drivers/staging/media/rkisp1/rkisp1-dev.c
+index 06de5540c8af..663b2efec9b0 100644
+--- a/drivers/staging/media/rkisp1/rkisp1-dev.c
++++ b/drivers/staging/media/rkisp1/rkisp1-dev.c
+@@ -518,7 +518,7 @@ static int rkisp1_probe(struct platform_device *pdev)
  
--	do {
--		seq = read_seqbegin(&cxlsd->target_lock);
--		rc = emit_target_list(cxlsd, buf);
--	} while (read_seqretry(&cxlsd->target_lock, seq));
--
-+	guard(rwsem_read)(&cxl_region_rwsem);
-+	rc = emit_target_list(cxlsd, buf);
- 	if (rc < 0)
- 		return rc;
- 	offset = rc;
-@@ -1633,7 +1629,7 @@ EXPORT_SYMBOL_NS_GPL(cxl_mem_find_port, CXL);
- static int decoder_populate_targets(struct cxl_switch_decoder *cxlsd,
- 				    struct cxl_port *port, int *target_map)
- {
--	int i, rc = 0;
-+	int i;
+ 	ret = v4l2_device_register(rkisp1->dev, &rkisp1->v4l2_dev);
+ 	if (ret)
+-		return ret;
++		goto err_pm_runtime_disable;
  
- 	if (!target_map)
- 		return 0;
-@@ -1643,19 +1639,16 @@ static int decoder_populate_targets(struct cxl_switch_decoder *cxlsd,
- 	if (xa_empty(&port->dports))
- 		return -EINVAL;
- 
--	write_seqlock(&cxlsd->target_lock);
-+	guard(rwsem_write)(&cxl_region_rwsem);
- 	for (i = 0; i < cxlsd->cxld.interleave_ways; i++) {
- 		struct cxl_dport *dport = find_dport(port, target_map[i]);
- 
--		if (!dport) {
--			rc = -ENXIO;
--			break;
--		}
-+		if (!dport)
-+			return -ENXIO;
- 		cxlsd->target[i] = dport;
- 	}
--	write_sequnlock(&cxlsd->target_lock);
- 
--	return rc;
-+	return 0;
+ 	ret = media_device_register(&rkisp1->media_dev);
+ 	if (ret) {
+@@ -538,6 +538,7 @@ static int rkisp1_probe(struct platform_device *pdev)
+ 	media_device_unregister(&rkisp1->media_dev);
+ err_unreg_v4l2_dev:
+ 	v4l2_device_unregister(&rkisp1->v4l2_dev);
++err_pm_runtime_disable:
+ 	pm_runtime_disable(&pdev->dev);
+ 	return ret;
  }
- 
- struct cxl_dport *cxl_hb_modulo(struct cxl_root_decoder *cxlrd, int pos)
-@@ -1725,7 +1718,6 @@ static int cxl_switch_decoder_init(struct cxl_port *port,
- 		return -EINVAL;
- 
- 	cxlsd->nr_targets = nr_targets;
--	seqlock_init(&cxlsd->target_lock);
- 	return cxl_decoder_init(port, &cxlsd->cxld);
- }
- 
-diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-index 687043ece101..62fa96f8567e 100644
---- a/drivers/cxl/cxl.h
-+++ b/drivers/cxl/cxl.h
-@@ -412,7 +412,6 @@ struct cxl_endpoint_decoder {
- /**
-  * struct cxl_switch_decoder - Switch specific CXL HDM Decoder
-  * @cxld: base cxl_decoder object
-- * @target_lock: coordinate coherent reads of the target list
-  * @nr_targets: number of elements in @target
-  * @target: active ordered target list in current decoder configuration
-  *
-@@ -424,7 +423,6 @@ struct cxl_endpoint_decoder {
-  */
- struct cxl_switch_decoder {
- 	struct cxl_decoder cxld;
--	seqlock_t target_lock;
- 	int nr_targets;
- 	struct cxl_dport *target[];
- };
 -- 
 2.43.0
 
