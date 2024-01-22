@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-14978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78AB8383B1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE4C837E6D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56002B255A7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D0EB285A90
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE89B6281C;
-	Tue, 23 Jan 2024 01:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E524E1D1;
+	Tue, 23 Jan 2024 00:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZGSS2Zh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fb3GtBm/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1B722060;
-	Tue, 23 Jan 2024 01:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DD24E1D2;
+	Tue, 23 Jan 2024 00:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974964; cv=none; b=HsdHNDL2TABlV53q/MvSIlGBLm8fTFdP0nb+BhC4fPR1y5WQBOAptI5fqjKHAyu1IoRBAYkxZVZcTLAGbA2mvIFTjIuMa1F6QCchrGtsdpfWzOHa5oJ+D9NZJzCBC14En0HKGQzdSO9KT7Yl9X+g6xw19G0JHwgQj+SC9X/8P/8=
+	t=1705970569; cv=none; b=GmFQOl6SPdPY3PXKle04q949sfh1aVPYF0IvH5xbx3n2BIQdwOtINZKNZE2/TrPirxufwBK/46fMZ+slZJZHuC2RA02c4XuhDTETAFwSLNCqDD26iCe3I6AnSPvon9H62mflrP+ZG96uVjFR6YeFfuMdNq6OCT2BlVQBWsLibig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974964; c=relaxed/simple;
-	bh=q6KSqTh68k3oDq51Iiw217elzCcVT47w9CcXN7oRSMU=;
+	s=arc-20240116; t=1705970569; c=relaxed/simple;
+	bh=4gouKHmTiaB0ZGERAHMo3wcBmx6umnqi+I4ZmJ4Ntl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tv6duw4Lr800QVaxdeHgD+9r41pFipafSEp4pVegxRwTxCn97JQVrSNOjkl2LMnZwnHS32eJVX/DrInK/e7Lk5o8UD4Suq7ltm8oiqiiop8a20m08XGBDDxaR1OSKOHAX7auk9vQNAnEsL2uK8QxLBpGRouU+HotEGHgNmI6WcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZGSS2Zh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6910DC433C7;
-	Tue, 23 Jan 2024 01:56:04 +0000 (UTC)
+	 MIME-Version; b=bSGyR1hukf0yQZ6d/ksS0tkghwyQ+goSACkpyKv8bV7hQwlzwbeqoOEU0CWZOdv/k6kht+nkINKLyXvpDMe60Nz5vHOiWWxXUqqAv3RQRtVSL2sDR83XQMp7begsxAbgKihK4FeG6gMFksHDw0R1dieoixZ6hLQrpGEBFwXnttk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fb3GtBm/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37743C433F1;
+	Tue, 23 Jan 2024 00:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974964;
-	bh=q6KSqTh68k3oDq51Iiw217elzCcVT47w9CcXN7oRSMU=;
+	s=korg; t=1705970568;
+	bh=4gouKHmTiaB0ZGERAHMo3wcBmx6umnqi+I4ZmJ4Ntl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lZGSS2ZhcwX4jC2BhXDaA43O5/LRVvkk+pSEi3N1YtrUhvEzdY9DK3LjS8kBMKcXy
-	 eYjF/17txBeMF7ht8Bk24bFyKR+mtwtpW+v38XmS+5CYXHMyRcN6eqgzLnkAeqwGSl
-	 SvKYPNg9kXlxHfDjivJ3imcvBiufSnLcxKBAJTw4=
+	b=Fb3GtBm/BaoKBRXPn0RddV0RKxyWjqOPO6u2FNvbvsCr9meZsvQrRATM6LPrZx5Hy
+	 IXeFrutattryVfrxa0GMzYMMouoUrisrFvA/35wSH+q1bZ0lamT8hWD3FalZtGsy70
+	 +0klrF1S4g2F7QNXRIkv9wqiq3US0CctL3JUJfCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingwei Lee <xrivendell7@gmail.com>,
-	Hou Tao <houtao1@huawei.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	wangyangxin <wangyangxin1@huawei.com>,
+	Gonglei <arei.gonglei@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 171/583] bpf: Limit the number of uprobes when attaching program to multiple uprobes
+Subject: [PATCH 6.1 054/417] crypto: virtio - Wait for tasklet to complete on device remove
 Date: Mon, 22 Jan 2024 15:53:42 -0800
-Message-ID: <20240122235817.262954608@linuxfoundation.org>
+Message-ID: <20240122235753.548981054@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: wangyangxin <wangyangxin1@huawei.com>
 
-[ Upstream commit 8b2efe51ba85ca83460941672afac6fca4199df6 ]
+[ Upstream commit 67cc511e8d436456cc98033e6d4ba83ebfc8e672 ]
 
-An abnormally big cnt may be passed to link_create.uprobe_multi.cnt,
-and it will trigger the following warning in kvmalloc_node():
+The scheduled tasklet needs to be executed on device remove.
 
-	if (unlikely(size > INT_MAX)) {
-		WARN_ON_ONCE(!(flags & __GFP_NOWARN));
-		return NULL;
-	}
-
-Fix the warning by limiting the maximal number of uprobes in
-bpf_uprobe_multi_link_attach(). If the number of uprobes is greater than
-MAX_UPROBE_MULTI_CNT, the attachment will return -E2BIG.
-
-Fixes: 89ae89f53d20 ("bpf: Add multi uprobe link")
-Reported-by: Xingwei Lee <xrivendell7@gmail.com>
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Closes: https://lore.kernel.org/bpf/CABOYnLwwJY=yFAGie59LFsUsBAgHfroVqbzZ5edAXbFE3YiNVA@mail.gmail.com
-Link: https://lore.kernel.org/bpf/20231215100708.2265609-2-houtao@huaweicloud.com
+Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
+Signed-off-by: wangyangxin <wangyangxin1@huawei.com>
+Signed-off-by: Gonglei <arei.gonglei@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/crypto/virtio/virtio_crypto_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 868008f56fec..39c4cef98b95 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -41,6 +41,8 @@
- #define bpf_event_rcu_dereference(p)					\
- 	rcu_dereference_protected(p, lockdep_is_held(&bpf_event_mutex))
+diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
+index 856daf05341c..56dc0935c774 100644
+--- a/drivers/crypto/virtio/virtio_crypto_core.c
++++ b/drivers/crypto/virtio/virtio_crypto_core.c
+@@ -499,12 +499,15 @@ static void virtcrypto_free_unused_reqs(struct virtio_crypto *vcrypto)
+ static void virtcrypto_remove(struct virtio_device *vdev)
+ {
+ 	struct virtio_crypto *vcrypto = vdev->priv;
++	int i;
  
-+#define MAX_UPROBE_MULTI_CNT (1U << 20)
-+
- #ifdef CONFIG_MODULES
- struct bpf_trace_module {
- 	struct module *module;
-@@ -3198,6 +3200,8 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 	dev_info(&vdev->dev, "Start virtcrypto_remove.\n");
  
- 	if (!upath || !uoffsets || !cnt)
- 		return -EINVAL;
-+	if (cnt > MAX_UPROBE_MULTI_CNT)
-+		return -E2BIG;
- 
- 	uref_ctr_offsets = u64_to_user_ptr(attr->link_create.uprobe_multi.ref_ctr_offsets);
- 	ucookies = u64_to_user_ptr(attr->link_create.uprobe_multi.cookies);
+ 	flush_work(&vcrypto->config_work);
+ 	if (virtcrypto_dev_started(vcrypto))
+ 		virtcrypto_dev_stop(vcrypto);
++	for (i = 0; i < vcrypto->max_data_queues; i++)
++		tasklet_kill(&vcrypto->data_vq[i].done_task);
+ 	virtio_reset_device(vdev);
+ 	virtcrypto_free_unused_reqs(vcrypto);
+ 	virtcrypto_clear_crypto_engines(vcrypto);
 -- 
 2.43.0
 
