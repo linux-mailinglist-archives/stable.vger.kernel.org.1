@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3211D8382B1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C7B837BF5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 650211C28CA5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF9DA1F2ABB6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DDE15EE8A;
-	Tue, 23 Jan 2024 01:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2241420CB;
+	Tue, 23 Jan 2024 00:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RuwLIVor"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoBqP48h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7635EE84;
-	Tue, 23 Jan 2024 01:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8A81420A5;
+	Tue, 23 Jan 2024 00:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974411; cv=none; b=f6uyvHMwqzq8v5kHU7q38W+tvMzlDYeObPejXwKLU3cftJzH39xb09yj4cQjONHT/OrtKxW9bN4ph2mIeDf9pXlsMG+qolIvYyCSWV7OLrjsgOobRyfY89J0GRqGQOk8P2ZGuno6gmU2n1HXG1xO/zQ99hn9g2P2w94w6vuPBK0=
+	t=1705969453; cv=none; b=IcbXkVOK2pfh4FKP/y5pSQTGtXiBjsG3vOhShN5s5m6/EKWq+TwG5uI8g6KFQLquxsaWW3KEbcL3Ein6/PkvtvCKRkxtcNnLWdkU9mlfPMhppLWgmUqZnMr2j4ph8tiixoDIVAoTHA6Q7dgZP015JsmUPt6s/FZvwEQ3RRQH2w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974411; c=relaxed/simple;
-	bh=OQlwQXBaUcnA1H32umP3sNoNkMr8oqg1CchWhAhdHz0=;
+	s=arc-20240116; t=1705969453; c=relaxed/simple;
+	bh=S2zmGTOEb/3+SDu+mH+iDuQRBE67nIHyVVWCXqgHSP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gtxpPyCBJS9nMnQI7lRkk10Dg1yT69IN0esPEAut+VEctwzTh8fRJhB5hk8QQ9YE1b81qF65RRqNO8l5MAQHRPBLP/5bun34Eyh2QhYd1saEwQ+DYK5EzWgjABlN1P63sDh/7kxHgkLtOILRj+k2dYaevuPFw41mIkO3e0gxLOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuwLIVor; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0BCC43394;
-	Tue, 23 Jan 2024 01:46:51 +0000 (UTC)
+	 MIME-Version; b=iDxU+TQBRgaknNcWnUZrMN8Wzo9ByLB/lsrUk6PfeM+T6nrTOVo1YSxE4wq8t7Z5crSGF9ftkZL9Vy4J9s3B1bu2vbxnac+9e6YJWtB7ONb/tuUfuVPhsXJo/+p5M2ha0vegAjiKB2G0lH7LEEeHyTHTIUhGiL0kOzIh6SwxVoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoBqP48h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1796C43390;
+	Tue, 23 Jan 2024 00:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974411;
-	bh=OQlwQXBaUcnA1H32umP3sNoNkMr8oqg1CchWhAhdHz0=;
+	s=korg; t=1705969453;
+	bh=S2zmGTOEb/3+SDu+mH+iDuQRBE67nIHyVVWCXqgHSP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RuwLIVor0ILNWv3WN8CWBMFvylAyyQGwHgUt9zH8i3ynGLtkZv1JwgOV5hIkze9eH
-	 DHiSyutPSpcVCP4QRWVJ2eF0IgTTpvPgOL6wVPkGi0/g43k93LZvHtcGA6Axl4fFoR
-	 AyWbX04ww46Ib4JSTpVlhGbwdO8/0GCXzqxK8cNA=
+	b=CoBqP48h+HBlrGhF8S1HggGoYfErjnzN0yVIXu8k8CX+6vnen9AwLoGBloJ66oLDO
+	 /FlxmHMeT3DyCQ+7v/N5nNzqIX76AfRsSjbF9sOktOJwn2Azbv5HdUbaDYFcWWSstX
+	 fUZFF+YkLnNpuU27PRg38w2AAzNGWRKjXwtFs8cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	David Thompson <davthompson@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/583] wifi: ath11k: Defer on rproc_get failure
-Date: Mon, 22 Jan 2024 15:52:21 -0800
-Message-ID: <20240122235814.922348486@linuxfoundation.org>
+Subject: [PATCH 6.7 238/641] mlxbf_gige: Enable the GigE port in mlxbf_gige_open
+Date: Mon, 22 Jan 2024 15:52:22 -0800
+Message-ID: <20240122235825.378679763@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Asmaa Mnebhi <asmaa@nvidia.com>
 
-[ Upstream commit 2a3ec40b98b46c339adb57313d3b933ee5e7a8e8 ]
+[ Upstream commit a460f4a684511e007bbf1700758a41f05d9981e6 ]
 
-If we already have gotten the rproc_handle (meaning the "qcom,rproc"
-property is defined in the devicetree), it's a valid state that the
-remoteproc module hasn't probed yet so we should defer probing instead
-of just failing to probe.
+At the moment, the GigE port is enabled in the mlxbf_gige_probe
+function. If the mlxbf_gige_open is not executed, this could cause
+pause frames to increase in the case where there is high backgroud
+traffic. This results in clogging the port.
+So move enabling the OOB port to mlxbf_gige_open.
 
-This resolves a race condition when the ath11k driver probes and fails
-before the wpss remoteproc driver has probed, like the following:
-
-  [    6.232360] ath11k 17a10040.wifi: failed to get rproc
-  [    6.232366] ath11k 17a10040.wifi: failed to get rproc: -22
-  [    6.232478] ath11k: probe of 17a10040.wifi failed with error -22
-       ...
-  [    6.252415] remoteproc remoteproc2: 8a00000.remoteproc is available
-  [    6.252776] remoteproc remoteproc2: powering up 8a00000.remoteproc
-  [    6.252781] remoteproc remoteproc2: Booting fw image qcom/qcm6490/fairphone5/wpss.mdt, size 7188
-
-So, defer the probe if we hit that so we can retry later once the wpss
-remoteproc is available.
-
-Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-01264-QCAMSLSWPLZ-1.37886.3
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231027-ath11k-rproc-defer-v1-1-f6b6a812cd18@fairphone.com
+Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/ahb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c   | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index 1215ebdf173a..ef11c138bf30 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -802,8 +802,8 @@ static int ath11k_core_get_rproc(struct ath11k_base *ab)
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+index ac7f0128619c..3d09fa54598f 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+@@ -130,9 +130,15 @@ static int mlxbf_gige_open(struct net_device *netdev)
+ {
+ 	struct mlxbf_gige *priv = netdev_priv(netdev);
+ 	struct phy_device *phydev = netdev->phydev;
++	u64 control;
+ 	u64 int_en;
+ 	int err;
  
- 	prproc = rproc_get_by_phandle(rproc_phandle);
- 	if (!prproc) {
--		ath11k_err(ab, "failed to get rproc\n");
--		return -EINVAL;
-+		ath11k_dbg(ab, ATH11K_DBG_AHB, "failed to get rproc, deferring\n");
-+		return -EPROBE_DEFER;
- 	}
- 	ab_ahb->tgt_rproc = prproc;
++	/* Perform general init of GigE block */
++	control = readq(priv->base + MLXBF_GIGE_CONTROL);
++	control |= MLXBF_GIGE_CONTROL_PORT_EN;
++	writeq(control, priv->base + MLXBF_GIGE_CONTROL);
++
+ 	err = mlxbf_gige_request_irqs(priv);
+ 	if (err)
+ 		return err;
+@@ -365,7 +371,6 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
+ 	void __iomem *plu_base;
+ 	void __iomem *base;
+ 	int addr, phy_irq;
+-	u64 control;
+ 	int err;
  
+ 	base = devm_platform_ioremap_resource(pdev, MLXBF_GIGE_RES_MAC);
+@@ -380,11 +385,6 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
+ 	if (IS_ERR(plu_base))
+ 		return PTR_ERR(plu_base);
+ 
+-	/* Perform general init of GigE block */
+-	control = readq(base + MLXBF_GIGE_CONTROL);
+-	control |= MLXBF_GIGE_CONTROL_PORT_EN;
+-	writeq(control, base + MLXBF_GIGE_CONTROL);
+-
+ 	netdev = devm_alloc_etherdev(&pdev->dev, sizeof(*priv));
+ 	if (!netdev)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
