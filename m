@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC7E837B47
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4300F8379B8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:44:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EE8EB2D63E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E704B1F27DE6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6AD12FF64;
-	Tue, 23 Jan 2024 00:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBC042A97;
+	Tue, 23 Jan 2024 00:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4h9MiDl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bz+cuN8B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCF912F5A7;
-	Tue, 23 Jan 2024 00:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FEA6FB3;
+	Tue, 23 Jan 2024 00:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969015; cv=none; b=qvpr6XcOl+5rijFYBBJk+shRrDZGobQay5WS/2lrqw7zkzeXQleHV+sn3N/XnLGrufCDgloMoNSVmiuyTqb4mSAmbOVejA+9PMkQ5FXqlzacYO+FQXJ/agTeYk5hc48xIwcJVoOxYQHg8hoydUUVyKQR201CJ0HxLZSXhKmkguU=
+	t=1705968444; cv=none; b=f8JJgUFl1c/xzvjoY+mX7bHM8Dc+cpd6xEybtySaeO4xvDyyxkkS9LhKRoRSMU1Oag2wj6AL3YRh1k8IiHdrbKsW3jDcFIj6d2XPAY2KBnyfKvr6phqm/q8TppgwngtXxtf4GBb0/vCjPBNwlEY76H62TrKu2SEkzCfx8rSqCOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969015; c=relaxed/simple;
-	bh=GbdwCxX9xta8Vvu07jwLxpMR6yZVGeiGET7KIwNklnk=;
+	s=arc-20240116; t=1705968444; c=relaxed/simple;
+	bh=YwhjUFcQ8S9etgL10ZJFiusgleatOm8z2dAAtiuCbd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jpf6CaWAUSyAf5N+n0/Fblgw3c4UfFBKxXJleaotl50jxVEjFfP+WbOYoGc9xsSi88efLjk9lE0u8lw4mSr7ADOmgVwftNZ0tvuPCIX3bYFieJe8luU64meiaXfmqkN+dctyeV5JJrArnmev/pUylzRLe0+sUKw7Ziv4oX8I0FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4h9MiDl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17452C433F1;
-	Tue, 23 Jan 2024 00:16:55 +0000 (UTC)
+	 MIME-Version; b=JooGGkn+kx/RftaTSaF4ntmX/VizWRcrjy/H+0K9T12tJraU/Ntanj+30lJRbdyOjsmXEgjD8WXOQ944tGO3v/F4+rzu/2kySgtypkqLUW/wBqZt44rsmr/Ed13W+s3PuAP9G2KBxNjPxhuD6OBauWbPyeMPRqYR0PBgLEIqiWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bz+cuN8B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AE2C433C7;
+	Tue, 23 Jan 2024 00:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969015;
-	bh=GbdwCxX9xta8Vvu07jwLxpMR6yZVGeiGET7KIwNklnk=;
+	s=korg; t=1705968444;
+	bh=YwhjUFcQ8S9etgL10ZJFiusgleatOm8z2dAAtiuCbd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v4h9MiDlodJQlNN3n3UtiGst62s2Kfg3eIbBT9ku7IShVtaGBCx54VDNP+5Pjn+vV
-	 Qog+G/8RjwcSo1XNSfKUkbB7r9oC3eYgLvbc23E1N19RA+brKUU5XHtIC1B1VR0ahR
-	 DRse/ujRU6eUSR2H4Fg0AjNOxGGXR7Kp1GlRPOPc=
+	b=Bz+cuN8BaacdhcYQU3qlB6i043eV5YT4ZxEWzdMsqqvmESZxHyMquFvOlqmF1EGQA
+	 /INtKVOvRfIcjRyN/blzXCrFmj85gCI/4uIgdwBcMcn/7aouqgiVuBe7LCgg8frLaN
+	 l4U5gNZQHMe9ihxrawhsjaNPmdHnv4rRINUc7Qxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Boyd <stephen.boyd@linaro.org>,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 137/194] of: Fix double free in of_parse_phandle_with_args_map
+Subject: [PATCH 4.19 111/148] of: unittest: Fix of_count_phandle_with_args() expected value message
 Date: Mon, 22 Jan 2024 15:57:47 -0800
-Message-ID: <20240122235725.106498173@linuxfoundation.org>
+Message-ID: <20240122235716.938191323@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,233 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 4dde83569832f9377362e50f7748463340c5db6b ]
+[ Upstream commit 716089b417cf98d01f0dc1b39f9c47e1d7b4c965 ]
 
-In of_parse_phandle_with_args_map() the inner loop that
-iterates through the map entries calls of_node_put(new)
-to free the reference acquired by the previous iteration
-of the inner loop. This assumes that the value of "new" is
-NULL on the first iteration of the inner loop.
+The expected result value for the call to of_count_phandle_with_args()
+was updated from 7 to 8, but the accompanying error message was
+forgotten.
 
-Make sure that this is true in all iterations of the outer
-loop by setting "new" to NULL after its value is assigned to "cur".
-
-Extend the unittest to detect the double free and add an additional
-test case that actually triggers this path.
-
-Fixes: bd6f2fd5a1 ("of: Support parsing phandle argument lists through a nexus node")
-Cc: Stephen Boyd <stephen.boyd@linaro.org>
-Signed-off-by: "Christian A. Ehrhardt" <lk@c--e.de>
-Link: https://lore.kernel.org/r/20231229105411.1603434-1-lk@c--e.de
+Fixes: 4dde83569832f937 ("of: Fix double free in of_parse_phandle_with_args_map")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20240111085025.2073894-1-geert+renesas@glider.be
 Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/base.c                           |  1 +
- drivers/of/unittest-data/tests-phandle.dtsi | 10 ++-
- drivers/of/unittest.c                       | 74 ++++++++++++---------
- 3 files changed, 53 insertions(+), 32 deletions(-)
+ drivers/of/unittest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index c8af9a65f98b..6fa209b3557b 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1744,6 +1744,7 @@ int of_parse_phandle_with_args_map(const struct device_node *np,
- 		out_args->np = new;
- 		of_node_put(cur);
- 		cur = new;
-+		new = NULL;
- 	}
- put:
- 	of_node_put(cur);
-diff --git a/drivers/of/unittest-data/tests-phandle.dtsi b/drivers/of/unittest-data/tests-phandle.dtsi
-index 6b33be4c4416..aa0d7027ffa6 100644
---- a/drivers/of/unittest-data/tests-phandle.dtsi
-+++ b/drivers/of/unittest-data/tests-phandle.dtsi
-@@ -38,6 +38,13 @@ provider4: provider4 {
- 				phandle-map-pass-thru = <0x0 0xf0>;
- 			};
- 
-+			provider5: provider5 {
-+				#phandle-cells = <2>;
-+				phandle-map = <2 7 &provider4 2 3>;
-+				phandle-map-mask = <0xff 0xf>;
-+				phandle-map-pass-thru = <0x0 0xf0>;
-+			};
-+
- 			consumer-a {
- 				phandle-list =	<&provider1 1>,
- 						<&provider2 2 0>,
-@@ -64,7 +71,8 @@ consumer-b {
- 						<&provider4 4 0x100>,
- 						<&provider4 0 0x61>,
- 						<&provider0>,
--						<&provider4 19 0x20>;
-+						<&provider4 19 0x20>,
-+						<&provider5 2 7>;
- 				phandle-list-bad-phandle = <12345678 0 0>;
- 				phandle-list-bad-args = <&provider2 1 0>,
- 							<&provider4 0>;
 diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index 42acbb3668b2..b1924062c939 100644
+index 52f2943be5b5..8abd541b811d 100644
 --- a/drivers/of/unittest.c
 +++ b/drivers/of/unittest.c
-@@ -430,6 +430,9 @@ static void __init of_unittest_parse_phandle_with_args(void)
- 
- 		unittest(passed, "index %i - data error on node %pOF rc=%i\n",
- 			 i, args.np, rc);
-+
-+		if (rc == 0)
-+			of_node_put(args.np);
- 	}
- 
- 	/* Check for missing list property */
-@@ -471,8 +474,9 @@ static void __init of_unittest_parse_phandle_with_args(void)
- 
- static void __init of_unittest_parse_phandle_with_args_map(void)
- {
--	struct device_node *np, *p0, *p1, *p2, *p3;
-+	struct device_node *np, *p[6] = {};
- 	struct of_phandle_args args;
-+	unsigned int prefs[6];
- 	int i, rc;
- 
- 	np = of_find_node_by_path("/testcase-data/phandle-tests/consumer-b");
-@@ -481,34 +485,24 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 		return;
- 	}
- 
--	p0 = of_find_node_by_path("/testcase-data/phandle-tests/provider0");
--	if (!p0) {
--		pr_err("missing testcase data\n");
--		return;
--	}
--
--	p1 = of_find_node_by_path("/testcase-data/phandle-tests/provider1");
--	if (!p1) {
--		pr_err("missing testcase data\n");
--		return;
--	}
--
--	p2 = of_find_node_by_path("/testcase-data/phandle-tests/provider2");
--	if (!p2) {
--		pr_err("missing testcase data\n");
--		return;
--	}
--
--	p3 = of_find_node_by_path("/testcase-data/phandle-tests/provider3");
--	if (!p3) {
--		pr_err("missing testcase data\n");
--		return;
-+	p[0] = of_find_node_by_path("/testcase-data/phandle-tests/provider0");
-+	p[1] = of_find_node_by_path("/testcase-data/phandle-tests/provider1");
-+	p[2] = of_find_node_by_path("/testcase-data/phandle-tests/provider2");
-+	p[3] = of_find_node_by_path("/testcase-data/phandle-tests/provider3");
-+	p[4] = of_find_node_by_path("/testcase-data/phandle-tests/provider4");
-+	p[5] = of_find_node_by_path("/testcase-data/phandle-tests/provider5");
-+	for (i = 0; i < ARRAY_SIZE(p); ++i) {
-+		if (!p[i]) {
-+			pr_err("missing testcase data\n");
-+			return;
-+		}
-+		prefs[i] = kref_read(&p[i]->kobj.kref);
+@@ -496,7 +496,7 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
  	}
  
  	rc = of_count_phandle_with_args(np, "phandle-list", "#phandle-cells");
--	unittest(rc == 7, "of_count_phandle_with_args() returned %i, expected 7\n", rc);
-+	unittest(rc == 8, "of_count_phandle_with_args() returned %i, expected 7\n", rc);
+-	unittest(rc == 8, "of_count_phandle_with_args() returned %i, expected 7\n", rc);
++	unittest(rc == 8, "of_count_phandle_with_args() returned %i, expected 8\n", rc);
  
--	for (i = 0; i < 8; i++) {
-+	for (i = 0; i < 9; i++) {
+ 	for (i = 0; i < 9; i++) {
  		bool passed = true;
- 
- 		memset(&args, 0, sizeof(args));
-@@ -519,13 +513,13 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 		switch (i) {
- 		case 0:
- 			passed &= !rc;
--			passed &= (args.np == p1);
-+			passed &= (args.np == p[1]);
- 			passed &= (args.args_count == 1);
- 			passed &= (args.args[0] == 1);
- 			break;
- 		case 1:
- 			passed &= !rc;
--			passed &= (args.np == p3);
-+			passed &= (args.np == p[3]);
- 			passed &= (args.args_count == 3);
- 			passed &= (args.args[0] == 2);
- 			passed &= (args.args[1] == 5);
-@@ -536,28 +530,36 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 			break;
- 		case 3:
- 			passed &= !rc;
--			passed &= (args.np == p0);
-+			passed &= (args.np == p[0]);
- 			passed &= (args.args_count == 0);
- 			break;
- 		case 4:
- 			passed &= !rc;
--			passed &= (args.np == p1);
-+			passed &= (args.np == p[1]);
- 			passed &= (args.args_count == 1);
- 			passed &= (args.args[0] == 3);
- 			break;
- 		case 5:
- 			passed &= !rc;
--			passed &= (args.np == p0);
-+			passed &= (args.np == p[0]);
- 			passed &= (args.args_count == 0);
- 			break;
- 		case 6:
- 			passed &= !rc;
--			passed &= (args.np == p2);
-+			passed &= (args.np == p[2]);
- 			passed &= (args.args_count == 2);
- 			passed &= (args.args[0] == 15);
- 			passed &= (args.args[1] == 0x20);
- 			break;
- 		case 7:
-+			passed &= !rc;
-+			passed &= (args.np == p[3]);
-+			passed &= (args.args_count == 3);
-+			passed &= (args.args[0] == 2);
-+			passed &= (args.args[1] == 5);
-+			passed &= (args.args[2] == 3);
-+			break;
-+		case 8:
- 			passed &= (rc == -ENOENT);
- 			break;
- 		default:
-@@ -566,6 +568,9 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 
- 		unittest(passed, "index %i - data error on node %s rc=%i\n",
- 			 i, args.np->full_name, rc);
-+
-+		if (rc == 0)
-+			of_node_put(args.np);
- 	}
- 
- 	/* Check for missing list property */
-@@ -591,6 +596,13 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 	rc = of_parse_phandle_with_args_map(np, "phandle-list-bad-args",
- 					    "phandle", 1, &args);
- 	unittest(rc == -EINVAL, "expected:%i got:%i\n", -EINVAL, rc);
-+
-+	for (i = 0; i < ARRAY_SIZE(p); ++i) {
-+		unittest(prefs[i] == kref_read(&p[i]->kobj.kref),
-+			 "provider%d: expected:%d got:%d\n",
-+			 i, prefs[i], kref_read(&p[i]->kobj.kref));
-+		of_node_put(p[i]);
-+	}
- }
- 
- static void __init of_unittest_property_string(void)
 -- 
 2.43.0
 
