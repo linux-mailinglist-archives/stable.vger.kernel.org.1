@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-12781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34DB083736A
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 21:02:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 776CD83738D
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 21:13:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A41B1C2589F
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:02:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3C7C1C27044
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:13:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF057405EA;
-	Mon, 22 Jan 2024 20:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF1F405EA;
+	Mon, 22 Jan 2024 20:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhjbHBJg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TN7kQnmF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2D8405DD
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 20:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03713DB86
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 20:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705953706; cv=none; b=SmgUOzZJP/EnG/o7/Ti7tZKwZVeVvqISWJUArt/e2y0yrQlp091YbHs44MK+NGWhlT5V1V1L5KTPyRoqrMRknz9+gvRxJSvwt/ZYlzfKf1Psa6FrVUv/ZbS+K5q1biNBhhLwFExgjvtDl75uKe3DLzU9aesvjJcR2aPFZacQwk0=
+	t=1705954391; cv=none; b=had2hbgup4CJRG7O/U2SH+7z4uF+v1nfWAzw+PT1YGoHCSZj7LqdoZT+SvIZ/RDlJnQBIBuWTvPZnrYUCHaN3Y6hcAdoraDgM/G7+F19wSUPeY0cdGNQFZugybeGdV7ktAgH7AZzq2xNWr2TiF4wrKsqaOOL4CGGcfJKL9LMdeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705953706; c=relaxed/simple;
-	bh=LDMXstqlRsp/AzjCePs4qruZngpeuMRvcfQj3Dk8eug=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=I1H5dosPaywIEBhJ0nKyRSCjHqeut9zbncb40D/TZ/0s3zKhmhFabMaarTCRR2ArplbV4CrIkBDeIbnGKkNw9Bx61XaUXFgl8FBr+4YF43TTqEtYDxH466R6NrYeaTDi77sO/kp3ey3jAlHPhZbmiT1w6bdGCImDGNyux2+UZJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhjbHBJg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F03BDC433F1;
-	Mon, 22 Jan 2024 20:01:45 +0000 (UTC)
+	s=arc-20240116; t=1705954391; c=relaxed/simple;
+	bh=3Lhk/3P+Xn70e+EamwRga7tSL2dkLrRSudCLZsUyczk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jCBMDEzxihFZiXjmf6/ZXBz7VNAPnRO5KcWnMWq35k2AZIUm7oneg+ts2K+OgO/Yo3zqdUQ9K4/R8aa5llubLU7C4/Wi5qOmZBCoqpEcS5dgmg5Nkr1NnqDkcxU7QUqPgKzg6hzRywPQnitNO5XDV8PlM4Ruxcfppbq9PVGT+Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TN7kQnmF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 686F9C433F1;
+	Mon, 22 Jan 2024 20:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705953706;
-	bh=LDMXstqlRsp/AzjCePs4qruZngpeuMRvcfQj3Dk8eug=;
+	s=korg; t=1705954391;
+	bh=3Lhk/3P+Xn70e+EamwRga7tSL2dkLrRSudCLZsUyczk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=yhjbHBJgRr6nUxnBvu2/wn45l/ZB/7ygxyqgD/27QCCHpgqhHpEfpWvTnH7B2cgdU
-	 uBCTv9e0B+oZoaYf7hQYlX77Lsqj2FO/bqBg1KJAOfixd0e7cKIMWgz/YjGYMmIJoU
-	 7u6hfUoGCXfwSNP0uP+Uq6/XJk24Uzzb1bBLDg6U=
-Subject: FAILED: patch "[PATCH] soundwire: fix initializing sysfs for same devices on" failed to apply to 4.19-stable tree
-To: krzysztof.kozlowski@linaro.org,Vijendar.Mukunda@amd.com,broonie@kernel.org,pierre-louis.bossart@linux.intel.com,srinivas.kandagatla@linaro.org,vkoul@kernel.org,yung-chuan.liao@linux.intel.com
+	b=TN7kQnmFE0knH/h0jdOXjBGt5xLs8K2TAzPKQxJXVu9HpmNbX04xBRzydaHt1YngM
+	 7hmykOOufw/x13Yhde+5pkNLtKDCgcEg9N5NuQzdunWHfyT+/JIJi5mnDfN+2hm8TY
+	 QyHzUy2E7tXGCn67daH4+ICH+OCm/3CxCxy/VrOk=
+Subject: FAILED: patch "[PATCH] net: stmmac: Prevent DSA tags from breaking COE" failed to apply to 6.6-stable tree
+To: romain.gantois@bootlin.com,davem@davemloft.net,florian.fainelli@broadcom.com,linus.walleij@linaro.org,rtresidd@electromag.com.au,stable@vger.kernel.org,vladimir.oltean@nxp.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 22 Jan 2024 12:01:42 -0800
-Message-ID: <2024012242-ultra-perennial-f490@gregkh>
+Date: Mon, 22 Jan 2024 12:13:10 -0800
+Message-ID: <2024012210-answering-vacate-2c6a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8a8a9ac8a4972ee69d3dd3d1ae43963ae39cee18
+git cherry-pick -x c2945c435c999c63e47f337bc7c13c98c21d0bcc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012242-ultra-perennial-f490@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012210-answering-vacate-2c6a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-8a8a9ac8a497 ("soundwire: fix initializing sysfs for same devices on different buses")
-92e9f10a0935 ("ASoC: intel: sof_sdw: Add helper to create a single codec DLC")
-009582008182 ("ASoC: intel: sof_sdw: Allow direct specification of CODEC name")
-656dd91a3a1c ("ASoC: Intel: sof_sdw: break earlier when a adr link contains different codecs")
-1d1062382b18 ("ASoC: intel: sof_sdw: Use consistent variable naming for links")
-0281b02e1913 ("ASoC: Intel: sof_sdw: add dai_link_codec_ch_map")
-d3fc5c4da599 ("ASoC: Intel: sof_sdw: add multi dailink support for a codec")
-5714aabdf971 ("ASoC: Intel: sdw_sof: append dai_type and remove codec_type")
-cededa5a6486 ("ASoC: Intel: sof_sdw: add codec_info pointer")
-b274586533f5 ("ASoC: Intel: sof_sdw: use predefine dailink id")
-07140abbbf9e ("ASoC: Intel: sof_sdw: add dai info")
-ba032909bb2d ("ASoC: Intel: sof_sdw: add missing exit callback")
-f0c8d83ab1a3 ("ASoC: Intel: sof_sdw: start set codec init function with an adr index")
-1785af9ff65d ("ASoC: intel: sof: use asoc_dummy_dlc")
-dc5a3e60a4b5 ("ASoC: Intel: sof_sdw: append codec type to dai link name")
-c8db7b50128b ("ASoC: Intel: sof_sdw: support different devices on the same sdw link")
-06b830bd73ec ("ASoC: Intel: sof_sdw: remove late_probe flag in struct sof_sdw_codec_info")
-ba7523bb0f49 ("ASoC: Intel: sof_nau8825: add variant with nau8318 amplifier.")
-5c10da436ebd ("ASoC: Intel: sof_sdw: use common helpers for all Realtek amps")
-8c4b3a8ea2c0 ("ASoC: intel: sof_sdw: add rt1318 codec support.")
+c2945c435c99 ("net: stmmac: Prevent DSA tags from breaking COE")
+8452a05b2c63 ("net: stmmac: Tx coe sw fallback")
 
 thanks,
 
@@ -96,83 +78,100 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8a8a9ac8a4972ee69d3dd3d1ae43963ae39cee18 Mon Sep 17 00:00:00 2001
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Tue, 17 Oct 2023 11:09:33 -0500
-Subject: [PATCH] soundwire: fix initializing sysfs for same devices on
- different buses
+From c2945c435c999c63e47f337bc7c13c98c21d0bcc Mon Sep 17 00:00:00 2001
+From: Romain Gantois <romain.gantois@bootlin.com>
+Date: Tue, 16 Jan 2024 13:19:17 +0100
+Subject: [PATCH] net: stmmac: Prevent DSA tags from breaking COE
 
-If same devices with same device IDs are present on different soundwire
-buses, the probe fails due to conflicting device names and sysfs
-entries:
+Some DSA tagging protocols change the EtherType field in the MAC header
+e.g.  DSA_TAG_PROTO_(DSA/EDSA/BRCM/MTK/RTL4C_A/SJA1105). On TX these tagged
+frames are ignored by the checksum offload engine and IP header checker of
+some stmmac cores.
 
-  sysfs: cannot create duplicate filename '/bus/soundwire/devices/sdw:0:0217:0204:00:0'
+On RX, the stmmac driver wrongly assumes that checksums have been computed
+for these tagged packets, and sets CHECKSUM_UNNECESSARY.
 
-The link ID is 0 for both devices, so they should be differentiated by
-the controller ID. Add the controller ID so, the device names and sysfs entries look
-like:
+Add an additional check in the stmmac TX and RX hotpaths so that COE is
+deactivated for packets with ethertypes that will not trigger the COE and
+IP header checks.
 
-  sdw:1:0:0217:0204:00:0 -> ../../../devices/platform/soc@0/6ab0000.soundwire-controller/sdw-master-1-0/sdw:1:0:0217:0204:00:0
-  sdw:3:0:0217:0204:00:0 -> ../../../devices/platform/soc@0/6b10000.soundwire-controller/sdw-master-3-0/sdw:3:0:0217:0204:00:0
+Fixes: 6b2c6e4a938f ("net: stmmac: propagate feature flags to vlan")
+Cc:  <stable@vger.kernel.org>
+Reported-by: Richard Tresidder <rtresidd@electromag.com.au>
+Link: https://lore.kernel.org/netdev/e5c6c75f-2dfa-4e50-a1fb-6bf4cdb617c2@electromag.com.au/
+Reported-by: Romain Gantois <romain.gantois@bootlin.com>
+Link: https://lore.kernel.org/netdev/c57283ed-6b9b-b0e6-ee12-5655c1c54495@bootlin.com/
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 
-[PLB changes: use bus->controller_id instead of bus->id]
-
-Fixes: 7c3cd189b86d ("soundwire: Add Master registration")
-Cc: stable@vger.kernel.org
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Co-developed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Mark Brown <broonie@kernel.org>
-Tested-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20231017160933.12624-3-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-
-diff --git a/drivers/soundwire/slave.c b/drivers/soundwire/slave.c
-index c1c1a2ac293a..060c2982e26b 100644
---- a/drivers/soundwire/slave.c
-+++ b/drivers/soundwire/slave.c
-@@ -39,14 +39,14 @@ int sdw_slave_add(struct sdw_bus *bus,
- 	slave->dev.fwnode = fwnode;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index c78a96b8eb64..a0e46369ae15 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -4435,6 +4435,28 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	return NETDEV_TX_OK;
+ }
  
- 	if (id->unique_id == SDW_IGNORED_UNIQUE_ID) {
--		/* name shall be sdw:link:mfg:part:class */
--		dev_set_name(&slave->dev, "sdw:%01x:%04x:%04x:%02x",
--			     bus->link_id, id->mfg_id, id->part_id,
-+		/* name shall be sdw:ctrl:link:mfg:part:class */
-+		dev_set_name(&slave->dev, "sdw:%01x:%01x:%04x:%04x:%02x",
-+			     bus->controller_id, bus->link_id, id->mfg_id, id->part_id,
- 			     id->class_id);
- 	} else {
--		/* name shall be sdw:link:mfg:part:class:unique */
--		dev_set_name(&slave->dev, "sdw:%01x:%04x:%04x:%02x:%01x",
--			     bus->link_id, id->mfg_id, id->part_id,
-+		/* name shall be sdw:ctrl:link:mfg:part:class:unique */
-+		dev_set_name(&slave->dev, "sdw:%01x:%01x:%04x:%04x:%02x:%01x",
-+			     bus->controller_id, bus->link_id, id->mfg_id, id->part_id,
- 			     id->class_id, id->unique_id);
- 	}
++/**
++ * stmmac_has_ip_ethertype() - Check if packet has IP ethertype
++ * @skb: socket buffer to check
++ *
++ * Check if a packet has an ethertype that will trigger the IP header checks
++ * and IP/TCP checksum engine of the stmmac core.
++ *
++ * Return: true if the ethertype can trigger the checksum engine, false
++ * otherwise
++ */
++static bool stmmac_has_ip_ethertype(struct sk_buff *skb)
++{
++	int depth = 0;
++	__be16 proto;
++
++	proto = __vlan_get_protocol(skb, eth_header_parse_protocol(skb),
++				    &depth);
++
++	return (depth <= ETH_HLEN) &&
++		(proto == htons(ETH_P_IP) || proto == htons(ETH_P_IPV6));
++}
++
+ /**
+  *  stmmac_xmit - Tx entry point of the driver
+  *  @skb : the socket buffer
+@@ -4499,9 +4521,13 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	/* DWMAC IPs can be synthesized to support tx coe only for a few tx
+ 	 * queues. In that case, checksum offloading for those queues that don't
+ 	 * support tx coe needs to fallback to software checksum calculation.
++	 *
++	 * Packets that won't trigger the COE e.g. most DSA-tagged packets will
++	 * also have to be checksummed in software.
+ 	 */
+ 	if (csum_insertion &&
+-	    priv->plat->tx_queues_cfg[queue].coe_unsupported) {
++	    (priv->plat->tx_queues_cfg[queue].coe_unsupported ||
++	     !stmmac_has_ip_ethertype(skb))) {
+ 		if (unlikely(skb_checksum_help(skb)))
+ 			goto dma_map_err;
+ 		csum_insertion = !csum_insertion;
+@@ -5066,7 +5092,7 @@ static void stmmac_dispatch_skb_zc(struct stmmac_priv *priv, u32 queue,
+ 		stmmac_rx_vlan(priv->dev, skb);
+ 	skb->protocol = eth_type_trans(skb, priv->dev);
  
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 3312ad8a563b..690c279bbb88 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -1232,11 +1232,11 @@ static int fill_sdw_codec_dlc(struct device *dev,
- 	else if (is_unique_device(adr_link, sdw_version, mfg_id, part_id,
- 				  class_id, adr_index))
- 		codec->name = devm_kasprintf(dev, GFP_KERNEL,
--					     "sdw:%01x:%04x:%04x:%02x", link_id,
-+					     "sdw:0:%01x:%04x:%04x:%02x", link_id,
- 					     mfg_id, part_id, class_id);
+-	if (unlikely(!coe))
++	if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
+ 		skb_checksum_none_assert(skb);
  	else
- 		codec->name = devm_kasprintf(dev, GFP_KERNEL,
--					     "sdw:%01x:%04x:%04x:%02x:%01x", link_id,
-+					     "sdw:0:%01x:%04x:%04x:%02x:%01x", link_id,
- 					     mfg_id, part_id, class_id, unique_id);
+ 		skb->ip_summed = CHECKSUM_UNNECESSARY;
+@@ -5589,7 +5615,7 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
  
- 	if (!codec->name)
+ 		skb->protocol = eth_type_trans(skb, priv->dev);
+ 
+-		if (unlikely(!coe))
++		if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
+ 			skb_checksum_none_assert(skb);
+ 		else
+ 			skb->ip_summed = CHECKSUM_UNNECESSARY;
 
 
