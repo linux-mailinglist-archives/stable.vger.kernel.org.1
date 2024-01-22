@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-14453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E183C8380FC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E83837E16
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B4CE28B92D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 308901F29C12
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1B713E20B;
-	Tue, 23 Jan 2024 01:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A67F57892;
+	Tue, 23 Jan 2024 00:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbKbNxG8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xz+LM/4h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC5D13E204;
-	Tue, 23 Jan 2024 01:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492B053E16;
+	Tue, 23 Jan 2024 00:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971985; cv=none; b=o97M0sq4bIE1lcdjLCnTrNQ8TH/Dzr57LaGc2aLcjrBAoI6iDWeGe9VRFdoKx0+BzA7xkX2513mrWlemrwmFmXgGNHBPDv2/SwgV7H6iN2ujNpn+aSHPhuC0qR2eOy8CLUI7NxvRMVr+XYKJOmmVMxZ2FHC2UuIyzOONj1TToss=
+	t=1705970358; cv=none; b=oSSwORXIXCebdiAChLUa6Asppy1StXDKecn8UIJYRjYtllH5B2oYG2ceM7EWOv/YAvieIecWrwPsu0XnTFRDT98ZFfWQpEFT2xW1glnOP8kShqIbsEt9B7Eh1Y5FADz40YpAk0qc2KXo00ViCeg6aVD/QW+Chg82xe2vckMPVSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971985; c=relaxed/simple;
-	bh=/nwQTadHjwMT0fDyozrZvhBdyzIIBKEIYKLdSjE8WAM=;
+	s=arc-20240116; t=1705970358; c=relaxed/simple;
+	bh=XY2K4NPXoPZUh8LPI8rlzrVIJb5lLviO+6GbJpdmMuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W5YPuW/eZfNs64A2sgYdGjuvX0QySdrwnfXBl2KilAk4/WK1XluLC5cz2UqSthAzzftENGsHRJj8pINovqvE4Bcpk4WStZE9X/x92yHRq7xzUfMjKT8vmnhL/z2VyLDqA032Q6zwmXBMlSCrQ8B6k4ZAqwJuEYAyqx4kfHG5wII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbKbNxG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7426C433F1;
-	Tue, 23 Jan 2024 01:06:24 +0000 (UTC)
+	 MIME-Version; b=Z9LliPhEUGlZneduxa7dwzpegmNaQs2zXS0OWF7zKGC2xzao6oGi6B6u3jjsWoOn9EfzXiYaCXkGA50dcaIkTk2Yj34EXPdGfjSmAhVtPJLKa85ETpdywRgFmJw9Sp5NBx3ajZNyLKtzksCY0rd/GA/dU5Yup4Fw14l3JTmJ9g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xz+LM/4h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB540C433F1;
+	Tue, 23 Jan 2024 00:39:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971985;
-	bh=/nwQTadHjwMT0fDyozrZvhBdyzIIBKEIYKLdSjE8WAM=;
+	s=korg; t=1705970358;
+	bh=XY2K4NPXoPZUh8LPI8rlzrVIJb5lLviO+6GbJpdmMuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nbKbNxG8iCfL7+Jx1Vg2uSuKZJ1mBYa6IMeskzp2uzzTG4HTvna3GZ7f4yJA+316d
-	 Abvu4dPn3v0KuWN/nleI9Zs+BryNYUTcTQWTO2JA3mDnRztDW+v4cs37uQfsLlibXK
-	 Ij+hs763PRhzfFx+bzqtI+0uHJfD9INtMjl4HkNA=
+	b=Xz+LM/4hrfC3RohHyyLL8sGK0d94izqTFnezND5S7ZvIIwvON/0L/2Fb70HStHCij
+	 yFqf1bWXgwQZ6I1h6FMMF/LvJ3hiwkLiL1C3XkCclhi6D42dxqLLf6KSuc+WEOzzJE
+	 nP4puPTKaJMt/zpBoka1kOa7BGG56aDLazdQWBAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 371/417] nvmet: re-fix tracing strncpy() warning
+Subject: [PATCH 6.7 635/641] mlxsw: spectrum_acl_tcam: Fix NULL pointer dereference in error path
 Date: Mon, 22 Jan 2024 15:58:59 -0800
-Message-ID: <20240122235804.662351788@linuxfoundation.org>
+Message-ID: <20240122235838.140684257@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +64,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 4ee7ffeb4ce50c80bc4504db6f39b25a2df6bcf4 ]
+[ Upstream commit efeb7dfea8ee10cdec11b6b6ba4e405edbe75809 ]
 
-An earlier patch had tried to address a warning about a string copy with
-missing zero termination:
+When calling mlxsw_sp_acl_tcam_region_destroy() from an error path after
+failing to attach the region to an ACL group, we hit a NULL pointer
+dereference upon 'region->group->tcam' [1].
 
-drivers/nvme/target/trace.h:52:3: warning: ‘strncpy’ specified bound 32 equals destination size [-Wstringop-truncation]
+Fix by retrieving the 'tcam' pointer using mlxsw_sp_acl_to_tcam().
 
-The new version causes a different warning with some compiler versions, notably
-gcc-9 and gcc-10, and also misses the zero padding that was apparently done
-intentionally in the original code:
+[1]
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+[...]
+RIP: 0010:mlxsw_sp_acl_tcam_region_destroy+0xa0/0xd0
+[...]
+Call Trace:
+ mlxsw_sp_acl_tcam_vchunk_get+0x88b/0xa20
+ mlxsw_sp_acl_tcam_ventry_add+0x25/0xe0
+ mlxsw_sp_acl_rule_add+0x47/0x240
+ mlxsw_sp_flower_replace+0x1a9/0x1d0
+ tc_setup_cb_add+0xdc/0x1c0
+ fl_hw_replace_filter+0x146/0x1f0
+ fl_change+0xc17/0x1360
+ tc_new_tfilter+0x472/0xb90
+ rtnetlink_rcv_msg+0x313/0x3b0
+ netlink_rcv_skb+0x58/0x100
+ netlink_unicast+0x244/0x390
+ netlink_sendmsg+0x1e4/0x440
+ ____sys_sendmsg+0x164/0x260
+ ___sys_sendmsg+0x9a/0xe0
+ __sys_sendmsg+0x7a/0xc0
+ do_syscall_64+0x40/0xe0
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-drivers/nvme/target/trace.h:56:2: error: 'strncpy' specified bound depends on the length of the source argument [-Werror=stringop-overflow=]
-
-Change it to use strscpy_pad() with the original length, which will give
-a properly padded and zero-terminated string as well as avoiding the warning.
-
-Fixes: d86481e924a7 ("nvmet: use min of device_path and disk len")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 22a677661f56 ("mlxsw: spectrum: Introduce ACL core with simple TCAM implementation")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Amit Cohen <amcohen@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/fb6a4542bbc9fcab5a523802d97059bffbca7126.1705502064.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/trace.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/trace.h b/drivers/nvme/target/trace.h
-index 6109b3806b12..155334ddc13f 100644
---- a/drivers/nvme/target/trace.h
-+++ b/drivers/nvme/target/trace.h
-@@ -53,8 +53,7 @@ static inline void __assign_req_name(char *name, struct nvmet_req *req)
- 		return;
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index d50786b0a6ce..7d1e91196e94 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -681,13 +681,13 @@ static void
+ mlxsw_sp_acl_tcam_region_destroy(struct mlxsw_sp *mlxsw_sp,
+ 				 struct mlxsw_sp_acl_tcam_region *region)
+ {
++	struct mlxsw_sp_acl_tcam *tcam = mlxsw_sp_acl_to_tcam(mlxsw_sp->acl);
+ 	const struct mlxsw_sp_acl_tcam_ops *ops = mlxsw_sp->acl_tcam_ops;
  
--	strncpy(name, req->ns->device_path,
--		min_t(size_t, DISK_NAME_LEN, strlen(req->ns->device_path)));
-+	strscpy_pad(name, req->ns->device_path, DISK_NAME_LEN);
+ 	ops->region_fini(mlxsw_sp, region->priv);
+ 	mlxsw_sp_acl_tcam_region_disable(mlxsw_sp, region);
+ 	mlxsw_sp_acl_tcam_region_free(mlxsw_sp, region);
+-	mlxsw_sp_acl_tcam_region_id_put(region->group->tcam,
+-					region->id);
++	mlxsw_sp_acl_tcam_region_id_put(tcam, region->id);
+ 	kfree(region);
  }
- #endif
  
 -- 
 2.43.0
