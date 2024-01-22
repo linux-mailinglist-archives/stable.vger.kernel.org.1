@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99DA7837F3F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C7483819E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:10:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F38D7B290E3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4783F1C292D7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFF61292C1;
-	Tue, 23 Jan 2024 00:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73AFE134C2;
+	Tue, 23 Jan 2024 01:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQ5VWZbQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nw8A+A8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A95128394;
-	Tue, 23 Jan 2024 00:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318CC1852;
+	Tue, 23 Jan 2024 01:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970976; cv=none; b=O1X6gest1xqgHI9x+BXIS0uU5hOcQNPvGiYJb+1YbjI8PIWi0ky2LuCeyCCHbAFvWXW4+TG0yg7Ln8OxQAgHqypmEth/y07kvXybUzPPTdnB0xu2JOK76hz5kZyPV8pmTH48gcVLFITmyrcG1WgJ9zvhkOQAOQyczSoiHBI3kRE=
+	t=1705972189; cv=none; b=By4LfiJtbxpQZZ6qgssYwCHNd6LK4DxFbxK0y355qP7xJOJ/cxqd6CTMPLLJjLVCP+BKx4yAhREe2iYZLI0eck5LcV/wDVRm4+2hA2UDPBfb0m4AyVNKYRNxwKXip0BfwwaSKH+estLmsRCaCZQazgcje3+Mk/Ql2ej02Wu0ya4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970976; c=relaxed/simple;
-	bh=Gie9Dr4QIx6F6UALF7zkcNYCgY+hFd/4Dxth1ex+pWE=;
+	s=arc-20240116; t=1705972189; c=relaxed/simple;
+	bh=xxbKOe+aw592RS5cxKgpvJzKgjszxST54QFXiFZB6Bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5uG96WkxIikul7tlJx7jYn+YxOVcSavM1QYeGWagj7uFsA37r9xlBAe7lENmQ2F6CHBW/Zbekc4pQTQ9PwWrEmngdGJpWJ0ZrfMDMS5xeL6SamvLapx/CfTK+VU+YSKio9KgKwJEqhatMYdQKNOfpxY0U3uJ6FQqG4RKiP+ADs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQ5VWZbQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6669C43390;
-	Tue, 23 Jan 2024 00:49:35 +0000 (UTC)
+	 MIME-Version; b=YwszK4WU4ScPxI5RfOelNS9VF/NwTN9nLt7INN7cKc6D/15BjupH/DyO1L/IFweAvXmSf9tUrTOuM+SnVCchLNJEGpCRE7rv6ePWgrCwi5CuQ/NTmHfCq0s6TRs1ChLQlUkVeyluOja9FmQC2hRZMDzs9JmTTrnpY/gNz407bLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nw8A+A8G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EEEC433C7;
+	Tue, 23 Jan 2024 01:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970975;
-	bh=Gie9Dr4QIx6F6UALF7zkcNYCgY+hFd/4Dxth1ex+pWE=;
+	s=korg; t=1705972189;
+	bh=xxbKOe+aw592RS5cxKgpvJzKgjszxST54QFXiFZB6Bk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HQ5VWZbQpkt/l7eVfsX11hHf4YFkHza4/Ek4y7xJ0VSic5BoU7gSeN4zcSN9WMEtn
-	 TBLaogdl1kVSVxtWg745yrfLi1w3dV5/2NEwSDlGnUM45lbBTuorLoHomIJXvbSkHo
-	 d6Uggbps5bKMM2uHLXMci51zWLCZx1zFKJwl2O8g=
+	b=nw8A+A8G4r8I1kvRFHuRdEWj5Ao5MdgFC2fzfswEmNGrhHBp+ZMGiwdYmatPMQoXN
+	 +aHCksOBTXTaNeP4KFdK4RKUiBHuCcqskrPyqoHCpMN9PqatSCeq2z9yyUd71antvV
+	 8EnIfSjV2RC3D6OEJgY+6RleCMLSfT1dHpc5Tz7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 061/286] spi: spi-zynqmp-gqspi: fix driver kconfig dependencies
+Subject: [PATCH 5.15 111/374] crypto: sahara - improve error handling in sahara_sha_process()
 Date: Mon, 22 Jan 2024 15:56:07 -0800
-Message-ID: <20240122235734.382071853@linuxfoundation.org>
+Message-ID: <20240122235748.496253384@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 424a8166764e462258fdccaaefbdeb07517c8b21 ]
+[ Upstream commit 5deff027fca49a1eb3b20359333cf2ae562a2343 ]
 
-ZynqMP GQSPI driver no longer uses spi-master framework. It had been
-converted to use spi-mem framework. So remove driver dependency from
-spi-master and replace it with spi-mem.
+sahara_sha_hw_data_descriptor_create() returns negative error codes on
+failure, so make sure the errors are correctly handled / propagated.
 
-Fixes: 1c26372e5aa9 ("spi: spi-zynqmp-gqspi: Update driver to use spi-mem framework")
-Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://lore.kernel.org/r/1699282435-884917-1-git-send-email-radhey.shyam.pandey@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/crypto/sahara.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 5fd9b515f6f1..74ea6b6b5f74 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -957,9 +957,10 @@ config SPI_ZYNQ_QSPI
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index a5c40ef6d8af..434c7e17d273 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -988,7 +988,10 @@ static int sahara_sha_process(struct ahash_request *req)
+ 		return ret;
  
- config SPI_ZYNQMP_GQSPI
- 	tristate "Xilinx ZynqMP GQSPI controller"
--	depends on (SPI_MASTER && HAS_DMA) || COMPILE_TEST
-+	depends on (SPI_MEM && HAS_DMA) || COMPILE_TEST
- 	help
- 	  Enables Xilinx GQSPI controller driver for Zynq UltraScale+ MPSoC.
-+	  This controller only supports SPI memory interface.
+ 	if (rctx->first) {
+-		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
++		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
++		if (ret)
++			return ret;
++
+ 		dev->hw_desc[0]->next = 0;
+ 		rctx->first = 0;
+ 	} else {
+@@ -996,7 +999,10 @@ static int sahara_sha_process(struct ahash_request *req)
  
- config SPI_AMD
- 	tristate "AMD SPI controller"
+ 		sahara_sha_hw_context_descriptor_create(dev, rctx, req, 0);
+ 		dev->hw_desc[0]->next = dev->hw_phys_desc[1];
+-		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
++		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
++		if (ret)
++			return ret;
++
+ 		dev->hw_desc[1]->next = 0;
+ 	}
+ 
 -- 
 2.43.0
 
