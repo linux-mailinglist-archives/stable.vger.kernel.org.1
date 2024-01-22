@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2591838240
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0BD838484
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86E311F26501
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 908F11C21325
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82075A0E9;
-	Tue, 23 Jan 2024 01:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72EC6EB6A;
+	Tue, 23 Jan 2024 02:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TusC+FhU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nP3ZqG2/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9753459B62;
-	Tue, 23 Jan 2024 01:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9758C6EB61;
+	Tue, 23 Jan 2024 02:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974111; cv=none; b=aIoD/opKZXgUU64s8lY4slrHdEJoGUB3B54s5csB/Pa6CN3rn6vzdu/yv9C02HlWzlD/sW0xwpeWaDUYi42tCdqz5NXir1DRqiUELLkmNU59ztDWo3CVwKE/qOKjyOn0y6JRbwX5E1CODReWF7NwAWe9TVWKUyZwCONGzCHc0GE=
+	t=1705975413; cv=none; b=e5CftG9HJWO6T2m0E6Xx77/FtHhjtqs6ZoqfAZ+yCO9b4dvKOemIN8szhknKk8yacwEbRewqjpbOHFVEWtPQBufm2NDt/B0iYq8Afx+mjWUFxIoNDLPJM2sYiGAgDbTDLOqJFXyz4Ry+dteFV9ULZE6LGkU2fCTRbkCu/g2Luh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974111; c=relaxed/simple;
-	bh=73MDIsAPft4HQX8jFLKQPHckBgeRwkx62YzsLMGXKtE=;
+	s=arc-20240116; t=1705975413; c=relaxed/simple;
+	bh=JZJR6sPy54ZdoL0HiP3fzXIfhYlTc1+Si98iegLA/38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M/uviGvq848QjmxZtFFvQXiA/oNj4VI0/Ik6RVnrvJsldUVJV6Gt7fwa6ZO0bpSRcFXMyuC9JtjkDLpTMlCcTS0SXOUMcdHXE7MHh9XWQSbMuyKp4XYps0tOVCyue5RnbFsKuS1VfNPzDg0NBcA1o/qnTdf3O0/TVGcztfV/QSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TusC+FhU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C22CC43394;
-	Tue, 23 Jan 2024 01:41:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oELc0QaoH0rQoLAJcqSIuddvMpXQzf2etRQeqytmOjB+Z4uIGZsF5bFtpLR45xtRp/aRTKUxo3swa3L2zfVKnO1r0RGRAjrkXqYR0DIXNU3IPW0sibPPLaOTU71E7Ges9hXW2GCSLhrHeyse4ZzA/kxsko9S8wt2FdGTpVjQRUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nP3ZqG2/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B98C43390;
+	Tue, 23 Jan 2024 02:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974111;
-	bh=73MDIsAPft4HQX8jFLKQPHckBgeRwkx62YzsLMGXKtE=;
+	s=korg; t=1705975413;
+	bh=JZJR6sPy54ZdoL0HiP3fzXIfhYlTc1+Si98iegLA/38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TusC+FhUPn55kK6vHZ0hKZuboO9NYOJbyWN5JNgEI67Irvf358hgQsoEBx8IL0soR
-	 RVPYpV/hOs1HlxLN22isk1mJlH9us2iFjZsH4kXCDmckVpB8sEuVF5QtCMYJoDEET/
-	 q64+TU+nqXPy2+8hx8TBsZ9kBjE13U3cUSsTTEuM=
+	b=nP3ZqG2/fR1HLPYPmpiq0I+58Lwtp1eGjkvVc3lTptj+yZptlHKQhoFeximqJu26R
+	 IPEQSAtdr4zi5q0VVv4Se1xNdEATBqm0/ytct4y0bxAL93XVAjmrvCxQxxKxWYm/NA
+	 4DgsCo2ofXzyYtpEhI3Rwl3VmIoJxhgcQ2rVnNNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 167/374] Bluetooth: btmtkuart: fix recv_buf() return value
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Subject: [PATCH 6.6 372/583] serial: core: fix sanitizing check for RTS settings
 Date: Mon, 22 Jan 2024 15:57:03 -0800
-Message-ID: <20240122235750.429483135@linuxfoundation.org>
+Message-ID: <20240122235823.389331157@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +59,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-[ Upstream commit 64057f051f20c2a2184b9db7f8037d928d68a4f4 ]
+commit 4afeced55baa391490b61ed9164867e2927353ed upstream.
 
-Serdev recv_buf() callback is supposed to return the amount of bytes
-consumed, therefore an int in between 0 and count.
+Among other things uart_sanitize_serial_rs485() tests the sanity of the RTS
+settings in a RS485 configuration that has been passed by userspace.
+If RTS-on-send and RTS-after-send are both set or unset the configuration
+is adjusted and RTS-after-send is disabled and RTS-on-send enabled.
 
-Do not return negative number in case of issue, just print an error and
-return count. This fixes a WARN in ttyport_receive_buf().
+This however makes only sense if both RTS modes are actually supported by
+the driver.
 
-Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
-Fixes: 7237c4c9ec92 ("Bluetooth: mediatek: Add protocol support for MediaTek serial devices")
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With commit be2e2cb1d281 ("serial: Sanitize rs485_struct") the code does
+take the driver support into account but only checks if one of both RTS
+modes are supported. This may lead to the errorneous result of RTS-on-send
+being set even if only RTS-after-send is supported.
+
+Fix this by changing the implemented logic: First clear all unsupported
+flags in the RS485 configuration, then adjust an invalid RTS setting by
+taking into account which RTS mode is supported.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: be2e2cb1d281 ("serial: Sanitize rs485_struct")
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Link: https://lore.kernel.org/r/20240103061818.564-4-l.sanfilippo@kunbus.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btmtkuart.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/tty/serial/serial_core.c |   28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/bluetooth/btmtkuart.c b/drivers/bluetooth/btmtkuart.c
-index 9ba22b13b4fa..a831d734cd9e 100644
---- a/drivers/bluetooth/btmtkuart.c
-+++ b/drivers/bluetooth/btmtkuart.c
-@@ -471,7 +471,7 @@ mtk_stp_split(struct btmtkuart_dev *bdev, const unsigned char *data, int count,
- 	return data;
- }
- 
--static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
-+static void btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
- {
- 	struct btmtkuart_dev *bdev = hci_get_drvdata(hdev);
- 	const unsigned char *p_left = data, *p_h4;
-@@ -510,25 +510,20 @@ static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
- 			bt_dev_err(bdev->hdev,
- 				   "Frame reassembly failed (%d)", err);
- 			bdev->rx_skb = NULL;
--			return err;
-+			return;
- 		}
- 
- 		sz_left -= sz_h4;
- 		p_left += sz_h4;
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -1370,19 +1370,27 @@ static void uart_sanitize_serial_rs485(s
+ 		return;
  	}
--
--	return 0;
- }
  
- static int btmtkuart_receive_buf(struct serdev_device *serdev, const u8 *data,
- 				 size_t count)
- {
- 	struct btmtkuart_dev *bdev = serdev_device_get_drvdata(serdev);
--	int err;
++	rs485->flags &= supported_flags;
++
+ 	/* Pick sane settings if the user hasn't */
+-	if ((supported_flags & (SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND)) &&
+-	    !(rs485->flags & SER_RS485_RTS_ON_SEND) ==
++	if (!(rs485->flags & SER_RS485_RTS_ON_SEND) ==
+ 	    !(rs485->flags & SER_RS485_RTS_AFTER_SEND)) {
+-		dev_warn_ratelimited(port->dev,
+-			"%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
+-			port->name, port->line);
+-		rs485->flags |= SER_RS485_RTS_ON_SEND;
+-		rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
+-		supported_flags |= SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND;
+-	}
++		if (supported_flags & SER_RS485_RTS_ON_SEND) {
++			rs485->flags |= SER_RS485_RTS_ON_SEND;
++			rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
  
--	err = btmtkuart_recv(bdev->hdev, data, count);
--	if (err < 0)
--		return err;
-+	btmtkuart_recv(bdev->hdev, data, count);
+-	rs485->flags &= supported_flags;
++			dev_warn_ratelimited(port->dev,
++				"%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
++				port->name, port->line);
++		} else {
++			rs485->flags |= SER_RS485_RTS_AFTER_SEND;
++			rs485->flags &= ~SER_RS485_RTS_ON_SEND;
++
++			dev_warn_ratelimited(port->dev,
++				"%s (%d): invalid RTS setting, using RTS_AFTER_SEND instead\n",
++				port->name, port->line);
++		}
++	}
  
- 	bdev->hdev->stat.byte_rx += count;
+ 	uart_sanitize_serial_rs485_delays(port, rs485);
  
--- 
-2.43.0
-
 
 
 
