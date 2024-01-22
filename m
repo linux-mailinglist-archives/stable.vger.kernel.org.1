@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C821837A27
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D87837891
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4534028A2BF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B024928C71D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4517212AACC;
-	Tue, 23 Jan 2024 00:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C8B1353FA;
+	Tue, 23 Jan 2024 00:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUVzBHrt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHFPW4TF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035DD12A17F;
-	Tue, 23 Jan 2024 00:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F491353EC;
+	Tue, 23 Jan 2024 00:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968770; cv=none; b=EXvsJ9wOtR8IR6W6MxjSptWm3S9Ry/GbpCVwsOiwNH5GDAsUFu439uewqo2+6pW7V3MEv2dMbsBpakzKp/Js8t/SIqDJIil2xu1bK7VygQMhM1buM8rNYZLDIMtfjyGbYldFY/5I3AN7VcA1jjbA7x2Gd1K41ZTbv6uhI9dHJnM=
+	t=1705968116; cv=none; b=LyrQc321VLRCqqn2AyXZ6RTtzLghP7+Z9YBc/zkundpT/9SZ15Ks2+XS3WPIL863vhN7SfW3JpguCMLe7iYThQBMc+LK8h3ghGGSUru61Ndn23dyT83X/qU44dJoyW2coDGti06/EEaUu+ZQjq+LMp7oasEUaqIxO5KbGOo2lEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968770; c=relaxed/simple;
-	bh=3S39M37V09BusYrXno3FfIF2wKyiM2AjIFqMRqTcWB4=;
+	s=arc-20240116; t=1705968116; c=relaxed/simple;
+	bh=t7gkXPMCo7zKHcONsBhjOi7DUZ0QEwjRCJ6hRhxR0IY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqSTZftaRCoxOmfGB2Heb+xKbgLvCb8C7uNOu9HXAqT4FNlqOZB7QPh4IzeTonHc3Php1C15V791wq6tAqaGIrbEewoP8HVENPSwjc7MHzjF12s5eo38LlYtCKEs/RKhmcUcu5FvGYVIMp0O4/76hdwiExvFbLQ6UnAs86guDGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUVzBHrt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91269C433F1;
-	Tue, 23 Jan 2024 00:12:49 +0000 (UTC)
+	 MIME-Version; b=CqQwwuJVaLMTvQjrmjbCfv1e19AnPXAW43IXknm+Ex8vwZFETSubdy50KU8M9bIjSc2F+4BtiDsyX8lVszeHw5ETydEFeiVWaafDW9UrFvQzpq/0sH+7IxCB5Y/WQUTY+dN0mO40PfYgr08ifAiuynjPrKWULyO/QW/uA/JG+JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHFPW4TF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EFCC433C7;
+	Tue, 23 Jan 2024 00:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968769;
-	bh=3S39M37V09BusYrXno3FfIF2wKyiM2AjIFqMRqTcWB4=;
+	s=korg; t=1705968116;
+	bh=t7gkXPMCo7zKHcONsBhjOi7DUZ0QEwjRCJ6hRhxR0IY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wUVzBHrtA9YRtbfh9L2T1CTMG2I3eGLF/UIDRK3Yx1rrs08CVqowBMzEDHQ86wM7O
-	 CVkdv2kwQj4m56q+qpe5CRHqDKX+FkAwYOn5d4nCiCzOpZ9DnbjyFEi2f/pAJ9+VkH
-	 SavQOaMkmg8jMxdW+V6KUbK0gzsHOb6hSAUJSvyc=
+	b=YHFPW4TF4g2fKX1ZOdBbEl3bf60Fvd6ajp92aNEc/8Uz8504Ey9MkY3okTTjMiFHb
+	 IaV0XQwzes0fGYgqhI/SpP6zdid2h0F9jdDb3F+0xxHiAqIC4LoDrz8/6jHCh8+pes
+	 ygbG8jGnASCR7X15zqPmEnpX53wjXhFZetFlFsjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 041/194] EDAC/thunderx: Fix possible out-of-bounds string access
+Subject: [PATCH 4.19 015/148] reset: hisilicon: hi6220: fix Wvoid-pointer-to-enum-cast warning
 Date: Mon, 22 Jan 2024 15:56:11 -0800
-Message-ID: <20240122235720.985972569@linuxfoundation.org>
+Message-ID: <20240122235713.046758331@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 475c58e1a471e9b873e3e39958c64a2d278275c8 ]
+[ Upstream commit b5ec294472794ed9ecba0cb4b8208372842e7e0d ]
 
-Enabling -Wstringop-overflow globally exposes a warning for a common bug
-in the usage of strncat():
+'type' is an enum, thus cast of pointer on 64-bit compile test with W=1
+causes:
 
-  drivers/edac/thunderx_edac.c: In function 'thunderx_ocx_com_threaded_isr':
-  drivers/edac/thunderx_edac.c:1136:17: error: 'strncat' specified bound 1024 equals destination size [-Werror=stringop-overflow=]
-   1136 |                 strncat(msg, other, OCX_MESSAGE_SIZE);
-        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   ...
-   1145 |                                 strncat(msg, other, OCX_MESSAGE_SIZE);
-   ...
-   1150 |                                 strncat(msg, other, OCX_MESSAGE_SIZE);
+  hi6220_reset.c:166:9: error: cast to smaller integer type 'enum hi6220_reset_ctrl_type' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
 
-   ...
-
-Apparently the author of this driver expected strncat() to behave the
-way that strlcat() does, which uses the size of the destination buffer
-as its third argument rather than the length of the source buffer. The
-result is that there is no check on the size of the allocated buffer.
-
-Change it to strlcat().
-
-  [ bp: Trim compiler output, fixup commit message. ]
-
-Fixes: 41003396f932 ("EDAC, thunderx: Add Cavium ThunderX EDAC driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/20231122222007.3199885-1-arnd@kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230810091300.70197-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/thunderx_edac.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/reset/hisilicon/hi6220_reset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/edac/thunderx_edac.c b/drivers/edac/thunderx_edac.c
-index 34be60fe6892..0fffb393415b 100644
---- a/drivers/edac/thunderx_edac.c
-+++ b/drivers/edac/thunderx_edac.c
-@@ -1133,7 +1133,7 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(int irq, void *irq_id)
- 		decode_register(other, OCX_OTHER_SIZE,
- 				ocx_com_errors, ctx->reg_com_int);
+diff --git a/drivers/reset/hisilicon/hi6220_reset.c b/drivers/reset/hisilicon/hi6220_reset.c
+index d5e5229308f2..d77a7ad7e57a 100644
+--- a/drivers/reset/hisilicon/hi6220_reset.c
++++ b/drivers/reset/hisilicon/hi6220_reset.c
+@@ -107,7 +107,7 @@ static int hi6220_reset_probe(struct platform_device *pdev)
+ 	if (!data)
+ 		return -ENOMEM;
  
--		strncat(msg, other, OCX_MESSAGE_SIZE);
-+		strlcat(msg, other, OCX_MESSAGE_SIZE);
+-	type = (enum hi6220_reset_ctrl_type)of_device_get_match_data(dev);
++	type = (uintptr_t)of_device_get_match_data(dev);
  
- 		for (lane = 0; lane < OCX_RX_LANES; lane++)
- 			if (ctx->reg_com_int & BIT(lane)) {
-@@ -1142,12 +1142,12 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(int irq, void *irq_id)
- 					 lane, ctx->reg_lane_int[lane],
- 					 lane, ctx->reg_lane_stat11[lane]);
- 
--				strncat(msg, other, OCX_MESSAGE_SIZE);
-+				strlcat(msg, other, OCX_MESSAGE_SIZE);
- 
- 				decode_register(other, OCX_OTHER_SIZE,
- 						ocx_lane_errors,
- 						ctx->reg_lane_int[lane]);
--				strncat(msg, other, OCX_MESSAGE_SIZE);
-+				strlcat(msg, other, OCX_MESSAGE_SIZE);
- 			}
- 
- 		if (ctx->reg_com_int & OCX_COM_INT_CE)
-@@ -1217,7 +1217,7 @@ static irqreturn_t thunderx_ocx_lnk_threaded_isr(int irq, void *irq_id)
- 		decode_register(other, OCX_OTHER_SIZE,
- 				ocx_com_link_errors, ctx->reg_com_link_int);
- 
--		strncat(msg, other, OCX_MESSAGE_SIZE);
-+		strlcat(msg, other, OCX_MESSAGE_SIZE);
- 
- 		if (ctx->reg_com_link_int & OCX_COM_LINK_INT_UE)
- 			edac_device_handle_ue(ocx->edac_dev, 0, 0, msg);
-@@ -1896,7 +1896,7 @@ static irqreturn_t thunderx_l2c_threaded_isr(int irq, void *irq_id)
- 
- 		decode_register(other, L2C_OTHER_SIZE, l2_errors, ctx->reg_int);
- 
--		strncat(msg, other, L2C_MESSAGE_SIZE);
-+		strlcat(msg, other, L2C_MESSAGE_SIZE);
- 
- 		if (ctx->reg_int & mask_ue)
- 			edac_device_handle_ue(l2c->edac_dev, 0, 0, msg);
+ 	regmap = syscon_node_to_regmap(np);
+ 	if (IS_ERR(regmap)) {
 -- 
 2.43.0
 
