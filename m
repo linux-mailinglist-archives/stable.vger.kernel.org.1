@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CFB58381DA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:14:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D306D837F2C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6019AB238CA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09E811C233AC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06FD1420D9;
-	Tue, 23 Jan 2024 01:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29F01292E8;
+	Tue, 23 Jan 2024 00:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwXx3yFT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0H3+adj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCDA811;
-	Tue, 23 Jan 2024 01:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D451292DF;
+	Tue, 23 Jan 2024 00:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972136; cv=none; b=hEusK7V9tjndLg1jc9f66AOdEP/+XALUWf9vJSH4OsUsm+mT1AQStPSwWSKgNljWGFwW068RxVQGMk7GlAqjgNbYgXbdL77E0nQIGX7YcaMVkzdHs/B4kByTTsSlXeOQI4fKhQb1wx59tP0YYolX4nTlxVoxVCJ0qVQsQTsZXs0=
+	t=1705970981; cv=none; b=oAJzUQ94JerwNC+MdROmH14716lbGdvWQ4T+3aIsk4EWV08PvQ/Tk8n+ZgD+AzZiYZPT5xZkDwGI+8t0pXBHTUUITFwFKSslPKMGR3pqpgyNgGUc6YcIphY0Ja6ibXHyouL1z6s8TasrXu20sGboA4+UaCBuBewUSZer8BN6xu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972136; c=relaxed/simple;
-	bh=os+ABS+x3eGK53OQ3TQedJMZwjYh6u9F6aIbMLa6JLE=;
+	s=arc-20240116; t=1705970981; c=relaxed/simple;
+	bh=V8asHHJMbDw+IJmIOxjRygwUycjLMyRBL5CF2lA3pLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PlOHOCP4snDwJMTd+WiqphYf5Mnpj8kdgRYlqw0tsoTOW84TG6R1WoYd4yBMNxWUvtXEFlUOwmUqagPr2/OHCp1V1zhIhLQB0hSSG1P3KSuCSElsk1F25KKW6T2OOiqlzJwsKaq1xfi5P27LrV+kABD9nkSmKjIqDTc717SshJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwXx3yFT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F394C433C7;
-	Tue, 23 Jan 2024 01:08:56 +0000 (UTC)
+	 MIME-Version; b=AOnpq512b4g4dCk2xbGyLRktp7xhWG0IA3ZjPG5KpEAGoIdefnJ/6D0ExZ98QxDfHRQaVAFlIcdkWmwDQqqYEhCPIGLLDt24olL6RzSovreNO3bAB2xWPY4S35gl5Rk40EUo536NFd/Q+rFm9ZJ6gyHyPMkOK9UGH3/BviqfZsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0H3+adj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD688C43390;
+	Tue, 23 Jan 2024 00:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972136;
-	bh=os+ABS+x3eGK53OQ3TQedJMZwjYh6u9F6aIbMLa6JLE=;
+	s=korg; t=1705970981;
+	bh=V8asHHJMbDw+IJmIOxjRygwUycjLMyRBL5CF2lA3pLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QwXx3yFTR5VAoLquTsNN3jBlI63WQKPfcKXPAlle8ZlnOWICZpgOR92t1Amq/NmyX
-	 hxRNaZRnNWutIMQNYqdVVvao+3yH3rTJolEXPGaS/GN/3p15eAJuTj0076gO+FdBV3
-	 N9c6Z+AWbDe3sw1TRAQ/ZBdDOetwhUTIZqFLPC+A=
+	b=b0H3+adj44wKT5haRTyzi71QkthQ7WsSJrNucn4BNp79W528JZ8cAhO34+HrrhyIf
+	 y+vCGbKZ5nADQePe/nvomajWictAQXn2yckgRAaKkOdXm2EUtLdaaFubP43e0yujLF
+	 XeEKkL6lwZVwI+Otnig2XT6sdxPPH3OrKuOuq4AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 067/374] powerpc: Mark .opd section read-only
+Subject: [PATCH 6.1 155/417] ARM: davinci: always select CONFIG_CPU_ARM926T
 Date: Mon, 22 Jan 2024 15:55:23 -0800
-Message-ID: <20240122235746.942965373@linuxfoundation.org>
+Message-ID: <20240122235757.207958208@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 3091f5fc5f1df7741ddf326561384e0997eca2a1 ]
+[ Upstream commit 40974ee421b4d1fc74ac733d86899ce1b83d8f65 ]
 
-.opd section contains function descriptors used to locate
-functions in the kernel. If someone is able to modify a
-function descriptor he will be able to run arbitrary
-kernel function instead of another.
+The select was lost by accident during the multiplatform conversion.
+Any davinci-only
 
-To avoid that, move .opd section inside read-only memory.
+arm-linux-gnueabi-ld: arch/arm/mach-davinci/sleep.o: in function `CACHE_FLUSH':
+(.text+0x168): undefined reference to `arm926_flush_kern_cache_all'
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/3cd40b682fb6f75bb40947b55ca0bac20cb3f995.1634136222.git.christophe.leroy@csgroup.eu
-Stable-dep-of: 1b1e38002648 ("powerpc: add crtsavres.o to always-y instead of extra-y")
+Fixes: f962396ce292 ("ARM: davinci: support multiplatform build for ARM v5")
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20240108110055.1531153-1-arnd@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/vmlinux.lds.S | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm/mach-davinci/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index d4531902d8c6..d8301ce7c675 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -148,6 +148,12 @@ SECTIONS
- 	SOFT_MASK_TABLE(8)
- 	RESTART_TABLE(8)
- 
-+	.opd : AT(ADDR(.opd) - LOAD_OFFSET) {
-+		__start_opd = .;
-+		KEEP(*(.opd))
-+		__end_opd = .;
-+	}
-+
- 	. = ALIGN(8);
- 	__stf_entry_barrier_fixup : AT(ADDR(__stf_entry_barrier_fixup) - LOAD_OFFSET) {
- 		__start___stf_entry_barrier_fixup = .;
-@@ -346,12 +352,6 @@ SECTIONS
- 		*(.branch_lt)
- 	}
- 
--	.opd : AT(ADDR(.opd) - LOAD_OFFSET) {
--		__start_opd = .;
--		KEEP(*(.opd))
--		__end_opd = .;
--	}
--
- 	. = ALIGN(256);
- 	.got : AT(ADDR(.got) - LOAD_OFFSET) {
- 		__toc_start = .;
+diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
+index c8cbd9a30791..0b54ca56555b 100644
+--- a/arch/arm/mach-davinci/Kconfig
++++ b/arch/arm/mach-davinci/Kconfig
+@@ -4,6 +4,7 @@ menuconfig ARCH_DAVINCI
+ 	bool "TI DaVinci"
+ 	depends on ARCH_MULTI_V5
+ 	depends on CPU_LITTLE_ENDIAN
++	select CPU_ARM926T
+ 	select DAVINCI_TIMER
+ 	select ZONE_DMA
+ 	select PM_GENERIC_DOMAINS if PM
 -- 
 2.43.0
 
