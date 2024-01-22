@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3F7837EF0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D64D8383F5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FC571F2B851
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 980AD1C29FE2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBC860860;
-	Tue, 23 Jan 2024 00:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7077664A1;
+	Tue, 23 Jan 2024 01:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTP67zTA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3ZR4yx+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7C160275;
-	Tue, 23 Jan 2024 00:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60F3664A6;
+	Tue, 23 Jan 2024 01:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970837; cv=none; b=ATfuzIvirj8OlyIPafkX04L3I7QnhtbfBe5PrDNoHxuAs2dgg2XPyeNDEZ2LSKr0QNsI0++fPblxgcf2zcoF+qMorObxtwx5kKE0ACioLj95pAT/15yZKxZFq7OMNCKosWaypH//M3sGOnxyqtRzzp3wblX5at2PP/XFvK4W0aQ=
+	t=1705975104; cv=none; b=H5Jzs7SXMo4/uJCWzJ+Ed1O6nLdQjSlgL9Wf3UdiOrNY/vt8zCp8IqQr/uVO4JG/+xlCEbRbPNJMqClXoaAmDW7GSE+iCXnerSbs2/VDaELR3MGS8xAgxMbAXV4YJSJHOWVyZR3RZCIw6/6MdTsWqauqWiBqBIIY4gjsFEa13ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970837; c=relaxed/simple;
-	bh=dcW9sC5h6ZTvl+06Z0e3grlDUKZdcnnc6EgAr/veVlo=;
+	s=arc-20240116; t=1705975104; c=relaxed/simple;
+	bh=jISu3IgRwxZAaQ1Myaoiig81fdU0Y643L8e6CpgWezk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=elsMgSW22k6LNrK8ruO+AmgJreeRxJC/lgBbgkR8ygXQ4iize/Od5fVOjzN+eL2avKj7abkmnLzW3M8+2r3HcS1YuTFGGCykZfqUP/pLbn712mpGLsUeJapwKazxSLHfu7cH34DrdPj+b1Pko1EZF3pSH82QCdKeyRi2ofk6Upg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTP67zTA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35679C43390;
-	Tue, 23 Jan 2024 00:47:17 +0000 (UTC)
+	 MIME-Version; b=pupEha5WK4v/cWEcfrjrphbEgKOeFG5FT92nIjmDhoc2B6XG8L0Twwt1NCtMQUms1mPwfj6ROfdo0IpbY4NG274TZiwA1ef5otkwyyFP/Pb1vfNdJwkomZp56SFjiLp/tifDFPHf/zLOX5JWOOi4VIHLjMGD+aQEwN36F0qd6WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3ZR4yx+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3842EC433F1;
+	Tue, 23 Jan 2024 01:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970837;
-	bh=dcW9sC5h6ZTvl+06Z0e3grlDUKZdcnnc6EgAr/veVlo=;
+	s=korg; t=1705975103;
+	bh=jISu3IgRwxZAaQ1Myaoiig81fdU0Y643L8e6CpgWezk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hTP67zTAn2lH1W8deYbdAWmdU4+D/c1cYiubTlzym7CyhxU2P1pWn2YksyV/tUoTH
-	 UjxbUJRpDEG9HnVGdoRXsTd+UoY9XkhB0idaMLo21Y+6ptOHtPwtvteVYqAXrc0a3P
-	 A3VQECCFd+H/+pzMyVJGstZwB9uQpTArr37enJLg=
+	b=D3ZR4yx+OpNpjgG/1iskFfeJyU8+ia5tpygi3g9jgoucoDf3wGBG7C44U9KGghDzy
+	 G1RCo0VK5zoUt1zX2/YdhuXtaGR2XLyM5QBTK4SSFdqY+EgONQcWjk2LSPhkBkwMEx
+	 AJWVbdG5mDrkiVYhZZS7sO12+bGIC2S/btxaZUGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/417] virtio/vsock: fix logic which reduces credit update messages
+Subject: [PATCH 6.6 239/583] drm/bridge: Fix typo in post_disable() description
 Date: Mon, 22 Jan 2024 15:54:50 -0800
-Message-ID: <20240122235756.026460825@linuxfoundation.org>
+Message-ID: <20240122235819.303199256@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-[ Upstream commit 93b80887668226180ea5f5349cc728ca6dc700ab ]
+[ Upstream commit 288b039db225676e0c520c981a1b5a2562d893a3 ]
 
-Add one more condition for sending credit update during dequeue from
-stream socket: when number of bytes in the rx queue is smaller than
-SO_RCVLOWAT value of the socket. This is actual for non-default value
-of SO_RCVLOWAT (e.g. not 1) - idea is to "kick" peer to continue data
-transmission, because we need at least SO_RCVLOWAT bytes in our rx
-queue to wake up user for reading data (in corner case it is also
-possible to stuck both tx and rx sides, this is why 'Fixes' is used).
+s/singals/signals/
 
-Fixes: b89d882dc9fc ("vsock/virtio: reduce credit update messages")
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 199e4e967af4 ("drm: Extract drm_bridge.h")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231124094253.658064-1-dario.binacchi@amarulasolutions.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ include/drm/drm_bridge.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 2e25890ca52d..9983b833b55d 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -366,6 +366,8 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 	struct virtio_vsock_sock *vvs = vsk->trans;
- 	size_t bytes, total = 0;
- 	struct sk_buff *skb;
-+	u32 fwd_cnt_delta;
-+	bool low_rx_bytes;
- 	int err = -EFAULT;
- 	u32 free_space;
- 
-@@ -400,7 +402,10 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 		}
- 	}
- 
--	free_space = vvs->buf_alloc - (vvs->fwd_cnt - vvs->last_fwd_cnt);
-+	fwd_cnt_delta = vvs->fwd_cnt - vvs->last_fwd_cnt;
-+	free_space = vvs->buf_alloc - fwd_cnt_delta;
-+	low_rx_bytes = (vvs->rx_bytes <
-+			sock_rcvlowat(sk_vsock(vsk), 0, INT_MAX));
- 
- 	spin_unlock_bh(&vvs->rx_lock);
- 
-@@ -410,9 +415,11 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 	 * too high causes extra messages. Too low causes transmitter
- 	 * stalls. As stalls are in theory more expensive than extra
- 	 * messages, we set the limit to a high value. TODO: experiment
--	 * with different values.
-+	 * with different values. Also send credit update message when
-+	 * number of bytes in rx queue is not enough to wake up reader.
- 	 */
--	if (free_space < VIRTIO_VSOCK_MAX_PKT_BUF_SIZE)
-+	if (fwd_cnt_delta &&
-+	    (free_space < VIRTIO_VSOCK_MAX_PKT_BUF_SIZE || low_rx_bytes))
- 		virtio_transport_send_credit_update(vsk);
- 
- 	return total;
+diff --git a/include/drm/drm_bridge.h b/include/drm/drm_bridge.h
+index c339fc85fd07..103ff57fc83c 100644
+--- a/include/drm/drm_bridge.h
++++ b/include/drm/drm_bridge.h
+@@ -192,7 +192,7 @@ struct drm_bridge_funcs {
+ 	 * or &drm_encoder_helper_funcs.dpms hook.
+ 	 *
+ 	 * The bridge must assume that the display pipe (i.e. clocks and timing
+-	 * singals) feeding it is no longer running when this callback is
++	 * signals) feeding it is no longer running when this callback is
+ 	 * called.
+ 	 *
+ 	 * The @post_disable callback is optional.
 -- 
 2.43.0
 
