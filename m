@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-13202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C48837AEE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CFE7837AF1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 347FC1F26C5E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:56:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDF091F26D23
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C62513541F;
-	Tue, 23 Jan 2024 00:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE95013BEBD;
+	Tue, 23 Jan 2024 00:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkKxbE8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYjGLHPq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B00613343B;
-	Tue, 23 Jan 2024 00:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E50A137C23;
+	Tue, 23 Jan 2024 00:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969136; cv=none; b=fPge5Iibs0M/KWSSkRGOkR4QnXkKrO0wbhadhZ+8fpCxCg5DGHxZc/Aw7f6icj6GONeH4EOs9EkoVQSNeesgkUzOzmCXCecGb/C8s22cCuZs3PebhUaJ2vQQkWj3HikDS2dPUHMWwgWj5Uc3raEyjaSL7DP86G3SpfDqoUn/nWw=
+	t=1705969139; cv=none; b=i5pwkyGu6HMfBCUrAsBIgzgQ4kyJABxYG/i0bd3Sq8GZ4bnrQhzwLo/CTZd6YR3yMOzjDt9xwC8r7KwZjJQpusQsMcH6fT7/Q94j+6Iq7BQwfcygiDMUYl/dO6P4fcQN4FHB8XqBKJvxTn7zH0de3XB7H+EPlrpnUEHuOH0S8gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969136; c=relaxed/simple;
-	bh=xLEHs8LRg6SMA893lHjGv9jWQwn4R1JRbEydsiI2z00=;
+	s=arc-20240116; t=1705969139; c=relaxed/simple;
+	bh=5tAbSiV788HoRPJv8n3hZubZ2XpuOOt036zK8jDqZMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nq8bhmbqcIvK7VybLuHdF4qoMfmXP2q8hbAHKcMXIj0XDfKmsyT6th6Be9l7HV014ETM9Q+NVeIO+qAlSvQNHs/XTc0TAqTRMJ6iwW5a8VNdM862rXH3iix18WiEAlWYdlZsmd2XNC4SfwcmvJEJ4qetAnp84BUIWwz3mpA3tBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkKxbE8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F84C433C7;
-	Tue, 23 Jan 2024 00:18:55 +0000 (UTC)
+	 MIME-Version; b=q5VBgQiL0b7VJlsQ/Lw68I5iS2Kh6hwsY0n+g5guAH4W+YJb7JIpewPEChISl9DKbV6jpA3vxl210fXVkElceBELopcITn20Vj/4bSqxM/34WoGdQCer/v0ks1rai6kwn9oq49lbL5rxFx1BxzGGH/KKjQQ25hu/on7A3GZa86c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYjGLHPq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1D2C433F1;
+	Tue, 23 Jan 2024 00:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969135;
-	bh=xLEHs8LRg6SMA893lHjGv9jWQwn4R1JRbEydsiI2z00=;
+	s=korg; t=1705969139;
+	bh=5tAbSiV788HoRPJv8n3hZubZ2XpuOOt036zK8jDqZMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kkKxbE8jJZ5ZXftH14wwvxFyZSyHvZX+iZxpBEtBuLqMc3lvntJAlUq0MTBMA8Isz
-	 THfcWAtjCPyarqygdbLUQHtbeG8t7Xj0/c1OY7dMXbI2BzeccxDU6pNIGkWc3fbACE
-	 dEdJp+5x59mfcrU1rTMdOyk7qvXJUjZtW6qlsNk0=
+	b=xYjGLHPqqMlPRQDyZq+UCXwHQAKMomY6vzh+lOe1oAZoEsGv/Hz5shObxWOuNkflU
+	 SSoCNTDep0QtbVvebpRwMTEyLcJHmIIuSdba7t4QZrRie+4fqVti4nJTTje9ecYNZK
+	 EhEZ2QVCjVj1Uy/oeffUAmbCPnRyZ2296s9uAelk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chanho Park <chanho61.park@samsung.com>,
-	Jia Jie Ho <jiajie.ho@starfivetech.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	wangyangxin <wangyangxin1@huawei.com>,
+	Gonglei <arei.gonglei@huawei.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 045/641] crypto: jh7110 - Correct deferred probe return
-Date: Mon, 22 Jan 2024 15:49:09 -0800
-Message-ID: <20240122235819.493173146@linuxfoundation.org>
+Subject: [PATCH 6.7 046/641] crypto: virtio - Handle dataq logic with tasklet
+Date: Mon, 22 Jan 2024 15:49:10 -0800
+Message-ID: <20240122235819.523455797@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -67,52 +68,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chanho Park <chanho61.park@samsung.com>
+From: Gonglei (Arei) <arei.gonglei@huawei.com>
 
-[ Upstream commit d57343022b71b9f41e731282dbe0baf0cff6ada8 ]
+[ Upstream commit fed93fb62e05c38152b0fc1dc9609639e63eed76 ]
 
-This fixes list_add corruption error when the driver is returned
-with -EPROBE_DEFER. It is also required to roll back the previous
-probe sequences in case of deferred_probe. So, this removes
-'err_probe_defer" goto label and just use err_dma_init instead.
+Doing ipsec produces a spinlock recursion warning.
+This is due to crypto_finalize_request() being called in the upper half.
+Move virtual data queue processing of virtio-crypto driver to tasklet.
 
-Fixes: 42ef0e944b01 ("crypto: starfive - Add crypto engine support")
-Signed-off-by: Chanho Park <chanho61.park@samsung.com>
-Reviewed-by: Jia Jie Ho <jiajie.ho@starfivetech.com>
+Fixes: dbaf0624ffa57 ("crypto: add virtio-crypto driver")
+Reported-by: Halil Pasic <pasic@linux.ibm.com>
+Signed-off-by: wangyangxin <wangyangxin1@huawei.com>
+Signed-off-by: Gonglei <arei.gonglei@huawei.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/starfive/jh7110-cryp.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/crypto/virtio/virtio_crypto_common.h |  2 ++
+ drivers/crypto/virtio/virtio_crypto_core.c   | 23 +++++++++++---------
+ 2 files changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/crypto/starfive/jh7110-cryp.c b/drivers/crypto/starfive/jh7110-cryp.c
-index 08e974e0dd12..3a67ddc4d936 100644
---- a/drivers/crypto/starfive/jh7110-cryp.c
-+++ b/drivers/crypto/starfive/jh7110-cryp.c
-@@ -180,12 +180,8 @@ static int starfive_cryp_probe(struct platform_device *pdev)
- 	spin_unlock(&dev_list.lock);
+diff --git a/drivers/crypto/virtio/virtio_crypto_common.h b/drivers/crypto/virtio/virtio_crypto_common.h
+index 154590e1f764..7059bbe5a2eb 100644
+--- a/drivers/crypto/virtio/virtio_crypto_common.h
++++ b/drivers/crypto/virtio/virtio_crypto_common.h
+@@ -10,6 +10,7 @@
+ #include <linux/virtio.h>
+ #include <linux/crypto.h>
+ #include <linux/spinlock.h>
++#include <linux/interrupt.h>
+ #include <crypto/aead.h>
+ #include <crypto/aes.h>
+ #include <crypto/engine.h>
+@@ -28,6 +29,7 @@ struct data_queue {
+ 	char name[32];
  
- 	ret = starfive_dma_init(cryp);
--	if (ret) {
--		if (ret == -EPROBE_DEFER)
--			goto err_probe_defer;
--		else
--			goto err_dma_init;
--	}
-+	if (ret)
-+		goto err_dma_init;
+ 	struct crypto_engine *engine;
++	struct tasklet_struct done_task;
+ };
  
- 	/* Initialize crypto engine */
- 	cryp->engine = crypto_engine_alloc_init(&pdev->dev, 1);
-@@ -233,7 +229,7 @@ static int starfive_cryp_probe(struct platform_device *pdev)
- 
- 	tasklet_kill(&cryp->aes_done);
- 	tasklet_kill(&cryp->hash_done);
--err_probe_defer:
-+
- 	return ret;
+ struct virtio_crypto {
+diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
+index 43a0838d31ff..428d76562447 100644
+--- a/drivers/crypto/virtio/virtio_crypto_core.c
++++ b/drivers/crypto/virtio/virtio_crypto_core.c
+@@ -72,27 +72,28 @@ int virtio_crypto_ctrl_vq_request(struct virtio_crypto *vcrypto, struct scatterl
+ 	return 0;
  }
  
+-static void virtcrypto_dataq_callback(struct virtqueue *vq)
++static void virtcrypto_done_task(unsigned long data)
+ {
+-	struct virtio_crypto *vcrypto = vq->vdev->priv;
++	struct data_queue *data_vq = (struct data_queue *)data;
++	struct virtqueue *vq = data_vq->vq;
+ 	struct virtio_crypto_request *vc_req;
+-	unsigned long flags;
+ 	unsigned int len;
+-	unsigned int qid = vq->index;
+ 
+-	spin_lock_irqsave(&vcrypto->data_vq[qid].lock, flags);
+ 	do {
+ 		virtqueue_disable_cb(vq);
+ 		while ((vc_req = virtqueue_get_buf(vq, &len)) != NULL) {
+-			spin_unlock_irqrestore(
+-				&vcrypto->data_vq[qid].lock, flags);
+ 			if (vc_req->alg_cb)
+ 				vc_req->alg_cb(vc_req, len);
+-			spin_lock_irqsave(
+-				&vcrypto->data_vq[qid].lock, flags);
+ 		}
+ 	} while (!virtqueue_enable_cb(vq));
+-	spin_unlock_irqrestore(&vcrypto->data_vq[qid].lock, flags);
++}
++
++static void virtcrypto_dataq_callback(struct virtqueue *vq)
++{
++	struct virtio_crypto *vcrypto = vq->vdev->priv;
++	struct data_queue *dq = &vcrypto->data_vq[vq->index];
++
++	tasklet_schedule(&dq->done_task);
+ }
+ 
+ static int virtcrypto_find_vqs(struct virtio_crypto *vi)
+@@ -150,6 +151,8 @@ static int virtcrypto_find_vqs(struct virtio_crypto *vi)
+ 			ret = -ENOMEM;
+ 			goto err_engine;
+ 		}
++		tasklet_init(&vi->data_vq[i].done_task, virtcrypto_done_task,
++				(unsigned long)&vi->data_vq[i]);
+ 	}
+ 
+ 	kfree(names);
 -- 
 2.43.0
 
