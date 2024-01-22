@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-12858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610AE8378AC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E9F837A61
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86ADE1C2746E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E2BB1F28A80
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505A1810;
-	Tue, 23 Jan 2024 00:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED8E12C52A;
+	Tue, 23 Jan 2024 00:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GR/8HbVV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuRaMeHz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074707F1;
-	Tue, 23 Jan 2024 00:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB6412BF3C;
+	Tue, 23 Jan 2024 00:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968198; cv=none; b=spMm0fDCpKE8rGULP4Or+fp+ETLTh59VjiSYWikxcO9N13+SY4ZKR5LBVFIvVs8+vrIzmu71gbGBGMdxr7S4A5h+Wt2m7bI8IEAin1SW+eVv1PAQ26o2F6hz7Bc43MblrfIWm5dS57DMCqHKWG4bfb+ZikYQBhWag9HCOT2rOgg=
+	t=1705968923; cv=none; b=V6IpBzzWgd2mPJbEVGBODLH6DUQUi9/FZVqE3SU8De9CHoNWALEWH/8FpmiGBqfrIEP7b/OyXfVzRP1JmzFjH3DWNoFXNGBDQSmU2nE0LwNXIKXoJAKsuAyT4UnFIO41CZUU5EtFwdkx50yGtl5VpvCTIRPLxr+KMxQU5zh4qBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968198; c=relaxed/simple;
-	bh=J3DewA7JJXawoVZi3nWlRFAaQHn4MRXbx4AS7RB4W/s=;
+	s=arc-20240116; t=1705968923; c=relaxed/simple;
+	bh=JKwamMGh5LzRdCjg2s6Fq4geAVQZmkFryJvnVvsIRWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GPhD/KyFEdcBT26nDIwJOgUWJV3q7RTd2PfjMOYFMEuxnNvMost4fTcgnyYgs3l52kIe01jqR/MZv7MGTpeVuCaYcDdNjyRsa314dc9/yrGLvPUOrDPWMgZXWSltoGCi8Pip82OcDGSRp9P7QpMu+GEAPD53rKBHI9g/bQPPMH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GR/8HbVV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BA5C433C7;
-	Tue, 23 Jan 2024 00:03:17 +0000 (UTC)
+	 MIME-Version; b=NePUi2y8D9ZHyyNngs5UEW5oh7OaaXG+LwYImpe/+OWYV9PAsIwsPrpSFTmFNhGFwdwHH6VmLzgmzQgdAhCs1VLS4nrk41uVdE7WP4oN1Klrfw3qCwPe5RRvIOw2zcxFIU3YVHZV8f3pYha9ry6TxxjxwBe4nQ4X4gdDuIVuTBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuRaMeHz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B8CC433C7;
+	Tue, 23 Jan 2024 00:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968197;
-	bh=J3DewA7JJXawoVZi3nWlRFAaQHn4MRXbx4AS7RB4W/s=;
+	s=korg; t=1705968923;
+	bh=JKwamMGh5LzRdCjg2s6Fq4geAVQZmkFryJvnVvsIRWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GR/8HbVV4bKt6dkfXtc9cpbjZABH5PJgQHshzO+8gZUD3rWIz0zRkrxmtL9vVL9Xy
-	 wGnvJ8e/92NqzK49f8nIaFXfzOHitkSYe2dIa6FlsXKyc6ha5CX/k6qf+h1PDKxOHA
-	 Ta8P96cWIK06X5kci1eq12hcggmUpEdl/wzgYj80=
+	b=uuRaMeHzHELaHd6mxoBx+nil047t/7AIyeQHInOqHixZ2qh99ydrrQqcFQrtj/vpp
+	 UDjWIrxD7InHfc5Zs7K4vdNVf12VeobK6JZw+3sOxoEvAmrCXn++J5b3MoVT1E2m3g
+	 ifwVSXGORknNwtHsjUQaJfP/Url0OTJtvTu+/FEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 041/148] netlabel: remove unused parameter in netlbl_netlink_auditinfo()
-Date: Mon, 22 Jan 2024 15:56:37 -0800
-Message-ID: <20240122235714.070459514@linuxfoundation.org>
+Subject: [PATCH 5.4 068/194] crypto: sahara - fix error handling in sahara_hw_descriptor_create()
+Date: Mon, 22 Jan 2024 15:56:38 -0800
+Message-ID: <20240122235722.125411525@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,180 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit f7e0318a314f9271b0f0cdd4bfdc691976976d8c ]
+[ Upstream commit ee6e6f0a7f5b39d50a5ef5fcc006f4f693db18a7 ]
 
-loginuid/sessionid/secid have been read from 'current' instead of struct
-netlink_skb_parms, the parameter 'skb' seems no longer needed.
+Do not call dma_unmap_sg() for scatterlists that were not mapped
+successfully.
 
-Fixes: c53fa1ed92cd ("netlink: kill loginuid/sessionid/sid members from struct netlink_skb_parms")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: ec4e9d630a64 ("calipso: fix memory leak in netlbl_calipso_add_pass()")
+Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlabel/netlabel_calipso.c   |  4 ++--
- net/netlabel/netlabel_cipso_v4.c  |  4 ++--
- net/netlabel/netlabel_mgmt.c      |  8 ++++----
- net/netlabel/netlabel_unlabeled.c | 10 +++++-----
- net/netlabel/netlabel_user.h      |  4 +---
- 5 files changed, 14 insertions(+), 16 deletions(-)
+ drivers/crypto/sahara.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/net/netlabel/netlabel_calipso.c b/net/netlabel/netlabel_calipso.c
-index 5ae9b0f18a7e..5363e07dbf65 100644
---- a/net/netlabel/netlabel_calipso.c
-+++ b/net/netlabel/netlabel_calipso.c
-@@ -119,7 +119,7 @@ static int netlbl_calipso_add(struct sk_buff *skb, struct genl_info *info)
- 	    !info->attrs[NLBL_CALIPSO_A_MTYPE])
- 		return -EINVAL;
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index c62f9ce6adc0..e505c01b7a05 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -481,13 +481,14 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
+ 			 DMA_TO_DEVICE);
+ 	if (ret != dev->nb_in_sg) {
+ 		dev_err(dev->device, "couldn't map in sg\n");
+-		goto unmap_in;
++		return -EINVAL;
+ 	}
++
+ 	ret = dma_map_sg(dev->device, dev->out_sg, dev->nb_out_sg,
+ 			 DMA_FROM_DEVICE);
+ 	if (ret != dev->nb_out_sg) {
+ 		dev_err(dev->device, "couldn't map out sg\n");
+-		goto unmap_out;
++		goto unmap_in;
+ 	}
  
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 	switch (nla_get_u32(info->attrs[NLBL_CALIPSO_A_MTYPE])) {
- 	case CALIPSO_MAP_PASS:
- 		ret_val = netlbl_calipso_add_pass(info, &audit_info);
-@@ -301,7 +301,7 @@ static int netlbl_calipso_remove(struct sk_buff *skb, struct genl_info *info)
- 	if (!info->attrs[NLBL_CALIPSO_A_DOI])
- 		return -EINVAL;
+ 	/* Create input links */
+@@ -535,9 +536,6 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
  
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 	cb_arg.doi = nla_get_u32(info->attrs[NLBL_CALIPSO_A_DOI]);
- 	cb_arg.audit_info = &audit_info;
- 	ret_val = netlbl_domhsh_walk(&skip_bkt, &skip_chain,
-diff --git a/net/netlabel/netlabel_cipso_v4.c b/net/netlabel/netlabel_cipso_v4.c
-index e252f62bb8c2..a0a145db3fc7 100644
---- a/net/netlabel/netlabel_cipso_v4.c
-+++ b/net/netlabel/netlabel_cipso_v4.c
-@@ -420,7 +420,7 @@ static int netlbl_cipsov4_add(struct sk_buff *skb, struct genl_info *info)
- 	    !info->attrs[NLBL_CIPSOV4_A_MTYPE])
- 		return -EINVAL;
+ 	return 0;
  
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 	switch (nla_get_u32(info->attrs[NLBL_CIPSOV4_A_MTYPE])) {
- 	case CIPSO_V4_MAP_TRANS:
- 		ret_val = netlbl_cipsov4_add_std(info, &audit_info);
-@@ -715,7 +715,7 @@ static int netlbl_cipsov4_remove(struct sk_buff *skb, struct genl_info *info)
- 	if (!info->attrs[NLBL_CIPSOV4_A_DOI])
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 	cb_arg.doi = nla_get_u32(info->attrs[NLBL_CIPSOV4_A_DOI]);
- 	cb_arg.audit_info = &audit_info;
- 	ret_val = netlbl_domhsh_walk(&skip_bkt, &skip_chain,
-diff --git a/net/netlabel/netlabel_mgmt.c b/net/netlabel/netlabel_mgmt.c
-index 71ba69cb50c9..43c51242dcd2 100644
---- a/net/netlabel/netlabel_mgmt.c
-+++ b/net/netlabel/netlabel_mgmt.c
-@@ -447,7 +447,7 @@ static int netlbl_mgmt_add(struct sk_buff *skb, struct genl_info *info)
- 	     (info->attrs[NLBL_MGMT_A_IPV6MASK] != NULL)))
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	return netlbl_mgmt_add_common(info, &audit_info);
- }
-@@ -470,7 +470,7 @@ static int netlbl_mgmt_remove(struct sk_buff *skb, struct genl_info *info)
- 	if (!info->attrs[NLBL_MGMT_A_DOMAIN])
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	domain = nla_data(info->attrs[NLBL_MGMT_A_DOMAIN]);
- 	return netlbl_domhsh_remove(domain, AF_UNSPEC, &audit_info);
-@@ -570,7 +570,7 @@ static int netlbl_mgmt_adddef(struct sk_buff *skb, struct genl_info *info)
- 	     (info->attrs[NLBL_MGMT_A_IPV6MASK] != NULL)))
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	return netlbl_mgmt_add_common(info, &audit_info);
- }
-@@ -589,7 +589,7 @@ static int netlbl_mgmt_removedef(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct netlbl_audit audit_info;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	return netlbl_domhsh_remove_default(AF_UNSPEC, &audit_info);
- }
-diff --git a/net/netlabel/netlabel_unlabeled.c b/net/netlabel/netlabel_unlabeled.c
-index 0067f472367b..ff52ff2278ed 100644
---- a/net/netlabel/netlabel_unlabeled.c
-+++ b/net/netlabel/netlabel_unlabeled.c
-@@ -827,7 +827,7 @@ static int netlbl_unlabel_accept(struct sk_buff *skb, struct genl_info *info)
- 	if (info->attrs[NLBL_UNLABEL_A_ACPTFLG]) {
- 		value = nla_get_u8(info->attrs[NLBL_UNLABEL_A_ACPTFLG]);
- 		if (value == 1 || value == 0) {
--			netlbl_netlink_auditinfo(skb, &audit_info);
-+			netlbl_netlink_auditinfo(&audit_info);
- 			netlbl_unlabel_acceptflg_set(value, &audit_info);
- 			return 0;
- 		}
-@@ -910,7 +910,7 @@ static int netlbl_unlabel_staticadd(struct sk_buff *skb,
- 	       !info->attrs[NLBL_UNLABEL_A_IPV6MASK])))
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	ret_val = netlbl_unlabel_addrinfo_get(info, &addr, &mask, &addr_len);
- 	if (ret_val != 0)
-@@ -960,7 +960,7 @@ static int netlbl_unlabel_staticadddef(struct sk_buff *skb,
- 	       !info->attrs[NLBL_UNLABEL_A_IPV6MASK])))
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	ret_val = netlbl_unlabel_addrinfo_get(info, &addr, &mask, &addr_len);
- 	if (ret_val != 0)
-@@ -1007,7 +1007,7 @@ static int netlbl_unlabel_staticremove(struct sk_buff *skb,
- 	       !info->attrs[NLBL_UNLABEL_A_IPV6MASK])))
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	ret_val = netlbl_unlabel_addrinfo_get(info, &addr, &mask, &addr_len);
- 	if (ret_val != 0)
-@@ -1047,7 +1047,7 @@ static int netlbl_unlabel_staticremovedef(struct sk_buff *skb,
- 	       !info->attrs[NLBL_UNLABEL_A_IPV6MASK])))
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	ret_val = netlbl_unlabel_addrinfo_get(info, &addr, &mask, &addr_len);
- 	if (ret_val != 0)
-diff --git a/net/netlabel/netlabel_user.h b/net/netlabel/netlabel_user.h
-index 4a397cde1a48..2c608677b43b 100644
---- a/net/netlabel/netlabel_user.h
-+++ b/net/netlabel/netlabel_user.h
-@@ -42,11 +42,9 @@
- 
- /**
-  * netlbl_netlink_auditinfo - Fetch the audit information from a NETLINK msg
-- * @skb: the packet
-  * @audit_info: NetLabel audit information
-  */
--static inline void netlbl_netlink_auditinfo(struct sk_buff *skb,
--					    struct netlbl_audit *audit_info)
-+static inline void netlbl_netlink_auditinfo(struct netlbl_audit *audit_info)
- {
- 	security_task_getsecid(current, &audit_info->secid);
- 	audit_info->loginuid = audit_get_loginuid(current);
+-unmap_out:
+-	dma_unmap_sg(dev->device, dev->out_sg, dev->nb_out_sg,
+-		DMA_FROM_DEVICE);
+ unmap_in:
+ 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
+ 		DMA_TO_DEVICE);
 -- 
 2.43.0
 
