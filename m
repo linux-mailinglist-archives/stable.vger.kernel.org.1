@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-15292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA34838537
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 882798382C5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:23:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D43CB2D72D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF68FB2B35C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5830A745E4;
-	Tue, 23 Jan 2024 02:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E105D8E0;
+	Tue, 23 Jan 2024 01:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nwXLHOi/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOQEO3B6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18557745E1;
-	Tue, 23 Jan 2024 02:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4005D8FA;
+	Tue, 23 Jan 2024 01:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975453; cv=none; b=A7ttXukhcOsgDDoKLnE3yswQIFHFAClBosGHKBVxTrxtgQcgatJGFWmuJCZFOsVIY43scB8P4up0WHPKhJlVZMHFyeeKPdUmehqrtSysK7CVy1qYryrYZjnphmVN1aoio59uIQbhgAvLenpdnxsIhpAiALar9ZzSrMqWQsDVlIE=
+	t=1705974387; cv=none; b=qvbBkhbloE7eGmVAg8tTGmjCCOzSqto7SgTVHhFk/WC/6ZsEQ8JbAepz1BYizCfwHsNAUBnqPj74xI/HGb9m2QNfXSKA5IBmbmCA7SXxWvnBg0rHB/WOzLYxosPWHcJxfv5Zc3CdUHO1D/lS2ljEbm4vB3FPgwr5syZUsUKHSi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975453; c=relaxed/simple;
-	bh=5LR//FK2dFJP9PDJacFAXBGQle6PngcfrCgFk8yg5BQ=;
+	s=arc-20240116; t=1705974387; c=relaxed/simple;
+	bh=jccotZ8ngA5YxOu25g7mfwaz+JU7JYy7CUlRaMEE+wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YK+e51kSpy659pq5EvukFzyQbSnoiXbscMvlSn7Km/p6LhGWlmvEDuLSmZDIXGcoVPZxiM4DhslVeoaz8zjHRYcxCkYkOO2tPzOQZjWcuHhn2EJptnGsRuGlcgiHLBn6JuvRC3AaIQTTC3J6Y/ImP/e9BSHH47iss1r6YyF2vkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nwXLHOi/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FDFC43390;
-	Tue, 23 Jan 2024 02:04:12 +0000 (UTC)
+	 MIME-Version; b=iJYvzSJIAb+0QGbTzX5ysIRl+kEFePg1S2k70G6NLBjO1CE/cIIN4/0gF4HpGzeNx4PwCkmj8TGJH3g6y3gE0kTn9LgFNjg6WVmI9KmweVDpYS5y60dFdsgZDR4u0+6fVPBQHZHc0qXckFKA7GxGTiYvxSA7x4QQWdYCNCGTyBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOQEO3B6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EA5C433C7;
+	Tue, 23 Jan 2024 01:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975452;
-	bh=5LR//FK2dFJP9PDJacFAXBGQle6PngcfrCgFk8yg5BQ=;
+	s=korg; t=1705974386;
+	bh=jccotZ8ngA5YxOu25g7mfwaz+JU7JYy7CUlRaMEE+wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nwXLHOi/YdCCufalPIAzA8zuRo0cnRQmxsVnvM88gXykgMIIA6ZNVSYximISNuPky
-	 Lwi7z0RB3rxCes6TGtoVA+nlpPl/xchoZIQ+f1fY18xYqInMMSdljvpvPbEKfOrTiE
-	 KNK4DTRro0dV8yQF89QhLfZr8TmtdUXl22/b8zy8=
+	b=mOQEO3B6GF3+skL/44MpYfz93cq/il+TmRRKTyeVvgcNdiqvZ984QstNUhHPrrMbu
+	 dj9uPJI+6xtwl67As3X53Md3hedDfhxj3WZH40QmXtBLI+rJ11LB6JF7x/mEJOOPC6
+	 wb5j58x2laUJ+i+R4uVh6ubQTPzesSSZCKGuuZwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <2045gemini@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 409/583] Bluetooth: Fix atomicity violation in {min,max}_key_size_set
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 204/374] f2fs: fix to update iostat correctly in f2fs_filemap_fault()
 Date: Mon, 22 Jan 2024 15:57:40 -0800
-Message-ID: <20240122235824.488513957@linuxfoundation.org>
+Message-ID: <20240122235751.705176843@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <2045gemini@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-commit da9065caa594d19b26e1a030fd0cc27bd365d685 upstream.
+[ Upstream commit bb34cc6ca87ff78f9fb5913d7619dc1389554da6 ]
 
-In min_key_size_set():
-    if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
-        return -EINVAL;
-    hci_dev_lock(hdev);
-    hdev->le_min_key_size = val;
-    hci_dev_unlock(hdev);
+In f2fs_filemap_fault(), it fixes to update iostat info only if
+VM_FAULT_LOCKED is tagged in return value of filemap_fault().
 
-In max_key_size_set():
-    if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
-        return -EINVAL;
-    hci_dev_lock(hdev);
-    hdev->le_max_key_size = val;
-    hci_dev_unlock(hdev);
-
-The atomicity violation occurs due to concurrent execution of set_min and
-set_max funcs.Consider a scenario where setmin writes a new, valid 'min'
-value, and concurrently, setmax writes a value that is greater than the
-old 'min' but smaller than the new 'min'. In this case, setmax might check
-against the old 'min' value (before acquiring the lock) but write its
-value after the 'min' has been updated by setmin. This leads to a
-situation where the 'max' value ends up being smaller than the 'min'
-value, which is an inconsistency.
-
-This possible bug is found by an experimental static analysis tool
-developed by our team, BassCheck[1]. This tool analyzes the locking APIs
-to extract function pairs that can be concurrently executed, and then
-analyzes the instructions in the paired functions to identify possible
-concurrency bugs including data races and atomicity violations. The above
-possible bug is reported when our tool analyzes the source code of
-Linux 5.17.
-
-To resolve this issue, it is suggested to encompass the validity checks
-within the locked sections in both set_min and set_max funcs. The
-modification ensures that the validation of 'val' against the
-current min/max values is atomic, thus maintaining the integrity of the
-settings. With this patch applied, our tool no longer reports the bug,
-with the kernel configuration allyesconfig for x86_64. Due to the lack of
-associated hardware, we cannot test the patch in runtime testing, and just
-verify it according to the code logic.
-
-[1] https://sites.google.com/view/basscheck/
-
-Fixes: 18f81241b74f ("Bluetooth: Move {min,max}_key_size debugfs ...")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8b83ac81f428 ("f2fs: support read iostat")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_debugfs.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ fs/f2fs/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/bluetooth/hci_debugfs.c
-+++ b/net/bluetooth/hci_debugfs.c
-@@ -1046,10 +1046,12 @@ static int min_key_size_set(void *data,
- {
- 	struct hci_dev *hdev = data;
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 0669ac4c0f12..533ab259ce01 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -41,7 +41,7 @@ static vm_fault_t f2fs_filemap_fault(struct vm_fault *vmf)
+ 	vm_fault_t ret;
  
--	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
-+	hci_dev_lock(hdev);
-+	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
+ 	ret = filemap_fault(vmf);
+-	if (!ret)
++	if (ret & VM_FAULT_LOCKED)
+ 		f2fs_update_iostat(F2FS_I_SB(inode), APP_MAPPED_READ_IO,
+ 							F2FS_BLKSIZE);
  
--	hci_dev_lock(hdev);
- 	hdev->le_min_key_size = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -1074,10 +1076,12 @@ static int max_key_size_set(void *data,
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
-+	hci_dev_lock(hdev);
-+	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->le_max_key_size = val;
- 	hci_dev_unlock(hdev);
- 
+-- 
+2.43.0
+
 
 
 
