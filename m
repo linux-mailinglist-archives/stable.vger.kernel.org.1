@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B93A837F44
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F68783820F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:17:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 010C229C00D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B11FB2880A4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1C312A163;
-	Tue, 23 Jan 2024 00:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E19557870;
+	Tue, 23 Jan 2024 01:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqX3QECM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5g9REZR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F136F129A86;
-	Tue, 23 Jan 2024 00:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06CC56742;
+	Tue, 23 Jan 2024 01:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971029; cv=none; b=s93y1yJdISe90ygnoC63oPwkhCe/8ccftbM4T3zB4C6QyRIm9s5ZF+MK26p1sP7nbyEpu980k1nka+j+glIKvC8MQZWqaqb16/UTj6drTRCwWITkGhcwFj5CmJU7UoSyWy9LErGGMP4VnQAkOE/G/8ZawZYtSDhP5zuhWevgERA=
+	t=1705974050; cv=none; b=ZpUypG4CdyvkQkcXIUfCe11xSadTCWVJlP1tcY4LyVyHaVSO0Q4UQCtTcbQs10Sebma/ZoRqkikKyCXGyFR/YvxoLoly8pxgRkSNr0xuuU+2tTJjM4+KNlxA5OXtlF2pYNcVYhyt5bSKJnyAKHHJFa1FF4LlRPTneRbbc5lXHls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971029; c=relaxed/simple;
-	bh=fgwzBqnj/CEwqiLS8DTlGD9yS+bQ5iCyI5nF8CtQQWo=;
+	s=arc-20240116; t=1705974050; c=relaxed/simple;
+	bh=fb7EEa6WhIlPojt6vbpB/exOFCSucvfSefy9Vol1Myg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YXy6cFi1qeDC2zBUBuhrhfw/MfOUtKLKCWKvxHYzPS1RQulAZD2TysyCR2sD01v3cpbaCCNvoZVwROCFZt2DEJiJh9ctNSSDoGPqWE2R4nYa1b83fWhPM4rUiL+ClNUMgLoxr7DVYT8f6NN6w7D8aqhNP3p9SE0mf2shqhM/pr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqX3QECM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9470C43394;
-	Tue, 23 Jan 2024 00:50:27 +0000 (UTC)
+	 MIME-Version; b=s2dStBN/ghwOIvcKBJAD/K8aJlD6DkYAyd6/9RpdEOB8bLRaWz+0C5Ne5xFXer6czDk0vZ9FCkYF6zPv3SQSW0b9a8iEHE9ucsEb2qQrot4yX0yIdL5bna3vjnVc59kJbqMo/T0OD/PiSZ2kWCzuC9gIheHOLS3WpRFdNJezGK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5g9REZR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45762C43390;
+	Tue, 23 Jan 2024 01:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971028;
-	bh=fgwzBqnj/CEwqiLS8DTlGD9yS+bQ5iCyI5nF8CtQQWo=;
+	s=korg; t=1705974050;
+	bh=fb7EEa6WhIlPojt6vbpB/exOFCSucvfSefy9Vol1Myg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SqX3QECMBgg5uUgVVMl5gplrsGtp5VVcE/oI86EPlOcaxkadwFdePsxioTPdzVL/T
-	 E9yX237UAMLbKtfwsYJ5NiaMPOUb3I2+pnE3FXP2+Kd+iDa6NCgM2DgpHAUJnM/2/S
-	 tigeCy+bqDqxyr25ZD8Baf5nMMRV/mQTJzj1dTsQ=
+	b=R5g9REZRSIBxEI3ZdtDqOkQr3L+T6EzeXY3KhZKFxa9T73/5YDyiPAub9e2LutuwC
+	 sZ0xHBNvGUdD4pCG03d7CYjCvDFKZKl0glB4E+FGlSFmtkwEthDc8t7Ou6QhAOFJt2
+	 8SV4gNpVrwx9mQjv6x7U4PPyVUNyA9DV8sGrHmXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Peter Delevoryas <peter@pjd.dev>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 072/286] efivarfs: force RO when remounting if SetVariable is not supported
-Date: Mon, 22 Jan 2024 15:56:18 -0800
-Message-ID: <20240122235734.790058983@linuxfoundation.org>
+Subject: [PATCH 5.15 123/374] net/ncsi: Fix netlink major/minor version numbers
+Date: Mon, 22 Jan 2024 15:56:19 -0800
+Message-ID: <20240122235748.923991412@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +62,204 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+From: Peter Delevoryas <peter@pjd.dev>
 
-[ Upstream commit 0e8d2444168dd519fea501599d150e62718ed2fe ]
+[ Upstream commit 3084b58bfd0b9e4b5e034f31f31b42977db35f12 ]
 
-If SetVariable at runtime is not supported by the firmware we never assign
-a callback for that function. At the same time mount the efivarfs as
-RO so no one can call that.  However, we never check the permission flags
-when someone remounts the filesystem as RW. As a result this leads to a
-crash looking like this:
+The netlink interface for major and minor version numbers doesn't actually
+return the major and minor version numbers.
 
-$ mount -o remount,rw /sys/firmware/efi/efivars
-$ efi-updatevar -f PK.auth PK
+It reports a u32 that contains the (major, minor, update, alpha1)
+components as the major version number, and then alpha2 as the minor
+version number.
 
-[  303.279166] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[  303.280482] Mem abort info:
-[  303.280854]   ESR = 0x0000000086000004
-[  303.281338]   EC = 0x21: IABT (current EL), IL = 32 bits
-[  303.282016]   SET = 0, FnV = 0
-[  303.282414]   EA = 0, S1PTW = 0
-[  303.282821]   FSC = 0x04: level 0 translation fault
-[  303.283771] user pgtable: 4k pages, 48-bit VAs, pgdp=000000004258c000
-[  303.284913] [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
-[  303.286076] Internal error: Oops: 0000000086000004 [#1] PREEMPT SMP
-[  303.286936] Modules linked in: qrtr tpm_tis tpm_tis_core crct10dif_ce arm_smccc_trng rng_core drm fuse ip_tables x_tables ipv6
-[  303.288586] CPU: 1 PID: 755 Comm: efi-updatevar Not tainted 6.3.0-rc1-00108-gc7d0c4695c68 #1
-[  303.289748] Hardware name: Unknown Unknown Product/Unknown Product, BIOS 2023.04-00627-g88336918701d 04/01/2023
-[  303.291150] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  303.292123] pc : 0x0
-[  303.292443] lr : efivar_set_variable_locked+0x74/0xec
-[  303.293156] sp : ffff800008673c10
-[  303.293619] x29: ffff800008673c10 x28: ffff0000037e8000 x27: 0000000000000000
-[  303.294592] x26: 0000000000000800 x25: ffff000002467400 x24: 0000000000000027
-[  303.295572] x23: ffffd49ea9832000 x22: ffff0000020c9800 x21: ffff000002467000
-[  303.296566] x20: 0000000000000001 x19: 00000000000007fc x18: 0000000000000000
-[  303.297531] x17: 0000000000000000 x16: 0000000000000000 x15: 0000aaaac807ab54
-[  303.298495] x14: ed37489f673633c0 x13: 71c45c606de13f80 x12: 47464259e219acf4
-[  303.299453] x11: ffff000002af7b01 x10: 0000000000000003 x9 : 0000000000000002
-[  303.300431] x8 : 0000000000000010 x7 : ffffd49ea8973230 x6 : 0000000000a85201
-[  303.301412] x5 : 0000000000000000 x4 : ffff0000020c9800 x3 : 00000000000007fc
-[  303.302370] x2 : 0000000000000027 x1 : ffff000002467400 x0 : ffff000002467000
-[  303.303341] Call trace:
-[  303.303679]  0x0
-[  303.303938]  efivar_entry_set_get_size+0x98/0x16c
-[  303.304585]  efivarfs_file_write+0xd0/0x1a4
-[  303.305148]  vfs_write+0xc4/0x2e4
-[  303.305601]  ksys_write+0x70/0x104
-[  303.306073]  __arm64_sys_write+0x1c/0x28
-[  303.306622]  invoke_syscall+0x48/0x114
-[  303.307156]  el0_svc_common.constprop.0+0x44/0xec
-[  303.307803]  do_el0_svc+0x38/0x98
-[  303.308268]  el0_svc+0x2c/0x84
-[  303.308702]  el0t_64_sync_handler+0xf4/0x120
-[  303.309293]  el0t_64_sync+0x190/0x194
-[  303.309794] Code: ???????? ???????? ???????? ???????? (????????)
-[  303.310612] ---[ end trace 0000000000000000 ]---
+For whatever reason, the u32 byte order was reversed (ntohl): maybe it was
+assumed that the encoded value was a single big-endian u32, and alpha2 was
+the minor version.
 
-Fix this by adding a .reconfigure() function to the fs operations which
-we can use to check the requested flags and deny anything that's not RO
-if the firmware doesn't implement SetVariable at runtime.
+The correct way to get the supported NC-SI version from the network
+controller is to parse the Get Version ID response as described in 8.4.44
+of the NC-SI spec[1].
 
-Fixes: f88814cc2578 ("efi/efivars: Expose RT service availability via efivars abstraction")
-Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+    Get Version ID Response Packet Format
+
+              Bits
+            +--------+--------+--------+--------+
+     Bytes  | 31..24 | 23..16 | 15..8  | 7..0   |
+    +-------+--------+--------+--------+--------+
+    | 0..15 | NC-SI Header                      |
+    +-------+--------+--------+--------+--------+
+    | 16..19| Response code   | Reason code     |
+    +-------+--------+--------+--------+--------+
+    |20..23 | Major  | Minor  | Update | Alpha1 |
+    +-------+--------+--------+--------+--------+
+    |24..27 |         reserved         | Alpha2 |
+    +-------+--------+--------+--------+--------+
+    |            .... other stuff ....          |
+
+The major, minor, and update fields are all binary-coded decimal (BCD)
+encoded [2]. The spec provides examples below the Get Version ID response
+format in section 8.4.44.1, but for practical purposes, this is an example
+from a live network card:
+
+    root@bmc:~# ncsi-util 0x15
+    NC-SI Command Response:
+    cmd: GET_VERSION_ID(0x15)
+    Response: COMMAND_COMPLETED(0x0000)  Reason: NO_ERROR(0x0000)
+    Payload length = 40
+
+    20: 0xf1 0xf1 0xf0 0x00 <<<<<<<<< (major, minor, update, alpha1)
+    24: 0x00 0x00 0x00 0x00 <<<<<<<<< (_, _, _, alpha2)
+
+    28: 0x6d 0x6c 0x78 0x30
+    32: 0x2e 0x31 0x00 0x00
+    36: 0x00 0x00 0x00 0x00
+    40: 0x16 0x1d 0x07 0xd2
+    44: 0x10 0x1d 0x15 0xb3
+    48: 0x00 0x17 0x15 0xb3
+    52: 0x00 0x00 0x81 0x19
+
+This should be parsed as "1.1.0".
+
+"f" in the upper-nibble means to ignore it, contributing zero.
+
+If both nibbles are "f", I think the whole field is supposed to be ignored.
+Major and minor are "required", meaning they're not supposed to be "ff",
+but the update field is "optional" so I think it can be ff. I think the
+simplest thing to do is just set the major and minor to zero instead of
+juggling some conditional logic or something.
+
+bcd2bin() from "include/linux/bcd.h" seems to assume both nibbles are 0-9,
+so I've provided a custom BCD decoding function.
+
+Alpha1 and alpha2 are ISO/IEC 8859-1 encoded, which just means ASCII
+characters as far as I can tell, although the full encoding table for
+non-alphabetic characters is slightly different (I think).
+
+I imagine the alpha fields are just supposed to be alphabetic characters,
+but I haven't seen any network cards actually report a non-zero value for
+either.
+
+If people wrote software against this netlink behavior, and were parsing
+the major and minor versions themselves from the u32, then this would
+definitely break their code.
+
+[1] https://www.dmtf.org/sites/default/files/standards/documents/DSP0222_1.0.0.pdf
+[2] https://en.wikipedia.org/wiki/Binary-coded_decimal
+[2] https://en.wikipedia.org/wiki/ISO/IEC_8859-1
+
+Signed-off-by: Peter Delevoryas <peter@pjd.dev>
+Fixes: 138635cc27c9 ("net/ncsi: NCSI response packet handler")
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/efivarfs/super.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/ncsi/internal.h     |  7 +++++--
+ net/ncsi/ncsi-netlink.c |  4 ++--
+ net/ncsi/ncsi-pkt.h     |  7 +++++--
+ net/ncsi/ncsi-rsp.c     | 26 ++++++++++++++++++++++++--
+ 4 files changed, 36 insertions(+), 8 deletions(-)
 
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 15880a68faad..3626816b174a 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -13,6 +13,7 @@
- #include <linux/ucs2_string.h>
- #include <linux/slab.h>
- #include <linux/magic.h>
-+#include <linux/printk.h>
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index 03757e76bb6b..374412ed780b 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -105,8 +105,11 @@ enum {
  
- #include "internal.h"
  
-@@ -231,8 +232,19 @@ static int efivarfs_get_tree(struct fs_context *fc)
- 	return get_tree_single(fc, efivarfs_fill_super);
- }
+ struct ncsi_channel_version {
+-	u32 version;		/* Supported BCD encoded NCSI version */
+-	u32 alpha2;		/* Supported BCD encoded NCSI version */
++	u8   major;		/* NCSI version major */
++	u8   minor;		/* NCSI version minor */
++	u8   update;		/* NCSI version update */
++	char alpha1;		/* NCSI version alpha1 */
++	char alpha2;		/* NCSI version alpha2 */
+ 	u8  fw_name[12];	/* Firmware name string                */
+ 	u32 fw_version;		/* Firmware version                   */
+ 	u16 pci_ids[4];		/* PCI identification                 */
+diff --git a/net/ncsi/ncsi-netlink.c b/net/ncsi/ncsi-netlink.c
+index c189b4c8a182..db350b8f5d88 100644
+--- a/net/ncsi/ncsi-netlink.c
++++ b/net/ncsi/ncsi-netlink.c
+@@ -71,8 +71,8 @@ static int ncsi_write_channel_info(struct sk_buff *skb,
+ 	if (nc == nc->package->preferred_channel)
+ 		nla_put_flag(skb, NCSI_CHANNEL_ATTR_FORCED);
  
-+static int efivarfs_reconfigure(struct fs_context *fc)
+-	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MAJOR, nc->version.version);
+-	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MINOR, nc->version.alpha2);
++	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MAJOR, nc->version.major);
++	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MINOR, nc->version.minor);
+ 	nla_put_string(skb, NCSI_CHANNEL_ATTR_VERSION_STR, nc->version.fw_name);
+ 
+ 	vid_nest = nla_nest_start_noflag(skb, NCSI_CHANNEL_ATTR_VLAN_LIST);
+diff --git a/net/ncsi/ncsi-pkt.h b/net/ncsi/ncsi-pkt.h
+index ba66c7dc3a21..c9d1da34dc4d 100644
+--- a/net/ncsi/ncsi-pkt.h
++++ b/net/ncsi/ncsi-pkt.h
+@@ -197,9 +197,12 @@ struct ncsi_rsp_gls_pkt {
+ /* Get Version ID */
+ struct ncsi_rsp_gvi_pkt {
+ 	struct ncsi_rsp_pkt_hdr rsp;          /* Response header */
+-	__be32                  ncsi_version; /* NCSI version    */
++	unsigned char           major;        /* NCSI version major */
++	unsigned char           minor;        /* NCSI version minor */
++	unsigned char           update;       /* NCSI version update */
++	unsigned char           alpha1;       /* NCSI version alpha1 */
+ 	unsigned char           reserved[3];  /* Reserved        */
+-	unsigned char           alpha2;       /* NCSI version    */
++	unsigned char           alpha2;       /* NCSI version alpha2 */
+ 	unsigned char           fw_name[12];  /* f/w name string */
+ 	__be32                  fw_version;   /* f/w version     */
+ 	__be16                  pci_ids[4];   /* PCI IDs         */
+diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
+index 069c2659074b..480e80e3c283 100644
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -19,6 +19,19 @@
+ #include "ncsi-pkt.h"
+ #include "ncsi-netlink.h"
+ 
++/* Nibbles within [0xA, 0xF] add zero "0" to the returned value.
++ * Optional fields (encoded as 0xFF) will default to zero.
++ */
++static u8 decode_bcd_u8(u8 x)
 +{
-+	if (!efivar_supports_writes() && !(fc->sb_flags & SB_RDONLY)) {
-+		pr_err("Firmware does not support SetVariableRT. Can not remount with rw\n");
-+		return -EINVAL;
-+	}
++	int lo = x & 0xF;
++	int hi = x >> 4;
 +
-+	return 0;
++	lo = lo < 0xA ? lo : 0;
++	hi = hi < 0xA ? hi : 0;
++	return lo + hi * 10;
 +}
 +
- static const struct fs_context_operations efivarfs_context_ops = {
- 	.get_tree	= efivarfs_get_tree,
-+	.reconfigure	= efivarfs_reconfigure,
- };
+ static int ncsi_validate_rsp_pkt(struct ncsi_request *nr,
+ 				 unsigned short payload)
+ {
+@@ -755,9 +768,18 @@ static int ncsi_rsp_handler_gvi(struct ncsi_request *nr)
+ 	if (!nc)
+ 		return -ENODEV;
  
- static int efivarfs_init_fs_context(struct fs_context *fc)
+-	/* Update to channel's version info */
++	/* Update channel's version info
++	 *
++	 * Major, minor, and update fields are supposed to be
++	 * unsigned integers encoded as packed BCD.
++	 *
++	 * Alpha1 and alpha2 are ISO/IEC 8859-1 characters.
++	 */
+ 	ncv = &nc->version;
+-	ncv->version = ntohl(rsp->ncsi_version);
++	ncv->major = decode_bcd_u8(rsp->major);
++	ncv->minor = decode_bcd_u8(rsp->minor);
++	ncv->update = decode_bcd_u8(rsp->update);
++	ncv->alpha1 = rsp->alpha1;
+ 	ncv->alpha2 = rsp->alpha2;
+ 	memcpy(ncv->fw_name, rsp->fw_name, 12);
+ 	ncv->fw_version = ntohl(rsp->fw_version);
 -- 
 2.43.0
 
