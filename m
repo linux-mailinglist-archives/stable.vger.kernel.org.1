@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-13572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5C3837D55
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA7C5837F23
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED9CBB2A8BC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:13:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F7EC1C282C5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B27146903;
-	Tue, 23 Jan 2024 00:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1814B612D7;
+	Tue, 23 Jan 2024 00:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFVgZIzp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZPLnofK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CC61468ED;
-	Tue, 23 Jan 2024 00:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD48E60DE3;
+	Tue, 23 Jan 2024 00:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969710; cv=none; b=i7P5Tlw2AltIFHTHm7L5uKdXXzeWfiYJkBFXzqcfMzx1lfUh77v+93m+/+j2B/4F2+/E8RWIG5japZIf+v8sozMhfdIEDCsXkeYR8+/UMytP5xpRXalPpZqcArW88EbtgbFA+mvqvw4WdT8YCp9OlK07GXMh6S5neNf1/vN46Cs=
+	t=1705970960; cv=none; b=ceQS5js71VuI6ABAsU49a/zmLb3gdMujEgIj6Onu6/fwp031Yh42ceU66rYYbVvNs+8GnT2CWfAtmhCLfHoUfL7uob/V3V79hj227c5Zua7lg4e+NgcOpgx1tQkBrGpi+/KL1iMjHCozMouCC7KJpIxlhjM5y1Jmm7p10WUlszM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969710; c=relaxed/simple;
-	bh=E2f4MFnRxtG9cnjHAajBlber7thOsRMoj2Q34aks8+g=;
+	s=arc-20240116; t=1705970960; c=relaxed/simple;
+	bh=BJvDOAzy8/BWztnV6Axb40uBFEUW+MwP550UfFhGtPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kxf/6UwUCr+Kajh+x3CmVdichctMhRdy1gfTqZZiG/dZg65IhmNuGuOtxJ4/9wQsKHoUhAnoFplAZBaRJSm2MRTTlT+yjuRPIQaeL+J1fvuEc0HVN3mJg5xS+TnMsKp2qT4SVCJzxSRq5UnK0tlnHjAytKThwPx/E5H9UkXRLVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFVgZIzp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D840C43390;
-	Tue, 23 Jan 2024 00:28:29 +0000 (UTC)
+	 MIME-Version; b=ft+6OWtZdIQe2rIkQUIdcEbiFNbVDV2QMt8i6aBcWnPVQCYhY2zPO/tmBnS9F8O4JLDGi0eXfZ6iCnVD+J2dMWNbzt4xwvyH05HfotKEn6iG19E/5wf4om8+6J5d8q2+8mXgwEKQ2QkNr1zWKWpUIfDORWvZchlcqIJ4zZRFD9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZPLnofK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D75FC433C7;
+	Tue, 23 Jan 2024 00:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969710;
-	bh=E2f4MFnRxtG9cnjHAajBlber7thOsRMoj2Q34aks8+g=;
+	s=korg; t=1705970960;
+	bh=BJvDOAzy8/BWztnV6Axb40uBFEUW+MwP550UfFhGtPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OFVgZIzpXxsxsx18h97MUeV8ICGeubK5sxgDe1x6auAF2fd5QC+7+/r6RQla6s2Yi
-	 LzEiCRgSf9kMbxQm3vv3IFNhj3tCiLcdvXpMdOctIneMOePj3ggsw8zQ9Mwm/PruqC
-	 i9Ig/A+MT2NDYypSnjIDnocYlFVCx3O+HmNE1tt0=
+	b=LZPLnofK1JHD4q8j03QpscoOgxAbin4dsWPw5UpS/c08WfVMSu+5p4MWc5Y1KCkMT
+	 GZlKeuCv85PAx4Q+ki6mD8RPjpSi9Z8yB9myyfFIJ4Eyi4SMm+ElfVok85YSCkH4xd
+	 HS2vLUNsa/20/XEBdNEIiBNjnTzVc9jTJQ3187Fs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.7 414/641] serial: core, imx: do not set RS485 enabled if it is not supported
+	Jacob Moroni <jmoroni@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 150/417] sctp: fix busy polling
 Date: Mon, 22 Jan 2024 15:55:18 -0800
-Message-ID: <20240122235830.927133140@linuxfoundation.org>
+Message-ID: <20240122235757.025379683@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +63,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 74eab89b26ac433ad857292f4707b43c1a8f0209 upstream.
+[ Upstream commit a562c0a2d651e040681b0bfce9b4d229ac3b0b8c ]
 
-If the imx driver cannot support RS485 it nullifies the ports
-rs485_supported structure. But it still calls uart_get_rs485_mode() which
-may set the RS485_ENABLED flag nevertheless.
+Busy polling while holding the socket lock makes litle sense,
+because incoming packets wont reach our receive queue.
 
-This may lead to an attempt to configure RS485 even if it is not supported
-when the flag is evaluated in uart_configure_port() at port startup.
-
-Avoid this by bailing out of uart_get_rs485_mode() if the RS485_ENABLED
-flag is not supported by the caller.
-
-With this fix a check for RTS availability is now obsolete in the imx
-driver, since it can not evaluate to true any more. So remove this check.
-
-Furthermore the explicit nullifcation of rs485_supported is not needed,
-since the memory has already been set to zeros at allocation. So remove
-this, too.
-
-Fixes: 00d7a00e2a6f ("serial: imx: Fill in rs485_supported")
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc:  <stable@vger.kernel.org>
-Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240103061818.564-6-l.sanfilippo@kunbus.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8465a5fcd1ce ("sctp: add support for busy polling to sctp protocol")
+Reported-by: Jacob Moroni <jmoroni@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Cc: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c         |    7 -------
- drivers/tty/serial/serial_core.c |    3 +++
- 2 files changed, 3 insertions(+), 7 deletions(-)
+ net/sctp/socket.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -2206,7 +2206,6 @@ static enum hrtimer_restart imx_trigger_
- 	return HRTIMER_NORESTART;
- }
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index da56832179f0..237a6b04adf6 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -2101,6 +2101,10 @@ static int sctp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	if (unlikely(flags & MSG_ERRQUEUE))
+ 		return inet_recv_error(sk, msg, len, addr_len);
  
--static const struct serial_rs485 imx_no_rs485 = {};	/* No RS485 if no RTS */
- static const struct serial_rs485 imx_rs485_supported = {
- 	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND |
- 		 SER_RS485_RX_DURING_TX,
-@@ -2290,8 +2289,6 @@ static int imx_uart_probe(struct platfor
- 	/* RTS is required to control the RS485 transmitter */
- 	if (sport->have_rtscts || sport->have_rtsgpio)
- 		sport->port.rs485_supported = imx_rs485_supported;
--	else
--		sport->port.rs485_supported = imx_no_rs485;
- 	sport->port.flags = UPF_BOOT_AUTOCONF;
- 	timer_setup(&sport->timer, imx_uart_timeout, 0);
- 
-@@ -2328,10 +2325,6 @@ static int imx_uart_probe(struct platfor
- 		return ret;
- 	}
- 
--	if (sport->port.rs485.flags & SER_RS485_ENABLED &&
--	    (!sport->have_rtscts && !sport->have_rtsgpio))
--		dev_err(&pdev->dev, "no RTS control, disabling rs485\n");
--
- 	/*
- 	 * If using the i.MX UART RTS/CTS control then the RTS (CTS_B)
- 	 * signal cannot be set low during transmission in case the
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -3600,6 +3600,9 @@ int uart_get_rs485_mode(struct uart_port
- 	u32 rs485_delay[2];
- 	int ret;
- 
-+	if (!(port->rs485_supported.flags & SER_RS485_ENABLED))
-+		return 0;
++	if (sk_can_busy_loop(sk) &&
++	    skb_queue_empty_lockless(&sk->sk_receive_queue))
++		sk_busy_loop(sk, flags & MSG_DONTWAIT);
 +
- 	ret = device_property_read_u32_array(dev, "rs485-rts-delay",
- 					     rs485_delay, 2);
- 	if (!ret) {
+ 	lock_sock(sk);
+ 
+ 	if (sctp_style(sk, TCP) && !sctp_sstate(sk, ESTABLISHED) &&
+@@ -9041,12 +9045,6 @@ struct sk_buff *sctp_skb_recv_datagram(struct sock *sk, int flags, int *err)
+ 		if (sk->sk_shutdown & RCV_SHUTDOWN)
+ 			break;
+ 
+-		if (sk_can_busy_loop(sk)) {
+-			sk_busy_loop(sk, flags & MSG_DONTWAIT);
+-
+-			if (!skb_queue_empty_lockless(&sk->sk_receive_queue))
+-				continue;
+-		}
+ 
+ 		/* User doesn't want to wait.  */
+ 		error = -EAGAIN;
+-- 
+2.43.0
+
 
 
 
