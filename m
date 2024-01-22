@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-13420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8392D837BFD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FD78382B6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DF51294E6E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4429E1C28617
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D47C45001;
-	Tue, 23 Jan 2024 00:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A465EE78;
+	Tue, 23 Jan 2024 01:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfiR9spj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTOOXHDx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B32B372;
-	Tue, 23 Jan 2024 00:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CEF05DF01;
+	Tue, 23 Jan 2024 01:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969464; cv=none; b=quublve2e6VOs+HEAKdfhJxK4h1gpsOy77kvieTZABJdIM2AqdaLTLn1CuF17fr+OYZXLqfe/l9cmYInziWM1r2ZHY2sBul145IDdx5RE/w2ww2YuRIkChT196rIkKBQh/Ezbz5LeF6Nzwt1mdlEpJzxwW8sVoeYVqWpVSiCFUg=
+	t=1705974415; cv=none; b=oDtvZMW9T75HySG1rb2IKDDRZorjKAHRW2K+3HNCSY7n9QcUsDm16uL7hY+Y1FyC5bJEWiNN+5k4Rzx3FvGCcl8RcVjGPDUJnOWf+husRab3xyi2ROYtk2WDeY1RWA3BwPC8ZW/SphaDPQGug+iqHpGNfgcBe2sjUdI5GkDz8Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969464; c=relaxed/simple;
-	bh=bSghpvZNq1T3rrpOYipet9T1woLnbL0GcCMSCBWTcXA=;
+	s=arc-20240116; t=1705974415; c=relaxed/simple;
+	bh=M4hhMeGWTM2mYSd5sSc7XDutoBl51SWQUXInPkjosGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WYPvv02WZzc0M1Q3xqHiGp13zI3jWUiYfNSGPOeecH5S/uRB0ZsGQdcYAR1YmquSqjnNxqiHbnukRgxARhwMio8cT4W617CsZs6OjZkKomaYXdvfAvV/zDwUJzWZ2CKncfGTW69lbeuLhbDTyfG1tMwmetzW3Czx7nVw2VLJIgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfiR9spj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD3EC433F1;
-	Tue, 23 Jan 2024 00:24:23 +0000 (UTC)
+	 MIME-Version; b=MinCyL9RSHSTFsWpAV/vaxPOv1OK9gguamM3S0LRhq5sSpXP17XswWehJUFLr6qS3NWaSaQK+gxr0IQ064nTquCB0edVqjeMZucYJj0CzYcAMIRVlL7ar2+yel1rkcxPvj9icjnZMc3VP0qoZQFernV8eG6vqR4kWrZ5lxZSp6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTOOXHDx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD19C433F1;
+	Tue, 23 Jan 2024 01:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969464;
-	bh=bSghpvZNq1T3rrpOYipet9T1woLnbL0GcCMSCBWTcXA=;
+	s=korg; t=1705974414;
+	bh=M4hhMeGWTM2mYSd5sSc7XDutoBl51SWQUXInPkjosGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rfiR9spjTzHxxdoTeR0FvNE3EcmwgaO1wwbRrvv4UUGWLyyHjPgEUZPwmTxdfGx6T
-	 MVNmoXTc657mmVatc3sxc8Yi+uV60hVyHH9MvR8wT0AAqNrFYYkBbQvZHfGBghUsjf
-	 BEnAze1OtvkiiEOqX//1SclGKGrjw47s8KPeyzyU=
+	b=DTOOXHDxisx7kerL8OBFmHT5+V/evFxWjWJynPQFIQd0gm2WVR3pdDz3qa9KIyvAy
+	 Ke1biSwvfCGG70K4IBAGgpp7WPGCMzGUL7+w2RDidGX1eLBePLAPMqWXw0MlT6lISF
+	 WqistRr0SuNUX5ZQ1g6G0OpU8YdFIVGEnq9ePxYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Dionne <marc.dionne@auristor.com>,
-	David Howells <dhowells@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 239/641] rxrpc: Fix skbuff cleanup of calls recvmsg_queue and rx_oos_queue
+Subject: [PATCH 6.6 092/583] ARM: dts: qcom: apq8064: correct XOADC register address
 Date: Mon, 22 Jan 2024 15:52:23 -0800
-Message-ID: <20240122235825.406423043@linuxfoundation.org>
+Message-ID: <20240122235814.985080858@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,50 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 4fc68c4c1a114ba597b4f3b082f04622dfa0e0f6 ]
+[ Upstream commit 554557542e709e190eff8a598f0cde02647d533a ]
 
-Fix rxrpc_cleanup_ring() to use rxrpc_purge_queue() rather than
-skb_queue_purge() so that the count of outstanding skbuffs is correctly
-updated when a failed call is cleaned up.
+The XOADC is present at the address 0x197 rather than just 197. It
+doesn't change a lot (since the driver hardcodes all register
+addresses), but the DT should present correct address anyway.
 
-Without this rmmod may hang waiting for rxrpc_n_rx_skbs to become zero.
-
-Fixes: 5d7edbc9231e ("rxrpc: Get rid of the Rx ring")
-Reported-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: c4b70883ee33 ("ARM: dts: add XOADC and IIO HWMON to APQ8064")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230928110309.1212221-3-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/call_object.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/qcom/qcom-apq8064.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
-index 773eecd1e979..f10b37c14772 100644
---- a/net/rxrpc/call_object.c
-+++ b/net/rxrpc/call_object.c
-@@ -545,8 +545,8 @@ void rxrpc_get_call(struct rxrpc_call *call, enum rxrpc_call_trace why)
-  */
- static void rxrpc_cleanup_ring(struct rxrpc_call *call)
- {
--	skb_queue_purge(&call->recvmsg_queue);
--	skb_queue_purge(&call->rx_oos_queue);
-+	rxrpc_purge_queue(&call->recvmsg_queue);
-+	rxrpc_purge_queue(&call->rx_oos_queue);
- }
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi
+index 516f0d2495e2..950adb63af70 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-apq8064.dtsi
+@@ -738,7 +738,7 @@ pwrkey@1c {
  
- /*
+ 				xoadc: xoadc@197 {
+ 					compatible = "qcom,pm8921-adc";
+-					reg = <197>;
++					reg = <0x197>;
+ 					interrupts-extended = <&pmicintc 78 IRQ_TYPE_EDGE_RISING>;
+ 					#address-cells = <2>;
+ 					#size-cells = <0>;
 -- 
 2.43.0
 
