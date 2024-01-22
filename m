@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-13130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D63A3837A9E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40BB0837A08
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B2F31F22142
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73B011C28337
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B85C12FF70;
-	Tue, 23 Jan 2024 00:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9BC129A64;
+	Tue, 23 Jan 2024 00:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGg7GhLg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOvznF7E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D9C12F5A7;
-	Tue, 23 Jan 2024 00:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EC81292F3;
+	Tue, 23 Jan 2024 00:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969023; cv=none; b=SGCA7gxvsQM5nGyRZ3yVgldUf/iD/VWVyBMmYwf6Ni/tz3qYskyz9vW7wgQ8A9j0ZIrreEKGU6pAVrOVOjwhwCJealQm4QVAlvWnmWphra6rUBqCv/rFOVaDUz41PtNbMVc+l3jB0xBG5akmIuy1AxnL8DSZ+NyT9B34F1W6tYo=
+	t=1705968711; cv=none; b=UeXobbfj1El08VIWGdAUJAQRNekHOlteHNiPFybUOrTtD/ttUeLm8DE/SqizZ4iTqfBdZ+EmL8v7SS9idg8uFCdh/j365wKAG0/Kc+4Da1nMqm8wtg22BtpSAcGAdTuXS84VBunvGsqqjJLPy9Ph6gpTf3JrweJ2gn3Hwmi29I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969023; c=relaxed/simple;
-	bh=oOBI5bI83M/lJA7o8l2vS6Tlz3lNyEeDk5/S+V8C0DI=;
+	s=arc-20240116; t=1705968711; c=relaxed/simple;
+	bh=X5qPIaGfMq3BO2Is1GUnhWO0rl3oPKJln2YgzUFL1iA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p1xt6KqmNRgcAJZb3qBQJqaTRc7SiWTRV0jdwPLB0lIMxC3fylB2OtHDKRi+XujDpfQWGgbWsPc/DK8NdRpSNRD9Np0etJrRgcbfVAKxhLPtMioTDlQZDqeCYZLAvsrr6kBm1Vdvn565S6uwFiT9z7B4V7ubON8N/3I9N/XTsEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rGg7GhLg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF39EC433C7;
-	Tue, 23 Jan 2024 00:17:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bGtLNObgMYp6UdG3Qm6fwZBnVkhD6rMO6FIq3oDKnsLQ00fXbIFJDM21RQBinrI45wdHRAc1GSCUFaIMAcem1Ays2DaFy0zir+SHBKFs91oB2dQ5QzyPsK1Skch/KOq/y72b3mDUDlnutp4+N424df1XAmUtNk80B0DcNmBMuoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOvznF7E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7E3C43390;
+	Tue, 23 Jan 2024 00:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969022;
-	bh=oOBI5bI83M/lJA7o8l2vS6Tlz3lNyEeDk5/S+V8C0DI=;
+	s=korg; t=1705968711;
+	bh=X5qPIaGfMq3BO2Is1GUnhWO0rl3oPKJln2YgzUFL1iA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rGg7GhLgbvsaMNccLzIqJLkSIzGz6QLWitehhqW8VZmr7a+bo+VN3UGaJnS2bZOIJ
-	 F8DqHWkra7Trk+Jx5gxRGiWDLFgk73CUN+PDm3Vz0Kumd8bmssS5ImEYzVe8fGZKJO
-	 375jgem5mpqNofs5wUJGvPFaeUrYxCZDH4TmFt/0=
+	b=uOvznF7EERJF1phu7vUpkye1+gIwAyCDAGKls+vv0Kb6IrXXg1oo1A3is3JlIF1lF
+	 k94wbVyG0xU2sCI0LHBdT2T0fmdIZUnqaO50OHHflcWEXsDGDcezN+2aNgaO2Alx3Q
+	 ZrmjzvPtFFXlD2kBI7qbOFFLCn4Ozs/4db95zhes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
+	Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 166/194] serial: 8250: omap: Dont skip resource freeing if pm_runtime_resume_and_get() failed
+Subject: [PATCH 4.19 140/148] net: ravb: Fix dma_addr_t truncation in error case
 Date: Mon, 22 Jan 2024 15:58:16 -0800
-Message-ID: <20240122235726.325619621@linuxfoundation.org>
+Message-ID: <20240122235718.253411001@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +66,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-[ Upstream commit ad90d0358bd3b4554f243a425168fc7cebe7d04e ]
+[ Upstream commit e327b2372bc0f18c30433ac40be07741b59231c5 ]
 
-Returning an error code from .remove() makes the driver core emit the
-little helpful error message:
+In ravb_start_xmit(), ravb driver uses u32 variable to store result of
+dma_map_single() call. Since ravb hardware has 32-bit address fields in
+descriptors, this works properly when mapping is successful - it is
+platform's job to provide mapping addresses that fit into hardware
+limitations.
 
-	remove callback returned a non-zero value. This will be ignored.
+However, in failure case dma_map_single() returns DMA_MAPPING_ERROR
+constant that is 64-bit when dma_addr_t is 64-bit. Storing this constant
+in u32 leads to truncation, and further call to dma_mapping_error()
+fails to notice the error.
 
-and then remove the device anyhow. So all resources that were not freed
-are leaked in this case. Skipping serial8250_unregister_port() has the
-potential to keep enough of the UART around to trigger a use-after-free.
+Fix that by storing result of dma_map_single() in a dma_addr_t
+variable.
 
-So replace the error return (and with it the little helpful error
-message) by a more useful error message and continue to cleanup.
-
-Fixes: e3f0c638f428 ("serial: 8250: omap: Fix unpaired pm_runtime_put_sync() in omap8250_remove()")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20231110152927.70601-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_omap.c | 2 +-
+ drivers/net/ethernet/renesas/ravb_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index a2db055278a1..6bb8bbaa4fdb 100644
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -1278,7 +1278,7 @@ static int omap8250_remove(struct platform_device *pdev)
- 
- 	err = pm_runtime_resume_and_get(&pdev->dev);
- 	if (err)
--		return err;
-+		dev_err(&pdev->dev, "Failed to resume hardware\n");
- 
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	pm_runtime_put_sync(&pdev->dev);
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index d70c82c926ea..3cfcc9e3c35d 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1508,7 +1508,7 @@ static netdev_tx_t ravb_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 	struct ravb_tstamp_skb *ts_skb;
+ 	struct ravb_tx_desc *desc;
+ 	unsigned long flags;
+-	u32 dma_addr;
++	dma_addr_t dma_addr;
+ 	void *buffer;
+ 	u32 entry;
+ 	u32 len;
 -- 
 2.43.0
 
