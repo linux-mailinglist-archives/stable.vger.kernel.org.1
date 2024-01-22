@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C83C838219
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:17:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE99837F9A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD4DB1F24FA4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DEC21C291F2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CCC62F4A;
-	Tue, 23 Jan 2024 01:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6510E634E2;
+	Tue, 23 Jan 2024 00:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VuE9OOTU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xp5ar9bM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE96C58126;
-	Tue, 23 Jan 2024 01:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFE46341D;
+	Tue, 23 Jan 2024 00:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974062; cv=none; b=Fr03k+cOj4i8GbKSGH54pRnj3FOZPBIM2Wk2PnogijkFgcNlT+aRXDKHG7G1puVVbhAGsltO2Rk6/6hFMS2WubUys4qX6N+wJkKP5I9AoZUqRK5tZwBczelwGg4vQufM8/1zRST7mztuoKziQjJzvDD+527eXvXVD/XMqJ1tQiM=
+	t=1705971230; cv=none; b=Y6VAMCHRX8PBTkB8YZkT3KJ30xih3pC5aj1yHpGsEs9BRXaK0uxH4uQtuJ28AgMuPjfjB7QRHy1LLd3Gf/YUVBZX/keKSSisDCZo75if5PhK8HTQxnaevA4o5G1tWpTr1hDDl6Ged4tsVEzxzT2+7eFcNmO+tq3JD3gIsBmohZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974062; c=relaxed/simple;
-	bh=9xhHdMLITR2ISLinQmnIf0Sh1HyTHPuMccNLvxZpKvQ=;
+	s=arc-20240116; t=1705971230; c=relaxed/simple;
+	bh=46PCfKazoKS/hebfvF98sisly1NhB0UbckB0wxoL9YU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p0jQwsLaiZgNM4CVD0XPqOzEiyJLN5/uTdlOe3y81mIZasCw16b2wMgbPRnOsyQ99Xh/owZf2JoBq7+5ex/MqQoVqN7xVatZNo49xQCUVNb1Il0dnz6OmLZL/fNx6qWByC+FKJ87qAGJJ6EUKadw8E1jNRxwcf+rCSI2nc5UV5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VuE9OOTU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D33C43394;
-	Tue, 23 Jan 2024 01:41:02 +0000 (UTC)
+	 MIME-Version; b=Yomm2IU8cBu1iJPnoYxO5ZaFuXLvi9rxXr3pEBlov7feuUXNQO0kdZw8O/4iljyXKISC25UcVqHpNvK6nEl4vpUECRpm+8whfO7LtpwaHbTFFaNreeh8Gpp2dO4OpXS7qwxUJ6ljlLZTe2QjTGeIShAZg3qByqR8djzykqhHBGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xp5ar9bM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1480C43390;
+	Tue, 23 Jan 2024 00:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974062;
-	bh=9xhHdMLITR2ISLinQmnIf0Sh1HyTHPuMccNLvxZpKvQ=;
+	s=korg; t=1705971230;
+	bh=46PCfKazoKS/hebfvF98sisly1NhB0UbckB0wxoL9YU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VuE9OOTUcV/XcszV1/RHYiJq6AZOBHX0H9O36UEMeIo9osf/vDJqDQYEgZ2JOCTyM
-	 DhhRKjH85BEpgJI6opJMYZ9JwbhnRFjCwhfYAaHwtPCfA2KFfN+ZOULWqHz63mNP/L
-	 L3Yk0fqXqAGDOzF969RG6G0j90rvd+kQ7K41jqYk=
+	b=Xp5ar9bM1HfcIe/sI78lzgaipVu43zkIjN5RvQ6ub6xO9woWsu+lDX86amTpkwnWb
+	 UUFtiuqEve4OxM5CMZKmdn56fsKw/CeZdAdUeG+W/j5SjPQ47cBdXAySdb+s2O3d+D
+	 Nz2rv8fu+iIeii4y15nF/buDAtB5L1t4TgWPEwuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordan Rome <jordalgo@meta.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hsiao Chien Sung <shawn.sung@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 119/374] bpf: Add crosstask check to __bpf_get_stack
+Subject: [PATCH 6.1 207/417] drm/mediatek: Return error if MDP RDMA failed to enable the clock
 Date: Mon, 22 Jan 2024 15:56:15 -0800
-Message-ID: <20240122235748.772476061@linuxfoundation.org>
+Message-ID: <20240122235759.101045562@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rome <jordalgo@meta.com>
+From: Hsiao Chien Sung <shawn.sung@mediatek.com>
 
-[ Upstream commit b8e3a87a627b575896e448021e5c2f8a3bc19931 ]
+[ Upstream commit 21b287146adf39304193e4c49198021e06a28ded ]
 
-Currently get_perf_callchain only supports user stack walking for
-the current task. Passing the correct *crosstask* param will return
-0 frames if the task passed to __bpf_get_stack isn't the current
-one instead of a single incorrect frame/address. This change
-passes the correct *crosstask* param but also does a preemptive
-check in __bpf_get_stack if the task is current and returns
--EOPNOTSUPP if it is not.
+Return the result of clk_prepare_enable() instead of
+always returns 0.
 
-This issue was found using bpf_get_task_stack inside a BPF
-iterator ("iter/task"), which iterates over all tasks.
-bpf_get_task_stack works fine for fetching kernel stacks
-but because get_perf_callchain relies on the caller to know
-if the requested *task* is the current one (via *crosstask*)
-it was failing in a confusing way.
+Fixes: f8946e2b6bb2 ("drm/mediatek: Add display MDP RDMA support for MT8195")
 
-It might be possible to get user stacks for all tasks utilizing
-something like access_process_vm but that requires the bpf
-program calling bpf_get_task_stack to be sleepable and would
-therefore be a breaking change.
-
-Fixes: fa28dcb82a38 ("bpf: Introduce helper bpf_get_task_stack()")
-Signed-off-by: Jordan Rome <jordalgo@meta.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20231108112334.3433136-1-jordalgo@meta.com
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20231214055847.4936-21-shawn.sung@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/bpf.h       |  3 +++
- kernel/bpf/stackmap.c          | 11 ++++++++++-
- tools/include/uapi/linux/bpf.h |  3 +++
- 3 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_mdp_rdma.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index 9fb06a511250..1da082a8c4ec 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -4245,6 +4245,8 @@ union bpf_attr {
-  * long bpf_get_task_stack(struct task_struct *task, void *buf, u32 size, u64 flags)
-  *	Description
-  *		Return a user or a kernel stack in bpf program provided buffer.
-+ *		Note: the user stack will only be populated if the *task* is
-+ *		the current task; all other tasks will return -EOPNOTSUPP.
-  *		To achieve this, the helper needs *task*, which is a valid
-  *		pointer to **struct task_struct**. To store the stacktrace, the
-  *		bpf program provides *buf* with a nonnegative *size*.
-@@ -4256,6 +4258,7 @@ union bpf_attr {
-  *
-  *		**BPF_F_USER_STACK**
-  *			Collect a user space stack instead of a kernel stack.
-+ *			The *task* must be the current task.
-  *		**BPF_F_USER_BUILD_ID**
-  *			Collect buildid+offset instead of ips for user stack,
-  *			only valid if **BPF_F_USER_STACK** is also specified.
-diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
-index 7efae3af6201..f8587abef73c 100644
---- a/kernel/bpf/stackmap.c
-+++ b/kernel/bpf/stackmap.c
-@@ -435,6 +435,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
+diff --git a/drivers/gpu/drm/mediatek/mtk_mdp_rdma.c b/drivers/gpu/drm/mediatek/mtk_mdp_rdma.c
+index eecfa98ff52e..b288bb6eeecc 100644
+--- a/drivers/gpu/drm/mediatek/mtk_mdp_rdma.c
++++ b/drivers/gpu/drm/mediatek/mtk_mdp_rdma.c
+@@ -223,8 +223,7 @@ int mtk_mdp_rdma_clk_enable(struct device *dev)
  {
- 	u32 trace_nr, copy_len, elem_size, num_elem, max_depth;
- 	bool user_build_id = flags & BPF_F_USER_BUILD_ID;
-+	bool crosstask = task && task != current;
- 	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
- 	bool user = flags & BPF_F_USER_STACK;
- 	struct perf_callchain_entry *trace;
-@@ -457,6 +458,14 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- 	if (task && user && !user_mode(regs))
- 		goto err_fault;
+ 	struct mtk_mdp_rdma *rdma = dev_get_drvdata(dev);
  
-+	/* get_perf_callchain does not support crosstask user stack walking
-+	 * but returns an empty stack instead of NULL.
-+	 */
-+	if (crosstask && user) {
-+		err = -EOPNOTSUPP;
-+		goto clear;
-+	}
-+
- 	num_elem = size / elem_size;
- 	max_depth = num_elem + skip;
- 	if (sysctl_perf_event_max_stack < max_depth)
-@@ -468,7 +477,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- 		trace = get_callchain_entry_for_task(task, max_depth);
- 	else
- 		trace = get_perf_callchain(regs, 0, kernel, user, max_depth,
--					   false, false);
-+					   crosstask, false);
- 	if (unlikely(!trace))
- 		goto err_fault;
+-	clk_prepare_enable(rdma->clk);
+-	return 0;
++	return clk_prepare_enable(rdma->clk);
+ }
  
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index 1e3e3f16eabc..d83eaa35c581 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -4245,6 +4245,8 @@ union bpf_attr {
-  * long bpf_get_task_stack(struct task_struct *task, void *buf, u32 size, u64 flags)
-  *	Description
-  *		Return a user or a kernel stack in bpf program provided buffer.
-+ *		Note: the user stack will only be populated if the *task* is
-+ *		the current task; all other tasks will return -EOPNOTSUPP.
-  *		To achieve this, the helper needs *task*, which is a valid
-  *		pointer to **struct task_struct**. To store the stacktrace, the
-  *		bpf program provides *buf* with a nonnegative *size*.
-@@ -4256,6 +4258,7 @@ union bpf_attr {
-  *
-  *		**BPF_F_USER_STACK**
-  *			Collect a user space stack instead of a kernel stack.
-+ *			The *task* must be the current task.
-  *		**BPF_F_USER_BUILD_ID**
-  *			Collect buildid+offset instead of ips for user stack,
-  *			only valid if **BPF_F_USER_STACK** is also specified.
+ void mtk_mdp_rdma_clk_disable(struct device *dev)
 -- 
 2.43.0
 
