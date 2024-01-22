@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-15120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E4BB8383F9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 999EF83814B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:07:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8207A1C29E78
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCC2A1C27ABB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A03664B8;
-	Tue, 23 Jan 2024 01:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B15714A08F;
+	Tue, 23 Jan 2024 01:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBb9kLa0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vaRugg1a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F9065BB4;
-	Tue, 23 Jan 2024 01:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBA814A085;
+	Tue, 23 Jan 2024 01:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975107; cv=none; b=et4iO8qB/77EDD5ZFW87fPZNB/thjU1o55783+q+DoFcxs5JCppJ/GNzYGTMgbDtmweHie4PPei0fO4y7OcDgMpnnKIhNSDgdY8+UnVu8mFwHqbALWMQI8xy/Btchw9ZoOiBggHvcH94DeLCigcGussrhFDJ92EEPJ8GJGStBi8=
+	t=1705972097; cv=none; b=GpG/mfJenHqAOez1qAjsvPgaZ9vgkuu+a7nXJn0Bn0htN2fUTGqOUpVzYcVQwd/R63AJ12OLrrqqLkuvM62eRuJwhweW4pkTBQxSFhgA02LE5OeVPwlZPZ7cP2N+VRx8pjgpamDZmgBJk8aSxI/so9AGTwBEWQe7zrzp/SSz8Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975107; c=relaxed/simple;
-	bh=TW8rAdJsmQYYcokg36Bl4S75gl1JAV0xA56wvbFQ0vo=;
+	s=arc-20240116; t=1705972097; c=relaxed/simple;
+	bh=jLX/ITKIZpub7DXccc6VLYPpHtkDpH2o02iygJTIXTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ujsK5MImPi80hR2NJtH8LVunTxdR5lHvO6c8wb5rP3cytqWhG+7eCtEdDW+BW8aoRLxdg4fOf7fUW+bR/PvDLFQjIPzb8n32hBC5vf7gMCFNeuTG7MgdP9xN/BV5ndNDhJtGFbE39sSd0Ga3nguXVJZVsvpqL/jtFTx0OX3KpIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBb9kLa0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9476C433A6;
-	Tue, 23 Jan 2024 01:58:26 +0000 (UTC)
+	 MIME-Version; b=j1H54qYdTjbXuv81qsn3w54BxFEWq6SZhFznHA7IcnBVrqTB6Yu9zwPmIuJIyu+Gp9IAQZnrHLPSLAVfZlGkATr0oDD0N1q5S9UdTiMyyY4e2jOOJQCOx483UiPA6wjhgyV1UMr0nHLPiWpF+gO7i34FH9v3f3QmtRSda5Q3fO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vaRugg1a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B26C43390;
+	Tue, 23 Jan 2024 01:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975106;
-	bh=TW8rAdJsmQYYcokg36Bl4S75gl1JAV0xA56wvbFQ0vo=;
+	s=korg; t=1705972097;
+	bh=jLX/ITKIZpub7DXccc6VLYPpHtkDpH2o02iygJTIXTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tBb9kLa0ksxjbNh9X0iLWLZ7s/pAS/WZxw5ra70vDo2351sleuttCWVMbmUnbewC8
-	 V+QjRab/+Wtgi9ebeRGzK7gdaomlcnH4cLVgx56m7vIugiL7eR4u0iwo/5qrS+MCGU
-	 xMU2KqXoO2y7RUbYbmIACv/w6K6kSWfarCy2VnYE=
+	b=vaRugg1adAu1FyoEPBLScuQrmay3IJddLc2+gZfFT4fYDi8ZJhU/rqbCVu5z3ul+f
+	 tT3C0TEsmi2TvOPrXgdk8UpBV0nmwlcHYzu8KpFj2yc3SDugRzb4MLU3VA7GX6pWmz
+	 FaYvFvIbUMecyYpAikq4JgUPs1NTIh8cyQB9zguo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 241/583] drm/radeon/r600_cs: Fix possible int overflows in r600_cs_check_reg()
+Subject: [PATCH 5.15 036/374] ring-buffer: Do not record in NMI if the arch does not support cmpxchg in NMI
 Date: Mon, 22 Jan 2024 15:54:52 -0800
-Message-ID: <20240122235819.370073877@linuxfoundation.org>
+Message-ID: <20240122235745.895235753@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 39c960bbf9d9ea862398759e75736cfb68c3446f ]
+[ Upstream commit 712292308af2265cd9b126aedfa987f10f452a33 ]
 
-While improbable, there may be a chance of hitting integer
-overflow when the result of radeon_get_ib_value() gets shifted
-left.
+As the ring buffer recording requires cmpxchg() to work, if the
+architecture does not support cmpxchg in NMI, then do not do any recording
+within an NMI.
 
-Avoid it by casting one of the operands to larger data type (u64).
+Link: https://lore.kernel.org/linux-trace-kernel/20231213175403.6fc18540@gandalf.local.home
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 1729dd33d20b ("drm/radeon/kms: r600 CS parser fixes")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/r600_cs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/ring_buffer.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/radeon/r600_cs.c b/drivers/gpu/drm/radeon/r600_cs.c
-index 638f861af80f..6cf54a747749 100644
---- a/drivers/gpu/drm/radeon/r600_cs.c
-+++ b/drivers/gpu/drm/radeon/r600_cs.c
-@@ -1275,7 +1275,7 @@ static int r600_cs_check_reg(struct radeon_cs_parser *p, u32 reg, u32 idx)
- 			return -EINVAL;
- 		}
- 		tmp = (reg - CB_COLOR0_BASE) / 4;
--		track->cb_color_bo_offset[tmp] = radeon_get_ib_value(p, idx) << 8;
-+		track->cb_color_bo_offset[tmp] = (u64)radeon_get_ib_value(p, idx) << 8;
- 		ib[idx] += (u32)((reloc->gpu_offset >> 8) & 0xffffffff);
- 		track->cb_color_base_last[tmp] = ib[idx];
- 		track->cb_color_bo[tmp] = reloc->robj;
-@@ -1302,7 +1302,7 @@ static int r600_cs_check_reg(struct radeon_cs_parser *p, u32 reg, u32 idx)
- 					"0x%04X\n", reg);
- 			return -EINVAL;
- 		}
--		track->htile_offset = radeon_get_ib_value(p, idx) << 8;
-+		track->htile_offset = (u64)radeon_get_ib_value(p, idx) << 8;
- 		ib[idx] += (u32)((reloc->gpu_offset >> 8) & 0xffffffff);
- 		track->htile_bo = reloc->robj;
- 		track->db_dirty = true;
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 65a728b89574..374cfba6c306 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -3603,6 +3603,12 @@ rb_reserve_next_event(struct trace_buffer *buffer,
+ 	int nr_loops = 0;
+ 	int add_ts_default;
+ 
++	/* ring buffer does cmpxchg, make sure it is safe in NMI context */
++	if (!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) &&
++	    (unlikely(in_nmi()))) {
++		return NULL;
++	}
++
+ 	rb_start_commit(cpu_buffer);
+ 	/* The commit page can not change after this */
+ 
 -- 
 2.43.0
 
