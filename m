@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-14937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E187838337
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB5F783833A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:27:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1FA11C297E2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A59B1C298A4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A921B4E1CC;
-	Tue, 23 Jan 2024 01:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5115E60B9D;
+	Tue, 23 Jan 2024 01:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3S3r/k0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEyP1Gw5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6945929408;
-	Tue, 23 Jan 2024 01:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E97B29403;
+	Tue, 23 Jan 2024 01:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974738; cv=none; b=Qq7Q5VxadlaRdaDgn5vkJjvmb2YrpPdiNhddN4/mYN8vhjJ67tCoz80CY6YqygQ0TVbEl/3H0VHjiM7+m8LLjujoU25PpMxe7YLo8Xvu+bWLK36j3tvEQU/qJLXCw/6lhVak7+HXFGH1/ehjQdyjs6wUXn9plhIwjEXtsoQhVss=
+	t=1705974741; cv=none; b=eQcCherWbopWSYyoYINOJrEnok5/wsz/OTlUxt36CnU7/yica4eOm18HeHZFyLWyf4zGOW8vn3XypNQ3dQMMYBKf5ki5/ysUkhICtzD76X9qSPdjyJMYFWfQrrGfNoAiC8sgAmkIX+5F1NQuSfUGxf5wtcvuT4+3SiqufyvY85Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974738; c=relaxed/simple;
-	bh=wmkeVO1w56XztlyThIXnzsvKSA/QrRb4FJFZuglpfoM=;
+	s=arc-20240116; t=1705974741; c=relaxed/simple;
+	bh=9IOhxyCy5PxRRFQh37yfyPMTEK2OO+XFWIi9Bd7gzLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fVbhFu0BrSS12HOLh+aULAnWcvbnuqpXgJDCOJDES+oplZrXuL6Vh6SpgokzEygfP6qTJr6rpzSKnOPxWzDkq+L+o8tIkaCNBTgHdZptQf/gu5FfbT7U90xk+ZKfNXJ1J9M674+Rv8o/p/ruxXH1wH0EXtvdSrT+1f58oZz3XXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3S3r/k0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDE8C43394;
-	Tue, 23 Jan 2024 01:52:18 +0000 (UTC)
+	 MIME-Version; b=ePEEkJFWIi+Bw+o6ikPyPmvxQvB856+6DwtyOyZEhKIpEvJmAmmBM5S6y8caDBt2j/OId/L2EfqZzyz3Mfvp+Cck3lnBLu3eT5KrVpMrBn/vRPw9dpq85RX3KKVutq5RqmXM3Yb9SZ0TnsEX989Qquk7KqEHo4X9zEHxFjyZinM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEyP1Gw5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FD3C43390;
+	Tue, 23 Jan 2024 01:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974738;
-	bh=wmkeVO1w56XztlyThIXnzsvKSA/QrRb4FJFZuglpfoM=;
+	s=korg; t=1705974740;
+	bh=9IOhxyCy5PxRRFQh37yfyPMTEK2OO+XFWIi9Bd7gzLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3S3r/k0QO2tdz32ZkzoPtsmIqXMBz0wMM2KBPgHcmUy2aRl6gRoNrihWvpxbw2F9
-	 637OPc/gareCYgnywbVDHT5WFTHgFK2ASIZOHOvhJ1BzImdHSSqmSYDV51+6a7IOVo
-	 DCxrPB8SowVj+jh9/+MAPK+5CNIGgeNQeZpS+y7g=
+	b=BEyP1Gw5d+yOGau3gqK3TT0CeriKvw/90F/ZxzA5jYgE9z09rA4EEX3pA39Sn2SS6
+	 5DgVenFuCu5vshK6nQgLlfOmP6oWml/x21LT/grDgYP2e15z4zLyD4SwVgj01Eq8x0
+	 oRnvEGpZsFHS7rd6Cg2mO+VmPaH0RjnSRz5/eT5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugen Hristev <eugen.hristev@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 150/583] arm64: dts: mediatek: mt8186: fix address warning for ADSP mailboxes
-Date: Mon, 22 Jan 2024 15:53:21 -0800
-Message-ID: <20240122235816.661744040@linuxfoundation.org>
+Subject: [PATCH 6.6 151/583] wifi: mt76: mt7921: fix country count limitation for CLC
+Date: Mon, 22 Jan 2024 15:53:22 -0800
+Message-ID: <20240122235816.692913771@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -66,49 +66,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eugen Hristev <eugen.hristev@collabora.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 840e341bed3c4331061031dc9db0aff04abafb4b ]
+[ Upstream commit fa6ad88e023ddfa6c5dcdb466d159e89f451e305 ]
 
-Fix warnings reported by dtbs_check :
+Due to the increase in the number of power tables for 6Ghz on CLC,
+the variable nr_country is no longer sufficient to represent the
+total quantity. Therefore, we have switched to calculating the
+length of clc buf to obtain the correct power table. Additionally,
+the version number has been incremented to 1.
 
-arch/arm64/boot/dts/mediatek/mt8186.dtsi:1163.35-1168.5: Warning (simple_bus_reg):
- /soc/mailbox@10686000: simple-bus unit address format error, expected "10686100"
-arch/arm64/boot/dts/mediatek/mt8186.dtsi:1170.35-1175.5: Warning (simple_bus_reg):
- /soc/mailbox@10687000: simple-bus unit address format error, expected "10687100"
-
-by having the right bus address as node name.
-
-Fixes: 379cf0e639ae ("arm64: dts: mediatek: mt8186: Add ADSP mailbox nodes")
-Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
-Link: https://lore.kernel.org/r/20231204135533.21327-1-eugen.hristev@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 23bdc5d8cadf ("wifi: mt76: mt7921: introduce Country Location Control support")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8186.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8186.dtsi b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-index 021397671099..2fec6fd1c1a7 100644
---- a/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-@@ -1160,14 +1160,14 @@ adsp: adsp@10680000 {
- 			status = "disabled";
- 		};
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 90c93970acab..d1b1b8f767fc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -1136,22 +1136,27 @@ int __mt7921_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
+ 		u8 type[2];
+ 		u8 rsvd[64];
+ 	} __packed req = {
++		.ver = 1,
+ 		.idx = idx,
+ 		.env = env_cap,
+ 		.acpi_conf = mt792x_acpi_get_flags(&dev->phy),
+ 	};
+ 	int ret, valid_cnt = 0;
+-	u8 i, *pos;
++	u16 buf_len = 0;
++	u8 *pos;
  
--		adsp_mailbox0: mailbox@10686000 {
-+		adsp_mailbox0: mailbox@10686100 {
- 			compatible = "mediatek,mt8186-adsp-mbox";
- 			#mbox-cells = <0>;
- 			reg = <0 0x10686100 0 0x1000>;
- 			interrupts = <GIC_SPI 361 IRQ_TYPE_LEVEL_HIGH 0>;
- 		};
+ 	if (!clc)
+ 		return 0;
  
--		adsp_mailbox1: mailbox@10687000 {
-+		adsp_mailbox1: mailbox@10687100 {
- 			compatible = "mediatek,mt8186-adsp-mbox";
- 			#mbox-cells = <0>;
- 			reg = <0 0x10687100 0 0x1000>;
++	buf_len = le16_to_cpu(clc->len) - sizeof(*clc);
+ 	pos = clc->data;
+-	for (i = 0; i < clc->nr_country; i++) {
++	while (buf_len > 16) {
+ 		struct mt7921_clc_rule *rule = (struct mt7921_clc_rule *)pos;
+ 		u16 len = le16_to_cpu(rule->len);
++		u16 offset = len + sizeof(*rule);
+ 
+-		pos += len + sizeof(*rule);
++		pos += offset;
++		buf_len -= offset;
+ 		if (rule->alpha2[0] != alpha2[0] ||
+ 		    rule->alpha2[1] != alpha2[1])
+ 			continue;
 -- 
 2.43.0
 
