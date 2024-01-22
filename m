@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-12871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B438378C0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2495F837A4C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40B6C28BC37
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD93E1F22937
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4982A23D2;
-	Tue, 23 Jan 2024 00:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABFF12BF06;
+	Tue, 23 Jan 2024 00:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bc5Jhrn/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlgxn9La"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0968520EE;
-	Tue, 23 Jan 2024 00:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF36A12A17F;
+	Tue, 23 Jan 2024 00:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968240; cv=none; b=Xqe4pF7ayHDPwsqBMdSUGZDl/thBRJUgU4J0BUSsnZXHbZOq4oBS7rbbLtZq/niMbIa77DCNO0s26w4pd1iP33vE7OHNYC5qdbY+4utGNZOUNNpSsg4imxhFYokCnoXFcTa7LJwPmmG5aAVkAashBdU642kZskat5p7+qA+emHs=
+	t=1705968884; cv=none; b=HZEbCJLFh90UCvQiGihGBMsz0H5InUBECnKCt9UQSHk1ZZXZGaeYSrOrBBAr2ETgbB8Tx5nHbYfuU3BgrkSPfhqrrnwEjPHti3/vnUnc8W7uU2pIN5V5Vjw++u8dYywxgYJCYPQmW6nvLQQ1lakWgEZNWlYj5i0gJ7aXcn1XwQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968240; c=relaxed/simple;
-	bh=5pKTpgZuUOSh8BKcR0h0LeW/SKIrWC2dD3aBquslxZ0=;
+	s=arc-20240116; t=1705968884; c=relaxed/simple;
+	bh=xXGP+Mr+O8Lgj796fqQFpDLt97rXeuDSovBN0LEX2WQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fe1gCZmgmoHcWF5qsu6984fCphKkYtjvpcfxNF1uJ13+Nr/LATT5zxGiXAEc9SjARBSovEsN4lZ3AlmzxJmoUdwbNOtTplz7QCn3H83pSW7qe/sHXo2oHTLLbC6dO9VDzF1hteBjPNsmAKULZMbgjfGkn44be38YslG7IswI7O4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bc5Jhrn/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C42C43394;
-	Tue, 23 Jan 2024 00:03:59 +0000 (UTC)
+	 MIME-Version; b=iUQZKntBkuJvi81miPzVjYGH0Y2XptNwH0uqt4SQb+zSvT0A+RkUA55jPBF6Q4pb87Yjq5Qtd71epyEpoPzXfxF+Vp6/baSzZjrZzEGIeLOrrktziMgQF55tOJIJcUFz+3+L34tSgotKuW+QUIZvaMEtdjtACWaBOdNYdW0aI88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlgxn9La; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7958AC43601;
+	Tue, 23 Jan 2024 00:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968239;
-	bh=5pKTpgZuUOSh8BKcR0h0LeW/SKIrWC2dD3aBquslxZ0=;
+	s=korg; t=1705968884;
+	bh=xXGP+Mr+O8Lgj796fqQFpDLt97rXeuDSovBN0LEX2WQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bc5Jhrn/eAoTyURQ0DgYYEZeVXG9hScW2L+KjeS0G2BsPACEkYGXp1dloTouL6Roi
-	 gkZ+I37HC6tcoVN20HIyFwkYe1PuXKZ6RbBqad7WsBg86EWJpoQ1QJOwZX2LpKJOZe
-	 fFT6gwDogkQ4Ugkwt6QRL7SllmYhQRvtpHx+vHyk=
+	b=hlgxn9LaXBjdTY/A1OLeHcXHuhL475FOYt6cQjHESlu47B1iRIkWc9fH1E86AsUWZ
+	 wh+VfoxgxQWsQ3imTusOl5zXCRoByhBt1ytYov6yN3ws48foYlKQGSOC3Q/bz/OURn
+	 QDViiIdVNXesKg1ONFPFo3C9fp7+NBGS6xZUktuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangyangxin <wangyangxin1@huawei.com>,
-	Gonglei <arei.gonglei@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Chih-Kang Chang <gary.chang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 053/148] crypto: virtio - Wait for tasklet to complete on device remove
-Date: Mon, 22 Jan 2024 15:56:49 -0800
-Message-ID: <20240122235714.566702828@linuxfoundation.org>
+Subject: [PATCH 5.4 080/194] wifi: rtw88: fix RX filter in FIF_ALLMULTI flag
+Date: Mon, 22 Jan 2024 15:56:50 -0800
+Message-ID: <20240122235722.667674525@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangyangxin <wangyangxin1@huawei.com>
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-[ Upstream commit 67cc511e8d436456cc98033e6d4ba83ebfc8e672 ]
+[ Upstream commit 53ee0b3b99edc6a47096bffef15695f5a895386f ]
 
-The scheduled tasklet needs to be executed on device remove.
+The broadcast packets will be filtered in the FIF_ALLMULTI flag in
+the original code, which causes beacon packets to be filtered out
+and disconnection. Therefore, we fix it.
 
-Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
-Signed-off-by: wangyangxin <wangyangxin1@huawei.com>
-Signed-off-by: Gonglei <arei.gonglei@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231103020851.102238-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/virtio/virtio_crypto_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/realtek/rtw88/mac80211.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
-index c21770345f5f..2515a141c67b 100644
---- a/drivers/crypto/virtio/virtio_crypto_core.c
-+++ b/drivers/crypto/virtio/virtio_crypto_core.c
-@@ -446,11 +446,14 @@ static void virtcrypto_free_unused_reqs(struct virtio_crypto *vcrypto)
- static void virtcrypto_remove(struct virtio_device *vdev)
- {
- 	struct virtio_crypto *vcrypto = vdev->priv;
-+	int i;
+diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+index e5e3605bb693..efcfeccee15f 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -206,9 +206,9 @@ static void rtw_ops_configure_filter(struct ieee80211_hw *hw,
  
- 	dev_info(&vdev->dev, "Start virtcrypto_remove.\n");
- 
- 	if (virtcrypto_dev_started(vcrypto))
- 		virtcrypto_dev_stop(vcrypto);
-+	for (i = 0; i < vcrypto->max_data_queues; i++)
-+		tasklet_kill(&vcrypto->data_vq[i].done_task);
- 	vdev->config->reset(vdev);
- 	virtcrypto_free_unused_reqs(vcrypto);
- 	virtcrypto_clear_crypto_engines(vcrypto);
+ 	if (changed_flags & FIF_ALLMULTI) {
+ 		if (*new_flags & FIF_ALLMULTI)
+-			rtwdev->hal.rcr |= BIT_AM | BIT_AB;
++			rtwdev->hal.rcr |= BIT_AM;
+ 		else
+-			rtwdev->hal.rcr &= ~(BIT_AM | BIT_AB);
++			rtwdev->hal.rcr &= ~(BIT_AM);
+ 	}
+ 	if (changed_flags & FIF_FCSFAIL) {
+ 		if (*new_flags & FIF_FCSFAIL)
 -- 
 2.43.0
 
