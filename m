@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F061F83800D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A3A837D2F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFF6BB2AE24
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF25F1F2956C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CAEA12AAC9;
-	Tue, 23 Jan 2024 00:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE0C250E5;
+	Tue, 23 Jan 2024 00:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DgN5USi8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I6tP4eLA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3FE12A167;
-	Tue, 23 Jan 2024 00:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19E73A1B4;
+	Tue, 23 Jan 2024 00:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971053; cv=none; b=Hzz2TOwX6JOcL73/z/yNLwlQa78HklcUkmAfPf5cK8V9zYuX4EQ3gr9VEc7UFZTiWtVOqLYbMS7sk+Gc8fOWazhNx25TzpIlUIdvw1TugL+glCyu6z6koHXADHL6T6OaLDjbOXZNlzShY27/5izH4PQcW2QGHwKwIjhJ20smmX8=
+	t=1705969828; cv=none; b=WPmnAMWjILUukwr17g0gwGVOPF+fjSIgtQp6Rm2K/SAeUOulGMD/Wo4QhjY1r1XoKL9EC0ZG7MZIq7WFqTaXLqBMbbh0nW2ifAAhsRG6zYmg8aR13NqSGZlIXjq822CsDMi367hKe8YaekQtnPIQ6drF6k+uFszfXhbsO1PBCX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971053; c=relaxed/simple;
-	bh=qHI7uNcbGQg+hcHJCA2XpX9WwnR0sIA+mZBkGQWUDoU=;
+	s=arc-20240116; t=1705969828; c=relaxed/simple;
+	bh=n4+TfmOQ1uTQX3DM0WiBO5/J+H0t0VqCjpOPYMQREFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9jlRt1+nVQPXCexTthRnNwqYiTUNFrLwj7689RAtVxcgSFmWuyFCKUWL1FmO71F0QS2Fw/MLvFMN36udI2iSyTiCy4ekA7A2xtJYnEMce4sXZVCDu2B5Q+35Bax8xPFI4oHdxopDX3gMEo7X6LCyXIO/BRzcY+kIrkEXnw3XOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DgN5USi8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D102DC43394;
-	Tue, 23 Jan 2024 00:50:52 +0000 (UTC)
+	 MIME-Version; b=oCk64Y2ecuEjkxtblpLXac1XFsEoTKjDp44v5ezFRmBsVpmKf4IpTTVYHqgga1EgYiQ8nu2ep1R83iDKbi4zHP/XlNR6f0ysmMwq01/AjQ8D4HKkGIr5IipJ7vn9Lz+geeU7kQhPO6l+3o1Lm3yznLYLv+s+1kezv/S2Hvyit7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I6tP4eLA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85862C43390;
+	Tue, 23 Jan 2024 00:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971053;
-	bh=qHI7uNcbGQg+hcHJCA2XpX9WwnR0sIA+mZBkGQWUDoU=;
+	s=korg; t=1705969828;
+	bh=n4+TfmOQ1uTQX3DM0WiBO5/J+H0t0VqCjpOPYMQREFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DgN5USi8BV0QEYm5fSQkyurbxNMu261PBo3wa8PG919pKJG3C7w7dLsTauqMU8iN/
-	 VtdhGMZpw0RFLosZnZyPknQbzb1/L+LBtP2QW3/kU/TLEB5+65CIHmoeZ5BIdmW+uC
-	 BKef5Cd7yqd2wv7ncSD4K9QdBXJtYWE7mWfIiG9U=
+	b=I6tP4eLAiOixAvDUvmpr7qEU7ZtiTMGH9zDjqn/uGN3pB9qNPHepsBc+qHecuGhkQ
+	 VJ3AfoOEIfHd5Nv1aqXm+eJ3u8RzkNX5mSxSwvewhxEiIdpmVHS9xS99EvtG+4/A4M
+	 9PdRgrmXQQEy9O9qunzjceBbnx/3L10/KFurkafQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH 5.10 048/286] coresight: etm4x: Fix width of CCITMIN field
+	Jiri Olsa <olsajiri@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Dmitrii Dolgov <9erthalion6@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.7 450/641] bpf: Fix re-attachment branch in bpf_tracing_prog_attach
 Date: Mon, 22 Jan 2024 15:55:54 -0800
-Message-ID: <20240122235733.883021451@linuxfoundation.org>
+Message-ID: <20240122235832.104274852@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Jiri Olsa <olsajiri@gmail.com>
 
-commit cc0271a339cc70cae914c3ec20edc2a8058407da upstream.
+commit 715d82ba636cb3629a6e18a33bb9dbe53f9936ee upstream.
 
-CCITMIN is a 12 bit field and doesn't fit in a u8, so extend it to u16.
-This probably wasn't an issue previously because values higher than 255
-never occurred.
+The following case can cause a crash due to missing attach_btf:
 
-But since commit 4aff040bcc8d ("coresight: etm: Override TRCIDR3.CCITMIN
-on errata affected cpus"), a comparison with 256 was done to enable the
-errata, generating the following W=1 build error:
+1) load rawtp program
+2) load fentry program with rawtp as target_fd
+3) create tracing link for fentry program with target_fd = 0
+4) repeat 3
 
-  coresight-etm4x-core.c:1188:24: error: result of comparison of
-  constant 256 with expression of type 'u8' (aka 'unsigned char') is
-  always false [-Werror,-Wtautological-constant-out-of-range-compare]
+In the end we have:
 
-   if (drvdata->ccitmin == 256)
+- prog->aux->dst_trampoline == NULL
+- tgt_prog == NULL (because we did not provide target_fd to link_create)
+- prog->aux->attach_btf == NULL (the program was loaded with attach_prog_fd=X)
+- the program was loaded for tgt_prog but we have no way to find out which one
 
+    BUG: kernel NULL pointer dereference, address: 0000000000000058
+    Call Trace:
+     <TASK>
+     ? __die+0x20/0x70
+     ? page_fault_oops+0x15b/0x430
+     ? fixup_exception+0x22/0x330
+     ? exc_page_fault+0x6f/0x170
+     ? asm_exc_page_fault+0x22/0x30
+     ? bpf_tracing_prog_attach+0x279/0x560
+     ? btf_obj_id+0x5/0x10
+     bpf_tracing_prog_attach+0x439/0x560
+     __sys_bpf+0x1cf4/0x2de0
+     __x64_sys_bpf+0x1c/0x30
+     do_syscall_64+0x41/0xf0
+     entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+Return -EINVAL in this situation.
+
+Fixes: f3a95075549e0 ("bpf: Allow trampoline re-attach for tracing and lsm programs")
 Cc: stable@vger.kernel.org
-Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310302043.as36UFED-lkp@intel.com/
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Signed-off-by: James Clark <james.clark@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20231101115206.70810-1-james.clark@arm.com
+Signed-off-by: Jiri Olsa <olsajiri@gmail.com>
+Acked-by: Jiri Olsa <olsajiri@gmail.com>
+Acked-by: Song Liu <song@kernel.org>
+Signed-off-by: Dmitrii Dolgov <9erthalion6@gmail.com>
+Link: https://lore.kernel.org/r/20240103190559.14750-4-9erthalion6@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/syscall.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/hwtracing/coresight/coresight-etm4x.h
-+++ b/drivers/hwtracing/coresight/coresight-etm4x.h
-@@ -440,7 +440,7 @@ struct etmv4_drvdata {
- 	u8				ctxid_size;
- 	u8				vmid_size;
- 	u8				ccsize;
--	u8				ccitmin;
-+	u16				ccitmin;
- 	u8				s_ex_level;
- 	u8				ns_ex_level;
- 	u8				q_support;
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -3205,6 +3205,10 @@ static int bpf_tracing_prog_attach(struc
+ 	 *
+ 	 * - if prog->aux->dst_trampoline and tgt_prog is NULL, the program
+ 	 *   was detached and is going for re-attachment.
++	 *
++	 * - if prog->aux->dst_trampoline is NULL and tgt_prog and prog->aux->attach_btf
++	 *   are NULL, then program was already attached and user did not provide
++	 *   tgt_prog_fd so we have no way to find out or create trampoline
+ 	 */
+ 	if (!prog->aux->dst_trampoline && !tgt_prog) {
+ 		/*
+@@ -3218,6 +3222,11 @@ static int bpf_tracing_prog_attach(struc
+ 			err = -EINVAL;
+ 			goto out_unlock;
+ 		}
++		/* We can allow re-attach only if we have valid attach_btf. */
++		if (!prog->aux->attach_btf) {
++			err = -EINVAL;
++			goto out_unlock;
++		}
+ 		btf_id = prog->aux->attach_btf_id;
+ 		key = bpf_trampoline_compute_key(NULL, prog->aux->attach_btf, btf_id);
+ 	}
 
 
 
