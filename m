@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-13742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C7A837DA4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C70A838075
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59DD61F24379
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FA771C29699
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2116957863;
-	Tue, 23 Jan 2024 00:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D9312F58C;
+	Tue, 23 Jan 2024 01:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvFEotmx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETTrFKVy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5896537F7;
-	Tue, 23 Jan 2024 00:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9357412DDBC;
+	Tue, 23 Jan 2024 01:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970097; cv=none; b=IVKxD40caLb4EzgskGQHZ9q4bCau9X+jeCtPBvGsH0EiBqamD/M0H+RjHq9fa1n7M+vct71XyAWz80wCa79l/VpwRSc/JS0uWluuThx73wZrMd4ZNRDuDAczHZRUnlIcwzrVORKdxvDDdyb9s2+cc9WHiNkHyEQRp5G+MbxKXuM=
+	t=1705971734; cv=none; b=QxBdHtCSfQrBPQv5ruFbGnSSfK/1+MvjdxbiWTf5I4gu/DpKWwfw/I2RpwMgJF0H9dmWsXrx1Ogk4r2Qly5LlKMQAjLvaos03uNLL6SYKlHv7PCm1iR8rnzqU1TUzo59Rnrr2K9vl2nZH2+PlFxyenZpD3Gehwi/KGv/l1pdidY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970097; c=relaxed/simple;
-	bh=picb0tIOyorXWYzJIdB1pxQ7P+5AVxluWmRxdXgq0YY=;
+	s=arc-20240116; t=1705971734; c=relaxed/simple;
+	bh=FHLXCkYJG86N7i+xnhXeaZrbk2hoPKxlNfDibv7km6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WR77I6AwQj57alyQi1P/n/GLk+k4IAS/nJRbShnvy3qp75IjumOXkFE5jadHXWgrSPOnUzsLtgIARDDoE2PfgO7VDZ9EKksK2rp0mUMBKy5c1q6My0hb/dhD2sZyaSV06rDUKyxVArYz9hGr5TQsAxliMMPwNdl2YXKumv1vxQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvFEotmx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67257C433F1;
-	Tue, 23 Jan 2024 00:34:57 +0000 (UTC)
+	 MIME-Version; b=GGxaw0tXQP0Q2RD6aZ3N61kclu6viUWUDdbKOZI//cyqngvPUPBpXzXzbW5X/5YqcYzKO2l4YQcBRGNBlG7lvoCoXjtRvCUnPq1vEOF20v7Nr1JRBFFlw9/fb04AVjILXpG8YvSyzqOy05e3tjYtP+diO1K63Cs3DabXPUqbg2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETTrFKVy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FBABC433C7;
+	Tue, 23 Jan 2024 01:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970097;
-	bh=picb0tIOyorXWYzJIdB1pxQ7P+5AVxluWmRxdXgq0YY=;
+	s=korg; t=1705971734;
+	bh=FHLXCkYJG86N7i+xnhXeaZrbk2hoPKxlNfDibv7km6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QvFEotmxT6w8sPucSEMYbo5dKHq205lpc35ON62qIt+yW0gqAZF7mmn7uoZOZWGt7
-	 L1arEs5pyNgsPD0ZZzYZkcKSIEnaXbtqKUhPedEIctTgWLuL1LUhNPgNqltOTpOXNG
-	 GciAOiqXh9dc/2DLEsidzQgfoFZDvll/5edLLm5A=
+	b=ETTrFKVyu0ZPFIRDhdi6JydUx5zLqZvKgH6J6brHOD4K74QkcFlTXa+RrvaBppkdR
+	 SIqjDken/AvqTGlJyTFV0I0usfOLjU+Xhr6xyCGvHA6V9zOCJBPy+EMMRFs5AHUrjD
+	 dlgg1mv6mLnCIe6dP/dAxizL8tCeLZzRIbfFstww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 553/641] nvmet-tcp: Fix a kernel panic when host sends an invalid H2C PDU length
-Date: Mon, 22 Jan 2024 15:57:37 -0800
-Message-ID: <20240122235835.447650515@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	Amir Goldstein <amir73il@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1 290/417] scsi: target: core: add missing file_{start,end}_write()
+Date: Mon, 22 Jan 2024 15:57:38 -0800
+Message-ID: <20240122235801.875755162@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit efa56305908ba20de2104f1b8508c6a7401833be ]
+commit 0db1d53937fafa8bb96e077375691e16902f4899 upstream.
 
-If the host sends an H2CData command with an invalid DATAL,
-the kernel may crash in nvmet_tcp_build_pdu_iovec().
+The callers of vfs_iter_write() are required to hold file_start_write().
+file_start_write() is a no-op for the S_ISBLK() case, but it is really
+needed when the backing file is a regular file.
 
-Unable to handle kernel NULL pointer dereference at
-virtual address 0000000000000000
-lr : nvmet_tcp_io_work+0x6ac/0x718 [nvmet_tcp]
-Call trace:
-  process_one_work+0x174/0x3c8
-  worker_thread+0x2d0/0x3e8
-  kthread+0x104/0x110
+We are going to move file_{start,end}_write() into vfs_iter_write(), but
+we need to fix this first, so that the fix could be backported to stable
+kernels.
 
-Fix the bug by raising a fatal error if DATAL isn't coherent
-with the packet size.
-Also, the PDU length should never exceed the MAXH2CDATA parameter which
-has been communicated to the host in nvmet_tcp_handle_icreq().
-
-Fixes: 872d26a391da ("nvmet-tcp: add NVMe over TCP target driver")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/ZV8ETIpM+wZa33B5@infradead.org/
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://lore.kernel.org/r/20231123092000.2665902-1-amir73il@gmail.com
+Acked-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/tcp.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/target/target_core_file.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 4cc27856aa8f..ad16795934b8 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -24,6 +24,7 @@
- #include "nvmet.h"
- 
- #define NVMET_TCP_DEF_INLINE_DATA_SIZE	(4 * PAGE_SIZE)
-+#define NVMET_TCP_MAXH2CDATA		0x400000 /* 16M arbitrary limit */
- 
- static int param_store_val(const char *str, int *val, int min, int max)
- {
-@@ -923,7 +924,7 @@ static int nvmet_tcp_handle_icreq(struct nvmet_tcp_queue *queue)
- 	icresp->hdr.pdo = 0;
- 	icresp->hdr.plen = cpu_to_le32(icresp->hdr.hlen);
- 	icresp->pfv = cpu_to_le16(NVME_TCP_PFV_1_0);
--	icresp->maxdata = cpu_to_le32(0x400000); /* 16M arbitrary limit */
-+	icresp->maxdata = cpu_to_le32(NVMET_TCP_MAXH2CDATA);
- 	icresp->cpda = 0;
- 	if (queue->hdr_digest)
- 		icresp->digest |= NVME_TCP_HDR_DIGEST_ENABLE;
-@@ -978,6 +979,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- {
- 	struct nvme_tcp_data_pdu *data = &queue->pdu.data;
- 	struct nvmet_tcp_cmd *cmd;
-+	unsigned int plen;
- 
- 	if (likely(queue->nr_cmds)) {
- 		if (unlikely(data->ttag >= queue->nr_cmds)) {
-@@ -1001,7 +1003,16 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		return -EPROTO;
+--- a/drivers/target/target_core_file.c
++++ b/drivers/target/target_core_file.c
+@@ -338,11 +338,13 @@ static int fd_do_rw(struct se_cmd *cmd,
  	}
  
-+	plen = le32_to_cpu(data->hdr.plen);
- 	cmd->pdu_len = le32_to_cpu(data->data_length);
-+	if (unlikely(cmd->pdu_len != (plen - sizeof(*data)) ||
-+		     cmd->pdu_len == 0 ||
-+		     cmd->pdu_len > NVMET_TCP_MAXH2CDATA)) {
-+		pr_err("H2CData PDU len %u is invalid\n", cmd->pdu_len);
-+		/* FIXME: use proper transport errors */
-+		nvmet_tcp_fatal_error(queue);
-+		return -EPROTO;
+ 	iov_iter_bvec(&iter, is_write, bvec, sgl_nents, len);
+-	if (is_write)
++	if (is_write) {
++		file_start_write(fd);
+ 		ret = vfs_iter_write(fd, &iter, &pos, 0);
+-	else
++		file_end_write(fd);
++	} else {
+ 		ret = vfs_iter_read(fd, &iter, &pos, 0);
+-
 +	}
- 	cmd->pdu_recv = 0;
- 	nvmet_tcp_build_pdu_iovec(cmd);
- 	queue->cmd = cmd;
--- 
-2.43.0
-
+ 	if (is_write) {
+ 		if (ret < 0 || ret != data_length) {
+ 			pr_err("%s() write returned %d\n", __func__, ret);
+@@ -474,7 +476,9 @@ fd_execute_write_same(struct se_cmd *cmd
+ 	}
+ 
+ 	iov_iter_bvec(&iter, ITER_SOURCE, bvec, nolb, len);
++	file_start_write(fd_dev->fd_file);
+ 	ret = vfs_iter_write(fd_dev->fd_file, &iter, &pos, 0);
++	file_end_write(fd_dev->fd_file);
+ 
+ 	kfree(bvec);
+ 	if (ret < 0 || ret != len) {
 
 
 
