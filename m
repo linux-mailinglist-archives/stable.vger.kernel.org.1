@@ -1,111 +1,107 @@
-Return-Path: <stable+bounces-12347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B838C835BD3
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 08:41:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C091A835C3A
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 09:03:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FAF028327C
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 07:41:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47822B26606
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 08:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7FD16427;
-	Mon, 22 Jan 2024 07:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990151804D;
+	Mon, 22 Jan 2024 08:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N1uaOB34"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CWZwPJzs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B846B16410;
-	Mon, 22 Jan 2024 07:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555A020DDB;
+	Mon, 22 Jan 2024 08:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705909309; cv=none; b=oNauoG96/P4snj4Y30c1PnuFLCAkWY+4g3B+OtnwYaqX6KpKpiNFwbtCPqfzdPy/tc2oAhA5miX560rudAPwZ4MpREuc4IQrS+WH5fvnVWX6UfCw1dc4AoJnmArxmGlSjvtnU77pbULpze45FFdY1ex+JfoeemCmcTo8GKuzWS0=
+	t=1705910614; cv=none; b=IlxHtkldjL2HGVCbn8AiIR+p4OnIIZMQeSLowro0Il48Zt1Bxjf/KUKJqOZZkYBEaSr+ziScUd7VxN4qxv9T0QNujZcZB8L55HuBtVHNCsiSdme7jlSZg8egd/0NTNwYASEpYCylUX5X1ex4x6fEAz7tYp7ZX24s0WZiX2tIdZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705909309; c=relaxed/simple;
-	bh=bNCnQp0ND/Bhd8jsEriViBmV+pDcacpd6HBwU8PIoQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qt7rX/FWFSJrkHbfWz0jJi58j7jzfblFd2CYsokAHOuw8+EVpLt1eB+NvS03SgwKdUiPb65OgGvmq+ml/lLB0aM8+Bg90ciGZLISInxtGxGfZ5kVv+kp/nEW4seJ0UPpYcK/ZFT7xVhPSiTTS+N6qzBp+3BLXHUVz+TThBDHRHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N1uaOB34; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D970C43390;
-	Mon, 22 Jan 2024 07:41:49 +0000 (UTC)
+	s=arc-20240116; t=1705910614; c=relaxed/simple;
+	bh=EbfASx6rdYM/fLYLjwpVsRLzQ8vlWH2xIbbLy3j+3tM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OCZvwTYgK0C3RUgkw8lVe3Ida/kLxlE3dIOF/68lV9MthJih1RqpUYZ4BpoYElc56RF7YZwiAPVFEJVleA3BPQv+hDeIwCzCCvTcPPVsjCMrnNGLPEDGNymRnvLsYe8rWZ5yMcbCv3XENMN1HONMvClhQR6NWRo+qH+vuTINgy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CWZwPJzs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E5D4C433F1;
+	Mon, 22 Jan 2024 08:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705909309;
-	bh=bNCnQp0ND/Bhd8jsEriViBmV+pDcacpd6HBwU8PIoQ0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N1uaOB34gDFPl5VgCSojvtB3kJLoAuXALTXH8M8PXB48+q0RzPXLgeiOZWpGlithi
-	 qkFsXXxAmmVdkaObyI1c5dBA0XZvmGmQS5ZjOmsdELsxbqFHd/o1fgSu21/Qub1xzc
-	 4QWHiAXJlV+pgMtIWN7G/5uSZUkb79z6lK7eWfIQ2XLpScPtr6nsBxmRU7CgsiM53k
-	 7/JBW3HKmwzdTRZl5desoUu2GpDNwD1xNn8OXJWdeTOI5RU0VtPYgjRbAhIK/8fPR+
-	 VZs5/t9m/cS8yIQPJlHnAK9sS/D2ASIRHn2Oa9MbSZScGYOJOxE26iu3WP369JHIxT
-	 NEsU/yw3Jvv/w==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rRowR-0000000071i-3V5n;
-	Mon, 22 Jan 2024 08:41:59 +0100
-Date: Mon, 22 Jan 2024 08:41:59 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Banajit Goswami <bgoswami@quicinc.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4 2/4] ASoC: qcom: sc8280xp: limit speaker volumes
-Message-ID: <Za4cR90XoAaATq8X@hovoldconsulting.com>
-References: <20240119112420.7446-1-johan+linaro@kernel.org>
- <20240119112420.7446-3-johan+linaro@kernel.org>
- <d54d3640-49bf-4a2f-903b-4beeb0ebd56c@sirena.org.uk>
+	s=k20201202; t=1705910613;
+	bh=EbfASx6rdYM/fLYLjwpVsRLzQ8vlWH2xIbbLy3j+3tM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CWZwPJzsmVZOgK3YChPXH5NRZmsfEKYe7IwCl4TcaM2rMBfBh9lUOj9dC4x+uJj07
+	 qVFReVHCQYJvrrhaQxmtqk32z+3Yi2djZyJgKIl6GTBpqdNmVaPQ5efLoGP7lQGsEJ
+	 gwXomJoDvULTx67btE2gFB1fKNB5ygLwnIXUh48NYA78ZEFNczHxjciWkCPR4vpkkD
+	 0XLuShj6rY2lzT+t74k5GGpFa0HJrdaC0Jpm9tCB5SRU0xJiwdLtF50ME4vWrK30k3
+	 fMAk/bZBtBcGh0dkiRO6JumTf0829Ij5ERroQfhP+P0FefNuqWSs5SpUvrjvgpCIc9
+	 MjDf//lwlZw5A==
+From: Jiri Olsa <jolsa@kernel.org>
+To: stable@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH stable 5.15] bpf: Add --skip_encoding_btf_inconsistent_proto, --btf_gen_optimized to pahole flags for v1.25
+Date: Mon, 22 Jan 2024 09:03:29 +0100
+Message-ID: <20240122080329.856574-1-jolsa@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="6hBlhn91CWqsWzU0"
-Content-Disposition: inline
-In-Reply-To: <d54d3640-49bf-4a2f-903b-4beeb0ebd56c@sirena.org.uk>
+Content-Transfer-Encoding: 8bit
 
+From: Alan Maguire <alan.maguire@oracle.com>
 
---6hBlhn91CWqsWzU0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+commit 7b99f75942da332e3f4f865e55a10fec95a30d4f upstream.
 
-On Mon, Jan 22, 2024 at 12:03:55AM +0000, Mark Brown wrote:
-> On Fri, Jan 19, 2024 at 12:24:18PM +0100, Johan Hovold wrote:
-> > The UCM configuration for the Lenovo ThinkPad X13s has up until now
-> > been setting the speaker PA volume to the minimum -3 dB when enabling
-> > the speakers, but this does not prevent the user from increasing the
-> > volume further.
->=20
-> This doesn't apply against current code, please check and resend.
+[ small context conflict because of not backported --lang_exclude=rust
+option, which is not needed in 5.15 ]
 
-These patches are based on Linus's tree after merging the sound updates
-and I just verified that they apply cleanly to 6.8-rc1.
+v1.25 of pahole supports filtering out functions with multiple inconsistent
+function prototypes or optimized-out parameters from the BTF representation.
+These present problems because there is no additional info in BTF saying which
+inconsistent prototype matches which function instance to help guide attachment,
+and functions with optimized-out parameters can lead to incorrect assumptions
+about register contents.
 
-I couldn't find anything related in either linux-next or your ASoC tree
-that should interfere.
+So for now, filter out such functions while adding BTF representations for
+functions that have "."-suffixes (foo.isra.0) but not optimized-out parameters.
+This patch assumes that below linked changes land in pahole for v1.25.
 
-Could you please try again or let me know which branch to rebase on?
+Issues with pahole filtering being too aggressive in removing functions
+appear to be resolved now, but CI and further testing will confirm.
 
-Johan
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20230510130241.1696561-1-alan.maguire@oracle.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+---
+ scripts/pahole-flags.sh | 3 +++
+ 1 file changed, 3 insertions(+)
 
---6hBlhn91CWqsWzU0
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/scripts/pahole-flags.sh b/scripts/pahole-flags.sh
+index d38fa6d84d62..5c724f697100 100755
+--- a/scripts/pahole-flags.sh
++++ b/scripts/pahole-flags.sh
+@@ -20,5 +20,8 @@ fi
+ if [ "${pahole_ver}" -ge "124" ]; then
+ 	extra_paholeopt="${extra_paholeopt} --skip_encoding_btf_enum64"
+ fi
++if [ "${pahole_ver}" -ge "125" ]; then
++	extra_paholeopt="${extra_paholeopt} --skip_encoding_btf_inconsistent_proto --btf_gen_optimized"
++fi
+ 
+ echo ${extra_paholeopt}
+-- 
+2.43.0
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQQHbPq+cpGvN/peuzMLxc3C7H1lCAUCZa4cQwAKCRALxc3C7H1l
-CIxuAP40ZX5S3hcjEvbXjMLdYeKr/Nckfcn4BA2prKLZ4aqX+wD+Nete6gxhBX0l
-Ms5y+h/uAsuqbIqbgFwhpapBjxXd+w0=
-=Ejix
------END PGP SIGNATURE-----
-
---6hBlhn91CWqsWzU0--
 
