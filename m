@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE3B838038
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC81F8384B2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E12671C2962F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65A02299D74
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174BD65BA4;
-	Tue, 23 Jan 2024 00:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B0E745F6;
+	Tue, 23 Jan 2024 02:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnbKn7OL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oEcBXHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA75765BA2;
-	Tue, 23 Jan 2024 00:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938EF745EF;
+	Tue, 23 Jan 2024 02:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971594; cv=none; b=jb4BO1FWYak+TwD5CPcz9iD2zZ3ECpo2yvt/ngIV2+qTjRWZj03ei0d53Tc9+sRhtL+unu35kFOTpUCguIjMZtE3vANRzN1WyaIihPRAqDv67FOBvyHy4736ASGIf1LrB8xmIHJ7yLgcqUtT2S8YKINXGC7OsW79iYcj9b+W6es=
+	t=1705975461; cv=none; b=nGVQpcmcwqj0blLt9jIIjYAAf+JNswCDGJdnLEVye0Fg4K8FFKac/Vde33JyJpEhELEGPzF5D51tBcfkLaun2FZEYfFijHL+ojOg7xQ8pf5EZCUMJ2A1wX6IhdrMLHpYheW8ehIaG0UBL/RSHZzfwS4I6Tu4G+/pWqvEXr+k8k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971594; c=relaxed/simple;
-	bh=atVIhm+JIkYatXpXK0HmXMnNEH4k7x242RbVOXrMjVo=;
+	s=arc-20240116; t=1705975461; c=relaxed/simple;
+	bh=7ZUTIbTkyKZozp4L8flRsZSYhZ7cJJgtsGSC5671vdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MKNIQlX30/tazMdWam+fKkclABZyKe8hxmOh9MVmXfDhx6LSzNWF+AElcy1xH8W8EZe3sNF8DhdT6It1YYGV1bRMY1fYeE2Doo8HkKCrEfCX7xVTTsjFBfm/LSvEkWXtNp1EvA4z+2enqjqHBSB8Z/M5r4yeFO+GGnv+ZigAOAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnbKn7OL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD96C433F1;
-	Tue, 23 Jan 2024 00:59:54 +0000 (UTC)
+	 MIME-Version; b=EwvPDi4bXAWIoYNNCIk+jL3ow+hIYYO3956N4FrKwf6VgX/cVEnhKe4RnAWhnhkAaFD9kW3/uhKjIZMCgToNVZpGe8Aj2qY9Pfbt1ZIBC2WgMo1mnNQfHezDPTyy9wN3N7P46KSKa/fljhbCwMuAO3+0mnukkXn1sBwIOEqQu04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oEcBXHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2C4C433C7;
+	Tue, 23 Jan 2024 02:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971594;
-	bh=atVIhm+JIkYatXpXK0HmXMnNEH4k7x242RbVOXrMjVo=;
+	s=korg; t=1705975461;
+	bh=7ZUTIbTkyKZozp4L8flRsZSYhZ7cJJgtsGSC5671vdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dnbKn7OLxwBZRT4WNNC8EhrpKk9uSUcu+gC8NnpI2Rxdjoe7rCBmWx/+xSxlU1/vb
-	 EbsINiebf08xe+pYCSORyQislCjHdlC0utS76lVWUzaEYJWDaFnV1St+D2FEQMoCbg
-	 r/FQ0UR1jXN1XJl72IHjeDRgPxSR11fAwQzRURJg=
+	b=1oEcBXHWqECBB0o4nrmZyXFiKCW1OlxS03ZZ8+yxQQLd1jJySucNQcXHbXF6ITZOq
+	 UJO/ZCK6WpmEpHnvMmuUthjnxtnaylGPoHPPPzUhsD9XKBEslCKSFPTNiN8/qn+33M
+	 BGx5iyfSSwdWxz5nvZ7lxBQ8jp48+TGppsN+Qpfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.1 276/417] serial: omap: do not override settings for RS485 support
+	Nam Cao <namcao@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.6 393/583] fbdev: flush deferred IO before closing
 Date: Mon, 22 Jan 2024 15:57:24 -0800
-Message-ID: <20240122235801.405706173@linuxfoundation.org>
+Message-ID: <20240122235824.006660297@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,109 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Nam Cao <namcao@linutronix.de>
 
-commit 51f93776b84dee23e44a7be880736669a01cec2b upstream.
+commit 33cd6ea9c0673517cdb06ad5c915c6f22e9615fc upstream.
 
-The drivers RS485 support is deactivated if there is no RTS GPIO available.
-This is done by nullifying the ports rs485_supported struct. After that
-however the settings in serial_omap_rs485_supported are assigned to the
-same structure unconditionally, which results in an unintended reactivation
-of RS485 support.
+When framebuffer gets closed, the queued deferred IO gets cancelled. This
+can cause some last display data to vanish. This is problematic for users
+who send a still image to the framebuffer, then close the file: the image
+may never appear.
 
-Fix this by moving the assignment to the beginning of
-serial_omap_probe_rs485() and thus before uart_get_rs485_mode() gets
-called.
+To ensure none of display data get lost, flush the queued deferred IO
+first before closing.
 
-Also replace the assignment of rs485_config() to have the complete RS485
-setup in one function.
+Another possible solution is to delete the cancel_delayed_work_sync()
+instead. The difference is that the display may appear some time after
+closing. However, the clearing of page mapping after this needs to be
+removed too, because the page mapping is used by the deferred work. It is
+not completely obvious whether it is okay to not clear the page mapping.
+For a patch intended for stable trees, go with the simple and obvious
+solution.
 
-Fixes: e2752ae3cfc9 ("serial: omap: Disallow RS-485 if rts-gpio is not specified")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240103061818.564-7-l.sanfilippo@kunbus.com
+Fixes: 60b59beafba8 ("fbdev: mm: Deferred IO support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/omap-serial.c |   27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ drivers/video/fbdev/core/fb_defio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/omap-serial.c
-+++ b/drivers/tty/serial/omap-serial.c
-@@ -1512,6 +1512,13 @@ static struct omap_uart_port_info *of_ge
- 	return omap_up_info;
- }
+--- a/drivers/video/fbdev/core/fb_defio.c
++++ b/drivers/video/fbdev/core/fb_defio.c
+@@ -313,7 +313,7 @@ static void fb_deferred_io_lastclose(str
+ 	struct page *page;
+ 	int i;
  
-+static const struct serial_rs485 serial_omap_rs485_supported = {
-+	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND |
-+		 SER_RS485_RX_DURING_TX,
-+	.delay_rts_before_send = 1,
-+	.delay_rts_after_send = 1,
-+};
-+
- static int serial_omap_probe_rs485(struct uart_omap_port *up,
- 				   struct device *dev)
- {
-@@ -1526,6 +1533,9 @@ static int serial_omap_probe_rs485(struc
- 	if (!np)
- 		return 0;
+-	cancel_delayed_work_sync(&info->deferred_work);
++	flush_delayed_work(&info->deferred_work);
  
-+	up->port.rs485_config = serial_omap_config_rs485;
-+	up->port.rs485_supported = serial_omap_rs485_supported;
-+
- 	ret = uart_get_rs485_mode(&up->port);
- 	if (ret)
- 		return ret;
-@@ -1560,13 +1570,6 @@ static int serial_omap_probe_rs485(struc
- 	return 0;
- }
- 
--static const struct serial_rs485 serial_omap_rs485_supported = {
--	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND |
--		 SER_RS485_RX_DURING_TX,
--	.delay_rts_before_send = 1,
--	.delay_rts_after_send = 1,
--};
--
- static int serial_omap_probe(struct platform_device *pdev)
- {
- 	struct omap_uart_port_info *omap_up_info = dev_get_platdata(&pdev->dev);
-@@ -1634,17 +1637,11 @@ static int serial_omap_probe(struct plat
- 		dev_info(up->port.dev, "no wakeirq for uart%d\n",
- 			 up->port.line);
- 
--	ret = serial_omap_probe_rs485(up, &pdev->dev);
--	if (ret < 0)
--		goto err_rs485;
--
- 	sprintf(up->name, "OMAP UART%d", up->port.line);
- 	up->port.mapbase = mem->start;
- 	up->port.membase = base;
- 	up->port.flags = omap_up_info->flags;
- 	up->port.uartclk = omap_up_info->uartclk;
--	up->port.rs485_config = serial_omap_config_rs485;
--	up->port.rs485_supported = serial_omap_rs485_supported;
- 	if (!up->port.uartclk) {
- 		up->port.uartclk = DEFAULT_CLK_SPEED;
- 		dev_warn(&pdev->dev,
-@@ -1652,6 +1649,10 @@ static int serial_omap_probe(struct plat
- 			 DEFAULT_CLK_SPEED);
- 	}
- 
-+	ret = serial_omap_probe_rs485(up, &pdev->dev);
-+	if (ret < 0)
-+		goto err_rs485;
-+
- 	up->latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
- 	up->calc_latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
- 	cpu_latency_qos_add_request(&up->pm_qos_request, up->latency);
+ 	/* clear out the mapping that we setup */
+ 	for (i = 0 ; i < info->fix.smem_len; i += PAGE_SIZE) {
 
 
 
