@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-12856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954FE8378AD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D40837A46
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DB12B24B47
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 335461F2878C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829F5372;
-	Tue, 23 Jan 2024 00:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A9812BEB0;
+	Tue, 23 Jan 2024 00:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjW4QSdU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqImr4A2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401ADDDB5;
-	Tue, 23 Jan 2024 00:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F0E12A17F;
+	Tue, 23 Jan 2024 00:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968191; cv=none; b=Qh8UaHI5afsKIC9DsnUonSDK1I+f0Ynl2EaYGAc7Aq2+A20idA29nINKVMS1wfmorlY/R6ty9b6h93Q7g/g+0Br2Lj4BdcdtqXssJN0mdoqlBW7VxtvOoOtRfwkk/WoA3/6X/2qJE5HeZ5jqsFC5MHq+3WfH+FfYF5jUjVsScNs=
+	t=1705968858; cv=none; b=MaS6cprIxcrLwe9vSrbH47Fv90/pfjPE+bxi7aLhwz5mQrrh9h/rVRptqXqzzd/GyonOXrqD+RrzvG8C5kQzwN8ehc7oO56MpFZYFEz2g7Q7LqhfIRPVfm8mAd2Z03yylfeEOZ7Nt/wuqX2g0+FZ2ROrgGtSI/BnuDJX8KMor7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968191; c=relaxed/simple;
-	bh=ZKMJGGsdUu7FpyQxsyLgl5t3/7hO0kwGR5On6mTJhVM=;
+	s=arc-20240116; t=1705968858; c=relaxed/simple;
+	bh=GQkJRM7bjmhhc63d2c8GTbkty8DSKvKUHhlgR+SySv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gfHjlS3kjuFS3oaSS9D0wCXRJA/zGqgT27hkib0dSZNBk4zmFeyp8A2ICC22jgiw4kOQOYfrrwBxxe7Hocl8F6jq4rtz1GO/E35essRSIH02H12AlDOGQDDFwVjOOoP2D/5aZVvp6YjTTljY1Wwl7W/I7Wch5glUfkqAX2OkFXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjW4QSdU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1869C433F1;
-	Tue, 23 Jan 2024 00:03:10 +0000 (UTC)
+	 MIME-Version; b=d5Y5bQQQUyBu+LRsLk3RiRtcBVloQDt+NCVQiUvFqmr/SCUsrXxCxA/zV73AjojTRQARrYy8czofdzkK7/P3VbRjqzwgdTHeEjzwxs1yWNFKmpdkcD3WnBOc42gNDsXKPdC3o97N09x3w4VA7Kd+JdTNA+DsvqVdT5U/aoXgrpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqImr4A2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6140C433C7;
+	Tue, 23 Jan 2024 00:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968191;
-	bh=ZKMJGGsdUu7FpyQxsyLgl5t3/7hO0kwGR5On6mTJhVM=;
+	s=korg; t=1705968858;
+	bh=GQkJRM7bjmhhc63d2c8GTbkty8DSKvKUHhlgR+SySv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OjW4QSdUwFopZ/P4s+AnMSoWqmf9E0TE9eyQEgpmwQjT6qUkOkpdHZWVBuQ5NC7Vy
-	 3rEAeYqcgxblcwpoEIJBV5DvCsMHoT11OuWrs+DpWIra/300wqeCcBTh8Jeer5jp4h
-	 95zmud3NyOZ6NHntSCGDJyzepzKJ7CU1Xa2gFL1k=
+	b=RqImr4A2xf5t8mdaSfLzEKF252eETbBL7Oyojg7NraZmZkcEcjkkX3luf85HIjKqs
+	 riMMWv9lWFrcmP4Vwi4IFWU4VBo9wCRZY2wDjMfYD4PhbcVwqztak/D0oBe8wDNVlk
+	 PHnfzjDsUwfEezvCxjP2YaLVHizIpgA8pPTh6QYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Kiryushin <kiryushin@ancud.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 039/148] ACPI: LPIT: Avoid u32 multiplication overflow
+Subject: [PATCH 5.4 065/194] crypto: sahara - remove FLAGS_NEW_KEY logic
 Date: Mon, 22 Jan 2024 15:56:35 -0800
-Message-ID: <20240122235713.992727729@linuxfoundation.org>
+Message-ID: <20240122235721.997112514@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Kiryushin <kiryushin@ancud.ru>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 56d2eeda87995245300836ee4dbd13b002311782 ]
+[ Upstream commit 8fd183435728b139248a77978ea3732039341779 ]
 
-In lpit_update_residency() there is a possibility of overflow
-in multiplication, if tsc_khz is large enough (> UINT_MAX/1000).
+Remove the FLAGS_NEW_KEY logic as it has the following issues:
+- the wrong key may end up being used when there are multiple data streams:
+       t1            t2
+    setkey()
+    encrypt()
+                   setkey()
+                   encrypt()
 
-Change multiplication to mul_u32_u32().
+    encrypt() <--- key from t2 is used
+- switching between encryption and decryption with the same key is not
+  possible, as the hdr flags are only updated when a new setkey() is
+  performed
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+With this change, the key is always sent along with the cryptdata when
+performing encryption/decryption operations.
 
-Fixes: eeb2d80d502a ("ACPI / LPIT: Add Low Power Idle Table (LPIT) support")
-Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_lpit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/sahara.c | 34 +++++++++++++---------------------
+ 1 file changed, 13 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
-index e43cb71b6972..c39c56904c52 100644
---- a/drivers/acpi/acpi_lpit.c
-+++ b/drivers/acpi/acpi_lpit.c
-@@ -106,7 +106,7 @@ static void lpit_update_residency(struct lpit_residency_info *info,
- 				 struct acpi_lpit_native *lpit_native)
- {
- 	info->frequency = lpit_native->counter_frequency ?
--				lpit_native->counter_frequency : tsc_khz * 1000;
-+				lpit_native->counter_frequency : mul_u32_u32(tsc_khz, 1000U);
- 	if (!info->frequency)
- 		info->frequency = 1;
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 8ac8ec6decd5..e44dd34f8559 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -43,7 +43,6 @@
+ #define FLAGS_MODE_MASK		0x000f
+ #define FLAGS_ENCRYPT		BIT(0)
+ #define FLAGS_CBC		BIT(1)
+-#define FLAGS_NEW_KEY		BIT(3)
+ 
+ #define SAHARA_HDR_BASE			0x00800000
+ #define SAHARA_HDR_SKHA_ALG_AES	0
+@@ -141,8 +140,6 @@ struct sahara_hw_link {
+ };
+ 
+ struct sahara_ctx {
+-	unsigned long flags;
+-
+ 	/* AES-specific context */
+ 	int keylen;
+ 	u8 key[AES_KEYSIZE_128];
+@@ -446,26 +443,22 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
+ 	int i, j;
+ 	int idx = 0;
+ 
+-	/* Copy new key if necessary */
+-	if (ctx->flags & FLAGS_NEW_KEY) {
+-		memcpy(dev->key_base, ctx->key, ctx->keylen);
+-		ctx->flags &= ~FLAGS_NEW_KEY;
++	memcpy(dev->key_base, ctx->key, ctx->keylen);
+ 
+-		if (dev->flags & FLAGS_CBC) {
+-			dev->hw_desc[idx]->len1 = AES_BLOCK_SIZE;
+-			dev->hw_desc[idx]->p1 = dev->iv_phys_base;
+-		} else {
+-			dev->hw_desc[idx]->len1 = 0;
+-			dev->hw_desc[idx]->p1 = 0;
+-		}
+-		dev->hw_desc[idx]->len2 = ctx->keylen;
+-		dev->hw_desc[idx]->p2 = dev->key_phys_base;
+-		dev->hw_desc[idx]->next = dev->hw_phys_desc[1];
++	if (dev->flags & FLAGS_CBC) {
++		dev->hw_desc[idx]->len1 = AES_BLOCK_SIZE;
++		dev->hw_desc[idx]->p1 = dev->iv_phys_base;
++	} else {
++		dev->hw_desc[idx]->len1 = 0;
++		dev->hw_desc[idx]->p1 = 0;
++	}
++	dev->hw_desc[idx]->len2 = ctx->keylen;
++	dev->hw_desc[idx]->p2 = dev->key_phys_base;
++	dev->hw_desc[idx]->next = dev->hw_phys_desc[1];
++	dev->hw_desc[idx]->hdr = sahara_aes_key_hdr(dev);
+ 
+-		dev->hw_desc[idx]->hdr = sahara_aes_key_hdr(dev);
++	idx++;
+ 
+-		idx++;
+-	}
+ 
+ 	dev->nb_in_sg = sg_nents_for_len(dev->in_sg, dev->total);
+ 	if (dev->nb_in_sg < 0) {
+@@ -608,7 +601,6 @@ static int sahara_aes_setkey(struct crypto_ablkcipher *tfm, const u8 *key,
+ 	/* SAHARA only supports 128bit keys */
+ 	if (keylen == AES_KEYSIZE_128) {
+ 		memcpy(ctx->key, key, keylen);
+-		ctx->flags |= FLAGS_NEW_KEY;
+ 		return 0;
+ 	}
  
 -- 
 2.43.0
