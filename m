@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE20E837FC0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9ADA838462
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7347A293948
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 987152996FE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF74512AAFA;
-	Tue, 23 Jan 2024 00:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823806D1BF;
+	Tue, 23 Jan 2024 02:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlE2rJK0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gG75G4bP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9B512AAF4;
-	Tue, 23 Jan 2024 00:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4165E6D1BC;
+	Tue, 23 Jan 2024 02:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971334; cv=none; b=r9eXzus02CQ/6oD542JLrv+3NmRs50H2+KOjOgPgpO06123X0/5hhpZVPgWKSqA35oTnjSPauXwKYFd4Y0BKr3MVf3yape0SGA7QPv2WeQ1qAaHovEGsNjtIjhj0E0joCvHumfSeL7+Tm++nZ++glLgjQ2JGuUq2v1O7n+Ey/ug=
+	t=1705975381; cv=none; b=FsK4iW3SVdlDJe7HDFLLcU1DxuaNZSO9ZdxNPB1CPqTvvfqnODxZjH8Z+SUHlFZdoVNjwEFFq7Ngvk1BqXJ4y79FuCC4MLE0Zx/2fdg6sCkMESvaLcGF0ztDRcJbs2bM/yO6mDAMysGrnfzgi75Fru+tkgKOCuqShjdesLHse3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971334; c=relaxed/simple;
-	bh=u7NeRdSgIQOCox0zX4WBOZ83aoZYA12vcMRVRlv4uIc=;
+	s=arc-20240116; t=1705975381; c=relaxed/simple;
+	bh=U19JMVy364AvbYHPxmL52TT8CvNcIy9DGYNjc8Ps6+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jUTC0NptouUE6zgQDDXK8mTBrV83HlGCTvHH/f1t2ggw+t7FwnyYKyJulrcLlDJY2LUZRMJNuyt//mEaNhj88brxwWM9mCdnbRbt2Xww0Vy0XeiVklhzJmM49DT24DY9xa/A54LgoGjk6FzPJB3t2P7VcHlmMiJZQtIu89RJdd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlE2rJK0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75E1C43390;
-	Tue, 23 Jan 2024 00:55:33 +0000 (UTC)
+	 MIME-Version; b=kqvnjQMGLzv5nOn2C5LlAuz8YW1bsiGkaLHWaBDpJwzw6MZmFOkausFxxdUw6HNQ7KBXSxSJDKPdcUC6V/8SsROo5/uBMdTFYPw6pDl8TkWrLsKyts8qCqKVPLU8H/UA78kyriYP5OhS2bkblr+lB5NLPKnB9b2hpTE8emBFLV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gG75G4bP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38BBC43390;
+	Tue, 23 Jan 2024 02:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971334;
-	bh=u7NeRdSgIQOCox0zX4WBOZ83aoZYA12vcMRVRlv4uIc=;
+	s=korg; t=1705975381;
+	bh=U19JMVy364AvbYHPxmL52TT8CvNcIy9DGYNjc8Ps6+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rlE2rJK0EAVoCKL/6qo4lDsEEDdvrUJKsP/nJU4sWrhZbqKuJj1G0gcqgLX6H4cVA
-	 SKBE0+LlWhqrSW+XjH9+yJkfxChEwHgg5wAKUubz3sBNek7R/AbgF6ApGYuHD0It4x
-	 YfHt0tz2py3KS5LeeBiBZ3+WpWnhJGKT2DhFmCmM=
+	b=gG75G4bPZ1RejebR83pPSelnWDB20JHvi3QPQRosSOA+7j5b9IRg/ronEl9mOO8A1
+	 8lqylqL1cKupm0INXsdnbtzH8/Hyn9g9XdN+dXRHKpudzyONU66/Wg9o6nSEwS+UVF
+	 bVHTz3gB+Hk2puMs7i2zz1huKiBqTXj+SiqszVyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Guillaume Ranquet <granquet@baylibre.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 225/417] drm/mediatek: dp: Add phy_mtk_dp module as pre-dependency
+	stable <stable@kernel.org>,
+	Andrea Righi <andrea.righi@canonical.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.6 342/583] kernfs: convert kernfs_idr_lock to an irq safe raw spinlock
 Date: Mon, 22 Jan 2024 15:56:33 -0800
-Message-ID: <20240122235759.707761441@linuxfoundation.org>
+Message-ID: <20240122235822.497340952@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +60,206 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Andrea Righi <andrea.righi@canonical.com>
 
-[ Upstream commit c8048dd0b07df68724805254b9e994d99e9a7af4 ]
+commit c312828c37a72fe2d033a961c47c227b0767e9f8 upstream.
 
-The mtk_dp driver registers a phy device which is handled by the
-phy_mtk_dp driver and assumes that the phy probe will complete
-synchronously, proceeding to make use of functionality exposed by that
-driver right away. This assumption however is false when the phy driver
-is built as a module, causing the mtk_dp driver to fail probe in this
-case.
+bpf_cgroup_from_id() is basically a wrapper to cgroup_get_from_id(),
+that is relying on kernfs to determine the right cgroup associated to
+the target id.
 
-Add the phy_mtk_dp module as a pre-dependency to the mtk_dp module to
-ensure the phy module has been loaded before the dp, so that the phy
-probe happens synchrounously and the mtk_dp driver can probe
-successfully even with the phy driver built as a module.
+As a kfunc, it has the potential to be attached to any function through
+BPF, particularly in contexts where certain locks are held.
 
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Guillaume Ranquet <granquet@baylibre.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20231121142938.460846-1-nfraprado@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, kernfs is not using an irq safe spinlock for kernfs_idr_lock,
+that means any kernfs function that is acquiring this lock can be
+interrupted and potentially hit bpf_cgroup_from_id() in the process,
+triggering a deadlock.
+
+For example, it is really easy to trigger a lockdep splat between
+kernfs_idr_lock and rq->_lock, attaching a small BPF program to
+__set_cpus_allowed_ptr_locked() that just calls bpf_cgroup_from_id():
+
+ =====================================================
+ WARNING: HARDIRQ-safe -> HARDIRQ-unsafe lock order detected
+ 6.7.0-rc7-virtme #5 Not tainted
+ -----------------------------------------------------
+ repro/131 [HC0[0]:SC0[0]:HE0:SE1] is trying to acquire:
+ ffffffffb2dc4578 (kernfs_idr_lock){+.+.}-{2:2}, at: kernfs_find_and_get_node_by_id+0x1d/0x80
+
+ and this task is already holding:
+ ffff911cbecaf218 (&rq->__lock){-.-.}-{2:2}, at: task_rq_lock+0x50/0xc0
+ which would create a new lock dependency:
+  (&rq->__lock){-.-.}-{2:2} -> (kernfs_idr_lock){+.+.}-{2:2}
+
+ but this new dependency connects a HARDIRQ-irq-safe lock:
+  (&rq->__lock){-.-.}-{2:2}
+
+ ... which became HARDIRQ-irq-safe at:
+   lock_acquire+0xbf/0x2b0
+   _raw_spin_lock_nested+0x2e/0x40
+   scheduler_tick+0x5d/0x170
+   update_process_times+0x9c/0xb0
+   tick_periodic+0x27/0xe0
+   tick_handle_periodic+0x24/0x70
+   __sysvec_apic_timer_interrupt+0x64/0x1a0
+   sysvec_apic_timer_interrupt+0x6f/0x80
+   asm_sysvec_apic_timer_interrupt+0x1a/0x20
+   memcpy+0xc/0x20
+   arch_dup_task_struct+0x15/0x30
+   copy_process+0x1ce/0x1eb0
+   kernel_clone+0xac/0x390
+   kernel_thread+0x6f/0xa0
+   kthreadd+0x199/0x230
+   ret_from_fork+0x31/0x50
+   ret_from_fork_asm+0x1b/0x30
+
+ to a HARDIRQ-irq-unsafe lock:
+  (kernfs_idr_lock){+.+.}-{2:2}
+
+ ... which became HARDIRQ-irq-unsafe at:
+ ...
+   lock_acquire+0xbf/0x2b0
+   _raw_spin_lock+0x30/0x40
+   __kernfs_new_node.isra.0+0x83/0x280
+   kernfs_create_root+0xf6/0x1d0
+   sysfs_init+0x1b/0x70
+   mnt_init+0xd9/0x2a0
+   vfs_caches_init+0xcf/0xe0
+   start_kernel+0x58a/0x6a0
+   x86_64_start_reservations+0x18/0x30
+   x86_64_start_kernel+0xc5/0xe0
+   secondary_startup_64_no_verify+0x178/0x17b
+
+ other info that might help us debug this:
+
+  Possible interrupt unsafe locking scenario:
+
+        CPU0                    CPU1
+        ----                    ----
+   lock(kernfs_idr_lock);
+                                local_irq_disable();
+                                lock(&rq->__lock);
+                                lock(kernfs_idr_lock);
+   <Interrupt>
+     lock(&rq->__lock);
+
+  *** DEADLOCK ***
+
+Prevent this deadlock condition converting kernfs_idr_lock to a raw irq
+safe spinlock.
+
+The performance impact of this change should be negligible and it also
+helps to prevent similar deadlock conditions with any other subsystems
+that may depend on kernfs.
+
+Fixes: 332ea1f697be ("bpf: Add bpf_cgroup_from_id() kfunc")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20231229074916.53547-1-andrea.righi@canonical.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/kernfs/dir.c |   23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index 2c850b6d945b..519e23a2a017 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -2669,3 +2669,4 @@ MODULE_AUTHOR("Markus Schneider-Pargmann <msp@baylibre.com>");
- MODULE_AUTHOR("Bo-Chen Chen <rex-bc.chen@mediatek.com>");
- MODULE_DESCRIPTION("MediaTek DisplayPort Driver");
- MODULE_LICENSE("GPL");
-+MODULE_SOFTDEP("pre: phy_mtk_dp");
--- 
-2.43.0
-
+--- a/fs/kernfs/dir.c
++++ b/fs/kernfs/dir.c
+@@ -27,7 +27,7 @@ static DEFINE_RWLOCK(kernfs_rename_lock)
+  */
+ static DEFINE_SPINLOCK(kernfs_pr_cont_lock);
+ static char kernfs_pr_cont_buf[PATH_MAX];	/* protected by pr_cont_lock */
+-static DEFINE_SPINLOCK(kernfs_idr_lock);	/* root->ino_idr */
++static DEFINE_RAW_SPINLOCK(kernfs_idr_lock);	/* root->ino_idr */
+ 
+ #define rb_to_kn(X) rb_entry((X), struct kernfs_node, rb)
+ 
+@@ -539,6 +539,7 @@ void kernfs_put(struct kernfs_node *kn)
+ {
+ 	struct kernfs_node *parent;
+ 	struct kernfs_root *root;
++	unsigned long flags;
+ 
+ 	if (!kn || !atomic_dec_and_test(&kn->count))
+ 		return;
+@@ -563,9 +564,9 @@ void kernfs_put(struct kernfs_node *kn)
+ 		simple_xattrs_free(&kn->iattr->xattrs, NULL);
+ 		kmem_cache_free(kernfs_iattrs_cache, kn->iattr);
+ 	}
+-	spin_lock(&kernfs_idr_lock);
++	raw_spin_lock_irqsave(&kernfs_idr_lock, flags);
+ 	idr_remove(&root->ino_idr, (u32)kernfs_ino(kn));
+-	spin_unlock(&kernfs_idr_lock);
++	raw_spin_unlock_irqrestore(&kernfs_idr_lock, flags);
+ 	kmem_cache_free(kernfs_node_cache, kn);
+ 
+ 	kn = parent;
+@@ -607,6 +608,7 @@ static struct kernfs_node *__kernfs_new_
+ 	struct kernfs_node *kn;
+ 	u32 id_highbits;
+ 	int ret;
++	unsigned long irqflags;
+ 
+ 	name = kstrdup_const(name, GFP_KERNEL);
+ 	if (!name)
+@@ -617,13 +619,13 @@ static struct kernfs_node *__kernfs_new_
+ 		goto err_out1;
+ 
+ 	idr_preload(GFP_KERNEL);
+-	spin_lock(&kernfs_idr_lock);
++	raw_spin_lock_irqsave(&kernfs_idr_lock, irqflags);
+ 	ret = idr_alloc_cyclic(&root->ino_idr, kn, 1, 0, GFP_ATOMIC);
+ 	if (ret >= 0 && ret < root->last_id_lowbits)
+ 		root->id_highbits++;
+ 	id_highbits = root->id_highbits;
+ 	root->last_id_lowbits = ret;
+-	spin_unlock(&kernfs_idr_lock);
++	raw_spin_unlock_irqrestore(&kernfs_idr_lock, irqflags);
+ 	idr_preload_end();
+ 	if (ret < 0)
+ 		goto err_out2;
+@@ -659,9 +661,9 @@ static struct kernfs_node *__kernfs_new_
+ 	return kn;
+ 
+  err_out3:
+-	spin_lock(&kernfs_idr_lock);
++	raw_spin_lock_irqsave(&kernfs_idr_lock, irqflags);
+ 	idr_remove(&root->ino_idr, (u32)kernfs_ino(kn));
+-	spin_unlock(&kernfs_idr_lock);
++	raw_spin_unlock_irqrestore(&kernfs_idr_lock, irqflags);
+  err_out2:
+ 	kmem_cache_free(kernfs_node_cache, kn);
+  err_out1:
+@@ -702,8 +704,9 @@ struct kernfs_node *kernfs_find_and_get_
+ 	struct kernfs_node *kn;
+ 	ino_t ino = kernfs_id_ino(id);
+ 	u32 gen = kernfs_id_gen(id);
++	unsigned long flags;
+ 
+-	spin_lock(&kernfs_idr_lock);
++	raw_spin_lock_irqsave(&kernfs_idr_lock, flags);
+ 
+ 	kn = idr_find(&root->ino_idr, (u32)ino);
+ 	if (!kn)
+@@ -727,10 +730,10 @@ struct kernfs_node *kernfs_find_and_get_
+ 	if (unlikely(!__kernfs_active(kn) || !atomic_inc_not_zero(&kn->count)))
+ 		goto err_unlock;
+ 
+-	spin_unlock(&kernfs_idr_lock);
++	raw_spin_unlock_irqrestore(&kernfs_idr_lock, flags);
+ 	return kn;
+ err_unlock:
+-	spin_unlock(&kernfs_idr_lock);
++	raw_spin_unlock_irqrestore(&kernfs_idr_lock, flags);
+ 	return NULL;
+ }
+ 
 
 
 
