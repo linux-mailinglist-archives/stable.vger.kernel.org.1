@@ -1,55 +1,65 @@
-Return-Path: <stable+bounces-15293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D10B78384AC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 890C8837D84
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 808B0299CDB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 402061F221A6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E03745DD;
-	Tue, 23 Jan 2024 02:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A291751003;
+	Tue, 23 Jan 2024 00:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYCRiARy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7q0//p0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB7C745E1;
-	Tue, 23 Jan 2024 02:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619E94E1D8;
+	Tue, 23 Jan 2024 00:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975454; cv=none; b=DB7hFuPzZmwZ9cPhb2cv5SNkilCgQWGRRqHxVIbJrHN6Grr2ps07EIRNDZLLIsthez8OkKDqjVRXWn0kpOGY5PVFsOG0TTQv2GUhGHYH7A15csg2Ws6YbVvFfvcwgY5pwj4pSkOxkPiXsJV6a9xt96+OB+Hx6GR8JPLrSqlSEHk=
+	t=1705969999; cv=none; b=BHO8QN3/eqo9o88PVCmwIQvOGjBfsR1WQ0+fv6IL55YVl0rkbIXkynRlJmbNFOGkBgkpmPjVuRb3bTo5jxBMQyeSW3cnoCEubindo8/oUXhp2rNGFSiJnD8TZZFGZ5zM2YpAm+D7m+F8lUM7QzYD9RTJsbnDd+3y1tFy2APgqd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975454; c=relaxed/simple;
-	bh=9NWSzAI1qwvHHsTEfThqlC6Fd8faA9ltHTbQjI5kggA=;
+	s=arc-20240116; t=1705969999; c=relaxed/simple;
+	bh=fLymaInPtAAwgoeZ5VsdNsz2ncoVA5YtzUPECDyXJiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i8qYBl8B9a056/ZWGo4GEW19J++/z7xFw1zc/9qWFKUCD4JbbfO67kKCFLCc6Yjdjm+SM1qQgvwM30GgvZROcl4sCdmyQlVSDw28mN/bpcbG9+UY426SkqwEzzVDtitY+sMY3eTqewv9OJNq4RXBRfhqg/WbFj5GSLs4TlsxU9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYCRiARy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC5CC43390;
-	Tue, 23 Jan 2024 02:04:14 +0000 (UTC)
+	 MIME-Version; b=ManCQGqahdLWrpeiAnkVAxLPuz1FHWNdMQIz8z9MwWI99qfG3exwlQK4s2+FvQMJ20RDHmrpbkKL9EHBq1Nkq5wmAMczdPc14mQ9HmIO5AX69jKxT9pqR7/Z4Aar4ynrEyKn+k6kuhIinkr95mbJH0T+MoXsOySWRYqQJfI+hSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7q0//p0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25B9C433C7;
+	Tue, 23 Jan 2024 00:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975454;
-	bh=9NWSzAI1qwvHHsTEfThqlC6Fd8faA9ltHTbQjI5kggA=;
+	s=korg; t=1705969999;
+	bh=fLymaInPtAAwgoeZ5VsdNsz2ncoVA5YtzUPECDyXJiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TYCRiARyCNcXfUzdG97APabu0cpDLgX1thAbUs02VPSXyro4k1eztPB+bH/P7cy1l
-	 sfV/cPbB2DczLv91jGP2olKNHyVcthAqRf5/Q//FmaTJfPw2LCRtuXM+Y7LeAILYft
-	 WaqcCrDrYis4XBT/hgKWsotxSLQSj9bW8DXArKcA=
+	b=h7q0//p0A+BPoI++MIWnq1VOE1DkL1P+SEAFIRUvr9QyHxTGSfIMyP10/6j1nBa8v
+	 M3ieD9UU6TgkMIPYV21UTmQd2l1Tkv3CzxmOAGEy97O8Ao0EpIBOBrFPND449muzvV
+	 mAXe6B/87ccghWotQSjPR2oaIIKSCEtNb1ZvAiyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 387/583] LoongArch: Fix and simplify fcsr initialization on execve()
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Fangrui Song <maskray@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Lieven Hey <lieven.hey@kdab.com>,
+	Milian Wolff <milian.wolff@kdab.com>,
+	Pablo Galindo <pablogsal@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 534/641] perf genelf: Set ELF program header addresses properly
 Date: Mon, 22 Jan 2024 15:57:18 -0800
-Message-ID: <20240122235823.835876504@linuxfoundation.org>
+Message-ID: <20240122235834.826824581@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,122 +71,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit c2396651309eba291c15e32db8fbe44c738b5921 upstream.
+[ Upstream commit 1af478903fc48c1409a8dd6b698383b62387adf1 ]
 
-There has been a lingering bug in LoongArch Linux systems causing some
-GCC tests to intermittently fail (see Closes link).  I've made a minimal
-reproducer:
+The text section starts after the ELF headers so PHDR.p_vaddr and
+others should have the correct addresses.
 
-    zsh% cat measure.s
-    .align 4
-    .globl _start
-    _start:
-        movfcsr2gr  $a0, $fcsr0
-        bstrpick.w  $a0, $a0, 16, 16
-        beqz        $a0, .ok
-        break       0
-    .ok:
-        li.w        $a7, 93
-        syscall     0
-    zsh% cc mesaure.s -o measure -nostdlib
-    zsh% echo $((1.0/3))
-    0.33333333333333331
-    zsh% while ./measure; do ; done
-
-This while loop should not stop as POSIX is clear that execve must set
-fenv to the default, where FCSR should be zero.  But in fact it will
-just stop after running for a while (normally less than 30 seconds).
-Note that "$((1.0/3))" is needed to reproduce this issue because it
-raises FE_INVALID and makes fcsr0 non-zero.
-
-The problem is we are currently relying on SET_PERSONALITY2() to reset
-current->thread.fpu.fcsr.  But SET_PERSONALITY2() is executed before
-start_thread which calls lose_fpu(0).  We can see if kernel preempt is
-enabled, we may switch to another thread after SET_PERSONALITY2() but
-before lose_fpu(0).  Then bad thing happens: during the thread switch
-the value of the fcsr0 register is stored into current->thread.fpu.fcsr,
-making it dirty again.
-
-The issue can be fixed by setting current->thread.fpu.fcsr after
-lose_fpu(0) because lose_fpu() clears TIF_USEDFPU, then the thread
-switch won't touch current->thread.fpu.fcsr.
-
-The only other architecture setting FCSR in SET_PERSONALITY2() is MIPS.
-I've ran a similar test on MIPS with mainline kernel and it turns out
-MIPS is buggy, too.  Anyway MIPS do this for supporting different FP
-flavors (NaN encodings, etc.) which do not exist on LoongArch.  So for
-LoongArch, we can simply remove the current->thread.fpu.fcsr setting
-from SET_PERSONALITY2() and do it in start_thread(), after lose_fpu(0).
-
-The while loop failing with the mainline kernel has survived one hour
-after this change on LoongArch.
-
-Fixes: 803b0fc5c3f2baa ("LoongArch: Add process management")
-Closes: https://github.com/loongson-community/discussions/issues/7
-Link: https://lore.kernel.org/linux-mips/7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site/
-Cc: stable@vger.kernel.org
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: babd04386b1df8c3 ("perf jit: Include program header in ELF files")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Fangrui Song <maskray@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Lieven Hey <lieven.hey@kdab.com>
+Cc: Milian Wolff <milian.wolff@kdab.com>
+Cc: Pablo Galindo <pablogsal@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20231212070547.612536-2-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/elf.h |    5 -----
- arch/loongarch/kernel/elf.c      |    5 -----
- arch/loongarch/kernel/process.c  |    1 +
- 3 files changed, 1 insertion(+), 10 deletions(-)
+ tools/perf/util/genelf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/loongarch/include/asm/elf.h
-+++ b/arch/loongarch/include/asm/elf.h
-@@ -241,8 +241,6 @@ void loongarch_dump_regs64(u64 *uregs, c
- do {									\
- 	current->thread.vdso = &vdso_info;				\
- 									\
--	loongarch_set_personality_fcsr(state);				\
--									\
- 	if (personality(current->personality) != PER_LINUX)		\
- 		set_personality(PER_LINUX);				\
- } while (0)
-@@ -259,7 +257,6 @@ do {									\
- 	clear_thread_flag(TIF_32BIT_ADDR);				\
- 									\
- 	current->thread.vdso = &vdso_info;				\
--	loongarch_set_personality_fcsr(state);				\
- 									\
- 	p = personality(current->personality);				\
- 	if (p != PER_LINUX32 && p != PER_LINUX)				\
-@@ -340,6 +337,4 @@ extern int arch_elf_pt_proc(void *ehdr,
- extern int arch_check_elf(void *ehdr, bool has_interpreter, void *interp_ehdr,
- 			  struct arch_elf_state *state);
- 
--extern void loongarch_set_personality_fcsr(struct arch_elf_state *state);
--
- #endif /* _ASM_ELF_H */
---- a/arch/loongarch/kernel/elf.c
-+++ b/arch/loongarch/kernel/elf.c
-@@ -23,8 +23,3 @@ int arch_check_elf(void *_ehdr, bool has
- {
- 	return 0;
- }
--
--void loongarch_set_personality_fcsr(struct arch_elf_state *state)
--{
--	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
--}
---- a/arch/loongarch/kernel/process.c
-+++ b/arch/loongarch/kernel/process.c
-@@ -85,6 +85,7 @@ void start_thread(struct pt_regs *regs,
- 	regs->csr_euen = euen;
- 	lose_fpu(0);
- 	lose_lbt(0);
-+	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
- 
- 	clear_thread_flag(TIF_LSX_CTX_LIVE);
- 	clear_thread_flag(TIF_LASX_CTX_LIVE);
+diff --git a/tools/perf/util/genelf.c b/tools/perf/util/genelf.c
+index fefc72066c4e..ac17a3cb59dc 100644
+--- a/tools/perf/util/genelf.c
++++ b/tools/perf/util/genelf.c
+@@ -293,9 +293,9 @@ jit_write_elf(int fd, uint64_t load_addr, const char *sym,
+ 	 */
+ 	phdr = elf_newphdr(e, 1);
+ 	phdr[0].p_type = PT_LOAD;
+-	phdr[0].p_offset = 0;
+-	phdr[0].p_vaddr = 0;
+-	phdr[0].p_paddr = 0;
++	phdr[0].p_offset = GEN_ELF_TEXT_OFFSET;
++	phdr[0].p_vaddr = GEN_ELF_TEXT_OFFSET;
++	phdr[0].p_paddr = GEN_ELF_TEXT_OFFSET;
+ 	phdr[0].p_filesz = csize;
+ 	phdr[0].p_memsz = csize;
+ 	phdr[0].p_flags = PF_X | PF_R;
+-- 
+2.43.0
+
 
 
 
