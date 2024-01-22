@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E4C78381F2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A16C837EFB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE75428BFC8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E64601F2B892
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A8456757;
-	Tue, 23 Jan 2024 01:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F16605D8;
+	Tue, 23 Jan 2024 00:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vH0Iq8fF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0mVR8Pm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F54E56468;
-	Tue, 23 Jan 2024 01:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524406025A;
+	Tue, 23 Jan 2024 00:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974012; cv=none; b=kyt8PAcGQ2OBpJ0U2EjLX1d2//7vHIL21rBrfHEbUgurXQlGFCZ8N7faGLUNfc9HcqGNbfh0FRO7nD5hZGCfWa6OA/OzI5SVK0oNkBz3Lvf8gtLcs6uy1Is4LwRkEd83aVDjeZv/NITQbQhdbtBEorz3e1rIgDW00WoAepv54hs=
+	t=1705970863; cv=none; b=M2M3YgxR1iqvQXlsZsSq8RgtU8NGdMPCPHdT+3edNgrcsYO2dJ6rDktg9XexoPNAbm5VCQIJr3dsewy3FlUcyaOKDMTJXMaN74AfBYNtQLWI2AFQITXIicBJhum8M+iKqkKjrYlwWFxUyUpVx/nF52FNEAxUSGk9I4lxKNfvWcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974012; c=relaxed/simple;
-	bh=H0olwTkixWLWX9nNBI8F73Kl52+nPwFG4K/dLIQph5g=;
+	s=arc-20240116; t=1705970863; c=relaxed/simple;
+	bh=3Jv1UgWeUCgQrfKOhC2inbAqh/03kp9zUKg7J9ha9EY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QvNv5Qy8378oIAuGYp87CfLIF41iAB1YvmzcmVhkGK2OdigD0L/SWDd0N5iivob0cA7l9ODGMtwPcDswJMn/uHTXpgdKOyC6hPjMbX8wQQclLr9/SaV92sfTf1dWIkwCzjYzz+jv3txmfNk+JTt8dB2y1wi7qXr8mfPsUjWuadc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vH0Iq8fF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6BEC433C7;
-	Tue, 23 Jan 2024 01:40:11 +0000 (UTC)
+	 MIME-Version; b=lPFWZGnKvM8rBRHD2F5SLlKaUZhRpNuoR3y4oJZat076SUzs+aTkVCeXQMIK6MkkVOnQ/s9qj4DRwKXzgWnqPasrs6xsJ2YM4KktW1e8EnmCVND4lCHKPWXYSFmSJ8qri984fjF2i0HbxZL8nEqw4FLjNTTEwB8dbP0X1WGJYaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0mVR8Pm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006AFC433C7;
+	Tue, 23 Jan 2024 00:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974011;
-	bh=H0olwTkixWLWX9nNBI8F73Kl52+nPwFG4K/dLIQph5g=;
+	s=korg; t=1705970863;
+	bh=3Jv1UgWeUCgQrfKOhC2inbAqh/03kp9zUKg7J9ha9EY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vH0Iq8fFQqxh1PWB7jcMDpBYbEr3zN4ngVyoQugriymslEwSauyeJooU0vZ0D7CYO
-	 GIoTAMCuRHoB3QrX7VIWwI8G64afgqFyollilbrYiQzL1akYYzS5A7tPazbIK7dNPZ
-	 p+q7zkxEzGaFDoHfbvIvMGUfP69Z5PLRKfNndsJE=
+	b=t0mVR8Pmni9e5pD60xJaTmEveTW7YHGiesELfXWE6LV4tjey8o/XYjaBW/nmw4M3X
+	 3vMg2Zl94hLNkYzHtXjthGXNz0OKX/8rdHTvJ7Y3Cj35rgWn9x99myjQ+V5MMpMYZi
+	 IJFCMW84+zixXKDfvi1LEthyfBCrdHDKxGZjT0KI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Rowand <frowand.list@gmail.com>,
-	Rob Herring <robh@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Vineet Gupta <vgupta@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 083/374] of: Add of_property_present() helper
+Subject: [PATCH 5.10 033/286] ARC: fix spare error
 Date: Mon, 22 Jan 2024 15:55:39 -0800
-Message-ID: <20240122235747.510105597@linuxfoundation.org>
+Message-ID: <20240122235733.299437134@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Vineet Gupta <vgupta@kernel.org>
 
-[ Upstream commit 9cbad37ce8122de32a1529e394b468bc101c9e7f ]
+[ Upstream commit aca02d933f63ba8bc84258bf35f9ffaf6b664336 ]
 
-Add an of_property_present() function similar to
-fwnode_property_present(). of_property_read_bool() could be used
-directly, but it is cleaner to not use it on non-boolean properties.
-
-Reviewed-by: Frank Rowand <frowand.list@gmail.com>
-Tested-by: Frank Rowand <frowand.list@gmail.com>
-Link: https://lore.kernel.org/all/20230215215547.691573-1-robh@kernel.org/
-Signed-off-by: Rob Herring <robh@kernel.org>
-Stable-dep-of: c4a5118a3ae1 ("cpufreq: scmi: process the result of devm_of_clk_add_hw_provider()")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312082320.VDN5A9hb-lkp@intel.com/
+Signed-off-by: Vineet Gupta <vgupta@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/of.h | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ arch/arc/kernel/signal.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/of.h b/include/linux/of.h
-index 4403e8fc764a..29f657101f4f 100644
---- a/include/linux/of.h
-+++ b/include/linux/of.h
-@@ -1073,7 +1073,8 @@ static inline int of_property_read_string_index(const struct device_node *np,
-  * @np:		device node from which the property value is to be read.
-  * @propname:	name of the property to be searched.
-  *
-- * Search for a property in a device node.
-+ * Search for a boolean property in a device node. Usage on non-boolean
-+ * property types is deprecated.
-  *
-  * Return: true if the property exists false otherwise.
-  */
-@@ -1085,6 +1086,20 @@ static inline bool of_property_read_bool(const struct device_node *np,
- 	return prop ? true : false;
+diff --git a/arch/arc/kernel/signal.c b/arch/arc/kernel/signal.c
+index 4868bdebf586..c43d323bcb59 100644
+--- a/arch/arc/kernel/signal.c
++++ b/arch/arc/kernel/signal.c
+@@ -61,7 +61,7 @@ struct rt_sigframe {
+ 	unsigned int sigret_magic;
+ };
+ 
+-static int save_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
++static int save_arcv2_regs(struct sigcontext __user *mctx, struct pt_regs *regs)
+ {
+ 	int err = 0;
+ #ifndef CONFIG_ISA_ARCOMPACT
+@@ -74,12 +74,12 @@ static int save_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
+ #else
+ 	v2abi.r58 = v2abi.r59 = 0;
+ #endif
+-	err = __copy_to_user(&mctx->v2abi, &v2abi, sizeof(v2abi));
++	err = __copy_to_user(&mctx->v2abi, (void const *)&v2abi, sizeof(v2abi));
+ #endif
+ 	return err;
  }
  
-+/**
-+ * of_property_present - Test if a property is present in a node
-+ * @np:		device node to search for the property.
-+ * @propname:	name of the property to be searched.
-+ *
-+ * Test for a property present in a device node.
-+ *
-+ * Return: true if the property exists false otherwise.
-+ */
-+static inline bool of_property_present(const struct device_node *np, const char *propname)
-+{
-+	return of_property_read_bool(np, propname);
-+}
-+
- /**
-  * of_property_read_u8_array - Find and read an array of u8 from a property.
-  *
+-static int restore_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
++static int restore_arcv2_regs(struct sigcontext __user *mctx, struct pt_regs *regs)
+ {
+ 	int err = 0;
+ #ifndef CONFIG_ISA_ARCOMPACT
 -- 
 2.43.0
 
