@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6186838057
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A2C83829A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 564C11F2CB19
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 988811C286A8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5232D66B54;
-	Tue, 23 Jan 2024 01:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB205D908;
+	Tue, 23 Jan 2024 01:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7afDQMX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xf84YLZ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F85E664CD;
-	Tue, 23 Jan 2024 01:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1AF5D8F9;
+	Tue, 23 Jan 2024 01:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971675; cv=none; b=plnH/7m4B1Oop4QLauuSs7Sc6Gh2H6SbkA4IGuXMmk6gtro/vav5/QjbWlBsnrFR+Wlvt2HFu+U87oPerjhE0LXehlSKBGaf2cyTANq9VFsuvjWdeUVfvlIzsvUgFyXX48NHI3pk4INv4yf5s5ye+/s9fq1gWl4uuZu1Qw3HL04=
+	t=1705974391; cv=none; b=EZpI4QFgv4vOeImWiRs0V5SXBE0obHXIteyeXJJU4uNriV/i+yercrl2AoWuRm80Dx9ljcW1RfC8spGgfLJMupESPPGtNSdltpMpkpk6gDpmIByTUBLVIVjdiriuoV3ulZDuSM0rCbcIMOcTA/mfZGLzC/3jfwjHrUR3zGT/xDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971675; c=relaxed/simple;
-	bh=ccHr1y8rsEEK8fsyaYjmrsnjx1JRrgSfVBM+cjKaGo0=;
+	s=arc-20240116; t=1705974391; c=relaxed/simple;
+	bh=PKBeKeQ6D+tmqJulcy5mxx96ts4qyKRPnWjx/gEUQhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IxRiNI3ol7YY0yI+FaWc0wMF762V2E4yICTYs+PvF/lai0CgwceqnilRP1YH5wMf+tsm2KLT0G5M/JOiEYi9z1OpEPoL8TZr4cX8ts+2EJW/yYRFBhDUzMAMfu3X7W2s1NDqr/bMezziflIzPb4FQIvvy6k2lVtTeivQ6xfkZVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7afDQMX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D01C433C7;
-	Tue, 23 Jan 2024 01:01:14 +0000 (UTC)
+	 MIME-Version; b=Dgav1R88dA45ObhAX6ao1qTjzdTzPTOUcDufBPVnblieLLfQRy2P3U7l7Ew+wD30lhnVO6jiB5N93DJyhAWzdjelUKH9xXjhkYQGgG/J6lIaeMAX2zyjAWAmmmj+xXvqKwGLn6qlZKcm9Of09WqnuEJdf0acPKC7tLAJb1jiw8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xf84YLZ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7919EC433C7;
+	Tue, 23 Jan 2024 01:46:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971674;
-	bh=ccHr1y8rsEEK8fsyaYjmrsnjx1JRrgSfVBM+cjKaGo0=;
+	s=korg; t=1705974391;
+	bh=PKBeKeQ6D+tmqJulcy5mxx96ts4qyKRPnWjx/gEUQhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7afDQMXt+eRaghN+sgnVTMGmQHRMT1QhDytkcyVT2PmpC/us+9MMSN6nTs/tXr7D
-	 CNC88ud63GNCfe+R1SsS/MKCUi5+e4pqqmYHA+hLcS9EurCCPLxIBoui4jhR1luISw
-	 cpC00FQTC5a8QYUMJOq5JNAoZED2QT16T/d7e56Q=
+	b=xf84YLZ72MJ1xdtMPKtpGPt7Cq0/hIfRFwSsQbJkAxo9Zy0G20vHPJ6azXgpSZ9m1
+	 HM1rohiibfyGhWVuLc0+t9DLcgK7tRVM9AC88zr/v/TFbUQ6V9367jGypGalhCPk3I
+	 dq2T9voUePA/K3x9fOh5eW10QlGg2eRGj07fxRiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 294/417] drm/amd: Enable PCIe PME from D3
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 206/374] media: dvbdev: drop refcount on error path in dvb_device_open()
 Date: Mon, 22 Jan 2024 15:57:42 -0800
-Message-ID: <20240122235802.013917484@linuxfoundation.org>
+Message-ID: <20240122235751.782706492@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit bd1f6a31e7762ebc99b97f3eda5e5ea3708fa792 upstream.
+[ Upstream commit a2dd235df435a05d389240be748909ada91201d2 ]
 
-When dGPU is put into BOCO it may be in D3cold but still able send
-PME on display hotplug event. For this to work it must be enabled
-as wake source from D3.
+If call to file->f_op->open() fails, then call dvb_device_put(dvbdev).
 
-When runpm is enabled use pci_wake_from_d3() to mark wakeup as
-enabled by default.
-
-Cc: stable@vger.kernel.org # 6.1+
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0fc044b2b5e2 ("media: dvbdev: adopts refcnt to avoid UAF")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |    2 ++
+ drivers/media/dvb-core/dvbdev.c | 2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2202,6 +2202,8 @@ retry_init:
- 
- 		pci_wake_from_d3(pdev, TRUE);
- 
-+		pci_wake_from_d3(pdev, TRUE);
-+
- 		/*
- 		 * For runpm implemented via BACO, PMFW will handle the
- 		 * timing for BACO in and out:
+diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
+index 2ff8a1b776fb..3a83e8e09256 100644
+--- a/drivers/media/dvb-core/dvbdev.c
++++ b/drivers/media/dvb-core/dvbdev.c
+@@ -114,6 +114,8 @@ static int dvb_device_open(struct inode *inode, struct file *file)
+ 			err = file->f_op->open(inode, file);
+ 		up_read(&minor_rwsem);
+ 		mutex_unlock(&dvbdev_mutex);
++		if (err)
++			dvb_device_put(dvbdev);
+ 		return err;
+ 	}
+ fail:
+-- 
+2.43.0
+
 
 
 
