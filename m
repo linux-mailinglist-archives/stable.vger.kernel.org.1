@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-13716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C49837D86
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD18B8384AE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B452280E85
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFB451C25789
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F4651C3E;
-	Tue, 23 Jan 2024 00:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F8766B5D;
+	Tue, 23 Jan 2024 02:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X2Q6ED3n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KThKJrTb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61AAB4E1D8;
-	Tue, 23 Jan 2024 00:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DAC745EE;
+	Tue, 23 Jan 2024 02:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970003; cv=none; b=uuAOaFpkscFuqt7Z2fYn4LZF62kwkNPIE+76GNFkwDkK0AGLqPRBJfXgukhwond5/mkO+d1ga/4VHm/8PTnuKwPbtaolihB/Yu+76Xu3+HOb7jdAvXaDPMbV0/9/5EhIvf0BPsdNRIMS9hRaE8ZTiVWTQi5t07BxWiMs8U/yIVA=
+	t=1705975457; cv=none; b=SmwshWoffvoGVXUKaaDLEj88IOt407hGDfIe8fZkZ9tEPucitVxIWV6aY7DPWyD2k6ccA3+OhXnjLv47hB7ydU8FogGvOd6haCwBb/Jx+I9KW2GObi7yT3WwsW8xGjOk9Ni1vhqtKYIccLVV5pZJ6UkBb4ho9BTfJLGAQKS4CRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970003; c=relaxed/simple;
-	bh=a+vEKBhGU/TR1im6bY5Zx0mUAifvTl5DnXwBas2gzKM=;
+	s=arc-20240116; t=1705975457; c=relaxed/simple;
+	bh=RtorUI8bAyUJb0pcjEn4niUPVhxIQKpPLIhr9asD/dU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t71mE+D+sJRtMqJVlnTeHgRion7SCijlYCmR4aRt+91ROSZkRsauUYmN3J9cKXwee1DMoXMl8CDAvL5z13zXi2+dHNtRf895wcwLqxYuYbZFg2tOI0BZluBHiAd/OADFnDrxg7JIj1mQwHt0l91l5cQhSnfkPRBMGNCWDkFTcUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2Q6ED3n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7845C433F1;
-	Tue, 23 Jan 2024 00:33:22 +0000 (UTC)
+	 MIME-Version; b=d+N10EjNn7daSGEX3ydHw0RnvDnEjqpMRQoeuyoB9WXgGhsBY2GsrSMlVn1n2w+//oUmvdsxFTsGLdyuZ5GCzkZMSZwnVHA/adcg2jbkRXwC0MLk8H++7REqFcqO48RdpjG0b3MO7fMjGnjhCP0gYx0eJBdX26anWk06G86bIOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KThKJrTb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651A1C433C7;
+	Tue, 23 Jan 2024 02:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970003;
-	bh=a+vEKBhGU/TR1im6bY5Zx0mUAifvTl5DnXwBas2gzKM=;
+	s=korg; t=1705975457;
+	bh=RtorUI8bAyUJb0pcjEn4niUPVhxIQKpPLIhr9asD/dU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X2Q6ED3ntRkzomkZcJPnIWrJ1JgVDECjTZfabCsCiO8M3cgUBOL5RplDxrDlJcEKR
-	 tetRYjwkjwXlhbdGYbp28k0mF/t7ANwWa9P3HORAWmpLJ70cUAsW8w0iCj6PgtQ4f9
-	 t4lS4Ym2WIV0d7HG4fY6sUKQRvjgGrA5IkfQAK5s=
+	b=KThKJrTb/CcngTb73ql678kIUgSjBJ32WQ831BExNBmqP7S76P7dskIp3LBRgoMQW
+	 ra5IvLPPOKoiPnJVRY0+Zzh+ycknsWNoJjqsB1r7FxGIO2nuDBxEKbSduyeeCUsGrs
+	 jYe18qZkjkYEN1CbFdiG0rykxzQFEXqV9PW65GJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Fangrui Song <maskray@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Milian Wolff <milian.wolff@kdab.com>,
-	Pablo Galindo <pablogsal@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 536/641] perf unwind-libunwind: Fix base address for .eh_frame
+	xingwei lee <xrivendell7@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 389/583] io_uring/rw: ensure io->bytes_done is always initialized
 Date: Mon, 22 Jan 2024 15:57:20 -0800
-Message-ID: <20240122235834.894829842@linuxfoundation.org>
+Message-ID: <20240122235823.893235912@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,54 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 4fb54994b2360ab5029ee3a959161f6fe6bbb349 ]
+commit 0a535eddbe0dc1de4386046ab849f08aeb2f8faf upstream.
 
-The base address of a DSO mapping should start at the start of the file.
-Usually DSOs are mapped from the pgoff 0 so it doesn't matter when it
-uses the start of the map address.
+If IOSQE_ASYNC is set and we fail importing an iovec for a readv or
+writev request, then we leave ->bytes_done uninitialized and hence the
+eventual failure CQE posted can potentially have a random res value
+rather than the expected -EINVAL.
 
-But generated DSOs for JIT codes doesn't start from the 0 so it should
-subtract the offset to calculate the .eh_frame table offsets correctly.
+Setup ->bytes_done before potentially failing, so we have a consistent
+value if we fail the request early.
 
-Fixes: dc2cf4ca866f5715 ("perf unwind: Fix segbase for ld.lld linked objects")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Fangrui Song <maskray@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Milian Wolff <milian.wolff@kdab.com>
-Cc: Pablo Galindo <pablogsal@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231212070547.612536-4-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/unwind-libunwind-local.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/rw.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/unwind-libunwind-local.c b/tools/perf/util/unwind-libunwind-local.c
-index c0641882fd2f..5e5c3395a499 100644
---- a/tools/perf/util/unwind-libunwind-local.c
-+++ b/tools/perf/util/unwind-libunwind-local.c
-@@ -327,7 +327,7 @@ static int read_unwind_spec_eh_frame(struct dso *dso, struct unwind_info *ui,
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -549,15 +549,19 @@ static inline int io_rw_prep_async(struc
+ 	struct iovec *iov;
+ 	int ret;
  
- 	maps__for_each_entry(thread__maps(ui->thread), map_node) {
- 		struct map *map = map_node->map;
--		u64 start = map__start(map);
-+		u64 start = map__start(map) - map__pgoff(map);
++	iorw->bytes_done = 0;
++	iorw->free_iovec = NULL;
++
+ 	/* submission path, ->uring_lock should already be taken */
+ 	ret = io_import_iovec(rw, req, &iov, &iorw->s, 0);
+ 	if (unlikely(ret < 0))
+ 		return ret;
  
- 		if (map__dso(map) == dso && start < base_addr)
- 			base_addr = start;
--- 
-2.43.0
-
+-	iorw->bytes_done = 0;
+-	iorw->free_iovec = iov;
+-	if (iov)
++	if (iov) {
++		iorw->free_iovec = iov;
+ 		req->flags |= REQ_F_NEED_CLEANUP;
++	}
++
+ 	return 0;
+ }
+ 
 
 
 
