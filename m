@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 464AF8382B0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7477B8384C7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E522D28D4EF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A18AD1C27ADF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FB85EE7F;
-	Tue, 23 Jan 2024 01:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7F9768FE;
+	Tue, 23 Jan 2024 02:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSthiYsp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpuVfL6x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72FCC5EE78;
-	Tue, 23 Jan 2024 01:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD46768F9;
+	Tue, 23 Jan 2024 02:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974410; cv=none; b=OVd/oEEpQ0DaOSIfGqGcapXhObZZYxqJV5u4OhJynU5MWn2Vu/EjzLO8wV7IV8w9sAYPGX1B8CM8OpffmQLKmQbIuL4apuUDp/EdEGvW0Bqrb5NRQDYqZ2lh5tOqnX7xD8Qs2A0T7obCUYmy7g0ns5Kehmgzg0fD6ITblG3wOOE=
+	t=1705975490; cv=none; b=WRYXcJTGsn0GKAz2N94fMuJ/sjpK4j1Kj5Z/Jql/htksWTfZb2eGG0j2SGHI05CxnqPImS7RQble0HIo+RmuRJNdrvmfjfpOoWVWJJA/vLY4f2SAPx30HXQBMriW3FZc5FOslzRucFOtsrAOtCd6Zy+sbZgiy5XXCS+OafHbupE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974410; c=relaxed/simple;
-	bh=9WH4Hk+JRK9zHUus7vZ+fQoZqq3vMNg+uZhJLFuJphI=;
+	s=arc-20240116; t=1705975490; c=relaxed/simple;
+	bh=LXUn4yf+G+di8j/j8wRWUmuZFuVCEVubRh1L2xbiGCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbDQEEwBtMovJ0JaLjcdtF8Brx6F0cLykTA4H+2ARJAxTI0qGz1zZ4ovip9s3O8WXp5ZEsnlDOHZRR46O6K8GteDZMJPu5PI6JYOU+duJXurTBW5SBoypjrXPI9EjJ3QY4Pw2+UEiYGXYCVYaeN0pM5jpadz4KCditMLCv4xBsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XSthiYsp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C2FC433F1;
-	Tue, 23 Jan 2024 01:46:50 +0000 (UTC)
+	 MIME-Version; b=nzKS2V6dPw0b35NKrVtz5Pr3XrN+84l4fkgQ2nHxSxsN7Bm33e4FIXvqh3zQnoKtcOL/JW82PziEqSGgxvDRmJ0IuBzWPeHCc4TUxFF2YnGN4YHAs6FHNavMELPR4WeuPSs8c9WWuGPu3nb/6xhD8ifMOp+w2p80qYHgQrZygeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpuVfL6x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4AFC433F1;
+	Tue, 23 Jan 2024 02:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974410;
-	bh=9WH4Hk+JRK9zHUus7vZ+fQoZqq3vMNg+uZhJLFuJphI=;
+	s=korg; t=1705975490;
+	bh=LXUn4yf+G+di8j/j8wRWUmuZFuVCEVubRh1L2xbiGCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XSthiYsp7lVbIls2yJHDkKx2MUHwgk+ftOsPJzpSzBCPFmdVLm2So192ANVDM35La
-	 AA8PTh2Erxl5Ry57Qu13hUVXZT/p11eY5zdcIyZxicoCuCgp53jCGhlfc5IjdQ2LdY
-	 eUyw9cScJduDXqlw6kt2BJnaBHNzFQmjDUGLsnvQ=
+	b=DpuVfL6xhHQR7a48c5PQxpGU59MJPk5mpbBiVSTc+6+lyUe3GUoRZYvl7Aqg5nX9u
+	 KDbv6YuKSyjE5ve4AcPV5Hw+oH1gaRKtiPQbEWj+OcwP3BDPJZLzZlTRxPS/1zlDZX
+	 uA+TtTycMx8Xx/kK9KCQiF2u2ZU/0o5wMMsHcaNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 214/374] clk: qcom: videocc-sm8150: Add missing PLL config property
+	Petr Tesarik <petr@tesarici.cz>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 419/583] net: stmmac: fix ethtool per-queue statistics
 Date: Mon, 22 Jan 2024 15:57:50 -0800
-Message-ID: <20240122235752.084616976@linuxfoundation.org>
+Message-ID: <20240122235824.788229303@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Petr Tesarik <petr@tesarici.cz>
 
-[ Upstream commit 71f130c9193f613d497f7245365ed05ffdb0a401 ]
+commit 61921bdaa132b580b6db6858e6d7dcdb870df5fe upstream.
 
-When the driver was ported upstream, PLL test_ctl_hi1 register value
-was omitted. Add it to ensure the PLLs are fully configured.
+Fix per-queue statistics for devices with more than one queue.
 
-Fixes: 5658e8cf1a8a ("clk: qcom: add video clock controller driver for SM8150")
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231201-videocc-8150-v3-3-56bec3a5e443@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The output data pointer is currently reset in each loop iteration,
+effectively summing all queue statistics in the first four u64 values.
+
+The summary values are not even labeled correctly. For example, if eth0 has
+2 queues, ethtool -S eth0 shows:
+
+     q0_tx_pkt_n: 374 (actually tx_pkt_n over all queues)
+     q0_tx_irq_n: 23  (actually tx_normal_irq_n over all queues)
+     q1_tx_pkt_n: 462 (actually rx_pkt_n over all queues)
+     q1_tx_irq_n: 446 (actually rx_normal_irq_n over all queues)
+     q0_rx_pkt_n: 0
+     q0_rx_irq_n: 0
+     q1_rx_pkt_n: 0
+     q1_rx_irq_n: 0
+
+Fixes: 133466c3bbe1 ("net: stmmac: use per-queue 64 bit statistics where necessary")
+Cc: stable@vger.kernel.org
+Signed-off-by: Petr Tesarik <petr@tesarici.cz>
+Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/videocc-sm8150.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clk/qcom/videocc-sm8150.c b/drivers/clk/qcom/videocc-sm8150.c
-index 6a5f89f53da8..52a9a453a143 100644
---- a/drivers/clk/qcom/videocc-sm8150.c
-+++ b/drivers/clk/qcom/videocc-sm8150.c
-@@ -33,6 +33,7 @@ static struct alpha_pll_config video_pll0_config = {
- 	.config_ctl_val = 0x20485699,
- 	.config_ctl_hi_val = 0x00002267,
- 	.config_ctl_hi1_val = 0x00000024,
-+	.test_ctl_hi1_val = 0x00000020,
- 	.user_ctl_val = 0x00000000,
- 	.user_ctl_hi_val = 0x00000805,
- 	.user_ctl_hi1_val = 0x000000D0,
--- 
-2.43.0
-
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+@@ -543,15 +543,12 @@ static void stmmac_get_per_qstats(struct
+ 	u32 rx_cnt = priv->plat->rx_queues_to_use;
+ 	unsigned int start;
+ 	int q, stat;
+-	u64 *pos;
+ 	char *p;
+ 
+-	pos = data;
+ 	for (q = 0; q < tx_cnt; q++) {
+ 		struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[q];
+ 		struct stmmac_txq_stats snapshot;
+ 
+-		data = pos;
+ 		do {
+ 			start = u64_stats_fetch_begin(&txq_stats->syncp);
+ 			snapshot = *txq_stats;
+@@ -559,17 +556,15 @@ static void stmmac_get_per_qstats(struct
+ 
+ 		p = (char *)&snapshot + offsetof(struct stmmac_txq_stats, tx_pkt_n);
+ 		for (stat = 0; stat < STMMAC_TXQ_STATS; stat++) {
+-			*data++ += (*(u64 *)p);
++			*data++ = (*(u64 *)p);
+ 			p += sizeof(u64);
+ 		}
+ 	}
+ 
+-	pos = data;
+ 	for (q = 0; q < rx_cnt; q++) {
+ 		struct stmmac_rxq_stats *rxq_stats = &priv->xstats.rxq_stats[q];
+ 		struct stmmac_rxq_stats snapshot;
+ 
+-		data = pos;
+ 		do {
+ 			start = u64_stats_fetch_begin(&rxq_stats->syncp);
+ 			snapshot = *rxq_stats;
+@@ -577,7 +572,7 @@ static void stmmac_get_per_qstats(struct
+ 
+ 		p = (char *)&snapshot + offsetof(struct stmmac_rxq_stats, rx_pkt_n);
+ 		for (stat = 0; stat < STMMAC_RXQ_STATS; stat++) {
+-			*data++ += (*(u64 *)p);
++			*data++ = (*(u64 *)p);
+ 			p += sizeof(u64);
+ 		}
+ 	}
 
 
 
