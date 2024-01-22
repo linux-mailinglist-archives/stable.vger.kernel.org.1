@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8F8837C7F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B46837F01
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD743285F28
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19329B291FE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846D013540C;
-	Tue, 23 Jan 2024 00:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACCFD277;
+	Tue, 23 Jan 2024 00:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNAxs0Lt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZztFnDF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BAC13540A;
-	Tue, 23 Jan 2024 00:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5015397;
+	Tue, 23 Jan 2024 00:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969640; cv=none; b=dGqKdCpFRcjA8KwzBirs5U0qDrz+8ZiRC6++ia/vVIB+7PpolBFrKPdAFGvfX7KHB/fpENCjacgO4NGli2vAKTHOyCzjKYumquH8mcCmV6/ar4DpWxqI73YEjay/8qgsmbXLfEH/1UmXudK/1xK4WOkrzoZzI1w8cQl0PCyA9ac=
+	t=1705970808; cv=none; b=DqoWyXA3Cev1pgsluxs5VvktHuCuyDlwiOFncck+/8G7IQk7QxG+9CpyqEKSLAClr3Pe22Oc9qw3K12VfhSat3bfIWFrHzpg9/pMEBVVqtNsk6AiqSSeK6YSspiu3xTXkcCMVtEKKwdkTnRMZU7KaBNx5BsOLBtYDR8mji/HS7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969640; c=relaxed/simple;
-	bh=TgT/cH4jJmgzg3c6kUFIDwJcr0OfGDJpSrvUm3U7iac=;
+	s=arc-20240116; t=1705970808; c=relaxed/simple;
+	bh=vkJaJ9cbSlIYUtGUf1999cttgAJhKKLcdsNZn3hyd/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLt/G/eqd7bjjTo31ZI6BJs4oQR6ZcNsQ44YUxe53FzxzVj3jzx11CIkpEYzAw2YkZLMmEavIdF2Hc1UYXPtLIx5+77VzisbuLnBUUWSddEnFg6kFs6OrtL/+n3NKf4T+vx6LsgkB/1E82SkDIKNgq8F7Oz9rEUec5caCnstdnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNAxs0Lt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015D7C433C7;
-	Tue, 23 Jan 2024 00:27:19 +0000 (UTC)
+	 MIME-Version; b=S48OSGR3Z78QeWqKPe9OK3jROfK6qWn6WHmqI4npYPTTkqdtpDGoRO6G6BN5lzpx9ZuoYiV6vSGZAvhDYuRBufb/zmk0P1y6vEgfT+ptjK1NEGQgw/LoejEH4FNyHz7wdMoF8y9hvWvCgXWf+bpFH1WofVsW53JNSXpOByAeAzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZztFnDF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38031C43390;
+	Tue, 23 Jan 2024 00:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969640;
-	bh=TgT/cH4jJmgzg3c6kUFIDwJcr0OfGDJpSrvUm3U7iac=;
+	s=korg; t=1705970808;
+	bh=vkJaJ9cbSlIYUtGUf1999cttgAJhKKLcdsNZn3hyd/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNAxs0Ltp+iZkrQOYgZtHUj1J3kirBt6x0Q/Zh8z22CIm8xqHL6UU6tp3enXw12O/
-	 ri0ZK6kAIvULFViV2VR5bDW0cbGE+cIJrxMCD4b7nN7ZBczi3dWAFHbfHfQYslv0th
-	 TXUJGYXfo3aS4qsKE+bA1eppXup0HBIPFoWlkABc=
+	b=XZztFnDF24IN8Lja1/a3G9outv/T7bmHF8dmKrzQTuDm0wz9yxCt6MlbCuqwH8yQ2
+	 oJKHGc73szHx92BTpp2j9wr4cK9Vlhqx8h3jwvG4vqJpb/n8M3FjUC6aUWb6sHzvK7
+	 +V1LlBY6U0cJTsWnR2LxSJRzmpeqNk/nPztaAqA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jing Xia <jing.xia@unisoc.com>,
-	Xuewen Yan <xuewen.yan@unisoc.com>
-Subject: [PATCH 6.7 377/641] class: fix use-after-free in class_register()
+	Li Nan <linan122@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 113/417] block: Set memalloc_noio to false on device_add_disk() error path
 Date: Mon, 22 Jan 2024 15:54:41 -0800
-Message-ID: <20240122235829.756276267@linuxfoundation.org>
+Message-ID: <20240122235755.680254290@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jing Xia <jing.xia@unisoc.com>
+From: Li Nan <linan122@huawei.com>
 
-commit 93ec4a3b76404bce01bd5c9032bef5df6feb1d62 upstream.
+[ Upstream commit 5fa3d1a00c2d4ba14f1300371ad39d5456e890d7 ]
 
-The lock_class_key is still registered and can be found in
-lock_keys_hash hlist after subsys_private is freed in error
-handler path.A task who iterate over the lock_keys_hash
-later may cause use-after-free.So fix that up and unregister
-the lock_class_key before kfree(cp).
+On the error path of device_add_disk(), device's memalloc_noio flag was
+set but not cleared. As the comment of pm_runtime_set_memalloc_noio(),
+"The function should be called between device_add() and device_del()".
+Clear this flag before device_del() now.
 
-On our platform, a driver fails to kset_register because of
-creating duplicate filename '/class/xxx'.With Kasan enabled,
-it prints a invalid-access bug report.
-
-KASAN bug report:
-
-BUG: KASAN: invalid-access in lockdep_register_key+0x19c/0x1bc
-Write of size 8 at addr 15ffff808b8c0368 by task modprobe/252
-Pointer tag: [15], memory tag: [fe]
-
-CPU: 7 PID: 252 Comm: modprobe Tainted: G        W
- 6.6.0-mainline-maybe-dirty #1
-
-Call trace:
-dump_backtrace+0x1b0/0x1e4
-show_stack+0x2c/0x40
-dump_stack_lvl+0xac/0xe0
-print_report+0x18c/0x4d8
-kasan_report+0xe8/0x148
-__hwasan_store8_noabort+0x88/0x98
-lockdep_register_key+0x19c/0x1bc
-class_register+0x94/0x1ec
-init_module+0xbc/0xf48 [rfkill]
-do_one_initcall+0x17c/0x72c
-do_init_module+0x19c/0x3f8
-...
-Memory state around the buggy address:
-ffffff808b8c0100: 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a
-ffffff808b8c0200: 8a 8a 8a 8a 8a 8a 8a 8a fe fe fe fe fe fe fe fe
->ffffff808b8c0300: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
-                                     ^
-ffffff808b8c0400: 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03
-
-As CONFIG_KASAN_GENERIC is not set, Kasan reports invalid-access
-not use-after-free here.In this case, modprobe is manipulating
-the corrupted lock_keys_hash hlish where lock_class_key is already
-freed before.
-
-It's worth noting that this only can happen if lockdep is enabled,
-which is not true for normal system.
-
-Fixes: dcfbb67e48a2 ("driver core: class: use lock_class_key already present in struct subsys_private")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jing Xia <jing.xia@unisoc.com>
-Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
-Link: https://lore.kernel.org/r/20231220024603.186078-1-jing.xia@unisoc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 25e823c8c37d ("block/genhd.c: apply pm_runtime_set_memalloc_noio on block devices")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20231211075356.1839282-1-linan666@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/class.c |    1 +
+ block/genhd.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/base/class.c
-+++ b/drivers/base/class.c
-@@ -213,6 +213,7 @@ int class_register(const struct class *c
- 	return 0;
- 
- err_out:
-+	lockdep_unregister_key(key);
- 	kfree(cp);
- 	return error;
- }
+--- a/block/genhd.c
++++ b/block/genhd.c
+@@ -567,6 +567,7 @@ out_del_integrity:
+ out_del_block_link:
+ 	if (!sysfs_deprecated)
+ 		sysfs_remove_link(block_depr, dev_name(ddev));
++	pm_runtime_set_memalloc_noio(ddev, false);
+ out_device_del:
+ 	device_del(ddev);
+ out_free_ext_minor:
 
 
 
