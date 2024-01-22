@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-14448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B9678380F9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63C578384EC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E12391F22C5D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95C871C2A406
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D7113DBB1;
-	Tue, 23 Jan 2024 01:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC7677F24;
+	Tue, 23 Jan 2024 02:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m53y/bg2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgRcMSSn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDDA13DBAF;
-	Tue, 23 Jan 2024 01:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0ECE77636;
+	Tue, 23 Jan 2024 02:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971979; cv=none; b=RDBmVZqncOST3K6F6adZt72kKcAtayLRgZu7YqV10TWhWOU5R1S6G4Ala3WbL+ziA0YoQXQ5awa7OQrdl+7yJZS9VmtbSg4BWC1mu20GdbNpB3J6QSYpeJXraAwCOYAla83oxeoC9HEy1rHQNfdcy3sweXW754GSZZ3+hvqV/iM=
+	t=1705975535; cv=none; b=n5dC/ng/bU8ftMzwmvJjE5ELpquHtSKQ6AYRYLegTCL/DeeDxYmA/qLvjErtKIcCbiBS1F8dV7S3CFVB3h7qVUBt9ecqS5zAcEjs0IKCZW53Ptw4Anfgb16T/nK4Fs1RcDCr+Ey5edUcPOZF89Tfwox/qlCcz7SL4ahEBxky3Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971979; c=relaxed/simple;
-	bh=KJBB89CpZ3dW8Is283WA0ESm201JPcBDsIoBvf3KyM0=;
+	s=arc-20240116; t=1705975535; c=relaxed/simple;
+	bh=HfWA4T+p9MSJQ8DvhkODRyFBo+TRZpF1N1Q7K2n4+jU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYhY+iVGjIdDYGkiQKY6Xn17JpUui1hZYSvBHOUfwu4SmfHFCBSGN7RhzOmj3qUtiqjxFxnRCqOQfY+QLnw/a9eys1Z4tcQDe3B8owihXKUqTrw6mNQR46vK86AouU57YsK5W0fNcLMNAnfALx054QZzQlS7wfZu8La8mtKFBF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m53y/bg2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA31C433F1;
-	Tue, 23 Jan 2024 01:06:18 +0000 (UTC)
+	 MIME-Version; b=Bwy0TjbQCu6NYenS1Uo7MThoZNruemvkg20kjgXki1BgNpmi2Z5zp0piu0GR7eUwHLIHYJN4UK/3KPxShp6+bmROmha9JWh/k98lm78EpScMX8MaJlO+pySb+7rA5cJEuKbm3IGniEMvVB6vV1AXTdyfgn28DTFUh/6AoemPvoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgRcMSSn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C260C43390;
+	Tue, 23 Jan 2024 02:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971979;
-	bh=KJBB89CpZ3dW8Is283WA0ESm201JPcBDsIoBvf3KyM0=;
+	s=korg; t=1705975535;
+	bh=HfWA4T+p9MSJQ8DvhkODRyFBo+TRZpF1N1Q7K2n4+jU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m53y/bg2PmHdaf8WMgZX0pMEMLl9C5yC/qTBp4DOpMr3StruRi2QcaRhAB+b/VTZD
-	 VMZzhcfcYTV2S1TuG4cQIWtTonB3yNXCVV139G8vffasoap1wPV2/NIz3LjO+OZUDE
-	 3/VfbUUTzdrBdMyBClmKViUwrrp0atArVtg9NFOo=
+	b=LgRcMSSngpiXdx0paYCcpLxfp0rjy3XmSWGTlDKB6+m/3WdTRCTJSJrvweiJA5n/J
+	 sWNB93z+Lc49pt23O5+gZxqF+CaY0V1gKThz4qkPWf0F1wNGLbYHqwrDlang5wFxIS
+	 pwFOO2horUrSGBbD3CXaoUIXyv9G26YuETrBORrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chunfeng Yun <chunfeng.yun@mediatek.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Fangrui Song <maskray@google.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Milian Wolff <milian.wolff@kdab.com>,
+	Pablo Galindo <pablogsal@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 369/417] usb: xhci-mtk: fix a short packet issue of gen1 isoc-in transfer
+Subject: [PATCH 6.6 486/583] perf unwind-libdw: Handle JIT-generated DSOs properly
 Date: Mon, 22 Jan 2024 15:58:57 -0800
-Message-ID: <20240122235804.591858440@linuxfoundation.org>
+Message-ID: <20240122235826.881729273@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +70,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunfeng Yun <chunfeng.yun@mediatek.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 017dbfc05c31284150819890b4cc86a699cbdb71 ]
+[ Upstream commit c966d23a351a33f8a977fd7efbb6f467132f7383 ]
 
-For Gen1 isoc-in transfer, host still send out unexpected ACK after device
-finish the burst with a short packet, this will cause an exception on the
-connected device, such as, a usb 4k camera.
-It can be fixed by setting rxfifo depth less than 4k bytes, prefer to use
-3k here, the side-effect is that may cause performance drop about 10%,
-including bulk transfer.
+Usually DSOs are mapped from the beginning of the file, so the base
+address of the DSO can be calculated by map->start - map->pgoff.
 
-Fixes: 926d60ae64a6 ("usb: xhci-mtk: modify the SOF/ITP interval for mt8195")
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Chunfeng Yun <chunfeng.yun@mediatek.com>
-Link: https://lore.kernel.org/r/20240104061640.7335-2-chunfeng.yun@mediatek.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, JIT DSOs which are generated by `perf inject -j`, are mapped
+only the code segment.  This makes unwind-libdw code confusing and
+rejects processing unwinds in the JIT DSOs.  It should use the map
+start address as base for them to fix the confusion.
+
+Fixes: 1fe627da30331024 ("perf unwind: Take pgoff into account when reporting elf to libdwfl")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Fangrui Song <maskray@google.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Milian Wolff <milian.wolff@kdab.com>
+Cc: Pablo Galindo <pablogsal@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20231212070547.612536-3-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mtk.c | 40 +++++++++++++++++++++++++++++++++++--
- drivers/usb/host/xhci-mtk.h |  2 ++
- 2 files changed, 40 insertions(+), 2 deletions(-)
+ tools/perf/util/unwind-libdw.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-mtk.c b/drivers/usb/host/xhci-mtk.c
-index a0921687444b..bb4f80627cdc 100644
---- a/drivers/usb/host/xhci-mtk.c
-+++ b/drivers/usb/host/xhci-mtk.c
-@@ -7,6 +7,7 @@
-  *  Chunfeng Yun <chunfeng.yun@mediatek.com>
-  */
- 
-+#include <linux/bitfield.h>
- #include <linux/dma-mapping.h>
- #include <linux/iopoll.h>
- #include <linux/kernel.h>
-@@ -73,6 +74,9 @@
- #define FRMCNT_LEV1_RANG	(0x12b << 8)
- #define FRMCNT_LEV1_RANG_MASK	GENMASK(19, 8)
- 
-+#define HSCH_CFG1		0x960
-+#define SCH3_RXFIFO_DEPTH_MASK	GENMASK(21, 20)
-+
- #define SS_GEN2_EOF_CFG		0x990
- #define SSG2EOF_OFFSET		0x3c
- 
-@@ -114,6 +118,8 @@
- #define SSC_IP_SLEEP_EN	BIT(4)
- #define SSC_SPM_INT_EN		BIT(1)
- 
-+#define SCH_FIFO_TO_KB(x)	((x) >> 10)
-+
- enum ssusb_uwk_vers {
- 	SSUSB_UWK_V1 = 1,
- 	SSUSB_UWK_V2,
-@@ -165,6 +171,35 @@ static void xhci_mtk_set_frame_interval(struct xhci_hcd_mtk *mtk)
- 	writel(value, hcd->regs + SS_GEN2_EOF_CFG);
- }
- 
-+/*
-+ * workaround: usb3.2 gen1 isoc rx hw issue
-+ * host send out unexpected ACK afer device fininsh a burst transfer with
-+ * a short packet.
-+ */
-+static void xhci_mtk_rxfifo_depth_set(struct xhci_hcd_mtk *mtk)
-+{
-+	struct usb_hcd *hcd = mtk->hcd;
-+	u32 value;
-+
-+	if (!mtk->rxfifo_depth)
-+		return;
-+
-+	value = readl(hcd->regs + HSCH_CFG1);
-+	value &= ~SCH3_RXFIFO_DEPTH_MASK;
-+	value |= FIELD_PREP(SCH3_RXFIFO_DEPTH_MASK,
-+			    SCH_FIFO_TO_KB(mtk->rxfifo_depth) - 1);
-+	writel(value, hcd->regs + HSCH_CFG1);
-+}
-+
-+static void xhci_mtk_init_quirk(struct xhci_hcd_mtk *mtk)
-+{
-+	/* workaround only for mt8195 */
-+	xhci_mtk_set_frame_interval(mtk);
-+
-+	/* workaround for SoCs using SSUSB about before IPM v1.6.0 */
-+	xhci_mtk_rxfifo_depth_set(mtk);
-+}
-+
- static int xhci_mtk_host_enable(struct xhci_hcd_mtk *mtk)
+diff --git a/tools/perf/util/unwind-libdw.c b/tools/perf/util/unwind-libdw.c
+index 8554db3fc0d7..6013335a8dae 100644
+--- a/tools/perf/util/unwind-libdw.c
++++ b/tools/perf/util/unwind-libdw.c
+@@ -46,6 +46,7 @@ static int __report_module(struct addr_location *al, u64 ip,
  {
- 	struct mu3c_ippc_regs __iomem *ippc = mtk->ippc_regs;
-@@ -453,8 +488,7 @@ static int xhci_mtk_setup(struct usb_hcd *hcd)
- 		if (ret)
- 			return ret;
+ 	Dwfl_Module *mod;
+ 	struct dso *dso = NULL;
++	Dwarf_Addr base;
+ 	/*
+ 	 * Some callers will use al->sym, so we can't just use the
+ 	 * cheaper thread__find_map() here.
+@@ -58,13 +59,25 @@ static int __report_module(struct addr_location *al, u64 ip,
+ 	if (!dso)
+ 		return 0;
  
--		/* workaround only for mt8195 */
--		xhci_mtk_set_frame_interval(mtk);
-+		xhci_mtk_init_quirk(mtk);
++	/*
++	 * The generated JIT DSO files only map the code segment without
++	 * ELF headers.  Since JIT codes used to be packed in a memory
++	 * segment, calculating the base address using pgoff falls into
++	 * a different code in another DSO.  So just use the map->start
++	 * directly to pick the correct one.
++	 */
++	if (!strncmp(dso->long_name, "/tmp/jitted-", 12))
++		base = map__start(al->map);
++	else
++		base = map__start(al->map) - map__pgoff(al->map);
++
+ 	mod = dwfl_addrmodule(ui->dwfl, ip);
+ 	if (mod) {
+ 		Dwarf_Addr s;
+ 
+ 		dwfl_module_info(mod, NULL, &s, NULL, NULL, NULL, NULL, NULL);
+-		if (s != map__start(al->map) - map__pgoff(al->map))
+-			mod = 0;
++		if (s != base)
++			mod = NULL;
  	}
  
- 	ret = xhci_gen_setup(hcd, xhci_mtk_quirks);
-@@ -531,6 +565,8 @@ static int xhci_mtk_probe(struct platform_device *pdev)
- 	of_property_read_u32(node, "mediatek,u2p-dis-msk",
- 			     &mtk->u2p_dis_msk);
+ 	if (!mod) {
+@@ -72,14 +85,14 @@ static int __report_module(struct addr_location *al, u64 ip,
  
-+	of_property_read_u32(node, "rx-fifo-depth", &mtk->rxfifo_depth);
-+
- 	ret = usb_wakeup_of_property_parse(mtk, node);
- 	if (ret) {
- 		dev_err(dev, "failed to parse uwk property\n");
-diff --git a/drivers/usb/host/xhci-mtk.h b/drivers/usb/host/xhci-mtk.h
-index 1174a510dd38..2a6a47d0f09a 100644
---- a/drivers/usb/host/xhci-mtk.h
-+++ b/drivers/usb/host/xhci-mtk.h
-@@ -160,6 +160,8 @@ struct xhci_hcd_mtk {
- 	struct regmap *uwk;
- 	u32 uwk_reg_base;
- 	u32 uwk_vers;
-+	/* quirk */
-+	u32 rxfifo_depth;
- };
+ 		__symbol__join_symfs(filename, sizeof(filename), dso->long_name);
+ 		mod = dwfl_report_elf(ui->dwfl, dso->short_name, filename, -1,
+-				      map__start(al->map) - map__pgoff(al->map), false);
++				      base, false);
+ 	}
+ 	if (!mod) {
+ 		char filename[PATH_MAX];
  
- static inline struct xhci_hcd_mtk *hcd_to_mtk(struct usb_hcd *hcd)
+ 		if (dso__build_id_filename(dso, filename, sizeof(filename), false))
+ 			mod = dwfl_report_elf(ui->dwfl, dso->short_name, filename, -1,
+-					      map__start(al->map) - map__pgoff(al->map), false);
++					      base, false);
+ 	}
+ 
+ 	if (mod) {
 -- 
 2.43.0
 
