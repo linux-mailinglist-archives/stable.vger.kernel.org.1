@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-13960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 217FE837EF8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AAE1837DCE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 549531C2862C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C543B2A2AD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A064C6027B;
-	Tue, 23 Jan 2024 00:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123CD135A59;
+	Tue, 23 Jan 2024 00:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJ/NrIjA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpcdHQFw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E94C60252;
-	Tue, 23 Jan 2024 00:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51A4135A50;
+	Tue, 23 Jan 2024 00:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970857; cv=none; b=ctx2qHnyCRPvp7cFkkL//dJFAAET+3rnWs8HX6FyZh/Vp6kUl+GNWi8KgYD+L3BfxVS/NCqdXCg1GVbhmsVt0nUgkJFZnWqvcKsZZBjBD1ZT9N9Zis7IWvDoixZrqKCVJ2cycek4uEFP/5HRPDcOuhhe0e2H+5O35SBnkO18s9g=
+	t=1705969662; cv=none; b=g2LNX9RRI/jFdm76Z+wPxB1HHjuTUQSs3I0uuzzUc0ZPlBpU7gqFiERnq/MB6pZ1buYjb6PKVVLeJsORva6uZ544+BtNaSKWPlfo/2y4ChYfFjxkTUVuHLx4UFFkO5ZKpj3geG78Ys9PiLhg71eAPsltbA9QcTdEVre/kMnuLvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970857; c=relaxed/simple;
-	bh=qDweAP6AwiHEp0NvNS/lpgWyPy2JUYQb+kMsMvEmo8k=;
+	s=arc-20240116; t=1705969662; c=relaxed/simple;
+	bh=igH/SExPG4y44b10SE9s+Q9kOL4DLcOlTrLKoh/7AT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g0Mp3xrG4pTIKzhTzWNmrJS22/qZV/1fnLUzlKPR4JsltPkjzZMOXgJB/+5MH5xwXAhYS92zeK26eXR/PADq6x7F0xm4hlRG8w6Wve+ExDbKL4b1bQd6gnC5asYMZG7hgpvKGMBwQvxE+ab+knQS9dmFVOtu1s7/vcFPJ53fIHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJ/NrIjA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACBDC43390;
-	Tue, 23 Jan 2024 00:47:37 +0000 (UTC)
+	 MIME-Version; b=OkKYf/Ascbj/FL8CLoNNl/KdfttNkXNS31EHtDGOuhjQUOtD8K2tBhzj6mCk/lPQqFszAsMeE6ClBgxQw9QuB1nNb5ZTTMhbWEEfrOCF90jlivfytJ2urftgLFiu2o2wUtfepeTbyeDyZCpciusOiEVkYKGb4cGheX1VZURKMxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpcdHQFw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA05C433F1;
+	Tue, 23 Jan 2024 00:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970857;
-	bh=qDweAP6AwiHEp0NvNS/lpgWyPy2JUYQb+kMsMvEmo8k=;
+	s=korg; t=1705969662;
+	bh=igH/SExPG4y44b10SE9s+Q9kOL4DLcOlTrLKoh/7AT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OJ/NrIjAD2BAxKQga9VLoK2rV7aP1Nz53LT1+ZVb34lBYSphcTw7DH6SJwCc5z37e
-	 Aoh+IVGU2RfZs0Mf1B7fqSS9aCTZ/m+dhVE0W2g/bhO959O3JDw6tthy4r2VbdodBb
-	 wtisSLAvr/+yiynsYEmno4gKxHWxJtLTqvUSNixk=
+	b=lpcdHQFwv4H//47iWgiZtyrBcMDvzXqXbGrh8IZyjjHsVkwE08KFqnAd1lp9Cmahm
+	 JpLnyJkyx7JzjiTvdtFdaGtPWirzPPeRON+bbcbEytdWCB+ZHlreCPVCDBj/dsK37/
+	 b5E5FIyXxJHh23K4CajFz6OJz0rbiQG2uO7ZsAiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/417] block: add check of minors and first_minor in device_add_disk()
+	Arnd Bergmann <arnd@arndb.de>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.7 390/641] clocksource/drivers/ep93xx: Fix error handling during probe
 Date: Mon, 22 Jan 2024 15:54:54 -0800
-Message-ID: <20240122235756.167113946@linuxfoundation.org>
+Message-ID: <20240122235830.151888921@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 4c434392c4777881d01beada6701eff8c76b43fe ]
+commit c0c4579d79d0df841e825c68df450909a0032faf upstream.
 
-'first_minor' represents the starting minor number of disks, and
-'minors' represents the number of partitions in the device. Neither
-of them can be greater than MINORMASK + 1.
+When the interrupt property fails to be parsed, ep93xx_timer_of_init()
+return code ends up uninitialized:
 
-Commit e338924bd05d ("block: check minor range in device_add_disk()")
-only added the check of 'first_minor + minors'. However, their sum might
-be less than MINORMASK but their values are wrong. Complete the checks now.
+drivers/clocksource/timer-ep93xx.c:160:6: error: variable 'ret' is used uninitialized whenever 'if' condition is true [-Werror,-Wsometimes-uninitialized]
+        if (irq < 0) {
+            ^~~~~~~
+drivers/clocksource/timer-ep93xx.c:188:9: note: uninitialized use occurs here
+        return ret;
+               ^~~
+drivers/clocksource/timer-ep93xx.c:160:2: note: remove the 'if' if its condition is always false
+        if (irq < 0) {
+        ^~~~~~~~~~~~~~
 
-Fixes: e338924bd05d ("block: check minor range in device_add_disk()")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20231219075942.840255-1-linan666@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Simplify this portion to use the normal construct of just checking
+whether a valid interrupt was returned. Note that irq_of_parse_and_map()
+never returns a negative value and no other callers check for that either.
+
+Fixes: c28ca80ba3b5 ("clocksource: ep93xx: Add driver for Cirrus Logic EP93xx")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20231212214616.193098-1-arnd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/genhd.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-ep93xx.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/block/genhd.c b/block/genhd.c
-index 5b23f2c3d692..8e9d162cbdbd 100644
---- a/block/genhd.c
-+++ b/block/genhd.c
-@@ -444,7 +444,9 @@ int __must_check device_add_disk(struct device *parent, struct gendisk *disk,
- 				DISK_MAX_PARTS);
- 			disk->minors = DISK_MAX_PARTS;
- 		}
--		if (disk->first_minor + disk->minors > MINORMASK + 1)
-+		if (disk->first_minor > MINORMASK ||
-+		    disk->minors > MINORMASK + 1 ||
-+		    disk->first_minor + disk->minors > MINORMASK + 1)
- 			goto out_exit_elevator;
- 	} else {
- 		if (WARN_ON(disk->minors))
+diff --git a/drivers/clocksource/timer-ep93xx.c b/drivers/clocksource/timer-ep93xx.c
+index bc0ca6e12334..6981ff3ac8a9 100644
+--- a/drivers/clocksource/timer-ep93xx.c
++++ b/drivers/clocksource/timer-ep93xx.c
+@@ -155,9 +155,8 @@ static int __init ep93xx_timer_of_init(struct device_node *np)
+ 	ep93xx_tcu = tcu;
+ 
+ 	irq = irq_of_parse_and_map(np, 0);
+-	if (irq == 0)
+-		irq = -EINVAL;
+-	if (irq < 0) {
++	if (!irq) {
++		ret = -EINVAL;
+ 		pr_err("EP93XX Timer Can't parse IRQ %d", irq);
+ 		goto out_free;
+ 	}
 -- 
 2.43.0
 
