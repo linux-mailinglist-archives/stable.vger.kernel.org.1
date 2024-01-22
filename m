@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA8D837A4B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B438378C0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 524771F21FC2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40B6C28BC37
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF3212BF03;
-	Tue, 23 Jan 2024 00:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4982A23D2;
+	Tue, 23 Jan 2024 00:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XhDvnS4a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bc5Jhrn/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D67C12A17F;
-	Tue, 23 Jan 2024 00:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0968520EE;
+	Tue, 23 Jan 2024 00:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968883; cv=none; b=lQEWjC7q9cbmWaDmwykHckbYSado0hQuxdlkBPNQkf/D7s0NqJeOGxxrV+Qcy+PdzKAdL3fFVHkyDwiv3N3aQ7qd0kAKd56H0BBKt/8ypB/4bXC1yUy/3bfLmzhkuL9Av3OcqEvuopT9DazmGAY6QqomkBTK3wDFdIestsQX/Rc=
+	t=1705968240; cv=none; b=Xqe4pF7ayHDPwsqBMdSUGZDl/thBRJUgU4J0BUSsnZXHbZOq4oBS7rbbLtZq/niMbIa77DCNO0s26w4pd1iP33vE7OHNYC5qdbY+4utGNZOUNNpSsg4imxhFYokCnoXFcTa7LJwPmmG5aAVkAashBdU642kZskat5p7+qA+emHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968883; c=relaxed/simple;
-	bh=ig4P/rnc3fWXXwGMlIpbKKDZ7iZaU0P7Qsx9QY++GcQ=;
+	s=arc-20240116; t=1705968240; c=relaxed/simple;
+	bh=5pKTpgZuUOSh8BKcR0h0LeW/SKIrWC2dD3aBquslxZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ietgHUEXOBwSSR+i8WEaCa4SywWve3lHst/ZqLMDrpxVvP6eo6P0IkxxTyj5NVrQyAt7R4Z4So6DbR9xrp9WKt3HN7t2iy1Ufl0o1/NGgQEqzSvS+FRJxOtOVUplcxMs6BtA//BEFwAA/ynynJTC5Kb6Y1UG/rx3AIrEUkz3imQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XhDvnS4a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92865C43601;
-	Tue, 23 Jan 2024 00:14:42 +0000 (UTC)
+	 MIME-Version; b=Fe1gCZmgmoHcWF5qsu6984fCphKkYtjvpcfxNF1uJ13+Nr/LATT5zxGiXAEc9SjARBSovEsN4lZ3AlmzxJmoUdwbNOtTplz7QCn3H83pSW7qe/sHXo2oHTLLbC6dO9VDzF1hteBjPNsmAKULZMbgjfGkn44be38YslG7IswI7O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bc5Jhrn/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C42C43394;
+	Tue, 23 Jan 2024 00:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968882;
-	bh=ig4P/rnc3fWXXwGMlIpbKKDZ7iZaU0P7Qsx9QY++GcQ=;
+	s=korg; t=1705968239;
+	bh=5pKTpgZuUOSh8BKcR0h0LeW/SKIrWC2dD3aBquslxZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XhDvnS4apoAwMZBQ1NOahk/4QCb5j0gb02bjhMq+5SOvktbg9RcEgXJOItdENn7G0
-	 4YclBldVqRHljB+intuw5WB7UsmwkaZVrbFqkx5JqPPKcxSamvIO4Ca//Ss5hNv+4f
-	 BFt20tC5IqXOjLSr0EXmN8Qd9klU/E/7eYLWNb7w=
+	b=bc5Jhrn/eAoTyURQ0DgYYEZeVXG9hScW2L+KjeS0G2BsPACEkYGXp1dloTouL6Roi
+	 gkZ+I37HC6tcoVN20HIyFwkYe1PuXKZ6RbBqad7WsBg86EWJpoQ1QJOwZX2LpKJOZe
+	 fFT6gwDogkQ4Ugkwt6QRL7SllmYhQRvtpHx+vHyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	wangyangxin <wangyangxin1@huawei.com>,
+	Gonglei <arei.gonglei@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 079/194] NFSv4.1/pnfs: Ensure we handle the error NFS4ERR_RETURNCONFLICT
+Subject: [PATCH 4.19 053/148] crypto: virtio - Wait for tasklet to complete on device remove
 Date: Mon, 22 Jan 2024 15:56:49 -0800
-Message-ID: <20240122235722.624499967@linuxfoundation.org>
+Message-ID: <20240122235714.566702828@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: wangyangxin <wangyangxin1@huawei.com>
 
-[ Upstream commit 037e56a22ff37f9a9c2330b66cff55d3d1ff9b90 ]
+[ Upstream commit 67cc511e8d436456cc98033e6d4ba83ebfc8e672 ]
 
-Once the client has processed the CB_LAYOUTRECALL, but has not yet
-successfully returned the layout, the server is supposed to switch to
-returning NFS4ERR_RETURNCONFLICT. This patch ensures that we handle
-that return value correctly.
+The scheduled tasklet needs to be executed on device remove.
 
-Fixes: 183d9e7b112a ("pnfs: rework LAYOUTGET retry handling")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
+Signed-off-by: wangyangxin <wangyangxin1@huawei.com>
+Signed-off-by: Gonglei <arei.gonglei@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 3 +++
+ drivers/crypto/virtio/virtio_crypto_core.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index b7529656b430..31503bade335 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -168,6 +168,7 @@ static int nfs4_map_errors(int err)
- 	case -NFS4ERR_RESOURCE:
- 	case -NFS4ERR_LAYOUTTRYLATER:
- 	case -NFS4ERR_RECALLCONFLICT:
-+	case -NFS4ERR_RETURNCONFLICT:
- 		return -EREMOTEIO;
- 	case -NFS4ERR_WRONGSEC:
- 	case -NFS4ERR_WRONG_CRED:
-@@ -552,6 +553,7 @@ static int nfs4_do_handle_exception(struct nfs_server *server,
- 		case -NFS4ERR_GRACE:
- 		case -NFS4ERR_LAYOUTTRYLATER:
- 		case -NFS4ERR_RECALLCONFLICT:
-+		case -NFS4ERR_RETURNCONFLICT:
- 			exception->delay = 1;
- 			return 0;
+diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
+index c21770345f5f..2515a141c67b 100644
+--- a/drivers/crypto/virtio/virtio_crypto_core.c
++++ b/drivers/crypto/virtio/virtio_crypto_core.c
+@@ -446,11 +446,14 @@ static void virtcrypto_free_unused_reqs(struct virtio_crypto *vcrypto)
+ static void virtcrypto_remove(struct virtio_device *vdev)
+ {
+ 	struct virtio_crypto *vcrypto = vdev->priv;
++	int i;
  
-@@ -9159,6 +9161,7 @@ nfs4_layoutget_handle_exception(struct rpc_task *task,
- 		status = -EBUSY;
- 		break;
- 	case -NFS4ERR_RECALLCONFLICT:
-+	case -NFS4ERR_RETURNCONFLICT:
- 		status = -ERECALLCONFLICT;
- 		break;
- 	case -NFS4ERR_DELEG_REVOKED:
+ 	dev_info(&vdev->dev, "Start virtcrypto_remove.\n");
+ 
+ 	if (virtcrypto_dev_started(vcrypto))
+ 		virtcrypto_dev_stop(vcrypto);
++	for (i = 0; i < vcrypto->max_data_queues; i++)
++		tasklet_kill(&vcrypto->data_vq[i].done_task);
+ 	vdev->config->reset(vdev);
+ 	virtcrypto_free_unused_reqs(vcrypto);
+ 	virtcrypto_clear_crypto_engines(vcrypto);
 -- 
 2.43.0
 
