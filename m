@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E0F783817A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC22837F3A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D06A21C288AF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8719629BFB8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7698114A4EE;
-	Tue, 23 Jan 2024 01:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5318129A84;
+	Tue, 23 Jan 2024 00:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtIljjY1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWmyutnl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3578D7E9;
-	Tue, 23 Jan 2024 01:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE1B129A7F;
+	Tue, 23 Jan 2024 00:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972145; cv=none; b=qe0bZsV4oYLGBfOtaYH5LQAnSyVddeg0L4lYRILhBWmQ912+vig7YiLrIBTEaLkRiKrrzzR9l1JcQfXY2ZvXOPgutQgR5iIv0SPFXWogi/i0wfzXvD6DhXZztKmlzs9DWE4gWvdPy7/jbZok4vTjyt18MoRVqvxXzsCLIh5Ymdk=
+	t=1705971012; cv=none; b=WNw6lH3flwjHV+N/Iq9Ohcm6fArKXWdc61YvDavh4kGsJpXrFv5CRAW33l1rrgCC+7RyHFaZr6Ck1xKL9zop9NrL+0m/0SkfsFuELtEGFoZyXtoPr2i5EK4m1UKBZGueeyWcpbANlRXIRbsaGG5OlwmMVYB2xMFhYBO7/b8G1cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972145; c=relaxed/simple;
-	bh=Ewfl3mT50+zYIiik8oL/eWTJypf6oSS4lTSnss/WgpU=;
+	s=arc-20240116; t=1705971012; c=relaxed/simple;
+	bh=810wMwglj+HtWU+yc7qYBAsjaQsubQC8GOZJTgL7cHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oM1ORiWgOIbrf6JN6yC4V3ZLPKHvNt1iIUiJ5nYSdagTGlspxbCE/5G5I1GxX0EX8JOJzqKwuoEDiynrqKQDYBzqFr3UWdiq7DGRGNhSiGfoNLqT9jxsudW/p0Ow+TVGZmgvzuQQiDKpbDN6gBtbv5gK1s1VeBcgRXGiBeAz8SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtIljjY1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CE4C433A6;
-	Tue, 23 Jan 2024 01:09:04 +0000 (UTC)
+	 MIME-Version; b=uTyQAur/l3uBYOMoElI9CY2EJBdzRIXVZ8TlOSEJXrWeP1hYfTiznub2lMg2b+3JZkOLlhulamhXadIarjYO+CRuEqFcQ9OXzBOgVKdqRvfijgqHjPoyBoFXbKFgf5VKO5NegacnXLL7zSKBJB+0pY5X9xoTW+oaFU/i8D0UXak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWmyutnl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A7EC433C7;
+	Tue, 23 Jan 2024 00:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972145;
-	bh=Ewfl3mT50+zYIiik8oL/eWTJypf6oSS4lTSnss/WgpU=;
+	s=korg; t=1705971012;
+	bh=810wMwglj+HtWU+yc7qYBAsjaQsubQC8GOZJTgL7cHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wtIljjY1a9ebheH0xlYI3ecLLzoFLsUMFvO9gssmK5mf243+oIY3KlCJw/FxyfV7m
-	 QAQyUNvoCiRZXwtr6AzEiurwYV3AajdhmccoN4BM3hC3soKqbqlikKMga0Rfyv2I+8
-	 Vu028+MMmZBQ9xcAP4RJH9h1Sn3rqWGNB+cD1fOw=
+	b=ZWmyutnlIrSr8cANHN/9UYivwME4Z9gBVW/vuiqNo6HWYLahkPI0Eq6D9jeIX5yfB
+	 +0Gh6N4HkA/mgd3AaNCyzvZEhf9zVAmeOHXR5sylEgq+igC+hjMdFlI7VywYpIn5An
+	 lQdPM5iWRrSUXWeq0cF2a+8jD5fNKlJ9uceSNGXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Abhinav Singh <singhabhinav9051571833@gmail.com>,
+	Danilo Krummrich <dakr@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 074/374] powerpc/powernv: Add a null pointer check to scom_debug_init_one()
+Subject: [PATCH 6.1 162/417] drm/nouveau/fence:: fix warning directly dereferencing a rcu pointer
 Date: Mon, 22 Jan 2024 15:55:30 -0800
-Message-ID: <20240122235747.191950960@linuxfoundation.org>
+Message-ID: <20240122235757.453435047@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Abhinav Singh <singhabhinav9051571833@gmail.com>
 
-[ Upstream commit 9a260f2dd827bbc82cc60eb4f4d8c22707d80742 ]
+[ Upstream commit 5f35a624c1e30b5bae5023b3c256e94e0ad4f806 ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
-Add a null pointer check, and release 'ent' to avoid memory leaks.
+Fix a sparse warning with this message
+"warning:dereference of noderef expression". In this context it means we
+are dereferencing a __rcu tagged pointer directly.
 
-Fixes: bfd2f0d49aef ("powerpc/powernv: Get rid of old scom_controller abstraction")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231208085937.107210-1-chentao@kylinos.cn
+We should not be directly dereferencing a rcu pointer. To get a normal
+(non __rcu tagged pointer) from a __rcu tagged pointer we are using the
+function unrcu_pointer(...). The non __rcu tagged pointer then can be
+dereferenced just like a normal pointer.
+
+I tested with qemu with this command
+qemu-system-x86_64 \
+	-m 2G \
+	-smp 2 \
+	-kernel bzImage \
+	-append "console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
+	-drive file=bullseye.img,format=raw \
+	-net user,host=10.0.2.10,hostfwd=tcp:127.0.0.1:10021-:22 \
+	-net nic,model=e1000 \
+	-enable-kvm \
+	-nographic \
+	-pidfile vm.pid \
+	2>&1 | tee vm.log
+with lockdep enabled.
+
+Fixes: 0ec5f02f0e2c ("drm/nouveau: prevent stale fence->channel pointers, and protect with rcu")
+Signed-off-by: Abhinav Singh <singhabhinav9051571833@gmail.com>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231113191303.3277733-1-singhabhinav9051571833@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/opal-xscom.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/nouveau/nv04_fence.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-xscom.c b/arch/powerpc/platforms/powernv/opal-xscom.c
-index 6b4eed2ef4fa..f67235d1ba2c 100644
---- a/arch/powerpc/platforms/powernv/opal-xscom.c
-+++ b/arch/powerpc/platforms/powernv/opal-xscom.c
-@@ -165,6 +165,11 @@ static int scom_debug_init_one(struct dentry *root, struct device_node *dn,
- 	ent->chip = chip;
- 	snprintf(ent->name, 16, "%08x", chip);
- 	ent->path.data = (void *)kasprintf(GFP_KERNEL, "%pOF", dn);
-+	if (!ent->path.data) {
-+		kfree(ent);
-+		return -ENOMEM;
-+	}
-+
- 	ent->path.size = strlen((char *)ent->path.data);
- 
- 	dir = debugfs_create_dir(ent->name, root);
+diff --git a/drivers/gpu/drm/nouveau/nv04_fence.c b/drivers/gpu/drm/nouveau/nv04_fence.c
+index 5b71a5a5cd85..cdbc75e3d1f6 100644
+--- a/drivers/gpu/drm/nouveau/nv04_fence.c
++++ b/drivers/gpu/drm/nouveau/nv04_fence.c
+@@ -39,7 +39,7 @@ struct nv04_fence_priv {
+ static int
+ nv04_fence_emit(struct nouveau_fence *fence)
+ {
+-	struct nvif_push *push = fence->channel->chan.push;
++	struct nvif_push *push = unrcu_pointer(fence->channel)->chan.push;
+ 	int ret = PUSH_WAIT(push, 2);
+ 	if (ret == 0) {
+ 		PUSH_NVSQ(push, NV_SW, 0x0150, fence->base.seqno);
 -- 
 2.43.0
 
