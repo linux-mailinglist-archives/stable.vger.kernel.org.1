@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056308380B8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2180A83835F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37DF61C2473C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD4791F28852
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1348C133429;
-	Tue, 23 Jan 2024 01:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1285661673;
+	Tue, 23 Jan 2024 01:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EOjOCsPq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BMAxkwx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49B3133416;
-	Tue, 23 Jan 2024 01:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F23627F5;
+	Tue, 23 Jan 2024 01:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971847; cv=none; b=OcxfPBEpoItnebd3mRBjut+uaQdCmUvGPs3MXdKG3qL5aguacLtyfdQGM8hi8i0b1LAwFHpX/qO+fjaogvBg98v2VXGr6ZnXo3ngA9YhcH/rmmK5qA2DFBX4gsDTMdFw0BCCyjbxDOKpN/oNHyOnp9AZSOJuEbnCKk25po6GNjA=
+	t=1705974951; cv=none; b=ofAcROuMJU+KUH5ynzJJGVGKR1WmFtlkA7wwdmXf0yvpVNciNDxr+vGKnXkhu4GQzOWc7l9UuDFNtumTMlfcx7GnUi34B5aMX7OaFn8WNmclCb8GV56NOnAEVUBnfYHzV+O+p8dpYUBN6L5z/BaHESYoKPh3IOXnbseq9ZIGSBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971847; c=relaxed/simple;
-	bh=iRr0Aynx4a42XTnyrkK6bIZXnXxKSgwUOISdeJTTh5s=;
+	s=arc-20240116; t=1705974951; c=relaxed/simple;
+	bh=Dzd6FGYfCCb+StyYpg9RqgaG8rkAuccp2iLqiPcc9ig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ij7ozlAhcTX2gf1K9YRGg1lPKzpjepv1QZZBZetGpZyuh89LhTM5qu/UazfsVeEcQK9EJcip2NdUIvkBhwx6ZjxfJNlYwQLxB2nNBmErgZVatdFztQScj0AtYgCYSglhz4AJXdyNI0Xn3/xJa23N4UgZcJWSnWuu39lA+GVpUNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EOjOCsPq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FAFBC433C7;
-	Tue, 23 Jan 2024 01:04:07 +0000 (UTC)
+	 MIME-Version; b=rQIQvWCuCfshQ4UpAGcVfR9PcmyRW+bqEfwTkG2VYqCDYujc3tEKdPaM1SNLsHeukMZJv2nuf7VkFwQe7gNuXqTI2WLy1ET+Dd4TgjXiSRCq9jAg5alLdX3+HNCKQRJn+qW3WdB98hjQDC8GVvFx0I40B81v1MGrig9ai2n1jcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BMAxkwx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FF9C433C7;
+	Tue, 23 Jan 2024 01:55:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971847;
-	bh=iRr0Aynx4a42XTnyrkK6bIZXnXxKSgwUOISdeJTTh5s=;
+	s=korg; t=1705974951;
+	bh=Dzd6FGYfCCb+StyYpg9RqgaG8rkAuccp2iLqiPcc9ig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EOjOCsPqGWC6SZJlS+QqZ7I8RyteDSdddyDCHJ7Ye8kQwJsQ4oW0gQ30khwYxzYwb
-	 dN7UXXwH8B6H5njw7X6DyePK07ZqXkELP3vhVK+xdg8FNagXTahgeclg/vL3qqlL67
-	 a12CWYgtS22nZ/Em+UYwlt+3TZuGOug0uYRa+LFE=
+	b=2BMAxkwxqrfOzhXmP2b1DD9GQuuQ05HeCrTcke3dDwjS/dSOsvpf7P1CD0BWnZohl
+	 wfgkbm/nPOmamw2ab71Fls2Ijms+pneGfvTKVTCB0cfPkNFMUJ00nxRO5lWid0ILUS
+	 CEYxv/AY3J5ucYtiE7HDfzAqjxFgqCl4p8ToGm1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
+	Dang Huynh <danct12@riseup.net>,
+	Nikita Travkin <nikita@trvn.ru>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 243/286] serial: 8250: omap: Dont skip resource freeing if pm_runtime_resume_and_get() failed
+Subject: [PATCH 5.15 293/374] leds: aw2013: Select missing dependency REGMAP_I2C
 Date: Mon, 22 Jan 2024 15:59:09 -0800
-Message-ID: <20240122235741.422026126@linuxfoundation.org>
+Message-ID: <20240122235754.981567445@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Dang Huynh <danct12@riseup.net>
 
-[ Upstream commit ad90d0358bd3b4554f243a425168fc7cebe7d04e ]
+[ Upstream commit 75469bb0537ad2ab0fc1fb6e534a79cfc03f3b3f ]
 
-Returning an error code from .remove() makes the driver core emit the
-little helpful error message:
+The AW2013 driver uses devm_regmap_init_i2c, so REGMAP_I2C needs to
+be selected.
 
-	remove callback returned a non-zero value. This will be ignored.
+Otherwise build process may fail with:
+  ld: drivers/leds/leds-aw2013.o: in function `aw2013_probe':
+    leds-aw2013.c:345: undefined reference to `__devm_regmap_init_i2c'
 
-and then remove the device anyhow. So all resources that were not freed
-are leaked in this case. Skipping serial8250_unregister_port() has the
-potential to keep enough of the UART around to trigger a use-after-free.
-
-So replace the error return (and with it the little helpful error
-message) by a more useful error message and continue to cleanup.
-
-Fixes: e3f0c638f428 ("serial: 8250: omap: Fix unpaired pm_runtime_put_sync() in omap8250_remove()")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20231110152927.70601-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dang Huynh <danct12@riseup.net>
+Acked-by: Nikita Travkin <nikita@trvn.ru>
+Fixes: 59ea3c9faf32 ("leds: add aw2013 driver")
+Link: https://lore.kernel.org/r/20231103114203.1108922-1-danct12@riseup.net
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_omap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/leds/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index bd4118f1b694..25765ebb756a 100644
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -1497,7 +1497,7 @@ static int omap8250_remove(struct platform_device *pdev)
- 
- 	err = pm_runtime_resume_and_get(&pdev->dev);
- 	if (err)
--		return err;
-+		dev_err(&pdev->dev, "Failed to resume hardware\n");
- 
- 	serial8250_unregister_port(priv->line);
- 	priv->line = -ENODEV;
+diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
+index 8bf545100fb0..fdfc41535c8a 100644
+--- a/drivers/leds/Kconfig
++++ b/drivers/leds/Kconfig
+@@ -97,6 +97,7 @@ config LEDS_ARIEL
+ config LEDS_AW2013
+ 	tristate "LED support for Awinic AW2013"
+ 	depends on LEDS_CLASS && I2C && OF
++	select REGMAP_I2C
+ 	help
+ 	  This option enables support for the AW2013 3-channel
+ 	  LED driver.
 -- 
 2.43.0
 
