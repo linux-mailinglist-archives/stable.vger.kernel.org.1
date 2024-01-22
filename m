@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D73B837C3B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2569D83832F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFCC22965CD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A5881C29983
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87446144614;
-	Tue, 23 Jan 2024 00:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5156088C;
+	Tue, 23 Jan 2024 01:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzDNetBF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jzb69lxn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4771514460D;
-	Tue, 23 Jan 2024 00:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3735024E;
+	Tue, 23 Jan 2024 01:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969544; cv=none; b=r4BCVqquZit3h9YHaQ02YKrc/M3rtTaIJqHdO4x8Dsus1i+gRYHtqFUOfrKHxpn+PIT8M1SdF/MkzzRHm4IZ/MpS0Nd4B4EsV0BcdFpLQwr6mVxufX5LQDA8R2wMyNCjHHOe8nQe8+EFhbnHt5/h6h6fMkjq9CU2Xv/ZOjIP4uk=
+	t=1705974727; cv=none; b=sx8ZT300LzpYxzg5xz/v2dq50W3gTWiLRZ3uiCi4TFwnkpwMbFhsCi56RScsNn3O/ab0fmeFD1FNmqMkjzvtq+/uUS8fDc3aTzD1GquqhhTXzPWoZUCIGnSw64fo3qgLASdKPF0qmpRFpxSsmGdu3X1dgIZ8kwhnYVSQdzYt+oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969544; c=relaxed/simple;
-	bh=UpQ8dVuwVbC5U3IWeSqtUhLR5cQaNUduD55WH0T3ec0=;
+	s=arc-20240116; t=1705974727; c=relaxed/simple;
+	bh=cKllp+G22Y9rCynJwerljBEwbsAQ10tSnmQJRUEWvn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E1es31qaZ98sdJXJnhrheGmbtK44L0CW+KUbNR8NTZcRJUvsJErutSOHuYy4Nsg5akf0fdH0ZV4X5Qq8R4gimwf6clP+Deu4B6hsEwX4lt4BuMZvgRIq2cN0TOK8BZ+25yYrHu41oTVvsT70sYHLHAQ2WY8b3tTm7+QzUX6jAIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzDNetBF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C37C43390;
-	Tue, 23 Jan 2024 00:25:43 +0000 (UTC)
+	 MIME-Version; b=NGm6EhaOebN20J+bSlKZZZ42WppHJ2k3eK3Yn4mqzRuqXI/dfWOAdPMe0swEYhcver05GGxrEM+KE4uZJXUfweKcZP1NKl93JfzoXILUyQzLYJb+RHwkl+4V7mDeEk0uSAdyBcwcv43AFZwClgY5UJLJlwThFCxFUj9moUoCBqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jzb69lxn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B45FC43390;
+	Tue, 23 Jan 2024 01:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969544;
-	bh=UpQ8dVuwVbC5U3IWeSqtUhLR5cQaNUduD55WH0T3ec0=;
+	s=korg; t=1705974727;
+	bh=cKllp+G22Y9rCynJwerljBEwbsAQ10tSnmQJRUEWvn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gzDNetBFeZmvQ0n9RJJeUpaLrnj6weJQNpTZeL8BzHvidVM3xxTSxZ9JgwpuOYChH
-	 kIRFh5OGOc1AM5JdfN8WDvw2NZfdNpgtxtW+Ej5sIh2+b49bV2s9Nw7NJi1Lvqr/Yy
-	 CHCb0UoLLZ/Tv/xGsBhckB4RnOOOWBUbbxaOYo9A=
+	b=Jzb69lxnuVkZrPeravMtYCU+U7GRvRP3kyjHZug04ddzkI+bx1d+20iYVD2Yq4uVt
+	 e65R7ny0OaKuInIHypv2bEnFrb19S1X7GHXMFkpcWwVwxeUoTWUDIxq73oXKp7o8Sw
+	 +oXLW5rxdjG3dsmIksNusRIMfmzrdNkj3S7wrGcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Hao Sun <sunhao.th@gmail.com>,
+	Andrei Matei <andreimatei1@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 292/641] drm/amd/display: Use drm_connector in create_stream_for_sink
+Subject: [PATCH 6.6 145/583] bpf: Fix accesses to uninit stack slots
 Date: Mon, 22 Jan 2024 15:53:16 -0800
-Message-ID: <20240122235827.029950383@linuxfoundation.org>
+Message-ID: <20240122235816.531975899@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,213 +63,458 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Andrei Matei <andreimatei1@gmail.com>
 
-[ Upstream commit 3e094a2875260543ca74838decc0c995d3765096 ]
+[ Upstream commit 6b4a64bafd107e521c01eec3453ce94a3fb38529 ]
 
-[WHAT]
-We need to use this function for both amdgpu_dm_connectors
-and drm_writeback_connectors. Modify it to operate on
-a drm_connector as a common base.
+Privileged programs are supposed to be able to read uninitialized stack
+memory (ever since 6715df8d5) but, before this patch, these accesses
+were permitted inconsistently. In particular, accesses were permitted
+above state->allocated_stack, but not below it. In other words, if the
+stack was already "large enough", the access was permitted, but
+otherwise the access was rejected instead of being allowed to "grow the
+stack". This undesired rejection was happening in two places:
+- in check_stack_slot_within_bounds()
+- in check_stack_range_initialized()
+This patch arranges for these accesses to be permitted. A bunch of tests
+that were relying on the old rejection had to change; all of them were
+changed to add also run unprivileged, in which case the old behavior
+persists. One tests couldn't be updated - global_func16 - because it
+can't run unprivileged for other reasons.
 
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: dbf5d3d02987 ("drm/amd/display: Check writeback connectors in create_validate_stream_for_sink")
+This patch also fixes the tracking of the stack size for variable-offset
+reads. This second fix is bundled in the same commit as the first one
+because they're inter-related. Before this patch, writes to the stack
+using registers containing a variable offset (as opposed to registers
+with fixed, known values) were not properly contributing to the
+function's needed stack size. As a result, it was possible for a program
+to verify, but then to attempt to read out-of-bounds data at runtime
+because a too small stack had been allocated for it.
+
+Each function tracks the size of the stack it needs in
+bpf_subprog_info.stack_depth, which is maintained by
+update_stack_depth(). For regular memory accesses, check_mem_access()
+was calling update_state_depth() but it was passing in only the fixed
+part of the offset register, ignoring the variable offset. This was
+incorrect; the minimum possible value of that register should be used
+instead.
+
+This tracking is now fixed by centralizing the tracking of stack size in
+grow_stack_state(), and by lifting the calls to grow_stack_state() to
+check_stack_access_within_bounds() as suggested by Andrii. The code is
+now simpler and more convincingly tracks the correct maximum stack size.
+check_stack_range_initialized() can now rely on enough stack having been
+allocated for the access; this helps with the fix for the first issue.
+
+A few tests were changed to also check the stack depth computation. The
+one that fails without this patch is verifier_var_off:stack_write_priv_vs_unpriv.
+
+Fixes: 01f810ace9ed3 ("bpf: Allow variable-offset stack access")
+Reported-by: Hao Sun <sunhao.th@gmail.com>
+Signed-off-by: Andrei Matei <andreimatei1@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20231208032519.260451-3-andreimatei1@gmail.com
+
+Closes: https://lore.kernel.org/bpf/CABWLsev9g8UP_c3a=1qbuZUi20tGoUXoU07FPf-5FLvhOKOY+Q@mail.gmail.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 65 +++++++++++--------
- 1 file changed, 37 insertions(+), 28 deletions(-)
+ kernel/bpf/verifier.c                         | 65 ++++++++-----------
+ .../selftests/bpf/progs/test_global_func16.c  |  2 +-
+ .../bpf/progs/verifier_basic_stack.c          |  8 +--
+ .../selftests/bpf/progs/verifier_int_ptr.c    |  5 +-
+ .../selftests/bpf/progs/verifier_raw_stack.c  |  5 +-
+ .../selftests/bpf/progs/verifier_var_off.c    | 62 ++++++++++++++----
+ .../selftests/bpf/verifier/atomic_cmpxchg.c   | 11 ----
+ tools/testing/selftests/bpf/verifier/calls.c  |  4 +-
+ 8 files changed, 91 insertions(+), 71 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 5cf919a489a1..beacda24b4ef 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -5527,6 +5527,7 @@ static void fill_stream_properties_from_drm_display_mode(
- 			&& stream->signal == SIGNAL_TYPE_HDMI_TYPE_A)
- 		timing_out->pixel_encoding = PIXEL_ENCODING_YCBCR420;
- 	else if (drm_mode_is_420_also(info, mode_in)
-+			&& aconnector
- 			&& aconnector->force_yuv420_output)
- 		timing_out->pixel_encoding = PIXEL_ENCODING_YCBCR420;
- 	else if ((connector->display_info.color_formats & DRM_COLOR_FORMAT_YCBCR444)
-@@ -5562,7 +5563,7 @@ static void fill_stream_properties_from_drm_display_mode(
- 		timing_out->hdmi_vic = hv_frame.vic;
- 	}
- 
--	if (is_freesync_video_mode(mode_in, aconnector)) {
-+	if (aconnector && is_freesync_video_mode(mode_in, aconnector)) {
- 		timing_out->h_addressable = mode_in->hdisplay;
- 		timing_out->h_total = mode_in->htotal;
- 		timing_out->h_sync_width = mode_in->hsync_end - mode_in->hsync_start;
-@@ -6039,14 +6040,14 @@ static void apply_dsc_policy_for_stream(struct amdgpu_dm_connector *aconnector,
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 47599505cdf8..ed24ad2e5bd2 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -1632,7 +1632,10 @@ static int resize_reference_state(struct bpf_func_state *state, size_t n)
+ 	return 0;
  }
  
- static struct dc_stream_state *
--create_stream_for_sink(struct amdgpu_dm_connector *aconnector,
-+create_stream_for_sink(struct drm_connector *connector,
- 		       const struct drm_display_mode *drm_mode,
- 		       const struct dm_connector_state *dm_state,
- 		       const struct dc_stream_state *old_stream,
- 		       int requested_bpc)
+-static int grow_stack_state(struct bpf_func_state *state, int size)
++/* Possibly update state->allocated_stack to be at least size bytes. Also
++ * possibly update the function's high-water mark in its bpf_subprog_info.
++ */
++static int grow_stack_state(struct bpf_verifier_env *env, struct bpf_func_state *state, int size)
  {
-+	struct amdgpu_dm_connector *aconnector = NULL;
- 	struct drm_display_mode *preferred_mode = NULL;
--	struct drm_connector *drm_connector;
- 	const struct drm_connector_state *con_state = &dm_state->base;
- 	struct dc_stream_state *stream = NULL;
- 	struct drm_display_mode mode;
-@@ -6065,20 +6066,22 @@ create_stream_for_sink(struct amdgpu_dm_connector *aconnector,
- 	drm_mode_init(&mode, drm_mode);
- 	memset(&saved_mode, 0, sizeof(saved_mode));
+ 	size_t old_n = state->allocated_stack / BPF_REG_SIZE, n = size / BPF_REG_SIZE;
  
--	if (aconnector == NULL) {
--		DRM_ERROR("aconnector is NULL!\n");
-+	if (connector == NULL) {
-+		DRM_ERROR("connector is NULL!\n");
- 		return stream;
- 	}
+@@ -1644,6 +1647,11 @@ static int grow_stack_state(struct bpf_func_state *state, int size)
+ 		return -ENOMEM;
  
--	drm_connector = &aconnector->base;
--
--	if (!aconnector->dc_sink) {
--		sink = create_fake_sink(aconnector);
--		if (!sink)
--			return stream;
--	} else {
--		sink = aconnector->dc_sink;
--		dc_sink_retain(sink);
-+	if (connector->connector_type != DRM_MODE_CONNECTOR_WRITEBACK) {
-+		aconnector = NULL;
-+		aconnector = to_amdgpu_dm_connector(connector);
-+		if (!aconnector->dc_sink) {
-+			sink = create_fake_sink(aconnector);
-+			if (!sink)
-+				return stream;
-+		} else {
-+			sink = aconnector->dc_sink;
-+			dc_sink_retain(sink);
-+		}
- 	}
- 
- 	stream = dc_create_stream_for_sink(sink);
-@@ -6088,12 +6091,13 @@ create_stream_for_sink(struct amdgpu_dm_connector *aconnector,
- 		goto finish;
- 	}
- 
-+	/* We leave this NULL for writeback connectors */
- 	stream->dm_stream_context = aconnector;
- 
- 	stream->timing.flags.LTE_340MCSC_SCRAMBLE =
--		drm_connector->display_info.hdmi.scdc.scrambling.low_rates;
-+		connector->display_info.hdmi.scdc.scrambling.low_rates;
- 
--	list_for_each_entry(preferred_mode, &aconnector->base.modes, head) {
-+	list_for_each_entry(preferred_mode, &connector->modes, head) {
- 		/* Search for preferred mode */
- 		if (preferred_mode->type & DRM_MODE_TYPE_PREFERRED) {
- 			native_mode_found = true;
-@@ -6102,7 +6106,7 @@ create_stream_for_sink(struct amdgpu_dm_connector *aconnector,
- 	}
- 	if (!native_mode_found)
- 		preferred_mode = list_first_entry_or_null(
--				&aconnector->base.modes,
-+				&connector->modes,
- 				struct drm_display_mode,
- 				head);
- 
-@@ -6116,7 +6120,7 @@ create_stream_for_sink(struct amdgpu_dm_connector *aconnector,
- 		 * and the modelist may not be filled in time.
- 		 */
- 		DRM_DEBUG_DRIVER("No preferred mode found\n");
--	} else {
-+	} else if (aconnector) {
- 		recalculate_timing = is_freesync_video_mode(&mode, aconnector);
- 		if (recalculate_timing) {
- 			freesync_mode = get_highest_refresh_rate_mode(aconnector, false);
-@@ -6139,13 +6143,17 @@ create_stream_for_sink(struct amdgpu_dm_connector *aconnector,
- 	 */
- 	if (!scale || mode_refresh != preferred_refresh)
- 		fill_stream_properties_from_drm_display_mode(
--			stream, &mode, &aconnector->base, con_state, NULL,
-+			stream, &mode, connector, con_state, NULL,
- 			requested_bpc);
- 	else
- 		fill_stream_properties_from_drm_display_mode(
--			stream, &mode, &aconnector->base, con_state, old_stream,
-+			stream, &mode, connector, con_state, old_stream,
- 			requested_bpc);
- 
-+	/* The rest isn't needed for writeback connectors */
-+	if (!aconnector)
-+		goto finish;
+ 	state->allocated_stack = size;
 +
- 	if (aconnector->timing_changed) {
- 		drm_dbg(aconnector->base.dev,
- 			"overriding timing for automated test, bpc %d, changing to %d\n",
-@@ -6163,7 +6171,7 @@ create_stream_for_sink(struct amdgpu_dm_connector *aconnector,
++	/* update known max for given subprogram */
++	if (env->subprog_info[state->subprogno].stack_depth < size)
++		env->subprog_info[state->subprogno].stack_depth = size;
++
+ 	return 0;
+ }
  
- 	fill_audio_info(
- 		&stream->audio_info,
--		drm_connector,
-+		connector,
- 		sink);
+@@ -4323,9 +4331,6 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
+ 	struct bpf_reg_state *reg = NULL;
+ 	u32 dst_reg = insn->dst_reg;
  
- 	update_stream_signal(stream, sink);
-@@ -6633,7 +6641,7 @@ create_validate_stream_for_sink(struct amdgpu_dm_connector *aconnector,
- 	enum dc_status dc_result = DC_OK;
- 
- 	do {
--		stream = create_stream_for_sink(aconnector, drm_mode,
-+		stream = create_stream_for_sink(connector, drm_mode,
- 						dm_state, old_stream,
- 						requested_bpc);
- 		if (stream == NULL) {
-@@ -9365,15 +9373,16 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
- 	dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
- 	acrtc = to_amdgpu_crtc(crtc);
- 	connector = amdgpu_dm_find_first_crtc_matching_connector(state, crtc);
--	aconnector = to_amdgpu_dm_connector(connector);
-+	if (connector && connector->connector_type != DRM_MODE_CONNECTOR_WRITEBACK)
-+		aconnector = to_amdgpu_dm_connector(connector);
- 
- 	/* TODO This hack should go away */
--	if (aconnector && enable) {
-+	if (connector && enable) {
- 		/* Make sure fake sink is created in plug-in scenario */
- 		drm_new_conn_state = drm_atomic_get_new_connector_state(state,
--							    &aconnector->base);
-+									connector);
- 		drm_old_conn_state = drm_atomic_get_old_connector_state(state,
--							    &aconnector->base);
-+									connector);
- 
- 		if (IS_ERR(drm_new_conn_state)) {
- 			ret = PTR_ERR_OR_ZERO(drm_new_conn_state);
-@@ -9520,7 +9529,7 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
- 		 * added MST connectors not found in existing crtc_state in the chained mode
- 		 * TODO: need to dig out the root cause of that
- 		 */
--		if (!aconnector)
-+		if (!connector)
- 			goto skip_modeset;
- 
- 		if (modereset_required(new_crtc_state))
-@@ -9563,7 +9572,7 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
- 	 * We want to do dc stream updates that do not require a
- 	 * full modeset below.
+-	err = grow_stack_state(state, round_up(slot + 1, BPF_REG_SIZE));
+-	if (err)
+-		return err;
+ 	/* caller checked that off % size == 0 and -MAX_BPF_STACK <= off < 0,
+ 	 * so it's aligned access and [off, off + size) are within stack limits
  	 */
--	if (!(enable && aconnector && new_crtc_state->active))
-+	if (!(enable && connector && new_crtc_state->active))
- 		return 0;
- 	/*
- 	 * Given above conditions, the dc state cannot be NULL because:
+@@ -4481,10 +4486,6 @@ static int check_stack_write_var_off(struct bpf_verifier_env *env,
+ 	    (!value_reg && is_bpf_st_mem(insn) && insn->imm == 0))
+ 		writing_zero = true;
+ 
+-	err = grow_stack_state(state, round_up(-min_off, BPF_REG_SIZE));
+-	if (err)
+-		return err;
+-
+ 	for (i = min_off; i < max_off; i++) {
+ 		int spi;
+ 
+@@ -5599,20 +5600,6 @@ static int check_ptr_alignment(struct bpf_verifier_env *env,
+ 					   strict);
+ }
+ 
+-static int update_stack_depth(struct bpf_verifier_env *env,
+-			      const struct bpf_func_state *func,
+-			      int off)
+-{
+-	u16 stack = env->subprog_info[func->subprogno].stack_depth;
+-
+-	if (stack >= -off)
+-		return 0;
+-
+-	/* update known max for given subprogram */
+-	env->subprog_info[func->subprogno].stack_depth = -off;
+-	return 0;
+-}
+-
+ /* starting from main bpf function walk all instructions of the function
+  * and recursively walk all callees that given function can call.
+  * Ignore jump and exit insns.
+@@ -6371,13 +6358,14 @@ static int check_ptr_to_map_access(struct bpf_verifier_env *env,
+  * The minimum valid offset is -MAX_BPF_STACK for writes, and
+  * -state->allocated_stack for reads.
+  */
+-static int check_stack_slot_within_bounds(s64 off,
+-					  struct bpf_func_state *state,
+-					  enum bpf_access_type t)
++static int check_stack_slot_within_bounds(struct bpf_verifier_env *env,
++                                          s64 off,
++                                          struct bpf_func_state *state,
++                                          enum bpf_access_type t)
+ {
+ 	int min_valid_off;
+ 
+-	if (t == BPF_WRITE)
++	if (t == BPF_WRITE || env->allow_uninit_stack)
+ 		min_valid_off = -MAX_BPF_STACK;
+ 	else
+ 		min_valid_off = -state->allocated_stack;
+@@ -6426,7 +6414,7 @@ static int check_stack_access_within_bounds(
+ 		max_off = reg->smax_value + off + access_size;
+ 	}
+ 
+-	err = check_stack_slot_within_bounds(min_off, state, type);
++	err = check_stack_slot_within_bounds(env, min_off, state, type);
+ 	if (!err && max_off > 0)
+ 		err = -EINVAL; /* out of stack access into non-negative offsets */
+ 
+@@ -6441,8 +6429,10 @@ static int check_stack_access_within_bounds(
+ 			verbose(env, "invalid variable-offset%s stack R%d var_off=%s size=%d\n",
+ 				err_extra, regno, tn_buf, access_size);
+ 		}
++		return err;
+ 	}
+-	return err;
++
++	return grow_stack_state(env, state, round_up(-min_off, BPF_REG_SIZE));
+ }
+ 
+ /* check whether memory at (regno + off) is accessible for t = (read | write)
+@@ -6457,7 +6447,6 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
+ {
+ 	struct bpf_reg_state *regs = cur_regs(env);
+ 	struct bpf_reg_state *reg = regs + regno;
+-	struct bpf_func_state *state;
+ 	int size, err = 0;
+ 
+ 	size = bpf_size_to_bytes(bpf_size);
+@@ -6600,11 +6589,6 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
+ 		if (err)
+ 			return err;
+ 
+-		state = func(env, reg);
+-		err = update_stack_depth(env, state, off);
+-		if (err)
+-			return err;
+-
+ 		if (t == BPF_READ)
+ 			err = check_stack_read(env, regno, off, size,
+ 					       value_regno);
+@@ -6799,7 +6783,8 @@ static int check_atomic(struct bpf_verifier_env *env, int insn_idx, struct bpf_i
+ 
+ /* When register 'regno' is used to read the stack (either directly or through
+  * a helper function) make sure that it's within stack boundary and, depending
+- * on the access type, that all elements of the stack are initialized.
++ * on the access type and privileges, that all elements of the stack are
++ * initialized.
+  *
+  * 'off' includes 'regno->off', but not its dynamic part (if any).
+  *
+@@ -6907,8 +6892,11 @@ static int check_stack_range_initialized(
+ 
+ 		slot = -i - 1;
+ 		spi = slot / BPF_REG_SIZE;
+-		if (state->allocated_stack <= slot)
+-			goto err;
++		if (state->allocated_stack <= slot) {
++			verbose(env, "verifier bug: allocated_stack too small");
++			return -EFAULT;
++		}
++
+ 		stype = &state->stack[spi].slot_type[slot % BPF_REG_SIZE];
+ 		if (*stype == STACK_MISC)
+ 			goto mark;
+@@ -6932,7 +6920,6 @@ static int check_stack_range_initialized(
+ 			goto mark;
+ 		}
+ 
+-err:
+ 		if (tnum_is_const(reg->var_off)) {
+ 			verbose(env, "invalid%s read from stack R%d off %d+%d size %d\n",
+ 				err_extra, regno, min_off, i - min_off, access_size);
+@@ -6957,7 +6944,7 @@ static int check_stack_range_initialized(
+ 		 * helper may write to the entire memory range.
+ 		 */
+ 	}
+-	return update_stack_depth(env, state, min_off);
++	return 0;
+ }
+ 
+ static int check_helper_mem_access(struct bpf_verifier_env *env, int regno,
+diff --git a/tools/testing/selftests/bpf/progs/test_global_func16.c b/tools/testing/selftests/bpf/progs/test_global_func16.c
+index e7206304632e..e3e64bc472cd 100644
+--- a/tools/testing/selftests/bpf/progs/test_global_func16.c
++++ b/tools/testing/selftests/bpf/progs/test_global_func16.c
+@@ -13,7 +13,7 @@ __noinline int foo(int (*arr)[10])
+ }
+ 
+ SEC("cgroup_skb/ingress")
+-__failure __msg("invalid indirect read from stack")
++__success
+ int global_func16(struct __sk_buff *skb)
+ {
+ 	int array[10];
+diff --git a/tools/testing/selftests/bpf/progs/verifier_basic_stack.c b/tools/testing/selftests/bpf/progs/verifier_basic_stack.c
+index 359df865a8f3..8d77cc5323d3 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_basic_stack.c
++++ b/tools/testing/selftests/bpf/progs/verifier_basic_stack.c
+@@ -27,8 +27,8 @@ __naked void stack_out_of_bounds(void)
+ 
+ SEC("socket")
+ __description("uninitialized stack1")
+-__failure __msg("invalid indirect read from stack")
+-__failure_unpriv
++__success __log_level(4) __msg("stack depth 8")
++__failure_unpriv __msg_unpriv("invalid indirect read from stack")
+ __naked void uninitialized_stack1(void)
+ {
+ 	asm volatile ("					\
+@@ -45,8 +45,8 @@ __naked void uninitialized_stack1(void)
+ 
+ SEC("socket")
+ __description("uninitialized stack2")
+-__failure __msg("invalid read from stack")
+-__failure_unpriv
++__success __log_level(4) __msg("stack depth 8")
++__failure_unpriv __msg_unpriv("invalid read from stack")
+ __naked void uninitialized_stack2(void)
+ {
+ 	asm volatile ("					\
+diff --git a/tools/testing/selftests/bpf/progs/verifier_int_ptr.c b/tools/testing/selftests/bpf/progs/verifier_int_ptr.c
+index b054f9c48143..589e8270de46 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_int_ptr.c
++++ b/tools/testing/selftests/bpf/progs/verifier_int_ptr.c
+@@ -5,9 +5,10 @@
+ #include <bpf/bpf_helpers.h>
+ #include "bpf_misc.h"
+ 
+-SEC("cgroup/sysctl")
++SEC("socket")
+ __description("ARG_PTR_TO_LONG uninitialized")
+-__failure __msg("invalid indirect read from stack R4 off -16+0 size 8")
++__success
++__failure_unpriv __msg_unpriv("invalid indirect read from stack R4 off -16+0 size 8")
+ __naked void arg_ptr_to_long_uninitialized(void)
+ {
+ 	asm volatile ("					\
+diff --git a/tools/testing/selftests/bpf/progs/verifier_raw_stack.c b/tools/testing/selftests/bpf/progs/verifier_raw_stack.c
+index efbfc3a4ad6a..f67390224a9c 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_raw_stack.c
++++ b/tools/testing/selftests/bpf/progs/verifier_raw_stack.c
+@@ -5,9 +5,10 @@
+ #include <bpf/bpf_helpers.h>
+ #include "bpf_misc.h"
+ 
+-SEC("tc")
++SEC("socket")
+ __description("raw_stack: no skb_load_bytes")
+-__failure __msg("invalid read from stack R6 off=-8 size=8")
++__success
++__failure_unpriv __msg_unpriv("invalid read from stack R6 off=-8 size=8")
+ __naked void stack_no_skb_load_bytes(void)
+ {
+ 	asm volatile ("					\
+diff --git a/tools/testing/selftests/bpf/progs/verifier_var_off.c b/tools/testing/selftests/bpf/progs/verifier_var_off.c
+index 83a90afba785..d1f23c1a7c5b 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_var_off.c
++++ b/tools/testing/selftests/bpf/progs/verifier_var_off.c
+@@ -59,9 +59,10 @@ __naked void stack_read_priv_vs_unpriv(void)
+ "	::: __clobber_all);
+ }
+ 
+-SEC("lwt_in")
++SEC("cgroup/skb")
+ __description("variable-offset stack read, uninitialized")
+-__failure __msg("invalid variable-offset read from stack R2")
++__success
++__failure_unpriv __msg_unpriv("R2 variable stack access prohibited for !root")
+ __naked void variable_offset_stack_read_uninitialized(void)
+ {
+ 	asm volatile ("					\
+@@ -83,12 +84,55 @@ __naked void variable_offset_stack_read_uninitialized(void)
+ 
+ SEC("socket")
+ __description("variable-offset stack write, priv vs unpriv")
+-__success __failure_unpriv
++__success
++/* Check that the maximum stack depth is correctly maintained according to the
++ * maximum possible variable offset.
++ */
++__log_level(4) __msg("stack depth 16")
++__failure_unpriv
+ /* Variable stack access is rejected for unprivileged.
+  */
+ __msg_unpriv("R2 variable stack access prohibited for !root")
+ __retval(0)
+ __naked void stack_write_priv_vs_unpriv(void)
++{
++	asm volatile ("                               \
++	/* Get an unknown value */                    \
++	r2 = *(u32*)(r1 + 0);                         \
++	/* Make it small and 8-byte aligned */        \
++	r2 &= 8;                                      \
++	r2 -= 16;                                     \
++	/* Add it to fp. We now have either fp-8 or   \
++	 * fp-16, but we don't know which             \
++	 */                                           \
++	r2 += r10;                                    \
++	/* Dereference it for a stack write */        \
++	r0 = 0;                                       \
++	*(u64*)(r2 + 0) = r0;                         \
++	exit;                                         \
++"	::: __clobber_all);
++}
++
++/* Similar to the previous test, but this time also perform a read from the
++ * address written to with a variable offset. The read is allowed, showing that,
++ * after a variable-offset write, a priviledged program can read the slots that
++ * were in the range of that write (even if the verifier doesn't actually know if
++ * the slot being read was really written to or not.
++ *
++ * Despite this test being mostly a superset, the previous test is also kept for
++ * the sake of it checking the stack depth in the case where there is no read.
++ */
++SEC("socket")
++__description("variable-offset stack write followed by read")
++__success
++/* Check that the maximum stack depth is correctly maintained according to the
++ * maximum possible variable offset.
++ */
++__log_level(4) __msg("stack depth 16")
++__failure_unpriv
++__msg_unpriv("R2 variable stack access prohibited for !root")
++__retval(0)
++__naked void stack_write_followed_by_read(void)
+ {
+ 	asm volatile ("					\
+ 	/* Get an unknown value */			\
+@@ -103,12 +147,7 @@ __naked void stack_write_priv_vs_unpriv(void)
+ 	/* Dereference it for a stack write */		\
+ 	r0 = 0;						\
+ 	*(u64*)(r2 + 0) = r0;				\
+-	/* Now read from the address we just wrote. This shows\
+-	 * that, after a variable-offset write, a priviledged\
+-	 * program can read the slots that were in the range of\
+-	 * that write (even if the verifier doesn't actually know\
+-	 * if the slot being read was really written to or not.\
+-	 */						\
++	/* Now read from the address we just wrote. */ \
+ 	r3 = *(u64*)(r2 + 0);				\
+ 	r0 = 0;						\
+ 	exit;						\
+@@ -253,9 +292,10 @@ __naked void access_min_out_of_bound(void)
+ 	: __clobber_all);
+ }
+ 
+-SEC("lwt_in")
++SEC("cgroup/skb")
+ __description("indirect variable-offset stack access, min_off < min_initialized")
+-__failure __msg("invalid indirect read from stack R2 var_off")
++__success
++__failure_unpriv __msg_unpriv("R2 variable stack access prohibited for !root")
+ __naked void access_min_off_min_initialized(void)
+ {
+ 	asm volatile ("					\
+diff --git a/tools/testing/selftests/bpf/verifier/atomic_cmpxchg.c b/tools/testing/selftests/bpf/verifier/atomic_cmpxchg.c
+index 319337bdcfc8..9a7b1106fda8 100644
+--- a/tools/testing/selftests/bpf/verifier/atomic_cmpxchg.c
++++ b/tools/testing/selftests/bpf/verifier/atomic_cmpxchg.c
+@@ -83,17 +83,6 @@
+ 	.result = REJECT,
+ 	.errstr = "!read_ok",
+ },
+-{
+-	"Can't use cmpxchg on uninit memory",
+-	.insns = {
+-		BPF_MOV64_IMM(BPF_REG_0, 3),
+-		BPF_MOV64_IMM(BPF_REG_2, 4),
+-		BPF_ATOMIC_OP(BPF_DW, BPF_CMPXCHG, BPF_REG_10, BPF_REG_2, -8),
+-		BPF_EXIT_INSN(),
+-	},
+-	.result = REJECT,
+-	.errstr = "invalid read from stack",
+-},
+ {
+ 	"BPF_W cmpxchg should zero top 32 bits",
+ 	.insns = {
+diff --git a/tools/testing/selftests/bpf/verifier/calls.c b/tools/testing/selftests/bpf/verifier/calls.c
+index 3d5cd51071f0..ab25a81fd3a1 100644
+--- a/tools/testing/selftests/bpf/verifier/calls.c
++++ b/tools/testing/selftests/bpf/verifier/calls.c
+@@ -1505,7 +1505,9 @@
+ 	.prog_type = BPF_PROG_TYPE_XDP,
+ 	.fixup_map_hash_8b = { 23 },
+ 	.result = REJECT,
+-	.errstr = "invalid read from stack R7 off=-16 size=8",
++	.errstr = "R0 invalid mem access 'scalar'",
++	.result_unpriv = REJECT,
++	.errstr_unpriv = "invalid read from stack R7 off=-16 size=8",
+ },
+ {
+ 	"calls: two calls that receive map_value via arg=ptr_stack_of_caller. test1",
 -- 
 2.43.0
 
