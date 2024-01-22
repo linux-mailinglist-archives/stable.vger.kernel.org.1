@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F05838334
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4FD837E0F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65C921C29882
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00BF0292100
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D678E60B8D;
-	Tue, 23 Jan 2024 01:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E0851C5F;
+	Tue, 23 Jan 2024 00:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aV9Q0Zox"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bD3hYjPJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969CC29D06;
-	Tue, 23 Jan 2024 01:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610214E1D0;
+	Tue, 23 Jan 2024 00:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974735; cv=none; b=FVDcqXqZqkFmmL9lOKtp0EzoI4eDBKrPVOMlz7RvFZY96serkROo+wUTT7C8UNZPe6cHEj/giZSLW1K90+O9rGOG+LUMar0BVF1oqTlynu4THBxuAMR6O6AXnr14slE+iKsb++GQ0wfCDPugZuCEMkye+Pzk3CWvnTsMXa0e6QA=
+	t=1705970284; cv=none; b=QV+Uzk3OT5yNnHJSPRggZAoy+GnpHcbJCGO1/+K7Si0wQssA53f/7/nZJmsl1yqgtchIBQZGmM2j6CA1geerTS8PvwWakllC7faS7Kw/TmDLnyLAZ1Hsv4CRhqwmpCR8ldkiAmBMBl0QdEyVK1geXYknBlpmW6r10ZK6Ko5IkCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974735; c=relaxed/simple;
-	bh=Q/YKwWRl9LVBHIiXwEhxmAYYqNirUKuEutIfgYG0zTw=;
+	s=arc-20240116; t=1705970284; c=relaxed/simple;
+	bh=zm8SsCVnvVGFOIXSNCpP+L9KV3CMiJ/IOgNFYNihoU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=njNCaJxzla/dMxGQgIkIxI3ZbGg4ns53/kOr3ni2GHBVXZ/tjmpa23e3yhH3AwlfKisZS/6betgLa1obPM1KgTbVbuB9u8TiyjTfR6zADxLE4cGvcfaYajUefBeDk5Jx8MvRrvrjpQnzenNl3JqMG83qvIHNgGdFFHB710gS1g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aV9Q0Zox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E0DC43390;
-	Tue, 23 Jan 2024 01:52:15 +0000 (UTC)
+	 MIME-Version; b=FRg34enxYtSv/e3ngPCuab25ENyOLSlf6mFHOCbDfMqv19raG6S7Eh//ovju/FsuRjmTVNx1d6NL4qVdtsh2BBp9faqqfkQ2Ts/XwUHjqGt8xqK5VGly6p7yb5z8QpSw7M0jTmMM1bIOTJMnksCPIKbx4gNBsbwJ6eIiPIpOZy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bD3hYjPJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEE4C433C7;
+	Tue, 23 Jan 2024 00:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974735;
-	bh=Q/YKwWRl9LVBHIiXwEhxmAYYqNirUKuEutIfgYG0zTw=;
+	s=korg; t=1705970284;
+	bh=zm8SsCVnvVGFOIXSNCpP+L9KV3CMiJ/IOgNFYNihoU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aV9Q0ZoxYoYvo0IymsJ6XviMi7NvhPqyb/eWvWQ1ACRN2PryYYUNNdkK8gj8egtV/
-	 yQ5j8YkC9Xj7do5cKZgFBRMKlrazF79zZORTO3kElB7Ro/9WNHG/9FEJ5gIbN1Puzh
-	 erJmLAvPtFM4xQrW1y4HPkDJO9lPTszdHne+vGZg=
+	b=bD3hYjPJFSiXHErmxMR3+So1yWmOeLTkXD4Qu7pdKKIoVMIh+Tj5hZnnyTGPw2+gO
+	 4hKbryojiH7DcNXOvRKEJ4/91D5vAnLvAOewPtlfM6OElTUrXnD0Ib3px75OgQmajl
+	 M9qrhhDiHT0ZahBPn+ZzoSKPLMHIu5Sb/SP1V27k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Landley <rob@landley.net>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Mimi Zohar <zohar@linux.ibm.com>
-Subject: [PATCH 5.15 273/374] rootfs: Fix support for rootfstype= when root= is given
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 625/641] netfilter: nf_tables: do not allow mismatch field size and set key length
 Date: Mon, 22 Jan 2024 15:58:49 -0800
-Message-ID: <20240122235754.269301539@linuxfoundation.org>
+Message-ID: <20240122235837.815517188@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 21528c69a0d8483f7c6345b1a0bc8d8975e9a172 upstream.
+[ Upstream commit 3ce67e3793f48c1b9635beb9bb71116ca1e51b58 ]
 
-Documentation/filesystems/ramfs-rootfs-initramfs.rst states:
+The set description provides the size of each field in the set whose sum
+should not mismatch the set key length, bail out otherwise.
 
-  If CONFIG_TMPFS is enabled, rootfs will use tmpfs instead of ramfs by
-  default.  To force ramfs, add "rootfstype=ramfs" to the kernel command
-  line.
+I did not manage to crash nft_set_pipapo with mismatch fields and set key
+length so far, but this is UB which must be disallowed.
 
-This currently does not work when root= is provided since then
-saved_root_name contains a string and rootfstype= is ignored. Therefore,
-ramfs is currently always chosen when root= is provided.
-
-The current behavior for rootfs's filesystem is:
-
-   root=       | rootfstype= | chosen rootfs filesystem
-   ------------+-------------+--------------------------
-   unspecified | unspecified | tmpfs
-   unspecified | tmpfs       | tmpfs
-   unspecified | ramfs       | ramfs
-    provided   | ignored     | ramfs
-
-rootfstype= should be respected regardless whether root= is given,
-as shown below:
-
-   root=       | rootfstype= | chosen rootfs filesystem
-   ------------+-------------+--------------------------
-   unspecified | unspecified | tmpfs  (as before)
-   unspecified | tmpfs       | tmpfs  (as before)
-   unspecified | ramfs       | ramfs  (as before)
-    provided   | unspecified | ramfs  (compatibility with before)
-    provided   | tmpfs       | tmpfs  (new)
-    provided   | ramfs       | ramfs  (new)
-
-This table represents the new behavior.
-
-Fixes: 6e19eded3684 ("initmpfs: use initramfs if rootfstype= or root= specified")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Rob Landley <rob@landley.net>
-Link: https://lore.kernel.org/lkml/8244c75f-445e-b15b-9dbf-266e7ca666e2@landley.net/
-Reviewed-and-Tested-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-Link: https://lore.kernel.org/r/20231120011248.396012-1-stefanb@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f3a2181e16f1 ("netfilter: nf_tables: Support for sets with multiple ranged fields")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/do_mounts.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/netfilter/nf_tables_api.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/init/do_mounts.c
-+++ b/init/do_mounts.c
-@@ -666,7 +666,10 @@ struct file_system_type rootfs_fs_type =
- 
- void __init init_rootfs(void)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 3912a133324c..7775bf5224ac 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4811,8 +4811,8 @@ static int nft_set_desc_concat_parse(const struct nlattr *attr,
+ static int nft_set_desc_concat(struct nft_set_desc *desc,
+ 			       const struct nlattr *nla)
  {
--	if (IS_ENABLED(CONFIG_TMPFS) && !saved_root_name[0] &&
--		(!root_fs_names || strstr(root_fs_names, "tmpfs")))
--		is_tmpfs = true;
-+	if (IS_ENABLED(CONFIG_TMPFS)) {
-+		if (!saved_root_name[0] && !root_fs_names)
-+			is_tmpfs = true;
-+		else if (root_fs_names && !!strstr(root_fs_names, "tmpfs"))
-+			is_tmpfs = true;
-+	}
- }
++	u32 num_regs = 0, key_num_regs = 0;
+ 	struct nlattr *attr;
+-	u32 num_regs = 0;
+ 	int rem, err, i;
+ 
+ 	nla_for_each_nested(attr, nla, rem) {
+@@ -4827,6 +4827,10 @@ static int nft_set_desc_concat(struct nft_set_desc *desc,
+ 	for (i = 0; i < desc->field_count; i++)
+ 		num_regs += DIV_ROUND_UP(desc->field_len[i], sizeof(u32));
+ 
++	key_num_regs = DIV_ROUND_UP(desc->klen, sizeof(u32));
++	if (key_num_regs != num_regs)
++		return -EINVAL;
++
+ 	if (num_regs > NFT_REG32_COUNT)
+ 		return -E2BIG;
+ 
+-- 
+2.43.0
+
 
 
 
