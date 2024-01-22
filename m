@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1327E837EE3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DA0283842D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1AA629BC23
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9A9B29842B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B32567F;
-	Tue, 23 Jan 2024 00:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467776A007;
+	Tue, 23 Jan 2024 02:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HHsEpqAK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwrYnxPq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EEF5397;
-	Tue, 23 Jan 2024 00:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BCD67E9E;
+	Tue, 23 Jan 2024 02:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970807; cv=none; b=X2RsfalCmjjnErkAmnjsSGvA2iWV46G+y0m5Kr0ETKgU4vQOt6MKUEI6N6XHDpcZnCNovioeWVyzkNAe9rPvskhH4Onwe/bmd9QFpiDVd+2KPD/QEJoKFIELOcOzsV21RTakuRgsd6/Zo+ZfhpmFb9JWBHTo5Dqa+aBHiS5TPLc=
+	t=1705975319; cv=none; b=PfEC0O+1SyPLLC9huodZCazV1qTbWq3PTe+H6Ri4AygBIN4TIDnw6GJfZR/EfheoM6PpjTm3PhZw3C6KwBUKfZvFrWPsKqX1Ue8H/njtf/sCN4fPkDU6DNkkCIMwYVa3KtC2Fg/YGK9YE85LLwtlMm+hqCOtL3PKgCByV7ihNds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970807; c=relaxed/simple;
-	bh=/XVWZ64vYAdeIy3v3OE9rGSryA2GsznWjqFsUc+TEx8=;
+	s=arc-20240116; t=1705975319; c=relaxed/simple;
+	bh=nNw8oBriiFahdV4mKXFzIQhWGckB/CUDvhCs57oPGUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dpNlwJXsldsCmUTQ3NitBFlrF2yd1Z+F4pPCbmiUw8v4zh6XvGZXiqtzM4byPGoKMKf8hu4Ke1rthnMH3fTaFQk5UjRKw7OtEyYwaLUmEuEbDKr7L31RXELo71xgW239Zs1mf7K4Q0gDPtuq10Cor7m14sgaFByEjU4O12iakzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HHsEpqAK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB38C433F1;
-	Tue, 23 Jan 2024 00:46:46 +0000 (UTC)
+	 MIME-Version; b=UDvy5LWCqOBYu4le9PuRDVb7U697CThQ/H3Q8pyMHBujObGUvDPn01ABBAnIR20Wi1quzVzB2ZNIQWZDST6X8YnH44j+9vdo7shS51rHeRPoumLTaLndTgA86ty54006D+PP5B6CK3wbCzTjTMeIrwJ5THH/M0ROQ7Zadd8fZbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwrYnxPq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CF4C43390;
+	Tue, 23 Jan 2024 02:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970806;
-	bh=/XVWZ64vYAdeIy3v3OE9rGSryA2GsznWjqFsUc+TEx8=;
+	s=korg; t=1705975318;
+	bh=nNw8oBriiFahdV4mKXFzIQhWGckB/CUDvhCs57oPGUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HHsEpqAK+kpfTWEWj6tJaBfTOt56DUnrgd2dY0b2yONimfEstCp/PD3vESmgKz7Lw
-	 U/DgHibHerifnKNGnmsxNxAsRr+EpZpccJcWLPi7Ked/f5FVFYqB/uU7DPgxfiJUhK
-	 g0DX1YD1pTyciT58ls477YdvaFIOYgcOq8S7evFw=
+	b=FwrYnxPqRIXn409nLJ6+u5Prsodg0FsJ/708mppcOClMWkf2MOzVrub6JQ54aR28S
+	 m3O5UyJbwofV8UqZm7wp5km0K6pNe8bLXNqawIQoFaZ2SKV+GQTd8yz+EpVDih80D7
+	 BTCWIxu/yF6tMv9aFDMiXmKu1Kav9mAtpGkpk+Hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inki Dae <inki.dae@samsung.com>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 020/286] drm/exynos: fix a wrong error checking
+Subject: [PATCH 6.6 275/583] drm/panel: st7701: Fix AVCL calculation
 Date: Mon, 22 Jan 2024 15:55:26 -0800
-Message-ID: <20240122235732.810525663@linuxfoundation.org>
+Message-ID: <20240122235820.415227980@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inki Dae <inki.dae@samsung.com>
+From: Chris Morgan <macromorgan@hotmail.com>
 
-[ Upstream commit 8d1b7809684c688005706125b804e1f9792d2b1b ]
+[ Upstream commit 799825aa87200ade1ba21db853d1c2ff720dcfe0 ]
 
-Fix a wrong error checking in exynos_drm_dma.c module.
+The AVCL register, according to the datasheet, comes in increments
+of -0.2v between -4.4v (represented by 0x0) to -5.0v (represented
+by 0x3). The current calculation is done by adding the defined
+AVCL value in mV to -4400 and then dividing by 200 to get the register
+value. Unfortunately if I subtract -4400 from -4400 I get -8800, which
+divided by 200 gives me -44. If I instead subtract -4400 from -4400
+I get 0, which divided by 200 gives me 0. Based on the datasheet this
+is the expected register value.
 
-In the exynos_drm_register_dma function, both arm_iommu_create_mapping()
-and iommu_get_domain_for_dev() functions are expected to return NULL as
-an error.
+Fixes: 83b7a8e7e88e ("drm/panel/panel-sitronix-st7701: Parametrize voltage and timing")
 
-However, the error checking is performed using the statement
-if(IS_ERR(mapping)), which doesn't provide a suitable error value.
-So check if 'mapping' is NULL, and if it is, return -ENODEV.
-
-This issue[1] was reported by Dan.
-
-Changelog v1:
-- fix build warning.
-
-[1] https://lore.kernel.org/all/33e52277-1349-472b-a55b-ab5c3462bfcf@moroto.mountain/
-
-Reported-by : Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20231208154847.130615-2-macroalpha82@gmail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231208154847.130615-2-macroalpha82@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_dma.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/panel/panel-sitronix-st7701.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_dma.c b/drivers/gpu/drm/exynos/exynos_drm_dma.c
-index bf33c3084cb4..6b4d6da3b1f4 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_dma.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_dma.c
-@@ -108,18 +108,16 @@ int exynos_drm_register_dma(struct drm_device *drm, struct device *dev,
- 		return 0;
+diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7701.c b/drivers/gpu/drm/panel/panel-sitronix-st7701.c
+index 0459965e1b4f..036ac403ed21 100644
+--- a/drivers/gpu/drm/panel/panel-sitronix-st7701.c
++++ b/drivers/gpu/drm/panel/panel-sitronix-st7701.c
+@@ -288,7 +288,7 @@ static void st7701_init_sequence(struct st7701 *st7701)
+ 		   FIELD_PREP(DSI_CMD2_BK1_PWRCTRL2_AVDD_MASK,
+ 			      DIV_ROUND_CLOSEST(desc->avdd_mv - 6200, 200)) |
+ 		   FIELD_PREP(DSI_CMD2_BK1_PWRCTRL2_AVCL_MASK,
+-			      DIV_ROUND_CLOSEST(-4400 + desc->avcl_mv, 200)));
++			      DIV_ROUND_CLOSEST(-4400 - desc->avcl_mv, 200)));
  
- 	if (!priv->mapping) {
--		void *mapping;
-+		void *mapping = NULL;
- 
- 		if (IS_ENABLED(CONFIG_ARM_DMA_USE_IOMMU))
- 			mapping = arm_iommu_create_mapping(&platform_bus_type,
- 				EXYNOS_DEV_ADDR_START, EXYNOS_DEV_ADDR_SIZE);
- 		else if (IS_ENABLED(CONFIG_IOMMU_DMA))
- 			mapping = iommu_get_domain_for_dev(priv->dma_dev);
--		else
--			mapping = ERR_PTR(-ENODEV);
- 
--		if (IS_ERR(mapping))
--			return PTR_ERR(mapping);
-+		if (!mapping)
-+			return -ENODEV;
- 		priv->mapping = mapping;
- 	}
- 
+ 	/* T2D = 0.2us * T2D[3:0] */
+ 	ST7701_DSI(st7701, DSI_CMD2_BK1_SPD1,
 -- 
 2.43.0
 
