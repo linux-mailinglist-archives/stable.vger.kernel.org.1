@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-14355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1F983808F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6DA8837DF3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED7611C2958C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 052A01C288E2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AB112FF7C;
-	Tue, 23 Jan 2024 01:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669135FF03;
+	Tue, 23 Jan 2024 00:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+9oiZZZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhwNY6nq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B212312FF73;
-	Tue, 23 Jan 2024 01:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249B5162E5C;
+	Tue, 23 Jan 2024 00:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971796; cv=none; b=k4hkiwgNJvr4ukzhJLSF/eK5v+WThlVUPsnrFzC5cjj+hpi6WWtJU+eGcUPl3GOb78Uae7hmDxaDphNvUl4kUTdyxC6ch+r8t1sHUJ3ssWnpWSLoass88EZ57Fmhp/pUQ7Thj/OGy32ZG7cmA+qQIYNndav/B5BAijKGfKbjFt4=
+	t=1705970189; cv=none; b=LeCaPb+wVUXJ4eew8zzMsCinigZiT3W3pbzCiirkn3VXGivazjBr7DePwPfVERjxUiziPISZVWnpC7Oyp5F3VDv/KAX1o1oNaSUD0TepKqyQk84Jnv1FGhCPiQM0tX7CbZ0B2/VjsD6w4IMixROlErcwPZcYLZrTr20XZWpgL/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971796; c=relaxed/simple;
-	bh=auqdmgquI4ieQRrzp17N/gauoSxnZjcBMhBl/z+Cymk=;
+	s=arc-20240116; t=1705970189; c=relaxed/simple;
+	bh=fOf5ri59UeJGqLqiNc+MKOf5bpSfv2Ze3iJIrjh+cc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VbLZs7G8lQZ29U4MwKhl8srrE6AEjD4F8IdozX30CepqobJ07N60F80Aba1e0B0wU3nCExCucvWJt57ksM0Hs2mpHk2eXf1/zFBxJgnqu+B/QCq223jhDBp+LcvEoJ+vUltLwlxLMZU1XPtXPBncH0a4/H7HjHPxK7NSBelZKGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+9oiZZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737CEC433F1;
-	Tue, 23 Jan 2024 01:03:16 +0000 (UTC)
+	 MIME-Version; b=fekwqkXudqVq8yzl32Obrn9iCsLCCxSuerrCeW0uR4CLKl/YXdE6MThZjIVnHZXhj0Vmhitg6GEaaewIfNO9+Uvh50WohItjM8XLT2874cd+3tABisNvLEHMdHxr6jpl6imyjc+tmLOXpSwENT1VaaO8yX9ptA4s8RkEZXM97Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhwNY6nq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1ACC43394;
+	Tue, 23 Jan 2024 00:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971796;
-	bh=auqdmgquI4ieQRrzp17N/gauoSxnZjcBMhBl/z+Cymk=;
+	s=korg; t=1705970189;
+	bh=fOf5ri59UeJGqLqiNc+MKOf5bpSfv2Ze3iJIrjh+cc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+9oiZZZW4fbI3+q6KmQkyTsfWRdLPLkj2FWX2Mp8zkFoR1Umb7114CicEcNQD9hm
-	 OrYCBFfnByT9mAu/ZZIbZYhpvZJFPEBnsBrFxxo+gsvE4jhyCKBd6EsdCZTegk7qNJ
-	 1iIbdZm1SpmpfM96rQ9DXunkZoiroAzOymKpURG0=
+	b=RhwNY6nq+hNnjRuxBMpV6q8doLBDWfDkDJHq/m/0C15l5lYB3Fz42iIEuSsD01x4W
+	 X7VQEKlF3gKnirNQ26CFyDKAm0Jr3FZYpe+vAVCP7x4eO9O1T83c635+ShyhEpUWcW
+	 25qfdwIibmR4MitVJ23PCclgxCTlBeGC59C1xkO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.1 322/417] serial: sc16is7xx: set safe default SPI clock frequency
-Date: Mon, 22 Jan 2024 15:58:10 -0800
-Message-ID: <20240122235802.957950334@linuxfoundation.org>
+	Chancel Liu <chancel.liu@nxp.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 587/641] ALSA: aloop: Introduce a function to get if access is interleaved mode
+Date: Mon, 22 Jan 2024 15:58:11 -0800
+Message-ID: <20240122235836.579919346@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Chancel Liu <chancel.liu@nxp.com>
 
-commit 3ef79cd1412236d884ab0c46b4d1921380807b48 upstream.
+[ Upstream commit cdac6e1f716419ce307ad3e44a718557a5469c17 ]
 
-15 MHz is supported only by 76x variants.
+There's a use case that playback stream of a loopback cable works on
+RW_INTERLEAVED mode while capture stream works on MMAP_INTERLEAVED mode:
 
-If the SPI clock frequency is not specified, use a safe default clock value
-of 4 MHz that is supported by all variants.
+aplay -Dhw:Loopback,0,0 S32_48K_2ch.wav;
+arecord -Dplughw:Loopback,1,0 -fS32_LE -r16000 -c2 cap.wav;
 
-Also use HZ_PER_MHZ macro to improve readability.
+The plug plugin handles only slave PCM support MMAP mode. Not only plug
+plugin but also other plugins like direct plugins(dmix/dsnoop/dshare)
+work on MMAP access mode. In this case capture stream is the slave
+PCM works on MMAP_INTERLEAVED mode. However loopback_check_format()
+rejects this access setting and return:
 
-Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-4-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+arecord: pcm_read:2240: read error: Input/output error
+
+To fix it a function called is_access_interleaved() is introduced to
+get if access is interleaved mode. If both access of capture stream and
+playback stream is interleaved mode loopback_check_format() will allow
+this kind of access setting.
+
+Fixes: 462494565c27 ("ALSA: aloop: Add support for the non-interleaved access mode")
+Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+Link: https://lore.kernel.org/r/20240111025219.2678764-1-chancel.liu@nxp.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/drivers/aloop.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -24,6 +24,7 @@
- #include <linux/tty_flip.h>
- #include <linux/spi/spi.h>
- #include <linux/uaccess.h>
-+#include <linux/units.h>
- #include <uapi/linux/sched/types.h>
+diff --git a/sound/drivers/aloop.c b/sound/drivers/aloop.c
+index e87dc67f33c6..1c65e0a3b13c 100644
+--- a/sound/drivers/aloop.c
++++ b/sound/drivers/aloop.c
+@@ -322,6 +322,17 @@ static int loopback_snd_timer_close_cable(struct loopback_pcm *dpcm)
+ 	return 0;
+ }
  
- #define SC16IS7XX_NAME			"sc16is7xx"
-@@ -1721,7 +1722,7 @@ static int sc16is7xx_spi_probe(struct sp
- 		return dev_err_probe(&spi->dev, -EINVAL, "Unsupported SPI mode\n");
++static bool is_access_interleaved(snd_pcm_access_t access)
++{
++	switch (access) {
++	case SNDRV_PCM_ACCESS_MMAP_INTERLEAVED:
++	case SNDRV_PCM_ACCESS_RW_INTERLEAVED:
++		return true;
++	default:
++		return false;
++	}
++};
++
+ static int loopback_check_format(struct loopback_cable *cable, int stream)
+ {
+ 	struct snd_pcm_runtime *runtime, *cruntime;
+@@ -341,7 +352,8 @@ static int loopback_check_format(struct loopback_cable *cable, int stream)
+ 	check = runtime->format != cruntime->format ||
+ 		runtime->rate != cruntime->rate ||
+ 		runtime->channels != cruntime->channels ||
+-		runtime->access != cruntime->access;
++		is_access_interleaved(runtime->access) !=
++		is_access_interleaved(cruntime->access);
+ 	if (!check)
+ 		return 0;
+ 	if (stream == SNDRV_PCM_STREAM_CAPTURE) {
+@@ -369,7 +381,8 @@ static int loopback_check_format(struct loopback_cable *cable, int stream)
+ 							&setup->channels_id);
+ 			setup->channels = runtime->channels;
+ 		}
+-		if (setup->access != runtime->access) {
++		if (is_access_interleaved(setup->access) !=
++		    is_access_interleaved(runtime->access)) {
+ 			snd_ctl_notify(card, SNDRV_CTL_EVENT_MASK_VALUE,
+ 							&setup->access_id);
+ 			setup->access = runtime->access;
+@@ -584,8 +597,7 @@ static void copy_play_buf(struct loopback_pcm *play,
+ 			size = play->pcm_buffer_size - src_off;
+ 		if (dst_off + size > capt->pcm_buffer_size)
+ 			size = capt->pcm_buffer_size - dst_off;
+-		if (runtime->access == SNDRV_PCM_ACCESS_RW_NONINTERLEAVED ||
+-		    runtime->access == SNDRV_PCM_ACCESS_MMAP_NONINTERLEAVED)
++		if (!is_access_interleaved(runtime->access))
+ 			copy_play_buf_part_n(play, capt, size, src_off, dst_off);
+ 		else
+ 			memcpy(dst + dst_off, src + src_off, size);
+@@ -1544,8 +1556,7 @@ static int loopback_access_get(struct snd_kcontrol *kcontrol,
+ 	mutex_lock(&loopback->cable_lock);
+ 	access = loopback->setup[kcontrol->id.subdevice][kcontrol->id.device].access;
  
- 	spi->mode		= spi->mode ? : SPI_MODE_0;
--	spi->max_speed_hz	= spi->max_speed_hz ? : 15000000;
-+	spi->max_speed_hz	= spi->max_speed_hz ? : 4 * HZ_PER_MHZ;
- 	ret = spi_setup(spi);
- 	if (ret)
- 		return ret;
+-	ucontrol->value.enumerated.item[0] = access == SNDRV_PCM_ACCESS_RW_NONINTERLEAVED ||
+-					     access == SNDRV_PCM_ACCESS_MMAP_NONINTERLEAVED;
++	ucontrol->value.enumerated.item[0] = !is_access_interleaved(access);
+ 
+ 	mutex_unlock(&loopback->cable_lock);
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
