@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C7483819E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:10:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BFCE838449
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4783F1C292D7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2B18299166
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73AFE134C2;
-	Tue, 23 Jan 2024 01:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9646BB24;
+	Tue, 23 Jan 2024 02:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nw8A+A8G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0hoHon4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318CC1852;
-	Tue, 23 Jan 2024 01:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACF96A354;
+	Tue, 23 Jan 2024 02:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972189; cv=none; b=By4LfiJtbxpQZZ6qgssYwCHNd6LK4DxFbxK0y355qP7xJOJ/cxqd6CTMPLLJjLVCP+BKx4yAhREe2iYZLI0eck5LcV/wDVRm4+2hA2UDPBfb0m4AyVNKYRNxwKXip0BfwwaSKH+estLmsRCaCZQazgcje3+Mk/Ql2ej02Wu0ya4=
+	t=1705975354; cv=none; b=nVmkze0t1jF4pknJDveupK+NPVCbCqxFtYxi4GWBI5J41Rv7wYUko+0UnFtw3VzW2YXOQHbc40FIDa7ZNPSF10eKIDyKQDW8VyD22BlyZcv+phsk6Sg7CtnIXhnSMMahISooVeN05i7OBOnzBEwogom6A2ZNz3nwt2p5sMrgXbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972189; c=relaxed/simple;
-	bh=xxbKOe+aw592RS5cxKgpvJzKgjszxST54QFXiFZB6Bk=;
+	s=arc-20240116; t=1705975354; c=relaxed/simple;
+	bh=cbyhx/8AX10ChBb9DLfvdECZPC8zC2Wzwz0HZndZWis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YwszK4WU4ScPxI5RfOelNS9VF/NwTN9nLt7INN7cKc6D/15BjupH/DyO1L/IFweAvXmSf9tUrTOuM+SnVCchLNJEGpCRE7rv6ePWgrCwi5CuQ/NTmHfCq0s6TRs1ChLQlUkVeyluOja9FmQC2hRZMDzs9JmTTrnpY/gNz407bLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nw8A+A8G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EEEC433C7;
-	Tue, 23 Jan 2024 01:09:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ROaIpp9l6wguKHqZ2A0KyZyKr4/M2LFg/MY23HJrCSxTCsCqMyAjTpioMZ1y5QHkHRxSoKTOOm5T/Qf57EFqdpYQXhflFbqkqmgfQLNHERMsBPTWkNQMRM2k17r5uHzHIFyi2nBdd2vVxcL0YwHwL7QiEHDfmYq7eBRpvMLKz6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n0hoHon4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1167C43394;
+	Tue, 23 Jan 2024 02:02:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972189;
-	bh=xxbKOe+aw592RS5cxKgpvJzKgjszxST54QFXiFZB6Bk=;
+	s=korg; t=1705975353;
+	bh=cbyhx/8AX10ChBb9DLfvdECZPC8zC2Wzwz0HZndZWis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nw8A+A8G4r8I1kvRFHuRdEWj5Ao5MdgFC2fzfswEmNGrhHBp+ZMGiwdYmatPMQoXN
-	 +aHCksOBTXTaNeP4KFdK4RKUiBHuCcqskrPyqoHCpMN9PqatSCeq2z9yyUd71antvV
-	 8EnIfSjV2RC3D6OEJgY+6RleCMLSfT1dHpc5Tz7U=
+	b=n0hoHon4X8mwdVmzvVYPSl3+vW7khDzdfCyVnA0PfP7Q2azYe2UxhtIo4mY9WvY1Q
+	 ZZai2zfZUZI5QTsXB0fHYrh7APiXHTLeJDCJiKs51aPszWzfPV7fDljXZlYSaD+dHj
+	 p5X8P1OxWZITgIDmWh7h5ookFH4xiR+gBf8sj8XA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 111/374] crypto: sahara - improve error handling in sahara_sha_process()
+Subject: [PATCH 6.6 316/583] pwm: stm32: Use hweight32 in stm32_pwm_detect_channels
 Date: Mon, 22 Jan 2024 15:56:07 -0800
-Message-ID: <20240122235748.496253384@linuxfoundation.org>
+Message-ID: <20240122235821.711114612@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +62,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Philipp Zabel <p.zabel@pengutronix.de>
 
-[ Upstream commit 5deff027fca49a1eb3b20359333cf2ae562a2343 ]
+[ Upstream commit 41fa8f57c0d269243fe3bde2bce71e82c884b9ad ]
 
-sahara_sha_hw_data_descriptor_create() returns negative error codes on
-failure, so make sure the errors are correctly handled / propagated.
+Use hweight32() to count the CCxE bits in stm32_pwm_detect_channels().
+Since the return value is assigned to chip.npwm, change it to unsigned
+int as well.
 
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Stable-dep-of: 19f1016ea960 ("pwm: stm32: Fix enable count for clk in .probe()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/pwm/pwm-stm32.c | 17 ++---------------
+ 1 file changed, 2 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index a5c40ef6d8af..434c7e17d273 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -988,7 +988,10 @@ static int sahara_sha_process(struct ahash_request *req)
- 		return ret;
+diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
+index 3d6be7749e23..0c7781f17805 100644
+--- a/drivers/pwm/pwm-stm32.c
++++ b/drivers/pwm/pwm-stm32.c
+@@ -579,10 +579,9 @@ static void stm32_pwm_detect_complementary(struct stm32_pwm *priv)
+ 	priv->have_complementary_output = (ccer != 0);
+ }
  
- 	if (rctx->first) {
--		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
-+		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
-+		if (ret)
-+			return ret;
-+
- 		dev->hw_desc[0]->next = 0;
- 		rctx->first = 0;
- 	} else {
-@@ -996,7 +999,10 @@ static int sahara_sha_process(struct ahash_request *req)
+-static int stm32_pwm_detect_channels(struct stm32_pwm *priv)
++static unsigned int stm32_pwm_detect_channels(struct stm32_pwm *priv)
+ {
+ 	u32 ccer;
+-	int npwm = 0;
  
- 		sahara_sha_hw_context_descriptor_create(dev, rctx, req, 0);
- 		dev->hw_desc[0]->next = dev->hw_phys_desc[1];
--		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
-+		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
-+		if (ret)
-+			return ret;
-+
- 		dev->hw_desc[1]->next = 0;
- 	}
+ 	/*
+ 	 * If channels enable bits don't exist writing 1 will have no
+@@ -592,19 +591,7 @@ static int stm32_pwm_detect_channels(struct stm32_pwm *priv)
+ 	regmap_read(priv->regmap, TIM_CCER, &ccer);
+ 	regmap_clear_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
  
+-	if (ccer & TIM_CCER_CC1E)
+-		npwm++;
+-
+-	if (ccer & TIM_CCER_CC2E)
+-		npwm++;
+-
+-	if (ccer & TIM_CCER_CC3E)
+-		npwm++;
+-
+-	if (ccer & TIM_CCER_CC4E)
+-		npwm++;
+-
+-	return npwm;
++	return hweight32(ccer & TIM_CCER_CCXE);
+ }
+ 
+ static int stm32_pwm_probe(struct platform_device *pdev)
 -- 
 2.43.0
 
