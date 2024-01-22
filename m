@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-14400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988D08380C7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F798838377
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C08CB1C27540
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B56821F28989
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA1B1339B2;
-	Tue, 23 Jan 2024 01:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C153863102;
+	Tue, 23 Jan 2024 01:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="taDUMKfM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmfMS821"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8849133435;
-	Tue, 23 Jan 2024 01:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B7162A0B;
+	Tue, 23 Jan 2024 01:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971892; cv=none; b=dmXNwAfZpmWfQwrC2+kvC4EFyGs3MvlQGrCX3yp8kVY7wzhk6OIcidwcA7u21TdhNQ+VBKeOPM+Al9cWPf6F4Lr3YsKhkCRnt6AZatU5h8SRSNraF6wlniR8nlJW5pRxQDTNe/Jzbavc/3ilhgvZyS6dpGZJCUVSafbugUKHdeI=
+	t=1705974981; cv=none; b=cb3gq6D3p1IcxFkwEGyriWQ8gKToqWWwI1iFZkd7zpemLRm6lETMQAJLiWU85X7FJ+QSawg+p5vAEkmSav5KS/v3MISWDdgWap7QNwBwS4B8osTkbB0XK6tO2tB5kItXic5o9DjIvS7OAFmTQ1k8WrVGe7E1YVVJzZWOSvx7EWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971892; c=relaxed/simple;
-	bh=dZnbMliJHDNMgrvyN2J8iBlHNpT9VpBLWX72ZHn/D3A=;
+	s=arc-20240116; t=1705974981; c=relaxed/simple;
+	bh=4CZMEQUDC+tbQbSXuSBcOqfEuJWeI5hhJDUbSYi8apI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D55menaWhuP5Bj6nYmDDA4rdsOE/YbW8Of4tW8YD6zhjaijUU5HQxnOXoOputF/VvNi8pj9thxHVvfUiA0V0xac0vguwZvWVSaPCI8aIDOZTQpFXiZPElOdSanVhaMhf8fRSIt4fo84Wqtwteu3UDeMVuvS7I8lVtUjG7gmFYMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taDUMKfM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD6DC433C7;
-	Tue, 23 Jan 2024 01:04:52 +0000 (UTC)
+	 MIME-Version; b=YDOQkJcivK//ZB6yQoppeuZ30dfDQSH+9z2aLc8ycwxHbE4E3bB6/MUEqOfuKkFg755g4oRukUMlfABSDddO3HDFXaYtgZrihk8aKNJ9Mp0K2kiUiSQFo87VF9GecQTSEIlQuQRtwlkBmCHeI8kD3eh4o3xMRZCjcMGTTeRiBAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmfMS821; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF551C433C7;
+	Tue, 23 Jan 2024 01:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971892;
-	bh=dZnbMliJHDNMgrvyN2J8iBlHNpT9VpBLWX72ZHn/D3A=;
+	s=korg; t=1705974981;
+	bh=4CZMEQUDC+tbQbSXuSBcOqfEuJWeI5hhJDUbSYi8apI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=taDUMKfMenrlGmaS3QnwaUEAxBG1GbzlWJDTX0FRBEEpj/IiKC/sXvAzQW6W17kKs
-	 4/GgwjTpoOb8+Goo3C73JrrZtfGAva1D2l6DGXl0mmvBRVnyfRnEMiPP2e25zlOwtm
-	 R0d/ZJdk2R8tS+c2syZpfLkxyIVK5iGDUrBu2u9o=
+	b=HmfMS821TDxXbpFFLgP6tQ7kcUB7KO0BMIlEcIPhhnf80VRC5tbt4ewdWcLsXBf3K
+	 4wrJCe//1gN10bwYr2D5I5QiUDMrjQZmQV24gR3dcQtBoNxMUgDNyYNU4rdHyZBJ21
+	 D2tPMlYQcDeJ4btuO1wbEuJp9nKpSSRa4abRoRfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Douglas Anderson <dianders@chromium.org>,
+	Grant Grundler <grundler@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 256/286] tty: use if in send_break() instead of goto
+Subject: [PATCH 5.15 306/374] r8152: Choose our USB config with choose_configuration() rather than probe()
 Date: Mon, 22 Jan 2024 15:59:22 -0800
-Message-ID: <20240122235741.891087819@linuxfoundation.org>
+Message-ID: <20240122235755.485557629@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 24f2cd019946fc2e88e632d2e24a34c2cc3f2be4 ]
+[ Upstream commit aa4f2b3e418e8673e55145de8b8016a7a9920306 ]
 
-Now, the "jumped-over" code is simple enough to be put inside an 'if'.
-Do so to make it 'goto'-less.
+If you deauthorize the r8152 device (by writing 0 to the "authorized"
+field in sysfs) and then reauthorize it (by writing a 1) then it no
+longer works. This is because when you do the above we lose the
+special configuration that we set in rtl8152_cfgselector_probe().
+Deauthorizing causes the config to be set to -1 and then reauthorizing
+runs the default logic for choosing the best config.
 
-Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20230919085156.1578-16-jirislaby@kernel.org
+I made an attempt to fix it so that the config is kept across
+deauthorizing / reauthorizing [1] but it was a bit ugly.
+
+Let's instead use the new USB core feature to override
+choose_configuration().
+
+This patch relies upon the patches ("usb: core: Don't force USB
+generic_subclass drivers to define probe()") and ("usb: core: Allow
+subclassed USB drivers to override usb_choose_configuration()")
+
+[1] https://lore.kernel.org/r/20231130154337.1.Ie00e07f07f87149c9ce0b27ae4e26991d307e14b@changeid
+
+Fixes: ec51fbd1b8a2 ("r8152: add USB device driver for config selection")
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Grant Grundler <grundler@chromium.org>
+Link: https://lore.kernel.org/r/20231201102946.v2.3.Ie00e07f07f87149c9ce0b27ae4e26991d307e14b@changeid
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 66aad7d8d3ec ("usb: cdc-acm: return correct error code on unsupported break")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty_io.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/usb/r8152.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
-index a45e6e1423d8..1c76e77e2d07 100644
---- a/drivers/tty/tty_io.c
-+++ b/drivers/tty/tty_io.c
-@@ -2477,11 +2477,10 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
- 		return -EINTR;
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index e8fd743a1509..85b98fd06ba2 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -9872,7 +9872,7 @@ static struct usb_driver rtl8152_driver = {
+ 	.disable_hub_initiated_lpm = 1,
+ };
  
- 	retval = tty->ops->break_ctl(tty, -1);
--	if (retval)
--		goto out;
--	msleep_interruptible(duration);
--	retval = tty->ops->break_ctl(tty, 0);
--out:
-+	if (!retval) {
-+		msleep_interruptible(duration);
-+		retval = tty->ops->break_ctl(tty, 0);
-+	}
- 	tty_write_unlock(tty);
+-static int rtl8152_cfgselector_probe(struct usb_device *udev)
++static int rtl8152_cfgselector_choose_configuration(struct usb_device *udev)
+ {
+ 	struct usb_host_config *c;
+ 	int i, num_configs;
+@@ -9899,19 +9899,13 @@ static int rtl8152_cfgselector_probe(struct usb_device *udev)
+ 	if (i == num_configs)
+ 		return -ENODEV;
  
- 	if (signal_pending(current))
+-	if (usb_set_configuration(udev, c->desc.bConfigurationValue)) {
+-		dev_err(&udev->dev, "Failed to set configuration %d\n",
+-			c->desc.bConfigurationValue);
+-		return -ENODEV;
+-	}
+-
+-	return 0;
++	return c->desc.bConfigurationValue;
+ }
+ 
+ static struct usb_device_driver rtl8152_cfgselector_driver = {
+-	.name =		MODULENAME "-cfgselector",
+-	.probe =	rtl8152_cfgselector_probe,
+-	.id_table =	rtl8152_table,
++	.name =	MODULENAME "-cfgselector",
++	.choose_configuration = rtl8152_cfgselector_choose_configuration,
++	.id_table = rtl8152_table,
+ 	.generic_subclass = 1,
+ 	.supports_autosuspend = 1,
+ };
 -- 
 2.43.0
 
