@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A14AF838252
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:19:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A74AE837D63
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D25A286E55
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:19:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAF2B1C27AB9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469685B5C2;
-	Tue, 23 Jan 2024 01:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2697659B4C;
+	Tue, 23 Jan 2024 00:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkfcIeRL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQoE+uGp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2495B5C8;
-	Tue, 23 Jan 2024 01:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D906F58116;
+	Tue, 23 Jan 2024 00:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974323; cv=none; b=k+XuPfF6gCknID3edRoCFgnSbeKXmYAr0LsFA5AAf1yl6RDhZwVr8AGCRtgJivsAcXjVylJ4YbzqV6BJBeUpXl8bokhFYevoSvswR8WvJc2goWgid90qU70cPsarUWYl0fNMqyYa7KIqV8mVkUHd28/6jqw1kokifeJxxr+bsqY=
+	t=1705969920; cv=none; b=Yj6C2HnfBU142WoVGXaQxsCXWo8hTX59WGrdwFjBGIUs4twa+e42C5Ydj4+j+PLacsN/Cu+Aw/1Tz3XpCkEN2INdg7GC6FYIEXRUKJZFdA6zEsqYT33uNf6HcR88P72HjbN9v93jE0J2RwP4GWJYESKbR/qZAJAwzxxILMvUZwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974323; c=relaxed/simple;
-	bh=vasDXmm8TejDYihH+5URWOWNRqSleo7TY/UqPq5reLQ=;
+	s=arc-20240116; t=1705969920; c=relaxed/simple;
+	bh=qAkZApl6ymsEpdw0CXnfNoQs0wWMT9u74o01kO8k2ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rWPLxyD0eV0ml8n1mwrNxj1wgx2dVh7qwNds7LAA+q1g+Qx5NopTq0VQjg66Ir4+R+1hArMLiapLOZtOnqAVZOr8+KiudLu74/BpFLFlRImUlFkS4DUuMbYY5cqIkRxuSF5qRfmHq5OI8yWjloHFldn6L+dosQQsQn1voXd2TYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkfcIeRL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7FE4C43390;
-	Tue, 23 Jan 2024 01:45:22 +0000 (UTC)
+	 MIME-Version; b=Luw/I2gg944MBKYWbyp5X9u6nn0zCTx3FVVfAbIqnuIGMe7+uou4iTPJyl3GL6tGMoqbLaJj2/ehmTPVwM+nZCU4rs2Q93uM3mdmCdCBPKGSPgFTzJ3YSPjX48L2XZHxuhJx9bEwO+zURPQ1u0Dy8JICRc0DTh5BADr904H/W10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQoE+uGp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C187C433F1;
+	Tue, 23 Jan 2024 00:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974323;
-	bh=vasDXmm8TejDYihH+5URWOWNRqSleo7TY/UqPq5reLQ=;
+	s=korg; t=1705969920;
+	bh=qAkZApl6ymsEpdw0CXnfNoQs0wWMT9u74o01kO8k2ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qkfcIeRLOAq/KBmhmY3Dn+AXcaCooNdXfkbKcrvpZl/zsNrLm591ZyF7TBdL+TrFs
-	 2pxUhtRAP2Efo5RiXFea1UQfP7zNrJlV4FdBb6vkX8fuy/EcwbNI9Td2PYjqxCLAu/
-	 VFOJUCqiu7f3fsZEDIs1qJDtTuJSocxq9XFrrfIY=
+	b=vQoE+uGpFc+Sc9bYA+4WDWoGh7hOZoaRG9n9asYbhgfaY8sTVIDMhxTRVQAxgO2WQ
+	 BbZARGlgfykFBfEZAN2fzDQWhc+Dik2eo1kMoPvCPuEpEFx0jn5bYx+P6qhJ+6ydTr
+	 Y7WPW5TNiwV3XosBtH2wLhpatCaaiqld132fnsuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Kai Huang <kai.huang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 171/374] mlxbf_gige: Fix intermittent no ip issue
-Date: Mon, 22 Jan 2024 15:57:07 -0800
-Message-ID: <20240122235750.581267073@linuxfoundation.org>
+Subject: [PATCH 6.7 524/641] selftests/sgx: Fix uninitialized pointer dereference in error path
+Date: Mon, 22 Jan 2024 15:57:08 -0800
+Message-ID: <20240122235834.485796945@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asmaa Mnebhi <asmaa@nvidia.com>
+From: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
 
-[ Upstream commit ef210ef85d5cb543ce34a57803ed856d0c8c08c2 ]
+[ Upstream commit 79eba8c924f7decfa71ddf187d38cb9f5f2cd7b3 ]
 
-Although the link is up, there is no ip assigned on setups with high background
-traffic. Nothing is transmitted nor received. The RX error count keeps on
-increasing. After several minutes, the RX error count stagnates and the
-GigE interface finally gets an ip.
+Ensure ctx is zero-initialized, such that the encl_measure function will
+not call EVP_MD_CTX_destroy with an uninitialized ctx pointer in case of an
+early error during key generation.
 
-The issue is that mlxbf_gige_rx_init() is called before phy_start().
-As soon as the RX DMA is enabled in mlxbf_gige_rx_init(), the RX CI reaches the max
-of 128, and becomes equal to RX PI. RX CI doesn't decrease since the code hasn't
-ran phy_start yet.
-Bring the PHY up before starting the RX.
-
-Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
-Reviewed-by: David Thompson <davthompson@nvidia.com>
-Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 2adcba79e69d ("selftests/x86: Add a selftest for SGX")
+Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Link: https://lore.kernel.org/all/20231005153854.25566-2-jo.vanbulck%40cs.kuleuven.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c | 14 +++++++-------
- .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c   |  6 +++---
- 2 files changed, 10 insertions(+), 10 deletions(-)
+ tools/testing/selftests/sgx/sigstruct.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-index b990782c1eb1..2cbe0daafd41 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-@@ -149,14 +149,14 @@ static int mlxbf_gige_open(struct net_device *netdev)
- 	 */
- 	priv->valid_polarity = 0;
+diff --git a/tools/testing/selftests/sgx/sigstruct.c b/tools/testing/selftests/sgx/sigstruct.c
+index a07896a46364..d73b29becf5b 100644
+--- a/tools/testing/selftests/sgx/sigstruct.c
++++ b/tools/testing/selftests/sgx/sigstruct.c
+@@ -318,9 +318,9 @@ bool encl_measure(struct encl *encl)
+ 	struct sgx_sigstruct *sigstruct = &encl->sigstruct;
+ 	struct sgx_sigstruct_payload payload;
+ 	uint8_t digest[SHA256_DIGEST_LENGTH];
++	EVP_MD_CTX *ctx = NULL;
+ 	unsigned int siglen;
+ 	RSA *key = NULL;
+-	EVP_MD_CTX *ctx;
+ 	int i;
  
--	err = mlxbf_gige_rx_init(priv);
-+	phy_start(phydev);
-+
-+	err = mlxbf_gige_tx_init(priv);
- 	if (err)
- 		goto free_irqs;
--	err = mlxbf_gige_tx_init(priv);
-+	err = mlxbf_gige_rx_init(priv);
- 	if (err)
--		goto rx_deinit;
--
--	phy_start(phydev);
-+		goto tx_deinit;
+ 	memset(sigstruct, 0, sizeof(*sigstruct));
+@@ -384,7 +384,8 @@ bool encl_measure(struct encl *encl)
+ 	return true;
  
- 	netif_napi_add(netdev, &priv->napi, mlxbf_gige_poll, NAPI_POLL_WEIGHT);
- 	napi_enable(&priv->napi);
-@@ -178,8 +178,8 @@ static int mlxbf_gige_open(struct net_device *netdev)
- 
- 	return 0;
- 
--rx_deinit:
--	mlxbf_gige_rx_deinit(priv);
-+tx_deinit:
-+	mlxbf_gige_tx_deinit(priv);
- 
- free_irqs:
- 	mlxbf_gige_free_irqs(priv);
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
-index 227d01cace3f..699984358493 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
-@@ -142,6 +142,9 @@ int mlxbf_gige_rx_init(struct mlxbf_gige *priv)
- 	writeq(MLXBF_GIGE_RX_MAC_FILTER_COUNT_PASS_EN,
- 	       priv->base + MLXBF_GIGE_RX_MAC_FILTER_COUNT_PASS);
- 
-+	writeq(ilog2(priv->rx_q_entries),
-+	       priv->base + MLXBF_GIGE_RX_WQE_SIZE_LOG2);
-+
- 	/* Clear MLXBF_GIGE_INT_MASK 'receive pkt' bit to
- 	 * indicate readiness to receive interrupts
- 	 */
-@@ -154,9 +157,6 @@ int mlxbf_gige_rx_init(struct mlxbf_gige *priv)
- 	data |= MLXBF_GIGE_RX_DMA_EN;
- 	writeq(data, priv->base + MLXBF_GIGE_RX_DMA);
- 
--	writeq(ilog2(priv->rx_q_entries),
--	       priv->base + MLXBF_GIGE_RX_WQE_SIZE_LOG2);
--
- 	return 0;
- 
- free_wqe_and_skb:
+ err:
+-	EVP_MD_CTX_destroy(ctx);
++	if (ctx)
++		EVP_MD_CTX_destroy(ctx);
+ 	RSA_free(key);
+ 	return false;
+ }
 -- 
 2.43.0
 
