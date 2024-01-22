@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-15369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A90158384ED
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8DD8380AE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DE0E290421
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80F65B2B724
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD15F77F2D;
-	Tue, 23 Jan 2024 02:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B177A12FF77;
+	Tue, 23 Jan 2024 01:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/F4tU9F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZQsZY1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D09477636;
-	Tue, 23 Jan 2024 02:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F45D657B3;
+	Tue, 23 Jan 2024 01:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975536; cv=none; b=oP82duS6hSwDa0fBxdqUKiLGGWdczyU/zKuchcFdztx6nBnh2Q6NcqFlBQzz3NceJj4FmIHh3LKUlBo3zME7BocCvDeB9+/rnc7tXnf8P8t+OpuXppfh2BgS9CfkiNz3BBTmb3HlX24Oay5JgOQynNfGEc0jXBOeH6XpaFDhMJU=
+	t=1705971794; cv=none; b=hwQMtJf9XalvOIOnZE6Xe3jmzl1pvt4qbrzhX+c2+w2LUxx87ylaf2cNbwNmSxGQY0WHpIBnshcqKSG86cTf5AAdl9t5AC4AsuREKPgqV3e04O8X6X0+ggcFVc6e4lMxhAuO7askRViJUhqe3VIWdpHeEHY6ENb7eBL8mmKVoSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975536; c=relaxed/simple;
-	bh=bv0CM6HBBiL56wTydBuoLsPDuQ/monk579RChBxyVH8=;
+	s=arc-20240116; t=1705971794; c=relaxed/simple;
+	bh=r1pcOx0OUp3TiixMlTQhhPcdwLWu6L+U15OMzLDMfIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n1Y3/oQIJbGeAXkXeO3NAlKmhsygk2nSLYvhJaEI4cHR3ptA4oGGnjzKs4snd6A3xzIAVIyKkkzSU3bZIeNUhooZKkqWOWN1RpkITJvuYmSoP4bNoBEK68X6r6eOTB+CTZ7p3z0N0Nokx5EWrMrepr3RzFJ/uEjugRV5t9LAtNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/F4tU9F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587A3C43390;
-	Tue, 23 Jan 2024 02:05:36 +0000 (UTC)
+	 MIME-Version; b=YZIdTheUK+7oVWiW4J4JE6F+gFO8NotJ4uDa8P6gasYc4f/mOjp6PCPLCbnaHv60DSGYNskeyWhmvv52Z5w81qXwN4wGvn0hrKYhpnrY234d4Ryj8hcCxmv0pWwgF6pf8DIQBwkxRXb9myyb93MxC7Qa+6xQPPCouRAjmlVzgmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZQsZY1Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6D0C433F1;
+	Tue, 23 Jan 2024 01:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975536;
-	bh=bv0CM6HBBiL56wTydBuoLsPDuQ/monk579RChBxyVH8=;
+	s=korg; t=1705971794;
+	bh=r1pcOx0OUp3TiixMlTQhhPcdwLWu6L+U15OMzLDMfIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M/F4tU9FTVJFDEyB5JwKK6/uiTBFck56BjR4EvscF42JUnSlfGq9JyXBgNgdz0S7E
-	 DBR1uSRvRrtDiVoGslK44nFnJZM/t6j7qJ5g8uYLRZlWPR9R+s980n6LizWFIB2Wkg
-	 kR43wEJZ8yMB8XOFeP+KBnNFyTJEoZfiONftQTD8=
+	b=XZQsZY1ZHfSmtbhPIRGmGXu/1ps5GdCBuujZvaDbZsJqG1Z+xo4s/UnNVeCbpZvSu
+	 O7fG0PLL/YrqArTytzmIwhVrf3gVlBxCOWbgU2H3M6Gpb3Dz0FVYYMg67fnawk0aYf
+	 t371AapNLUcv3k94fHm0tV5v8dPfXLBXprhyUGV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Fangrui Song <maskray@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Milian Wolff <milian.wolff@kdab.com>,
-	Pablo Galindo <pablogsal@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 487/583] perf unwind-libunwind: Fix base address for .eh_frame
+	Kunkun Jiang <jiangkunkun@huawei.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: [PATCH 5.10 232/286] KVM: arm64: vgic-v4: Restore pending state on host userspace write
 Date: Mon, 22 Jan 2024 15:58:58 -0800
-Message-ID: <20240122235826.917807363@linuxfoundation.org>
+Message-ID: <20240122235741.004487123@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,54 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 4fb54994b2360ab5029ee3a959161f6fe6bbb349 ]
+commit 7b95382f965133ef61ce44aaabc518c16eb46909 upstream.
 
-The base address of a DSO mapping should start at the start of the file.
-Usually DSOs are mapped from the pgoff 0 so it doesn't matter when it
-uses the start of the map address.
+When the VMM writes to ISPENDR0 to set the state pending state of
+an SGI, we fail to convey this to the HW if this SGI is already
+backed by a GICv4.1 vSGI.
 
-But generated DSOs for JIT codes doesn't start from the 0 so it should
-subtract the offset to calculate the .eh_frame table offsets correctly.
+This is a bit of a corner case, as this would only occur if the
+vgic state is changed on an already running VM, but this can
+apparently happen across a guest reset driven by the VMM.
 
-Fixes: dc2cf4ca866f5715 ("perf unwind: Fix segbase for ld.lld linked objects")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Fangrui Song <maskray@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Milian Wolff <milian.wolff@kdab.com>
-Cc: Pablo Galindo <pablogsal@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231212070547.612536-4-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by always writing out the pending_latch value to the
+HW, and reseting it to false.
+
+Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Cc: stable@vger.kernel.org # 5.10+
+Link: https://lore.kernel.org/r/7e7f2c0c-448b-10a9-8929-4b8f4f6e2a32@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/unwind-libunwind-local.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c |   27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/tools/perf/util/unwind-libunwind-local.c b/tools/perf/util/unwind-libunwind-local.c
-index c0641882fd2f..5e5c3395a499 100644
---- a/tools/perf/util/unwind-libunwind-local.c
-+++ b/tools/perf/util/unwind-libunwind-local.c
-@@ -327,7 +327,7 @@ static int read_unwind_spec_eh_frame(struct dso *dso, struct unwind_info *ui,
+--- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+@@ -356,19 +356,26 @@ static int vgic_v3_uaccess_write_pending
+ 		struct vgic_irq *irq = vgic_get_irq(vcpu->kvm, vcpu, intid + i);
  
- 	maps__for_each_entry(thread__maps(ui->thread), map_node) {
- 		struct map *map = map_node->map;
--		u64 start = map__start(map);
-+		u64 start = map__start(map) - map__pgoff(map);
+ 		raw_spin_lock_irqsave(&irq->irq_lock, flags);
+-		if (test_bit(i, &val)) {
+-			/*
+-			 * pending_latch is set irrespective of irq type
+-			 * (level or edge) to avoid dependency that VM should
+-			 * restore irq config before pending info.
+-			 */
+-			irq->pending_latch = true;
+-			vgic_queue_irq_unlock(vcpu->kvm, irq, flags);
+-		} else {
++
++		/*
++		 * pending_latch is set irrespective of irq type
++		 * (level or edge) to avoid dependency that VM should
++		 * restore irq config before pending info.
++		 */
++		irq->pending_latch = test_bit(i, &val);
++
++		if (irq->hw && vgic_irq_is_sgi(irq->intid)) {
++			irq_set_irqchip_state(irq->host_irq,
++					      IRQCHIP_STATE_PENDING,
++					      irq->pending_latch);
+ 			irq->pending_latch = false;
+-			raw_spin_unlock_irqrestore(&irq->irq_lock, flags);
+ 		}
  
- 		if (map__dso(map) == dso && start < base_addr)
- 			base_addr = start;
--- 
-2.43.0
-
++		if (irq->pending_latch)
++			vgic_queue_irq_unlock(vcpu->kvm, irq, flags);
++		else
++			raw_spin_unlock_irqrestore(&irq->irq_lock, flags);
++
+ 		vgic_put_irq(vcpu->kvm, irq);
+ 	}
+ 
 
 
 
