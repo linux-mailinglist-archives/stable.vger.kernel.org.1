@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-12763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86477837294
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:31:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2961837295
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:31:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F00221F26954
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:31:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67DAC293A5C
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E640C3E49E;
-	Mon, 22 Jan 2024 19:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA8C3E497;
+	Mon, 22 Jan 2024 19:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfixqT8D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ckCsG5wh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74353E497
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 19:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA223E486
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 19:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705951883; cv=none; b=n8+PY9mHmX8MyWaMVWgV9WBX2RvH+ZxsOrAfBnoozF2rwpoF/nOJY8CxhfAAB4gNtmX1Kjsqih4P3wR1SUAGT5VbmQ5PX3eyOW/yCOSlD84RJ0/wajuXMi+AXrp+utgthr8RTjW7OCF0GkX+sRmO5EsR4EEkKDj+4Z4cXR8FetA=
+	t=1705951888; cv=none; b=Zti7/2+pbFuJkvZPZio42rGRxk4xTjSMiWLZ1wLUxn8r3RwuFSoB2tirdxbyZ5s6gmLR8aoPSliFb8h+6vbWjWs8tfiYeHuzrn2bU809JBiVYIOWzKIPFimflk9JE+WpCHzGcFps5BoBCS0zzhjOeVwmbMCy64tHvlcNQu91PA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705951883; c=relaxed/simple;
-	bh=Z2wkm+Lev2ZbR9R1r45+WGWDg85vYRGyOFb3WEmmryU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lG3Vz1ue5ZxfaSg/FJc2TXBFGKjW64AxCk6UcbuQvgiw7CPk/dIOYpzlloo8gLIW1lXNStjtEhgxN+MFlBmty8AXB6Vf9/NRRCApDn8ZbTSJOUJLbgx9JZwDaM5ko/Qearp16T+92PLnR7gSaJFZeCbRhSUZ26GwtF/sieqJirg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xfixqT8D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97ADC433C7;
-	Mon, 22 Jan 2024 19:31:22 +0000 (UTC)
+	s=arc-20240116; t=1705951888; c=relaxed/simple;
+	bh=qTlhDEYfHOaPReEdeA/UXRxb62OZMrbxbA4kM1sQBCM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uLLCUi6g5Eus/BgH6oz4KV/HOYuCiD2xX7n9Vz3avXOnfjolmT8w4jyRTtCnf+S1wTMurMpfoyxpKmB8S3jLFbIZ3lcikxt74ckmAkjVNsB3hVjXHOO2TX5id5QZu1vqNfbeuCm6QiIW1D/EjLcQWOo+bK/aEWokxHACcXauIRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ckCsG5wh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D45C433C7;
+	Mon, 22 Jan 2024 19:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705951883;
-	bh=Z2wkm+Lev2ZbR9R1r45+WGWDg85vYRGyOFb3WEmmryU=;
+	s=korg; t=1705951888;
+	bh=qTlhDEYfHOaPReEdeA/UXRxb62OZMrbxbA4kM1sQBCM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=xfixqT8DUoC07rFSytt99yRRVCXma/7IhvQUw1tKG5pxdycD+LSlbhMgRi8sp0eld
-	 gscFT7lam6vE8/YZc+spFlvyZT3WRTmd0vpOcR3oQDv1JfEBlA0IXucy3gULEzTzXz
-	 WaT1rjGisPaIbfXzZjZPQzUcDZWBq0ZeD16CsdkY=
-Subject: FAILED: patch "[PATCH] block: Remove special-casing of compound pages" failed to apply to 6.1-stable tree
+	b=ckCsG5whGaud2i8E2AhzguTK4w9w9NWd8fsFyaVaYYma/QQ1Ay0uk6fOFfnJunE5s
+	 uU2zNW6/UOcbpW+VhG/d4q6xVTtBQ5d0fi+5BtlJ+sGLFchlkmkx69UxugW1cZGOpM
+	 m5emEt6cX8WltU7hI4vEnKHkkFfhJ2sCneAbPF/4=
+Subject: FAILED: patch "[PATCH] block: Remove special-casing of compound pages" failed to apply to 5.15-stable tree
 To: willy@infradead.org,akpm@osdl.org,axboe@kernel.dk,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 22 Jan 2024 11:31:15 -0800
-Message-ID: <2024012215-drainable-immortal-a01a@gregkh>
+Date: Mon, 22 Jan 2024 11:31:18 -0800
+Message-ID: <2024012218-elevator-shrug-f68a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1b151e2435fc3a9b10c8946c6aebe9f3e1938c55
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012215-drainable-immortal-a01a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012218-elevator-shrug-f68a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,14 @@ e51bab4e2058 ("block: Replace BIO_NO_PAGE_REF with BIO_PAGE_REFFED with inverted
 a450f49708ea ("iomap: Don't get an reference on ZERO_PAGE for direct I/O block zeroing")
 7ee4ccf57484 ("block: set FOLL_PCI_P2PDMA in bio_map_user_iov()")
 80bd4a7aab4c ("blk-mq: move the srcu_struct used for quiescing to the tagset")
+e88811bc43b9 ("block: use on-stack page vec for <= UIO_FASTIOV")
+480cb846c27b ("block: convert to advancing variants of iov_iter_get_pages{,_alloc}()")
+e97424fd4472 ("block: fix leaking page ref on truncated direct io")
+34cdb8c825f2 ("block: ensure bio_iov_add_page can't fail")
+325347d965e7 ("block: ensure iov_iter advances for added pages")
+46754bd05605 ("block: move ->bio_split to the gendisk")
+5a97806f7dc0 ("block: change the blk_queue_split calling convention")
+8374cfe647a1 ("Merge tag 'for-6.0/dm-changes' of git://git.kernel.org/pub/scm/linux/kernel/git/device-mapper/linux-dm")
 
 thanks,
 
