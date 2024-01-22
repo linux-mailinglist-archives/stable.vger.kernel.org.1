@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-15249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C1B83847F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32446837D59
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1A981F292C0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B79231F29738
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346596EB52;
-	Tue, 23 Jan 2024 02:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C191E54FBF;
+	Tue, 23 Jan 2024 00:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMippKeV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="po+xBV+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F6D6DD10;
-	Tue, 23 Jan 2024 02:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9F852F7C;
+	Tue, 23 Jan 2024 00:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975407; cv=none; b=JXyr0Neveqldv6EMd/8f7SEOM7IKJN4GhPCunBwtu2Udbf7rtz1+S2LnmaTVT3HVRkYAMNK4JQcKY9p4QJnGFEUfJJ/YFIgQ8x3fTn/wE2NKylv4R0RMFlk2Me2ClCHjOnAGBgq2qVaWB2Y+WaBX1G1y6LWmi9t2SIjlWRyKBIE=
+	t=1705969900; cv=none; b=iOljd2adu3qtgPvbjQrU1abCgDi+tI2Om5uSX3re4kTxwR0dMqPM4wx6mjoi4kyVyxcwwc6R05MfWhjzFUaqwYhQ0EXkwzuJYN1MMpOeltuFV3O7hDLHyRMG05CP6jI/xNdra2jWs7O4quUSwGIiMjYwZ8s/iqTEF3euOHDjntM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975407; c=relaxed/simple;
-	bh=X20E/BumwcPFD+RuWLQ+35/CaHjmYPB0NlGZ6Oc69p8=;
+	s=arc-20240116; t=1705969900; c=relaxed/simple;
+	bh=ZjPVYU/dP0ox3s5ayrlljiVplTUowQjxJ9WStqwfTcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YIE1Fy9zsMQ5i2n5mLKMLfoquVbbtNviWr29Jw6YTMfyV3kGDQAwuRA5FcJPEdaVqiFjdpn72/sgD7oRYOjrPv+mTyXG5Io3DTPPmuoamqzPitJN8Hm8HW0Iphvf3wWVDs5f7DqU5Z7inBUs/cvdDisw0Xd7N7x9sqr5VXeKUuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMippKeV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7C1C433B1;
-	Tue, 23 Jan 2024 02:03:26 +0000 (UTC)
+	 MIME-Version; b=skjpguGLPJg9AtgbbzoFyZy3Z1TzZ2sdkUOGTiJEWX+Me9Ta9+Fp2cRlR6aev16XOtbJGmNReX4TW7n1TK/D/K/7CpyZtpYTp2Lq4RGQV0jhjNsmR3wi31iABv7Ks8z172BK/HObn5r7pi6a53pDLUUB0TRHjdYd1muAr0tjZSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=po+xBV+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D1AC433F1;
+	Tue, 23 Jan 2024 00:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975406;
-	bh=X20E/BumwcPFD+RuWLQ+35/CaHjmYPB0NlGZ6Oc69p8=;
+	s=korg; t=1705969900;
+	bh=ZjPVYU/dP0ox3s5ayrlljiVplTUowQjxJ9WStqwfTcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bMippKeVn/tsfF2kcVszEAUTtjsoM9ZYv6EJzwqG17uq09jLeOThpGIC9UChQ9Qid
-	 9A+rF7q5eoydMRdxZWVCF3+mVFz+I0x/PDc6+hPELiSRyTEP/a7DVZQoG3LBldGVh0
-	 tDo6fQcDcsQmdvMrt8NmWKW+ZwsLwZNfVozynXZk=
+	b=po+xBV+JEygz3nYLdPjZwuDD+MQI/U/gLleZuyXD6IGIPHAvrcj2lvYw1Z/7LeDP5
+	 wgPnF2G2BLxf0glym/avS2evOhjdMK+UJ9z/rWnyuPmGGw0tJWef6kDOIE+dTlf3L1
+	 853Sf3mw8NqApZJvXVwt9/TpDq6zZOwhx8P1jcOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.6 367/583] usb: cdns3: Fix uvc fail when DMA cross 4k boundery since sg enabled
-Date: Mon, 22 Jan 2024 15:56:58 -0800
-Message-ID: <20240122235823.245505318@linuxfoundation.org>
+	Brett Creeley <brett.creeley@amd.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 515/641] vfio/pds: Fix calculations in pds_vfio_dirty_sync
+Date: Mon, 22 Jan 2024 15:56:59 -0800
+Message-ID: <20240122235834.201823743@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Brett Creeley <brett.creeley@amd.com>
 
-commit 40c304109e866a7dc123661a5c8ca72f6b5e14e0 upstream.
+[ Upstream commit 4004497cec3093d7b0087bc70709b45969fa07b6 ]
 
-Supposed DMA cross 4k bounder problem should be fixed at DEV_VER_V2, but
-still met problem when do ISO transfer if sg enabled.
+The incorrect check is being done for comparing the
+iova/length being requested to sync. This can cause
+the dirty sync operation to fail. Fix this by making
+sure the iova offset added to the requested sync
+length doesn't exceed the region_size.
 
-Data pattern likes below when sg enabled, package size is 1k and mult is 2
-	[UVC Header(8B) ] [data(3k - 8)] ...
+Also, the region_start is assumed to always be at 0.
+This can cause dirty tracking to fail because the
+device/driver bitmap offset always starts at 0,
+however, the region_start/iova may not. Fix this by
+determining the iova offset from region_start to
+determine the bitmap offset.
 
-The received data at offset 0xd000 will get 0xc000 data, len 0x70. Error
-happen position as below pattern:
-	0xd000: wrong
-	0xe000: wrong
-	0xf000: correct
-	0x10000: wrong
-	0x11000: wrong
-	0x12000: correct
-	...
-
-To avoid DMA cross 4k bounder at ISO transfer, reduce burst len according
-to start DMA address's alignment.
-
-Cc:  <stable@vger.kernel.org>
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231224153816.1664687-4-Frank.Li@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f232836a9152 ("vfio/pds: Add support for dirty page tracking")
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Link: https://lore.kernel.org/r/20231117001207.2793-2-brett.creeley@amd.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdns3-gadget.c |   32 +++++++++++++++++++++++++++++++-
- 1 file changed, 31 insertions(+), 1 deletion(-)
+ drivers/vfio/pci/pds/dirty.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/cdns3/cdns3-gadget.c
-+++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -1120,6 +1120,7 @@ static int cdns3_ep_run_transfer(struct
- 	u32 togle_pcs = 1;
- 	int sg_iter = 0;
- 	int num_trb_req;
-+	int trb_burst;
- 	int num_trb;
- 	int address;
- 	u32 control;
-@@ -1242,7 +1243,36 @@ static int cdns3_ep_run_transfer(struct
- 			total_tdl += DIV_ROUND_UP(length,
- 					       priv_ep->endpoint.maxpacket);
+diff --git a/drivers/vfio/pci/pds/dirty.c b/drivers/vfio/pci/pds/dirty.c
+index c937aa6f3954..27607d7b9030 100644
+--- a/drivers/vfio/pci/pds/dirty.c
++++ b/drivers/vfio/pci/pds/dirty.c
+@@ -478,8 +478,7 @@ static int pds_vfio_dirty_sync(struct pds_vfio_pci_device *pds_vfio,
+ 		pds_vfio->vf_id, iova, length, pds_vfio->dirty.region_page_size,
+ 		pages, bitmap_size);
  
--		trb->length |= cpu_to_le32(TRB_BURST_LEN(priv_ep->trb_burst_size) |
-+		trb_burst = priv_ep->trb_burst_size;
-+
-+		/*
-+		 * Supposed DMA cross 4k bounder problem should be fixed at DEV_VER_V2, but still
-+		 * met problem when do ISO transfer if sg enabled.
-+		 *
-+		 * Data pattern likes below when sg enabled, package size is 1k and mult is 2
-+		 *       [UVC Header(8B) ] [data(3k - 8)] ...
-+		 *
-+		 * The received data at offset 0xd000 will get 0xc000 data, len 0x70. Error happen
-+		 * as below pattern:
-+		 *	0xd000: wrong
-+		 *	0xe000: wrong
-+		 *	0xf000: correct
-+		 *	0x10000: wrong
-+		 *	0x11000: wrong
-+		 *	0x12000: correct
-+		 *	...
-+		 *
-+		 * But it is still unclear about why error have not happen below 0xd000, it should
-+		 * cross 4k bounder. But anyway, the below code can fix this problem.
-+		 *
-+		 * To avoid DMA cross 4k bounder at ISO transfer, reduce burst len according to 16.
-+		 */
-+		if (priv_ep->type == USB_ENDPOINT_XFER_ISOC && priv_dev->dev_ver <= DEV_VER_V2)
-+			if (ALIGN_DOWN(trb->buffer, SZ_4K) !=
-+			    ALIGN_DOWN(trb->buffer + length, SZ_4K))
-+				trb_burst = 16;
-+
-+		trb->length |= cpu_to_le32(TRB_BURST_LEN(trb_burst) |
- 					TRB_LEN(length));
- 		pcs = priv_ep->pcs ? TRB_CYCLE : 0;
+-	if (!length || ((dirty->region_start + iova + length) >
+-			(dirty->region_start + dirty->region_size))) {
++	if (!length || ((iova - dirty->region_start + length) > dirty->region_size)) {
+ 		dev_err(dev, "Invalid iova 0x%lx and/or length 0x%lx to sync\n",
+ 			iova, length);
+ 		return -EINVAL;
+@@ -496,7 +495,8 @@ static int pds_vfio_dirty_sync(struct pds_vfio_pci_device *pds_vfio,
+ 		return -EINVAL;
+ 	}
  
+-	bmp_offset = DIV_ROUND_UP(iova / dirty->region_page_size, sizeof(u64));
++	bmp_offset = DIV_ROUND_UP((iova - dirty->region_start) /
++				  dirty->region_page_size, sizeof(u64));
+ 
+ 	dev_dbg(dev,
+ 		"Syncing dirty bitmap, iova 0x%lx length 0x%lx, bmp_offset %llu bmp_bytes %llu\n",
+-- 
+2.43.0
+
 
 
 
