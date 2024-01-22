@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-13624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3684837D27
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 512F3837F6C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 120CA1C28676
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E44301F23617
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E425BAF3;
-	Tue, 23 Jan 2024 00:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD5E363130;
+	Tue, 23 Jan 2024 00:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KC5sGLf0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jI1ucQCP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6703A27E;
-	Tue, 23 Jan 2024 00:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5A862A0C;
+	Tue, 23 Jan 2024 00:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969815; cv=none; b=D+FQ1J7loAOLjAZrjY/g7Jp/Qm6UNSG7i/wl5LXoGdNIiiFJhBWVu+oZFgPhvq8r4YzYQtpVhqJ8gQn20eC+Zp6TapwuvzDon3hUoYnzLqA0vnphaR1rKOt69jziZBsB7qcI4MYAVBJ1qmYTwt9BVx9wMaFhilAaoCpz1OYGc+g=
+	t=1705971123; cv=none; b=HKM1GBmG69hY2iuZPqlVgXoavgjQHxQLMwaUGzqomPHZd0xM1lS1cTMi9yYdmPSHc9OwCF0MxrsTwWPZxA8E+5eHjeI5hmdUa5AhXQTo3UB4q/avFL3fyWbFeE6Jv7k7kIpMAl9sPh586FRs3SHXl6WhXFFP3k3UVB/+hpBJfQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969815; c=relaxed/simple;
-	bh=zfy2rAJe5Cn1sMdZohc+QJsVgNcPheBk9wmsP14nLvE=;
+	s=arc-20240116; t=1705971123; c=relaxed/simple;
+	bh=0lKzXC9Kid5kT5epMfeI25CKGY6pLqJyCTKavM3Q/Zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=djmuYNhUF3uB3xtXgs+LXDTfdcdx5eOYBMcLIZsQB+Ifx3T+CTcuAPMb/NtRYX7P2WvmHb3XVddBdMyjIBo0ZgkWb/+w4GC/JQPI/L6M+kpV9rizllYJhy23Olms0XJYZrpM2Y99PWoUD44WfyCveIUgjnq1w3qLT2upXLL3amU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KC5sGLf0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB704C433C7;
-	Tue, 23 Jan 2024 00:30:14 +0000 (UTC)
+	 MIME-Version; b=Qt+q3MgM46pm2u8RgC6HctwjpqPObYU0DE9y1QjXsc/Imbxh/XMxZmWOX+QekcG4CBWDRo1cgSoKsEE5QQT31R/xDDF3cxh+7IDvhc6lz/Ywk3OBQYHwMhoSb+WbrUHtrziD+Du4rtUDA0zZNMyKAhCmfYlgcgWkpuMzWNo8hUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jI1ucQCP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22244C43390;
+	Tue, 23 Jan 2024 00:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969814;
-	bh=zfy2rAJe5Cn1sMdZohc+QJsVgNcPheBk9wmsP14nLvE=;
+	s=korg; t=1705971123;
+	bh=0lKzXC9Kid5kT5epMfeI25CKGY6pLqJyCTKavM3Q/Zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KC5sGLf0M4/qhZ5+yMja9VaR53FiTOXyF58hcKjF4dvEK/4yX6sCxA2eolQDDyz/g
-	 u/JyYKFI8uatO0juDFJHnNaAd+GGW0qC8CYVz9DFzoiB+m3wTpD0QlJowtFQbfLD3S
-	 4eu3wQiceW81cqp9jEIK+EZTpZexc5ES5ZtG2ZQs=
+	b=jI1ucQCPzWW87tGLnQ7OZN9UjhUSPvetp6i8RakPLeOSuWBtzvtXtemgDWg919XHV
+	 vaW+6IJu7Y5xBeF0gJTcwfwH9kyppQGAeQTgPXoAAMZf4828r5hajitplcVUCsWLKP
+	 tZhA+UYJitDXY+6j54nwoNUU5MS4x3xKIPOadd0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <2045gemini@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.7 449/641] Bluetooth: Fix atomicity violation in {min,max}_key_size_set
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 185/417] drm/panfrost: Ignore core_mask for poweroff and disable PWRTRANS irq
 Date: Mon, 22 Jan 2024 15:55:53 -0800
-Message-ID: <20240122235832.073769747@linuxfoundation.org>
+Message-ID: <20240122235758.291969588@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <2045gemini@gmail.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-commit da9065caa594d19b26e1a030fd0cc27bd365d685 upstream.
+[ Upstream commit a4f5892914ca7709ea6d191f0edace93a5935966 ]
 
-In min_key_size_set():
-    if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
-        return -EINVAL;
-    hci_dev_lock(hdev);
-    hdev->le_min_key_size = val;
-    hci_dev_unlock(hdev);
+Some SoCs may be equipped with a GPU containing two core groups
+and this is exactly the case of Samsung's Exynos 5422 featuring
+an ARM Mali-T628 MP6 GPU: the support for this GPU in Panfrost
+is partial, as this driver currently supports using only one
+core group and that's reflected on all parts of it, including
+the power on (and power off, previously to this patch) function.
 
-In max_key_size_set():
-    if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
-        return -EINVAL;
-    hci_dev_lock(hdev);
-    hdev->le_max_key_size = val;
-    hci_dev_unlock(hdev);
+The issue with this is that even though executing the soft reset
+operation should power off all cores unconditionally, on at least
+one platform we're seeing a crash that seems to be happening due
+to an interrupt firing which may be because we are calling power
+transition only on the first core group, leaving the second one
+unchanged, or because ISR execution was pending before entering
+the panfrost_gpu_power_off() function and executed after powering
+off the GPU cores, or all of the above.
 
-The atomicity violation occurs due to concurrent execution of set_min and
-set_max funcs.Consider a scenario where setmin writes a new, valid 'min'
-value, and concurrently, setmax writes a value that is greater than the
-old 'min' but smaller than the new 'min'. In this case, setmax might check
-against the old 'min' value (before acquiring the lock) but write its
-value after the 'min' has been updated by setmin. This leads to a
-situation where the 'max' value ends up being smaller than the 'min'
-value, which is an inconsistency.
+Finally, solve this by:
+ - Avoid to enable the power transition interrupt on reset; and
+ - Ignoring the core_mask and ask the GPU to poweroff both core groups
 
-This possible bug is found by an experimental static analysis tool
-developed by our team, BassCheck[1]. This tool analyzes the locking APIs
-to extract function pairs that can be concurrently executed, and then
-analyzes the instructions in the paired functions to identify possible
-concurrency bugs including data races and atomicity violations. The above
-possible bug is reported when our tool analyzes the source code of
-Linux 5.17.
-
-To resolve this issue, it is suggested to encompass the validity checks
-within the locked sections in both set_min and set_max funcs. The
-modification ensures that the validation of 'val' against the
-current min/max values is atomic, thus maintaining the integrity of the
-settings. With this patch applied, our tool no longer reports the bug,
-with the kernel configuration allyesconfig for x86_64. Due to the lack of
-associated hardware, we cannot test the patch in runtime testing, and just
-verify it according to the code logic.
-
-[1] https://sites.google.com/view/basscheck/
-
-Fixes: 18f81241b74f ("Bluetooth: Move {min,max}_key_size debugfs ...")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 22aa1a209018 ("drm/panfrost: Really power off GPU cores in panfrost_gpu_power_off()")
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231204114215.54575-2-angelogioacchino.delregno@collabora.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_debugfs.c |   12 ++++++++----
+ drivers/gpu/drm/panfrost/panfrost_gpu.c | 12 ++++++++----
  1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/net/bluetooth/hci_debugfs.c
-+++ b/net/bluetooth/hci_debugfs.c
-@@ -1046,10 +1046,12 @@ static int min_key_size_set(void *data,
+diff --git a/drivers/gpu/drm/panfrost/panfrost_gpu.c b/drivers/gpu/drm/panfrost/panfrost_gpu.c
+index c08715f033c5..55d243048516 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_gpu.c
++++ b/drivers/gpu/drm/panfrost/panfrost_gpu.c
+@@ -71,7 +71,12 @@ int panfrost_gpu_soft_reset(struct panfrost_device *pfdev)
+ 	}
+ 
+ 	gpu_write(pfdev, GPU_INT_CLEAR, GPU_IRQ_MASK_ALL);
+-	gpu_write(pfdev, GPU_INT_MASK, GPU_IRQ_MASK_ALL);
++
++	/* Only enable the interrupts we care about */
++	gpu_write(pfdev, GPU_INT_MASK,
++		  GPU_IRQ_MASK_ERROR |
++		  GPU_IRQ_PERFCNT_SAMPLE_COMPLETED |
++		  GPU_IRQ_CLEAN_CACHES_COMPLETED);
+ 
+ 	return 0;
+ }
+@@ -369,11 +374,10 @@ void panfrost_gpu_power_on(struct panfrost_device *pfdev)
+ 
+ void panfrost_gpu_power_off(struct panfrost_device *pfdev)
  {
- 	struct hci_dev *hdev = data;
+-	u64 core_mask = panfrost_get_core_mask(pfdev);
+ 	int ret;
+ 	u32 val;
  
--	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
-+	hci_dev_lock(hdev);
-+	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
+-	gpu_write(pfdev, SHADER_PWROFF_LO, pfdev->features.shader_present & core_mask);
++	gpu_write(pfdev, SHADER_PWROFF_LO, pfdev->features.shader_present);
+ 	ret = readl_relaxed_poll_timeout(pfdev->iomem + SHADER_PWRTRANS_LO,
+ 					 val, !val, 1, 1000);
+ 	if (ret)
+@@ -385,7 +389,7 @@ void panfrost_gpu_power_off(struct panfrost_device *pfdev)
+ 	if (ret)
+ 		dev_err(pfdev->dev, "tiler power transition timeout");
  
--	hci_dev_lock(hdev);
- 	hdev->le_min_key_size = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -1074,10 +1076,12 @@ static int max_key_size_set(void *data,
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
-+	hci_dev_lock(hdev);
-+	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->le_max_key_size = val;
- 	hci_dev_unlock(hdev);
- 
+-	gpu_write(pfdev, L2_PWROFF_LO, pfdev->features.l2_present & core_mask);
++	gpu_write(pfdev, L2_PWROFF_LO, pfdev->features.l2_present);
+ 	ret = readl_poll_timeout(pfdev->iomem + L2_PWRTRANS_LO,
+ 				 val, !val, 0, 1000);
+ 	if (ret)
+-- 
+2.43.0
+
 
 
 
