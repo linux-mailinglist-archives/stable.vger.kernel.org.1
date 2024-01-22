@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-12918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E98CB8379AE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:44:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 093A6837AC7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28FD41C2713A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:44:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5817DB2D2A4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C37F63B7;
-	Tue, 23 Jan 2024 00:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B07212BF0C;
+	Tue, 23 Jan 2024 00:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/rIGs19"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06uA0a7V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABA06130;
-	Tue, 23 Jan 2024 00:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B91312A17F;
+	Tue, 23 Jan 2024 00:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968419; cv=none; b=b6vGSp7ihWQC9YgrUcAZjb1jAqVGaSL6/oOigFy352/oWiNvD1KraOf6jOHzUTME86ISQUWiPqjNQZRkbkO6e9SVl/8PO9QToKB6Jwi52p7kg3pqw9TJ5sxeav4ZjHdaazuuWWaeL+MayR2x6QXXmJYrF28MDsptIVXxGzu8ysM=
+	t=1705968889; cv=none; b=p01SbRY8Dv13yPlGz1tNnhbwU/+U0AOVlFX79QeumYMKjqtCG2ZcIPjEs2YzEHZvQ4xtZFUWqrnL6/tMXc9E80+d0Sefcg/pwDrZs9YVADuTO+1KbHowDa/BTIx1iUeLCaK19RkhbN/7z1/f+eDE6MmDthYGe0Q5Ufo+e1dupXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968419; c=relaxed/simple;
-	bh=66jBS7z8gwXTsYPtJz0SerDcxd/16Iemfcg/YLrS/Yc=;
+	s=arc-20240116; t=1705968889; c=relaxed/simple;
+	bh=dAIUzhptMwX+wTMslwuFzgX/QFmrRnjHfc42jX/Mc2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZr9DfVvZ7BX91Si3+VJ64jNhK8V7O+GULlqTBQlyEyvZA2HiuQmVOyHD07taFitcxRgWlLB0OdsgHYfGb0olx64X+b7ctqy9ZWo2TzjT/aGMqxtSRtj6fb+JmGYvXWjYs1MAOK8e+QrgY8eyKa3SgJMtAGoym5jYErqBh+Oqdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/rIGs19; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C458BC433C7;
-	Tue, 23 Jan 2024 00:06:58 +0000 (UTC)
+	 MIME-Version; b=p6156hxaTDN6T+uNpITFkLdeTBxfsladESyoUsP7OIq6DUa6eZpbK7vaWM2o4UTaVr3uwhefD+5Nx7S0ob7+4wtmUiuPkctP56PwT0aUjmKSylKP7cWo8svW+HfneVGSLAxWJ92OrGvn7sTplnrG0r3kJRvHyFILWEq/2l/17cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06uA0a7V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF426C43390;
+	Tue, 23 Jan 2024 00:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968419;
-	bh=66jBS7z8gwXTsYPtJz0SerDcxd/16Iemfcg/YLrS/Yc=;
+	s=korg; t=1705968889;
+	bh=dAIUzhptMwX+wTMslwuFzgX/QFmrRnjHfc42jX/Mc2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z/rIGs19gAcJkqaxkJYtK5ZmarsFd9mJ4UH6r9H4y3kchq2eQhjy06iN7ywK9K6WL
-	 pwP2qbi6CPeVx0W0lOXDP3P8DNA374DzbWppcmoxKZAtPSsyWxW5kvXNkNgbhLEjpM
-	 4vyRwEffd4HXZB216IIFGy1CF5lKvYcCj36e8wxM=
+	b=06uA0a7VDB5f0GA9pt+H6PT2acIpzp7yXaEJ3MSjCepGqIHfQNHR+MnqM4vQEu3Nw
+	 waEmazN+bZTvEMDhTYFZp63TwTL1bugtJq7Dq+nkEd70YiL3Vfntxln5Cm7K+QqxcP
+	 pHjzPiAnc1V9NsKBwRK9/U0/FX4//acUx4OnRDjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 056/148] crypto: sahara - improve error handling in sahara_sha_process()
+Subject: [PATCH 5.4 082/194] wifi: libertas: stop selecting wext
 Date: Mon, 22 Jan 2024 15:56:52 -0800
-Message-ID: <20240122235714.674381205@linuxfoundation.org>
+Message-ID: <20240122235722.768281022@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5deff027fca49a1eb3b20359333cf2ae562a2343 ]
+[ Upstream commit 8170b04c2c92eee52ea50b96db4c54662197e512 ]
 
-sahara_sha_hw_data_descriptor_create() returns negative error codes on
-failure, so make sure the errors are correctly handled / propagated.
+Libertas no longer references the iw_handler infrastructure or wext_spy,
+so neither of the 'select' statements are used any more.
 
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: e86dc1ca4676 ("Libertas: cfg80211 support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231108153409.1065286-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/wireless/marvell/libertas/Kconfig | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 96cb77abbabb..c69016faff6f 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -1007,7 +1007,10 @@ static int sahara_sha_process(struct ahash_request *req)
- 		return ret;
- 
- 	if (rctx->first) {
--		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
-+		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
-+		if (ret)
-+			return ret;
-+
- 		dev->hw_desc[0]->next = 0;
- 		rctx->first = 0;
- 	} else {
-@@ -1015,7 +1018,10 @@ static int sahara_sha_process(struct ahash_request *req)
- 
- 		sahara_sha_hw_context_descriptor_create(dev, rctx, req, 0);
- 		dev->hw_desc[0]->next = dev->hw_phys_desc[1];
--		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
-+		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
-+		if (ret)
-+			return ret;
-+
- 		dev->hw_desc[1]->next = 0;
- 	}
- 
+diff --git a/drivers/net/wireless/marvell/libertas/Kconfig b/drivers/net/wireless/marvell/libertas/Kconfig
+index b9fe598130c3..38347a2e8320 100644
+--- a/drivers/net/wireless/marvell/libertas/Kconfig
++++ b/drivers/net/wireless/marvell/libertas/Kconfig
+@@ -2,8 +2,6 @@
+ config LIBERTAS
+ 	tristate "Marvell 8xxx Libertas WLAN driver support"
+ 	depends on CFG80211
+-	select WIRELESS_EXT
+-	select WEXT_SPY
+ 	select LIB80211
+ 	select FW_LOADER
+ 	---help---
 -- 
 2.43.0
 
