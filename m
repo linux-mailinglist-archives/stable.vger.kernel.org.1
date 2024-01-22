@@ -1,54 +1,62 @@
-Return-Path: <stable+bounces-15269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D1DB838493
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6577F837D6D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0AF11C298FE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 335B11F243CD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E3B6A003;
-	Tue, 23 Jan 2024 02:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FF35C601;
+	Tue, 23 Jan 2024 00:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbZWFi/j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pi2DiTW9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0566F6EB61;
-	Tue, 23 Jan 2024 02:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A0A4E1D7;
+	Tue, 23 Jan 2024 00:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975429; cv=none; b=H8KO8YUmTPnFyZ0UX850gNF6on+2sfEp030av9AA003sgW+aJgdb72JmYz0456n3FpLryIo26usUihNUsOiRRnLXrg5eXLWnSictwJtKt/w5hK5bNn5BRX3PIqffrEqmBmy/GkrxFaQyMdIQ15B62KdWHA/uCXS77tNwyY0yVQs=
+	t=1705969942; cv=none; b=bF5J9lXqqVIVWMB9D2I4Qq+rC23z1GI+AVxd1l944p2ax1cs2QrVPnZV5G5GkBOqp+WREbiERAMlamvItDoKsA1ZREcljMYI9duJxj4JJYlb3gMV1lNpx9sg3SbMH0kgAx7/uw1SEktiHxflro8O26Stbj1ZT48105qwFjGMHy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975429; c=relaxed/simple;
-	bh=ujA23hm7VIWdfBb4VHPszNK/QUal64RQ/LcAIBqpZPY=;
+	s=arc-20240116; t=1705969942; c=relaxed/simple;
+	bh=q1U8mHsB4wLRUdMw+7immP+tqkWXNT6TPBBH5jBYA6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eEzGBT3/8FSjU39vwpKaNvGX4g1Tt8r2Efamp+ksHy7pmIOUNNSLO4tRxSC+MKFaxoMq0997ibDWtMLSSeqQNP6e+87P87Z92TuHwOMxzm4jPJmYK+LK5j2IiaM3+yE/zJ6pk1yLprJX0AtOGI+i2YXXt3t0CRZP0auT7J1oAk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbZWFi/j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC42C433C7;
-	Tue, 23 Jan 2024 02:03:48 +0000 (UTC)
+	 MIME-Version; b=SSwW9EDqb+K26thTXfTyzBxv1QN+yP13+yqYJWGJKYcB0lTbm8i4+jtDrvHkhfA98Rs9PQshTugmqeaBQiZuojJJFp2UDtwoj0xtbUANhrKHLUWYyEr6QYnVKACytVnwMbNskidXaAERPAZuhnUDKWjXUAcwEFZaHj9LV+IO1MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pi2DiTW9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0DCFC433C7;
+	Tue, 23 Jan 2024 00:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975428;
-	bh=ujA23hm7VIWdfBb4VHPszNK/QUal64RQ/LcAIBqpZPY=;
+	s=korg; t=1705969942;
+	bh=q1U8mHsB4wLRUdMw+7immP+tqkWXNT6TPBBH5jBYA6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qbZWFi/jya8bdX2OOw1fW+zPLqYWQsqm62Hu5fYjZ8haWF6dAWyR8rq26VI0PiXh9
-	 JRLHA0LKKggn9VJ+3MfjkbzOmJVmX0MXsSnm9CHGaLpn8GYGBN9ZZIiHv48BEualOY
-	 5JpyvJL7US3uBdRMGEgucG6QYSaivCjsOykP07y8=
+	b=Pi2DiTW9+FaufPtyDk3dNdcd9MLbitCvu9cmAm43V0WozV2wC5gjdLa7HxfllN5QG
+	 OOHGYnANzVMQXCp1QRUdjbkoy81c6SGV/LPSqsAKD7Jm3lrdjq0+W4GHhdqte8WyQv
+	 UbVxCcpo8CfbyOFjaGh2DNQ3N2QhvDpUuwGQxdQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wesley Cheng <quic_wcheng@quicinc.com>
-Subject: [PATCH 6.6 361/583] usb: dwc3: gadget: Queue PM runtime idle on disconnect event
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	German Gomez <german.gomez@arm.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Leo Yan <leo.yan@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 508/641] perf header: Fix segfault on build_mem_topology() error path
 Date: Mon, 22 Jan 2024 15:56:52 -0800
-Message-ID: <20240122235823.067595617@linuxfoundation.org>
+Message-ID: <20240122235833.971914972@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +68,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 3c7af52c7616c3aa6dacd2336ec748d4a65df8f4 upstream.
+[ Upstream commit 70df07838fc1c0acfab3325ae79014e241a88bdf ]
 
-There is a scenario where DWC3 runtime suspend is blocked due to the
-dwc->connected flag still being true while PM usage_count is zero after
-DWC3 giveback is completed and the USB gadget session is being terminated.
-This leads to a case where nothing schedules a PM runtime idle for the
-device.
+Do not increase the node count unless a node has been successfully read,
+because it can lead to a segfault if an error occurs.
 
-The exact condition is seen with the following sequence:
-  1.  USB bus reset is issued by the host
-  2.  Shortly after, or concurrently, a USB PD DR SWAP request is received
-      (sink->source)
-  3.  USB bus reset event handler runs and issues
-      dwc3_stop_active_transfers(), and pending transfer are stopped
-  4.  DWC3 usage_count decremented to 0, and runtime idle occurs while
-      dwc->connected == true, returns -EBUSY
-  5.  DWC3 disconnect event seen, dwc->connected set to false due to DR
-      swap handling
-  6.  No runtime idle after this point
+For example, if perf exceeds the open file limit in memory_node__read(),
+which, on a test system, could be made to happen by setting the file limit
+to exactly 32:
 
-Address this by issuing an asynchronous PM runtime idle call after the
-disconnect event is completed, as it modifies the dwc->connected flag,
-which is what blocks the initial runtime idle.
+ Before:
 
-Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Link: https://lore.kernel.org/r/20240103214946.2596-1-quic_wcheng@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  $ ulimit -n 32
+  $ perf mem record --all-user -- sleep 1
+  [ perf record: Woken up 1 times to write data ]
+  failed: can't open memory sysfs data
+  perf: Segmentation fault
+  Obtained 14 stack frames.
+  perf(sighandler_dump_stack+0x48) [0x55f4b1f59558]
+  /lib/x86_64-linux-gnu/libc.so.6(+0x42520) [0x7f4ba1c42520]
+  /lib/x86_64-linux-gnu/libc.so.6(free+0x1e) [0x7f4ba1ca53fe]
+  perf(+0x178ff4) [0x55f4b1f48ff4]
+  perf(+0x179a70) [0x55f4b1f49a70]
+  perf(+0x17ef5d) [0x55f4b1f4ef5d]
+  perf(+0x85c0b) [0x55f4b1e55c0b]
+  perf(cmd_record+0xe1d) [0x55f4b1e5920d]
+  perf(cmd_mem+0xc96) [0x55f4b1e80e56]
+  perf(+0x130460) [0x55f4b1f00460]
+  perf(main+0x689) [0x55f4b1e427d9]
+  /lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x7f4ba1c29d90]
+  /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80) [0x7f4ba1c29e40]
+  perf(_start+0x25) [0x55f4b1e42a25]
+  Segmentation fault (core dumped)
+  $
+
+After:
+
+  $ ulimit -n 32
+  $ perf mem record --all-user -- sleep 1
+  [ perf record: Woken up 1 times to write data ]
+  failed: can't open memory sysfs data
+  [ perf record: Captured and wrote 0.005 MB perf.data (11 samples) ]
+  $
+
+Fixes: f8e502b9d1b3b197 ("perf header: Ensure bitmaps are freed")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20231123075848.9652-2-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/perf/util/header.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -3983,6 +3983,13 @@ static void dwc3_gadget_disconnect_inter
- 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
- 
- 	dwc3_ep0_reset_state(dwc);
-+
-+	/*
-+	 * Request PM idle to address condition where usage count is
-+	 * already decremented to zero, but waiting for the disconnect
-+	 * interrupt to set dwc->connected to FALSE.
-+	 */
-+	pm_request_idle(dwc->dev);
- }
- 
- static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
+diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+index e86b9439ffee..7609b4d468dc 100644
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -1444,7 +1444,9 @@ static int build_mem_topology(struct memory_node **nodesp, u64 *cntp)
+ 			nodes = new_nodes;
+ 			size += 4;
+ 		}
+-		ret = memory_node__read(&nodes[cnt++], idx);
++		ret = memory_node__read(&nodes[cnt], idx);
++		if (!ret)
++			cnt += 1;
+ 	}
+ out:
+ 	closedir(dir);
+-- 
+2.43.0
+
 
 
 
