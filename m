@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-14347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52457838088
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5B68384C0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E81B21F2CD7C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEBCC1F26E7A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81E4312FF63;
-	Tue, 23 Jan 2024 01:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3524A768E0;
+	Tue, 23 Jan 2024 02:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LbBRhH6p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2l6cms2C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFB012F5BC;
-	Tue, 23 Jan 2024 01:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E913873176;
+	Tue, 23 Jan 2024 02:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971780; cv=none; b=XlwLpwqbqOVK6FP1QPamxai7MMEvm+kLjOHhp4PgoxOUyx/yZZpmUH1LQgXAHV6mTHuB3l6zsfo4XWKM9nfjyhnvTXyWnT42yAQyO/SASIdq3GFbHc15sShjG0ijgfFILB3kftJfkei8U75HuAKtp/UdaK+b59Wc7WbCGMfgxUM=
+	t=1705975481; cv=none; b=fonp9z03vyH4Y8lNcD2tblbeRsQ2hXH3K5I/6i7ZFEs4fF3i32mveFgnek/r4ZDXQOFcqQ+lmHsddMcAUr2tRUGPL7Lhu4sOWZnFT3Zbz0neJEb7h36Zrk9VrimXMYywMqF/S0t66CWBgPb14d+/3juq1Par01SkQaeZ6K40NS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971780; c=relaxed/simple;
-	bh=gS21zIpAU1HEsMzRQSM5PiWTUtQhx40pFHV7SZmHWc0=;
+	s=arc-20240116; t=1705975481; c=relaxed/simple;
+	bh=B7YZYQKyC5+0kmomc1V9W4HxOkbkDCE7AJi6hr5gxyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bck6YO97hEI5rldHUADdzI4aTXO2FCT+Sp2cjYt9Tma9WX4ipXANthIM5kpqhVL3XhtlNleXRLYAQ1cTpg5IZKD6sakXNiWfQfMNVPIzzkdQS+GJszhdh3LLteVzQu9Jf4dcQ6Pj+8vHGKrrJslAk9tiIrr05UpP7fsT9Xs1tV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LbBRhH6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23F6C433F1;
-	Tue, 23 Jan 2024 01:02:59 +0000 (UTC)
+	 MIME-Version; b=LhBdCAuTMUgNIY8OIE/lJLJSjHrmOd4C+6mkMIvt0w9eIn4PByr6HTUEoyOzywv2W40gIxdSOoMUMCYDFN6TRJkD7pVQwxT6suwSUVu2xfFhwF+VP5ub7LWFhPKM2OrMODF7Zo6ExIXOELJGeMV20QElMh7FiYXO9/y8UrnFojI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2l6cms2C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE8BC433C7;
+	Tue, 23 Jan 2024 02:04:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971780;
-	bh=gS21zIpAU1HEsMzRQSM5PiWTUtQhx40pFHV7SZmHWc0=;
+	s=korg; t=1705975480;
+	bh=B7YZYQKyC5+0kmomc1V9W4HxOkbkDCE7AJi6hr5gxyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LbBRhH6px3mLSPqZiCW8HkCTquNQtShlBPb71vwTmOwKDU7O6Quwuna7rjodfdp8I
-	 13lFNQkj+t9MTMQ1WBFwRmZf7atnFfndGJIQlfMmUHSY9ma/miAKKXL1gcIekOSyRt
-	 DB8c/PLc3cK7gKzI2GSK0Wo7uZieDPL8zDS14rVk=
+	b=2l6cms2CTA625igmzcebBNpFVHwBGYqhlho+Sg9uxxSCqyck3iIj8RsPsLvP6BoHM
+	 m16FL4ILffW7tOM48bOZ+slpzldPpvBeydrSXEqdem8YzKc4F4SCJ8C/iek4OEMjpS
+	 DL6gunKMNOFGwIsycoNQ9oI3H3FWe1C0/u3vHBcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.1 318/417] KVM: arm64: vgic-its: Avoid potential UAF in LPI translation cache
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.6 435/583] serial: sc16is7xx: add check for unsupported SPI modes during probe
 Date: Mon, 22 Jan 2024 15:58:06 -0800
-Message-ID: <20240122235802.830337969@linuxfoundation.org>
+Message-ID: <20240122235825.293065879@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit ad362fe07fecf0aba839ff2cc59a3617bd42c33f upstream.
+commit 6d710b769c1f5f0d55c9ad9bb49b7dce009ec103 upstream.
 
-There is a potential UAF scenario in the case of an LPI translation
-cache hit racing with an operation that invalidates the cache, such
-as a DISCARD ITS command. The root of the problem is that
-vgic_its_check_cache() does not elevate the refcount on the vgic_irq
-before dropping the lock that serializes refcount changes.
+The original comment is confusing because it implies that variants other
+than the SC16IS762 supports other SPI modes beside SPI_MODE_0.
 
-Have vgic_its_check_cache() raise the refcount on the returned vgic_irq
-and add the corresponding decrement after queueing the interrupt.
+Extract from datasheet:
+    The SC16IS762 differs from the SC16IS752 in that it supports SPI clock
+    speeds up to 15 Mbit/s instead of the 4 Mbit/s supported by the
+    SC16IS752... In all other aspects, the SC16IS762 is functionally and
+    electrically the same as the SC16IS752.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240104183233.3560639-1-oliver.upton@linux.dev
+The same is also true of the SC16IS760 variant versus the SC16IS740 and
+SC16IS750 variants.
+
+For all variants, only SPI mode 0 is supported.
+
+Change comment and abort probing if the specified SPI mode is not
+SPI_MODE_0.
+
+Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231221231823.2327894-3-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/vgic/vgic-its.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/tty/serial/sc16is7xx.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/kvm/vgic/vgic-its.c
-+++ b/arch/arm64/kvm/vgic/vgic-its.c
-@@ -584,7 +584,11 @@ static struct vgic_irq *vgic_its_check_c
- 	unsigned long flags;
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1714,7 +1714,10 @@ static int sc16is7xx_spi_probe(struct sp
  
- 	raw_spin_lock_irqsave(&dist->lpi_list_lock, flags);
+ 	/* Setup SPI bus */
+ 	spi->bits_per_word	= 8;
+-	/* only supports mode 0 on SC16IS762 */
++	/* For all variants, only mode 0 is supported */
++	if ((spi->mode & SPI_MODE_X_MASK) != SPI_MODE_0)
++		return dev_err_probe(&spi->dev, -EINVAL, "Unsupported SPI mode\n");
 +
- 	irq = __vgic_its_check_cache(dist, db, devid, eventid);
-+	if (irq)
-+		vgic_get_irq_kref(irq);
-+
- 	raw_spin_unlock_irqrestore(&dist->lpi_list_lock, flags);
- 
- 	return irq;
-@@ -763,6 +767,7 @@ int vgic_its_inject_cached_translation(s
- 	raw_spin_lock_irqsave(&irq->irq_lock, flags);
- 	irq->pending_latch = true;
- 	vgic_queue_irq_unlock(kvm, irq, flags);
-+	vgic_put_irq(kvm, irq);
- 
- 	return 0;
- }
+ 	spi->mode		= spi->mode ? : SPI_MODE_0;
+ 	spi->max_speed_hz	= spi->max_speed_hz ? : 15000000;
+ 	ret = spi_setup(spi);
 
 
 
