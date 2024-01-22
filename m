@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5390837FA8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C98838196
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 298942937C3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F5542886E8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0567664A8E;
-	Tue, 23 Jan 2024 00:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7EB7679E8;
+	Tue, 23 Jan 2024 01:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="poKGXVRY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxffePg4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BC464A80;
-	Tue, 23 Jan 2024 00:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920D74F616;
+	Tue, 23 Jan 2024 01:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971272; cv=none; b=rJz5OK54LtmD35bTOD6uvPqPEYOzSi9vvWRU2rpuQ+e7cy/N8RpdFpde0XBlFcJrsHW+6Ilk+LH40tZCv1E+jS2Mh8818SxqkURm5C3E9hk71RJ5/CE0BlBV7W7i3K7EMugApw/oU2Vlcnvpsd0H/8WzaVTUOyu/c6vMEiIenuI=
+	t=1705972181; cv=none; b=HocrjKgobV/+QIcGYifpK6/5iFNmdXrf8S08ECK3KFwQxHO/enAtc9dfbFm31cOToI8rfQC+/cbE3pcIei2R1cg9OJfOJQ+5v5TkKlCeErwajM0A+NFWhhkNwue3mBBVTlgfLTDQxmOdk5gQe57iT45c9ldXvgQt5vQ/b/MTC/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971272; c=relaxed/simple;
-	bh=AkOtkTD5EXIAWxoziTOzEfaARwuJMM4vxzPRL1WqBdE=;
+	s=arc-20240116; t=1705972181; c=relaxed/simple;
+	bh=L3pepSqcZyV67CEoAoRTUdLXcYAWuJJ/DJ8jhk1aeqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RjJKNRvFVXoOgzOV502K8J0Ww4Cemv5By3UU3dvBGG9S8Wu6s9EfqJf2o0ac2OD86MdDp6HB/bWB6IakR6cRWSal2rukgCqvAmKUi0ECY4v8LrcKJUUc/93CcMFsrzsE/YM/OPxGTvoDqyjmkGDbEgsP8BKQam1S7B6288FdCjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=poKGXVRY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA21C433C7;
-	Tue, 23 Jan 2024 00:54:31 +0000 (UTC)
+	 MIME-Version; b=EV9unwiIcEmdHoNoBWVyG2XkZW3sea/ydS37fb43nZImdngDD/WUy0YqDXAF5I5Wgdk5GiFI9agk+uU5+NkNZPtHdgk/rLMvFwJZSKh96n8Hff0ex3o3MglyzN97no6cJkNtADQlcsOFg9sKmQLL5Zajqkk3I6ee6j/J5GRGBL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxffePg4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC02C43390;
+	Tue, 23 Jan 2024 01:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971272;
-	bh=AkOtkTD5EXIAWxoziTOzEfaARwuJMM4vxzPRL1WqBdE=;
+	s=korg; t=1705972181;
+	bh=L3pepSqcZyV67CEoAoRTUdLXcYAWuJJ/DJ8jhk1aeqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=poKGXVRYP/2gSvpEG3Rozqog7c/eugiiIkvt7Vh9ydN/JJkAhg7pi4zw2i4lgiZed
-	 Fkl4qwSHwAZgZgRK3mI6VkdsTaBY36pEYISPX0S+UhxlGDazRQEz4sIDJyVMCD4kYe
-	 T+IcaixyzIvTq7e1lYoBkJaiZgdrtetkpuiQsdFw=
+	b=fxffePg4yARzEQ+TJ7Bzdq5UA2U9w9KhZbbu1bbhPHe+KmMAfUDgF8lF6cOtSteZD
+	 WOAhlKYw2hBEYvcK0FUa2D4/qSS3iu3nrZG9OJ1Qq7QgKaRVwq9oVeHAkv/ZYAJ+8m
+	 AsQ+40czTiPtSxL4/kRu55rqdq+Pg5bnL4Hc1R0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 193/417] clk: qcom: gpucc-sm8150: Update the gpu_cc_pll1 config
+	Osama Muhammad <osmtendev@gmail.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+da0fc229cc1ff4bb2e6d@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 105/374] gfs2: Fix kernel NULL pointer dereference in gfs2_rgrp_dump
 Date: Mon, 22 Jan 2024 15:56:01 -0800
-Message-ID: <20240122235758.613672627@linuxfoundation.org>
+Message-ID: <20240122235748.271373337@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Osama Muhammad <osmtendev@gmail.com>
 
-[ Upstream commit 6ebd9a4f8b8d2b35cf965a04849c4ba763722f13 ]
+[ Upstream commit 8877243beafa7c6bfc42022cbfdf9e39b25bd4fa ]
 
-Update the test_ctl_hi_val and test_ctl_hi1_val of gpu_cc_pll1
-as per latest HW recommendation.
+Syzkaller has reported a NULL pointer dereference when accessing
+rgd->rd_rgl in gfs2_rgrp_dump().  This can happen when creating
+rgd->rd_gl fails in read_rindex_entry().  Add a NULL pointer check in
+gfs2_rgrp_dump() to prevent that.
 
-Fixes: 0cef71f2ccc8 ("clk: qcom: Add graphics clock controller driver for SM8150")
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231122042814.4158076-1-quic_skakitap@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reported-and-tested-by: syzbot+da0fc229cc1ff4bb2e6d@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=da0fc229cc1ff4bb2e6d
+Fixes: 72244b6bc752 ("gfs2: improve debug information when lvb mismatches are found")
+Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gpucc-sm8150.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/gfs2/rgrp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gpucc-sm8150.c b/drivers/clk/qcom/gpucc-sm8150.c
-index 8422fd047493..c89a5b59ddb7 100644
---- a/drivers/clk/qcom/gpucc-sm8150.c
-+++ b/drivers/clk/qcom/gpucc-sm8150.c
-@@ -37,8 +37,8 @@ static struct alpha_pll_config gpu_cc_pll1_config = {
- 	.config_ctl_hi_val = 0x00002267,
- 	.config_ctl_hi1_val = 0x00000024,
- 	.test_ctl_val = 0x00000000,
--	.test_ctl_hi_val = 0x00000002,
--	.test_ctl_hi1_val = 0x00000000,
-+	.test_ctl_hi_val = 0x00000000,
-+	.test_ctl_hi1_val = 0x00000020,
- 	.user_ctl_val = 0x00000000,
- 	.user_ctl_hi_val = 0x00000805,
- 	.user_ctl_hi1_val = 0x000000d0,
+diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+index 6901cd85f1df..e4e85010ab5b 100644
+--- a/fs/gfs2/rgrp.c
++++ b/fs/gfs2/rgrp.c
+@@ -2316,7 +2316,7 @@ void gfs2_rgrp_dump(struct seq_file *seq, struct gfs2_rgrpd *rgd,
+ 		       (unsigned long long)rgd->rd_addr, rgd->rd_flags,
+ 		       rgd->rd_free, rgd->rd_free_clone, rgd->rd_dinodes,
+ 		       rgd->rd_requested, rgd->rd_reserved, rgd->rd_extfail_pt);
+-	if (rgd->rd_sbd->sd_args.ar_rgrplvb) {
++	if (rgd->rd_sbd->sd_args.ar_rgrplvb && rgd->rd_rgl) {
+ 		struct gfs2_rgrp_lvb *rgl = rgd->rd_rgl;
+ 
+ 		gfs2_print_dbg(seq, "%s  L: f:%02x b:%u i:%u\n", fs_id_buf,
 -- 
 2.43.0
 
