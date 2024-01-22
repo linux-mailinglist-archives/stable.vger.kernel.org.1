@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D818D837A35
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F788378D0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17B451C273D8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E55EF280FC4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95AB412AAF4;
-	Tue, 23 Jan 2024 00:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDEF31EEEB;
+	Tue, 23 Jan 2024 00:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVuluGDC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qf5+J5vQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5649D12AAF1;
-	Tue, 23 Jan 2024 00:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2FA14010;
+	Tue, 23 Jan 2024 00:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968797; cv=none; b=F48tbTgIxOaPDSOsTlqAZIE7qNb1SX1gYBfQB+z5pdRZpHVmH4XqqbXuEo+L9oF6Z6MHTqZwXJxcbkwjR0hh1DeFAK99T0/imqN7gKxZobCor99Rmf2AzNcPvB/rH3WOkI029a8wAVZUDzTuv2+h7X3fhrea47QuJRUh/G+pINk=
+	t=1705968258; cv=none; b=Gbp2JzjADhJA1gH+VOdl+PY7M2LyaIILTDJj87hcDuRCJ3ziQ+So2EPRe318PwfitO8tfFtMYJmXQ3MzNPreTBgq0vVUQwcix7VyavnVw4nWYkY0YbYjXrEwI0A8IXudq77ZGHWxZH7+h0LC/Bis+4LC+E3OzixslHRGJ2bFwbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968797; c=relaxed/simple;
-	bh=j3iLJEQ2pSSqLqkr8ntM5eyhZ2TPpva4bYaxSp0g3Sc=;
+	s=arc-20240116; t=1705968258; c=relaxed/simple;
+	bh=ADpL+Of5mkNa8NmULMnfqNRmeVZ8VPmm1tefyXcLTys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rcm4o1VnzpVUGHlTIS1fYUcERCUzxSU+UswuoK7L2qC+luGQ43zxsKo/exLZ+qVEl1PR7YW8yYfNDnpSKKvwcu99m4J4a2r5qMvu8U1J/lGR588Dq+ecQX2P2LY/O8baKcuu42k89GwxqXRBRUulKQIcu2H9Aoh1IPVTmfAdqSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVuluGDC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC56C433C7;
-	Tue, 23 Jan 2024 00:13:15 +0000 (UTC)
+	 MIME-Version; b=jETcMuEtLqkHyl17VqIGRYTmkkAGy6IC23Db5GwxXxDJSOujD4+vO0Q5u9pD2lIbyyygGGejsnPNRw4F9oRogmyjWKSQNpZQ6QLEgG1RQtVrJFOGMJ8oNsZJeTNZ7VALkoy/yanXEMCfHHPyjA4wgrOhU8cW6KuQ1kQHdtbHZ3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qf5+J5vQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDB2C433F1;
+	Tue, 23 Jan 2024 00:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968796;
-	bh=j3iLJEQ2pSSqLqkr8ntM5eyhZ2TPpva4bYaxSp0g3Sc=;
+	s=korg; t=1705968258;
+	bh=ADpL+Of5mkNa8NmULMnfqNRmeVZ8VPmm1tefyXcLTys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OVuluGDCPM8SXn6rzxN7VeM1hgU8TJG/30KrOlgBI3nRz9uxotvCblfyHbmqHdRYm
-	 DH/MS578qH0peSqkyzUQEPWHK/ZDjbaZGNNTRtGP+PvtVonjqJ6K5IecVsH1kpLaPs
-	 PsSEpwioMyvmyO40j0emvlzj9HQfy7qU4Uu8Hfe0=
+	b=qf5+J5vQYyX3srhzGQ3JApvWQMbv0Kmo6thDTX+MvbePrTPk3ebwU30yMYrInXdNi
+	 rTbGE04yxpZg66NrTNrqSKJ+1fmsMo6qjVQaEZy9k7/cegDk1KnTyrKP8KFVQe/a/P
+	 tecNMvN+8zPcx/IYWGoL6ukt3kws8TFj9ImlzjzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Kiryushin <kiryushin@ancud.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 053/194] ACPI: LPIT: Avoid u32 multiplication overflow
+Subject: [PATCH 4.19 027/148] x86/lib: Fix overflow when counting digits
 Date: Mon, 22 Jan 2024 15:56:23 -0800
-Message-ID: <20240122235721.475127060@linuxfoundation.org>
+Message-ID: <20240122235713.508799482@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Kiryushin <kiryushin@ancud.ru>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 56d2eeda87995245300836ee4dbd13b002311782 ]
+[ Upstream commit a24d61c609813963aacc9f6ec8343f4fcaac7243 ]
 
-In lpit_update_residency() there is a possibility of overflow
-in multiplication, if tsc_khz is large enough (> UINT_MAX/1000).
+tl;dr: The num_digits() function has a theoretical overflow issue.
+But it doesn't affect any actual in-tree users.  Fix it by using
+a larger type for one of the local variables.
 
-Change multiplication to mul_u32_u32().
+Long version:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+There is an overflow in variable m in function num_digits when val
+is >= 1410065408 which leads to the digit calculation loop to
+iterate more times than required. This results in either more
+digits being counted or in some cases (for example where val is
+1932683193) the value of m eventually overflows to zero and the
+while loop spins forever).
 
-Fixes: eeb2d80d502a ("ACPI / LPIT: Add Low Power Idle Table (LPIT) support")
-Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Currently the function num_digits is currently only being used for
+small values of val in the SMP boot stage for digit counting on the
+number of cpus and NUMA nodes, so the overflow is never encountered.
+However it is useful to fix the overflow issue in case the function
+is used for other purposes in the future. (The issue was discovered
+while investigating the digit counting performance in various
+kernel helper functions rather than any real-world use-case).
+
+The simplest fix is to make m a long long, the overhead in
+multiplication speed for a long long is very minor for small values
+of val less than 10000 on modern processors. The alternative
+fix is to replace the multiplication with a constant division
+by 10 loop (this compiles down to an multiplication and shift)
+without needing to make m a long long, but this is slightly slower
+than the fix in this commit when measured on a range of x86
+processors).
+
+[ dhansen: subject and changelog tweaks ]
+
+Fixes: 646e29a1789a ("x86: Improve the printout of the SMP bootup CPU table")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20231102174901.2590325-1-colin.i.king%40gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_lpit.c | 2 +-
+ arch/x86/lib/misc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
-index 433376e819bb..c79266b8029a 100644
---- a/drivers/acpi/acpi_lpit.c
-+++ b/drivers/acpi/acpi_lpit.c
-@@ -98,7 +98,7 @@ static void lpit_update_residency(struct lpit_residency_info *info,
- 				 struct acpi_lpit_native *lpit_native)
+diff --git a/arch/x86/lib/misc.c b/arch/x86/lib/misc.c
+index a018ec4fba53..c97be9a1430a 100644
+--- a/arch/x86/lib/misc.c
++++ b/arch/x86/lib/misc.c
+@@ -6,7 +6,7 @@
+  */
+ int num_digits(int val)
  {
- 	info->frequency = lpit_native->counter_frequency ?
--				lpit_native->counter_frequency : tsc_khz * 1000;
-+				lpit_native->counter_frequency : mul_u32_u32(tsc_khz, 1000U);
- 	if (!info->frequency)
- 		info->frequency = 1;
+-	int m = 10;
++	long long m = 10;
+ 	int d = 1;
  
+ 	if (val < 0) {
 -- 
 2.43.0
 
