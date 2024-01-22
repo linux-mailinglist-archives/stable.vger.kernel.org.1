@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-14260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6032838035
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE788384DD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6BB71C2962E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17D03290279
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E1866B50;
-	Tue, 23 Jan 2024 00:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD2277652;
+	Tue, 23 Jan 2024 02:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qm1eOHOu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5jFdYln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867D264CEB;
-	Tue, 23 Jan 2024 00:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BCE768F6;
+	Tue, 23 Jan 2024 02:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971588; cv=none; b=E1Zd5g8iCQDKX5Dt0x1IcOwccT3kukl8xuySZg8Lmlp8u31P8TzJ9H3JrGwgWvTfrLxhANqjLgYKQuHbiilwAK9wEcbqG0yWQzX36T2MHKAmQTfmKJF/Z37B5JB/GojMtt2Gp8mHaXL0pu41wjPk/rBzcaeeZIumywBMxd9A2bQ=
+	t=1705975520; cv=none; b=sad1hGZcfqrosGmnzrUBMhjJkQ7pffZj2X+r2FqfG3xeMpYqkrLevYio0qr3ymcneMsxGRi1RkPCf/lqSdeZsUcsEA+MySx08VAYwkhB8GJju2mh9iB3TcN/Xtw6eW4zggATAQ21Bsj7NbOS3uTNemRojFwKS8wAEkYAEZNyXOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971588; c=relaxed/simple;
-	bh=lSekXoW4aDhmS5+IVDsZlejJb+iCAt1UNU4RLKhxhSg=;
+	s=arc-20240116; t=1705975520; c=relaxed/simple;
+	bh=xX/3b4lWu1XIKVmIVSY0uMBSXU7x1PLXM1lYl+KQ9x0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tH5NDJlpxEe9fkE5hEzVI6ByljZYMfBsdZBHq13E1OzyE8HNL9Gtn4A96KSXzC0FHdIFIUBxxKge3V/pUIqr8bpq/YOI8PyQEO1npWRalWp7tIUU8b66/L0D3D3gPNH2ZBgnxd1IoHz86TeK4+VTJXP7wsGK34u5rb6m21hpVE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qm1eOHOu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32876C433C7;
-	Tue, 23 Jan 2024 00:59:48 +0000 (UTC)
+	 MIME-Version; b=hFup1N5y7kxONnzu9E8ffYfQiSLdW0/unA0yLcTzG+DafbWO9+vW0G6pB2F2jw8gKn0t4qQTdt8FosFxFpChuCKYLOiQyNXUE5hFbDbnD7Z5fwMuYHNe7wfhmvijynsPhDUGNhEzgfvL3BA3P80FIp3LFPr3BA/fPKfKGO9wcwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5jFdYln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9363DC43399;
+	Tue, 23 Jan 2024 02:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971588;
-	bh=lSekXoW4aDhmS5+IVDsZlejJb+iCAt1UNU4RLKhxhSg=;
+	s=korg; t=1705975520;
+	bh=xX/3b4lWu1XIKVmIVSY0uMBSXU7x1PLXM1lYl+KQ9x0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qm1eOHOuVQTNODaOK5PXzOMFUGqsECiNigFtDLrRxmhKGJ6zBhMQQYSq4NalqNgX5
-	 MUkh3HZMnldg9GiHiVqJOGAkr2jY5qaEM1ZDaXwVt3rumSHbqV17oLmfhi/Wi4vWh+
-	 iGzG0dRDLPRI2T8h0Ek8/OOgJjR8BGpzrFzGLO7c=
+	b=g5jFdYlnjTdTbYJsPAVF9Z1bHHt7Vnym8/p8baDK1BRnnsSbcD4HslsA/MjkcXIj9
+	 ii4kE3FN2L2mQrk1103gF/dDVh2MzT7DXh6iayf3GYfySTRESdZY+smynn/rdZmlp6
+	 /5PXHYUMglw2vkotQx8y18N/i1WJ/IwyEF8S7RIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Curtis Klein <curtis.klein@hpe.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	kernel test robot <lkp@intel.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Arnd Bergmann <arnd@arndb.de>,
+	linux-arm-kernel@lists.infradead.org,
+	patches@armlinux.org.uk,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 182/286] watchdog: set cdev owner before adding
+Subject: [PATCH 6.6 437/583] ARM: 9330/1: davinci: also select PINCTRL
 Date: Mon, 22 Jan 2024 15:58:08 -0800
-Message-ID: <20240122235739.158631712@linuxfoundation.org>
+Message-ID: <20240122235825.350820535@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +67,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Curtis Klein <curtis.klein@hpe.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 38d75297745f04206db9c29bdd75557f0344c7cc ]
+[ Upstream commit f54e8634d1366926c807e2af6125b33cff555fa7 ]
 
-When the new watchdog character device is registered, it becomes
-available for opening. This creates a race where userspace may open the
-device before the character device's owner is set. This results in an
-imbalance in module_get calls as the cdev_get in cdev_open will not
-increment the reference count on the watchdog driver module.
+kconfig warns when PINCTRL_SINGLE is selected but PINCTRL is not
+set, so also set PINCTRL for ARCH_DAVINCI. This prevents a
+kconfig/build warning:
 
-This causes problems when the watchdog character device is released as
-the module loader's reference will also be released. This makes it
-impossible to open the watchdog device later on as it now appears that
-the module is being unloaded. The open will fail with -ENXIO from
-chrdev_open.
+   WARNING: unmet direct dependencies detected for PINCTRL_SINGLE
+     Depends on [n]: PINCTRL [=n] && OF [=y] && HAS_IOMEM [=y]
+     Selected by [y]:
+     - ARCH_DAVINCI [=y] && ARCH_MULTI_V5 [=y]
 
-The legacy watchdog device will fail with -EBUSY from the try_module_get
-in watchdog_open because it's module owner is the watchdog core module
-so it can still be opened but it will fail to get a refcount on the
-underlying watchdog device driver.
+Closes: lore.kernel.org/r/202311070548.0f6XfBrh-lkp@intel.com
 
-Fixes: 72139dfa2464 ("watchdog: Fix the race between the release of watchdog_core_data and cdev")
-Signed-off-by: Curtis Klein <curtis.klein@hpe.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231205190522.55153-1-curtis.klein@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: f962396ce292 ("ARM: davinci: support multiplatform build for ARM v5")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: patches@armlinux.org.uk
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/watchdog_dev.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm/mach-davinci/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/watchdog/watchdog_dev.c b/drivers/watchdog/watchdog_dev.c
-index f37255cd75fd..24d0470af81c 100644
---- a/drivers/watchdog/watchdog_dev.c
-+++ b/drivers/watchdog/watchdog_dev.c
-@@ -1028,6 +1028,7 @@ static int watchdog_cdev_register(struct watchdog_device *wdd)
+diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
+index 59de137c6f53..2a8a9fe46586 100644
+--- a/arch/arm/mach-davinci/Kconfig
++++ b/arch/arm/mach-davinci/Kconfig
+@@ -11,6 +11,7 @@ menuconfig ARCH_DAVINCI
+ 	select PM_GENERIC_DOMAINS_OF if PM && OF
+ 	select REGMAP_MMIO
+ 	select RESET_CONTROLLER
++	select PINCTRL
+ 	select PINCTRL_SINGLE
  
- 	/* Fill in the data structures */
- 	cdev_init(&wd_data->cdev, &watchdog_fops);
-+	wd_data->cdev.owner = wdd->ops->owner;
- 
- 	/* Add the device */
- 	err = cdev_device_add(&wd_data->cdev, &wd_data->dev);
-@@ -1042,8 +1043,6 @@ static int watchdog_cdev_register(struct watchdog_device *wdd)
- 		return err;
- 	}
- 
--	wd_data->cdev.owner = wdd->ops->owner;
--
- 	/* Record time of most recent heartbeat as 'just before now'. */
- 	wd_data->last_hw_keepalive = ktime_sub(ktime_get(), 1);
- 	watchdog_set_open_deadline(wd_data);
+ if ARCH_DAVINCI
 -- 
 2.43.0
 
