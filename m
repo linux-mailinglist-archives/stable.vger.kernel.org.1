@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2E98381EE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E564837D0B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:23:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC061287A86
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 349202913F6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FFC51006;
-	Tue, 23 Jan 2024 01:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A760015E284;
+	Tue, 23 Jan 2024 00:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udYDdQt2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMMVVT+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD3F54BCE;
-	Tue, 23 Jan 2024 01:40:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DB64E1D5;
+	Tue, 23 Jan 2024 00:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974008; cv=none; b=bRs8Pzp2C+joUkfqtb4OqxtKrvrLtTUQ7jY2/kmTtr7lrneEMufMsQJR/cU9oiTODMa/phWwOKsdcLlUBrL5ZOVA5unWPkZvIgkW+BbIJQNlaOwzaIdB6rN7qzGY8KXCde/CBgVSL9DXPLd7pQ5fdSbVWlW1a6fd0qYvEiC2xBM=
+	t=1705969775; cv=none; b=W0RdpQud4jEvXx4XQZ+NAo3Y1LCt5k0HmGSbG+xMeszaMX10miWQPKmQXFyaO8oojJjRWDElTBnNtQG+z9+Z0Y0Txq148uITnlLPzLOLq7ZrYSumPELjJ+3kJifEGnLgPVBbwC68GY6qYUvPcTfleZ+PbYQdDMINNfwhbj45/dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974008; c=relaxed/simple;
-	bh=K6JPH35hNIKgK4ySHRZws6uTkfcipBQ6SKYuqI91PrU=;
+	s=arc-20240116; t=1705969775; c=relaxed/simple;
+	bh=/+lGWXsnEP5E45/aTVr1JVy/fcPXLeo1fyo74oiEBys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHVIXZPT/4O4yncvy/OgsI+ZVtd/CX0GykPpVLpc62cp1aGj27vyUXP+riLlHYymTtn3Lwyxf7mEj3DeWquuZHu82jY703e9fAH+B2Ffu002e5BJLHWWcsfVVubW9FlwC1DK3h9oWKZXyavvZoAr2Blm9c39s3w1vKHqCBcJNTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udYDdQt2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1419DC433C7;
-	Tue, 23 Jan 2024 01:40:08 +0000 (UTC)
+	 MIME-Version; b=r9+nr1jVQX7ecAmdd5TYBhsmDZdDNwFWfs0Y/cLaBbw7nKj8GLcv15btJdF+jH9i3k18AohuwACj3jcxbupC88KMu6sLZKsqbH85z0GzZQn12y8IODRugBknAM84AOVIhNjQ1uZ6raHYdAppxjgzPFIDE6K/Gmi8AhydBY0/O24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMMVVT+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24302C433C7;
+	Tue, 23 Jan 2024 00:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974008;
-	bh=K6JPH35hNIKgK4ySHRZws6uTkfcipBQ6SKYuqI91PrU=;
+	s=korg; t=1705969775;
+	bh=/+lGWXsnEP5E45/aTVr1JVy/fcPXLeo1fyo74oiEBys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udYDdQt2558+vk4YmfgQy/qVupVAQ51tbwC4EyCANeMJ98xuvbwzO6xDAkX5i+6bO
-	 K5ysXPOepSqcWYN0252FESi6JuIxZ5E7NJpnx1lJ12rw55p0qV1gzYLj9bICEkerVJ
-	 rUvsPJt0AD2/Lg8HZB58ySD/ZLnwgqfywxWukFfo=
+	b=VMMVVT+FOccG+wQQ1MwvaUs3d/JQ6FS2NnwpIF3IdTxF0lPOxVfi9DCUqsHjACNlI
+	 rH8eklXiqcsqsZ9BQccIbEqZzRMJMMtAbc1YyzPaj358Tx0M/qtS83qNumyum9a19q
+	 PRCCIfpMjS6HyV0MIvGLtiRvcFWffbqPxACtXu7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Vinarskis <alex.vinarskis@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 089/374] ACPI: LPSS: Fix the fractional clock divider flags
+	Min Li <min15.li@samsung.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.7 441/641] block: add check that partition length needs to be aligned with block size
 Date: Mon, 22 Jan 2024 15:55:45 -0800
-Message-ID: <20240122235747.711027210@linuxfoundation.org>
+Message-ID: <20240122235831.819654417@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Min Li <min15.li@samsung.com>
 
-[ Upstream commit 3ebccf1d1ca74bbb78e6f8c38d1d172e468d91f8 ]
+commit 6f64f866aa1ae6975c95d805ed51d7e9433a0016 upstream.
 
-The conversion to CLK_FRAC_DIVIDER_POWER_OF_TWO_PS uses wrong flags
-in the parameters and hence miscalculates the values in the clock
-divider. Fix this by applying the flag to the proper parameter.
+Before calling add partition or resize partition, there is no check
+on whether the length is aligned with the logical block size.
+If the logical block size of the disk is larger than 512 bytes,
+then the partition size maybe not the multiple of the logical block size,
+and when the last sector is read, bio_truncate() will adjust the bio size,
+resulting in an IO error if the size of the read command is smaller than
+the logical block size.If integrity data is supported, this will also
+result in a null pointer dereference when calling bio_integrity_free.
 
-Fixes: 82f53f9ee577 ("clk: fractional-divider: Introduce POWER_OF_TWO_PS flag")
-Reported-by: Alex Vinarskis <alex.vinarskis@gmail.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Min Li <min15.li@samsung.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230629142517.121241-1-min15.li@samsung.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_lpss.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ block/ioctl.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
-index f609f9d62efd..332befb5f579 100644
---- a/drivers/acpi/acpi_lpss.c
-+++ b/drivers/acpi/acpi_lpss.c
-@@ -439,8 +439,9 @@ static int register_device_clock(struct acpi_device *adev,
- 		if (!clk_name)
- 			return -ENOMEM;
- 		clk = clk_register_fractional_divider(NULL, clk_name, parent,
-+						      0, prv_base, 1, 15, 16, 15,
- 						      CLK_FRAC_DIVIDER_POWER_OF_TWO_PS,
--						      prv_base, 1, 15, 16, 15, 0, NULL);
-+						      NULL);
- 		parent = clk_name;
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -18,7 +18,7 @@ static int blkpg_do_ioctl(struct block_d
+ {
+ 	struct gendisk *disk = bdev->bd_disk;
+ 	struct blkpg_partition p;
+-	long long start, length;
++	sector_t start, length;
  
- 		clk_name = kasprintf(GFP_KERNEL, "%s-update", devname);
--- 
-2.43.0
-
+ 	if (disk->flags & GENHD_FL_NO_PART)
+ 		return -EINVAL;
+@@ -35,14 +35,17 @@ static int blkpg_do_ioctl(struct block_d
+ 	if (op == BLKPG_DEL_PARTITION)
+ 		return bdev_del_partition(disk, p.pno);
+ 
++	if (p.start < 0 || p.length <= 0 || p.start + p.length < 0)
++		return -EINVAL;
++	/* Check that the partition is aligned to the block size */
++	if (!IS_ALIGNED(p.start | p.length, bdev_logical_block_size(bdev)))
++		return -EINVAL;
++
+ 	start = p.start >> SECTOR_SHIFT;
+ 	length = p.length >> SECTOR_SHIFT;
+ 
+ 	switch (op) {
+ 	case BLKPG_ADD_PARTITION:
+-		/* check if partition is aligned to blocksize */
+-		if (p.start & (bdev_logical_block_size(bdev) - 1))
+-			return -EINVAL;
+ 		return bdev_add_partition(disk, p.pno, start, length);
+ 	case BLKPG_RESIZE_PARTITION:
+ 		return bdev_resize_partition(disk, p.pno, start, length);
 
 
 
