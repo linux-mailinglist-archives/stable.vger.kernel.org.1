@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-14562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D08838169
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C62837CA1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:13:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49E3C1C27E23
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 598D21F2905F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A313E14A4E4;
-	Tue, 23 Jan 2024 01:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD01D145B3C;
+	Tue, 23 Jan 2024 00:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9F4C1UC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JsY0Aw9D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617A61420C9;
-	Tue, 23 Jan 2024 01:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC44136658;
+	Tue, 23 Jan 2024 00:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972125; cv=none; b=iEwchKHyHYM1ue/2sCKoECOSQMnj2+nvA81juRUbJbSvVD4R1mjGCtTxcTg7h5pLBuvcVozJq9bbOxK+BLX1bsCJkeTk4wfgZxnUxg9Gqo8F3P8IBcxogX3cofScxIF1mQTgd4x5QyP0Q2QVczpmFf0AP0QALAeQupA2UOXivLE=
+	t=1705969697; cv=none; b=qel1BggNcw5nuow4UZWiBRz9I5/NCkj4iHW9a1bRpn+KUXb9SJcoAVWqgD4Sl1toWiTclFaRDXThpiijmt6QcpPflOQS+PAIaJHlLfV0LuIp+59UbRj4oCliRXeSWQIKJ8tv3oJ3mTieemyNYeyli326wHwfxSgEu9wezpqqJjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972125; c=relaxed/simple;
-	bh=0B+4d/HY17Yx7kR8rhbUjd+ZKbNftYOwQxrhlwaL/74=;
+	s=arc-20240116; t=1705969697; c=relaxed/simple;
+	bh=QTK89Qr4I53BSao7WEW8TcnaXgs+QZsQ2ewW6uUMcxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ueplsGH+ngTsJQKLDC6zWRM4HUxSCeTKLegclvaeSpdrVFE6CyJ2vgc5tmullgPS9DsdSEQ0hZOo2dNmUBJU2WoPMWDhUDYsoham5ZHjVpKn9MMgfGbGvFzm9QepGkhrY9gYwqnqF+cgVvfqiQed4utcaK8zU/PeL661xH54wcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9F4C1UC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D925C43390;
-	Tue, 23 Jan 2024 01:08:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J8e1ICnd7FOIOMwrEr/eGpQYWvRG1W5oXGC8/IEsigcmdk4UkOpyXYeuCHSlnbqJM3uujh/rxjHaUNz5o8nfXbLYYQxZ2oZdZvUc/EubWZRJxcxbM7TknlDgbIovmbm2ITYhBKyjxEgFvUE6BRpGtmSP0E/So5GESqfF16EuEtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JsY0Aw9D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389C2C433C7;
+	Tue, 23 Jan 2024 00:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972125;
-	bh=0B+4d/HY17Yx7kR8rhbUjd+ZKbNftYOwQxrhlwaL/74=;
+	s=korg; t=1705969697;
+	bh=QTK89Qr4I53BSao7WEW8TcnaXgs+QZsQ2ewW6uUMcxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B9F4C1UCHRjgZedV/RGPkyNyDC8M9QSvLcT3EkkP6VWHHASMbgGuZbrStlz0QTKoN
-	 bukoxHUq6NBT8r+PkEia1NTxJVQKyofbcKSdp4iut0rpKHiSijgeqBoBH1gnu2LYHS
-	 knFiWpN1l7B+cM/UDV9cr8CQodZHl1NdgYX4Yylw=
+	b=JsY0Aw9DpmLCMfP/f4yUdw+/fwBYBF17I95WH6R0rrh4QIo94QVzVvd3bHedq4jgV
+	 ssKqdMxFOzPcn+cImzj1yebNy4/3/DxxGsrux93RSwCJNLm7m5wBRehc5aEKlB70Sr
+	 dKy8fS5ZrL8Sck/ENkR3JIav8t4VHJ3DNjjrFffQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.15 058/374] binder: fix comment on binder_alloc_new_buf() return value
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Subject: [PATCH 6.7 410/641] serial: core: fix sanitizing check for RTS settings
 Date: Mon, 22 Jan 2024 15:55:14 -0800
-Message-ID: <20240122235746.626462031@linuxfoundation.org>
+Message-ID: <20240122235830.812351422@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +59,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-commit e1090371e02b601cbfcea175c2a6cc7c955fa830 upstream.
+commit 4afeced55baa391490b61ed9164867e2927353ed upstream.
 
-Update the comments of binder_alloc_new_buf() to reflect that the return
-value of the function is now ERR_PTR(-errno) on failure.
+Among other things uart_sanitize_serial_rs485() tests the sanity of the RTS
+settings in a RS485 configuration that has been passed by userspace.
+If RTS-on-send and RTS-after-send are both set or unset the configuration
+is adjusted and RTS-after-send is disabled and RTS-on-send enabled.
 
-No functional changes in this patch.
+This however makes only sense if both RTS modes are actually supported by
+the driver.
 
-Cc: stable@vger.kernel.org
-Fixes: 57ada2fb2250 ("binder: add log information for binder transaction failures")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-8-cmllamas@google.com
+With commit be2e2cb1d281 ("serial: Sanitize rs485_struct") the code does
+take the driver support into account but only checks if one of both RTS
+modes are supported. This may lead to the errorneous result of RTS-on-send
+being set even if only RTS-after-send is supported.
+
+Fix this by changing the implemented logic: First clear all unsupported
+flags in the RS485 configuration, then adjust an invalid RTS setting by
+taking into account which RTS mode is supported.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: be2e2cb1d281 ("serial: Sanitize rs485_struct")
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Link: https://lore.kernel.org/r/20240103061818.564-4-l.sanfilippo@kunbus.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder_alloc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/serial_core.c |   28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -557,7 +557,7 @@ err_alloc_buf_struct_failed:
-  * is the sum of the three given sizes (each rounded up to
-  * pointer-sized boundary)
-  *
-- * Return:	The allocated buffer or %NULL if error
-+ * Return:	The allocated buffer or %ERR_PTR(-errno) if error
-  */
- struct binder_buffer *binder_alloc_new_buf(struct binder_alloc *alloc,
- 					   size_t data_size,
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -1371,19 +1371,27 @@ static void uart_sanitize_serial_rs485(s
+ 		return;
+ 	}
+ 
++	rs485->flags &= supported_flags;
++
+ 	/* Pick sane settings if the user hasn't */
+-	if ((supported_flags & (SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND)) &&
+-	    !(rs485->flags & SER_RS485_RTS_ON_SEND) ==
++	if (!(rs485->flags & SER_RS485_RTS_ON_SEND) ==
+ 	    !(rs485->flags & SER_RS485_RTS_AFTER_SEND)) {
+-		dev_warn_ratelimited(port->dev,
+-			"%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
+-			port->name, port->line);
+-		rs485->flags |= SER_RS485_RTS_ON_SEND;
+-		rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
+-		supported_flags |= SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND;
+-	}
++		if (supported_flags & SER_RS485_RTS_ON_SEND) {
++			rs485->flags |= SER_RS485_RTS_ON_SEND;
++			rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
+ 
+-	rs485->flags &= supported_flags;
++			dev_warn_ratelimited(port->dev,
++				"%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
++				port->name, port->line);
++		} else {
++			rs485->flags |= SER_RS485_RTS_AFTER_SEND;
++			rs485->flags &= ~SER_RS485_RTS_ON_SEND;
++
++			dev_warn_ratelimited(port->dev,
++				"%s (%d): invalid RTS setting, using RTS_AFTER_SEND instead\n",
++				port->name, port->line);
++		}
++	}
+ 
+ 	uart_sanitize_serial_rs485_delays(port, rs485);
+ 
 
 
 
