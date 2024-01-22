@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-12898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDECF837904
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5246E837A7A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F07211C27D03
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:27:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 772841C2435D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C778145B06;
-	Tue, 23 Jan 2024 00:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 766EC12CDBE;
+	Tue, 23 Jan 2024 00:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpxKG8W5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZtbD6iQ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C774E56B;
-	Tue, 23 Jan 2024 00:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D4912CDB0;
+	Tue, 23 Jan 2024 00:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968334; cv=none; b=Z6qHIxWNc+dPwRQv9gg56kjxxUVl2OO1FF1gE4J5ZeHCV5WzXPhD3QhXrTME4BPNpgG34iytRNt93PA+S6kkOwCI0RKEz35SKaBC9Oa0MrytyROESRaMkb/XYlFp7Z+GgBIRG0Cp/O4LhirI178DHJELaMcxdhVQz9lORqm8vvo=
+	t=1705968973; cv=none; b=Md8UQq136PbQAplbXW1uRZD2uxZEAqrsZQBjSgay554qt9y7GG6B8SzE2SfSwXJ6qty4JPVunLC1v37wlk5L1Y8wchVwnXdVNF2cGHxfPyRaC64ORs0MohMSzEDBexLQkxt9S/Xw1G/pZJSJJE95fTwe2uN9RT3FNLxuUle4yiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968334; c=relaxed/simple;
-	bh=5pDAicGktSineutPuEG2WEzvhtxuuX1TWT8+jA6syac=;
+	s=arc-20240116; t=1705968973; c=relaxed/simple;
+	bh=7yFYHNlZ3QIxCdiCnI6Gp7eQNi90FFY6j5XKom5tVZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RVIawq2Mv3BLG6AH/UdyOtMWieT4bN+xVYSg3M1AouHAJrHyMUmAJ63BbimQ8WDHTYWurormK8MbQTMbJVO7wAWE8/5CgIWOIzp37AZHRzE1aH3DcSC5btZslSfohNxAhyau4OBapF9htq/RONBljvdUAT/Pw+QUr/Isy6nGm9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpxKG8W5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E5DC433F1;
-	Tue, 23 Jan 2024 00:05:32 +0000 (UTC)
+	 MIME-Version; b=DL8kPBSO0qyAnKwMZfwIR3iXYc8HGun8B2KaECjwMp4x7xP/AWT49p+4DuBqi792jm2/dDG7zPT+T8/WvXsTR5B3Tg/g06lH/wJJLlDsOFAXFk1xvFABShlk7y+NCrS5AbKe2/DWu/Ok1m9YN3xRsAROetoRC0fA2rcAc3/bYhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZtbD6iQ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25D1C43390;
+	Tue, 23 Jan 2024 00:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968334;
-	bh=5pDAicGktSineutPuEG2WEzvhtxuuX1TWT8+jA6syac=;
+	s=korg; t=1705968973;
+	bh=7yFYHNlZ3QIxCdiCnI6Gp7eQNi90FFY6j5XKom5tVZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xpxKG8W57FsD1AxtzFD15TPDHAfaKex2PtpRCZQebNj/7cE3qN4CA6CSFj+owM0g1
-	 7yKIVoVMK4aTOTVH7k3x4vipi+9SFxxtUHpW1vkW/LUzDl6i3RyVyMyO2/+449x96q
-	 ABI349cYevsF0/Y4U9EWeY/jryxE3TqnYwxEqZJ4=
+	b=ZtbD6iQ0w1A3Lj0N4aSThgO+CDAVFBCPmTKFccKSetWyzdMpkZNz3Cel1y0RYZwQ2
+	 +4sQMUzjfVpZ1vRDD+5a2O0UmiDCUFcgEyqeppvi9GMjPKDy7r8z3z0GGy0dGUeQv6
+	 I8mHz1mxYgAe7DeiKjF0bJ6sLzYARJ3rmucZVHKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 081/148] wifi: rtlwifi: rtl8192ee: using calculate_bit_shift()
+Subject: [PATCH 5.4 107/194] ip6_tunnel: fix NEXTHDR_FRAGMENT handling in ip6_tnl_parse_tlv_enc_lim()
 Date: Mon, 22 Jan 2024 15:57:17 -0800
-Message-ID: <20240122235715.684394197@linuxfoundation.org>
+Message-ID: <20240122235723.835431815@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +65,174 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 63526897fc0d086069bcab67c3a112caaec751cb ]
+[ Upstream commit d375b98e0248980681e5e56b712026174d617198 ]
 
-Using calculate_bit_shift() to replace _rtl92ee_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+syzbot pointed out [1] that NEXTHDR_FRAGMENT handling is broken.
 
-Fixes: b1a3bfc97cd9 ("rtlwifi: rtl8192ee: Move driver from staging to the regular tree")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-9-suhui@nfschina.com
+Reading frag_off can only be done if we pulled enough bytes
+to skb->head. Currently we might access garbage.
+
+[1]
+BUG: KMSAN: uninit-value in ip6_tnl_parse_tlv_enc_lim+0x94f/0xbb0
+ip6_tnl_parse_tlv_enc_lim+0x94f/0xbb0
+ipxip6_tnl_xmit net/ipv6/ip6_tunnel.c:1326 [inline]
+ip6_tnl_start_xmit+0xab2/0x1a70 net/ipv6/ip6_tunnel.c:1432
+__netdev_start_xmit include/linux/netdevice.h:4940 [inline]
+netdev_start_xmit include/linux/netdevice.h:4954 [inline]
+xmit_one net/core/dev.c:3548 [inline]
+dev_hard_start_xmit+0x247/0xa10 net/core/dev.c:3564
+__dev_queue_xmit+0x33b8/0x5130 net/core/dev.c:4349
+dev_queue_xmit include/linux/netdevice.h:3134 [inline]
+neigh_connected_output+0x569/0x660 net/core/neighbour.c:1592
+neigh_output include/net/neighbour.h:542 [inline]
+ip6_finish_output2+0x23a9/0x2b30 net/ipv6/ip6_output.c:137
+ip6_finish_output+0x855/0x12b0 net/ipv6/ip6_output.c:222
+NF_HOOK_COND include/linux/netfilter.h:303 [inline]
+ip6_output+0x323/0x610 net/ipv6/ip6_output.c:243
+dst_output include/net/dst.h:451 [inline]
+ip6_local_out+0xe9/0x140 net/ipv6/output_core.c:155
+ip6_send_skb net/ipv6/ip6_output.c:1952 [inline]
+ip6_push_pending_frames+0x1f9/0x560 net/ipv6/ip6_output.c:1972
+rawv6_push_pending_frames+0xbe8/0xdf0 net/ipv6/raw.c:582
+rawv6_sendmsg+0x2b66/0x2e70 net/ipv6/raw.c:920
+inet_sendmsg+0x105/0x190 net/ipv4/af_inet.c:847
+sock_sendmsg_nosec net/socket.c:730 [inline]
+__sock_sendmsg net/socket.c:745 [inline]
+____sys_sendmsg+0x9c2/0xd60 net/socket.c:2584
+___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
+__sys_sendmsg net/socket.c:2667 [inline]
+__do_sys_sendmsg net/socket.c:2676 [inline]
+__se_sys_sendmsg net/socket.c:2674 [inline]
+__x64_sys_sendmsg+0x307/0x490 net/socket.c:2674
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+Uninit was created at:
+slab_post_alloc_hook+0x129/0xa70 mm/slab.h:768
+slab_alloc_node mm/slub.c:3478 [inline]
+__kmem_cache_alloc_node+0x5c9/0x970 mm/slub.c:3517
+__do_kmalloc_node mm/slab_common.c:1006 [inline]
+__kmalloc_node_track_caller+0x118/0x3c0 mm/slab_common.c:1027
+kmalloc_reserve+0x249/0x4a0 net/core/skbuff.c:582
+pskb_expand_head+0x226/0x1a00 net/core/skbuff.c:2098
+__pskb_pull_tail+0x13b/0x2310 net/core/skbuff.c:2655
+pskb_may_pull_reason include/linux/skbuff.h:2673 [inline]
+pskb_may_pull include/linux/skbuff.h:2681 [inline]
+ip6_tnl_parse_tlv_enc_lim+0x901/0xbb0 net/ipv6/ip6_tunnel.c:408
+ipxip6_tnl_xmit net/ipv6/ip6_tunnel.c:1326 [inline]
+ip6_tnl_start_xmit+0xab2/0x1a70 net/ipv6/ip6_tunnel.c:1432
+__netdev_start_xmit include/linux/netdevice.h:4940 [inline]
+netdev_start_xmit include/linux/netdevice.h:4954 [inline]
+xmit_one net/core/dev.c:3548 [inline]
+dev_hard_start_xmit+0x247/0xa10 net/core/dev.c:3564
+__dev_queue_xmit+0x33b8/0x5130 net/core/dev.c:4349
+dev_queue_xmit include/linux/netdevice.h:3134 [inline]
+neigh_connected_output+0x569/0x660 net/core/neighbour.c:1592
+neigh_output include/net/neighbour.h:542 [inline]
+ip6_finish_output2+0x23a9/0x2b30 net/ipv6/ip6_output.c:137
+ip6_finish_output+0x855/0x12b0 net/ipv6/ip6_output.c:222
+NF_HOOK_COND include/linux/netfilter.h:303 [inline]
+ip6_output+0x323/0x610 net/ipv6/ip6_output.c:243
+dst_output include/net/dst.h:451 [inline]
+ip6_local_out+0xe9/0x140 net/ipv6/output_core.c:155
+ip6_send_skb net/ipv6/ip6_output.c:1952 [inline]
+ip6_push_pending_frames+0x1f9/0x560 net/ipv6/ip6_output.c:1972
+rawv6_push_pending_frames+0xbe8/0xdf0 net/ipv6/raw.c:582
+rawv6_sendmsg+0x2b66/0x2e70 net/ipv6/raw.c:920
+inet_sendmsg+0x105/0x190 net/ipv4/af_inet.c:847
+sock_sendmsg_nosec net/socket.c:730 [inline]
+__sock_sendmsg net/socket.c:745 [inline]
+____sys_sendmsg+0x9c2/0xd60 net/socket.c:2584
+___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
+__sys_sendmsg net/socket.c:2667 [inline]
+__do_sys_sendmsg net/socket.c:2676 [inline]
+__se_sys_sendmsg net/socket.c:2674 [inline]
+__x64_sys_sendmsg+0x307/0x490 net/socket.c:2674
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+CPU: 0 PID: 7345 Comm: syz-executor.3 Not tainted 6.7.0-rc8-syzkaller-00024-gac865f00af29 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
+
+Fixes: fbfa743a9d2a ("ipv6: fix ip6_tnl_parse_tlv_enc_lim()")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/realtek/rtlwifi/rtl8192ee/phy.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ net/ipv6/ip6_tunnel.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-index 7aeff442bd06..9a3e88d6a570 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-@@ -38,7 +38,6 @@ static u32 _rtl92ee_phy_rf_serial_read(struct ieee80211_hw *hw,
- static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
- 					 enum radio_path rfpath, u32 offset,
- 					 u32 data);
--static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask);
- static bool _rtl92ee_phy_bb8192ee_config_parafile(struct ieee80211_hw *hw);
- static bool _rtl92ee_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);
- static bool phy_config_bb_with_hdr_file(struct ieee80211_hw *hw,
-@@ -68,7 +67,7 @@ u32 rtl92ee_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- 	RT_TRACE(rtlpriv, COMP_RF, DBG_TRACE,
- 		 "regaddr(%#x), bitmask(%#x)\n", regaddr, bitmask);
- 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
--	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index b97611894882..5319093d9aa6 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -399,7 +399,7 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff *skb, __u8 *raw)
+ 	const struct ipv6hdr *ipv6h = (const struct ipv6hdr *)raw;
+ 	unsigned int nhoff = raw - skb->data;
+ 	unsigned int off = nhoff + sizeof(*ipv6h);
+-	u8 next, nexthdr = ipv6h->nexthdr;
++	u8 nexthdr = ipv6h->nexthdr;
  
- 	RT_TRACE(rtlpriv, COMP_RF, DBG_TRACE,
-@@ -90,7 +89,7 @@ void rtl92ee_phy_set_bb_reg(struct ieee80211_hw *hw, u32 regaddr,
+ 	while (ipv6_ext_hdr(nexthdr) && nexthdr != NEXTHDR_NONE) {
+ 		struct ipv6_opt_hdr *hdr;
+@@ -410,25 +410,25 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff *skb, __u8 *raw)
  
- 	if (bitmask != MASKDWORD) {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
+ 		hdr = (struct ipv6_opt_hdr *)(skb->data + off);
+ 		if (nexthdr == NEXTHDR_FRAGMENT) {
+-			struct frag_hdr *frag_hdr = (struct frag_hdr *) hdr;
+-			if (frag_hdr->frag_off)
+-				break;
+ 			optlen = 8;
+ 		} else if (nexthdr == NEXTHDR_AUTH) {
+ 			optlen = ipv6_authlen(hdr);
+ 		} else {
+ 			optlen = ipv6_optlen(hdr);
+ 		}
+-		/* cache hdr->nexthdr, since pskb_may_pull() might
+-		 * invalidate hdr
+-		 */
+-		next = hdr->nexthdr;
+-		if (nexthdr == NEXTHDR_DEST) {
+-			u16 i = 2;
+ 
+-			/* Remember : hdr is no longer valid at this point. */
+-			if (!pskb_may_pull(skb, off + optlen))
++		if (!pskb_may_pull(skb, off + optlen))
++			break;
++
++		hdr = (struct ipv6_opt_hdr *)(skb->data + off);
++		if (nexthdr == NEXTHDR_FRAGMENT) {
++			struct frag_hdr *frag_hdr = (struct frag_hdr *)hdr;
++
++			if (frag_hdr->frag_off)
+ 				break;
++		}
++		if (nexthdr == NEXTHDR_DEST) {
++			u16 i = 2;
+ 
+ 			while (1) {
+ 				struct ipv6_tlv_tnl_enc_lim *tel;
+@@ -449,7 +449,7 @@ __u16 ip6_tnl_parse_tlv_enc_lim(struct sk_buff *skb, __u8 *raw)
+ 					i++;
+ 			}
+ 		}
+-		nexthdr = next;
++		nexthdr = hdr->nexthdr;
+ 		off += optlen;
  	}
- 
-@@ -115,7 +114,7 @@ u32 rtl92ee_phy_query_rf_reg(struct ieee80211_hw *hw,
- 	spin_lock_irqsave(&rtlpriv->locks.rf_lock, flags);
- 
- 	original_value = _rtl92ee_phy_rf_serial_read(hw , rfpath, regaddr);
--	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock_irqrestore(&rtlpriv->locks.rf_lock, flags);
-@@ -143,7 +142,7 @@ void rtl92ee_phy_set_rf_reg(struct ieee80211_hw *hw,
- 
- 	if (bitmask != RFREG_OFFSET_MASK) {
- 		original_value = _rtl92ee_phy_rf_serial_read(hw, rfpath, addr);
--		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = (original_value & (~bitmask)) | (data << bitshift);
- 	}
- 
-@@ -226,13 +225,6 @@ static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
- 		 pphyreg->rf3wire_offset, data_and_addr);
- }
- 
--static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
--
- bool rtl92ee_phy_mac_config(struct ieee80211_hw *hw)
- {
- 	return _rtl92ee_phy_config_mac_with_headerfile(hw);
+ 	return 0;
 -- 
 2.43.0
 
