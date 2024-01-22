@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E888383BC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB5D838106
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1403CB2D698
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48FEC1F21B6B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BB264AA3;
-	Tue, 23 Jan 2024 01:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2162C13E229;
+	Tue, 23 Jan 2024 01:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KISwYqYz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2Sy7Ryh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E91A634F8;
-	Tue, 23 Jan 2024 01:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40A913DBB7;
+	Tue, 23 Jan 2024 01:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975041; cv=none; b=aFCR5jhBAQ61sJbdzbzrlJWvm3ZBySjmOV5x4W3LChmUbCZX35CFaFaTRgrw+55PAlXnPgECTLSKuxpKaP9+WtOsa6y6ztUeWOdjSia+sH1qXqpGpCdpxLGA3P5erQ4MB/V8MjrUfXJ58hXcpNuQocnHgGzo6Yuq6hjr111wOyw=
+	t=1705971996; cv=none; b=l9dpbWC+di0n0/XyblrVf3W6ZmQE0Ij0ZdVOIHuJi7CFsCImPR2yrX6FXXwQMygtKDFHsGp8+MriIFL7Ol9tJ8nuAoRb5O4tcoOXcremuO1Cq1yg0phPanDHe2NjGkQmkTkFMD4cBDnJHYS8LS0/6Y4pg5l2Bps2G74ESxuFais=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975041; c=relaxed/simple;
-	bh=FU6NHire4A+yS/0yNZBhHXgZtXL6ekuYio97YL9LIZw=;
+	s=arc-20240116; t=1705971996; c=relaxed/simple;
+	bh=9OP6R7S7BLvOgYtITc+1faAYcFOEUT3MKAn9R2DRtRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RqKNNE0mep7ydvT0qjijZimT+2X8QFvApjVWXa0HIoMl/bJF6xxB5OeCN67wvGcYaM/PKIN8vutp9w2Zy4rHAshvoJMtOTI7gbKLeAxJvDGHqdglNsJr9+PPQZ+j1rOHScWhNP+zsJ36sasrF1wQr65LuT9sMyvF3KHc0MGEWD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KISwYqYz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78FBC433C7;
-	Tue, 23 Jan 2024 01:57:20 +0000 (UTC)
+	 MIME-Version; b=Ar8NBMAIVEwbR3Dou+yAK5wxTcfb3QX15DIA+PLf/R/KCXUOpx7ymV/c+2I1KtMYGOboCrokIt18lf/seg5bD7P2BKq+OvU3MncJ0dzoEiU0D0afU6kTbEunjdUqlHAxTLtfObT33VLU33gMNAVcI6jC/WuBmzjuQkJe5xvErHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2Sy7Ryh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E763C433F1;
+	Tue, 23 Jan 2024 01:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975040;
-	bh=FU6NHire4A+yS/0yNZBhHXgZtXL6ekuYio97YL9LIZw=;
+	s=korg; t=1705971996;
+	bh=9OP6R7S7BLvOgYtITc+1faAYcFOEUT3MKAn9R2DRtRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KISwYqYzPdAnSYOVl5n1R2BfbF77PLR+fjLttSO3xq9sN8e8luaEamb+/8Nnsnyxu
-	 AVzA4/KBt8rv3/Zf6IXV8mEtkDQUoAl1mQl8GubAFFIvsC3BnBLlpM9cgTo4nP2c23
-	 1xkzqY+8OrKEPLFeVTPiqYhDA7AaWbM1J/zHz/Bg=
+	b=i2Sy7Ryhgp5tI627C5r4VOEqcFZhzP92ItMGUyb8KW1/ikbWK1ltIKP7byxXB5+5i
+	 SAg2zlpVSDaIfL24jo0s7AJMwRY6dIwpACknourOrtbiKeAXPUOjLdoOXSGMfLWhag
+	 bwMknUl0jAgGmHUPEyko52NNFmVmzrGJF2R+0lBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang.tang@suse.com>,
-	Matthieu Baerts <matthieu.baerts@tessares.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 336/374] mptcp: drop unused sk in mptcp_get_options
+Subject: [PATCH 5.10 286/286] i2c: s3c24xx: fix transferring more than one message in polling mode
 Date: Mon, 22 Jan 2024 15:59:52 -0800
-Message-ID: <20240122235756.596413735@linuxfoundation.org>
+Message-ID: <20240122235743.066816523@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <geliang.tang@suse.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 0799e21b5a76d9f14d8a8f024d0b6b9847ad1a03 ]
+[ Upstream commit 990489e1042c6c5d6bccf56deca68f8dbeed8180 ]
 
-The parameter 'sk' became useless since the code using it was dropped
-from mptcp_get_options() in the commit 8d548ea1dd15 ("mptcp: do not set
-unconditionally csum_reqd on incoming opt"). Let's drop it.
+To properly handle ACK on the bus when transferring more than one
+message in polling mode, move the polling handling loop from
+s3c24xx_i2c_message_start() to s3c24xx_i2c_doxfer(). This way
+i2c_s3c_irq_nextbyte() is always executed till the end, properly
+acknowledging the IRQ bits and no recursive calls to
+i2c_s3c_irq_nextbyte() are made.
 
-Signed-off-by: Geliang Tang <geliang.tang@suse.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: c1665273bdc7 ("mptcp: strict validation before using mp_opt->hmac")
+While touching this, also fix finishing transfers in polling mode by
+using common code path and always waiting for the bus to become idle
+and disabled.
+
+Fixes: 117053f77a5a ("i2c: s3c2410: Add polling mode support")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/options.c  |  5 ++---
- net/mptcp/protocol.h |  3 +--
- net/mptcp/subflow.c  | 10 +++++-----
- 3 files changed, 8 insertions(+), 10 deletions(-)
+ drivers/i2c/busses/i2c-s3c2410.c | 27 ++++++++++-----------------
+ 1 file changed, 10 insertions(+), 17 deletions(-)
 
-diff --git a/net/mptcp/options.c b/net/mptcp/options.c
-index c7d6997b31c8..3b4ce8a06f99 100644
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -354,8 +354,7 @@ static void mptcp_parse_option(const struct sk_buff *skb,
- 	}
+diff --git a/drivers/i2c/busses/i2c-s3c2410.c b/drivers/i2c/busses/i2c-s3c2410.c
+index 687588834fc8..fd0969cd7dc6 100644
+--- a/drivers/i2c/busses/i2c-s3c2410.c
++++ b/drivers/i2c/busses/i2c-s3c2410.c
+@@ -286,16 +286,6 @@ static void s3c24xx_i2c_message_start(struct s3c24xx_i2c *i2c,
+ 
+ 	stat |= S3C2410_IICSTAT_START;
+ 	writel(stat, i2c->regs + S3C2410_IICSTAT);
+-
+-	if (i2c->quirks & QUIRK_POLL) {
+-		while ((i2c->msg_num != 0) && is_ack(i2c)) {
+-			i2c_s3c_irq_nextbyte(i2c, stat);
+-			stat = readl(i2c->regs + S3C2410_IICSTAT);
+-
+-			if (stat & S3C2410_IICSTAT_ARBITR)
+-				dev_err(i2c->dev, "deal with arbitration loss\n");
+-		}
+-	}
  }
  
--void mptcp_get_options(const struct sock *sk,
--		       const struct sk_buff *skb,
-+void mptcp_get_options(const struct sk_buff *skb,
- 		       struct mptcp_options_received *mp_opt)
+ static inline void s3c24xx_i2c_stop(struct s3c24xx_i2c *i2c, int ret)
+@@ -702,7 +692,7 @@ static void s3c24xx_i2c_wait_idle(struct s3c24xx_i2c *i2c)
+ static int s3c24xx_i2c_doxfer(struct s3c24xx_i2c *i2c,
+ 			      struct i2c_msg *msgs, int num)
  {
- 	const struct tcphdr *th = tcp_hdr(skb);
-@@ -1091,7 +1090,7 @@ bool mptcp_incoming_options(struct sock *sk, struct sk_buff *skb)
- 		return true;
+-	unsigned long timeout;
++	unsigned long timeout = 0;
+ 	int ret;
+ 
+ 	ret = s3c24xx_i2c_set_master(i2c);
+@@ -722,16 +712,19 @@ static int s3c24xx_i2c_doxfer(struct s3c24xx_i2c *i2c,
+ 	s3c24xx_i2c_message_start(i2c, msgs);
+ 
+ 	if (i2c->quirks & QUIRK_POLL) {
+-		ret = i2c->msg_idx;
++		while ((i2c->msg_num != 0) && is_ack(i2c)) {
++			unsigned long stat = readl(i2c->regs + S3C2410_IICSTAT);
+ 
+-		if (ret != num)
+-			dev_dbg(i2c->dev, "incomplete xfer (%d)\n", ret);
++			i2c_s3c_irq_nextbyte(i2c, stat);
+ 
+-		goto out;
++			stat = readl(i2c->regs + S3C2410_IICSTAT);
++			if (stat & S3C2410_IICSTAT_ARBITR)
++				dev_err(i2c->dev, "deal with arbitration loss\n");
++		}
++	} else {
++		timeout = wait_event_timeout(i2c->wait, i2c->msg_num == 0, HZ * 5);
  	}
  
--	mptcp_get_options(sk, skb, &mp_opt);
-+	mptcp_get_options(skb, &mp_opt);
+-	timeout = wait_event_timeout(i2c->wait, i2c->msg_num == 0, HZ * 5);
+-
+ 	ret = i2c->msg_idx;
  
- 	/* The subflow can be in close state only if check_fully_established()
- 	 * just sent a reset. If so, tell the caller to ignore the current packet.
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index e193b710b471..78aa6125eafb 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -636,8 +636,7 @@ int __init mptcp_proto_v6_init(void);
- struct sock *mptcp_sk_clone(const struct sock *sk,
- 			    const struct mptcp_options_received *mp_opt,
- 			    struct request_sock *req);
--void mptcp_get_options(const struct sock *sk,
--		       const struct sk_buff *skb,
-+void mptcp_get_options(const struct sk_buff *skb,
- 		       struct mptcp_options_received *mp_opt);
- 
- void mptcp_finish_connect(struct sock *sk);
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 666f6720db76..a1349c6eda46 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -152,7 +152,7 @@ static int subflow_check_req(struct request_sock *req,
- 		return -EINVAL;
- #endif
- 
--	mptcp_get_options(sk_listener, skb, &mp_opt);
-+	mptcp_get_options(skb, &mp_opt);
- 
- 	opt_mp_capable = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPC);
- 	opt_mp_join = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPJ);
-@@ -249,7 +249,7 @@ int mptcp_subflow_init_cookie_req(struct request_sock *req,
- 	int err;
- 
- 	subflow_init_req(req, sk_listener);
--	mptcp_get_options(sk_listener, skb, &mp_opt);
-+	mptcp_get_options(skb, &mp_opt);
- 
- 	opt_mp_capable = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPC);
- 	opt_mp_join = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPJ);
-@@ -407,7 +407,7 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
- 	subflow->ssn_offset = TCP_SKB_CB(skb)->seq;
- 	pr_debug("subflow=%p synack seq=%x", subflow, subflow->ssn_offset);
- 
--	mptcp_get_options(sk, skb, &mp_opt);
-+	mptcp_get_options(skb, &mp_opt);
- 	if (subflow->request_mptcp) {
- 		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPC)) {
- 			MPTCP_INC_STATS(sock_net(sk),
-@@ -687,7 +687,7 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
- 		 * reordered MPC will cause fallback, but we don't have other
- 		 * options.
- 		 */
--		mptcp_get_options(sk, skb, &mp_opt);
-+		mptcp_get_options(skb, &mp_opt);
- 		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPC)) {
- 			fallback = true;
- 			goto create_child;
-@@ -697,7 +697,7 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
- 		if (!new_msk)
- 			fallback = true;
- 	} else if (subflow_req->mp_join) {
--		mptcp_get_options(sk, skb, &mp_opt);
-+		mptcp_get_options(skb, &mp_opt);
- 		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPJ) ||
- 		    !subflow_hmac_valid(req, &mp_opt) ||
- 		    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
+ 	/*
 -- 
 2.43.0
 
