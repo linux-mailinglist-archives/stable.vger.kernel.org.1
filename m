@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-14930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3C3C83845E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F856837DFD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDDF4B219CD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64A3F1C28D5B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B2A5FBAD;
-	Tue, 23 Jan 2024 01:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27E55100B;
+	Tue, 23 Jan 2024 00:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ChGveJD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vL+H5qpe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A275025C;
-	Tue, 23 Jan 2024 01:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A088C4E1D0;
+	Tue, 23 Jan 2024 00:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974730; cv=none; b=rg8WG+6PJq4pYh2cAJl8TynVDiG2Jg4CWP5RTMror9eFTCiQc8VHTWodHg4QKkZ/1UjIZsaRYyVbAgPrVSm5acECYCYNUp9lLaagSu4CH4Y/qZgkVL2wU1LtBY2Dmp3e1uCNH4GJtueX2kc6qk2INhfUH/75rZajrjnwUUP8yfo=
+	t=1705970266; cv=none; b=Dp1E/aqSC5NDq0lKav1DxEAppzvtMvdAMDcWDmgZ9tU5kQxmbZRrzg/mIsNb0jrTODj87/kIYXeICXPxr9S3sflHRNuOqrekSKN4ETM26PMtdZBNHdp66yb5ecAMAsdDjUv8xJgvha+DfUzohFvGHfCcL/I5a5ZfyZUNr9UNTSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974730; c=relaxed/simple;
-	bh=SM2FJC7LXdgWu7oleTk/yOU8/KGdQz1mczlOKywJoE8=;
+	s=arc-20240116; t=1705970266; c=relaxed/simple;
+	bh=mQlChY3N5gnooNj3rIzwvjujXMbOfggAI+gSlkmOAiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cKOtdKAs9EUrnY4ENkEYxjWzvkOMo4xhgk2KA8mcmEAeq/vTReq77gMQjyjrRgsLk7+MuF5HSYRtT65xDQooy6VWAddO0UOmW0De6AwCccAU0nKAcFUcy5zkjPiNUl6dPL0nv1u8Q2OVS99OAiN3jFlatDBhqm1gaVafO5bruPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ChGveJD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F417C433C7;
-	Tue, 23 Jan 2024 01:52:10 +0000 (UTC)
+	 MIME-Version; b=cmtuhQgKi9K1eITTKNzxu9UUwHe2IhqUECDwJ8RqBj0iCqzEU69EelpsP9WpHsivDpKDfJQ7lsCJOa4Zmxv9Zqu2jxEmRGsVb96xUrFmdXfVRTXMDplzqIlOvm/ZA8Fj1xlPXKKyJWNJr4nFfytjTiAfA/WpptH74s727x5sSxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vL+H5qpe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E806C433C7;
+	Tue, 23 Jan 2024 00:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974730;
-	bh=SM2FJC7LXdgWu7oleTk/yOU8/KGdQz1mczlOKywJoE8=;
+	s=korg; t=1705970266;
+	bh=mQlChY3N5gnooNj3rIzwvjujXMbOfggAI+gSlkmOAiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ChGveJDaWe06U21heu73r4WpT/iKd2gnayUJHdiNi42A+AWVFxT47C/ps7CdnJMa
-	 GfC8EYg0PtFRusGPn6gVywJ45i5d5UFj7DJDXHXhDiGRFTezjZ9oLFCcFDD6NFVIui
-	 sSnXHKTXcgLlmWQdPnRat42fgL0CpeOGTHI8JMbk=
+	b=vL+H5qpe3tXGg4xLC/p8Y736n6VE5R1meETg8oni3RTbbC32h1AgcXpXmjs4YLrXF
+	 r361XjkHpTFLlsiBq7giAMTz2VBKpZQJE9E4Gmkv/To+Cln4t57Pn5oPIS51Cb8EcL
+	 0C4kem7DK8gQwoblKJdEL1rB/7cdKcuvdtEuccJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: [PATCH 5.15 271/374] pwm: jz4740: Dont use dev_err_probe() in .request()
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 623/641] netfilter: propagate net to nf_bridge_get_physindev
 Date: Mon, 22 Jan 2024 15:58:47 -0800
-Message-ID: <20240122235754.194481678@linuxfoundation.org>
+Message-ID: <20240122235837.747213432@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +61,196 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 
-commit 9320fc509b87b4d795fb37112931e2f4f8b5c55f upstream.
+[ Upstream commit a54e72197037d2c9bfcd70dddaac8c8ccb5b41ba ]
 
-dev_err_probe() is only supposed to be used in probe functions. While it
-probably doesn't hurt, both the EPROBE_DEFER handling and calling
-device_set_deferred_probe_reason() are conceptually wrong in the request
-callback. So replace the call by dev_err() and a separate return
-statement.
+This is a preparation patch for replacing physindev with physinif on
+nf_bridge_info structure. We will use dev_get_by_index_rcu to resolve
+device, when needed, and it requires net to be available.
 
-This effectively reverts commit c0bfe9606e03 ("pwm: jz4740: Simplify
-with dev_err_probe()").
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240106141302.1253365-2-u.kleine-koenig@pengutronix.de
-Fixes: c0bfe9606e03 ("pwm: jz4740: Simplify with dev_err_probe()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 9874808878d9 ("netfilter: bridge: replace physindev with physinif in nf_bridge_info")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-jz4740.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/linux/netfilter_bridge.h           |  2 +-
+ net/ipv4/netfilter/nf_reject_ipv4.c        |  2 +-
+ net/ipv6/netfilter/nf_reject_ipv6.c        |  2 +-
+ net/netfilter/ipset/ip_set_hash_netiface.c |  8 ++++----
+ net/netfilter/nf_log_syslog.c              | 13 +++++++------
+ net/netfilter/nf_queue.c                   |  2 +-
+ net/netfilter/xt_physdev.c                 |  2 +-
+ 7 files changed, 16 insertions(+), 15 deletions(-)
 
---- a/drivers/pwm/pwm-jz4740.c
-+++ b/drivers/pwm/pwm-jz4740.c
-@@ -60,9 +60,10 @@ static int jz4740_pwm_request(struct pwm
- 	snprintf(name, sizeof(name), "timer%u", pwm->hwpwm);
+diff --git a/include/linux/netfilter_bridge.h b/include/linux/netfilter_bridge.h
+index f980edfdd278..e927b9a15a55 100644
+--- a/include/linux/netfilter_bridge.h
++++ b/include/linux/netfilter_bridge.h
+@@ -56,7 +56,7 @@ static inline int nf_bridge_get_physoutif(const struct sk_buff *skb)
+ }
  
- 	clk = clk_get(chip->dev, name);
--	if (IS_ERR(clk))
--		return dev_err_probe(chip->dev, PTR_ERR(clk),
--				     "Failed to get clock\n");
-+	if (IS_ERR(clk)) {
-+		dev_err(chip->dev, "error %pe: Failed to get clock\n", clk);
-+		return PTR_ERR(clk);
-+	}
+ static inline struct net_device *
+-nf_bridge_get_physindev(const struct sk_buff *skb)
++nf_bridge_get_physindev(const struct sk_buff *skb, struct net *net)
+ {
+ 	const struct nf_bridge_info *nf_bridge = nf_bridge_info_get(skb);
  
- 	err = clk_prepare_enable(clk);
- 	if (err < 0) {
+diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
+index f01b038fc1cd..86e7d390671a 100644
+--- a/net/ipv4/netfilter/nf_reject_ipv4.c
++++ b/net/ipv4/netfilter/nf_reject_ipv4.c
+@@ -289,7 +289,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	 * build the eth header using the original destination's MAC as the
+ 	 * source, and send the RST packet directly.
+ 	 */
+-	br_indev = nf_bridge_get_physindev(oldskb);
++	br_indev = nf_bridge_get_physindev(oldskb, net);
+ 	if (br_indev) {
+ 		struct ethhdr *oeth = eth_hdr(oldskb);
+ 
+diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
+index d45bc54b7ea5..27b2164f4c43 100644
+--- a/net/ipv6/netfilter/nf_reject_ipv6.c
++++ b/net/ipv6/netfilter/nf_reject_ipv6.c
+@@ -354,7 +354,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
+ 	 * build the eth header using the original destination's MAC as the
+ 	 * source, and send the RST packet directly.
+ 	 */
+-	br_indev = nf_bridge_get_physindev(oldskb);
++	br_indev = nf_bridge_get_physindev(oldskb, net);
+ 	if (br_indev) {
+ 		struct ethhdr *oeth = eth_hdr(oldskb);
+ 
+diff --git a/net/netfilter/ipset/ip_set_hash_netiface.c b/net/netfilter/ipset/ip_set_hash_netiface.c
+index 95aeb31c60e0..30a655e5c4fd 100644
+--- a/net/netfilter/ipset/ip_set_hash_netiface.c
++++ b/net/netfilter/ipset/ip_set_hash_netiface.c
+@@ -138,9 +138,9 @@ hash_netiface4_data_next(struct hash_netiface4_elem *next,
+ #include "ip_set_hash_gen.h"
+ 
+ #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
+-static const char *get_physindev_name(const struct sk_buff *skb)
++static const char *get_physindev_name(const struct sk_buff *skb, struct net *net)
+ {
+-	struct net_device *dev = nf_bridge_get_physindev(skb);
++	struct net_device *dev = nf_bridge_get_physindev(skb, net);
+ 
+ 	return dev ? dev->name : NULL;
+ }
+@@ -177,7 +177,7 @@ hash_netiface4_kadt(struct ip_set *set, const struct sk_buff *skb,
+ 
+ 	if (opt->cmdflags & IPSET_FLAG_PHYSDEV) {
+ #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
+-		const char *eiface = SRCDIR ? get_physindev_name(skb) :
++		const char *eiface = SRCDIR ? get_physindev_name(skb, xt_net(par)) :
+ 					      get_physoutdev_name(skb);
+ 
+ 		if (!eiface)
+@@ -395,7 +395,7 @@ hash_netiface6_kadt(struct ip_set *set, const struct sk_buff *skb,
+ 
+ 	if (opt->cmdflags & IPSET_FLAG_PHYSDEV) {
+ #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
+-		const char *eiface = SRCDIR ? get_physindev_name(skb) :
++		const char *eiface = SRCDIR ? get_physindev_name(skb, xt_net(par)) :
+ 					      get_physoutdev_name(skb);
+ 
+ 		if (!eiface)
+diff --git a/net/netfilter/nf_log_syslog.c b/net/netfilter/nf_log_syslog.c
+index c66689ad2b49..58402226045e 100644
+--- a/net/netfilter/nf_log_syslog.c
++++ b/net/netfilter/nf_log_syslog.c
+@@ -111,7 +111,8 @@ nf_log_dump_packet_common(struct nf_log_buf *m, u8 pf,
+ 			  unsigned int hooknum, const struct sk_buff *skb,
+ 			  const struct net_device *in,
+ 			  const struct net_device *out,
+-			  const struct nf_loginfo *loginfo, const char *prefix)
++			  const struct nf_loginfo *loginfo, const char *prefix,
++			  struct net *net)
+ {
+ 	const struct net_device *physoutdev __maybe_unused;
+ 	const struct net_device *physindev __maybe_unused;
+@@ -121,7 +122,7 @@ nf_log_dump_packet_common(struct nf_log_buf *m, u8 pf,
+ 			in ? in->name : "",
+ 			out ? out->name : "");
+ #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
+-	physindev = nf_bridge_get_physindev(skb);
++	physindev = nf_bridge_get_physindev(skb, net);
+ 	if (physindev && in != physindev)
+ 		nf_log_buf_add(m, "PHYSIN=%s ", physindev->name);
+ 	physoutdev = nf_bridge_get_physoutdev(skb);
+@@ -148,7 +149,7 @@ static void nf_log_arp_packet(struct net *net, u_int8_t pf,
+ 		loginfo = &default_loginfo;
+ 
+ 	nf_log_dump_packet_common(m, pf, hooknum, skb, in, out, loginfo,
+-				  prefix);
++				  prefix, net);
+ 	dump_arp_packet(m, loginfo, skb, skb_network_offset(skb));
+ 
+ 	nf_log_buf_close(m);
+@@ -845,7 +846,7 @@ static void nf_log_ip_packet(struct net *net, u_int8_t pf,
+ 		loginfo = &default_loginfo;
+ 
+ 	nf_log_dump_packet_common(m, pf, hooknum, skb, in,
+-				  out, loginfo, prefix);
++				  out, loginfo, prefix, net);
+ 
+ 	if (in)
+ 		dump_mac_header(m, loginfo, skb);
+@@ -880,7 +881,7 @@ static void nf_log_ip6_packet(struct net *net, u_int8_t pf,
+ 		loginfo = &default_loginfo;
+ 
+ 	nf_log_dump_packet_common(m, pf, hooknum, skb, in, out,
+-				  loginfo, prefix);
++				  loginfo, prefix, net);
+ 
+ 	if (in)
+ 		dump_mac_header(m, loginfo, skb);
+@@ -916,7 +917,7 @@ static void nf_log_unknown_packet(struct net *net, u_int8_t pf,
+ 		loginfo = &default_loginfo;
+ 
+ 	nf_log_dump_packet_common(m, pf, hooknum, skb, in, out, loginfo,
+-				  prefix);
++				  prefix, net);
+ 
+ 	dump_mac_header(m, loginfo, skb);
+ 
+diff --git a/net/netfilter/nf_queue.c b/net/netfilter/nf_queue.c
+index 3dfcb3ac5cb4..e2f334f70281 100644
+--- a/net/netfilter/nf_queue.c
++++ b/net/netfilter/nf_queue.c
+@@ -84,7 +84,7 @@ static void __nf_queue_entry_init_physdevs(struct nf_queue_entry *entry)
+ 	const struct sk_buff *skb = entry->skb;
+ 
+ 	if (nf_bridge_info_exists(skb)) {
+-		entry->physin = nf_bridge_get_physindev(skb);
++		entry->physin = nf_bridge_get_physindev(skb, entry->state.net);
+ 		entry->physout = nf_bridge_get_physoutdev(skb);
+ 	} else {
+ 		entry->physin = NULL;
+diff --git a/net/netfilter/xt_physdev.c b/net/netfilter/xt_physdev.c
+index ec6ed6fda96c..343e65f377d4 100644
+--- a/net/netfilter/xt_physdev.c
++++ b/net/netfilter/xt_physdev.c
+@@ -59,7 +59,7 @@ physdev_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ 	    (!!outdev ^ !(info->invert & XT_PHYSDEV_OP_BRIDGED)))
+ 		return false;
+ 
+-	physdev = nf_bridge_get_physindev(skb);
++	physdev = nf_bridge_get_physindev(skb, xt_net(par));
+ 	indev = physdev ? physdev->name : NULL;
+ 
+ 	if ((info->bitmask & XT_PHYSDEV_OP_ISIN &&
+-- 
+2.43.0
+
 
 
 
