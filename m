@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-14589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E6A838184
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEBD7837CCF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5FB91F23AD8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F367282E47
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E413185B;
-	Tue, 23 Jan 2024 01:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CF215957A;
+	Tue, 23 Jan 2024 00:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1EbxExq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTf3hJut"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7DF1C3E;
-	Tue, 23 Jan 2024 01:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36524159574;
+	Tue, 23 Jan 2024 00:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972157; cv=none; b=sb3KyOC5tif9H+Z7X6usrCajPWk8IJsdiBNBoLvDOTdNxAFKxfgp26i6rUcC1viKHAkHvS/xWs+QSy5Af5w/0psfzNsr44gaLlDaMhKpwjpS4kiZYAOhk7zWg24xFVF7lalgSBDGmqeaVZ2dwm8lS2jikbTBdkAstnBzKarDz4o=
+	t=1705969743; cv=none; b=QytR3cCBRg82UKlZUbwRHhU+rsPDTPR1n2VyBHx9aAwGWMfxoVlibYMX3JTfJpc8vGsdO0wVgnk30GMZ24ebJbziUfkYeRfOfcJqGF0Rkwn1+vW+TYOqczG4qlXX8uHqqpEGwGFiN0uOYHJHfBtd62+rMOX5xtSXUzWUNF4p0ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972157; c=relaxed/simple;
-	bh=8RUJrBxFUVP8j9rW39KeQiguv1jm1bI7/E2MkLonFG8=;
+	s=arc-20240116; t=1705969743; c=relaxed/simple;
+	bh=z2b1xMLzzEvRZyGBKIl0nJUCSMGr1w8AxMsLihxjkYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=isbZFpgvw/FNYMTvQz7JhdHJi9JpkAuMvSV5zotp9SL+S3UCd5xlUux94tbs4FYnXyIae1E2T2oLPkbtD4HFEGr8WbD4+0PU2D2y23+6kB0z1pRSyhusCjB4mu6t1ldwrrdC86zLufJnjhmMAJY/LkF5m+AaHCUkZsYKTTK2F5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1EbxExq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE83C43390;
-	Tue, 23 Jan 2024 01:09:16 +0000 (UTC)
+	 MIME-Version; b=JfJJ5r+qtYrOgHZm5Upm0ikCkcL4sUdyH5cBQxsTV4vDa8EiiaW4J+ozENLaXLJiFadOkhkpwLy8Gelk53koMZbKnVBEGrMYLVXXRIEZlxX74rPJdkL6nYSaodFgYF4HJ/QosBvDbR4YWK0NEI2REyRSprGK3YMbXzxHtnVOJjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTf3hJut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D28C433B1;
+	Tue, 23 Jan 2024 00:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972156;
-	bh=8RUJrBxFUVP8j9rW39KeQiguv1jm1bI7/E2MkLonFG8=;
+	s=korg; t=1705969742;
+	bh=z2b1xMLzzEvRZyGBKIl0nJUCSMGr1w8AxMsLihxjkYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1EbxExqHZG2ywWvvGdrjqhwh+xmjIAUa2lXQtFZ9arKHuZGz8pIdYf31lBzD6Mt9
-	 m1QIQzbRf/d5WYDsVqMqeHrvI8lai5IBleAUm+DqZeUOaGoLZVtLU7ZTQkkJA8FZ4v
-	 HKGa8Xx8/snx8VWUrKiq2+JGrdCT2SEoiAnMw9WA=
+	b=LTf3hJutBTajuKmR9Bw2PgbGMlBWQ3wdBNiqWmPrnifWCEXQPv28xgz9enZvY5gcF
+	 1J7MUH9ZRlMqbuF5Y/UfQyYm0qXkRBM9zxw99q0k0GkcaNWwQOhYh4PWK8F3Z4uHt6
+	 V8tlpwzPZFrNBtpQEXR2UWPRlS0n0QIHXvm9SIb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luis Acuna <ldacuna@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 050/374] ACPI: resource: Add another DMI match for the TongFang GMxXGxx
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.7 402/641] usb: cdns3: fix uvc failure work since sg support enabled
 Date: Mon, 22 Jan 2024 15:55:06 -0800
-Message-ID: <20240122235746.345377357@linuxfoundation.org>
+Message-ID: <20240122235830.553112480@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +60,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit df0cced74159c79e36ce7971f0bf250673296d93 upstream.
+commit 1b8be5ecff26201bafb0a554c74e91571299fb94 upstream.
 
-The TongFang GMxXGxx, which needs IRQ overriding for the keyboard to work,
-is also sold as the Eluktronics RP-15 which does not use the standard
-TongFang GMxXGxx DMI board_name.
+When IP version >= DEV_VER_V2, gadget:sg_supported is true. So uvc gadget
+function driver will use sg to equeue data, first is 8bytes header, the
+second is 1016bytes data.
 
-Add an entry for this laptop to the irq1_edge_low_force_override[] DMI
-table to make the internal keyboard functional.
+    cdns3_prepare_trb: ep2in: trb 0000000000ac755f, dma buf: 0xbf455000, size: 8, burst: 128 ctrl: 0x00000415 (C=1, T=0, ISP, CHAIN, Normal)
+    cdns3_prepare_trb: ep2in: trb 00000000a574e693, dma buf: 0xc0200fe0, size: 1016, burst: 128 ctrl: 0x00000405 (C=1, T=0, ISP, Normal)
 
-Reported-by: Luis Acuna <ldacuna@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+But cdns3_ep_run_transfer() can't correctly handle this case, which only
+support one TRB for ISO transfer.
+
+The controller requires duplicate the TD for each SOF if priv_ep->interval
+is not 1. DMA will read data from DDR to internal FIFO when get SOF. Send
+data to bus when receive IN token. DMA always refill FIFO when get SOF
+regardless host send IN token or not. If host send IN token later, some
+frames data will be lost.
+
+Fixed it by below major steps:
+
+1. Calculate numembers of TRB base on sg_nums and priv_ep->interval.
+2. Remove CHAIN flags for each end TRB of TD when duplicate TD.
+3. The controller requires LINK TRB must be first TRB of TD. When check
+there are not enough TRBs lefts, just fill LINK TRB for left TRBs.
+
+.... CHAIN_TRB DATA_TRB, CHAIN_TRB DATA_TRB,  LINK_TRB ... LINK_TRB
+                                                           ^End of TRB List
+
+Cc:  <stable@vger.kernel.org>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231224153816.1664687-2-Frank.Li@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/cdns3/cdns3-gadget.c |   51 ++++++++++++++++++++++++++++++---------
+ 1 file changed, 40 insertions(+), 11 deletions(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -481,6 +481,13 @@ static const struct dmi_system_id mainge
- 		},
- 	},
- 	{
-+		/* TongFang GMxXGxx sold as Eluktronics Inc. RP-15 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
-+			DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
-+		},
-+	},
-+	{
- 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "GM6XGxX"),
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -1119,6 +1119,7 @@ static int cdns3_ep_run_transfer(struct
+ 	dma_addr_t trb_dma;
+ 	u32 togle_pcs = 1;
+ 	int sg_iter = 0;
++	int num_trb_req;
+ 	int num_trb;
+ 	int address;
+ 	u32 control;
+@@ -1127,15 +1128,13 @@ static int cdns3_ep_run_transfer(struct
+ 	struct scatterlist *s = NULL;
+ 	bool sg_supported = !!(request->num_mapped_sgs);
+ 
++	num_trb_req = sg_supported ? request->num_mapped_sgs : 1;
++
++	/* ISO transfer require each SOF have a TD, each TD include some TRBs */
+ 	if (priv_ep->type == USB_ENDPOINT_XFER_ISOC)
+-		num_trb = priv_ep->interval;
++		num_trb = priv_ep->interval * num_trb_req;
+ 	else
+-		num_trb = sg_supported ? request->num_mapped_sgs : 1;
+-
+-	if (num_trb > priv_ep->free_trbs) {
+-		priv_ep->flags |= EP_RING_FULL;
+-		return -ENOBUFS;
+-	}
++		num_trb = num_trb_req;
+ 
+ 	priv_req = to_cdns3_request(request);
+ 	address = priv_ep->endpoint.desc->bEndpointAddress;
+@@ -1184,14 +1183,31 @@ static int cdns3_ep_run_transfer(struct
+ 
+ 		link_trb->control = cpu_to_le32(((priv_ep->pcs) ? TRB_CYCLE : 0) |
+ 				    TRB_TYPE(TRB_LINK) | TRB_TOGGLE | ch_bit);
++
++		if (priv_ep->type == USB_ENDPOINT_XFER_ISOC) {
++			/*
++			 * ISO require LINK TRB must be first one of TD.
++			 * Fill LINK TRBs for left trb space to simply software process logic.
++			 */
++			while (priv_ep->enqueue) {
++				*trb = *link_trb;
++				trace_cdns3_prepare_trb(priv_ep, trb);
++
++				cdns3_ep_inc_enq(priv_ep);
++				trb = priv_ep->trb_pool + priv_ep->enqueue;
++				priv_req->trb = trb;
++			}
++		}
++	}
++
++	if (num_trb > priv_ep->free_trbs) {
++		priv_ep->flags |= EP_RING_FULL;
++		return -ENOBUFS;
+ 	}
+ 
+ 	if (priv_dev->dev_ver <= DEV_VER_V2)
+ 		togle_pcs = cdns3_wa1_update_guard(priv_ep, trb);
+ 
+-	if (sg_supported)
+-		s = request->sg;
+-
+ 	/* set incorrect Cycle Bit for first trb*/
+ 	control = priv_ep->pcs ? 0 : TRB_CYCLE;
+ 	trb->length = 0;
+@@ -1209,6 +1225,9 @@ static int cdns3_ep_run_transfer(struct
+ 	do {
+ 		u32 length;
+ 
++		if (!(sg_iter % num_trb_req) && sg_supported)
++			s = request->sg;
++
+ 		/* fill TRB */
+ 		control |= TRB_TYPE(TRB_NORMAL);
+ 		if (sg_supported) {
+@@ -1250,7 +1269,7 @@ static int cdns3_ep_run_transfer(struct
+ 		if (sg_supported) {
+ 			trb->control |= cpu_to_le32(TRB_ISP);
+ 			/* Don't set chain bit for last TRB */
+-			if (sg_iter < num_trb - 1)
++			if ((sg_iter % num_trb_req) < num_trb_req - 1)
+ 				trb->control |= cpu_to_le32(TRB_CHAIN);
+ 
+ 			s = sg_next(s);
+@@ -1508,6 +1527,12 @@ static void cdns3_transfer_completed(str
+ 
+ 		/* The TRB was changed as link TRB, and the request was handled at ep_dequeue */
+ 		while (TRB_FIELD_TO_TYPE(le32_to_cpu(trb->control)) == TRB_LINK) {
++
++			/* ISO ep_traddr may stop at LINK TRB */
++			if (priv_ep->dequeue == cdns3_get_dma_pos(priv_dev, priv_ep) &&
++			    priv_ep->type == USB_ENDPOINT_XFER_ISOC)
++				break;
++
+ 			trace_cdns3_complete_trb(priv_ep, trb);
+ 			cdns3_ep_inc_deq(priv_ep);
+ 			trb = priv_ep->trb_pool + priv_ep->dequeue;
+@@ -1540,6 +1565,10 @@ static void cdns3_transfer_completed(str
+ 			}
+ 
+ 			if (request_handled) {
++				/* TRBs are duplicated by priv_ep->interval time for ISO IN */
++				if (priv_ep->type == USB_ENDPOINT_XFER_ISOC && priv_ep->dir)
++					request->actual /= priv_ep->interval;
++
+ 				cdns3_gadget_giveback(priv_ep, priv_req, 0);
+ 				request_handled = false;
+ 				transfer_end = false;
 
 
 
