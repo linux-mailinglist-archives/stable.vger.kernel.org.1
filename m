@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC6E837C0E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E819F837E30
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EC7E1C285FC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DE0D289836
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220D2210D;
-	Tue, 23 Jan 2024 00:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298EE5BAE8;
+	Tue, 23 Jan 2024 00:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1pD3R2N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUuzOj0V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69C31FDB;
-	Tue, 23 Jan 2024 00:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA90959154;
+	Tue, 23 Jan 2024 00:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969488; cv=none; b=OE4bFynP9mlAJ5YP8Nc2TsSWJ54ccs84elHNOhP7rg99CGC9skDil01JjWHYAqHEbjS/+ZeXh9V+1JsZ6ph3yQ8In2eL+bzjNKEau4lYbqgQKdw0ImdqrhdR4YyiVlkcPjsMKqOLqoF6v+NNj8iu3/crTpRLL3XIzyymAY9+CKA=
+	t=1705970416; cv=none; b=sYu5M67P3H2T32I1ZX8E+cUeXgMX7gtFPAeKmijIGXxHVI2QoTzONszHJm578oD3Mxd5XLCMAXPSbbdwQdkEN6sfzyS3J5euUPNEvgrN2lS9eHMA1T6AAZajrnp3HzqoYDPispmsg2KCGWGW391LPAV4Gjm1kFlQ/8TkuFwFQM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969488; c=relaxed/simple;
-	bh=N/mdc422U8S8qQ28tKuRS3M6oiqaVCAjyu+FgCXwpBk=;
+	s=arc-20240116; t=1705970416; c=relaxed/simple;
+	bh=PTUMQcAoWhi9HPrEIFAgaEpCtq57vNvX8pL/cRSvHTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGo1nrQP6NSh43Bk/vUXXz+PYqZhLMuaXZqyLjzcViyKhXv/SWsNFux9Yk+cgOYAxVyEDpB2F++FC3mJWCPl5SladCpEhjlTfBlvVJUY27geW7pV6NGSre5099WAwA/2aD1dU02GpqHKRH6JHBS7fYwv+HiG0VSt0sRqlMxyZh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1pD3R2N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A05C433A6;
-	Tue, 23 Jan 2024 00:24:48 +0000 (UTC)
+	 MIME-Version; b=HJ6dTXQf6O0pnOixNhTwU+OyeLUnwMWW7TC4cmTMyIkdZefwPkJaXlM1EfOqd32lRMYfisGKsgcNo16rzrPynzDup6N5HKpcrpknYDMUdnptd/T+JV0+kN6OsHHRhqj7xW2B1rPI0w1E/x2ieFL1+3VWMgAlyW04bf1ywpdYryI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUuzOj0V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CF0C433C7;
+	Tue, 23 Jan 2024 00:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969488;
-	bh=N/mdc422U8S8qQ28tKuRS3M6oiqaVCAjyu+FgCXwpBk=;
+	s=korg; t=1705970416;
+	bh=PTUMQcAoWhi9HPrEIFAgaEpCtq57vNvX8pL/cRSvHTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L1pD3R2NBuzqAOoqTVRGlkLdCHwIMy3o6yAggI0VFu1BPXixIXK68ETKco4Fw8IMO
-	 44ela/bZj/i/GwoPO4zuA1/jVzP/xYCe0u7cBngLjkxoK2Mstvf1EiY1tJ1EumRV5f
-	 ARfkDuQl/ujr7wnmlHefQMyJ9wAsLrIDlhsATtoo=
+	b=VUuzOj0V+NoWCafq4XDERS9DGKwcU/lIlrtGqPZ2DCjZzSCwHSxnVU0FIFfV+/ifH
+	 tEZfPWVvY3vBAh5XVMboFfHIrKXQPYtfVN225zABSRXvTiCWscqfrdjHj8dF/PJiY/
+	 0yLIfLNXz6WYySKV6dwcGY4aJUcmkwCZKLIYJV4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ronald Monthero <debug.penguin32@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 278/641] drm/msm/a6xx: add QMP dependency
+Subject: [PATCH 6.1 014/417] mtd: rawnand: Increment IFC_TIMEOUT_MSECS for nand controller response
 Date: Mon, 22 Jan 2024 15:53:02 -0800
-Message-ID: <20240122235826.610235002@linuxfoundation.org>
+Message-ID: <20240122235751.997597821@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ronald Monthero <debug.penguin32@gmail.com>
 
-[ Upstream commit 96ab215b2d5edc39310c00f50b33d8ab72ac3fe3 ]
+[ Upstream commit 923fb6238cb3ac529aa2bf13b3b1e53762186a8b ]
 
-When QMP is in a loadable module, the A6xx GPU driver fails to link
-as built-in:
+Under heavy load it is likely that the controller is done
+with its own task but the thread unlocking the wait is not
+scheduled in time. Increasing IFC_TIMEOUT_MSECS allows the
+controller to respond within allowable timeslice of 1 sec.
 
-x86_64-linux-ld: drivers/gpu/drm/msm/adreno/a6xx_gmu.o: in function `a6xx_gmu_resume':
-a6xx_gmu.c:(.text+0xd62): undefined reference to `qmp_send'
+fsl,ifc-nand 7e800000.nand: Controller is not responding
 
-Add the usual dependency that still allows compiling without QMP but
-otherwise avoids the broken combination of options.
+[<804b2047>] (nand_get_device) from [<804b5335>] (nand_write_oob+0x1b/0x4a)
+[<804b5335>] (nand_write_oob) from [<804a3585>] (mtd_write+0x41/0x5c)
+[<804a3585>] (mtd_write) from [<804c1d47>] (ubi_io_write+0x17f/0x22c)
+[<804c1d47>] (ubi_io_write) from [<804c047b>] (ubi_eba_write_leb+0x5b/0x1d0)
 
-Fixes: 88a0997f2f949 ("drm/msm/a6xx: Send ACD state to QMP at GMU resume")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/562945/
-Link: https://lore.kernel.org/r/20231016200415.791090-1-arnd@kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 82771882d960 ("NAND Machine support for Integrated Flash Controller")
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Ronald Monthero <debug.penguin32@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20231118083156.776887-1-debug.penguin32@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/nand/raw/fsl_ifc_nand.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/Kconfig b/drivers/gpu/drm/msm/Kconfig
-index 6309a857ca31..ad70b611b44f 100644
---- a/drivers/gpu/drm/msm/Kconfig
-+++ b/drivers/gpu/drm/msm/Kconfig
-@@ -6,6 +6,7 @@ config DRM_MSM
- 	depends on ARCH_QCOM || SOC_IMX5 || COMPILE_TEST
- 	depends on COMMON_CLK
- 	depends on IOMMU_SUPPORT
-+	depends on QCOM_AOSS_QMP || QCOM_AOSS_QMP=n
- 	depends on QCOM_OCMEM || QCOM_OCMEM=n
- 	depends on QCOM_LLCC || QCOM_LLCC=n
- 	depends on QCOM_COMMAND_DB || QCOM_COMMAND_DB=n
+diff --git a/drivers/mtd/nand/raw/fsl_ifc_nand.c b/drivers/mtd/nand/raw/fsl_ifc_nand.c
+index 02d500176838..bea1a7d3edd7 100644
+--- a/drivers/mtd/nand/raw/fsl_ifc_nand.c
++++ b/drivers/mtd/nand/raw/fsl_ifc_nand.c
+@@ -20,7 +20,7 @@
+ 
+ #define ERR_BYTE		0xFF /* Value returned for read
+ 					bytes when read failed	*/
+-#define IFC_TIMEOUT_MSECS	500  /* Maximum number of mSecs to wait
++#define IFC_TIMEOUT_MSECS	1000 /* Maximum timeout to wait
+ 					for IFC NAND Machine	*/
+ 
+ struct fsl_ifc_ctrl;
 -- 
 2.43.0
 
