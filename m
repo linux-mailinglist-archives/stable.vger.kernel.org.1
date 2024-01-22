@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4155838164
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85CAE837F4B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D86221C27683
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D95B32877F6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197F814A0B6;
-	Tue, 23 Jan 2024 01:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB5AC12A17D;
+	Tue, 23 Jan 2024 00:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1N6r/+HC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7e0fSns"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE381420BD;
-	Tue, 23 Jan 2024 01:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A25012A167;
+	Tue, 23 Jan 2024 00:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972122; cv=none; b=C3b9t6a3E1EQsoM+zfWVOn0fOC9yDnibkAMcjH55bpNyVL0QqVXqTf402bmVD+yGV3dHv/tc5M3VkM0OF0mAejDDPHT0aX39L1o3wtSJNNRCkruINugJh9/xKLskSw6BozJHQTrCtnrhZ7LeyugbjHoZWTNSX7jJCuzTbMbGIzE=
+	t=1705971047; cv=none; b=A7oXU9ugDz1wWcySUFOUciJWSYOlmna93j7ZnZzA98KclxR7XRFJF8+6BvFeKIlTZDV1P1Ii4apGIFFuN+4h4mTBcSP6MN7GDxKCwXZQSI8c0iqMA8X/N3IpPqn4GFTSLta319CNoq7k5WiAivlZTX7RxokY9YcqeRqNSMQustc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972122; c=relaxed/simple;
-	bh=XVI/XeP/w6Y1bJbidwZZQmxwqgUqvOAEhFUqXReOvg4=;
+	s=arc-20240116; t=1705971047; c=relaxed/simple;
+	bh=wd6XJhc6LtuFnhRuuFZoIQsFOz6BpovgapUIBMsnp+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=INGHdisihFrW4oT+1VqLRsoKX/doO8Gc2WhAFvIyAmOB1o1wpa8zw36GoVu+60W7S3/BL9YNf/K0RRELNPBBoERDQuu6fm3ANcV8bLU4AilT1slsEl664a6bsxfPmYn5D18swr2CGaruMcwkVktlkET0d+UdknaTmniQM3jU+3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1N6r/+HC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E880C43399;
-	Tue, 23 Jan 2024 01:08:42 +0000 (UTC)
+	 MIME-Version; b=fbHFA/aqUGfMNiaDKYWpB8xqS13/igzg/nUbFde0vD/ak7OpLETcV/toGIT/ZhRkcNSBt8TiPFlpTgoHUo4lsKunsN6qFqHy4bswKJNzQIOJvEDb4t4cwYxIE9Vj+6VTET76CDdgG3MtMN8Z+pELn29pHmMDrOEUVlEmBxMez/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7e0fSns; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4A4C43390;
+	Tue, 23 Jan 2024 00:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972122;
-	bh=XVI/XeP/w6Y1bJbidwZZQmxwqgUqvOAEhFUqXReOvg4=;
+	s=korg; t=1705971047;
+	bh=wd6XJhc6LtuFnhRuuFZoIQsFOz6BpovgapUIBMsnp+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1N6r/+HCRjFQgyGJYef7alIlbgi9ROY7xRnasGss7MYrGF2L/NrQfVStVdJiOKbLt
-	 dvOZpn2M/mdhb7eQkVZzwJRlb/sTO8TPsbeXoKVNQgeKt8RvuRrPGpTUY4t881tzj6
-	 V+Ne5GfvGKBPFWfpqb7k7CPwpL5ZQkhIUs4rBZL0=
+	b=b7e0fSnsRZPiEl1mvBz2m6l6ZjDQCFZQqH9mx8LSTUl/TbYIVOXOtDOJxyHq66Cvp
+	 sOkCNn/NoIdP+53o7oF30GXeW4PkGqTt1eaD7ESZz8eZ3QkBrdQht4N7vpzIFZFWL7
+	 YPp5jvaCsdIZ9cvmQX0IUdL+D76uPvZgf8W40VAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Minchan Kim <minchan@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.15 056/374] binder: fix use-after-free in shinkers callback
-Date: Mon, 22 Jan 2024 15:55:12 -0800
-Message-ID: <20240122235746.551873641@linuxfoundation.org>
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 145/417] Bluetooth: btmtkuart: fix recv_buf() return value
+Date: Mon, 22 Jan 2024 15:55:13 -0800
+Message-ID: <20240122235756.856716415@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-commit 3f489c2067c5824528212b0fc18b28d51332d906 upstream.
+[ Upstream commit 64057f051f20c2a2184b9db7f8037d928d68a4f4 ]
 
-The mmap read lock is used during the shrinker's callback, which means
-that using alloc->vma pointer isn't safe as it can race with munmap().
-As of commit dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in
-munmap") the mmap lock is downgraded after the vma has been isolated.
+Serdev recv_buf() callback is supposed to return the amount of bytes
+consumed, therefore an int in between 0 and count.
 
-I was able to reproduce this issue by manually adding some delays and
-triggering page reclaiming through the shrinker's debug sysfs. The
-following KASAN report confirms the UAF:
+Do not return negative number in case of issue, just print an error and
+return count. This fixes a WARN in ttyport_receive_buf().
 
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in zap_page_range_single+0x470/0x4b8
-  Read of size 8 at addr ffff356ed50e50f0 by task bash/478
-
-  CPU: 1 PID: 478 Comm: bash Not tainted 6.6.0-rc5-00055-g1c8b86a3799f-dirty #70
-  Hardware name: linux,dummy-virt (DT)
-  Call trace:
-   zap_page_range_single+0x470/0x4b8
-   binder_alloc_free_page+0x608/0xadc
-   __list_lru_walk_one+0x130/0x3b0
-   list_lru_walk_node+0xc4/0x22c
-   binder_shrink_scan+0x108/0x1dc
-   shrinker_debugfs_scan_write+0x2b4/0x500
-   full_proxy_write+0xd4/0x140
-   vfs_write+0x1ac/0x758
-   ksys_write+0xf0/0x1dc
-   __arm64_sys_write+0x6c/0x9c
-
-  Allocated by task 492:
-   kmem_cache_alloc+0x130/0x368
-   vm_area_alloc+0x2c/0x190
-   mmap_region+0x258/0x18bc
-   do_mmap+0x694/0xa60
-   vm_mmap_pgoff+0x170/0x29c
-   ksys_mmap_pgoff+0x290/0x3a0
-   __arm64_sys_mmap+0xcc/0x144
-
-  Freed by task 491:
-   kmem_cache_free+0x17c/0x3c8
-   vm_area_free_rcu_cb+0x74/0x98
-   rcu_core+0xa38/0x26d4
-   rcu_core_si+0x10/0x1c
-   __do_softirq+0x2fc/0xd24
-
-  Last potentially related work creation:
-   __call_rcu_common.constprop.0+0x6c/0xba0
-   call_rcu+0x10/0x1c
-   vm_area_free+0x18/0x24
-   remove_vma+0xe4/0x118
-   do_vmi_align_munmap.isra.0+0x718/0xb5c
-   do_vmi_munmap+0xdc/0x1fc
-   __vm_munmap+0x10c/0x278
-   __arm64_sys_munmap+0x58/0x7c
-
-Fix this issue by performing instead a vma_lookup() which will fail to
-find the vma that was isolated before the mmap lock downgrade. Note that
-this option has better performance than upgrading to a mmap write lock
-which would increase contention. Plus, mmap_write_trylock() has been
-recently removed anyway.
-
-Fixes: dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in munmap")
-Cc: stable@vger.kernel.org
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-3-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
+Fixes: 7237c4c9ec92 ("Bluetooth: mediatek: Add protocol support for MediaTek serial devices")
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btmtkuart.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -1005,7 +1005,9 @@ enum lru_status binder_alloc_free_page(s
- 		goto err_mmget;
- 	if (!mmap_read_trylock(mm))
- 		goto err_mmap_read_lock_failed;
--	vma = binder_alloc_get_vma(alloc);
-+	vma = vma_lookup(mm, page_addr);
-+	if (vma && vma != binder_alloc_get_vma(alloc))
-+		goto err_invalid_vma;
+diff --git a/drivers/bluetooth/btmtkuart.c b/drivers/bluetooth/btmtkuart.c
+index c98691cdbbd5..04b72394dda5 100644
+--- a/drivers/bluetooth/btmtkuart.c
++++ b/drivers/bluetooth/btmtkuart.c
+@@ -337,7 +337,7 @@ mtk_stp_split(struct btmtkuart_dev *bdev, const unsigned char *data, int count,
+ 	return data;
+ }
  
- 	list_lru_isolate(lru, item);
- 	spin_unlock(lock);
-@@ -1031,6 +1033,8 @@ enum lru_status binder_alloc_free_page(s
- 	mutex_unlock(&alloc->mutex);
- 	return LRU_REMOVED_RETRY;
+-static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
++static void btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
+ {
+ 	struct btmtkuart_dev *bdev = hci_get_drvdata(hdev);
+ 	const unsigned char *p_left = data, *p_h4;
+@@ -376,25 +376,20 @@ static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
+ 			bt_dev_err(bdev->hdev,
+ 				   "Frame reassembly failed (%d)", err);
+ 			bdev->rx_skb = NULL;
+-			return err;
++			return;
+ 		}
  
-+err_invalid_vma:
-+	mmap_read_unlock(mm);
- err_mmap_read_lock_failed:
- 	mmput_async(mm);
- err_mmget:
+ 		sz_left -= sz_h4;
+ 		p_left += sz_h4;
+ 	}
+-
+-	return 0;
+ }
+ 
+ static int btmtkuart_receive_buf(struct serdev_device *serdev, const u8 *data,
+ 				 size_t count)
+ {
+ 	struct btmtkuart_dev *bdev = serdev_device_get_drvdata(serdev);
+-	int err;
+ 
+-	err = btmtkuart_recv(bdev->hdev, data, count);
+-	if (err < 0)
+-		return err;
++	btmtkuart_recv(bdev->hdev, data, count);
+ 
+ 	bdev->hdev->stat.byte_rx += count;
+ 
+-- 
+2.43.0
+
 
 
 
