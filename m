@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-13670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE018837D58
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C59837FFC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9532D28602B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A783A28D2BE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CC353E2F;
-	Tue, 23 Jan 2024 00:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C68212CDBD;
+	Tue, 23 Jan 2024 00:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6Sr997o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AfA9MD77"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A12F52F7C;
-	Tue, 23 Jan 2024 00:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF45E12CDB7;
+	Tue, 23 Jan 2024 00:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969899; cv=none; b=mgX+wEbprth2FtcDuVImIqOSWN5GGl0c9JBT72ON6gMMlCNzBE+diosIBfMaLzL+f7QAugW4cZTVockoosWZVTVsG0K6/OoIy/3B4DVUN7ZJ4OQm+cdhOJyGYU//6SXEuudywA28KrUXOUmAEPna9RWdJ0ViqoiJDGnPJx3eElk=
+	t=1705971485; cv=none; b=JnubScalgK/+tbq/KM9gB3k5vGcuXOEssqV5WTzWGEVXiK5ryWD//y14lTbgjQpU5+mrUQZBhSTt3uRuXZe/jmEFr526mRLa5LsF5ZeUi5i7bMTih9KCsK9ZwMxBRNuhvyYk1w+cN15qduWRK86k7J8qLcjpAgl2HJdu7ackCZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969899; c=relaxed/simple;
-	bh=Tx9DwdWCbOJ/q3nPoPsHMbEQFbjvJgeuOBEidwS1tCo=;
+	s=arc-20240116; t=1705971485; c=relaxed/simple;
+	bh=IXZat+ICceP8js8QlRcXyIRc5P48P3xXZt9V1q2Sh5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q0PFrKkJXFxNG6UwIXbU22E2I0sEJrXlpr1Rzy51uziDU4ki0aXlw35CwXW0EAm4jvdjmkmo9/E2NFG4LQnpiinVvNb0p3k/xOCESuh2/sn9Lc5BBbLGFMcuY95hAVEc0/xH/snCkM7I9sJa1j//aIeN73R4/FgXz0AmxXblp28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6Sr997o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3752C433C7;
-	Tue, 23 Jan 2024 00:31:38 +0000 (UTC)
+	 MIME-Version; b=an2v9crForUkNGslvIcwxiWukaiOnFbVMv/iiB0V6MXU5oYms6NNN1pZ6jMqSHvUAY/txrZDe8tRXOgreez232Wcc6qtJWMhlfvForqDxO1jOVUnVvKGMGHRWviXkspej3gKxavC0lrFSSrpR26dAr7YQBh8hQJvYzHD+n0mlwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AfA9MD77; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE59C433C7;
+	Tue, 23 Jan 2024 00:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969898;
-	bh=Tx9DwdWCbOJ/q3nPoPsHMbEQFbjvJgeuOBEidwS1tCo=;
+	s=korg; t=1705971484;
+	bh=IXZat+ICceP8js8QlRcXyIRc5P48P3xXZt9V1q2Sh5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i6Sr997ou7wvBOnovwcu9/R0SFWb6CqwGao+SIPwfN0C25iTMCZWPFl0xPnnjMsS1
-	 ny42nZz9f7q0FOd/hMPwrV3f0dv4nf2HY1eH+gbD4NLXcSa3WmTmaH0gkk/X9p0ieP
-	 W4DtLzfc9BqbE5SmPKFOUpsof1v8z6Q2GXnqogmo=
+	b=AfA9MD77ArGqTxkofL0rBAN9WcctFv8pV3523JS4aybT0KXxpY5wF7zc2xvI7HcsD
+	 wPM8sMHSbO3v6qGC+h5r3uh4npneCuLvAcPom2qxqPOtghufCn6GEv44L2mh7/5T0p
+	 UspCWefqJklq6g4wTaZmDLZQhytQmwAszp2LSjTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@linaro.org>,
-	Veronika Molnarova <vmolnaro@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Michael Petlan <mpetlan@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 514/641] perf test record user-regs: Fix mask for vg register
+	Alice Ryhl <aliceryhl@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 6.1 250/417] binder: fix async space check for 0-sized buffers
 Date: Mon, 22 Jan 2024 15:56:58 -0800
-Message-ID: <20240122235834.172295462@linuxfoundation.org>
+Message-ID: <20240122235800.535725245@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Veronika Molnarova <vmolnaro@redhat.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 28b01743ca752cea5ab182297d8b912b22f2a2d1 ]
+commit 3091c21d3e9322428691ce0b7a0cfa9c0b239eeb upstream.
 
-The 'vg' register for arm64 shows up in --user_regs as available when
-masking the variable AT_HWCAP with 1 << 22 returns '1' as done in
-perf_regs.c.
+Move the padding of 0-sized buffers to an earlier stage to account for
+this round up during the alloc->free_async_space check.
 
-However, in subtests for support of SVE, the check for the 'vg' register
-is done by masking the variable AT_HWCAP with the value 0x200000 which
-is equals to 1 << 21 instead of 1 << 22.
-
-This results in inconsistencies on certain systems where the test
-expects that the 'vg' register is not operational when it is, and
-vice-versa.
-
-During the testing on a machine that the test expected not to have the
-'vg' register available, 'perf record' with the option --user-regs
-showed records for the 'vg' register together with all of the others,
-which means that the mask for the subtest of perf_event_attr is off by
-one.
-
-Change the value of the mask from 0x200000 to 0x400000 to correct it.
-
-Fixes: 9440ebdc333dd12e ("perf test arm64: Add attr tests for new VG register")
-Reviewed-by: Leo Yan <leo.yan@linaro.org>
-Signed-off-by: Veronika Molnarova <vmolnaro@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Michael Petlan <mpetlan@redhat.com>
-Link: https://lore.kernel.org/r/20231201194617.13012-1-vmolnaro@redhat.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-5-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/tests/attr/test-record-user-regs-no-sve-aarch64 | 2 +-
- tools/perf/tests/attr/test-record-user-regs-sve-aarch64    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/android/binder_alloc.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/tests/attr/test-record-user-regs-no-sve-aarch64 b/tools/perf/tests/attr/test-record-user-regs-no-sve-aarch64
-index fbb065842880..bed765450ca9 100644
---- a/tools/perf/tests/attr/test-record-user-regs-no-sve-aarch64
-+++ b/tools/perf/tests/attr/test-record-user-regs-no-sve-aarch64
-@@ -6,4 +6,4 @@ args    = --no-bpf-event --user-regs=vg kill >/dev/null 2>&1
- ret     = 129
- test_ret = true
- arch    = aarch64
--auxv    = auxv["AT_HWCAP"] & 0x200000 == 0
-+auxv    = auxv["AT_HWCAP"] & 0x400000 == 0
-diff --git a/tools/perf/tests/attr/test-record-user-regs-sve-aarch64 b/tools/perf/tests/attr/test-record-user-regs-sve-aarch64
-index c598c803221d..a65113cd7311 100644
---- a/tools/perf/tests/attr/test-record-user-regs-sve-aarch64
-+++ b/tools/perf/tests/attr/test-record-user-regs-sve-aarch64
-@@ -6,7 +6,7 @@ args    = --no-bpf-event --user-regs=vg kill >/dev/null 2>&1
- ret     = 1
- test_ret = true
- arch    = aarch64
--auxv    = auxv["AT_HWCAP"] & 0x200000 == 0x200000
-+auxv    = auxv["AT_HWCAP"] & 0x400000 == 0x400000
- kernel_since = 6.1
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -407,6 +407,10 @@ static struct binder_buffer *binder_allo
+ 				alloc->pid, extra_buffers_size);
+ 		return ERR_PTR(-EINVAL);
+ 	}
++
++	/* Pad 0-size buffers so they get assigned unique addresses */
++	size = max(size, sizeof(void *));
++
+ 	if (is_async &&
+ 	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
+@@ -415,9 +419,6 @@ static struct binder_buffer *binder_allo
+ 		return ERR_PTR(-ENOSPC);
+ 	}
  
- [event:base-record]
--- 
-2.43.0
-
+-	/* Pad 0-size buffers so they get assigned unique addresses */
+-	size = max(size, sizeof(void *));
+-
+ 	while (n) {
+ 		buffer = rb_entry(n, struct binder_buffer, rb_node);
+ 		BUG_ON(!buffer->free);
 
 
 
