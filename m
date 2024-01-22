@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22688838189
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3BA8837FD3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55DCC1C29314
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE769B2B03C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B5F259C;
-	Tue, 23 Jan 2024 01:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D03605D1;
+	Tue, 23 Jan 2024 00:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M33cg7xO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBAyVo4j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162391FBF;
-	Tue, 23 Jan 2024 01:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906BA26ACB;
+	Tue, 23 Jan 2024 00:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972168; cv=none; b=B7npe8xdTKg0C686GF5CqlG9tIhiveYO7QxdJuyP5C5rqv+nfsiWRNCZ5jYVTQqKinL2dmwupqnvYdsnZrsg6LekiKa8YA/ElphVnw/J+eKJ3v57aZ5j4Nn7lSVQpq2YlJPGF7eUgpGt+hHzssyNHZZgCz0OX+joGTA41eeKjfQ=
+	t=1705970912; cv=none; b=ct4y2VvIqErBELki3fM0jzwh3miPBuHVxYSWoB3KjaIY2kYz66rorHx+GyNEloVXSaL5aKjkC+IxG20uD+fDDg3YGBjkodAXUdJ6qqCOAN6UYhufTyYUoPIUvymOCwV858fLD6Qnzb9ytgFwOvg4IIPIH0MluiMaq88DGRX9cSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972168; c=relaxed/simple;
-	bh=s0713vGKUb838GfSccjUzd+g0aoJep/y9D6givxpX2s=;
+	s=arc-20240116; t=1705970912; c=relaxed/simple;
+	bh=BY4EV9zbkAT6Ei4xhcckM2EnKI0bf4UKPUHEeRxGMRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NdMkndBIE34mRe5QEBqrmzyLWYZWw/BI80E2254y5qZs3+5FpjxDJXQCr8fKwXTLwg2+1v7ob13iLoRVPjtpkr2a22TuhaKkEEgDucABGY5fvOn5FFjqajBVZKTW5jl4APEav1n1SOpxFkw4WnWiqueK6C+NBS0KvMTPc69d0pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M33cg7xO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A4EC43390;
-	Tue, 23 Jan 2024 01:09:27 +0000 (UTC)
+	 MIME-Version; b=ASVCNtC8NIHtoco1AzE00Zq0oayUewtVzrfWxIy2UuUmuHyIALG/9jhvQaNRf4WevcE9y0SCz+JK3ZuS0Oxti/3qqGUl3J8B9hKH6QqDEJbMx5rPXLjwIY146zcjeJEmmEX4gHqzpiOYkN1D5IFpJml2UmeQuqj9tEOjx0nhbro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBAyVo4j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AAB1C433C7;
+	Tue, 23 Jan 2024 00:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972167;
-	bh=s0713vGKUb838GfSccjUzd+g0aoJep/y9D6givxpX2s=;
+	s=korg; t=1705970912;
+	bh=BY4EV9zbkAT6Ei4xhcckM2EnKI0bf4UKPUHEeRxGMRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M33cg7xO8W02rrcZsuU6JWetdWhDXogNrM4WUkkExXDsm8r/wr8CbPbovCqC/Kesu
-	 HQ4ec0g5XY/DmFylRlFLkpEYsTEMZYDhjbAC2tGhwz+DK+rkc6T9HHHJtk3jt5KxNz
-	 HE1937KPqc8Wc+hnSIoUVSQdpGK4q0wgI+JZUOxE=
+	b=dBAyVo4jxSi6FKmnEjU9iq0fijrSmh6CByP7LSvA7u7YlZGKu0mRDhclTGuQXsFKg
+	 xB842rMPIaWfIwwjlVnaWNg57xNcnkp0XCydmc60aDzW1sXCC9d1RTCZO138rq15Tb
+	 o4n0TVGRUsS3xMiXjgH+vf4S4rBspZuGhBoJnP9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Halil Pasic <pasic@linux.ibm.com>,
-	wangyangxin <wangyangxin1@huawei.com>,
-	Gonglei <arei.gonglei@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 094/374] crypto: virtio - Handle dataq logic with tasklet
+	stable <stable@kernel.org>,
+	Guanghui Feng <guanghuifeng@linux.alibaba.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: [PATCH 5.10 044/286] uio: Fix use-after-free in uio_open
 Date: Mon, 22 Jan 2024 15:55:50 -0800
-Message-ID: <20240122235747.878975783@linuxfoundation.org>
+Message-ID: <20240122235733.724536121@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gonglei (Arei) <arei.gonglei@huawei.com>
+From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-[ Upstream commit fed93fb62e05c38152b0fc1dc9609639e63eed76 ]
+commit 0c9ae0b8605078eafc3bea053cc78791e97ba2e2 upstream.
 
-Doing ipsec produces a spinlock recursion warning.
-This is due to crypto_finalize_request() being called in the upper half.
-Move virtual data queue processing of virtio-crypto driver to tasklet.
+core-1				core-2
+-------------------------------------------------------
+uio_unregister_device		uio_open
+				idev = idr_find()
+device_unregister(&idev->dev)
+put_device(&idev->dev)
+uio_device_release
+				get_device(&idev->dev)
+kfree(idev)
+uio_free_minor(minor)
+				uio_release
+				put_device(&idev->dev)
+				kfree(idev)
+-------------------------------------------------------
 
-Fixes: dbaf0624ffa57 ("crypto: add virtio-crypto driver")
-Reported-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: wangyangxin <wangyangxin1@huawei.com>
-Signed-off-by: Gonglei <arei.gonglei@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In the core-1 uio_unregister_device(), the device_unregister will kfree
+idev when the idev->dev kobject ref is 1. But after core-1
+device_unregister, put_device and before doing kfree, the core-2 may
+get_device. Then:
+1. After core-1 kfree idev, the core-2 will do use-after-free for idev.
+2. When core-2 do uio_release and put_device, the idev will be double
+   freed.
+
+To address this issue, we can get idev atomic & inc idev reference with
+minor_lock.
+
+Fixes: 57c5f4df0a5a ("uio: fix crash after the device is unregistered")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Link: https://lore.kernel.org/r/1703152663-59949-1-git-send-email-guanghuifeng@linux.alibaba.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/virtio/virtio_crypto_common.h |  2 ++
- drivers/crypto/virtio/virtio_crypto_core.c   | 23 +++++++++++---------
- 2 files changed, 15 insertions(+), 10 deletions(-)
+ drivers/uio/uio.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/virtio/virtio_crypto_common.h b/drivers/crypto/virtio/virtio_crypto_common.h
-index a24f85c589e7..faa804a15299 100644
---- a/drivers/crypto/virtio/virtio_crypto_common.h
-+++ b/drivers/crypto/virtio/virtio_crypto_common.h
-@@ -10,6 +10,7 @@
- #include <linux/virtio.h>
- #include <linux/crypto.h>
- #include <linux/spinlock.h>
-+#include <linux/interrupt.h>
- #include <crypto/aead.h>
- #include <crypto/aes.h>
- #include <crypto/engine.h>
-@@ -27,6 +28,7 @@ struct data_queue {
- 	char name[32];
+--- a/drivers/uio/uio.c
++++ b/drivers/uio/uio.c
+@@ -464,13 +464,13 @@ static int uio_open(struct inode *inode,
  
- 	struct crypto_engine *engine;
-+	struct tasklet_struct done_task;
- };
- 
- struct virtio_crypto {
-diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
-index e2375d992308..370c47c8a67a 100644
---- a/drivers/crypto/virtio/virtio_crypto_core.c
-+++ b/drivers/crypto/virtio/virtio_crypto_core.c
-@@ -22,27 +22,28 @@ virtcrypto_clear_request(struct virtio_crypto_request *vc_req)
+ 	mutex_lock(&minor_lock);
+ 	idev = idr_find(&uio_idr, iminor(inode));
+-	mutex_unlock(&minor_lock);
+ 	if (!idev) {
+ 		ret = -ENODEV;
++		mutex_unlock(&minor_lock);
+ 		goto out;
  	}
+-
+ 	get_device(&idev->dev);
++	mutex_unlock(&minor_lock);
+ 
+ 	if (!try_module_get(idev->owner)) {
+ 		ret = -ENODEV;
+@@ -1062,9 +1062,8 @@ void uio_unregister_device(struct uio_in
+ 	wake_up_interruptible(&idev->wait);
+ 	kill_fasync(&idev->async_queue, SIGIO, POLL_HUP);
+ 
+-	device_unregister(&idev->dev);
+-
+ 	uio_free_minor(minor);
++	device_unregister(&idev->dev);
+ 
+ 	return;
  }
- 
--static void virtcrypto_dataq_callback(struct virtqueue *vq)
-+static void virtcrypto_done_task(unsigned long data)
- {
--	struct virtio_crypto *vcrypto = vq->vdev->priv;
-+	struct data_queue *data_vq = (struct data_queue *)data;
-+	struct virtqueue *vq = data_vq->vq;
- 	struct virtio_crypto_request *vc_req;
--	unsigned long flags;
- 	unsigned int len;
--	unsigned int qid = vq->index;
- 
--	spin_lock_irqsave(&vcrypto->data_vq[qid].lock, flags);
- 	do {
- 		virtqueue_disable_cb(vq);
- 		while ((vc_req = virtqueue_get_buf(vq, &len)) != NULL) {
--			spin_unlock_irqrestore(
--				&vcrypto->data_vq[qid].lock, flags);
- 			if (vc_req->alg_cb)
- 				vc_req->alg_cb(vc_req, len);
--			spin_lock_irqsave(
--				&vcrypto->data_vq[qid].lock, flags);
- 		}
- 	} while (!virtqueue_enable_cb(vq));
--	spin_unlock_irqrestore(&vcrypto->data_vq[qid].lock, flags);
-+}
-+
-+static void virtcrypto_dataq_callback(struct virtqueue *vq)
-+{
-+	struct virtio_crypto *vcrypto = vq->vdev->priv;
-+	struct data_queue *dq = &vcrypto->data_vq[vq->index];
-+
-+	tasklet_schedule(&dq->done_task);
- }
- 
- static int virtcrypto_find_vqs(struct virtio_crypto *vi)
-@@ -99,6 +100,8 @@ static int virtcrypto_find_vqs(struct virtio_crypto *vi)
- 			ret = -ENOMEM;
- 			goto err_engine;
- 		}
-+		tasklet_init(&vi->data_vq[i].done_task, virtcrypto_done_task,
-+				(unsigned long)&vi->data_vq[i]);
- 	}
- 
- 	kfree(names);
--- 
-2.43.0
-
 
 
 
