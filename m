@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-14988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F61B838370
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD5F8383D7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21D5B1F26F1B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7ACA6B20AF8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C4B62A04;
-	Tue, 23 Jan 2024 01:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC8862A06;
+	Tue, 23 Jan 2024 01:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6LiAjos"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LAfakB6d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7697C62A00;
-	Tue, 23 Jan 2024 01:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EA762A0F;
+	Tue, 23 Jan 2024 01:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974974; cv=none; b=jKLz61ha4NVrV1C6duU2BUGcc9SEFXC6SxgGElDNQoEG5c7jBsdeUIDxkrWZYA/fx0JA9ExLGQ0ouGew/rx6qqdFE6EGZUNJmL10OuxaWWKME2NbvgND30hIdMAyDv9LSAopVg0dN/GQhdPSu1q5yz59FnLleMHPMMl9ELLEadU=
+	t=1705974976; cv=none; b=Hr3K1ZiAwJScjhVtE4IdnrOqzcp/uRWtzFNthl20TWc7IEYTZqId2CEqxB3cO0I00+9U5oI6P9kfgIJfLXjlDplw5oBiX4hu7fdtw5NgSumfq/TolHFtsY2StQNC3ljgYF8E+lcqRt6eHnLmgl6lGHpqou++fnDRKMCBJAeJw14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974974; c=relaxed/simple;
-	bh=m8w1lHjG7Yd5A9DQuk8VVbhlFEIEiHnlqcRoaTWZcPo=;
+	s=arc-20240116; t=1705974976; c=relaxed/simple;
+	bh=eEmlSjk6rpRuaGSggUDSI1cKPthMUuVuu/4Na3ODas0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M2whmHKgPtjP/nQktoKmfit6SYcZUgwmD+l6DbHrARXeuvG5txZJjVP6+uylY3r4NmHvjke9d0sjGa5eUVpzJ5n6j4PW/JqR81aDdOOHOlE5KaS0XGJsnkduqG9eR8sE5tPvvBUstFbBPA52p3wmfA9mINSuuVTO7OIIrd2Hs00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6LiAjos; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFB6C433F1;
-	Tue, 23 Jan 2024 01:56:13 +0000 (UTC)
+	 MIME-Version; b=EahrZHnAXiG/yHSejoifxtwdxSzgmyOW9Mo5Cdm8pLBA1fpsjBrXIIyOKbL5yGP/3YMxWBn7x4M5VmCL9wTY5rAH9GcXYP3qn016UsOGiiBzgQYMF+wWGZCZdpoNiM9Yrfrq5oo44kyKO1qhnMLZ/IGLlhDgZ00HvsSksOXtS5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LAfakB6d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E02BC43390;
+	Tue, 23 Jan 2024 01:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974973;
-	bh=m8w1lHjG7Yd5A9DQuk8VVbhlFEIEiHnlqcRoaTWZcPo=;
+	s=korg; t=1705974976;
+	bh=eEmlSjk6rpRuaGSggUDSI1cKPthMUuVuu/4Na3ODas0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h6LiAjos77Cz3a6DU+ZR3ZCwqnxQYlkwbtQtiEzis/VXrPP2CxQoJ7RkACPe/+CJD
-	 V+bL3zyLt5iLpgJh5aK/I3NOa4wUltGCGrviDZ6wv5/uZo7SD4ce5TW1a3pPB2L9uk
-	 c0BiMVHpq0YckM7fNmXnPZLDY+Pop+s//+LA9Aq0=
+	b=LAfakB6d27mcxFNIlclk0EsBadYxBuKEjquq2sP6utYoD53i+ckhPC4mR6VC4oLf+
+	 BX4e8pWIwH5Y4gOGXtUw63h4ov81wx8OfwdD6MByG+/myeGY2G9u5xoIswdhJas539
+	 QTuXvIfrhgvor60kOXqno5v2M3p5amZMX1IDdLjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Tony Lindgren <tony@atomide.com>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 303/374] serial: 8250: omap: Dont skip resource freeing if pm_runtime_resume_and_get() failed
-Date: Mon, 22 Jan 2024 15:59:19 -0800
-Message-ID: <20240122235755.340325799@linuxfoundation.org>
+Subject: [PATCH 5.15 304/374] libapi: Add missing linux/types.h header to get the __u64 type on io.h
+Date: Mon, 22 Jan 2024 15:59:20 -0800
+Message-ID: <20240122235755.385032971@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
 References: <20240122235744.598274724@linuxfoundation.org>
@@ -60,52 +63,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit ad90d0358bd3b4554f243a425168fc7cebe7d04e ]
+[ Upstream commit af76b2dec0984a079d8497bfa37d29a9b55932e1 ]
 
-Returning an error code from .remove() makes the driver core emit the
-little helpful error message:
+There are functions using __u64, so we need to have the linux/types.h
+header otherwise we'll break when its not included before api/io.h.
 
-	remove callback returned a non-zero value. This will be ignored.
-
-and then remove the device anyhow. So all resources that were not freed
-are leaked in this case. Skipping serial8250_unregister_port() has the
-potential to keep enough of the UART around to trigger a use-after-free.
-
-So replace the error return (and with it the little helpful error
-message) by a more useful error message and continue to cleanup.
-
-Fixes: e3f0c638f428 ("serial: 8250: omap: Fix unpaired pm_runtime_put_sync() in omap8250_remove()")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20231110152927.70601-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e95770af4c4a280f ("tools api: Add a lightweight buffered reading api")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/lkml/ZWjDPL+IzPPsuC3X@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_omap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/lib/api/io.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index 20e0703f1def..770c4cabdf9b 100644
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -1492,7 +1492,7 @@ static int omap8250_remove(struct platform_device *pdev)
+diff --git a/tools/lib/api/io.h b/tools/lib/api/io.h
+index 777c20f6b604..458acd294237 100644
+--- a/tools/lib/api/io.h
++++ b/tools/lib/api/io.h
+@@ -9,6 +9,7 @@
  
- 	err = pm_runtime_resume_and_get(&pdev->dev);
- 	if (err)
--		return err;
-+		dev_err(&pdev->dev, "Failed to resume hardware\n");
+ #include <stdlib.h>
+ #include <unistd.h>
++#include <linux/types.h>
  
- 	serial8250_unregister_port(priv->line);
- 	priv->line = -ENODEV;
+ struct io {
+ 	/* File descriptor being read/ */
 -- 
 2.43.0
 
