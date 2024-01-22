@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06F683800F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A66EE838345
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:27:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 708751F2BE6B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B5E2B23F01
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2221165BB6;
-	Tue, 23 Jan 2024 00:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA635EE9B;
+	Tue, 23 Jan 2024 01:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HK7VfH37"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKN0LxnN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70B8657A2;
-	Tue, 23 Jan 2024 00:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08815DF01;
+	Tue, 23 Jan 2024 01:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971525; cv=none; b=mFoPwpuQvEXKhwW7yjiDH55EZCmaBiUXjus+1AuNPErx38NOSMmQQRgYYF6UFF+xWxMrIChc/kDuV58vHLeA/iQV4zMrCL9hAiRmDfd0UsHiF+6bu86k+WvvuOOYPtG0nR7ebkLhKW+lT2t6kb8L6HmcGwH6UGHqNwu6bCvMDmA=
+	t=1705974415; cv=none; b=nQtDex3JaXv8CrHRa6MefDcSrrIjEyNOq9Ca8JollioUC07dHCpln0QL6ILxGGd0P920z6FB42XDgETU/cCDNoJpIsXk2RLFe0k075J2t3ZLZvQjuYp+hEeZMaHlKen6I523CBsA0guHC/mwcrSzZibBHkrbAeaKcmxggZLZ0FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971525; c=relaxed/simple;
-	bh=Oi3ey0wLX0QMs7AkVjVtbPkzRY+O8KWrwbh95ziD8mM=;
+	s=arc-20240116; t=1705974415; c=relaxed/simple;
+	bh=j39wvLsL7XSAANaYI+4ILaVvLPFKuSuNYgZsTB0Up+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bgACzJOhaI8iEzczDuLkLoUcusnLUH52xUSQSqeMjoTDoT5XKu09sYne9Ghd4oFHq8cnO6UrmdDoZSKKpbepJjdJPimtq7GNgqk0JYKN2pf12oxcYRSF6f+bG3tPAY9YSjPk+yPRjjG9ZE2Ah3p0jLkL9GyAEIgA9fsXVzeBczw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HK7VfH37; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F1BC433C7;
-	Tue, 23 Jan 2024 00:58:45 +0000 (UTC)
+	 MIME-Version; b=dk4VTin6GYN4SiOwlue4oTrP0rvCX12csDYq7LArpcbJQuCS+ak0+534QSuw+iFcwczgtMaPAeLYin/yqQfuHL+foKpJWTA841HeFuSi24mUBENFk3yV5Ia5RmtrRHdP2h5/6IyyqGn8dbc2vJGCOixrhKLBpQEDBIkq8HFs7Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKN0LxnN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95604C433F1;
+	Tue, 23 Jan 2024 01:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971525;
-	bh=Oi3ey0wLX0QMs7AkVjVtbPkzRY+O8KWrwbh95ziD8mM=;
+	s=korg; t=1705974415;
+	bh=j39wvLsL7XSAANaYI+4ILaVvLPFKuSuNYgZsTB0Up+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HK7VfH37idZxbdECZCIGwOpLMBNGj5IfGpXj5vBs7PH5C1ZYLzhqWOXsk3wquiCjL
-	 +MYbPWhYP6CDRr8DJflzN4whJY5Gn9oB4E+TIFJSwV6DyY1ZzQsxp4PupJ5X+wV1N6
-	 fEBRLkkAGtN5aK9lPDoplIpgJwp+SbYd2zeU4VvQ=
+	b=DKN0LxnNuKv/opblHIlWtPi/d40+OCXF5cugc/fxEgXskNqjgfEE6+L9f/A64iJpT
+	 HNwXi5g7/tOj3nSgAQjn83SSwUySKIHdMZu2o6zOHzpiOwMjCY8R8nrHGDdHXJGXlZ
+	 yJDAKKmycYgmi6fWsMdvFhUh+lqqgmbcsdA04ToA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Dafna Hirschfeld <dafna@fastmail.com>,
-	Paul Elder <paul.elder@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 166/286] media: rkisp1: Disable runtime PM in probe error path
-Date: Mon, 22 Jan 2024 15:57:52 -0800
-Message-ID: <20240122235738.570450085@linuxfoundation.org>
+Subject: [PATCH 5.15 217/374] clk: zynqmp: Add a check for NULL pointer
+Date: Mon, 22 Jan 2024 15:57:53 -0800
+Message-ID: <20240122235752.204829520@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
 
-[ Upstream commit 13c9810281f8b24af9b7712cd84a1fce61843e93 ]
+[ Upstream commit 6ab9810cfe6c8f3d8b8750c827d7870abd3751b9 ]
 
-If the v4l2_device_register() call fails, runtime PM is left enabled.
-Fix it.
+Add a NULL pointer check as clk_hw_get_parent can return NULL.
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Dafna Hirschfeld <dafna@fastmail.com>
-Reviewed-by: Paul Elder <paul.elder@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Stable-dep-of: 452f604a4683 ("media: rkisp1: Fix media device memory leak")
+Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
+Link: https://lore.kernel.org/r/20220518055314.2486-1-shubhrajyoti.datta@xilinx.com
+Acked-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Stable-dep-of: 1fe15be1fb61 ("drivers: clk: zynqmp: update divider round rate logic")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/rkisp1/rkisp1-dev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/zynqmp/divider.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/media/rkisp1/rkisp1-dev.c b/drivers/staging/media/rkisp1/rkisp1-dev.c
-index 06de5540c8af..663b2efec9b0 100644
---- a/drivers/staging/media/rkisp1/rkisp1-dev.c
-+++ b/drivers/staging/media/rkisp1/rkisp1-dev.c
-@@ -518,7 +518,7 @@ static int rkisp1_probe(struct platform_device *pdev)
+diff --git a/drivers/clk/zynqmp/divider.c b/drivers/clk/zynqmp/divider.c
+index 9e535d3e1c0c..47a199346ddf 100644
+--- a/drivers/clk/zynqmp/divider.c
++++ b/drivers/clk/zynqmp/divider.c
+@@ -120,10 +120,13 @@ static void zynqmp_get_divider2_val(struct clk_hw *hw,
+ 	long error = LONG_MAX;
+ 	unsigned long div1_prate;
+ 	struct clk_hw *div1_parent_hw;
++	struct zynqmp_clk_divider *pdivider;
+ 	struct clk_hw *div2_parent_hw = clk_hw_get_parent(hw);
+-	struct zynqmp_clk_divider *pdivider =
+-				to_zynqmp_clk_divider(div2_parent_hw);
  
- 	ret = v4l2_device_register(rkisp1->dev, &rkisp1->v4l2_dev);
- 	if (ret)
--		return ret;
-+		goto err_pm_runtime_disable;
++	if (!div2_parent_hw)
++		return;
++
++	pdivider = to_zynqmp_clk_divider(div2_parent_hw);
+ 	if (!pdivider)
+ 		return;
  
- 	ret = media_device_register(&rkisp1->media_dev);
- 	if (ret) {
-@@ -538,6 +538,7 @@ static int rkisp1_probe(struct platform_device *pdev)
- 	media_device_unregister(&rkisp1->media_dev);
- err_unreg_v4l2_dev:
- 	v4l2_device_unregister(&rkisp1->v4l2_dev);
-+err_pm_runtime_disable:
- 	pm_runtime_disable(&pdev->dev);
- 	return ret;
- }
 -- 
 2.43.0
 
