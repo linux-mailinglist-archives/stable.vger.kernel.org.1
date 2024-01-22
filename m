@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C0B837D70
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E943838033
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C8151F23259
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 313F81C2961A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A1C51C32;
-	Tue, 23 Jan 2024 00:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552BE65BC0;
+	Tue, 23 Jan 2024 00:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKUDPpzo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVQJIIUd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120154E1D8;
-	Tue, 23 Jan 2024 00:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B0F64CEB;
+	Tue, 23 Jan 2024 00:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969951; cv=none; b=F9n9eg4zz+tFDPZp5qAAfd1J4VoUDrK4pwczM1cz25Sgf7elHxLdoaPTijIKJqWhARaEO5M9Kvxb6+eZDoiXn9fWoglNejrdN2BEV2q/Lcr5Bj0gOJGcTXipujaITDOFJKfd3JOTxvUwMULl+8Li+Xs8qfBtV8iSMKxGxEHCLCw=
+	t=1705971585; cv=none; b=Xz5Qm4swsYlgbvk43hngE+suofl6num7xGM3QpB3vMh/XfYnFwhWHU4oVtyQHi+1HB90hbmw8djEHWm0Kw7VkoCmUkF6zwavmPqStPFAg670irivhNkil1JbdHAMMUDoJNIwApEIV2e2/r8PSNJuwIVS/N019tIY31lUllqPRT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969951; c=relaxed/simple;
-	bh=Rm8Fhv8iuJKvmTtJ+QL4toP6IaCDEKVOstNMqT03ZvQ=;
+	s=arc-20240116; t=1705971585; c=relaxed/simple;
+	bh=1v8FL6Iu8FQjoO3MfK1z6PrC3oVRbymHNPqcy7tmvng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ufZglDFhrziMPNNnxogr5eKRl2umy+RDYJPZTt8DON2WVZcTZYQC3NCNhE7s1nh6CzmhVwOZmk00gzEgWggqSFi2ft9XDejfq6a7zj2HoQ5L2fe5k1YCglq9RdFLrNT3tCcEJJ+QgtotG4Uvh88daM6NBL9tTfhgib+TcapAQFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKUDPpzo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CE8C433F1;
-	Tue, 23 Jan 2024 00:32:30 +0000 (UTC)
+	 MIME-Version; b=dsbIYZJT8xZKimOefcu54zcTjCc7XPZHPBeLS9rqg+CC85c/nRDVMnNAuQX6viIsNHNgYzhKAlc15VKnicNA1+X4T26jQZfPaCQY+/F4kRCS5UC6sz9VvzXpbqcTcMV1VaXeH/vs7197g3DiZn2wyl7n+VEaPdkgdZYI2940Fws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVQJIIUd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28C7C433F1;
+	Tue, 23 Jan 2024 00:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969950;
-	bh=Rm8Fhv8iuJKvmTtJ+QL4toP6IaCDEKVOstNMqT03ZvQ=;
+	s=korg; t=1705971584;
+	bh=1v8FL6Iu8FQjoO3MfK1z6PrC3oVRbymHNPqcy7tmvng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QKUDPpzorTB00p0/OdOjlL5ACwLkk5RMYYLimmPSrbWACKNEmYfD094hz4FzhFHs4
-	 l0F8fxzoqx9wrfz2sVMdscpPZOKtq4FwYiIRdldifd0XSk690iSHHiCPsrDpeFTXTo
-	 op6ldYEh1V2tEZ++QAg2GnZfrMu45p0pSYVmyj0I=
+	b=KVQJIIUdLaStB+MNXqm8fiyU+AHYkIK0phHmOODlVBAZ6B3l7Dl0N5Li+cX4u04mY
+	 aLmgFcCUDMG1Davgqqcqw0kIGGX4txWMevuWekCAZvYVV9VqPjx2VowPK0gEYM/JiC
+	 c72OvTSbiw7toquEUE41vQfQpZVeMDJdsrdVnnvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 537/641] bus: mhi: ep: Do not allocate event ring element on stack
-Date: Mon, 22 Jan 2024 15:57:21 -0800
-Message-ID: <20240122235834.929686510@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH 6.1 274/417] serial: imx: Ensure that imx_uart_rs485_config() is called with enabled clock
+Date: Mon, 22 Jan 2024 15:57:22 -0800
+Message-ID: <20240122235801.343961135@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,131 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
 
-[ Upstream commit 987fdb5a43a66764808371b54e6047834170d565 ]
+commit 7c45eaa813476bd195ac1227a64b52f9cf2e2030 upstream.
 
-It is possible that the host controller driver would use DMA framework to
-write the event ring element. So avoid allocating event ring element on the
-stack as DMA cannot work on vmalloc memory.
+There are register accesses in the function imx_uart_rs485_config(). The
+clock must be enabled for these accesses. This was ensured by calling it
+via the function uart_rs485_config() in the probe() function within the
+range where the clock is enabled. With the commit 7c7f9bc986e6 ("serial:
+Deassert Transmit Enable on probe in driver-specific way") it was removed
+from the probe() function and is now only called through the function
+uart_add_one_port() which is located at the end of the probe() function.
+But the clock is already switched off in this area. To ensure that the
+clock is enabled during register access, move the disabling of the clock
+to the very end of the probe() function. To avoid leaking enabled clocks
+on error also add an error path for exiting with disabling the clock.
 
-Cc: stable@vger.kernel.org
-Fixes: 961aeb689224 ("bus: mhi: ep: Add support for sending events to the host")
-Link: https://lore.kernel.org/r/20230901073502.69385-1-manivannan.sadhasivam@linaro.org
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Stable-dep-of: 327ec5f70609 ("PCI: epf-mhi: Fix the DMA data direction of dma_unmap_single()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7c7f9bc986e6 ("serial: Deassert Transmit Enable on probe in driver-specific way")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Link: https://lore.kernel.org/r/20231226113647.39376-1-cniedermaier@dh-electronics.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/ep/main.c | 68 ++++++++++++++++++++++++++++-----------
- 1 file changed, 50 insertions(+), 18 deletions(-)
+ drivers/tty/serial/imx.c |   23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
-index 600881808982..e2513f5f47a6 100644
---- a/drivers/bus/mhi/ep/main.c
-+++ b/drivers/bus/mhi/ep/main.c
-@@ -71,45 +71,77 @@ static int mhi_ep_send_event(struct mhi_ep_cntrl *mhi_cntrl, u32 ring_idx,
- static int mhi_ep_send_completion_event(struct mhi_ep_cntrl *mhi_cntrl, struct mhi_ep_ring *ring,
- 					struct mhi_ring_element *tre, u32 len, enum mhi_ev_ccs code)
- {
--	struct mhi_ring_element event = {};
-+	struct mhi_ring_element *event;
-+	int ret;
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -2356,10 +2356,8 @@ static int imx_uart_probe(struct platfor
+ 	sport->ufcr = readl(sport->port.membase + UFCR);
+ 
+ 	ret = uart_get_rs485_mode(&sport->port);
+-	if (ret) {
+-		clk_disable_unprepare(sport->clk_ipg);
+-		return ret;
+-	}
++	if (ret)
++		goto err_clk;
+ 
+ 	/*
+ 	 * If using the i.MX UART RTS/CTS control then the RTS (CTS_B)
+@@ -2439,8 +2437,6 @@ static int imx_uart_probe(struct platfor
+ 		imx_uart_writel(sport, ucr3, UCR3);
+ 	}
+ 
+-	clk_disable_unprepare(sport->clk_ipg);
+-
+ 	hrtimer_init(&sport->trigger_start_tx, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
+ 	hrtimer_init(&sport->trigger_stop_tx, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
+ 	sport->trigger_start_tx.function = imx_trigger_start_tx;
+@@ -2456,7 +2452,7 @@ static int imx_uart_probe(struct platfor
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to request rx irq: %d\n",
+ 				ret);
+-			return ret;
++			goto err_clk;
+ 		}
+ 
+ 		ret = devm_request_irq(&pdev->dev, txirq, imx_uart_txint, 0,
+@@ -2464,7 +2460,7 @@ static int imx_uart_probe(struct platfor
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to request tx irq: %d\n",
+ 				ret);
+-			return ret;
++			goto err_clk;
+ 		}
+ 
+ 		ret = devm_request_irq(&pdev->dev, rtsirq, imx_uart_rtsint, 0,
+@@ -2472,14 +2468,14 @@ static int imx_uart_probe(struct platfor
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to request rts irq: %d\n",
+ 				ret);
+-			return ret;
++			goto err_clk;
+ 		}
+ 	} else {
+ 		ret = devm_request_irq(&pdev->dev, rxirq, imx_uart_int, 0,
+ 				       dev_name(&pdev->dev), sport);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to request irq: %d\n", ret);
+-			return ret;
++			goto err_clk;
+ 		}
+ 	}
+ 
+@@ -2487,7 +2483,12 @@ static int imx_uart_probe(struct platfor
+ 
+ 	platform_set_drvdata(pdev, sport);
+ 
+-	return uart_add_one_port(&imx_uart_uart_driver, &sport->port);
++	ret = uart_add_one_port(&imx_uart_uart_driver, &sport->port);
 +
-+	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
-+	if (!event)
-+		return -ENOMEM;
- 
--	event.ptr = cpu_to_le64(ring->rbase + ring->rd_offset * sizeof(*tre));
--	event.dword[0] = MHI_TRE_EV_DWORD0(code, len);
--	event.dword[1] = MHI_TRE_EV_DWORD1(ring->ch_id, MHI_PKT_TYPE_TX_EVENT);
-+	event->ptr = cpu_to_le64(ring->rbase + ring->rd_offset * sizeof(*tre));
-+	event->dword[0] = MHI_TRE_EV_DWORD0(code, len);
-+	event->dword[1] = MHI_TRE_EV_DWORD1(ring->ch_id, MHI_PKT_TYPE_TX_EVENT);
- 
--	return mhi_ep_send_event(mhi_cntrl, ring->er_index, &event, MHI_TRE_DATA_GET_BEI(tre));
-+	ret = mhi_ep_send_event(mhi_cntrl, ring->er_index, event, MHI_TRE_DATA_GET_BEI(tre));
-+	kfree(event);
-+
-+	return ret;
- }
- 
- int mhi_ep_send_state_change_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_state state)
- {
--	struct mhi_ring_element event = {};
-+	struct mhi_ring_element *event;
-+	int ret;
-+
-+	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
-+	if (!event)
-+		return -ENOMEM;
- 
--	event.dword[0] = MHI_SC_EV_DWORD0(state);
--	event.dword[1] = MHI_SC_EV_DWORD1(MHI_PKT_TYPE_STATE_CHANGE_EVENT);
-+	event->dword[0] = MHI_SC_EV_DWORD0(state);
-+	event->dword[1] = MHI_SC_EV_DWORD1(MHI_PKT_TYPE_STATE_CHANGE_EVENT);
- 
--	return mhi_ep_send_event(mhi_cntrl, 0, &event, 0);
-+	ret = mhi_ep_send_event(mhi_cntrl, 0, event, 0);
-+	kfree(event);
-+
-+	return ret;
- }
- 
- int mhi_ep_send_ee_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_ee_type exec_env)
- {
--	struct mhi_ring_element event = {};
-+	struct mhi_ring_element *event;
-+	int ret;
-+
-+	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
-+	if (!event)
-+		return -ENOMEM;
- 
--	event.dword[0] = MHI_EE_EV_DWORD0(exec_env);
--	event.dword[1] = MHI_SC_EV_DWORD1(MHI_PKT_TYPE_EE_EVENT);
-+	event->dword[0] = MHI_EE_EV_DWORD0(exec_env);
-+	event->dword[1] = MHI_SC_EV_DWORD1(MHI_PKT_TYPE_EE_EVENT);
- 
--	return mhi_ep_send_event(mhi_cntrl, 0, &event, 0);
-+	ret = mhi_ep_send_event(mhi_cntrl, 0, event, 0);
-+	kfree(event);
++err_clk:
++	clk_disable_unprepare(sport->clk_ipg);
 +
 +	return ret;
  }
  
- static int mhi_ep_send_cmd_comp_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_ev_ccs code)
- {
- 	struct mhi_ep_ring *ring = &mhi_cntrl->mhi_cmd->ring;
--	struct mhi_ring_element event = {};
-+	struct mhi_ring_element *event;
-+	int ret;
-+
-+	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
-+	if (!event)
-+		return -ENOMEM;
- 
--	event.ptr = cpu_to_le64(ring->rbase + ring->rd_offset * sizeof(struct mhi_ring_element));
--	event.dword[0] = MHI_CC_EV_DWORD0(code);
--	event.dword[1] = MHI_CC_EV_DWORD1(MHI_PKT_TYPE_CMD_COMPLETION_EVENT);
-+	event->ptr = cpu_to_le64(ring->rbase + ring->rd_offset * sizeof(struct mhi_ring_element));
-+	event->dword[0] = MHI_CC_EV_DWORD0(code);
-+	event->dword[1] = MHI_CC_EV_DWORD1(MHI_PKT_TYPE_CMD_COMPLETION_EVENT);
- 
--	return mhi_ep_send_event(mhi_cntrl, 0, &event, 0);
-+	ret = mhi_ep_send_event(mhi_cntrl, 0, event, 0);
-+	kfree(event);
-+
-+	return ret;
- }
- 
- static int mhi_ep_process_cmd_ring(struct mhi_ep_ring *ring, struct mhi_ring_element *el)
--- 
-2.43.0
-
+ static int imx_uart_remove(struct platform_device *pdev)
 
 
 
