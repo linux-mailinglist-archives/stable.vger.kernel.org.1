@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71104838024
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75628837D8E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50AE2B22C1A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DF6D1F23754
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8AF65197;
-	Tue, 23 Jan 2024 00:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258CA57323;
+	Tue, 23 Jan 2024 00:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ee6OjS0L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OphbFqvg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39421657C7;
-	Tue, 23 Jan 2024 00:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A6C4E1D8;
+	Tue, 23 Jan 2024 00:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971508; cv=none; b=JcLqkUiVmApzMcvJhDyZ5pSKKElBcQ0iMib/QMemrq1ym/USHh44QqA3j2scmtZZWe/WLvEs1D65SZY3Ri9pkLvVlr7oSMJ+j1jRyLyG7OxIBWrRIClTeM3rJWf5iYFiLCayqsfbq0Pl+rXp9ZUcUw8qvEbMxNcTNfXdtCC4FRc=
+	t=1705970019; cv=none; b=bsH384buXhhffWUkO99AzASnq00gE0iFyTBuVa69VaZyYiUl3y8V+4Js7jIl0H5xe1MEJCxFkH3HsXOfjVS+64aUle1s55ovO+kkEqKHRiE4mscQPl72h+UGYfgn2MKnR3c0b9851rMWvOH2kFHJgVQXiQ3hqQdYjgOK1fT7kUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971508; c=relaxed/simple;
-	bh=8Lhdt5BTFOaXCFewjpCr2wEyz4gIo0ZyUgViOvIz6z4=;
+	s=arc-20240116; t=1705970019; c=relaxed/simple;
+	bh=mqsi2sCtKo6BBY7n64iT+WXHZqxKjqGzuOEeoKYd3fA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G4skm8bVUoubXnMTp9JqywBysp/Wf1DAKCY12L6Bey1JDV+uGYME+x2VxyujxCF72qgMGme+fGtFtRNtNeIH15+4IubzKxQvZqQ8G7Lya6kSx82/wn5+6h1P9dWoc5/b+PiyJ2Q9ku5ZP2xx+P+kG9efDjmqLQibCan9BYA4O7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ee6OjS0L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6562C433C7;
-	Tue, 23 Jan 2024 00:58:27 +0000 (UTC)
+	 MIME-Version; b=Z3iP8GDvlnnJE/qCLGPaKyCTpXadBqzdCt4o+/7gzlbkEgC7nyzPdv3djS/c1GFp36/7/hMXndWXryPEaLPFmhgWrSpNhoAT+QwSzCpR3O5YJK41Uc9SmK58o463rgHCk26CX1zyas2kS3Tl9owwyNVjwqpQt6mtd796JIh77w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OphbFqvg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71010C433F1;
+	Tue, 23 Jan 2024 00:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971508;
-	bh=8Lhdt5BTFOaXCFewjpCr2wEyz4gIo0ZyUgViOvIz6z4=;
+	s=korg; t=1705970019;
+	bh=mqsi2sCtKo6BBY7n64iT+WXHZqxKjqGzuOEeoKYd3fA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ee6OjS0LMyH8NaOntYyUVUbe7ZFKuuiuyYlAY86pb/J75+nvURX0LuGCSZ/KhZJKg
-	 nHNqoTPyMuSHuRvOqztRXcoVdKT3ZHqJGiCQC+N9eYnjH+PltYkDwmZmvgnR9HB8HS
-	 LI4ccnwhRW9HxV60iApoSfGvbg6+3usgXB9He8u4=
+	b=OphbFqvgxEAEA74qvrouYV8zb1215+2k1Go7NIoIAoDeQnkx5nDe4JSUIe5YZ6J3Z
+	 Cv//NMmIhtVWw1UorX9K+C87aQk1Lq4k7wMg+E0uBbdXX8DrMYpHzAmsNLsA8Ttezm
+	 JUKSNGvATLTwGk71VeqcP2O6ZEmYNcXVG+7TzOJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Abhijit Gangurde <abhijit.gangurde@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 163/286] drm/bridge: tc358767: Fix return value on error case
+Subject: [PATCH 6.7 565/641] cdx: call of_node_put() on error path
 Date: Mon, 22 Jan 2024 15:57:49 -0800
-Message-ID: <20240122235738.445710116@linuxfoundation.org>
+Message-ID: <20240122235835.843909426@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 32bd29b619638256c5b75fb021d6d9f12fc4a984 ]
+[ Upstream commit 87736ae12e1427bb2e6fd11f37b2ff76ed69aa0f ]
 
-If the hpd_pin is invalid, the driver returns 'ret'. But 'ret' contains
-0, instead of an error value.
+Add a missing call to of_node_put(np) on error.
 
-Return -EINVAL instead.
+There was a second error path where "np" was NULL, but that situation is
+impossible.  The for_each_compatible_node() loop iterator is always
+non-NULL.  Just deleted that error path.
 
-Fixes: f25ee5017e4f ("drm/bridge: tc358767: add IRQ and HPD support")
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-4-c22b2444f5f5@ideasonboard.com
+Fixes: 54b406e10f03 ("cdx: Remove cdx controller list from cdx bus system")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Abhijit Gangurde <abhijit.gangurde@amd.com>
+Link: https://lore.kernel.org/r/2e66efc4-a13a-4774-8c9d-763455fe4834@moroto.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358767.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cdx/cdx.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358767.c b/drivers/gpu/drm/bridge/tc358767.c
-index b4f7e7a7f7c5..9c905634fec7 100644
---- a/drivers/gpu/drm/bridge/tc358767.c
-+++ b/drivers/gpu/drm/bridge/tc358767.c
-@@ -1637,7 +1637,7 @@ static int tc_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 	} else {
- 		if (tc->hpd_pin < 0 || tc->hpd_pin > 1) {
- 			dev_err(dev, "failed to parse HPD number\n");
--			return ret;
-+			return -EINVAL;
- 		}
- 	}
+diff --git a/drivers/cdx/cdx.c b/drivers/cdx/cdx.c
+index d84d153078d7..40035dd2e299 100644
+--- a/drivers/cdx/cdx.c
++++ b/drivers/cdx/cdx.c
+@@ -572,12 +572,11 @@ static ssize_t rescan_store(const struct bus_type *bus,
  
+ 	/* Rescan all the devices */
+ 	for_each_compatible_node(np, NULL, compat_node_name) {
+-		if (!np)
+-			return -EINVAL;
+-
+ 		pd = of_find_device_by_node(np);
+-		if (!pd)
++		if (!pd) {
++			of_node_put(np);
+ 			return -EINVAL;
++		}
+ 
+ 		cdx = platform_get_drvdata(pd);
+ 		if (cdx && cdx->controller_registered && cdx->ops->scan)
 -- 
 2.43.0
 
