@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-13613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DB3837D1C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 182FB837F6A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 227BD1C27E36
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6AFB28F475
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5885787D;
-	Tue, 23 Jan 2024 00:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2554822062;
+	Tue, 23 Jan 2024 00:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amdeR5JH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSX92Lt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4B256B89;
-	Tue, 23 Jan 2024 00:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D634162805;
+	Tue, 23 Jan 2024 00:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969798; cv=none; b=Zx1qQMKTiWWtSyKWcrZ8vCEUSU7P/QwV9gFucQlqNpCCAH/9a9hYeIT/wARQqRxpErEeuNXXsCwfRpUvh3d1+gqPPlV0JfvC5W4r81xB2+P4e6b4fZChEg0cSZqXbzic2MeoU77SeYiD35/RBsSrY/Y2uKRkJLUP6w4jbA4OJVI=
+	t=1705971119; cv=none; b=H0xJbrjbmp15+9FqmnGmPLQBnEEsx9z5LJXkChTvOHyaE2sp61/hhH04g4KSiBnjpC5mVz2fIMThInIcUvuEBADimM397p0Z2TEGPH//X/RTdxLCEnhjlvfn7gYvwxncSJvhtnoT5Mak0WQ7eP8WMQ1NKYQsnuUcAlROVLhZULc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969798; c=relaxed/simple;
-	bh=lUdm9mMY0vIkZsBZ06VmV3fl9AZnbFf3GYZ6i/GrBAM=;
+	s=arc-20240116; t=1705971119; c=relaxed/simple;
+	bh=Spbv1FuG2mWKI1Rnmy9YHWTMG9kKgiufphQyCICvCZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCK09bvn9us15PUMC7Cy27whiSN/Q9Vyh1BNUJrlN+gFdBTG/9N81wEccMzibTc+kbm1C7wLlMITh8x7uOcpNlKnGed7s1IPBYZDP4UvbOEc+vArXUC9+w3I1evRaYL4ljeAsvFq2WOvCxeRmbDlvIZ+cXdhhSfMbqbe3r9lJps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amdeR5JH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0262CC433F1;
-	Tue, 23 Jan 2024 00:29:57 +0000 (UTC)
+	 MIME-Version; b=O8RC+2zg9VN63/H4UKNsPKzLNvJuFSwCMVsEU6s1lt+0uWEYzUilPi73nq6eJijkajuKVJAaeqt/Jx7xbTi32PsEkXCqr+600icMgPD8ziNsbQZdNTArIB6WEgqyKcUSKyJKR5Mdk0ntSn8e4PDJQkMA8G64ws6Qji5UGynRZpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSX92Lt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317E9C43390;
+	Tue, 23 Jan 2024 00:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969798;
-	bh=lUdm9mMY0vIkZsBZ06VmV3fl9AZnbFf3GYZ6i/GrBAM=;
+	s=korg; t=1705971119;
+	bh=Spbv1FuG2mWKI1Rnmy9YHWTMG9kKgiufphQyCICvCZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=amdeR5JHmnxNHEituRPlbi2gb9gadJ4AkyTZoPARLoG14uWYD4PXolZ7dVA1VfV6w
-	 SChY3MxzWWBF3+43jiUD3kgdtdrff/GmJhRDzzt8XQfFtFlS5tKb9b0x+9C33OXLGP
-	 aO3UY8bORzXEuesu+4ghagi6+v7QQNKWr+F0kz9U=
+	b=lSX92Lt2i/FNwiEItzekGCRgT0+uwZTxBU+eiqTgMCSOeMSD9UEIPWeywte5gIeVz
+	 AvlZJY0AVKM+wR91bGdikQCr4x61zriv2Kap2ZIX0+y21Q6tjbAXf39g+Isx8zM8Ii
+	 CROnqnfczS6JNHw5g2pwIEpbT14Yr7Qy9N5xkBvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Landley <rob@landley.net>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Mimi Zohar <zohar@linux.ibm.com>
-Subject: [PATCH 6.7 448/641] rootfs: Fix support for rootfstype= when root= is given
+	Curtis Malainey <cujomalainey@chromium.org>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Brent Lu <brent.lu@intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 184/417] ASoC: Intel: glk_rt5682_max98357a: fix board id mismatch
 Date: Mon, 22 Jan 2024 15:55:52 -0800
-Message-ID: <20240122235832.043974292@linuxfoundation.org>
+Message-ID: <20240122235758.247310216@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+From: Brent Lu <brent.lu@intel.com>
 
-commit 21528c69a0d8483f7c6345b1a0bc8d8975e9a172 upstream.
+[ Upstream commit 486ede0df82dd74472c6f5651e38ff48f7f766c1 ]
 
-Documentation/filesystems/ramfs-rootfs-initramfs.rst states:
+The drv_name in enumeration table for ALC5682I-VS codec does not match
+the board id string in machine driver. Modify the entry of "10EC5682"
+to enumerate "RTL5682" as well and remove invalid entry.
 
-  If CONFIG_TMPFS is enabled, rootfs will use tmpfs instead of ramfs by
-  default.  To force ramfs, add "rootfstype=ramfs" to the kernel command
-  line.
-
-This currently does not work when root= is provided since then
-saved_root_name contains a string and rootfstype= is ignored. Therefore,
-ramfs is currently always chosen when root= is provided.
-
-The current behavior for rootfs's filesystem is:
-
-   root=       | rootfstype= | chosen rootfs filesystem
-   ------------+-------------+--------------------------
-   unspecified | unspecified | tmpfs
-   unspecified | tmpfs       | tmpfs
-   unspecified | ramfs       | ramfs
-    provided   | ignored     | ramfs
-
-rootfstype= should be respected regardless whether root= is given,
-as shown below:
-
-   root=       | rootfstype= | chosen rootfs filesystem
-   ------------+-------------+--------------------------
-   unspecified | unspecified | tmpfs  (as before)
-   unspecified | tmpfs       | tmpfs  (as before)
-   unspecified | ramfs       | ramfs  (as before)
-    provided   | unspecified | ramfs  (compatibility with before)
-    provided   | tmpfs       | tmpfs  (new)
-    provided   | ramfs       | ramfs  (new)
-
-This table represents the new behavior.
-
-Fixes: 6e19eded3684 ("initmpfs: use initramfs if rootfstype= or root= specified")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Rob Landley <rob@landley.net>
-Link: https://lore.kernel.org/lkml/8244c75f-445e-b15b-9dbf-266e7ca666e2@landley.net/
-Reviewed-and-Tested-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-Link: https://lore.kernel.org/r/20231120011248.396012-1-stefanb@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 88b4d77d6035 ("ASoC: Intel: glk_rt5682_max98357a: support ALC5682I-VS codec")
+Reported-by: Curtis Malainey <cujomalainey@chromium.org>
+Reviewed-by: Curtis Malainey <cujomalainey@chromium.org>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Brent Lu <brent.lu@intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20231204214200.203100-4-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/do_mounts.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ sound/soc/intel/common/soc-acpi-intel-glk-match.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/init/do_mounts.c
-+++ b/init/do_mounts.c
-@@ -510,7 +510,10 @@ struct file_system_type rootfs_fs_type =
+diff --git a/sound/soc/intel/common/soc-acpi-intel-glk-match.c b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
+index 387e73100884..8911c90bbaf6 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-glk-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
+@@ -19,6 +19,11 @@ static const struct snd_soc_acpi_codecs glk_codecs = {
+ 	.codecs = {"MX98357A"}
+ };
  
- void __init init_rootfs(void)
- {
--	if (IS_ENABLED(CONFIG_TMPFS) && !saved_root_name[0] &&
--		(!root_fs_names || strstr(root_fs_names, "tmpfs")))
--		is_tmpfs = true;
-+	if (IS_ENABLED(CONFIG_TMPFS)) {
-+		if (!saved_root_name[0] && !root_fs_names)
-+			is_tmpfs = true;
-+		else if (root_fs_names && !!strstr(root_fs_names, "tmpfs"))
-+			is_tmpfs = true;
-+	}
- }
++static const struct snd_soc_acpi_codecs glk_rt5682_rt5682s_hp = {
++	.num_codecs = 2,
++	.codecs = {"10EC5682", "RTL5682"},
++};
++
+ struct snd_soc_acpi_mach snd_soc_acpi_intel_glk_machines[] = {
+ 	{
+ 		.id = "INT343A",
+@@ -35,20 +40,13 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_glk_machines[] = {
+ 		.sof_tplg_filename = "sof-glk-da7219.tplg",
+ 	},
+ 	{
+-		.id = "10EC5682",
++		.comp_ids = &glk_rt5682_rt5682s_hp,
+ 		.drv_name = "glk_rt5682_mx98357a",
+ 		.fw_filename = "intel/dsp_fw_glk.bin",
+ 		.machine_quirk = snd_soc_acpi_codec_list,
+ 		.quirk_data = &glk_codecs,
+ 		.sof_tplg_filename = "sof-glk-rt5682.tplg",
+ 	},
+-	{
+-		.id = "RTL5682",
+-		.drv_name = "glk_rt5682_max98357a",
+-		.machine_quirk = snd_soc_acpi_codec_list,
+-		.quirk_data = &glk_codecs,
+-		.sof_tplg_filename = "sof-glk-rt5682.tplg",
+-	},
+ 	{
+ 		.id = "10134242",
+ 		.drv_name = "glk_cs4242_mx98357a",
+-- 
+2.43.0
+
 
 
 
