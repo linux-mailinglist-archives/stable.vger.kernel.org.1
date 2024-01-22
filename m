@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936DD837D31
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC24E837F26
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B4E3291DC3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B18629BE56
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C9026AFA;
-	Tue, 23 Jan 2024 00:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA7D61678;
+	Tue, 23 Jan 2024 00:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7d8mZp/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNXazQi4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A7421340;
-	Tue, 23 Jan 2024 00:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3331560DE3;
+	Tue, 23 Jan 2024 00:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969832; cv=none; b=EWGlMIlwKqmHsg6xYy/jjMB4RFK5+4dGLsmcrNlUbTYqEJ9UahiencNFlDl/3jDbjkoSRRTpv/9LRETgh4+fzNU1BMs9ybjmz8a7Xj9CCV6P3UjzZ2WA+R7+PtLgZOfpOEbmtVLjm3AfZXWZsLk8RL06UeoBRKZ6pHur78EeDMw=
+	t=1705970968; cv=none; b=ayY9ZUQLwmEWpPgjgCv1jKUL2cYnYhXN8wT4hvR2DreuV8bO+HmVbY+7Xnf7RhXBIeRE7WCj7E7no/AOQPGW+1PGq/wHYe+oQqzLoVkcNtfX/9dLM0mh7Fgv2DtgeZhS6HOPSNyZMfYb8g/FY0cdsmE00+fyhakgbxyeHIFfxMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969832; c=relaxed/simple;
-	bh=ONA8VCsmsxZuh8ycUL95gPH3kvgW3U3U9LXr0xDVITg=;
+	s=arc-20240116; t=1705970968; c=relaxed/simple;
+	bh=VR/8oLrQX9MKw12h6VwZPZOa8PV2iB+BA8JBG2DH4C0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FQR+anTEOHF3Jd2Y7Arb6csJ1vmgPRUQxtyh8rWaIveNR4UYteHEGq2yxmIYYMfJ7UMOzdEC1+PGNovvYHflXHEjrVZJroMEgGeFlVwIPDbiZzLgmTxOCh8Qz+OsCpeNhvXnRhiwk+L19zzq7SSfIScD1pqY+G4GccsUJpG3x4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7d8mZp/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77538C43390;
-	Tue, 23 Jan 2024 00:30:31 +0000 (UTC)
+	 MIME-Version; b=AJ+oTp8me68TIChM4vy/pv1/sUfNd32kasD4CYjugztfdDlnL2XGYV0Cwj/6HhXoAovpygwaXSX/elBZcgbhbShaVx4udS7gjakMnPNoAn99k8od03BBC044Jr4Kk4MFR93Mt3rYxqCjlgVW1+3QqB+AQwXdXKQDHzdn2q7+haM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNXazQi4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB76DC433C7;
+	Tue, 23 Jan 2024 00:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969831;
-	bh=ONA8VCsmsxZuh8ycUL95gPH3kvgW3U3U9LXr0xDVITg=;
+	s=korg; t=1705970968;
+	bh=VR/8oLrQX9MKw12h6VwZPZOa8PV2iB+BA8JBG2DH4C0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W7d8mZp/UAr9FB/WCqkJOM9LcSIj1tR+m5j9yTb01QVxAPbUB+LsQnYnEQsKdeL6+
-	 ygv+MGUPBu36YLYxlqgOcMmLQOiOYChtQ00+AiZz/qWgsuYF59xxlxc95NK4crOWAZ
-	 Zwp3dT0i1954GcEYRENL1og98hLK3AMmCbkiVnCs=
+	b=zNXazQi4GUHQdS+4zLJVKn7wDsNs3aDlQJqy6+qjoD7oW5x+U73ty1dbqshEYaklH
+	 1Vm+ZGAw5nqU4MgMEe9pus0xgjJSnP3vJTYYoNVS1l+SUh8if4iLT36rqDRcyGKE+V
+	 IhwXjuvjVFoxQA5sC+VtFcfNLpr+2MXlD4V76PSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.7 452/641] iommu/arm-smmu-qcom: Add missing GMU entry to match table
+	Arnd Bergmann <arnd@arndb.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 050/286] EDAC/thunderx: Fix possible out-of-bounds string access
 Date: Mon, 22 Jan 2024 15:55:56 -0800
-Message-ID: <20240122235832.166172745@linuxfoundation.org>
+Message-ID: <20240122235733.958829813@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit afc95681c3068956fed1241a1ff1612c066c75ac upstream.
+[ Upstream commit 475c58e1a471e9b873e3e39958c64a2d278275c8 ]
 
-In some cases the firmware expects cbndx 1 to be assigned to the GMU,
-so we also want the default domain for the GMU to be an identy domain.
-This way it does not get a context bank assigned.  Without this, both
-of_dma_configure() and drm/msm's iommu_domain_attach() will trigger
-allocating and configuring a context bank.  So GMU ends up attached to
-both cbndx 1 and later cbndx 2.  This arrangement seemingly confounds
-and surprises the firmware if the GPU later triggers a translation
-fault, resulting (on sc8280xp / lenovo x13s, at least) in the SMMU
-getting wedged and the GPU stuck without memory access.
+Enabling -Wstringop-overflow globally exposes a warning for a common bug
+in the usage of strncat():
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/20231210180655.75542-1-robdclark@gmail.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  drivers/edac/thunderx_edac.c: In function 'thunderx_ocx_com_threaded_isr':
+  drivers/edac/thunderx_edac.c:1136:17: error: 'strncat' specified bound 1024 equals destination size [-Werror=stringop-overflow=]
+   1136 |                 strncat(msg, other, OCX_MESSAGE_SIZE);
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   ...
+   1145 |                                 strncat(msg, other, OCX_MESSAGE_SIZE);
+   ...
+   1150 |                                 strncat(msg, other, OCX_MESSAGE_SIZE);
+
+   ...
+
+Apparently the author of this driver expected strncat() to behave the
+way that strlcat() does, which uses the size of the destination buffer
+as its third argument rather than the length of the source buffer. The
+result is that there is no check on the size of the allocated buffer.
+
+Change it to strlcat().
+
+  [ bp: Trim compiler output, fixup commit message. ]
+
+Fixes: 41003396f932 ("EDAC, thunderx: Add Cavium ThunderX EDAC driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20231122222007.3199885-1-arnd@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/edac/thunderx_edac.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -243,6 +243,7 @@ static int qcom_adreno_smmu_init_context
+diff --git a/drivers/edac/thunderx_edac.c b/drivers/edac/thunderx_edac.c
+index 0eb5eb97fd74..3b0e1fe27d93 100644
+--- a/drivers/edac/thunderx_edac.c
++++ b/drivers/edac/thunderx_edac.c
+@@ -1133,7 +1133,7 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(int irq, void *irq_id)
+ 		decode_register(other, OCX_OTHER_SIZE,
+ 				ocx_com_errors, ctx->reg_com_int);
  
- static const struct of_device_id qcom_smmu_client_of_match[] __maybe_unused = {
- 	{ .compatible = "qcom,adreno" },
-+	{ .compatible = "qcom,adreno-gmu" },
- 	{ .compatible = "qcom,mdp4" },
- 	{ .compatible = "qcom,mdss" },
- 	{ .compatible = "qcom,sc7180-mdss" },
+-		strncat(msg, other, OCX_MESSAGE_SIZE);
++		strlcat(msg, other, OCX_MESSAGE_SIZE);
+ 
+ 		for (lane = 0; lane < OCX_RX_LANES; lane++)
+ 			if (ctx->reg_com_int & BIT(lane)) {
+@@ -1142,12 +1142,12 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(int irq, void *irq_id)
+ 					 lane, ctx->reg_lane_int[lane],
+ 					 lane, ctx->reg_lane_stat11[lane]);
+ 
+-				strncat(msg, other, OCX_MESSAGE_SIZE);
++				strlcat(msg, other, OCX_MESSAGE_SIZE);
+ 
+ 				decode_register(other, OCX_OTHER_SIZE,
+ 						ocx_lane_errors,
+ 						ctx->reg_lane_int[lane]);
+-				strncat(msg, other, OCX_MESSAGE_SIZE);
++				strlcat(msg, other, OCX_MESSAGE_SIZE);
+ 			}
+ 
+ 		if (ctx->reg_com_int & OCX_COM_INT_CE)
+@@ -1217,7 +1217,7 @@ static irqreturn_t thunderx_ocx_lnk_threaded_isr(int irq, void *irq_id)
+ 		decode_register(other, OCX_OTHER_SIZE,
+ 				ocx_com_link_errors, ctx->reg_com_link_int);
+ 
+-		strncat(msg, other, OCX_MESSAGE_SIZE);
++		strlcat(msg, other, OCX_MESSAGE_SIZE);
+ 
+ 		if (ctx->reg_com_link_int & OCX_COM_LINK_INT_UE)
+ 			edac_device_handle_ue(ocx->edac_dev, 0, 0, msg);
+@@ -1896,7 +1896,7 @@ static irqreturn_t thunderx_l2c_threaded_isr(int irq, void *irq_id)
+ 
+ 		decode_register(other, L2C_OTHER_SIZE, l2_errors, ctx->reg_int);
+ 
+-		strncat(msg, other, L2C_MESSAGE_SIZE);
++		strlcat(msg, other, L2C_MESSAGE_SIZE);
+ 
+ 		if (ctx->reg_int & mask_ue)
+ 			edac_device_handle_ue(l2c->edac_dev, 0, 0, msg);
+-- 
+2.43.0
+
 
 
 
