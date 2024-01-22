@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-15247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 345C483847D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 980B183801D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D93601F29301
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4692528AB34
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C47C6EB55;
-	Tue, 23 Jan 2024 02:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF07664A7;
+	Tue, 23 Jan 2024 00:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Po4vHaLb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/Tz141v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2036EB50;
-	Tue, 23 Jan 2024 02:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A437664A6;
+	Tue, 23 Jan 2024 00:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975405; cv=none; b=EdIgSGBzgaxTghbyfrtTKZWunI/FL77WVRlFkZWFAQOeMuKXLs3AArDOsKXVMNomc8u9scpxQwUehx7OXLxTqjt4Mpepl8ctrYqZDYxFA5y+5uJDDDHO3JCxySiAAz5d/zyfHpVlaIeBjbc8pbJVxz3SBkZcna4uYgDqn4N0ZfM=
+	t=1705971556; cv=none; b=gB7yZAVt2pg6GatmDEjcw/vgot4tIHxwk691hiwVPhjJPQgvfXSSaS1jscbqBTJ2FxSEr/boMeWsHwNfvg5Azq320fpCFmd5K4MChGIBUc5HBQv6B37Vdw0TbgMprw2CfF8LlzyGzBB4SwsW70ZnzrKZ+6tMHKuxemocoOpYsgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975405; c=relaxed/simple;
-	bh=uqeztJ24AhFFsjDvU+6leozVNIALYGP0rJpNkhkQYn0=;
+	s=arc-20240116; t=1705971556; c=relaxed/simple;
+	bh=NYqLkmoBJC8pHY4fcdVtVTp6e6MfTomP1ml1JCWAfZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rpzlFNKgRdsQaZ0ysPBGK9hZpyPOf7KIUIIziXB4Xb3R7RpHLoUy5N+WDL6Sc2efAhov/W35YwDWMiGMwvwLXRQtatHNSI/nHrbNpsZRa4UqGu06bKUXprZ8AU6PujQndoTtcgzcu1FMW8FOJPYHJ7Ovx7gVaKyEEldmRCi5j6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Po4vHaLb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF23DC433C7;
-	Tue, 23 Jan 2024 02:03:24 +0000 (UTC)
+	 MIME-Version; b=qaWCVSvIu9aVekPJe59nlexTrPAXNHFJvIRQxm/buu1s6erDcr86enm7yYNSfHuin4xC3e009u4s9wMfON5giKv1HKGs2F70HsOmxGbiwWGsgdkMPm7hvfx5iNjfV046O74bwZAjAxiD6HdGFmsw0SZiMl0BtZmUQIuGN9n9pfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/Tz141v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7134C433C7;
+	Tue, 23 Jan 2024 00:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975405;
-	bh=uqeztJ24AhFFsjDvU+6leozVNIALYGP0rJpNkhkQYn0=;
+	s=korg; t=1705971555;
+	bh=NYqLkmoBJC8pHY4fcdVtVTp6e6MfTomP1ml1JCWAfZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Po4vHaLb2ltC3GzMiSKLF98k+gGf2/Jsk2HkcPnX9kSAN8BoOFVSt8oRsu2Olomla
-	 Gy3QJPEx6Sb96pLEcULFKaPv5nD5G4lUAUQvbZzskL8HMRKtr9b8jmLIVIZ1HkdbKI
-	 ctT5K7iXBDSTQ/e66y06gAw9cMfZlvIUuJJphvCM=
+	b=T/Tz141v475/G0ywH7j/528TbDlrdWZcIB0W7g3Xe+ZmLhOB126ABq1AVeUnzneMx
+	 8t/kue6OIYgysahlO5NeeQwwJV95Qsm3Zi4UDforcZ4U+WfdR/MYJmI/cQC4ghY9Nx
+	 pPpVcXkZ8dTGAXu2z2Jroc2HA3IblgO40aZ/ifQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.6 357/583] Revert "usb: gadget: f_uvc: change endpoint allocation in uvc_function_bind()"
-Date: Mon, 22 Jan 2024 15:56:48 -0800
-Message-ID: <20240122235822.943400434@linuxfoundation.org>
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 241/417] drm/amd/pm/smu7: fix a memleak in smu7_hwmgr_backend_init
+Date: Mon, 22 Jan 2024 15:56:49 -0800
+Message-ID: <20240122235800.231908426@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-commit 895ee5aefb7e24203de5dffae7ce9a02d78fa3d1 upstream.
+[ Upstream commit 2f3be3ca779b11c332441b10e00443a2510f4d7b ]
 
-This reverts commit 3c5b006f3ee800b4bd9ed37b3a8f271b8560126e.
+The hwmgr->backend, (i.e. data) allocated by kzalloc is not freed in
+the error-handling paths of smu7_get_evv_voltages and
+smu7_update_edc_leakage_table. However, it did be freed in the
+error-handling of phm_initializa_dynamic_state_adjustment_rule_settings,
+by smu7_hwmgr_backend_fini. So the lack of free in smu7_get_evv_voltages
+and smu7_update_edc_leakage_table is considered a memleak in this patch.
 
-gadget_is_{super|dual}speed() API check UDC controller capitblity. It
-should pass down highest speed endpoint descriptor to UDC controller. So
-UDC controller driver can reserve enough resource at check_config(),
-especially mult and maxburst. So UDC driver (such as cdns3) can know need
-at least (mult + 1) * (maxburst + 1) * wMaxPacketSize internal memory for
-this uvc functions.
-
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231224153816.1664687-5-Frank.Li@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 599a7e9fe1b6 ("drm/amd/powerplay: implement smu7 hwmgr to manager asics with smu ip version 7.")
+Fixes: 8f0804c6b7d0 ("drm/amd/pm: add edc leakage controller setting")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_uvc.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_uvc.c
-+++ b/drivers/usb/gadget/function/f_uvc.c
-@@ -719,13 +719,29 @@ uvc_function_bind(struct usb_configurati
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index a31a62a1ce0b..5e9410117712 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -2987,6 +2987,8 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 		result = smu7_get_evv_voltages(hwmgr);
+ 		if (result) {
+ 			pr_info("Get EVV Voltage Failed.  Abort Driver loading!\n");
++			kfree(hwmgr->backend);
++			hwmgr->backend = NULL;
+ 			return -EINVAL;
+ 		}
+ 	} else {
+@@ -3032,8 +3034,10 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
  	}
- 	uvc->enable_interrupt_ep = opts->enable_interrupt_ep;
  
--	ep = usb_ep_autoconfig(cdev->gadget, &uvc_fs_streaming_ep);
-+	/*
-+	 * gadget_is_{super|dual}speed() API check UDC controller capitblity. It should pass down
-+	 * highest speed endpoint descriptor to UDC controller. So UDC controller driver can reserve
-+	 * enough resource at check_config(), especially mult and maxburst. So UDC driver (such as
-+	 * cdns3) can know need at least (mult + 1) * (maxburst + 1) * wMaxPacketSize internal
-+	 * memory for this uvc functions. This is the only straightforward method to resolve the UDC
-+	 * resource allocation issue in the current gadget framework.
-+	 */
-+	if (gadget_is_superspeed(c->cdev->gadget))
-+		ep = usb_ep_autoconfig_ss(cdev->gadget, &uvc_ss_streaming_ep,
-+					  &uvc_ss_streaming_comp);
-+	else if (gadget_is_dualspeed(cdev->gadget))
-+		ep = usb_ep_autoconfig(cdev->gadget, &uvc_hs_streaming_ep);
-+	else
-+		ep = usb_ep_autoconfig(cdev->gadget, &uvc_fs_streaming_ep);
-+
- 	if (!ep) {
- 		uvcg_info(f, "Unable to allocate streaming EP\n");
- 		goto error;
- 	}
- 	uvc->video.ep = ep;
+ 	result = smu7_update_edc_leakage_table(hwmgr);
+-	if (result)
++	if (result) {
++		smu7_hwmgr_backend_fini(hwmgr);
+ 		return result;
++	}
  
-+	uvc_fs_streaming_ep.bEndpointAddress = uvc->video.ep->address;
- 	uvc_hs_streaming_ep.bEndpointAddress = uvc->video.ep->address;
- 	uvc_ss_streaming_ep.bEndpointAddress = uvc->video.ep->address;
- 
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
