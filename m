@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BA87838329
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6B6837C31
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E78AB28C904
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7430E2961C7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA7B60887;
-	Tue, 23 Jan 2024 01:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5034500F;
+	Tue, 23 Jan 2024 00:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9kC9rqc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgoT5f9W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB2E605DF;
-	Tue, 23 Jan 2024 01:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E3C747A;
+	Tue, 23 Jan 2024 00:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974721; cv=none; b=fQtH2u8AtXWxpEnxUu4fofx5nGwHAp/Oc5eG/E5wi+Q9SSW1hEuvIaCWn/0mMyheNeV/12eM6PI37mMcyu0Jg+zHi0KTtNBZ++AZjPSvZfFla4FHRicv7OP2zynGijxKk98st7lcientHf3p8bfIgPZp5b8TBaX6ydkdZTpaeEY=
+	t=1705969531; cv=none; b=TW5gLsqjNXMolcGK8eGOzFXjRTVg+FND2Rql0bU+VnQSm+usEC6Cm8RqLppalWf14gKaroaDZauf+tn2LuvSL4SzzkP3v+WjKxdUWOOKxRTQ+obyd/RBZIlobf/uk74fnu7wPO3MD6VtTVGfS1h9p3PRk49GYB+bmEaT184b26M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974721; c=relaxed/simple;
-	bh=8y9k9m6o7D45Qgsw8N5iLdquAsZk/z6eg9UPBDOYzo4=;
+	s=arc-20240116; t=1705969531; c=relaxed/simple;
+	bh=opMfgBB5v5wqqf3NNQRJYCjDgAlzX1V4V8wN4YIzJxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kEVfE9qSgIpMdVSV9fO5I0ZDQSn8Q1A9ld4dS3c4FtgIzNoCS8FIz88tFMXz2FeTd0Q2Z4OwFQWtmGrkdEQ1oKo4lcJZfvglsQ9N2Az1PSnUUkNdw/XOf6eHkgFVhGbzACBREmimiZBwglHVc3p8EWy0dBBvT6zgEbdvmvm8K+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9kC9rqc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C778FC433F1;
-	Tue, 23 Jan 2024 01:52:00 +0000 (UTC)
+	 MIME-Version; b=PvPi4J9J9mpFyNrnaYMIqwfyfDlWCL1dWqTR7NSMqimnp/9QDlSbbT2AOgcL7WvoduxBC/OGYe5typXmriiH8FAOepg+qAMd4bYLhvOrXlFayjXc9mjDGXTeIXXw9NWY5ggS/PdPTFFA3u8LOzhxiHfNYx6FCjBcrhN3wdczXN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fgoT5f9W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC64BC433A6;
+	Tue, 23 Jan 2024 00:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974721;
-	bh=8y9k9m6o7D45Qgsw8N5iLdquAsZk/z6eg9UPBDOYzo4=;
+	s=korg; t=1705969530;
+	bh=opMfgBB5v5wqqf3NNQRJYCjDgAlzX1V4V8wN4YIzJxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I9kC9rqcS/u9e9fn5p7tvf2bYC7m8hE3ZZwmzcN6LYFoDhCfrjcFl+tDqCFugzMlp
-	 oCQ7SAo2zJUFOmp7ibqIYLfzPU+4VYp332EZmgod19jg7gLnwXmhu8JXGHI5EYdddt
-	 wzZ84HXmNJPyobTL0CmKcnjsTNLJYByHoRw+tfzM=
+	b=fgoT5f9WVWNqbNp0JiwMUlmEt254BSAwtLnr457/xZ4fxe8mCX5dtEj/8W+ZuqWP5
+	 Feqr6/Eb37B+U4wQS4CN6Q+NhCgahzNjfT3x6zvHmvTwl9Qks63qRXhwccODnHmTe8
+	 Q0ii6rx6Y4Q/XbVlA8s2AuSNYXKPF8XnX95xFsmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Sun <sunhao.th@gmail.com>,
-	Andrei Matei <andreimatei1@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Paloma Arellano <quic_parellan@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 142/583] bpf: Fix verification of indirect var-off stack access
-Date: Mon, 22 Jan 2024 15:53:13 -0800
-Message-ID: <20240122235816.448534467@linuxfoundation.org>
+Subject: [PATCH 6.7 290/641] drm/msm/dpu: correct clk bit for WB2 block
+Date: Mon, 22 Jan 2024 15:53:14 -0800
+Message-ID: <20240122235826.965904616@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Matei <andreimatei1@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit a833a17aeac73b33f79433d7cee68d5cafd71e4f ]
+[ Upstream commit e843ca2f30e630675e2d2a75c96f4844f2854430 ]
 
-This patch fixes a bug around the verification of possibly-zero-sized
-stack accesses. When the access was done through a var-offset stack
-pointer, check_stack_access_within_bounds was incorrectly computing the
-maximum-offset of a zero-sized read to be the same as the register's min
-offset. Instead, we have to take in account the register's maximum
-possible value. The patch also simplifies how the max offset is checked;
-the check is now simpler than for min offset.
+On sc7280 there are two clk bits for WB2: vbif_cli and clk_ctrl. While
+programming the VBIF params of WB, the driver should be toggling the
+former bit, while the sc7180_mdp, sc7280_mdp and sm8250_mdp structs
+list the latter one.
 
-The bug was allowing accesses to erroneously pass the
-check_stack_access_within_bounds() checks, only to later crash in
-check_stack_range_initialized() when all the possibly-affected stack
-slots are iterated (this time with a correct max offset).
-check_stack_range_initialized() is relying on
-check_stack_access_within_bounds() for its accesses to the
-stack-tracking vector to be within bounds; in the case of zero-sized
-accesses, we were essentially only verifying that the lowest possible
-slot was within bounds. We would crash when the max-offset of the stack
-pointer was >= 0 (which shouldn't pass verification, and hopefully is
-not something anyone's code attempts to do in practice).
+Correct that to ensure proper programming sequence for WB2 on these
+platforms.
 
-Thanks Hao for reporting!
-
-Fixes: 01f810ace9ed3 ("bpf: Allow variable-offset stack access")
-Reported-by: Hao Sun <sunhao.th@gmail.com>
-Signed-off-by: Andrei Matei <andreimatei1@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20231207041150.229139-2-andreimatei1@gmail.com
-
-Closes: https://lore.kernel.org/bpf/CACkBjsZGEUaRCHsmaX=h-efVogsRfK1FPxmkgb0Os_frnHiNdw@mail.gmail.com/
+Fixes: 255f056181ac ("drm/msm/dpu: sc7180: add missing WB2 clock control")
+Fixes: 3ce166380567 ("drm/msm/dpu: add writeback support for sc7280")
+Fixes: 53324b99bd7b ("drm/msm/dpu: add writeback blocks to the sm8250 DPU catalog")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Tested-by: Paloma Arellano <quic_parellan@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/570185/
+Link: https://lore.kernel.org/r/20231203002437.1291595-1-dmitry.baryshkov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h | 2 +-
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h | 2 +-
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 24152ac6a393..76834ecc59a9 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -6414,10 +6414,7 @@ static int check_stack_access_within_bounds(
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
+index 94278a3e3483..9f8068fa0175 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
+@@ -32,7 +32,7 @@ static const struct dpu_mdp_cfg sm8250_mdp = {
+ 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2bc, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA3] = { .reg_off = 0x2c4, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_REG_DMA] = { .reg_off = 0x2bc, .bit_off = 20 },
+-		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x3b8, .bit_off = 24 },
++		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
+ 	},
+ };
  
- 	if (tnum_is_const(reg->var_off)) {
- 		min_off = reg->var_off.value + off;
--		if (access_size > 0)
--			max_off = min_off + access_size - 1;
--		else
--			max_off = min_off;
-+		max_off = min_off + access_size;
- 	} else {
- 		if (reg->smax_value >= BPF_MAX_VAR_OFF ||
- 		    reg->smin_value <= -BPF_MAX_VAR_OFF) {
-@@ -6426,15 +6423,12 @@ static int check_stack_access_within_bounds(
- 			return -EACCES;
- 		}
- 		min_off = reg->smin_value + off;
--		if (access_size > 0)
--			max_off = reg->smax_value + off + access_size - 1;
--		else
--			max_off = min_off;
-+		max_off = reg->smax_value + off + access_size;
- 	}
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
+index c0d88ddccb28..9bfa15e4e645 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
+@@ -25,7 +25,7 @@ static const struct dpu_mdp_cfg sc7180_mdp = {
+ 		[DPU_CLK_CTRL_DMA0] = { .reg_off = 0x2ac, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA1] = { .reg_off = 0x2b4, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2c4, .bit_off = 8 },
+-		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x3b8, .bit_off = 24 },
++		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
+ 	},
+ };
  
- 	err = check_stack_slot_within_bounds(min_off, state, type);
--	if (!err)
--		err = check_stack_slot_within_bounds(max_off, state, type);
-+	if (!err && max_off > 0)
-+		err = -EINVAL; /* out of stack access into non-negative offsets */
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
+index 15942fa5a8e0..b9c296e51e36 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
+@@ -25,7 +25,7 @@ static const struct dpu_mdp_cfg sc7280_mdp = {
+ 		[DPU_CLK_CTRL_DMA0] = { .reg_off = 0x2ac, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA1] = { .reg_off = 0x2b4, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2c4, .bit_off = 8 },
+-		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x3b8, .bit_off = 24 },
++		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
+ 	},
+ };
  
- 	if (err) {
- 		if (tnum_is_const(reg->var_off)) {
 -- 
 2.43.0
 
