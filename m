@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5324C838335
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FBAB837C3F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 871071C298F8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA8E31F2B7D5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD8529406;
-	Tue, 23 Jan 2024 01:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560AD14462C;
+	Tue, 23 Jan 2024 00:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+fZTkPR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BuHkVYZm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF2229403;
-	Tue, 23 Jan 2024 01:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EF83C3F;
+	Tue, 23 Jan 2024 00:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974736; cv=none; b=buIMGqs1LYowSRepQW79fxc4iy4VvPslgWPS0iER2P+jECS9QEJUvuIgnTAbr0KtRO/BPE7xEsYzF5pG/PrXAo7gVfRCQvMDK8FiHlg8kcH2+7f/FAC7IxjVnvFRraxvB+sQ1F1yFsAmOwah2+9u/oTta/LGw+mUXOoF5/5132s=
+	t=1705969551; cv=none; b=E/vk+78iJfK1SNL2yBdayrEQ4WbxOnPrxMk5AanHjIzQvd17OGX5wBmB01gySNtRn9Dyfq6uPB8uAeEcsk/cUM7jlW77mFuMXiF+fP+JPh1pHZ92fkBo1H/m3AG3qMPezMGVT1QNhpsF/L/N6StEx+9xQy/b8MwtvE2iHwqVjeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974736; c=relaxed/simple;
-	bh=GuM/VoSM3B4dLuiw+gEG1pDSIVhdVAdnrue+FPy8WeM=;
+	s=arc-20240116; t=1705969551; c=relaxed/simple;
+	bh=Qj17u9nWe8fYn4ZW2NtmDPQtdSbPWyRCUyIvmjCUBV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4LHyhrMdPJxwHdsGci+kuiiBwlOMY/N2MoOoieHhorBP8+NNsxfJRQg/A3+rfCC91iPc7eyGbiodQZlHqG4cmQUkSHUYeutc+Zv3P4POhY0+XjrPciuXHjwOZr3QU2m/oh0wK8PdaV1gcVmvSCpMnUyjklF1wOU6H4i2BZG5E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+fZTkPR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE3EC433C7;
-	Tue, 23 Jan 2024 01:52:16 +0000 (UTC)
+	 MIME-Version; b=aNgrY3RjU+DUQyOq4pqKUnMnpS0/QGj0tHUJT+gTuh7YSaHiN71SnkEO7JJfmgjwe/rCrbDzm7yz/3E7v3n5XwFQfx8y+KWD5FzaetCHNW0nRUq2SHW8v7MoURC4gtvEcOYWDsQRSPLTrR5Pbm9i8+UiEyOvRtemMQnNtiPGWEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BuHkVYZm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED49C433F1;
+	Tue, 23 Jan 2024 00:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974736;
-	bh=GuM/VoSM3B4dLuiw+gEG1pDSIVhdVAdnrue+FPy8WeM=;
+	s=korg; t=1705969550;
+	bh=Qj17u9nWe8fYn4ZW2NtmDPQtdSbPWyRCUyIvmjCUBV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f+fZTkPRLw5Cf9DQtBycWAKRo0isLyBlucO7q5+5Qh8CO9FV/Sli6JrGic40huHQu
-	 gzlRbI93BRhb2AdXVsV59ECNwYONyT1fUrkIjYi2iZ6umId2v6IP8MBJ1DI7p1iOn5
-	 sT1VSaQNpEDW2+uvcx1SHjBSQVFyTwvZZYWErWss=
+	b=BuHkVYZmOrMop/oHfUG1KVq4lng85b2pb8wLOsEdCggnaiPWP1P2yQ9CKN+7UnZln
+	 utkkJ5DTiSgpxlOtGBpb8dsHWImBM6Nqzu7faSF2sINjEcH6ZCJh5vi+b8rb0IdMOd
+	 npsJZBZWxjwLBmg7RUcKO9WeEVfmxXlsYVM9SOc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 149/583] arm64: dts: mediatek: mt8186: Fix alias prefix for ovl_2l0
+Subject: [PATCH 6.7 296/641] drm/radeon/trinity_dpm: fix a memleak in trinity_parse_power_table
 Date: Mon, 22 Jan 2024 15:53:20 -0800
-Message-ID: <20240122235816.634085395@linuxfoundation.org>
+Message-ID: <20240122235827.162041236@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 6ed159e499bc2ebedf94c9086244220824e71672 ]
+[ Upstream commit 28c28d7f77c06ac2c0b8f9c82bc04eba22912b3b ]
 
-The alias prefix for ovl_2l (2 layer overlay) is "ovl-2l", not "ovl_2l".
+The rdev->pm.dpm.ps allocated by kcalloc should be freed in every
+following error-handling path. However, in the error-handling of
+rdev->pm.power_state[i].clock_info the rdev->pm.dpm.ps is not freed,
+resulting in a memleak in this function.
 
-Fix this.
-
-Fixes: 7e07d3322de2 ("arm64: dts: mediatek: mt8186: Add display nodes")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20231130074032.913511-4-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: d70229f70447 ("drm/radeon/kms: add dpm support for trinity asics")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8186.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/trinity_dpm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8186.dtsi b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-index df0c04f2ba1d..021397671099 100644
---- a/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-@@ -22,7 +22,7 @@ / {
- 
- 	aliases {
- 		ovl0 = &ovl0;
--		ovl_2l0 = &ovl_2l0;
-+		ovl-2l0 = &ovl_2l0;
- 		rdma0 = &rdma0;
- 		rdma1 = &rdma1;
- 	};
+diff --git a/drivers/gpu/drm/radeon/trinity_dpm.c b/drivers/gpu/drm/radeon/trinity_dpm.c
+index 08ea1c864cb2..ef1cc7bad20a 100644
+--- a/drivers/gpu/drm/radeon/trinity_dpm.c
++++ b/drivers/gpu/drm/radeon/trinity_dpm.c
+@@ -1726,8 +1726,10 @@ static int trinity_parse_power_table(struct radeon_device *rdev)
+ 		non_clock_array_index = power_state->v2.nonClockInfoIndex;
+ 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
+ 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
+-		if (!rdev->pm.power_state[i].clock_info)
++		if (!rdev->pm.power_state[i].clock_info) {
++			kfree(rdev->pm.dpm.ps);
+ 			return -EINVAL;
++		}
+ 		ps = kzalloc(sizeof(struct sumo_ps), GFP_KERNEL);
+ 		if (ps == NULL) {
+ 			kfree(rdev->pm.dpm.ps);
 -- 
 2.43.0
 
