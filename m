@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-14352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C49083808D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B8683838F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D7D72865C8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A73371C29CD0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F94E12FF71;
-	Tue, 23 Jan 2024 01:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A9E633F0;
+	Tue, 23 Jan 2024 01:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtMH4fQB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LE4EUClz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBF1657B3;
-	Tue, 23 Jan 2024 01:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E855F633EA;
+	Tue, 23 Jan 2024 01:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971788; cv=none; b=ILESKQM2Z5W/e5r7tECP5gD0e9pfmNIZSY1JrGklvnP+Y9Mr7G186x5oEU7nE16b5qRIjB/ZmSqPCLTalGwEHKPASYyFdz49/wAqtpdZM0YDTkXTVfEF6O9jSo8zrBjxtEt1bvltuGDVcybZ6R4HPbxHFkfAY1V+tIKGXe7c6D4=
+	t=1705975007; cv=none; b=LdI5E7YANjZEloKVXTPJNvw5BPISrvkRVKq+TRerlsjT2fQn30iBVZC+uugkQPt8npmktM8T6WZMJAh9jbEZEoQsF764cEDIR5OV3Llv6nU2N+xgHwX1img1XryXKvvWDdizHOvDz0cHx2rCHqngQ1DXMMXiU48cWk9lo7BrrPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971788; c=relaxed/simple;
-	bh=7YEf8rEhj0FiBGheFJe3qG0b82x4CbN6EKsZAQJ6DE0=;
+	s=arc-20240116; t=1705975007; c=relaxed/simple;
+	bh=vzybYGrLk3HEJmal+nTA6KkpilCDF3nCe+SlRj8/Ytw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gNDC8Vkwz20rqUBq3gRDccizRfzz9ORRehO586Pce5pr3iPd4rHRl25HSueB7B7MC7Iy/1BDN+h4po3IaGBOpolAEjv10u6d3tpfqugKg9uqlMPDZ4WnBtrVr7VP3MhLUcmJ6yI5ZegIO387oplz9xHJGF0y6rJTrUiaGTHg3Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtMH4fQB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061D7C433C7;
-	Tue, 23 Jan 2024 01:03:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CXCU1bNH+GqaYIxHUXP9gCrcmMLrLH3WqhDN4kW8RgSPuQZqyAGlqXDcU2gGXv5B8FT6q8ZoSGk4BJ9QwDNWSlOREjNt45cYX34v3xDrNFmn0rhDAjJ1rI0ZVawj9ST7vC0Td561ZDSedbGqm12k3NceMRdbMoVzg2YVq0+10b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LE4EUClz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA15C433F1;
+	Tue, 23 Jan 2024 01:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971788;
-	bh=7YEf8rEhj0FiBGheFJe3qG0b82x4CbN6EKsZAQJ6DE0=;
+	s=korg; t=1705975006;
+	bh=vzybYGrLk3HEJmal+nTA6KkpilCDF3nCe+SlRj8/Ytw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NtMH4fQB6m8EgTR5XWLu+WnB98auCLYxRKFIvnNs8yFftZZOoyifWY6AVfte5zvdi
-	 urWOUMzThoN/Oipis/WkZAur7ZCZ+RqrCzenAzPConw20SMLO7fI/xWGjnQv2NrJ0u
-	 gh775DlOZiTfXvHeLGqrKrBZ3XR2PECasdooKfFA=
+	b=LE4EUClz1Ck1CyA/h428tbS/r1dK6KVQh25SeihFEou/C6TVxjMy+ZkAZV75bOdaI
+	 e2YqEyBG5OqRaMyNcnsULv5ylo+dmstYymVOFlkdwBTfTmAUxRt6ldhTT/ea6xkjfq
+	 9ui0a93FEZcAR8YKjMTHuEc5KmpL76oopbRBzzic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>
-Subject: [PATCH 5.10 231/286] x86/kvm: Do not try to disable kvmclock if it was not enabled
-Date: Mon, 22 Jan 2024 15:58:57 -0800
-Message-ID: <20240122235740.971693522@linuxfoundation.org>
+	qizhong cheng <qizhong.cheng@mediatek.com>,
+	Jianjun Wang <jianjun.wang@mediatek.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 5.15 282/374] PCI: mediatek: Clear interrupt status before dispatching handler
+Date: Mon, 22 Jan 2024 15:58:58 -0800
+Message-ID: <20240122235754.575907523@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: qizhong cheng <qizhong.cheng@mediatek.com>
 
-commit 1c6d984f523f67ecfad1083bb04c55d91977bb15 upstream.
+commit 4e11c29873a8a296a20f99b3e03095e65ebf897d upstream.
 
-kvm_guest_cpu_offline() tries to disable kvmclock regardless if it is
-present in the VM. It leads to write to a MSR that doesn't exist on some
-configurations, namely in TDX guest:
+We found a failure when using the iperf tool during WiFi performance
+testing, where some MSIs were received while clearing the interrupt
+status, and these MSIs cannot be serviced.
 
-	unchecked MSR access error: WRMSR to 0x12 (tried to write 0x0000000000000000)
-	at rIP: 0xffffffff8110687c (kvmclock_disable+0x1c/0x30)
+The interrupt status can be cleared even if the MSI status remains pending.
+As such, given the edge-triggered interrupt type, its status should be
+cleared before being dispatched to the handler of the underling device.
 
-kvmclock enabling is gated by CLOCKSOURCE and CLOCKSOURCE2 KVM paravirt
-features.
-
-Do not disable kvmclock if it was not enabled.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: c02027b5742b ("x86/kvm: Disable kvmclock on all CPUs on shutdown")
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Wanpeng Li <wanpengli@tencent.com>
-Cc: stable@vger.kernel.org
-Message-Id: <20231205004510.27164-6-kirill.shutemov@linux.intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+[kwilczynski: commit log, code comment wording]
+Link: https://lore.kernel.org/linux-pci/20231211094923.31967-1-jianjun.wang@mediatek.com
+Fixes: 43e6409db64d ("PCI: mediatek: Add MSI support for MT2712 and MT7622")
+Signed-off-by: qizhong cheng <qizhong.cheng@mediatek.com>
+Signed-off-by: Jianjun Wang <jianjun.wang@mediatek.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: rewrap comment]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc:  <stable@vger.kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/kvmclock.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/pci/controller/pcie-mediatek.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/kvmclock.c
-+++ b/arch/x86/kernel/kvmclock.c
-@@ -24,8 +24,8 @@
+--- a/drivers/pci/controller/pcie-mediatek.c
++++ b/drivers/pci/controller/pcie-mediatek.c
+@@ -624,12 +624,18 @@ static void mtk_pcie_intr_handler(struct
+ 		if (status & MSI_STATUS){
+ 			unsigned long imsi_status;
  
- static int kvmclock __initdata = 1;
- static int kvmclock_vsyscall __initdata = 1;
--static int msr_kvm_system_time __ro_after_init = MSR_KVM_SYSTEM_TIME;
--static int msr_kvm_wall_clock __ro_after_init = MSR_KVM_WALL_CLOCK;
-+static int msr_kvm_system_time __ro_after_init;
-+static int msr_kvm_wall_clock __ro_after_init;
- static u64 kvm_sched_clock_offset __ro_after_init;
- 
- static int __init parse_no_kvmclock(char *arg)
-@@ -196,7 +196,8 @@ static void kvm_setup_secondary_clock(vo
- 
- void kvmclock_disable(void)
- {
--	native_write_msr(msr_kvm_system_time, 0, 0);
-+	if (msr_kvm_system_time)
-+		native_write_msr(msr_kvm_system_time, 0, 0);
- }
- 
- static void __init kvmclock_init_mem(void)
-@@ -292,7 +293,10 @@ void __init kvmclock_init(void)
- 	if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE2)) {
- 		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME_NEW;
- 		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK_NEW;
--	} else if (!kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
-+	} else if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
-+		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME;
-+		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK;
-+	} else {
- 		return;
++			/*
++			 * The interrupt status can be cleared even if the
++			 * MSI status remains pending. As such, given the
++			 * edge-triggered interrupt type, its status should
++			 * be cleared before being dispatched to the
++			 * handler of the underlying device.
++			 */
++			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
+ 			while ((imsi_status = readl(port->base + PCIE_IMSI_STATUS))) {
+ 				for_each_set_bit(bit, &imsi_status, MTK_MSI_IRQS_NUM)
+ 					generic_handle_domain_irq(port->inner_domain, bit);
+ 			}
+-			/* Clear MSI interrupt status */
+-			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
+ 		}
  	}
  
 
