@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-14889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F33428383B2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 307B783830C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1423B21E5A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD99428AC45
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8576027D;
-	Tue, 23 Jan 2024 01:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F12460273;
+	Tue, 23 Jan 2024 01:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJwVjbpU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWpLbgJ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C58605A4;
-	Tue, 23 Jan 2024 01:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C204B604DE;
+	Tue, 23 Jan 2024 01:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974689; cv=none; b=QKVvQ2tNpW/YgUBTE7stBSyy3+QK2hgxmvoCJDO+IfX0Xg785911PiUHGNxYDiaVsZ19Q/GL7mmKRxaRKtXsMhOeRlVCyyyw+ZuqDA8rho6/Vqy7yO9etJege3looHXusALR2kt9NYkVvN4vagoMXzM3m0DWnC76JoeIlZ9b+lo=
+	t=1705974691; cv=none; b=BgH2AjW0x380qwfp24y7PjttUBEU2zsktqzq+apDFh4Hhhj+41HD0aWLANCxpdhVZlH0Am+TdvIjzIkAzy14rFva6/rhKcAu9tVaE+0V9LOcP/OrBdKArnblCW1M0J2mZscC2pbUy9esCX6rmCAxsluXQgdZeSRhPt4dAHBlcVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974689; c=relaxed/simple;
-	bh=CFt5n9aJJovuveX0xeC9lp5fYtrxvBfCccFMMYE0//U=;
+	s=arc-20240116; t=1705974691; c=relaxed/simple;
+	bh=kZ//05DPThWiy81+tkWpQaV0F8ucv5hnC2oeHbqVZEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hgo74w1gz/MkUyNY0qk8YP7owUH472f5UaeZ5LqqNGAxukpcEDtl7cJ+a7Tbicsb8fnPmg8RZcBh093qQgF7vlrl0gjbiWRmF6sI7w3Er3V4ESTVI7ax474nH63UZfk082cQ/4s3i6yvXpVghqmI4jU/rSv1lvD2CO/3KPYTa1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJwVjbpU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F46C433F1;
-	Tue, 23 Jan 2024 01:51:28 +0000 (UTC)
+	 MIME-Version; b=tI/SLYR+eQtBRdkAUdXYL8X6f/paKtlWZCq9gsVzLRwH4XV+LnSUYAwRaJ7DK0yr8UIe48kfnZrUC++z9jfCeUVwW5fB10mE9p/AZ5xcCvpBT3AEJXG1eztUI6yZGgwga4foE2wB0PzNd826T+V8L042J/SGHMjOk4TtZB0ZuwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWpLbgJ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F27C433F1;
+	Tue, 23 Jan 2024 01:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974688;
-	bh=CFt5n9aJJovuveX0xeC9lp5fYtrxvBfCccFMMYE0//U=;
+	s=korg; t=1705974691;
+	bh=kZ//05DPThWiy81+tkWpQaV0F8ucv5hnC2oeHbqVZEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJwVjbpU7lgdnVhfjpoVd0rlgFs0s+BXqV4f6aW8x+af8XuLpQ1ivUk6sagnPMaR+
-	 UY09QFle364FdT41+1C639BygP4/bqZr2X72w+RAFadYFahWrSyO1JrP7xuZeF9gM7
-	 LzvRm+ykqlAwBp3xIW4jPzf+7rZEJ5cyNViFsUNA=
+	b=nWpLbgJ+j+NRGUjaJaElkFHxRETmauGtMpC/cu9HIypdLYZswuWqBddKChLslQ5aT
+	 PJXVxzeKvpEiFjNSQiWyuWg5KlF3/CIqX6Onmtw7Y8qaVgltEDMUzfGUZBOmvZ7KfK
+	 u1/e7wExNsY5+hvwKWejdy3rqzF035+LdKZhbJL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.15 251/374] binder: fix race between mmput() and do_exit()
-Date: Mon, 22 Jan 2024 15:58:27 -0800
-Message-ID: <20240122235753.499020645@linuxfoundation.org>
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>
+Subject: [PATCH 5.15 252/374] tick-sched: Fix idle and iowait sleeptime accounting vs CPU hotplug
+Date: Mon, 22 Jan 2024 15:58:28 -0800
+Message-ID: <20240122235753.537690434@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
 References: <20240122235744.598274724@linuxfoundation.org>
@@ -65,67 +67,86 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit 9a9ab0d963621d9d12199df9817e66982582d5a5 upstream.
+commit 71fee48fb772ac4f6cfa63dbebc5629de8b4cc09 upstream.
 
-Task A calls binder_update_page_range() to allocate and insert pages on
-a remote address space from Task B. For this, Task A pins the remote mm
-via mmget_not_zero() first. This can race with Task B do_exit() and the
-final mmput() refcount decrement will come from Task A.
+When offlining and onlining CPUs the overall reported idle and iowait
+times as reported by /proc/stat jump backward and forward:
 
-  Task A            | Task B
-  ------------------+------------------
-  mmget_not_zero()  |
-                    |  do_exit()
-                    |    exit_mm()
-                    |      mmput()
-  mmput()           |
-    exit_mmap()     |
-      remove_vma()  |
-        fput()      |
+cpu  132 0 176 225249 47 6 6 21 0 0
+cpu0 80 0 115 112575 33 3 4 18 0 0
+cpu1 52 0 60 112673 13 3 1 2 0 0
 
-In this case, the work of ____fput() from Task B is queued up in Task A
-as TWA_RESUME. So in theory, Task A returns to userspace and the cleanup
-work gets executed. However, Task A instead sleep, waiting for a reply
-from Task B that never comes (it's dead).
+cpu  133 0 177 226681 47 6 6 21 0 0
+cpu0 80 0 116 113387 33 3 4 18 0 0
 
-This means the binder_deferred_release() is blocked until an unrelated
-binder event forces Task A to go back to userspace. All the associated
-death notifications will also be delayed until then.
+cpu  133 0 178 114431 33 6 6 21 0 0 <---- jump backward
+cpu0 80 0 116 114247 33 3 4 18 0 0
+cpu1 52 0 61 183 0 3 1 2 0 0        <---- idle + iowait start with 0
 
-In order to fix this use mmput_async() that will schedule the work in
-the corresponding mm->async_put_work WQ instead of Task A.
+cpu  133 0 178 228956 47 6 6 21 0 0 <---- jump forward
+cpu0 81 0 117 114929 33 3 4 18 0 0
 
-Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-4-cmllamas@google.com
+Reason for this is that get_idle_time() in fs/proc/stat.c has different
+sources for both values depending on if a CPU is online or offline:
+
+- if a CPU is online the values may be taken from its per cpu
+  tick_cpu_sched structure
+
+- if a CPU is offline the values are taken from its per cpu cpustat
+  structure
+
+The problem is that the per cpu tick_cpu_sched structure is set to zero on
+CPU offline. See tick_cancel_sched_timer() in kernel/time/tick-sched.c.
+
+Therefore when a CPU is brought offline and online afterwards both its idle
+and iowait sleeptime will be zero, causing a jump backward in total system
+idle and iowait sleeptime. In a similar way if a CPU is then brought
+offline again the total idle and iowait sleeptimes will jump forward.
+
+It looks like this behavior was introduced with commit 4b0c0f294f60
+("tick: Cleanup NOHZ per cpu data on cpu down").
+
+This was only noticed now on s390, since we switched to generic idle time
+reporting with commit be76ea614460 ("s390/idle: remove arch_cpu_idle_time()
+and corresponding code").
+
+Fix this by preserving the values of idle_sleeptime and iowait_sleeptime
+members of the per-cpu tick_sched structure on CPU hotplug.
+
+Fixes: 4b0c0f294f60 ("tick: Cleanup NOHZ per cpu data on cpu down")
+Reported-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20240115163555.1004144-1-hca@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder_alloc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/time/tick-sched.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -271,7 +271,7 @@ static int binder_update_page_range(stru
- 	}
- 	if (mm) {
- 		mmap_write_unlock(mm);
--		mmput(mm);
-+		mmput_async(mm);
- 	}
- 	return 0;
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -1528,13 +1528,18 @@ void tick_setup_sched_timer(void)
+ void tick_cancel_sched_timer(int cpu)
+ {
+ 	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
++	ktime_t idle_sleeptime, iowait_sleeptime;
  
-@@ -304,7 +304,7 @@ err_page_ptr_cleared:
- err_no_vma:
- 	if (mm) {
- 		mmap_write_unlock(mm);
--		mmput(mm);
-+		mmput_async(mm);
- 	}
- 	return vma ? -ENOMEM : -ESRCH;
+ # ifdef CONFIG_HIGH_RES_TIMERS
+ 	if (ts->sched_timer.base)
+ 		hrtimer_cancel(&ts->sched_timer);
+ # endif
+ 
++	idle_sleeptime = ts->idle_sleeptime;
++	iowait_sleeptime = ts->iowait_sleeptime;
+ 	memset(ts, 0, sizeof(*ts));
++	ts->idle_sleeptime = idle_sleeptime;
++	ts->iowait_sleeptime = iowait_sleeptime;
  }
+ #endif
+ 
 
 
 
