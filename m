@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFAEE838091
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE17838362
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F276B1C296BC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 702311C29B6B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BDA12FF81;
-	Tue, 23 Jan 2024 01:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9111E627FD;
+	Tue, 23 Jan 2024 01:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4BwoXto"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xj4k2a+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4277F657B3;
-	Tue, 23 Jan 2024 01:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51271627EB;
+	Tue, 23 Jan 2024 01:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971799; cv=none; b=cbEzE+LX8Ih9dDZuyiXEZHeslguLMKtDnYAxfX7gNR5PRJtRZfasv6kCTBkh8sablDqaR/n5UmogJxR9Yd8XLEg6xi4XLUdtSWCXXiEHk4aD6U3AD60N+oSn3k1TH4ZptbPOYIs95cCegwgA5D9tP/p4dNT6N4RDp2/3OuC/Xmw=
+	t=1705974954; cv=none; b=OgI6ATrcVLVmJ4rG+KsW9kHIPc0MNeGgr0xu+vUpEszl2IR6gKBtbyYXEiku5GhkzH3WdBlfmG/avpNxeqiPiMhy4i6GKf0R56TNR0jaS7xnmrueRb5b/xZp2SvNEiqlOZMOe+DJAbq7hkhBidF5rSXetjr32CEr5sGNox0OXP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971799; c=relaxed/simple;
-	bh=sd6nSTg5yErosQZVyVtHV0bsTpItzEtIh8O0Z/+2T38=;
+	s=arc-20240116; t=1705974954; c=relaxed/simple;
+	bh=9NdGZZIgOlkXND2lgzh2I+m/F93rOmETj2pMtjKMT0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WOpR38xuqY0sTmPfMkn9qSFL7Sam9Mb6CUBfcjYHySK0aPx65rJD971VlJUmRnZGVp+7juvRrGNT+25GqjMAO3wwyEm0CYaP5bwUrXOt1+cnHGDrpLytCfYqdSQnS5I9e/YcTxw2PubMTgP5mKHjzxNwl2tdwIQlMFVdulrXcg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4BwoXto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6114C43394;
-	Tue, 23 Jan 2024 01:03:18 +0000 (UTC)
+	 MIME-Version; b=mLJc6m13C/tLG0URVag+ETOx7rZQS1Arz0c24y0FuH7bxfyathwWtf+OOZtRrqRub/5Q6qVEreRUKmby93Q8k1MR6xnvML5UHIlRiVml1ahny7X4+DNcrIouD25gZVA0Hswf6WTDU3NBTxPPn0XwSTp8VN+8hNgxZ/PLltRM7no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xj4k2a+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D64BC43399;
+	Tue, 23 Jan 2024 01:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971799;
-	bh=sd6nSTg5yErosQZVyVtHV0bsTpItzEtIh8O0Z/+2T38=;
+	s=korg; t=1705974954;
+	bh=9NdGZZIgOlkXND2lgzh2I+m/F93rOmETj2pMtjKMT0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v4BwoXtou4SMW7wobpCQF6X7VrVK8fUe9r3oLMbp010GSaOhcWVbDiXKRmMiVg8fs
-	 zrJpswLkmUftLgwdRo9ilhixPbvBuAD3E7RJwDBznfOGXU6SE2JWLhUA7cB7m143Hn
-	 3phYlrHUVfEMw8o8UKOq1f5jkt+wR+CqotELxy1w=
+	b=Xj4k2a+OCWCF3gMs1PRIy6SnSTkTzWSYGdBkaIQ8MecLAGiH4i7GELD3VjrVGF15k
+	 zBZJvbl1YcP5PbfQ09AnRQzXFhrErcXhGlCjINjMqIW/kOdsUuJmIBCAf0YHglO9X6
+	 m2iOA222r8WDXlyWhKb6ub+u0S++oXlqvaVk0vc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 5.10 233/286] KVM: arm64: vgic-its: Avoid potential UAF in LPI translation cache
-Date: Mon, 22 Jan 2024 15:58:59 -0800
-Message-ID: <20240122235741.040987905@linuxfoundation.org>
+	Kunkun Jiang <jiangkunkun@huawei.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: [PATCH 5.15 284/374] KVM: arm64: vgic-v4: Restore pending state on host userspace write
+Date: Mon, 22 Jan 2024 15:59:00 -0800
+Message-ID: <20240122235754.652120637@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Marc Zyngier <maz@kernel.org>
 
-commit ad362fe07fecf0aba839ff2cc59a3617bd42c33f upstream.
+commit 7b95382f965133ef61ce44aaabc518c16eb46909 upstream.
 
-There is a potential UAF scenario in the case of an LPI translation
-cache hit racing with an operation that invalidates the cache, such
-as a DISCARD ITS command. The root of the problem is that
-vgic_its_check_cache() does not elevate the refcount on the vgic_irq
-before dropping the lock that serializes refcount changes.
+When the VMM writes to ISPENDR0 to set the state pending state of
+an SGI, we fail to convey this to the HW if this SGI is already
+backed by a GICv4.1 vSGI.
 
-Have vgic_its_check_cache() raise the refcount on the returned vgic_irq
-and add the corresponding decrement after queueing the interrupt.
+This is a bit of a corner case, as this would only occur if the
+vgic state is changed on an already running VM, but this can
+apparently happen across a guest reset driven by the VMM.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Fix this by always writing out the pending_latch value to the
+HW, and reseting it to false.
+
+Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
 Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240104183233.3560639-1-oliver.upton@linux.dev
+Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
+Cc: stable@vger.kernel.org # 5.10+
+Link: https://lore.kernel.org/r/7e7f2c0c-448b-10a9-8929-4b8f4f6e2a32@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/vgic/vgic-its.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c |   27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
---- a/arch/arm64/kvm/vgic/vgic-its.c
-+++ b/arch/arm64/kvm/vgic/vgic-its.c
-@@ -584,7 +584,11 @@ static struct vgic_irq *vgic_its_check_c
- 	unsigned long flags;
+--- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+@@ -363,19 +363,26 @@ static int vgic_v3_uaccess_write_pending
+ 		struct vgic_irq *irq = vgic_get_irq(vcpu->kvm, vcpu, intid + i);
  
- 	raw_spin_lock_irqsave(&dist->lpi_list_lock, flags);
+ 		raw_spin_lock_irqsave(&irq->irq_lock, flags);
+-		if (test_bit(i, &val)) {
+-			/*
+-			 * pending_latch is set irrespective of irq type
+-			 * (level or edge) to avoid dependency that VM should
+-			 * restore irq config before pending info.
+-			 */
+-			irq->pending_latch = true;
+-			vgic_queue_irq_unlock(vcpu->kvm, irq, flags);
+-		} else {
 +
- 	irq = __vgic_its_check_cache(dist, db, devid, eventid);
-+	if (irq)
-+		vgic_get_irq_kref(irq);
++		/*
++		 * pending_latch is set irrespective of irq type
++		 * (level or edge) to avoid dependency that VM should
++		 * restore irq config before pending info.
++		 */
++		irq->pending_latch = test_bit(i, &val);
 +
- 	raw_spin_unlock_irqrestore(&dist->lpi_list_lock, flags);
++		if (irq->hw && vgic_irq_is_sgi(irq->intid)) {
++			irq_set_irqchip_state(irq->host_irq,
++					      IRQCHIP_STATE_PENDING,
++					      irq->pending_latch);
+ 			irq->pending_latch = false;
+-			raw_spin_unlock_irqrestore(&irq->irq_lock, flags);
+ 		}
  
- 	return irq;
-@@ -763,6 +767,7 @@ int vgic_its_inject_cached_translation(s
- 	raw_spin_lock_irqsave(&irq->irq_lock, flags);
- 	irq->pending_latch = true;
- 	vgic_queue_irq_unlock(kvm, irq, flags);
-+	vgic_put_irq(kvm, irq);
++		if (irq->pending_latch)
++			vgic_queue_irq_unlock(vcpu->kvm, irq, flags);
++		else
++			raw_spin_unlock_irqrestore(&irq->irq_lock, flags);
++
+ 		vgic_put_irq(vcpu->kvm, irq);
+ 	}
  
- 	return 0;
- }
 
 
 
