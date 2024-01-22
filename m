@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C2AA838230
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AAD0837D46
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45CE11F2501D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C68BA1F2966C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15E958AD4;
-	Tue, 23 Jan 2024 01:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220E65674E;
+	Tue, 23 Jan 2024 00:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gA72h0Td"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fs6yt8gR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFEA58AD2;
-	Tue, 23 Jan 2024 01:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6DFD3A8F4;
+	Tue, 23 Jan 2024 00:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974088; cv=none; b=Ccpc8VOYVwUEnnKv99Ea3NXQiRPeLn4Fsi7LHj3BaaikFuzyslQu3R+bAs+VWlwV/dLngUerfYvD+Fyw3T8pdGTQkS3tds1ta35lI7b6bRWLOrOEKnjcWUq7BX4VPvNCUjy5A3X8bGQOPgk1s6cre9S/9M/C4aCc1+h/zDMXtDI=
+	t=1705969870; cv=none; b=Xkzt6ndpoWkWSx4gS6zQ5TGZrx7c0EQXw55vcn5tGOacWmE3cOrcIEJAZdUCkyYQpMLpmobBcrqTej9mtqDnEBAUEOzNcMWFlP5as/X1eelv/g83p3CFHvsN6d5OPt2JztPjk4VKT7C6uLB4Tq/OhN2wL1f+v0po+50uQzukzXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974088; c=relaxed/simple;
-	bh=xn7a7C4SC3tT9QLuiNkv92T5npghZuuypjXdYPt/6gU=;
+	s=arc-20240116; t=1705969870; c=relaxed/simple;
+	bh=21tyZEPijBbq5A9B6w06fnm6aDPrF+SEVsfzMx+MdRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OqBuEc3U9PuV5h70pN5TsRF0HGr8DrwfTp2XjKbENlT1RBZEEh6K0Y05H6wmqc1BjLkEkUQ9mEThItXvWDTLyVf9zTuvRUFPFii1aJM1wXP3K822pyRm2soEgeesZhmbbK8VnOdWHFKtKeI7SwUstbhDu7Qg4uM+7jrPw7cVI5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gA72h0Td; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463F9C43399;
-	Tue, 23 Jan 2024 01:41:27 +0000 (UTC)
+	 MIME-Version; b=JvB25ykeeNTk1rAE+lATGBcYRnowAZ1F8LE3eBn11fHsN8vGAoJUH5EDtNDOrht3LNOSzyVwdM6IMr4mLNkOmS3k7jdGP2RHIapmno02scGJ36nXGB8u0CsYnJFKC77ePQI0NV+3cCPRmDzJI0TFc36Ltk6LfOG0j0heu7XianM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fs6yt8gR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB59C433F1;
+	Tue, 23 Jan 2024 00:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974087;
-	bh=xn7a7C4SC3tT9QLuiNkv92T5npghZuuypjXdYPt/6gU=;
+	s=korg; t=1705969870;
+	bh=21tyZEPijBbq5A9B6w06fnm6aDPrF+SEVsfzMx+MdRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gA72h0TdapklBYiQOPzRVOPoHDrOJf7ES3IHPyPI9nPnY3obibOnIj2pIHPSqz8P6
-	 Lpop6TpwyJA3e8585dVg/m38BHTbXXaMOukW0HGvHIRpn3BRPvypfOt/Xec1wI9TQt
-	 4VlaYsToI6cOAXdpp/dqAWuh+mxm6dpCrOaY+UfI=
+	b=fs6yt8gRbp5M1Ed672h/fZfb8H3BcAMyTHHDBushdAuoAS/m/N1RX5DISS1fI7qRw
+	 Lmh7U0/XPjMS1+/q7k29yNOfJClpeop34/u43nNXu0J6Ll2/+VSO68Jp79QQTVB21n
+	 38pE2ihi34Uq4D+VJCK1mV/HUca+AI215toIeSjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 145/374] scsi: hisi_sas: Rollback some operations if FLR failed
+Subject: [PATCH 6.7 497/641] riscv: Fix set_direct_map_default_noflush() to reset _PAGE_EXEC
 Date: Mon, 22 Jan 2024 15:56:41 -0800
-Message-ID: <20240122235749.675446256@linuxfoundation.org>
+Message-ID: <20240122235833.615885340@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 7ea3e7763c50b20a8bd25cf524ea0c6463de69be ]
+[ Upstream commit b8b2711336f03ece539de61479d6ffc44fb603d3 ]
 
-We obtain the semaphore and set HISI_SAS_RESETTING_BIT in
-hisi_sas_reset_prepare_v3_hw(), block the scsi host and set
-HISI_SAS_REJECT_CMD_BIT in hisi_sas_controller_reset_prepare(), released
-them in hisi_sas_controller_reset_done(). However, if the HW reset failure
-in FLR results in early return, the semaphore and flag bits will not be
-release.
+When resetting the linear mapping permissions, we must make sure that we
+clear the X bit so that do not end up with WX mappings (since we set
+PAGE_KERNEL).
 
-Rollback some operations including clearing flags / releasing semaphore
-when FLR is failed.
-
-Fixes: e5ea48014adc ("scsi: hisi_sas: Implement handlers of PCIe FLR for v3 hw")
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/1702525516-51258-5-git-send-email-chenxiang66@hisilicon.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 395a21ff859c ("riscv: add ARCH_HAS_SET_DIRECT_MAP support")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20231213134027.155327-3-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/riscv/mm/pageattr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 88af529ab100..4505310c0c3c 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -4948,6 +4948,7 @@ static void hisi_sas_reset_done_v3_hw(struct pci_dev *pdev)
+diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
+index 96cbda683936..01398fee5cf8 100644
+--- a/arch/riscv/mm/pageattr.c
++++ b/arch/riscv/mm/pageattr.c
+@@ -383,7 +383,7 @@ int set_direct_map_invalid_noflush(struct page *page)
+ int set_direct_map_default_noflush(struct page *page)
  {
- 	struct sas_ha_struct *sha = pci_get_drvdata(pdev);
- 	struct hisi_hba *hisi_hba = sha->lldd_ha;
-+	struct Scsi_Host *shost = hisi_hba->shost;
- 	struct device *dev = hisi_hba->dev;
- 	int rc;
+ 	return __set_memory((unsigned long)page_address(page), 1,
+-			    PAGE_KERNEL, __pgprot(0));
++			    PAGE_KERNEL, __pgprot(_PAGE_EXEC));
+ }
  
-@@ -4956,6 +4957,10 @@ static void hisi_sas_reset_done_v3_hw(struct pci_dev *pdev)
- 	rc = hw_init_v3_hw(hisi_hba);
- 	if (rc) {
- 		dev_err(dev, "FLR: hw init failed rc=%d\n", rc);
-+		clear_bit(HISI_SAS_REJECT_CMD_BIT, &hisi_hba->flags);
-+		scsi_unblock_requests(shost);
-+		clear_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags);
-+		up(&hisi_hba->sem);
- 		return;
- 	}
- 
+ #ifdef CONFIG_DEBUG_PAGEALLOC
 -- 
 2.43.0
 
