@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A1FC837D05
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:23:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2AC837F04
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01DA629123C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C73F1C28745
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A75E5EE7B;
-	Tue, 23 Jan 2024 00:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4492A604DB;
+	Tue, 23 Jan 2024 00:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7OhZGgp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nziC/fyD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBC45D909;
-	Tue, 23 Jan 2024 00:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D8460252;
+	Tue, 23 Jan 2024 00:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969769; cv=none; b=P6tazG20wo/9PH2OqLeIYfF/98u2Rx3OE+Ekh7TMBkaJ11UpYJbdFl5CWi2zF5Lr9go4MBg0QE6BwQX4ay8QxPx0NY6bqZqXT+1E3UNkTyPKbFQQJOhpKsLXdJ6wosvWkebafqPaIWhKzT9idWwmoO4iOUOO9FjjWnxxa6GQWKQ=
+	t=1705970882; cv=none; b=Ezyh4yPgAiHQS373ebZ/0Kseo/mz+qqF142oc9aBjNDNR1W4+SmC7GKSM4VjY5v8Lozoxowh06Wa9YajGqxWPefH+yQ899Hd334uafYsxAe8AjDOiRfGJ6JvbXOujETj7fxJptKz0jiRk9mRdja6nu0LaY7qXczAEh4tRz8Nevg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969769; c=relaxed/simple;
-	bh=WspuN2o7u2MWDw6XT44LGybx7IZO3a+lbnMZ3lul2ME=;
+	s=arc-20240116; t=1705970882; c=relaxed/simple;
+	bh=SElfri2iPavq4ZeMm96DSfWrveNz1ijSIY+D9hn77Ac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gc7S6zo1DsSpzMVPqzxOdci/QT9n2JXFINtuWv6NyCMNl+vCqsszoV0lzorx1NeXE3/qUIplmr0qHI0SNxlbstERrdiRFoPPXfuhLCiut9FDs/FoK3ocefIpxIaRaF3AodR7aiKHwaNPveymXjQZAOndQNI1iGjNgqiJQj7TsKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7OhZGgp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA6DC433F1;
-	Tue, 23 Jan 2024 00:29:28 +0000 (UTC)
+	 MIME-Version; b=m8mfkRILUS1ik9DSyWsUORd4J4wb6ttqlmhyAAKY2dzAyBi20JWwpq5o4pyxrLOb8xqVE6hohVf051vVDVjZzoMldgDAocSJzOeLJg9vzPiU1+iGAHj+DhdBNCtKQ2dcpxp7NHt3x3FO6GBk21mDotcDVo/oQQwbbYJ0enFwVEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nziC/fyD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51A5C433C7;
+	Tue, 23 Jan 2024 00:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969768;
-	bh=WspuN2o7u2MWDw6XT44LGybx7IZO3a+lbnMZ3lul2ME=;
+	s=korg; t=1705970881;
+	bh=SElfri2iPavq4ZeMm96DSfWrveNz1ijSIY+D9hn77Ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7OhZGgpONwYbQ2laVPpOoQkNYNJSLxpe3SNOtXsJziDoy+HS2+JpZTwPhwTAawwz
-	 dMP+b10E7MBZ5RjAXZMs8FiIzNscVlXH2cn/rRDXbuLDNo77clymFjTA/3qwqjrBXA
-	 VnIrgNpJgD11wDw2NNZnignMLWzCH6R7JLmPexh0=
+	b=nziC/fyDH4dxJHdAxq9GMjJXNv9hiExvCg6F29YPD72ONM/DFNCpCQ9m1rfpZBDBK
+	 47jtE43GJAzmxrO5AL7ahjb/JGL+LhCu0uKMtCI4ETk/s8Dqol5kFxNkKDveXAL7T9
+	 c+Vq8ms//lF3FL+b4dpU2NLoc6CtlcvMOIHF5av8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Song Liu <song@kernel.org>
-Subject: [PATCH 6.7 438/641] md: bypass block throttle for superblock update
-Date: Mon, 22 Jan 2024 15:55:42 -0800
-Message-ID: <20240122235831.717823754@linuxfoundation.org>
+	Sarannya Sasikumar <quic_sarannya@quicinc.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 037/286] net: qrtr: ns: Return 0 if server port is not present
+Date: Mon, 22 Jan 2024 15:55:43 -0800
+Message-ID: <20240122235733.442062972@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxiao Bi <junxiao.bi@oracle.com>
+From: Sarannya S <quic_sarannya@quicinc.com>
 
-commit d6e035aad6c09991da1c667fb83419329a3baed8 upstream.
+[ Upstream commit 9bf2e9165f90dc9f416af53c902be7e33930f728 ]
 
-commit 5e2cf333b7bd ("md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d")
-introduced a hung bug and will be reverted in next patch, since the issue
-that commit is fixing is due to md superblock write is throttled by wbt,
-to fix it, we can have superblock write bypass block layer throttle.
+When a 'DEL_CLIENT' message is received from the remote, the corresponding
+server port gets deleted. A DEL_SERVER message is then announced for this
+server. As part of handling the subsequent DEL_SERVER message, the name-
+server attempts to delete the server port which results in a '-ENOENT' error.
+The return value from server_del() is then propagated back to qrtr_ns_worker,
+causing excessive error prints.
+To address this, return 0 from control_cmd_del_server() without checking the
+return value of server_del(), since the above scenario is not an error case
+and hence server_del() doesn't have any other error return value.
 
-Fixes: 5e2cf333b7bd ("md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d")
-Cc: stable@vger.kernel.org # v5.19+
-Suggested-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20231108182216.73611-1-junxiao.bi@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sarannya Sasikumar <quic_sarannya@quicinc.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/qrtr/ns.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -1037,9 +1037,10 @@ void md_super_write(struct mddev *mddev,
- 		return;
+diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+index 713e9940d88b..c92dd960bfef 100644
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -577,7 +577,9 @@ static int ctrl_cmd_del_server(struct sockaddr_qrtr *from,
+ 	if (!node)
+ 		return -ENOENT;
  
- 	bio = bio_alloc_bioset(rdev->meta_bdev ? rdev->meta_bdev : rdev->bdev,
--			       1,
--			       REQ_OP_WRITE | REQ_SYNC | REQ_PREFLUSH | REQ_FUA,
--			       GFP_NOIO, &mddev->sync_set);
-+			      1,
-+			      REQ_OP_WRITE | REQ_SYNC | REQ_IDLE | REQ_META
-+				  | REQ_PREFLUSH | REQ_FUA,
-+			      GFP_NOIO, &mddev->sync_set);
+-	return server_del(node, port, true);
++	server_del(node, port, true);
++
++	return 0;
+ }
  
- 	atomic_inc(&rdev->nr_pending);
- 
+ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
+-- 
+2.43.0
+
 
 
 
