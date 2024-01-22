@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F2E83827D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0028C838043
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53A8F28AAC0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33C101C29689
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A99E5C603;
-	Tue, 23 Jan 2024 01:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB1A657BF;
+	Tue, 23 Jan 2024 01:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUQswZAT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nulMa8wX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFCF5BAFD;
-	Tue, 23 Jan 2024 01:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD62657BB;
+	Tue, 23 Jan 2024 01:00:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974367; cv=none; b=telRKGXtW/PGLYNSHo3bFnMuaVk+eyf1WrZDZ8i+LM18w+NfhhOFEnx+r/mMCaNzyWjhycfBXCViuxX2twAU++d20RmIAGbdHhGFM3iFyY9//zmmCbhrpTIfUNayjzAmHucz/BQTYzzt2VvopTpfOYC1M0/q521xJjidnwzMpl8=
+	t=1705971631; cv=none; b=V720eeo2Wz8gA59x1sQ3afBcjh/0S1p01xWj9sExpa96wI+nNMrGMVySgp4vC8f0zuGIJAH4QiYs3p94OjP4le87xEiZ3CpPUqS0+lJa81yS0f1qW8WTUrSpFZbHrtU5JD3tDipslX4fa+7dr2/+2kkIfnv+TPGPmQdw2O05nhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974367; c=relaxed/simple;
-	bh=rFBWn1RWKEXyio3gJGMMSgUw1eGSbcalaubLBjj7Kks=;
+	s=arc-20240116; t=1705971631; c=relaxed/simple;
+	bh=oRVD07WiguRkz3DzjrojPeNAXVVMmqHlarZF1g2DjCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axkkRkuA0BsvskB2R1v3b4ItDOqyMQgnQX8hTR0xl1HIkCQX/hAIMIqGHdazcM2MLbnx1le5cXBFNXDOXA6mUpxOCQGt4netIzdIw5Y6tqniObvkMJgI1/nUFakGjbSRZBUA0vARJFIJ0uVc/5RCWVHWDx6ZXBZIk8EdDglTZ5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUQswZAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C31C433C7;
-	Tue, 23 Jan 2024 01:46:06 +0000 (UTC)
+	 MIME-Version; b=Gah+ByPchXdAnsgWaYHU9jqIUGS3yPj0HgaAj5sWJD7943I7UorFI22H9mdqrBdOHgRBt20udECb7oO8EJ6XTprj1FPpNC53m8kbP2aZr4Sd8hg4be6ct5fVVvC+MX3n+vJ/UwtfcZ18dwYO+QGw+YGGZAbWP+qN03Ix3c+8GHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nulMa8wX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067F6C433C7;
+	Tue, 23 Jan 2024 01:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974366;
-	bh=rFBWn1RWKEXyio3gJGMMSgUw1eGSbcalaubLBjj7Kks=;
+	s=korg; t=1705971631;
+	bh=oRVD07WiguRkz3DzjrojPeNAXVVMmqHlarZF1g2DjCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yUQswZATAAV1AkCNSL+y1db5ySXzR+Ll7uFmqoTmdwcjxREWbB6UjbAh3JoI6H4Mw
-	 W8GRX5+2EeFDno739DpyiHbrvgkH11Je0cYvNWzCw8HsfZzU/8fGlUHyrFLaEb+/ZB
-	 DhMGv1xzV6LSZL1t/tUxwKGFOnYyY4kOJw4pr0HI=
+	b=nulMa8wXkLAc3cNNuTUF7tVbq7prYOy+o1ZQELsNFF00wHLde56eHJ6Vmdr7asWhf
+	 XA/Ki7p4GytitFz/HktoKjhC8ouuMmlt+gYAckyqA1jehkcmi8W7pNTEf2BvHCyjJS
+	 oP4WhJJ9Dns3AMzw3ak0cp8hBkKI/eOsJGb0+4KI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 194/374] drm/drv: propagate errors from drm_modeset_register_all()
+	Bin Li <bin.li@canonical.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 282/417] ALSA: hda/realtek: Enable headset mic on Lenovo M70 Gen5
 Date: Mon, 22 Jan 2024 15:57:30 -0800
-Message-ID: <20240122235751.362630048@linuxfoundation.org>
+Message-ID: <20240122235801.608419312@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Bin Li <bin.li@canonical.com>
 
-[ Upstream commit 5f8dec200923a76dc57187965fd59c1136f5d085 ]
+commit fb3c007fde80d9d3b4207943e74c150c9116cead upstream.
 
-In case the drm_modeset_register_all() function fails, its error code
-will be ignored. Instead make the drm_dev_register() bail out in case of
-such an error.
+Lenovo M70 Gen5 is equipped with ALC623, and it needs
+ALC283_FIXUP_HEADSET_MIC quirk to make its headset mic work.
 
-Fixes: 79190ea2658a ("drm: Add callbacks for late registering")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231202225552.1283638-1-dmitry.baryshkov@linaro.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Bin Li <bin.li@canonical.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240117154123.21578-1-bin.li@canonical.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_drv.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/drm_drv.c b/drivers/gpu/drm/drm_drv.c
-index 6f1791613757..23409f1916ee 100644
---- a/drivers/gpu/drm/drm_drv.c
-+++ b/drivers/gpu/drm/drm_drv.c
-@@ -894,8 +894,11 @@ int drm_dev_register(struct drm_device *dev, unsigned long flags)
- 			goto err_minors;
- 	}
- 
--	if (drm_core_check_feature(dev, DRIVER_MODESET))
--		drm_modeset_register_all(dev);
-+	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
-+		ret = drm_modeset_register_all(dev);
-+		if (ret)
-+			goto err_unload;
-+	}
- 
- 	DRM_INFO("Initialized %s %d.%d.%d %s for %s on minor %d\n",
- 		 driver->name, driver->major, driver->minor,
-@@ -905,6 +908,9 @@ int drm_dev_register(struct drm_device *dev, unsigned long flags)
- 
- 	goto out_unlock;
- 
-+err_unload:
-+	if (dev->driver->unload)
-+		dev->driver->unload(dev);
- err_minors:
- 	remove_compat_control_link(dev);
- 	drm_minor_unregister(dev, DRM_MINOR_PRIMARY);
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9980,6 +9980,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x17aa, 0x3176, "ThinkCentre Station", ALC283_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3178, "ThinkCentre Station", ALC283_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x31af, "ThinkCentre Station", ALC623_FIXUP_LENOVO_THINKSTATION_P340),
++	SND_PCI_QUIRK(0x17aa, 0x334b, "Lenovo ThinkCentre M70 Gen5", ALC283_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3801, "Lenovo Yoga9 14IAP7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x3802, "Lenovo Yoga DuetITL 2021", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3813, "Legion 7i 15IMHG05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
 
 
 
