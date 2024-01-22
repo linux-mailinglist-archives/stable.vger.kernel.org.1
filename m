@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 138BE83801B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C03F838023
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F9BFB2526C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 004B3B20946
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC85A6280D;
-	Tue, 23 Jan 2024 00:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A4F66B23;
+	Tue, 23 Jan 2024 00:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qR/fy6/V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLPMOYrH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAAF634F2;
-	Tue, 23 Jan 2024 00:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B464A657C2;
+	Tue, 23 Jan 2024 00:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971238; cv=none; b=JUZxZ5xDANKC87LXu0HBPtXEd+gDuTqC3P5bXTzYP6C7v9jM72vQdf0K/E/pb4nLgSbVG97sPc5QLlFTY5m8gVxRxjX9rBqY/CQwXIXXj7rnRMEBW0f+MEO0OI+R8MuymMhMFTz/lOOOrBFao//mzRKySNwmYPDO8BPCcPxzhpo=
+	t=1705971505; cv=none; b=Endv7Dat/38ZntC+7PWhhUwowNEcKp9Fb+EfWLuoHE6Cb1idvY8jnQp81VqOPRgPLkXhTkZpkbOw+u5A3mSTc5Avy6covEJ6od1VBbUEAWG/KWkUdCx7rhmUr6K20BtaJZdaZQMAd7w4PNHjQACE5cpQZ2uDP3OAHk3T/pfEPNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971238; c=relaxed/simple;
-	bh=fJ5m3u//hbDh0cQZIS4Gh/8LwvvzoCx0aByMr5SI+wk=;
+	s=arc-20240116; t=1705971505; c=relaxed/simple;
+	bh=1xRXmbNaPOBAGdgMhodF1NhuSwFSD+c429zklcq6ZqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IJfd4lf79WnhWCN7MDT6k/+LZyUgl3dKuaBvFveaB+ZL1Vr7SMWsG4SAXLAfe+dj8QwWGO02nK17JkDzcRDCiK7M5k0nydFdtdfp4JWD91/5WRNzPsZx2ELz/eMZEMPwzniEAIh0/ZychxpRx4AgAweuGq7jpEEi79JCpcaal/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qR/fy6/V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9290BC43390;
-	Tue, 23 Jan 2024 00:53:57 +0000 (UTC)
+	 MIME-Version; b=D133NLe6VLmFnF4dH3nJpv4lPAMlobnD4zHB5MqtM5Y8f+sdVlIXWUGRxBc6yNgNEj7Zc4T1SJDS7TNdFwVu/B1ZVRLAYKwCGsI7w5jdZqrXOss0cNwvo6GeQFUju8tSpcbO7DOM2FlHgmr1p211ls7mwYKFmG15f1j5MP7wBEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLPMOYrH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44261C433F1;
+	Tue, 23 Jan 2024 00:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971238;
-	bh=fJ5m3u//hbDh0cQZIS4Gh/8LwvvzoCx0aByMr5SI+wk=;
+	s=korg; t=1705971505;
+	bh=1xRXmbNaPOBAGdgMhodF1NhuSwFSD+c429zklcq6ZqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qR/fy6/Vzn08llBXtYiCcUkL5mSryVNrreyRhlNE65xnUVbIeacsr9MF7I2lWcGIF
-	 W4TBpfgPNDa7lZ2SwHw2CjpdRR/GM7coAIvUK4tNrEX9Mt2edSDY5T55zCAqFmZ/8r
-	 uX+8/lOpa80pnS6SsR4F09iXfQqozOr2pezO2P6k=
+	b=XLPMOYrH69qvvseLbqUjxj0u3XOjxOFk4Qif1Nx7lRdi2fv6NYLGL3l6KGK6OwBwy
+	 Vx0Itr94fMGDJlU4VvGsE4yvod8fMAUdQ1fL4qwN6LUKr9fpOruqoAGZ+ba+KJBSnB
+	 I8mUxg8nWAimuF4OQdgHMFn/cmTOUVzSQeWwMi3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Nishanth Menon <nm@ti.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 116/286] firmware: ti_sci: Fix an off-by-one in ti_sci_debugfs_create()
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>,
+	Paul Durrant <paul@xen.org>
+Subject: [PATCH 6.1 254/417] xen-netback: dont produce zero-size SKB frags
 Date: Mon, 22 Jan 2024 15:57:02 -0800
-Message-ID: <20240122235736.575387239@linuxfoundation.org>
+Message-ID: <20240122235800.681385812@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Jan Beulich <jbeulich@suse.com>
 
-[ Upstream commit 964946b88887089f447a9b6a28c39ee97dc76360 ]
+commit c7ec4f2d684e17d69bbdd7c4324db0ef5daac26a upstream.
 
-The ending NULL is not taken into account by strncat(), so switch to
-snprintf() to correctly build 'debug_name'.
+While frontends may submit zero-size requests (wasting a precious slot),
+core networking code as of at least 3ece782693c4b ("sock: skb_copy_ubufs
+support for compound pages") can't deal with SKBs when they have all
+zero-size fragments. Respond to empty requests right when populating
+fragments; all further processing is fragment based and hence won't
+encounter these empty requests anymore.
 
-Using snprintf() also makes the code more readable.
+In a way this should have been that way from the beginning: When no data
+is to be transferred for a particular request, there's not even a point
+in validating the respective grant ref. That's no different from e.g.
+passing NULL into memcpy() when at the same time the size is 0.
 
-Fixes: aa276781a64a ("firmware: Add basic support for TI System Control Interface (TI-SCI) protocol")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/7158db0a4d7b19855ddd542ec61b666973aad8dc.1698660720.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is XSA-448 / CVE-2023-46838.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Paul Durrant <paul@xen.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/ti_sci.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/xen-netback/netback.c |   44 ++++++++++++++++++++++++++++++++------
+ 1 file changed, 38 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
-index fe6be0771a07..b0576cec263b 100644
---- a/drivers/firmware/ti_sci.c
-+++ b/drivers/firmware/ti_sci.c
-@@ -161,7 +161,7 @@ static int ti_sci_debugfs_create(struct platform_device *pdev,
- {
- 	struct device *dev = &pdev->dev;
- 	struct resource *res;
--	char debug_name[50] = "ti_sci_debug@";
-+	char debug_name[50];
+--- a/drivers/net/xen-netback/netback.c
++++ b/drivers/net/xen-netback/netback.c
+@@ -463,12 +463,25 @@ static void xenvif_get_requests(struct x
+ 	}
  
- 	/* Debug region is optional */
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
-@@ -178,10 +178,10 @@ static int ti_sci_debugfs_create(struct platform_device *pdev,
- 	/* Setup NULL termination */
- 	info->debug_buffer[info->debug_region_size] = 0;
+ 	for (shinfo->nr_frags = 0; nr_slots > 0 && shinfo->nr_frags < MAX_SKB_FRAGS;
+-	     shinfo->nr_frags++, gop++, nr_slots--) {
++	     nr_slots--) {
++		if (unlikely(!txp->size)) {
++			unsigned long flags;
++
++			spin_lock_irqsave(&queue->response_lock, flags);
++			make_tx_response(queue, txp, 0, XEN_NETIF_RSP_OKAY);
++			push_tx_responses(queue);
++			spin_unlock_irqrestore(&queue->response_lock, flags);
++			++txp;
++			continue;
++		}
++
+ 		index = pending_index(queue->pending_cons++);
+ 		pending_idx = queue->pending_ring[index];
+ 		xenvif_tx_create_map_op(queue, pending_idx, txp,
+ 				        txp == first ? extra_count : 0, gop);
+ 		frag_set_pending_idx(&frags[shinfo->nr_frags], pending_idx);
++		++shinfo->nr_frags;
++		++gop;
  
--	info->d = debugfs_create_file(strncat(debug_name, dev_name(dev),
--					      sizeof(debug_name) -
--					      sizeof("ti_sci_debug@")),
--				      0444, NULL, info, &ti_sci_debug_fops);
-+	snprintf(debug_name, sizeof(debug_name), "ti_sci_debug@%s",
-+		 dev_name(dev));
-+	info->d = debugfs_create_file(debug_name, 0444, NULL, info,
-+				      &ti_sci_debug_fops);
- 	if (IS_ERR(info->d))
- 		return PTR_ERR(info->d);
+ 		if (txp == first)
+ 			txp = txfrags;
+@@ -481,20 +494,39 @@ static void xenvif_get_requests(struct x
+ 		shinfo = skb_shinfo(nskb);
+ 		frags = shinfo->frags;
  
--- 
-2.43.0
-
+-		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots;
+-		     shinfo->nr_frags++, txp++, gop++) {
++		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots; ++txp) {
++			if (unlikely(!txp->size)) {
++				unsigned long flags;
++
++				spin_lock_irqsave(&queue->response_lock, flags);
++				make_tx_response(queue, txp, 0,
++						 XEN_NETIF_RSP_OKAY);
++				push_tx_responses(queue);
++				spin_unlock_irqrestore(&queue->response_lock,
++						       flags);
++				continue;
++			}
++
+ 			index = pending_index(queue->pending_cons++);
+ 			pending_idx = queue->pending_ring[index];
+ 			xenvif_tx_create_map_op(queue, pending_idx, txp, 0,
+ 						gop);
+ 			frag_set_pending_idx(&frags[shinfo->nr_frags],
+ 					     pending_idx);
++			++shinfo->nr_frags;
++			++gop;
+ 		}
+ 
+-		skb_shinfo(skb)->frag_list = nskb;
+-	} else if (nskb) {
++		if (shinfo->nr_frags) {
++			skb_shinfo(skb)->frag_list = nskb;
++			nskb = NULL;
++		}
++	}
++
++	if (nskb) {
+ 		/* A frag_list skb was allocated but it is no longer needed
+-		 * because enough slots were converted to copy ops above.
++		 * because enough slots were converted to copy ops above or some
++		 * were empty.
+ 		 */
+ 		kfree_skb(nskb);
+ 	}
 
 
 
