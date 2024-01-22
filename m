@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D658382A0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90DD3837BDD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E91BF1C28A45
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 473902941F5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8BF5D917;
-	Tue, 23 Jan 2024 01:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD3B1552F0;
+	Tue, 23 Jan 2024 00:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePPCBiqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Vhl9eja"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFE05D912;
-	Tue, 23 Jan 2024 01:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C07D154C05;
+	Tue, 23 Jan 2024 00:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974395; cv=none; b=LqagqCJQSyyeLMUvHskPbxI4ndBjPfO26I8MM/S05PQQhmIQRXWjb0AwOdo7PX01tmitstuYrlIbPy0Irnp6gFSTPm5y9PqDHid2A4deCJS6nGCtpxYEHuGAG8pTMkOhnwfABrDlLMQncFtyUMAY/VKmVOow9zVj8aF36XXDX0s=
+	t=1705969415; cv=none; b=cfe1x+rSIeINKbT2+rgS4qZjfTXhKAfKJ1Deu7Rn6YcuiFuLXs/u/DauIKXHSUr++Gmd7vpGP/X9607rXi1NQHtwz+9VwJO12Q7rUB68XXG7P5VPhe7+1FqmqsfQqMTHlSVIEuQsV2QVfRH9IgzQn4OnlzcxVNN0I7ptoOFWPBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974395; c=relaxed/simple;
-	bh=eAQ2HyFGj/DzaJssjCRrZWsomch8Uy4LyvwPbTPpszM=;
+	s=arc-20240116; t=1705969415; c=relaxed/simple;
+	bh=Yfom9pyzJaigB/on7uXwN00R7P3N2RzHxCHjFvAbsFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=up7QPSkYUtzsFfTvY0EGn1RCisf7oKI/EXCHrdYzZN7b8Qno7iD4VQTfDvb4v/MXRLMSjoi3ZA/ac2slTRybWgGNXu2zd0C6okhmoi3jSXqAGThtj/IqIrTp5M5DAwiJJV+AV0ugQojAV1EdJBe4K7yudYprLvjlOpRbG8sDxTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePPCBiqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4589C433F1;
-	Tue, 23 Jan 2024 01:46:34 +0000 (UTC)
+	 MIME-Version; b=Dof2tiCYVNz6vwCU6cGRRbO3dSksVgPoN/lNvm0AIkHHEsWxx0YYm0LGTKO0/Fnsi/rs0uPpqwaNjxeReF3lsMNltFAe4YtjDV3CJupFxcE6Si5j1yECXqk8A9dYghwaTNk0sIy8v1yVnJZm0SA9a0Z4S6Y8eApxKgXd/C8pRkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Vhl9eja; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E153CC433B1;
+	Tue, 23 Jan 2024 00:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974394;
-	bh=eAQ2HyFGj/DzaJssjCRrZWsomch8Uy4LyvwPbTPpszM=;
+	s=korg; t=1705969415;
+	bh=Yfom9pyzJaigB/on7uXwN00R7P3N2RzHxCHjFvAbsFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ePPCBiqtMmLyRFJn/urr6JGYkIkpqbmUTneBeVoAJTnnidb7qqf5mYUtG6OLLPaL7
-	 VLdWTaDoOzLiRRyEVrgERte+W//8NEhikqeXKk7woq8PyOl/shs+8I60tcFixXo5JS
-	 yLpMzPNmxdI88n/AROHF6hg9a1sbpvVxkCYRYqxg=
+	b=2Vhl9ejaPlcqOtNK+oPkFmKoGcDCdgBJH8iw7+a97BH7JOokD+QnqGA8JuSppcPtH
+	 zPsc5kCsAE1SL5woM6Eu3sfIOEp0YkGFfq84eBINFrTa+TCZFrvoDFkGkW9AiJTLAY
+	 ZTJsrXHn0vOqfZMP6ZFF970z2u4AhyXiip2j/IXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/583] arm64: dts: qcom: sc8280xp-x13s: Use the correct DP PHY compatible
+Subject: [PATCH 6.7 230/641] wifi: cfg80211: parse all ML elements in an ML probe response
 Date: Mon, 22 Jan 2024 15:52:14 -0800
-Message-ID: <20240122235814.699478438@linuxfoundation.org>
+Message-ID: <20240122235825.130452175@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 0cd080dd6d08817c9980d2069197b066636b0f23 ]
+[ Upstream commit d18125b640309e925441ce49559be33867ae6b29 ]
 
-The DP PHY needs different settings when an eDP display is used.
-Make sure these apply on the X13s.
+A probe response from a transmitting AP in an Multi-BSSID setup will
+contain more than one Multi-Link element. Most likely, only one of these
+elements contains per-STA profiles.
 
-FWIW
-I could not notice any user-facing change stemming from this commit.
-
-Fixes: f48c70b111b4 ("arm64: dts: qcom: sc8280xp-x13s: enable eDP display")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230929-topic-x13s_edpphy-v1-1-ce59f9eb4226@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 2481b5da9c6b ("wifi: cfg80211: handle BSS data contained in ML probe responses")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240102213313.6635eb152735.I94289002d4a2f7b6b44dfa428344854e37b0b29c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts | 1 +
- 1 file changed, 1 insertion(+)
+ net/wireless/scan.c | 40 ++++++++++++++++++++++++++--------------
+ 1 file changed, 26 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-index 38edaf51aa34..6a4c6cc19c09 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-@@ -601,6 +601,7 @@ mdss0_dp3_out: endpoint {
- };
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 8cd3eef76f2b..0d6c3fc1238a 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -2591,10 +2591,12 @@ cfg80211_tbtt_info_for_mld_ap(const u8 *ie, size_t ielen, u8 mld_id, u8 link_id,
+ 	return false;
+ }
  
- &mdss0_dp3_phy {
-+	compatible = "qcom,sc8280xp-edp-phy";
- 	vdda-phy-supply = <&vreg_l6b>;
- 	vdda-pll-supply = <&vreg_l3b>;
+-static void cfg80211_parse_ml_sta_data(struct wiphy *wiphy,
+-				       struct cfg80211_inform_single_bss_data *tx_data,
+-				       struct cfg80211_bss *source_bss,
+-				       gfp_t gfp)
++static void
++cfg80211_parse_ml_elem_sta_data(struct wiphy *wiphy,
++				struct cfg80211_inform_single_bss_data *tx_data,
++				struct cfg80211_bss *source_bss,
++				const struct element *elem,
++				gfp_t gfp)
+ {
+ 	struct cfg80211_inform_single_bss_data data = {
+ 		.drv_data = tx_data->drv_data,
+@@ -2603,7 +2605,6 @@ static void cfg80211_parse_ml_sta_data(struct wiphy *wiphy,
+ 		.bss_source = BSS_SOURCE_STA_PROFILE,
+ 	};
+ 	struct ieee80211_multi_link_elem *ml_elem;
+-	const struct element *elem;
+ 	struct cfg80211_mle *mle;
+ 	u16 control;
+ 	u8 *new_ie;
+@@ -2613,15 +2614,7 @@ static void cfg80211_parse_ml_sta_data(struct wiphy *wiphy,
+ 	const u8 *pos;
+ 	u8 i;
  
+-	if (!source_bss)
+-		return;
+-
+-	if (tx_data->ftype != CFG80211_BSS_FTYPE_PRESP)
+-		return;
+-
+-	elem = cfg80211_find_ext_elem(WLAN_EID_EXT_EHT_MULTI_LINK,
+-				      tx_data->ie, tx_data->ielen);
+-	if (!elem || !ieee80211_mle_size_ok(elem->data + 1, elem->datalen - 1))
++	if (!ieee80211_mle_size_ok(elem->data + 1, elem->datalen - 1))
+ 		return;
+ 
+ 	ml_elem = (void *)elem->data + 1;
+@@ -2756,6 +2749,25 @@ static void cfg80211_parse_ml_sta_data(struct wiphy *wiphy,
+ 	kfree(mle);
+ }
+ 
++static void cfg80211_parse_ml_sta_data(struct wiphy *wiphy,
++				       struct cfg80211_inform_single_bss_data *tx_data,
++				       struct cfg80211_bss *source_bss,
++				       gfp_t gfp)
++{
++	const struct element *elem;
++
++	if (!source_bss)
++		return;
++
++	if (tx_data->ftype != CFG80211_BSS_FTYPE_PRESP)
++		return;
++
++	for_each_element_extid(elem, WLAN_EID_EXT_EHT_MULTI_LINK,
++			       tx_data->ie, tx_data->ielen)
++		cfg80211_parse_ml_elem_sta_data(wiphy, tx_data, source_bss,
++						elem, gfp);
++}
++
+ struct cfg80211_bss *
+ cfg80211_inform_bss_data(struct wiphy *wiphy,
+ 			 struct cfg80211_inform_bss *data,
 -- 
 2.43.0
 
