@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-14176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A54B5837FD1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59BC6837F6D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D64111C294B3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFD4D28F0A9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DAA12BEA3;
-	Tue, 23 Jan 2024 00:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B7B62A0D;
+	Tue, 23 Jan 2024 00:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tv4TW2mZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14FbHIzi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CA34E1AD;
-	Tue, 23 Jan 2024 00:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7164A60269;
+	Tue, 23 Jan 2024 00:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971372; cv=none; b=alcsT4qYTwScGSkbNsOxp544fYq7qi9Ke0LbXCv9F+H22RzLqceFDbXpwclrYrM3U9Aj2+ExMZJROP0NO6LvfASgy4R498x/iSYiocKQ//SFTxLNKiB2G8I6s6AGqP8LhC6pWj+P2hviJVcxAAlFIogSxzMwMTzSchlDfLT17qk=
+	t=1705971126; cv=none; b=VUUTOV0wSCq0VGoDyIl3z0xXRK/5dnGqjRmcS+9a/w9x7QEdy76Kfpe8BLJet9w+5oykbUmPvaHHZq3ItMa2gG4WWTk4rLt15qcKEQsiDriYBqGvOj3IQ8aCbpTtSzbr6VI+y6sLrpM2Ao3lVyZARF9MOyvFwwSAv9ilhBa5x/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971372; c=relaxed/simple;
-	bh=NUjSgafIWC60Lc6mwGhSfEGpsLHWJtcn1OH77MjMvZ8=;
+	s=arc-20240116; t=1705971126; c=relaxed/simple;
+	bh=YXE41PDjGFySlu7jFRIlpWbdBVdFXNXqkWdVmWlLaOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t+U5cvgqBLYHU/kWqojeidcIIlHU0FQ9cYBt+lO9k5hK2I+so70GnQYCvdebz1yad4P+O2cgE9bqJb8j5hK8PTcz7dJi0ZSehzh2R55OKpZtLbAWDUAZRkCLfHtBGBuhU89NviEWp55wG1ZDUZepfF5ESdZkg70jPenrDyo6Amo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tv4TW2mZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57FE6C433F1;
-	Tue, 23 Jan 2024 00:56:10 +0000 (UTC)
+	 MIME-Version; b=iGX1xb3sAzsfBtuk0Gm5jRh78MO3KbpJyD5zS6yFHIeuHB7+/tFE/2h+v7E5i9+krl/DALnppQfgqGBK8pazaaFkyj9HuaYoWd/NDzj5brS9crbTUAhiEEiI1trAGalT+cyQ3ZhnnyQ8VtxwcGsodWi9X//MH69OvL9HXxGEqsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14FbHIzi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BE9C43390;
+	Tue, 23 Jan 2024 00:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971372;
-	bh=NUjSgafIWC60Lc6mwGhSfEGpsLHWJtcn1OH77MjMvZ8=;
+	s=korg; t=1705971126;
+	bh=YXE41PDjGFySlu7jFRIlpWbdBVdFXNXqkWdVmWlLaOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tv4TW2mZDTywK4op5NVk+W1DLxYMWNR5ChIHILS33viR7vl1+mOhFHrHPWRqzazK/
-	 7zrSQFi4mOhZkYsZTRlVVmF2dywXbHELgJGrI7lHiWpOj+NhpeeSYeGo3JYhFCIx+Y
-	 b7aiCIADCuXaIFAwjaPgf+rBTHfoeuiHrBCEB2DI=
+	b=14FbHIziyFTw2YvDvyJKHK510we3VUzICmcgjSq/7a6Y7pxBaOdbbt9AXePGh40TS
+	 jX7ik9K2UnISi9p51eID9G5K6pS8x4/xba7n/ub82BkuPuBFwJRyo72EPmwzxMCTJk
+	 G4RtPXQiSNfWgsgqsDYXn5M7XqTA/U6GK2LffkIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Chiu <chiu@endlessos.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 231/417] ASoC: rt5645: Drop double EF20 entry from dmi_platform_data[]
+Subject: [PATCH 5.10 093/286] fs: indicate request originates from old mount API
 Date: Mon, 22 Jan 2024 15:56:39 -0800
-Message-ID: <20240122235759.903457434@linuxfoundation.org>
+Message-ID: <20240122235735.635355359@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +66,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 51add1687f39292af626ac3c2046f49241713273 ]
+[ Upstream commit f67d922edb4e95a4a56d07d5d40a76dd4f23a85b ]
 
-dmi_platform_data[] first contains a DMI entry matching:
+We already communicate to filesystems when a remount request comes from
+the old mount API as some filesystems choose to implement different
+behavior in the new mount API than the old mount API to e.g., take the
+chance to fix significant API bugs. Allow the same for regular mount
+requests.
 
-   DMI_MATCH(DMI_PRODUCT_NAME, "EF20"),
-
-and then contains an identical entry except for the match being:
-
-   DMI_MATCH(DMI_PRODUCT_NAME, "EF20EA"),
-
-Since these are partial (non exact) DMI matches the first match
-will also match any board with "EF20EA" in their DMI product-name,
-drop the second, redundant, entry.
-
-Fixes: a4dae468cfdd ("ASoC: rt5645: Add ACPI-defined GPIO for ECS EF20 series")
-Cc: Chris Chiu <chiu@endlessos.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://msgid.link/r/20231126214024.300505-2-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: b330966f79fb ("fuse: reject options on reconfigure via fsconfig(2)")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5645.c | 8 --------
- 1 file changed, 8 deletions(-)
+ fs/namespace.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
-index 60518ee5a86e..fd3dca08460b 100644
---- a/sound/soc/codecs/rt5645.c
-+++ b/sound/soc/codecs/rt5645.c
-@@ -3827,14 +3827,6 @@ static const struct dmi_system_id dmi_platform_data[] = {
- 		},
- 		.driver_data = (void *)&ecs_ef20_platform_data,
- 	},
--	{
--		.ident = "EF20EA",
--		.callback = cht_rt5645_ef20_quirk_cb,
--		.matches = {
--			DMI_MATCH(DMI_PRODUCT_NAME, "EF20EA"),
--		},
--		.driver_data = (void *)&ecs_ef20_platform_data,
--	},
- 	{ }
- };
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 046b084136c5..b020a12c53a2 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2627,7 +2627,12 @@ static int do_remount(struct path *path, int ms_flags, int sb_flags,
+ 	if (IS_ERR(fc))
+ 		return PTR_ERR(fc);
  
++	/*
++	 * Indicate to the filesystem that the remount request is coming
++	 * from the legacy mount system call.
++	 */
+ 	fc->oldapi = true;
++
+ 	err = parse_monolithic_mount_data(fc, data);
+ 	if (!err) {
+ 		down_write(&sb->s_umount);
+@@ -2886,6 +2891,12 @@ static int do_new_mount(struct path *path, const char *fstype, int sb_flags,
+ 	if (IS_ERR(fc))
+ 		return PTR_ERR(fc);
+ 
++	/*
++	 * Indicate to the filesystem that the mount request is coming
++	 * from the legacy mount system call.
++	 */
++	fc->oldapi = true;
++
+ 	if (subtype)
+ 		err = vfs_parse_fs_string(fc, "subtype",
+ 					  subtype, strlen(subtype));
 -- 
 2.43.0
 
