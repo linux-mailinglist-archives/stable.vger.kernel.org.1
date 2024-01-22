@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-15324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9993E8384C6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BC838382AD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5421228D402
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 515E328D31A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C7C768F1;
-	Tue, 23 Jan 2024 02:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE0F5EE6A;
+	Tue, 23 Jan 2024 01:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbDhbYtG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17yTKPHc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7652B768F9;
-	Tue, 23 Jan 2024 02:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6275EE62;
+	Tue, 23 Jan 2024 01:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975489; cv=none; b=DBIN8ZmqAntIkMf+KEbAOVSFdg3+CNRnDeoNijugR8oZjtwr1QJ8e5krfO+frjOltl0cn0j3tI6uzGuLLj/fwQ0vhPNSNxGvfPkE9RnXnxADDx89umnaHcsfi4yj7LcSBWNX4JZBNfdQDVM6cDZBNW4mF8A+DyxJNyR3qzdYUlo=
+	t=1705974407; cv=none; b=TzzJO7EDkKZpR0gqj/1Il7z+Dkq4Rnviu7v0qFW0RKBJKZr2R1GFSXQPtsa77uFAqPXYxKISsFPHdTsWg/Lr5kICu+41w0tr6nW27aRV7Q7fO7RjH7DBj5INvxYac5xfFWFehTqjPf0We1Ws8YWk7hdTmCvFrKQwIXedltlBHLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975489; c=relaxed/simple;
-	bh=s0QC7/OKRsVK4L/y9SZ9RLJ9Abrcy+veHpkZIo7e0xg=;
+	s=arc-20240116; t=1705974407; c=relaxed/simple;
+	bh=xlaeMjpUDpnNwJqaklZVDRsKydLOLUR5N/ooyKijPas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fFQve0PlYSEhIK5JnlDnPM49cl0rVOWxvQp0zTkuai8UE17Cp6R/bWcaAQ+Z+2cTeu/XjFuSNoi/aw//wuKR6mMZNFx8vf4K0vZKyVD9tDF2nwLh3B1/Ys5fAjZ/wk23iWLS5LyWaUqCltyFs1WoGRnwpgpsT/LnxX6aW7R/s44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbDhbYtG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C26DC43390;
-	Tue, 23 Jan 2024 02:04:49 +0000 (UTC)
+	 MIME-Version; b=mPplY97b7qkOUFDutJWVmQkiDIys4Dc/I8LDWsPHeSl+cn4EX917KLrh3Bp8IWagvW8ba7Ja7aQ/1VBzAhyrmWDGYiyAtPaSPHKI9a3UcO0xoTU5GbvSAXs7NeAqIch1voEKW0P6Rf/4lfZtgVrzpgjggBAFsM6TYnIuWjmXGvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17yTKPHc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69AF5C433C7;
+	Tue, 23 Jan 2024 01:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975489;
-	bh=s0QC7/OKRsVK4L/y9SZ9RLJ9Abrcy+veHpkZIo7e0xg=;
+	s=korg; t=1705974407;
+	bh=xlaeMjpUDpnNwJqaklZVDRsKydLOLUR5N/ooyKijPas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nbDhbYtGeUBDk+/R7lr6G1wDVK7wB8OGfn3W9d5UdrAtgdxlfOlyzP9iJQ7c5VZlO
-	 5w4QpuHzs/3WexSVhBLP/H2x7DtDyfVYaE8CQuuwFB+g+7sO4W7MtDzdAmPXImtsGw
-	 E7RLYYUn6gO0zHkQFR6GjQ0CGBLen9LSj5bhRsK8=
+	b=17yTKPHcLwUU7D0R9vvZkdu7fcZYvHorzQr/BErb5S05x4hQncRJUWjtqyiZ9flgP
+	 Y6fwayFAY2GrnzCXoHentegTTJAA1hYL2VgAFPT0gIi5hl76k8x8s01t3p83sPO2iJ
+	 akMj7tXeGWTJXlBg1P8Sm6fuvH34yJFb6a9KVV/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lin <yu-hao.lin@nxp.com>,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.6 418/583] wifi: mwifiex: fix uninitialized firmware_stat
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 213/374] clk: qcom: videocc-sm8150: Update the videocc resets
 Date: Mon, 22 Jan 2024 15:57:49 -0800
-Message-ID: <20240122235824.755793809@linuxfoundation.org>
+Message-ID: <20240122235752.052856527@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lin <yu-hao.lin@nxp.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-commit 3df95e265924ac898c1a38a0c01846dd0bd3b354 upstream.
+[ Upstream commit 1fd9a939db24d2f66e48f8bca3e3654add3fa205 ]
 
-Variable firmware_stat is possible to be used without initialization.
+Add all the available resets for the video clock controller
+on sm8150.
 
-Signed-off-by: David Lin <yu-hao.lin@nxp.com>
-Fixes: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202312192236.ZflaWYCw-lkp@intel.com/
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231221015511.1032128-1-yu-hao.lin@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5658e8cf1a8a ("clk: qcom: add video clock controller driver for SM8150")
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231201-videocc-8150-v3-2-56bec3a5e443@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/sdio.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/videocc-sm8150.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-@@ -779,7 +779,7 @@ static int mwifiex_check_fw_status(struc
- {
- 	struct sdio_mmc_card *card = adapter->card;
- 	int ret = 0;
--	u16 firmware_stat;
-+	u16 firmware_stat = 0;
- 	u32 tries;
+diff --git a/drivers/clk/qcom/videocc-sm8150.c b/drivers/clk/qcom/videocc-sm8150.c
+index 1afdbe4a249d..6a5f89f53da8 100644
+--- a/drivers/clk/qcom/videocc-sm8150.c
++++ b/drivers/clk/qcom/videocc-sm8150.c
+@@ -214,6 +214,10 @@ static const struct regmap_config video_cc_sm8150_regmap_config = {
  
- 	for (tries = 0; tries < poll_num; tries++) {
+ static const struct qcom_reset_map video_cc_sm8150_resets[] = {
+ 	[VIDEO_CC_MVSC_CORE_CLK_BCR] = { 0x850, 2 },
++	[VIDEO_CC_INTERFACE_BCR] = { 0x8f0 },
++	[VIDEO_CC_MVS0_BCR] = { 0x870 },
++	[VIDEO_CC_MVS1_BCR] = { 0x8b0 },
++	[VIDEO_CC_MVSC_BCR] = { 0x810 },
+ };
+ 
+ static const struct qcom_cc_desc video_cc_sm8150_desc = {
+-- 
+2.43.0
+
 
 
 
