@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-13412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A32B0837BF4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 256968382E5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6E7A1C2444C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D217F1F27E02
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9436B1420C3;
-	Tue, 23 Jan 2024 00:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90AA5FDD9;
+	Tue, 23 Jan 2024 01:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zf8myM7N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHcB0+fa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FA71420A5;
-	Tue, 23 Jan 2024 00:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A225FDC1;
+	Tue, 23 Jan 2024 01:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969451; cv=none; b=KNBirxBtjzHv+yfgSeL+eAlGfsIBpsvQ8AskmcjtxVfPEZTBW0pgkDjSrqEXO4jFa1b5tfW+3y2V4+A6Piyfq5bZgJj/GJeds+P4ae81SYSpsvJnOFjMNj5DB/a1OC5OkpioBrOAzMysFyiT+3hBchrfFRUpFd0rPs5nnKO64zg=
+	t=1705974653; cv=none; b=eACDQ9gZS+G6LMFD1kY7lqqcJJffT5qZHjbtdEbbCLAe7dxEngQQd0VhEcL2f1uhfSTczTXJ4R+Z9wYGN+5010u4UVr5mpjt42MccK0FpITfFkeex+odltPQr1DcSmGnv+g81I85ph1PI83PWW1OI6scPR12BK5GKpSaIyvT6cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969451; c=relaxed/simple;
-	bh=Erdy0CcfkIYRHT86T+PKyJH4DGwp4ITPjXPpthTOYYg=;
+	s=arc-20240116; t=1705974653; c=relaxed/simple;
+	bh=qnj1c8M4H9oaQM200jrX346MRr4LoTVQkD/24p4aMIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rCrMSRqDYWZrbflNOVzF0aF4TTABa7NmkFoudDAfl/HuGJGckORWyQzeWXyjDrh2EbPt80Y18M3Qkm6caeXPreWydFk51jV12CzptQP1EEct4a/eVw3neAqjj1LIYg1ASd9gRVQhqVfDO56A8cSsWpiCvKcL86opSrQ0EtU+fHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zf8myM7N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEECBC43390;
-	Tue, 23 Jan 2024 00:24:10 +0000 (UTC)
+	 MIME-Version; b=uw/DUf/BzpuGPkrO/r6g3NU2LixWw5tLo5LJ5Nd4S+cMz+/rFQGqRTZZ6uE5figKpMVUNsyEI+AWrjXL8EfpfxjX3GNJ8qy1GMiFLShdHn3IHhX6sf6Pwq3z7PhNntRc6tgtJeof+MXHObfRclA9P5fbwfLkC4nTy0Ca/DezvwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHcB0+fa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC6DC43390;
+	Tue, 23 Jan 2024 01:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969451;
-	bh=Erdy0CcfkIYRHT86T+PKyJH4DGwp4ITPjXPpthTOYYg=;
+	s=korg; t=1705974653;
+	bh=qnj1c8M4H9oaQM200jrX346MRr4LoTVQkD/24p4aMIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zf8myM7NQ39v+UFPySLY4d080u/el//mur8dw1FppwXHRKFoUqhUxseorGTDotNMp
-	 6vXK3LuVcP5bu9xZYouVN4dwrCVDz4vYxDdt7k1AKCCRXaqN1u2t2ayqMw0mVZnIDX
-	 fzE3/r42ID1QACcwQb1wujLNibqHzJxN2PEyvNFs=
+	b=OHcB0+fawr1zk9hp5PeBCVK3Oln0psII08+76d21bwAdv+VDudWz5sZI1BNVov6df
+	 2KpAgXtbKVnED6mAvpbisTGS0m3TOK7cIMLbnExhyTvzBuaNcYgy69bxoyDmK800y2
+	 WPDuEvbU+pWcCtwxOOySljm0q6OtG4oT4mZ6oPyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 255/641] media: mtk-jpeg: Remove cancel worker in mtk_jpeg_remove to avoid the crash of multi-core JPEG devices
+Subject: [PATCH 6.6 108/583] arm64: dts: qcom: sm8450: correct TX Soundwire clock
 Date: Mon, 22 Jan 2024 15:52:39 -0800
-Message-ID: <20240122235825.890898027@linuxfoundation.org>
+Message-ID: <20240122235815.468873974@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit d8212c5c87c143ca01b78f6bf61244af07e0058e ]
+[ Upstream commit 20e886590a310665244a354e3b693b881544edec ]
 
-This patch reverts commit c677d7ae8314
-("media: mtk-jpeg: Fix use after free bug due to uncanceled work").
-The job_timeout_work is initialized only for
-the single-core JPEG device so it will cause the crash for multi-core
-JPEG devices.
+The TX Soundwire controller should take clock from TX macro codec, not
+VA macro codec clock, otherwise the clock stays disabled.  This looks
+like a copy-paste issue, because the SC8280xp code uses here correctly
+clock from TX macro.  The VA macro clock is already consumed by TX macro
+codec, thus it won't be disabled by this change.
 
-Fix it by removing the cancel_delayed_work_sync function.
-
-Fixes: c677d7ae8314 ("media: mtk-jpeg: Fix use after free bug due to uncanceled work")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 14341e76dbc7 ("arm64: dts: qcom: sm8450: add Soundwire and LPASS")
+Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231129140537.161720-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm8450.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-index 7194f88edc0f..60425c99a2b8 100644
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-@@ -1403,7 +1403,6 @@ static void mtk_jpeg_remove(struct platform_device *pdev)
- {
- 	struct mtk_jpeg_dev *jpeg = platform_get_drvdata(pdev);
+diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+index 2a60cf8bd891..79cc8fbcd846 100644
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -2325,7 +2325,7 @@ swr2: soundwire-controller@33b0000 {
+ 				     <GIC_SPI 520 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "core", "wakeup";
  
--	cancel_delayed_work_sync(&jpeg->job_timeout_work);
- 	pm_runtime_disable(&pdev->dev);
- 	video_unregister_device(jpeg->vdev);
- 	v4l2_m2m_release(jpeg->m2m_dev);
+-			clocks = <&vamacro>;
++			clocks = <&txmacro>;
+ 			clock-names = "iface";
+ 			label = "TX";
+ 
 -- 
 2.43.0
 
