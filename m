@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BFC837EE2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F8F8837C7F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 993C01C28428
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD743285F28
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB39953A2;
-	Tue, 23 Jan 2024 00:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846D013540C;
+	Tue, 23 Jan 2024 00:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2YmgDKm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNAxs0Lt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8F25384;
-	Tue, 23 Jan 2024 00:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BAC13540A;
+	Tue, 23 Jan 2024 00:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970805; cv=none; b=nEEL3tdPKylwMN8T02Z8KGgXPV4j5EGnJCafkma8Bsg9JZ/ANaMyOzRZTYdeCanJiyAmJfnyjqZudvh0TOekioZC/HeQEw36oQ/+8mzaiWwAbDCHIutqyGc+blnNL6Lxr4O51Z/jNz+Z2NSzhcTmvtu9tSJpa7PJvqohI+XmSOc=
+	t=1705969640; cv=none; b=dGqKdCpFRcjA8KwzBirs5U0qDrz+8ZiRC6++ia/vVIB+7PpolBFrKPdAFGvfX7KHB/fpENCjacgO4NGli2vAKTHOyCzjKYumquH8mcCmV6/ar4DpWxqI73YEjay/8qgsmbXLfEH/1UmXudK/1xK4WOkrzoZzI1w8cQl0PCyA9ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970805; c=relaxed/simple;
-	bh=kwBIY59WR4li50G3uGFxFVZCPn8+7LC4tTe36TnUcuo=;
+	s=arc-20240116; t=1705969640; c=relaxed/simple;
+	bh=TgT/cH4jJmgzg3c6kUFIDwJcr0OfGDJpSrvUm3U7iac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+gKvXGdMWZkvKSOimxP2p+DM3Qa79WokEC7mIyVs8ag70d0CJoh5uMKdy+N0wFnkdA/UR/mLtj+4slR3dUESiVlPUYlJaF2DPxPLMA0QeXA2h5PhUde4BadwSMWs+5Cgic0g6QWWYD6Afri7KzM0ZevoORk61Oif5CsfXopUng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2YmgDKm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D62C433C7;
-	Tue, 23 Jan 2024 00:46:44 +0000 (UTC)
+	 MIME-Version; b=GLt/G/eqd7bjjTo31ZI6BJs4oQR6ZcNsQ44YUxe53FzxzVj3jzx11CIkpEYzAw2YkZLMmEavIdF2Hc1UYXPtLIx5+77VzisbuLnBUUWSddEnFg6kFs6OrtL/+n3NKf4T+vx6LsgkB/1E82SkDIKNgq8F7Oz9rEUec5caCnstdnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNAxs0Lt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015D7C433C7;
+	Tue, 23 Jan 2024 00:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970805;
-	bh=kwBIY59WR4li50G3uGFxFVZCPn8+7LC4tTe36TnUcuo=;
+	s=korg; t=1705969640;
+	bh=TgT/cH4jJmgzg3c6kUFIDwJcr0OfGDJpSrvUm3U7iac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v2YmgDKmhtwlUP1dBuTzfRJ0Xnn/TairBSlwEhCXgGED/VLmN3IDoZeA5AO8o06Qe
-	 Q8bOk5Achy7NnJWP7rOJoGeSBCY+0i1EcztU7pTOWyAdgTcb+bONTwwpuJ+RWjGnIh
-	 CzIkpCDmnedveil0g5ipBDDF7GLWTriGPdaMv4D0=
+	b=TNAxs0Ltp+iZkrQOYgZtHUj1J3kirBt6x0Q/Zh8z22CIm8xqHL6UU6tp3enXw12O/
+	 ri0ZK6kAIvULFViV2VR5bDW0cbGE+cIJrxMCD4b7nN7ZBczi3dWAFHbfHfQYslv0th
+	 TXUJGYXfo3aS4qsKE+bA1eppXup0HBIPFoWlkABc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YiFei Zhu <zhuyifei@google.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/417] selftests/bpf: Relax time_tai test for equal timestamps in tai_forward
-Date: Mon, 22 Jan 2024 15:54:40 -0800
-Message-ID: <20240122235755.649509035@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Jing Xia <jing.xia@unisoc.com>,
+	Xuewen Yan <xuewen.yan@unisoc.com>
+Subject: [PATCH 6.7 377/641] class: fix use-after-free in class_register()
+Date: Mon, 22 Jan 2024 15:54:41 -0800
+Message-ID: <20240122235829.756276267@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YiFei Zhu <zhuyifei@google.com>
+From: Jing Xia <jing.xia@unisoc.com>
 
-[ Upstream commit e1ba7f64b192f083b4423644be03bb9e3dc8ae84 ]
+commit 93ec4a3b76404bce01bd5c9032bef5df6feb1d62 upstream.
 
-We're observing test flakiness on an arm64 platform which might not
-have timestamps as precise as x86. The test log looks like:
+The lock_class_key is still registered and can be found in
+lock_keys_hash hlist after subsys_private is freed in error
+handler path.A task who iterate over the lock_keys_hash
+later may cause use-after-free.So fix that up and unregister
+the lock_class_key before kfree(cp).
 
-  test_time_tai:PASS:tai_open 0 nsec
-  test_time_tai:PASS:test_run 0 nsec
-  test_time_tai:PASS:tai_ts1 0 nsec
-  test_time_tai:PASS:tai_ts2 0 nsec
-  test_time_tai:FAIL:tai_forward unexpected tai_forward: actual 1702348135471494160 <= expected 1702348135471494160
-  test_time_tai:PASS:tai_gettime 0 nsec
-  test_time_tai:PASS:tai_future_ts1 0 nsec
-  test_time_tai:PASS:tai_future_ts2 0 nsec
-  test_time_tai:PASS:tai_range_ts1 0 nsec
-  test_time_tai:PASS:tai_range_ts2 0 nsec
-  #199     time_tai:FAIL
+On our platform, a driver fails to kset_register because of
+creating duplicate filename '/class/xxx'.With Kasan enabled,
+it prints a invalid-access bug report.
 
-This patch changes ASSERT_GT to ASSERT_GE in the tai_forward assertion
-so that equal timestamps are permitted.
+KASAN bug report:
 
-Fixes: 64e15820b987 ("selftests/bpf: Add BPF-helper test for CLOCK_TAI access")
-Signed-off-by: YiFei Zhu <zhuyifei@google.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20231212182911.3784108-1-zhuyifei@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: KASAN: invalid-access in lockdep_register_key+0x19c/0x1bc
+Write of size 8 at addr 15ffff808b8c0368 by task modprobe/252
+Pointer tag: [15], memory tag: [fe]
+
+CPU: 7 PID: 252 Comm: modprobe Tainted: G        W
+ 6.6.0-mainline-maybe-dirty #1
+
+Call trace:
+dump_backtrace+0x1b0/0x1e4
+show_stack+0x2c/0x40
+dump_stack_lvl+0xac/0xe0
+print_report+0x18c/0x4d8
+kasan_report+0xe8/0x148
+__hwasan_store8_noabort+0x88/0x98
+lockdep_register_key+0x19c/0x1bc
+class_register+0x94/0x1ec
+init_module+0xbc/0xf48 [rfkill]
+do_one_initcall+0x17c/0x72c
+do_init_module+0x19c/0x3f8
+...
+Memory state around the buggy address:
+ffffff808b8c0100: 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a
+ffffff808b8c0200: 8a 8a 8a 8a 8a 8a 8a 8a fe fe fe fe fe fe fe fe
+>ffffff808b8c0300: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
+                                     ^
+ffffff808b8c0400: 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03
+
+As CONFIG_KASAN_GENERIC is not set, Kasan reports invalid-access
+not use-after-free here.In this case, modprobe is manipulating
+the corrupted lock_keys_hash hlish where lock_class_key is already
+freed before.
+
+It's worth noting that this only can happen if lockdep is enabled,
+which is not true for normal system.
+
+Fixes: dcfbb67e48a2 ("driver core: class: use lock_class_key already present in struct subsys_private")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jing Xia <jing.xia@unisoc.com>
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Link: https://lore.kernel.org/r/20231220024603.186078-1-jing.xia@unisoc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/prog_tests/time_tai.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/class.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/time_tai.c b/tools/testing/selftests/bpf/prog_tests/time_tai.c
-index a31119823666..f45af1b0ef2c 100644
---- a/tools/testing/selftests/bpf/prog_tests/time_tai.c
-+++ b/tools/testing/selftests/bpf/prog_tests/time_tai.c
-@@ -56,7 +56,7 @@ void test_time_tai(void)
- 	ASSERT_NEQ(ts2, 0, "tai_ts2");
+--- a/drivers/base/class.c
++++ b/drivers/base/class.c
+@@ -213,6 +213,7 @@ int class_register(const struct class *c
+ 	return 0;
  
- 	/* TAI is moving forward only */
--	ASSERT_GT(ts2, ts1, "tai_forward");
-+	ASSERT_GE(ts2, ts1, "tai_forward");
- 
- 	/* Check for future */
- 	ret = clock_gettime(CLOCK_TAI, &now_tai);
--- 
-2.43.0
-
+ err_out:
++	lockdep_unregister_key(key);
+ 	kfree(cp);
+ 	return error;
+ }
 
 
 
