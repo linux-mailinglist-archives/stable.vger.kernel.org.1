@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB5F383823F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8426A837BCE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60C061F26DA9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3B141C277CD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4505A0E7;
-	Tue, 23 Jan 2024 01:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78117154BEF;
+	Tue, 23 Jan 2024 00:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09Fhu65V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lU+1NTOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCEA59B7D;
-	Tue, 23 Jan 2024 01:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363AC15445E;
+	Tue, 23 Jan 2024 00:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974110; cv=none; b=CwKbdkWaYSxtDCPcxzlXg6pEqfOVU5xb8yLH93rS8JSOZLX2WW8tZuQAETFZXO5jyUy+D+1W1JzSAdCCNY2duV3xwcOTpW8zOmehfJAeaeVRQLRgJQzzpxky4v17157tP7NPz5gPFAWKss2fwb4ElmMeuqghaIxwDAgmBo9ZiV0=
+	t=1705969389; cv=none; b=Hwb3rz3PXr8ix4zl7F5BEi0CnzGLbLTX57ZRrY8j+lCj5hO/KlkvFIQRda6NeOYdSWgDK8cn1nKAfpRmBxm8c+THyIT+EiEgMyUFheGM56Sad/DRoQXSBeiHdySqZLP4NGuX5pU/b/8h+GSeN408X2iGcbGGlMZ0zx2MHh6nJW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974110; c=relaxed/simple;
-	bh=6igz5nsUDKnFOsILAESoVPTGAR/nsmJQJC9d76SYgS8=;
+	s=arc-20240116; t=1705969389; c=relaxed/simple;
+	bh=K64sTdcl62y6k9V5I03ndE7m/OthFa0fAfQKMIKdYSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fHsVFfzGBLRkBq8OEKGE8T//q0uEp/8ZOJRYZY9lF+y2EKbXAU4gPRB+OUVMFKFdWr27N+koDEc+sVhsMKRDd/N0e49QWw3gyE90yuoLbYSPgzVYgSi9Oo+zcWnxs9DkkFcjbwdqXHPiOuIbwR+2OxzeLHsdVzbl8D5WDpVxE1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09Fhu65V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16AE9C433C7;
-	Tue, 23 Jan 2024 01:41:50 +0000 (UTC)
+	 MIME-Version; b=UXw97aGYZmwR0JVQIVXqPISvyiOMq+JSNoFkU26PQTpvAU3sGC39yao5D1ei4edcc2vjM+x4tTN9dPu2z2DUgM2PXkdacN0Hy/Dl/ueE1Y3S1iGAWrpmcSMJ39/h2bT1HtBu+st2a+DbuQFlA23SIFNnT4zWHA4nmw65oFAPT3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lU+1NTOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1062C433A6;
+	Tue, 23 Jan 2024 00:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974110;
-	bh=6igz5nsUDKnFOsILAESoVPTGAR/nsmJQJC9d76SYgS8=;
+	s=korg; t=1705969389;
+	bh=K64sTdcl62y6k9V5I03ndE7m/OthFa0fAfQKMIKdYSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=09Fhu65V0zwZ/MG9HgtX8xgehmceuTWLeSLlS4WJ2yApFRJlkD1Zfbc/Wo/agI3fj
-	 Vk3k5fDIXqd48hSxvleMt5qULTgXXeTDzhdJsVO4SUQN27IFn9ZcCanYrMDoJ/5Di9
-	 yDo2USLa58VAmUelwIuj/pK55tIVWPXONvMwqn3o=
+	b=lU+1NTOqx248Yn+rEU2STPCGCTlCkc3+Ha+ZZBCad4eT9TseiuaEzOw/EK4bWsUjO
+	 M+z//A4YPuBNzx4LeP15h2+S+Wjm+xdaLpmQddOcYL/Hy2OkmRec5K4bMdTns8+Tm8
+	 ee5CItcZ0B/O0oXVHBtpti26XKtbD71s3fKeXQ+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Hou Tao <houtao1@huawei.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/583] crypto: rsa - add a check for allocation failure
-Date: Mon, 22 Jan 2024 15:51:33 -0800
-Message-ID: <20240122235813.434189588@linuxfoundation.org>
+Subject: [PATCH 6.7 190/641] bpf: Limit the number of kprobes when attaching program to multiple kprobes
+Date: Mon, 22 Jan 2024 15:51:34 -0800
+Message-ID: <20240122235823.917785608@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit d872ca165cb67112f2841ef9c37d51ef7e63d1e4 ]
+[ Upstream commit d6d1e6c17cab2dcb7b8530c599f00e7de906d380 ]
 
-Static checkers insist that the mpi_alloc() allocation can fail so add
-a check to prevent a NULL dereference.  Small allocations like this
-can't actually fail in current kernels, but adding a check is very
-simple and makes the static checkers happy.
+An abnormally big cnt may also be assigned to kprobe_multi.cnt when
+attaching multiple kprobes. It will trigger the following warning in
+kvmalloc_node():
 
-Fixes: 6637e11e4ad2 ("crypto: rsa - allow only odd e and restrict value in FIPS mode")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+	if (unlikely(size > INT_MAX)) {
+	    WARN_ON_ONCE(!(flags & __GFP_NOWARN));
+	    return NULL;
+	}
+
+Fix the warning by limiting the maximal number of kprobes in
+bpf_kprobe_multi_link_attach(). If the number of kprobes is greater than
+MAX_KPROBE_MULTI_CNT, the attachment will fail and return -E2BIG.
+
+Fixes: 0dcac2725406 ("bpf: Add multi kprobe link")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20231215100708.2265609-3-houtao@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/rsa.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/trace/bpf_trace.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/crypto/rsa.c b/crypto/rsa.c
-index c79613cdce6e..b9cd11fb7d36 100644
---- a/crypto/rsa.c
-+++ b/crypto/rsa.c
-@@ -220,6 +220,8 @@ static int rsa_check_exponent_fips(MPI e)
- 	}
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 640b08818afa..652c40a14d0d 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -42,6 +42,7 @@
+ 	rcu_dereference_protected(p, lockdep_is_held(&bpf_event_mutex))
  
- 	e_max = mpi_alloc(0);
-+	if (!e_max)
-+		return -ENOMEM;
- 	mpi_set_bit(e_max, 256);
+ #define MAX_UPROBE_MULTI_CNT (1U << 20)
++#define MAX_KPROBE_MULTI_CNT (1U << 20)
  
- 	if (mpi_cmp(e, e_max) >= 0) {
+ #ifdef CONFIG_MODULES
+ struct bpf_trace_module {
+@@ -2901,6 +2902,8 @@ int bpf_kprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 	cnt = attr->link_create.kprobe_multi.cnt;
+ 	if (!cnt)
+ 		return -EINVAL;
++	if (cnt > MAX_KPROBE_MULTI_CNT)
++		return -E2BIG;
+ 
+ 	size = cnt * sizeof(*addrs);
+ 	addrs = kvmalloc_array(cnt, sizeof(*addrs), GFP_KERNEL);
 -- 
 2.43.0
 
