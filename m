@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323B0837C16
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E4F838327
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64A541C285CE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBC5F1C2989E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EEEEEC2;
-	Tue, 23 Jan 2024 00:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4366C6087E;
+	Tue, 23 Jan 2024 01:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Lgk3jVN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwQV2Y4A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DCAEAF4;
-	Tue, 23 Jan 2024 00:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011226025E;
+	Tue, 23 Jan 2024 01:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969502; cv=none; b=QP+65Aw2sLu/O3QcOXk1OziS6n+B14S/soV0zHKpG7ifbzd4PjDg1rn3Dm6H9fUPUcsxFwehIyWi6UjNN5Yvx/gGGbqdXOYkzVVjJqlSTIvqGBmK8b6KPDWQGgpoiMIonZDNghy5PWLms2CJQoFv3G7QpSFTCva7Yd0BhTcojzc=
+	t=1705974718; cv=none; b=jCEVUZW2VPLs2mt4C3hVvgOFJEzoDY50vqUhoUow45d9F+dsJmZAvQeRvXZxV/s9404H1ieuQIUzWJW/2JCavU7STJ6NcKwSJCdYjszRllynuUN3PGclbkKMKdAcYmGz06dhUs9aoz41BBOsMotrGN/obOl1k7jeEdHOdb9XHN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969502; c=relaxed/simple;
-	bh=umG1c/LBGj07P3/oK5Co0NVo5+qEjmSPkONzZbwtaWY=;
+	s=arc-20240116; t=1705974718; c=relaxed/simple;
+	bh=xVse2rhU5L8+DxRa3Vtbnw9mh4/YOhkW48NX62spYM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UAt+Kae4B8whlvrrGnVFhjjCrEMaCHEAFXRUtApI0E5M4vMQu+UlRKoFRw4lz/QRTe9pWGY6bDfYXzMBDDaNvj5cczrzTAAhn/1WQr+XakwMnU76sQPfJmKJqVrpmukrhgX6b1i6zo2TdALvwheeE/8OK9jeXO5E98hnw7OkFpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Lgk3jVN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D6FC433A6;
-	Tue, 23 Jan 2024 00:25:01 +0000 (UTC)
+	 MIME-Version; b=J1Aev5YD5VWZVcUzxLuAxNRUuQ42Jfz8a1XetIid1jXGfckQ/FpL7HnCtf2AT+nQO7djJCMUedqnskk7/hSzFkhahsvlVBYA9hKh8gF23S+2HOQtplhc6pAbx2f88kLAWyslTwAM9OEDEqqFouQc/NRURJDw1sEGuJIY7nqudDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwQV2Y4A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C6AC433C7;
+	Tue, 23 Jan 2024 01:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969502;
-	bh=umG1c/LBGj07P3/oK5Co0NVo5+qEjmSPkONzZbwtaWY=;
+	s=korg; t=1705974717;
+	bh=xVse2rhU5L8+DxRa3Vtbnw9mh4/YOhkW48NX62spYM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Lgk3jVNb9UL5koroLTfADkZ2ZXvItcqg7qajW9P04gCAoXPNQ9GZg6WhreYJ0jfl
-	 oIQiSUXX+mf9OMaoiacg/g3Ihe3QZP2PoOH6ldw+xLwTReIaYygpVTaLO6XY9HDF/Z
-	 OGbBFj8iPyBq2/wY8u1QWxBFfKjPYJyFIazNe6aw=
+	b=mwQV2Y4AYWGaIj8smfWaSoDv5lW5n+eA2FdJdHnvsOMnZd64LhpuW0gbBQnTkKeMB
+	 9gOgXO2NxVNNn4Bdm0ORbBTdVsIJt+cwp+PV5XSZIkDdJ0NSI7LoYwfJKNZTvtUy6A
+	 xhLfBMPhD3lb/EdibctcusyFMKQcZenyaSp9Cwlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Wang Zhao <wang.zhao@mediatek.com>,
+	Deren Wu <deren.wu@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 287/641] drm/msm/dpu: enable SmartDMA on SM8450
-Date: Mon, 22 Jan 2024 15:53:11 -0800
-Message-ID: <20240122235826.875880197@linuxfoundation.org>
+Subject: [PATCH 6.6 141/583] wifi: mt76: mt7921s: fix workqueue problem causes STA association fail
+Date: Mon, 22 Jan 2024 15:53:12 -0800
+Message-ID: <20240122235816.417421474@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +63,181 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Wang Zhao <wang.zhao@mediatek.com>
 
-[ Upstream commit a9bd555de5e9042fdf8ab8d6080b86f45c68ddf6 ]
+[ Upstream commit 92184eae1d5ad804884e2c6e289d885b9e3194d1 ]
 
-Enable the SmartDMA / multirect support on the SM8450 platform to
-support higher resoltion modes.
+The ieee80211_queue_work function queues work into the mac80211
+local->workqueue, which is widely used for mac80211 internal
+work processes. In the mt76 driver, both the mt76-sido-status and
+mt76-sdio-net threads enqueue workers to the workqueue with this
+function. However, in some cases, when two workers are enqueued
+to the workqueue almost simultaneously, the second worker may not
+be scheduled immediately and may get stuck for a while.
+This can cause timing issues. To avoid these timing
+conflicts caused by worker scheduling, replace the worker
+with an independent thread.
 
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/561590/
-Link: https://lore.kernel.org/r/20231009165627.2691015-1-dmitry.baryshkov@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Stable-dep-of: 46b1f1b839ca ("drm/msm/dpu: populate SSPP scaler block version")
+Fixes: 48fab5bbef40 ("mt76: mt7921: introduce mt7921s support")
+Signed-off-by: Wang Zhao <wang.zhao@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h   | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76.h      |  3 +--
+ .../net/wireless/mediatek/mt76/mt7615/sdio.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7921/sdio.c   |  4 +++-
+ .../wireless/mediatek/mt76/mt7921/sdio_mac.c   |  3 ++-
+ drivers/net/wireless/mediatek/mt76/sdio.c      | 18 +++++++++++-------
+ 5 files changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h
-index 7742f52be859..d18145c226da 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h
-@@ -75,7 +75,7 @@ static const struct dpu_sspp_cfg sm8450_sspp[] = {
- 	{
- 		.name = "sspp_0", .id = SSPP_VIG0,
- 		.base = 0x4000, .len = 0x32c,
--		.features = VIG_SC7180_MASK,
-+		.features = VIG_SC7180_MASK_SDMA,
- 		.sblk = &sm8250_vig_sblk_0,
- 		.xin_id = 0,
- 		.type = SSPP_TYPE_VIG,
-@@ -83,7 +83,7 @@ static const struct dpu_sspp_cfg sm8450_sspp[] = {
- 	}, {
- 		.name = "sspp_1", .id = SSPP_VIG1,
- 		.base = 0x6000, .len = 0x32c,
--		.features = VIG_SC7180_MASK,
-+		.features = VIG_SC7180_MASK_SDMA,
- 		.sblk = &sm8250_vig_sblk_1,
- 		.xin_id = 4,
- 		.type = SSPP_TYPE_VIG,
-@@ -91,7 +91,7 @@ static const struct dpu_sspp_cfg sm8450_sspp[] = {
- 	}, {
- 		.name = "sspp_2", .id = SSPP_VIG2,
- 		.base = 0x8000, .len = 0x32c,
--		.features = VIG_SC7180_MASK,
-+		.features = VIG_SC7180_MASK_SDMA,
- 		.sblk = &sm8250_vig_sblk_2,
- 		.xin_id = 8,
- 		.type = SSPP_TYPE_VIG,
-@@ -99,7 +99,7 @@ static const struct dpu_sspp_cfg sm8450_sspp[] = {
- 	}, {
- 		.name = "sspp_3", .id = SSPP_VIG3,
- 		.base = 0xa000, .len = 0x32c,
--		.features = VIG_SC7180_MASK,
-+		.features = VIG_SC7180_MASK_SDMA,
- 		.sblk = &sm8250_vig_sblk_3,
- 		.xin_id = 12,
- 		.type = SSPP_TYPE_VIG,
-@@ -107,7 +107,7 @@ static const struct dpu_sspp_cfg sm8450_sspp[] = {
- 	}, {
- 		.name = "sspp_8", .id = SSPP_DMA0,
- 		.base = 0x24000, .len = 0x32c,
--		.features = DMA_SDM845_MASK,
-+		.features = DMA_SDM845_MASK_SDMA,
- 		.sblk = &sdm845_dma_sblk_0,
- 		.xin_id = 1,
- 		.type = SSPP_TYPE_DMA,
-@@ -115,7 +115,7 @@ static const struct dpu_sspp_cfg sm8450_sspp[] = {
- 	}, {
- 		.name = "sspp_9", .id = SSPP_DMA1,
- 		.base = 0x26000, .len = 0x32c,
--		.features = DMA_SDM845_MASK,
-+		.features = DMA_SDM845_MASK_SDMA,
- 		.sblk = &sdm845_dma_sblk_1,
- 		.xin_id = 5,
- 		.type = SSPP_TYPE_DMA,
-@@ -123,7 +123,7 @@ static const struct dpu_sspp_cfg sm8450_sspp[] = {
- 	}, {
- 		.name = "sspp_10", .id = SSPP_DMA2,
- 		.base = 0x28000, .len = 0x32c,
--		.features = DMA_CURSOR_SDM845_MASK,
-+		.features = DMA_CURSOR_SDM845_MASK_SDMA,
- 		.sblk = &sdm845_dma_sblk_2,
- 		.xin_id = 9,
- 		.type = SSPP_TYPE_DMA,
-@@ -131,7 +131,7 @@ static const struct dpu_sspp_cfg sm8450_sspp[] = {
- 	}, {
- 		.name = "sspp_11", .id = SSPP_DMA3,
- 		.base = 0x2a000, .len = 0x32c,
--		.features = DMA_CURSOR_SDM845_MASK,
-+		.features = DMA_CURSOR_SDM845_MASK_SDMA,
- 		.sblk = &sdm845_dma_sblk_3,
- 		.xin_id = 13,
- 		.type = SSPP_TYPE_DMA,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index dae5410d67e8..7f44736ca26f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -572,8 +572,7 @@ struct mt76_sdio {
+ 	struct mt76_worker txrx_worker;
+ 	struct mt76_worker status_worker;
+ 	struct mt76_worker net_worker;
+-
+-	struct work_struct stat_work;
++	struct mt76_worker stat_worker;
+ 
+ 	u8 *xmit_buf;
+ 	u32 xmit_buf_sz;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+index fc547a0031ea..67cedd2555f9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+@@ -204,8 +204,8 @@ static int mt7663s_suspend(struct device *dev)
+ 	mt76_worker_disable(&mdev->mt76.sdio.txrx_worker);
+ 	mt76_worker_disable(&mdev->mt76.sdio.status_worker);
+ 	mt76_worker_disable(&mdev->mt76.sdio.net_worker);
++	mt76_worker_disable(&mdev->mt76.sdio.stat_worker);
+ 
+-	cancel_work_sync(&mdev->mt76.sdio.stat_work);
+ 	clear_bit(MT76_READING_STATS, &mdev->mphy.state);
+ 
+ 	mt76_tx_status_check(&mdev->mt76, true);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+index dc1beb76df3e..7591e54d2897 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+@@ -228,7 +228,7 @@ static int mt7921s_suspend(struct device *__dev)
+ 	mt76_txq_schedule_all(&dev->mphy);
+ 	mt76_worker_disable(&mdev->tx_worker);
+ 	mt76_worker_disable(&mdev->sdio.status_worker);
+-	cancel_work_sync(&mdev->sdio.stat_work);
++	mt76_worker_disable(&mdev->sdio.stat_worker);
+ 	clear_bit(MT76_READING_STATS, &dev->mphy.state);
+ 	mt76_tx_status_check(mdev, true);
+ 
+@@ -260,6 +260,7 @@ static int mt7921s_suspend(struct device *__dev)
+ restore_worker:
+ 	mt76_worker_enable(&mdev->tx_worker);
+ 	mt76_worker_enable(&mdev->sdio.status_worker);
++	mt76_worker_enable(&mdev->sdio.stat_worker);
+ 
+ 	if (!pm->ds_enable)
+ 		mt76_connac_mcu_set_deep_sleep(mdev, false);
+@@ -292,6 +293,7 @@ static int mt7921s_resume(struct device *__dev)
+ 	mt76_worker_enable(&mdev->sdio.txrx_worker);
+ 	mt76_worker_enable(&mdev->sdio.status_worker);
+ 	mt76_worker_enable(&mdev->sdio.net_worker);
++	mt76_worker_enable(&mdev->sdio.stat_worker);
+ 
+ 	/* restore previous ds setting */
+ 	if (!pm->ds_enable)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+index 8edd0291c128..389eb0903807 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+@@ -107,7 +107,7 @@ int mt7921s_mac_reset(struct mt792x_dev *dev)
+ 	mt76_worker_disable(&dev->mt76.sdio.txrx_worker);
+ 	mt76_worker_disable(&dev->mt76.sdio.status_worker);
+ 	mt76_worker_disable(&dev->mt76.sdio.net_worker);
+-	cancel_work_sync(&dev->mt76.sdio.stat_work);
++	mt76_worker_disable(&dev->mt76.sdio.stat_worker);
+ 
+ 	mt7921s_disable_irq(&dev->mt76);
+ 	mt7921s_wfsys_reset(dev);
+@@ -115,6 +115,7 @@ int mt7921s_mac_reset(struct mt792x_dev *dev)
+ 	mt76_worker_enable(&dev->mt76.sdio.txrx_worker);
+ 	mt76_worker_enable(&dev->mt76.sdio.status_worker);
+ 	mt76_worker_enable(&dev->mt76.sdio.net_worker);
++	mt76_worker_enable(&dev->mt76.sdio.stat_worker);
+ 
+ 	dev->fw_assert = false;
+ 	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
+diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wireless/mediatek/mt76/sdio.c
+index 419723118ded..c52d550f0c32 100644
+--- a/drivers/net/wireless/mediatek/mt76/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/sdio.c
+@@ -481,21 +481,21 @@ static void mt76s_status_worker(struct mt76_worker *w)
+ 		if (dev->drv->tx_status_data && ndata_frames > 0 &&
+ 		    !test_and_set_bit(MT76_READING_STATS, &dev->phy.state) &&
+ 		    !test_bit(MT76_STATE_SUSPEND, &dev->phy.state))
+-			ieee80211_queue_work(dev->hw, &dev->sdio.stat_work);
++			mt76_worker_schedule(&sdio->stat_worker);
+ 	} while (nframes > 0);
+ 
+ 	if (resched)
+ 		mt76_worker_schedule(&dev->tx_worker);
+ }
+ 
+-static void mt76s_tx_status_data(struct work_struct *work)
++static void mt76s_tx_status_data(struct mt76_worker *worker)
+ {
+ 	struct mt76_sdio *sdio;
+ 	struct mt76_dev *dev;
+ 	u8 update = 1;
+ 	u16 count = 0;
+ 
+-	sdio = container_of(work, struct mt76_sdio, stat_work);
++	sdio = container_of(worker, struct mt76_sdio, stat_worker);
+ 	dev = container_of(sdio, struct mt76_dev, sdio);
+ 
+ 	while (true) {
+@@ -508,7 +508,7 @@ static void mt76s_tx_status_data(struct work_struct *work)
+ 	}
+ 
+ 	if (count && test_bit(MT76_STATE_RUNNING, &dev->phy.state))
+-		ieee80211_queue_work(dev->hw, &sdio->stat_work);
++		mt76_worker_schedule(&sdio->status_worker);
+ 	else
+ 		clear_bit(MT76_READING_STATS, &dev->phy.state);
+ }
+@@ -600,8 +600,8 @@ void mt76s_deinit(struct mt76_dev *dev)
+ 	mt76_worker_teardown(&sdio->txrx_worker);
+ 	mt76_worker_teardown(&sdio->status_worker);
+ 	mt76_worker_teardown(&sdio->net_worker);
++	mt76_worker_teardown(&sdio->stat_worker);
+ 
+-	cancel_work_sync(&sdio->stat_work);
+ 	clear_bit(MT76_READING_STATS, &dev->phy.state);
+ 
+ 	mt76_tx_status_check(dev, true);
+@@ -644,10 +644,14 @@ int mt76s_init(struct mt76_dev *dev, struct sdio_func *func,
+ 	if (err)
+ 		return err;
+ 
++	err = mt76_worker_setup(dev->hw, &sdio->stat_worker, mt76s_tx_status_data,
++				"sdio-sta");
++	if (err)
++		return err;
++
+ 	sched_set_fifo_low(sdio->status_worker.task);
+ 	sched_set_fifo_low(sdio->net_worker.task);
+-
+-	INIT_WORK(&sdio->stat_work, mt76s_tx_status_data);
++	sched_set_fifo_low(sdio->stat_worker.task);
+ 
+ 	dev->queue_ops = &sdio_queue_ops;
+ 	dev->bus = bus_ops;
 -- 
 2.43.0
 
