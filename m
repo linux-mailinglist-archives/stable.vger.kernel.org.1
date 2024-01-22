@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-13113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EEF2837A8D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 233158379DA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:46:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2895328FE33
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FC1AB29CCF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA46312F59C;
-	Tue, 23 Jan 2024 00:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AB11272B7;
+	Tue, 23 Jan 2024 00:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNqxou8b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbcdXhyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3AC12CDB0;
-	Tue, 23 Jan 2024 00:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F8D50272;
+	Tue, 23 Jan 2024 00:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968995; cv=none; b=QbXjyT1PRd+4hwM/Qud9D79VbiE+C65gQnlNuDPx6wnnAykUnjjlZpVId099TJ1tpN/mcJJw7btjgcPJY4nlZB+mRtHasjcu5BV/vHXicmjTOAKFpfwKArDCWrV4uOf7qsMuZu0nG9XxaKzhwXtuYnQUksyahe0vvzLAGjCDPXc=
+	t=1705968489; cv=none; b=GPIzJI+SQelhsHKvdPzNNcW61sUr8r93QtwkwfoRhWk1rRQbLruqYWsciCaPsdmQV+5iZSd+GEv8ug4umo9vmzQrLL2SgZ/AN6EIWPkIdZuHYQJZ7ojG/RdO8JbpjMgu2Qc0Op5QQ08QBVYQuNY5ZxI2TwzrPBig/X1UVI0s/Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968995; c=relaxed/simple;
-	bh=LCSFfkzZi7dAOcdfCa1XSXTciN6bedYNz+YSOIB0Q38=;
+	s=arc-20240116; t=1705968489; c=relaxed/simple;
+	bh=dtoNid2yVpNPWi6SxjKFasStWJ9imwq2WBCh6N2ZmJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r22DJl/yVctq/iEe9eIsSNR8/DQ/pnBCUwcN4jYz5C004x5sj57Fv6e7iez/mQsrvCnAL27iOD9XAkroM598x8BDiJYbtF55hPMQGEo1Kf3N8jrdZWceeJaeykulCxK3Nno1WQf4zrcqAY/bmi78ox6cRF+GlSzrGFmkN7O3X20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNqxou8b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383E5C433F1;
-	Tue, 23 Jan 2024 00:16:35 +0000 (UTC)
+	 MIME-Version; b=cwq5a4iNbb/wJvPfOULH+/mWXcBfw7pemzzGChMHq7yBbKtO8D8VwoRQkM7xb7EsfNrFsrQcmC/1/02gMFcCMJHaa/bDEnfdkywcoaBFb2Nay1BZBNCQimCBqu23/b4JerBni7pw9dbBpKFrW5o/xhyPqfgrofY95Ad7bfheJng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbcdXhyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B28C433C7;
+	Tue, 23 Jan 2024 00:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968995;
-	bh=LCSFfkzZi7dAOcdfCa1XSXTciN6bedYNz+YSOIB0Q38=;
+	s=korg; t=1705968489;
+	bh=dtoNid2yVpNPWi6SxjKFasStWJ9imwq2WBCh6N2ZmJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tNqxou8bjFOLt68767njw2QtWVag38Ey/sggY2BpZdqZu1UirMnjWRtlQKrlUcnuk
-	 aHF+59DwuBAV+L5dOm2RrkVJLRW8M6SAt2eaEgtG+WbmoqC0n+x7yAXpeRoGZOBd5y
-	 ysNSOKdTiSg+iuXRf0USIYFad4ycPWS7Wl7eOb4Q=
+	b=KbcdXhyYUfi+xhAW2AlIEHrmOCwfnNyP6boLJ+L8UIIVwuvrq6uq5Mioe4mVXCD+p
+	 3Kr+r/pV356YHOr8zp89U0Rf6y4xwSTWuU3vXPNO0XdrQXiUtS21Oa0u4zQP5QmK5K
+	 S8RqYrYk84AtnwdBUiqcZLFLJT/MgerH9ABOHesE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-Subject: [PATCH 5.4 148/194] usb: dwc: ep0: Update request status in dwc3_ep0_stall_restart
-Date: Mon, 22 Jan 2024 15:57:58 -0800
-Message-ID: <20240122235725.566602375@linuxfoundation.org>
+	Peter Chen <peter.chen@kernel.org>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Li Jun <jun.li@nxp.com>
+Subject: [PATCH 4.19 123/148] usb: chipidea: wait controller resume finished for wakeup irq
+Date: Mon, 22 Jan 2024 15:57:59 -0800
+Message-ID: <20240122235717.477847370@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit e9d40b215e38480fd94c66b06d79045717a59e9c upstream.
+commit 128d849074d05545becf86e713715ce7676fc074 upstream.
 
-Current implementation blocks the running operations when Plug-out and
-Plug-In is performed continuously, process gets stuck in
-dwc3_thread_interrupt().
+After the chipidea driver introduce extcon for id and vbus, it's able
+to wakeup from another irq source, in case the system with extcon ID
+cable, wakeup from usb ID cable and device removal, the usb device
+disconnect irq may come firstly before the extcon notifier while system
+resume, so we will get 2 "wakeup" irq, one for usb device disconnect;
+and one for extcon ID cable change(real wakeup event), current driver
+treat them as 2 successive wakeup irq so can't handle it correctly, then
+finally the usb irq can't be enabled. This patch adds a check to bypass
+further usb events before controller resume finished to fix it.
 
-Code Flow:
-
-	CPU1
-
-	->Gadget_start
-	->dwc3_interrupt
-	->dwc3_thread_interrupt
-	->dwc3_process_event_buf
-	->dwc3_process_event_entry
-	->dwc3_endpoint_interrupt
-	->dwc3_ep0_interrupt
-	->dwc3_ep0_inspect_setup
-	->dwc3_ep0_stall_and_restart
-
-By this time if pending_list is not empty, it will get the next request
-on the given list and calls dwc3_gadget_giveback which will unmap request
-and call its complete() callback to notify upper layers that it has
-completed. Currently dwc3_gadget_giveback status is set to -ECONNRESET,
-whereas it should be -ESHUTDOWN based on condition if not dwc->connected
-is true.
-
-Cc:  <stable@vger.kernel.org>
-Fixes: d742220b3577 ("usb: dwc3: ep0: giveback requests on stall_and_restart")
-Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-Link: https://lore.kernel.org/r/20231222094704.20276-1-quic_uaggarwa@quicinc.com
+Fixes: 1f874edcb731 ("usb: chipidea: add runtime power management support")
+cc:  <stable@vger.kernel.org>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Signed-off-by: Li Jun <jun.li@nxp.com>
+Link: https://lore.kernel.org/r/20231228110753.1755756-2-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/ep0.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/usb/chipidea/core.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -236,7 +236,10 @@ static void dwc3_ep0_stall_and_restart(s
- 		struct dwc3_request	*req;
+--- a/drivers/usb/chipidea/core.c
++++ b/drivers/usb/chipidea/core.c
+@@ -539,6 +539,13 @@ static irqreturn_t ci_irq_handler(int ir
+ 	u32 otgsc = 0;
  
- 		req = next_request(&dep->pending_list);
--		dwc3_gadget_giveback(dep, req, -ECONNRESET);
-+		if (!dwc->connected)
-+			dwc3_gadget_giveback(dep, req, -ESHUTDOWN);
-+		else
-+			dwc3_gadget_giveback(dep, req, -ECONNRESET);
- 	}
- 
- 	dwc->ep0state = EP0_SETUP_PHASE;
+ 	if (ci->in_lpm) {
++		/*
++		 * If we already have a wakeup irq pending there,
++		 * let's just return to wait resume finished firstly.
++		 */
++		if (ci->wakeup_int)
++			return IRQ_HANDLED;
++
+ 		disable_irq_nosync(irq);
+ 		ci->wakeup_int = true;
+ 		pm_runtime_get(ci->dev);
 
 
 
