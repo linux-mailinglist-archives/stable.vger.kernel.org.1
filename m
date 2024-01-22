@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D3E837EAD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ECEE837C68
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB4351F29213
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3890D296AF3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8EE612FD;
-	Tue, 23 Jan 2024 00:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FBC15231;
+	Tue, 23 Jan 2024 00:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOiXyvmQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3ZFz394"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41121612F2;
-	Tue, 23 Jan 2024 00:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2C17472;
+	Tue, 23 Jan 2024 00:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970757; cv=none; b=Ukak2WtFl2LTkBD0/1POD6Kbvd1Lf2wLEgmOJUcy1DtZIqqRd8bh/gE8h75bNnK83x0z9S3HaP9HlceNYGRqyxftb4ZEih1pgmgMcAqVW4FeAiSNi8isyQOsARKQQRJppYtVXwx9HGoA/LK9ijissfCTZJglSh5hcm9/4u38vyw=
+	t=1705969607; cv=none; b=EhTIzqFcyjP0J/QsBg38mlWSwMSTpAB1ULrdymNGDoAHWWyj9cGDlW/D2YRxmO/rupx5CPQ/wyCMk6WhjROmnZhFa7OcISznQXZsZw5BlXV2kRE5g/hKx4EKAgnWktHznB7hHsWxtVJCSMZgXHaM55Hhum/ATAbITUq7J72qc7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970757; c=relaxed/simple;
-	bh=c6dlXjZH8uhkSDaF4kALW9BZfuYGjsR6DE43MQh+YTI=;
+	s=arc-20240116; t=1705969607; c=relaxed/simple;
+	bh=KNQ9yhSUh7+djwL34eDu7gsasqHCy0HSSZHoiX8Cx38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gq5XGDkacduXvdi36phHWv7rcKy4Pp8jTvmWH116E9QF0Xsjd6a05lJRmYECmj83kElvuMgbfPma3q/wuWIeASsCr1o865GHcFVC4cXbzoJ6WfjETvY9G1QTywgA4S1uvBBwxZay+A6gqlO1i8ys9Thti3q6HCHbMOCpCxTHYUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOiXyvmQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20905C43390;
-	Tue, 23 Jan 2024 00:45:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PfqVhNowvubODgy8l8n5JcconetacJv0Na3yKn8SJa4axbb/T31IYr0mCNPoRyprGlt5PXNwrSZaZHRFDmO085Eo6Xkv3fV2SORIEOM0BpS+/NWvzHgzzfvFPQnR3FQgxxS7f1rsSE97XMRB7SLgtl0H2w9jl78WDYZUVUOrCIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3ZFz394; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C30C433C7;
+	Tue, 23 Jan 2024 00:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970756;
-	bh=c6dlXjZH8uhkSDaF4kALW9BZfuYGjsR6DE43MQh+YTI=;
+	s=korg; t=1705969607;
+	bh=KNQ9yhSUh7+djwL34eDu7gsasqHCy0HSSZHoiX8Cx38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOiXyvmQCwMhTvo/hzXTZM2MOQeaPgCVa5emK0+Uj/hjnFj69CWUBi7BllFwtIEiI
-	 F4CZKWxFj8ADqVMJkT70spCXntSMKBmCS04rJuRanbJMJrNkUmgYYRHeRkTSHxj26f
-	 ZFc6qnuEoQSZrtPeJMVGeeHvRQVu03mXwzo0s7ew=
+	b=B3ZFz394Ivq+V2S7i6Th6EPJTmNYKAaIkmxEvBVW4kRqdJtmEnonz1/4HC7plgNRH
+	 SSoMkJhide9DzEf1n/RnvZMuapLyvTyiPDmXL5BAwhjFeTLxwKkq/W7QJ6votjlsmN
+	 6DfaVoJRmgHdNPEst0f8Zo61lOXgkJ6zNYu9gQ8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/417] arm64: dts: qcom: sm8250: Make watchdog bark interrupt edge triggered
+Subject: [PATCH 6.7 354/641] clk: fixed-rate: fix clk_hw_register_fixed_rate_with_accuracy_parent_hw
 Date: Mon, 22 Jan 2024 15:54:18 -0800
-Message-ID: <20240122235754.812812835@linuxfoundation.org>
+Message-ID: <20240122235829.009671509@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Théo Lebrun <theo.lebrun@bootlin.com>
 
-[ Upstream commit 735d80e2e8e5d073ae8b1fff8b1589ea284aa5af ]
+[ Upstream commit ee0cf5e07f44a10fce8f1bfa9db226c0b5ecf880 ]
 
-As described in the patch ("arm64: dts: qcom: sc7180: Make watchdog
-bark interrupt edge triggered"), the Qualcomm watchdog timer's bark
-interrupt should be configured as edge triggered. Make the change.
+Add missing comma and remove extraneous NULL argument. The macro is
+currently used by no one which explains why the typo slipped by.
 
-Fixes: 46a4359f9156 ("arm64: dts: qcom: sm8250: Add watchdog bark interrupt")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20231106144335.v2.5.I2910e7c10493d896841e9785c1817df9b9a58701@changeid
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 2d34f09e79c9 ("clk: fixed-rate: Add support for specifying parents via DT/pointers")
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://lore.kernel.org/r/20231218-mbly-clk-v1-1-44ce54108f06@bootlin.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/clk-provider.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index 4d9b30f0b284..3d02adbc0b62 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -4879,7 +4879,7 @@ watchdog@17c10000 {
- 			compatible = "qcom,apss-wdt-sm8250", "qcom,kpss-wdt";
- 			reg = <0 0x17c10000 0 0x1000>;
- 			clocks = <&sleep_clk>;
--			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
- 		};
- 
- 		timer@17c20000 {
+diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
+index ace3a4ce2fc9..1293c38ddb7f 100644
+--- a/include/linux/clk-provider.h
++++ b/include/linux/clk-provider.h
+@@ -448,8 +448,8 @@ struct clk *clk_register_fixed_rate(struct device *dev, const char *name,
+  */
+ #define clk_hw_register_fixed_rate_with_accuracy_parent_hw(dev, name,	      \
+ 		parent_hw, flags, fixed_rate, fixed_accuracy)		      \
+-	__clk_hw_register_fixed_rate((dev), NULL, (name), NULL, (parent_hw)   \
+-				     NULL, NULL, (flags), (fixed_rate),	      \
++	__clk_hw_register_fixed_rate((dev), NULL, (name), NULL, (parent_hw),  \
++				     NULL, (flags), (fixed_rate),	      \
+ 				     (fixed_accuracy), 0, false)
+ /**
+  * clk_hw_register_fixed_rate_with_accuracy_parent_data - register fixed-rate
 -- 
 2.43.0
 
