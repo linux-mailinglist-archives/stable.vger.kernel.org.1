@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-14716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19BD88382A3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95336837CBA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:15:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4772BB25D07
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2DCCB27264
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D46459B6D;
-	Tue, 23 Jan 2024 01:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB310154BEB;
+	Tue, 23 Jan 2024 00:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRvyLqNV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tclLvF1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9C62B9B7;
-	Tue, 23 Jan 2024 01:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1CE15445E;
+	Tue, 23 Jan 2024 00:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974108; cv=none; b=fXhOpxxNjhX4a/H/Cb7a9xbC5AIZn05CumO+OyLEXRIa25Znzrhtf4vku4pg/ZKfxZo1islyhKo+knw4r2Fog7eQ4U1fb3JjirKLUu60jV/gpkH3A6Vu5I7FamKxqzu0UzW0srtA3T2jnGoBzKHoRrY34vyFhyxksXsTyHSHtlA=
+	t=1705969388; cv=none; b=qChGzqStH1/B7ysPW2khJItUHJxd47T+R2dgGSPE37d3cGZziMER4UmJ6eqxKkmHRlF9UFo//1FFE8OohGuEoO9Gqu03rnfWHFkmpUHVqHxA/KO9t2fvVNux8vqOslVR0CZdj59MI1gglw+lXNVW7XX+Fp762MjrVc3309OD1vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974108; c=relaxed/simple;
-	bh=2tkxMR1zeh97f3NX7x79QwVPXJUtSmzb8WNfO/TZpPc=;
+	s=arc-20240116; t=1705969388; c=relaxed/simple;
+	bh=/+whhwBLaEXa9/o+OIab5ey+rNosoYEOt39mFYMYlDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uOiPaFuIR/Hk/FnAIg3bVT08SRucnJmSGRDzzF4F4RQiLGyKvrYQgY+5/9JbZKCNA9x6TMfCAcgJEoP07GElgICOQVNyYSIWO3HA/y5ixMY/ygBP8pkPJnhzfoFpru4swejsesHtcTskLocSM4SP38BTxMcNt3RMtrAEaMiQ1Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRvyLqNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E527EC43390;
-	Tue, 23 Jan 2024 01:41:47 +0000 (UTC)
+	 MIME-Version; b=uxH51z1/Hopmn83r+iTXa0DbYWcqkiwMPWO43SnruGM1eIYgO77w9pz47HyMWTFsiNv1NPE6CAiGoRPWf1SOpnq3vdmZ+0FpgtC13JPUB8Pt9Lzfva6TQOsgK5zlegyqpI5PczUHCxMB7iPbsEBhw3wmzqCsPeSJ7S9bRQzxjdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tclLvF1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7174C433F1;
+	Tue, 23 Jan 2024 00:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974108;
-	bh=2tkxMR1zeh97f3NX7x79QwVPXJUtSmzb8WNfO/TZpPc=;
+	s=korg; t=1705969388;
+	bh=/+whhwBLaEXa9/o+OIab5ey+rNosoYEOt39mFYMYlDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HRvyLqNVbhpp7VYgBbW8AaVp98CgXCEoIhwmIwCKdnouCsA1AYdHxSlQZriOEFXjV
-	 l5wfemyw706sQTpLbsdJ6PQvFN/jUU/cJzOLPlkUJi5B0AkqIXvWCw8ehRbrXRKpew
-	 1Es/bDmbZpU4PzhIFSGRMRiEjLtjrNCTQC2XneM4=
+	b=tclLvF1mqdHlsVaRxISbLB0kKLnj69Fg3oZHydllVoECLRmXREPIXqpGfqSrx75oi
+	 dl1spiqIhoqAO70Qjq8fXweCwHaDn7ERYvwPcybAjuMNSzgAYUN7lfQbXQKfOB9fRD
+	 d6ihIlbX22e5fjHVWkt6FJntskIzCKasLCZcxa3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Paris <eparis@parisplace.org>,
-	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Xingwei Lee <xrivendell7@gmail.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/583] selinux: Fix error priority for bind with AF_UNSPEC on PF_INET6 socket
-Date: Mon, 22 Jan 2024 15:51:32 -0800
-Message-ID: <20240122235813.406072843@linuxfoundation.org>
+Subject: [PATCH 6.7 189/641] bpf: Limit the number of uprobes when attaching program to multiple uprobes
+Date: Mon, 22 Jan 2024 15:51:33 -0800
+Message-ID: <20240122235823.891002442@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit bbf5a1d0e5d0fb3bdf90205aa872636122692a50 ]
+[ Upstream commit 8b2efe51ba85ca83460941672afac6fca4199df6 ]
 
-The IPv6 network stack first checks the sockaddr length (-EINVAL error)
-before checking the family (-EAFNOSUPPORT error).
+An abnormally big cnt may be passed to link_create.uprobe_multi.cnt,
+and it will trigger the following warning in kvmalloc_node():
 
-This was discovered thanks to commit a549d055a22e ("selftests/landlock:
-Add network tests").
+	if (unlikely(size > INT_MAX)) {
+		WARN_ON_ONCE(!(flags & __GFP_NOWARN));
+		return NULL;
+	}
 
-Cc: Eric Paris <eparis@parisplace.org>
-Cc: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
-Cc: Paul Moore <paul@paul-moore.com>
-Cc: Stephen Smalley <stephen.smalley.work@gmail.com>
-Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Closes: https://lore.kernel.org/r/0584f91c-537c-4188-9e4f-04f192565667@collabora.com
-Fixes: 0f8db8cc73df ("selinux: add AF_UNSPEC and INADDR_ANY checks to selinux_socket_bind()")
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
-Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Fix the warning by limiting the maximal number of uprobes in
+bpf_uprobe_multi_link_attach(). If the number of uprobes is greater than
+MAX_UPROBE_MULTI_CNT, the attachment will return -E2BIG.
+
+Fixes: 89ae89f53d20 ("bpf: Add multi uprobe link")
+Reported-by: Xingwei Lee <xrivendell7@gmail.com>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Closes: https://lore.kernel.org/bpf/CABOYnLwwJY=yFAGie59LFsUsBAgHfroVqbzZ5edAXbFE3YiNVA@mail.gmail.com
+Link: https://lore.kernel.org/bpf/20231215100708.2265609-2-houtao@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/selinux/hooks.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/trace/bpf_trace.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 208503340721..aa0afc122f09 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -4661,6 +4661,13 @@ static int selinux_socket_bind(struct socket *sock, struct sockaddr *address, in
- 				return -EINVAL;
- 			addr4 = (struct sockaddr_in *)address;
- 			if (family_sa == AF_UNSPEC) {
-+				if (family == PF_INET6) {
-+					/* Length check from inet6_bind_sk() */
-+					if (addrlen < SIN6_LEN_RFC2133)
-+						return -EINVAL;
-+					/* Family check from __inet6_bind() */
-+					goto err_af;
-+				}
- 				/* see __inet_bind(), we only want to allow
- 				 * AF_UNSPEC if the address is INADDR_ANY
- 				 */
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 84e8a0f6e4e0..640b08818afa 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -41,6 +41,8 @@
+ #define bpf_event_rcu_dereference(p)					\
+ 	rcu_dereference_protected(p, lockdep_is_held(&bpf_event_mutex))
+ 
++#define MAX_UPROBE_MULTI_CNT (1U << 20)
++
+ #ifdef CONFIG_MODULES
+ struct bpf_trace_module {
+ 	struct module *module;
+@@ -3202,6 +3204,8 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 
+ 	if (!upath || !uoffsets || !cnt)
+ 		return -EINVAL;
++	if (cnt > MAX_UPROBE_MULTI_CNT)
++		return -E2BIG;
+ 
+ 	uref_ctr_offsets = u64_to_user_ptr(attr->link_create.uprobe_multi.ref_ctr_offsets);
+ 	ucookies = u64_to_user_ptr(attr->link_create.uprobe_multi.cookies);
 -- 
 2.43.0
 
