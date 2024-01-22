@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4944838394
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9F5837E8A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5746A1F28D18
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E7401C212D2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9B9633FA;
-	Tue, 23 Jan 2024 01:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 139525BAE7;
+	Tue, 23 Jan 2024 00:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABQigaIX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DKyhACk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3A3633E6;
-	Tue, 23 Jan 2024 01:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81F35732A;
+	Tue, 23 Jan 2024 00:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975013; cv=none; b=mi+UvIWZwYLjNIgcwXX9xjF8xcmCmNnBc4kATWvxqmfZcJXQP2dZHobofo2vdUiLjea2+hPycb9VbBHa8jElglJC1nDIITUN/+jbigitME7YnCIYnMREfr1gnBBc+fV6EKnADogEEA1Fc7pv/BjJE5jiOcZQPTp8OXgUmYBqLF8=
+	t=1705970653; cv=none; b=kBenzfSbNrS33RKkN83qHq/wVMS6p/JAwM9oXw/xaE9nlEosjVJBxF1nFAWwoAf4Dgs/q/2gTybatwovviKmdjx7lxnvnNvP4ddBEFQb2NK9ZXRPSoefIlBDZHdmAPAKqvnqIL+gDuqKrKVgcUB/LmXAPwUxjFAWECxfyb65/6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975013; c=relaxed/simple;
-	bh=y3cau3qTDNrzUi1y1r8KqBvz5jJkiW4Tn+YylVRxl30=;
+	s=arc-20240116; t=1705970653; c=relaxed/simple;
+	bh=+OxAHl4gilmsuBtynJc/FbdbKZckl0jNuvG4OqqZNIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q+ZwiQhw0iHfAgIuzrBv0UQXw2APwNQ8DR7Ya4CVqxUjIksXwbGtbJzYsbKK8lM7EdmQhHD23OPUutSquOWdSr4xqircB/Ah9ZrR6/+mVdYTeoo5Igsf/Lqqsc8y/TGVME5gOirz7S6ddn5sAQOVIYupoY2tcnYhxNEuiu4nSOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABQigaIX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338A9C433F1;
-	Tue, 23 Jan 2024 01:56:53 +0000 (UTC)
+	 MIME-Version; b=QeRCRhP+Hi3sUdOf8of25G2d+o0RF1xhoInrFy5X9XNd8uRwaGHAxxGxHVgwAxAe/d9itT68eqW6dfubs0nhaV0rLJYAHJlVMSRgBsn3+GdNKRBnnsZ9q45J0O9sG7eK+Vsln7rMH7Gen1J+bpcT8NKgyhMK3yHpfLncX1f7opA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DKyhACk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA42EC433F1;
+	Tue, 23 Jan 2024 00:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975013;
-	bh=y3cau3qTDNrzUi1y1r8KqBvz5jJkiW4Tn+YylVRxl30=;
+	s=korg; t=1705970653;
+	bh=+OxAHl4gilmsuBtynJc/FbdbKZckl0jNuvG4OqqZNIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ABQigaIXRaFD+0ghzhG8v2wNyMURmsfBeAaBwMBcTjTlUo0KmVETRGDyAst8OfRLD
-	 weKdUxPoC5oh0SsNYGfKJbuFDIUGzOl0ARK8GN4ywn8Z0nwf7I0USvLh1YGCPcJ0dD
-	 LrxiMkviQ+i1251K5l6RDjX0jLNd5C8hG+Pg0H9U=
+	b=1DKyhACkXO666zV/lnZBsaR6D59x4toKKscye3eEpMGY0Gr7htbU7NTA1uIqIwTqG
+	 jryNmLgP48lVxsovUAl75Wf9Y26Lm4gD4XemNQibt3NaEdkCJdBK4fTfpPVTrOkSIX
+	 P5v4pJSRR7iEPZEw/liScoglEslN8IaVcVw01JQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Nitin Yadav <n-yadav@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 196/583] wifi: rtlwifi: rtl8192de: using calculate_bit_shift()
+Subject: [PATCH 6.1 079/417] arm64: dts: ti: k3-am62a-main: Fix GPIO pin count in DT nodes
 Date: Mon, 22 Jan 2024 15:54:07 -0800
-Message-ID: <20240122235817.981821907@linuxfoundation.org>
+Message-ID: <20240122235754.439142617@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Nitin Yadav <n-yadav@ti.com>
 
-[ Upstream commit b8b2baad2e652042cf8b6339939ac2f4e6f53de4 ]
+[ Upstream commit 7dc4af358cc382c5d20bd5b726e53ef0f526eb6d ]
 
-Using calculate_bit_shift() to replace _rtl92d_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+Fix number of gpio pins in main_gpio0 & main_gpio1 DT nodes according
+to AM62A7 datasheet[0].
 
-Fixes: 7274a8c22980 ("rtlwifi: rtl8192de: Merge phy routines")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-8-suhui@nfschina.com
+[0] https://www.ti.com/lit/gpn/am62a3 Section: 6.3.10 GPIO (Page No. 52-55)
+Fixes: 5fc6b1b62639 ("arm64: dts: ti: Introduce AM62A7 family of SoCs")
+Signed-off-by: Nitin Yadav <n-yadav@ti.com>
+Link: https://lore.kernel.org/r/20231027065930.1187405-1-n-yadav@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/realtek/rtlwifi/rtl8192de/phy.c  | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62a-main.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-index d18c092b6142..d835a27429f0 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -169,13 +169,6 @@ static const u8 channel_all[59] = {
- 	157, 159, 161, 163, 165
- };
- 
--static u32 _rtl92d_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
--
- u32 rtl92d_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
-@@ -198,7 +191,7 @@ u32 rtl92d_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- 	} else {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
- 	}
--	bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
- 		"BBR MASK=0x%x Addr[0x%x]=0x%x\n",
-@@ -230,7 +223,7 @@ void rtl92d_phy_set_bb_reg(struct ieee80211_hw *hw,
- 					dbi_direct);
- 		else
- 			originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
- 	}
- 	if (rtlhal->during_mac1init_radioa || rtlhal->during_mac0init_radiob)
-@@ -317,7 +310,7 @@ u32 rtl92d_phy_query_rf_reg(struct ieee80211_hw *hw,
- 		regaddr, rfpath, bitmask);
- 	spin_lock(&rtlpriv->locks.rf_lock);
- 	original_value = _rtl92d_phy_rf_serial_read(hw, rfpath, regaddr);
--	bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 	spin_unlock(&rtlpriv->locks.rf_lock);
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
-@@ -343,7 +336,7 @@ void rtl92d_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
- 		if (bitmask != RFREG_OFFSET_MASK) {
- 			original_value = _rtl92d_phy_rf_serial_read(hw,
- 				rfpath, regaddr);
--			bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data = ((original_value & (~bitmask)) |
- 				(data << bitshift));
- 		}
+diff --git a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+index bc4b50bcd177..9301ea388802 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+@@ -245,7 +245,7 @@ main_gpio0: gpio@600000 {
+ 			     <193>, <194>, <195>;
+ 		interrupt-controller;
+ 		#interrupt-cells = <2>;
+-		ti,ngpio = <87>;
++		ti,ngpio = <92>;
+ 		ti,davinci-gpio-unbanked = <0>;
+ 		power-domains = <&k3_pds 77 TI_SCI_PD_EXCLUSIVE>;
+ 		clocks = <&k3_clks 77 0>;
+@@ -263,7 +263,7 @@ main_gpio1: gpio@601000 {
+ 			     <183>, <184>, <185>;
+ 		interrupt-controller;
+ 		#interrupt-cells = <2>;
+-		ti,ngpio = <88>;
++		ti,ngpio = <52>;
+ 		ti,davinci-gpio-unbanked = <0>;
+ 		power-domains = <&k3_pds 78 TI_SCI_PD_EXCLUSIVE>;
+ 		clocks = <&k3_clks 78 0>;
 -- 
 2.43.0
 
