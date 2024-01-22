@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EB2838223
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF599837D68
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1BA21F24504
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E1E11C23B56
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F7C58AC1;
-	Tue, 23 Jan 2024 01:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F165B5B3;
+	Tue, 23 Jan 2024 00:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFWZIZ6W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAHXxeye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D066AA6;
-	Tue, 23 Jan 2024 01:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BFE52F7C;
+	Tue, 23 Jan 2024 00:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974073; cv=none; b=DtrKj0/Uk2ykHJI0+lldNVAMRkE3FfBJFBPRT4BlCto67UpGtvjJ8q1qpb/VfLvogQBE5ZWWXzjMDf/tFxcXFi78WX8T/acxCB1hftCJGyNDxI1a/9MBUIyh7aNIQfYVMSA/N9BrhyQP2KNmHVB/t7aYzu9/g4XzHmFTT3UjiSQ=
+	t=1705969929; cv=none; b=QNgayzPpRmJ3XbxjAvl4e/1hqjRqxXNfYDwS1XjdkbfYq+PcG00BvYPKg1Gb3VXNn+v5WBK29VbEicRZXM1oxycH/4UICVHPuqzoSjQ9uKjKvkWop5lBr/vtDz/oeakbHuY7HKQN1dYXx6iarNFmLBMEOVZiHrX/nphFoEh3Cfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974073; c=relaxed/simple;
-	bh=0RZ/+m9/E2v4DLxDc24LAViWqOsFcp0HwVig6Wepoko=;
+	s=arc-20240116; t=1705969929; c=relaxed/simple;
+	bh=VooucQcIgDapA7yu2x4XtrcljtZUlAx7HN1gwSd+9KE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kIOdnek377aDZp4Z1E2JBHEh7mzR9kBPYdRswH4rK0deuKaLQI30g5BajRZntMkBI0cHdCiaAPxHHvTk4GUAzeZKXl8a5XWnGP3lamfr078qwpDofgRtUJMKs2+EYg3pxEKrVaqmLgaufj+0EWlaEWUYwiEKUzAtlfb3K9w8Qbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFWZIZ6W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 686DAC43390;
-	Tue, 23 Jan 2024 01:41:12 +0000 (UTC)
+	 MIME-Version; b=ojl8d4zGHFqrr8BXdFw4OUsHaqeLqLX7h6r10xgbIpeKyvXV0iVhQLQlMU1EFxBth+KKGGkbsbpb5CPlrg+DpFPBVvErgs4xn65GUx9RtsBJRa6KtzQpWx16OEoLSbqjNz4k3nu7u4VOaUbb+mnx4s/chWxFupkzdjEJB59tKPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAHXxeye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC8DC433C7;
+	Tue, 23 Jan 2024 00:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974072;
-	bh=0RZ/+m9/E2v4DLxDc24LAViWqOsFcp0HwVig6Wepoko=;
+	s=korg; t=1705969929;
+	bh=VooucQcIgDapA7yu2x4XtrcljtZUlAx7HN1gwSd+9KE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFWZIZ6Wk1vV26i2CqI566q0CJgxmHQBESCVZ4XzNEh+6jOZLnDURp51ICTRONouF
-	 cHhjJuREaH67uCd1b3nVKSStd6O15885hDeAzNljZLdiA6TQGBCTrfpg41ShBRO53y
-	 LHEt+04uhkwhHf/airJElYFT8cBHwPyr0mi+8hfE=
+	b=TAHXxeye7C94TcCZRTsaXeMHz9EPXHGCiFLDum0Vib/HzaHLd3oWDj63yIEzxrx47
+	 UH5wTGYLZSelPmlO30Xy02ZJXLfFd1PLybhYE+6h1oH0qRK1NcXGWnZv5m+ambn9Gd
+	 foZsJfSQIv8ZKmHLlFVCtF9Fjajgvw/66e4j5Rng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 152/374] arm64: dts: qcom: sm8150-hdk: fix SS USB regulators
+Subject: [PATCH 6.7 504/641] PCI: Avoid potential out-of-bounds read in pci_dev_for_each_resource()
 Date: Mon, 22 Jan 2024 15:56:48 -0800
-Message-ID: <20240122235749.911624273@linuxfoundation.org>
+Message-ID: <20240122235833.844032233@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit a509adf05b2aac31b22781f5aa09e4768a5b6c39 ]
+[ Upstream commit 3171e46d677a668eed3086da78671f1e4f5b8405 ]
 
-The SM8150-HDK uses two different regulators to power up SuperSpeed USB
-PHYs. The L5A regulator is used for the second USB host, while the first
-(OTG) USB host uses different regulator, L18A. Fix the regulator for the
-usb_1 QMPPHY and (to remove possible confusion) drop the
-usb_ss_dp_core_1/_2 labels.
+Coverity complains that pointer in the pci_dev_for_each_resource() may be
+wrong, i.e., might be used for the out-of-bounds read.
 
-Fixes: 0ab1b2d10afe ("arm64: dts: qcom: add sm8150 hdk dts")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20231215174152.315403-4-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+There is no actual issue right now because we have another check afterwards
+and the out-of-bounds read is not being performed. In any case it's better
+code with this fixed, hence the proposed change.
+
+As Jonas pointed out "It probably makes the code slightly less performant
+as res will now be checked for being not NULL (which will always be true),
+but I doubt it will be significant (or in any hot paths)."
+
+Fixes: 09cc90063240 ("PCI: Introduce pci_dev_for_each_resource()")
+Reported-by: Bjorn Helgaas <bhelgaas@google.com>
+Closes: https://lore.kernel.org/r/20230509182122.GA1259567@bhelgaas
+Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://lore.kernel.org/r/20231030114218.2752236-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8150-hdk.dts | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ include/linux/pci.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8150-hdk.dts b/arch/arm64/boot/dts/qcom/sm8150-hdk.dts
-index 335aa0753fc0..716e964946ed 100644
---- a/arch/arm64/boot/dts/qcom/sm8150-hdk.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8150-hdk.dts
-@@ -126,8 +126,6 @@ vdda_qrefs_0p875_5:
- 		vdda_sp_sensor:
- 		vdda_ufs_2ln_core_1:
- 		vdda_ufs_2ln_core_2:
--		vdda_usb_ss_dp_core_1:
--		vdda_usb_ss_dp_core_2:
- 		vdda_qlink_lv:
- 		vdda_qlink_lv_ck:
- 		vreg_l5a_0p875: ldo5 {
-@@ -209,6 +207,12 @@ vreg_l17a_3p0: ldo17 {
- 			regulator-max-microvolt = <3008000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
-+
-+		vreg_l18a_0p8: ldo18 {
-+			regulator-min-microvolt = <880000>;
-+			regulator-max-microvolt = <880000>;
-+			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+		};
- 	};
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index dea043bc1e38..bc80960fad7c 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -2130,14 +2130,14 @@ int pci_iobar_pfn(struct pci_dev *pdev, int bar, struct vm_area_struct *vma);
+ 	(pci_resource_end((dev), (bar)) ? 				\
+ 	 resource_size(pci_resource_n((dev), (bar))) : 0)
  
- 	pm8150l-rpmh-regulators {
-@@ -441,13 +445,13 @@ &usb_2_hsphy {
- &usb_1_qmpphy {
- 	status = "okay";
- 	vdda-phy-supply = <&vreg_l3c_1p2>;
--	vdda-pll-supply = <&vdda_usb_ss_dp_core_1>;
-+	vdda-pll-supply = <&vreg_l18a_0p8>;
- };
+-#define __pci_dev_for_each_res0(dev, res, ...)				\
+-	for (unsigned int __b = 0;					\
+-	     res = pci_resource_n(dev, __b), __b < PCI_NUM_RESOURCES;	\
++#define __pci_dev_for_each_res0(dev, res, ...)				  \
++	for (unsigned int __b = 0;					  \
++	     __b < PCI_NUM_RESOURCES && (res = pci_resource_n(dev, __b)); \
+ 	     __b++)
  
- &usb_2_qmpphy {
- 	status = "okay";
- 	vdda-phy-supply = <&vreg_l3c_1p2>;
--	vdda-pll-supply = <&vdda_usb_ss_dp_core_1>;
-+	vdda-pll-supply = <&vreg_l5a_0p875>;
- };
+-#define __pci_dev_for_each_res1(dev, res, __b)				\
+-	for (__b = 0;							\
+-	     res = pci_resource_n(dev, __b), __b < PCI_NUM_RESOURCES;	\
++#define __pci_dev_for_each_res1(dev, res, __b)				  \
++	for (__b = 0;							  \
++	     __b < PCI_NUM_RESOURCES && (res = pci_resource_n(dev, __b)); \
+ 	     __b++)
  
- &usb_1 {
+ #define pci_dev_for_each_resource(dev, res, ...)			\
 -- 
 2.43.0
 
