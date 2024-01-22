@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C010C837D45
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51A8838255
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:19:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 798C42922A8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89397B2A80B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E85D56750;
-	Tue, 23 Jan 2024 00:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F0258215;
+	Tue, 23 Jan 2024 01:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkoe0zLL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QiKUu6pw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20203A8F4;
-	Tue, 23 Jan 2024 00:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8495820F;
+	Tue, 23 Jan 2024 01:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969869; cv=none; b=bOYwOmzYucCjN1QiIHZ9M6ByOAVxrEJf7UF3GUtFwR9lkc7nb52pTblZR6uwu5aeiDf1rJ1y8c72riVPgyB79nBl/ldJQDeuy4T9ka64Nd2temSlIYbm+pmGcGJ0Yn/q2dbk2pDEyQhH/ghbllEVPVJc/st/agjWd4ML0/EFjJE=
+	t=1705974063; cv=none; b=PfR+7ev4wVQbPawusq1YzF4ut54ARlkQbtskxUzyOKkKJy3jElYgWtuVGLWA6pNGS+zEnWjkTnTGGJ6vs2oRqctChFjvFpA2+mYM1ZOChrxYh5EAJjkowA5tZFKauMG5q0+R+hyrrQhAZKu/8YzpRvHt74qFtjq8UoQAzVzAPjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969869; c=relaxed/simple;
-	bh=jdUZ+wWHC2t4Hl+JrG1E1tW3pVuc//eIN3p/jlHxFsc=;
+	s=arc-20240116; t=1705974063; c=relaxed/simple;
+	bh=uiVEUKeXS5wEbvbQ0u9q869wnW6Rnzoy/wS8Xe1Fhls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nReXXN5JVvIsSQ56TjZW5AIwkaKXfow6OhCS6SRc9Jj1npfrhQgNxPgeMQDDElFYJkulMYV79En9Df6YlxeqgsrQBE4u18C2TZ9OWYj8Fpr3Rgea8PBdJIMdyJub2a9f+Lc5hfKVk9HK+nrDWvV/PABTSQMUWP+3o6SSZvSYVgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkoe0zLL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF67C433F1;
-	Tue, 23 Jan 2024 00:31:08 +0000 (UTC)
+	 MIME-Version; b=eGhxr3g0iGOBHyDNpMkosbvpHH50ttQAPIkuUc9pnUluDNnFm4t8BOheO5nOtw2tmkzV3+uFiYnMUfpcvC57JXcB3Ntq3D1gzwHBbW5RAfemDNSyQplc6Aq7cpcnca7/om1wDt99Hcef+7gEYQ5n2oLXRLjYlu61m87mhKnxxyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QiKUu6pw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB63C43390;
+	Tue, 23 Jan 2024 01:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969868;
-	bh=jdUZ+wWHC2t4Hl+JrG1E1tW3pVuc//eIN3p/jlHxFsc=;
+	s=korg; t=1705974063;
+	bh=uiVEUKeXS5wEbvbQ0u9q869wnW6Rnzoy/wS8Xe1Fhls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkoe0zLLpPND692z5ZaFxf5Dy2iegnIuAGyiRFtkCmmCs/5ttEBxdcgSiXfi0Ohxt
-	 NfIiqao76STIjBappAOTYKOwGkTqSYpoW8sbSephBuAPdJBsNFLtIaYRvd1/OvTPh6
-	 H1P+xUWfRivRi0TJszxkxrCHIdkQsD+0H7jrMs4I=
+	b=QiKUu6pwHCmSsumAPzAPuhons8XMoP17u7HDrhUGnDK1smOparwY1mCXTtQd8kfjv
+	 Tf5za04sZnfTyv4v1+vMzrnOF98IpaXIn8jOHiObkrvCAQbHosERAZpuFEuXAUbpLc
+	 XL4vpiiaDrluXf+EMDecwtAZnAYqNoJGwvMLmryE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Yihang Li <liyihang9@huawei.com>,
+	Xiang Chen <chenxiang66@hisilicon.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 496/641] riscv: Fix module_alloc() that did not reset the linear mapping permissions
+Subject: [PATCH 5.15 144/374] scsi: hisi_sas: Replace with standard error code return value
 Date: Mon, 22 Jan 2024 15:56:40 -0800
-Message-ID: <20240122235833.588642626@linuxfoundation.org>
+Message-ID: <20240122235749.639914868@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Yihang Li <liyihang9@huawei.com>
 
-[ Upstream commit 749b94b08005929bbc636df21a23322733166e35 ]
+[ Upstream commit d34ee535705eb43885bc0f561c63046f697355ad ]
 
-After unloading a module, we must reset the linear mapping permissions,
-see the example below:
+In function hisi_sas_controller_prereset(), -ENOSYS (Function not
+implemented) should be returned if the driver does not support .soft_reset.
+Returns -EPERM (Operation not permitted) if HISI_SAS_RESETTING_BIT is
+already be set.
 
-Before unloading a module:
+In function _suspend_v3_hw(), returns -EPERM (Operation not permitted) if
+HISI_SAS_RESETTING_BIT is already be set.
 
-0xffffaf809d65d000-0xffffaf809d6dc000    0x000000011d65d000       508K PTE .   ..     ..   D A G . . W R V
-0xffffaf809d6dc000-0xffffaf809d6dd000    0x000000011d6dc000         4K PTE .   ..     ..   D A G . . . R V
-0xffffaf809d6dd000-0xffffaf809d6e1000    0x000000011d6dd000        16K PTE .   ..     ..   D A G . . W R V
-0xffffaf809d6e1000-0xffffaf809d6e7000    0x000000011d6e1000        24K PTE .   ..     ..   D A G . X . R V
-
-After unloading a module:
-
-0xffffaf809d65d000-0xffffaf809d6e1000    0x000000011d65d000       528K PTE .   ..     ..   D A G . . W R V
-0xffffaf809d6e1000-0xffffaf809d6e7000    0x000000011d6e1000        24K PTE .   ..     ..   D A G . X W R V
-
-The last mapping is not reset and we end up with WX mappings in the linear
-mapping.
-
-So add VM_FLUSH_RESET_PERMS to our module_alloc() definition.
-
-Fixes: 0cff8bff7af8 ("riscv: avoid the PIC offset of static percpu data in module beyond 2G limits")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20231213134027.155327-2-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 4522204ab218 ("scsi: hisi_sas: tidy host controller reset function a bit")
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+Link: https://lore.kernel.org/r/1702525516-51258-3-git-send-email-chenxiang66@hisilicon.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/module.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/hisi_sas/hisi_sas_main.c  | 4 ++--
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/riscv/kernel/module.c b/arch/riscv/kernel/module.c
-index aac019ed63b1..862834bb1d64 100644
---- a/arch/riscv/kernel/module.c
-+++ b/arch/riscv/kernel/module.c
-@@ -894,7 +894,8 @@ void *module_alloc(unsigned long size)
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
+index 19081790f011..530f61df109a 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_main.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
+@@ -1584,12 +1584,12 @@ EXPORT_SYMBOL_GPL(hisi_sas_controller_reset_done);
+ static int hisi_sas_controller_prereset(struct hisi_hba *hisi_hba)
  {
- 	return __vmalloc_node_range(size, 1, MODULES_VADDR,
- 				    MODULES_END, GFP_KERNEL,
--				    PAGE_KERNEL, 0, NUMA_NO_NODE,
-+				    PAGE_KERNEL, VM_FLUSH_RESET_PERMS,
-+				    NUMA_NO_NODE,
- 				    __builtin_return_address(0));
- }
- #endif
+ 	if (!hisi_hba->hw->soft_reset)
+-		return -1;
++		return -ENOENT;
+ 
+ 	down(&hisi_hba->sem);
+ 	if (test_and_set_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags)) {
+ 		up(&hisi_hba->sem);
+-		return -1;
++		return -EPERM;
+ 	}
+ 
+ 	if (hisi_sas_debugfs_enable && hisi_hba->debugfs_itct[0].itct)
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index 0e57381121d5..88af529ab100 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -4983,7 +4983,7 @@ static int _suspend_v3_hw(struct device *device)
+ 	}
+ 
+ 	if (test_and_set_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags))
+-		return -1;
++		return -EPERM;
+ 
+ 	scsi_block_requests(shost);
+ 	set_bit(HISI_SAS_REJECT_CMD_BIT, &hisi_hba->flags);
 -- 
 2.43.0
 
