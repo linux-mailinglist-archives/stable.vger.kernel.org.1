@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 493FB838217
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:17:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F9FC837FA7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AF3B1C251A7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52AE31C29165
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF7E5811C;
-	Tue, 23 Jan 2024 01:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9FC64A82;
+	Tue, 23 Jan 2024 00:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1eZAftRg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0LFkqht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28135569F;
-	Tue, 23 Jan 2024 01:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C84F634F8;
+	Tue, 23 Jan 2024 00:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974062; cv=none; b=TBBFDjSAiZmn+gFNv6Fv/wXYlyqWb7WXcvmoQh7rp6/ZDpfHyyvllgjiUlKMRWV6f9vHV8Zaet9ZpmcNmxy7K/QOrarsHM6xMX/6Fs11okOJt8nTEmtxtSQxdCBz2XkdcsxhanxIZEwO/oMRI72JXu1EeoKa4Y8HhlYn4q1xA3Q=
+	t=1705971269; cv=none; b=kAfeKVbG1ayJWu6XU+19+MjwEPCtUsJDVGx/KdLUnAIvaPaZQ26WB2ZIdWrEP8n2o6goMkuYESCsyl+lQPMB5wxEqx5yq3iI0RO9grOW9LY8TxlYGqyKxyjv+AZPcbexxwTFe0MLGWRNBU+QZ5oW+hCQYbVy6LZE8t6CS9I9K7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974062; c=relaxed/simple;
-	bh=rxwu8+Dh1uVSUwGm6gGU50B6fB3elpC9njPzIV30CyA=;
+	s=arc-20240116; t=1705971269; c=relaxed/simple;
+	bh=RkmlUiHot1vJbPao7lpcpK7e3uEGLbQWMJWj4m9n8S4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPwW0J84Y2HAwEQIZEpD0ndLa2/W/9wjhS6AMiSvNndNjV7ECWMjLYxKaxjrma7tqNoZBnAYP7//qsYZJZDIDGE83lWSVNrFcSojLqp97U3kGLd07k2i6OjZWiq+fFlWfsXmev//5QpmsV5knO34002VERnNJFAjEDtiJX0LcL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1eZAftRg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733E2C43394;
-	Tue, 23 Jan 2024 01:41:00 +0000 (UTC)
+	 MIME-Version; b=RB1+kf3ZeprGtTPPYIbt7cYwCCNmk3prEDmEbJ1CgLbHwEsEvkzv+JCy+62g3DF4LRVc0uJO59eW0cvZAa2unpoViH73BI43/uXRc9EVl6sZOKQSBWiXU3iKUOIzCkOPznzbBwL3t3nLTn9XSpewekxmarBnNyqENtfCXjg6z9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0LFkqht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB47C433F1;
+	Tue, 23 Jan 2024 00:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974060;
-	bh=rxwu8+Dh1uVSUwGm6gGU50B6fB3elpC9njPzIV30CyA=;
+	s=korg; t=1705971269;
+	bh=RkmlUiHot1vJbPao7lpcpK7e3uEGLbQWMJWj4m9n8S4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1eZAftRgFxjSJCvTQRfIg5pRc874Ho0FupB6w1DLyzHcJAf9KwbdLs7FvviQJUAsP
-	 y4YvizAV9KUiKoEtlkFxRrPMJNvdWnsfkv1PKxo28QtemX4WlmQTUIO1UTTcKxvNdY
-	 d0JLueTNoitqU8PWCS+SplvsmlesageZqGQGR4P4=
+	b=c0LFkqhtXGl3Ob76T8vu5VGT1G1PtbF7N6yoLcXK30NZc0bIOo7VGdJDX95hlmnUi
+	 qHoZAVfXx/8Mg2eD9UVVIpL0fL3An667++XVJpBPibh3oZ0/GKGmLkCWa2/uTt4QJG
+	 0AqADGSB6QWHnJS8A7QBTxxZc6lHChwEchS1ZciI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Rokosov <ddrokosov@sberdevices.ru>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 125/374] firmware: meson_sm: populate platform devices from sm device tree data
-Date: Mon, 22 Jan 2024 15:56:21 -0800
-Message-ID: <20240122235748.989267842@linuxfoundation.org>
+Subject: [PATCH 6.1 214/417] f2fs: fix to check return value of f2fs_recover_xattr_data
+Date: Mon, 22 Jan 2024 15:56:22 -0800
+Message-ID: <20240122235759.334407942@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit e45f243409db98d610248c843b25435e7fb0baf3 ]
+[ Upstream commit 86d7d57a3f096c8349b32a0cd5f6f314e4416a6d ]
 
-In some meson boards, secure monitor device has children, for example,
-power secure controller. By default, secure monitor isn't the bus in terms
-of device tree subsystem, so the of_platform initialization code doesn't
-populate its device tree data. As a result, secure monitor's children
-aren't probed at all.
+Should check return value of f2fs_recover_xattr_data in
+__f2fs_setxattr rather than doing invalid retry if error happen.
 
-Run the 'of_platform_populate()' routine manually to resolve such issues.
+Also just do set_page_dirty in f2fs_recover_xattr_data when
+page is changed really.
 
-Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20230324145557.27797-1-ddrokosov@sberdevices.ru
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Stable-dep-of: d8385d7433f9 ("firmware: meson-sm: unmap out_base shmem in error path")
+Fixes: 50a472bbc79f ("f2fs: do not return EFSCORRUPTED, but try to run online repair")
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/meson/meson_sm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/f2fs/node.c  |  6 +++---
+ fs/f2fs/xattr.c | 11 +++++++----
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/firmware/meson/meson_sm.c b/drivers/firmware/meson/meson_sm.c
-index d081a6312627..bf19dd66c213 100644
---- a/drivers/firmware/meson/meson_sm.c
-+++ b/drivers/firmware/meson/meson_sm.c
-@@ -313,11 +313,14 @@ static int __init meson_sm_probe(struct platform_device *pdev)
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index 6efccd7ccfe1..c6d0e0709632 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -2738,11 +2738,11 @@ int f2fs_recover_xattr_data(struct inode *inode, struct page *page)
+ 	f2fs_update_inode_page(inode);
  
- 	platform_set_drvdata(pdev, fw);
+ 	/* 3: update and set xattr node page dirty */
+-	if (page)
++	if (page) {
+ 		memcpy(F2FS_NODE(xpage), F2FS_NODE(page),
+ 				VALID_XATTR_BLOCK_SIZE);
+-
+-	set_page_dirty(xpage);
++		set_page_dirty(xpage);
++	}
+ 	f2fs_put_page(xpage, 1);
  
--	pr_info("secure-monitor enabled\n");
-+	if (devm_of_platform_populate(dev))
-+		goto out_in_base;
- 
- 	if (sysfs_create_group(&pdev->dev.kobj, &meson_sm_sysfs_attr_group))
- 		goto out_in_base;
- 
-+	pr_info("secure-monitor enabled\n");
-+
  	return 0;
- 
- out_in_base:
+diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
+index 8816e13ca7c9..0631b383e21f 100644
+--- a/fs/f2fs/xattr.c
++++ b/fs/f2fs/xattr.c
+@@ -660,11 +660,14 @@ static int __f2fs_setxattr(struct inode *inode, int index,
+ 	here = __find_xattr(base_addr, last_base_addr, NULL, index, len, name);
+ 	if (!here) {
+ 		if (!F2FS_I(inode)->i_xattr_nid) {
++			error = f2fs_recover_xattr_data(inode, NULL);
+ 			f2fs_notice(F2FS_I_SB(inode),
+-				"recover xattr in inode (%lu)", inode->i_ino);
+-			f2fs_recover_xattr_data(inode, NULL);
+-			kfree(base_addr);
+-			goto retry;
++				"recover xattr in inode (%lu), error(%d)",
++					inode->i_ino, error);
++			if (!error) {
++				kfree(base_addr);
++				goto retry;
++			}
+ 		}
+ 		f2fs_err(F2FS_I_SB(inode), "set inode (%lu) has corrupted xattr",
+ 								inode->i_ino);
 -- 
 2.43.0
 
