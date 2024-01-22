@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC22837F3A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7FFE837D17
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8719629BFB8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 885A71F293FC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5318129A84;
-	Tue, 23 Jan 2024 00:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F204F55C1C;
+	Tue, 23 Jan 2024 00:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWmyutnl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jaII2sa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE1B129A7F;
-	Tue, 23 Jan 2024 00:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B8C53816;
+	Tue, 23 Jan 2024 00:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971012; cv=none; b=WNw6lH3flwjHV+N/Iq9Ohcm6fArKXWdc61YvDavh4kGsJpXrFv5CRAW33l1rrgCC+7RyHFaZr6Ck1xKL9zop9NrL+0m/0SkfsFuELtEGFoZyXtoPr2i5EK4m1UKBZGueeyWcpbANlRXIRbsaGG5OlwmMVYB2xMFhYBO7/b8G1cc=
+	t=1705969789; cv=none; b=XVhNEE7kQcP992yZsT2IY8RLOGW301OCphyfdWLl1zYXlOwdGBL1ObbtbCM706dLyzYkLTvTE9D8FQLXD+g0kGMxKRAkm+EN7nxH6lr+rKtB1OCIeMd29Y7Z2q9oGsQsfvH6vZG06piLCulNuzzXpKBnrhHYrYeJp5TV1BAB8Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971012; c=relaxed/simple;
-	bh=810wMwglj+HtWU+yc7qYBAsjaQsubQC8GOZJTgL7cHQ=;
+	s=arc-20240116; t=1705969789; c=relaxed/simple;
+	bh=8fcyCqUq6pRfVidrtERIwRO0VswcPiPji1DJv1n5HYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTyQAur/l3uBYOMoElI9CY2EJBdzRIXVZ8TlOSEJXrWeP1hYfTiznub2lMg2b+3JZkOLlhulamhXadIarjYO+CRuEqFcQ9OXzBOgVKdqRvfijgqHjPoyBoFXbKFgf5VKO5NegacnXLL7zSKBJB+0pY5X9xoTW+oaFU/i8D0UXak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWmyutnl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A7EC433C7;
-	Tue, 23 Jan 2024 00:50:11 +0000 (UTC)
+	 MIME-Version; b=QaFCn/YKFSzx0/6B0njIXaPvaEBs8xbEiUQ77txkc0/r9jlcHtMqZsWFCLs0S1AzEtYu0eoGmSn0JiSvdrUJ+4qSSlGOX8shEiFdeg432uVyozw5Zvfd63j45jaxiv4+RdM/wRLEjkg6t9+GFMrMImpNRYV7Idg8/AaV6N4FU4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jaII2sa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F94CC433C7;
+	Tue, 23 Jan 2024 00:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971012;
-	bh=810wMwglj+HtWU+yc7qYBAsjaQsubQC8GOZJTgL7cHQ=;
+	s=korg; t=1705969789;
+	bh=8fcyCqUq6pRfVidrtERIwRO0VswcPiPji1DJv1n5HYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZWmyutnlIrSr8cANHN/9UYivwME4Z9gBVW/vuiqNo6HWYLahkPI0Eq6D9jeIX5yfB
-	 +0Gh6N4HkA/mgd3AaNCyzvZEhf9zVAmeOHXR5sylEgq+igC+hjMdFlI7VywYpIn5An
-	 lQdPM5iWRrSUXWeq0cF2a+8jD5fNKlJ9uceSNGXM=
+	b=0jaII2sajakQB5w9jL+Ya+ZBGI9Q9IHv518y3ho5bG1a08NIcyqCgrmlgamtZJFIw
+	 0AyL34F9xcW+vNeb9EN5Bf3r8PcPe2Nw8SRLRPRkP17OJhAMrii71gn7l2hgcOPtrz
+	 jAD0TByqkRx5osFc7dhlCvhvnY3EsXSYkz3o8vXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Singh <singhabhinav9051571833@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 162/417] drm/nouveau/fence:: fix warning directly dereferencing a rcu pointer
+	Xi Ruoyao <xry111@xry111.site>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.7 426/641] LoongArch: Fix and simplify fcsr initialization on execve()
 Date: Mon, 22 Jan 2024 15:55:30 -0800
-Message-ID: <20240122235757.453435047@linuxfoundation.org>
+Message-ID: <20240122235831.323393532@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +61,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Singh <singhabhinav9051571833@gmail.com>
+From: Xi Ruoyao <xry111@xry111.site>
 
-[ Upstream commit 5f35a624c1e30b5bae5023b3c256e94e0ad4f806 ]
+commit c2396651309eba291c15e32db8fbe44c738b5921 upstream.
 
-Fix a sparse warning with this message
-"warning:dereference of noderef expression". In this context it means we
-are dereferencing a __rcu tagged pointer directly.
+There has been a lingering bug in LoongArch Linux systems causing some
+GCC tests to intermittently fail (see Closes link).  I've made a minimal
+reproducer:
 
-We should not be directly dereferencing a rcu pointer. To get a normal
-(non __rcu tagged pointer) from a __rcu tagged pointer we are using the
-function unrcu_pointer(...). The non __rcu tagged pointer then can be
-dereferenced just like a normal pointer.
+    zsh% cat measure.s
+    .align 4
+    .globl _start
+    _start:
+        movfcsr2gr  $a0, $fcsr0
+        bstrpick.w  $a0, $a0, 16, 16
+        beqz        $a0, .ok
+        break       0
+    .ok:
+        li.w        $a7, 93
+        syscall     0
+    zsh% cc mesaure.s -o measure -nostdlib
+    zsh% echo $((1.0/3))
+    0.33333333333333331
+    zsh% while ./measure; do ; done
 
-I tested with qemu with this command
-qemu-system-x86_64 \
-	-m 2G \
-	-smp 2 \
-	-kernel bzImage \
-	-append "console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
-	-drive file=bullseye.img,format=raw \
-	-net user,host=10.0.2.10,hostfwd=tcp:127.0.0.1:10021-:22 \
-	-net nic,model=e1000 \
-	-enable-kvm \
-	-nographic \
-	-pidfile vm.pid \
-	2>&1 | tee vm.log
-with lockdep enabled.
+This while loop should not stop as POSIX is clear that execve must set
+fenv to the default, where FCSR should be zero.  But in fact it will
+just stop after running for a while (normally less than 30 seconds).
+Note that "$((1.0/3))" is needed to reproduce this issue because it
+raises FE_INVALID and makes fcsr0 non-zero.
 
-Fixes: 0ec5f02f0e2c ("drm/nouveau: prevent stale fence->channel pointers, and protect with rcu")
-Signed-off-by: Abhinav Singh <singhabhinav9051571833@gmail.com>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231113191303.3277733-1-singhabhinav9051571833@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem is we are currently relying on SET_PERSONALITY2() to reset
+current->thread.fpu.fcsr.  But SET_PERSONALITY2() is executed before
+start_thread which calls lose_fpu(0).  We can see if kernel preempt is
+enabled, we may switch to another thread after SET_PERSONALITY2() but
+before lose_fpu(0).  Then bad thing happens: during the thread switch
+the value of the fcsr0 register is stored into current->thread.fpu.fcsr,
+making it dirty again.
+
+The issue can be fixed by setting current->thread.fpu.fcsr after
+lose_fpu(0) because lose_fpu() clears TIF_USEDFPU, then the thread
+switch won't touch current->thread.fpu.fcsr.
+
+The only other architecture setting FCSR in SET_PERSONALITY2() is MIPS.
+I've ran a similar test on MIPS with mainline kernel and it turns out
+MIPS is buggy, too.  Anyway MIPS do this for supporting different FP
+flavors (NaN encodings, etc.) which do not exist on LoongArch.  So for
+LoongArch, we can simply remove the current->thread.fpu.fcsr setting
+from SET_PERSONALITY2() and do it in start_thread(), after lose_fpu(0).
+
+The while loop failing with the mainline kernel has survived one hour
+after this change on LoongArch.
+
+Fixes: 803b0fc5c3f2baa ("LoongArch: Add process management")
+Closes: https://github.com/loongson-community/discussions/issues/7
+Link: https://lore.kernel.org/linux-mips/7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site/
+Cc: stable@vger.kernel.org
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nv04_fence.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/include/asm/elf.h |    5 -----
+ arch/loongarch/kernel/elf.c      |    5 -----
+ arch/loongarch/kernel/process.c  |    1 +
+ 3 files changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nv04_fence.c b/drivers/gpu/drm/nouveau/nv04_fence.c
-index 5b71a5a5cd85..cdbc75e3d1f6 100644
---- a/drivers/gpu/drm/nouveau/nv04_fence.c
-+++ b/drivers/gpu/drm/nouveau/nv04_fence.c
-@@ -39,7 +39,7 @@ struct nv04_fence_priv {
- static int
- nv04_fence_emit(struct nouveau_fence *fence)
+--- a/arch/loongarch/include/asm/elf.h
++++ b/arch/loongarch/include/asm/elf.h
+@@ -241,8 +241,6 @@ void loongarch_dump_regs64(u64 *uregs, c
+ do {									\
+ 	current->thread.vdso = &vdso_info;				\
+ 									\
+-	loongarch_set_personality_fcsr(state);				\
+-									\
+ 	if (personality(current->personality) != PER_LINUX)		\
+ 		set_personality(PER_LINUX);				\
+ } while (0)
+@@ -259,7 +257,6 @@ do {									\
+ 	clear_thread_flag(TIF_32BIT_ADDR);				\
+ 									\
+ 	current->thread.vdso = &vdso_info;				\
+-	loongarch_set_personality_fcsr(state);				\
+ 									\
+ 	p = personality(current->personality);				\
+ 	if (p != PER_LINUX32 && p != PER_LINUX)				\
+@@ -340,6 +337,4 @@ extern int arch_elf_pt_proc(void *ehdr,
+ extern int arch_check_elf(void *ehdr, bool has_interpreter, void *interp_ehdr,
+ 			  struct arch_elf_state *state);
+ 
+-extern void loongarch_set_personality_fcsr(struct arch_elf_state *state);
+-
+ #endif /* _ASM_ELF_H */
+--- a/arch/loongarch/kernel/elf.c
++++ b/arch/loongarch/kernel/elf.c
+@@ -23,8 +23,3 @@ int arch_check_elf(void *_ehdr, bool has
  {
--	struct nvif_push *push = fence->channel->chan.push;
-+	struct nvif_push *push = unrcu_pointer(fence->channel)->chan.push;
- 	int ret = PUSH_WAIT(push, 2);
- 	if (ret == 0) {
- 		PUSH_NVSQ(push, NV_SW, 0x0150, fence->base.seqno);
--- 
-2.43.0
-
+ 	return 0;
+ }
+-
+-void loongarch_set_personality_fcsr(struct arch_elf_state *state)
+-{
+-	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
+-}
+--- a/arch/loongarch/kernel/process.c
++++ b/arch/loongarch/kernel/process.c
+@@ -85,6 +85,7 @@ void start_thread(struct pt_regs *regs,
+ 	regs->csr_euen = euen;
+ 	lose_fpu(0);
+ 	lose_lbt(0);
++	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
+ 
+ 	clear_thread_flag(TIF_LSX_CTX_LIVE);
+ 	clear_thread_flag(TIF_LASX_CTX_LIVE);
 
 
 
