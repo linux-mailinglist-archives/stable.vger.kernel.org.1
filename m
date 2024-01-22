@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20878838282
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF738384A3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F81D1C22C9C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B982B299CF3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3E15C619;
-	Tue, 23 Jan 2024 01:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B6EA745CE;
+	Tue, 23 Jan 2024 02:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWjZx0WE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+CA/Yaf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D2F5C606;
-	Tue, 23 Jan 2024 01:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE83F7318E;
+	Tue, 23 Jan 2024 02:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974371; cv=none; b=Ctl1D+OeXOGRnSeZDKcCd8ThYKvXVmgQdJHwgjXsppOUlxOh3WHTEatv8JJ4p/yVTTqXJhqI/LrB3KLRNsXBFmRwPfQQVR59X3CuYEs5Qu44zEpnrFZnnX0PdbzMBoncbWR9AKs+h4Gd68m3tm4IyTCBEPb+3ITBQBGTGg0cmIo=
+	t=1705975445; cv=none; b=YnZ50QRfNySXR57JgSfuYzQBVLJnPp9RHQIoc010BnfpFwWS0AJHIinM+gGln9GS3YT8yQJl8uBvJstx4eAoaJpJ5u1NJOMiZ+XRfJOJTwUUEUJ6Hh/qQ04Z/L+Xa9n9V8o+OrQLAG2IXv2XKfOTSacWTOtLr2YndSUSB3eN5z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974371; c=relaxed/simple;
-	bh=oxna0LMvK319CeFVy8dl/pq6wclZWuj3T9976u2kiRU=;
+	s=arc-20240116; t=1705975445; c=relaxed/simple;
+	bh=ekwQia3Vdpl/cm+X9No2gy7kguelVI6nyYfWDZd4VOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AqR7i62W941mh1va6lQ6y+0lmiABdPCDjPBV0LyGdiyC0I9ILqMBSMRp17GeDQhFoIcGCrSNuX9tq3mvyNVi9sIzOLv5Z/woXe3OeXov5ZIJDiyEwok5ZAqcqUxAt6P03M05fyNocx8hRem2W8a7jGv/jobK+o1qgxYRcJGYJF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWjZx0WE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B39C433C7;
-	Tue, 23 Jan 2024 01:46:10 +0000 (UTC)
+	 MIME-Version; b=RnA+hHRhbilPLGcudX52YmnG+B5zsDvVmL+MR/U5E5g08jD+tr4Ckh9lZwP+GZgmc14jsgmHzvUkM364N8B6IqwRUGcNLXoR3m5/Hzq/QKn6GVnxrqq38kuOK+GZMMs+BZxd5VAZxZPqVDKU4kZEWtYxWCwGMj+5PxXoFF/gn18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+CA/Yaf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4983C43399;
+	Tue, 23 Jan 2024 02:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974370;
-	bh=oxna0LMvK319CeFVy8dl/pq6wclZWuj3T9976u2kiRU=;
+	s=korg; t=1705975444;
+	bh=ekwQia3Vdpl/cm+X9No2gy7kguelVI6nyYfWDZd4VOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VWjZx0WE3AR6zFimuhPVyCsfDj28eoYgyIxgCK9ckZ7f+5uuy60FX70cLMaUg2FOS
-	 atCjZm4KT6DNgno3WLJ9bJaCoxj22gR87a6HfHxpjmIah6Hp349lJR+Fk4wKmuH+aP
-	 yFsrCnwfveKicj85haMgytcJLEn4kdjUnf+tRzMY=
+	b=L+CA/YafVAFc5/gRICEQ/kBLNkUkXDTwjx2c5HD7bfGaqFL0Pl/FaukoOmjWgNUJC
+	 5NcDavOs4vbQOYU1nBZEQOwbyLG6wNyolDbFalM9UAf81uTanmJ/ffLvLRN4sz705Z
+	 yybX98Rq4g3egb4O3RjV5ylRzgGhAceR4BBrimR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 196/374] drm/radeon/dpm: fix a memleak in sumo_parse_power_table
+	Min Li <min15.li@samsung.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 401/583] block: add check that partition length needs to be aligned with block size
 Date: Mon, 22 Jan 2024 15:57:32 -0800
-Message-ID: <20240122235751.424181417@linuxfoundation.org>
+Message-ID: <20240122235824.257771643@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Min Li <min15.li@samsung.com>
 
-[ Upstream commit 0737df9ed0997f5b8addd6e2b9699a8c6edba2e4 ]
+commit 6f64f866aa1ae6975c95d805ed51d7e9433a0016 upstream.
 
-The rdev->pm.dpm.ps allocated by kcalloc should be freed in every
-following error-handling path. However, in the error-handling of
-rdev->pm.power_state[i].clock_info the rdev->pm.dpm.ps is not freed,
-resulting in a memleak in this function.
+Before calling add partition or resize partition, there is no check
+on whether the length is aligned with the logical block size.
+If the logical block size of the disk is larger than 512 bytes,
+then the partition size maybe not the multiple of the logical block size,
+and when the last sector is read, bio_truncate() will adjust the bio size,
+resulting in an IO error if the size of the read command is smaller than
+the logical block size.If integrity data is supported, this will also
+result in a null pointer dereference when calling bio_integrity_free.
 
-Fixes: 80ea2c129c76 ("drm/radeon/kms: add dpm support for sumo asics (v2)")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Min Li <min15.li@samsung.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230629142517.121241-1-min15.li@samsung.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/sumo_dpm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ block/ioctl.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/sumo_dpm.c b/drivers/gpu/drm/radeon/sumo_dpm.c
-index f74f381af05f..d49c145db437 100644
---- a/drivers/gpu/drm/radeon/sumo_dpm.c
-+++ b/drivers/gpu/drm/radeon/sumo_dpm.c
-@@ -1493,8 +1493,10 @@ static int sumo_parse_power_table(struct radeon_device *rdev)
- 		non_clock_array_index = power_state->v2.nonClockInfoIndex;
- 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
- 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
--		if (!rdev->pm.power_state[i].clock_info)
-+		if (!rdev->pm.power_state[i].clock_info) {
-+			kfree(rdev->pm.dpm.ps);
- 			return -EINVAL;
-+		}
- 		ps = kzalloc(sizeof(struct sumo_ps), GFP_KERNEL);
- 		if (ps == NULL) {
- 			kfree(rdev->pm.dpm.ps);
--- 
-2.43.0
-
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -18,7 +18,7 @@ static int blkpg_do_ioctl(struct block_d
+ {
+ 	struct gendisk *disk = bdev->bd_disk;
+ 	struct blkpg_partition p;
+-	long long start, length;
++	sector_t start, length;
+ 
+ 	if (disk->flags & GENHD_FL_NO_PART)
+ 		return -EINVAL;
+@@ -35,14 +35,17 @@ static int blkpg_do_ioctl(struct block_d
+ 	if (op == BLKPG_DEL_PARTITION)
+ 		return bdev_del_partition(disk, p.pno);
+ 
++	if (p.start < 0 || p.length <= 0 || p.start + p.length < 0)
++		return -EINVAL;
++	/* Check that the partition is aligned to the block size */
++	if (!IS_ALIGNED(p.start | p.length, bdev_logical_block_size(bdev)))
++		return -EINVAL;
++
+ 	start = p.start >> SECTOR_SHIFT;
+ 	length = p.length >> SECTOR_SHIFT;
+ 
+ 	switch (op) {
+ 	case BLKPG_ADD_PARTITION:
+-		/* check if partition is aligned to blocksize */
+-		if (p.start & (bdev_logical_block_size(bdev) - 1))
+-			return -EINVAL;
+ 		return bdev_add_partition(disk, p.pno, start, length);
+ 	case BLKPG_RESIZE_PARTITION:
+ 		return bdev_resize_partition(disk, p.pno, start, length);
 
 
 
