@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F13D7838398
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD19837E9C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C91DBB2AE06
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B2BF28BFD0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A326B62A00;
-	Tue, 23 Jan 2024 01:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A6E63AF;
+	Tue, 23 Jan 2024 00:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mK0A+A0T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DngHCphA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6240062A1F;
-	Tue, 23 Jan 2024 01:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFCD60B86;
+	Tue, 23 Jan 2024 00:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974991; cv=none; b=A0V6ldgNw/i4WVVnOxvTMgxyrp68qP63IkRrTvqU9kKO/1cxRXOaDhGQG0OH7M1kTr9fYj3T3UzTv9QUZOkHuyqyeZ2g94BoC2BUUfE5c0ib+x3GVZWqtaABzIOBkclnalJSXpTg4GhvdaPmqafQHI6uD9pMfQXUP1wMEWSnyl4=
+	t=1705970691; cv=none; b=JT2n+boM7UG6vRtR0qU4H83OkXy28a4pGnfm40jajDwp11W5iYAmKUggS3vf+TFoNtlB+C0vBwDSyBr99O5chrFitGZ5aAW5WKVoYBgjx7uimvbauZSGb6+ir/E/ClphCTBwGMzQ+LT6e0PWIEADbS7wttrQTsooXOITTeNt3hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974991; c=relaxed/simple;
-	bh=n+GCtK1UsLqPMKdQEQ2I3a0f0Bq7fAIFc0NdIPXAB/A=;
+	s=arc-20240116; t=1705970691; c=relaxed/simple;
+	bh=zmFFmBvsL6V+28c0tIqgk5bPnypi4oZHiFEznWqkNYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KKMylyQnJFfrx0oVTDkUFPIRKptbNqWrThxz3XM2WNvgSM3lRGDa3ZmIqJDSaHYjQwzls5bg6JzQXAm/jtagAQXPY4iDZPSVUwtMMStuX6VwT5GWX9kwJTiiF/s1a4gNake/UxPszeJJoZxU8uU1EpvPRG51F70Enr0mod3ANq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mK0A+A0T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB3FC433F1;
-	Tue, 23 Jan 2024 01:56:30 +0000 (UTC)
+	 MIME-Version; b=nTAaL5UDMzqAMV5cXjggyFthgKjGdtTOBhwtX9TPFHdA6ZH7wB1iBrF0o0ziBlhD9YddVzFRMBDk2V+V5LO88jZQMs74bXc62YkhrC5iCf9o4BAx+aP+g1jm/GISwOlmHVtGbYFY+lw26bEpXNcmmBgh2vIfTLoVzgg4Fla3XLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DngHCphA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6156EC433F1;
+	Tue, 23 Jan 2024 00:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974990;
-	bh=n+GCtK1UsLqPMKdQEQ2I3a0f0Bq7fAIFc0NdIPXAB/A=;
+	s=korg; t=1705970691;
+	bh=zmFFmBvsL6V+28c0tIqgk5bPnypi4oZHiFEznWqkNYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mK0A+A0TU4SBXVChTwYW+cBbr60d1o4Vpcp1xUCZy7Hc50HVS1srB45VuTbkeCjlT
-	 H+YyF4dcAElNqH6G5D9B8iCbfIY2jc54+3EuUM7orwwqI+1KUnezWO4VuFhU/QkJlg
-	 Fc+snmra+ko3A2oYqVLQmQIbV3xO3VvvR8g8hp1w=
+	b=DngHCphA1GMMZ+rMAVwdpv/QYoBtwyftPUYTxFoMCgeiq0BmyrKHs0MzEO02nw5aj
+	 MaTwaG27SmH4uO5BOjqqjjN37aEafn72qfRinkytSkEchICOAJRqKxuMM1rPDhcQep
+	 DfOOFUNbKaAH0TBGOqvp0hBFL6M7jz8A8Y7waQzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Olga Kornievskaia <kolga@netapp.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 183/583] arm64: dts: qcom: sm8550: Separate out X3 idle state
+Subject: [PATCH 6.1 066/417] SUNRPC: fix _xprt_switch_find_current_entry logic
 Date: Mon, 22 Jan 2024 15:53:54 -0800
-Message-ID: <20240122235817.603699023@linuxfoundation.org>
+Message-ID: <20240122235753.987910581@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Olga Kornievskaia <kolga@netapp.com>
 
-[ Upstream commit 28b735232d5e16a34f98dbac1e7b5401c1c16d89 ]
+[ Upstream commit 98b4e5137504a5bd9346562b1310cdc13486603b ]
 
-The X3 core has different entry/exit/residency time requirements than
-the big cluster. Denote them to stop confusing the scheduler.
+Fix the logic for picking current transport entry.
 
-Fixes: ffc50b2d3828 ("arm64: dts: qcom: Add base SM8550 dtsi")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231218-topic-8550_fixes-v1-11-ce1272d77540@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 95d0d30c66b8 ("SUNRPC create an iterator to list only OFFLINE xprts")
+Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550.dtsi | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ net/sunrpc/xprtmultipath.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-index 045cef68a256..15d91ace8703 100644
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -298,6 +298,16 @@ BIG_CPU_SLEEP_0: cpu-sleep-1-0 {
- 				min-residency-us = <4791>;
- 				local-timer-stop;
- 			};
-+
-+			PRIME_CPU_SLEEP_0: cpu-sleep-2-0 {
-+				compatible = "arm,idle-state";
-+				idle-state-name = "goldplus-rail-power-collapse";
-+				arm,psci-suspend-param = <0x40000004>;
-+				entry-latency-us = <500>;
-+				exit-latency-us = <1350>;
-+				min-residency-us = <7480>;
-+				local-timer-stop;
-+			};
- 		};
- 
- 		domain-idle-states {
-@@ -398,7 +408,7 @@ CPU_PD6: power-domain-cpu6 {
- 		CPU_PD7: power-domain-cpu7 {
- 			#power-domain-cells = <0>;
- 			power-domains = <&CLUSTER_PD>;
--			domain-idle-states = <&BIG_CPU_SLEEP_0>;
-+			domain-idle-states = <&PRIME_CPU_SLEEP_0>;
- 		};
- 
- 		CLUSTER_PD: power-domain-cluster {
+diff --git a/net/sunrpc/xprtmultipath.c b/net/sunrpc/xprtmultipath.c
+index 701250b305db..74ee2271251e 100644
+--- a/net/sunrpc/xprtmultipath.c
++++ b/net/sunrpc/xprtmultipath.c
+@@ -284,7 +284,7 @@ struct rpc_xprt *_xprt_switch_find_current_entry(struct list_head *head,
+ 		if (cur == pos)
+ 			found = true;
+ 		if (found && ((find_active && xprt_is_active(pos)) ||
+-			      (!find_active && xprt_is_active(pos))))
++			      (!find_active && !xprt_is_active(pos))))
+ 			return pos;
+ 	}
+ 	return NULL;
 -- 
 2.43.0
 
