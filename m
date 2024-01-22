@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9E9837C8B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 288118381B4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:11:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37E031F28B48
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA1BBB2386A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA91135A5B;
-	Tue, 23 Jan 2024 00:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C79A14A4C6;
+	Tue, 23 Jan 2024 01:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0YnZOVq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1bS8iTu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3F433097;
-	Tue, 23 Jan 2024 00:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6D814A0BF;
+	Tue, 23 Jan 2024 01:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969664; cv=none; b=Y2LpzLSu0MqVCpZncq5I0K8NSjcND1Z/O0FiDxQW5oqJrsSPEDoHI9qIRCCQrrGzoxx4f/m09/D3uUHf1h0cLLBkQ2AV/sduWqvEGX4sNXu71BAxDvpoNXgs2yydS2Xq8Ekrb1qAaWCs6jXrlYkA48JfInrLSt9q8czIqt+dnEM=
+	t=1705972102; cv=none; b=d3TCMQX2us1EnGmCNZnjvncHls5DwCFV4POZl1zL8WYnPtRSTWn5wDy67q57CEO+q0EGCTVQs4WDNHVuc3x0zKAxpmvvFk/GVXB/0b1kgQ0zLDSdwaaXgiFg04ziHTHqmOKD+OBhbFUeMrlEuQDEW/CYUmPsWFuVDlXUJxSZwPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969664; c=relaxed/simple;
-	bh=LIhKsIEPMYh0Dsya1G0UyxzeSyuz6vgb817Zehf854E=;
+	s=arc-20240116; t=1705972102; c=relaxed/simple;
+	bh=8zYakxI+sTSAMJIu/z0eQOpLmAbY2BTOnTAkmwH0vNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TTG0hufFzq9tZaqeE8/NY5knkhPIDOIFtSqlCWEqXKYmhhsB4jrNWrBGJWhKOCG46bXqoh2OOlTl2K8v+fnQjRG0BahR+XzKuBLhFt0D50uXL5firZxsjSrI4basht0oiNZPWVARKg36O6wMA3nQ36HG5fzLM887VzxSbolp9kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0YnZOVq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5048DC433C7;
-	Tue, 23 Jan 2024 00:27:44 +0000 (UTC)
+	 MIME-Version; b=j1cDHJUNicfoTMHAk8t6+6fl2MnqwDxyTeK70txgsPCJ+T0FKRK+QyUwiva2FKndxlmiKAo3wGH/Vl57+sz0m589GcRPFi3gNC47a0QwOuLSDZuUx2MzXcmG74xfKZwbFqsF5ZsFeWzAaOwecTd2NML77Gnv0xSwh17SLVd74MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1bS8iTu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 687F0C433C7;
+	Tue, 23 Jan 2024 01:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969664;
-	bh=LIhKsIEPMYh0Dsya1G0UyxzeSyuz6vgb817Zehf854E=;
+	s=korg; t=1705972102;
+	bh=8zYakxI+sTSAMJIu/z0eQOpLmAbY2BTOnTAkmwH0vNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0YnZOVq6LFSTFJ9n8Wq4Jul50P1rhHXZXij5sy9xwTqoFtKJG/U77/d4NtU46FNL
-	 eliXQO8wimPa9FHDn5TuCN5+TbrZAWBhDjcQQFTfSOtVn6DF9lbgI2IdrD0KlG3kHB
-	 Znn/+tAgrKkU29Qh0V9Sg/+9Ids8qOBNJb8jp+DU=
+	b=O1bS8iTunnqQE//sNyyTgk/xoipyuu9JVodRaLX3R6gZN28VYBHXw05foDkNkySEb
+	 pr5r//oh5tnjN7v6HD6zmGLS6qV60ACIKresufG5MT4VoiKP/oxxJ/vpZB8SCvdDgx
+	 YlOjnEtLOZq5ozZK7r1yHNeQEh6VNkj2XwRNBJ7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org>
-Subject: [PATCH 6.7 391/641] powerpc/64s: Increase default stack size to 32KB
+	Esther Shimanovich <eshimanovich@chromium.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 039/374] Input: i8042 - add nomux quirk for Acer P459-G2-M
 Date: Mon, 22 Jan 2024 15:54:55 -0800
-Message-ID: <20240122235830.184819507@linuxfoundation.org>
+Message-ID: <20240122235745.983054320@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Esther Shimanovich <eshimanovich@chromium.org>
 
-commit 18f14afe281648e31ed35c9ad2fcb724c4838ad9 upstream.
+[ Upstream commit 335fe00319e030d481a54d5e0e68d50c5e672c0e ]
 
-There are reports of kernels crashing due to stack overflow while
-running OpenShift (Kubernetes). The primary contributor to the stack
-usage seems to be openvswitch, which is used by OVN-Kubernetes (based on
-OVN (Open Virtual Network)), but NFS also contributes in some stack
-traces.
+After the laptop lid is opened, and the device resumes from S3 deep
+sleep, if the user presses a keyboard key while the screen is still black,
+the mouse and keyboard become unusable.
 
-There may be some opportunities to reduce stack usage in the openvswitch
-code, but doing so potentially require tradeoffs vs performance, and
-also requires testing across architectures.
+Enabling this quirk prevents this behavior from occurring.
 
-Looking at stack usage across the kernel (using -fstack-usage), shows
-that ppc64le stack frames are on average 50-100% larger than the
-equivalent function built for x86-64. Which is not surprising given the
-minimum stack frame size is 32 bytes on ppc64le vs 16 bytes on x86-64.
-
-So increase the default stack size to 32KB for the modern 64-bit Book3S
-platforms, ie. pseries (virtualised) and powernv (bare metal). That
-leaves the older systems like G5s, and the AmigaOne (pasemi) with a 16KB
-stack which should be sufficient on those machines.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
-Link: https://msgid.link/20231215124449.317597-1-mpe@ellerman.id.au
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Esther Shimanovich <eshimanovich@chromium.org>
+Link: https://lore.kernel.org/r/20231130195615.v2.1.Ibe78a9df97ecd18dc227a5cff67d3029631d9c11@changeid
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/input/serio/i8042-acpipnpio.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -858,6 +858,7 @@ config THREAD_SHIFT
- 	int "Thread shift" if EXPERT
- 	range 13 15
- 	default "15" if PPC_256K_PAGES
-+	default "15" if PPC_PSERIES || PPC_POWERNV
- 	default "14" if PPC64
- 	default "13"
- 	help
+diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
+index 3db87ee0b70c..6af38f53154b 100644
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -351,6 +351,14 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_DRITEK)
+ 	},
++	{
++		/* Acer TravelMate P459-G2-M */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "TravelMate P459-G2-M"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
++	},
+ 	{
+ 		/* Amoi M636/A737 */
+ 		.matches = {
+-- 
+2.43.0
+
 
 
 
