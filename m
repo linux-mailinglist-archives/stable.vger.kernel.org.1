@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3248083839F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42CED8381CC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:13:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1752294806
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57A7EB2D1D2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 360E163414;
-	Tue, 23 Jan 2024 01:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2421474B6;
+	Tue, 23 Jan 2024 01:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEv1PVx7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLZ7aU9v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CEC6313F;
-	Tue, 23 Jan 2024 01:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0CC14831A;
+	Tue, 23 Jan 2024 01:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975024; cv=none; b=o4TWbufkYiY8lZk5/+QYIz4c9xrup/ZkOWvJ+knsvE82LsLlFz9A9xFIYRXn1rCRZto3DNomZuIqIh9SD48KHtF0Saoql2Ey0HbL6ALsynHuXyrZdUU+z1GZxnNonK7CMM2cffWYgHj02s0mNT4d2sSOZB6bjAXGNZfrfNwL78k=
+	t=1705972064; cv=none; b=OAeWjq4CNgS7XTUihFCcCLPsYGyYptnXxaEj4DRfOQmwTTViPpqBzCHYDt9laGCPERM+8E7SdZ23ljA2OJkBuyrEw4/frV9xCKq7TCVdqbjgSSwufoh4JIFMOiHGVsW4R1lYhuoFPVtB4unSLqqASY3i00AiOpCsX221iPBuNBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975024; c=relaxed/simple;
-	bh=gX8QS4GztEV8tTIjLnS7Dt2BdlKyHbH0jlwhW9i+nKQ=;
+	s=arc-20240116; t=1705972064; c=relaxed/simple;
+	bh=5yYpPdpkboP+UloqnFytlOW73PhWAtnw0AlimkRkUkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MOL/I0cQAfsDcypmVAYe9kxF5brp4N9+oYzGkNNc7NxBqFwQXsRL7sZQ5BQpZnbTgSK6YSWrfNjTOSyulP5I5vmEuXTG4AwALLwVqR6FxGaWQo9L+TujaENN7Bk/78K2a56EqdpD55hKuxjTAe64zIs9HQyxuFyTEL3Dv5ppc1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEv1PVx7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC312C433B1;
-	Tue, 23 Jan 2024 01:57:03 +0000 (UTC)
+	 MIME-Version; b=PmvIFc7pwOhmRuxbsYx1PLhfmidXfmrIXDMghAVf0VsTITW1xr0pkJHL8xXBwCJ/SxP7HxNnTSZr2e2n2GDYeXyIjry/58MWfHJzl0tYdtcu5she3bAzCy4SzeqngM8S7v9/pjuhHgYFCqAKiLI8uX0NMQka1vv1KJJO2NwwDvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLZ7aU9v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24043C43390;
+	Tue, 23 Jan 2024 01:07:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975023;
-	bh=gX8QS4GztEV8tTIjLnS7Dt2BdlKyHbH0jlwhW9i+nKQ=;
+	s=korg; t=1705972064;
+	bh=5yYpPdpkboP+UloqnFytlOW73PhWAtnw0AlimkRkUkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FEv1PVx75ONrszvAwGt8+W1q11NRi9Imp8a4vefigIFAXLtYtP7y6ZO7peedwL2JC
-	 jwgGWdT6WJL6t11emrc9S7/veX7knNPoSfnhCDEKegIvPHJkBzB7yWtne0EPLg6NrO
-	 Ch9BAHCdJNDdm/KSOx9O0P9Zfr6tfctsk495TW0g=
+	b=CLZ7aU9v2XT3sXPLsreaqHsnvIllxccESXrXSMgRNileQwq5GsmNITyMeZBFlzxk9
+	 YYYZ6HyPc0aTrhDuyvwxjYnB62AWCGYXuhIhE34EDcMhj2jd0dYXjdwi3YqcdOjjqu
+	 fa+hr0KtSgX9iaTv6FlxsxYritMfny2j18NU25Rg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 328/374] nvmet: re-fix tracing strncpy() warning
-Date: Mon, 22 Jan 2024 15:59:44 -0800
-Message-ID: <20240122235756.311993468@linuxfoundation.org>
+	syzbot+afb726d49f84c8d95ee1@syzkaller.appspotmail.com,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.1 417/417] riscv: Fix wrong usage of lm_alias() when splitting a huge linear mapping
+Date: Mon, 22 Jan 2024 15:59:45 -0800
+Message-ID: <20240122235806.137097416@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 4ee7ffeb4ce50c80bc4504db6f39b25a2df6bcf4 ]
+commit c29fc621e1a49949a14c7fa031dd4760087bfb29 upstream.
 
-An earlier patch had tried to address a warning about a string copy with
-missing zero termination:
+lm_alias() can only be used on kernel mappings since it explicitly uses
+__pa_symbol(), so simply fix this by checking where the address belongs
+to before.
 
-drivers/nvme/target/trace.h:52:3: warning: ‘strncpy’ specified bound 32 equals destination size [-Wstringop-truncation]
-
-The new version causes a different warning with some compiler versions, notably
-gcc-9 and gcc-10, and also misses the zero padding that was apparently done
-intentionally in the original code:
-
-drivers/nvme/target/trace.h:56:2: error: 'strncpy' specified bound depends on the length of the source argument [-Werror=stringop-overflow=]
-
-Change it to use strscpy_pad() with the original length, which will give
-a properly padded and zero-terminated string as well as avoiding the warning.
-
-Fixes: d86481e924a7 ("nvmet: use min of device_path and disk len")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 311cd2f6e253 ("riscv: Fix set_memory_XX() and set_direct_map_XX() by splitting huge linear mappings")
+Reported-by: syzbot+afb726d49f84c8d95ee1@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-riscv/000000000000620dd0060c02c5e1@google.com/
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Link: https://lore.kernel.org/r/20231212195400.128457-1-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/trace.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/riscv/mm/pageattr.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/trace.h b/drivers/nvme/target/trace.h
-index 6109b3806b12..155334ddc13f 100644
---- a/drivers/nvme/target/trace.h
-+++ b/drivers/nvme/target/trace.h
-@@ -53,8 +53,7 @@ static inline void __assign_req_name(char *name, struct nvmet_req *req)
- 		return;
- 	}
+--- a/arch/riscv/mm/pageattr.c
++++ b/arch/riscv/mm/pageattr.c
+@@ -304,8 +304,13 @@ static int __set_memory(unsigned long ad
+ 				goto unlock;
+ 		}
+ 	} else if (is_kernel_mapping(start) || is_linear_mapping(start)) {
+-		lm_start = (unsigned long)lm_alias(start);
+-		lm_end = (unsigned long)lm_alias(end);
++		if (is_kernel_mapping(start)) {
++			lm_start = (unsigned long)lm_alias(start);
++			lm_end = (unsigned long)lm_alias(end);
++		} else {
++			lm_start = start;
++			lm_end = end;
++		}
  
--	strncpy(name, req->ns->device_path,
--		min_t(size_t, DISK_NAME_LEN, strlen(req->ns->device_path)));
-+	strscpy_pad(name, req->ns->device_path, DISK_NAME_LEN);
- }
- #endif
- 
--- 
-2.43.0
-
+ 		ret = split_linear_mapping(lm_start, lm_end);
+ 		if (ret)
 
 
 
