@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD79837E94
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E160837C49
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DF181C2136E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61AA41C23C63
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5DA2B9CC;
-	Tue, 23 Jan 2024 00:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0751114532C;
+	Tue, 23 Jan 2024 00:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBfFWhNT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZfwA/Zv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC49B626;
-	Tue, 23 Jan 2024 00:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9027144633;
+	Tue, 23 Jan 2024 00:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970690; cv=none; b=TndKLyXgiKlr5n6hG/toRlQ6E9yZolJ8bpLVwnMbqIBUHsvOh1LlSJmqa/PinPocBIgzjNKm68/OTTxJmXJ5MlZS3fBKr8SDUoKyCFdbj3WaOuJwftslHjKAAwciR31km9WuGlEQdeEUKVOalZ4rgikoFRkorQg73ANNGJGAW/Y=
+	t=1705969569; cv=none; b=NVIB59ipeMKBL38RLjMrAW19IjBEB5GxJZF4ELHCIMcfsG6bcXJs/C7Z03iIRu5S8742tNO2zvAXchbUYX2p9cdYmuFnEVBHNVmunJqH4A3SBkh05G4a+bZXa9kyOFsDBg6WeWmnIiWO80Nqk28rPdnkr48//ba55baj9AVrIcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970690; c=relaxed/simple;
-	bh=z1IkpyOGaWwSxFZaY7ncqSsKPsbeaPSxiDAzrw24ncE=;
+	s=arc-20240116; t=1705969569; c=relaxed/simple;
+	bh=a4NMzxga9L7G93uHVc/KyWOYW2r9LmdHMRQooSXKSaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/McbG0zRYBgwxnzcrHq+D8QHS64M1wvY2f4l5epp0Ir1nSWTVAfi3UmsJZrC3Eomd+heNuDtN6HjnYWEdVaSguNvJTGAtvSkDRQOegiAVsnq+AJDPpSLgjB3vwA7VndmP3un12JsQ8Tsd9AQy+wCka5LA2CGE1yoYZT5RfBMgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBfFWhNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA40C433C7;
-	Tue, 23 Jan 2024 00:44:49 +0000 (UTC)
+	 MIME-Version; b=CecC1MmpP/H0kFETFBNEx7sKEGz1R7qfkPcMZeOsCh4O5ffMT87UChaAoChXIrmSMzO2Rvq357PHfheGEVoR4TCLPjW3DH0+3229KJkFNq2rRzeRs1Bry/LYR2pLE5EtlGxRAsUy35uGSSaxhV0NdS59wuJaQWqXftLPtlquk4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZfwA/Zv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C620C433F1;
+	Tue, 23 Jan 2024 00:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970689;
-	bh=z1IkpyOGaWwSxFZaY7ncqSsKPsbeaPSxiDAzrw24ncE=;
+	s=korg; t=1705969569;
+	bh=a4NMzxga9L7G93uHVc/KyWOYW2r9LmdHMRQooSXKSaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TBfFWhNTqZ9cy2r/d14YDFHlE/YkrODYFsBMGeZ7TqAnTEKfmrXkV2PoP5j0o4rVy
-	 kqIMrUs6zqo16IC6LPUq/mRbX4Zkj5DQ8mEdV5yz3MM91IZshYhAQ705EUIe9T+4qh
-	 uH17DKJUgdXjnqWpeqICxeYHCdoUuvlcjZSEASjI=
+	b=cZfwA/ZvVSOqIzAtV10cdnT4vtPZfrWyXtr9QZJOyyJzXCBwJmCu4sXP7W8UGdW5r
+	 nPZSt3oJjvCxv4DHYVkwmdRuyFDjHH6Du93AHtvV5y9Xpgiz8WvjSAekU/sIXijbsd
+	 DfA9N/sXY2KJxAlY9UyGlaUkxxvTb8XqellCN9WQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/417] NFSv4.1/pnfs: Ensure we handle the error NFS4ERR_RETURNCONFLICT
+Subject: [PATCH 6.7 329/641] drivers/amd/pm: fix a use-after-free in kv_parse_power_table
 Date: Mon, 22 Jan 2024 15:53:53 -0800
-Message-ID: <20240122235753.958385031@linuxfoundation.org>
+Message-ID: <20240122235828.192704037@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 037e56a22ff37f9a9c2330b66cff55d3d1ff9b90 ]
+[ Upstream commit 28dd788382c43b330480f57cd34cde0840896743 ]
 
-Once the client has processed the CB_LAYOUTRECALL, but has not yet
-successfully returned the layout, the server is supposed to switch to
-returning NFS4ERR_RETURNCONFLICT. This patch ensures that we handle
-that return value correctly.
+When ps allocated by kzalloc equals to NULL, kv_parse_power_table
+frees adev->pm.dpm.ps that allocated before. However, after the control
+flow goes through the following call chains:
 
-Fixes: 183d9e7b112a ("pnfs: rework LAYOUTGET retry handling")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+kv_parse_power_table
+  |-> kv_dpm_init
+        |-> kv_dpm_sw_init
+	      |-> kv_dpm_fini
+
+The adev->pm.dpm.ps is used in the for loop of kv_dpm_fini after its
+first free in kv_parse_power_table and causes a use-after-free bug.
+
+Fixes: a2e73f56fa62 ("drm/amdgpu: Add support for CIK parts")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 85a952143e9f..ec3f0103e1a7 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -170,6 +170,7 @@ static int nfs4_map_errors(int err)
- 	case -NFS4ERR_RESOURCE:
- 	case -NFS4ERR_LAYOUTTRYLATER:
- 	case -NFS4ERR_RECALLCONFLICT:
-+	case -NFS4ERR_RETURNCONFLICT:
- 		return -EREMOTEIO;
- 	case -NFS4ERR_WRONGSEC:
- 	case -NFS4ERR_WRONG_CRED:
-@@ -558,6 +559,7 @@ static int nfs4_do_handle_exception(struct nfs_server *server,
- 		case -NFS4ERR_GRACE:
- 		case -NFS4ERR_LAYOUTTRYLATER:
- 		case -NFS4ERR_RECALLCONFLICT:
-+		case -NFS4ERR_RETURNCONFLICT:
- 			exception->delay = 1;
- 			return 0;
- 
-@@ -9667,6 +9669,7 @@ nfs4_layoutget_handle_exception(struct rpc_task *task,
- 		status = -EBUSY;
- 		break;
- 	case -NFS4ERR_RECALLCONFLICT:
-+	case -NFS4ERR_RETURNCONFLICT:
- 		status = -ERECALLCONFLICT;
- 		break;
- 	case -NFS4ERR_DELEG_REVOKED:
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
+index 5d28c951a319..5cb4725c773f 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
+@@ -2735,10 +2735,8 @@ static int kv_parse_power_table(struct amdgpu_device *adev)
+ 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
+ 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
+ 		ps = kzalloc(sizeof(struct kv_ps), GFP_KERNEL);
+-		if (ps == NULL) {
+-			kfree(adev->pm.dpm.ps);
++		if (ps == NULL)
+ 			return -ENOMEM;
+-		}
+ 		adev->pm.dpm.ps[i].ps_priv = ps;
+ 		k = 0;
+ 		idx = (u8 *)&power_state->v2.clockInfoIndex[0];
 -- 
 2.43.0
 
