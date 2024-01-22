@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-12969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44AA837A06
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5A3837AB2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12D011C283D6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:48:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBB3F290D87
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62171292FD;
-	Tue, 23 Jan 2024 00:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D263D130E44;
+	Tue, 23 Jan 2024 00:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlrtQNyr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXDumnGQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747E01292F3;
-	Tue, 23 Jan 2024 00:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D2212FF86;
+	Tue, 23 Jan 2024 00:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968709; cv=none; b=I3r5q9wegFPQJWzFScZqgdi1P0ubW56Iu0Ufh2DGFGyyyFOj6SXzMjQVCg2JPDtF85PvbTcnoL9S6LyFl6nHa4wjC1AJb3GYwaLUxiakO5gPucRorVMwiZrQ97PH7LWUBHMHQu4lbFRibFS372/b17BBTbhGFLMezqgWC48RvK4=
+	t=1705969060; cv=none; b=iVxV7sWEdDLabgFEoktSDrWmfnGm7r3ApyQlE/w9fTvVKCzZcmQkHLKLWS1ZIacgSzT+fWkqWnouNP/CyC7yDPJKxFpUmEdTngf3mZejuWCIFiZ0+DelT1OsNulWwCK7/ytEziYITyi2Uor8X/zk+di8gLySoHjPBafqYVYvo/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968709; c=relaxed/simple;
-	bh=zu6n9yNvXfV2pnGRn1mH7C7wO/4c17E8ObQb339TuoE=;
+	s=arc-20240116; t=1705969060; c=relaxed/simple;
+	bh=lutKwh8mLi5DFXL549d5HGPusiOiPABZ1I6IrLxAvT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MwtX8bCS+l63SKSpL9pc/gz7w5N7wKZMw5osCjNz+6el72jM//ZmepzvEtgjl3PNA1lYtlRh63pk8xwy7SOA1cLHUi+vpM34tj+K/XRd4i5X4g8rbwq/OEwsC5Oz8mwckIsdzgHIdAkUCqObyAMrOTLBJgthu4Y0mydq4kwUnqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlrtQNyr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C48CC433C7;
-	Tue, 23 Jan 2024 00:11:49 +0000 (UTC)
+	 MIME-Version; b=lEaxyzN5+7yABAdVNwAXpU+6+qgwLWzG5ary8kg7Duh6nOdUe58ggiz5cnBZg3UlOYOaLDLSOm0df7PGExl0y+m4InDDlkDXt/KQpnYpRGWRwwE6TGkr2ROwR28IeOrPUPeOthfZJaoY5SZL6Sw9TTNp4SP1TxYDwo7cEdxiLE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXDumnGQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF07C43390;
+	Tue, 23 Jan 2024 00:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968709;
-	bh=zu6n9yNvXfV2pnGRn1mH7C7wO/4c17E8ObQb339TuoE=;
+	s=korg; t=1705969060;
+	bh=lutKwh8mLi5DFXL549d5HGPusiOiPABZ1I6IrLxAvT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlrtQNyr5kM+27HqbulMEH0esskkpA10YLWQu83fDEPZGrYo3vYYVfU4bthsyDo9K
-	 z64xlz9Av7Ux194rzmULHuSXutOCFFX2rViCoaa6bvu+Zr6mtH94YSn/XADMvI/c2c
-	 76N5AXq3gYqvgyt9FwHtvaaznVNZX5A8adYJCQr8=
+	b=tXDumnGQQ3NSjqfXclyQLpgPl4ZiStIu27vfEOEnSOZTOVB1WMJW7oJXIOB/BC6xV
+	 AWEA81xo/yVwfwLiiDWK0Fw6uAocy0GeY5Z0PGwMxyk7Pus5/F/6pOUq9OpuKKFMZj
+	 88VJN8twq2TLCKuxOSrAcLwyhSq7uCG9s8XizrHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 138/148] serial: imx: Correct clock error message in function probe()
+Subject: [PATCH 5.4 164/194] MIPS: Alchemy: Fix an out-of-bound access in db1200_dev_setup()
 Date: Mon, 22 Jan 2024 15:58:14 -0800
-Message-ID: <20240122235718.161837241@linuxfoundation.org>
+Message-ID: <20240122235726.231716221@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 3e189470cad27d41a3a9dc02649f965b7ed1c90f ]
+[ Upstream commit 89c4b588d11e9acf01d604de4b0c715884f59213 ]
 
-Correct the clock error message by changing the clock name.
+When calling spi_register_board_info(), we should pass the number of
+elements in 'db1200_spi_devs', not 'db1200_i2c_devs'.
 
-Fixes: 1e512d45332b ("serial: imx: add error messages when .probe fails")
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20231224093209.2612-1-cniedermaier@dh-electronics.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 63323ec54a7e ("MIPS: Alchemy: Extended DB1200 board support.")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c | 2 +-
+ arch/mips/alchemy/devboards/db1200.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 819f340a8a7a..024777e7aefe 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -2250,7 +2250,7 @@ static int imx_uart_probe(struct platform_device *pdev)
- 	/* For register access, we only need to enable the ipg clock. */
- 	ret = clk_prepare_enable(sport->clk_ipg);
- 	if (ret) {
--		dev_err(&pdev->dev, "failed to enable per clk: %d\n", ret);
-+		dev_err(&pdev->dev, "failed to enable ipg clk: %d\n", ret);
- 		return ret;
- 	}
+diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
+index 414f92eacb5e..9ad26215b004 100644
+--- a/arch/mips/alchemy/devboards/db1200.c
++++ b/arch/mips/alchemy/devboards/db1200.c
+@@ -847,7 +847,7 @@ int __init db1200_dev_setup(void)
+ 	i2c_register_board_info(0, db1200_i2c_devs,
+ 				ARRAY_SIZE(db1200_i2c_devs));
+ 	spi_register_board_info(db1200_spi_devs,
+-				ARRAY_SIZE(db1200_i2c_devs));
++				ARRAY_SIZE(db1200_spi_devs));
  
+ 	/* SWITCHES:	S6.8 I2C/SPI selector  (OFF=I2C	 ON=SPI)
+ 	 *		S6.7 AC97/I2S selector (OFF=AC97 ON=I2S)
 -- 
 2.43.0
 
