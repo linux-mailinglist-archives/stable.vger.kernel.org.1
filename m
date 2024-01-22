@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2E1837FD9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8438A837D7C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D89DC1F2AD13
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B6F11F221A6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9272F12BF12;
-	Tue, 23 Jan 2024 00:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902AF5BAE1;
+	Tue, 23 Jan 2024 00:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYkk34VS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyWtjvw9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50ADD4E1AD;
-	Tue, 23 Jan 2024 00:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D45E4E1D8;
+	Tue, 23 Jan 2024 00:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971399; cv=none; b=CxOO9SubUl7eHO7FKrifybCjTcJHDxZZN2aIjTLhzSVYMMFifDVLb7cpiKxarvpZHML9eaO1q4ZGVZQmS/cxon0TZ+73c/brbKnjxg3eXMu1l67pKmHMrxPpHie73VhlkGXOwlpu5NsJyFYSjXNOnfi2KnAo93YqIeRlc3+nsCI=
+	t=1705969979; cv=none; b=qAtu5FJSJkmnj3YlygNLNsBUKe9yfndpDqUo/waxI9paB3NoKnsiV7ky9WVLvJBfeyYNwWpUpEgCIgjx3qUeHAeNFrLI5lxrcHZF+SNfiZIX+Efvoq2LRYyPbRof0BNAmikQdla4rHbl9G/YTBCKih+Vziypupf1lzaV2k/QLjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971399; c=relaxed/simple;
-	bh=MKrwNiNRob3Trknt6JBlzMkHYmLESGk9V2AxpNB8jWo=;
+	s=arc-20240116; t=1705969979; c=relaxed/simple;
+	bh=IBbTH+hRGVF20EnPxUXb9DVWPuMO2GSIz1zU0vk+pQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OkUpNONYHM++XI6iTL5C7j8EeU6552YsJL0JvvYc81oghCwAfgfoQdiFyhQ2IImGipbPPjo5fAP7Yd/WW46erjDTU3wz2Cr/9rbtw8gH1NGywJO0lcD3pzEB5ncj88hKMbSIf0y1PDGJTHSxvlug5gxSH4ZUCBQ5uXA/oKn8A7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYkk34VS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBFDBC433C7;
-	Tue, 23 Jan 2024 00:56:38 +0000 (UTC)
+	 MIME-Version; b=j3mVBHSpF4CRDcmHpEicIz/0o2mXvtauEfDOoXAN8K6WUlINXN0zf6Wf86Nx8iB1iFnH7C0sf0q80Fmc2kcrIQJSXX2ymv0vOctwt1++6A3T7+BPKl8+eVyXuEnhkL2I+721eaPtXu0tNTRwTQVtLArw9LxS3ha7laQ4tzz3N/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyWtjvw9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02144C433C7;
+	Tue, 23 Jan 2024 00:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971399;
-	bh=MKrwNiNRob3Trknt6JBlzMkHYmLESGk9V2AxpNB8jWo=;
+	s=korg; t=1705969979;
+	bh=IBbTH+hRGVF20EnPxUXb9DVWPuMO2GSIz1zU0vk+pQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mYkk34VS3TyU23iT5x+ghe+yT5Z9lGhBJqa5mWymPIL735pAU1xRk8WC5hc/jb/Tb
-	 esLOzYUHyGN+mxiC/rxv1a2g/fSaXeMCTQewnG5YVr/gxU1hFW0hcW6/9yaZoBLHgf
-	 rhuFYsMhhIivqIM0k4czLqNyJ6cPApqXNbol5AXA=
+	b=QyWtjvw9PpQUZZGjRnLwxcMGmUNV+rSKsTPwbNF3ehyoMkXREaqVRfxge4O26v27O
+	 C2qP1S0H5GIaiuIw/oDe60DozAhINxu8z5CDASi3XLgYbFeW1rw0rNYtD3ATDE4b09
+	 q12rOU0M68ssGGeFxH5jSAL1tdxDjz5oBgtzdJ5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Ashish Mhetre <amhetre@nvidia.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 146/286] rcu: Create an unrcu_pointer() to remove __rcu from a pointer
+Subject: [PATCH 6.7 548/641] iommu: Dont reserve 0-length IOVA region
 Date: Mon, 22 Jan 2024 15:57:32 -0800
-Message-ID: <20240122235737.783718691@linuxfoundation.org>
+Message-ID: <20240122235835.291554266@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Ashish Mhetre <amhetre@nvidia.com>
 
-[ Upstream commit 76c8eaafe4f061f3790112842a2fbb297e4bea88 ]
+[ Upstream commit bb57f6705960bebeb832142ce9abf43220c3eab1 ]
 
-The xchg() and cmpxchg() functions are sometimes used to carry out RCU
-updates.  Unfortunately, this can result in sparse warnings for both
-the old-value and new-value arguments, as well as for the return value.
-The arguments can be dealt with using RCU_INITIALIZER():
+When the bootloader/firmware doesn't setup the framebuffers, their
+address and size are 0 in "iommu-addresses" property. If IOVA region is
+reserved with 0 length, then it ends up corrupting the IOVA rbtree with
+an entry which has pfn_hi < pfn_lo.
+If we intend to use display driver in kernel without framebuffer then
+it's causing the display IOMMU mappings to fail as entire valid IOVA
+space is reserved when address and length are passed as 0.
+An ideal solution would be firmware removing the "iommu-addresses"
+property and corresponding "memory-region" if display is not present.
+But the kernel should be able to handle this by checking for size of
+IOVA region and skipping the IOVA reservation if size is 0. Also, add
+a warning if firmware is requesting 0-length IOVA region reservation.
 
-	old_p = xchg(&p, RCU_INITIALIZER(new_p));
-
-But a sparse warning still remains due to assigning the __rcu pointer
-returned from xchg to the (most likely) non-__rcu pointer old_p.
-
-This commit therefore provides an unrcu_pointer() macro that strips
-the __rcu.  This macro can be used as follows:
-
-	old_p = unrcu_pointer(xchg(&p, RCU_INITIALIZER(new_p)));
-
-Reported-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Stable-dep-of: 5f35a624c1e3 ("drm/nouveau/fence:: fix warning directly dereferencing a rcu pointer")
+Fixes: a5bf3cfce8cb ("iommu: Implement of_iommu_get_resv_regions()")
+Signed-off-by: Ashish Mhetre <amhetre@nvidia.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/20231205065656.9544-1-amhetre@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rcupdate.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/iommu/of_iommu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index ef8d56b18da6..8716a1706351 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -366,6 +366,20 @@ static inline void rcu_preempt_sleep_check(void) { }
- #define rcu_check_sparse(p, space)
- #endif /* #else #ifdef __CHECKER__ */
+diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
+index 47302b637cc0..42cffb0ee5e2 100644
+--- a/drivers/iommu/of_iommu.c
++++ b/drivers/iommu/of_iommu.c
+@@ -264,6 +264,10 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
+ 					prot |= IOMMU_CACHE;
  
-+/**
-+ * unrcu_pointer - mark a pointer as not being RCU protected
-+ * @p: pointer needing to lose its __rcu property
-+ *
-+ * Converts @p from an __rcu pointer to a __kernel pointer.
-+ * This allows an __rcu pointer to be used with xchg() and friends.
-+ */
-+#define unrcu_pointer(p)						\
-+({									\
-+	typeof(*p) *_________p1 = (typeof(*p) *__force)(p);		\
-+	rcu_check_sparse(p, __rcu); 					\
-+	((typeof(*p) __force __kernel *)(_________p1)); 		\
-+})
-+
- #define __rcu_access_pointer(p, space) \
- ({ \
- 	typeof(*p) *_________p1 = (typeof(*p) *__force)READ_ONCE(p); \
+ 				maps = of_translate_dma_region(np, maps, &iova, &length);
++				if (length == 0) {
++					dev_warn(dev, "Cannot reserve IOVA region of 0 size\n");
++					continue;
++				}
+ 				type = iommu_resv_region_get_type(dev, &phys, iova, length);
+ 
+ 				region = iommu_alloc_resv_region(iova, length, prot, type,
 -- 
 2.43.0
 
