@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5C74837C7C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5978F837E93
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9B5A1C2894B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C12FB23ED9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB429135404;
-	Tue, 23 Jan 2024 00:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D598B5C9A;
+	Tue, 23 Jan 2024 00:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+zcSr5I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zVHqTGL3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D601353F6;
-	Tue, 23 Jan 2024 00:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9405F5683;
+	Tue, 23 Jan 2024 00:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969636; cv=none; b=gXA0s9yhRrqTLfkr1NeKv96Emut1z/gMPTZ5qvf1qOcfYgdHSjKkQ7G+0Z4VrPbLTdRVnavJUe6MvFuC3lvcwBGlFEbzr8BmSGISb745iCV71vijXl2xmmItmw7974icdR/w7tMByeogF6tWWBzktPSC/iqn5ubvjR7pVqoy188=
+	t=1705970670; cv=none; b=SBptl0VZy3seCMFKnzaP1D4p0p6yzg1QAhQw0fQ2+zJA8ts4ZbVledvCXWD3cxQp7cZWS1H1HL72TiSLTKhiphCDNRxNyRg0Un/HzHLe+pnYtg59xOt6SBQelA+QIY2ub8IWr4+8oBO5Xq4vN5GP5kCBV+bGTZNv4QQGIbTa1cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969636; c=relaxed/simple;
-	bh=JvTul+SWomYj7T6vkGzYGi6S1HD/rkUVsXCGPPs+2EE=;
+	s=arc-20240116; t=1705970670; c=relaxed/simple;
+	bh=wxlfXtpVz9muv1QtsTpd2d5DAJ6MUBfaDN0h2WnRQXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W+9zLkO6uHfGU1s7qmSyHFT07MCjub1JNkOlObdP2AGL1DHf7lA0EWctz6c/leEV4QqR+uxStwkCkBmvnLhjz00xsFQlCat399vI+86EebvJMlDvLp4r5j6KXz35aa2iQxEL7uuGfc/t+3cxKerNMAjVlHBk3pVwWnjEvw2Y4Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+zcSr5I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE49C43399;
-	Tue, 23 Jan 2024 00:27:16 +0000 (UTC)
+	 MIME-Version; b=HcnbB185cori9fbqRG+ITIP6zpz+Fac72jjHrg2ihRUkrD8Fg4mEGCKe6T3KeyDBjLfnAqt7CK9neoRpcCmiMLEVdhxOf8xJZmW3+NW8lT1P1KtXYflLqsQxCxrHqkvnjmdpx1O9lY8AwLEEaTKhHcL+BR/xIIgp5YeXt95WUDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zVHqTGL3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D1DC433C7;
+	Tue, 23 Jan 2024 00:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969636;
-	bh=JvTul+SWomYj7T6vkGzYGi6S1HD/rkUVsXCGPPs+2EE=;
+	s=korg; t=1705970670;
+	bh=wxlfXtpVz9muv1QtsTpd2d5DAJ6MUBfaDN0h2WnRQXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+zcSr5INLQg9Z0x75LsDrYiwTlDBfj0NgO2lxVxUfO/PfzpRKCWfl+MXvH1jAVdn
-	 VVjkhrav/nHeDvf3IFDfzb7oSLkdK+CtXftRS7sCnMDdPs8qYUSBncsCKNP15fCy8m
-	 OAVOCgzHl8WP3xgaQ3nPFV9/mVFBXELRgE/+nQy4=
+	b=zVHqTGL3A7rmbHfp4D3fpJ/81kMraaMlfakfE26eiF9+ct+0hR0XRdPd77555m8TR
+	 U8l2q6/9xfmRPLwBLnunQItixmB+f5aTzJtM5EE6y/2wDB7QCPBaQQBJoahJEFUGMo
+	 GaGiwbJkunV6KaUnTC5Gl3PlEMIdwwe7XoZxx6Oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 349/641] clk: qcom: gcc-sm8550: use collapse-voting for PCIe GDSCs
+Subject: [PATCH 6.1 085/417] arm64: dts: qcom: sc7180: Make watchdog bark interrupt edge triggered
 Date: Mon, 22 Jan 2024 15:54:13 -0800
-Message-ID: <20240122235828.842953465@linuxfoundation.org>
+Message-ID: <20240122235754.645946547@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 7e77a39265293ea4f05e20fff180755503c49918 ]
+[ Upstream commit 7ac90b4cf107a3999b30844d7899e0331686b33b ]
 
-The PCIe GDSCs can be shared with other masters and should use the APCS
-collapse-vote register when updating the power state.
+On sc7180 when the watchdog timer fires your logs get filled with:
+  watchdog0: pretimeout event
+  watchdog0: pretimeout event
+  watchdog0: pretimeout event
+  ...
+  watchdog0: pretimeout event
 
-This is specifically also needed to be able to disable power domains
-that have been enabled by boot firmware using the vote register.
+If you're using console-ramoops to debug crashes the above gets quite
+annoying since it blows away any other log messages that might have
+been there.
 
-Following other recent Qualcomm platforms, describe this register and
-the corresponding mask for the PCIe (and _phy) GDSCs.
+The issue is that the "bark" interrupt (AKA the "pretimeout"
+interrupt) remains high until the watchdog is pet. Since we've got
+things configured as "level" triggered we'll keep getting interrupted
+over and over.
 
-Fixes: 955f2ea3b9e9 ("clk: qcom: Add GCC driver for SM8550")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231218-topic-8550_fixes-v1-5-ce1272d77540@linaro.org
+Let's switch to edge triggered. Now we'll get one interrupt when the
+"bark" interrupt goes off and won't get another one until the "bark"
+interrupt is cleared and asserts again.
+
+This matches how many older Qualcomm SoCs have things configured.
+
+Fixes: 28cc13e4060c ("arm64: dts: qcom: sc7180: Add watchdog bark interrupt")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20231106144335.v2.1.Ic7577567baff921347d423b722de8b857602efb1@changeid
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sm8550.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/boot/dts/qcom/sc7180.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-sm8550.c b/drivers/clk/qcom/gcc-sm8550.c
-index a16d07426b71..73bda0d03aa7 100644
---- a/drivers/clk/qcom/gcc-sm8550.c
-+++ b/drivers/clk/qcom/gcc-sm8550.c
-@@ -2998,6 +2998,8 @@ static struct clk_branch gcc_video_axi1_clk = {
+diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+index 6f0ee4e13ef1..78e537f1d796 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+@@ -3378,7 +3378,7 @@ watchdog@17c10000 {
+ 			compatible = "qcom,apss-wdt-sc7180", "qcom,kpss-wdt";
+ 			reg = <0 0x17c10000 0 0x1000>;
+ 			clocks = <&sleep_clk>;
+-			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
+ 		};
  
- static struct gdsc pcie_0_gdsc = {
- 	.gdscr = 0x6b004,
-+	.collapse_ctrl = 0x52020,
-+	.collapse_mask = BIT(0),
- 	.pd = {
- 		.name = "pcie_0_gdsc",
- 	},
-@@ -3007,6 +3009,8 @@ static struct gdsc pcie_0_gdsc = {
- 
- static struct gdsc pcie_0_phy_gdsc = {
- 	.gdscr = 0x6c000,
-+	.collapse_ctrl = 0x52020,
-+	.collapse_mask = BIT(3),
- 	.pd = {
- 		.name = "pcie_0_phy_gdsc",
- 	},
-@@ -3016,6 +3020,8 @@ static struct gdsc pcie_0_phy_gdsc = {
- 
- static struct gdsc pcie_1_gdsc = {
- 	.gdscr = 0x8d004,
-+	.collapse_ctrl = 0x52020,
-+	.collapse_mask = BIT(1),
- 	.pd = {
- 		.name = "pcie_1_gdsc",
- 	},
-@@ -3025,6 +3031,8 @@ static struct gdsc pcie_1_gdsc = {
- 
- static struct gdsc pcie_1_phy_gdsc = {
- 	.gdscr = 0x8e000,
-+	.collapse_ctrl = 0x52020,
-+	.collapse_mask = BIT(4),
- 	.pd = {
- 		.name = "pcie_1_phy_gdsc",
- 	},
+ 		timer@17c20000{
 -- 
 2.43.0
 
