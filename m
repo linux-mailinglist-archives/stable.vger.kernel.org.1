@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E990A837C37
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2AC838363
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 294101C28903
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E2851C29B48
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BC5144619;
-	Tue, 23 Jan 2024 00:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A3B627F5;
+	Tue, 23 Jan 2024 01:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REMNPrpO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uf182zbE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10ECDEEB9;
-	Tue, 23 Jan 2024 00:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3253D22060;
+	Tue, 23 Jan 2024 01:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969540; cv=none; b=iY83DDa6A1cxhmDvKKO+sYD1/XbkQsE0xTAIyz4i/hxXta41j2JXGtK4ikOUpksgVWgn4GluLtmxdPZcnBCTcay+6g8retBDsYb68VMjgV1yd5wiQGvIDCDT2/KWhaYrsfs1P3dIiOQMznqvvdVkMz32FeMp89phk6VRDNdvf/A=
+	t=1705974955; cv=none; b=uzTQHFxrwtCUB5YZKItNah+NP9MldUhuUILBEJcy3wY8s//Q2pknR0O6JYEh1VL70ffxC3v5bgZtfZ/u2kcjsgfsZapfgTd2c1NkEW1NwSFwZNok6GoD1BXdVDghSo1EL6PjNhUHuEfrTEIxcZ7vAs4yVYRlMj6ZGbOOkFdmHA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969540; c=relaxed/simple;
-	bh=lc5EtGfJwhNr0+crBK3k9xOxw5M86yPg/G7QRD5ZWIk=;
+	s=arc-20240116; t=1705974955; c=relaxed/simple;
+	bh=KcArF0fmfrUwrK4aeRs59x+yzu6O/hRkwxzNlgGthVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ijHoKN5/RVWJr+JqLnVARXdfZGVSaaXj8uoDYdRqA6gDWjcFUeGn0w1unor1F+SQGz7gywVtadul0IWq5BdjsiASzbkOwU1nffKVUxfMX1gYYSYekSG5TL2xuO6atMpDT6zbE2mWvhECRInp8pCwzy2JHltxxmsl385aKrzKHgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REMNPrpO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E898C433F1;
-	Tue, 23 Jan 2024 00:25:39 +0000 (UTC)
+	 MIME-Version; b=ETjSeuFqDL7Dro9xqdy9QHqx28rnGSkrtFUdFupAxL9JJc51z0G73nNHq4TfG7iIfDxLSvCQ6ejUeOXLPRRXuXnSgE9eLhJDy+1o8syY2ZXUucwJmmAq34GBkq9oEntPXUNLBCtj/WECCENnEQhhO8U6BZ6gzHegtsTHs+Zsu1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uf182zbE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9011C43390;
+	Tue, 23 Jan 2024 01:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969539;
-	bh=lc5EtGfJwhNr0+crBK3k9xOxw5M86yPg/G7QRD5ZWIk=;
+	s=korg; t=1705974955;
+	bh=KcArF0fmfrUwrK4aeRs59x+yzu6O/hRkwxzNlgGthVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=REMNPrpObP+AWIboysADfRvCjCvJnSuV77wGBvi3xNgbmToarX8Pko1twEOypZMu9
-	 z6bmZ8H3VmHWocD7T6JaBPS+AzCvinA73PothY2WzwI648ZlR0y79xhleqwIuwCHGm
-	 rJA6scb9y5XC2nouCmZQ0rfC+Ou6rBOXOJUIjjvw=
+	b=Uf182zbE6J0oMLbZbRwcF9RruuI+h/q3iwgFOeG6ADOcWfsGqvFeXJklKksavXC2L
+	 JFSv9f7a3KoAgQx8mxn/xvsMKfBF80zlMF9hn02pKE7u9uX952FGOMzrIQyW8OKvXP
+	 lTFauqtctnQ4fwrIpShBGA45IOWJ48iYzGPqR8B4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Leone Fernando <leone4fernando@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 313/641] drm/panel: st7701: Fix AVCL calculation
-Date: Mon, 22 Jan 2024 15:53:37 -0800
-Message-ID: <20240122235827.694961851@linuxfoundation.org>
+Subject: [PATCH 6.6 167/583] ipmr: support IP_PKTINFO on cache report IGMP msg
+Date: Mon, 22 Jan 2024 15:53:38 -0800
+Message-ID: <20240122235817.149563932@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Morgan <macromorgan@hotmail.com>
+From: Leone Fernando <leone4fernando@gmail.com>
 
-[ Upstream commit 799825aa87200ade1ba21db853d1c2ff720dcfe0 ]
+[ Upstream commit bb7403655b3c3eb245d0ee330047cd3e20b3c4af ]
 
-The AVCL register, according to the datasheet, comes in increments
-of -0.2v between -4.4v (represented by 0x0) to -5.0v (represented
-by 0x3). The current calculation is done by adding the defined
-AVCL value in mV to -4400 and then dividing by 200 to get the register
-value. Unfortunately if I subtract -4400 from -4400 I get -8800, which
-divided by 200 gives me -44. If I instead subtract -4400 from -4400
-I get 0, which divided by 200 gives me 0. Based on the datasheet this
-is the expected register value.
+In order to support IP_PKTINFO on those packets, we need to call
+ipv4_pktinfo_prepare.
 
-Fixes: 83b7a8e7e88e ("drm/panel/panel-sitronix-st7701: Parametrize voltage and timing")
+When sending mrouted/pimd daemons a cache report IGMP msg, it is
+unnecessary to set dst on the newly created skb.
+It used to be necessary on older versions until
+commit d826eb14ecef ("ipv4: PKTINFO doesnt need dst reference") which
+changed the way IP_PKTINFO struct is been retrieved.
 
-Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20231208154847.130615-2-macroalpha82@gmail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231208154847.130615-2-macroalpha82@gmail.com
+Changes from v1:
+1. Undo changes in ipv4_pktinfo_prepare function. use it directly
+   and copy the control block.
+
+Fixes: d826eb14ecef ("ipv4: PKTINFO doesnt need dst reference")
+Signed-off-by: Leone Fernando <leone4fernando@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-sitronix-st7701.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/ipmr.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7701.c b/drivers/gpu/drm/panel/panel-sitronix-st7701.c
-index 0459965e1b4f..036ac403ed21 100644
---- a/drivers/gpu/drm/panel/panel-sitronix-st7701.c
-+++ b/drivers/gpu/drm/panel/panel-sitronix-st7701.c
-@@ -288,7 +288,7 @@ static void st7701_init_sequence(struct st7701 *st7701)
- 		   FIELD_PREP(DSI_CMD2_BK1_PWRCTRL2_AVDD_MASK,
- 			      DIV_ROUND_CLOSEST(desc->avdd_mv - 6200, 200)) |
- 		   FIELD_PREP(DSI_CMD2_BK1_PWRCTRL2_AVCL_MASK,
--			      DIV_ROUND_CLOSEST(-4400 + desc->avcl_mv, 200)));
-+			      DIV_ROUND_CLOSEST(-4400 - desc->avcl_mv, 200)));
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index 9e222a57bc2b..0063a237253b 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -1025,6 +1025,10 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 	struct sk_buff *skb;
+ 	int ret;
  
- 	/* T2D = 0.2us * T2D[3:0] */
- 	ST7701_DSI(st7701, DSI_CMD2_BK1_SPD1,
++	mroute_sk = rcu_dereference(mrt->mroute_sk);
++	if (!mroute_sk)
++		return -EINVAL;
++
+ 	if (assert == IGMPMSG_WHOLEPKT || assert == IGMPMSG_WRVIFWHOLE)
+ 		skb = skb_realloc_headroom(pkt, sizeof(struct iphdr));
+ 	else
+@@ -1069,7 +1073,8 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 		msg = (struct igmpmsg *)skb_network_header(skb);
+ 		msg->im_vif = vifi;
+ 		msg->im_vif_hi = vifi >> 8;
+-		skb_dst_set(skb, dst_clone(skb_dst(pkt)));
++		ipv4_pktinfo_prepare(mroute_sk, pkt);
++		memcpy(skb->cb, pkt->cb, sizeof(skb->cb));
+ 		/* Add our header */
+ 		igmp = skb_put(skb, sizeof(struct igmphdr));
+ 		igmp->type = assert;
+@@ -1079,12 +1084,6 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 		skb->transport_header = skb->network_header;
+ 	}
+ 
+-	mroute_sk = rcu_dereference(mrt->mroute_sk);
+-	if (!mroute_sk) {
+-		kfree_skb(skb);
+-		return -EINVAL;
+-	}
+-
+ 	igmpmsg_netlink_event(mrt, skb);
+ 
+ 	/* Deliver to mrouted */
 -- 
 2.43.0
 
