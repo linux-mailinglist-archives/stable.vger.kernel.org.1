@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A2FA837C73
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D528384A4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AC551C2883A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CE7CB2B443
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4F033CCA;
-	Tue, 23 Jan 2024 00:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A897165198;
+	Tue, 23 Jan 2024 01:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvcdUMva"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1EUlLlC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195A633097;
-	Tue, 23 Jan 2024 00:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E1B64AB3;
+	Tue, 23 Jan 2024 01:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969623; cv=none; b=Zz3qkkcj2TLxTa19IFyMcjQ7bVk6vjn4kmD4i9V1XNAk58Q6k4uveSA0lPrQ6CSTPPuLLCojloViEB60mDY7Ts9+NcOn0mfxnynjkOWiPw6bUNlDREFfo4OUUbIR5nueTuBQaNU+FwHNyzHv6Ssy3gLHpLTFrLNQg2F6IwueP9A=
+	t=1705975058; cv=none; b=mQXqzKoFKtYl/JJtDezdSX6DgkOXBpmZM3HapASDX3TXI3nNakSJMLTciPl7l29nW0U/jYyN+c/r8YC+ySqwuggKTAPlbusYXcI2ypHnKuMh/fcSN43j8pYlYKLFElSUV3bEntW4dEbP8nyyJGRRdjiY2ltUASaOKz8+U0N7Zmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969623; c=relaxed/simple;
-	bh=ozadYcz0StpP42jzhHa5S81FsutVyrXMixC1vRu8FmM=;
+	s=arc-20240116; t=1705975058; c=relaxed/simple;
+	bh=xkOsfdas6XjH1JDLq9j49UWoauPUijiLcmm9I+70yto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGk21yPbqi/lnBDDkk1XUMSgxyOV9PV4vksmMbBJD7x9DJLdha70aidn/TABPXmCg+9cX71A0gPftdavihRkvrsxKqcGP5n2GeEnBz34MxCbI+12i4YgciBP/xQbfBsQs3keq4VscFs7uq92zKsg9MAcwavT2kEOpXbaCPq0yPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mvcdUMva; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7E3C433F1;
-	Tue, 23 Jan 2024 00:27:02 +0000 (UTC)
+	 MIME-Version; b=sRf6hWCmoT2x/M82viKqXofJrz0EMiRZ1zSqLj3gaeCEE0Zr48vi037EfcGfW8NnZWUqDPeUHM8+O9JIw+/het6wgCpIxkZagXIJgvUYlEuLyz5OQthJ/HrWiJ9ZFYUiOF9DExkAOGDOzlPxuuVUsQYe6sFB2d+R45TfPqBGwlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1EUlLlC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30238C43399;
+	Tue, 23 Jan 2024 01:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969622;
-	bh=ozadYcz0StpP42jzhHa5S81FsutVyrXMixC1vRu8FmM=;
+	s=korg; t=1705975058;
+	bh=xkOsfdas6XjH1JDLq9j49UWoauPUijiLcmm9I+70yto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mvcdUMva5aY8GqU9OQA4J1ODGouFfaHYFUR+Zdpg5cyTC8Hk4qtV4G2Tx48aHCmsD
-	 W8gqC+dSGZbUK+fjL2o6AEFQfQA+ZQBg3sRLsxJjHj87XCmdY1H3pWFwMA9fcwOuOb
-	 LQ1Mo9pPd2K2JgJhxGmQ9vCz5JmjHBLVJ90u4qRc=
+	b=y1EUlLlC1rhHUF84OJVOZ/Df1sWnw0Jf4/aeWIgisnx4EDNP/jqjBT7mb3x/Q0WG0
+	 DYP93OvcnKUsuwALJrnmXQTUuwjop/1UWllcK5DFaygFzFT2dqcy59wGGgCnpQfKLk
+	 wzrgNej33bGUOVP/LZEBpJ+NUIeHTxn6I43QlbJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	David Thompson <davthompson@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 364/641] mmc: sdhci_omap: Fix TI SoC dependencies
+Subject: [PATCH 6.6 217/583] mlxbf_gige: Fix intermittent no ip issue
 Date: Mon, 22 Jan 2024 15:54:28 -0800
-Message-ID: <20240122235829.330725185@linuxfoundation.org>
+Message-ID: <20240122235818.649854197@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Robinson <pbrobinson@gmail.com>
+From: Asmaa Mnebhi <asmaa@nvidia.com>
 
-[ Upstream commit 09f164d393a6671e5ff8342ba6b3cb7fe3f20208 ]
+[ Upstream commit ef210ef85d5cb543ce34a57803ed856d0c8c08c2 ]
 
-The sdhci_omap is specific to  older TI SoCs, update the
-dependencies for those SoCs and compile testing. While we're
-at it update the text to reflect the wider range of
-supported TI SoCS the driver now supports.
+Although the link is up, there is no ip assigned on setups with high background
+traffic. Nothing is transmitted nor received. The RX error count keeps on
+increasing. After several minutes, the RX error count stagnates and the
+GigE interface finally gets an ip.
 
-Fixes: 7d326930d352 ("mmc: sdhci-omap: Add OMAP SDHCI driver")
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-Link: https://lore.kernel.org/r/20231220135950.433588-2-pbrobinson@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+The issue is that mlxbf_gige_rx_init() is called before phy_start().
+As soon as the RX DMA is enabled in mlxbf_gige_rx_init(), the RX CI reaches the max
+of 128, and becomes equal to RX PI. RX CI doesn't decrease since the code hasn't
+ran phy_start yet.
+Bring the PHY up before starting the RX.
+
+Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/Kconfig | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c | 14 +++++++-------
+ .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c   |  6 +++---
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 24ce5576b61a..81f2c4e05287 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -1026,14 +1026,15 @@ config MMC_SDHCI_XENON
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+index 694de9513b9f..7d132a132a29 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+@@ -147,14 +147,14 @@ static int mlxbf_gige_open(struct net_device *netdev)
+ 	 */
+ 	priv->valid_polarity = 0;
  
- config MMC_SDHCI_OMAP
- 	tristate "TI SDHCI Controller Support"
-+	depends on ARCH_OMAP2PLUS || ARCH_KEYSTONE || COMPILE_TEST
- 	depends on MMC_SDHCI_PLTFM && OF
- 	select THERMAL
- 	imply TI_SOC_THERMAL
- 	select MMC_SDHCI_EXTERNAL_DMA if DMA_ENGINE
- 	help
- 	  This selects the Secure Digital Host Controller Interface (SDHCI)
--	  support present in TI's DRA7 SOCs. The controller supports
--	  SD/MMC/SDIO devices.
-+	  support present in TI's Keystone/OMAP2+/DRA7 SOCs. The controller
-+	  supports SD/MMC/SDIO devices.
+-	err = mlxbf_gige_rx_init(priv);
++	phy_start(phydev);
++
++	err = mlxbf_gige_tx_init(priv);
+ 	if (err)
+ 		goto free_irqs;
+-	err = mlxbf_gige_tx_init(priv);
++	err = mlxbf_gige_rx_init(priv);
+ 	if (err)
+-		goto rx_deinit;
+-
+-	phy_start(phydev);
++		goto tx_deinit;
  
- 	  If you have a controller with this interface, say Y or M here.
+ 	netif_napi_add(netdev, &priv->napi, mlxbf_gige_poll);
+ 	napi_enable(&priv->napi);
+@@ -176,8 +176,8 @@ static int mlxbf_gige_open(struct net_device *netdev)
  
+ 	return 0;
+ 
+-rx_deinit:
+-	mlxbf_gige_rx_deinit(priv);
++tx_deinit:
++	mlxbf_gige_tx_deinit(priv);
+ 
+ free_irqs:
+ 	mlxbf_gige_free_irqs(priv);
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
+index 227d01cace3f..699984358493 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
+@@ -142,6 +142,9 @@ int mlxbf_gige_rx_init(struct mlxbf_gige *priv)
+ 	writeq(MLXBF_GIGE_RX_MAC_FILTER_COUNT_PASS_EN,
+ 	       priv->base + MLXBF_GIGE_RX_MAC_FILTER_COUNT_PASS);
+ 
++	writeq(ilog2(priv->rx_q_entries),
++	       priv->base + MLXBF_GIGE_RX_WQE_SIZE_LOG2);
++
+ 	/* Clear MLXBF_GIGE_INT_MASK 'receive pkt' bit to
+ 	 * indicate readiness to receive interrupts
+ 	 */
+@@ -154,9 +157,6 @@ int mlxbf_gige_rx_init(struct mlxbf_gige *priv)
+ 	data |= MLXBF_GIGE_RX_DMA_EN;
+ 	writeq(data, priv->base + MLXBF_GIGE_RX_DMA);
+ 
+-	writeq(ilog2(priv->rx_q_entries),
+-	       priv->base + MLXBF_GIGE_RX_WQE_SIZE_LOG2);
+-
+ 	return 0;
+ 
+ free_wqe_and_skb:
 -- 
 2.43.0
 
