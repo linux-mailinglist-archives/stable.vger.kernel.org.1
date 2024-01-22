@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-14992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1C47838374
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AE0F838376
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77FC2283771
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE6931C29CDC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FDC762A1E;
-	Tue, 23 Jan 2024 01:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB04C63104;
+	Tue, 23 Jan 2024 01:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnjHgFVd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVXOphKG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84D95D8FD;
-	Tue, 23 Jan 2024 01:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8952162A12;
+	Tue, 23 Jan 2024 01:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974978; cv=none; b=gdUWnpX77RKMGVT94l51XTH3xcZvdLoPRJ/aHgXL8BWixhaTSXnWoOSqDsAoWT58mYLd3G71BbYsiNtYdesqDDu22SHrYuIQs2wzBfW1ryr1uCdazCQG0PQBktxdbF4iT2KAtMk8wd6FLGjnsjeimDoFMpUWRd+d+XJEivJHsLA=
+	t=1705974980; cv=none; b=lB/jbDrEv0gpI1RX1scgiEy4/mRNFrQWkDQXJpLKDEIxRkuM925wG3ff4qXVbcihdu+2PEPOYx4pNZW8mlAjm5TNx4opdkIsyvbtl8jgZP+jpcWQIwXqgQ1Qul66Oid2cXHKyprjv6xyxFMw6E2II/BlUfbODOceksyRYJdXU2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974978; c=relaxed/simple;
-	bh=8xa1o9Q1H7wqKDLTveOXzEB53uo/Wcq53fTdxupHNkE=;
+	s=arc-20240116; t=1705974980; c=relaxed/simple;
+	bh=5wG0n6rZd1gSyQ7QDK3wqawTa90yVWHd8B6Yes5Jb44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fRtMyG/9eH88Z2weVPXhnZ/F17+l4ICCW1lI2jYg9C5FF3ooI+fsTr15Vy/xknij0482ucY4VL6trzYS3M1zWM2C/ma6FTx+s21KPeoHZBI94Ag1WXejMvp2L93ZZqHHOGBsBV/NKsaKEs1aulFKaSRZkRLv097wF+Sh0ZZ9nJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnjHgFVd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D264C433F1;
-	Tue, 23 Jan 2024 01:56:18 +0000 (UTC)
+	 MIME-Version; b=aN9tjSZ3XE+3lnIMwAfaORLPqNbnl38JTam0DIp37WqXYdqoFzSqqTRbUko2x+XMeJXn0QwYKk/wQ6C5txQXpmHx/HKW8bQhJWCtw6SBFwjvGSBB3apL4zfRLDSjmxO9DZqBQCZ9fyIqjmoUHXcVuhu/16zmD9MnCf/HBUu8HJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVXOphKG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 056C8C433F1;
+	Tue, 23 Jan 2024 01:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974978;
-	bh=8xa1o9Q1H7wqKDLTveOXzEB53uo/Wcq53fTdxupHNkE=;
+	s=korg; t=1705974980;
+	bh=5wG0n6rZd1gSyQ7QDK3wqawTa90yVWHd8B6Yes5Jb44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JnjHgFVd0ze9e5798lpGlMSmjvUnigHMsy9a7bfKzcbWym+qkYN+Y9FDmrMWTSBwe
-	 edTmOXiAnCX9XvOGm6Pw4r1x23ClVBqyQ89iW1+VYpBxdJjY0jDkWifUtHFeH0B9AH
-	 1f/ALlDe3Fcq6kw8C0wXqgmUk0oVJvLJVixVY1xw=
+	b=SVXOphKGLEI1UaeFJGdB+ZkAYgTTRjXerh0WUmCaNcSScGe6j3a6vyUm8HDzymE7o
+	 bI/XaOabZXWg7bErFf4yIN+EySGLOYkTRnwILZ7cZ07wdNhxMtN4Hc7DQ5syozLOgH
+	 6+OBTu8++LBrafW/EJ8GrPOYEoUQnG0y48g3dm+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 177/583] arm64: dts: qcom: sm8150: make dispcc cast minimal vote on MMCX
-Date: Mon, 22 Jan 2024 15:53:48 -0800
-Message-ID: <20240122235817.433119639@linuxfoundation.org>
+Subject: [PATCH 6.6 178/583] arm64: dts: qcom: sm8150-hdk: fix SS USB regulators
+Date: Mon, 22 Jan 2024 15:53:49 -0800
+Message-ID: <20240122235817.462109490@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -69,34 +69,66 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 617de4ce7b1c4b41c1316e493d4717cd2f208def ]
+[ Upstream commit a509adf05b2aac31b22781f5aa09e4768a5b6c39 ]
 
-Add required-opps property to the display clock controller. This makes
-it cast minimal vote on the MMCX lane and prevents further 'clock stuck'
-errors when enabling the display.
+The SM8150-HDK uses two different regulators to power up SuperSpeed USB
+PHYs. The L5A regulator is used for the second USB host, while the first
+(OTG) USB host uses different regulator, L18A. Fix the regulator for the
+usb_1 QMPPHY and (to remove possible confusion) drop the
+usb_ss_dp_core_1/_2 labels.
 
-Fixes: 2ef3bb17c45c ("arm64: dts: qcom: sm8150: Add DISPCC node")
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Fixes: 0ab1b2d10afe ("arm64: dts: qcom: add sm8150 hdk dts")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20231215174152.315403-2-dmitry.baryshkov@linaro.org
+Link: https://lore.kernel.org/r/20231215174152.315403-4-dmitry.baryshkov@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8150.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sm8150-hdk.dts | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-index d7a2c3567532..32045fb48157 100644
---- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-@@ -3959,6 +3959,7 @@ dispcc: clock-controller@af00000 {
- 				      "dp_phy_pll_link_clk",
- 				      "dp_phy_pll_vco_div_clk";
- 			power-domains = <&rpmhpd SM8150_MMCX>;
-+			required-opps = <&rpmhpd_opp_low_svs>;
- 			#clock-cells = <1>;
- 			#reset-cells = <1>;
- 			#power-domain-cells = <1>;
+diff --git a/arch/arm64/boot/dts/qcom/sm8150-hdk.dts b/arch/arm64/boot/dts/qcom/sm8150-hdk.dts
+index bb161b536da4..f4c6e1309a7e 100644
+--- a/arch/arm64/boot/dts/qcom/sm8150-hdk.dts
++++ b/arch/arm64/boot/dts/qcom/sm8150-hdk.dts
+@@ -127,8 +127,6 @@ vdda_qrefs_0p875_5:
+ 		vdda_sp_sensor:
+ 		vdda_ufs_2ln_core_1:
+ 		vdda_ufs_2ln_core_2:
+-		vdda_usb_ss_dp_core_1:
+-		vdda_usb_ss_dp_core_2:
+ 		vdda_qlink_lv:
+ 		vdda_qlink_lv_ck:
+ 		vreg_l5a_0p875: ldo5 {
+@@ -210,6 +208,12 @@ vreg_l17a_3p0: ldo17 {
+ 			regulator-max-microvolt = <3008000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+ 		};
++
++		vreg_l18a_0p8: ldo18 {
++			regulator-min-microvolt = <880000>;
++			regulator-max-microvolt = <880000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
+ 	};
+ 
+ 	regulators-1 {
+@@ -445,13 +449,13 @@ &usb_2_hsphy {
+ &usb_1_qmpphy {
+ 	status = "okay";
+ 	vdda-phy-supply = <&vreg_l3c_1p2>;
+-	vdda-pll-supply = <&vdda_usb_ss_dp_core_1>;
++	vdda-pll-supply = <&vreg_l18a_0p8>;
+ };
+ 
+ &usb_2_qmpphy {
+ 	status = "okay";
+ 	vdda-phy-supply = <&vreg_l3c_1p2>;
+-	vdda-pll-supply = <&vdda_usb_ss_dp_core_1>;
++	vdda-pll-supply = <&vreg_l5a_0p875>;
+ };
+ 
+ &usb_1 {
 -- 
 2.43.0
 
