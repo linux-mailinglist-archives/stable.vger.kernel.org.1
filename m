@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-12817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 448FB83774A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:02:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39EA6837761
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:04:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 771931C2513D
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 23:02:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9402028304C
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 23:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930973771A;
-	Mon, 22 Jan 2024 23:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD2C495DA;
+	Mon, 22 Jan 2024 23:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="1SBPrx5E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rj3ezUeq"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438431D683;
-	Mon, 22 Jan 2024 23:02:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B985495D0;
+	Mon, 22 Jan 2024 23:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705964528; cv=none; b=QwG+41zPitBqLCVLOg8rAUJDAPsDforD7EsilVTWP2deEsP5n0TdhM1SMgNfPXr4JD6V7J3THQpNpZ+CpvU5XYvc8qzt+N+3N/u7CT2LycT2jLcVk0FNPJOgqw/xBZKpu3irvzak6Tcq/mEXEAvj0VBEwmMnrdrDYKkd+mx8xPA=
+	t=1705964675; cv=none; b=B2oLIQTzKe9RZaT03tSayU/sIkaGp93URd+jU/ycn9Hmj9NOaQ0R3DZBi52As5pB3JEVqplUPBEnHRKR2i0Zm26U/EuITMZvlEifjcu200rdD4lw7B/ydxkDc7T3DOsMrEugJjnmRMXzCrflkY0xL6K1AjEmOrL83l5Om5/3afI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705964528; c=relaxed/simple;
-	bh=msPH/QovNKRrRRB++PtjTpko5zkcFfMhC8VmQiE6/Eo=;
+	s=arc-20240116; t=1705964675; c=relaxed/simple;
+	bh=0WtBFrKbQ+ipOh3xWeUTAfnGIGSgexddLuxNCH/vWcU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rjy2TH9pRH4r+TPhSQ7m68RYND2lUgTDgzT4UzEH7msA8HO9re9uQAoUOkC7ztXiDU4XJEZ7+JpiootglgvCB0aR8QdcJyM/cAKAOCsDS7znCizUMKyv9eC9IxgpEZ6ief1/ONUu3uPeluDutxppAqVi3o7U7RLhezC9jVJDmRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=1SBPrx5E; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=KRw78m3Bu0Lh0xEAaZeRhX3+itpQs8cnM41OSUQcl/A=; b=1SBPrx5EOt9aBHEAmrDPhz5nRv
-	4Mx1v/L0bNRd04j6uwcKOcgKSJdziAptqz6IhFClnEmoN7JUuGntEnTl8n1DWEAADXkd5IlxA91Re
-	6shIs0M9FrU9RAe4zHNF2tVFbaqYk6ErSYF9cHhnrOFo7iO9tW2uvsmXjlv4l8+hKOhw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1rS3IZ-005mCa-9Z; Tue, 23 Jan 2024 00:01:47 +0100
-Date: Tue, 23 Jan 2024 00:01:47 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Tim Menninger <tmenninger@purestorage.com>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
-	netdev-maintainers <edumazet@google.com>, kuba@kernel.org,
-	pabeni@redhat.com, davem@davemloft.net,
-	netdev <netdev@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH net v1] net: dsa: mv88e6xxx: Make unsupported C45 reads
- return 0xffff
-Message-ID: <5f449e47-fc39-48c3-a784-77b808c31050@lunn.ch>
-References: <20240120192125.1340857-1-andrew@lunn.ch>
- <20240122122457.jt6xgvbiffhmmksr@skbuf>
- <0d9e0412-6ca3-407a-b2a1-b18ab4c20714@lunn.ch>
- <CAO-L_45iCb+TFMSqZJex-mZKfopBXxR=KH5aV4Wfx5eF5_N_8Q@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=R3x94JYKWCq+07xoe8pxpMwCFG4BIRj5TKWxTUYD8ZKY9ZZ3A31Cbs3qxXDUNqvhhBxspfe4w+mDsW55A6IqDTwytHs8qGJ+SmtdekqT3kstiO7we3Nv9+GOZgTqU5wndlLQ2vteDBE3Qvm4TX9fZCKKKoN9aj3R8OfEMOby76Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rj3ezUeq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95113C43390;
+	Mon, 22 Jan 2024 23:04:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1705964675;
+	bh=0WtBFrKbQ+ipOh3xWeUTAfnGIGSgexddLuxNCH/vWcU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Rj3ezUequMXxmACTz6uTOy5MSeztBwQYkUA9QcmiyOskbQZffb4yBIjyYGfVlnYqn
+	 LL1TLLkmOPHcYlp12jln+Khzjt71kn6jhJFGWN4fmm7IEwiIGHS/m6UBM9WlJLbYxl
+	 +yDgTVdz0hlCkFe8vw8fYVRT06IFqocJqso0N1Qw=
+Date: Mon, 22 Jan 2024 15:04:30 -0800
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
+Cc: "quic_charante@quicinc.com" <quic_charante@quicinc.com>,
+	"david@redhat.com" <david@redhat.com>,
+	"mhocko@suse.com" <mhocko@suse.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+	"mgorman@techsingularity.net" <mgorman@techsingularity.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"quic_pkondeti@quicinc.com" <quic_pkondeti@quicinc.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"quic_cgoldswo@quicinc.com" <quic_cgoldswo@quicinc.com>
+Subject: Re: [RESEND PATCH V2] mm: page_alloc: unreserve highatomic page
+ blocks before oom
+Message-ID: <2024012210-outshoot-dragonish-fe8e@gregkh>
+References: <1700823445-27531-1-git-send-email-quic_charante@quicinc.com>
+ <3fe3b3edd33cd784071dd9b459d20a79605ec918.camel@infinera.com>
+ <2024012205-undrilled-those-2435@gregkh>
+ <PH0PR10MB461565CEE892267025BC697BF4752@PH0PR10MB4615.namprd10.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,49 +68,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAO-L_45iCb+TFMSqZJex-mZKfopBXxR=KH5aV4Wfx5eF5_N_8Q@mail.gmail.com>
+In-Reply-To: <PH0PR10MB461565CEE892267025BC697BF4752@PH0PR10MB4615.namprd10.prod.outlook.com>
 
-> I'm not sure I fully agree with returning 0xffff here, and especially not
-> for just one of the four functions (reads and writes, c22 and c45). If the
-> end goal is to unify error handling, what if we keep the return values as
-> they are, i.e. continue to return -EOPNOTSUPP, and then in get_phy_c22_id
-> and get_phy_c45_ids on error we do something like:
-> 
->     return (phy_reg == -EIO || phy_reg == -ENODEV || phy_reg == -EOPNOTSUPP)
->         ? -ENODEV : -EIO;
+A: http://en.wikipedia.org/wiki/Top_post
+Q: Were do I find info about this thing called top-posting?
+A: Because it messes up the order in which people normally read text.
+Q: Why is top-posting such a bad thing?
+A: Top-posting.
+Q: What is the most annoying thing in e-mail?
 
-As i said to Vladimir, what i posted so far is just a minimal fix for
-stable. After that, i have two patches for net-next, which are the
-full, clean fix. And the first patch is similar to what you suggest:
+A: No.
+Q: Should I include quotations after my reply?
 
-+++ b/drivers/net/phy/phy_device.c
-@@ -780,7 +780,7 @@ static int get_phy_c45_devs_in_pkg(struct mii_bus *bus, int addr, int dev_addr,
-  * and identifiers in @c45_ids.
-  *
-  * Returns zero on success, %-EIO on bus access error, or %-ENODEV if
-- * the "devices in package" is invalid.
-+ * the "devices in package" is invalid or no device responds.
-  */
- static int get_phy_c45_ids(struct mii_bus *bus, int addr,
-                           struct phy_c45_device_ids *c45_ids)
-@@ -803,7 +803,10 @@ static int get_phy_c45_ids(struct mii_bus *bus, int addr,
-                         */
-                        ret = phy_c45_probe_present(bus, addr, i);
-                        if (ret < 0)
--                               return -EIO;
-+                               /* returning -ENODEV doesn't stop bus
-+                                * scanning */
-+                               return (phy_reg == -EIO ||
-+                                       phy_reg == -ENODEV) ? -ENODEV : -EIO;
- 
-                        if (!ret)
-                                continue;
+http://daringfireball.net/2007/07/on_top
 
-This makes C22 and C45 handling of -ENODEV the same.
+On Mon, Jan 22, 2024 at 10:49:32PM +0000, Joakim Tjernlund wrote:
+> Seems like I pasted the wrong commit(sorry), should be: ac3f3b0a55518056bc80ed32a41931c99e1f7d81
+> I only see that one in master.
 
-I then have another patch which changed mv88e6xxx to return -ENODEV.
-I cannot post the net-next patches for merging until the net patch is
-accepted and then merged into net-next.
+And what kernels have you tested this on?  How far back should it go?
 
-  Andrew
+For mm patches like this, that are not explicitly tagged by the
+maintainers to be included in the stable tree, we need their ack to be
+able to apply them based on their requests.  So can you get that for
+this change and provide tested patches, we will be glad to queue them
+up.
+
+thanks,
+
+greg k-h
 
