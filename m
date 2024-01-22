@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD1E838257
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:19:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19915837FDA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2F2F1C27586
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:19:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D2F11C24A6B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B965B1F9;
-	Tue, 23 Jan 2024 01:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F4212BF18;
+	Tue, 23 Jan 2024 00:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dt/d+Nn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yH13XUA7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F1D5B5B5;
-	Tue, 23 Jan 2024 01:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B819412BF15;
+	Tue, 23 Jan 2024 00:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974327; cv=none; b=Grd08qT2HWAwJorIgXWWV33M5OQEgiicm1Ornk8foh6KDt6HmkY8qcl7WDds2LCf4K8KaqopNp2rzjWGviHXAQDA8XLkZ1uzhCQHkN0auw8fcO7dc10Nfy3mGt+jHuCjO+aLsE3P2/XB/JGrz6wnqZp+7BC8U/f4Hy09FuaOGMU=
+	t=1705971403; cv=none; b=OeO3svv1VV3uTAuO4zzBCq87VDfy/+s2FlOUjRAXicgpppqZ5I/04adSrtKwv/S9xmkVz3EtpASUtdJ5r4LxQkQLLAoYciG4/gn3CdgWjq1eP+d0L5Dqufs8Ps7SWwbcZvzVLvM63t+Fb/wFFjlfX7wj+u+b9XEXioIMMY1pAlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974327; c=relaxed/simple;
-	bh=1hg6wwNo7PSIqFxJE3Zl8f7G32A8mwWY6AwruPd93RA=;
+	s=arc-20240116; t=1705971403; c=relaxed/simple;
+	bh=I0RU/jxr+pqtF3PMK/2J1Za9EZegSaRCASwOi4nvtSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d8ckPn0Bk7dEeBcHrkV6ED6YYV+CY8h1yE5SZNJt9h5a4EQyjAH79I65xxo1TL672w2xfOtOEckrAeDtgFKfFQ7Eyc3jOQCFtdZSWi6DTxYYG9T3tIxP4wIb7CoBEhptLxCcgVR63myxgvb51Vy+yCUJIG4VlHpd22Y7z+htMWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dt/d+Nn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C78C433F1;
-	Tue, 23 Jan 2024 01:45:27 +0000 (UTC)
+	 MIME-Version; b=lPmBbX3hA0AlILGyInm52N8mx3g9AUUXcSShqjNMewYHfpdrbq9Hx82RomZBaRSNRR+gf+w1E0pbE9mdqa4tHPsR74VZzgCagVVy9C5rbZAC5rDWK+Cmku0d6bvfXmsEFFIpKDxA5Q0zJ0xZdaBjHy2N4P4bkGe6eQihuo+TG7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yH13XUA7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28930C433C7;
+	Tue, 23 Jan 2024 00:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974327;
-	bh=1hg6wwNo7PSIqFxJE3Zl8f7G32A8mwWY6AwruPd93RA=;
+	s=korg; t=1705971403;
+	bh=I0RU/jxr+pqtF3PMK/2J1Za9EZegSaRCASwOi4nvtSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dt/d+Nn4qAKyh2PW+zJTOqLSctWQIZ/hCn/erLDn2OMUvyzTBqq4UVckR+joq322+
-	 N5KaJe7pAc/aKpAYYLVSHY0cnbVCJobHHE9zIYm0SnWqVggZ20P4gRjKK56EVC7fZC
-	 Bc9S2PSO8fgo2tUibAdYGHJEFyKxq7s7PMu4kJdI=
+	b=yH13XUA7BtV6WXmoskLe62Fk0FTGvHUZ4VeiKeV1fbCoQdUURWh/jrACZ9Zeimq27
+	 3txbNdm3S5em5K4Pc23tzsvZNwes7ODGwXLCnX2de6UwAwsriyFZRk8boiNjTD0eUu
+	 ASYWtuLhgF3FQMICzY2TnBACnv8D+0+KpPGWUeZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 148/374] virtio/vsock: fix logic which reduces credit update messages
+Subject: [PATCH 6.1 236/417] ALSA: scarlett2: Add clamp() in scarlett2_mixer_ctl_put()
 Date: Mon, 22 Jan 2024 15:56:44 -0800
-Message-ID: <20240122235749.779577353@linuxfoundation.org>
+Message-ID: <20240122235800.067279969@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-[ Upstream commit 93b80887668226180ea5f5349cc728ca6dc700ab ]
+[ Upstream commit 04f8f053252b86c7583895c962d66747ecdc61b7 ]
 
-Add one more condition for sending credit update during dequeue from
-stream socket: when number of bytes in the rx queue is smaller than
-SO_RCVLOWAT value of the socket. This is actual for non-default value
-of SO_RCVLOWAT (e.g. not 1) - idea is to "kick" peer to continue data
-transmission, because we need at least SO_RCVLOWAT bytes in our rx
-queue to wake up user for reading data (in corner case it is also
-possible to stuck both tx and rx sides, this is why 'Fixes' is used).
+Ensure the value passed to scarlett2_mixer_ctl_put() is between 0 and
+SCARLETT2_MIXER_MAX_VALUE so we don't attempt to access outside
+scarlett2_mixer_values[].
 
-Fixes: b89d882dc9fc ("vsock/virtio: reduce credit update messages")
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
+Link: https://lore.kernel.org/r/3b19fb3da641b587749b85fe1daa1b4e696c0c1b.1703001053.git.g@b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ sound/usb/mixer_scarlett_gen2.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 00e8b60af0f8..b490f832439e 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -355,6 +355,8 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 	struct virtio_vsock_pkt *pkt;
- 	size_t bytes, total = 0;
- 	u32 free_space;
-+	u32 fwd_cnt_delta;
-+	bool low_rx_bytes;
- 	int err = -EFAULT;
+diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
+index eedac43eee7d..1bcb05c73e0a 100644
+--- a/sound/usb/mixer_scarlett_gen2.c
++++ b/sound/usb/mixer_scarlett_gen2.c
+@@ -3361,7 +3361,8 @@ static int scarlett2_mixer_ctl_put(struct snd_kcontrol *kctl,
+ 	mutex_lock(&private->data_mutex);
  
- 	spin_lock_bh(&vvs->rx_lock);
-@@ -386,7 +388,10 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 		}
- 	}
+ 	oval = private->mix[index];
+-	val = ucontrol->value.integer.value[0];
++	val = clamp(ucontrol->value.integer.value[0],
++		    0L, (long)SCARLETT2_MIXER_MAX_VALUE);
+ 	num_mixer_in = port_count[SCARLETT2_PORT_TYPE_MIX][SCARLETT2_PORT_OUT];
+ 	mix_num = index / num_mixer_in;
  
--	free_space = vvs->buf_alloc - (vvs->fwd_cnt - vvs->last_fwd_cnt);
-+	fwd_cnt_delta = vvs->fwd_cnt - vvs->last_fwd_cnt;
-+	free_space = vvs->buf_alloc - fwd_cnt_delta;
-+	low_rx_bytes = (vvs->rx_bytes <
-+			sock_rcvlowat(sk_vsock(vsk), 0, INT_MAX));
- 
- 	spin_unlock_bh(&vvs->rx_lock);
- 
-@@ -396,9 +401,11 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 	 * too high causes extra messages. Too low causes transmitter
- 	 * stalls. As stalls are in theory more expensive than extra
- 	 * messages, we set the limit to a high value. TODO: experiment
--	 * with different values.
-+	 * with different values. Also send credit update message when
-+	 * number of bytes in rx queue is not enough to wake up reader.
- 	 */
--	if (free_space < VIRTIO_VSOCK_MAX_PKT_BUF_SIZE)
-+	if (fwd_cnt_delta &&
-+	    (free_space < VIRTIO_VSOCK_MAX_PKT_BUF_SIZE || low_rx_bytes))
- 		virtio_transport_send_credit_update(vsk);
- 
- 	return total;
 -- 
 2.43.0
 
