@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02FF88380D3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B188380E5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B068828D414
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 512B7B2AFE3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5D013473C;
-	Tue, 23 Jan 2024 01:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFDF12F5AA;
+	Tue, 23 Jan 2024 01:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3gnJdYC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jluBLaig"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9BF133435;
-	Tue, 23 Jan 2024 01:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC19912F59C;
+	Tue, 23 Jan 2024 01:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971914; cv=none; b=U3pWcAT8TWdOz1495+Oz0FYpWlpyCa/JsBh3cEWS0vYTG9JbLYpWpNdmUyx5gLVYGRSZs7EA6eyRDlc6gWPGnciT0MmF+ZOPYpGxwNt1BHg2CRU8JIMz0rqx4u526kSy3QDZUXOkNu7XQSU8OSRL6jaRSD+OEpAoHkN9ypnNTZw=
+	t=1705971765; cv=none; b=KG+DXPLDV6SApY63hJRlHIQ865++3vTeafSm/+558QoAj4XauaRx4yeYawGbo6HdkjiC3UnutLWErPXUxrNQuiT32tLciYdv8W6HxQJ68YaqYohPf3qmMQjT5g1lxXGHclOj+UKdeqkb6W3yOjm5SImFyb6fSf9RiqChtMHitBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971914; c=relaxed/simple;
-	bh=//mPx3NEZtBtuYfMw1gm8HpziCrMEqvhBKLooMBKJOo=;
+	s=arc-20240116; t=1705971765; c=relaxed/simple;
+	bh=5xKjPx/qzWNDCFNjPgn4gERkiJho0x6ZhrNJ1v3FOR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YdV+4vjmxLnRYj2JmO7XBNHjGj9tDkPypryPaDl4pXwWqUShi3fJx0H9xP+0ObetsRlEpaQJ6AjngHbRyKJYAsRGcwnrqJn0P/fUec9+XmKHneaoj7WT9o2pI669BHuYn/u9LntXJPs4vwqCCKzkjLivnoF8PkF+oxfXNjZtEbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3gnJdYC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10B0C433F1;
-	Tue, 23 Jan 2024 01:05:13 +0000 (UTC)
+	 MIME-Version; b=qdhrYRZhk++o75daDLkN702jytRHFn2fgW/hhHlYdIYSQonB/TM034rumczQ+oNfE6/p0aA7Rg5alXFyXkiQSxuV2rUBr1MS8xG1b3XCbG39INNBGoWwF1JkOHFkt2YyPv0eWPzjos6Te5dqVcZumgmJwCHBtG02WMFRmGAeMjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jluBLaig; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE25C433F1;
+	Tue, 23 Jan 2024 01:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971913;
-	bh=//mPx3NEZtBtuYfMw1gm8HpziCrMEqvhBKLooMBKJOo=;
+	s=korg; t=1705971764;
+	bh=5xKjPx/qzWNDCFNjPgn4gERkiJho0x6ZhrNJ1v3FOR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S3gnJdYCJHRdImh35HJrT3I23UOEs8SZk5GEX9LrSl4Ax0IeQJYCvTc9Wc++XWaMT
-	 5PX8WKwlKC1kyDd7sxVAWIGYAkE7W3trzuOQDXhmnm0NgXpgvdmOIjUK9ZrwzRCdQU
-	 SPuYIzS8qPKMZJEA3E2UwPc1a2HJkXE/H/xwXvYk=
+	b=jluBLaigA7t1T8cDIihCm8cKl/ktvCX/8gx7Tzk76B8+B1wrP8dBBai+sxi5cxxtx
+	 q6f6fGesndRtXsnWuR9rBlQvAiQLLE6+Nn2kEH0kHjmoPANIKaRn6DxpxCrNsxtt3+
+	 AUwDX166+vWpox1IDSuq1f4cPnchGatEgu0ImFss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Palus <jpalus@fastmail.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 336/417] power: supply: cw2015: correct time_to_empty units in sysfs
-Date: Mon, 22 Jan 2024 15:58:24 -0800
-Message-ID: <20240122235803.421239095@linuxfoundation.org>
+	Carlos Llamas <cmllamas@google.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH 5.10 199/286] binder: fix unused alloc->free_async_space
+Date: Mon, 22 Jan 2024 15:58:25 -0800
+Message-ID: <20240122235739.776654735@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Palus <jpalus@fastmail.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit f37669119423ca852ca855b24732f25c0737aa57 ]
+commit c6d05e0762ab276102246d24affd1e116a46aa0c upstream.
 
-RRT_ALRT register holds remaining battery time in minutes therefore it
-needs to be scaled accordingly when exposing TIME_TO_EMPTY via sysfs
-expressed in seconds
+Each transaction is associated with a 'struct binder_buffer' that stores
+the metadata about its buffer area. Since commit 74310e06be4d ("android:
+binder: Move buffer out of area shared with user space") this struct is
+no longer embedded within the buffer itself but is instead allocated on
+the heap to prevent userspace access to this driver-exclusive info.
 
-Fixes: b4c7715c10c1 ("power: supply: add CellWise cw2015 fuel gauge driver")
-Signed-off-by: Jan Palus <jpalus@fastmail.com>
-Link: https://lore.kernel.org/r/20231111221704.5579-1-jpalus@fastmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Unfortunately, the space of this struct is still being accounted for in
+the total buffer size calculation, specifically for async transactions.
+This results in an additional 104 bytes added to every async buffer
+request, and this area is never used.
+
+This wasted space can be substantial. If we consider the maximum mmap
+buffer space of SZ_4M, the driver will reserve half of it for async
+transactions, or 0x200000. This area should, in theory, accommodate up
+to 262,144 buffers of the minimum 8-byte size. However, after adding
+the extra 'sizeof(struct binder_buffer)', the total number of buffers
+drops to only 18,724, which is a sad 7.14% of the actual capacity.
+
+This patch fixes the buffer size calculation to enable the utilization
+of the entire async buffer space. This is expected to reduce the number
+of -ENOSPC errors that are seen on the field.
+
+Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-6-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/cw2015_battery.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/android/binder_alloc.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/power/supply/cw2015_battery.c b/drivers/power/supply/cw2015_battery.c
-index 473522b4326a..9d957cf8edf0 100644
---- a/drivers/power/supply/cw2015_battery.c
-+++ b/drivers/power/supply/cw2015_battery.c
-@@ -491,7 +491,7 @@ static int cw_battery_get_property(struct power_supply *psy,
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -359,8 +359,7 @@ static void debug_low_async_space_locked
+ 			continue;
+ 		if (!buffer->async_transaction)
+ 			continue;
+-		total_alloc_size += binder_alloc_buffer_size(alloc, buffer)
+-			+ sizeof(struct binder_buffer);
++		total_alloc_size += binder_alloc_buffer_size(alloc, buffer);
+ 		num_buffers++;
+ 	}
  
- 	case POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW:
- 		if (cw_battery_valid_time_to_empty(cw_bat))
--			val->intval = cw_bat->time_to_empty;
-+			val->intval = cw_bat->time_to_empty * 60;
- 		else
- 			val->intval = 0;
- 		break;
--- 
-2.43.0
-
+@@ -419,8 +418,7 @@ static struct binder_buffer *binder_allo
+ 	/* Pad 0-size buffers so they get assigned unique addresses */
+ 	size = max(size, sizeof(void *));
+ 
+-	if (is_async &&
+-	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
++	if (is_async && alloc->free_async_space < size) {
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
+ 			     "%d: binder_alloc_buf size %zd failed, no async space left\n",
+ 			      alloc->pid, size);
+@@ -527,7 +525,7 @@ static struct binder_buffer *binder_allo
+ 	buffer->extra_buffers_size = extra_buffers_size;
+ 	buffer->pid = pid;
+ 	if (is_async) {
+-		alloc->free_async_space -= size + sizeof(struct binder_buffer);
++		alloc->free_async_space -= size;
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
+ 			     "%d: binder_alloc_buf size %zd async free %zd\n",
+ 			      alloc->pid, size, alloc->free_async_space);
+@@ -663,8 +661,7 @@ static void binder_free_buf_locked(struc
+ 	BUG_ON(buffer->user_data > alloc->buffer + alloc->buffer_size);
+ 
+ 	if (buffer->async_transaction) {
+-		alloc->free_async_space += buffer_size + sizeof(struct binder_buffer);
+-
++		alloc->free_async_space += buffer_size;
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
+ 			     "%d: binder_free_buf size %zd async free %zd\n",
+ 			      alloc->pid, size, alloc->free_async_space);
 
 
 
