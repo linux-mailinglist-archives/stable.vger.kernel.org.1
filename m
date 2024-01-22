@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD65837C66
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC2D8383AB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D07B1C28856
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 715EF1C29E78
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10BDE522C;
-	Tue, 23 Jan 2024 00:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E2E6350A;
+	Tue, 23 Jan 2024 01:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXRA5pzw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="av1sq6Ef"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D483C2D;
-	Tue, 23 Jan 2024 00:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097F4634FB;
+	Tue, 23 Jan 2024 01:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969604; cv=none; b=OfLEKW8nQsgIraTs7K82dJNgLmVktp7I4a2OFsEPkCnoJ4eGLcuEyXSXLWt2ASE/n3fh8J34nRrXjbeSrDqW70+lW4bF/Oi+HJ7ed4Myv2qFuPSAwO0OQ/lT/BNf+AHNsLz6bX7zJ4qodGV+hdh2UvAgsS49+LqZmL5/AWPO/mQ=
+	t=1705975036; cv=none; b=sszIuQTIMZQx4/OFjLfaKIoE8aghqPCZVs8CN/DM5vKU7D5NmjXEZAMHfHbmOjFHK2pEb/6wuyQpL+ubf6VmcPQRcWOeP0Sv1nJqceBWMhKmSi+Ds3nqa0utfMFYsKPp0EqFg6qmdbHVyp8GmhH5i+O28jfQiDc95pFL9YGuVuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969604; c=relaxed/simple;
-	bh=J0BnqyAEPsMC+wGJkii85BZ4EBr6ujxBQKZ8Jylt5SM=;
+	s=arc-20240116; t=1705975036; c=relaxed/simple;
+	bh=5g7kjPo/Olfe8KKmDyUq3QqeJtWd9g7sYvyboGp/3gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gr2c5+ap38CsVH5rhl2lQJksDDCzIme+yi7Wi+Va9wN+1JzVvTIAUDP+kvpqZxUNmSbD6uPShTnjIlkcDoGS6n6RWDl/jVS3hadSwrEL4DnPJw/M8Rd1BnacGPX57N+b0kYNhdrh1gd0rxZbsjWoonCUPsh+udcqFM0r5ZyIV38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXRA5pzw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63383C433C7;
-	Tue, 23 Jan 2024 00:26:44 +0000 (UTC)
+	 MIME-Version; b=ZtSWzmfzW53O+k5bbJfOksf8PMaagheclpVH0pisnK46Bcak6vzBF0g1Cahtfx+oNg+0SWqc+cPxJkZmQMInFCfNGrnxwbKxJO1kYMUm87Fi9wzGYisfK6aMCu60hwzFIe82sh3KyfhEVtX3r6rDZDxSTD75PNE2s6yl+cjR1Nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=av1sq6Ef; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD62C433C7;
+	Tue, 23 Jan 2024 01:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969604;
-	bh=J0BnqyAEPsMC+wGJkii85BZ4EBr6ujxBQKZ8Jylt5SM=;
+	s=korg; t=1705975035;
+	bh=5g7kjPo/Olfe8KKmDyUq3QqeJtWd9g7sYvyboGp/3gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXRA5pzwxkVLvvQ5U/Pa9r4QrtuRYUHDwawmMbXRCYUDLnVcARgpfv9KFNO5NpjwJ
-	 4UsOUkb/t2EHdJk5sFgNTiGmi79lrSCUEJdRzCAO2nYbwu+OGKFg6rU1P52Er+9c4i
-	 MMHA007akOrV9wDh5HYJP8KI0hRcfCJuUl0V2PTY=
+	b=av1sq6EfSAnPMUP+LbDZICYo1V8XfIjdcKIavsJL4VsutJqAeOr7/fd0QgbdVxNJt
+	 uXVXqvjYye3NGT7bQT2QnHEpehmB+L/Fo8d/+zGaF8wwAekIEIngodXF8yda/Xz5p9
+	 8OMV07pr0O1XseriE/HQM1UO+e4Nm8dGZyErY3Mk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 352/641] clk: qcom: dispcc-sm8550: Update disp PLL settings
-Date: Mon, 22 Jan 2024 15:54:16 -0800
-Message-ID: <20240122235828.939820870@linuxfoundation.org>
+Subject: [PATCH 6.6 206/583] Bluetooth: btnxpuart: fix recv_buf() return value
+Date: Mon, 22 Jan 2024 15:54:17 -0800
+Message-ID: <20240122235818.303880287@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-[ Upstream commit febd251d8775c4fb6e4acd6b5d7b0ed707f4611f ]
+[ Upstream commit 94d05394254401e503867c16aff561d3e687dfdc ]
 
-The settings in the driver seem to have been taken from an older
-release. Update them to match the latest values.
+Serdev recv_buf() callback is supposed to return the amount of bytes
+consumed, therefore an int in between 0 and count.
 
-Fixes: 90114ca11476 ("clk: qcom: add SM8550 DISPCC driver")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231218-topic-8550_fixes-v1-8-ce1272d77540@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Do not return a negative number in case of issue, just print an error
+and return count. Before this change, in case of error, the returned
+negative number was internally converted to 0 in ttyport_receive_buf,
+now when the receive buffer is corrupted we return the size of the whole
+received data (`count`). This should allow for better recovery in case
+receiver/transmitter get out of sync if some data is lost.
+
+This fixes a WARN in ttyport_receive_buf().
+
+  Bluetooth: hci0: Frame reassembly failed (-84)
+  ------------[ cut here ]------------
+  serial serial0: receive_buf returns -84 (count = 6)
+  WARNING: CPU: 0 PID: 37 at drivers/tty/serdev/serdev-ttyport.c:37 ttyport_receive_buf+0xd8/0xf8
+  Modules linked in: mwifiex_sdio(+) ...
+  CPU: 0 PID: 37 Comm: kworker/u4:2 Not tainted 6.7.0-rc2-00147-gf1a09972a45a #1
+  Hardware name: Toradex Verdin AM62 WB on Verdin Development Board (DT)
+  Workqueue: events_unbound flush_to_ldisc
+  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : ttyport_receive_buf+0xd8/0xf8
+  lr : ttyport_receive_buf+0xd8/0xf8
+...
+  Call trace:
+   ttyport_receive_buf+0xd8/0xf8
+   flush_to_ldisc+0xbc/0x1a4
+   process_scheduled_works+0x16c/0x28c
+
+Closes: https://lore.kernel.org/all/ZWEIhcUXfutb5SY6@francesco-nb.int.toradex.com/
+Fixes: 689ca16e5232 ("Bluetooth: NXP: Add protocol support for NXP Bluetooth chipsets")
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm8550.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/bluetooth/btnxpuart.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
-index aefa19f3c2c5..0b8f0904b339 100644
---- a/drivers/clk/qcom/dispcc-sm8550.c
-+++ b/drivers/clk/qcom/dispcc-sm8550.c
-@@ -81,6 +81,10 @@ static const struct alpha_pll_config disp_cc_pll0_config = {
- 	.config_ctl_val = 0x20485699,
- 	.config_ctl_hi_val = 0x00182261,
- 	.config_ctl_hi1_val = 0x82aa299c,
-+	.test_ctl_val = 0x00000000,
-+	.test_ctl_hi_val = 0x00000003,
-+	.test_ctl_hi1_val = 0x00009000,
-+	.test_ctl_hi2_val = 0x00000034,
- 	.user_ctl_val = 0x00000000,
- 	.user_ctl_hi_val = 0x00000005,
- };
-@@ -108,6 +112,10 @@ static const struct alpha_pll_config disp_cc_pll1_config = {
- 	.config_ctl_val = 0x20485699,
- 	.config_ctl_hi_val = 0x00182261,
- 	.config_ctl_hi1_val = 0x82aa299c,
-+	.test_ctl_val = 0x00000000,
-+	.test_ctl_hi_val = 0x00000003,
-+	.test_ctl_hi1_val = 0x00009000,
-+	.test_ctl_hi2_val = 0x00000034,
- 	.user_ctl_val = 0x00000000,
- 	.user_ctl_hi_val = 0x00000005,
- };
+diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
+index b7e66b7ac570..951fe3014a3f 100644
+--- a/drivers/bluetooth/btnxpuart.c
++++ b/drivers/bluetooth/btnxpuart.c
+@@ -1276,11 +1276,10 @@ static int btnxpuart_receive_buf(struct serdev_device *serdev, const u8 *data,
+ 	if (IS_ERR(nxpdev->rx_skb)) {
+ 		int err = PTR_ERR(nxpdev->rx_skb);
+ 		/* Safe to ignore out-of-sync bootloader signatures */
+-		if (is_fw_downloading(nxpdev))
+-			return count;
+-		bt_dev_err(nxpdev->hdev, "Frame reassembly failed (%d)", err);
++		if (!is_fw_downloading(nxpdev))
++			bt_dev_err(nxpdev->hdev, "Frame reassembly failed (%d)", err);
+ 		nxpdev->rx_skb = NULL;
+-		return err;
++		return count;
+ 	}
+ 	if (!is_fw_downloading(nxpdev))
+ 		nxpdev->hdev->stat.byte_rx += count;
 -- 
 2.43.0
 
