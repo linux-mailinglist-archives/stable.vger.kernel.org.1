@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B7B1837E9A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 309F88381B7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:12:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DB921F214F9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C450EB24FE1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25605027F;
-	Tue, 23 Jan 2024 00:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE6A1487FE;
+	Tue, 23 Jan 2024 01:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EOUsfSG2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l28ziOwA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B065150278;
-	Tue, 23 Jan 2024 00:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA14148FE8;
+	Tue, 23 Jan 2024 01:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970707; cv=none; b=chg9mDv2Eg/csCnL2y9kH2nvuHZrb57yxF5ie/ZSGQC2hClvKCAEdNuS9Pe44jllxGjmk9YDg3dOT1/oiYG/fjFIXPTlaihc07WafhPvSKUS6MXmu235/aEoRhHqNXdjLa02wo/zmVb0/aap+NpKglSmC8iIGPzSb8D9iHU2fu8=
+	t=1705972084; cv=none; b=tlPQKN9vbPrfw8EyK+bO5pNb/pwchwYFuWhDvtBZ/Ttw+/JH7QsT/YcunQ0TznatnX7hPTk4Sg+/jx/fTU/u/TxqeLH3uMznzHcdlFUFAOCJ48fHQOIBkcyOqL6O1E1ogl2wgGTnGrbaIv9dmXbf0gs8gDrt3ZeL5sQNAY1jO6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970707; c=relaxed/simple;
-	bh=gFl8a8Zw6dNg4e1/eeyQLjfcQCNj3ikoenuBjhJ5Gq4=;
+	s=arc-20240116; t=1705972084; c=relaxed/simple;
+	bh=1aecxd9/pDUq6lX6EUeJV5PCf5lfn3jlxu/s9Va2Gec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JjSCSbbbDPoM1S/MR33RqP8PTVu4UTPf/4ycW1+j4s1C5yDn3V4SrRjt4+q3AIMK087u98TpTLkVMKw4nU1/KA2fknDJseJjpJ7SUnVvZ+FUpCP8PATNtDfqmb2kdrpnh0saCdEwbd70hFIDXtE4DIz0BE7hg6dc0cCJ+bRDT30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EOUsfSG2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BC6C433F1;
-	Tue, 23 Jan 2024 00:45:07 +0000 (UTC)
+	 MIME-Version; b=EABclmU5DaS6p9eyMkaVFUON+Oh6fudWt0weID6MuDCOUOSIm1Kxqf4NVpMUDg/MdNr82Yvr9wCHnVG58whnMSFbGtbvuuapgqvznpLLqGLLYDrU8NSnpvHNrXtAyw8ARU4tGmBrHgfIxvYLrgFTSmk4U5HKumq3WJ4lAkC/5mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l28ziOwA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B081DC43390;
+	Tue, 23 Jan 2024 01:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970707;
-	bh=gFl8a8Zw6dNg4e1/eeyQLjfcQCNj3ikoenuBjhJ5Gq4=;
+	s=korg; t=1705972083;
+	bh=1aecxd9/pDUq6lX6EUeJV5PCf5lfn3jlxu/s9Va2Gec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EOUsfSG2a/IBSp5Wnhh0iA8203w6Fm8VhqtTvgMkQ8CcCYTy3o+ATREPmnseSgJGm
-	 vOJqWTjFwcLvnyrWyzq0mNoyAaiflQIVC+0M8zzhHzbfXajbfnCO88xBScGmV7rz0E
-	 NMSvOTfw3cZx2vVCGFvasm3t4X48UYMV1KaHeYDg=
+	b=l28ziOwAIM0hdgPU1Xm6Q/WlNEkwLQ2xdpDHlmhKz8VsOkrmh6uDvkIgjQGvJZu4M
+	 P+piWoyyPgAi3CjN5+UgeEDykdlrv1BJlxhOuNOWF/od0oobNeRM9zBWKoqmF8u4U2
+	 fEqu9Sst9tJgJFzYU+Mz+I6i7SBFQPnO6cWMONk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/417] bpf: Defer the free of inner map when necessary
+Subject: [PATCH 5.15 008/374] nvme-core: check for too small lba shift
 Date: Mon, 22 Jan 2024 15:54:24 -0800
-Message-ID: <20240122235755.015406171@linuxfoundation.org>
+Message-ID: <20240122235744.917018880@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,143 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 876673364161da50eed6b472d746ef88242b2368 ]
+[ Upstream commit 74fbc88e161424b3b96a22b23a8e3e1edab9d05c ]
 
-When updating or deleting an inner map in map array or map htab, the map
-may still be accessed by non-sleepable program or sleepable program.
-However bpf_map_fd_put_ptr() decreases the ref-counter of the inner map
-directly through bpf_map_put(), if the ref-counter is the last one
-(which is true for most cases), the inner map will be freed by
-ops->map_free() in a kworker. But for now, most .map_free() callbacks
-don't use synchronize_rcu() or its variants to wait for the elapse of a
-RCU grace period, so after the invocation of ops->map_free completes,
-the bpf program which is accessing the inner map may incur
-use-after-free problem.
+The block layer doesn't support logical block sizes smaller than 512
+bytes. The nvme spec doesn't support that small either, but the driver
+isn't checking to make sure the device responded with usable data.
+Failing to catch this will result in a kernel bug, either from a
+division by zero when stacking, or a zero length bio.
 
-Fix the free of inner map by invoking bpf_map_free_deferred() after both
-one RCU grace period and one tasks trace RCU grace period if the inner
-map has been removed from the outer map before. The deferment is
-accomplished by using call_rcu() or call_rcu_tasks_trace() when
-releasing the last ref-counter of bpf map. The newly-added rcu_head
-field in bpf_map shares the same storage space with work field to
-reduce the size of bpf_map.
-
-Fixes: bba1dc0b55ac ("bpf: Remove redundant synchronize_rcu.")
-Fixes: 638e4b825d52 ("bpf: Allows per-cpu maps and map-in-map in sleepable programs")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20231204140425.1480317-5-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h     |  7 ++++++-
- kernel/bpf/map_in_map.c | 11 ++++++++---
- kernel/bpf/syscall.c    | 32 +++++++++++++++++++++++++++-----
- 3 files changed, 41 insertions(+), 9 deletions(-)
+ drivers/nvme/host/core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 47420a973e58..c04a61ffac8a 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -237,7 +237,11 @@ struct bpf_map {
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 98a7649a0f06..8f06e5c1706b 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -1846,9 +1846,10 @@ static void nvme_update_disk_info(struct gendisk *disk,
+ 
+ 	/*
+ 	 * The block layer can't support LBA sizes larger than the page size
+-	 * yet, so catch this early and don't allow block I/O.
++	 * or smaller than a sector size yet, so catch this early and don't
++	 * allow block I/O.
  	 */
- 	atomic64_t refcnt ____cacheline_aligned;
- 	atomic64_t usercnt;
--	struct work_struct work;
-+	/* rcu is used before freeing and work is only used during freeing */
-+	union {
-+		struct work_struct work;
-+		struct rcu_head rcu;
-+	};
- 	struct mutex freeze_mutex;
- 	atomic64_t writecnt;
- 	/* 'Ownership' of program-containing map is claimed by the first program
-@@ -253,6 +257,7 @@ struct bpf_map {
- 	} owner;
- 	bool bypass_spec_v1;
- 	bool frozen; /* write-once; write-protected by freeze_mutex */
-+	bool free_after_mult_rcu_gp;
- 	s64 __percpu *elem_count;
- };
- 
-diff --git a/kernel/bpf/map_in_map.c b/kernel/bpf/map_in_map.c
-index 47ecc4818c93..141f3332038c 100644
---- a/kernel/bpf/map_in_map.c
-+++ b/kernel/bpf/map_in_map.c
-@@ -117,10 +117,15 @@ void *bpf_map_fd_get_ptr(struct bpf_map *map,
- 
- void bpf_map_fd_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
- {
--	/* ptr->ops->map_free() has to go through one
--	 * rcu grace period by itself.
-+	struct bpf_map *inner_map = ptr;
-+
-+	/* The inner map may still be used by both non-sleepable and sleepable
-+	 * bpf program, so free it after one RCU grace period and one tasks
-+	 * trace RCU grace period.
- 	 */
--	bpf_map_put(ptr);
-+	if (need_defer)
-+		WRITE_ONCE(inner_map->free_after_mult_rcu_gp, true);
-+	bpf_map_put(inner_map);
- }
- 
- u32 bpf_map_fd_sys_lookup_elem(void *ptr)
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 0c8b7733573e..f019c0821c70 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -628,6 +628,28 @@ static void bpf_map_put_uref(struct bpf_map *map)
+-	if (ns->lba_shift > PAGE_SHIFT) {
++	if (ns->lba_shift > PAGE_SHIFT || ns->lba_shift < SECTOR_SHIFT) {
+ 		capacity = 0;
+ 		bs = (1 << 9);
  	}
- }
- 
-+static void bpf_map_free_in_work(struct bpf_map *map)
-+{
-+	INIT_WORK(&map->work, bpf_map_free_deferred);
-+	/* Avoid spawning kworkers, since they all might contend
-+	 * for the same mutex like slab_mutex.
-+	 */
-+	queue_work(system_unbound_wq, &map->work);
-+}
-+
-+static void bpf_map_free_rcu_gp(struct rcu_head *rcu)
-+{
-+	bpf_map_free_in_work(container_of(rcu, struct bpf_map, rcu));
-+}
-+
-+static void bpf_map_free_mult_rcu_gp(struct rcu_head *rcu)
-+{
-+	if (rcu_trace_implies_rcu_gp())
-+		bpf_map_free_rcu_gp(rcu);
-+	else
-+		call_rcu(rcu, bpf_map_free_rcu_gp);
-+}
-+
- /* decrement map refcnt and schedule it for freeing via workqueue
-  * (unrelying map implementation ops->map_free() might sleep)
-  */
-@@ -637,11 +659,11 @@ static void __bpf_map_put(struct bpf_map *map, bool do_idr_lock)
- 		/* bpf_map_free_id() must be called first */
- 		bpf_map_free_id(map, do_idr_lock);
- 		btf_put(map->btf);
--		INIT_WORK(&map->work, bpf_map_free_deferred);
--		/* Avoid spawning kworkers, since they all might contend
--		 * for the same mutex like slab_mutex.
--		 */
--		queue_work(system_unbound_wq, &map->work);
-+
-+		if (READ_ONCE(map->free_after_mult_rcu_gp))
-+			call_rcu_tasks_trace(&map->rcu, bpf_map_free_mult_rcu_gp);
-+		else
-+			bpf_map_free_in_work(map);
- 	}
- }
- 
 -- 
 2.43.0
 
