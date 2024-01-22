@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-13209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE462837AF9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3248A837B14
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CE6B1C2691B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:57:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9B331F27F98
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175AA14831D;
-	Tue, 23 Jan 2024 00:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B7314A086;
+	Tue, 23 Jan 2024 00:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUx7QUiA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IKaEi6p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C703E1419A5;
-	Tue, 23 Jan 2024 00:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE63149010;
+	Tue, 23 Jan 2024 00:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969145; cv=none; b=glB6xOsJsDKATLvJQOkBFu6xpCd6+3E3knmAlC2DdI5yOr8csXzmztLsriEEDZZBiFIkn/MXaUGPZcOXfJ4DF5D6RAbeVSBZpQBHPWP/W5Z02MicZB2Lci2JKxhwlrz/I4hgAhdiIXYe+K58e0cjRGcS0pi79mblUhfuVwMVhhA=
+	t=1705969189; cv=none; b=G3kmxFi9TNu2MN5FmNpgMDasIGoaGf8jgCVjqQwJd45YhCvAuVHs5IcXIjgaWZo5Otd8k/NquLrFysQrC5qeQFirm6ninWwzT2c9ZF6vHcJRVIrhudJ0JKN3YSAens92FWMqYSZYZGygHJm3bxqEUjpqRo3+UfNOwv1j16yZiok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969145; c=relaxed/simple;
-	bh=skV+59tLcH9zjg8L5RJJR9iYUu91/ATIqfMYlWZo2f4=;
+	s=arc-20240116; t=1705969189; c=relaxed/simple;
+	bh=uaCuyBsde9+Fb0SXgHVfasv6koX/zoR9apwmp4HDmtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uisvGm9fe7JUBnNNl8n7eIrZocp6k7DBmnElymUKnUhUcfFAx2tsq4sIO6JPHGk4CFfn6hlmocVwvft9EpZRUPTI2hR5jjRwIuv3j+NvsXpHY52lTLzWDNZ6iGxVgBaitWgk7d53DSptKvRkF50mvqL8Q6VDFlrqMNJ6Yi7szAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUx7QUiA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88953C433C7;
-	Tue, 23 Jan 2024 00:19:05 +0000 (UTC)
+	 MIME-Version; b=CbrUfihSYg8F6hzaB+KEW5kEWUFYWYrQZGNkCGtyGh1ft8lplhhHkqlZoBf3x+TNs8jawJjNHRbE5pLppRh12ZfrJiZwmXQTgT9EolBFK9SWbFBI7t54e44ZYfrvf0k3slg4WIZ05f5BDspAnS1jOEiJiAyVUL8NchKB4d5uowA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IKaEi6p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4F0C43399;
+	Tue, 23 Jan 2024 00:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969145;
-	bh=skV+59tLcH9zjg8L5RJJR9iYUu91/ATIqfMYlWZo2f4=;
+	s=korg; t=1705969188;
+	bh=uaCuyBsde9+Fb0SXgHVfasv6koX/zoR9apwmp4HDmtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PUx7QUiAElzZto6pRRQK6akwp8yIOJgQ7GR+u0i8fcFIx+v8f+BFCuptztIFcauzZ
-	 R5QA2LDrmkWCMkxM6uGQ7ANwcVK//11TIqGVm+RRZtnP950bWKTLVjuQR0+MAIOt0U
-	 tPEmb1l7WqHjqIqh4vtiD8pwJARyp9miD/h00wuA=
+	b=2IKaEi6pDASkSdgwhaouPguaICoBshJzwXN7GXwLiwUNfhQCDpQHJKPJwvhGFYE0T
+	 j4O32EVNMol7JjSW8900f+YtrEe69NpqEWCxcTLCPtQKwaB0RZaXIXpE86UyRT05tx
+	 jbEEQ8rkCHJ1jekm9aw/tn10p7cYrA88ghDHkjSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Damian Muszynski <damian.muszynski@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 051/641] crypto: af_alg - Disallow multiple in-flight AIO requests
-Date: Mon, 22 Jan 2024 15:49:15 -0800
-Message-ID: <20240122235819.668192405@linuxfoundation.org>
+Subject: [PATCH 6.7 052/641] crypto: qat - fix error path in add_update_sla()
+Date: Mon, 22 Jan 2024 15:49:16 -0800
+Message-ID: <20240122235819.695634602@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -65,83 +68,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Damian Muszynski <damian.muszynski@intel.com>
 
-[ Upstream commit 67b164a871af1d736f131fd6fe78a610909f06f3 ]
+[ Upstream commit 6627f03c21cb7001ae4dbbfb7a8514516d02331c ]
 
-Having multiple in-flight AIO requests results in unpredictable
-output because they all share the same IV.  Fix this by only allowing
-one request at a time.
+The input argument `sla_in` is a pointer to a structure that contains
+the parameters of the SLA which is being added or updated.
+If this pointer is NULL, the function should return an error as
+the data required for the algorithm is not available.
+By mistake, the logic jumps to the error path which dereferences
+the pointer.
 
-Fixes: 83094e5e9e49 ("crypto: af_alg - add async support to algif_aead")
-Fixes: a596999b7ddf ("crypto: algif - change algif_skcipher to be asynchronous")
+This results in a warnings reported by the static analyzer Smatch when
+executed without a database:
+
+    drivers/crypto/intel/qat/qat_common/adf_rl.c:871 add_update_sla()
+    error: we previously assumed 'sla_in' could be null (see line 812)
+
+This issue was not found in internal testing as the pointer cannot be
+NULL. The function add_update_sla() is only called (indirectly) by
+the rate limiting sysfs interface implementation in adf_sysfs_rl.c
+which ensures that the data structure is allocated and valid. This is
+also proven by the fact that Smatch executed with a database does not
+report such error.
+
+Fix it by returning with error if the pointer `sla_in` is NULL.
+
+Fixes: d9fb8408376e ("crypto: qat - add rate limiting feature to qat_4xxx")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Damian Muszynski <damian.muszynski@intel.com>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/af_alg.c         | 14 +++++++++++++-
- include/crypto/if_alg.h |  3 +++
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/crypto/intel/qat/qat_common/adf_rl.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index ea6fb8e89d06..68cc9290cabe 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -1116,9 +1116,13 @@ EXPORT_SYMBOL_GPL(af_alg_sendmsg);
- void af_alg_free_resources(struct af_alg_async_req *areq)
- {
- 	struct sock *sk = areq->sk;
-+	struct af_alg_ctx *ctx;
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_rl.c b/drivers/crypto/intel/qat/qat_common/adf_rl.c
+index 86e3e2152b1b..f2de3cd7d05d 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_rl.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_rl.c
+@@ -812,8 +812,7 @@ static int add_update_sla(struct adf_accel_dev *accel_dev,
+ 	if (!sla_in) {
+ 		dev_warn(&GET_DEV(accel_dev),
+ 			 "SLA input data pointer is missing\n");
+-		ret = -EFAULT;
+-		goto ret_err;
++		return -EFAULT;
+ 	}
  
- 	af_alg_free_areq_sgls(areq);
- 	sock_kfree_s(sk, areq, areq->areqlen);
-+
-+	ctx = alg_sk(sk)->private;
-+	ctx->inflight = false;
- }
- EXPORT_SYMBOL_GPL(af_alg_free_resources);
- 
-@@ -1188,11 +1192,19 @@ EXPORT_SYMBOL_GPL(af_alg_poll);
- struct af_alg_async_req *af_alg_alloc_areq(struct sock *sk,
- 					   unsigned int areqlen)
- {
--	struct af_alg_async_req *areq = sock_kmalloc(sk, areqlen, GFP_KERNEL);
-+	struct af_alg_ctx *ctx = alg_sk(sk)->private;
-+	struct af_alg_async_req *areq;
-+
-+	/* Only one AIO request can be in flight. */
-+	if (ctx->inflight)
-+		return ERR_PTR(-EBUSY);
- 
-+	areq = sock_kmalloc(sk, areqlen, GFP_KERNEL);
- 	if (unlikely(!areq))
- 		return ERR_PTR(-ENOMEM);
- 
-+	ctx->inflight = true;
-+
- 	areq->areqlen = areqlen;
- 	areq->sk = sk;
- 	areq->first_rsgl.sgl.sgt.sgl = areq->first_rsgl.sgl.sgl;
-diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
-index ef8ce86b1f78..08b803a4fcde 100644
---- a/include/crypto/if_alg.h
-+++ b/include/crypto/if_alg.h
-@@ -136,6 +136,7 @@ struct af_alg_async_req {
-  *			recvmsg is invoked.
-  * @init:		True if metadata has been sent.
-  * @len:		Length of memory allocated for this data structure.
-+ * @inflight:		Non-zero when AIO requests are in flight.
-  */
- struct af_alg_ctx {
- 	struct list_head tsgl_list;
-@@ -154,6 +155,8 @@ struct af_alg_ctx {
- 	bool init;
- 
- 	unsigned int len;
-+
-+	unsigned int inflight;
- };
- 
- int af_alg_register_type(const struct af_alg_type *type);
+ 	/* Input validation */
 -- 
 2.43.0
 
