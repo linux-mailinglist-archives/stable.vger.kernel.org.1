@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DA2837D3E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1C3837F64
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9AEC1F29503
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EBA31F29EED
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AAC524AB;
-	Tue, 23 Jan 2024 00:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C50627FE;
+	Tue, 23 Jan 2024 00:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbbL9mba"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIxXh3o2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8372648CCD;
-	Tue, 23 Jan 2024 00:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FC0627FB;
+	Tue, 23 Jan 2024 00:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969859; cv=none; b=NoAZm5CkezIC9S3/WGOTeuVLpooLUx/rFPnkcX5O0Adr5B1hOfowuMUXi5//yuqXQv2ptQBbLnQiYj9wX7ADFjFlD5duGSIyRdJVToFLjWepLJqTc4bKsPb1kZ7cxX9zEL/0+NYpe8P48qL0wfSCqByjUjELwqwcuvayG6bzJyE=
+	t=1705971103; cv=none; b=c6Xh3w3NYMHwPlQDI0b3qQnB5zBEB0+Wez+gRHJjt38Pnt6t4oxfYEuQbr4YW+YUnOvyAIV5EsH/OTSs2KkSZ7PI8hlNaYn57GfXamCVAL7+u+4llJoeIxRVQ+TirvewwKaV0wqhgsYyHOK9GK/gkwigXUax5Jey+FYa+XyNj7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969859; c=relaxed/simple;
-	bh=MlQsXGJzNiSfhQDSceC9dHDeEXezFYRXoGSnyqYm7OQ=;
+	s=arc-20240116; t=1705971103; c=relaxed/simple;
+	bh=mtrWedbnCErhmeoIRnSgqj5Uj5IMRI3HyL6gZ6NjHa0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TczoF+WUWXfqBQWb4UYo/bQ5mhX1DGEOiXvjqfNliIah6nIk0UlY8cBjtUDckxAvaV3Cyx8ZRyYdB2HuP2N0Qh/f3CkuWeKVViS+fY227KSSWvyePJvUnLiUB5diwvcNFOg/GnOT5pLfoN3EGUrSfpfOu9s5/DyfYSr37OSRDSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbbL9mba; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F0F1C43390;
-	Tue, 23 Jan 2024 00:30:59 +0000 (UTC)
+	 MIME-Version; b=CHTEDaxx9L6Xgpva2xMdPa9XYvIlmRgcLfbA5tWExfwjzMpzh0PzKR5x196j0pAsDfAC7zn8aB/sLbmehoMagEWAAjCAVKuWkhoDD1owBH0rV9gONXaomLvl+ydHekSXjZF1BQUH7AKvh8bgjTFBt7JUD8ndYI4uu3IbyPBzy4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIxXh3o2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961C6C43390;
+	Tue, 23 Jan 2024 00:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969859;
-	bh=MlQsXGJzNiSfhQDSceC9dHDeEXezFYRXoGSnyqYm7OQ=;
+	s=korg; t=1705971102;
+	bh=mtrWedbnCErhmeoIRnSgqj5Uj5IMRI3HyL6gZ6NjHa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fbbL9mbac/H8yqtqksfkmjtB6UTOs+7Nz5/cgjQwGXXO5PysHGStsIVeOXh9siyCZ
-	 dhsYCpo3uYrBtNTn4fkTvIGfVWegxAj22NquL0KhjekWfO+trN29NQ8fP7tMxoLgNe
-	 cZoUKmQdxHvWl/knp5mLWKQ7TDkk7jZWppZpjqJI=
+	b=IIxXh3o2VzACwwWDYs22P9M/SXJ/rA91d45WtRJed8zZsikCA8kVTya062sd2ixv0
+	 acLDOKblBiKqyJAIepYM+1ZBDvwSkG2ewGT2Fejd/Dtc15UULksD2iitsGlYSkcQhP
+	 bmE0wEmPwHpDK0ubbwN67UUSzFFgP2k9mwiwk3WY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Neeraj Upadhyay (AMD)" <neeraj.iitr10@gmail.com>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 490/641] srcu: Use try-lock lockdep annotation for NMI-safe access.
+Subject: [PATCH 5.10 088/286] crypto: sahara - fix cbc selftest failure
 Date: Mon, 22 Jan 2024 15:56:34 -0800
-Message-ID: <20240122235833.405376758@linuxfoundation.org>
+Message-ID: <20240122235735.423061701@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 3c6b0c1c28184038d90dffe8eb542bedcb8ccf98 ]
+[ Upstream commit 9f10bc28c0fb676ae58aa3bfa358db8f5de124bb ]
 
-It is claimed that srcu_read_lock_nmisafe() NMI-safe. However it
-triggers a lockdep if used from NMI because lockdep expects a deadlock
-since nothing disables NMIs while the lock is acquired.
+The kernel crypto API requires that all CBC implementations update the IV
+buffer to contain the last ciphertext block.
 
-This is because commit f0f44752f5f61 ("rcu: Annotate SRCU's update-side
-lockdep dependencies") annotates synchronize_srcu() as a write lock
-usage. This helps to detect a deadlocks such as
-	srcu_read_lock();
-	synchronize_srcu();
-	srcu_read_unlock();
+This fixes the following cbc selftest error:
+alg: skcipher: sahara-cbc-aes encryption test failed (wrong output IV) on
+test vector 0, cfg="in-place (one sglist)"
 
-The side effect is that the lock srcu_struct now has a USED usage in normal
-contexts, so it conflicts with a USED_READ usage in NMI. But this shouldn't
-cause a real deadlock because the write lock usage from synchronize_srcu()
-is a fake one and only used for read/write deadlock detection.
-
-Use a try-lock annotation for srcu_read_lock_nmisafe() to avoid lockdep
-complains if used from NMI.
-
-Fixes: f0f44752f5f6 ("rcu: Annotate SRCU's update-side lockdep dependencies")
-Link: https://lore.kernel.org/r/20230927160231.XRCDDSK4@linutronix.de
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.iitr10@gmail.com>
+Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rcupdate.h | 6 ++++++
- include/linux/srcu.h     | 2 +-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ drivers/crypto/sahara.c | 33 +++++++++++++++++++++++++++++++--
+ 1 file changed, 31 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index f7206b2623c9..31d523c4e089 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -301,6 +301,11 @@ static inline void rcu_lock_acquire(struct lockdep_map *map)
- 	lock_acquire(map, 0, 0, 2, 0, NULL, _THIS_IP_);
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 0ae95767bb76..0b6e63a763ca 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -148,6 +148,7 @@ struct sahara_ctx {
+ 
+ struct sahara_aes_reqctx {
+ 	unsigned long mode;
++	u8 iv_out[AES_BLOCK_SIZE];
+ 	struct skcipher_request fallback_req;	// keep at the end
+ };
+ 
+@@ -541,8 +542,24 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
+ 	return -EINVAL;
  }
  
-+static inline void rcu_try_lock_acquire(struct lockdep_map *map)
++static void sahara_aes_cbc_update_iv(struct skcipher_request *req)
 +{
-+	lock_acquire(map, 0, 1, 2, 0, NULL, _THIS_IP_);
++	struct crypto_skcipher *skcipher = crypto_skcipher_reqtfm(req);
++	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
++	unsigned int ivsize = crypto_skcipher_ivsize(skcipher);
++
++	/* Update IV buffer to contain the last ciphertext block */
++	if (rctx->mode & FLAGS_ENCRYPT) {
++		sg_pcopy_to_buffer(req->dst, sg_nents(req->dst), req->iv,
++				   ivsize, req->cryptlen - ivsize);
++	} else {
++		memcpy(req->iv, rctx->iv_out, ivsize);
++	}
 +}
 +
- static inline void rcu_lock_release(struct lockdep_map *map)
+ static int sahara_aes_process(struct skcipher_request *req)
  {
- 	lock_release(map, _THIS_IP_);
-@@ -315,6 +320,7 @@ int rcu_read_lock_any_held(void);
- #else /* #ifdef CONFIG_DEBUG_LOCK_ALLOC */
++	struct crypto_skcipher *skcipher = crypto_skcipher_reqtfm(req);
+ 	struct sahara_dev *dev = dev_ptr;
+ 	struct sahara_ctx *ctx;
+ 	struct sahara_aes_reqctx *rctx;
+@@ -564,8 +581,17 @@ static int sahara_aes_process(struct skcipher_request *req)
+ 	rctx->mode &= FLAGS_MODE_MASK;
+ 	dev->flags = (dev->flags & ~FLAGS_MODE_MASK) | rctx->mode;
  
- # define rcu_lock_acquire(a)		do { } while (0)
-+# define rcu_try_lock_acquire(a)	do { } while (0)
- # define rcu_lock_release(a)		do { } while (0)
+-	if ((dev->flags & FLAGS_CBC) && req->iv)
+-		memcpy(dev->iv_base, req->iv, AES_KEYSIZE_128);
++	if ((dev->flags & FLAGS_CBC) && req->iv) {
++		unsigned int ivsize = crypto_skcipher_ivsize(skcipher);
++
++		memcpy(dev->iv_base, req->iv, ivsize);
++
++		if (!(dev->flags & FLAGS_ENCRYPT)) {
++			sg_pcopy_to_buffer(req->src, sg_nents(req->src),
++					   rctx->iv_out, ivsize,
++					   req->cryptlen - ivsize);
++		}
++	}
  
- static inline int rcu_read_lock_held(void)
-diff --git a/include/linux/srcu.h b/include/linux/srcu.h
-index 127ef3b2e607..236610e4a8fa 100644
---- a/include/linux/srcu.h
-+++ b/include/linux/srcu.h
-@@ -229,7 +229,7 @@ static inline int srcu_read_lock_nmisafe(struct srcu_struct *ssp) __acquires(ssp
+ 	/* assign new context to device */
+ 	dev->ctx = ctx;
+@@ -588,6 +614,9 @@ static int sahara_aes_process(struct skcipher_request *req)
+ 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
+ 		DMA_TO_DEVICE);
  
- 	srcu_check_nmi_safety(ssp, true);
- 	retval = __srcu_read_lock_nmisafe(ssp);
--	rcu_lock_acquire(&ssp->dep_map);
-+	rcu_try_lock_acquire(&ssp->dep_map);
- 	return retval;
++	if ((dev->flags & FLAGS_CBC) && req->iv)
++		sahara_aes_cbc_update_iv(req);
++
+ 	return 0;
  }
  
 -- 
