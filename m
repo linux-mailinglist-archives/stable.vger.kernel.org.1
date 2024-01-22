@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-15150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FBD883841B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 446568381E3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:15:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C30841C297DE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C7C5B2D8C3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB0467E68;
-	Tue, 23 Jan 2024 02:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FAE413BEA8;
+	Tue, 23 Jan 2024 01:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYSf9IOK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHa+S9ng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1FD6775D;
-	Tue, 23 Jan 2024 02:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F649137C55;
+	Tue, 23 Jan 2024 01:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975303; cv=none; b=RwlswgoKWlG2Sc9ckHLA43HYt9G5Zy6bUO9+UEhR7X+1nBXHnDsdTcIyUZvXNTZD8dWLwfg0yS7gI+PW1wVVKy3WqPVy4mtCRx4auFIFbKQ0GwYctXmGtH40uPVQeR/rew2QJLnfT0yYKDnV3fjsYA9IyU1QJc+/h9qmtwKp/WE=
+	t=1705972111; cv=none; b=Z869+hsLZqMl5BOlIRHQXUmjxxNwTFn/HAFETbX/I8fjwmYDID/5kXvaUzymndR1KRS8ZqTT88Kxq1t+XGkjfU0aM8v2YDnWj0mnqzWshBfswECHzv9Z0Xc92PgQ2+ApCrRKYFegop2bY3mrFRPyyVZJ1bYRTfejl11nxskdVxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975303; c=relaxed/simple;
-	bh=ZWzszK4miFrUFCF2ZNRzGbgEUsXaxEXOvVKEQVYda4M=;
+	s=arc-20240116; t=1705972111; c=relaxed/simple;
+	bh=8scI/XzvhUNGB6fY4QDuCO5GJ4g2YNOBjg/HtFD8hz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cFb3qqUfLE4ACRwJ8vohx9BpOezRIZzMUcxUyBCb6PL03KsDahwAZSlfELT3Ud7FtWwaI2T8fxBBDEy96R6FTuQyGcsmoL6hHwYQ5/jyGTxk5qU0qSIkG+ZTJigTUI24Tg3Ba/An6ZeodMtrfC8kADnvGTBeuBIMUge9rTvILLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYSf9IOK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 422F7C43390;
-	Tue, 23 Jan 2024 02:01:43 +0000 (UTC)
+	 MIME-Version; b=UeZ0gRIERgRBX78+MDYXY6f8NFGlxMGjvLdo64SN4SwI3cTi1K8PnJqDcEFUbHba/vCVuj4y2VDjucT7h/lAWlzPHNtBW9FlKJsdzh6ybzB/2Ksq3pESwXfcqYuR09R4qt6GvzeV2AZw8/293tDNrpgwx7TPpaaUmnYsh6OSbEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHa+S9ng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C519BC433C7;
+	Tue, 23 Jan 2024 01:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975303;
-	bh=ZWzszK4miFrUFCF2ZNRzGbgEUsXaxEXOvVKEQVYda4M=;
+	s=korg; t=1705972110;
+	bh=8scI/XzvhUNGB6fY4QDuCO5GJ4g2YNOBjg/HtFD8hz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yYSf9IOKqAkBv4MrimFqWPUyPRvCtBf5IXT5m/dGpcrxXyyR4yMmbA3sNivPnKjuw
-	 IL6vP7fm1iX6aQ0cHwbfEvbVPsRQt6MQBx0i3vjtfwDtgKdQiTeTQ4Occ+xdT2qvn1
-	 fXmN47r5H7cnvTASvMtQgIbecVihtEWtKb0Hainw=
+	b=OHa+S9ng9HF9B+Pd4t6CkQJMjgs4zm+3dfF7B7zgBnEN47SW06Xpi2zE/s1JTNcCC
+	 PJUrnFG0fNVEu2b3sKDK+pPerKVK4CdDWw7LkWB8YDYERKqbHBp/csFjV6yVKBez63
+	 xVH29g91Zie7mBYCf8D5Zek1AxMMbYMKJSAwY+tA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Jensen Huang <jensenhuang@friendlyarm.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 250/583] drm/msm/mdp4: flush vblank event on disable
+Subject: [PATCH 5.15 045/374] i2c: rk3x: fix potential spinlock recursion on poll
 Date: Mon, 22 Jan 2024 15:55:01 -0800
-Message-ID: <20240122235819.653093161@linuxfoundation.org>
+Message-ID: <20240122235746.185788225@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Jensen Huang <jensenhuang@friendlyarm.com>
 
-[ Upstream commit c6721b3c6423d8a348ae885a0f4c85e14f9bf85c ]
+[ Upstream commit 19cde9c92b8d3b7ee555d0da3bcb0232d3a784f4 ]
 
-Flush queued events when disabling the crtc. This avoids timeouts when
-we come back and wait for dependencies (like the previous frame's
-flip_done).
+Possible deadlock scenario (on reboot):
+rk3x_i2c_xfer_common(polling)
+    -> rk3x_i2c_wait_xfer_poll()
+        -> rk3x_i2c_irq(0, i2c);
+            --> spin_lock(&i2c->lock);
+            ...
+        <rk3x i2c interrupt>
+        -> rk3x_i2c_irq(0, i2c);
+            --> spin_lock(&i2c->lock); (deadlock here)
 
-Fixes: c8afe684c95c ("drm/msm: basic KMS driver for snapdragon")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/569127/
-Link: https://lore.kernel.org/r/20231127215401.4064128-1-dmitry.baryshkov@linaro.org
+Store the IRQ number and disable/enable it around the polling transfer.
+This patch has been tested on NanoPC-T4.
+
+Signed-off-by: Jensen Huang <jensenhuang@friendlyarm.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/i2c/busses/i2c-rk3x.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c b/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
-index 169f9de4a12a..3100957225a7 100644
---- a/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
-+++ b/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
-@@ -269,6 +269,7 @@ static void mdp4_crtc_atomic_disable(struct drm_crtc *crtc,
- {
- 	struct mdp4_crtc *mdp4_crtc = to_mdp4_crtc(crtc);
- 	struct mdp4_kms *mdp4_kms = get_kms(crtc);
-+	unsigned long flags;
+diff --git a/drivers/i2c/busses/i2c-rk3x.c b/drivers/i2c/busses/i2c-rk3x.c
+index 13c14eb175e9..6abcf975a2db 100644
+--- a/drivers/i2c/busses/i2c-rk3x.c
++++ b/drivers/i2c/busses/i2c-rk3x.c
+@@ -178,6 +178,7 @@ struct rk3x_i2c_soc_data {
+  * @clk: function clk for rk3399 or function & Bus clks for others
+  * @pclk: Bus clk for rk3399
+  * @clk_rate_nb: i2c clk rate change notify
++ * @irq: irq number
+  * @t: I2C known timing information
+  * @lock: spinlock for the i2c bus
+  * @wait: the waitqueue to wait for i2c transfer
+@@ -200,6 +201,7 @@ struct rk3x_i2c {
+ 	struct clk *clk;
+ 	struct clk *pclk;
+ 	struct notifier_block clk_rate_nb;
++	int irq;
  
- 	DBG("%s", mdp4_crtc->name);
+ 	/* Settings */
+ 	struct i2c_timings t;
+@@ -1087,13 +1089,18 @@ static int rk3x_i2c_xfer_common(struct i2c_adapter *adap,
  
-@@ -281,6 +282,14 @@ static void mdp4_crtc_atomic_disable(struct drm_crtc *crtc,
- 	mdp_irq_unregister(&mdp4_kms->base, &mdp4_crtc->err);
- 	mdp4_disable(mdp4_kms);
+ 		spin_unlock_irqrestore(&i2c->lock, flags);
  
-+	if (crtc->state->event && !crtc->state->active) {
-+		WARN_ON(mdp4_crtc->event);
-+		spin_lock_irqsave(&mdp4_kms->dev->event_lock, flags);
-+		drm_crtc_send_vblank_event(crtc, crtc->state->event);
-+		crtc->state->event = NULL;
-+		spin_unlock_irqrestore(&mdp4_kms->dev->event_lock, flags);
-+	}
+-		rk3x_i2c_start(i2c);
+-
+ 		if (!polling) {
++			rk3x_i2c_start(i2c);
 +
- 	mdp4_crtc->enabled = false;
- }
+ 			timeout = wait_event_timeout(i2c->wait, !i2c->busy,
+ 						     msecs_to_jiffies(WAIT_TIMEOUT));
+ 		} else {
++			disable_irq(i2c->irq);
++			rk3x_i2c_start(i2c);
++
+ 			timeout = rk3x_i2c_wait_xfer_poll(i2c);
++
++			enable_irq(i2c->irq);
+ 		}
  
+ 		spin_lock_irqsave(&i2c->lock, flags);
+@@ -1301,6 +1308,8 @@ static int rk3x_i2c_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
++	i2c->irq = irq;
++
+ 	platform_set_drvdata(pdev, i2c);
+ 
+ 	if (i2c->soc_data->calc_timings == rk3x_i2c_v0_calc_timings) {
 -- 
 2.43.0
 
