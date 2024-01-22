@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-13914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CFF6837EA8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE7AC837C98
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:13:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57ACE28FCD6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F28AC1C28AEE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F291A60EEF;
-	Tue, 23 Jan 2024 00:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30BE145B20;
+	Tue, 23 Jan 2024 00:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgsQHogG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbraETlj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B074560DE7;
-	Tue, 23 Jan 2024 00:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8244E136658;
+	Tue, 23 Jan 2024 00:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970744; cv=none; b=J5ECxmTQwZ2RxRAi9zWRl4bNu1gwy8PbZG0lEtSFxHq240RsNNUECucJsSeth1wNZ1zpTYXbTOA0wfVuSoxFTS0okgNaPAKH/QMTPuaompnKRCd2FJeaTvZviyZjXurOCIOObCD0FsC8izWQ0Nr5GgKZnhVhX03iohP0sWywUO0=
+	t=1705969682; cv=none; b=E8VMHv6ChQIJi19tk6DjcA/Yk4h+pRODlAE2MPZ9ElP3ZyOmPgsVBttD0o3LiVAmlnMnko69uAkzYm5o9LAWSZvJfzzrTewUj54iwiXql3cclSmHTaWGeZNW77a63P7H3DuH8IuvNCuK436mJHFAobbYaEa+JmPSMPhqvRqy2sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970744; c=relaxed/simple;
-	bh=OFFOXl4+ej/hOSqxefk+W3Yd39WGpFOhrEx8lKz5ZMk=;
+	s=arc-20240116; t=1705969682; c=relaxed/simple;
+	bh=gHJQp4oGShQdNnuPGMYK6zjXq3yFGI+kXzRWyVpzgtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RloLgBTJ/sbZk6tlxucpu0fA5LEulHZ1/r1/eDqQhM+MeWLeqVuQ2hMMBBYCwugcPh4YkNr1AFPOaiQefHAF+F4eIRusiPOOqlfGWYNB5zISppPF3DvDeXU87UUsjYf/wQIiY3XUNQC0i/nU8niUrUDL0VFQvpx2xr/TsknZjEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgsQHogG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE38AC433C7;
-	Tue, 23 Jan 2024 00:45:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MlbfoXQ6RG3zdTJ8K3+OMEgb7KeDDQVVVR1yVF8Xqvg4nHWiXM3wO4jrOAKyXBCokfE9HqSb1MzuRVVO7Osj4TnmyQAJKx6y4epzN9IdY793D1N/qnxtmfqvrT71JLp/HIrf8FBLHnrOszqcWMqWVuHdGsUr0bya+jP0Gayxxwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zbraETlj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EA3C43390;
+	Tue, 23 Jan 2024 00:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970744;
-	bh=OFFOXl4+ej/hOSqxefk+W3Yd39WGpFOhrEx8lKz5ZMk=;
+	s=korg; t=1705969682;
+	bh=gHJQp4oGShQdNnuPGMYK6zjXq3yFGI+kXzRWyVpzgtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EgsQHogGl/kF/L2sYbUj7FKE8G/LGgxkogU3SeJ+twLjzkaN8r8qCQR0gt6MMdqGz
-	 St4oEOVhpgToVUCQ7o8n+cUEupc+ej8uRy2kEbzFE/AR+5d1ygdnTho7uVQLsGdXeE
-	 2EFW1RKW9XZsMzrcxwfHBBCJCFPN/359MW+k/zUw=
+	b=zbraETljlF8LRCFAVXHQcodo2uY81zrVLC8sXOSxNzUKB7Cet3TxfcIMNX6jIAyM/
+	 Hq4/AXTBaJrVDaD62/PsGw2dt74AjE5ZATKiv0V9Ssj8FOkU2szHM4DL0rLPE1kXj1
+	 PhqD5mq9DYmtn87ecTThysqLfsFBmuQ//loP5mTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Nia Espera <nespera@igalia.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/417] arm64: dts: qcom: sm8350: Fix DMA0 address
-Date: Mon, 22 Jan 2024 15:54:30 -0800
-Message-ID: <20240122235755.229456864@linuxfoundation.org>
+Subject: [PATCH 6.7 367/641] drm/amdkfd: Confirm list is non-empty before utilizing list_first_entry in kfd_topology.c
+Date: Mon, 22 Jan 2024 15:54:31 -0800
+Message-ID: <20240122235829.436187542@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +64,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nia Espera <nespera@igalia.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 01a9e9eb6cdbce175ddea3cbe1163daed6d54344 ]
+[ Upstream commit 499839eca34ad62d43025ec0b46b80e77065f6d8 ]
 
-DMA0 node downstream is specified at 0x900000, so fix the typo. Without
-this, enabling any i2c node using DMA0 causes a hang.
+Before using list_first_entry, make sure to check that list is not
+empty, if list is empty return -ENODATA.
 
-Fixes: bc08fbf49bc8 ("arm64: dts: qcom: sm8350: Define GPI DMA engines")
-Fixes: 41d6bca799b3 ("arm64: dts: qcom: sm8350: correct DMA controller unit address")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Nia Espera <nespera@igalia.com>
-Link: https://lore.kernel.org/r/20231111-nia-sm8350-for-upstream-v4-2-3a638b02eea5@igalia.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1347 kfd_create_indirect_link_prop() warn: can 'gpu_link' even be NULL?
+drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1428 kfd_add_peer_prop() warn: can 'iolink1' even be NULL?
+drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1433 kfd_add_peer_prop() warn: can 'iolink2' even be NULL?
+
+Fixes: 0f28cca87e9a ("drm/amdkfd: Extend KFD device topology to surface peer-to-peer links")
+Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Suggested-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-index 793768a2c9e1..888bf4cd73c3 100644
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -903,9 +903,9 @@ spi19: spi@894000 {
- 			};
- 		};
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+index 057284bf50bb..58d775a0668d 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+@@ -1342,10 +1342,11 @@ static int kfd_create_indirect_link_prop(struct kfd_topology_device *kdev, int g
+ 		num_cpu++;
+ 	}
  
--		gpi_dma0: dma-controller@9800000 {
-+		gpi_dma0: dma-controller@900000 {
- 			compatible = "qcom,sm8350-gpi-dma", "qcom,sm6350-gpi-dma";
--			reg = <0 0x09800000 0 0x60000>;
-+			reg = <0 0x00900000 0 0x60000>;
- 			interrupts = <GIC_SPI 244 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 245 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 246 IRQ_TYPE_LEVEL_HIGH>,
++	if (list_empty(&kdev->io_link_props))
++		return -ENODATA;
++
+ 	gpu_link = list_first_entry(&kdev->io_link_props,
+-					struct kfd_iolink_properties, list);
+-	if (!gpu_link)
+-		return -ENOMEM;
++				    struct kfd_iolink_properties, list);
+ 
+ 	for (i = 0; i < num_cpu; i++) {
+ 		/* CPU <--> GPU */
+@@ -1423,15 +1424,17 @@ static int kfd_add_peer_prop(struct kfd_topology_device *kdev,
+ 				peer->gpu->adev))
+ 		return ret;
+ 
++	if (list_empty(&kdev->io_link_props))
++		return -ENODATA;
++
+ 	iolink1 = list_first_entry(&kdev->io_link_props,
+-							struct kfd_iolink_properties, list);
+-	if (!iolink1)
+-		return -ENOMEM;
++				   struct kfd_iolink_properties, list);
++
++	if (list_empty(&peer->io_link_props))
++		return -ENODATA;
+ 
+ 	iolink2 = list_first_entry(&peer->io_link_props,
+-							struct kfd_iolink_properties, list);
+-	if (!iolink2)
+-		return -ENOMEM;
++				   struct kfd_iolink_properties, list);
+ 
+ 	props = kfd_alloc_struct(props);
+ 	if (!props)
 -- 
 2.43.0
 
