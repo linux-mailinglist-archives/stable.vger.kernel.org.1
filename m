@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D01F883828F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7CC683801F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F1381C27D2B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05A3D1C2950F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00305C91F;
-	Tue, 23 Jan 2024 01:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89C566B29;
+	Tue, 23 Jan 2024 00:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QeWQaida"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jodx5Hcw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965CB5D756;
-	Tue, 23 Jan 2024 01:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691D8664C3;
+	Tue, 23 Jan 2024 00:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974379; cv=none; b=GMQQmOjFQt4UVRWYA1jZabs1NmNXhfSEme71+oKbssBnFbjZJDIm8GXk4PXI6WqI6NsTFwLpEyzJgvMYHut9ettJGnA+t5rwSKLRBojJTuZNn+hs0yEJONq+Rbxh745FS0WSUH6TkJWUKKnFSB450nu1z+jBasV0I2JBn9dLtKc=
+	t=1705971557; cv=none; b=etsTsrSctK+EPhZEXEkr1RVu0LHZWCubH1mOB7HbKrIZ8Emb9ddJAtGSrmNb+pYG+3oXqz9dtJPYy5TzAAgcD4j6Wf9spFS3781sw+x3M7h1MRgIWZrxu5LUB/xTEk8BI1+UVdq16jEGWYaSv+YYepC+4G4pNlK6Jn0M/U00aH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974379; c=relaxed/simple;
-	bh=Qc1uHyfphXvWwaNGdLuTqfXeCfHiO0q+YNyTvOkrrx0=;
+	s=arc-20240116; t=1705971557; c=relaxed/simple;
+	bh=UbXDQztOKQYSffYz0U8IfJgBbpEbYGSMgpBGRXEQ2yQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eB1fiuwi7JoGack/5NktOu+OuCdMIpkhP5G/9aDkihO7AmmUZ+4WuUaYOY8RoD/GchRGqypYhfHhVzvBVmzsWEsJ90q4cblCJmZk0lFcdaZ5QRUKLeNOEwwilXSqna7kQM37Crl+3Ww/K9gjV3Dz4WYAuElhktM1vheOFVCl6SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeWQaida; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579C1C43399;
-	Tue, 23 Jan 2024 01:46:19 +0000 (UTC)
+	 MIME-Version; b=aNWpRS01hdJwZBRFELFEk2DbkDH8MZAeR+SWvJHKKvnwi4sD+VTXcuSrdYWPNMyPf90+H7/OEmLsG/M7O6V1YD5Edk2WpzC9J/6a7Ymd3zDVQJnKq+SkqQ8E6ZztzBLyBy/JRN2189WgD0CX3fiRcJaNF1H5t+dRVT4ZjiJc10c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jodx5Hcw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58B0C433C7;
+	Tue, 23 Jan 2024 00:59:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974379;
-	bh=Qc1uHyfphXvWwaNGdLuTqfXeCfHiO0q+YNyTvOkrrx0=;
+	s=korg; t=1705971557;
+	bh=UbXDQztOKQYSffYz0U8IfJgBbpEbYGSMgpBGRXEQ2yQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QeWQaidarPGWa5NXSIS2EQmWLIMXiJU+wNI0eNCEogkGvN3KqCN5SK7W7/4VtwCJ0
-	 wppNJyl+VTswyvcwTlW/cvhM8G7rGKHFLbG5L5X99x4F/9xhiqwRmFlqHPtSz3aOca
-	 vX9BvmFuP7hIi5UiGSJWctJC74IoKr0vqXmNdzcM=
+	b=Jodx5HcwAkShikf5F3tZL6oxESnL+kBepcH3WM4Apuno5VlLgNpgkgiz6LqUZOJz3
+	 /6iL2QB+G6jhtA1fsmKqtZGEo3cFgqptZ3tC426KIl0gJFeSYzfTEhx4dJGcdSDQdP
+	 8xRockiHTJWqi+NoCK1fZY5s2Ii2uD9kBAVdwbgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 199/374] drm/bridge: tc358767: Fix return value on error case
-Date: Mon, 22 Jan 2024 15:57:35 -0800
-Message-ID: <20240122235751.523768567@linuxfoundation.org>
+Subject: [PATCH 5.10 150/286] drm/bridge: Fix typo in post_disable() description
+Date: Mon, 22 Jan 2024 15:57:36 -0800
+Message-ID: <20240122235737.932129858@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-[ Upstream commit 32bd29b619638256c5b75fb021d6d9f12fc4a984 ]
+[ Upstream commit 288b039db225676e0c520c981a1b5a2562d893a3 ]
 
-If the hpd_pin is invalid, the driver returns 'ret'. But 'ret' contains
-0, instead of an error value.
+s/singals/signals/
 
-Return -EINVAL instead.
-
-Fixes: f25ee5017e4f ("drm/bridge: tc358767: add IRQ and HPD support")
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-4-c22b2444f5f5@ideasonboard.com
+Fixes: 199e4e967af4 ("drm: Extract drm_bridge.h")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231124094253.658064-1-dario.binacchi@amarulasolutions.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358767.c | 2 +-
+ include/drm/drm_bridge.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358767.c b/drivers/gpu/drm/bridge/tc358767.c
-index 14d671742963..4c6f3052156b 100644
---- a/drivers/gpu/drm/bridge/tc358767.c
-+++ b/drivers/gpu/drm/bridge/tc358767.c
-@@ -1633,7 +1633,7 @@ static int tc_probe(struct i2c_client *client, const struct i2c_device_id *id)
- 	} else {
- 		if (tc->hpd_pin < 0 || tc->hpd_pin > 1) {
- 			dev_err(dev, "failed to parse HPD number\n");
--			return ret;
-+			return -EINVAL;
- 		}
- 	}
- 
+diff --git a/include/drm/drm_bridge.h b/include/drm/drm_bridge.h
+index 055486e35e68..3826cf9553c0 100644
+--- a/include/drm/drm_bridge.h
++++ b/include/drm/drm_bridge.h
+@@ -186,7 +186,7 @@ struct drm_bridge_funcs {
+ 	 * or &drm_encoder_helper_funcs.dpms hook.
+ 	 *
+ 	 * The bridge must assume that the display pipe (i.e. clocks and timing
+-	 * singals) feeding it is no longer running when this callback is
++	 * signals) feeding it is no longer running when this callback is
+ 	 * called.
+ 	 *
+ 	 * The @post_disable callback is optional.
 -- 
 2.43.0
 
