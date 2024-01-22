@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-13099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E08837A7D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF5B837907
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC3891F2104F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:52:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0094D1F26668
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C15612DD87;
-	Tue, 23 Jan 2024 00:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2935145B0C;
+	Tue, 23 Jan 2024 00:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgMbRhY0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jnk4PJud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D000312CDBB;
-	Tue, 23 Jan 2024 00:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9282FE56B;
+	Tue, 23 Jan 2024 00:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968976; cv=none; b=uZr1W3FQ6BWEB0PUO0QYJdgejYoj4be+rT2KLVmtMzV9EPCvNBbZ0q/TVOy4jNqN6Qfu7/4ChpGH5IocAha05l9/4C6UX1Kxw4bnNOJFgVQCarYVmGvAelY1yJiuC/6MwkTdRVTA1cfWxFmY3ptE8fGcRFjcStBCP3Kg36vV+M4=
+	t=1705968346; cv=none; b=pCmLsZJp/xfOM5XOPwXCEwihGu3kvdApiSNtlBf7ifMnjH4EofVUHR9+Y1U+vk26B7X322TM4DBfrSr5WSIkQdxa5gZTvV6RIKFITH0546FKXC1yHWouHTkogNugy2fZ8Htb0RJ+F/PVxUf3Ur6YTG7+0H1hi7uYOBxDFGoGZ9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968976; c=relaxed/simple;
-	bh=gVxFclSdnWMeqcSxDNaXmFfNgeTZjopzL8cnJdTpiTg=;
+	s=arc-20240116; t=1705968346; c=relaxed/simple;
+	bh=16KNdegz1kFXJ2zpfVuheKmgk8lS+Yvcs3CVxtdj4wQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QvgUwlwTieDE6wxU7XveDRbfRXE+DFCFS2TnSQWx7rb5zNgzeC8zLlKZZlyeIuL58RDx65+aEldGdT9gYWHS7KV2Sn8OQ2HM06/UIUSjaS2AvJPSSCiT4G2lwx5riqMNRkC57kZ0ZqW/9+c872K489aOnpwCo6QfByfns/yt8Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgMbRhY0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1A5C433F1;
-	Tue, 23 Jan 2024 00:16:16 +0000 (UTC)
+	 MIME-Version; b=lNPG8p5E+FFrjrB4ZdJ8O4R5MHsDFH5aFfUBYPAVL8u15YUpTVwo27xfJsEAgqUMIUhBMSUgaoRJqmXSzQ747V/Kr+uIfa06knPvuYtzaTyR8+DBgX0Uylp18flwWYAnAi9LbvgJ5uH0/4dGjm11f5EbCU79Icu56dlxzKi3aHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jnk4PJud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63ED2C433C7;
+	Tue, 23 Jan 2024 00:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968976;
-	bh=gVxFclSdnWMeqcSxDNaXmFfNgeTZjopzL8cnJdTpiTg=;
+	s=korg; t=1705968346;
+	bh=16KNdegz1kFXJ2zpfVuheKmgk8lS+Yvcs3CVxtdj4wQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RgMbRhY030uNG9MzrsYSbgTA370eFBpk33Aa4pnNHKp/hVFuySjSTHZrrMiKU3i4T
-	 Pt8nPfQ4xoxkGsYomb1KoI4OHZe9orMREJV+t9Y1kFRfpCDz8Z4bCC8Gjo4W38HvdX
-	 nFiQM/E4yg+GmFyuUNF89vxp1Gnz8iiEuIB0Ghyk=
+	b=Jnk4PJudggbtncqwYwNYc8ZFI6CHcquo3UmUsTnpAZYsrops5/v9WRkHo+Z3uhraC
+	 xV8er2fbrfu6Db2QqyXgbCSVwwaRTHH+QQ8phKRuRIcHyOLEhlMhANtmPIDuFDHEMA
+	 XhlnxeJ9SB4kPEf7NUcKq9wj3DmiPEsGny/rYldo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Leon Romanovsky <leonro@nvidia.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 109/194] RDMA/usnic: Silence uninitialized symbol smatch warnings
+Subject: [PATCH 4.19 083/148] Bluetooth: Fix bogus check for re-auth no supported with non-ssp
 Date: Mon, 22 Jan 2024 15:57:19 -0800
-Message-ID: <20240122235723.908575329@linuxfoundation.org>
+Message-ID: <20240122235715.761075986@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit b9a85e5eec126d6ae6c362f94b447c223e8fe6e4 ]
+[ Upstream commit d03376c185926098cb4d668d6458801eb785c0a5 ]
 
-The patch 1da177e4c3f4: "Linux-2.6.12-rc2" from Apr 16, 2005
-(linux-next), leads to the following Smatch static checker warning:
+This reverts 19f8def031bfa50c579149b200bfeeb919727b27
+"Bluetooth: Fix auth_complete_evt for legacy units" which seems to be
+working around a bug on a broken controller rather then any limitation
+imposed by the Bluetooth spec, in fact if there ws not possible to
+re-auth the command shall fail not succeed.
 
-        drivers/infiniband/hw/mthca/mthca_cmd.c:644 mthca_SYS_EN()
-        error: uninitialized symbol 'out'.
-
-drivers/infiniband/hw/mthca/mthca_cmd.c
-    636 int mthca_SYS_EN(struct mthca_dev *dev)
-    637 {
-    638         u64 out;
-    639         int ret;
-    640
-    641         ret = mthca_cmd_imm(dev, 0, &out, 0, 0, CMD_SYS_EN, CMD_TIME_CLASS_D);
-
-We pass out here and it gets used without being initialized.
-
-        err = mthca_cmd_post(dev, in_param,
-                             out_param ? *out_param : 0,
-                                         ^^^^^^^^^^
-                             in_modifier, op_modifier,
-                             op, context->token, 1);
-
-It's the same in mthca_cmd_wait() and mthca_cmd_poll().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/533bc3df-8078-4397-b93d-d1f6cec9b636@moroto.mountain
-Link: https://lore.kernel.org/r/c559cb7113158c02d75401ac162652072ef1b5f0.1699867650.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Fixes: 19f8def031bf ("Bluetooth: Fix auth_complete_evt for legacy units")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mthca/mthca_cmd.c  | 4 ++--
- drivers/infiniband/hw/mthca/mthca_main.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ include/net/bluetooth/hci_core.h |  1 -
+ net/bluetooth/hci_conn.c         |  8 +++-----
+ net/bluetooth/hci_event.c        | 11 ++---------
+ 3 files changed, 5 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mthca/mthca_cmd.c b/drivers/infiniband/hw/mthca/mthca_cmd.c
-index bdf5ed38de22..0307c45aa6d3 100644
---- a/drivers/infiniband/hw/mthca/mthca_cmd.c
-+++ b/drivers/infiniband/hw/mthca/mthca_cmd.c
-@@ -635,7 +635,7 @@ void mthca_free_mailbox(struct mthca_dev *dev, struct mthca_mailbox *mailbox)
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index d3503f8c054e..878e7e92d8ef 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -659,7 +659,6 @@ void hci_inquiry_cache_flush(struct hci_dev *hdev);
+ /* ----- HCI Connections ----- */
+ enum {
+ 	HCI_CONN_AUTH_PEND,
+-	HCI_CONN_REAUTH_PEND,
+ 	HCI_CONN_ENCRYPT_PEND,
+ 	HCI_CONN_RSWITCH_PEND,
+ 	HCI_CONN_MODE_CHANGE_PEND,
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 0e837feaa527..b8730c5f1cac 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1338,12 +1338,10 @@ static int hci_conn_auth(struct hci_conn *conn, __u8 sec_level, __u8 auth_type)
+ 		hci_send_cmd(conn->hdev, HCI_OP_AUTH_REQUESTED,
+ 			     sizeof(cp), &cp);
  
- int mthca_SYS_EN(struct mthca_dev *dev)
- {
--	u64 out;
-+	u64 out = 0;
- 	int ret;
+-		/* If we're already encrypted set the REAUTH_PEND flag,
+-		 * otherwise set the ENCRYPT_PEND.
++		/* Set the ENCRYPT_PEND to trigger encryption after
++		 * authentication.
+ 		 */
+-		if (test_bit(HCI_CONN_ENCRYPT, &conn->flags))
+-			set_bit(HCI_CONN_REAUTH_PEND, &conn->flags);
+-		else
++		if (!test_bit(HCI_CONN_ENCRYPT, &conn->flags))
+ 			set_bit(HCI_CONN_ENCRYPT_PEND, &conn->flags);
+ 	}
  
- 	ret = mthca_cmd_imm(dev, 0, &out, 0, 0, CMD_SYS_EN, CMD_TIME_CLASS_D);
-@@ -1955,7 +1955,7 @@ int mthca_WRITE_MGM(struct mthca_dev *dev, int index,
- int mthca_MGID_HASH(struct mthca_dev *dev, struct mthca_mailbox *mailbox,
- 		    u16 *hash)
- {
--	u64 imm;
-+	u64 imm = 0;
- 	int err;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 7ce6932d9ca6..9d01874e6b93 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -2722,14 +2722,8 @@ static void hci_auth_complete_evt(struct hci_dev *hdev, struct sk_buff *skb)
  
- 	err = mthca_cmd_imm(dev, mailbox->dma, &imm, 0, 0, CMD_MGID_HASH,
-diff --git a/drivers/infiniband/hw/mthca/mthca_main.c b/drivers/infiniband/hw/mthca/mthca_main.c
-index fe9654a7af71..3acd1372c814 100644
---- a/drivers/infiniband/hw/mthca/mthca_main.c
-+++ b/drivers/infiniband/hw/mthca/mthca_main.c
-@@ -382,7 +382,7 @@ static int mthca_init_icm(struct mthca_dev *mdev,
- 			  struct mthca_init_hca_param *init_hca,
- 			  u64 icm_size)
- {
--	u64 aux_pages;
-+	u64 aux_pages = 0;
- 	int err;
+ 	if (!ev->status) {
+ 		clear_bit(HCI_CONN_AUTH_FAILURE, &conn->flags);
+-
+-		if (!hci_conn_ssp_enabled(conn) &&
+-		    test_bit(HCI_CONN_REAUTH_PEND, &conn->flags)) {
+-			bt_dev_info(hdev, "re-auth of legacy device is not possible.");
+-		} else {
+-			set_bit(HCI_CONN_AUTH, &conn->flags);
+-			conn->sec_level = conn->pending_sec_level;
+-		}
++		set_bit(HCI_CONN_AUTH, &conn->flags);
++		conn->sec_level = conn->pending_sec_level;
+ 	} else {
+ 		if (ev->status == HCI_ERROR_PIN_OR_KEY_MISSING)
+ 			set_bit(HCI_CONN_AUTH_FAILURE, &conn->flags);
+@@ -2738,7 +2732,6 @@ static void hci_auth_complete_evt(struct hci_dev *hdev, struct sk_buff *skb)
+ 	}
  
- 	err = mthca_SET_ICM_SIZE(mdev, icm_size, &aux_pages);
+ 	clear_bit(HCI_CONN_AUTH_PEND, &conn->flags);
+-	clear_bit(HCI_CONN_REAUTH_PEND, &conn->flags);
+ 
+ 	if (conn->state == BT_CONFIG) {
+ 		if (!ev->status && hci_conn_ssp_enabled(conn)) {
 -- 
 2.43.0
 
