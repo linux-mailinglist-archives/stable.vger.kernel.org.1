@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBA2C838124
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 988D08380C7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 776CD1F23838
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C08CB1C27540
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8482141997;
-	Tue, 23 Jan 2024 01:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA1B1339B2;
+	Tue, 23 Jan 2024 01:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjgnnB46"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="taDUMKfM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78689140796;
-	Tue, 23 Jan 2024 01:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8849133435;
+	Tue, 23 Jan 2024 01:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972044; cv=none; b=nqXWaO9/pZjxoVkJaO8UU7FoWyEQeWQ8qWD7s2LxgTutjfAGvHg9Q4lOVy0lzS20DZ4zPJuY42shh0JDWDOa/+0KTwW44L8q8xyD0Kp+RnMqXE6/X1R3zwbmd9shcAE8rXo9JBUjYMJjSptvc0xhZgPxjCWg+73rcRztorc8GY8=
+	t=1705971892; cv=none; b=dmXNwAfZpmWfQwrC2+kvC4EFyGs3MvlQGrCX3yp8kVY7wzhk6OIcidwcA7u21TdhNQ+VBKeOPM+Al9cWPf6F4Lr3YsKhkCRnt6AZatU5h8SRSNraF6wlniR8nlJW5pRxQDTNe/Jzbavc/3ilhgvZyS6dpGZJCUVSafbugUKHdeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972044; c=relaxed/simple;
-	bh=APA+wQ0PLHAt+ThM/khiwjARNAgbxUeFVAsqtdPEtgQ=;
+	s=arc-20240116; t=1705971892; c=relaxed/simple;
+	bh=dZnbMliJHDNMgrvyN2J8iBlHNpT9VpBLWX72ZHn/D3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PD2DQtqNV/IdItK8RrMadXjLdK0CPRYomHyxqD1YBrJQ3vASFbQpax7NHmdpPYO1mynJrZOUDzwkVN4ZW++jCbZqOYTr+5Db8qan5CH8N8eogS723GbrbUz0Bbjo5FEkq/KusqDj6QBYOOn6t2vdBFN1M9W+2VK4mh6G064daRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjgnnB46; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352C9C43394;
-	Tue, 23 Jan 2024 01:07:24 +0000 (UTC)
+	 MIME-Version; b=D55menaWhuP5Bj6nYmDDA4rdsOE/YbW8Of4tW8YD6zhjaijUU5HQxnOXoOputF/VvNi8pj9thxHVvfUiA0V0xac0vguwZvWVSaPCI8aIDOZTQpFXiZPElOdSanVhaMhf8fRSIt4fo84Wqtwteu3UDeMVuvS7I8lVtUjG7gmFYMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taDUMKfM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD6DC433C7;
+	Tue, 23 Jan 2024 01:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972044;
-	bh=APA+wQ0PLHAt+ThM/khiwjARNAgbxUeFVAsqtdPEtgQ=;
+	s=korg; t=1705971892;
+	bh=dZnbMliJHDNMgrvyN2J8iBlHNpT9VpBLWX72ZHn/D3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DjgnnB46kycpdCNni7pV6Q2YgRD1N7T3Am+Gj+sFUJwY1KDE6QBWBYML7kPSb6yIx
-	 wg4mS4lIOvl23JBzDieq3MPaatVYNvoqBTBca7W8o8CVZir9+EzcZ4+UW8r4rtUjD4
-	 EEQWESSuBhqL1lHNN7YEH9hXy0+UG8wIMgUfgNyM=
+	b=taDUMKfMenrlGmaS3QnwaUEAxBG1GbzlWJDTX0FRBEEpj/IiKC/sXvAzQW6W17kKs
+	 4/GgwjTpoOb8+Goo3C73JrrZtfGAva1D2l6DGXl0mmvBRVnyfRnEMiPP2e25zlOwtm
+	 R0d/ZJdk2R8tS+c2syZpfLkxyIVK5iGDUrBu2u9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Sun <sunhao.th@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Yonghong Song <yonghong.song@linux.dev>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 394/417] bpf: Reject variable offset alu on PTR_TO_FLOW_KEYS
+Subject: [PATCH 5.10 256/286] tty: use if in send_break() instead of goto
 Date: Mon, 22 Jan 2024 15:59:22 -0800
-Message-ID: <20240122235805.399238965@linuxfoundation.org>
+Message-ID: <20240122235741.891087819@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Sun <sunhao.th@gmail.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 22c7fa171a02d310e3a3f6ed46a698ca8a0060ed ]
+[ Upstream commit 24f2cd019946fc2e88e632d2e24a34c2cc3f2be4 ]
 
-For PTR_TO_FLOW_KEYS, check_flow_keys_access() only uses fixed off
-for validation. However, variable offset ptr alu is not prohibited
-for this ptr kind. So the variable offset is not checked.
+Now, the "jumped-over" code is simple enough to be put inside an 'if'.
+Do so to make it 'goto'-less.
 
-The following prog is accepted:
-
-  func#0 @0
-  0: R1=ctx() R10=fp0
-  0: (bf) r6 = r1                       ; R1=ctx() R6_w=ctx()
-  1: (79) r7 = *(u64 *)(r6 +144)        ; R6_w=ctx() R7_w=flow_keys()
-  2: (b7) r8 = 1024                     ; R8_w=1024
-  3: (37) r8 /= 1                       ; R8_w=scalar()
-  4: (57) r8 &= 1024                    ; R8_w=scalar(smin=smin32=0,
-  smax=umax=smax32=umax32=1024,var_off=(0x0; 0x400))
-  5: (0f) r7 += r8
-  mark_precise: frame0: last_idx 5 first_idx 0 subseq_idx -1
-  mark_precise: frame0: regs=r8 stack= before 4: (57) r8 &= 1024
-  mark_precise: frame0: regs=r8 stack= before 3: (37) r8 /= 1
-  mark_precise: frame0: regs=r8 stack= before 2: (b7) r8 = 1024
-  6: R7_w=flow_keys(smin=smin32=0,smax=umax=smax32=umax32=1024,var_off
-  =(0x0; 0x400)) R8_w=scalar(smin=smin32=0,smax=umax=smax32=umax32=1024,
-  var_off=(0x0; 0x400))
-  6: (79) r0 = *(u64 *)(r7 +0)          ; R0_w=scalar()
-  7: (95) exit
-
-This prog loads flow_keys to r7, and adds the variable offset r8
-to r7, and finally causes out-of-bounds access:
-
-  BUG: unable to handle page fault for address: ffffc90014c80038
-  [...]
-  Call Trace:
-   <TASK>
-   bpf_dispatcher_nop_func include/linux/bpf.h:1231 [inline]
-   __bpf_prog_run include/linux/filter.h:651 [inline]
-   bpf_prog_run include/linux/filter.h:658 [inline]
-   bpf_prog_run_pin_on_cpu include/linux/filter.h:675 [inline]
-   bpf_flow_dissect+0x15f/0x350 net/core/flow_dissector.c:991
-   bpf_prog_test_run_flow_dissector+0x39d/0x620 net/bpf/test_run.c:1359
-   bpf_prog_test_run kernel/bpf/syscall.c:4107 [inline]
-   __sys_bpf+0xf8f/0x4560 kernel/bpf/syscall.c:5475
-   __do_sys_bpf kernel/bpf/syscall.c:5561 [inline]
-   __se_sys_bpf kernel/bpf/syscall.c:5559 [inline]
-   __x64_sys_bpf+0x73/0xb0 kernel/bpf/syscall.c:5559
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0x3f/0x110 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Fix this by rejecting ptr alu with variable offset on flow_keys.
-Applying the patch rejects the program with "R7 pointer arithmetic
-on flow_keys prohibited".
-
-Fixes: d58e468b1112 ("flow_dissector: implements flow dissector BPF hook")
-Signed-off-by: Hao Sun <sunhao.th@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/bpf/20240115082028.9992-1-sunhao.th@gmail.com
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20230919085156.1578-16-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 66aad7d8d3ec ("usb: cdc-acm: return correct error code on unsupported break")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/tty/tty_io.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 95e7b638418e..23b6d57b5eef 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -8541,6 +8541,10 @@ static int adjust_ptr_min_max_vals(struct bpf_verifier_env *env,
- 	}
+diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
+index a45e6e1423d8..1c76e77e2d07 100644
+--- a/drivers/tty/tty_io.c
++++ b/drivers/tty/tty_io.c
+@@ -2477,11 +2477,10 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
+ 		return -EINTR;
  
- 	switch (base_type(ptr_reg->type)) {
-+	case PTR_TO_FLOW_KEYS:
-+		if (known)
-+			break;
-+		fallthrough;
- 	case CONST_PTR_TO_MAP:
- 		/* smin_val represents the known value */
- 		if (known && smin_val == 0 && opcode == BPF_ADD)
+ 	retval = tty->ops->break_ctl(tty, -1);
+-	if (retval)
+-		goto out;
+-	msleep_interruptible(duration);
+-	retval = tty->ops->break_ctl(tty, 0);
+-out:
++	if (!retval) {
++		msleep_interruptible(duration);
++		retval = tty->ops->break_ctl(tty, 0);
++	}
+ 	tty_write_unlock(tty);
+ 
+ 	if (signal_pending(current))
 -- 
 2.43.0
 
