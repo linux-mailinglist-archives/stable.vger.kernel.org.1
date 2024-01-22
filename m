@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3389F838591
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:44:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC9B83827B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56A19B29E53
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24974284CE0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B2E745C1;
-	Tue, 23 Jan 2024 02:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E1D5C5FE;
+	Tue, 23 Jan 2024 01:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="He0ZIDNN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jh2trWfx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38ED87318E;
-	Tue, 23 Jan 2024 02:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BD55C5FB;
+	Tue, 23 Jan 2024 01:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975440; cv=none; b=m2FIvhkKoWjlAbUvDbPH5u7Ljf4jxBjfZS8TgmZ1UY/OnabK4MFTt+6ftPfxaBDH5u4IfM7mobpUYjJxNkeWLOJwq0uX2vOZ7wZFcyZ4XSZ2HsYwrE1w1fgAzhGEu+ZKSQysPpj+HYYy5XGfrvd1NFz0aF6YCaB6uqBTLL52sWs=
+	t=1705974365; cv=none; b=fjVPJWO27FqzV8DfAF9kEhwU6BF2J45qyEKNRsx2HHkZNCd/NEQIxNcdm6oO0cEClOmtzLByAfvv/QCS4OqzUdDB6mRdTN2huDpQnVL6LSN/2kcXizT7lmFBGHs2/iyfsaRC/yil8k8z03z9XTqjWGx/x9A7t6BJJIOiVkXdKmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975440; c=relaxed/simple;
-	bh=LetyzKnkv85dJs0nAxbhwzCI1IMxMt1igl8ctua4Kh4=;
+	s=arc-20240116; t=1705974365; c=relaxed/simple;
+	bh=Ns19Snfd63YksiOtcr+W9l1iw2RCXe8iGYm0bY7+zqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=udY9ZWEvtfJqiSsn72KGIs6pMBfJGEK2LHaFRrHP5lMZytLml9HbD2A0/WSeTTWkXeFQQngj0Z6t+JQKLwJDjrb2gyowZMA+hK61yfqrmqkThp2noSY+yeW2qro492HPNHp7Y3gfYFwGvddlLJW9UYj/llPriLG5WArffDLwWJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=He0ZIDNN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B0DC43390;
-	Tue, 23 Jan 2024 02:03:59 +0000 (UTC)
+	 MIME-Version; b=T+2060B4wkWzy3cqLHSNxbFBw2ZNJTlroO2zOnynvusOEjyi1W6KlSSvIXJCifXrcThwBqk+7cBh5OJes578+EPWXMzcOuBTkB1zfgIXTS1kMznhg8lxGcqR1l4IN0IkDFry3X77laAUWVmAyOXTvDLt4YaQ7d8gk6v6vGyqH3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jh2trWfx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E0AC43394;
+	Tue, 23 Jan 2024 01:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975440;
-	bh=LetyzKnkv85dJs0nAxbhwzCI1IMxMt1igl8ctua4Kh4=;
+	s=korg; t=1705974364;
+	bh=Ns19Snfd63YksiOtcr+W9l1iw2RCXe8iGYm0bY7+zqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=He0ZIDNN0r/aJSdrCWriz76QAbACBI5PZ8w0M5Fl2qpIIF/vOXjpD1DY1MDlfyfjy
-	 kgeAizJyAYjRA3cGpGBSSq47yPNyO7pTKr94dThUhReoWNaykakMFDXp/CgwhZWKqt
-	 9yxRJaH/oG76APbHmnqh4bLf0BsEG/124Ggx3PkQ=
+	b=Jh2trWfx99zuzG1rx8Wwb+OZesAtO19IT+Dt6sV7E58leG2zemAJYEI0ji1Jo3LHK
+	 JhUVKsoMD01gxrZisq24K6nYAel1ni2ttpkw3nIlB/U1/Tz8N3pMtt2pqAFPvoKICw
+	 YvhrZHlSH2WhwzBfyWGWqDeZxSZHzzV3CgGNAJC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathya Prakash <sathya.prakash@broadcom.com>,
-	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 398/583] scsi: mpi3mr: Block PEL Enable Command on Controller Reset and Unrecoverable State
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 193/374] drm/msm/dsi: Use pm_runtime_resume_and_get to prevent refcnt leaks
 Date: Mon, 22 Jan 2024 15:57:29 -0800
-Message-ID: <20240122235824.162058737@linuxfoundation.org>
+Message-ID: <20240122235751.331172300@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-commit f8fb3f39148e8010479e4b2003ba4728818ec661 upstream.
+[ Upstream commit 3d07a411b4faaf2b498760ccf12888f8de529de0 ]
 
-If a controller reset is underway or the controller is in an unrecoverable
-state, the PEL enable management command will be returned as EAGAIN or
-EFAULT.
+This helper has been introduced to avoid programmer errors (missing
+_put calls leading to dangling refcnt) when using pm_runtime_get, use it.
 
-Cc: <stable@vger.kernel.org> # v6.1+
-Co-developed-by: Sathya Prakash <sathya.prakash@broadcom.com>
-Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
-Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
-Link: https://lore.kernel.org/r/20231126053134.10133-4-chandrakanth.patil@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While at it, start checking the return value.
+
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 5c8290284402 ("drm/msm/dsi: Split PHY drivers to separate files")
+Patchwork: https://patchwork.freedesktop.org/patch/543350/
+Link: https://lore.kernel.org/r/20230620-topic-dsiphy_rpm-v2-1-a11a751f34f0@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_app.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/mpi3mr/mpi3mr_app.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
-@@ -223,6 +223,22 @@ static long mpi3mr_bsg_pel_enable(struct
- 		return rval;
- 	}
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+index 6a917fe69a83..4b5b0a4b051b 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+@@ -588,7 +588,9 @@ static int dsi_phy_enable_resource(struct msm_dsi_phy *phy)
+ 	struct device *dev = &phy->pdev->dev;
+ 	int ret;
  
-+	if (mrioc->unrecoverable) {
-+		dprint_bsg_err(mrioc, "%s: unrecoverable controller\n",
-+			       __func__);
-+		return -EFAULT;
-+	}
-+
-+	if (mrioc->reset_in_progress) {
-+		dprint_bsg_err(mrioc, "%s: reset in progress\n", __func__);
-+		return -EAGAIN;
-+	}
-+
-+	if (mrioc->stop_bsgs) {
-+		dprint_bsg_err(mrioc, "%s: bsgs are blocked\n", __func__);
-+		return -EAGAIN;
-+	}
-+
- 	sg_copy_to_buffer(job->request_payload.sg_list,
- 			  job->request_payload.sg_cnt,
- 			  &pel_enable, sizeof(pel_enable));
+-	pm_runtime_get_sync(dev);
++	ret = pm_runtime_resume_and_get(dev);
++	if (ret)
++		return ret;
+ 
+ 	ret = clk_prepare_enable(phy->ahb_clk);
+ 	if (ret) {
+-- 
+2.43.0
+
 
 
 
