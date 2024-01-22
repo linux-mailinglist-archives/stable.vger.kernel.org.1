@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E943838033
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6045B83826B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 313F81C2961A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14AA61F27836
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552BE65BC0;
-	Tue, 23 Jan 2024 00:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50F25BAE7;
+	Tue, 23 Jan 2024 01:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVQJIIUd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFaM5r4v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B0F64CEB;
-	Tue, 23 Jan 2024 00:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639755A7B8;
+	Tue, 23 Jan 2024 01:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971585; cv=none; b=Xz5Qm4swsYlgbvk43hngE+suofl6num7xGM3QpB3vMh/XfYnFwhWHU4oVtyQHi+1HB90hbmw8djEHWm0Kw7VkoCmUkF6zwavmPqStPFAg670irivhNkil1JbdHAMMUDoJNIwApEIV2e2/r8PSNJuwIVS/N019tIY31lUllqPRT0=
+	t=1705974349; cv=none; b=KhbXthbmRLUhyxMkJeE+MICPVTNoTo5qa9rhd5ZHp2dwb5L4ushfTSWhFITqlrcnU3ls0aRfDZF7HT03rrI4QeJKOVomvxFUgoa6bR/1ZrrQkQ7AD//qY5BFRVp/HtnzkoDObt8Z3PUE4f4kPbGDt5kSQxf4SHd52iY0ugpVP7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971585; c=relaxed/simple;
-	bh=1v8FL6Iu8FQjoO3MfK1z6PrC3oVRbymHNPqcy7tmvng=;
+	s=arc-20240116; t=1705974349; c=relaxed/simple;
+	bh=6SBgCHWrvdlz43g7ab+lcdEPzc5VVlMUZu1pF/e1Jm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dsbIYZJT8xZKimOefcu54zcTjCc7XPZHPBeLS9rqg+CC85c/nRDVMnNAuQX6viIsNHNgYzhKAlc15VKnicNA1+X4T26jQZfPaCQY+/F4kRCS5UC6sz9VvzXpbqcTcMV1VaXeH/vs7197g3DiZn2wyl7n+VEaPdkgdZYI2940Fws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVQJIIUd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28C7C433F1;
-	Tue, 23 Jan 2024 00:59:44 +0000 (UTC)
+	 MIME-Version; b=pu5wevapA+jm8uODSAXdJR+5pahz5Qb3EY/ti7UUtFvwAcGvegC9pRcI2aLxZQiDe37QiWFTeU/FtkMQGNgIsxZxwsQIdndgsigVgLxEjfsHFK8K49NqBARUNZX11OBpAAHsOE2ZSLusoluF6Ko1bjHuE8nq5Sd8EGDyVJjXFAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFaM5r4v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4287C43394;
+	Tue, 23 Jan 2024 01:45:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971584;
-	bh=1v8FL6Iu8FQjoO3MfK1z6PrC3oVRbymHNPqcy7tmvng=;
+	s=korg; t=1705974348;
+	bh=6SBgCHWrvdlz43g7ab+lcdEPzc5VVlMUZu1pF/e1Jm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KVQJIIUdLaStB+MNXqm8fiyU+AHYkIK0phHmOODlVBAZ6B3l7Dl0N5Li+cX4u04mY
-	 aLmgFcCUDMG1Davgqqcqw0kIGGX4txWMevuWekCAZvYVV9VqPjx2VowPK0gEYM/JiC
-	 c72OvTSbiw7toquEUE41vQfQpZVeMDJdsrdVnnvI=
+	b=TFaM5r4v7tS2KaJDuV+VE3xAwUjBHDuZqvWMBU7rNSNJIP6r02hoq1YnglHml9w5o
+	 vI5GpHm26yBUKU6DnVU0pb5/GAfsCtvkBXSraG0ap41vB9R9rdWkXGPBaypCui+kgr
+	 024c3Wfe90RbQZ06bTH6KGhx3uy3oC0dEg/AN5nE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH 6.1 274/417] serial: imx: Ensure that imx_uart_rs485_config() is called with enabled clock
+	Jan Kara <jack@suse.cz>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 186/374] f2fs: fix to avoid dirent corruption
 Date: Mon, 22 Jan 2024 15:57:22 -0800
-Message-ID: <20240122235801.343961135@linuxfoundation.org>
+Message-ID: <20240122235751.092292114@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 7c45eaa813476bd195ac1227a64b52f9cf2e2030 upstream.
+[ Upstream commit 53edb549565f55ccd0bdf43be3d66ce4c2d48b28 ]
 
-There are register accesses in the function imx_uart_rs485_config(). The
-clock must be enabled for these accesses. This was ensured by calling it
-via the function uart_rs485_config() in the probe() function within the
-range where the clock is enabled. With the commit 7c7f9bc986e6 ("serial:
-Deassert Transmit Enable on probe in driver-specific way") it was removed
-from the probe() function and is now only called through the function
-uart_add_one_port() which is located at the end of the probe() function.
-But the clock is already switched off in this area. To ensure that the
-clock is enabled during register access, move the disabling of the clock
-to the very end of the probe() function. To avoid leaking enabled clocks
-on error also add an error path for exiting with disabling the clock.
+As Al reported in link[1]:
 
-Fixes: 7c7f9bc986e6 ("serial: Deassert Transmit Enable on probe in driver-specific way")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Link: https://lore.kernel.org/r/20231226113647.39376-1-cniedermaier@dh-electronics.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+f2fs_rename()
+...
+	if (old_dir != new_dir && !whiteout)
+		f2fs_set_link(old_inode, old_dir_entry,
+					old_dir_page, new_dir);
+	else
+		f2fs_put_page(old_dir_page, 0);
+
+You want correct inumber in the ".." link.  And cross-directory
+rename does move the source to new parent, even if you'd been asked
+to leave a whiteout in the old place.
+
+[1] https://lore.kernel.org/all/20231017055040.GN800259@ZenIV/
+
+With below testcase, it may cause dirent corruption, due to it missed
+to call f2fs_set_link() to update ".." link to new directory.
+- mkdir -p dir/foo
+- renameat2 -w dir/foo bar
+
+[ASSERT] (__chk_dots_dentries:1421)  --> Bad inode number[0x4] for '..', parent parent ino is [0x3]
+[FSCK] other corrupted bugs                           [Fail]
+
+Fixes: 7e01e7ad746b ("f2fs: support RENAME_WHITEOUT")
+Cc: Jan Kara <jack@suse.cz>
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c |   23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ fs/f2fs/namei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -2356,10 +2356,8 @@ static int imx_uart_probe(struct platfor
- 	sport->ufcr = readl(sport->port.membase + UFCR);
- 
- 	ret = uart_get_rs485_mode(&sport->port);
--	if (ret) {
--		clk_disable_unprepare(sport->clk_ipg);
--		return ret;
--	}
-+	if (ret)
-+		goto err_clk;
- 
- 	/*
- 	 * If using the i.MX UART RTS/CTS control then the RTS (CTS_B)
-@@ -2439,8 +2437,6 @@ static int imx_uart_probe(struct platfor
- 		imx_uart_writel(sport, ucr3, UCR3);
+diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
+index 7a86a8dcf4f1..0d6906644feb 100644
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -1088,7 +1088,7 @@ static int f2fs_rename(struct inode *old_dir, struct dentry *old_dentry,
  	}
  
--	clk_disable_unprepare(sport->clk_ipg);
--
- 	hrtimer_init(&sport->trigger_start_tx, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
- 	hrtimer_init(&sport->trigger_stop_tx, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
- 	sport->trigger_start_tx.function = imx_trigger_start_tx;
-@@ -2456,7 +2452,7 @@ static int imx_uart_probe(struct platfor
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request rx irq: %d\n",
- 				ret);
--			return ret;
-+			goto err_clk;
- 		}
- 
- 		ret = devm_request_irq(&pdev->dev, txirq, imx_uart_txint, 0,
-@@ -2464,7 +2460,7 @@ static int imx_uart_probe(struct platfor
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request tx irq: %d\n",
- 				ret);
--			return ret;
-+			goto err_clk;
- 		}
- 
- 		ret = devm_request_irq(&pdev->dev, rtsirq, imx_uart_rtsint, 0,
-@@ -2472,14 +2468,14 @@ static int imx_uart_probe(struct platfor
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request rts irq: %d\n",
- 				ret);
--			return ret;
-+			goto err_clk;
- 		}
- 	} else {
- 		ret = devm_request_irq(&pdev->dev, rxirq, imx_uart_int, 0,
- 				       dev_name(&pdev->dev), sport);
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request irq: %d\n", ret);
--			return ret;
-+			goto err_clk;
- 		}
- 	}
- 
-@@ -2487,7 +2483,12 @@ static int imx_uart_probe(struct platfor
- 
- 	platform_set_drvdata(pdev, sport);
- 
--	return uart_add_one_port(&imx_uart_uart_driver, &sport->port);
-+	ret = uart_add_one_port(&imx_uart_uart_driver, &sport->port);
-+
-+err_clk:
-+	clk_disable_unprepare(sport->clk_ipg);
-+
-+	return ret;
- }
- 
- static int imx_uart_remove(struct platform_device *pdev)
+ 	if (old_dir_entry) {
+-		if (old_dir != new_dir && !whiteout)
++		if (old_dir != new_dir)
+ 			f2fs_set_link(old_inode, old_dir_entry,
+ 						old_dir_page, new_dir);
+ 		else
+-- 
+2.43.0
+
 
 
 
