@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22EC08380EE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C639A838121
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD92AB21265
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EDA828E421
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3D71350DF;
-	Tue, 23 Jan 2024 01:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB1314198A;
+	Tue, 23 Jan 2024 01:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xI5yQipM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRLD2m/B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9BC1350CA;
-	Tue, 23 Jan 2024 01:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0F5140796;
+	Tue, 23 Jan 2024 01:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971944; cv=none; b=Iiz0qpwJx7Hqe/pIGwWqSGYunlbrHpcr6UkdbR3BJO5xFhV8oCLubc/6GIbEn16t+BeW6RSyhPln1miJnvWCwaKjrxkLZbI1bUKbgsJDMP1/sFNGU5woMZexIUBvrTKYpmJfMBYQ9oqwRWDvAma96+N+hwZ7Wfe106X1sfsiUXM=
+	t=1705972040; cv=none; b=QmV/O4T4wGY4eVqmVjhpO9AX5t2F1E8tc/EcNLqzDH4H02mHKHcyIPto2LTXxYgNeB9Xh93ttWE+og9u51Xx8q9XmyTu2YtOCSB6PRsQxn+XS1v8kGdOAvVK78mWn1CsbfBis9grp4UMvRyqsZM4wDbu7PyE64KgNFBx3L4GlqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971944; c=relaxed/simple;
-	bh=LXRYKtgJZa6tij/vb/SIIYcIob9sXiJxWWBayO8wqAs=;
+	s=arc-20240116; t=1705972040; c=relaxed/simple;
+	bh=4LVKt8jWSF7omSY/pFXmj2WW/Zw26btYAzV+Kmg28jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e7MdYxvkziUnwfPeWQo+ieqscSVpFCVZTTkbiYFRXvCLGOpH5vKFe2fa8qJ13HVH/UWND12actMele7skAyITiEdBYsWLSa/foIAkQQY3S1VBxaPoJfhGB2kO/Ia7LrgRel8hAols2ddPKZoYom+kgELO+j3c/yLs1JX32Oz2kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xI5yQipM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C836C433F1;
-	Tue, 23 Jan 2024 01:05:44 +0000 (UTC)
+	 MIME-Version; b=d8U8GUdxoejwY7O4ilcTejTN9fI9FZb8LJ+v8rC+rrguqdnnW8YLsnyyn3fvqrpATfppkTdGVCGnB98RgQ+948wx1JwmaAxibMkdShDVUnksLeV/IRubE0ZUcKu11GQmZ0rRu8TRcduMQ+Jnk1kRHpprzHIfkeOcUeBn40mEPrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRLD2m/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1581FC433C7;
+	Tue, 23 Jan 2024 01:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971944;
-	bh=LXRYKtgJZa6tij/vb/SIIYcIob9sXiJxWWBayO8wqAs=;
+	s=korg; t=1705972040;
+	bh=4LVKt8jWSF7omSY/pFXmj2WW/Zw26btYAzV+Kmg28jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xI5yQipMEgV3gQVk9yslOEZ4eViZyr7GYJy9nd5OCodPGGXcOzCX9KbLweiP5rwS0
-	 9QbKBLVHUTwBHuujs8Iv+eUMAd2S2ynki5nhBK+WkrBg/J/9oeDDdPkC6CtcT2OFF3
-	 smIK+ic3YupWSHZh0BfcygqEbvlwjqexaqFPMLJ4=
+	b=tRLD2m/B8pGgHsexw2lsyt3//h9bSlZTG/B15LqeX2WU6PnzJy9AamxYMHsA9WGai
+	 KVEZkwgFXeQ/PpBV5d6dDx/Ml063GsiHszelnAnwB7u2IP+LZwf3DZ+GO0tM1cTMqf
+	 xUln12cEoySyckPqGRW2isggWPu13b61tyl0AsVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 270/286] net: dsa: vsc73xx: Add null pointer check to vsc73xx_gpio_probe
+Subject: [PATCH 6.1 408/417] kdb: Fix a potential buffer overflow in kdb_local()
 Date: Mon, 22 Jan 2024 15:59:36 -0800
-Message-ID: <20240122235742.455951408@linuxfoundation.org>
+Message-ID: <20240122235805.834893734@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 776dac5a662774f07a876b650ba578d0a62d20db ]
+[ Upstream commit 4f41d30cd6dc865c3cbc1a852372321eba6d4e4c ]
 
-devm_kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+When appending "[defcmd]" to 'kdb_prompt_str', the size of the string
+already in the buffer should be taken into account.
 
-Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240111072018.75971-1-chentao@kylinos.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+An option could be to switch from strncat() to strlcat() which does the
+correct test to avoid such an overflow.
+
+However, this actually looks as dead code, because 'defcmd_in_progress'
+can't be true here.
+See a more detailed explanation at [1].
+
+[1]: https://lore.kernel.org/all/CAD=FV=WSh7wKN7Yp-3wWiDgX4E3isQ8uh0LCzTmd1v9Cg9j+nQ@mail.gmail.com/
+
+Fixes: 5d5314d6795f ("kdb: core for kgdb back end (1 of 2)")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/debug/kdb/kdb_main.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index 80eadf509c0a..018988b95035 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -1119,6 +1119,8 @@ static int vsc73xx_gpio_probe(struct vsc73xx *vsc)
+diff --git a/kernel/debug/kdb/kdb_main.c b/kernel/debug/kdb/kdb_main.c
+index 438b868cbfa9..35aa2e98a92a 100644
+--- a/kernel/debug/kdb/kdb_main.c
++++ b/kernel/debug/kdb/kdb_main.c
+@@ -1349,8 +1349,6 @@ static int kdb_local(kdb_reason_t reason, int error, struct pt_regs *regs,
+ 		/* PROMPT can only be set if we have MEM_READ permission. */
+ 		snprintf(kdb_prompt_str, CMD_BUFLEN, kdbgetenv("PROMPT"),
+ 			 raw_smp_processor_id());
+-		if (defcmd_in_progress)
+-			strncat(kdb_prompt_str, "[defcmd]", CMD_BUFLEN);
  
- 	vsc->gc.label = devm_kasprintf(vsc->dev, GFP_KERNEL, "VSC%04x",
- 				       vsc->chipid);
-+	if (!vsc->gc.label)
-+		return -ENOMEM;
- 	vsc->gc.ngpio = 4;
- 	vsc->gc.owner = THIS_MODULE;
- 	vsc->gc.parent = vsc->dev;
+ 		/*
+ 		 * Fetch command from keyboard
 -- 
 2.43.0
 
