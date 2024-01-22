@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-13321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D46837B65
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:01:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 298B0837B53
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:00:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 035431C2860F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:01:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFE5F1F28700
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03514134728;
-	Tue, 23 Jan 2024 00:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6006914D432;
+	Tue, 23 Jan 2024 00:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HpbRNdye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jA9cnVF2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46A71339BC;
-	Tue, 23 Jan 2024 00:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB1814D424;
+	Tue, 23 Jan 2024 00:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969308; cv=none; b=RrfqjRxgZxwSKKSHKqDzUOBL1c1ThD4bnu9tdiHTdA0rQxIuU+dgyFKuy7LrA/06ZKaREK6TA7RqFtwriiAPKmyoea1yJr+oTQosFZiaa4S+HzV+yZjH4WH7bUEYBVUEDwocEj5D64hhwJ1xgOi3uxP6+1lE0iTMiHwBEQoBGR0=
+	t=1705969280; cv=none; b=LMDwNI3tfaZI5BxHDTok6vRDgM+pFWSuePPYI4d5EHO1TKwjDQlqyWBGbj+LWjapbGokUojsnZzFLOcmqzqWt9sRVerFP4pN2fz9G5CbiaD2kVzrrcuafhGP/Lyxt6hmikuxujpH7//005UY0EdHaNwn42H3D7zr2JGb1eybLLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969308; c=relaxed/simple;
-	bh=cB0m5WUgJTQ5K//99+ZUl4l4wMHGl48tNGi4DbCPXzA=;
+	s=arc-20240116; t=1705969280; c=relaxed/simple;
+	bh=uyDTYyvdJNFJwXIZG9ka5FiE70liZ7oT5dvAXH0mKS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G2fv3PLF5XQ1GpJqRAP0kr7ZZINEWpjNpJO2iOaTTK1VN6Ez4Z6ZNi/3rce2g/srRcQjcOklmeXMk1D/DRRIQq61tgAnKOKD46oCDI+Bj/lMgRIw2IzyY4u00cThi7qlfvbulBz4pMMCposj0LfZUkWprR1briF08WmeW1KeSFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HpbRNdye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067B3C433B1;
-	Tue, 23 Jan 2024 00:21:47 +0000 (UTC)
+	 MIME-Version; b=meoYcaqwemHhY4xlnyY/OOS9wDFW0d8B4zXAKF2/LqvN4/zR44zi5ri0SBc4NWSGK8fAQqtoV/6zLafzUUM7oEp8obKKImVelZscvFO1GWYFkO436zYYZEEqaP/k50mVviBIGv4/8oSPv0ZxwuwEFPQ525Et+uRDx2U8ifDJY8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jA9cnVF2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2157C433F1;
+	Tue, 23 Jan 2024 00:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969308;
-	bh=cB0m5WUgJTQ5K//99+ZUl4l4wMHGl48tNGi4DbCPXzA=;
+	s=korg; t=1705969280;
+	bh=uyDTYyvdJNFJwXIZG9ka5FiE70liZ7oT5dvAXH0mKS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HpbRNdyefjW4KDCmsFEyaVPBWF9DUlFk3OlxL1kCGlwwt3oC2ynpZPqWmy7Kwexu4
-	 YsZr82Ftr6H24RtKwnTeTN2USjzLUhQslkGBKeX2krgUeBgAHIyS5PZvFQgVkGJ4iS
-	 niSoGZYqIG4tc/yweD+WWWekb7fFIsYFytkXEREE=
+	b=jA9cnVF2m5JKPb6huthUN8Geaqec4TqSSjAxF8uW2KA4c1o4yguXNRrwlssxgJgaq
+	 JMWrRFYRsteOs+Mf/h9JVwX0FMkY6Un2eFAFOSfrMSuKprFcbsNNFE6DMkVsBY39gI
+	 nBVp0VeA7IDsGvOmuC2ELLwqjePSixsuAvkN76ZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Nia Espera <nespera@igalia.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 140/641] arm64: dts: qcom: sm8350: Fix DMA0 address
-Date: Mon, 22 Jan 2024 15:50:44 -0800
-Message-ID: <20240122235822.432111902@linuxfoundation.org>
+Subject: [PATCH 6.7 141/641] arm64: dts: qcom: sc7280: Fix up GPU SIDs
+Date: Mon, 22 Jan 2024 15:50:45 -0800
+Message-ID: <20240122235822.462355858@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -67,40 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nia Espera <nespera@igalia.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 01a9e9eb6cdbce175ddea3cbe1163daed6d54344 ]
+[ Upstream commit 94085049fdad7a36fe14dd55e72e712fe55d6bca ]
 
-DMA0 node downstream is specified at 0x900000, so fix the typo. Without
-this, enabling any i2c node using DMA0 causes a hang.
+GPU_SMMU SID 1 is meant for Adreno LPAC (Low Priority Async Compute).
+On platforms that support it (in firmware), it is necessary to
+describe that link, or Adreno register access will hang the board.
 
-Fixes: bc08fbf49bc8 ("arm64: dts: qcom: sm8350: Define GPI DMA engines")
-Fixes: 41d6bca799b3 ("arm64: dts: qcom: sm8350: correct DMA controller unit address")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Nia Espera <nespera@igalia.com>
-Link: https://lore.kernel.org/r/20231111-nia-sm8350-for-upstream-v4-2-3a638b02eea5@igalia.com
+The current settings are functionally identical, *but* due to what is
+likely hardcoded security policies, the secure firmware rejects them,
+resulting in the board hanging. To avoid that, alter the settings such
+that SID 0 and 1 are described separately.
+
+Fixes: 96c471970b7b ("arm64: dts: qcom: sc7280: Add gpu support")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230926-topic-a643-v2-2-06fa3d899c0a@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sc7280.dtsi | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-index b46236235b7f..1d597af15bb3 100644
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -919,9 +919,9 @@ spi19: spi@894000 {
- 			};
- 		};
- 
--		gpi_dma0: dma-controller@9800000 {
-+		gpi_dma0: dma-controller@900000 {
- 			compatible = "qcom,sm8350-gpi-dma", "qcom,sm6350-gpi-dma";
--			reg = <0 0x09800000 0 0x60000>;
-+			reg = <0 0x00900000 0 0x60000>;
- 			interrupts = <GIC_SPI 244 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 245 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 246 IRQ_TYPE_LEVEL_HIGH>,
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index 6d01262199dc..ea183eadf700 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -2598,7 +2598,8 @@ gpu: gpu@3d00000 {
+ 				    "cx_mem",
+ 				    "cx_dbgc";
+ 			interrupts = <GIC_SPI 300 IRQ_TYPE_LEVEL_HIGH>;
+-			iommus = <&adreno_smmu 0 0x401>;
++			iommus = <&adreno_smmu 0 0x400>,
++				 <&adreno_smmu 1 0x400>;
+ 			operating-points-v2 = <&gpu_opp_table>;
+ 			qcom,gmu = <&gmu>;
+ 			interconnects = <&gem_noc MASTER_GFX3D 0 &mc_virt SLAVE_EBI1 0>;
 -- 
 2.43.0
 
