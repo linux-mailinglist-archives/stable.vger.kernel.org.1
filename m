@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-12881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8958378D5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA13837A50
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E79B1F25A90
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:25:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A08F41C211C1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020488462;
-	Tue, 23 Jan 2024 00:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA0912BF16;
+	Tue, 23 Jan 2024 00:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJlzAqXu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tcnmLiPF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E423C3C;
-	Tue, 23 Jan 2024 00:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB4012A17F;
+	Tue, 23 Jan 2024 00:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968268; cv=none; b=YM1gFkDp9viphP5g29BrnQ7ItBTqV7Cyts6l3y5YPc72/VKetADytNbSW5uRsZACdJtqWxQNGooAvL8rAPljrzmtzjdCNeT5EQtnf3e0PFxHpE8qlVDtCOxvcr5UBHSj1DfE3OGV7haXAURB12uGMSUY7EFHZjKU2qVSU14Zyrg=
+	t=1705968893; cv=none; b=Jta9/XD6ty8acJi/hmLIiMZdfFCQFX80kvEy3LyvOo2BpN8uXZTlU8SgEGJmJNUZtVExJiFgczk616xpeelD/OONSnXi6bCGGWIwEpPLHGkYk2IWiP2pjarnhlJ/8SgS8LhMxgCbGkrAL+8s+nta1WRrwlRLUXu9tOQfunMjDkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968268; c=relaxed/simple;
-	bh=EYU7hvOrk1lUyuuA0DQhB+Dfuyz4HqFZuSOQlDBLOPc=;
+	s=arc-20240116; t=1705968893; c=relaxed/simple;
+	bh=AIoWjsXY4BiejFO0aEnvOEbu9cu2VhXT+CuWIV9DHBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JLVY/dQDcBar//Auraw0xAQljqs8j8tDulkxLR//WhyXM4BSWG1CJ3ks4mh6wwhSUhg+uj9LWxq4fY4E0gHkI0i9KbBaq6o+qtqwIbl7ipBaOTbAjrAuGTN8HzaFUyLBBQmZHLwIgue1uCSamqqL9EoJfwR8FCQoiReHd/XZzqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJlzAqXu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6164DC433F1;
-	Tue, 23 Jan 2024 00:04:27 +0000 (UTC)
+	 MIME-Version; b=bqGSwYCe9/Uzq584PoOXAY0D1zph+5YcI7/Iw+ZB0apZvuHlF0D3Qm3FC+CSmYObX9xhpvix4y+jLx6IzrP0FZ6x26UmYnGjE8mMCojJ4ubrLAHP9rCNuKGjLja61JFz3GPWbCQxj0qWGD2QVDBq7iIy7ScmK2/LMJ7mmeTh7sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tcnmLiPF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC3EC43390;
+	Tue, 23 Jan 2024 00:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968268;
-	bh=EYU7hvOrk1lUyuuA0DQhB+Dfuyz4HqFZuSOQlDBLOPc=;
+	s=korg; t=1705968893;
+	bh=AIoWjsXY4BiejFO0aEnvOEbu9cu2VhXT+CuWIV9DHBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mJlzAqXu7HPMosv2Bz8ilsyR0B5FBVaDMqv/hTxzuOrN5znMJ/eUMd4/mJMVW+dc/
-	 cVfsmom2yfBMg+co+M6L61LR1qO1om2xPjkS08WXcr80mmkUchFosml6EGJR8luykX
-	 lxlhbPpP0Rdw2RCC5TtKKhfb2AJrx3qp3n5JKTig=
+	b=tcnmLiPFge8sU50LpXXxTDt02JXzcqUtYJM/cQD8dtRCTh5QvZzBepULomfTvlga7
+	 LbeOR7A87TOlUTp3XFuWaSAN+cTmCkVWkhUG/UCKfvbnFbtRqjaaueLZJZHPE9fL69
+	 Bni77iVAdXTSbfAi8NaTx/NrghxeIOQgCS6aJjQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Bhaskar Chowdhury <unixbhaskar@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 057/148] crypto: sahara - fix processing hash requests with req->nbytes < sg->length
-Date: Mon, 22 Jan 2024 15:56:53 -0800
-Message-ID: <20240122235714.717613136@linuxfoundation.org>
+Subject: [PATCH 5.4 084/194] ncsi: internal.h: Fix a spello
+Date: Mon, 22 Jan 2024 15:56:54 -0800
+Message-ID: <20240122235722.854472442@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 
-[ Upstream commit 7bafa74d1ba35dcc173e1ce915e983d65905f77e ]
+[ Upstream commit 195a8ec4033b4124f6864892e71dcef24ba74a5a ]
 
-It's not always the case that the entire sg entry needs to be processed.
-Currently, when nbytes is less than sg->length, "Descriptor length" errors
-are encountered.
+s/Firware/Firmware/
 
-To fix this, take the actual request size into account when populating the
-hw links.
-
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 3084b58bfd0b ("net/ncsi: Fix netlink major/minor version numbers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ncsi/internal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index c69016faff6f..79e0ad0f7d26 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -796,6 +796,7 @@ static int sahara_sha_hw_links_create(struct sahara_dev *dev,
- 				       int start)
- {
- 	struct scatterlist *sg;
-+	unsigned int len;
- 	unsigned int i;
- 	int ret;
- 
-@@ -817,12 +818,14 @@ static int sahara_sha_hw_links_create(struct sahara_dev *dev,
- 	if (!ret)
- 		return -EFAULT;
- 
-+	len = rctx->total;
- 	for (i = start; i < dev->nb_in_sg + start; i++) {
--		dev->hw_link[i]->len = sg->length;
-+		dev->hw_link[i]->len = min(len, sg->length);
- 		dev->hw_link[i]->p = sg->dma_address;
- 		if (i == (dev->nb_in_sg + start - 1)) {
- 			dev->hw_link[i]->next = 0;
- 		} else {
-+			len -= min(len, sg->length);
- 			dev->hw_link[i]->next = dev->hw_phys_link[i + 1];
- 			sg = sg_next(sg);
- 		}
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index ad3fd7f1da75..9b2bfb87c289 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -83,7 +83,7 @@ enum {
+ struct ncsi_channel_version {
+ 	u32 version;		/* Supported BCD encoded NCSI version */
+ 	u32 alpha2;		/* Supported BCD encoded NCSI version */
+-	u8  fw_name[12];	/* Firware name string                */
++	u8  fw_name[12];	/* Firmware name string                */
+ 	u32 fw_version;		/* Firmware version                   */
+ 	u16 pci_ids[4];		/* PCI identification                 */
+ 	u32 mf_id;		/* Manufacture ID                     */
 -- 
 2.43.0
 
