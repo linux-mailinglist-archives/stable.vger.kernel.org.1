@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299EC838458
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B307D837F9F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3ADD299543
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50F051F29F6B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7F36BB4B;
-	Tue, 23 Jan 2024 02:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D803634FF;
+	Tue, 23 Jan 2024 00:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkqTCxxw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZimW36y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8F16A354;
-	Tue, 23 Jan 2024 02:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B31B6311F;
+	Tue, 23 Jan 2024 00:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975366; cv=none; b=EUvvVEmxu3kNqw1Q8qmMXUBC81aPH5OGR8mbrTwueCe0ezLWo6a1epj20tTsQupdb4OiHISVMaHkJ/FJWA7K4IyEcs4pHn7EEWBtgOrN7Hho/sPAbsC4dByNj43jtbWCNjFa2FYP3fgw9Z/lAGehnzGz2hUxYw/Lw+r42uMjBl8=
+	t=1705971246; cv=none; b=cJNtZwekuGVisFvdJEXL3dIjAQ/e0dRyUGsxUiyy+A+jQnCOzy8ZL7+0r1HdBSHDX+0Q3i5N5k/todZov8cGqBy9nM4jgBV3mNMxtw7/aV41yc4S+//6xSArNMExNrGt7jlXOnmdUw2er8Y1Jamw5NCbkQT6cSfKg62svDyw+IQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975366; c=relaxed/simple;
-	bh=C56x3KfeIS2Mpt/xXf1g6otvcJp6erG7Rf2XgCTxdjo=;
+	s=arc-20240116; t=1705971246; c=relaxed/simple;
+	bh=RiyN3r4JXgl4D/lGSX2k8vEq6yNyQncRRlwM7MZ60Wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mjhbhD+ZdqGHiYcMtY0WI9VibSBnJaukSL5K63wKevPdTBhO5iM+ZWsItjdqL2lgA4vFm3Y5V35qPcfAgiBphDP6jMLeGn3srv7saN5OqVBZKeNQhzotqPpxsUjVgK85W8ghm8823XyX8Praq+8m/j0eVM2n2JhpWDDIe7IPPBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkqTCxxw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC22C433C7;
-	Tue, 23 Jan 2024 02:02:46 +0000 (UTC)
+	 MIME-Version; b=ZLHMfPlKlvdTtgjbZpaCmDl7wmS45zQVq6rU9VE1eun+z869x1KLC/AroC+GNg1DUQv5DdXgu0smwxWZDJxHuPd3fgCaL580UwouF3uxOGOvcjdfyfRgiFQufkql4aj1CaEE1jqCUzT/Tg2Z/dhTD9xbaj973NqwKJB8cWXzb6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZimW36y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CA3C433C7;
+	Tue, 23 Jan 2024 00:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975366;
-	bh=C56x3KfeIS2Mpt/xXf1g6otvcJp6erG7Rf2XgCTxdjo=;
+	s=korg; t=1705971245;
+	bh=RiyN3r4JXgl4D/lGSX2k8vEq6yNyQncRRlwM7MZ60Wo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EkqTCxxwgJq4rsxx5twl2wfH2HfLSG1jN9LSdAt0B/x8sccAoYEwuGIUJhI7Rw+9r
-	 jF+25CaQt8Ql0zGxMn3ggw2JU0Z/XePcyyhez2N0sX8D/O8rVQcgT1znV0HeOOU6d8
-	 j/XE9F6n4Xm8Rl6ZM+OZYMyHBZl06MnfXcL2sSVA=
+	b=tZimW36y6EIIAswOVLbWPLLLGGtR4i+hSd4jN4aEEp9ESTRiF/pDGC28jgwyXD9qi
+	 nlmOqBEd1guiCA5k+krn9SGVDBWLan74HTopcUyt1EFy2LLLIkgM/mzbGqu9yPimfu
+	 S40tV7gTINGf1UWLz/+kP1WD8pmpSpb/wyWKpASs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 327/583] gpiolib: make gpio_device_get() and gpio_device_put() public
+Subject: [PATCH 6.1 210/417] drm/amd/pm: fix a double-free in si_dpm_init
 Date: Mon, 22 Jan 2024 15:56:18 -0800
-Message-ID: <20240122235822.057957168@linuxfoundation.org>
+Message-ID: <20240122235759.199024689@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 36aa129f221c9070afd8dff03154ab49702a5b1b ]
+[ Upstream commit ac16667237a82e2597e329eb9bc520d1cf9dff30 ]
 
-In order to start migrating away from accessing struct gpio_chip by
-users other than their owners, let's first make the reference management
-functions for the opaque struct gpio_device public in the driver.h
-header.
+When the allocation of
+adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries fails,
+amdgpu_free_extended_power_table is called to free some fields of adev.
+However, when the control flow returns to si_dpm_sw_init, it goes to
+label dpm_failed and calls si_dpm_fini, which calls
+amdgpu_free_extended_power_table again and free those fields again. Thus
+a double-free is triggered.
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Stable-dep-of: 48e1b4d369cf ("gpiolib: remove the GPIO device from the list when it's unregistered")
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib.c      | 24 ++++++++++++++++++++++++
- drivers/gpio/gpiolib.h      | 10 ----------
- include/linux/gpio/driver.h |  3 +++
- 3 files changed, 27 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 40a0022ea719..c2b40d7138fa 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -1058,6 +1058,30 @@ static struct gpio_chip *find_chip_by_name(const char *name)
- 	return gpiochip_find((void *)name, gpiochip_match_name);
- }
- 
-+/**
-+ * gpio_device_get() - Increase the reference count of this GPIO device
-+ * @gdev: GPIO device to increase the refcount for
-+ *
-+ * Returns:
-+ * Pointer to @gdev.
-+ */
-+struct gpio_device *gpio_device_get(struct gpio_device *gdev)
-+{
-+	return to_gpio_device(get_device(&gdev->dev));
-+}
-+EXPORT_SYMBOL_GPL(gpio_device_get);
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index c89cfef7cafa..dc0a6fba7050 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -7379,10 +7379,9 @@ static int si_dpm_init(struct amdgpu_device *adev)
+ 		kcalloc(4,
+ 			sizeof(struct amdgpu_clock_voltage_dependency_entry),
+ 			GFP_KERNEL);
+-	if (!adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries) {
+-		amdgpu_free_extended_power_table(adev);
++	if (!adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries)
+ 		return -ENOMEM;
+-	}
 +
-+/**
-+ * gpio_device_put() - Decrease the reference count of this GPIO device and
-+ *                     possibly free all resources associated with it.
-+ * @gdev: GPIO device to decrease the reference count for
-+ */
-+void gpio_device_put(struct gpio_device *gdev)
-+{
-+	put_device(&gdev->dev);
-+}
-+EXPORT_SYMBOL_GPL(gpio_device_put);
-+
- #ifdef CONFIG_GPIOLIB_IRQCHIP
- 
- /*
-diff --git a/drivers/gpio/gpiolib.h b/drivers/gpio/gpiolib.h
-index a0a67569300b..aa1926083689 100644
---- a/drivers/gpio/gpiolib.h
-+++ b/drivers/gpio/gpiolib.h
-@@ -86,16 +86,6 @@ static inline struct gpio_device *to_gpio_device(struct device *dev)
- 	return container_of(dev, struct gpio_device, dev);
- }
- 
--static inline struct gpio_device *gpio_device_get(struct gpio_device *gdev)
--{
--	return to_gpio_device(get_device(&gdev->dev));
--}
--
--static inline void gpio_device_put(struct gpio_device *gdev)
--{
--	put_device(&gdev->dev);
--}
--
- /* gpio suffixes used for ACPI and device tree lookup */
- static __maybe_unused const char * const gpio_suffixes[] = { "gpios", "gpio" };
- 
-diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
-index 4f0c5d62c8f3..64c214317a83 100644
---- a/include/linux/gpio/driver.h
-+++ b/include/linux/gpio/driver.h
-@@ -607,6 +607,9 @@ extern int devm_gpiochip_add_data_with_key(struct device *dev, struct gpio_chip
- extern struct gpio_chip *gpiochip_find(void *data,
- 			      int (*match)(struct gpio_chip *gc, void *data));
- 
-+struct gpio_device *gpio_device_get(struct gpio_device *gdev);
-+void gpio_device_put(struct gpio_device *gdev);
-+
- bool gpiochip_line_is_irq(struct gpio_chip *gc, unsigned int offset);
- int gpiochip_reqres_irq(struct gpio_chip *gc, unsigned int offset);
- void gpiochip_relres_irq(struct gpio_chip *gc, unsigned int offset);
+ 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.count = 4;
+ 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[0].clk = 0;
+ 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[0].v = 0;
 -- 
 2.43.0
 
