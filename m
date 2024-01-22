@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-14689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3DD6838227
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE4D838239
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C6021F25EB3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7110C1C26DC2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A9359154;
-	Tue, 23 Jan 2024 01:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE3025026C;
+	Tue, 23 Jan 2024 01:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HI77i0sf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwaXTuWP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A061063C3;
-	Tue, 23 Jan 2024 01:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7A06121;
+	Tue, 23 Jan 2024 01:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974076; cv=none; b=aeh16kSabCxMt7SHV47CwLv2/gvF5qQQQ05vrat75T23F3I30PGhtiCoW/qEBabsybAUO7rH6Ot98cJGh6IZej/yW7czveI1CmwVZm2cB8uJ6gU6vsYAEJush6feL8vkE5QyCAHfGq0X8kPAPDVO61RPRU7qgJSKAUJXSNDmxjI=
+	t=1705974101; cv=none; b=YOMGDrd2WBXui+Z7QvoOelCMMgCNI5432YJnC3vZILz0mlSgZ5JK29PDVb1yjTt43q1s+UGDGobsq17kojW9cwtxG6bzheHubLyREtybhnq06RzTTqeKpiNeCo+AfHDoTnhBCf59R6IVgz0zcDNs8EjRDbzI/N4ddG8U8SlWndo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974076; c=relaxed/simple;
-	bh=Zx93t4WrYNTYsFZhS59scngehJmuPRWc1qIZcn7Vfco=;
+	s=arc-20240116; t=1705974101; c=relaxed/simple;
+	bh=JWmf85/XV7TbSEDTsNU6S71WFaa0FWMcmKoSMFnf2MY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xymc7JKQ3F0yh6neogWCpODShUGls+tyR0S2VNHBHBI4SCO/ydZOwSnD8nnb0Wpg4ck/82C4IDB0R+wVx949dnHF7xO+tp4lIG4A2OyIe/osQAZcSIgC+lDYN5gU8fVv0BNY2KIePRyyqjOB7H4nMHHAwDBzRXoP/iYa76CEqKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HI77i0sf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C63EC433C7;
-	Tue, 23 Jan 2024 01:41:16 +0000 (UTC)
+	 MIME-Version; b=fTPhbug+LWw0hhJohV6MQU1H4qgkcjjo9RUzqCcDPT5Br7tdY9hqNmbpVJzaMv13OzfYuPFL+dAorv8BfWnRb1RzmJESocsh1AmfcdZV4RfA+xe5wKjcPgSWBNa+xWo01wlB8WF8i/GdD9rS3gQN4+/gp8vrzpJKy9u8xn4aAVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwaXTuWP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7485C43390;
+	Tue, 23 Jan 2024 01:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974076;
-	bh=Zx93t4WrYNTYsFZhS59scngehJmuPRWc1qIZcn7Vfco=;
+	s=korg; t=1705974101;
+	bh=JWmf85/XV7TbSEDTsNU6S71WFaa0FWMcmKoSMFnf2MY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HI77i0sf8aJuz3RaPlSc1N9QLqxUIvOxBvKeOogd6cNIG0HkMnrooFZBHFzLRkbs1
-	 Y+NMpdSmQvNSv71P1HEL5JCn/3F9Z1ZjVpYsRw2I0IxjR6+pGqd6pQDlQ10Hirm/Sh
-	 wgp2zNU772UFu2+7D+fV+35l5fNQqFeHKr43jTzs=
+	b=KwaXTuWPNqlvJC5IuWa9vxwYvYSrXUtlpa6Uhz9FvLKFqBJtUPJodG8GkB5jmb0gT
+	 dby1+BOGOHZb+QxWev2do9kKiIWHUbtd8vHwK6Cpy54iHDU0JmCFazklUzF6EHbhkW
+	 3IFMpHeoMgIQo+5L85BwFywRrToT5vagAnPN/Q7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiwei Lin <s921975628@gmail.com>,
+	Kyle Meyer <kyle.meyer@hpe.com>,
+	Alexander Antonov <alexander.antonov@linux.intel.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Abel Wu <wuyun.abel@bytedance.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/583] sched/fair: Update min_vruntime for reweight_entity() correctly
-Date: Mon, 22 Jan 2024 15:51:11 -0800
-Message-ID: <20240122235812.834374640@linuxfoundation.org>
+Subject: [PATCH 6.6 021/583] perf/x86/intel/uncore: Fix NULL pointer dereference issue in upi_fill_topology()
+Date: Mon, 22 Jan 2024 15:51:12 -0800
+Message-ID: <20240122235812.863075023@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -67,56 +68,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yiwei Lin <s921975628@gmail.com>
+From: Alexander Antonov <alexander.antonov@linux.intel.com>
 
-[ Upstream commit 5068d84054b766efe7c6202fc71b2350d1c326f1 ]
+[ Upstream commit 1692cf434ba13ee212495b5af795b6a07e986ce4 ]
 
-Since reweight_entity() may have chance to change the weight of
-cfs_rq->curr entity, we should also update_min_vruntime() if
-this is the case
+Get logical socket id instead of physical id in discover_upi_topology()
+to avoid out-of-bound access on 'upi = &type->topology[nid][idx];' line
+that leads to NULL pointer dereference in upi_fill_topology()
 
-Fixes: eab03c23c2a1 ("sched/eevdf: Fix vruntime adjustment on reweight")
-Signed-off-by: Yiwei Lin <s921975628@gmail.com>
+Fixes: f680b6e6062e ("perf/x86/intel/uncore: Enable UPI topology discovery for Icelake Server")
+Reported-by: Kyle Meyer <kyle.meyer@hpe.com>
+Signed-off-by: Alexander Antonov <alexander.antonov@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Abel Wu <wuyun.abel@bytedance.com>
-Link: https://lore.kernel.org/r/20231117080106.12890-1-s921975628@gmail.com
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Tested-by: Kyle Meyer <kyle.meyer@hpe.com>
+Link: https://lore.kernel.org/r/20231127185246.2371939-2-alexander.antonov@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ arch/x86/events/intel/uncore_snbep.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index fa9fff0f9620..d336af9cba13 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3771,17 +3771,17 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
- 	enqueue_load_avg(cfs_rq, se);
- 	if (se->on_rq) {
- 		update_load_add(&cfs_rq->load, se->load.weight);
--		if (!curr) {
--			/*
--			 * The entity's vruntime has been adjusted, so let's check
--			 * whether the rq-wide min_vruntime needs updated too. Since
--			 * the calculations above require stable min_vruntime rather
--			 * than up-to-date one, we do the update at the end of the
--			 * reweight process.
--			 */
-+		if (!curr)
- 			__enqueue_entity(cfs_rq, se);
--			update_min_vruntime(cfs_rq);
--		}
-+
-+		/*
-+		 * The entity's vruntime has been adjusted, so let's check
-+		 * whether the rq-wide min_vruntime needs updated too. Since
-+		 * the calculations above require stable min_vruntime rather
-+		 * than up-to-date one, we do the update at the end of the
-+		 * reweight process.
-+		 */
-+		update_min_vruntime(cfs_rq);
- 	}
- }
+diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
+index 8250f0f59c2b..49bc27ab26ad 100644
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -5596,7 +5596,7 @@ static int discover_upi_topology(struct intel_uncore_type *type, int ubox_did, i
+ 	struct pci_dev *ubox = NULL;
+ 	struct pci_dev *dev = NULL;
+ 	u32 nid, gid;
+-	int i, idx, ret = -EPERM;
++	int i, idx, lgc_pkg, ret = -EPERM;
+ 	struct intel_uncore_topology *upi;
+ 	unsigned int devfn;
  
+@@ -5614,8 +5614,13 @@ static int discover_upi_topology(struct intel_uncore_type *type, int ubox_did, i
+ 		for (i = 0; i < 8; i++) {
+ 			if (nid != GIDNIDMAP(gid, i))
+ 				continue;
++			lgc_pkg = topology_phys_to_logical_pkg(i);
++			if (lgc_pkg < 0) {
++				ret = -EPERM;
++				goto err;
++			}
+ 			for (idx = 0; idx < type->num_boxes; idx++) {
+-				upi = &type->topology[nid][idx];
++				upi = &type->topology[lgc_pkg][idx];
+ 				devfn = PCI_DEVFN(dev_link0 + idx, ICX_UPI_REGS_ADDR_FUNCTION);
+ 				dev = pci_get_domain_bus_and_slot(pci_domain_nr(ubox->bus),
+ 								  ubox->bus->number,
+@@ -5626,6 +5631,7 @@ static int discover_upi_topology(struct intel_uncore_type *type, int ubox_did, i
+ 						goto err;
+ 				}
+ 			}
++			break;
+ 		}
+ 	}
+ err:
 -- 
 2.43.0
 
