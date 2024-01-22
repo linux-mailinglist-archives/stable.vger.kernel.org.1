@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A51837FC4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4716E83820B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:17:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37B6B28F2D2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE883287981
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C70012BE93;
-	Tue, 23 Jan 2024 00:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3323057332;
+	Tue, 23 Jan 2024 01:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9eU5rZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flGCzJoQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE50064CDA;
-	Tue, 23 Jan 2024 00:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E272351C44;
+	Tue, 23 Jan 2024 01:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971343; cv=none; b=GnD1DLVT7N/u8DBb0J2ksId/xrv5DFYannJ9HLAsOtG8+/FeyJjyVwbodFGzmgc5bTIOwfq+U9YBqNCuZuWZvahzf7lKg6AWhFoF9q5hveEnBWPQPlkKZHoDcLJg+xhtHleqNfv4T+rAnrnvZ/+VHkLPkwPURG4prB7Fae8HIsE=
+	t=1705974043; cv=none; b=PEaMxQbT4h80O4ETF5pfqybKpUtYQ1ePTAaLNrXcQS8CD4bwRnTEfVav8fzxdVYF9Wybjgu+1/L8QdoIqkIpsblBo9XQqR5GV+xarfTqtN/IT4Gy2iR8+1ToDWG499bArsfMfZv0amnIBBVcmDQgdNO3creBG5tZChNwLqFxcIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971343; c=relaxed/simple;
-	bh=Rk70To/34dzhv8aXOUJRPhl4CO89h6JCzDCip1ph1hE=;
+	s=arc-20240116; t=1705974043; c=relaxed/simple;
+	bh=+iFnuB3Z1acTQWdjwVuB4kkVwBVxbx4VPpyYBHoyBNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I3PRllkfgLoqt092S7WPsuaGtUQUXuHC6VXfLQxtaa0WCEZiQbfUFKXHsemjBBicn1uml83rjp9so2JFtI4HRmnRueF0Zl6ONFuHEDPzDoqIPeS7AM5u+uYO7neLG77l7YL4xsVAelzuZZukWJzkV/IRUCgP+soVQFeyxP6Qzkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9eU5rZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF28C433F1;
-	Tue, 23 Jan 2024 00:55:41 +0000 (UTC)
+	 MIME-Version; b=rHitbUHQHEHwotJoaOViD84/7LJxv69M53n2ZT1qknU8piyjLfISRx7/hfO1gQLpuEkor6F3U+exgf782135DOUbaqmA45HK7rigRDVN8WpxgWiEQN9fD0jsZ9YJhxgNmXJi74SzgUmsCXG8q0TBlaoWAPtXMi1Cu4EChpYspGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flGCzJoQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F8C3C43390;
+	Tue, 23 Jan 2024 01:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971342;
-	bh=Rk70To/34dzhv8aXOUJRPhl4CO89h6JCzDCip1ph1hE=;
+	s=korg; t=1705974042;
+	bh=+iFnuB3Z1acTQWdjwVuB4kkVwBVxbx4VPpyYBHoyBNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s9eU5rZA2H6sBZZiImNcCBXIf/abiEWxfJCSU5vTgVImQesNTMJsXsFBFw8N5nGEg
-	 /mK//xB9Sqdd2mvKTmTAAwox4/azXyeNWX21HwV4BAjck3VGqJV/Xf6DkX7bdD7+CW
-	 jtbpnfKYYXclKXh9cyga5Os/Bj+FX9Wx1s9tNwL0=
+	b=flGCzJoQNl73yMSiqdJCrIetiZ/UhkiKm+GM29+pR1Do58Lorud9HZbuCvwcHsR1+
+	 SPx28b0QDBsWMhErNICs2lpxrMehtft09uHLY4PYbvCfejWKsxrsU7PU504hiwiloz
+	 nnJocIqY4xD88grVIdy+FxX53KmOWacJ8Z70U+bQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingyuan Mo <hdthky0@gmail.com>,
-	Oded Gabbay <ogabbay@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 226/417] accel/habanalabs: fix information leak in sec_attest_info()
+Subject: [PATCH 5.15 138/374] arm64: dts: qcom: sdm845-db845c: correct LED panic indicator
 Date: Mon, 22 Jan 2024 15:56:34 -0800
-Message-ID: <20240122235759.740806369@linuxfoundation.org>
+Message-ID: <20240122235749.438867631@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingyuan Mo <hdthky0@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit a9f07790a4b2250f0140e9a61c7f842fd9b618c7 ]
+[ Upstream commit 0c90c75e663246203a2b7f6dd9e08a110f4c3c43 ]
 
-This function may copy the pad0 field of struct hl_info_sec_attest to user
-mode which has not been initialized, resulting in leakage of kernel heap
-data to user mode. To prevent this, use kzalloc() to allocate and zero out
-the buffer, which can also eliminate other uninitialized holes, if any.
+There is no "panic-indicator" default trigger but a property with that
+name:
 
-Fixes: 0c88760f8f5e ("habanalabs/gaudi2: add secured attestation info uapi")
-Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
-Reviewed-by: Oded Gabbay <ogabbay@kernel.org>
-Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
+  sdm845-db845c.dtb: leds: led-0: Unevaluated properties are not allowed ('linux,default-trigger' was unexpected)
+
+Fixes: 3f72e2d3e682 ("arm64: dts: qcom: Add Dragonboard 845c")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231111095617.16496-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/habanalabs/common/habanalabs_ioctl.c | 2 +-
+ arch/arm64/boot/dts/qcom/sdm845-db845c.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/misc/habanalabs/common/habanalabs_ioctl.c b/drivers/misc/habanalabs/common/habanalabs_ioctl.c
-index 43afe40966e5..1ea1ae34b7a7 100644
---- a/drivers/misc/habanalabs/common/habanalabs_ioctl.c
-+++ b/drivers/misc/habanalabs/common/habanalabs_ioctl.c
-@@ -677,7 +677,7 @@ static int sec_attest_info(struct hl_fpriv *hpriv, struct hl_info_args *args)
- 	if (!sec_attest_info)
- 		return -ENOMEM;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
+index 5ce270f0b2ec..62877311e5c2 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
+@@ -55,8 +55,8 @@ leds {
+ 		user4 {
+ 			label = "green:user4";
+ 			gpios = <&pm8998_gpio 13 GPIO_ACTIVE_HIGH>;
+-			linux,default-trigger = "panic-indicator";
+ 			default-state = "off";
++			panic-indicator;
+ 		};
  
--	info = kmalloc(sizeof(*info), GFP_KERNEL);
-+	info = kzalloc(sizeof(*info), GFP_KERNEL);
- 	if (!info) {
- 		rc = -ENOMEM;
- 		goto free_sec_attest_info;
+ 		wlan {
 -- 
 2.43.0
 
