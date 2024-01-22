@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A30837D81
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 606E983825A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:19:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DE6C2874DC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 198C4286D39
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:19:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E095C8F4;
-	Tue, 23 Jan 2024 00:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32B05B5B9;
+	Tue, 23 Jan 2024 01:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+ttXWsm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHJhpXGI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C204E1D8;
-	Tue, 23 Jan 2024 00:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCFD5B5A0;
+	Tue, 23 Jan 2024 01:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969990; cv=none; b=YDy9y5+C2KJTF/JdaSW919RpshXyhyX3OsNbp0/Uu47N75x8f5CRk8KlqHtf1gETgHwz0vmKFyCxNq+iO7srqCaGtr0sTFCa6b4HTIhRngA+U+5Qgnlc7Zrhls4ROIIcAie7+NX7vY2+gEPWSzYKDUR2lm7bI9Y1nlmXPw1Ijnk=
+	t=1705974332; cv=none; b=uUp/wn7IeVUDVYhlh80BKsEQgVCP3Kwb7AnJ0lbq16134E+7AtI8HNBlyu6wpaFIlSOqosC2dF+Jg/4k7SWe/FQqWwmUPZn3yO2XqYSRZlwHc3uzhFvRwuASUIrLsB2ojsLgUaWbLz8ys8tRInU9ujoBnpUg+rFZltZ8VkAcuSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969990; c=relaxed/simple;
-	bh=vnWmFgeZyfawnANBigyyuGC5oJv5oH9E30xvA7jC6j0=;
+	s=arc-20240116; t=1705974332; c=relaxed/simple;
+	bh=dooU8+5FhSJVpyTYNGykAl/ZWR6G9uPRZxmdOxGtxIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fyfqpzQgy/j4Az0U9/nkFkvFVVXtVz52w6y0xyiPnQMZjnZHx9DmDrYEsHqj7d6H+ro8wgePP6V6FpN2G8VKZPlUBuhyPg7xz9BqTJzWv+wldvJbOVAf+YRaxLx6NvQPwL/4CEiqDl+Th/dYWbC/YdPYtspSM8muExqOQY+TtKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+ttXWsm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F03C433F1;
-	Tue, 23 Jan 2024 00:33:09 +0000 (UTC)
+	 MIME-Version; b=j7g3DViHazfpjI5blpMBKn6O7PPf91RCcjtdAWVbFThAsRHk+DxJGUJwvgB74aUFhk/YyRUQC/3peoZc62WfntKlswpW4Wf2WTmb7CMSrosV/8TWX0YlWnOiaBcsuKcOQ1Fqa+ir2KsqrTGLIHBqPmgFm9H2GTLR6xIopnrRiE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHJhpXGI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769E3C433F1;
+	Tue, 23 Jan 2024 01:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969990;
-	bh=vnWmFgeZyfawnANBigyyuGC5oJv5oH9E30xvA7jC6j0=;
+	s=korg; t=1705974331;
+	bh=dooU8+5FhSJVpyTYNGykAl/ZWR6G9uPRZxmdOxGtxIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q+ttXWsmoG0UR2FxDfudkiXGvenBMHEHntajNJydeqr9ZVOlZBuFEUAcDbXwGogpa
-	 373m/qYUeVF2imqImOAH/GZ9HDeyWHIXSbGCMt/dMo5KUIGrPl52fpTx2tu7ZdKTTi
-	 4M2+l0d3W7htf/Mk8sRNV+dvNFriCl2dUPyIRyDU=
+	b=AHJhpXGIjRHSY+3CQQN6ffnReTvzFp53OdxGJKx+bBLMCQIaXluCw9zG692GPlFlR
+	 Kws16jLGdrD7JbKWHoA1CjaIwcE/cqKSBrbR+6kY95hTTzvbW/fVrKmFB0cKcMiz+H
+	 Xsme/ZZI0qtnMf3WehwwDdUJfgXJ8koECSPoKt0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Leon Romanovsky <leonro@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 530/641] iio: adc: ad9467: add mutex to struct ad9467_state
+Subject: [PATCH 5.15 178/374] RDMA/usnic: Silence uninitialized symbol smatch warnings
 Date: Mon, 22 Jan 2024 15:57:14 -0800
-Message-ID: <20240122235834.693114886@linuxfoundation.org>
+Message-ID: <20240122235750.829259926@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 737720197be445bb9eec2986101e4a386e019337 ]
+[ Upstream commit b9a85e5eec126d6ae6c362f94b447c223e8fe6e4 ]
 
-When calling ad9467_set_scale(), multiple calls to ad9467_spi_write()
-are done which means we need to properly protect the whole operation so
-we are sure we will be in a sane state if two concurrent calls occur.
+The patch 1da177e4c3f4: "Linux-2.6.12-rc2" from Apr 16, 2005
+(linux-next), leads to the following Smatch static checker warning:
 
-Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20231207-iio-backend-prep-v2-3-a4a33bc4d70e@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+        drivers/infiniband/hw/mthca/mthca_cmd.c:644 mthca_SYS_EN()
+        error: uninitialized symbol 'out'.
+
+drivers/infiniband/hw/mthca/mthca_cmd.c
+    636 int mthca_SYS_EN(struct mthca_dev *dev)
+    637 {
+    638         u64 out;
+    639         int ret;
+    640
+    641         ret = mthca_cmd_imm(dev, 0, &out, 0, 0, CMD_SYS_EN, CMD_TIME_CLASS_D);
+
+We pass out here and it gets used without being initialized.
+
+        err = mthca_cmd_post(dev, in_param,
+                             out_param ? *out_param : 0,
+                                         ^^^^^^^^^^
+                             in_modifier, op_modifier,
+                             op, context->token, 1);
+
+It's the same in mthca_cmd_wait() and mthca_cmd_poll().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/533bc3df-8078-4397-b93d-d1f6cec9b636@moroto.mountain
+Link: https://lore.kernel.org/r/c559cb7113158c02d75401ac162652072ef1b5f0.1699867650.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad9467.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mthca/mthca_cmd.c  | 4 ++--
+ drivers/infiniband/hw/mthca/mthca_main.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-index d3c98c4eccd3..104c6d394a3e 100644
---- a/drivers/iio/adc/ad9467.c
-+++ b/drivers/iio/adc/ad9467.c
-@@ -4,8 +4,9 @@
-  *
-  * Copyright 2012-2020 Analog Devices Inc.
-  */
--
-+#include <linux/cleanup.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/device.h>
- #include <linux/kernel.h>
- #include <linux/slab.h>
-@@ -121,6 +122,8 @@ struct ad9467_state {
- 	unsigned int			output_mode;
+diff --git a/drivers/infiniband/hw/mthca/mthca_cmd.c b/drivers/infiniband/hw/mthca/mthca_cmd.c
+index bdf5ed38de22..0307c45aa6d3 100644
+--- a/drivers/infiniband/hw/mthca/mthca_cmd.c
++++ b/drivers/infiniband/hw/mthca/mthca_cmd.c
+@@ -635,7 +635,7 @@ void mthca_free_mailbox(struct mthca_dev *dev, struct mthca_mailbox *mailbox)
  
- 	struct gpio_desc		*pwrdown_gpio;
-+	/* ensure consistent state obtained on multiple related accesses */
-+	struct mutex			lock;
- };
- 
- static int ad9467_spi_read(struct spi_device *spi, unsigned int reg)
-@@ -161,6 +164,7 @@ static int ad9467_reg_access(struct adi_axi_adc_conv *conv, unsigned int reg,
+ int mthca_SYS_EN(struct mthca_dev *dev)
+ {
+-	u64 out;
++	u64 out = 0;
  	int ret;
  
- 	if (readval == NULL) {
-+		guard(mutex)(&st->lock);
- 		ret = ad9467_spi_write(spi, reg, writeval);
- 		if (ret)
- 			return ret;
-@@ -310,6 +314,7 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
- 		if (scale_val[0] != val || scale_val[1] != val2)
- 			continue;
+ 	ret = mthca_cmd_imm(dev, 0, &out, 0, 0, CMD_SYS_EN, CMD_TIME_CLASS_D);
+@@ -1955,7 +1955,7 @@ int mthca_WRITE_MGM(struct mthca_dev *dev, int index,
+ int mthca_MGID_HASH(struct mthca_dev *dev, struct mthca_mailbox *mailbox,
+ 		    u16 *hash)
+ {
+-	u64 imm;
++	u64 imm = 0;
+ 	int err;
  
-+		guard(mutex)(&st->lock);
- 		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
- 				       info->scale_table[i][1]);
- 		if (ret < 0)
+ 	err = mthca_cmd_imm(dev, mailbox->dma, &imm, 0, 0, CMD_MGID_HASH,
+diff --git a/drivers/infiniband/hw/mthca/mthca_main.c b/drivers/infiniband/hw/mthca/mthca_main.c
+index f507c4cd46d3..f77c48b317f2 100644
+--- a/drivers/infiniband/hw/mthca/mthca_main.c
++++ b/drivers/infiniband/hw/mthca/mthca_main.c
+@@ -382,7 +382,7 @@ static int mthca_init_icm(struct mthca_dev *mdev,
+ 			  struct mthca_init_hca_param *init_hca,
+ 			  u64 icm_size)
+ {
+-	u64 aux_pages;
++	u64 aux_pages = 0;
+ 	int err;
+ 
+ 	err = mthca_SET_ICM_SIZE(mdev, icm_size, &aux_pages);
 -- 
 2.43.0
 
