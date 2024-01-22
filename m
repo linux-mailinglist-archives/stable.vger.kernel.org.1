@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C378B837E7A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B47838388
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03A961C28EFC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9BBB1F28CF3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA30C5EE6C;
-	Tue, 23 Jan 2024 00:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D264063131;
+	Tue, 23 Jan 2024 01:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xx0ZvjUV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDOPwjdW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40085D8FB;
-	Tue, 23 Jan 2024 00:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CB162A13;
+	Tue, 23 Jan 2024 01:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970619; cv=none; b=uMtVD6m0PEhgM2TxqDzo/pSzqVK3Cx75a4AOECk9PiU5qHMNfblHXf58jy3B5SDoghiD0w8oz8uQXzSx76tEPXqcKPtZ9nR02hBpRzs6/HNR4VscS4ktrEvXxdDQaDcz2IfjXCZbRJ5qbUCwDstpRQblaj1RokepPIayfs+MxZ0=
+	t=1705974999; cv=none; b=KwBFjCQyNesiTn/W0nEcOrG+KMtJvn9dmWFSEhot43omwfMdIACftX1QMyHZPYYSqmlrEgmvpA6yYXe4Evcyw4dLfjl8rdjizpQtmD6Ia9yF7gmxZCZuZYe5U4+Rp7zghIQjgri0RLNN1ZVFlprbmq0xgGVpTOnDutWshW75SfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970619; c=relaxed/simple;
-	bh=5Fy2im1bP0tPpPOsPcI/wSVcydE/jF0SYdZgGU3kXzY=;
+	s=arc-20240116; t=1705974999; c=relaxed/simple;
+	bh=rd76ELiHWwhH8qJO+mKotgvmPoTYrNMd26k6Tslq+Po=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nerZ1hqkCN0mJ+ApXAlhFXexfBaxZ2h5yhPmyhjbLvIz6l7m2ITW8U0UuE9y8CpWg8UUYxXwCPB+Rzk9fHi0S9dS7ITalire6+aVy5BkRuUJEge+d76xPBSx5GzDi+QheD5sZmU24NxdjdOFq1lGQFmbybI/pu/X7EsQIhjFOL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xx0ZvjUV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC66C433C7;
-	Tue, 23 Jan 2024 00:43:38 +0000 (UTC)
+	 MIME-Version; b=lTjEFrYlaGzd9MMX8QLUONsnteuNM5KfO4yMipLZTi03oiYTiB/T+MhBdpEJpxeWQkO17l21tFDn8gCjDhRVGyFsZtsfwn9qTf3mUw+DwMwhMsJWodJVuy5wx7Y4Qm9nLNhnxCk8y3IqvBJPA2/c6qh+yxgEenKDXEYv2Pcqm9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDOPwjdW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54065C433C7;
+	Tue, 23 Jan 2024 01:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970619;
-	bh=5Fy2im1bP0tPpPOsPcI/wSVcydE/jF0SYdZgGU3kXzY=;
+	s=korg; t=1705974999;
+	bh=rd76ELiHWwhH8qJO+mKotgvmPoTYrNMd26k6Tslq+Po=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xx0ZvjUVazVZpfsVqJJv/uq7dRMeFNXWAwUNX8m5r+0UlWZiMkg0jnJa1AxLaIiuY
-	 bqRX2tbsI+5nS6MHqNqgGpLwcdEdf43atm5MfNVEKnY/cBfmPHtvzIBsJCIwTyGo0t
-	 KraJzZhR7aLEgthCs5pAD4o9A3nDDcdyGFQOU+tY=
+	b=wDOPwjdWTZl28Rny1okEZ22IG+0XfiyR4wXvY8bY52icuYEZEXaLZGdOpVemc0FN6
+	 ukMWPasHLCRtqrR37iqcG8uHnh9pjJ2n5HDvKODUMtumnIFNJIpP0UsJ8LectjMpLm
+	 A4HbABsnRkJ1P+8XcBWJ4ZBOc1HO3ukYuTupqBz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Lehner <dev@der-flo.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/417] bpf, lpm: Fix check prefixlen before walking trie
+Subject: [PATCH 6.6 187/583] arm64: dts: qcom: sc8180x: Fix up PCIe nodes
 Date: Mon, 22 Jan 2024 15:53:58 -0800
-Message-ID: <20240122235754.132346077@linuxfoundation.org>
+Message-ID: <20240122235817.721667485@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Lehner <dev@der-flo.net>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 9b75dbeb36fcd9fc7ed51d370310d0518a387769 ]
+[ Upstream commit 78403b37f6770441f80a78d13772394731afe055 ]
 
-When looking up an element in LPM trie, the condition 'matchlen ==
-trie->max_prefixlen' will never return true, if key->prefixlen is larger
-than trie->max_prefixlen. Consequently all elements in the LPM trie will
-be visited and no element is returned in the end.
+Duplicated clock output names cause probe errors and wrong clocks cause
+hardware not to work. Fix such issues.
 
-To resolve this, check key->prefixlen first before walking the LPM trie.
-
-Fixes: b95a5c4db09b ("bpf: add a longest prefix match trie map implementation")
-Signed-off-by: Florian Lehner <dev@der-flo.net>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20231105085801.3742-1-dev@der-flo.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: d20b6c84f56a ("arm64: dts: qcom: sc8180x: Add PCIe instances")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231219-topic-8180_pcie-v1-1-c2acbba4723c@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/lpm_trie.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/qcom/sc8180x.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index d833496e9e42..ce3a091d52e8 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -231,6 +231,9 @@ static void *trie_lookup_elem(struct bpf_map *map, void *_key)
- 	struct lpm_trie_node *node, *found = NULL;
- 	struct bpf_lpm_trie_key *key = _key;
+diff --git a/arch/arm64/boot/dts/qcom/sc8180x.dtsi b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
+index dfaeb337960e..f4381424e70a 100644
+--- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
+@@ -1762,7 +1762,7 @@ pcie0_phy: phy@1c06000 {
+ 			clocks = <&gcc GCC_PCIE_PHY_AUX_CLK>,
+ 				 <&gcc GCC_PCIE_0_CFG_AHB_CLK>,
+ 				 <&gcc GCC_PCIE_0_CLKREF_CLK>,
+-				 <&gcc GCC_PCIE1_PHY_REFGEN_CLK>,
++				 <&gcc GCC_PCIE0_PHY_REFGEN_CLK>,
+ 				 <&gcc GCC_PCIE_0_PIPE_CLK>;
+ 			clock-names = "aux",
+ 				      "cfg_ahb",
+@@ -1860,7 +1860,7 @@ pcie3_phy: phy@1c0c000 {
+ 			clocks = <&gcc GCC_PCIE_PHY_AUX_CLK>,
+ 				 <&gcc GCC_PCIE_3_CFG_AHB_CLK>,
+ 				 <&gcc GCC_PCIE_3_CLKREF_CLK>,
+-				 <&gcc GCC_PCIE2_PHY_REFGEN_CLK>,
++				 <&gcc GCC_PCIE3_PHY_REFGEN_CLK>,
+ 				 <&gcc GCC_PCIE_3_PIPE_CLK>;
+ 			clock-names = "aux",
+ 				      "cfg_ahb",
+@@ -2066,7 +2066,7 @@ pcie2_phy: phy@1c1c000 {
+ 				      "refgen",
+ 				      "pipe";
+ 			#clock-cells = <0>;
+-			clock-output-names = "pcie_3_pipe_clk";
++			clock-output-names = "pcie_2_pipe_clk";
  
-+	if (key->prefixlen > trie->max_prefixlen)
-+		return NULL;
-+
- 	/* Start walking the trie from the root node ... */
+ 			#phy-cells = <0>;
  
- 	for (node = rcu_dereference_check(trie->root, rcu_read_lock_bh_held());
 -- 
 2.43.0
 
