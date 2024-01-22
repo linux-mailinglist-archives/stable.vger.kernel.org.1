@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA67837F35
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A5983843E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EDD529BF75
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 484961C2A0B3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B3F129A6F;
-	Tue, 23 Jan 2024 00:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890E86A33E;
+	Tue, 23 Jan 2024 02:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/wMflXu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtqRTa+H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF86129A64;
-	Tue, 23 Jan 2024 00:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447D26A03B;
+	Tue, 23 Jan 2024 02:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971001; cv=none; b=O8S1IC1wrimyoy+Bvepn9EXWuKHhuZt4oEUuYpHEcxkVzEHJZSyaZ2lgBUxF0WEKxrVSpHw+vljnSgD99504mecOgpzj1Rd+JQ503NrKWyZ35FCnpk1wOfIG6yoPIaInb+26oIDEpvn/RQdt58lKWF61WRPLM5H35Q8/T9tBJFU=
+	t=1705975341; cv=none; b=NXVFn7mrZI152i0QdWOhWbmjf3nBueqXTxkCpr1f2ABecN0InVFjuWCvHbjxIYkE5ua12yOKssDykAqPeCMoXOjBIovSrOSqJGs2N9E9tXOr0KcqnOKamVU/6J45A6PjoOoltCkU0PqJjo426inJwye60VlTdFAIf3N3xXwhfO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971001; c=relaxed/simple;
-	bh=2mfdjGoT6NFSEvjsOXFoX/llh9ldx8wX898QpV/sF7Q=;
+	s=arc-20240116; t=1705975341; c=relaxed/simple;
+	bh=EHxg1DX9nuDZRQ+Y7Nj308ZDUByqVtLwsT/5XJU0/Mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CBesM+PgeOx9RgoGRR0WluhR7h6iNL6/nM+AGZ9890YXNiKbT/zYRBoryHFB4NA0xdU459OwblCCWde12NZTMO/k7RRP2j66Bz32MX9g+Vb5pANhvQ3S5Jlt7X2v6arlzuKpXm6qgONdnf7D21axm67OXvcWKXNzktWGFxRhVgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/wMflXu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B49C433C7;
-	Tue, 23 Jan 2024 00:50:00 +0000 (UTC)
+	 MIME-Version; b=MAY2Cy1JyDAQPP0gl9TkKjOiFAB9U/Dqxfad5HF5MMslHcX5QKw/zhjNE3P4vPlCL3/MRXnHegkmFbhi9IL2VZ3TRvotf5iJn8KxI2fY2BFFt5FqStH0O+Qdsb0l92bjnBwXn3ulva/qDTSQgPX7gU/Qi3INfA+QgYN/ZZw1gqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtqRTa+H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065FDC433B1;
+	Tue, 23 Jan 2024 02:02:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971001;
-	bh=2mfdjGoT6NFSEvjsOXFoX/llh9ldx8wX898QpV/sF7Q=;
+	s=korg; t=1705975341;
+	bh=EHxg1DX9nuDZRQ+Y7Nj308ZDUByqVtLwsT/5XJU0/Mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q/wMflXuZ75FRTFZyA4VcTLe2UQvgMKKMx/vZ3s8NuP4OVgY2OF0L5UMLUR7pjJoB
-	 /EW5mYoZstL9y6IcFf1eymEyr/oRNk8rUTy0mmYIVmm6dHH3A7SveSr6gr0H96+wso
-	 ayjhUjPd6xnu18S3oWHOIuc+tcGNqwwoCxU4U3NI=
+	b=CtqRTa+Hm4Z7SY8ATZLeS/cbOo5AGsokQiHaKhGZxS/7nX1lQ0CE6iGW/sKgBU6qE
+	 03k5HXPoicTHZLh6Hjhp1xNbLbZrG2juQSBR3xnuSIpmJOaWx3P5GTliWnLwRvqcc+
+	 dzx2vMDIWuQpRB58H/tuFGinkG9YYYqfvVlMXdtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 160/417] RDMA/hns: Fix inappropriate err code for unsupported operations
-Date: Mon, 22 Jan 2024 15:55:28 -0800
-Message-ID: <20240122235757.386026412@linuxfoundation.org>
+Subject: [PATCH 6.6 278/583] f2fs: fix to update iostat correctly in f2fs_filemap_fault()
+Date: Mon, 22 Jan 2024 15:55:29 -0800
+Message-ID: <20240122235820.502030032@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit f45b83ad39f8033e717b1eee57e81811113d5a84 ]
+[ Upstream commit bb34cc6ca87ff78f9fb5913d7619dc1389554da6 ]
 
-EOPNOTSUPP is more situable than EINVAL for allocating XRCD while XRC
-is not supported and unsupported resizing SRQ.
+In f2fs_filemap_fault(), it fixes to update iostat info only if
+VM_FAULT_LOCKED is tagged in return value of filemap_fault().
 
-Fixes: 32548870d438 ("RDMA/hns: Add support for XRC on HIP09")
-Fixes: 221109e64316 ("RDMA/hns: Add interception for resizing SRQs")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20231114123449.1106162-2-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 8b83ac81f428 ("f2fs: support read iostat")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
- drivers/infiniband/hw/hns/hns_roce_pd.c    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index c2ee80546d12..280a3458bb53 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -5791,7 +5791,7 @@ static int hns_roce_v2_modify_srq(struct ib_srq *ibsrq,
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index e36a3208a3e9..a631d706e117 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -42,7 +42,7 @@ static vm_fault_t f2fs_filemap_fault(struct vm_fault *vmf)
+ 	vm_fault_t ret;
  
- 	/* Resizing SRQs is not supported yet */
- 	if (srq_attr_mask & IB_SRQ_MAX_WR)
--		return -EINVAL;
-+		return -EOPNOTSUPP;
+ 	ret = filemap_fault(vmf);
+-	if (!ret)
++	if (ret & VM_FAULT_LOCKED)
+ 		f2fs_update_iostat(F2FS_I_SB(inode), inode,
+ 					APP_MAPPED_READ_IO, F2FS_BLKSIZE);
  
- 	if (srq_attr_mask & IB_SRQ_LIMIT) {
- 		if (srq_attr->srq_limit > srq->wqe_cnt)
-diff --git a/drivers/infiniband/hw/hns/hns_roce_pd.c b/drivers/infiniband/hw/hns/hns_roce_pd.c
-index 783e71852c50..bd1fe89ca205 100644
---- a/drivers/infiniband/hw/hns/hns_roce_pd.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_pd.c
-@@ -150,7 +150,7 @@ int hns_roce_alloc_xrcd(struct ib_xrcd *ib_xrcd, struct ib_udata *udata)
- 	int ret;
- 
- 	if (!(hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_XRC))
--		return -EINVAL;
-+		return -EOPNOTSUPP;
- 
- 	ret = hns_roce_xrcd_alloc(hr_dev, &xrcd->xrcdn);
- 	if (ret)
 -- 
 2.43.0
 
