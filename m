@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE56183823C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B80C837FB2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89798B27703
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F6EA1C21703
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E375646A;
-	Tue, 23 Jan 2024 01:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180A964ABE;
+	Tue, 23 Jan 2024 00:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrNtKN7D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ubpv3eda"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1CD56771;
-	Tue, 23 Jan 2024 01:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C965164AB5;
+	Tue, 23 Jan 2024 00:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974024; cv=none; b=YEyJghXP7iXQvUv+7w+6gdgQXhstXhR3lfoFB2PZopHSDkdJ0njgU90oEaX+Q8HIhlAvSr4pEXfXkUT9sJE/tI29vrJ8t0BWzZwwKFXDI8BrQ6SmMB+YhZlFJ1j/+93zl3Yz3iPq+1lAp8KB2qp6pX5MOV/RP+g+kTqCDK56jyY=
+	t=1705971294; cv=none; b=uTTz+Xoa9pNmoc4h18hIZ5mC4aPbpeBGur+e18WbpYaXx5fMuqC5gPw0vxmI38pUvIJhlVp8tG+hUSkmebVn3Pe9JZPi9nmYhFFTlV5zizXDgjvtSJf1CSd5fEYmet2XFyHvrncejkAk6XMgpnx0/bpU2fwEIWITIh5iVvoNJBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974024; c=relaxed/simple;
-	bh=yod64n7+WxRqZQQNg4Sdyszk0Pu/9/AlSbWvUdPBfvY=;
+	s=arc-20240116; t=1705971294; c=relaxed/simple;
+	bh=H09XUqlDIwBuLmKV08ZhX3Y+2i/m6oxLXrIegz3wIK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3xVy+EKeXF+/rnefCrCcZDQzPYn7XTj9+e11RZo1R+ZuZ5IPceUWHao4uD4dU2ESOcohK8vMnNoaPoFfde2yKe9+Lne1VvsRCbgwgm7BmT1qLy1oguKCUcdboTMQIxS1vl4Ve23E6cr/DwYiaJg5zLeIzrcwYWccwYMOkmtxbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZrNtKN7D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE88C433C7;
-	Tue, 23 Jan 2024 01:40:23 +0000 (UTC)
+	 MIME-Version; b=speE2zpheoPdlm8dX49G0epdTVcW0pGQY/gOm4sUR9KSLJUjlqzwxhgKUjOlkZLgs6i5MPoCMQW38ZcaIr9iUml5/I3QdYdzftKQTFjiOORnsHKY8uCJyrhoetEvEchAnjnZYC+3nTnlJ5waQ0JFUiM1iAVck2gUTK/hRQb5lGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ubpv3eda; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC31C433F1;
+	Tue, 23 Jan 2024 00:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974023;
-	bh=yod64n7+WxRqZQQNg4Sdyszk0Pu/9/AlSbWvUdPBfvY=;
+	s=korg; t=1705971294;
+	bh=H09XUqlDIwBuLmKV08ZhX3Y+2i/m6oxLXrIegz3wIK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZrNtKN7DD5Ep3EIOhm5RGvecwfVPrA8wUAGeG2zCqjqDbhKhkZv0J143zvZBf4Bmu
-	 GL1XJ+trAWnNVjqkyxNrvrDbnGKNC+mgdfT5t7BKlFRIKVjO0FeTa3ae+ZB+roTMye
-	 IviReT2czJstrFUObLcw/XXwInd2xPdHeIclG0VI=
+	b=Ubpv3eda+rmV0vNet+7qPeLsQ4Tt+8npywD2huzPI3W3ejR4wGVLDgAGA9V9YFUD+
+	 pQAQgPEdexw/9Q+J07Q992PO3VUXCqvATjI9UdBiXHBZ9CUouNiNOXfatGctdHgdV/
+	 Jzv3d1XQjL4uneEzBtphpFraWsQoSQgqbmJxKzvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 130/374] arm64: dts: qcom: sc7180: Make watchdog bark interrupt edge triggered
-Date: Mon, 22 Jan 2024 15:56:26 -0800
-Message-ID: <20240122235749.167508294@linuxfoundation.org>
+Subject: [PATCH 6.1 219/417] drivers: clk: zynqmp: update divider round rate logic
+Date: Mon, 22 Jan 2024 15:56:27 -0800
+Message-ID: <20240122235759.508732707@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
 
-[ Upstream commit 7ac90b4cf107a3999b30844d7899e0331686b33b ]
+[ Upstream commit 1fe15be1fb613534ecbac5f8c3f8744f757d237d ]
 
-On sc7180 when the watchdog timer fires your logs get filled with:
-  watchdog0: pretimeout event
-  watchdog0: pretimeout event
-  watchdog0: pretimeout event
-  ...
-  watchdog0: pretimeout event
+Currently zynqmp divider round rate is considering single parent and
+calculating rate and parent rate accordingly. But if divider clock flag
+is set to SET_RATE_PARENT then its not trying to traverse through all
+parent rate and not selecting best parent rate from that. So use common
+divider_round_rate() which is traversing through all clock parents and
+its rate and calculating proper parent rate.
 
-If you're using console-ramoops to debug crashes the above gets quite
-annoying since it blows away any other log messages that might have
-been there.
-
-The issue is that the "bark" interrupt (AKA the "pretimeout"
-interrupt) remains high until the watchdog is pet. Since we've got
-things configured as "level" triggered we'll keep getting interrupted
-over and over.
-
-Let's switch to edge triggered. Now we'll get one interrupt when the
-"bark" interrupt goes off and won't get another one until the "bark"
-interrupt is cleared and asserts again.
-
-This matches how many older Qualcomm SoCs have things configured.
-
-Fixes: 28cc13e4060c ("arm64: dts: qcom: sc7180: Add watchdog bark interrupt")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20231106144335.v2.1.Ic7577567baff921347d423b722de8b857602efb1@changeid
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 3fde0e16d016 ("drivers: clk: Add ZynqMP clock driver")
+Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+Link: https://lore.kernel.org/r/20231129112916.23125-3-jay.buddhabhatti@amd.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/zynqmp/divider.c | 66 +++---------------------------------
+ 1 file changed, 5 insertions(+), 61 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-index 12816d60e249..410e0305eb51 100644
---- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-@@ -3366,7 +3366,7 @@ watchdog@17c10000 {
- 			compatible = "qcom,apss-wdt-sc7180", "qcom,kpss-wdt";
- 			reg = <0 0x17c10000 0 0x1000>;
- 			clocks = <&sleep_clk>;
--			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
- 		};
+diff --git a/drivers/clk/zynqmp/divider.c b/drivers/clk/zynqmp/divider.c
+index 33a3b2a22659..5a00487ae408 100644
+--- a/drivers/clk/zynqmp/divider.c
++++ b/drivers/clk/zynqmp/divider.c
+@@ -110,52 +110,6 @@ static unsigned long zynqmp_clk_divider_recalc_rate(struct clk_hw *hw,
+ 	return DIV_ROUND_UP_ULL(parent_rate, value);
+ }
  
- 		timer@17c20000{
+-static void zynqmp_get_divider2_val(struct clk_hw *hw,
+-				    unsigned long rate,
+-				    struct zynqmp_clk_divider *divider,
+-				    u32 *bestdiv)
+-{
+-	int div1;
+-	int div2;
+-	long error = LONG_MAX;
+-	unsigned long div1_prate;
+-	struct clk_hw *div1_parent_hw;
+-	struct zynqmp_clk_divider *pdivider;
+-	struct clk_hw *div2_parent_hw = clk_hw_get_parent(hw);
+-
+-	if (!div2_parent_hw)
+-		return;
+-
+-	pdivider = to_zynqmp_clk_divider(div2_parent_hw);
+-	if (!pdivider)
+-		return;
+-
+-	div1_parent_hw = clk_hw_get_parent(div2_parent_hw);
+-	if (!div1_parent_hw)
+-		return;
+-
+-	div1_prate = clk_hw_get_rate(div1_parent_hw);
+-	*bestdiv = 1;
+-	for (div1 = 1; div1 <= pdivider->max_div;) {
+-		for (div2 = 1; div2 <= divider->max_div;) {
+-			long new_error = ((div1_prate / div1) / div2) - rate;
+-
+-			if (abs(new_error) < abs(error)) {
+-				*bestdiv = div2;
+-				error = new_error;
+-			}
+-			if (divider->flags & CLK_DIVIDER_POWER_OF_TWO)
+-				div2 = div2 << 1;
+-			else
+-				div2++;
+-		}
+-		if (pdivider->flags & CLK_DIVIDER_POWER_OF_TWO)
+-			div1 = div1 << 1;
+-		else
+-			div1++;
+-	}
+-}
+-
+ /**
+  * zynqmp_clk_divider_round_rate() - Round rate of divider clock
+  * @hw:			handle between common and hardware-specific interfaces
+@@ -174,6 +128,7 @@ static long zynqmp_clk_divider_round_rate(struct clk_hw *hw,
+ 	u32 div_type = divider->div_type;
+ 	u32 bestdiv;
+ 	int ret;
++	u8 width;
+ 
+ 	/* if read only, just return current value */
+ 	if (divider->flags & CLK_DIVIDER_READ_ONLY) {
+@@ -193,23 +148,12 @@ static long zynqmp_clk_divider_round_rate(struct clk_hw *hw,
+ 		return DIV_ROUND_UP_ULL((u64)*prate, bestdiv);
+ 	}
+ 
+-	bestdiv = zynqmp_divider_get_val(*prate, rate, divider->flags);
+-
+-	/*
+-	 * In case of two divisors, compute best divider values and return
+-	 * divider2 value based on compute value. div1 will  be automatically
+-	 * set to optimum based on required total divider value.
+-	 */
+-	if (div_type == TYPE_DIV2 &&
+-	    (clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT)) {
+-		zynqmp_get_divider2_val(hw, rate, divider, &bestdiv);
+-	}
++	width = fls(divider->max_div);
+ 
+-	if ((clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT) && divider->is_frac)
+-		bestdiv = rate % *prate ? 1 : bestdiv;
++	rate = divider_round_rate(hw, rate, prate, NULL, width, divider->flags);
+ 
+-	bestdiv = min_t(u32, bestdiv, divider->max_div);
+-	*prate = rate * bestdiv;
++	if (divider->is_frac && (clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT) && (rate % *prate))
++		*prate = rate;
+ 
+ 	return rate;
+ }
 -- 
 2.43.0
 
