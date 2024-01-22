@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-14511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42CED8381CC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:13:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1C0B83859E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:45:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57A7EB2D1D2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9ED8B2C094
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2421474B6;
-	Tue, 23 Jan 2024 01:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87C2386;
+	Tue, 23 Jan 2024 02:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLZ7aU9v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lm5HDt1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0CC14831A;
-	Tue, 23 Jan 2024 01:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869C7380;
+	Tue, 23 Jan 2024 02:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972064; cv=none; b=OAeWjq4CNgS7XTUihFCcCLPsYGyYptnXxaEj4DRfOQmwTTViPpqBzCHYDt9laGCPERM+8E7SdZ23ljA2OJkBuyrEw4/frV9xCKq7TCVdqbjgSSwufoh4JIFMOiHGVsW4R1lYhuoFPVtB4unSLqqASY3i00AiOpCsX221iPBuNBc=
+	t=1705975749; cv=none; b=ugc5uujdShq3N0Iy7ZBE9b5eZmQ8LaD0WmLLcT1eZQ5jC/ZZ5jql8B0DPZeOhOgqknb/S+6c0B6dMKKeda7cpxLq0Y/fLXdp+z2I183yteEWuy0+MdzCZ7xZKqpo7d3agTQC51u5myVanmrfVMAKQSCGeQNt2gj+5Nuuw+zd6Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972064; c=relaxed/simple;
-	bh=5yYpPdpkboP+UloqnFytlOW73PhWAtnw0AlimkRkUkw=;
+	s=arc-20240116; t=1705975749; c=relaxed/simple;
+	bh=IxlL/Bcx2TLJNtxavQHWoxs9K22qsTWlkIFm1xX1gPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PmvIFc7pwOhmRuxbsYx1PLhfmidXfmrIXDMghAVf0VsTITW1xr0pkJHL8xXBwCJ/SxP7HxNnTSZr2e2n2GDYeXyIjry/58MWfHJzl0tYdtcu5she3bAzCy4SzeqngM8S7v9/pjuhHgYFCqAKiLI8uX0NMQka1vv1KJJO2NwwDvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLZ7aU9v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24043C43390;
-	Tue, 23 Jan 2024 01:07:44 +0000 (UTC)
+	 MIME-Version; b=HtkLaxKh6HZP7E5GiWRqVlaQbEdZYwV6S/5RdyjKjCPKRJI7hR0ue3NOePxYEHMH0ukBpUW9uMDl/Wnzg5he6Ij10I17A0INiZ16zSWAfRE3p8il6ab2NhY/5K2EzyEq6Q6pfs9KC1iXsVba2OfWOp9Ltyus4dxgV50+tiL00b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lm5HDt1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE6AC43394;
+	Tue, 23 Jan 2024 02:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972064;
-	bh=5yYpPdpkboP+UloqnFytlOW73PhWAtnw0AlimkRkUkw=;
+	s=korg; t=1705975749;
+	bh=IxlL/Bcx2TLJNtxavQHWoxs9K22qsTWlkIFm1xX1gPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLZ7aU9v2XT3sXPLsreaqHsnvIllxccESXrXSMgRNileQwq5GsmNITyMeZBFlzxk9
-	 YYYZ6HyPc0aTrhDuyvwxjYnB62AWCGYXuhIhE34EDcMhj2jd0dYXjdwi3YqcdOjjqu
-	 fa+hr0KtSgX9iaTv6FlxsxYritMfny2j18NU25Rg=
+	b=lm5HDt1JeiGtCeb1Lik6ndwWbt4Y8/GmUAtdMbtV/4a/p1PZDwDQPsDbSvXoCAHfo
+	 hfyIKCpMzBsQRICrOFtmTZ+YlAHAuZPzG+DZ5ZdwcCRwaIVvsn/4uEXFTGSPlOmL+/
+	 9ntjzA0kYW4h4eGD02bFBIsskHfi8FzY3Rq7fQbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+afb726d49f84c8d95ee1@syzkaller.appspotmail.com,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.1 417/417] riscv: Fix wrong usage of lm_alias() when splitting a huge linear mapping
+	Eric Dumazet <edumazet@google.com>,
+	Florian Westphal <fw@strlen.de>,
+	Peter Krystad <peter.krystad@linux.intel.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang.tang@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 534/583] mptcp: use OPTION_MPTCP_MPJ_SYNACK in subflow_finish_connect()
 Date: Mon, 22 Jan 2024 15:59:45 -0800
-Message-ID: <20240122235806.137097416@linuxfoundation.org>
+Message-ID: <20240122235828.463224221@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +69,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit c29fc621e1a49949a14c7fa031dd4760087bfb29 upstream.
+[ Upstream commit be1d9d9d38da922bd4beeec5b6dd821ff5a1dfeb ]
 
-lm_alias() can only be used on kernel mappings since it explicitly uses
-__pa_symbol(), so simply fix this by checking where the address belongs
-to before.
+subflow_finish_connect() uses four fields (backup, join_id, thmac, none)
+that may contain garbage unless OPTION_MPTCP_MPJ_SYNACK has been set
+in mptcp_parse_option()
 
-Fixes: 311cd2f6e253 ("riscv: Fix set_memory_XX() and set_direct_map_XX() by splitting huge linear mappings")
-Reported-by: syzbot+afb726d49f84c8d95ee1@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-riscv/000000000000620dd0060c02c5e1@google.com/
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Link: https://lore.kernel.org/r/20231212195400.128457-1-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Florian Westphal <fw@strlen.de>
+Cc: Peter Krystad <peter.krystad@linux.intel.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>
+Cc: Geliang Tang <geliang.tang@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20240111194917.4044654-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/pageattr.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/mptcp/subflow.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/riscv/mm/pageattr.c
-+++ b/arch/riscv/mm/pageattr.c
-@@ -304,8 +304,13 @@ static int __set_memory(unsigned long ad
- 				goto unlock;
- 		}
- 	} else if (is_kernel_mapping(start) || is_linear_mapping(start)) {
--		lm_start = (unsigned long)lm_alias(start);
--		lm_end = (unsigned long)lm_alias(end);
-+		if (is_kernel_mapping(start)) {
-+			lm_start = (unsigned long)lm_alias(start);
-+			lm_end = (unsigned long)lm_alias(end);
-+		} else {
-+			lm_start = start;
-+			lm_end = end;
-+		}
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index d6ee0e52ea41..5b37fee2a85a 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -506,7 +506,7 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
+ 	} else if (subflow->request_join) {
+ 		u8 hmac[SHA256_DIGEST_SIZE];
  
- 		ret = split_linear_mapping(lm_start, lm_end);
- 		if (ret)
+-		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPJ)) {
++		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_SYNACK)) {
+ 			subflow->reset_reason = MPTCP_RST_EMPTCP;
+ 			goto do_reset;
+ 		}
+-- 
+2.43.0
+
 
 
 
