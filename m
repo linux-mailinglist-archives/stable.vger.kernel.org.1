@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF148384B5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B8808382B2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 423CF1C223D8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADD121C28B12
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88FD74E07;
-	Tue, 23 Jan 2024 02:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83FA95EE95;
+	Tue, 23 Jan 2024 01:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1tYCmIs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="saULskn3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BAF745D6;
-	Tue, 23 Jan 2024 02:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFA75EE8D;
+	Tue, 23 Jan 2024 01:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975464; cv=none; b=KHUz6eHcuus+Ik/cMK0Sp2aWlJUmKzUEli9Uo7X53Segi2WXMoDglZpVILTVcKNgTYcqoWsnmc3j2cEgiY8tpC5+59Bxt7tMKUVsv4qB5mTezElPpkFx9pHUfdw/Ck5sW6BsBDvYF8ZmaSJgwedTmpDooHhuCEESVQeaR+PlmaE=
+	t=1705974412; cv=none; b=EgkmxBCRU9EiZKkOZzjK+P/6zRyMl6h+qZiS4tSWgP3iUtzHL866U6jID1VHy/jruf6IStQbhW9TZUoG/ODzaVbeSehgB8waqka51fIR8d+jq115UAYmks6cAXTklXrhegafpJyjcphLAbx03PutrpupCY3X2oHktavqCB+3hFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975464; c=relaxed/simple;
-	bh=CE7oYr4bX7QGhO04/9OVKNNPDJTjVyThyr87DMMBU68=;
+	s=arc-20240116; t=1705974412; c=relaxed/simple;
+	bh=6UlYWCaNvT/wLuyWuMZnPWvqAD/Txj8+cQNOs+lie+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=scMnjzKIDWidjLcq0Vl53oxdfNMymqg963YzGAyki4vJoGbNVE9QxIrxjQ38vcqqRcZn7pNgeMQz9MXWreUOQsTXcZ0V2oc4r+lPok3bp5d/ph/8qrrDvb8/CfpFR2X7pVQgL5hMmRFTPFwlMlzbyI9WfIe+4gfRADw4dl3GMeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1tYCmIs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39943C433C7;
-	Tue, 23 Jan 2024 02:04:24 +0000 (UTC)
+	 MIME-Version; b=JBT23RRrFI3esVR85mpwGL6ffRMrEoB+9PwK+M2ZKcND3ZHC0cCwJ/Ci3wA7dzOCrJjgANPaL9I8H4oUsSEggJw1eNbijzegm8+NufhMrLA73FUHA2FJTYjWQz4aYI3ZGQ27u/CGXvkxjWLqtRL2nJIo5XvCjSOkA0zDC3zKgH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=saULskn3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0628FC433C7;
+	Tue, 23 Jan 2024 01:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975464;
-	bh=CE7oYr4bX7QGhO04/9OVKNNPDJTjVyThyr87DMMBU68=;
+	s=korg; t=1705974412;
+	bh=6UlYWCaNvT/wLuyWuMZnPWvqAD/Txj8+cQNOs+lie+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P1tYCmIsnmoiiO7XCNTFTStG4lyH2gXfDuQ1kPi/rMOiuL/nDWJsVb+5lW+D+3t5l
-	 zkfsiR6hRHCyHYiMJcuE9bfAQWmXBNHRn79R4V8qpG5LYu+++c+GvZZ2KGcRBSkTGQ
-	 Wdzvltf+ieJCs0WfAGDLTPBlkPhkCQ1As6f1R5L0=
+	b=saULskn3OUlMwo3t06AOs1wpE+A+lJJc+i1HQjmvJEzDzkCtov0xi1ERfBe841hGf
+	 g7Xh5cczXSueLLdBH6DNTCz1VQD+YtNUogYMmi8LgnhfFBdFy82RBB86dCPkti/Sn0
+	 NVjjCE5AXFJsd0v8fetvjygC9hsEIpfDiqiwdges=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 420/583] Revert "net: rtnetlink: Enslave device before bringing it up"
+	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 215/374] drivers: clk: zynqmp: calculate closest mux rate
 Date: Mon, 22 Jan 2024 15:57:51 -0800
-Message-ID: <20240122235824.820883582@linuxfoundation.org>
+Message-ID: <20240122235752.122434240@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
 
-commit ec4ffd100ffb396eca13ebe7d18938ea80f399c3 upstream.
+[ Upstream commit b782921ddd7f84f524723090377903f399fdbbcb ]
 
-This reverts commit a4abfa627c3865c37e036bccb681619a50d3d93c.
+Currently zynqmp clock driver is not calculating closest mux rate and
+because of that Linux is not setting proper frequency for CPU and
+not able to set given frequency for dynamic frequency scaling.
 
-The patch broke:
-> ip link set dummy0 up
-> ip link set dummy0 master bond0 down
+E.g., In current logic initial acpu clock parent and frequency as below
+apll1                  0    0    0  2199999978    0     0  50000      Y
+    acpu0_mux          0    0    0  2199999978    0     0  50000      Y
+        acpu0_idiv1    0    0    0  2199999978    0     0  50000      Y
+            acpu0      0    0    0  2199999978    0     0  50000      Y
 
-This last command is useful to be able to enslave an interface with only
-one netlink message.
+After changing acpu frequency to 549999994 Hz using CPU freq scaling its
+selecting incorrect parent which is not closest frequency.
+rpll_to_xpd            0    0    0  1599999984    0     0  50000      Y
+    acpu0_mux          0    0    0  1599999984    0     0  50000      Y
+        acpu0_div1     0    0    0   533333328    0     0  50000      Y
+            acpu0      0    0    0   533333328    0     0  50000      Y
 
-After discussion, there is no good reason to support:
-> ip link set dummy0 down
-> ip link set dummy0 master bond0 up
-because the bond interface already set the slave up when it is up.
+Parent should remain same since 549999994 = 2199999978 / 4.
 
-Cc: stable@vger.kernel.org
-Fixes: a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20240108094103.2001224-2-nicolas.dichtel@6wind.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So use __clk_mux_determine_rate_closest() generic function to calculate
+closest rate for mux clock. After this change its selecting correct
+parent and correct clock rate.
+apll1                  0    0    0  2199999978    0     0  50000      Y
+    acpu0_mux          0    0    0  2199999978    0     0  50000      Y
+        acpu0_div1     0    0    0   549999995    0     0  50000      Y
+            acpu0      0    0    0   549999995    0     0  50000      Y
+
+Fixes: 3fde0e16d016 ("drivers: clk: Add ZynqMP clock driver")
+Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+Link: https://lore.kernel.org/r/20231129112916.23125-2-jay.buddhabhatti@amd.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/clk/zynqmp/clk-mux-zynqmp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -2869,13 +2869,6 @@ static int do_setlink(const struct sk_bu
- 		call_netdevice_notifiers(NETDEV_CHANGEADDR, dev);
- 	}
+diff --git a/drivers/clk/zynqmp/clk-mux-zynqmp.c b/drivers/clk/zynqmp/clk-mux-zynqmp.c
+index 17afce594f28..5a040f939056 100644
+--- a/drivers/clk/zynqmp/clk-mux-zynqmp.c
++++ b/drivers/clk/zynqmp/clk-mux-zynqmp.c
+@@ -89,7 +89,7 @@ static int zynqmp_clk_mux_set_parent(struct clk_hw *hw, u8 index)
+ static const struct clk_ops zynqmp_clk_mux_ops = {
+ 	.get_parent = zynqmp_clk_mux_get_parent,
+ 	.set_parent = zynqmp_clk_mux_set_parent,
+-	.determine_rate = __clk_mux_determine_rate,
++	.determine_rate = __clk_mux_determine_rate_closest,
+ };
  
--	if (tb[IFLA_MASTER]) {
--		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
--		if (err)
--			goto errout;
--		status |= DO_SETLINK_MODIFIED;
--	}
--
- 	if (ifm->ifi_flags || ifm->ifi_change) {
- 		err = dev_change_flags(dev, rtnl_dev_combine_flags(dev, ifm),
- 				       extack);
-@@ -2883,6 +2876,13 @@ static int do_setlink(const struct sk_bu
- 			goto errout;
- 	}
- 
-+	if (tb[IFLA_MASTER]) {
-+		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
-+		if (err)
-+			goto errout;
-+		status |= DO_SETLINK_MODIFIED;
-+	}
-+
- 	if (tb[IFLA_CARRIER]) {
- 		err = dev_change_carrier(dev, nla_get_u8(tb[IFLA_CARRIER]));
- 		if (err)
+ static const struct clk_ops zynqmp_clk_mux_ro_ops = {
+-- 
+2.43.0
+
 
 
 
