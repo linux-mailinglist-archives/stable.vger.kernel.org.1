@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-15283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF738384A3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B35AE838047
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B982B299CF3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69ACB289EFF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B6EA745CE;
-	Tue, 23 Jan 2024 02:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FA3657BD;
+	Tue, 23 Jan 2024 01:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+CA/Yaf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKO+LUX5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE83F7318E;
-	Tue, 23 Jan 2024 02:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6336665196;
+	Tue, 23 Jan 2024 01:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975445; cv=none; b=YnZ50QRfNySXR57JgSfuYzQBVLJnPp9RHQIoc010BnfpFwWS0AJHIinM+gGln9GS3YT8yQJl8uBvJstx4eAoaJpJ5u1NJOMiZ+XRfJOJTwUUEUJ6Hh/qQ04Z/L+Xa9n9V8o+OrQLAG2IXv2XKfOTSacWTOtLr2YndSUSB3eN5z4=
+	t=1705971638; cv=none; b=lsy++dYaddEWWVKrP3bgTu8c01CLRuTKtVaVwNyeL9AibRWBcXvOQhuMsBuGhoHMbAYDx1w9q5dg/pXNQiGY1BRgjUOkdGes0GZoLyv0Is10BOSlqtbNr4FI5YnjoO/+6yr1T4H3YlG0q2dodNfAjGv7fuU1R6emmyXMLCB5JXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975445; c=relaxed/simple;
-	bh=ekwQia3Vdpl/cm+X9No2gy7kguelVI6nyYfWDZd4VOc=;
+	s=arc-20240116; t=1705971638; c=relaxed/simple;
+	bh=FdHSAyWaG44wNPJyy9zI13/DfRb78H5Xzt4DsabOK4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RnA+hHRhbilPLGcudX52YmnG+B5zsDvVmL+MR/U5E5g08jD+tr4Ckh9lZwP+GZgmc14jsgmHzvUkM364N8B6IqwRUGcNLXoR3m5/Hzq/QKn6GVnxrqq38kuOK+GZMMs+BZxd5VAZxZPqVDKU4kZEWtYxWCwGMj+5PxXoFF/gn18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+CA/Yaf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4983C43399;
-	Tue, 23 Jan 2024 02:04:04 +0000 (UTC)
+	 MIME-Version; b=fBpvZVmuo4hm6pvxqyHt27obKfuohGBywVn9mGcRKQf9dtATOhj/1JeFqTl0YWqUiKxzdyjvuPIqYtuH2Ah6c2zw1d7Hg9F3lB/nTKPE7rhuOhBY0UcM8nnSPfm+pBTjzQ7xpPAiKR6GsG+4oZKew9/lkXQ63D1L+SYoH5edM0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKO+LUX5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D76C433C7;
+	Tue, 23 Jan 2024 01:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975444;
-	bh=ekwQia3Vdpl/cm+X9No2gy7kguelVI6nyYfWDZd4VOc=;
+	s=korg; t=1705971638;
+	bh=FdHSAyWaG44wNPJyy9zI13/DfRb78H5Xzt4DsabOK4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+CA/YafVAFc5/gRICEQ/kBLNkUkXDTwjx2c5HD7bfGaqFL0Pl/FaukoOmjWgNUJC
-	 5NcDavOs4vbQOYU1nBZEQOwbyLG6wNyolDbFalM9UAf81uTanmJ/ffLvLRN4sz705Z
-	 yybX98Rq4g3egb4O3RjV5ylRzgGhAceR4BBrimR8=
+	b=hKO+LUX5W3A15OB6DWuvHS9TG46MD+u/d6tVmwohp4zDqaT2j1ujHUqXBnxLzS5ia
+	 vCSQGp+BHnyA/ZhHnu9OnS98zgETINCi6hueT7aFJmprZSfPfmG0ZI7lQMBYGCllTC
+	 QVVzk8WIB3zsBEgbg1wPaqFQgq7jqikPzG+TyTPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Min Li <min15.li@samsung.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 401/583] block: add check that partition length needs to be aligned with block size
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.1 284/417] ksmbd: fix UAF issue in ksmbd_tcp_new_connection()
 Date: Mon, 22 Jan 2024 15:57:32 -0800
-Message-ID: <20240122235824.257771643@linuxfoundation.org>
+Message-ID: <20240122235801.673462608@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Min Li <min15.li@samsung.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 6f64f866aa1ae6975c95d805ed51d7e9433a0016 upstream.
+commit 38d20c62903d669693a1869aa68c4dd5674e2544 upstream.
 
-Before calling add partition or resize partition, there is no check
-on whether the length is aligned with the logical block size.
-If the logical block size of the disk is larger than 512 bytes,
-then the partition size maybe not the multiple of the logical block size,
-and when the last sector is read, bio_truncate() will adjust the bio size,
-resulting in an IO error if the size of the read command is smaller than
-the logical block size.If integrity data is supported, this will also
-result in a null pointer dereference when calling bio_integrity_free.
+The race is between the handling of a new TCP connection and
+its disconnection. It leads to UAF on `struct tcp_transport` in
+ksmbd_tcp_new_connection() function.
 
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Min Li <min15.li@samsung.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230629142517.121241-1-min15.li@samsung.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: stable@vger.kernel.org
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-22991
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/ioctl.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/smb/server/connection.c     |    6 ------
+ fs/smb/server/connection.h     |    1 -
+ fs/smb/server/transport_rdma.c |   11 ++++++-----
+ fs/smb/server/transport_tcp.c  |   13 +++++++------
+ 4 files changed, 13 insertions(+), 18 deletions(-)
 
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -18,7 +18,7 @@ static int blkpg_do_ioctl(struct block_d
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -415,13 +415,7 @@ static void stop_sessions(void)
+ again:
+ 	down_read(&conn_list_lock);
+ 	list_for_each_entry(conn, &conn_list, conns_list) {
+-		struct task_struct *task;
+-
+ 		t = conn->transport;
+-		task = t->handler;
+-		if (task)
+-			ksmbd_debug(CONN, "Stop session handler %s/%d\n",
+-				    task->comm, task_pid_nr(task));
+ 		ksmbd_conn_set_exiting(conn);
+ 		if (t->ops->shutdown) {
+ 			up_read(&conn_list_lock);
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -135,7 +135,6 @@ struct ksmbd_transport_ops {
+ struct ksmbd_transport {
+ 	struct ksmbd_conn		*conn;
+ 	struct ksmbd_transport_ops	*ops;
+-	struct task_struct		*handler;
+ };
+ 
+ #define KSMBD_TCP_RECV_TIMEOUT	(7 * HZ)
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -2039,6 +2039,7 @@ static bool rdma_frwr_is_supported(struc
+ static int smb_direct_handle_connect_request(struct rdma_cm_id *new_cm_id)
  {
- 	struct gendisk *disk = bdev->bd_disk;
- 	struct blkpg_partition p;
--	long long start, length;
-+	sector_t start, length;
+ 	struct smb_direct_transport *t;
++	struct task_struct *handler;
+ 	int ret;
  
- 	if (disk->flags & GENHD_FL_NO_PART)
- 		return -EINVAL;
-@@ -35,14 +35,17 @@ static int blkpg_do_ioctl(struct block_d
- 	if (op == BLKPG_DEL_PARTITION)
- 		return bdev_del_partition(disk, p.pno);
+ 	if (!rdma_frwr_is_supported(&new_cm_id->device->attrs)) {
+@@ -2056,11 +2057,11 @@ static int smb_direct_handle_connect_req
+ 	if (ret)
+ 		goto out_err;
  
-+	if (p.start < 0 || p.length <= 0 || p.start + p.length < 0)
-+		return -EINVAL;
-+	/* Check that the partition is aligned to the block size */
-+	if (!IS_ALIGNED(p.start | p.length, bdev_logical_block_size(bdev)))
-+		return -EINVAL;
-+
- 	start = p.start >> SECTOR_SHIFT;
- 	length = p.length >> SECTOR_SHIFT;
+-	KSMBD_TRANS(t)->handler = kthread_run(ksmbd_conn_handler_loop,
+-					      KSMBD_TRANS(t)->conn, "ksmbd:r%u",
+-					      smb_direct_port);
+-	if (IS_ERR(KSMBD_TRANS(t)->handler)) {
+-		ret = PTR_ERR(KSMBD_TRANS(t)->handler);
++	handler = kthread_run(ksmbd_conn_handler_loop,
++			      KSMBD_TRANS(t)->conn, "ksmbd:r%u",
++			      smb_direct_port);
++	if (IS_ERR(handler)) {
++		ret = PTR_ERR(handler);
+ 		pr_err("Can't start thread\n");
+ 		goto out_err;
+ 	}
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -185,6 +185,7 @@ static int ksmbd_tcp_new_connection(stru
+ 	struct sockaddr *csin;
+ 	int rc = 0;
+ 	struct tcp_transport *t;
++	struct task_struct *handler;
  
- 	switch (op) {
- 	case BLKPG_ADD_PARTITION:
--		/* check if partition is aligned to blocksize */
--		if (p.start & (bdev_logical_block_size(bdev) - 1))
--			return -EINVAL;
- 		return bdev_add_partition(disk, p.pno, start, length);
- 	case BLKPG_RESIZE_PARTITION:
- 		return bdev_resize_partition(disk, p.pno, start, length);
+ 	t = alloc_transport(client_sk);
+ 	if (!t) {
+@@ -199,13 +200,13 @@ static int ksmbd_tcp_new_connection(stru
+ 		goto out_error;
+ 	}
+ 
+-	KSMBD_TRANS(t)->handler = kthread_run(ksmbd_conn_handler_loop,
+-					      KSMBD_TRANS(t)->conn,
+-					      "ksmbd:%u",
+-					      ksmbd_tcp_get_port(csin));
+-	if (IS_ERR(KSMBD_TRANS(t)->handler)) {
++	handler = kthread_run(ksmbd_conn_handler_loop,
++			      KSMBD_TRANS(t)->conn,
++			      "ksmbd:%u",
++			      ksmbd_tcp_get_port(csin));
++	if (IS_ERR(handler)) {
+ 		pr_err("cannot start conn thread\n");
+-		rc = PTR_ERR(KSMBD_TRANS(t)->handler);
++		rc = PTR_ERR(handler);
+ 		free_transport(t);
+ 	}
+ 	return rc;
 
 
 
