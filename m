@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-12956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 178A18379F9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F653837AA1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB7BC1F2858C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:48:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56C031F242A1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB543FD4;
-	Tue, 23 Jan 2024 00:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43ADF12FF76;
+	Tue, 23 Jan 2024 00:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rq4suWaC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7SYRESG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9060C1FB2;
-	Tue, 23 Jan 2024 00:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023A112F5A7;
+	Tue, 23 Jan 2024 00:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968691; cv=none; b=LLUnQRIne05K8EhDNVyA3hkGZRjaUrXlog9/fx0ddnm++d78cWtW7y6ATdKDPXdMrdmAybX/bdiuK0Nz5m2hj8W049vSY/9xohac+unPgQGZAKYUEvXNTn8EPU/O1pLuXc0crnRSUT6nyl0sSY6F/ilRbuEG62DDJq0AtW0X9uY=
+	t=1705969027; cv=none; b=Mx9ggML5aUTTlvZKbjxlUlH4Dl2oAdCGsKqZkDF60O/6cH83wpHpA1zpxkbeAenf0FOoNWW/5y3ugbJ00jDlGMgO0/IlgMpl4pPHMu96jLkw/+HCXatrdYNn/D8rzCFZnU9s9dttssX5a3BlCeHZePD0sNliSpTB7x7exbPb5a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968691; c=relaxed/simple;
-	bh=N9UkoQr0+1XyYjLFy7fiTUsFRrIP8YrzRnafF+TOZrg=;
+	s=arc-20240116; t=1705969027; c=relaxed/simple;
+	bh=9c4JCoxqxdgeJV1PrfJu90FhJOlOgqQqFxCk1m8OvLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTIyO9R/oKNmrjjuC8b0Jip5sv8RakT6XlOvj+u/O3RgtaMsZ67urQwX1Jx4Wfc82Nvc/cKi1wo3NMkaJtvW5yKX/LgBE6UEaTTj1TOqIiN3OXfrJ/OK1LHhgGvpWhYBCK9pyOsJp0NFnY5tj06O9gntVmTbq6SEQCtD5aAuBIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rq4suWaC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4953AC433F1;
-	Tue, 23 Jan 2024 00:11:31 +0000 (UTC)
+	 MIME-Version; b=D58IPlbL5tcaZBhJDu8wwWh9MVWStRSdrbrqugfA68QFo4J2U7S46ZaT7iSBkbetUaQIc2mmuhFGxRQ0nq3Nvyg/UABsfiKVawJdmQ5goSy8u+CRXrydsK+4K3okBWKkAK/d3t419DKqyHFHmedhJHEg7shAHubpDLsUUrgtq4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7SYRESG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90931C433C7;
+	Tue, 23 Jan 2024 00:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968691;
-	bh=N9UkoQr0+1XyYjLFy7fiTUsFRrIP8YrzRnafF+TOZrg=;
+	s=korg; t=1705969026;
+	bh=9c4JCoxqxdgeJV1PrfJu90FhJOlOgqQqFxCk1m8OvLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rq4suWaC8ZnaL84Ck2nDRUfPgxhBt24iHCUx/a5KTa8RLyzvloHaowsx83efR4Z9G
-	 bVu+q0No263yIvMhR3YDMTpvedJ87BdtTq5d7P1ziTxgkYRcbG+e112+Y7Lpi+yC/r
-	 cnGklaJEVYj57imLLxvrFfiKVylQzI3ywMWlV8ms=
+	b=z7SYRESG1TFN/xZK0e4c/RcX7rgasFmVb0Fl+gFO1nIBu0hWV4AC+O77D0P3xzxUF
+	 8jbetGBWRFR4Q6VdvdaklbiDDlCUrdk/HYB5ivRparzNnD4BaXSeXksHcULCfq1fYe
+	 of23S73Zo3svQx0B8IteqUIZ6IJdIhMsI0twFORk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 141/148] net: dsa: vsc73xx: Add null pointer check to vsc73xx_gpio_probe
-Date: Mon, 22 Jan 2024 15:58:17 -0800
-Message-ID: <20240122235718.304819978@linuxfoundation.org>
+Subject: [PATCH 5.4 168/194] acpi: property: Let args be NULL in __acpi_node_get_property_reference
+Date: Mon, 22 Jan 2024 15:58:18 -0800
+Message-ID: <20240122235726.417627908@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 776dac5a662774f07a876b650ba578d0a62d20db ]
+[ Upstream commit bef52aa0f3de1b7d8c258c13b16e577361dabf3a ]
 
-devm_kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+fwnode_get_property_reference_args() may not be called with args argument
+NULL on ACPI, OF already supports this. Add the missing NULL checks and
+document this.
 
-Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240111072018.75971-1-chentao@kylinos.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The purpose is to be able to count the references.
+
+Fixes: 977d5ad39f3e ("ACPI: Convert ACPI reference args to generic fwnode reference args")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20231109101010.1329587-2-sakari.ailus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/property.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx.c b/drivers/net/dsa/vitesse-vsc73xx.c
-index 9f1b5f2e8a64..34fefa015fd7 100644
---- a/drivers/net/dsa/vitesse-vsc73xx.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx.c
-@@ -1227,6 +1227,8 @@ static int vsc73xx_gpio_probe(struct vsc73xx *vsc)
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 479856ceda9f..5906e247b9fa 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -646,6 +646,7 @@ acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
+  * @index: Index of the reference to return
+  * @num_args: Maximum number of arguments after each reference
+  * @args: Location to store the returned reference with optional arguments
++ *	  (may be NULL)
+  *
+  * Find property with @name, verifify that it is a package containing at least
+  * one object reference and if so, store the ACPI device object pointer to the
+@@ -704,6 +705,9 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
+ 		if (ret)
+ 			return ret == -ENODEV ? -EINVAL : ret;
  
- 	vsc->gc.label = devm_kasprintf(vsc->dev, GFP_KERNEL, "VSC%04x",
- 				       vsc->chipid);
-+	if (!vsc->gc.label)
-+		return -ENOMEM;
- 	vsc->gc.ngpio = 4;
- 	vsc->gc.owner = THIS_MODULE;
- 	vsc->gc.parent = vsc->dev;
++		if (!args)
++			return 0;
++
+ 		args->fwnode = acpi_fwnode_handle(device);
+ 		args->nargs = 0;
+ 		return 0;
 -- 
 2.43.0
 
