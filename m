@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64A2C83829A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C98D983857A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:42:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 988811C286A8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6C91B292C4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB205D908;
-	Tue, 23 Jan 2024 01:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C161374E03;
+	Tue, 23 Jan 2024 02:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xf84YLZ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HgnQfRmF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1AF5D8F9;
-	Tue, 23 Jan 2024 01:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816FB745D6;
+	Tue, 23 Jan 2024 02:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974391; cv=none; b=EZpI4QFgv4vOeImWiRs0V5SXBE0obHXIteyeXJJU4uNriV/i+yercrl2AoWuRm80Dx9ljcW1RfC8spGgfLJMupESPPGtNSdltpMpkpk6gDpmIByTUBLVIVjdiriuoV3ulZDuSM0rCbcIMOcTA/mfZGLzC/3jfwjHrUR3zGT/xDs=
+	t=1705975463; cv=none; b=MQ8UkrGtycolHTXYewTf0Hnis/+TEcCkM2atgioIcN6XUrO1LzO1nm2NUIR61TcvTcIz2SedAENea/11Ovqqrk1UBA9dKDY41z4+Mu1c9f/Ng5nwwMrL/hZbzML+sQCyoYp1tHo8MDG+HHgfvaNK/LXTyL3ctCpdPr5lnpmgUdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974391; c=relaxed/simple;
-	bh=PKBeKeQ6D+tmqJulcy5mxx96ts4qyKRPnWjx/gEUQhw=;
+	s=arc-20240116; t=1705975463; c=relaxed/simple;
+	bh=ZXW7R36bJFm2satXuvZA6BBVyTUTbObN6/8cIh1XPg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dgav1R88dA45ObhAX6ao1qTjzdTzPTOUcDufBPVnblieLLfQRy2P3U7l7Ew+wD30lhnVO6jiB5N93DJyhAWzdjelUKH9xXjhkYQGgG/J6lIaeMAX2zyjAWAmmmj+xXvqKwGLn6qlZKcm9Of09WqnuEJdf0acPKC7tLAJb1jiw8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xf84YLZ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7919EC433C7;
-	Tue, 23 Jan 2024 01:46:31 +0000 (UTC)
+	 MIME-Version; b=RVq7fdsjDo9+C3SeV4/yQ+5oMdR9+MeBNXwSOmPZ/jbvAD5xWw/q3VEyp1FZJRX5SYEArp6rSmaP47H9rJ7Dcn0nSDXyTs12+vGo0kl1WZ+BtMGW9KfPWS23044Sysqus8VYWgW3NqHmOeOcNP2d2S8LxbPW8a/DWmuQ/wLL84A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HgnQfRmF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C29C433C7;
+	Tue, 23 Jan 2024 02:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974391;
-	bh=PKBeKeQ6D+tmqJulcy5mxx96ts4qyKRPnWjx/gEUQhw=;
+	s=korg; t=1705975463;
+	bh=ZXW7R36bJFm2satXuvZA6BBVyTUTbObN6/8cIh1XPg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xf84YLZ72MJ1xdtMPKtpGPt7Cq0/hIfRFwSsQbJkAxo9Zy0G20vHPJ6azXgpSZ9m1
-	 HM1rohiibfyGhWVuLc0+t9DLcgK7tRVM9AC88zr/v/TFbUQ6V9367jGypGalhCPk3I
-	 dq2T9voUePA/K3x9fOh5eW10QlGg2eRGj07fxRiI=
+	b=HgnQfRmFUtcT7+zEIKkJZSvoGA1AhNok5jfEq7MyBvAE51sUeNxDoKCq55/bj6Xt8
+	 H4fy8qtgt4opWHYv4aJ49Yh1T8bLwCNmjs6xWq6Kv938D5Cr0R2oDizFc9UNbsvIdp
+	 QzynG27LnqpdxYphVYmpOO8tjel/NoqHoHRlEQzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 206/374] media: dvbdev: drop refcount on error path in dvb_device_open()
+	Rob Clark <robdclark@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 411/583] iommu/arm-smmu-qcom: Add missing GMU entry to match table
 Date: Mon, 22 Jan 2024 15:57:42 -0800
-Message-ID: <20240122235751.782706492@linuxfoundation.org>
+Message-ID: <20240122235824.545952731@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit a2dd235df435a05d389240be748909ada91201d2 ]
+commit afc95681c3068956fed1241a1ff1612c066c75ac upstream.
 
-If call to file->f_op->open() fails, then call dvb_device_put(dvbdev).
+In some cases the firmware expects cbndx 1 to be assigned to the GMU,
+so we also want the default domain for the GMU to be an identy domain.
+This way it does not get a context bank assigned.  Without this, both
+of_dma_configure() and drm/msm's iommu_domain_attach() will trigger
+allocating and configuring a context bank.  So GMU ends up attached to
+both cbndx 1 and later cbndx 2.  This arrangement seemingly confounds
+and surprises the firmware if the GPU later triggers a translation
+fault, resulting (on sc8280xp / lenovo x13s, at least) in the SMMU
+getting wedged and the GPU stuck without memory access.
 
-Fixes: 0fc044b2b5e2 ("media: dvbdev: adopts refcnt to avoid UAF")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/20231210180655.75542-1-robdclark@gmail.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvbdev.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
-index 2ff8a1b776fb..3a83e8e09256 100644
---- a/drivers/media/dvb-core/dvbdev.c
-+++ b/drivers/media/dvb-core/dvbdev.c
-@@ -114,6 +114,8 @@ static int dvb_device_open(struct inode *inode, struct file *file)
- 			err = file->f_op->open(inode, file);
- 		up_read(&minor_rwsem);
- 		mutex_unlock(&dvbdev_mutex);
-+		if (err)
-+			dvb_device_put(dvbdev);
- 		return err;
- 	}
- fail:
--- 
-2.43.0
-
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -243,6 +243,7 @@ static int qcom_adreno_smmu_init_context
+ 
+ static const struct of_device_id qcom_smmu_client_of_match[] __maybe_unused = {
+ 	{ .compatible = "qcom,adreno" },
++	{ .compatible = "qcom,adreno-gmu" },
+ 	{ .compatible = "qcom,mdp4" },
+ 	{ .compatible = "qcom,mdss" },
+ 	{ .compatible = "qcom,sc7180-mdss" },
 
 
 
