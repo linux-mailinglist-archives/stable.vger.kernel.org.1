@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB4C837F2B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE40E837D24
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CDC11F2B968
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96379291B90
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFAF1292C5;
-	Tue, 23 Jan 2024 00:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762275B5A1;
+	Tue, 23 Jan 2024 00:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPTo2z1v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWCGwHy0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9CE7C0A5;
-	Tue, 23 Jan 2024 00:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3604559B6F;
+	Tue, 23 Jan 2024 00:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970979; cv=none; b=IwKPX8M1Dsq0PH+43wv5wmYuTI//p+ilB3V/EaLi1UCIYaFx5AUkVa17ZW3lkQ7mT9drLfuMz43Ld3fTCFg4VK5+RrZejDtHRzvE8Tdx497gBUGOpaSl3Ux8lH3p2MS2VqG5NEpJRkGcl8LkQhSQqAKVL+3sPjAk5KoIgKsmzAI=
+	t=1705969810; cv=none; b=RE09Rlll+UombjeYHNINPGegqA+Qe/zNxNSvZnyibRVE5O2irzSWqGU+yu5LYhXKYQIPx724hgk13DkNTxNDWGy/ejX0H4DkeIv5fLBXBLwBliZtKbkjjwh17WxcSfflbQ4vsbyR4rh2/qT7ZTfPerJXY0faK203Ih+prebTLyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970979; c=relaxed/simple;
-	bh=zR/sE9iT3EQv8tWiqo5cutfO4QZCJtB/hUdrlafCjcI=;
+	s=arc-20240116; t=1705969810; c=relaxed/simple;
+	bh=97WQ2EJ4EncoWnKQHmTXYH+2VnwlAFIUIM38aGB7ji4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p6Yo3c6ZkYu7AbdiTs+gBr4Rce6tAO34XyKOnhSwOIUPhXuYowVm6I78F6KpYjhtndq6oVvUM39duOGZ9NzLaZwrlAAh64jIVP7YbmzoM8fZfyYZJOr6mPm6E8KxAzUcMkbwi2aKzJwrW4TguLHMSlNiy5Czlh6JnmqPTJL45wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPTo2z1v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F333EC43390;
-	Tue, 23 Jan 2024 00:49:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BjrFtV+hOjCh701rNmfV5wxoq7+tqCHYqHhF8MZjyRzIpkBqYonTfiGP0oGWwSlVpERnGqRDCFNQ3NCNneFaWi3bH+eOUF/STxOmJtud4Ld3dKOoTgJkWCZOD/H6Ej92FyDkRgGrXno5dClF4G8MYxaL8bjrTt8Tzqq4UI7MPRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWCGwHy0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF1AC43390;
+	Tue, 23 Jan 2024 00:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970979;
-	bh=zR/sE9iT3EQv8tWiqo5cutfO4QZCJtB/hUdrlafCjcI=;
+	s=korg; t=1705969810;
+	bh=97WQ2EJ4EncoWnKQHmTXYH+2VnwlAFIUIM38aGB7ji4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HPTo2z1vzsxrzoAR+vnZ7xQPqmvPHKglP4DKj/bRtKcVbLhNS8mPuU5ypVd82APYS
-	 dB7n6KBmc43qY1UhNI7UbVVnB7VRCSGdbBv18XC8o2Pc0T1ZqT7dcvO1TgY4dX+skw
-	 013eAWblQKx8wx2wadU8RAYrPHPH26FLSmm0d5HI=
+	b=pWCGwHy0VcilxXCPMIGs07karzMEoMO8TtI03s90CYq6SRdjJd7/VPlabgojOUBzo
+	 0p0HFep87wGbvCbHwOOs7R28/IoZzIrsgphJP1LyuqZASXpcf4pBab7A34FwMpNj0W
+	 Qq8ESuwGnxDbGVL9n+tZZNEt/xmfWyvKG7Qp0FpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ronald Monthero <debug.penguin32@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 062/286] mtd: rawnand: Increment IFC_TIMEOUT_MSECS for nand controller response
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.7 464/641] drm/amdgpu: revert "Adjust removal control flow for smu v13_0_2"
 Date: Mon, 22 Jan 2024 15:56:08 -0800
-Message-ID: <20240122235734.413176244@linuxfoundation.org>
+Message-ID: <20240122235832.563225671@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +59,194 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Monthero <debug.penguin32@gmail.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 923fb6238cb3ac529aa2bf13b3b1e53762186a8b ]
+commit fb1c93c2e9604a884467a773790016199f78ca08 upstream.
 
-Under heavy load it is likely that the controller is done
-with its own task but the thread unlocking the wait is not
-scheduled in time. Increasing IFC_TIMEOUT_MSECS allows the
-controller to respond within allowable timeslice of 1 sec.
+Calling amdgpu_device_ip_resume_phase1() during shutdown leaves the
+HW in an active state and is an unbalanced use of the IP callbacks.
 
-fsl,ifc-nand 7e800000.nand: Controller is not responding
+Using the IP callbacks like this can lead to memory leaks, double
+free and imbalanced reference counters.
 
-[<804b2047>] (nand_get_device) from [<804b5335>] (nand_write_oob+0x1b/0x4a)
-[<804b5335>] (nand_write_oob) from [<804a3585>] (mtd_write+0x41/0x5c)
-[<804a3585>] (mtd_write) from [<804c1d47>] (ubi_io_write+0x17f/0x22c)
-[<804c1d47>] (ubi_io_write) from [<804c047b>] (ubi_eba_write_leb+0x5b/0x1d0)
+Leaving the HW in an active state can lead to DMA accesses to memory now
+freed by the driver.
 
-Fixes: 82771882d960 ("NAND Machine support for Integrated Flash Controller")
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Ronald Monthero <debug.penguin32@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20231118083156.776887-1-debug.penguin32@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Both is a complete no-go for driver unload so completely revert the
+workaround for now.
+
+This reverts commit f5c7e7797060255dbc8160734ccc5ad6183c5e04.
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/fsl_ifc_nand.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |   32 -----------------------------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c    |   32 -----------------------------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_reset.h  |    1 
+ drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.h   |    1 
+ 4 files changed, 1 insertion(+), 65 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/fsl_ifc_nand.c b/drivers/mtd/nand/raw/fsl_ifc_nand.c
-index e345f9d9f8e8..fcda744e8a40 100644
---- a/drivers/mtd/nand/raw/fsl_ifc_nand.c
-+++ b/drivers/mtd/nand/raw/fsl_ifc_nand.c
-@@ -21,7 +21,7 @@
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5172,7 +5172,6 @@ int amdgpu_do_asic_reset(struct list_hea
+ 	struct amdgpu_device *tmp_adev = NULL;
+ 	bool need_full_reset, skip_hw_reset, vram_lost = false;
+ 	int r = 0;
+-	bool gpu_reset_for_dev_remove = 0;
  
- #define ERR_BYTE		0xFF /* Value returned for read
- 					bytes when read failed	*/
--#define IFC_TIMEOUT_MSECS	500  /* Maximum number of mSecs to wait
-+#define IFC_TIMEOUT_MSECS	1000 /* Maximum timeout to wait
- 					for IFC NAND Machine	*/
+ 	/* Try reset handler method first */
+ 	tmp_adev = list_first_entry(device_list_handle, struct amdgpu_device,
+@@ -5192,10 +5191,6 @@ int amdgpu_do_asic_reset(struct list_hea
+ 		test_bit(AMDGPU_NEED_FULL_RESET, &reset_context->flags);
+ 	skip_hw_reset = test_bit(AMDGPU_SKIP_HW_RESET, &reset_context->flags);
  
- struct fsl_ifc_ctrl;
--- 
-2.43.0
-
+-	gpu_reset_for_dev_remove =
+-		test_bit(AMDGPU_RESET_FOR_DEVICE_REMOVE, &reset_context->flags) &&
+-			test_bit(AMDGPU_NEED_FULL_RESET, &reset_context->flags);
+-
+ 	/*
+ 	 * ASIC reset has to be done on all XGMI hive nodes ASAP
+ 	 * to allow proper links negotiation in FW (within 1 sec)
+@@ -5238,18 +5233,6 @@ int amdgpu_do_asic_reset(struct list_hea
+ 		amdgpu_ras_intr_cleared();
+ 	}
+ 
+-	/* Since the mode1 reset affects base ip blocks, the
+-	 * phase1 ip blocks need to be resumed. Otherwise there
+-	 * will be a BIOS signature error and the psp bootloader
+-	 * can't load kdb on the next amdgpu install.
+-	 */
+-	if (gpu_reset_for_dev_remove) {
+-		list_for_each_entry(tmp_adev, device_list_handle, reset_list)
+-			amdgpu_device_ip_resume_phase1(tmp_adev);
+-
+-		goto end;
+-	}
+-
+ 	list_for_each_entry(tmp_adev, device_list_handle, reset_list) {
+ 		if (need_full_reset) {
+ 			/* post card */
+@@ -5486,11 +5469,6 @@ int amdgpu_device_gpu_recover(struct amd
+ 	int i, r = 0;
+ 	bool need_emergency_restart = false;
+ 	bool audio_suspended = false;
+-	bool gpu_reset_for_dev_remove = false;
+-
+-	gpu_reset_for_dev_remove =
+-			test_bit(AMDGPU_RESET_FOR_DEVICE_REMOVE, &reset_context->flags) &&
+-				test_bit(AMDGPU_NEED_FULL_RESET, &reset_context->flags);
+ 
+ 	/*
+ 	 * Special case: RAS triggered and full reset isn't supported
+@@ -5528,7 +5506,7 @@ int amdgpu_device_gpu_recover(struct amd
+ 	if (!amdgpu_sriov_vf(adev) && (adev->gmc.xgmi.num_physical_nodes > 1)) {
+ 		list_for_each_entry(tmp_adev, &hive->device_list, gmc.xgmi.head) {
+ 			list_add_tail(&tmp_adev->reset_list, &device_list);
+-			if (gpu_reset_for_dev_remove && adev->shutdown)
++			if (adev->shutdown)
+ 				tmp_adev->shutdown = true;
+ 		}
+ 		if (!list_is_first(&adev->reset_list, &device_list))
+@@ -5613,10 +5591,6 @@ int amdgpu_device_gpu_recover(struct amd
+ 
+ retry:	/* Rest of adevs pre asic reset from XGMI hive. */
+ 	list_for_each_entry(tmp_adev, device_list_handle, reset_list) {
+-		if (gpu_reset_for_dev_remove) {
+-			/* Workaroud for ASICs need to disable SMC first */
+-			amdgpu_device_smu_fini_early(tmp_adev);
+-		}
+ 		r = amdgpu_device_pre_asic_reset(tmp_adev, reset_context);
+ 		/*TODO Should we stop ?*/
+ 		if (r) {
+@@ -5648,9 +5622,6 @@ retry:	/* Rest of adevs pre asic reset f
+ 		r = amdgpu_do_asic_reset(device_list_handle, reset_context);
+ 		if (r && r == -EAGAIN)
+ 			goto retry;
+-
+-		if (!r && gpu_reset_for_dev_remove)
+-			goto recover_end;
+ 	}
+ 
+ skip_hw_reset:
+@@ -5706,7 +5677,6 @@ skip_sched_resume:
+ 		amdgpu_ras_set_error_query_ready(tmp_adev, true);
+ 	}
+ 
+-recover_end:
+ 	tmp_adev = list_first_entry(device_list_handle, struct amdgpu_device,
+ 					    reset_list);
+ 	amdgpu_device_unlock_reset_domain(tmp_adev->reset_domain);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2315,38 +2315,6 @@ amdgpu_pci_remove(struct pci_dev *pdev)
+ 		pm_runtime_forbid(dev->dev);
+ 	}
+ 
+-	if (amdgpu_ip_version(adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 2) &&
+-	    !amdgpu_sriov_vf(adev)) {
+-		bool need_to_reset_gpu = false;
+-
+-		if (adev->gmc.xgmi.num_physical_nodes > 1) {
+-			struct amdgpu_hive_info *hive;
+-
+-			hive = amdgpu_get_xgmi_hive(adev);
+-			if (hive->device_remove_count == 0)
+-				need_to_reset_gpu = true;
+-			hive->device_remove_count++;
+-			amdgpu_put_xgmi_hive(hive);
+-		} else {
+-			need_to_reset_gpu = true;
+-		}
+-
+-		/* Workaround for ASICs need to reset SMU.
+-		 * Called only when the first device is removed.
+-		 */
+-		if (need_to_reset_gpu) {
+-			struct amdgpu_reset_context reset_context;
+-
+-			adev->shutdown = true;
+-			memset(&reset_context, 0, sizeof(reset_context));
+-			reset_context.method = AMD_RESET_METHOD_NONE;
+-			reset_context.reset_req_dev = adev;
+-			set_bit(AMDGPU_NEED_FULL_RESET, &reset_context.flags);
+-			set_bit(AMDGPU_RESET_FOR_DEVICE_REMOVE, &reset_context.flags);
+-			amdgpu_device_gpu_recover(adev, NULL, &reset_context);
+-		}
+-	}
+-
+ 	amdgpu_driver_unload_kms(dev);
+ 
+ 	/*
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_reset.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_reset.h
+@@ -32,7 +32,6 @@ enum AMDGPU_RESET_FLAGS {
+ 
+ 	AMDGPU_NEED_FULL_RESET = 0,
+ 	AMDGPU_SKIP_HW_RESET = 1,
+-	AMDGPU_RESET_FOR_DEVICE_REMOVE = 2,
+ };
+ 
+ struct amdgpu_reset_context {
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.h
+@@ -43,7 +43,6 @@ struct amdgpu_hive_info {
+ 	} pstate;
+ 
+ 	struct amdgpu_reset_domain *reset_domain;
+-	uint32_t device_remove_count;
+ 	atomic_t ras_recovery;
+ };
+ 
 
 
 
