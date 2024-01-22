@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-14808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4176E8382AC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17DB6837BE1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 744CC1C237AE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C30261F2A82F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908E95D8F8;
-	Tue, 23 Jan 2024 01:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9EF813474D;
+	Tue, 23 Jan 2024 00:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6uydr9v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYF1TxP6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAF44F8AE;
-	Tue, 23 Jan 2024 01:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883FD131748;
+	Tue, 23 Jan 2024 00:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974406; cv=none; b=ugDHaemo0vqiNNvRk3QqL7dHuNGPUB6IeLmaTdtkGIA4wOWIo/9d0mjjK+lgcTKTD5RBSpgtXFwwMZZ4LPbpjPOU0pXZ2bBc3xDmqmMKXvF2TdwgVROVagZx9uDCo2e1D9c/ZeZfRBN7Lj80HyONrJ8pAfZRDcNZJD2QcLQGUzk=
+	t=1705969422; cv=none; b=jVZytKSbpiicPdBv2ximqZ4tOh1O+khdclN2ajW/JcoVyJLFgvJTM8j0o24YFA7ZTF9F9UqS8/LVUqOqofqJmbjrwsECQa6gsMT1hqjuADXTLzl1vMrT7urMgSFoDt7+hqldAD3mIyfifzvkaVEObqSyQlsS+1aQ/RVIU+z6F7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974406; c=relaxed/simple;
-	bh=uYgevHvhF9iyFnKVdjrQbFUZhScWt/xXu1V/ErO76eI=;
+	s=arc-20240116; t=1705969422; c=relaxed/simple;
+	bh=M83FQz5zTHHhqG73uXu9CnRFpixDeSmZNyor9ZamnzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e0cIg47Kv87PNvszU0jA96JDV/r5ivaQX06D5Dx/gBL/V4gc5a8ntzOoYq8enPGV2Lfzv1YSdSQhyFkMAgxNn8CaUWv+7n3teR0h2kVGR7K0wWu52Ef6Qa5SX9pBdi32M1P5z0rDwQZEaPYsEV3vrzAutEfT0VjMBl02Hp3KYDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6uydr9v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC751C433F1;
-	Tue, 23 Jan 2024 01:46:45 +0000 (UTC)
+	 MIME-Version; b=XnpZ9ArG+1YVmEYc07iZ8EGhxmWO/lj4H2RxmSlkM7HlVjfhlA9HFFJem8ymWYPuwQUSSjngrRNuyASA6amffaZevTBZw1A2AuG7+/8NjA7rSQx9jmFUZQrR54KFUdSm4j07XriC1X6SsqfGYC61A3zp1i1Uvt48ZRZaTLtLSFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYF1TxP6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F49C43390;
+	Tue, 23 Jan 2024 00:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974406;
-	bh=uYgevHvhF9iyFnKVdjrQbFUZhScWt/xXu1V/ErO76eI=;
+	s=korg; t=1705969422;
+	bh=M83FQz5zTHHhqG73uXu9CnRFpixDeSmZNyor9ZamnzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p6uydr9v0XUqFx/0zsuu33Vmr1Pl8TMOd6MI2c73XFKV4HJ9F1JoN87HDimMf4FOX
-	 jH1s2YFk72rYZNslSJPifBHfbZjblLgjtjfFnds7cLBXN9Vn1fid3uiLxgL8V2GMMB
-	 cpY89wTU68j7YpqB0fG1k2Q5C+DrB8XA6h9ZHe4o=
+	b=yYF1TxP6rtxKIzPDVhOSq4pdWB/EzH55XHtRhcFa4UjOt1mXKn/iQHvo010vAFwKI
+	 TApg9r849DzE3W+ncE1AdlPH1YSBQ4SLJeh1FGeK/tBY3GC6QLZJZtc/IaUc+WP9ab
+	 Z9GBR2BivCcxPw5GQ7H6vX0bbMigC44Zu9U6T0IM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Lehner <dev@der-flo.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Changhui Zhong <czhong@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/583] bpf, lpm: Fix check prefixlen before walking trie
+Subject: [PATCH 6.7 235/641] blk-cgroup: fix rcu lockdep warning in blkg_lookup()
 Date: Mon, 22 Jan 2024 15:52:19 -0800
-Message-ID: <20240122235814.861431869@linuxfoundation.org>
+Message-ID: <20240122235825.280928948@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Lehner <dev@der-flo.net>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 9b75dbeb36fcd9fc7ed51d370310d0518a387769 ]
+[ Upstream commit 393cd8ffd832f23eec3a105553eff622e8198918 ]
 
-When looking up an element in LPM trie, the condition 'matchlen ==
-trie->max_prefixlen' will never return true, if key->prefixlen is larger
-than trie->max_prefixlen. Consequently all elements in the LPM trie will
-be visited and no element is returned in the end.
+blkg_lookup() is called with either queue_lock or rcu read lock, so
+use rcu_dereference_check(lockdep_is_held(&q->queue_lock)) for
+retrieving 'blkg', which way models the check exactly for covering
+queue lock or rcu read lock.
 
-To resolve this, check key->prefixlen first before walking the LPM trie.
+Fix lockdep warning of "block/blk-cgroup.h:254 suspicious rcu_dereference_check() usage!"
+from blkg_lookup().
 
-Fixes: b95a5c4db09b ("bpf: add a longest prefix match trie map implementation")
-Signed-off-by: Florian Lehner <dev@der-flo.net>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20231105085801.3742-1-dev@der-flo.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Tested-by: Changhui Zhong <czhong@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Fixes: 83462a6c971c ("blkcg: Drop unnecessary RCU read [un]locks from blkg_conf_prep/finish()")
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20231219012833.2129540-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/lpm_trie.c | 3 +++
- 1 file changed, 3 insertions(+)
+ block/blk-cgroup.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index 17c7e7782a1f..b32be680da6c 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -231,6 +231,9 @@ static void *trie_lookup_elem(struct bpf_map *map, void *_key)
- 	struct lpm_trie_node *node, *found = NULL;
- 	struct bpf_lpm_trie_key *key = _key;
+diff --git a/block/blk-cgroup.h b/block/blk-cgroup.h
+index fd482439afbc..b927a4a0ad03 100644
+--- a/block/blk-cgroup.h
++++ b/block/blk-cgroup.h
+@@ -252,7 +252,8 @@ static inline struct blkcg_gq *blkg_lookup(struct blkcg *blkcg,
+ 	if (blkcg == &blkcg_root)
+ 		return q->root_blkg;
  
-+	if (key->prefixlen > trie->max_prefixlen)
-+		return NULL;
-+
- 	/* Start walking the trie from the root node ... */
+-	blkg = rcu_dereference(blkcg->blkg_hint);
++	blkg = rcu_dereference_check(blkcg->blkg_hint,
++			lockdep_is_held(&q->queue_lock));
+ 	if (blkg && blkg->q == q)
+ 		return blkg;
  
- 	for (node = rcu_dereference_check(trie->root, rcu_read_lock_bh_held());
 -- 
 2.43.0
 
