@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E9A8382D5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F047E837BDE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD0EAB2B073
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8EA52946EE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2BD85DF26;
-	Tue, 23 Jan 2024 01:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A450F1552F5;
+	Tue, 23 Jan 2024 00:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XuvEdDJO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7CB4ZiE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914625DF19;
-	Tue, 23 Jan 2024 01:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64680154C05;
+	Tue, 23 Jan 2024 00:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974397; cv=none; b=EtQUP6pVyl3Dee+VziSdHp2X7yPUDluv4KL/oWkw4vEixEazbytunPHZGdNXnu+MPm0gX7VO99fu4dCiUcdRWMKCNgLOXEy9EJoKKlHd+fNjrag/rupqx/KQhiuV4QoFDshipErCTYYakwYm6sVZA4OSVDh4B+5nIgtJHqohucI=
+	t=1705969416; cv=none; b=soNNpDdh5HE5dL5BA43AzavO2oQtF4eUb216/y3KwI4xX0QagzdmSOA3oR0AEsEiYISGaFxMkROgk00xWHu0oRPsSBw8zEBC2JbTVhOfPyLSVxAhLlsfgrC5qi4ECY9zoE6z+cUCe9A8tvJThTjPNPhk9rAvYGgbjFA928EUnSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974397; c=relaxed/simple;
-	bh=NGnFmn9BAeXpVzWDWZMLhxJwYHfsPvurquAmPybd2QM=;
+	s=arc-20240116; t=1705969416; c=relaxed/simple;
+	bh=bzlOz9u5Gl4aoSu+OsM0viALyQUyP6IUA45q5XjWZcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DCx74HT8huT65spRmQ81B6ugEAZ+Oe+1kgGGU3X36bRHVvLIaDNcJlDsGmidL1/x6+wxm59LeVOKEfN9HbJwGES0gTQ7ZIbQhMvGJLetazRbghxvCv9E8uKgGjmM6GYw2fyuGXmRg49RBI0GcYPfbPdhotlfctp3YMfSQERZsAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XuvEdDJO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B3EC43394;
-	Tue, 23 Jan 2024 01:46:37 +0000 (UTC)
+	 MIME-Version; b=lcmCHSswNJgE11BI9bU9k7FujH9KWW1pkEiixmhbbXIJFUIunhS/rWTf91ZLcHK6Q74Y4XQ13Zc4RxL6+7HeGQa3yM7SjwTVW3T/HzjQGe4Vfv+/S5eWiAbIJQnCEI9QePWvoE2ibzrVdVCmXTnXZ/ro1ZpUjt6SxqaaHXtPpME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7CB4ZiE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B4D4C433F1;
+	Tue, 23 Jan 2024 00:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974397;
-	bh=NGnFmn9BAeXpVzWDWZMLhxJwYHfsPvurquAmPybd2QM=;
+	s=korg; t=1705969416;
+	bh=bzlOz9u5Gl4aoSu+OsM0viALyQUyP6IUA45q5XjWZcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XuvEdDJOBleXUIx/vMxgY3kSKVkgvKylhd6pB27oBFdz7dEG9sVTcZ5UDHXpdxoH4
-	 1qk20bGTxu2OsGjw/Wg9b1KnAGihF2nFnk/NncLzTGLZ1xiFLbTlNbyaDHtr7+zdPe
-	 kQ7iVF7WlCXouUvI/8vSL++EfraBzrHqp29fyD4o=
+	b=U7CB4ZiECX9ywVNGJERjoMYoGz4RRyw74iKkghygqO92Tj7XK7KJ/vtjTDJftJu4+
+	 0GJbQrACrvISMtFwAPqa3F1D5nYVIRlszEsBwi3K+BQeo24s/HuX7yU53hWSCaAJrd
+	 GplIOmRRiBrAr6DAL5046LY0n1NhsUrz32vWatEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Xingwei Lee <xrivendell7@gmail.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/583] arm64: dts: qcom: sc8280xp-x13s: add missing camera LED pin config
+Subject: [PATCH 6.7 231/641] bpf: sockmap, fix proto update hook to avoid dup calls
 Date: Mon, 22 Jan 2024 15:52:15 -0800
-Message-ID: <20240122235814.730832881@linuxfoundation.org>
+Message-ID: <20240122235825.158034846@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: John Fastabend <john.fastabend@gmail.com>
 
-[ Upstream commit a3457cc5bc30ad053c90ae9f14e9b7723d204a98 ]
+[ Upstream commit 16b2f264983dc264c1560cc0170e760dec1bf54f ]
 
-Add the missing pin configuration for the recently added camera
-indicator LED.
+When sockets are added to a sockmap or sockhash we allocate and init a
+psock. Then update the proto ops with sock_map_init_proto the flow is
 
-Fixes: 1c63dd1c5fda ("arm64: dts: qcom: sc8280xp-x13s: Add camera activity LED")
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231003093647.3840-1-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+  sock_hash_update_common
+    sock_map_link
+      psock = sock_map_psock_get_checked() <-returns existing psock
+      sock_map_init_proto(sk, psock)       <- updates sk_proto
+
+If the socket is already in a map this results in the sock_map_init_proto
+being called multiple times on the same socket. We do this because when
+a socket is added to multiple maps this might result in a new set of BPF
+programs being attached to the socket requiring an updated ops struct.
+
+This creates a rule where it must be safe to call psock_update_sk_prot
+multiple times. When we added a fix for UAF through unix sockets in patch
+4dd9a38a753fc we broke this rule by adding a sock_hold in that path
+to ensure the sock is not released. The result is if a af_unix stream sock
+is placed in multiple maps it results in a memory leak because we call
+sock_hold multiple times with only a single sock_put on it.
+
+Fixes: 8866730aed51 ("bpf, sockmap: af_unix stream sockets need to hold ref for pair sock")
+Reported-by: Xingwei Lee <xrivendell7@gmail.com>
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Link: https://lore.kernel.org/r/20231221232327.43678-2-john.fastabend@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts    | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/unix/unix_bpf.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-index 6a4c6cc19c09..f2055899ae7a 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-@@ -82,6 +82,9 @@ switch-lid {
- 	leds {
- 		compatible = "gpio-leds";
+diff --git a/net/unix/unix_bpf.c b/net/unix/unix_bpf.c
+index 7ea7c3a0d0d0..bd84785bf8d6 100644
+--- a/net/unix/unix_bpf.c
++++ b/net/unix/unix_bpf.c
+@@ -161,15 +161,30 @@ int unix_stream_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool r
+ {
+ 	struct sock *sk_pair;
  
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&cam_indicator_en>;
-+
- 		led-camera-indicator {
- 			label = "white:camera-indicator";
- 			function = LED_FUNCTION_INDICATOR;
-@@ -1278,6 +1281,13 @@ hstp-sw-ctrl-pins {
- 		};
- 	};
++	/* Restore does not decrement the sk_pair reference yet because we must
++	 * keep the a reference to the socket until after an RCU grace period
++	 * and any pending sends have completed.
++	 */
+ 	if (restore) {
+ 		sk->sk_write_space = psock->saved_write_space;
+ 		sock_replace_proto(sk, psock->sk_proto);
+ 		return 0;
+ 	}
  
-+	cam_indicator_en: cam-indicator-en-state {
-+		pins = "gpio28";
-+		function = "gpio";
-+		drive-strength = <2>;
-+		bias-disable;
-+	};
+-	sk_pair = unix_peer(sk);
+-	sock_hold(sk_pair);
+-	psock->sk_pair = sk_pair;
++	/* psock_update_sk_prot can be called multiple times if psock is
++	 * added to multiple maps and/or slots in the same map. There is
++	 * also an edge case where replacing a psock with itself can trigger
++	 * an extra psock_update_sk_prot during the insert process. So it
++	 * must be safe to do multiple calls. Here we need to ensure we don't
++	 * increment the refcnt through sock_hold many times. There will only
++	 * be a single matching destroy operation.
++	 */
++	if (!psock->sk_pair) {
++		sk_pair = unix_peer(sk);
++		sock_hold(sk_pair);
++		psock->sk_pair = sk_pair;
++	}
 +
- 	edp_reg_en: edp-reg-en-state {
- 		pins = "gpio25";
- 		function = "gpio";
+ 	unix_stream_bpf_check_needs_rebuild(psock->sk_proto);
+ 	sock_replace_proto(sk, &unix_stream_bpf_prot);
+ 	return 0;
 -- 
 2.43.0
 
