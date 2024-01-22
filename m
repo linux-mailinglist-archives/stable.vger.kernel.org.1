@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555CD8384DB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2984A838100
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 089801F232FB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EB04B2BAD2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D7277651;
-	Tue, 23 Jan 2024 02:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877E0130E2F;
+	Tue, 23 Jan 2024 01:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMvnBx1g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eES1u/nI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0453B7763C;
-	Tue, 23 Jan 2024 02:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF7312FF73;
+	Tue, 23 Jan 2024 01:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975518; cv=none; b=blEjgcCnpZIWTEmDYEkobF9GD4FDq4cVKoV8600aJKW75TFyYxM42YjVo8k090qMgPjafj3QWWqXy+uuM7cxoNO0gyT3/w7tdHQeRACVE8MOsuvUxWpxOmdSDhWzZoZIpmU3nz5Slwc8pAeo6BytftV17W3e9s+/iDd7gZt/uS8=
+	t=1705971819; cv=none; b=Gi9hMHTGhL4pzJfflJAPHad6ipwCAY7xpkMIGk7RvfjzKjUdtJSKGVxZVGjAVCMb36tTXGLDhtQ5XsLJgSgXYBI9Mk1MAE1IaoKa5GnUoMq/aCXBCWuuTK1xq5Lm0kgMocJtjffDmLWo3MSGY/zlf6dfboZw+IMtqn5mX0TulWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975518; c=relaxed/simple;
-	bh=NumcpoOgHH6Tq+ds25PFRjc2Lmk9VwGE0WpiSNqA27o=;
+	s=arc-20240116; t=1705971819; c=relaxed/simple;
+	bh=VrvLtvi34/In1AFG0heVUT3dH8ETtflgMzRrxKyg/iA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W9xKDxA7S7iHVPDC9TxlamT/WZL/MavCZp6Aajl9yEZdnam5io+pVwRkRYrwPylIHHxBYTGV/f4MiPejFK9Tw4I78S5GG1BjinccRTlpW4+FBw798cEiURnnKpWa7fjIJzdVpDZFLGJY/OndIYeeGzF8H6+CfivKJpD3jQ9rsRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMvnBx1g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8ECC433C7;
-	Tue, 23 Jan 2024 02:05:17 +0000 (UTC)
+	 MIME-Version; b=nBmSFxvLHpQT4NvIN/ozZWRbW4Dklu0EIdRjbp9C6EmbzPoW5W5QSTnaDN8oCWWeHg1057VLn9/XIXGCm/wbfEeC5qZfichFr5ByO6Y9QfGVROuO8dPVywsznMkdzWUZ9uOVxY7EJVhHUOue9x2I9wSjNAQ5iUSJAJqNSq6j48c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eES1u/nI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1A6C433F1;
+	Tue, 23 Jan 2024 01:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975517;
-	bh=NumcpoOgHH6Tq+ds25PFRjc2Lmk9VwGE0WpiSNqA27o=;
+	s=korg; t=1705971819;
+	bh=VrvLtvi34/In1AFG0heVUT3dH8ETtflgMzRrxKyg/iA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RMvnBx1g+6Nl33RlQQdDfdjzuGYcSd490VLRiBdCtFy8HM6o3LqcdIMP8YT2J5KuB
-	 zB6JVkUMJR/KqKwrHXnhpUV/bDtm2QwUkNe0B8ldb5Iorb2kkUBfFmjyURA3gWRPWG
-	 +qUAmUhjeb6/s2UIjbqw5o8cq9Lp1nBLqMv3O+HM=
+	b=eES1u/nIV8V3cQ9le2LIdKcTxahOyAwviUzPZL2/wq8gmfbDqUR9Gjj2hiJ2GSs6p
+	 MgTimpsVFJ8B7v9kll2eufigR3tgz3W6TrTSmsskYEIK62wYTunYq8UONSsSR9fT/f
+	 8wieSrVGzzkm0OAyV+ERWm3+d+rK7VbrKa8X2KPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Alex Vinarskis <alex.vinarskis@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 444/583] mfd: intel-lpss: Fix the fractional clock divider flags
-Date: Mon, 22 Jan 2024 15:58:15 -0800
-Message-ID: <20240122235825.565161679@linuxfoundation.org>
+Subject: [PATCH 6.1 328/417] mips: Fix incorrect max_low_pfn adjustment
+Date: Mon, 22 Jan 2024 15:58:16 -0800
+Message-ID: <20240122235803.159487302@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-[ Upstream commit 03d790f04fb2507173913cad9c213272ac983a60 ]
+[ Upstream commit 0f5cc249ff73552d3bd864e62f85841dafaa107d ]
 
-The conversion to CLK_FRAC_DIVIDER_POWER_OF_TWO_PS uses wrong flags
-in the parameters and hence miscalculates the values in the clock
-divider. Fix this by applying the flag to the proper parameter.
+max_low_pfn variable is incorrectly adjusted if the kernel is built with
+high memory support and the later is detected in a running system, so the
+memory which actually can be directly mapped is getting into the highmem
+zone. See the ZONE_NORMAL range on my MIPS32r5 system:
 
-Fixes: 82f53f9ee577 ("clk: fractional-divider: Introduce POWER_OF_TWO_PS flag")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reported-by: Alex Vinarskis <alex.vinarskis@gmail.com>
-Link: https://lore.kernel.org/r/20231211111441.3910083-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+> Zone ranges:
+>   DMA      [mem 0x0000000000000000-0x0000000000ffffff]
+>   Normal   [mem 0x0000000001000000-0x0000000007ffffff]
+>   HighMem  [mem 0x0000000008000000-0x000000020fffffff]
+
+while the zones are supposed to look as follows:
+
+> Zone ranges:
+>   DMA      [mem 0x0000000000000000-0x0000000000ffffff]
+>   Normal   [mem 0x0000000001000000-0x000000001fffffff]
+>   HighMem  [mem 0x0000000020000000-0x000000020fffffff]
+
+Even though the physical memory within the range [0x08000000;0x20000000]
+belongs to MMIO on our system, we don't really want it to be considered as
+high memory since on MIPS32 that range still can be directly mapped.
+
+Note there might be other problems caused by the max_low_pfn variable
+misconfiguration. For instance high_memory variable is initialize with
+virtual address corresponding to the max_low_pfn PFN, and by design it
+must define the upper bound on direct map memory, then end of the normal
+zone. That in its turn potentially may cause problems in accessing the
+memory by means of the /dev/mem and /dev/kmem devices.
+
+Let's fix the discovered misconfiguration then. It turns out the commit
+a94e4f24ec83 ("MIPS: init: Drop boot_mem_map") didn't introduce the
+max_low_pfn adjustment quite correct. If the kernel is built with high
+memory support and the system is equipped with high memory, the
+max_low_pfn variable will need to be initialized with PFN of the most
+upper directly reachable memory address so the zone normal would be
+correctly setup. On MIPS that PFN corresponds to PFN_DOWN(HIGHMEM_START).
+If the system is built with no high memory support and one is detected in
+the running system, we'll just need to adjust the max_pfn variable to
+discard the found high memory from the system and leave the max_low_pfn as
+is, since the later will be less than PFN_DOWN(HIGHMEM_START) anyway by
+design of the for_each_memblock() loop performed a bit early in the
+bootmem_init() method.
+
+Fixes: a94e4f24ec83 ("MIPS: init: Drop boot_mem_map")
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel-lpss.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/setup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/intel-lpss.c b/drivers/mfd/intel-lpss.c
-index 9591b354072a..00e7b578bb3e 100644
---- a/drivers/mfd/intel-lpss.c
-+++ b/drivers/mfd/intel-lpss.c
-@@ -301,8 +301,8 @@ static int intel_lpss_register_clock_divider(struct intel_lpss *lpss,
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 7c540572f1f7..e46e7ec76b4f 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -326,11 +326,11 @@ static void __init bootmem_init(void)
+ 		panic("Incorrect memory mapping !!!");
  
- 	snprintf(name, sizeof(name), "%s-div", devname);
- 	tmp = clk_register_fractional_divider(NULL, name, __clk_get_name(tmp),
-+					      0, lpss->priv, 1, 15, 16, 15,
- 					      CLK_FRAC_DIVIDER_POWER_OF_TWO_PS,
--					      lpss->priv, 1, 15, 16, 15, 0,
- 					      NULL);
- 	if (IS_ERR(tmp))
- 		return PTR_ERR(tmp);
+ 	if (max_pfn > PFN_DOWN(HIGHMEM_START)) {
++		max_low_pfn = PFN_DOWN(HIGHMEM_START);
+ #ifdef CONFIG_HIGHMEM
+-		highstart_pfn = PFN_DOWN(HIGHMEM_START);
++		highstart_pfn = max_low_pfn;
+ 		highend_pfn = max_pfn;
+ #else
+-		max_low_pfn = PFN_DOWN(HIGHMEM_START);
+ 		max_pfn = max_low_pfn;
+ #endif
+ 	}
 -- 
 2.43.0
 
