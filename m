@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-15153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9990283841E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CC6837CD3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:19:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CD481F29195
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 621C1B2A576
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D6967E72;
-	Tue, 23 Jan 2024 02:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4E4146907;
+	Tue, 23 Jan 2024 00:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9RpyozC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2zIf4Hi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837AA67E69;
-	Tue, 23 Jan 2024 02:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA921482ED;
+	Tue, 23 Jan 2024 00:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975307; cv=none; b=ssjkrfsOlRdxJCVgNFkCbRu95Nsdc4yGTZ7CRNh9oswthqnqMWJnPpOfAlnemFLevf0q5v41d/0rpUiy2qIFNqG9q7kjSrvZenrvNHUhY3VVefLMk+zH+5mvykebxKgWYtSeQzw6fcbcHq0kdwpxjWejZWq6L8pHTDrdq/CG4TE=
+	t=1705969718; cv=none; b=bBTHp+lRP/WFfNPFczUY5KYMpOGA9+IPjNprGSZZUW/hIxa6MLf1bepcTX8ZiZs1j36TLCTSYFhb6UgkulsRNO8yiBnxZWL7uZKMJJEO3jPIiScj1a/OYo3CTSBRKfrSQyg722b/d98pynuEg0aFA3BD5IwPkVX/Ukk3nyx1vzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975307; c=relaxed/simple;
-	bh=V23Nmt+FzKsTBJNAajuapYKlf/PHE1WxhGpdYB7exYo=;
+	s=arc-20240116; t=1705969718; c=relaxed/simple;
+	bh=whBWWlLkOlmA2ops6LImnMosfARiGc3h0PGxP2KPU9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k9nZQm63BujYOcVHke5UW925CRvknR3/VcaU9NcDVgqfNmjZfnN9tzuc5F0FjAgeaKNCIFYpnCdSpnt4LFw4urBJTs49CHSBVUu3dDSGBYK43I5oJq9E/Sx3v9/B4ggmmTOU+zVbne1cCm2+icYRKYu6CjQBG10bGNEJXMK53DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9RpyozC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48AB4C433C7;
-	Tue, 23 Jan 2024 02:01:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g0zKhwIQUQ1spnmP3f0Qng2qBwxp58bsAKZK1LHsmeYgQ0n2c2naKAEigjRwFrzRtvHosDD0PbZzXsAhH0dI/v05YiAw+1OWCA3ungqENWZ3S7KrEVBtrL8cioayLt1hUhEyqz2+90Q3bNfA0/IV9sIge4SQEVMki9vpOEeRXLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2zIf4Hi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1916C43399;
+	Tue, 23 Jan 2024 00:28:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975307;
-	bh=V23Nmt+FzKsTBJNAajuapYKlf/PHE1WxhGpdYB7exYo=;
+	s=korg; t=1705969718;
+	bh=whBWWlLkOlmA2ops6LImnMosfARiGc3h0PGxP2KPU9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9RpyozC5ty5+ocoS2s+6Hmal1LRFh238MF6Kh1Jq+n5GBSi9QktmW/OZZ7KpV6am
-	 mbuNWVyCUjwY3uhcCvRqI0ZWyGAuKwSqBjKfzCEBR3TCR2jlvmq3+VbqEbqvbF2lHc
-	 HWg/G/S/ejCgiYyQxxMDA/C7/T3UFwRDaKHZarzA=
+	b=r2zIf4HiPLC7G7aLisQsbmTL8FFrM95vCYBDjM6rZNBnbTvEdWR5CuXAKEw5gbYma
+	 9gcEYktj6bMNuHwr9PguX/ERHDrhyxHPXru7Jw3bhr6Wio38e9ECTVSFi5PSsurR4j
+	 43BgdkyHXS26kff5SHmy6nIm9HJ2ThsICx5brcg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 270/583] media: imx-mipi-csis: Fix clock handling in remove()
+	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.7 417/641] serial: omap: do not override settings for RS485 support
 Date: Mon, 22 Jan 2024 15:55:21 -0800
-Message-ID: <20240122235820.258863867@linuxfoundation.org>
+Message-ID: <20240122235831.032802946@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +59,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-[ Upstream commit 5705b0e0eb550ff834125a46a4ef99b62093d83d ]
+commit 51f93776b84dee23e44a7be880736669a01cec2b upstream.
 
-The driver always calls mipi_csis_runtime_suspend() and
-mipi_csis_clk_disable() in remove(). This causes multiple WARNs from the
-kernel, as the clocks get disabled too many times.
+The drivers RS485 support is deactivated if there is no RTS GPIO available.
+This is done by nullifying the ports rs485_supported struct. After that
+however the settings in serial_omap_rs485_supported are assigned to the
+same structure unconditionally, which results in an unintended reactivation
+of RS485 support.
 
-Fix the remove() to call mipi_csis_runtime_suspend() and
-mipi_csis_clk_disable() in a way that reverses what is done in probe().
+Fix this by moving the assignment to the beginning of
+serial_omap_probe_rs485() and thus before uart_get_rs485_mode() gets
+called.
 
-Link: https://lore.kernel.org/r/20231122-imx-csis-v2-1-e44b8dc4cb66@ideasonboard.com
+Also replace the assignment of rs485_config() to have the complete RS485
+setup in one function.
 
-Fixes: 7807063b862b ("media: staging/imx7: add MIPI CSI-2 receiver subdev for i.MX7")
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e2752ae3cfc9 ("serial: omap: Disallow RS-485 if rts-gpio is not specified")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240103061818.564-7-l.sanfilippo@kunbus.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/nxp/imx-mipi-csis.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/tty/serial/omap-serial.c | 27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
-index 5f93712bf485..e7629c9f5746 100644
---- a/drivers/media/platform/nxp/imx-mipi-csis.c
-+++ b/drivers/media/platform/nxp/imx-mipi-csis.c
-@@ -1504,8 +1504,10 @@ static void mipi_csis_remove(struct platform_device *pdev)
- 	v4l2_async_nf_cleanup(&csis->notifier);
- 	v4l2_async_unregister_subdev(&csis->sd);
+diff --git a/drivers/tty/serial/omap-serial.c b/drivers/tty/serial/omap-serial.c
+index 730755621879..f5a0b401af63 100644
+--- a/drivers/tty/serial/omap-serial.c
++++ b/drivers/tty/serial/omap-serial.c
+@@ -1483,6 +1483,13 @@ static struct omap_uart_port_info *of_get_uart_port_info(struct device *dev)
+ 	return omap_up_info;
+ }
  
-+	if (!pm_runtime_enabled(&pdev->dev))
-+		mipi_csis_runtime_suspend(&pdev->dev);
++static const struct serial_rs485 serial_omap_rs485_supported = {
++	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND |
++		 SER_RS485_RX_DURING_TX,
++	.delay_rts_before_send = 1,
++	.delay_rts_after_send = 1,
++};
 +
- 	pm_runtime_disable(&pdev->dev);
--	mipi_csis_runtime_suspend(&pdev->dev);
- 	mipi_csis_clk_disable(csis);
- 	v4l2_subdev_cleanup(&csis->sd);
- 	media_entity_cleanup(&csis->sd.entity);
+ static int serial_omap_probe_rs485(struct uart_omap_port *up,
+ 				   struct device *dev)
+ {
+@@ -1497,6 +1504,9 @@ static int serial_omap_probe_rs485(struct uart_omap_port *up,
+ 	if (!np)
+ 		return 0;
+ 
++	up->port.rs485_config = serial_omap_config_rs485;
++	up->port.rs485_supported = serial_omap_rs485_supported;
++
+ 	ret = uart_get_rs485_mode(&up->port);
+ 	if (ret)
+ 		return ret;
+@@ -1531,13 +1541,6 @@ static int serial_omap_probe_rs485(struct uart_omap_port *up,
+ 	return 0;
+ }
+ 
+-static const struct serial_rs485 serial_omap_rs485_supported = {
+-	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND |
+-		 SER_RS485_RX_DURING_TX,
+-	.delay_rts_before_send = 1,
+-	.delay_rts_after_send = 1,
+-};
+-
+ static int serial_omap_probe(struct platform_device *pdev)
+ {
+ 	struct omap_uart_port_info *omap_up_info = dev_get_platdata(&pdev->dev);
+@@ -1604,17 +1607,11 @@ static int serial_omap_probe(struct platform_device *pdev)
+ 		dev_info(up->port.dev, "no wakeirq for uart%d\n",
+ 			 up->port.line);
+ 
+-	ret = serial_omap_probe_rs485(up, &pdev->dev);
+-	if (ret < 0)
+-		goto err_rs485;
+-
+ 	sprintf(up->name, "OMAP UART%d", up->port.line);
+ 	up->port.mapbase = mem->start;
+ 	up->port.membase = base;
+ 	up->port.flags = omap_up_info->flags;
+ 	up->port.uartclk = omap_up_info->uartclk;
+-	up->port.rs485_config = serial_omap_config_rs485;
+-	up->port.rs485_supported = serial_omap_rs485_supported;
+ 	if (!up->port.uartclk) {
+ 		up->port.uartclk = DEFAULT_CLK_SPEED;
+ 		dev_warn(&pdev->dev,
+@@ -1622,6 +1619,10 @@ static int serial_omap_probe(struct platform_device *pdev)
+ 			 DEFAULT_CLK_SPEED);
+ 	}
+ 
++	ret = serial_omap_probe_rs485(up, &pdev->dev);
++	if (ret < 0)
++		goto err_rs485;
++
+ 	up->latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
+ 	up->calc_latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
+ 	cpu_latency_qos_add_request(&up->pm_qos_request, up->latency);
 -- 
 2.43.0
 
