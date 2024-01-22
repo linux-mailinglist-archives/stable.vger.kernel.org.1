@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7C283832C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 875118380D8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E76D1C2990E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2788CB2ADFE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE86D50266;
-	Tue, 23 Jan 2024 01:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AF812F59A;
+	Tue, 23 Jan 2024 01:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjgfSzKY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SV2Qwkkr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4214E1CC;
-	Tue, 23 Jan 2024 01:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB25812BF34;
+	Tue, 23 Jan 2024 01:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974724; cv=none; b=bE8404IlflBGicP30C/v45KQEopPzsRcHYbwnZ4yiPJNqg0KHoYTqFP3JpedDCjVZ1Cd2iq8wr+PSAfHRsliaT9RqvBbHsNcz6SRAu5NxMGP3Tzw5CrYdadhOD9O0KaK9NzWJ1L18++Cf30ihuUkUuLc3BBppkzPaGLACdIsHzY=
+	t=1705971753; cv=none; b=UkPOJErhiF5IAWah5ROlEJddIqkv5tknJJ95B88ThkQSWLk8xehSWA/D/uIdQve5jm3pKhgZS3YZK1+frWrLrzhvE3rgtIGghAwpq54MFo+HvXiw+y3U2Rjq0CcDoO5qGQ0SkaVhBoA5i+RS8tgqWSkO3wflg3IITGJiHTelHlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974724; c=relaxed/simple;
-	bh=GD0bgRSWDpDfHKjneyDHxKnLKPU569RcCwEUTIeH0B4=;
+	s=arc-20240116; t=1705971753; c=relaxed/simple;
+	bh=C25frbqcO9aEOlFcbzkKiV4XKHpxrYT5SYfRNefekSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g1MoEbTcEm0aI5FVhYQc/q+V7IjS8juSBgUrQ2h8qVitrCiaArcHTauJsYrB3atqlEN5DjF82fWze55tQy0nks40GF4K/O3Iss5DkfW7S7zClYW5BoeDm3NfNbqSsZWisZOPR3EM611CUrLH8k+JQzsB1kQqK1CXsjFi+jRimoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjgfSzKY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDF9C433C7;
-	Tue, 23 Jan 2024 01:52:04 +0000 (UTC)
+	 MIME-Version; b=F9hXGsLUj1dBiffW91Q8UlFWHEEc2XpHBM11KormCme+Q8fla/u8IVZIk6C/CSRfHQLvQnMjCIYE86oC3XrI+43S7Id8hosNjTPp1AOsvrD5oLUKM8JSD1ZdzUq8d3YJg2vmHPAWs8rjwPbClV4TfDveiDvUuN063fC9IRv3gnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SV2Qwkkr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B6AC433C7;
+	Tue, 23 Jan 2024 01:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974724;
-	bh=GD0bgRSWDpDfHKjneyDHxKnLKPU569RcCwEUTIeH0B4=;
+	s=korg; t=1705971752;
+	bh=C25frbqcO9aEOlFcbzkKiV4XKHpxrYT5SYfRNefekSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qjgfSzKYI71VgTXcQ2UlwmzRKK9xua0P/BnqhNjfMjbQ6dn94Ym6UjeyXy1ihaf2z
-	 Pha2z7QiuwN4yDK9INSER+lN2KaMzXBP34GgxdyxbwbC3Xnn7qNauSLChSGq/qBguM
-	 1FhYRr95Hek/6WoRWl6ZCcucYofNU01IdxzGjPI4=
+	b=SV2Qwkkrvc/sYAZ+Y+iZLHSt/63u1UtqrqorS9fAoKm31yA6KDpz40+piKfm9Mr4z
+	 yaPN1GoHdw8IsevoIaLS3LkICk5yNQTZeDmo5aoQh8sZLAYmKyKLHz3MZ8y0fIdn9o
+	 FxGkXKQAk76oKd/kzkPOjpjHW2QPDBqM7dRvPofM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathya Prakash <sathya.prakash@broadcom.com>,
-	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 268/374] scsi: mpi3mr: Refresh sdev queue depth after controller reset
-Date: Mon, 22 Jan 2024 15:58:44 -0800
-Message-ID: <20240122235754.093472601@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Lukas Wunner <lukas@wunner.de>
+Subject: [PATCH 5.10 219/286] serial: imx: Ensure that imx_uart_rs485_config() is called with enabled clock
+Date: Mon, 22 Jan 2024 15:58:45 -0800
+Message-ID: <20240122235740.505571909@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
 
-commit e5aab848dfdf7996d20ece4d28d2733c732c5e5a upstream.
+commit 7c45eaa813476bd195ac1227a64b52f9cf2e2030 upstream.
 
-After a controller reset, the firmware may modify the device queue depth.
-Therefore, update the device queue depth accordingly.
+There are register accesses in the function imx_uart_rs485_config(). The
+clock must be enabled for these accesses. This was ensured by calling it
+via the function uart_rs485_config() in the probe() function within the
+range where the clock is enabled. With the commit 7c7f9bc986e6 ("serial:
+Deassert Transmit Enable on probe in driver-specific way") it was removed
+from the probe() function and is now only called through the function
+uart_add_one_port() which is located at the end of the probe() function.
+But the clock is already switched off in this area. To ensure that the
+clock is enabled during register access, move the disabling of the clock
+to the very end of the probe() function. To avoid leaking enabled clocks
+on error also add an error path for exiting with disabling the clock.
 
-Cc: <stable@vger.kernel.org> # v5.15+
-Co-developed-by: Sathya Prakash <sathya.prakash@broadcom.com>
-Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
-Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
-Link: https://lore.kernel.org/r/20231126053134.10133-2-chandrakanth.patil@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 7c7f9bc986e6 ("serial: Deassert Transmit Enable on probe in driver-specific way")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Link: https://lore.kernel.org/r/20231226113647.39376-1-cniedermaier@dh-electronics.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_os.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/tty/serial/imx.c |   23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
---- a/drivers/scsi/mpi3mr/mpi3mr_os.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
-@@ -781,8 +781,14 @@ void mpi3mr_rfresh_tgtdevs(struct mpi3mr
- 	tgtdev = NULL;
- 	list_for_each_entry(tgtdev, &mrioc->tgtdev_list, list) {
- 		if ((tgtdev->dev_handle != MPI3MR_INVALID_DEV_HANDLE) &&
--		    !tgtdev->is_hidden && !tgtdev->host_exposed)
--			mpi3mr_report_tgtdev_to_host(mrioc, tgtdev->perst_id);
-+		    !tgtdev->is_hidden) {
-+			if (!tgtdev->host_exposed)
-+				mpi3mr_report_tgtdev_to_host(mrioc,
-+							     tgtdev->perst_id);
-+			else if (tgtdev->starget)
-+				starget_for_each_device(tgtdev->starget,
-+							(void *)tgtdev, mpi3mr_update_sdev);
-+	}
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -2358,10 +2358,8 @@ static int imx_uart_probe(struct platfor
+ 	sport->ufcr = readl(sport->port.membase + UFCR);
+ 
+ 	ret = uart_get_rs485_mode(&sport->port);
+-	if (ret) {
+-		clk_disable_unprepare(sport->clk_ipg);
+-		return ret;
+-	}
++	if (ret)
++		goto err_clk;
+ 
+ 	if (sport->port.rs485.flags & SER_RS485_ENABLED &&
+ 	    (!sport->have_rtscts && !sport->have_rtsgpio))
+@@ -2415,8 +2413,6 @@ static int imx_uart_probe(struct platfor
+ 		imx_uart_writel(sport, ucr3, UCR3);
  	}
+ 
+-	clk_disable_unprepare(sport->clk_ipg);
+-
+ 	hrtimer_init(&sport->trigger_start_tx, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
+ 	hrtimer_init(&sport->trigger_stop_tx, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
+ 	sport->trigger_start_tx.function = imx_trigger_start_tx;
+@@ -2432,7 +2428,7 @@ static int imx_uart_probe(struct platfor
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to request rx irq: %d\n",
+ 				ret);
+-			return ret;
++			goto err_clk;
+ 		}
+ 
+ 		ret = devm_request_irq(&pdev->dev, txirq, imx_uart_txint, 0,
+@@ -2440,7 +2436,7 @@ static int imx_uart_probe(struct platfor
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to request tx irq: %d\n",
+ 				ret);
+-			return ret;
++			goto err_clk;
+ 		}
+ 
+ 		ret = devm_request_irq(&pdev->dev, rtsirq, imx_uart_rtsint, 0,
+@@ -2448,14 +2444,14 @@ static int imx_uart_probe(struct platfor
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to request rts irq: %d\n",
+ 				ret);
+-			return ret;
++			goto err_clk;
+ 		}
+ 	} else {
+ 		ret = devm_request_irq(&pdev->dev, rxirq, imx_uart_int, 0,
+ 				       dev_name(&pdev->dev), sport);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to request irq: %d\n", ret);
+-			return ret;
++			goto err_clk;
+ 		}
+ 	}
+ 
+@@ -2463,7 +2459,12 @@ static int imx_uart_probe(struct platfor
+ 
+ 	platform_set_drvdata(pdev, sport);
+ 
+-	return uart_add_one_port(&imx_uart_uart_driver, &sport->port);
++	ret = uart_add_one_port(&imx_uart_uart_driver, &sport->port);
++
++err_clk:
++	clk_disable_unprepare(sport->clk_ipg);
++
++	return ret;
  }
  
+ static int imx_uart_remove(struct platform_device *pdev)
 
 
 
