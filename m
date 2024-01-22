@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-12880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8CB48378D7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B5A83789F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BA65B2387B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:25:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 005A61C273F3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2972119;
-	Tue, 23 Jan 2024 00:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698BD1420B8;
+	Tue, 23 Jan 2024 00:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gx5kA+tA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OKTkNxu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D59A1EEE3;
-	Tue, 23 Jan 2024 00:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2588A1420B3;
+	Tue, 23 Jan 2024 00:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968264; cv=none; b=KCnP2xChZ1XLfbT1EGfRCOMQt9Y9OOVt8QdozarHeSw+KWI2YjIazuoGNIhITlqBUXv17Q8wBcpMl680mQGe8qMn/3KGOF5pvDmIT8Fn1aBfBTvNmqtWD6/+lUCRmxoEThHOfR8zBR02wXk4hrzfTUvFjv6HSWOrtaZV06xaEUs=
+	t=1705968159; cv=none; b=btLXxZcSy0S3Gs7cC+qZZXa6Gh3NOh1oUA0Qo/XqUAB17FtoISRBzbOZErQg1/yuwxyoLl7zrcPZiLJe3aYzpMtNWuwKJzsimaFYBp308libDHnyvn4985P4vYNMwCFWAfWce6w3HYmR4SiFwDY75TWzT+JWLIDZ6NnB+LgFDI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968264; c=relaxed/simple;
-	bh=z1N8PbS9FQHTQt2/7unhOyQukbjBBl2daMbMb+Cqmwg=;
+	s=arc-20240116; t=1705968159; c=relaxed/simple;
+	bh=HQQaZ15hkhhcFJsyjA4x0PKNzT6NNFWy+u/Gw9FCleM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bW2QhjPHUazGRT76aZTFS6ndgmUxk7pSu3ySrKIkUnL1GETZeidLDTYRVwKt3new3JMAfa3Bqw+Qf0k4CoJUZNoDodZEpCAAgAkHxSghRhkblgmCSbTjeriV6sWbq0dMeflZdL8Ev3mkhTKQxDxYtw9IElNARX7P7jrzT/gVYmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gx5kA+tA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FFC6C433C7;
-	Tue, 23 Jan 2024 00:04:24 +0000 (UTC)
+	 MIME-Version; b=TU2WSQehPKwaH4JP0uZiFzrbh0zAKEMpi28FaWnbCB9FDgxrAboaNFn3F8G1LvgJMMkquwNAnvn5l9nkeR6as3V9YyiZH1uE/STFiwv98NAjzFgYYz8bBYwmVuxJ6U3Qij+OpLNqBZdLIMpB4v1QvLTsLfu0j6Qehl3I6yKe0h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OKTkNxu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F6FC433C7;
+	Tue, 23 Jan 2024 00:02:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968264;
-	bh=z1N8PbS9FQHTQt2/7unhOyQukbjBBl2daMbMb+Cqmwg=;
+	s=korg; t=1705968159;
+	bh=HQQaZ15hkhhcFJsyjA4x0PKNzT6NNFWy+u/Gw9FCleM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gx5kA+tAYfT23YzsoMQT2KH6Sy3DSrHCRjVlaAn4DmuHXrx1jQ3lIVk2n1Lx3r+aO
-	 D7kXKP+7QYn/51f7viHHDCvfh7BbEFoDsEZGMVHZK4P5O/3W4uGHRldayVZL+cn3+x
-	 vIluu3hV25FNTdf+9r87a1EF+V/1xCROq86EUCEI=
+	b=0OKTkNxuDsOq4ME8ebndjK1PRH9cYTshIYShBXFO6hcQv9gBWbur1r+K+6RHHtwIU
+	 RGLb7Wch51LJJWE6dyCivckx91Ro7TQ/q7ukCxV0Yw+bcmLzTy89mjCBwDQAXeAqc6
+	 PPf2MLhuBFPSwTCZ5bXafJHWsS8Iu2UkvbayxDlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Vineet Gupta <vgupta@kernel.org>,
+	Luca Weiss <luca@z3ntu.xyz>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 019/148] ARC: fix spare error
-Date: Mon, 22 Jan 2024 15:56:15 -0800
-Message-ID: <20240122235713.203499044@linuxfoundation.org>
+Subject: [PATCH 4.19 020/148] Input: xpad - add Razer Wolverine V2 support
+Date: Mon, 22 Jan 2024 15:56:16 -0800
+Message-ID: <20240122235713.244077602@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
 References: <20240122235712.442097787@linuxfoundation.org>
@@ -66,46 +66,32 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vineet Gupta <vgupta@kernel.org>
+From: Luca Weiss <luca@z3ntu.xyz>
 
-[ Upstream commit aca02d933f63ba8bc84258bf35f9ffaf6b664336 ]
+[ Upstream commit c3d1610345b79cbe29ef6ca04a4780eff0d360c7 ]
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312082320.VDN5A9hb-lkp@intel.com/
-Signed-off-by: Vineet Gupta <vgupta@kernel.org>
+Add the VID and PID of Razer Wolverine V2 to xpad_device.
+
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Link: https://lore.kernel.org/r/20231125-razer-wolverine-v2-v1-1-979fe9f9288e@z3ntu.xyz
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arc/kernel/signal.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/input/joystick/xpad.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arc/kernel/signal.c b/arch/arc/kernel/signal.c
-index 68901f6f18ba..c36e642eb1a0 100644
---- a/arch/arc/kernel/signal.c
-+++ b/arch/arc/kernel/signal.c
-@@ -64,7 +64,7 @@ struct rt_sigframe {
- 	unsigned int sigret_magic;
- };
- 
--static int save_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
-+static int save_arcv2_regs(struct sigcontext __user *mctx, struct pt_regs *regs)
- {
- 	int err = 0;
- #ifndef CONFIG_ISA_ARCOMPACT
-@@ -77,12 +77,12 @@ static int save_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
- #else
- 	v2abi.r58 = v2abi.r59 = 0;
- #endif
--	err = __copy_to_user(&mctx->v2abi, &v2abi, sizeof(v2abi));
-+	err = __copy_to_user(&mctx->v2abi, (void const *)&v2abi, sizeof(v2abi));
- #endif
- 	return err;
- }
- 
--static int restore_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
-+static int restore_arcv2_regs(struct sigcontext __user *mctx, struct pt_regs *regs)
- {
- 	int err = 0;
- #ifndef CONFIG_ISA_ARCOMPACT
+diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
+index e330d28b59ec..dffdd25b6fc9 100644
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -280,6 +280,7 @@ static const struct xpad_device {
+ 	{ 0x146b, 0x0604, "Bigben Interactive DAIJA Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
+ 	{ 0x1532, 0x0a00, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
+ 	{ 0x1532, 0x0a03, "Razer Wildcat", 0, XTYPE_XBOXONE },
++	{ 0x1532, 0x0a29, "Razer Wolverine V2", 0, XTYPE_XBOXONE },
+ 	{ 0x15e4, 0x3f00, "Power A Mini Pro Elite", 0, XTYPE_XBOX360 },
+ 	{ 0x15e4, 0x3f0a, "Xbox Airflo wired controller", 0, XTYPE_XBOX360 },
+ 	{ 0x15e4, 0x3f10, "Batarang Xbox 360 controller", 0, XTYPE_XBOX360 },
 -- 
 2.43.0
 
