@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E160837C49
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F13D7838398
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61AA41C23C63
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C91DBB2AE06
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0751114532C;
-	Tue, 23 Jan 2024 00:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A326B62A00;
+	Tue, 23 Jan 2024 01:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZfwA/Zv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mK0A+A0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9027144633;
-	Tue, 23 Jan 2024 00:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6240062A1F;
+	Tue, 23 Jan 2024 01:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969569; cv=none; b=NVIB59ipeMKBL38RLjMrAW19IjBEB5GxJZF4ELHCIMcfsG6bcXJs/C7Z03iIRu5S8742tNO2zvAXchbUYX2p9cdYmuFnEVBHNVmunJqH4A3SBkh05G4a+bZXa9kyOFsDBg6WeWmnIiWO80Nqk28rPdnkr48//ba55baj9AVrIcI=
+	t=1705974991; cv=none; b=A0V6ldgNw/i4WVVnOxvTMgxyrp68qP63IkRrTvqU9kKO/1cxRXOaDhGQG0OH7M1kTr9fYj3T3UzTv9QUZOkHuyqyeZ2g94BoC2BUUfE5c0ib+x3GVZWqtaABzIOBkclnalJSXpTg4GhvdaPmqafQHI6uD9pMfQXUP1wMEWSnyl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969569; c=relaxed/simple;
-	bh=a4NMzxga9L7G93uHVc/KyWOYW2r9LmdHMRQooSXKSaE=;
+	s=arc-20240116; t=1705974991; c=relaxed/simple;
+	bh=n+GCtK1UsLqPMKdQEQ2I3a0f0Bq7fAIFc0NdIPXAB/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CecC1MmpP/H0kFETFBNEx7sKEGz1R7qfkPcMZeOsCh4O5ffMT87UChaAoChXIrmSMzO2Rvq357PHfheGEVoR4TCLPjW3DH0+3229KJkFNq2rRzeRs1Bry/LYR2pLE5EtlGxRAsUy35uGSSaxhV0NdS59wuJaQWqXftLPtlquk4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZfwA/Zv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C620C433F1;
-	Tue, 23 Jan 2024 00:26:09 +0000 (UTC)
+	 MIME-Version; b=KKMylyQnJFfrx0oVTDkUFPIRKptbNqWrThxz3XM2WNvgSM3lRGDa3ZmIqJDSaHYjQwzls5bg6JzQXAm/jtagAQXPY4iDZPSVUwtMMStuX6VwT5GWX9kwJTiiF/s1a4gNake/UxPszeJJoZxU8uU1EpvPRG51F70Enr0mod3ANq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mK0A+A0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB3FC433F1;
+	Tue, 23 Jan 2024 01:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969569;
-	bh=a4NMzxga9L7G93uHVc/KyWOYW2r9LmdHMRQooSXKSaE=;
+	s=korg; t=1705974990;
+	bh=n+GCtK1UsLqPMKdQEQ2I3a0f0Bq7fAIFc0NdIPXAB/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cZfwA/ZvVSOqIzAtV10cdnT4vtPZfrWyXtr9QZJOyyJzXCBwJmCu4sXP7W8UGdW5r
-	 nPZSt3oJjvCxv4DHYVkwmdRuyFDjHH6Du93AHtvV5y9Xpgiz8WvjSAekU/sIXijbsd
-	 DfA9N/sXY2KJxAlY9UyGlaUkxxvTb8XqellCN9WQ=
+	b=mK0A+A0TU4SBXVChTwYW+cBbr60d1o4Vpcp1xUCZy7Hc50HVS1srB45VuTbkeCjlT
+	 H+YyF4dcAElNqH6G5D9B8iCbfIY2jc54+3EuUM7orwwqI+1KUnezWO4VuFhU/QkJlg
+	 Fc+snmra+ko3A2oYqVLQmQIbV3xO3VvvR8g8hp1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 329/641] drivers/amd/pm: fix a use-after-free in kv_parse_power_table
-Date: Mon, 22 Jan 2024 15:53:53 -0800
-Message-ID: <20240122235828.192704037@linuxfoundation.org>
+Subject: [PATCH 6.6 183/583] arm64: dts: qcom: sm8550: Separate out X3 idle state
+Date: Mon, 22 Jan 2024 15:53:54 -0800
+Message-ID: <20240122235817.603699023@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 28dd788382c43b330480f57cd34cde0840896743 ]
+[ Upstream commit 28b735232d5e16a34f98dbac1e7b5401c1c16d89 ]
 
-When ps allocated by kzalloc equals to NULL, kv_parse_power_table
-frees adev->pm.dpm.ps that allocated before. However, after the control
-flow goes through the following call chains:
+The X3 core has different entry/exit/residency time requirements than
+the big cluster. Denote them to stop confusing the scheduler.
 
-kv_parse_power_table
-  |-> kv_dpm_init
-        |-> kv_dpm_sw_init
-	      |-> kv_dpm_fini
-
-The adev->pm.dpm.ps is used in the for loop of kv_dpm_fini after its
-first free in kv_parse_power_table and causes a use-after-free bug.
-
-Fixes: a2e73f56fa62 ("drm/amdgpu: Add support for CIK parts")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: ffc50b2d3828 ("arm64: dts: qcom: Add base SM8550 dtsi")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231218-topic-8550_fixes-v1-11-ce1272d77540@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
-index 5d28c951a319..5cb4725c773f 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
-@@ -2735,10 +2735,8 @@ static int kv_parse_power_table(struct amdgpu_device *adev)
- 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
- 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
- 		ps = kzalloc(sizeof(struct kv_ps), GFP_KERNEL);
--		if (ps == NULL) {
--			kfree(adev->pm.dpm.ps);
-+		if (ps == NULL)
- 			return -ENOMEM;
--		}
- 		adev->pm.dpm.ps[i].ps_priv = ps;
- 		k = 0;
- 		idx = (u8 *)&power_state->v2.clockInfoIndex[0];
+diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+index 045cef68a256..15d91ace8703 100644
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -298,6 +298,16 @@ BIG_CPU_SLEEP_0: cpu-sleep-1-0 {
+ 				min-residency-us = <4791>;
+ 				local-timer-stop;
+ 			};
++
++			PRIME_CPU_SLEEP_0: cpu-sleep-2-0 {
++				compatible = "arm,idle-state";
++				idle-state-name = "goldplus-rail-power-collapse";
++				arm,psci-suspend-param = <0x40000004>;
++				entry-latency-us = <500>;
++				exit-latency-us = <1350>;
++				min-residency-us = <7480>;
++				local-timer-stop;
++			};
+ 		};
+ 
+ 		domain-idle-states {
+@@ -398,7 +408,7 @@ CPU_PD6: power-domain-cpu6 {
+ 		CPU_PD7: power-domain-cpu7 {
+ 			#power-domain-cells = <0>;
+ 			power-domains = <&CLUSTER_PD>;
+-			domain-idle-states = <&BIG_CPU_SLEEP_0>;
++			domain-idle-states = <&PRIME_CPU_SLEEP_0>;
+ 		};
+ 
+ 		CLUSTER_PD: power-domain-cluster {
 -- 
 2.43.0
 
