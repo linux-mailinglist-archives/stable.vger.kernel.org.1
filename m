@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-13111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6CA1837A8C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AFB98379C5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:45:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F69028FC6E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6495281E10
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F31712F595;
-	Tue, 23 Jan 2024 00:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403841272B0;
+	Tue, 23 Jan 2024 00:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SrbtKgFJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FAF0uL8/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D66012CDB0;
-	Tue, 23 Jan 2024 00:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F164E50272;
+	Tue, 23 Jan 2024 00:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968993; cv=none; b=RInnCb1g3x97pMmju2+07+HYrOdmJj00mRe/rGY2M06sXwIoAVgA21pfOdCfHbC1fXzIyUpEjZkY6+ei1yVwGcnFHKJH9DQeG4XeZomJbn4h0Ml6vGlH2Av0xVDwHj8e4bDHnTsNWeORAkNjE8EbCzMu+p/usjTMGjSOakhBv6o=
+	t=1705968485; cv=none; b=hmgk1a/kmenbrMLL+s2Kn7QOPEyj7Tg3RfWE30dZ+pMVQf9oPIJF8u9nkLWBKY6pzRWYVg6PEClXQ3GaQAYCFLXj1bQBmZ49kYjVI+Ny73QafK/GHUu88+/Z22sAB2kaejNPar5jSHyjSaqyCYeBzCjznu8RQMVa0um29+4PiaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968993; c=relaxed/simple;
-	bh=p1lYo5l+PytBoufEf/nxJmkmRqsJLHHxLqXhG2/ou48=;
+	s=arc-20240116; t=1705968485; c=relaxed/simple;
+	bh=mtMxlSAPZV4tohjuv7QqUOMp+raM64fY12XgDx+LQRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NkjpaYHRAIK3DfR0mqzRvcw8Aw7c9S/D4CfeoEijC38G1z/GGPytizUlJfLwIva5muRM8ag0rQoh/DXYClZ4DNsRqCj7RT96K+Pna847oX7xJyam4jjKHmXfdbDexUrp/ahNCHamd6kLPv0SW/M1U/VZttDzKhfR1l1I+Ry7vRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SrbtKgFJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61B1C433C7;
-	Tue, 23 Jan 2024 00:16:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZYcILwH98SDUTHrtltbhJyyOTU0wxUNGP5uf6mfmqVX6tlorXKckm/mdTmaICsHCPKO9/PBXgjyZ2LL2liEV+axgp78UT4n79oBXvew2uZCPGl2EWTTJWgaxnU1mwYDauWM1kEaaDAwvPQPEGBYfQiS+2/XPS8vlHVN9ReaeJqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FAF0uL8/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A219EC433C7;
+	Tue, 23 Jan 2024 00:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968993;
-	bh=p1lYo5l+PytBoufEf/nxJmkmRqsJLHHxLqXhG2/ou48=;
+	s=korg; t=1705968484;
+	bh=mtMxlSAPZV4tohjuv7QqUOMp+raM64fY12XgDx+LQRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SrbtKgFJ71Vhrh40+sp5cKbMnmRNJ2pAw/i30KxFtxj6xYiJPTdkF1vvA6ZUHwm/H
-	 No77X1jeR5/L/83Re4gh+sq2zaXH3IiCV657Mlh9/evM1DInno0VIIul2OI8aeNAcq
-	 3qcHnEBUxizvU7nyGYbv72ctTVI/6UaoqlApSffg=
+	b=FAF0uL8/cu4/EFDENavMCr1bgObO/ZD4iqxhhxsQzBOgE3c0hZAnRLaKuNhoy3qkd
+	 D3yld08eOBGnsIu8mePbC1Dt/Q+zBSmbNGt1Jb3O7/I4qkx7Ro812osjaQ1AOS7A8z
+	 hAirKKVpLR82iy0bkhx+F2essxYwLR20gns0EavA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chen <peter.chen@kernel.org>,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 5.4 147/194] usb: phy: mxs: remove CONFIG_USB_OTG condition for mxs_phy_is_otg_host()
+	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 4.19 121/148] Revert "usb: dwc3: Soft reset phy on probe for host"
 Date: Mon, 22 Jan 2024 15:57:57 -0800
-Message-ID: <20240122235725.532111052@linuxfoundation.org>
+Message-ID: <20240122235717.389820385@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +59,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit ff2b89de471da942a4d853443688113a44fd35ed upstream.
+commit 7059fbebcb00554c3f31e5b5d93ef6d2d96dc7b4 upstream.
 
-When CONFIG_USB_OTG is not set, mxs_phy_is_otg_host() will always return
-false. This behaviour is wrong. Since phy.last_event will always be set
-for either host or device mode. Therefore, CONFIG_USB_OTG condition
-can be removed.
+This reverts commit 8bea147dfdf823eaa8d3baeccc7aeb041b41944b.
 
-Fixes: 5eda42aebb76 ("usb: phy: mxs: fix getting wrong state with mxs_phy_is_otg_host()")
-cc:  <stable@vger.kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20231228110753.1755756-3-xu.yang_2@nxp.com
+The phy soft reset GUSB2PHYCFG.PHYSOFTRST only applies to UTMI phy, not
+ULPI. This fix is incomplete.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: 8bea147dfdf8 ("usb: dwc3: Soft reset phy on probe for host")
+Reported-by: Köry Maincent <kory.maincent@bootlin.com>
+Closes: https://lore.kernel.org/linux-usb/20231205151959.5236c231@kmaincent-XPS-13-7390
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/29a26593a60eba727de872a3e580a674807b3339.1703282469.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/phy/phy-mxs-usb.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/dwc3/core.c |   39 +--------------------------------------
+ 1 file changed, 1 insertion(+), 38 deletions(-)
 
---- a/drivers/usb/phy/phy-mxs-usb.c
-+++ b/drivers/usb/phy/phy-mxs-usb.c
-@@ -388,8 +388,7 @@ static void __mxs_phy_disconnect_line(st
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -244,46 +244,9 @@ static int dwc3_core_soft_reset(struct d
+ 	 * XHCI driver will reset the host block. If dwc3 was configured for
+ 	 * host-only mode or current role is host, then we can return early.
+ 	 */
+-	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
++	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
+ 		return 0;
  
- static bool mxs_phy_is_otg_host(struct mxs_phy *mxs_phy)
- {
--	return IS_ENABLED(CONFIG_USB_OTG) &&
--		mxs_phy->phy.last_event == USB_EVENT_ID;
-+	return mxs_phy->phy.last_event == USB_EVENT_ID;
- }
- 
- static void mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool on)
+-	/*
+-	 * If the dr_mode is host and the dwc->current_dr_role is not the
+-	 * corresponding DWC3_GCTL_PRTCAP_HOST, then the dwc3_core_init_mode
+-	 * isn't executed yet. Ensure the phy is ready before the controller
+-	 * updates the GCTL.PRTCAPDIR or other settings by soft-resetting
+-	 * the phy.
+-	 *
+-	 * Note: GUSB3PIPECTL[n] and GUSB2PHYCFG[n] are port settings where n
+-	 * is port index. If this is a multiport host, then we need to reset
+-	 * all active ports.
+-	 */
+-	if (dwc->dr_mode == USB_DR_MODE_HOST) {
+-		u32 usb3_port;
+-		u32 usb2_port;
+-
+-		usb3_port = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
+-		usb3_port |= DWC3_GUSB3PIPECTL_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
+-
+-		usb2_port = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
+-		usb2_port |= DWC3_GUSB2PHYCFG_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
+-
+-		/* Small delay for phy reset assertion */
+-		usleep_range(1000, 2000);
+-
+-		usb3_port &= ~DWC3_GUSB3PIPECTL_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
+-
+-		usb2_port &= ~DWC3_GUSB2PHYCFG_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
+-
+-		/* Wait for clock synchronization */
+-		msleep(50);
+-		return 0;
+-	}
+-
+ 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
+ 	reg |= DWC3_DCTL_CSFTRST;
+ 	dwc3_writel(dwc->regs, DWC3_DCTL, reg);
 
 
 
