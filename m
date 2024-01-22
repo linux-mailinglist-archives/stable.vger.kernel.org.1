@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-12954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78FC8379D9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:46:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 537C8837A71
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CD091F23701
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:46:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86DD71C2275D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C969D128399;
-	Tue, 23 Jan 2024 00:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF2D12CD9D;
+	Tue, 23 Jan 2024 00:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFziXNAy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u19jzpui"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F0312838A;
-	Tue, 23 Jan 2024 00:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF68D12CD99;
+	Tue, 23 Jan 2024 00:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968687; cv=none; b=ufPX3/R4ppFagREHbxgmcQZHYIr+7bX45j48HgpIJgjLVBbeaoCrCKvB1+J/BcBLQ8iHMB4N8eYeAb/T8BDt+qSVr90cO/MVKRtFxCvkh5iOiLth4b55hti+MDh7j7AUqW0VadyUJxfgY2EIomdopcQ83NbWzib6j+L2rwfHdBY=
+	t=1705968956; cv=none; b=cKFY5Q3BFa5E5mQMWqXSuw6R5uQJ3iGCbDe+uGbK4GcJlPFql3PNVnPdMv1IlGSK2aEEY9eY57Ht9t/QmY6LbPD/qHbb/ZE82O9REnq8eMipml/MqAuQ4jZ7qxvxxdcDF6JaB0neO6+Af4u/2GboO0w1GAKndpbOYrhvi7RIcS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968687; c=relaxed/simple;
-	bh=FJJcbuKg0EYjyvsS12slHRJ2eCO37SHcK/wbDaxl++w=;
+	s=arc-20240116; t=1705968956; c=relaxed/simple;
+	bh=MtOxzWvxV9LMSxSDSWD6rB7lieft94X8dVOSPDWgqOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqm9AI2wZfsAxOMDeD5TIJA5tf9i/Scm/ReQMAJzGYSIHFAnL0CBr2jEGMRWSsVlWz6soVc67UXo5+XjopS1CMG5X8v2W9BX5tYjs0RiJnwZOkVRI/cTP5yTglJW2vMCgH/BmA9720bh3a+UgMt8XCHmkwdFnNFqFmxp55xva5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFziXNAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061A8C433F1;
-	Tue, 23 Jan 2024 00:11:26 +0000 (UTC)
+	 MIME-Version; b=oosyR9U3o+Vf/VZ9T6c1+deX4BcJUNRSN3SKezQgmOUdqybLM4rqZF6CiMvpazRSKe67hQ86hSB8YvfwcVjfsREGQgWu3c6fiw6X3qj/huxIPQEFJVonHyE4IcP2KpUzBRy2TwnFKjsPga1Adfi+0IW01QyEXv8HonoU677eRrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u19jzpui; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4240BC433C7;
+	Tue, 23 Jan 2024 00:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968687;
-	bh=FJJcbuKg0EYjyvsS12slHRJ2eCO37SHcK/wbDaxl++w=;
+	s=korg; t=1705968956;
+	bh=MtOxzWvxV9LMSxSDSWD6rB7lieft94X8dVOSPDWgqOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OFziXNAyxNCHW+bgi5vf2BV/uih6VBcz5lsZOpUYw+aku8OTFXA6JfMrOkA2SIpnh
-	 5J+2wwQPfpUByHJ4dBgFJ6uvZv9gn+fQTMkpXKdEDDKnys+VOn7pqvZxlBLRBbJcxP
-	 uaKmjsVesH0ASLn5+Oa1qjKvSCYNLkYj60H2PdlU=
+	b=u19jzpuissWhf3SHm37w7fEcvvrYr3yETqrbwBLRicsqyXrMcsT2WTyFZ2tyBXj/K
+	 vX1kCFjv2PH00Oi5boTmc30lPIfCUE3yKx/oiBiO2xI4Wiu5cgRquK5BTm1ludmREk
+	 DEd/DP0gNv9TN5LzQ74FjBzFdNn7sesLoCVr0GnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 094/148] ASoC: cs35l34: Fix GPIO name and drop legacy include
-Date: Mon, 22 Jan 2024 15:57:30 -0800
-Message-ID: <20240122235716.191289312@linuxfoundation.org>
+Subject: [PATCH 5.4 121/194] drm/radeon: check the alloc_workqueue return value in radeon_crtc_init()
+Date: Mon, 22 Jan 2024 15:57:31 -0800
+Message-ID: <20240122235724.413187160@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit a6122b0b4211d132934ef99e7b737910e6d54d2f ]
+[ Upstream commit 7a2464fac80d42f6f8819fed97a553e9c2f43310 ]
 
-This driver includes the legacy GPIO APIs <linux/gpio.h> and
-<linux/of_gpio.h> but does not use any symbols from any of
-them.
+check the alloc_workqueue return value in radeon_crtc_init()
+to avoid null-ptr-deref.
 
-Drop the includes.
-
-Further the driver is requesting "reset-gpios" rather than
-just "reset" from the GPIO framework. This is wrong because
-the gpiolib core will add "-gpios" before processing the
-request from e.g. device tree. Drop the suffix.
-
-The last problem means that the optional RESET GPIO has
-never been properly retrieved and used even if it existed,
-but nobody noticed.
-
-Fixes: c1124c09e103 ("ASoC: cs35l34: Initial commit of the cs35l34 CODEC driver.")
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20231201-descriptors-sound-cirrus-v2-3-ee9f9d4655eb@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: fa7f517cb26e ("drm/radeon: rework page flip handling v4")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l34.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/radeon/radeon_display.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cs35l34.c b/sound/soc/codecs/cs35l34.c
-index 5063c05afa27..72c7c8426f3f 100644
---- a/sound/soc/codecs/cs35l34.c
-+++ b/sound/soc/codecs/cs35l34.c
-@@ -24,14 +24,12 @@
- #include <linux/regulator/machine.h>
- #include <linux/pm_runtime.h>
- #include <linux/of_device.h>
--#include <linux/of_gpio.h>
- #include <linux/of_irq.h>
- #include <sound/core.h>
- #include <sound/pcm.h>
- #include <sound/pcm_params.h>
- #include <sound/soc.h>
- #include <sound/soc-dapm.h>
--#include <linux/gpio.h>
- #include <linux/gpio/consumer.h>
- #include <sound/initval.h>
- #include <sound/tlv.h>
-@@ -1062,7 +1060,7 @@ static int cs35l34_i2c_probe(struct i2c_client *i2c_client,
- 		dev_err(&i2c_client->dev, "Failed to request IRQ: %d\n", ret);
+diff --git a/drivers/gpu/drm/radeon/radeon_display.c b/drivers/gpu/drm/radeon/radeon_display.c
+index 27b168936b2a..c7f50d9f7e37 100644
+--- a/drivers/gpu/drm/radeon/radeon_display.c
++++ b/drivers/gpu/drm/radeon/radeon_display.c
+@@ -682,11 +682,16 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
+ 	if (radeon_crtc == NULL)
+ 		return;
  
- 	cs35l34->reset_gpio = devm_gpiod_get_optional(&i2c_client->dev,
--				"reset-gpios", GPIOD_OUT_LOW);
-+				"reset", GPIOD_OUT_LOW);
- 	if (IS_ERR(cs35l34->reset_gpio))
- 		return PTR_ERR(cs35l34->reset_gpio);
++	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
++	if (!radeon_crtc->flip_queue) {
++		kfree(radeon_crtc);
++		return;
++	}
++
+ 	drm_crtc_init(dev, &radeon_crtc->base, &radeon_crtc_funcs);
  
+ 	drm_mode_crtc_set_gamma_size(&radeon_crtc->base, 256);
+ 	radeon_crtc->crtc_id = index;
+-	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
+ 	rdev->mode_info.crtcs[index] = radeon_crtc;
+ 
+ 	if (rdev->family >= CHIP_BONAIRE) {
 -- 
 2.43.0
 
