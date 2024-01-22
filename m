@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F17837D18
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE38F838440
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BC6A291918
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 750AF298E95
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FB554BC0;
-	Tue, 23 Jan 2024 00:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4308E6A346;
+	Tue, 23 Jan 2024 02:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9hZYvCy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gg8cQbXK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829774EB4A;
-	Tue, 23 Jan 2024 00:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035036A320;
+	Tue, 23 Jan 2024 02:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969791; cv=none; b=rXC+DPkPr4unFphCIqwa0j7/iek/aCha0psFsv8/sNKDx2ErzOIEvEJoB/BTh9m/lSjLZmh8YRYYlhxPBj4hZGOwFMWNEKa7V8hmYDYMuFzG1SdxXBOZByJPh353muz2J7HByGvDHCxB7Q0VU+PRyYoeuz2XxqDatqrpTLr979s=
+	t=1705975343; cv=none; b=cZEeNXvz6wOPARewEL2fmSpDSX4zgT/8Ha1OysqsmDGzS0srSmuGIpmjiDKta5I1jjBreFVgIT5Ispo4Cqj/WCd+hanIsKQdAbZcXqg5uS02XMHSMcHpf4pIahyPTDIRi6yQ1gcMZLHZmvyMItnu8Wx7xbxhZJFtxLksBZckKoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969791; c=relaxed/simple;
-	bh=zB8rHEQhO3ed/wZuhWqCzibRBWLWK9BHGyX2xspIWYU=;
+	s=arc-20240116; t=1705975343; c=relaxed/simple;
+	bh=shEMUHsgyMOAuQx3vfHNpkm6z305yuoalm4Q8uMmKI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQJ2Tb9ROfVSk5r3t2eCFLKFtjogIyC+8aJHr4N5gJt3zkkZn0f07G5k8FSZy5e+u36KM2jazuIX6PjMx7bjXmDjUOQNe094KrnLnZQzj1jTNkX5xsYOu7LF9HAoGvle/c/coPMmV0TvOqCiPBKVslz0p7rBGt7bP/9tszgqzeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9hZYvCy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1339C433F1;
-	Tue, 23 Jan 2024 00:29:50 +0000 (UTC)
+	 MIME-Version; b=j3PMaGwraxsqizs3AxKKOF0Iz+m/t+Wb/VR1p6Hucap5rKAhj5altGzxrhHGUWfVK4ppRH6qCvWTk63NUfdeOehL8MYT2CS87c0IGeXqr9tFsOO1YSl5BbUp4wga+wuz6owy2kjbtySh0bDWSbSBg/GtAfcsF1vk28vBrX4B6qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gg8cQbXK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC869C433C7;
+	Tue, 23 Jan 2024 02:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969791;
-	bh=zB8rHEQhO3ed/wZuhWqCzibRBWLWK9BHGyX2xspIWYU=;
+	s=korg; t=1705975342;
+	bh=shEMUHsgyMOAuQx3vfHNpkm6z305yuoalm4Q8uMmKI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z9hZYvCyLowNJ8QF2M9s/64zTd87AEpzIX8pXeomGNJPUd8YG0wJlFXN0UCW7xSU/
-	 pCqJ9h7E221Ds1kBZjxReoscCGgz4R/jkrGo6dPTLW171vCHO0/1uImayEurVNVz7D
-	 isNFQ5YZJP544WwlNOb81ed6bYv/0Fj5iHEdRIKU=
+	b=gg8cQbXKTwQtKbRkxaw+57rvX0qvlLdPVS6YSjGR73YsTm0vRGnTXdC8nYXHmIfzN
+	 EOVpz4nbTBfrV7GCnFD0NcYQzkO1fZ2v8LNqm/TqCXCX5WoiJvDh/DxZWDwIyGTUCN
+	 9SZTdIbw8SR2ZkP1Bs/yHA6HlbcYk1/rVwIQNlHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.7 427/641] io_uring: dont check iopoll if request completes
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 280/583] media: dvb-frontends: m88ds3103: Fix a memory leak in an error handling path of m88ds3103_probe()
 Date: Mon, 22 Jan 2024 15:55:31 -0800
-Message-ID: <20240122235831.353232285@linuxfoundation.org>
+Message-ID: <20240122235820.568064599@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 9b43ef3d52532a0175ed6654618f7db61d390d2e upstream.
+[ Upstream commit 5b2f885e2f6f482d05c23f04c8240f7b4fc5bdb5 ]
 
-IOPOLL request should never return IOU_OK, so the following iopoll
-queueing check in io_issue_sqe() after getting IOU_OK doesn't make any
-sense as would never turn true. Let's optimise on that and return a bit
-earlier. It's also much more resilient to potential bugs from
-mischieving iopoll implementations.
+If an error occurs after a successful i2c_mux_add_adapter(), then
+i2c_mux_del_adapters() should be called to free some resources, as
+already done in the remove function.
 
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/2f8690e2fa5213a2ff292fac29a7143c036cdd60.1701390926.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e6089feca460 ("media: m88ds3103: Add support for ds3103b demod")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/media/dvb-frontends/m88ds3103.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1898,7 +1898,11 @@ static int io_issue_sqe(struct io_kiocb
- 			io_req_complete_defer(req);
- 		else
- 			io_req_complete_post(req, issue_flags);
--	} else if (ret != IOU_ISSUE_SKIP_COMPLETE)
-+
-+		return 0;
-+	}
-+
-+	if (ret != IOU_ISSUE_SKIP_COMPLETE)
- 		return ret;
+diff --git a/drivers/media/dvb-frontends/m88ds3103.c b/drivers/media/dvb-frontends/m88ds3103.c
+index cf037b61b226..affaa36d3147 100644
+--- a/drivers/media/dvb-frontends/m88ds3103.c
++++ b/drivers/media/dvb-frontends/m88ds3103.c
+@@ -1894,7 +1894,7 @@ static int m88ds3103_probe(struct i2c_client *client)
+ 		/* get frontend address */
+ 		ret = regmap_read(dev->regmap, 0x29, &utmp);
+ 		if (ret)
+-			goto err_kfree;
++			goto err_del_adapters;
+ 		dev->dt_addr = ((utmp & 0x80) == 0) ? 0x42 >> 1 : 0x40 >> 1;
+ 		dev_dbg(&client->dev, "dt addr is 0x%02x\n", dev->dt_addr);
  
- 	/* If the op doesn't have a file, we're not polling for it */
+@@ -1902,11 +1902,14 @@ static int m88ds3103_probe(struct i2c_client *client)
+ 						      dev->dt_addr);
+ 		if (IS_ERR(dev->dt_client)) {
+ 			ret = PTR_ERR(dev->dt_client);
+-			goto err_kfree;
++			goto err_del_adapters;
+ 		}
+ 	}
+ 
+ 	return 0;
++
++err_del_adapters:
++	i2c_mux_del_adapters(dev->muxc);
+ err_kfree:
+ 	kfree(dev);
+ err:
+-- 
+2.43.0
+
 
 
 
