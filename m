@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E530837E3A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E5C838306
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0D4D1C27B08
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:36:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F386928A758
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE305676A;
-	Tue, 23 Jan 2024 00:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68625605B6;
+	Tue, 23 Jan 2024 01:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gyKMolIr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLD3Frbf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9F94F207;
-	Tue, 23 Jan 2024 00:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE5D605AF;
+	Tue, 23 Jan 2024 01:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970460; cv=none; b=uvetEDjfWv5buZLKJoN4preKH4b1vQck4Pms6azoVZ2A3vt1PukjInxWj4jfwo6YSfCYiXaMVQ/t686V0n2YZhw7Wxc2hu4UDd8Bm9XHflGI8Drl0ZwvEwwr1x7uwO4TKmx27ybuhAmj5XsIbnUOgH06fvux69jA6px+2ne97Kw=
+	t=1705974684; cv=none; b=QJ4BGJVVhicx7tgv86sZSjQmsi5ooDGPP0r/T7EhqHMfCDaJFVL9kGKrYFKQQB7sKW0TMO0MsNlhlkucBJxdr4wjucSEqmu3ZeLuoF2/v9oM/XZk5XqJ4aMlSiHtVa7DcDVbqn8zDXihcUPVEInJm0HfI+ncL6zWhXb1SLhrv3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970460; c=relaxed/simple;
-	bh=9+BTKugS12MQXoTS37yzBQJlyHLZOFqKQ328/NEoWAE=;
+	s=arc-20240116; t=1705974684; c=relaxed/simple;
+	bh=w0VHpeha3wIwnMVWSypuSjZh4tcR+7GCF5Qqw8X5VRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JlrjdslTO6+CC6UQ4Dj/ouRo47VqCBCYRBYQrZCZ68ZC5bbCHWpkL8si6gxGfsgup6yvo/hLcvH7dGmxBfzu2Ire6uZ3F53NN5HdxIVTyTiilDvUOqAkwx4M6gxhf219Yk4ClLRNK0F5sM/Puv2nZgjFDorrdG6T/ajPaGozius=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gyKMolIr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE0EC433F1;
-	Tue, 23 Jan 2024 00:40:59 +0000 (UTC)
+	 MIME-Version; b=W2VplvLaQtbGz0y5SdQWuDoYGP0ui6VsuL13oCWNfzQK5rZoXyCOSv1AtRbuOxtTKDB5DyBBSK0n+R7L/oR5xJ6Le0d9J9IgSJjQJr+ZeXRsEehGEjR+VFiiHMbxncdUf6oKoBfnc4YBaugideI5CIjZxZ4d8dS0Lm8XPVFPd98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLD3Frbf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A8AC43390;
+	Tue, 23 Jan 2024 01:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970460;
-	bh=9+BTKugS12MQXoTS37yzBQJlyHLZOFqKQ328/NEoWAE=;
+	s=korg; t=1705974683;
+	bh=w0VHpeha3wIwnMVWSypuSjZh4tcR+7GCF5Qqw8X5VRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gyKMolIrOoqBcO6ozMJhhuOMlZ9LZ9yJZO0CRvzFwu7Mp6o461I8GG65Pzkl3QC6r
-	 vRPi09VdOYYsBgqekP6tFPJB5lXVUgQq3AqW06MPUmzv9YQQpXLT0PuqP1LfqhDX7l
-	 O6ooKZUkofS8p+Bv/dvV1PRANouTtHnjdxjYnkZg=
+	b=pLD3FrbfO1FlgWbbFyp6NDdOjCmKh0n0S2O/EW45ucSLShzwkRjhUaAood9cZbriz
+	 1fgZ9kgIgl2SCwSzzZqMzCisj47lE5XEBIJSIMlNIhMUUAXMuzrzm6R+e7RrdZDa4b
+	 NZIW4wf9VE8LNHah2dMklaHBzL+xk3giFkPIQn2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/417] powerpc: remove checks for binutils older than 2.25
-Date: Mon, 22 Jan 2024 15:52:52 -0800
-Message-ID: <20240122235751.635715305@linuxfoundation.org>
+Subject: [PATCH 6.6 122/583] bpf: fix check for attempt to corrupt spilled pointer
+Date: Mon, 22 Jan 2024 15:52:53 -0800
+Message-ID: <20240122235815.875139114@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 54a11654de163994e32b24e3aa90ef81f4a3184d ]
+[ Upstream commit ab125ed3ec1c10ccc36bc98c7a4256ad114a3dae ]
 
-Commit e4412739472b ("Documentation: raise minimum supported version of
-binutils to 2.25") allows us to remove the checks for old binutils.
+When register is spilled onto a stack as a 1/2/4-byte register, we set
+slot_type[BPF_REG_SIZE - 1] (plus potentially few more below it,
+depending on actual spill size). So to check if some stack slot has
+spilled register we need to consult slot_type[7], not slot_type[0].
 
-There is no more user for ld-ifversion. Remove it as well.
+To avoid the need to remember and double-check this in the future, just
+use is_spilled_reg() helper.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230119082250.151485-1-masahiroy@kernel.org
-Stable-dep-of: 1b1e38002648 ("powerpc: add crtsavres.o to always-y instead of extra-y")
+Fixes: 27113c59b6d0 ("bpf: Check the other end of slot_type for STACK_SPILL")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20231205184248.1502704-4-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/Makefile     | 17 +----------------
- arch/powerpc/lib/Makefile |  2 +-
- scripts/Makefile.compiler |  4 ----
- 3 files changed, 2 insertions(+), 21 deletions(-)
+ kernel/bpf/verifier.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 054844153b1f..487e4967b60d 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -42,18 +42,13 @@ machine-$(CONFIG_PPC64) += 64
- machine-$(CONFIG_CPU_LITTLE_ENDIAN) += le
- UTS_MACHINE := $(subst $(space),,$(machine-y))
- 
--# XXX This needs to be before we override LD below
--ifdef CONFIG_PPC32
--KBUILD_LDFLAGS_MODULE += arch/powerpc/lib/crtsavres.o
--else
--ifeq ($(call ld-ifversion, -ge, 22500, y),y)
-+ifeq ($(CONFIG_PPC64)$(CONFIG_LD_IS_BFD),yy)
- # Have the linker provide sfpr if possible.
- # There is a corresponding test in arch/powerpc/lib/Makefile
- KBUILD_LDFLAGS_MODULE += --save-restore-funcs
- else
- KBUILD_LDFLAGS_MODULE += arch/powerpc/lib/crtsavres.o
- endif
--endif
- 
- ifdef CONFIG_CPU_LITTLE_ENDIAN
- KBUILD_CFLAGS	+= -mlittle-endian
-@@ -391,17 +386,7 @@ endif
- endif
- 
- PHONY += checkbin
--# Check toolchain versions:
--# - gcc-4.6 is the minimum kernel-wide version so nothing required.
- checkbin:
--	@if test "x${CONFIG_LD_IS_LLD}" != "xy" -a \
--		"x$(call ld-ifversion, -le, 22400, y)" = "xy" ; then \
--		echo -n '*** binutils 2.24 miscompiles weak symbols ' ; \
--		echo 'in some circumstances.' ; \
--		echo    '*** binutils 2.23 do not define the TOC symbol ' ; \
--		echo -n '*** Please use a different binutils version.' ; \
--		false ; \
--	fi
- 	@if test "x${CONFIG_FTRACE_MCOUNT_USE_RECORDMCOUNT}" = "xy" -a \
- 		"x${CONFIG_LD_IS_BFD}" = "xy" -a \
- 		"${CONFIG_LD_VERSION}" = "23700" ; then \
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index 8560c912186d..b705c89f3e21 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -42,7 +42,7 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)	+= error-inject.o
- # 64-bit linker creates .sfpr on demand for final link (vmlinux),
- # so it is only needed for modules, and only for older linkers which
- # do not support --save-restore-funcs
--ifeq ($(call ld-ifversion, -lt, 22500, y),y)
-+ifndef CONFIG_LD_IS_BFD
- extra-$(CONFIG_PPC64)	+= crtsavres.o
- endif
- 
-diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
-index 158c57f2acfd..87589a7ba27f 100644
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -72,7 +72,3 @@ clang-min-version = $(shell [ $(CONFIG_CLANG_VERSION)0 -ge $(1)0 ] && echo y)
- # ld-option
- # Usage: KBUILD_LDFLAGS += $(call ld-option, -X, -Y)
- ld-option = $(call try-run, $(LD) $(KBUILD_LDFLAGS) $(1) -v,$(1),$(2),$(3))
--
--# ld-ifversion
--# Usage:  $(call ld-ifversion, -ge, 22252, y)
--ld-ifversion = $(shell [ $(CONFIG_LD_VERSION)0 $(1) $(2)0 ] && echo $(3) || echo $(4))
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 2deae0db03e8..24152ac6a393 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -4330,7 +4330,7 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
+ 	 * so it's aligned access and [off, off + size) are within stack limits
+ 	 */
+ 	if (!env->allow_ptr_leaks &&
+-	    state->stack[spi].slot_type[0] == STACK_SPILL &&
++	    is_spilled_reg(&state->stack[spi]) &&
+ 	    size != BPF_REG_SIZE) {
+ 		verbose(env, "attempt to corrupt spilled pointer on stack\n");
+ 		return -EACCES;
 -- 
 2.43.0
 
