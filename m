@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D01A38381BC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:12:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A5C0837EF3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0033BB21A68
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E7ED1C283A0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FBF715C6;
-	Tue, 23 Jan 2024 01:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44BC4605D5;
+	Tue, 23 Jan 2024 00:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJWylD1Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJ8OCKD4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F500374;
-	Tue, 23 Jan 2024 01:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A7F60274;
+	Tue, 23 Jan 2024 00:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972152; cv=none; b=fClLBRCxmQd1h3e8wdXrbPylrIM4kxzYJNxXFvKczROp8rEoo7DOmKfHFFXw6n95qyat19JYdjzEtHVBdHngGaQGoBUwDh6/45qV2sRwvfwDSs4x7TC5pFcDx3DUwl4sL9310R1U4nizlxY8WU5ifofQ6NbKrNprStAYf7QuDVs=
+	t=1705970843; cv=none; b=L6JXQCes14+KiH85ZMecggN6WfE9KDIaSVTQnRl5RtvIG+w42TXuoB/2FnY+EpOZ8Z8qZ8ltlwUFmx8ft2PIxGTfT6FRBE810p/U/lMxbMG0jIm+SiEdvS0aua7vT/YXB2aKfPxMZA+OU3Y+qyTdAMHCI8kk9nFVihZhxT77Spg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972152; c=relaxed/simple;
-	bh=AZx4UE4Wq/X1S038gc6JZWjabIWdTrAX8A3Looq4D7Q=;
+	s=arc-20240116; t=1705970843; c=relaxed/simple;
+	bh=sfhbHz2jLcfiG8f/l72BA+iE2McRbCGAmgF+JytUtFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KErGQ59DIvLpDNmjF18IwClz1di9M0IZDN4IplJLl2BBXmb/2oEmZIeBx2CFMDHkroMV9ihFnfUocYzzoSAzxAPzbn35vR+EbkzQeDAm/DK/ZJV7n2+/buzU++mocHVJszAA3HKsM7YB+6FPPpuewqJ1dYRLzcOr1JiFMburij0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJWylD1Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF256C43390;
-	Tue, 23 Jan 2024 01:09:11 +0000 (UTC)
+	 MIME-Version; b=lGfxnSg355k+F+QPeYlk34F/Ow7aMKUMtY1O/8NqrQwcA5Ir5cyz3zYC6uZjXsUtKd6pbyqaG2/RBXoROD/zlQmKG1LBoLKGuGwh+MokxGOl8vh4rMlZZ9V0dFQxbhtFnFc7mazW3m4M4/v88NrtpnqmOhXPSsRJIBSKOTGkDVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJ8OCKD4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5168DC433A6;
+	Tue, 23 Jan 2024 00:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972152;
-	bh=AZx4UE4Wq/X1S038gc6JZWjabIWdTrAX8A3Looq4D7Q=;
+	s=korg; t=1705970842;
+	bh=sfhbHz2jLcfiG8f/l72BA+iE2McRbCGAmgF+JytUtFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iJWylD1Qdi/xFbln/x0a1zpsrrtG982aB5NbueFf4V7ht9afG/TChPEjjz6uDjz6S
-	 jAX1b9DhavJ2hZilEy5kDmLOVqexWlSwYwgiex7Za/fYfJzV2jd4OVwJJP+GNVwdfo
-	 uWrVHLDcNpcYWuhf5yt01wylQdRCefdoqrgvx4zQ=
+	b=nJ8OCKD4AHV9dFw5C+vZPciIBgHtj+6wwyEzQEzxMlu6EB4fH3af3bwMVyVBcVjGo
+	 y7hvMRd+5QGp6G4HCi2P0SddHjxp0qMskWshSirQRPBiNplx8PB+03dnHCcAznXwXE
+	 YVyFx8ilxt4pWWTBfhsxWM5yLN+wy8A9YAejilcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ronald Monthero <debug.penguin32@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 079/374] mtd: rawnand: Increment IFC_TIMEOUT_MSECS for nand controller response
+Subject: [PATCH 5.10 029/286] reset: hisilicon: hi6220: fix Wvoid-pointer-to-enum-cast warning
 Date: Mon, 22 Jan 2024 15:55:35 -0800
-Message-ID: <20240122235747.370600012@linuxfoundation.org>
+Message-ID: <20240122235733.148038237@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Monthero <debug.penguin32@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 923fb6238cb3ac529aa2bf13b3b1e53762186a8b ]
+[ Upstream commit b5ec294472794ed9ecba0cb4b8208372842e7e0d ]
 
-Under heavy load it is likely that the controller is done
-with its own task but the thread unlocking the wait is not
-scheduled in time. Increasing IFC_TIMEOUT_MSECS allows the
-controller to respond within allowable timeslice of 1 sec.
+'type' is an enum, thus cast of pointer on 64-bit compile test with W=1
+causes:
 
-fsl,ifc-nand 7e800000.nand: Controller is not responding
+  hi6220_reset.c:166:9: error: cast to smaller integer type 'enum hi6220_reset_ctrl_type' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
 
-[<804b2047>] (nand_get_device) from [<804b5335>] (nand_write_oob+0x1b/0x4a)
-[<804b5335>] (nand_write_oob) from [<804a3585>] (mtd_write+0x41/0x5c)
-[<804a3585>] (mtd_write) from [<804c1d47>] (ubi_io_write+0x17f/0x22c)
-[<804c1d47>] (ubi_io_write) from [<804c047b>] (ubi_eba_write_leb+0x5b/0x1d0)
-
-Fixes: 82771882d960 ("NAND Machine support for Integrated Flash Controller")
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Ronald Monthero <debug.penguin32@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20231118083156.776887-1-debug.penguin32@gmail.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230810091300.70197-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/fsl_ifc_nand.c | 2 +-
+ drivers/reset/hisilicon/hi6220_reset.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/fsl_ifc_nand.c b/drivers/mtd/nand/raw/fsl_ifc_nand.c
-index 02d500176838..bea1a7d3edd7 100644
---- a/drivers/mtd/nand/raw/fsl_ifc_nand.c
-+++ b/drivers/mtd/nand/raw/fsl_ifc_nand.c
-@@ -20,7 +20,7 @@
+diff --git a/drivers/reset/hisilicon/hi6220_reset.c b/drivers/reset/hisilicon/hi6220_reset.c
+index 19926506d033..2a7688fa9b9b 100644
+--- a/drivers/reset/hisilicon/hi6220_reset.c
++++ b/drivers/reset/hisilicon/hi6220_reset.c
+@@ -164,7 +164,7 @@ static int hi6220_reset_probe(struct platform_device *pdev)
+ 	if (!data)
+ 		return -ENOMEM;
  
- #define ERR_BYTE		0xFF /* Value returned for read
- 					bytes when read failed	*/
--#define IFC_TIMEOUT_MSECS	500  /* Maximum number of mSecs to wait
-+#define IFC_TIMEOUT_MSECS	1000 /* Maximum timeout to wait
- 					for IFC NAND Machine	*/
+-	type = (enum hi6220_reset_ctrl_type)of_device_get_match_data(dev);
++	type = (uintptr_t)of_device_get_match_data(dev);
  
- struct fsl_ifc_ctrl;
+ 	regmap = syscon_node_to_regmap(np);
+ 	if (IS_ERR(regmap)) {
 -- 
 2.43.0
 
