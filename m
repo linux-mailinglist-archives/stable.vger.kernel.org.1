@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-13472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47873837C38
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1DEC837E71
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AF6B1C241C3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 210B91C28F3F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD922144621;
-	Tue, 23 Jan 2024 00:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65EEC55C2B;
+	Tue, 23 Jan 2024 00:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivju4Hzp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stiivRgg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C170EEB9;
-	Tue, 23 Jan 2024 00:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A1353E0F;
+	Tue, 23 Jan 2024 00:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969541; cv=none; b=DnH3CCx9Siyew8oNg0O2IM/k1np9aCbi8lCjvelfSOnoAw7sRiFmpdeHR4aIbZUQaoCt5i8o/kuqQy2Yy886LEwo2zIKwEv6RSD+PvQxiTFcAmMANLW1tOycJ8EngjqSgmTkcfNjj4/78ZAS3bqmTJDVmr/PNseyWXCqt+NFn+w=
+	t=1705970582; cv=none; b=h//LAppaHKJZYmVkMT0XvU8SrEVMgGRZSS2sAgELqqcoCBH8eex08xsLU8ORGKSCHfbfOQUWwmzSnyHNiSaMM6D13znPrS5JknMy3SXkUcI6N7e37kz7YqkFZmz3oEHSoYx6Ignd7zXZVtpM6Z9rQ8r2S2CBoyHxTHEXvDrn8UY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969541; c=relaxed/simple;
-	bh=l9KH4Y8S7qNjsIYQjyYoqdHPvjUecMN610aMiwlAG9o=;
+	s=arc-20240116; t=1705970582; c=relaxed/simple;
+	bh=NJYV3ZW/ATadiZ6jOlWoGkBPGOBCLyrtrENb2By6VvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ctgb+t01w4PN3Y5kp0M7xYFPzxZKxOUioUtB8uTgLIiSBJPVkE/9yHiA4x2rBTdCwPFrbjmgwkqPH3aaqctWDnr1OeHO6z9v/6vpTYLdaFSkr7HvlJe5tXgNbE+2dA4jru8Cwnnz6CQ+lZ6IHxk6aaXVZwnkzEM2zXlemLWUDxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivju4Hzp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07ADDC433F1;
-	Tue, 23 Jan 2024 00:25:40 +0000 (UTC)
+	 MIME-Version; b=ROq20FgrLzH2y2sX83JXiArGNadLGFHNYkEwIZpegEAC+n7cab4MS9y38nzaJxZ8puXC+az7400HQnF8hpLfHEVdKpE1SQIa4mwa8vfDxLsloMiTfwDYgALKN6Ql+AfL1qns4n2notELEggcsz0zuLlyAphqCONBQpneUBu+ilc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stiivRgg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79185C433C7;
+	Tue, 23 Jan 2024 00:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969541;
-	bh=l9KH4Y8S7qNjsIYQjyYoqdHPvjUecMN610aMiwlAG9o=;
+	s=korg; t=1705970582;
+	bh=NJYV3ZW/ATadiZ6jOlWoGkBPGOBCLyrtrENb2By6VvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ivju4HzpSWnJnjawkEOiq2G2/aqSMWUPxCNGgoBNT6AVBS5EZuF1qM0Irwak8azDZ
-	 10auT9mfgZNXBLXiRRTVtFcy7vfczQ0SE4LlcI5cSoSIL3SsoBwwfnMHKuTV6qCFqt
-	 FZQzd8Vh55aEtSjR+l/RoL5mETAgEpC+29JAzkj0=
+	b=stiivRgg8yonykQ6anSUVSnKBhG1OngNGa4Vu5g6EjuVbeDbJ8fnnAkSCtSgsh/z1
+	 nlA2Ev0l+RRtGVX4hnoEs/M3BwBf1wWwkez+QIeVexaJ61FdF6+EihZeJVck2jbBQ0
+	 CuyPkwClZIiRUrLWi/dLk3g5rnUZOaiNHKGJTQk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 291/641] drm/amd/display: Return drm_connector from find_first_crtc_matching_connector
-Date: Mon, 22 Jan 2024 15:53:15 -0800
-Message-ID: <20240122235827.002294112@linuxfoundation.org>
+Subject: [PATCH 6.1 028/417] spi: sh-msiof: Enforce fixed DTDL for R-Car H3
+Date: Mon, 22 Jan 2024 15:53:16 -0800
+Message-ID: <20240122235752.543555326@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 748b091d641638e68330b1b24195eaba9aadf997 ]
+[ Upstream commit e5c7bcb499840551cfbe85c6df177ebc50432bf0 ]
 
-[WHY]
-We will be dealing with two types of connector: amdgpu_dm_connector
-and drm_writeback_connector.
+Documentation says only DTDL of 200 is allowed for this SoC.
 
-[HOW]
-We want to find both and then cast to the appriopriate type afterwards.
-
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: dbf5d3d02987 ("drm/amd/display: Check writeback connectors in create_validate_stream_for_sink")
+Fixes: 4286db8456f4 ("spi: sh-msiof: Add R-Car Gen 2 and 3 fallback bindings")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://msgid.link/r/20231212081239.14254-1-wsa+renesas@sang-engineering.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c         | 8 +++++---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h         | 2 +-
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c   | 4 +++-
- 3 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/spi/spi-sh-msiof.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index d8c967cee498..5cf919a489a1 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2660,7 +2660,7 @@ static int dm_suspend(void *handle)
- 	return 0;
- }
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 9bca3d076f05..51ceaa485724 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -30,12 +30,15 @@
  
--struct amdgpu_dm_connector *
-+struct drm_connector *
- amdgpu_dm_find_first_crtc_matching_connector(struct drm_atomic_state *state,
- 					     struct drm_crtc *crtc)
- {
-@@ -2673,7 +2673,7 @@ amdgpu_dm_find_first_crtc_matching_connector(struct drm_atomic_state *state,
- 		crtc_from_state = new_con_state->crtc;
+ #include <asm/unaligned.h>
  
- 		if (crtc_from_state == crtc)
--			return to_amdgpu_dm_connector(connector);
-+			return connector;
++#define SH_MSIOF_FLAG_FIXED_DTDL_200	BIT(0)
++
+ struct sh_msiof_chipdata {
+ 	u32 bits_per_word_mask;
+ 	u16 tx_fifo_size;
+ 	u16 rx_fifo_size;
+ 	u16 ctlr_flags;
+ 	u16 min_div_pow;
++	u32 flags;
+ };
+ 
+ struct sh_msiof_spi_priv {
+@@ -1073,6 +1076,16 @@ static const struct sh_msiof_chipdata rcar_gen3_data = {
+ 	.min_div_pow = 1,
+ };
+ 
++static const struct sh_msiof_chipdata rcar_r8a7795_data = {
++	.bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16) |
++			      SPI_BPW_MASK(24) | SPI_BPW_MASK(32),
++	.tx_fifo_size = 64,
++	.rx_fifo_size = 64,
++	.ctlr_flags = SPI_CONTROLLER_MUST_TX,
++	.min_div_pow = 1,
++	.flags = SH_MSIOF_FLAG_FIXED_DTDL_200,
++};
++
+ static const struct of_device_id sh_msiof_match[] = {
+ 	{ .compatible = "renesas,sh-mobile-msiof", .data = &sh_data },
+ 	{ .compatible = "renesas,msiof-r8a7743",   .data = &rcar_gen2_data },
+@@ -1083,6 +1096,7 @@ static const struct of_device_id sh_msiof_match[] = {
+ 	{ .compatible = "renesas,msiof-r8a7793",   .data = &rcar_gen2_data },
+ 	{ .compatible = "renesas,msiof-r8a7794",   .data = &rcar_gen2_data },
+ 	{ .compatible = "renesas,rcar-gen2-msiof", .data = &rcar_gen2_data },
++	{ .compatible = "renesas,msiof-r8a7795",   .data = &rcar_r8a7795_data },
+ 	{ .compatible = "renesas,msiof-r8a7796",   .data = &rcar_gen3_data },
+ 	{ .compatible = "renesas,rcar-gen3-msiof", .data = &rcar_gen3_data },
+ 	{ .compatible = "renesas,rcar-gen4-msiof", .data = &rcar_gen3_data },
+@@ -1280,6 +1294,9 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 		return -ENXIO;
  	}
  
- 	return NULL;
-@@ -9354,6 +9354,7 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
- 	 * update changed items
- 	 */
- 	struct amdgpu_crtc *acrtc = NULL;
-+	struct drm_connector *connector = NULL;
- 	struct amdgpu_dm_connector *aconnector = NULL;
- 	struct drm_connector_state *drm_new_conn_state = NULL, *drm_old_conn_state = NULL;
- 	struct dm_connector_state *dm_new_conn_state = NULL, *dm_old_conn_state = NULL;
-@@ -9363,7 +9364,8 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
- 	dm_old_crtc_state = to_dm_crtc_state(old_crtc_state);
- 	dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
- 	acrtc = to_amdgpu_crtc(crtc);
--	aconnector = amdgpu_dm_find_first_crtc_matching_connector(state, crtc);
-+	connector = amdgpu_dm_find_first_crtc_matching_connector(state, crtc);
-+	aconnector = to_amdgpu_dm_connector(connector);
- 
- 	/* TODO This hack should go away */
- 	if (aconnector && enable) {
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-index 3d480be802cb..3710f4d0f2cb 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-@@ -834,7 +834,7 @@ struct dc_stream_state *
- int dm_atomic_get_state(struct drm_atomic_state *state,
- 			struct dm_atomic_state **dm_state);
- 
--struct amdgpu_dm_connector *
-+struct drm_connector *
- amdgpu_dm_find_first_crtc_matching_connector(struct drm_atomic_state *state,
- 					     struct drm_crtc *crtc);
- 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index 9b71643d8a89..602a2ab98abf 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -1500,14 +1500,16 @@ int pre_validate_dsc(struct drm_atomic_state *state,
- 		int ind = find_crtc_index_in_state_by_stream(state, stream);
- 
- 		if (ind >= 0) {
-+			struct drm_connector *connector;
- 			struct amdgpu_dm_connector *aconnector;
- 			struct drm_connector_state *drm_new_conn_state;
- 			struct dm_connector_state *dm_new_conn_state;
- 			struct dm_crtc_state *dm_old_crtc_state;
- 
--			aconnector =
-+			connector =
- 				amdgpu_dm_find_first_crtc_matching_connector(state,
- 									     state->crtcs[ind].ptr);
-+			aconnector = to_amdgpu_dm_connector(connector);
- 			drm_new_conn_state =
- 				drm_atomic_get_new_connector_state(state,
- 								   &aconnector->base);
++	if (chipdata->flags & SH_MSIOF_FLAG_FIXED_DTDL_200)
++		info->dtdl = 200;
++
+ 	if (info->mode == MSIOF_SPI_SLAVE)
+ 		ctlr = spi_alloc_slave(&pdev->dev,
+ 				       sizeof(struct sh_msiof_spi_priv));
 -- 
 2.43.0
 
