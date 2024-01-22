@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564DE83818F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52C68837D30
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 890241C27683
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C129291E31
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028C2DDB5;
-	Tue, 23 Jan 2024 01:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664921DA52;
+	Tue, 23 Jan 2024 00:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OoqOQSz8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFkJMjVM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CA137C;
-	Tue, 23 Jan 2024 01:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2408836B04;
+	Tue, 23 Jan 2024 00:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972173; cv=none; b=JZR943ApM2/DzcVgt/jsV0hRuJWknRQYNYvylVxkrlwhQusaNvQkK99As1MfRUtNhxXpKr7b7bgwPvYkQHKbkLHh9H+RzrtrmdLYI1xsyi+ZwsyayaeYittfuq9PcFwYmX0mxCmRrGfAXXg/0ZeN/jJ1hCjlyEKvkaqLzTDc4Qo=
+	t=1705969830; cv=none; b=jM8JRBx2482OlF39KxzPIIbVe5kdawZ4Ge21Stt8KSdmXKzfgqkMAi247Nyc/Avi9cLUZLl47fk4Y78fPZZZuSQFvtbY/ZHgL7cLXT9gs/4MtpCGgePSCSM+PtmcgHZzMxhX5pMJVoYrdVx9vSdBvZD0AkdP72JWlZnUD5zvQfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972173; c=relaxed/simple;
-	bh=W8wmht3V9dMWnPczh0LLvSUzlLk2yZ1VsvjSgP3X4vM=;
+	s=arc-20240116; t=1705969830; c=relaxed/simple;
+	bh=HjyjPtoKzsQ7g7RYFklPIUQs4olkvW5vb1ryIr+qH7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BP/KZvePe/ipFdVYCACuHes/ssC3HKaYmIiOqCKyi9a/i7wkAOIozKuEbO47uG1S3kFA5bUOrBe9Gd+I94jvVo4fjATbuaRRpBBJBqZyYrM7wIUGIr4OcSUV8edx8g2wO7XVscAGGbHAUkjcHBEZjZBscHo/pF7mr8EKR32nkCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OoqOQSz8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7014BC433C7;
-	Tue, 23 Jan 2024 01:09:33 +0000 (UTC)
+	 MIME-Version; b=S27QmZl8rEovTqFA8lq+e9SA4r7nj0rnoa3AoiEssVwvznRJtiQ5ArGaa4Si3waGUhX93Ato9b+p3rp1xriktgKhgqYX9P0QVexklhS/tw48NzF1R++EI/1D/teiJyhbmPoeuANMWxMp6xb10HhKvbvMQX3Q85dzlE7xCdqMbao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFkJMjVM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D80AAC43394;
+	Tue, 23 Jan 2024 00:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972173;
-	bh=W8wmht3V9dMWnPczh0LLvSUzlLk2yZ1VsvjSgP3X4vM=;
+	s=korg; t=1705969830;
+	bh=HjyjPtoKzsQ7g7RYFklPIUQs4olkvW5vb1ryIr+qH7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OoqOQSz8SuZAZa6qP4NLTK+iOSlJqzSkksvSaEQlvTWDFblj4zVds2m2O6s3L/Rsx
-	 porKGa0mIpfz17C/VMap6WaRuuJYMlTydMcu+1iQHUetPcZb0t81oA9MWCFqFJkZg1
-	 L5CLf6kQzjshi3exdoHo6bEJFA/+gAZodu5Rhodg=
+	b=dFkJMjVMXPcSaPEMRy8uQN4Xp4bvBIsbQAoouwwGFCfn2srGJ1InlnaEHhjwWqwQc
+	 uQzEuLUPKWrjRrVVLdibCaT6kGBzHcPYxkBEWbqi0jl51O3rIUA054z7MO3s9jg3Zc
+	 /2pQpn4ttn2LAeZMjd+cxHV8uq+yHE0WHcAl2pAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 099/374] crypto: sahara - fix cbc selftest failure
+	Jiri Slaby <jirislaby@gmail.com>,
+	David Laight <David.Laight@ACULAB.COM>,
+	Aurelien Jarno <aurelien@aurel32.net>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.7 451/641] media: solo6x10: replace max(a, min(b, c)) by clamp(b, a, c)
 Date: Mon, 22 Jan 2024 15:55:55 -0800
-Message-ID: <20240122235748.039652603@linuxfoundation.org>
+Message-ID: <20240122235832.133784775@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Aurelien Jarno <aurelien@aurel32.net>
 
-[ Upstream commit 9f10bc28c0fb676ae58aa3bfa358db8f5de124bb ]
+commit 31e97d7c9ae3de072d7b424b2cf706a03ec10720 upstream.
 
-The kernel crypto API requires that all CBC implementations update the IV
-buffer to contain the last ciphertext block.
+This patch replaces max(a, min(b, c)) by clamp(b, a, c) in the solo6x10
+driver.  This improves the readability and more importantly, for the
+solo6x10-p2m.c file, this reduces on my system (x86-64, gcc 13):
 
-This fixes the following cbc selftest error:
-alg: skcipher: sahara-cbc-aes encryption test failed (wrong output IV) on
-test vector 0, cfg="in-place (one sglist)"
+ - the preprocessed size from 121 MiB to 4.5 MiB;
 
-Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ - the build CPU time from 46.8 s to 1.6 s;
+
+ - the build memory from 2786 MiB to 98MiB.
+
+In fine, this allows this relatively simple C file to be built on a
+32-bit system.
+
+Reported-by: Jiri Slaby <jirislaby@gmail.com>
+Closes: https://lore.kernel.org/lkml/18c6df0d-45ed-450c-9eda-95160a2bbb8e@gmail.com/
+Cc:  <stable@vger.kernel.org> # v6.7+
+Suggested-by: David Laight <David.Laight@ACULAB.COM>
+Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+Reviewed-by: David Laight <David.Laight@ACULAB.COM>
+Reviewed-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/sahara.c | 33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ drivers/media/pci/solo6x10/solo6x10-offsets.h |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 84a7c4de537a..1f41c8eeb8fc 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -149,6 +149,7 @@ struct sahara_ctx {
+--- a/drivers/media/pci/solo6x10/solo6x10-offsets.h
++++ b/drivers/media/pci/solo6x10/solo6x10-offsets.h
+@@ -57,16 +57,16 @@
+ #define SOLO_MP4E_EXT_ADDR(__solo) \
+ 	(SOLO_EREF_EXT_ADDR(__solo) + SOLO_EREF_EXT_AREA(__solo))
+ #define SOLO_MP4E_EXT_SIZE(__solo) \
+-	max((__solo->nr_chans * 0x00080000),				\
+-	    min(((__solo->sdram_size - SOLO_MP4E_EXT_ADDR(__solo)) -	\
+-		 __SOLO_JPEG_MIN_SIZE(__solo)), 0x00ff0000))
++	clamp(__solo->sdram_size - SOLO_MP4E_EXT_ADDR(__solo) -	\
++	      __SOLO_JPEG_MIN_SIZE(__solo),			\
++	      __solo->nr_chans * 0x00080000, 0x00ff0000)
  
- struct sahara_aes_reqctx {
- 	unsigned long mode;
-+	u8 iv_out[AES_BLOCK_SIZE];
- 	struct skcipher_request fallback_req;	// keep at the end
- };
+ #define __SOLO_JPEG_MIN_SIZE(__solo)		(__solo->nr_chans * 0x00080000)
+ #define SOLO_JPEG_EXT_ADDR(__solo) \
+ 		(SOLO_MP4E_EXT_ADDR(__solo) + SOLO_MP4E_EXT_SIZE(__solo))
+ #define SOLO_JPEG_EXT_SIZE(__solo) \
+-	max(__SOLO_JPEG_MIN_SIZE(__solo),				\
+-	    min((__solo->sdram_size - SOLO_JPEG_EXT_ADDR(__solo)), 0x00ff0000))
++	clamp(__solo->sdram_size - SOLO_JPEG_EXT_ADDR(__solo),	\
++	      __SOLO_JPEG_MIN_SIZE(__solo), 0x00ff0000)
  
-@@ -542,8 +543,24 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 	return -EINVAL;
- }
- 
-+static void sahara_aes_cbc_update_iv(struct skcipher_request *req)
-+{
-+	struct crypto_skcipher *skcipher = crypto_skcipher_reqtfm(req);
-+	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
-+	unsigned int ivsize = crypto_skcipher_ivsize(skcipher);
-+
-+	/* Update IV buffer to contain the last ciphertext block */
-+	if (rctx->mode & FLAGS_ENCRYPT) {
-+		sg_pcopy_to_buffer(req->dst, sg_nents(req->dst), req->iv,
-+				   ivsize, req->cryptlen - ivsize);
-+	} else {
-+		memcpy(req->iv, rctx->iv_out, ivsize);
-+	}
-+}
-+
- static int sahara_aes_process(struct skcipher_request *req)
- {
-+	struct crypto_skcipher *skcipher = crypto_skcipher_reqtfm(req);
- 	struct sahara_dev *dev = dev_ptr;
- 	struct sahara_ctx *ctx;
- 	struct sahara_aes_reqctx *rctx;
-@@ -565,8 +582,17 @@ static int sahara_aes_process(struct skcipher_request *req)
- 	rctx->mode &= FLAGS_MODE_MASK;
- 	dev->flags = (dev->flags & ~FLAGS_MODE_MASK) | rctx->mode;
- 
--	if ((dev->flags & FLAGS_CBC) && req->iv)
--		memcpy(dev->iv_base, req->iv, AES_KEYSIZE_128);
-+	if ((dev->flags & FLAGS_CBC) && req->iv) {
-+		unsigned int ivsize = crypto_skcipher_ivsize(skcipher);
-+
-+		memcpy(dev->iv_base, req->iv, ivsize);
-+
-+		if (!(dev->flags & FLAGS_ENCRYPT)) {
-+			sg_pcopy_to_buffer(req->src, sg_nents(req->src),
-+					   rctx->iv_out, ivsize,
-+					   req->cryptlen - ivsize);
-+		}
-+	}
- 
- 	/* assign new context to device */
- 	dev->ctx = ctx;
-@@ -589,6 +615,9 @@ static int sahara_aes_process(struct skcipher_request *req)
- 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
- 		DMA_TO_DEVICE);
- 
-+	if ((dev->flags & FLAGS_CBC) && req->iv)
-+		sahara_aes_cbc_update_iv(req);
-+
- 	return 0;
- }
- 
--- 
-2.43.0
-
+ #define SOLO_SDRAM_END(__solo) \
+ 	(SOLO_JPEG_EXT_ADDR(__solo) + SOLO_JPEG_EXT_SIZE(__solo))
 
 
 
