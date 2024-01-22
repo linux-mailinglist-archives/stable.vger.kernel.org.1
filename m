@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20C4838018
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A57E1837D95
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F8B71C29587
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8FEB1C24FAC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B2D65BDD;
-	Tue, 23 Jan 2024 00:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519135B5B9;
+	Tue, 23 Jan 2024 00:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtVRxwX6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/XCIujr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E5E64CF1;
-	Tue, 23 Jan 2024 00:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1229256B68;
+	Tue, 23 Jan 2024 00:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971544; cv=none; b=mFTzN6O0r59gvkwD6KQNrHm6dN1BM5XiQE+KVqYlUDYcb1OVWjR1WpiIQbBnCqHB2Ern+CYpqsIShcUu1c6kn+/MVlbGMuUvWj3JVDWPHKMaMesWGP578cZhCtdnY4TlCFq32Z0KENj8atQYeHnssvM3UdrEhtGkCkBPi03ICa0=
+	t=1705970041; cv=none; b=dAfb/qBCYhijy8w+0QjPGia4WMVIa+uTOYh7NC6RaMiFz0vLsmxo6oUHcyeqBCB7FWUf8f7VKH/WUey+L7i+pAS3fojaVE8PWVRlo0Ra36PIsTsIvcomMBQyqReNyde8TV5LTK54J/Fi+RkvhfiVkpGcm70kt1ndOCbbfl33gQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971544; c=relaxed/simple;
-	bh=MJQX4VeSDMtVYaVY+BbdvSD+7i+YVVQLYIHu4AgP89Q=;
+	s=arc-20240116; t=1705970041; c=relaxed/simple;
+	bh=lLQHYWRiYh1PpCVAhR4EJXnuDKv+/Z6+pexwg+6hTxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUXzdJmWpqvpn1Cfu/IYA6UyfC9z8ieoOuGW1EUxd0L9LZuHPplECU5vjhrZnIH6qHdvIfsIIb+ScxZ4GqVFQ2BEK2n7Bh0UyphWbK7h4Y3GdCOQgkXEdLosEO7ZhORcbNuQOQcFYncZ/X5KYPYTc986l40GQX7M0qTX7YoCdLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtVRxwX6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F1CC433C7;
-	Tue, 23 Jan 2024 00:59:03 +0000 (UTC)
+	 MIME-Version; b=TUb6ECzezU40Z4fDjuAK2kWopJxbllEH68uaZwLtUZh3Oq39O/MaEFI1Ryn8Mhvvsev8MvLzd7veaN7yXCOEqg/kSKwepn4k2CXMiA5PZ2jXMvkD7FbVcjzlEouJmwmwV/dK9vLROSi/6YfRALrsqTa4hJpcUX2MJsyEHr4bTt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/XCIujr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A829AC433F1;
+	Tue, 23 Jan 2024 00:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971543;
-	bh=MJQX4VeSDMtVYaVY+BbdvSD+7i+YVVQLYIHu4AgP89Q=;
+	s=korg; t=1705970040;
+	bh=lLQHYWRiYh1PpCVAhR4EJXnuDKv+/Z6+pexwg+6hTxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GtVRxwX6YvqfPyhvTD6cWsgQvuwlnU9kapoCotDGB12LlgujE/IYzU1WRRbGgtIdQ
-	 1s5yp5NN8btjXOzZW50rx2GGp/ejEQ6M52FFKLmldHTnxTvI8HbXfzvIUWk0dXEBo0
-	 8T+mroPOLblbpO0pFaMrw2N6R1UdC0spGD5jTV7M=
+	b=e/XCIujrHqYl3NRPFuo4g5uhE8C+w+RipLTmgt8j8243PLRq4Hm0kbN/5jPCiVk/M
+	 UxqJeJ01QUvCpBKqEK2X3aPuStgtH8tbiH1/yNUT7zuK+114HKE6uY3l1ZFhrCDiVA
+	 QsPg9SwgZuoIvjIWp6Mu4chwAP5442j9denQxl7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 170/286] media: dvb-frontends: m88ds3103: Fix a memory leak in an error handling path of m88ds3103_probe()
+Subject: [PATCH 6.7 572/641] nvme: trace: avoid memcpy overflow warning
 Date: Mon, 22 Jan 2024 15:57:56 -0800
-Message-ID: <20240122235738.722336830@linuxfoundation.org>
+Message-ID: <20240122235836.054873388@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5b2f885e2f6f482d05c23f04c8240f7b4fc5bdb5 ]
+[ Upstream commit a7de1dea76cd6a3707707af4ea2f8bc3cdeaeb11 ]
 
-If an error occurs after a successful i2c_mux_add_adapter(), then
-i2c_mux_del_adapters() should be called to free some resources, as
-already done in the remove function.
+A previous patch introduced a struct_group() in nvme_common_command to help
+stringop fortification figure out the length of the fields, but one function
+is not currently using them:
 
-Fixes: e6089feca460 ("media: m88ds3103: Add support for ds3103b demod")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+In file included from drivers/nvme/target/core.c:7:
+In file included from include/linux/string.h:254:
+include/linux/fortify-string.h:592:4: error: call to '__read_overflow2_field' declared with 'warning' attribute: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
+                        __read_overflow2_field(q_size_field, size);
+                        ^
+
+Change this one to use the correct field name to avoid the warning.
+
+Fixes: 5c629dc9609dc ("nvme: use struct group for generic command dwords")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/m88ds3103.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/nvme/target/trace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/m88ds3103.c b/drivers/media/dvb-frontends/m88ds3103.c
-index ff106d6ece68..94c6cc59372c 100644
---- a/drivers/media/dvb-frontends/m88ds3103.c
-+++ b/drivers/media/dvb-frontends/m88ds3103.c
-@@ -1898,7 +1898,7 @@ static int m88ds3103_probe(struct i2c_client *client,
- 		/* get frontend address */
- 		ret = regmap_read(dev->regmap, 0x29, &utmp);
- 		if (ret)
--			goto err_kfree;
-+			goto err_del_adapters;
- 		dev->dt_addr = ((utmp & 0x80) == 0) ? 0x42 >> 1 : 0x40 >> 1;
- 		dev_dbg(&client->dev, "dt addr is 0x%02x\n", dev->dt_addr);
- 
-@@ -1906,11 +1906,14 @@ static int m88ds3103_probe(struct i2c_client *client,
- 						      dev->dt_addr);
- 		if (IS_ERR(dev->dt_client)) {
- 			ret = PTR_ERR(dev->dt_client);
--			goto err_kfree;
-+			goto err_del_adapters;
- 		}
- 	}
- 
- 	return 0;
-+
-+err_del_adapters:
-+	i2c_mux_del_adapters(dev->muxc);
- err_kfree:
- 	kfree(dev);
- err:
+diff --git a/drivers/nvme/target/trace.h b/drivers/nvme/target/trace.h
+index 155334ddc13f..974d99d47f51 100644
+--- a/drivers/nvme/target/trace.h
++++ b/drivers/nvme/target/trace.h
+@@ -84,7 +84,7 @@ TRACE_EVENT(nvmet_req_init,
+ 		__entry->flags = cmd->common.flags;
+ 		__entry->nsid = le32_to_cpu(cmd->common.nsid);
+ 		__entry->metadata = le64_to_cpu(cmd->common.metadata);
+-		memcpy(__entry->cdw10, &cmd->common.cdw10,
++		memcpy(__entry->cdw10, &cmd->common.cdws,
+ 			sizeof(__entry->cdw10));
+ 	),
+ 	TP_printk("nvmet%s: %sqid=%d, cmdid=%u, nsid=%u, flags=%#x, "
 -- 
 2.43.0
 
