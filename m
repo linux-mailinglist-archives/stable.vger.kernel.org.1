@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99E43837EA6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D93BF838137
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EC22293152
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 778B01F2500A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0996360B97;
-	Tue, 23 Jan 2024 00:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9AAD1487C1;
+	Tue, 23 Jan 2024 01:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhgjhBKA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVpzRDoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB414BAA4;
-	Tue, 23 Jan 2024 00:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98046141981;
+	Tue, 23 Jan 2024 01:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970717; cv=none; b=OvKBjGi5tEiqJXqp7w3oJVVHgEJJQFPHFd/c/Zkmr0wfHGM0PUiagTlFvOzIYoBaKI5/s4OYrBhD15BqWSfkmN1oaHpoTAI7ZtNOVMj4vsMbUj47EFg/mckRaA0UpdcNAJcKAmCtosuElKsS0BlIsDT332e2v5G6pZw9XWvXLUo=
+	t=1705972067; cv=none; b=DSg7LcM4akysNTvi+KG2CW3p3w/AAAigr/o6+mn1u1qX2XmmtFmhzD29eEEPFDOCSPm0/u9NioYntkwPpCq6e/EMf2fMn/lMmvZlufxLRYJr1kbzEGTMgraiwjvvUHppj0l7u9ZHcO53mgHour8B54Ys86EyDXtK8W5J9gPcaN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970717; c=relaxed/simple;
-	bh=CAkwx+q5kBIKnaUrqSopT0afF6VDWoX/P4zeGwvsgJA=;
+	s=arc-20240116; t=1705972067; c=relaxed/simple;
+	bh=GkGh2WbgHVM9KYGQ8KuOKpq4QykSbjLn2T1gJdLkQwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0SOFuFL2ot4TMfO7+QzO+zosD8J+thE1p0GbqAPSRIWq8yJDKeVPwlYPkY+WRsJjnKA6t0bm9Gz9tqswlx+BiDkQnH4WbuMBkYAE3NJ5i+LVEh0tZ0UeYrMu1QtfcqxmBdT4U0i9Q1/BMxUQSI+X5x6IpVIcGmfnoxM0j20Oxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhgjhBKA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70078C433C7;
-	Tue, 23 Jan 2024 00:45:17 +0000 (UTC)
+	 MIME-Version; b=P7RZ1GfpI+hCDQV+kcD+Z3SZUTJeMMI3aX78X9rC1Tl+y3TT6wjT0IiyopOih4+NbAlirhiMG/owrl6aUTlPzyt83Oqn9al9CL0iugGOkDs2K7pdZPH5cjLQrHcCU1LbRCKVE2qL20sOOOZkMbxF1LkQ2X1KQKOe05sz4krkJ4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sVpzRDoL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59473C433F1;
+	Tue, 23 Jan 2024 01:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970717;
-	bh=CAkwx+q5kBIKnaUrqSopT0afF6VDWoX/P4zeGwvsgJA=;
+	s=korg; t=1705972067;
+	bh=GkGh2WbgHVM9KYGQ8KuOKpq4QykSbjLn2T1gJdLkQwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zhgjhBKA9hm+sBoUIUr6sg8ZnzsHeKbsQaRt2UW7gwXEiGKiurkH6qqgCQLoAoXoQ
-	 aGXYhrMncOKsnsyAZe3OJhOSzJb3TrePVNAin47erO4rv/fdtTJl+sDtF8aOnQuVO6
-	 9Zjx/saytKE5rmAJoHNBVNm+fpCscbP8m4Wzl4do=
+	b=sVpzRDoLSM+O6G5+XwsrrHmwvdy8xffDnNfVjefsnsinWRdlNsIxRKK6M64Gs7QgR
+	 42uhfgPioubtXRPMXtYpGfhE543GyDCXXbuuIcu3is0wOdzmuVyVysHN4P+5HHdVzm
+	 Ijkz9YMHPVX3RskoWdlw66V3X/S0w5SquJSOZfsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	David Lin <CTLIN0@nuvoton.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/417] bpf: fix check for attempt to corrupt spilled pointer
-Date: Mon, 22 Jan 2024 15:54:26 -0800
-Message-ID: <20240122235755.088199771@linuxfoundation.org>
+Subject: [PATCH 5.15 011/374] ASoC: nau8822: Fix incorrect type in assignment and cast to restricted __be16
+Date: Mon, 22 Jan 2024 15:54:27 -0800
+Message-ID: <20240122235745.013588391@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: David Lin <CTLIN0@nuvoton.com>
 
-[ Upstream commit ab125ed3ec1c10ccc36bc98c7a4256ad114a3dae ]
+[ Upstream commit c1501f2597dd08601acd42256a4b0a0fc36bf302 ]
 
-When register is spilled onto a stack as a 1/2/4-byte register, we set
-slot_type[BPF_REG_SIZE - 1] (plus potentially few more below it,
-depending on actual spill size). So to check if some stack slot has
-spilled register we need to consult slot_type[7], not slot_type[0].
+This issue is reproduced when W=1 build in compiler gcc-12.
+The following are sparse warnings:
 
-To avoid the need to remember and double-check this in the future, just
-use is_spilled_reg() helper.
+sound/soc/codecs/nau8822.c:199:25: sparse: sparse: incorrect type in assignment
+sound/soc/codecs/nau8822.c:199:25: sparse: expected unsigned short
+sound/soc/codecs/nau8822.c:199:25: sparse: got restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
 
-Fixes: 27113c59b6d0 ("bpf: Check the other end of slot_type for STACK_SPILL")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20231205184248.1502704-4-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311122320.T1opZVkP-lkp@intel.com/
+Signed-off-by: David Lin <CTLIN0@nuvoton.com>
+Link: https://lore.kernel.org/r/20231117043011.1747594-1-CTLIN0@nuvoton.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/nau8822.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 024a2393613f..adadf8546270 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -3284,7 +3284,7 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- 	 * so it's aligned access and [off, off + size) are within stack limits
- 	 */
- 	if (!env->allow_ptr_leaks &&
--	    state->stack[spi].slot_type[0] == STACK_SPILL &&
-+	    is_spilled_reg(&state->stack[spi]) &&
- 	    size != BPF_REG_SIZE) {
- 		verbose(env, "attempt to corrupt spilled pointer on stack\n");
- 		return -EACCES;
+diff --git a/sound/soc/codecs/nau8822.c b/sound/soc/codecs/nau8822.c
+index b436e532993d..6ffd0f5e3a60 100644
+--- a/sound/soc/codecs/nau8822.c
++++ b/sound/soc/codecs/nau8822.c
+@@ -184,6 +184,7 @@ static int nau8822_eq_get(struct snd_kcontrol *kcontrol,
+ 	struct soc_bytes_ext *params = (void *)kcontrol->private_value;
+ 	int i, reg;
+ 	u16 reg_val, *val;
++	__be16 tmp;
+ 
+ 	val = (u16 *)ucontrol->value.bytes.data;
+ 	reg = NAU8822_REG_EQ1;
+@@ -192,8 +193,8 @@ static int nau8822_eq_get(struct snd_kcontrol *kcontrol,
+ 		/* conversion of 16-bit integers between native CPU format
+ 		 * and big endian format
+ 		 */
+-		reg_val = cpu_to_be16(reg_val);
+-		memcpy(val + i, &reg_val, sizeof(reg_val));
++		tmp = cpu_to_be16(reg_val);
++		memcpy(val + i, &tmp, sizeof(tmp));
+ 	}
+ 
+ 	return 0;
+@@ -216,6 +217,7 @@ static int nau8822_eq_put(struct snd_kcontrol *kcontrol,
+ 	void *data;
+ 	u16 *val, value;
+ 	int i, reg, ret;
++	__be16 *tmp;
+ 
+ 	data = kmemdup(ucontrol->value.bytes.data,
+ 		params->max, GFP_KERNEL | GFP_DMA);
+@@ -228,7 +230,8 @@ static int nau8822_eq_put(struct snd_kcontrol *kcontrol,
+ 		/* conversion of 16-bit integers between native CPU format
+ 		 * and big endian format
+ 		 */
+-		value = be16_to_cpu(*(val + i));
++		tmp = (__be16 *)(val + i);
++		value = be16_to_cpup(tmp);
+ 		ret = snd_soc_component_write(component, reg + i, value);
+ 		if (ret) {
+ 			dev_err(component->dev,
 -- 
 2.43.0
 
