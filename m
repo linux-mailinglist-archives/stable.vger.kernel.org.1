@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42B47838388
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6618F837C53
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9BBB1F28CF3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2085E296774
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D264063131;
-	Tue, 23 Jan 2024 01:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42EB5155A20;
+	Tue, 23 Jan 2024 00:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDOPwjdW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2Xjvu6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CB162A13;
-	Tue, 23 Jan 2024 01:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032CA14532F;
+	Tue, 23 Jan 2024 00:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974999; cv=none; b=KwBFjCQyNesiTn/W0nEcOrG+KMtJvn9dmWFSEhot43omwfMdIACftX1QMyHZPYYSqmlrEgmvpA6yYXe4Evcyw4dLfjl8rdjizpQtmD6Ia9yF7gmxZCZuZYe5U4+Rp7zghIQjgri0RLNN1ZVFlprbmq0xgGVpTOnDutWshW75SfQ=
+	t=1705969580; cv=none; b=ZMYHLAT49AUiHLp0QnSFDdwmmYi+rtuGaG/d31zyUd4vn1O9FkPHbcJk0imN5D06slPs5VMZE/3NiMjpJe5jLx1ugCaXQWRXZIhcRgDxMq/UcSwIU4D2fsDEFRR61nBtosNebAP590huxLtHW8E0fclifIJuZPAH0e5no6sXIvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974999; c=relaxed/simple;
-	bh=rd76ELiHWwhH8qJO+mKotgvmPoTYrNMd26k6Tslq+Po=;
+	s=arc-20240116; t=1705969580; c=relaxed/simple;
+	bh=muBmKaXVH7IWm8po1/KMV4bnrSHFbKEKgvga8owtzYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lTjEFrYlaGzd9MMX8QLUONsnteuNM5KfO4yMipLZTi03oiYTiB/T+MhBdpEJpxeWQkO17l21tFDn8gCjDhRVGyFsZtsfwn9qTf3mUw+DwMwhMsJWodJVuy5wx7Y4Qm9nLNhnxCk8y3IqvBJPA2/c6qh+yxgEenKDXEYv2Pcqm9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDOPwjdW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54065C433C7;
-	Tue, 23 Jan 2024 01:56:39 +0000 (UTC)
+	 MIME-Version; b=e7uq8QK7Hq8AS9LgjNLIWwl5B3WBGn9qZRFNEKHlvEDDfiVAVlIZ+dytF8tBwXCanbb65Dh6WxN/Khhy3HfcGKZK+/0CpAh4Axaaw7N1UwwAULSCKehfX47nkz4wiFpQQY602JIED+w5M4nNRL6GN9i90cp83s/YOtVG3NiXn0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2Xjvu6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EA70C433A6;
+	Tue, 23 Jan 2024 00:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974999;
-	bh=rd76ELiHWwhH8qJO+mKotgvmPoTYrNMd26k6Tslq+Po=;
+	s=korg; t=1705969579;
+	bh=muBmKaXVH7IWm8po1/KMV4bnrSHFbKEKgvga8owtzYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wDOPwjdWTZl28Rny1okEZ22IG+0XfiyR4wXvY8bY52icuYEZEXaLZGdOpVemc0FN6
-	 ukMWPasHLCRtqrR37iqcG8uHnh9pjJ2n5HDvKODUMtumnIFNJIpP0UsJ8LectjMpLm
-	 A4HbABsnRkJ1P+8XcBWJ4ZBOc1HO3ukYuTupqBz0=
+	b=J2Xjvu6sweLJOAIZl6A+ySEsluj3tNgboC6iR8hUgzlzev4xgzsZcqzmp5bQa23Pm
+	 9eNJRqVf44AKkwK+mP+KyV+IWqkjHi+4LRI1av1JKKHMsIrEjHlt9SwOFPzZg02XOI
+	 7ZQob49i/B8XxpDlXjre6qNwnrYZV5KZgi36xZKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 187/583] arm64: dts: qcom: sc8180x: Fix up PCIe nodes
+Subject: [PATCH 6.7 334/641] clk: sp7021: fix return value check in sp7021_clk_probe()
 Date: Mon, 22 Jan 2024 15:53:58 -0800
-Message-ID: <20240122235817.721667485@linuxfoundation.org>
+Message-ID: <20240122235828.361015201@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 78403b37f6770441f80a78d13772394731afe055 ]
+[ Upstream commit 1004c346a2b7393fce37dd1f320555e0a0d71e3f ]
 
-Duplicated clock output names cause probe errors and wrong clocks cause
-hardware not to work. Fix such issues.
+devm_platform_ioremap_resource() never returns NULL pointer,
+it will return ERR_PTR() when it fails, so replace the check
+with IS_ERR().
 
-Fixes: d20b6c84f56a ("arm64: dts: qcom: sc8180x: Add PCIe instances")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231219-topic-8180_pcie-v1-1-c2acbba4723c@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: d54c1fd4a51e ("clk: Add Sunplus SP7021 clock driver")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Link: https://lore.kernel.org/r/20231128133016.2494699-1-yangyingliang@huawei.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8180x.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/clk/clk-sp7021.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8180x.dtsi b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-index dfaeb337960e..f4381424e70a 100644
---- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-@@ -1762,7 +1762,7 @@ pcie0_phy: phy@1c06000 {
- 			clocks = <&gcc GCC_PCIE_PHY_AUX_CLK>,
- 				 <&gcc GCC_PCIE_0_CFG_AHB_CLK>,
- 				 <&gcc GCC_PCIE_0_CLKREF_CLK>,
--				 <&gcc GCC_PCIE1_PHY_REFGEN_CLK>,
-+				 <&gcc GCC_PCIE0_PHY_REFGEN_CLK>,
- 				 <&gcc GCC_PCIE_0_PIPE_CLK>;
- 			clock-names = "aux",
- 				      "cfg_ahb",
-@@ -1860,7 +1860,7 @@ pcie3_phy: phy@1c0c000 {
- 			clocks = <&gcc GCC_PCIE_PHY_AUX_CLK>,
- 				 <&gcc GCC_PCIE_3_CFG_AHB_CLK>,
- 				 <&gcc GCC_PCIE_3_CLKREF_CLK>,
--				 <&gcc GCC_PCIE2_PHY_REFGEN_CLK>,
-+				 <&gcc GCC_PCIE3_PHY_REFGEN_CLK>,
- 				 <&gcc GCC_PCIE_3_PIPE_CLK>;
- 			clock-names = "aux",
- 				      "cfg_ahb",
-@@ -2066,7 +2066,7 @@ pcie2_phy: phy@1c1c000 {
- 				      "refgen",
- 				      "pipe";
- 			#clock-cells = <0>;
--			clock-output-names = "pcie_3_pipe_clk";
-+			clock-output-names = "pcie_2_pipe_clk";
+diff --git a/drivers/clk/clk-sp7021.c b/drivers/clk/clk-sp7021.c
+index 01d3c4c7b0b2..7cb7d501d7a6 100644
+--- a/drivers/clk/clk-sp7021.c
++++ b/drivers/clk/clk-sp7021.c
+@@ -604,14 +604,14 @@ static int sp7021_clk_probe(struct platform_device *pdev)
+ 	int i;
  
- 			#phy-cells = <0>;
+ 	clk_base = devm_platform_ioremap_resource(pdev, 0);
+-	if (!clk_base)
+-		return -ENXIO;
++	if (IS_ERR(clk_base))
++		return PTR_ERR(clk_base);
+ 	pll_base = devm_platform_ioremap_resource(pdev, 1);
+-	if (!pll_base)
+-		return -ENXIO;
++	if (IS_ERR(pll_base))
++		return PTR_ERR(pll_base);
+ 	sys_base = devm_platform_ioremap_resource(pdev, 2);
+-	if (!sys_base)
+-		return -ENXIO;
++	if (IS_ERR(sys_base))
++		return PTR_ERR(sys_base);
  
+ 	/* enable default clks */
+ 	for (i = 0; i < ARRAY_SIZE(sp_clken); i++)
 -- 
 2.43.0
 
