@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 765BB837EDE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD1EC83818E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9EE71C283DD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3155B21039
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB841538B;
-	Tue, 23 Jan 2024 00:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3664F13D511;
+	Tue, 23 Jan 2024 01:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCCx/c3b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9D/N7tI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6D05384;
-	Tue, 23 Jan 2024 00:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C301339A7;
+	Tue, 23 Jan 2024 01:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970793; cv=none; b=CncQGH3YgCvq1eiXwiMT2P7Y/poE5Wxhc7yjLGjS2e7OaiAxwvStiRTJQuz1Aso7ns6/JmeNCadWtpefYg7d/VvMJkBrRI4uR1XHGTL9T63/LorDzpyF9bI/SqFR6H8RX/BHwNohp051wdfd89RHnuPfQHG8bD0LZ8r73ddi0CA=
+	t=1705972112; cv=none; b=LltOHFyTr5HTciCirvewS3KNCoKBrn4MheFLBRkuxZIFdLNDn8QZHNn5diVWlJnbZgoylu7tKDsLxEbrpkPFBQ8NxGSXYIgoN+OblCkacYkSyV9BdXrd8z0PfDmm0VQQRxl2A/57CBxOTcFC8KGuAm8ORHJoGIi/DadLaaKxjaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970793; c=relaxed/simple;
-	bh=0vF0A1SV6QjNK5pg8XLUtLG2+ZHPAlHZhKnFg4GfYX0=;
+	s=arc-20240116; t=1705972112; c=relaxed/simple;
+	bh=uOQEL5cmTZHhfPeSrfGTcuDG+Rn17VyjOkSsFwYrlPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xr0UM5HQdsud8kT9Vnv0AGnoR0t/Jap4uE+QmwJoxojvrobm5ZJYQB6C2iwV9KCt7v1P4L6M6+C2BFrLYcWkBNKhDDOcj0fqZyY4tECReh4cTSsGyDq4S79ip2IkWub275TGLV8qsoYDeqCqo5OGDDXR2cS1bh3aEHAkJcoSHkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCCx/c3b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8F8C433F1;
-	Tue, 23 Jan 2024 00:46:32 +0000 (UTC)
+	 MIME-Version; b=eJuGCYp0lwhnov3x/M4JLgFzcMfg91zPSeOgQoLNoTO76yrAcbTnRzAAqztsjpwah9NPaOU3slhUK2el17mlcCoEBkoRK0e0Vn9F3dN0x2p5OGzESVR3Ya9eOzRVR15pJb4ikQPMUXClCj79og/fT0qJMr0Eii7j4yMdoM4q67s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9D/N7tI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A850AC433C7;
+	Tue, 23 Jan 2024 01:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970793;
-	bh=0vF0A1SV6QjNK5pg8XLUtLG2+ZHPAlHZhKnFg4GfYX0=;
+	s=korg; t=1705972111;
+	bh=uOQEL5cmTZHhfPeSrfGTcuDG+Rn17VyjOkSsFwYrlPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JCCx/c3bw+jvuLJ0W4FVy33YINPGDcX3UNeeSIIlVNYEwy/pPWGXeNqLOcUXaMi7d
-	 uPVz+PosR32JxX3NZO9hxR3SPM2/TBc0VmU6UuGWBzZyvdEIi44tB9J2xR1VPU0jtr
-	 70tyGR/LBF1bH/lA6IHDV2u8reaE3Ol6HzcW100A=
+	b=s9D/N7tI0kFSWCIWK0TbNYDmP+r1ujQwiy8xoYUs6k1+p9zU+OyySJLY4noJNW1Im
+	 MqbX7uYfIqvP4ttt7S6tdNmEYloKLd/7ycosuxidFtvA2QjVLSy2lU6ZDY7WGypvJq
+	 wD0PLzkK/OpiIlR3oIq/kxSq1d00Yfsk2Z8WGU9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moudy Ho <moudy.ho@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Xiang Yang <xiangyang3@huawei.com>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 110/417] arm64: dts: mediatek: mt8183: correct MDP3 DMA-related nodes
+Subject: [PATCH 5.15 022/374] drm/exynos: fix a potential error pointer dereference
 Date: Mon, 22 Jan 2024 15:54:38 -0800
-Message-ID: <20240122235755.562860521@linuxfoundation.org>
+Message-ID: <20240122235745.404645862@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moudy Ho <moudy.ho@mediatek.com>
+From: Xiang Yang <xiangyang3@huawei.com>
 
-[ Upstream commit 188ffcd7fea79af3cac441268fc99f60e87f03b3 ]
+[ Upstream commit 73bf1c9ae6c054c53b8e84452c5e46f86dd28246 ]
 
-In order to generalize the node names, the DMA-related nodes
-corresponding to MT8183 MDP3 need to be corrected.
+Smatch reports the warning below:
+drivers/gpu/drm/exynos/exynos_hdmi.c:1864 hdmi_bind()
+error: 'crtc' dereferencing possible ERR_PTR()
 
-Fixes: 60a2fb8d202a ("arm64: dts: mt8183: add MediaTek MDP3 nodes")
-Signed-off-by: Moudy Ho <moudy.ho@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+The return value of exynos_drm_crtc_get_by_type maybe ERR_PTR(-ENODEV),
+which can not be used directly. Fix this by checking the return value
+before using it.
+
+Signed-off-by: Xiang Yang <xiangyang3@huawei.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183.dtsi | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/exynos/exynos_hdmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-index 10779a9947fe..d5d9b954c449 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-@@ -1586,7 +1586,7 @@ mmsys: syscon@14000000 {
- 			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0 0x1000>;
- 		};
+diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
+index 7655142a4651..42b6b001405a 100644
+--- a/drivers/gpu/drm/exynos/exynos_hdmi.c
++++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
+@@ -1861,6 +1861,8 @@ static int hdmi_bind(struct device *dev, struct device *master, void *data)
+ 		return ret;
  
--		mdp3-rdma0@14001000 {
-+		dma-controller0@14001000 {
- 			compatible = "mediatek,mt8183-mdp3-rdma";
- 			reg = <0 0x14001000 0 0x1000>;
- 			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x1000 0x1000>;
-@@ -1598,6 +1598,7 @@ mdp3-rdma0@14001000 {
- 			iommus = <&iommu M4U_PORT_MDP_RDMA0>;
- 			mboxes = <&gce 20 CMDQ_THR_PRIO_LOWEST 0>,
- 				 <&gce 21 CMDQ_THR_PRIO_LOWEST 0>;
-+			#dma-cells = <1>;
- 		};
+ 	crtc = exynos_drm_crtc_get_by_type(drm_dev, EXYNOS_DISPLAY_TYPE_HDMI);
++	if (IS_ERR(crtc))
++		return PTR_ERR(crtc);
+ 	crtc->pipe_clk = &hdata->phy_clk;
  
- 		mdp3-rsz0@14003000 {
-@@ -1618,7 +1619,7 @@ mdp3-rsz1@14004000 {
- 			clocks = <&mmsys CLK_MM_MDP_RSZ1>;
- 		};
- 
--		mdp3-wrot0@14005000 {
-+		dma-controller@14005000 {
- 			compatible = "mediatek,mt8183-mdp3-wrot";
- 			reg = <0 0x14005000 0 0x1000>;
- 			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x5000 0x1000>;
-@@ -1627,6 +1628,7 @@ mdp3-wrot0@14005000 {
- 			power-domains = <&spm MT8183_POWER_DOMAIN_DISP>;
- 			clocks = <&mmsys CLK_MM_MDP_WROT0>;
- 			iommus = <&iommu M4U_PORT_MDP_WROT0>;
-+			#dma-cells = <1>;
- 		};
- 
- 		mdp3-wdma@14006000 {
+ 	ret = hdmi_create_connector(encoder);
 -- 
 2.43.0
 
