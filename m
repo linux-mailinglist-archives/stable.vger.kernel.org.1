@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC24E837F26
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F28F837F72
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B18629BE56
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B35741F25A8E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA7D61678;
-	Tue, 23 Jan 2024 00:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3EC62A1B;
+	Tue, 23 Jan 2024 00:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNXazQi4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzPe7qi4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3331560DE3;
-	Tue, 23 Jan 2024 00:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDA462814;
+	Tue, 23 Jan 2024 00:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970968; cv=none; b=ayY9ZUQLwmEWpPgjgCv1jKUL2cYnYhXN8wT4hvR2DreuV8bO+HmVbY+7Xnf7RhXBIeRE7WCj7E7no/AOQPGW+1PGq/wHYe+oQqzLoVkcNtfX/9dLM0mh7Fgv2DtgeZhS6HOPSNyZMfYb8g/FY0cdsmE00+fyhakgbxyeHIFfxMg=
+	t=1705971136; cv=none; b=ucQ0cQqjV4sJtayxBDlsegLFVOapg0PkV+hYZ42IP2UXuFBIvRrYQy6s98kcxwHMK0ztBLs5wiwRXaLiuIiGnNI3kmREJLrO5nzYfO/tnW9CfD9YKuhZJ7HKtu8j6p0Z9pHLeF/F/NYYIEYpecOyKk1ZhmsUGjOHbDl1eazioO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970968; c=relaxed/simple;
-	bh=VR/8oLrQX9MKw12h6VwZPZOa8PV2iB+BA8JBG2DH4C0=;
+	s=arc-20240116; t=1705971136; c=relaxed/simple;
+	bh=qF34d9jI2jC6/2KLGNvWOU3QJgUcPek3M9An6r/NITE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJ+oTp8me68TIChM4vy/pv1/sUfNd32kasD4CYjugztfdDlnL2XGYV0Cwj/6HhXoAovpygwaXSX/elBZcgbhbShaVx4udS7gjakMnPNoAn99k8od03BBC044Jr4Kk4MFR93Mt3rYxqCjlgVW1+3QqB+AQwXdXKQDHzdn2q7+haM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNXazQi4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB76DC433C7;
-	Tue, 23 Jan 2024 00:49:27 +0000 (UTC)
+	 MIME-Version; b=NMvVuDu2TT+rogzAWLmymbW2sNdksvbgHvEJvb1nbuGkEog/ri+TldV8bbjo3bM3+K1r/Gj9QhgVt40O9Ls+jyitWWdKhchTPreZBnlaAO6jrwohwGdRngTsXEh1F/XGe3NxsXdKVLqcQHSOiuyyILamfHJahCDiWNiX1g5ikmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzPe7qi4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358ABC43394;
+	Tue, 23 Jan 2024 00:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970968;
-	bh=VR/8oLrQX9MKw12h6VwZPZOa8PV2iB+BA8JBG2DH4C0=;
+	s=korg; t=1705971136;
+	bh=qF34d9jI2jC6/2KLGNvWOU3QJgUcPek3M9An6r/NITE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zNXazQi4GUHQdS+4zLJVKn7wDsNs3aDlQJqy6+qjoD7oW5x+U73ty1dbqshEYaklH
-	 1Vm+ZGAw5nqU4MgMEe9pus0xgjJSnP3vJTYYoNVS1l+SUh8if4iLT36rqDRcyGKE+V
-	 IhwXjuvjVFoxQA5sC+VtFcfNLpr+2MXlD4V76PSU=
+	b=TzPe7qi4MHQdO5wz4gylX8X/04oe43gF39yxxsipbvezTU3qlo28e8XBbPWZaAa/H
+	 yxNEmRJG0/MtY07p7knSrOlgl6/npf8eaTFIPIAeHLWPgnKT19sG2wJ7jkVvw5H9bd
+	 tD6hDeuUOcJkUAdDNJp8aC+coh+saW3EucMKduQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 050/286] EDAC/thunderx: Fix possible out-of-bounds string access
+Subject: [PATCH 6.1 188/417] drm/radeon/trinity_dpm: fix a memleak in trinity_parse_power_table
 Date: Mon, 22 Jan 2024 15:55:56 -0800
-Message-ID: <20240122235733.958829813@linuxfoundation.org>
+Message-ID: <20240122235758.418285761@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 475c58e1a471e9b873e3e39958c64a2d278275c8 ]
+[ Upstream commit 28c28d7f77c06ac2c0b8f9c82bc04eba22912b3b ]
 
-Enabling -Wstringop-overflow globally exposes a warning for a common bug
-in the usage of strncat():
+The rdev->pm.dpm.ps allocated by kcalloc should be freed in every
+following error-handling path. However, in the error-handling of
+rdev->pm.power_state[i].clock_info the rdev->pm.dpm.ps is not freed,
+resulting in a memleak in this function.
 
-  drivers/edac/thunderx_edac.c: In function 'thunderx_ocx_com_threaded_isr':
-  drivers/edac/thunderx_edac.c:1136:17: error: 'strncat' specified bound 1024 equals destination size [-Werror=stringop-overflow=]
-   1136 |                 strncat(msg, other, OCX_MESSAGE_SIZE);
-        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   ...
-   1145 |                                 strncat(msg, other, OCX_MESSAGE_SIZE);
-   ...
-   1150 |                                 strncat(msg, other, OCX_MESSAGE_SIZE);
-
-   ...
-
-Apparently the author of this driver expected strncat() to behave the
-way that strlcat() does, which uses the size of the destination buffer
-as its third argument rather than the length of the source buffer. The
-result is that there is no check on the size of the allocated buffer.
-
-Change it to strlcat().
-
-  [ bp: Trim compiler output, fixup commit message. ]
-
-Fixes: 41003396f932 ("EDAC, thunderx: Add Cavium ThunderX EDAC driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/20231122222007.3199885-1-arnd@kernel.org
+Fixes: d70229f70447 ("drm/radeon/kms: add dpm support for trinity asics")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/thunderx_edac.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/radeon/trinity_dpm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/edac/thunderx_edac.c b/drivers/edac/thunderx_edac.c
-index 0eb5eb97fd74..3b0e1fe27d93 100644
---- a/drivers/edac/thunderx_edac.c
-+++ b/drivers/edac/thunderx_edac.c
-@@ -1133,7 +1133,7 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(int irq, void *irq_id)
- 		decode_register(other, OCX_OTHER_SIZE,
- 				ocx_com_errors, ctx->reg_com_int);
- 
--		strncat(msg, other, OCX_MESSAGE_SIZE);
-+		strlcat(msg, other, OCX_MESSAGE_SIZE);
- 
- 		for (lane = 0; lane < OCX_RX_LANES; lane++)
- 			if (ctx->reg_com_int & BIT(lane)) {
-@@ -1142,12 +1142,12 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(int irq, void *irq_id)
- 					 lane, ctx->reg_lane_int[lane],
- 					 lane, ctx->reg_lane_stat11[lane]);
- 
--				strncat(msg, other, OCX_MESSAGE_SIZE);
-+				strlcat(msg, other, OCX_MESSAGE_SIZE);
- 
- 				decode_register(other, OCX_OTHER_SIZE,
- 						ocx_lane_errors,
- 						ctx->reg_lane_int[lane]);
--				strncat(msg, other, OCX_MESSAGE_SIZE);
-+				strlcat(msg, other, OCX_MESSAGE_SIZE);
- 			}
- 
- 		if (ctx->reg_com_int & OCX_COM_INT_CE)
-@@ -1217,7 +1217,7 @@ static irqreturn_t thunderx_ocx_lnk_threaded_isr(int irq, void *irq_id)
- 		decode_register(other, OCX_OTHER_SIZE,
- 				ocx_com_link_errors, ctx->reg_com_link_int);
- 
--		strncat(msg, other, OCX_MESSAGE_SIZE);
-+		strlcat(msg, other, OCX_MESSAGE_SIZE);
- 
- 		if (ctx->reg_com_link_int & OCX_COM_LINK_INT_UE)
- 			edac_device_handle_ue(ocx->edac_dev, 0, 0, msg);
-@@ -1896,7 +1896,7 @@ static irqreturn_t thunderx_l2c_threaded_isr(int irq, void *irq_id)
- 
- 		decode_register(other, L2C_OTHER_SIZE, l2_errors, ctx->reg_int);
- 
--		strncat(msg, other, L2C_MESSAGE_SIZE);
-+		strlcat(msg, other, L2C_MESSAGE_SIZE);
- 
- 		if (ctx->reg_int & mask_ue)
- 			edac_device_handle_ue(l2c->edac_dev, 0, 0, msg);
+diff --git a/drivers/gpu/drm/radeon/trinity_dpm.c b/drivers/gpu/drm/radeon/trinity_dpm.c
+index 08ea1c864cb2..ef1cc7bad20a 100644
+--- a/drivers/gpu/drm/radeon/trinity_dpm.c
++++ b/drivers/gpu/drm/radeon/trinity_dpm.c
+@@ -1726,8 +1726,10 @@ static int trinity_parse_power_table(struct radeon_device *rdev)
+ 		non_clock_array_index = power_state->v2.nonClockInfoIndex;
+ 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
+ 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
+-		if (!rdev->pm.power_state[i].clock_info)
++		if (!rdev->pm.power_state[i].clock_info) {
++			kfree(rdev->pm.dpm.ps);
+ 			return -EINVAL;
++		}
+ 		ps = kzalloc(sizeof(struct sumo_ps), GFP_KERNEL);
+ 		if (ps == NULL) {
+ 			kfree(rdev->pm.dpm.ps);
 -- 
 2.43.0
 
