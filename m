@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9AA837EE7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 209978383B4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E818B29BC6E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53C2F1C28A49
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFD96026F;
-	Tue, 23 Jan 2024 00:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A843464AB5;
+	Tue, 23 Jan 2024 01:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wj7cITB5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ECe0++FD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6B46026B;
-	Tue, 23 Jan 2024 00:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6820764AB0;
+	Tue, 23 Jan 2024 01:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970815; cv=none; b=udhvtYO4eVfQNtNRGMOauBxw43LQ/JboJV+48WSpvcrTDxhKpO4/dzgPdTEjRFC/PrQvO3+pjMAuXl3RIj0dyiNnwpAT+NsSchaYPWF+04XGzVL+Ry8fDKzlmY66k1hHIuMVu8oMP7bGaw28l05hDK9jm/sZVhEvGB7K2BWfgBk=
+	t=1705975043; cv=none; b=U0NPVTOqecjP5ToAf5xkE6Jb3f7GHMrECdbGiP739sbZYg5+Zyv299twA2mlGQ5gG1jOA5TGrMQDB431t8DcqM9zZQDTfwtcvub84fhRUf2xioxpnxFLtaOAG/HNvhIoV/BMIL+Jm4caxJ1oUHmtiyFqRzztyVmt3AP10gWQI4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970815; c=relaxed/simple;
-	bh=3yWYnpDIkP0sB+SfrpNR8wzkmTdOFcQqYi4jIbIzbWo=;
+	s=arc-20240116; t=1705975043; c=relaxed/simple;
+	bh=xLOrwr0wwJ7+K2bXnvjoRxNTvCF2O/Basxsdn5YuYZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=InGA5j/A3R+5Q+bzeIbXD9Fh97lB7oI1IOUhGLFDMkr5sof7yw1UoPhDVLW9hqWqmGakONQ5QDCQvwyLyU11TLVpuFbWba6HPaW8kV1TQt+5MeNHhGZapNkHrTD09nYxe7fEAysYWfd8b+JIjuporybKc2l/Kf8Ny8R7TFDK4iI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wj7cITB5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFC0C433F1;
-	Tue, 23 Jan 2024 00:46:54 +0000 (UTC)
+	 MIME-Version; b=lvU6az81YBFh5TX/8NOA3O2wLreWDWidMcSAcOToqmy7L3N8u7WI3BzJl7zrcAbLIOUIe8b5TYphch7NXC53V89tGiKfp0DTidwB0rXuooeFnFlg+lMJ5mErre2C6f8pTCDh1lv0L4JXYDlldwgTgovLdT48Pvw624V+bbYgp8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ECe0++FD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE2BC433F1;
+	Tue, 23 Jan 2024 01:57:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970815;
-	bh=3yWYnpDIkP0sB+SfrpNR8wzkmTdOFcQqYi4jIbIzbWo=;
+	s=korg; t=1705975043;
+	bh=xLOrwr0wwJ7+K2bXnvjoRxNTvCF2O/Basxsdn5YuYZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wj7cITB5GGAtiu/g2bPTej//N/0BtphTugHblsdnp/ejGQr1Da5yxPf11NNJxzIrU
-	 5QEFPET0eVlPVzlbnq9ldIec2HXhbemKTGLuI+RXBHSsEDly/lLIXGt6AkBMXLdA2m
-	 /78W+UxyVKTHaIO6qeXqU7RTef/8rgL/ueKCyXy4=
+	b=ECe0++FDbf+lBDBWBNy0d/UuAMvLMbYaPYim42TXxvMLgj9GyhxWe79ZYpdbie01J
+	 UZmBEaHv64VhHrQehXnk05zyVeVg+bX9ksS+MTUhdy49xh2Dnu8xwlL1+uidAhj9n6
+	 1d62caRIfwTmkHEZ95c2hxj/5uont6dnziqz6iBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao@huaweicloud.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 093/417] rcu-tasks: Provide rcu_trace_implies_rcu_gp()
+Subject: [PATCH 6.6 210/583] wifi: cfg80211: correct comment about MLD ID
 Date: Mon, 22 Jan 2024 15:54:21 -0800
-Message-ID: <20240122235754.917598986@linuxfoundation.org>
+Message-ID: <20240122235818.430319540@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit e6c86c513f440bec5f1046539c7e3c6c653842da ]
+[ Upstream commit 2a0698f86d4dfc43cc0c1703efb7ba6b1506a4e2 ]
 
-As an accident of implementation, an RCU Tasks Trace grace period also
-acts as an RCU grace period.  However, this could change at any time.
-This commit therefore creates an rcu_trace_implies_rcu_gp() that currently
-returns true to codify this accident.  Code relying on this accident
-must call this function to verify that this accident is still happening.
+The comment was referencing the wrong section of the documentation and
+was also subtly wrong as it assumed the rules that apply when sending
+probe requests directly to a nontransmitted AP. However, in that case
+the response comes from the transmitting AP and the AP MLD ID will be
+included.
 
-Reported-by: Hou Tao <houtao@huaweicloud.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Martin KaFai Lau <martin.lau@linux.dev>
-Link: https://lore.kernel.org/r/20221014113946.965131-2-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: 876673364161 ("bpf: Defer the free of inner map when necessary")
+Fixes: 2481b5da9c6b ("wifi: cfg80211: handle BSS data contained in ML probe responses")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240102213313.0917ab4b5d7f.I76aff0e261a5de44ffb467e591a46597a30d7c0a@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rcupdate.h | 12 ++++++++++++
- kernel/rcu/tasks.h       |  2 ++
- 2 files changed, 14 insertions(+)
+ net/wireless/scan.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index e9e61cd27ef6..46bd9a331fd5 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -242,6 +242,18 @@ static inline void exit_tasks_rcu_stop(void) { }
- static inline void exit_tasks_rcu_finish(void) { }
- #endif /* #else #ifdef CONFIG_TASKS_RCU_GENERIC */
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index e4cc6209c7b9..a7d7469b10a4 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -2625,8 +2625,11 @@ static void cfg80211_parse_ml_sta_data(struct wiphy *wiphy,
+ 	/* MLD capabilities and operations */
+ 	pos += 2;
  
-+/**
-+ * rcu_trace_implies_rcu_gp - does an RCU Tasks Trace grace period imply an RCU grace period?
-+ *
-+ * As an accident of implementation, an RCU Tasks Trace grace period also
-+ * acts as an RCU grace period.  However, this could change at any time.
-+ * Code relying on this accident must call this function to verify that
-+ * this accident is still happening.
-+ *
-+ * You have been warned!
-+ */
-+static inline bool rcu_trace_implies_rcu_gp(void) { return true; }
-+
- /**
-  * cond_resched_tasks_rcu_qs - Report potential quiescent states to RCU
-  *
-diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index c1f18c63b9b1..b5d5b6cf093a 100644
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -1570,6 +1570,8 @@ static void rcu_tasks_trace_postscan(struct list_head *hop)
- {
- 	// Wait for late-stage exiting tasks to finish exiting.
- 	// These might have passed the call to exit_tasks_rcu_finish().
-+
-+	// If you remove the following line, update rcu_trace_implies_rcu_gp()!!!
- 	synchronize_rcu();
- 	// Any tasks that exit after this point will set
- 	// TRC_NEED_QS_CHECKED in ->trc_reader_special.b.need_qs.
+-	/* Not included when the (nontransmitted) AP is responding itself,
+-	 * but defined to zero then (Draft P802.11be_D3.0, 9.4.2.170.2)
++	/*
++	 * The MLD ID of the reporting AP is always zero. It is set if the AP
++	 * is part of an MBSSID set and will be non-zero for ML Elements
++	 * relating to a nontransmitted BSS (matching the Multi-BSSID Index,
++	 * Draft P802.11be_D3.2, 35.3.4.2)
+ 	 */
+ 	if (u16_get_bits(control, IEEE80211_MLC_BASIC_PRES_MLD_ID)) {
+ 		mld_id = *pos;
 -- 
 2.43.0
 
