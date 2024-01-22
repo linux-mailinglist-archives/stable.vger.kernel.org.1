@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-12784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5F483738F
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 21:14:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEB89837392
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 21:14:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E27C728EC09
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:14:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52EB61F2C604
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C01C405EC;
-	Mon, 22 Jan 2024 20:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92194405EC;
+	Mon, 22 Jan 2024 20:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZ1XBOqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxbVDvFM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C45E3DB86
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 20:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DE941233
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 20:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705954444; cv=none; b=Uirt++BqY8e3RLBSPC5mkkWvGianBcq7MuPuEIe+hANHwB9hE0HzFL697+LS+nxarML9gyCkdPO5jjEi7NW+uWqnxcM3vkSB1HfgNXKGrD0Hz7E8UFrPXVBEQSx2s/eM2hxs3fCQ+tED48AAFfurmkE/xgdNu1b1KhE0i9M6vI8=
+	t=1705954452; cv=none; b=cG7+YvnGttqAhR1lbfc5qq4ih5H4DDVEedINOTW5GEzuRk9rJ/r4aHSnPNCCob1siyX9UvoYtsYiPJbStQtsLUnWljKBo624ro+RrG19IVAoEIIA25jQZAtBg4ApsV9xSnW2w/985FY1rdXHvYNwSE9nAaN21nKzgqGEXOkryMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705954444; c=relaxed/simple;
-	bh=3UaDD8gH72GgFW+cxY8/JF65fB8qPN0GtDA3kL8mTzE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bROCyYXCH9svk4vNYHu3TLshgc4Xeq+Jldc9A56iKRwWXj2XjYflIHegzg0KYCJ34QNViwT/QUBB/07aowJ1pFAza5DqSbD/pI8SAj5Ed4jEIidY3P7abz8WoWVU8VbQXLC6g4udEhd0UY9e7BwJietmxKNcAuWJn+0TBSOXY1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZ1XBOqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8287BC433C7;
-	Mon, 22 Jan 2024 20:14:01 +0000 (UTC)
+	s=arc-20240116; t=1705954452; c=relaxed/simple;
+	bh=WAswLKrBaUe9egn1eBq8rnn+Prg1GChfzQdB69l6Ys4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CfDPwttiO/34oLF3u29JV2oaIvRjSfQTzOtBWNOTPJuWMVdWoGwiLj39viJ2drBrYGFVWKfG5J3TOVwOfAkttG7KQJdXaQvX0Hyran3VsK+9H3TC3KvwN1FZ5258iBhFiioMdvyVXpSnV/TANzycqu+JJVjdQDwERjkIUJ4drlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxbVDvFM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B13AC433C7;
+	Mon, 22 Jan 2024 20:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705954442;
-	bh=3UaDD8gH72GgFW+cxY8/JF65fB8qPN0GtDA3kL8mTzE=;
+	s=korg; t=1705954451;
+	bh=WAswLKrBaUe9egn1eBq8rnn+Prg1GChfzQdB69l6Ys4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=LZ1XBOqtzTdOg9q44uHmuyuQsm4BCRkPZnadxI66pL8Z/lXbJA5saZyxYMi1+why+
-	 px9tUh+nnT4tPNxKhwoBkV2IStEV01xcDRfbvrkulL7yo3/6nTP0hvR5tGGtD2ViPZ
-	 4kTxtRJ5f7i7VYSTxYSWXjHRjYTs5Ah+n9hqVmuY=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: revert "Adjust removal control flow for smu" failed to apply to 6.1-stable tree
+	b=MxbVDvFMiZlWR1/vdONPskf+9cvIhPY4FYE2Xmuvtvegu21aT9ooqjZunr9t60r2n
+	 udi2vgcS6iZl3T3B5vCRzp+SHPAH3vZt7aBMPJKIO0AfzpZUEeUFCVlrm2bTFEhAO/
+	 lghN1frmfd8mphTcisy2N0OqSr0Kxqi8MFyLgIOc=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: revert "Adjust removal control flow for smu" failed to apply to 6.6-stable tree
 To: christian.koenig@amd.com,alexander.deucher@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 22 Jan 2024 12:13:59 -0800
-Message-ID: <2024012259-habitable-dynasty-e10b@gregkh>
+Date: Mon, 22 Jan 2024 12:14:01 -0800
+Message-ID: <2024012200-chapter-graph-3e80@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x fb1c93c2e9604a884467a773790016199f78ca08
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012259-habitable-dynasty-e10b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012200-chapter-graph-3e80@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -86,9 +86,6 @@ aba2be41470a ("drm/amdgpu: add mmhub 3.3.0 support")
 f56c1941ebb7 ("drm/amdgpu: use 6.1.0 register offset for HDP CLK_CNTL")
 15c5c5f57514 ("drm/amdgpu: Add bootloader status check")
 3cce0bfcd0f9 ("drm/amd/display: Enable Replay for static screen use cases")
-e20ff051707c ("drm/amdgpu: Add memory vendor information")
-603b9a575d57 ("drm/amdgpu: skip fence GFX interrupts disable/enable for S0ix")
-15419813f2ef ("drm/amd: Hide unsupported power attributes")
 
 thanks,
 
