@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122F3837BC9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 488988382C8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:23:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3E721F2A3B4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9D90B23F4D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F16154457;
-	Tue, 23 Jan 2024 00:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB0459B5D;
+	Tue, 23 Jan 2024 01:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVOwkeWg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGmCbcA3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63A1154441;
-	Tue, 23 Jan 2024 00:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7C84EB52;
+	Tue, 23 Jan 2024 01:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969384; cv=none; b=tRj8t2rNHCYpPE3DCIiIRdB7ofnsxzcp69G+OIhLcRFEv/xLBbc+LBlhcyg4KM4v30x5Ek6E2sIGoMDgIhzc9PMdwQAys+FLGButPgl40EdS7fuQUIAK8Cq38R4aiUa0X61wNOeq5iFMdJSRPIlsC2ydiFQJahtlC+akbnQZyVk=
+	t=1705974105; cv=none; b=asLbBcEMTi1etRt/1za2yHbji8LUhIwmTuUeQyS9SK9EMlPvfIBvSHWsI7fN2Jd+Zb7xxMSTSu3BjW0+rQCBzv2eOGlY8Bfd+cHOWSJT3KOfQf75Lxm7L7mlfC07y2HYRNuFeBNcuEnjf18PzzHg6A+R2tywpiTiYQR8fxmltJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969384; c=relaxed/simple;
-	bh=SZX2+5ZmSUOzADCvx7hRSjLTT6qLTEMaj++IWHp1Pg4=;
+	s=arc-20240116; t=1705974105; c=relaxed/simple;
+	bh=AGz8RIdaW7988L0YOvKEN31AhG/QF40gjfDw9q7++AI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ArOQNNKljYdDilvTql5k+JHLOMrJUsgjKAW8Bl94+qL9NokNEgJG7E+mYx6VXSZWv3BFipUJTyX4CuPsQf7WTcyrl0u5EgYH0+3OFrHnSPNxi2il+NN9PB+S7B++Zo5AWH3EBSTljkfKKiMskuULdB4CBzX7MEWQUP6qQu1Qhkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVOwkeWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6540BC433F1;
-	Tue, 23 Jan 2024 00:23:04 +0000 (UTC)
+	 MIME-Version; b=t5SSLCyC4nd4xyrtND1d0Qa5eDDnbpfBlCmKWIErqXsvVwFVvsPjtRLZArnY0AlH+J6LECHnTKbJ63aakLsiHb5G2NQVTOVmZn5UJevd3zeFqVpsRa03JCd15/zj8Cz4xUcR58n5uYr4CcRoLSy94pPOITf2YNNCBe/emtn93rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGmCbcA3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D8B6C43394;
+	Tue, 23 Jan 2024 01:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969384;
-	bh=SZX2+5ZmSUOzADCvx7hRSjLTT6qLTEMaj++IWHp1Pg4=;
+	s=korg; t=1705974104;
+	bh=AGz8RIdaW7988L0YOvKEN31AhG/QF40gjfDw9q7++AI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JVOwkeWgx45F0ApqISF5dwadXb9CepeaeL4GvrfjPYH3M8Mc01gmPwzStx8ZZi7Vt
-	 29op4VODXoCrd6HJfVFKOXsiKpL9RnptTOgQ2Nz9LLqPskgBuxao5Xhek5SLQ+b1NN
-	 AsUyp9jgDR08dbOOL7hKLNFzaXNo6wRGmFAinsRs=
+	b=OGmCbcA3ju7bWHf3UHsKGWeIWtGpMppgZOj0JBtr9OGTMBBcI6AYagQz+Pvh18Rld
+	 3Twy9oryVZDeDjLFLyGMWSjxDHhrLfuPSX2wBgmvAKHULhay58jRe26hi8TRzgsZvw
+	 s5efPSVDueZepXDPZYJtdEd+sZJXDCFjXVIdMxyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Yinbo Zhu <zhuyinbo@loongson.cn>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 186/641] virtio/vsock: fix logic which reduces credit update messages
-Date: Mon, 22 Jan 2024 15:51:30 -0800
-Message-ID: <20240122235823.801583342@linuxfoundation.org>
+Subject: [PATCH 6.6 040/583] drivers/thermal/loongson2_thermal: Fix incorrect PTR_ERR() judgment
+Date: Mon, 22 Jan 2024 15:51:31 -0800
+Message-ID: <20240122235813.375915692@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: Binbin Zhou <zhoubinbin@loongson.cn>
 
-[ Upstream commit 93b80887668226180ea5f5349cc728ca6dc700ab ]
+[ Upstream commit 15ef92e9c41124ee9d88b01208364f3fe1f45f84 ]
 
-Add one more condition for sending credit update during dequeue from
-stream socket: when number of bytes in the rx queue is smaller than
-SO_RCVLOWAT value of the socket. This is actual for non-default value
-of SO_RCVLOWAT (e.g. not 1) - idea is to "kick" peer to continue data
-transmission, because we need at least SO_RCVLOWAT bytes in our rx
-queue to wake up user for reading data (in corner case it is also
-possible to stuck both tx and rx sides, this is why 'Fixes' is used).
+PTR_ERR() returns -ENODEV when thermal-zones are undefined, and we need
+-ENODEV as the right value for comparison.
 
-Fixes: b89d882dc9fc ("vsock/virtio: reduce credit update messages")
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Otherwise, tz->type is NULL when thermal-zones is undefined, resulting
+in the following error:
+
+[   12.290030] CPU 1 Unable to handle kernel paging request at virtual address fffffffffffffff1, era == 900000000355f410, ra == 90000000031579b8
+[   12.302877] Oops[#1]:
+[   12.305190] CPU: 1 PID: 181 Comm: systemd-udevd Not tainted 6.6.0-rc7+ #5385
+[   12.312304] pc 900000000355f410 ra 90000000031579b8 tp 90000001069e8000 sp 90000001069eba10
+[   12.320739] a0 0000000000000000 a1 fffffffffffffff1 a2 0000000000000014 a3 0000000000000001
+[   12.329173] a4 90000001069eb990 a5 0000000000000001 a6 0000000000001001 a7 900000010003431c
+[   12.337606] t0 fffffffffffffff1 t1 54567fd5da9b4fd4 t2 900000010614ec40 t3 00000000000dc901
+[   12.346041] t4 0000000000000000 t5 0000000000000004 t6 900000010614ee20 t7 900000000d00b790
+[   12.354472] t8 00000000000dc901 u0 54567fd5da9b4fd4 s9 900000000402ae10 s0 900000010614ec40
+[   12.362916] s1 90000000039fced0 s2 ffffffffffffffed s3 ffffffffffffffed s4 9000000003acc000
+[   12.362931] s5 0000000000000004 s6 fffffffffffff000 s7 0000000000000490 s8 90000001028b2ec8
+[   12.362938]    ra: 90000000031579b8 thermal_add_hwmon_sysfs+0x258/0x300
+[   12.386411]   ERA: 900000000355f410 strscpy+0xf0/0x160
+[   12.391626]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
+[   12.397898]  PRMD: 00000004 (PPLV0 +PIE -PWE)
+[   12.403678]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
+[   12.409859]  ECFG: 00071c1c (LIE=2-4,10-12 VS=7)
+[   12.415882] ESTAT: 00010000 [PIL] (IS= ECode=1 EsubCode=0)
+[   12.415907]  BADV: fffffffffffffff1
+[   12.415911]  PRID: 0014a000 (Loongson-64bit, Loongson-2K1000)
+[   12.415917] Modules linked in: loongson2_thermal(+) vfat fat uio_pdrv_genirq uio fuse zram zsmalloc
+[   12.415950] Process systemd-udevd (pid: 181, threadinfo=00000000358b9718, task=00000000ace72fe3)
+[   12.415961] Stack : 0000000000000dc0 54567fd5da9b4fd4 900000000402ae10 9000000002df9358
+[   12.415982]         ffffffffffffffed 0000000000000004 9000000107a10aa8 90000001002a3410
+[   12.415999]         ffffffffffffffed ffffffffffffffed 9000000107a11268 9000000003157ab0
+[   12.416016]         9000000107a10aa8 ffffff80020fc0c8 90000001002a3410 ffffffffffffffed
+[   12.416032]         0000000000000024 ffffff80020cc1e8 900000000402b2a0 9000000003acc000
+[   12.416048]         90000001002a3410 0000000000000000 ffffff80020f4030 90000001002a3410
+[   12.416065]         0000000000000000 9000000002df6808 90000001002a3410 0000000000000000
+[   12.416081]         ffffff80020f4030 0000000000000000 90000001002a3410 9000000002df2ba8
+[   12.416097]         00000000000000b4 90000001002a34f4 90000001002a3410 0000000000000002
+[   12.416114]         ffffff80020f4030 fffffffffffffff0 90000001002a3410 9000000002df2f30
+[   12.416131]         ...
+[   12.416138] Call Trace:
+[   12.416142] [<900000000355f410>] strscpy+0xf0/0x160
+[   12.416167] [<90000000031579b8>] thermal_add_hwmon_sysfs+0x258/0x300
+[   12.416183] [<9000000003157ab0>] devm_thermal_add_hwmon_sysfs+0x50/0xe0
+[   12.416200] [<ffffff80020cc1e8>] loongson2_thermal_probe+0x128/0x200 [loongson2_thermal]
+[   12.416232] [<9000000002df6808>] platform_probe+0x68/0x140
+[   12.416249] [<9000000002df2ba8>] really_probe+0xc8/0x3c0
+[   12.416269] [<9000000002df2f30>] __driver_probe_device+0x90/0x180
+[   12.416286] [<9000000002df3058>] driver_probe_device+0x38/0x160
+[   12.416302] [<9000000002df33a8>] __driver_attach+0xa8/0x200
+[   12.416314] [<9000000002deffec>] bus_for_each_dev+0x8c/0x120
+[   12.416330] [<9000000002df198c>] bus_add_driver+0x10c/0x2a0
+[   12.416346] [<9000000002df46b4>] driver_register+0x74/0x160
+[   12.416358] [<90000000022201a4>] do_one_initcall+0x84/0x220
+[   12.416372] [<90000000022f3ab8>] do_init_module+0x58/0x2c0
+[   12.416386] [<90000000022f6538>] init_module_from_file+0x98/0x100
+[   12.416399] [<90000000022f67f0>] sys_finit_module+0x230/0x3c0
+[   12.416412] [<900000000358f7c8>] do_syscall+0x88/0xc0
+[   12.416431] [<900000000222137c>] handle_syscall+0xbc/0x158
+
+Fixes: e7e3a7c35791 ("thermal/drivers/loongson-2: Add thermal management support")
+Cc: Yinbo Zhu <zhuyinbo@loongson.cn>
+Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/343c14de98216636a47b43e8bfd47b70d0a8e068.1700817227.git.zhoubinbin@loongson.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/thermal/loongson2_thermal.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 6df246b53260..b35306dfcebe 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -557,6 +557,8 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 	struct virtio_vsock_sock *vvs = vsk->trans;
- 	size_t bytes, total = 0;
- 	struct sk_buff *skb;
-+	u32 fwd_cnt_delta;
-+	bool low_rx_bytes;
- 	int err = -EFAULT;
- 	u32 free_space;
+diff --git a/drivers/thermal/loongson2_thermal.c b/drivers/thermal/loongson2_thermal.c
+index 133098dc0854..99ca0c7bc41c 100644
+--- a/drivers/thermal/loongson2_thermal.c
++++ b/drivers/thermal/loongson2_thermal.c
+@@ -127,7 +127,7 @@ static int loongson2_thermal_probe(struct platform_device *pdev)
+ 		if (!IS_ERR(tzd))
+ 			break;
  
-@@ -600,7 +602,10 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 		}
- 	}
+-		if (PTR_ERR(tzd) != ENODEV)
++		if (PTR_ERR(tzd) != -ENODEV)
+ 			continue;
  
--	free_space = vvs->buf_alloc - (vvs->fwd_cnt - vvs->last_fwd_cnt);
-+	fwd_cnt_delta = vvs->fwd_cnt - vvs->last_fwd_cnt;
-+	free_space = vvs->buf_alloc - fwd_cnt_delta;
-+	low_rx_bytes = (vvs->rx_bytes <
-+			sock_rcvlowat(sk_vsock(vsk), 0, INT_MAX));
- 
- 	spin_unlock_bh(&vvs->rx_lock);
- 
-@@ -610,9 +615,11 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
- 	 * too high causes extra messages. Too low causes transmitter
- 	 * stalls. As stalls are in theory more expensive than extra
- 	 * messages, we set the limit to a high value. TODO: experiment
--	 * with different values.
-+	 * with different values. Also send credit update message when
-+	 * number of bytes in rx queue is not enough to wake up reader.
- 	 */
--	if (free_space < VIRTIO_VSOCK_MAX_PKT_BUF_SIZE)
-+	if (fwd_cnt_delta &&
-+	    (free_space < VIRTIO_VSOCK_MAX_PKT_BUF_SIZE || low_rx_bytes))
- 		virtio_transport_send_credit_update(vsk);
- 
- 	return total;
+ 		return dev_err_probe(dev, PTR_ERR(tzd), "failed to register");
 -- 
 2.43.0
 
