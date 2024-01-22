@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-13685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF599837D68
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D3A838011
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E1E11C23B56
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB45C1C2950F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F165B5B3;
-	Tue, 23 Jan 2024 00:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3776064CFA;
+	Tue, 23 Jan 2024 00:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAHXxeye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HD5io+MQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BFE52F7C;
-	Tue, 23 Jan 2024 00:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA54564CF5;
+	Tue, 23 Jan 2024 00:58:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969929; cv=none; b=QNgayzPpRmJ3XbxjAvl4e/1hqjRqxXNfYDwS1XjdkbfYq+PcG00BvYPKg1Gb3VXNn+v5WBK29VbEicRZXM1oxycH/4UICVHPuqzoSjQ9uKjKvkWop5lBr/vtDz/oeakbHuY7HKQN1dYXx6iarNFmLBMEOVZiHrX/nphFoEh3Cfo=
+	t=1705971529; cv=none; b=VCJIqgzbawS7yXM3RROWyj65K7mBdVGtkcHysKWVCxISqAiHUM9NGiBq4gKiHwrJAiJJS008QWGV6ZpGP8MdEz6Rxr64wxBJq4dPN3EB+MzRLGImzsGivhBSPXQfuHWpuC00Hmwce52sBXdKy9T3OB1tFnP/XgeRoZigGXWxpuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969929; c=relaxed/simple;
-	bh=VooucQcIgDapA7yu2x4XtrcljtZUlAx7HN1gwSd+9KE=;
+	s=arc-20240116; t=1705971529; c=relaxed/simple;
+	bh=6i+3HgelJanc/SloyjVPiesdUHwmdp33jt7lgq6PKNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ojl8d4zGHFqrr8BXdFw4OUsHaqeLqLX7h6r10xgbIpeKyvXV0iVhQLQlMU1EFxBth+KKGGkbsbpb5CPlrg+DpFPBVvErgs4xn65GUx9RtsBJRa6KtzQpWx16OEoLSbqjNz4k3nu7u4VOaUbb+mnx4s/chWxFupkzdjEJB59tKPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAHXxeye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC8DC433C7;
-	Tue, 23 Jan 2024 00:32:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bwSTfPKyVdFWaygv6MOzf4stPoZm+uZBRZbUm3jbhndzR7yKv6whDdpmNJlEdnKmBLGfsaP3HZvMKexd7y33W3MKqESDVEUkDFmxgzoKlZK+wXEbqlqgbJePTjV7GNgSAG5WVqjk8+Q6C1INsNk6EZUrLOoaJME4IlNr0UG0kQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HD5io+MQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6461FC433C7;
+	Tue, 23 Jan 2024 00:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969929;
-	bh=VooucQcIgDapA7yu2x4XtrcljtZUlAx7HN1gwSd+9KE=;
+	s=korg; t=1705971528;
+	bh=6i+3HgelJanc/SloyjVPiesdUHwmdp33jt7lgq6PKNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TAHXxeye7C94TcCZRTsaXeMHz9EPXHGCiFLDum0Vib/HzaHLd3oWDj63yIEzxrx47
-	 UH5wTGYLZSelPmlO30Xy02ZJXLfFd1PLybhYE+6h1oH0qRK1NcXGWnZv5m+ambn9Gd
-	 foZsJfSQIv8ZKmHLlFVCtF9Fjajgvw/66e4j5Rng=
+	b=HD5io+MQ5FSm847mjLRwbDKUq58yAz2V/9hCMRlNEUz0Q/vE/tLE0ky05chRZwSa8
+	 XMtPe4SxMoVOOtaMqlbbBAqgVWwVKmUf9jPh65BXSqXgQrVOjPdKUfPXar7smC7l80
+	 ktsnV9LXNMbI/Hup8AkWwNo6nTtw0Mney1KMrLkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 504/641] PCI: Avoid potential out-of-bounds read in pci_dev_for_each_resource()
+Subject: [PATCH 6.1 240/417] drm/amdkfd: Confirm list is non-empty before utilizing list_first_entry in kfd_topology.c
 Date: Mon, 22 Jan 2024 15:56:48 -0800
-Message-ID: <20240122235833.844032233@linuxfoundation.org>
+Message-ID: <20240122235800.199217770@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +64,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 3171e46d677a668eed3086da78671f1e4f5b8405 ]
+[ Upstream commit 499839eca34ad62d43025ec0b46b80e77065f6d8 ]
 
-Coverity complains that pointer in the pci_dev_for_each_resource() may be
-wrong, i.e., might be used for the out-of-bounds read.
+Before using list_first_entry, make sure to check that list is not
+empty, if list is empty return -ENODATA.
 
-There is no actual issue right now because we have another check afterwards
-and the out-of-bounds read is not being performed. In any case it's better
-code with this fixed, hence the proposed change.
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1347 kfd_create_indirect_link_prop() warn: can 'gpu_link' even be NULL?
+drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1428 kfd_add_peer_prop() warn: can 'iolink1' even be NULL?
+drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1433 kfd_add_peer_prop() warn: can 'iolink2' even be NULL?
 
-As Jonas pointed out "It probably makes the code slightly less performant
-as res will now be checked for being not NULL (which will always be true),
-but I doubt it will be significant (or in any hot paths)."
-
-Fixes: 09cc90063240 ("PCI: Introduce pci_dev_for_each_resource()")
-Reported-by: Bjorn Helgaas <bhelgaas@google.com>
-Closes: https://lore.kernel.org/r/20230509182122.GA1259567@bhelgaas
-Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://lore.kernel.org/r/20231030114218.2752236-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: 0f28cca87e9a ("drm/amdkfd: Extend KFD device topology to surface peer-to-peer links")
+Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Suggested-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pci.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index dea043bc1e38..bc80960fad7c 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -2130,14 +2130,14 @@ int pci_iobar_pfn(struct pci_dev *pdev, int bar, struct vm_area_struct *vma);
- 	(pci_resource_end((dev), (bar)) ? 				\
- 	 resource_size(pci_resource_n((dev), (bar))) : 0)
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+index 713f893d2530..705d9e91b5aa 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+@@ -1403,10 +1403,11 @@ static int kfd_create_indirect_link_prop(struct kfd_topology_device *kdev, int g
+ 		num_cpu++;
+ 	}
  
--#define __pci_dev_for_each_res0(dev, res, ...)				\
--	for (unsigned int __b = 0;					\
--	     res = pci_resource_n(dev, __b), __b < PCI_NUM_RESOURCES;	\
-+#define __pci_dev_for_each_res0(dev, res, ...)				  \
-+	for (unsigned int __b = 0;					  \
-+	     __b < PCI_NUM_RESOURCES && (res = pci_resource_n(dev, __b)); \
- 	     __b++)
++	if (list_empty(&kdev->io_link_props))
++		return -ENODATA;
++
+ 	gpu_link = list_first_entry(&kdev->io_link_props,
+-					struct kfd_iolink_properties, list);
+-	if (!gpu_link)
+-		return -ENOMEM;
++				    struct kfd_iolink_properties, list);
  
--#define __pci_dev_for_each_res1(dev, res, __b)				\
--	for (__b = 0;							\
--	     res = pci_resource_n(dev, __b), __b < PCI_NUM_RESOURCES;	\
-+#define __pci_dev_for_each_res1(dev, res, __b)				  \
-+	for (__b = 0;							  \
-+	     __b < PCI_NUM_RESOURCES && (res = pci_resource_n(dev, __b)); \
- 	     __b++)
+ 	for (i = 0; i < num_cpu; i++) {
+ 		/* CPU <--> GPU */
+@@ -1484,15 +1485,17 @@ static int kfd_add_peer_prop(struct kfd_topology_device *kdev,
+ 				peer->gpu->adev))
+ 		return ret;
  
- #define pci_dev_for_each_resource(dev, res, ...)			\
++	if (list_empty(&kdev->io_link_props))
++		return -ENODATA;
++
+ 	iolink1 = list_first_entry(&kdev->io_link_props,
+-							struct kfd_iolink_properties, list);
+-	if (!iolink1)
+-		return -ENOMEM;
++				   struct kfd_iolink_properties, list);
++
++	if (list_empty(&peer->io_link_props))
++		return -ENODATA;
+ 
+ 	iolink2 = list_first_entry(&peer->io_link_props,
+-							struct kfd_iolink_properties, list);
+-	if (!iolink2)
+-		return -ENOMEM;
++				   struct kfd_iolink_properties, list);
+ 
+ 	props = kfd_alloc_struct(props);
+ 	if (!props)
 -- 
 2.43.0
 
