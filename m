@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-14270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE8CF83803E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD0A837FFF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D0311C295E9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C2F9B25023
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D862A64CF0;
-	Tue, 23 Jan 2024 01:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC7412C52A;
+	Tue, 23 Jan 2024 00:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1hj01uq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6F2uu2a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988034E1AD;
-	Tue, 23 Jan 2024 01:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1963B12C525;
+	Tue, 23 Jan 2024 00:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971618; cv=none; b=Rm//EFaFwLOisYcOG4nz3BKpAxQj6FEuc3kaCh/xXwtgE3p4915uyYcxLbgig0zHpOl02aRJO80oeqJkbSeyeUUaArlBOUS1eizVPdsm5ixrXlmHDaQ48iIZf8lG8obUuKyOMTzjxFsrV/hejQQPaGrFZJe29qDLCIA0wCV2xes=
+	t=1705971433; cv=none; b=AID5l/g1Kb3RmEQp6qV0DiwJvUaBqh9h+4BL+RdQdJ62akJZaQ4DBnQaVKYnE1p+LrCN5kYb8VTVJS1r5AAnbTfr4wtIIU6AAraMr00WW+FQ7ewO1aZx6a/y8PKt9Su/PjeFJ5Dp1CBNflgrSSEYm7qtbn74mLMyH073qg5tDXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971618; c=relaxed/simple;
-	bh=laF12l0+J5Um/+L+czPVenIfraqZQFsOsq9fo2k7sF0=;
+	s=arc-20240116; t=1705971433; c=relaxed/simple;
+	bh=c79XDCiAo+vA/Kd1qILf1Y7n7ydazvZuTnejby+6650=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OTZN5btPHMq1adlZg2s4KA/IYNAePvOVQiSy4O8X8YyQ2ijiifd1zIwsxAJM99gFKll5Vsc3g0Gkn9yBYHHzsBFORzpKluYjWemqGxfRK4pPIbQwyrb15Kb6sCPsplMdX9UxNha52TGXg51N1/FozHSia3I9xCl2vUAfhphUtWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1hj01uq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40321C433C7;
-	Tue, 23 Jan 2024 01:00:18 +0000 (UTC)
+	 MIME-Version; b=DC7a2sXbJTwoGMXUKdppg9zDijUwE6F6cQGPa995Xzx3bwU/Z+2bJJssxcoYhOem7hgIYWnzRz5Wo6BwrMHuSGtyrAi7z6G8+uWgLnlT/Lil2TXkkFQSP1ImXeqXDOMj/tuu5N1r644hTz46YyIPijcUzFnQa8s88HbD0y6ebXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6F2uu2a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5713BC43390;
+	Tue, 23 Jan 2024 00:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971618;
-	bh=laF12l0+J5Um/+L+czPVenIfraqZQFsOsq9fo2k7sF0=;
+	s=korg; t=1705971432;
+	bh=c79XDCiAo+vA/Kd1qILf1Y7n7ydazvZuTnejby+6650=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W1hj01uqKpwmbLYtu6UmpJrPvIMjZMtcZ0QnNI3IoBvtdk9dYjjBPPIT8b5J44HUS
-	 awCC8CQW9bNwWXgKg+1giq+3SI4L/lFHrY6uruB7/jmp6KbyWtH3GE/R9INydGp/Co
-	 aONyUeeGWhLRR/y07RAP1/NPgaC+K0VZOJurdPAQ=
+	b=W6F2uu2aKPUO/R71+OVkrsWJ9ZpWAHEdHzttEFJVPWtpoAXu4OjTH4kvKzMPaY2+u
+	 VnfLdtYCVmj+ZbuyiauJQBMggWHJ7r/CfyyD9CDUOx438eoT46+2ucRXGE00RuXdmE
+	 9gvkRh89oHWv4UFN+4noAX8CeQnsuw53EFUKxZm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.1 266/417] usb: cdns3: Fix uvc fail when DMA cross 4k boundery since sg enabled
+	Mark-PK Tsai <mark-pk.tsai@mediatek.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 128/286] dma-mapping: Add dma_release_coherent_memory to DMA API
 Date: Mon, 22 Jan 2024 15:57:14 -0800
-Message-ID: <20240122235801.078553326@linuxfoundation.org>
+Message-ID: <20240122235737.069915124@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
 
-commit 40c304109e866a7dc123661a5c8ca72f6b5e14e0 upstream.
+[ Upstream commit e61c451476e61450f6771ce03bbc01210a09be16 ]
 
-Supposed DMA cross 4k bounder problem should be fixed at DEV_VER_V2, but
-still met problem when do ISO transfer if sg enabled.
+Add dma_release_coherent_memory to DMA API to allow dma
+user call it to release dev->dma_mem when the device is
+removed.
 
-Data pattern likes below when sg enabled, package size is 1k and mult is 2
-	[UVC Header(8B) ] [data(3k - 8)] ...
-
-The received data at offset 0xd000 will get 0xc000 data, len 0x70. Error
-happen position as below pattern:
-	0xd000: wrong
-	0xe000: wrong
-	0xf000: correct
-	0x10000: wrong
-	0x11000: wrong
-	0x12000: correct
-	...
-
-To avoid DMA cross 4k bounder at ISO transfer, reduce burst len according
-to start DMA address's alignment.
-
-Cc:  <stable@vger.kernel.org>
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231224153816.1664687-4-Frank.Li@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
+Acked-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20220422062436.14384-2-mark-pk.tsai@mediatek.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Stable-dep-of: b07bc2347672 ("dma-mapping: clear dev->dma_mem to NULL after freeing it")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdns3-gadget.c |   32 +++++++++++++++++++++++++++++++-
- 1 file changed, 31 insertions(+), 1 deletion(-)
+ include/linux/dma-map-ops.h |  3 +++
+ kernel/dma/coherent.c       | 10 ++++++++--
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/cdns3/cdns3-gadget.c
-+++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -1118,6 +1118,7 @@ static int cdns3_ep_run_transfer(struct
- 	u32 togle_pcs = 1;
- 	int sg_iter = 0;
- 	int num_trb_req;
-+	int trb_burst;
- 	int num_trb;
- 	int address;
- 	u32 control;
-@@ -1240,7 +1241,36 @@ static int cdns3_ep_run_transfer(struct
- 			total_tdl += DIV_ROUND_UP(length,
- 					       priv_ep->endpoint.maxpacket);
- 
--		trb->length |= cpu_to_le32(TRB_BURST_LEN(priv_ep->trb_burst_size) |
-+		trb_burst = priv_ep->trb_burst_size;
+diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
+index a5f89fc4d6df..22e3bfebdc34 100644
+--- a/include/linux/dma-map-ops.h
++++ b/include/linux/dma-map-ops.h
+@@ -165,6 +165,7 @@ static inline void dma_pernuma_cma_reserve(void) { }
+ #ifdef CONFIG_DMA_DECLARE_COHERENT
+ int dma_declare_coherent_memory(struct device *dev, phys_addr_t phys_addr,
+ 		dma_addr_t device_addr, size_t size);
++void dma_release_coherent_memory(struct device *dev);
+ int dma_alloc_from_dev_coherent(struct device *dev, ssize_t size,
+ 		dma_addr_t *dma_handle, void **ret);
+ int dma_release_from_dev_coherent(struct device *dev, int order, void *vaddr);
+@@ -183,6 +184,8 @@ static inline int dma_declare_coherent_memory(struct device *dev,
+ {
+ 	return -ENOSYS;
+ }
 +
-+		/*
-+		 * Supposed DMA cross 4k bounder problem should be fixed at DEV_VER_V2, but still
-+		 * met problem when do ISO transfer if sg enabled.
-+		 *
-+		 * Data pattern likes below when sg enabled, package size is 1k and mult is 2
-+		 *       [UVC Header(8B) ] [data(3k - 8)] ...
-+		 *
-+		 * The received data at offset 0xd000 will get 0xc000 data, len 0x70. Error happen
-+		 * as below pattern:
-+		 *	0xd000: wrong
-+		 *	0xe000: wrong
-+		 *	0xf000: correct
-+		 *	0x10000: wrong
-+		 *	0x11000: wrong
-+		 *	0x12000: correct
-+		 *	...
-+		 *
-+		 * But it is still unclear about why error have not happen below 0xd000, it should
-+		 * cross 4k bounder. But anyway, the below code can fix this problem.
-+		 *
-+		 * To avoid DMA cross 4k bounder at ISO transfer, reduce burst len according to 16.
-+		 */
-+		if (priv_ep->type == USB_ENDPOINT_XFER_ISOC && priv_dev->dev_ver <= DEV_VER_V2)
-+			if (ALIGN_DOWN(trb->buffer, SZ_4K) !=
-+			    ALIGN_DOWN(trb->buffer + length, SZ_4K))
-+				trb_burst = 16;
-+
-+		trb->length |= cpu_to_le32(TRB_BURST_LEN(trb_burst) |
- 					TRB_LEN(length));
- 		pcs = priv_ep->pcs ? TRB_CYCLE : 0;
++#define dma_release_coherent_memory(dev) (0)
+ #define dma_alloc_from_dev_coherent(dev, size, handle, ret) (0)
+ #define dma_release_from_dev_coherent(dev, order, vaddr) (0)
+ #define dma_mmap_from_dev_coherent(dev, vma, vaddr, order, ret) (0)
+diff --git a/kernel/dma/coherent.c b/kernel/dma/coherent.c
+index 5b5b6c7ec7f2..b79d8d0433dd 100644
+--- a/kernel/dma/coherent.c
++++ b/kernel/dma/coherent.c
+@@ -84,7 +84,7 @@ static int dma_init_coherent_memory(phys_addr_t phys_addr,
+ 	return ret;
+ }
  
+-static void dma_release_coherent_memory(struct dma_coherent_mem *mem)
++static void _dma_release_coherent_memory(struct dma_coherent_mem *mem)
+ {
+ 	if (!mem)
+ 		return;
+@@ -136,10 +136,16 @@ int dma_declare_coherent_memory(struct device *dev, phys_addr_t phys_addr,
+ 
+ 	ret = dma_assign_coherent_memory(dev, mem);
+ 	if (ret)
+-		dma_release_coherent_memory(mem);
++		_dma_release_coherent_memory(mem);
+ 	return ret;
+ }
+ 
++void dma_release_coherent_memory(struct device *dev)
++{
++	if (dev)
++		_dma_release_coherent_memory(dev->dma_mem);
++}
++
+ static void *__dma_alloc_from_coherent(struct device *dev,
+ 				       struct dma_coherent_mem *mem,
+ 				       ssize_t size, dma_addr_t *dma_handle)
+-- 
+2.43.0
+
 
 
 
