@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-14492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D055D8381BA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:12:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 073D28383C5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64243B271C1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A3DA1C240D1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E459141988;
-	Tue, 23 Jan 2024 01:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AC3564CCD;
+	Tue, 23 Jan 2024 01:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIezNz+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uF0Rolal"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6E6140796;
-	Tue, 23 Jan 2024 01:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA2B64CFC;
+	Tue, 23 Jan 2024 01:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972039; cv=none; b=Pvb5jsB7R6bsfVvObx9tC4RetjXOOGLlHDryXMpax5O9s9u5OGGNwVdy6+nk92E+yJZ7FvINNyWC1G39GhM9EYsxAT7heHAdWbTKFse2IuD193cibXJvqbDk7IOXw38nbAxG++zHneZQY1Spj4a5ktx4XKfQlqj1v3WOOPvqnHA=
+	t=1705975059; cv=none; b=dp7Y6i7kRnGcgG2w4qzEVaQ4fBCP9+gRZU6NS9MM+7rG8NX33rbfgpwFhn3t3tpHDGBiKrtgPTGN9P4icc9TJuzQyfi5Rl3+CqTb8+G08sEBv+p2bDxatsqsygQdUka02cInlL79+I31wOisbFEja3mlIaWgykykMmDXlhUFdx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972039; c=relaxed/simple;
-	bh=hakS+i9Wb1f7Jxx73fA1/Cskn2vJYfbu/C1MnXSPfhE=;
+	s=arc-20240116; t=1705975059; c=relaxed/simple;
+	bh=lITLzO4lTF5MsrPL7BAuMEhba9IQHbeIWdF9GHCc9Q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YT0KYdlefZdhxdHzN91COXrLkP9AYNdbX75GWmJXF7d/M8bfg6qkBgvjsv1yy5biKyD9Xz5mkRkJ/Ih3BRMUo/lM3Vd+4Lb5Nf0bjJ8X4SaDNVzGwbzihy5c+eiQ1qk5v+NBfpIpcWsHAPtQqkiFqDIiv4YWp03eol1nBeaNcxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIezNz+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE79C433F1;
-	Tue, 23 Jan 2024 01:07:18 +0000 (UTC)
+	 MIME-Version; b=TCooBkIoSTPqLqDGcedpw0T+6K8XD17bSNKe38+g9PEWC/Bp99abKHQZ2p0QOB/+wHEuVd9ioTME8mLXN2ax0I1AuaFB+qA0RMkzBrXE1JYOWSwd9ooiQJAATllmUnMGEwsNs8ORKiufzF+nvCApS/PBQ+rULYnLyjfF1RJcB/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uF0Rolal; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011F0C433B2;
+	Tue, 23 Jan 2024 01:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972039;
-	bh=hakS+i9Wb1f7Jxx73fA1/Cskn2vJYfbu/C1MnXSPfhE=;
+	s=korg; t=1705975059;
+	bh=lITLzO4lTF5MsrPL7BAuMEhba9IQHbeIWdF9GHCc9Q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xIezNz+Y8FejcWfbNCuyMaQgPMEv6F9FsQo8n2j0REahBF+fKI9cL3VRi4qCXdRLs
-	 pevMWo/1DnmylqyxkQwPRzFlC2o/7FBnuUeta6jD08WN2BD3Tz+9xpmLJrp2MiiaU/
-	 fHm1X/0uDlwvuOZpsXXUbP0MR36fbQZzR5Zy5L2Y=
+	b=uF0Rolalpe0tdEQdmo9Njn2qrC/LtN29lHESfmFsEaoO7aU4jMIEF37eL0RzXfl99
+	 Ko9KB918XOMDfnglNwXYdkcgPvLGDWCgmcIdOLKjMJmmxWs2mXHZqUqkZYVWr/4ti5
+	 e7UqBbsX4U8NSGeFHtFsb6p4E+g7GmWCe36u1g1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Julian Anastasov <ja@ssi.bg>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 407/417] ipvs: avoid stat macros calls from preemptible context
+Subject: [PATCH 5.15 319/374] tty: use if in send_break() instead of goto
 Date: Mon, 22 Jan 2024 15:59:35 -0800
-Message-ID: <20240122235805.804335461@linuxfoundation.org>
+Message-ID: <20240122235755.983111169@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit d6938c1c76c64f42363d0d1f051e1b4641c2ad40 ]
+[ Upstream commit 24f2cd019946fc2e88e632d2e24a34c2cc3f2be4 ]
 
-Inside decrement_ttl() upon discovering that the packet ttl has exceeded,
-__IP_INC_STATS and __IP6_INC_STATS macros can be called from preemptible
-context having the following backtrace:
+Now, the "jumped-over" code is simple enough to be put inside an 'if'.
+Do so to make it 'goto'-less.
 
-check_preemption_disabled: 48 callbacks suppressed
-BUG: using __this_cpu_add() in preemptible [00000000] code: curl/1177
-caller is decrement_ttl+0x217/0x830
-CPU: 5 PID: 1177 Comm: curl Not tainted 6.7.0+ #34
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xbd/0xe0
- check_preemption_disabled+0xd1/0xe0
- decrement_ttl+0x217/0x830
- __ip_vs_get_out_rt+0x4e0/0x1ef0
- ip_vs_nat_xmit+0x205/0xcd0
- ip_vs_in_hook+0x9b1/0x26a0
- nf_hook_slow+0xc2/0x210
- nf_hook+0x1fb/0x770
- __ip_local_out+0x33b/0x640
- ip_local_out+0x2a/0x490
- __ip_queue_xmit+0x990/0x1d10
- __tcp_transmit_skb+0x288b/0x3d10
- tcp_connect+0x3466/0x5180
- tcp_v4_connect+0x1535/0x1bb0
- __inet_stream_connect+0x40d/0x1040
- inet_stream_connect+0x57/0xa0
- __sys_connect_file+0x162/0x1a0
- __sys_connect+0x137/0x160
- __x64_sys_connect+0x72/0xb0
- do_syscall_64+0x6f/0x140
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
-RIP: 0033:0x7fe6dbbc34e0
-
-Use the corresponding preemption-aware variants: IP_INC_STATS and
-IP6_INC_STATS.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 8d8e20e2d7bb ("ipvs: Decrement ttl")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Acked-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20230919085156.1578-16-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 66aad7d8d3ec ("usb: cdc-acm: return correct error code on unsupported break")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_xmit.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/tty_io.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
-index b452eb3ddcec..d40a4ca2b27f 100644
---- a/net/netfilter/ipvs/ip_vs_xmit.c
-+++ b/net/netfilter/ipvs/ip_vs_xmit.c
-@@ -271,7 +271,7 @@ static inline bool decrement_ttl(struct netns_ipvs *ipvs,
- 			skb->dev = dst->dev;
- 			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
- 				    ICMPV6_EXC_HOPLIMIT, 0);
--			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
-+			IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
+diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
+index cdbf05e76bc7..82b49aa0f9de 100644
+--- a/drivers/tty/tty_io.c
++++ b/drivers/tty/tty_io.c
+@@ -2511,11 +2511,10 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
+ 		return -EINTR;
  
- 			return false;
- 		}
-@@ -286,7 +286,7 @@ static inline bool decrement_ttl(struct netns_ipvs *ipvs,
- 	{
- 		if (ip_hdr(skb)->ttl <= 1) {
- 			/* Tell the sender its packet died... */
--			__IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
-+			IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
- 			icmp_send(skb, ICMP_TIME_EXCEEDED, ICMP_EXC_TTL, 0);
- 			return false;
- 		}
+ 	retval = tty->ops->break_ctl(tty, -1);
+-	if (retval)
+-		goto out;
+-	msleep_interruptible(duration);
+-	retval = tty->ops->break_ctl(tty, 0);
+-out:
++	if (!retval) {
++		msleep_interruptible(duration);
++		retval = tty->ops->break_ctl(tty, 0);
++	}
+ 	tty_write_unlock(tty);
+ 
+ 	if (signal_pending(current))
 -- 
 2.43.0
 
