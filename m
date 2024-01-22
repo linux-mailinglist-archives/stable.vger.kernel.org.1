@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-13035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206A6837A45
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96892837890
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FEB91C2395B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C77C11C2734B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724F312BEAA;
-	Tue, 23 Jan 2024 00:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E609E134752;
+	Tue, 23 Jan 2024 00:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yo8K8hg6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+V76cH1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3248C12A17F;
-	Tue, 23 Jan 2024 00:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4654134749;
+	Tue, 23 Jan 2024 00:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968850; cv=none; b=NdocXyn9mv03lqbq/zYA63LKqoZEYXishrwTZHcKXRhX7CGMNXAbqX9yR76VbJ8oFYuxdl9w27Vds1lHHglZksRr/bcrZttmtAclBLXtir6LB4pzcSzXaapaAg1dGwLtTpGWYJGI5oOqil3y3x0O46cOMxEJCqtpd4x+goGPzsw=
+	t=1705968112; cv=none; b=Nz7W2yQkpcdU7Nsy/TcYuhzPT2LNlvntFZ3A06zd/mXCJu2IacZOii4y1fsg1kgw1fNHMKDoj/9LZroPdv/J/lXoolt0VVyzm19kscn9n2InbK+8put7L7YKkqR2k289ZDAOfYUl/znVuVwiLoDMy+hn6Mk3LHouxo8B4NhW60U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968850; c=relaxed/simple;
-	bh=TSWgq/abMZL0c0ApWnNe+KLUeT7x4DXHKqwnLCg/ga8=;
+	s=arc-20240116; t=1705968112; c=relaxed/simple;
+	bh=MFQGIwWqUp6j5KK0nHh9dXPrdwdQWX40C7iy1/JeXNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N9pi9EBpukn3tZeYM2C0hTUMCXnmdf1fbn0/pgX/Zk4a4MSTT/nYVacaYQWp2WSq87sKbrIUUsary++dpE+GwfaaLMHmoNkX5XTboYcS3DKdf8u6IbQkM9yLpiiJ7GzYe//klPcgkhSh2Bl+79wAM/omgpX5zQpBXRvXLsAYquQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yo8K8hg6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7948EC433F1;
-	Tue, 23 Jan 2024 00:14:09 +0000 (UTC)
+	 MIME-Version; b=QXJxH/bDRemhZHNDmdTXjoINCJPWzqyegUH7sMRvzoM89W685GOJGOtVQMo31KIpEHf8S8EEQ5q6CSlrs8AHIQBh7hKNZXJuAnWLgNcSt0A4PWXf+zZcv9M5xyLj+yRJl2PWop1XBChxzQBTnEQLzAzYKWaSLUMK+C1t2xxRPpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+V76cH1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B53C433F1;
+	Tue, 23 Jan 2024 00:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968849;
-	bh=TSWgq/abMZL0c0ApWnNe+KLUeT7x4DXHKqwnLCg/ga8=;
+	s=korg; t=1705968112;
+	bh=MFQGIwWqUp6j5KK0nHh9dXPrdwdQWX40C7iy1/JeXNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yo8K8hg62kvtAwADVOaSA5VSNJMRRdZff5oyHN1deBOXt0IxeWkVEBKFj/N1L4b79
-	 Q5upVRyaJ/rvLpLrA0DWEkFr8OKny9mQrdWfC5A23ZuwcLoHO2SX0y8YOwDR4TTYDl
-	 pdeoL66txTeRbK//9R5gBAbKAQyegzUCFRfcICtk=
+	b=l+V76cH1AFzQVV23B7V82M99T3wsAe8P4e8uFaMb/cnrNDI+V+MMR3VoN+Q3KYxhV
+	 j1mkXsVkeVbgQ2X4RPbp+nvnkjNzUL/9+EGwQc6Dtidovmrvj6o/z4dAJToFk+lFBR
+	 UxHd+ccMSJ13Mbpl3TAcHf8kBP68BS+RAkRp9npE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH 5.4 039/194] coresight: etm4x: Fix width of CCITMIN field
-Date: Mon, 22 Jan 2024 15:56:09 -0800
-Message-ID: <20240122235720.884477222@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 014/148] ring-buffer: Do not record in NMI if the arch does not support cmpxchg in NMI
+Date: Mon, 22 Jan 2024 15:56:10 -0800
+Message-ID: <20240122235713.008763811@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit cc0271a339cc70cae914c3ec20edc2a8058407da upstream.
+[ Upstream commit 712292308af2265cd9b126aedfa987f10f452a33 ]
 
-CCITMIN is a 12 bit field and doesn't fit in a u8, so extend it to u16.
-This probably wasn't an issue previously because values higher than 255
-never occurred.
+As the ring buffer recording requires cmpxchg() to work, if the
+architecture does not support cmpxchg in NMI, then do not do any recording
+within an NMI.
 
-But since commit 4aff040bcc8d ("coresight: etm: Override TRCIDR3.CCITMIN
-on errata affected cpus"), a comparison with 256 was done to enable the
-errata, generating the following W=1 build error:
+Link: https://lore.kernel.org/linux-trace-kernel/20231213175403.6fc18540@gandalf.local.home
 
-  coresight-etm4x-core.c:1188:24: error: result of comparison of
-  constant 256 with expression of type 'u8' (aka 'unsigned char') is
-  always false [-Werror,-Wtautological-constant-out-of-range-compare]
-
-   if (drvdata->ccitmin == 256)
-
-Cc: stable@vger.kernel.org
-Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310302043.as36UFED-lkp@intel.com/
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Signed-off-by: James Clark <james.clark@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20231101115206.70810-1-james.clark@arm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/ring_buffer.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/hwtracing/coresight/coresight-etm4x.h
-+++ b/drivers/hwtracing/coresight/coresight-etm4x.h
-@@ -361,7 +361,7 @@ struct etmv4_drvdata {
- 	u8				ctxid_size;
- 	u8				vmid_size;
- 	u8				ccsize;
--	u8				ccitmin;
-+	u16				ccitmin;
- 	u8				s_ex_level;
- 	u8				ns_ex_level;
- 	u8				q_support;
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index b627bc820540..d2903d8834fe 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -2891,6 +2891,12 @@ rb_reserve_next_event(struct ring_buffer *buffer,
+ 	int nr_loops = 0;
+ 	u64 diff;
+ 
++	/* ring buffer does cmpxchg, make sure it is safe in NMI context */
++	if (!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) &&
++	    (unlikely(in_nmi()))) {
++		return NULL;
++	}
++
+ 	rb_start_commit(cpu_buffer);
+ 
+ #ifdef CONFIG_RING_BUFFER_ALLOW_SWAP
+-- 
+2.43.0
+
 
 
 
