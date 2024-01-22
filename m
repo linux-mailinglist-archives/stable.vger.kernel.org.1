@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-12828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB3C083788E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E03F9837AD2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 957FE28C48E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8945B2D001
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7372132C16;
-	Tue, 23 Jan 2024 00:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF8912BEA9;
+	Tue, 23 Jan 2024 00:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOvC08oZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRKTkUmn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE0A132C0C;
-	Tue, 23 Jan 2024 00:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D2212BEA6;
+	Tue, 23 Jan 2024 00:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968104; cv=none; b=p0iKRv5JDwPxTpALNxUuS43rvJeOLm/0aNR/+yYW00VzsxDftI5H9UKAL21ptsOAA3WmrLNRUVyPqSgfERkxrxscak0gqSbGRSUi8LyuXZvHPSKZxdUmmGcZ7OH4o1NOtIgLafhIBa/ABZDdZVgT6gNdEiHG098KPRZddnTNwZs=
+	t=1705968847; cv=none; b=oxlxYG5HmXSJZfM542rovP3g8b6aVe/1onkGRj7WhL7c77ffMRiVIbMGEEjc7kvPrzpU0gmmrGoy0ThnYwGXoyH7FBjQ84lij7tSwXMdh7XJvV9hlMFGL89m8dceZF7X2E+UkDkOJ5h0ZO9HDiGeTHKXlWZyI9WdVvxKCS3BW84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968104; c=relaxed/simple;
-	bh=8HJzLURa5P1aYEpGm7s3/UEFOkh2EwudchDXXdhLIpo=;
+	s=arc-20240116; t=1705968847; c=relaxed/simple;
+	bh=MknyJ+fcllUKmZHwXeXL2n0Cg6pS93iFU4OLs5F3DCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WxshKvXndf2MTxHaaBBbmo41djBHRsOyc4+MiLwqVVI2u7DGZDipMO67R/tTQoVC8AT46A3uYElM+bH5OdfCCEuMrhFNo9EKY2QzQxE/yrKcCL3R5w4qSPwZH8hq9o7O/Y8YVfYmKrRHjLxVXONQetOLwzKf8NnmV6bpiCNJ69w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOvC08oZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962DEC4AF69;
-	Tue, 23 Jan 2024 00:01:43 +0000 (UTC)
+	 MIME-Version; b=RWVNkT3ph/CAaimwdBD8tpAvPjFkLcJtSgBreNxCLbVdsZYiiwfqwuAYAZYzaLKdbv1Cdo3chUD3VJuMzLqRYLQqHgMSSGAW5cvZ3+Me9Q2q43a1WjlC6r6HnTHJpWZUF8tI+r+Y65csN0c4/6cO2CTzBl0MqAIDAbGvfcgdxhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRKTkUmn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ECE2C43399;
+	Tue, 23 Jan 2024 00:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968103;
-	bh=8HJzLURa5P1aYEpGm7s3/UEFOkh2EwudchDXXdhLIpo=;
+	s=korg; t=1705968847;
+	bh=MknyJ+fcllUKmZHwXeXL2n0Cg6pS93iFU4OLs5F3DCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UOvC08oZ+MKQs39sdBrmAr4kYluF3L63JrIPZnK3OLpLg8QtnBCKego4t8Gklv20k
-	 dzttV+HOBbM1eFrgwx6Hyt9vD5q8NeRHbpYp5mPEPaQPiP+T7OoruqVbHvIesJal4C
-	 BzZCVEPtH8EdFKmuQh2shqiGA4H+xGzNPGVhEpFg=
+	b=FRKTkUmnciTUZkXe9l1xlLhyse3pJH+ONuARM3lr6xAJZKZFxau6l8aeNSCNK0awG
+	 1eoNidhVCiPnhJhv+FSSR65/GNbafwFO2L5cYI/zrFQiRMgkQc+IieZqAciY/HmSyX
+	 dFo51cMI/mhFObNSUZ6IijQC6/szxsRVI4mGfJVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 012/148] tracing: Have large events show up as [LINE TOO BIG] instead of nothing
+	Cameron Williams <cang1@live.co.uk>,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Subject: [PATCH 5.4 038/194] parport: parport_serial: Add Brainboxes device IDs and geometry
 Date: Mon, 22 Jan 2024 15:56:08 -0800
-Message-ID: <20240122235712.939955066@linuxfoundation.org>
+Message-ID: <20240122235720.845843215@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Cameron Williams <cang1@live.co.uk>
 
-[ Upstream commit b55b0a0d7c4aa2dac3579aa7e6802d1f57445096 ]
+commit 6aa1fc5a8085bbc01687aa708dcf2dbe637a5ee3 upstream.
 
-If a large event was added to the ring buffer that is larger than what the
-trace_seq can handle, it just drops the output:
+Add device IDs for the Brainboxes UC-203, UC-257, UC-414, UC-475,
+IS-300/IS-500 and PX-263/PX-295 and define the relevant "geometry"
+for the cards.
+This patch requires part 1 of this series.
 
- ~# cat /sys/kernel/tracing/trace
- # tracer: nop
- #
- # entries-in-buffer/entries-written: 2/2   #P:8
- #
- #                                _-----=> irqs-off/BH-disabled
- #                               / _----=> need-resched
- #                              | / _---=> hardirq/softirq
- #                              || / _--=> preempt-depth
- #                              ||| / _-=> migrate-disable
- #                              |||| /     delay
- #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
- #              | |         |   |||||     |         |
-            <...>-859     [001] .....   141.118951: tracing_mark_write           <...>-859     [001] .....   141.148201: tracing_mark_write: 78901234
-
-Instead, catch this case and add some context:
-
- ~# cat /sys/kernel/tracing/trace
- # tracer: nop
- #
- # entries-in-buffer/entries-written: 2/2   #P:8
- #
- #                                _-----=> irqs-off/BH-disabled
- #                               / _----=> need-resched
- #                              | / _---=> hardirq/softirq
- #                              || / _--=> preempt-depth
- #                              ||| / _-=> migrate-disable
- #                              |||| /     delay
- #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
- #              | |         |   |||||     |         |
-            <...>-852     [001] .....   121.550551: tracing_mark_write[LINE TOO BIG]
-            <...>-852     [001] .....   121.550581: tracing_mark_write: 78901234
-
-This now emulates the same output as trace_pipe.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231209171058.78c1a026@gandalf.local.home
-
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Link: https://lore.kernel.org/r/AS4PR02MB7903A4094564BE28F1F926A6C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/parport/parport_serial.c |   56 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index b43d681b072f..e6b2d443bab9 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -3828,7 +3828,11 @@ static int s_show(struct seq_file *m, void *v)
- 		iter->leftover = ret;
+--- a/drivers/parport/parport_serial.c
++++ b/drivers/parport/parport_serial.c
+@@ -285,6 +285,38 @@ static struct pci_device_id parport_seri
+ 	{ PCI_VENDOR_ID_SUNIX, PCI_DEVICE_ID_SUNIX_1999, PCI_VENDOR_ID_SUNIX,
+ 	  0x0104, 0, 0, sunix_5099a },
  
- 	} else {
--		print_trace_line(iter);
-+		ret = print_trace_line(iter);
-+		if (ret == TRACE_TYPE_PARTIAL_LINE) {
-+			iter->seq.full = 0;
-+			trace_seq_puts(&iter->seq, "[LINE TOO BIG]\n");
-+		}
- 		ret = trace_print_seq(m, &iter->seq);
- 		/*
- 		 * If we overflow the seq_file buffer, then it will
--- 
-2.43.0
-
++	/* Brainboxes UC-203 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc1,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc2,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++
++	/* Brainboxes UC-257 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0861,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0862,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0863,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++
++	/* Brainboxes UC-414 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0e61,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc414 },
++
++	/* Brainboxes UC-475 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0981,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0982,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++
++	/* Brainboxes IS-300/IS-500 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0da0,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_is300 },
++
++	/* Brainboxes PX-263/PX-295 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x402c,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_px263 },
++
+ 	{ 0, } /* terminate list */
+ };
+ MODULE_DEVICE_TABLE(pci,parport_serial_pci_tbl);
+@@ -550,6 +582,30 @@ static struct pciserial_board pci_parpor
+ 		.base_baud      = 921600,
+ 		.uart_offset	= 0x8,
+ 	},
++	[brainboxes_uc257] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 2,
++		.base_baud	= 115200,
++		.uart_offset	= 8,
++	},
++	[brainboxes_is300] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 1,
++		.base_baud	= 115200,
++		.uart_offset	= 8,
++	},
++	[brainboxes_uc414] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 4,
++		.base_baud	= 115200,
++		.uart_offset	= 8,
++	},
++	[brainboxes_px263] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 4,
++		.base_baud	= 921600,
++		.uart_offset	= 8,
++	},
+ };
+ 
+ struct parport_serial_private {
 
 
 
