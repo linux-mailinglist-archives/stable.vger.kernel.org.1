@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-13997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80428837F19
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE8E837F1B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B29721C231AE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC19E1F2B8F3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1094160882;
-	Tue, 23 Jan 2024 00:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5258F6088B;
+	Tue, 23 Jan 2024 00:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3OhOQaz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+ZFaizx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44013FFE;
-	Tue, 23 Jan 2024 00:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106F93FFE;
+	Tue, 23 Jan 2024 00:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970937; cv=none; b=qLORBoMx1q02tqsHyaxsi305z6SNJZ7ZwD+xxPQZJ7ZU0at3ijLZuATdV+8bcXi8AIJzz+te6lcpkWI+m18w/dHgWstHlokOweEcnSGMpVT5bud7RVvjocmrBSdM8uqTu1kP6mf2RtgIyTexOLQb1dswL8ZpETbzIS6SfOiltTo=
+	t=1705970942; cv=none; b=BMVt+HPbPHLKi1pcBXwSLBbvsf/LTTw9Yqf3CV4Jto45kwyK/4DQK9vxGmO5CQAlB5OsHntuYEyyXwO4VWLq4jLbc3FgcskcR1DSZRr8Bol9/s0WRq1/tz0Q0BvO1V/j0V1Fb74X4sHm+XlScf5YJmt4fhFowi0uqBrW7HtmTLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970937; c=relaxed/simple;
-	bh=VAhjB5lgdxLzRVJ6y1vox/0Qz2E+q7mqoYJ5XZ8g6H8=;
+	s=arc-20240116; t=1705970942; c=relaxed/simple;
+	bh=pCeV1kJ7rdpj8EbpJL6BGok+i4I8Ghstow2nucdyulE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=diagY1D0uW14rq3FS9eDBGNhOhPaaeJJpjPp72pHE5cKrW2HPsNOUEAyCGmlAKKm1XKf5vOk7BWm3FuI2gi0b0BExAYg7kEdylK3LVVOF01R7c4cmvbTbZ1FdpktErIV5EOVo1XqnmxHAFpI3bam9sCGLnd93W8F0HQEbQzqGx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3OhOQaz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9B8C43390;
-	Tue, 23 Jan 2024 00:48:57 +0000 (UTC)
+	 MIME-Version; b=gdWs1uJKYT3IavU5ij2F13uohKOHnuT1DEjkTUVxWeJoJ1nCwXVmYNq8oO1WeyCqcxd96D3wlg0VDpRxc0mD6/9pfVCVJxNtJJ6+RDokNSJK7tuIPjlfB8JOlr7sbPQf6+jUUTmox/uhOH85x4cAiGVZ4cR5ScBIOIRMXrcNxNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+ZFaizx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85741C43390;
+	Tue, 23 Jan 2024 00:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970937;
-	bh=VAhjB5lgdxLzRVJ6y1vox/0Qz2E+q7mqoYJ5XZ8g6H8=;
+	s=korg; t=1705970941;
+	bh=pCeV1kJ7rdpj8EbpJL6BGok+i4I8Ghstow2nucdyulE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r3OhOQaz01Afn01SGNt43vNSlC9DEvkAQtGGMvSnYMCkIO9DN2MEnLDbdtiN1ANQV
-	 QD0M/2GoBx0AfTIhzkPzfkrzLZFJoMi9DnP9eyvkzHB7tFCDBOnVqBomrAD9QIOUPF
-	 zqGwTpWQvIMWhd8W0l0HDLLwlS1CAgjfLp7UQNN0=
+	b=N+ZFaizxBOdvvRzFqi8u15DBKdH2pOn1TMsW62Vjp4GQBvDLmaR9d8Fo/LcLtx8Dm
+	 4zVwTmJRzed+5T6opttr1uGFTeYOFs70YH8oUNZL+RVYnA+GFZJLrUMmknybzP5X4e
+	 dEE5emFNY//KlvSdVO9I81OmntsIn+ZrD2m4ioyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Judy Hsiao <judyhsiao@chromium.org>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 024/286] neighbour: Dont let neigh_forced_gc() disable preemption for long
-Date: Mon, 22 Jan 2024 15:55:30 -0800
-Message-ID: <20240122235732.955186938@linuxfoundation.org>
+Subject: [PATCH 5.10 025/286] jbd2: fix soft lockup in journal_finish_inode_data_buffers()
+Date: Mon, 22 Jan 2024 15:55:31 -0800
+Message-ID: <20240122235732.988415316@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
 References: <20240122235732.009174833@linuxfoundation.org>
@@ -69,62 +67,80 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Judy Hsiao <judyhsiao@chromium.org>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit e5dc5afff62f3e97e86c3643ec9fcad23de4f2d3 ]
+[ Upstream commit 6c02757c936063f0631b4e43fe156f8c8f1f351f ]
 
-We are seeing cases where neigh_cleanup_and_release() is called by
-neigh_forced_gc() many times in a row with preemption turned off.
-When running on a low powered CPU at a low CPU frequency, this has
-been measured to keep preemption off for ~10 ms. That's not great on a
-system with HZ=1000 which expects tasks to be able to schedule in
-with ~1ms latency.
+There's issue when do io test:
+WARN: soft lockup - CPU#45 stuck for 11s! [jbd2/dm-2-8:4170]
+CPU: 45 PID: 4170 Comm: jbd2/dm-2-8 Kdump: loaded Tainted: G  OE
+Call trace:
+ dump_backtrace+0x0/0x1a0
+ show_stack+0x24/0x30
+ dump_stack+0xb0/0x100
+ watchdog_timer_fn+0x254/0x3f8
+ __hrtimer_run_queues+0x11c/0x380
+ hrtimer_interrupt+0xfc/0x2f8
+ arch_timer_handler_phys+0x38/0x58
+ handle_percpu_devid_irq+0x90/0x248
+ generic_handle_irq+0x3c/0x58
+ __handle_domain_irq+0x68/0xc0
+ gic_handle_irq+0x90/0x320
+ el1_irq+0xcc/0x180
+ queued_spin_lock_slowpath+0x1d8/0x320
+ jbd2_journal_commit_transaction+0x10f4/0x1c78 [jbd2]
+ kjournald2+0xec/0x2f0 [jbd2]
+ kthread+0x134/0x138
+ ret_from_fork+0x10/0x18
 
-Suggested-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Judy Hsiao <judyhsiao@chromium.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Analyzed informations from vmcore as follows:
+(1) There are about 5k+ jbd2_inode in 'commit_transaction->t_inode_list';
+(2) Now is processing the 855th jbd2_inode;
+(3) JBD2 task has TIF_NEED_RESCHED flag;
+(4) There's no pags in address_space around the 855th jbd2_inode;
+(5) There are some process is doing drop caches;
+(6) Mounted with 'nodioread_nolock' option;
+(7) 128 CPUs;
+
+According to informations from vmcore we know 'journal->j_list_lock' spin lock
+competition is fierce. So journal_finish_inode_data_buffers() maybe process
+slowly. Theoretically, there is scheduling point in the filemap_fdatawait_range_keep_errors().
+However, if inode's address_space has no pages which taged with PAGECACHE_TAG_WRITEBACK,
+will not call cond_resched(). So may lead to soft lockup.
+journal_finish_inode_data_buffers
+  filemap_fdatawait_range_keep_errors
+    __filemap_fdatawait_range
+      while (index <= end)
+        nr_pages = pagevec_lookup_range_tag(&pvec, mapping, &index, end, PAGECACHE_TAG_WRITEBACK);
+        if (!nr_pages)
+           break;    --> If 'nr_pages' is equal zero will break, then will not call cond_resched()
+        for (i = 0; i < nr_pages; i++)
+          wait_on_page_writeback(page);
+        cond_resched();
+
+To solve above issue, add scheduling point in the journal_finish_inode_data_buffers();
+
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231211112544.3879780-1-yebin10@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/neighbour.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/jbd2/commit.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 4c43183a8d93..432e3a64dc4a 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -226,9 +226,11 @@ static int neigh_forced_gc(struct neigh_table *tbl)
- {
- 	int max_clean = atomic_read(&tbl->gc_entries) -
- 			READ_ONCE(tbl->gc_thresh2);
-+	u64 tmax = ktime_get_ns() + NSEC_PER_MSEC;
- 	unsigned long tref = jiffies - 5 * HZ;
- 	struct neighbour *n, *tmp;
- 	int shrunk = 0;
-+	int loop = 0;
- 
- 	NEIGH_CACHE_STAT_INC(tbl, forced_gc_runs);
- 
-@@ -251,11 +253,16 @@ static int neigh_forced_gc(struct neigh_table *tbl)
- 				shrunk++;
- 			if (shrunk >= max_clean)
- 				break;
-+			if (++loop == 16) {
-+				if (ktime_get_ns() > tmax)
-+					goto unlock;
-+				loop = 0;
-+			}
+diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
+index fa24b407a9dc..db137671a41f 100644
+--- a/fs/jbd2/commit.c
++++ b/fs/jbd2/commit.c
+@@ -300,6 +300,7 @@ static int journal_finish_inode_data_buffers(journal_t *journal,
+ 			if (!ret)
+ 				ret = err;
  		}
- 	}
- 
- 	WRITE_ONCE(tbl->last_flush, jiffies);
--
-+unlock:
- 	write_unlock_bh(&tbl->lock);
- 
- 	return shrunk;
++		cond_resched();
+ 		spin_lock(&journal->j_list_lock);
+ 		jinode->i_flags &= ~JI_COMMIT_RUNNING;
+ 		smp_mb();
 -- 
 2.43.0
 
