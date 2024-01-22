@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD18837E6E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B8083836B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6269A1C28F1C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78FBC1C29BA8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A145102C;
-	Tue, 23 Jan 2024 00:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D7C629EE;
+	Tue, 23 Jan 2024 01:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WL3gmoL0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZ7Vc/iO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656C84E1D2;
-	Tue, 23 Jan 2024 00:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5287C62802;
+	Tue, 23 Jan 2024 01:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970572; cv=none; b=oBLNCzVMatjZDRaJ+SEarfSUzxuYFMILZQEVC5RnbiohjRmn4xKxf53O2VPIh9Ac1h1w8zyNPSbqpsZN9fWGzaYBDO28wXUTXbgmqI5VxqUGeY3iTUD4SI+sxFycVpDW7Vjo7TFlFSkzoEXOofITM7qHz98qL04xWoQl2ffG8co=
+	t=1705974967; cv=none; b=TVqRL5Yw38kO9U83Tsom5gqeo65/J0vwGw5FaYZ5fYb4xMacPlLY3pHtY1M77pJj6Wh4LzCUD5BqC5+Vew6PMiZfk+el/RUi5FqsZgVvxhxFeiKRO0NSCtThDlnc+zgA41qkzyklMkD4DgBLhtWwVBKZrNSroF4Ub+IFJwXRsvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970572; c=relaxed/simple;
-	bh=Jwzi0NNzwveOXLmmAoS62agfWIg599akstLXzbfAwks=;
+	s=arc-20240116; t=1705974967; c=relaxed/simple;
+	bh=9euEvJDHHCKRYYfvlVPZjpLF246FPE37+8xxsWd/d3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=amSBe8gLwLzG20K8RdSMxOIuS6L520ys1oRtaANPW9lfrum0VQ/qHEnl+gp7rCafg67C2wT/vVLcbmrOIaoS2Jy6eukps1UC8T/uU1ivl7C2ntVa4vRmDG22T9I/H6CHH4zLb7ffU3xB2SXPUOHoP9otRoU8ssQgoSrf7Jlwqo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WL3gmoL0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF5DC433C7;
-	Tue, 23 Jan 2024 00:42:51 +0000 (UTC)
+	 MIME-Version; b=kH6Oanj4uvGNbfBmtV7TpB4hZf7SuuDTShbgz+ubKO81rvKC9i79gi3L6BC0NiyBeqnWTH1/Fh2uQeo13koXQ0P+ffYS3KKHfvqAS9xFbVCdHYCGWz+T6hOaQOOA3nBMee1Vjyl6HCS+LeUJ7xS5KHXLTswM6lx56iltARXjrHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZ7Vc/iO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18676C433F1;
+	Tue, 23 Jan 2024 01:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970572;
-	bh=Jwzi0NNzwveOXLmmAoS62agfWIg599akstLXzbfAwks=;
+	s=korg; t=1705974967;
+	bh=9euEvJDHHCKRYYfvlVPZjpLF246FPE37+8xxsWd/d3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WL3gmoL0NAUF+8aonpG75f8bBmvVyUMWJUODqR3EyjNounVN43pjLdoCQ2ejSj+h+
-	 EyQdDpvA129ZyMVlcaDGg6wO+Ox9Wg40np3DbM40EFk7wZd9U53TCH2a+QqnOoQrEa
-	 W6csfW65dZd1KugiERqWLGw5NQhNW5iULAkcqcX0=
+	b=SZ7Vc/iOEaPxEymLIHZM/XNYEsp0uXYnFq9WyJj9KB0k+8lzFve+uIP0/FDLm5XWo
+	 /shizZbl+OPUxncI1oa2DMl+II8A7oBP8ylEYPDZC9nNLV3MUAJ7ls9kLPVbGqoNiW
+	 2z2FarRIJGDE2lwfMAOJxTiocyPwNt0nfKfpCvWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Hou Tao <houtao1@huawei.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/417] crypto: sahara - avoid skcipher fallback code duplication
+Subject: [PATCH 6.6 172/583] bpf: Limit the number of kprobes when attaching program to multiple kprobes
 Date: Mon, 22 Jan 2024 15:53:43 -0800
-Message-ID: <20240122235753.589102345@linuxfoundation.org>
+Message-ID: <20240122235817.292147893@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,150 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 01d70a4bbff20ea05cadb4c208841985a7cc6596 ]
+[ Upstream commit d6d1e6c17cab2dcb7b8530c599f00e7de906d380 ]
 
-Factor out duplicated skcipher fallback handling code to a helper function
-sahara_aes_fallback(). Also, keep a single check if fallback is required in
-sahara_aes_crypt().
+An abnormally big cnt may also be assigned to kprobe_multi.cnt when
+attaching multiple kprobes. It will trigger the following warning in
+kvmalloc_node():
 
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: d1d6351e37aa ("crypto: sahara - handle zero-length aes requests")
+	if (unlikely(size > INT_MAX)) {
+	    WARN_ON_ONCE(!(flags & __GFP_NOWARN));
+	    return NULL;
+	}
+
+Fix the warning by limiting the maximal number of kprobes in
+bpf_kprobe_multi_link_attach(). If the number of kprobes is greater than
+MAX_KPROBE_MULTI_CNT, the attachment will fail and return -E2BIG.
+
+Fixes: 0dcac2725406 ("bpf: Add multi kprobe link")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20231215100708.2265609-3-houtao@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 85 ++++++++++++-----------------------------
- 1 file changed, 25 insertions(+), 60 deletions(-)
+ kernel/trace/bpf_trace.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 0b7a95dae9fe..89fd54bc0127 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -649,12 +649,37 @@ static int sahara_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 	return crypto_skcipher_setkey(ctx->fallback, key, keylen);
- }
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 39c4cef98b95..1d76f3b014ae 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -42,6 +42,7 @@
+ 	rcu_dereference_protected(p, lockdep_is_held(&bpf_event_mutex))
  
-+static int sahara_aes_fallback(struct skcipher_request *req, unsigned long mode)
-+{
-+	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
-+	struct sahara_ctx *ctx = crypto_skcipher_ctx(
-+		crypto_skcipher_reqtfm(req));
-+
-+	skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
-+	skcipher_request_set_callback(&rctx->fallback_req,
-+				      req->base.flags,
-+				      req->base.complete,
-+				      req->base.data);
-+	skcipher_request_set_crypt(&rctx->fallback_req, req->src,
-+				   req->dst, req->cryptlen, req->iv);
-+
-+	if (mode & FLAGS_ENCRYPT)
-+		return crypto_skcipher_encrypt(&rctx->fallback_req);
-+
-+	return crypto_skcipher_decrypt(&rctx->fallback_req);
-+}
-+
- static int sahara_aes_crypt(struct skcipher_request *req, unsigned long mode)
- {
- 	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
-+	struct sahara_ctx *ctx = crypto_skcipher_ctx(
-+		crypto_skcipher_reqtfm(req));
- 	struct sahara_dev *dev = dev_ptr;
- 	int err = 0;
+ #define MAX_UPROBE_MULTI_CNT (1U << 20)
++#define MAX_KPROBE_MULTI_CNT (1U << 20)
  
-+	if (unlikely(ctx->keylen != AES_KEYSIZE_128))
-+		return sahara_aes_fallback(req, mode);
-+
- 	dev_dbg(dev->device, "nbytes: %d, enc: %d, cbc: %d\n",
- 		req->cryptlen, !!(mode & FLAGS_ENCRYPT), !!(mode & FLAGS_CBC));
+ #ifdef CONFIG_MODULES
+ struct bpf_trace_module {
+@@ -2897,6 +2898,8 @@ int bpf_kprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 	cnt = attr->link_create.kprobe_multi.cnt;
+ 	if (!cnt)
+ 		return -EINVAL;
++	if (cnt > MAX_KPROBE_MULTI_CNT)
++		return -E2BIG;
  
-@@ -677,81 +702,21 @@ static int sahara_aes_crypt(struct skcipher_request *req, unsigned long mode)
- 
- static int sahara_aes_ecb_encrypt(struct skcipher_request *req)
- {
--	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
--	struct sahara_ctx *ctx = crypto_skcipher_ctx(
--		crypto_skcipher_reqtfm(req));
--
--	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
--		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
--		skcipher_request_set_callback(&rctx->fallback_req,
--					      req->base.flags,
--					      req->base.complete,
--					      req->base.data);
--		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
--					   req->dst, req->cryptlen, req->iv);
--		return crypto_skcipher_encrypt(&rctx->fallback_req);
--	}
--
- 	return sahara_aes_crypt(req, FLAGS_ENCRYPT);
- }
- 
- static int sahara_aes_ecb_decrypt(struct skcipher_request *req)
- {
--	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
--	struct sahara_ctx *ctx = crypto_skcipher_ctx(
--		crypto_skcipher_reqtfm(req));
--
--	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
--		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
--		skcipher_request_set_callback(&rctx->fallback_req,
--					      req->base.flags,
--					      req->base.complete,
--					      req->base.data);
--		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
--					   req->dst, req->cryptlen, req->iv);
--		return crypto_skcipher_decrypt(&rctx->fallback_req);
--	}
--
- 	return sahara_aes_crypt(req, 0);
- }
- 
- static int sahara_aes_cbc_encrypt(struct skcipher_request *req)
- {
--	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
--	struct sahara_ctx *ctx = crypto_skcipher_ctx(
--		crypto_skcipher_reqtfm(req));
--
--	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
--		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
--		skcipher_request_set_callback(&rctx->fallback_req,
--					      req->base.flags,
--					      req->base.complete,
--					      req->base.data);
--		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
--					   req->dst, req->cryptlen, req->iv);
--		return crypto_skcipher_encrypt(&rctx->fallback_req);
--	}
--
- 	return sahara_aes_crypt(req, FLAGS_ENCRYPT | FLAGS_CBC);
- }
- 
- static int sahara_aes_cbc_decrypt(struct skcipher_request *req)
- {
--	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
--	struct sahara_ctx *ctx = crypto_skcipher_ctx(
--		crypto_skcipher_reqtfm(req));
--
--	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
--		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
--		skcipher_request_set_callback(&rctx->fallback_req,
--					      req->base.flags,
--					      req->base.complete,
--					      req->base.data);
--		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
--					   req->dst, req->cryptlen, req->iv);
--		return crypto_skcipher_decrypt(&rctx->fallback_req);
--	}
--
- 	return sahara_aes_crypt(req, FLAGS_CBC);
- }
- 
+ 	size = cnt * sizeof(*addrs);
+ 	addrs = kvmalloc_array(cnt, sizeof(*addrs), GFP_KERNEL);
 -- 
 2.43.0
 
