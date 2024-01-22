@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E4F838327
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE52837E47
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBC5F1C2989E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81A3FB21FD2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4366C6087E;
-	Tue, 23 Jan 2024 01:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41AD35DF39;
+	Tue, 23 Jan 2024 00:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwQV2Y4A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edbnloa2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011226025E;
-	Tue, 23 Jan 2024 01:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EB85DF33;
+	Tue, 23 Jan 2024 00:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974718; cv=none; b=jCEVUZW2VPLs2mt4C3hVvgOFJEzoDY50vqUhoUow45d9F+dsJmZAvQeRvXZxV/s9404H1ieuQIUzWJW/2JCavU7STJ6NcKwSJCdYjszRllynuUN3PGclbkKMKdAcYmGz06dhUs9aoz41BBOsMotrGN/obOl1k7jeEdHOdb9XHN8=
+	t=1705970490; cv=none; b=C8ekepWLO8XTNnHeVcNdiMAZ4WsCQM8RfUADR+BhkUtsKq68S86mpaSU6SCEIvtR43Pu1nrW7HopMxrWDpdsHS0wPUkGQtGWjJu63XDrfzmYHwiUc6HM8NxZ/SlFkaNH6XBef1d90KJ8fKka6WMO1FU2d1vUE4+tJXvqXI6BJBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974718; c=relaxed/simple;
-	bh=xVse2rhU5L8+DxRa3Vtbnw9mh4/YOhkW48NX62spYM8=;
+	s=arc-20240116; t=1705970490; c=relaxed/simple;
+	bh=cCy2I+1aGmwMfNsFbkIHNX9Vi6FvWyUkCdilsO3W6UM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J1Aev5YD5VWZVcUzxLuAxNRUuQ42Jfz8a1XetIid1jXGfckQ/FpL7HnCtf2AT+nQO7djJCMUedqnskk7/hSzFkhahsvlVBYA9hKh8gF23S+2HOQtplhc6pAbx2f88kLAWyslTwAM9OEDEqqFouQc/NRURJDw1sEGuJIY7nqudDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwQV2Y4A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C6AC433C7;
-	Tue, 23 Jan 2024 01:51:57 +0000 (UTC)
+	 MIME-Version; b=RN2VWDUYS+NPAgmokFeHfnwDUU3tQAbOg+f5mbz29tnNs46MbkbILI6JihbA9fgqIGjOwx+uNjO66NtiAhYgTFl0iV9Grv3UOCRGRdMd/sZ1zVWGNIGu6tHQ0vkefrRR1D3ETC9OddUZ3pp/pExSqeebYrZ3kTnLASa5+5ZSDfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edbnloa2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584EDC43390;
+	Tue, 23 Jan 2024 00:41:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974717;
-	bh=xVse2rhU5L8+DxRa3Vtbnw9mh4/YOhkW48NX62spYM8=;
+	s=korg; t=1705970489;
+	bh=cCy2I+1aGmwMfNsFbkIHNX9Vi6FvWyUkCdilsO3W6UM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mwQV2Y4AYWGaIj8smfWaSoDv5lW5n+eA2FdJdHnvsOMnZd64LhpuW0gbBQnTkKeMB
-	 9gOgXO2NxVNNn4Bdm0ORbBTdVsIJt+cwp+PV5XSZIkDdJ0NSI7LoYwfJKNZTvtUy6A
-	 xhLfBMPhD3lb/EdibctcusyFMKQcZenyaSp9Cwlk=
+	b=edbnloa2ydxVkaeWE1bq1TfdQ8FZjG8UQSY8zDZ5ooACVl0nOLi7Vf06AIwDfkW4T
+	 9kUELX6BPNi8TC6Y/2fTSZIBkRj+Nseyka5EOQ+Aet8OYWza034bUNtyMkqW2E8/4y
+	 cm1s2JbZVJEnXblcB8P/BmWgZ19pz8k/GnAcK6vI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Zhao <wang.zhao@mediatek.com>,
-	Deren Wu <deren.wu@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Alexandra Diupina <adiupina@astralinux.ru>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 141/583] wifi: mt76: mt7921s: fix workqueue problem causes STA association fail
+Subject: [PATCH 6.1 024/417] cpufreq: scmi: process the result of devm_of_clk_add_hw_provider()
 Date: Mon, 22 Jan 2024 15:53:12 -0800
-Message-ID: <20240122235816.417421474@linuxfoundation.org>
+Message-ID: <20240122235752.390222862@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,181 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Zhao <wang.zhao@mediatek.com>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-[ Upstream commit 92184eae1d5ad804884e2c6e289d885b9e3194d1 ]
+[ Upstream commit c4a5118a3ae1eadc687d84eef9431f9e13eb015c ]
 
-The ieee80211_queue_work function queues work into the mac80211
-local->workqueue, which is widely used for mac80211 internal
-work processes. In the mt76 driver, both the mt76-sido-status and
-mt76-sdio-net threads enqueue workers to the workqueue with this
-function. However, in some cases, when two workers are enqueued
-to the workqueue almost simultaneously, the second worker may not
-be scheduled immediately and may get stuck for a while.
-This can cause timing issues. To avoid these timing
-conflicts caused by worker scheduling, replace the worker
-with an independent thread.
+devm_of_clk_add_hw_provider() may return an errno, so
+add a return value check
 
-Fixes: 48fab5bbef40 ("mt76: mt7921: introduce mt7921s support")
-Signed-off-by: Wang Zhao <wang.zhao@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 8410e7f3b31e ("cpufreq: scmi: Fix OPP addition failure with a dummy clock provider")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76.h      |  3 +--
- .../net/wireless/mediatek/mt76/mt7615/sdio.c   |  2 +-
- .../net/wireless/mediatek/mt76/mt7921/sdio.c   |  4 +++-
- .../wireless/mediatek/mt76/mt7921/sdio_mac.c   |  3 ++-
- drivers/net/wireless/mediatek/mt76/sdio.c      | 18 +++++++++++-------
- 5 files changed, 18 insertions(+), 12 deletions(-)
+ drivers/cpufreq/scmi-cpufreq.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-index dae5410d67e8..7f44736ca26f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-@@ -572,8 +572,7 @@ struct mt76_sdio {
- 	struct mt76_worker txrx_worker;
- 	struct mt76_worker status_worker;
- 	struct mt76_worker net_worker;
--
--	struct work_struct stat_work;
-+	struct mt76_worker stat_worker;
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index f34e6382a4c5..028df8a5f537 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -310,8 +310,11 @@ static int scmi_cpufreq_probe(struct scmi_device *sdev)
  
- 	u8 *xmit_buf;
- 	u32 xmit_buf_sz;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
-index fc547a0031ea..67cedd2555f9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
-@@ -204,8 +204,8 @@ static int mt7663s_suspend(struct device *dev)
- 	mt76_worker_disable(&mdev->mt76.sdio.txrx_worker);
- 	mt76_worker_disable(&mdev->mt76.sdio.status_worker);
- 	mt76_worker_disable(&mdev->mt76.sdio.net_worker);
-+	mt76_worker_disable(&mdev->mt76.sdio.stat_worker);
+ #ifdef CONFIG_COMMON_CLK
+ 	/* dummy clock provider as needed by OPP if clocks property is used */
+-	if (of_property_present(dev->of_node, "#clock-cells"))
+-		devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, NULL);
++	if (of_property_present(dev->of_node, "#clock-cells")) {
++		ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, NULL);
++		if (ret)
++			return dev_err_probe(dev, ret, "%s: registering clock provider failed\n", __func__);
++	}
+ #endif
  
--	cancel_work_sync(&mdev->mt76.sdio.stat_work);
- 	clear_bit(MT76_READING_STATS, &mdev->mphy.state);
- 
- 	mt76_tx_status_check(&mdev->mt76, true);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
-index dc1beb76df3e..7591e54d2897 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
-@@ -228,7 +228,7 @@ static int mt7921s_suspend(struct device *__dev)
- 	mt76_txq_schedule_all(&dev->mphy);
- 	mt76_worker_disable(&mdev->tx_worker);
- 	mt76_worker_disable(&mdev->sdio.status_worker);
--	cancel_work_sync(&mdev->sdio.stat_work);
-+	mt76_worker_disable(&mdev->sdio.stat_worker);
- 	clear_bit(MT76_READING_STATS, &dev->mphy.state);
- 	mt76_tx_status_check(mdev, true);
- 
-@@ -260,6 +260,7 @@ static int mt7921s_suspend(struct device *__dev)
- restore_worker:
- 	mt76_worker_enable(&mdev->tx_worker);
- 	mt76_worker_enable(&mdev->sdio.status_worker);
-+	mt76_worker_enable(&mdev->sdio.stat_worker);
- 
- 	if (!pm->ds_enable)
- 		mt76_connac_mcu_set_deep_sleep(mdev, false);
-@@ -292,6 +293,7 @@ static int mt7921s_resume(struct device *__dev)
- 	mt76_worker_enable(&mdev->sdio.txrx_worker);
- 	mt76_worker_enable(&mdev->sdio.status_worker);
- 	mt76_worker_enable(&mdev->sdio.net_worker);
-+	mt76_worker_enable(&mdev->sdio.stat_worker);
- 
- 	/* restore previous ds setting */
- 	if (!pm->ds_enable)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-index 8edd0291c128..389eb0903807 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-@@ -107,7 +107,7 @@ int mt7921s_mac_reset(struct mt792x_dev *dev)
- 	mt76_worker_disable(&dev->mt76.sdio.txrx_worker);
- 	mt76_worker_disable(&dev->mt76.sdio.status_worker);
- 	mt76_worker_disable(&dev->mt76.sdio.net_worker);
--	cancel_work_sync(&dev->mt76.sdio.stat_work);
-+	mt76_worker_disable(&dev->mt76.sdio.stat_worker);
- 
- 	mt7921s_disable_irq(&dev->mt76);
- 	mt7921s_wfsys_reset(dev);
-@@ -115,6 +115,7 @@ int mt7921s_mac_reset(struct mt792x_dev *dev)
- 	mt76_worker_enable(&dev->mt76.sdio.txrx_worker);
- 	mt76_worker_enable(&dev->mt76.sdio.status_worker);
- 	mt76_worker_enable(&dev->mt76.sdio.net_worker);
-+	mt76_worker_enable(&dev->mt76.sdio.stat_worker);
- 
- 	dev->fw_assert = false;
- 	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
-diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wireless/mediatek/mt76/sdio.c
-index 419723118ded..c52d550f0c32 100644
---- a/drivers/net/wireless/mediatek/mt76/sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/sdio.c
-@@ -481,21 +481,21 @@ static void mt76s_status_worker(struct mt76_worker *w)
- 		if (dev->drv->tx_status_data && ndata_frames > 0 &&
- 		    !test_and_set_bit(MT76_READING_STATS, &dev->phy.state) &&
- 		    !test_bit(MT76_STATE_SUSPEND, &dev->phy.state))
--			ieee80211_queue_work(dev->hw, &dev->sdio.stat_work);
-+			mt76_worker_schedule(&sdio->stat_worker);
- 	} while (nframes > 0);
- 
- 	if (resched)
- 		mt76_worker_schedule(&dev->tx_worker);
- }
- 
--static void mt76s_tx_status_data(struct work_struct *work)
-+static void mt76s_tx_status_data(struct mt76_worker *worker)
- {
- 	struct mt76_sdio *sdio;
- 	struct mt76_dev *dev;
- 	u8 update = 1;
- 	u16 count = 0;
- 
--	sdio = container_of(work, struct mt76_sdio, stat_work);
-+	sdio = container_of(worker, struct mt76_sdio, stat_worker);
- 	dev = container_of(sdio, struct mt76_dev, sdio);
- 
- 	while (true) {
-@@ -508,7 +508,7 @@ static void mt76s_tx_status_data(struct work_struct *work)
- 	}
- 
- 	if (count && test_bit(MT76_STATE_RUNNING, &dev->phy.state))
--		ieee80211_queue_work(dev->hw, &sdio->stat_work);
-+		mt76_worker_schedule(&sdio->status_worker);
- 	else
- 		clear_bit(MT76_READING_STATS, &dev->phy.state);
- }
-@@ -600,8 +600,8 @@ void mt76s_deinit(struct mt76_dev *dev)
- 	mt76_worker_teardown(&sdio->txrx_worker);
- 	mt76_worker_teardown(&sdio->status_worker);
- 	mt76_worker_teardown(&sdio->net_worker);
-+	mt76_worker_teardown(&sdio->stat_worker);
- 
--	cancel_work_sync(&sdio->stat_work);
- 	clear_bit(MT76_READING_STATS, &dev->phy.state);
- 
- 	mt76_tx_status_check(dev, true);
-@@ -644,10 +644,14 @@ int mt76s_init(struct mt76_dev *dev, struct sdio_func *func,
- 	if (err)
- 		return err;
- 
-+	err = mt76_worker_setup(dev->hw, &sdio->stat_worker, mt76s_tx_status_data,
-+				"sdio-sta");
-+	if (err)
-+		return err;
-+
- 	sched_set_fifo_low(sdio->status_worker.task);
- 	sched_set_fifo_low(sdio->net_worker.task);
--
--	INIT_WORK(&sdio->stat_work, mt76s_tx_status_data);
-+	sched_set_fifo_low(sdio->stat_worker.task);
- 
- 	dev->queue_ops = &sdio_queue_ops;
- 	dev->bus = bus_ops;
+ 	ret = cpufreq_register_driver(&scmi_cpufreq_driver);
 -- 
 2.43.0
 
