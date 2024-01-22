@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E19EB83830D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32B6A837CB8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:15:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FAB11C297E5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 593F8B2372D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BA250265;
-	Tue, 23 Jan 2024 01:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C474E187A;
+	Tue, 23 Jan 2024 00:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QULYkYv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8Oo2GUo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68F36025E;
-	Tue, 23 Jan 2024 01:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8494F1852;
+	Tue, 23 Jan 2024 00:24:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974692; cv=none; b=hjid0NiFB69yOYq/ZZvy1Hh10TBVXlYF2mjC8g6qkzadQ0iKrVOmEFkkL63wLTydNhIWXFUaNAoGP73+39mzhptBzuKy/MjP3eG8XzhqAEHrfhvW5/nvFkp/JGyhbjllZmz10VHQXNSSfRlqODkmrxJT/aKOuFsttqx1OJspH/k=
+	t=1705969480; cv=none; b=OEJ64APD2OIRwGj/e6Wet6OkdkO79HbXuhY5t4nZuwKkDGRZBQC4SAHN25SGIsghWVRgzCADN7MzgXMpZJv1R54tzeeSFnyq3Klm746Yzuj4HWs7cJ4HroGOdln6cE2bJHhMLfn29g76H5VvmYYAh8Ou6+VZnFA/LyAhSpMyr74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974692; c=relaxed/simple;
-	bh=mnigtyfK4oRTMwJGtR6k0dUe12oXFybOg2Y8WdFVWP4=;
+	s=arc-20240116; t=1705969480; c=relaxed/simple;
+	bh=e/jKJ+mZsqtO5SFEb4LoUjQIiLf6CQgvsdhpnhghDLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gjah+31HUbbazF8KRKlNO3buHGnAuKKDMnxpGy1CY5gQ5LpBec+et27fvJEahnZjqHfXAL27Ltz98sq4zA/rSXJB8YdR3Aucj4THxxSV9nPKDrX/5MrPbtQChcfWekmiFaBbFbuxPoi7Lm+P9WTAIoHEKQyzNMCWrNzpf4yttAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QULYkYv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4EFC43394;
-	Tue, 23 Jan 2024 01:51:32 +0000 (UTC)
+	 MIME-Version; b=n4kNiiJU6NNJwfQrzIHEAR3KeTjqV8YDx2+QM3MQItTKFoBGpKRgpkcJsYVSW7IYEyT2xfqCn58lcF1m+YbJo8nqxc8lK0Ujw5mV1RAspSzymneazapL61TSeHoaljXbmgwulInVsZiUCkW3luH4jyuQkldRntaV7FwPNoQAZBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8Oo2GUo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1C3C43390;
+	Tue, 23 Jan 2024 00:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974692;
-	bh=mnigtyfK4oRTMwJGtR6k0dUe12oXFybOg2Y8WdFVWP4=;
+	s=korg; t=1705969480;
+	bh=e/jKJ+mZsqtO5SFEb4LoUjQIiLf6CQgvsdhpnhghDLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QULYkYv5Rubg7/ZXOY0+E0bg9fGU6g1A3TWDOQ6N5Vz0pBo73S5tPBFYBmEgJsEOP
-	 noJwL3//wuH7hV3EpZI/AV0+rKN33ZWUaah+UwkIfiBpYg2qf3RGyw3S5r5xlnkwJT
-	 hJW1OBNG6COj6GQk04WIYKADyzm0gv2Mr6R21o6A=
+	b=B8Oo2GUo+NXh65K7OOyUjoWW65PouCdVi+f6A9JIOoD+tYfleVlN+8fsb4td/jXjL
+	 474JfmZAzu6pBYqeb9myotYOsR5oFq8uTuwO4PVtxMTMY/se2YNQJVBlKYWW+3VhyZ
+	 MoG4g91JK9rfwn9ghry7Ca+8Q87eVC7exsZO0e5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 126/583] arm64: dts: qcom: qrb5165-rb5: correct LED panic indicator
+Subject: [PATCH 6.7 273/641] drm/tidss: Check for K2G in in dispc_softreset()
 Date: Mon, 22 Jan 2024 15:52:57 -0800
-Message-ID: <20240122235815.993496353@linuxfoundation.org>
+Message-ID: <20240122235826.460668248@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit dc6b5562acbac0285ab3b2dad23930b6434bdfc6 ]
+[ Upstream commit 151825150cf9c2e9fb90763d35b9dff3783628ac ]
 
-There is no "panic-indicator" default trigger but a property with that
-name:
+K2G doesn't have softreset feature. Instead of having every caller of
+dispc_softreset() check for K2G, move the check into dispc_softreset(),
+and make dispc_softreset() return 0 in case of K2G.
 
-  qrb5165-rb5.dtb: leds: led-user4: Unevaluated properties are not allowed ('linux,default-trigger' was unexpected)
-
-Fixes: b5cbd84e499a ("arm64: dts: qcom: qrb5165-rb5: Add onboard LED support")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231111094623.12476-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-6-ac91b5ea35c0@ideasonboard.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Stable-dep-of: bc288a927815 ("drm/tidss: Fix dss reset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qrb5165-rb5.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/tidss/tidss_dispc.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-index dfa8ee5c75af..e95a004c3391 100644
---- a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-@@ -63,8 +63,8 @@ led-user4 {
- 			function = LED_FUNCTION_INDICATOR;
- 			color = <LED_COLOR_ID_GREEN>;
- 			gpios = <&pm8150_gpios 10 GPIO_ACTIVE_HIGH>;
--			linux,default-trigger = "panic-indicator";
- 			default-state = "off";
-+			panic-indicator;
- 		};
+diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
+index 9a29f5fa8453..2af623842cfb 100644
+--- a/drivers/gpu/drm/tidss/tidss_dispc.c
++++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+@@ -2707,6 +2707,10 @@ static int dispc_softreset(struct dispc_device *dispc)
+ 	u32 val;
+ 	int ret = 0;
  
- 		led-wlan {
++	/* K2G display controller does not support soft reset */
++	if (dispc->feat->subrev == DISPC_K2G)
++		return 0;
++
+ 	/* Soft reset */
+ 	REG_FLD_MOD(dispc, DSS_SYSCONFIG, 1, 1, 1);
+ 	/* Wait for reset to complete */
+@@ -2829,12 +2833,9 @@ int dispc_init(struct tidss_device *tidss)
+ 	of_property_read_u32(dispc->dev->of_node, "max-memory-bandwidth",
+ 			     &dispc->memory_bandwidth_limit);
+ 
+-	/* K2G display controller does not support soft reset */
+-	if (feat->subrev != DISPC_K2G) {
+-		r = dispc_softreset(dispc);
+-		if (r)
+-			return r;
+-	}
++	r = dispc_softreset(dispc);
++	if (r)
++		return r;
+ 
+ 	tidss->dispc = dispc;
+ 
 -- 
 2.43.0
 
