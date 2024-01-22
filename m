@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBCB7837C70
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB88F8381C4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:12:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A21561F22906
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C66DB2857C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3291A290;
-	Tue, 23 Jan 2024 00:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651C1148FF9;
+	Tue, 23 Jan 2024 01:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkLJhTIS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZ/oXkYf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E812443E;
-	Tue, 23 Jan 2024 00:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23010148FF4;
+	Tue, 23 Jan 2024 01:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969619; cv=none; b=UObq97Jj5ayxqq3aahefXsYmkIKbz8nW8aGQ+FE01ZnLwlqeGHyzdyXbJI6JSYlK/h0ZLpiqS44or9PxWF7+g0t+XFIuC/LLMv00fSsEzgDh7et1o2GI4gsdRtBdlWInsV2Qr7FA/fn7bLbrlEtW4eSA2U0htI4BG55tc32JW0g=
+	t=1705972085; cv=none; b=fSsisuC1JHyQBJzNhi8GHZJW5MqSE7SuiXVcwPnJw0GUX1tNI+2IY8MjpjHvgmvG8FklYcIHIJd6s676zK1VztXUMBcr2WaYvR2M7csqXxBNz3cEzRyFd13lqIDTysuPeGGyoZC/JaPOeCgJaIxW/Y81VcXxjc7mEQiXqiH122s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969619; c=relaxed/simple;
-	bh=umJuhacjH/wP7sqlmW+XLK+BIXOvDbEQ1PUK/eUo9Y0=;
+	s=arc-20240116; t=1705972085; c=relaxed/simple;
+	bh=sob86fwMh4bPwDXhQUtiDiHe/tMNdxekpkIoDdIHd6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PwkkvMyuFgp9R4ZvEgwQUkoaLLjEjslwowH86cLB2Q6M0mDjwj83IvD/7aXiHNqFw2vzopRNSi107LFHXR5migmlE1G/hbyF90k7CVUnwnYDgXWDvYNv4UKRnDeFmIjJ56tguLt+/F/m8WCRI5VX2UadSz1ho2AEO/Zpsc/SqGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkLJhTIS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E77BC43390;
-	Tue, 23 Jan 2024 00:26:59 +0000 (UTC)
+	 MIME-Version; b=odvzCiRo6Fq0IAZq4+NfcSOsegkVGPoDYpUfGrxaGztP75+eWlBh5M+W50uiM1SHwcx5uw1kqV5saXduwz+BB2a8l75uDZF+ve+wL3sio6T9bXwsSK0CZP1LGdQOjvnxqQwjyT9ZLasz5Dn15LJDsJGjSI5W5GKU6k9Awf1nRcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZ/oXkYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8777C43394;
+	Tue, 23 Jan 2024 01:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969619;
-	bh=umJuhacjH/wP7sqlmW+XLK+BIXOvDbEQ1PUK/eUo9Y0=;
+	s=korg; t=1705972085;
+	bh=sob86fwMh4bPwDXhQUtiDiHe/tMNdxekpkIoDdIHd6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XkLJhTISu6IUvWxkfECOPfZOlE+ljb4dzrvcd0AtO2qVA/npv5ybXjRoqJnvu8p0F
-	 OwKLxmNBW74HipmhP8VXvEZQls7iSo+7wb8p1bxSbAQr1KWOqTLMcpoyPsX+BUV0FR
-	 ue4SHGopyQ0ifbvNtBDK27+ZFf4NpzbdNzBOK5ts=
+	b=BZ/oXkYfC7F5smKZKoWKLTXqZwPTk0dhukQ9RwcFD64072JLkyY76pTK03oo5rP/A
+	 tHi7+4rVXf9Ux69MKVFKj3EI7KKyFznsdC+p6iWvZB8b67ILZU+9VaeDLok2ZOqrZS
+	 wvIFtEF2CFqe7gxTgPhLiZBCBi1TM8aQfVtgfcfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 361/641] ALSA: scarlett2: Add clamp() in scarlett2_mixer_ctl_put()
+Subject: [PATCH 5.15 009/374] ASoC: wm8974: Correct boost mixer inputs
 Date: Mon, 22 Jan 2024 15:54:25 -0800
-Message-ID: <20240122235829.228292218@linuxfoundation.org>
+Message-ID: <20240122235744.949594317@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 04f8f053252b86c7583895c962d66747ecdc61b7 ]
+[ Upstream commit 37e6fd0cebf0b9f71afb38fd95b10408799d1f0b ]
 
-Ensure the value passed to scarlett2_mixer_ctl_put() is between 0 and
-SCARLETT2_MIXER_MAX_VALUE so we don't attempt to access outside
-scarlett2_mixer_values[].
+Bit 6 of INPPGA (INPPGAMUTE) does not control the Aux path, it controls
+the input PGA path, as can been seen from Figure 8 Input Boost Stage in
+the datasheet. Update the naming of things in the driver to match this
+and update the routing to also reflect this.
 
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
-Link: https://lore.kernel.org/r/3b19fb3da641b587749b85fe1daa1b4e696c0c1b.1703001053.git.g@b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20231113155916.1741027-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett2.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/codecs/wm8974.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
-index f4351900fbbd..cdaf0470e62b 100644
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -3663,7 +3663,8 @@ static int scarlett2_mixer_ctl_put(struct snd_kcontrol *kctl,
- 	mutex_lock(&private->data_mutex);
+diff --git a/sound/soc/codecs/wm8974.c b/sound/soc/codecs/wm8974.c
+index fdc68ab49742..9eeac3443566 100644
+--- a/sound/soc/codecs/wm8974.c
++++ b/sound/soc/codecs/wm8974.c
+@@ -186,7 +186,7 @@ SOC_DAPM_SINGLE("PCM Playback Switch", WM8974_MONOMIX, 0, 1, 0),
  
- 	oval = private->mix[index];
--	val = ucontrol->value.integer.value[0];
-+	val = clamp(ucontrol->value.integer.value[0],
-+		    0L, (long)SCARLETT2_MIXER_MAX_VALUE);
- 	num_mixer_in = port_count[SCARLETT2_PORT_TYPE_MIX][SCARLETT2_PORT_OUT];
- 	mix_num = index / num_mixer_in;
+ /* Boost mixer */
+ static const struct snd_kcontrol_new wm8974_boost_mixer[] = {
+-SOC_DAPM_SINGLE("Aux Switch", WM8974_INPPGA, 6, 1, 1),
++SOC_DAPM_SINGLE("PGA Switch", WM8974_INPPGA, 6, 1, 1),
+ };
  
+ /* Input PGA */
+@@ -246,8 +246,8 @@ static const struct snd_soc_dapm_route wm8974_dapm_routes[] = {
+ 
+ 	/* Boost Mixer */
+ 	{"ADC", NULL, "Boost Mixer"},
+-	{"Boost Mixer", "Aux Switch", "Aux Input"},
+-	{"Boost Mixer", NULL, "Input PGA"},
++	{"Boost Mixer", NULL, "Aux Input"},
++	{"Boost Mixer", "PGA Switch", "Input PGA"},
+ 	{"Boost Mixer", NULL, "MICP"},
+ 
+ 	/* Input PGA */
 -- 
 2.43.0
 
