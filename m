@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0DC6838037
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D88E837DE7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 583B0282614
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A05651C25B60
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3005D657DF;
-	Tue, 23 Jan 2024 00:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01721615B3;
+	Tue, 23 Jan 2024 00:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRaUirwm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3ABIkZJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F4664CEB;
-	Tue, 23 Jan 2024 00:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778521615A6;
+	Tue, 23 Jan 2024 00:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971593; cv=none; b=S/QloifcJPACCRrNdOzOYR8moPbY9uB+TevN0WBtL5y0UvveaJX0Ev2xoRkM6isH2x8WaG9Wzz6tfGZNc3scWQ685pXSsNLtCBdpJ1gDvls3N5srrLt8AT8ERYaKi17sO6fn/GXq5FUEINCPM174O4JuY3dGgQcCGhS1KWjREA4=
+	t=1705970181; cv=none; b=DsgPdk0hNzV3KK45+y3udm3tn8tWndONZdGDMdF4SkxWOxejBp7Au7RFBSacCovnZRSDQsKg5b6V51LqdMlTQLGRhrD4WdexbFzlzmsD8K/wv4AUZXVgrf2zm1wrBuQ1YlgkNaqTTX3hW2dwmaM0HG+SOdDmZaa8uvEdSUsWBRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971593; c=relaxed/simple;
-	bh=4RwgCmSODM/y/I8WQX0AJRwuR7f22gHDD1Jw8VF28QQ=;
+	s=arc-20240116; t=1705970181; c=relaxed/simple;
+	bh=kzfHHTSA9u3PsIJvd5sKOip/6xBOEj+GR45N3qsU0/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WyWsA09Kwqkx/fOf+u0Evp6chgYmqvIU2p+jO62Ztzcsc1wKqRJDjv1nL3M9ZZpg6rOOAEhsDjEvQf0x07wALsnvxKpPXtrxorBNvg4LFIbqXyD3X/NfYdeVqkqvNIgoxJ5iarw38TfW/SDarLI+Gpvl5pkwKQQOnMl3irAwz0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRaUirwm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FC5C433F1;
-	Tue, 23 Jan 2024 00:59:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RNwUQKd4N312YfF0uHbBcTH8goEahE/WMKeRkwLI+LbpRYpZjexHNWYFg5qGYVT7DcCph/xvecLn7Ut5tvANQkOZy4kV1a3+q6G/uOKQrK8E1dmb5tyeL0Fkw5Kho8uFJJZlt+qO98FV00eCLbLIis9/dw/Q435/8lCNTzmF5TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3ABIkZJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF7EC433C7;
+	Tue, 23 Jan 2024 00:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971592;
-	bh=4RwgCmSODM/y/I8WQX0AJRwuR7f22gHDD1Jw8VF28QQ=;
+	s=korg; t=1705970181;
+	bh=kzfHHTSA9u3PsIJvd5sKOip/6xBOEj+GR45N3qsU0/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qRaUirwmfIlE39RUisJJcULlZB0DJTf9SA3ix9A0Z50qweYX2MyThN5fIoJneFk5M
-	 0hy4r/iqgiFqf9yBqywgR5kB2twaB9ty3cqmRVlB6xF9OTtTlzpdRq+ceHvzmg903I
-	 aMO/fhmXVBNx/d5uhBq1sHdGlvCaGfKkf802JuGg=
+	b=E3ABIkZJs8KmpFcOS6QsxkmUIdQJZ/iYsPQVTlnd5tHOZTqMTkBfWqr0AKQbVoJ8G
+	 posA0d3Xi1oPjKgy3tow7T5PO99dGnqPDeuz9OrnGkklwhlU72VpwzbH44r8LZJ4nL
+	 TrVonGwc8h9/dluQdCj8lGTT6xHiEomOxgGcvo5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Hoemann <jerry.hoemann@hpe.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 183/286] watchdog/hpwdt: Only claim UNKNOWN NMI if from iLO
+Subject: [PATCH 6.7 585/641] net: ethernet: ti: am65-cpsw: Fix max mtu to fit ethernet frames
 Date: Mon, 22 Jan 2024 15:58:09 -0800
-Message-ID: <20240122235739.199388982@linuxfoundation.org>
+Message-ID: <20240122235836.502626731@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerry Hoemann <jerry.hoemann@hpe.com>
+From: Sanjuán García, Jorge <Jorge.SanjuanGarcia@duagon.com>
 
-[ Upstream commit dced0b3e51dd2af3730efe14dd86b5e3173f0a65 ]
+[ Upstream commit 64e47d8afb5ca533b27efc006405e5bcae2c4a7b ]
 
-Avoid unnecessary crashes by claiming only NMIs that are due to
-ERROR signalling or generated by the hpwdt hardware device.
+The value of AM65_CPSW_MAX_PACKET_SIZE represents the maximum length
+of a received frame. This value is written to the register
+AM65_CPSW_PORT_REG_RX_MAXLEN.
 
-The code does this, but only for iLO5.
+The maximum MTU configured on the network device should then leave
+some room for the ethernet headers and frame check. Otherwise, if
+the network interface is configured to its maximum mtu possible,
+the frames will be larger than AM65_CPSW_MAX_PACKET_SIZE and will
+get dropped as oversized.
 
-The intent was to preserve legacy, Gen9 and earlier, semantics of
-using hpwdt for error containtment as hardware/firmware would signal
-fatal IO errors as an NMI with the expectation of hpwdt crashing
-the system.  Howerver, these IO errors should be received by hpwdt
-as an NMI_IO_CHECK.  So the test is overly permissive and should
-not be limited to only ilo5.
+The switch supports ethernet frame sizes between 64 and 2024 bytes
+(including VLAN) as stated in the technical reference manual, so
+define AM65_CPSW_MAX_PACKET_SIZE with that maximum size.
 
-We need to enable this protection for future iLOs not matching the
-current PCI IDs.
-
-Fixes: 62290a5c194b ("watchdog: hpwdt: Claim NMIs generated by iLO5")
-Signed-off-by: Jerry Hoemann <jerry.hoemann@hpe.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231213215340.495734-2-jerry.hoemann@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://lore.kernel.org/r/20240105085530.14070-2-jorge.sanjuangarcia@duagon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/hpwdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/hpwdt.c b/drivers/watchdog/hpwdt.c
-index 7d34bcf1c45b..53573c3ddd1a 100644
---- a/drivers/watchdog/hpwdt.c
-+++ b/drivers/watchdog/hpwdt.c
-@@ -174,7 +174,7 @@ static int hpwdt_pretimeout(unsigned int ulReason, struct pt_regs *regs)
- 		"3. OA Forward Progress Log\n"
- 		"4. iLO Event Log";
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index ece9f8df98ae..f7a6d720ebb3 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -56,7 +56,7 @@
+ #define AM65_CPSW_MAX_PORTS	8
  
--	if (ilo5 && ulReason == NMI_UNKNOWN && !mynmi)
-+	if (ulReason == NMI_UNKNOWN && !mynmi)
- 		return NMI_DONE;
+ #define AM65_CPSW_MIN_PACKET_SIZE	VLAN_ETH_ZLEN
+-#define AM65_CPSW_MAX_PACKET_SIZE	(VLAN_ETH_FRAME_LEN + ETH_FCS_LEN)
++#define AM65_CPSW_MAX_PACKET_SIZE	2024
  
- 	if (ilo5 && !pretimeout && !mynmi)
+ #define AM65_CPSW_REG_CTL		0x004
+ #define AM65_CPSW_REG_STAT_PORT_EN	0x014
+@@ -2167,7 +2167,8 @@ am65_cpsw_nuss_init_port_ndev(struct am65_cpsw_common *common, u32 port_idx)
+ 	eth_hw_addr_set(port->ndev, port->slave.mac_addr);
+ 
+ 	port->ndev->min_mtu = AM65_CPSW_MIN_PACKET_SIZE;
+-	port->ndev->max_mtu = AM65_CPSW_MAX_PACKET_SIZE;
++	port->ndev->max_mtu = AM65_CPSW_MAX_PACKET_SIZE -
++			      (VLAN_ETH_HLEN + ETH_FCS_LEN);
+ 	port->ndev->hw_features = NETIF_F_SG |
+ 				  NETIF_F_RXCSUM |
+ 				  NETIF_F_HW_CSUM |
 -- 
 2.43.0
 
