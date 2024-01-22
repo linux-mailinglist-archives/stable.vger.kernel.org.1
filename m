@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-15309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86BF58384BC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B87AC8380CF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F769299DCE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 866C8B2AE25
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F393574E28;
-	Tue, 23 Jan 2024 02:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C265112F59F;
+	Tue, 23 Jan 2024 01:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lS/iKrAT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7rxlWHt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BD774E25;
-	Tue, 23 Jan 2024 02:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B3812F59C;
+	Tue, 23 Jan 2024 01:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975472; cv=none; b=Gmqy4FP2mYzk+ACmrORk6sdwPooCcsuF/nR5ourWA7HKx2jHiwujnnWnd/pqA7gIF6332FwtYyZLxajNVebaJgt7ttAzm0Zi7mdcWuaP0CL2jVLX14NF4YvZsz30iPDU49+j/kVV/BgC79d1xDspQYTKStiQUj/LEs2cs7jrUyQ=
+	t=1705971755; cv=none; b=XUuQap0UhOpKEqPwFLdfwV+DmxLqzMCMxdwf9WrZff6BPe9qZshag6CrvlTn4FrkBEDJNXi20S7zhYuu3AOCTsyS15PazU9k5P3g/1r62GAdVMkC34YHy6Py6QSwS5yFZGCI7OOxHCGhP37HdXwfsUOWCu6bzDdSgwL3MFzkLDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975472; c=relaxed/simple;
-	bh=ICJIwfV03NizNxS4B0g8Tk5JaciqrC2UOE4I13CUzMo=;
+	s=arc-20240116; t=1705971755; c=relaxed/simple;
+	bh=NOxBVvxjkrQZfHiHcZej9nfsT5V4SfuT/23gYgh1OKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ucBOUPP/+OxdDjavDT47T9AGagguQC4DNAQwTMuxVoVR+kRQiKJfB6YH3IjKgNo+kv8x7n9jEGh1sA5WwRykXzvAfF7E8bsgHTwhYHbmss6cyIuKue7ajG3J4lMIJ+5d/Pz9Xfw0JQqm9+k3JTunHgoVATmnRXvp4UevDh2zxu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lS/iKrAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E198C43390;
-	Tue, 23 Jan 2024 02:04:32 +0000 (UTC)
+	 MIME-Version; b=EeoNjhAnUw8zD6cj9KFIkEADsT3pPoOf2BK+yViyBFvzGEX1FZE3iUzydn/zJoimADmqmsXnE6NQHCrqhyDfZeWaBIex+Lz/lstgaTpWy3sqU3otC076TM0ijVbJ8oEb7V2eWXMDNm/RZUEqCm6y8BYawd+lkO/tcQujUcGr9JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7rxlWHt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4306C433F1;
+	Tue, 23 Jan 2024 01:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975472;
-	bh=ICJIwfV03NizNxS4B0g8Tk5JaciqrC2UOE4I13CUzMo=;
+	s=korg; t=1705971755;
+	bh=NOxBVvxjkrQZfHiHcZej9nfsT5V4SfuT/23gYgh1OKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lS/iKrAToAwkPUcV/DWJXdOHAmnxz5KP3b7YO10JMOMmeij+IUnmYDgeauFqZ26w6
-	 fSvYFl/2VC/8GN/1911a0ZHli8wlJ9Pm5OVUk/iSrf2qL/kdDQBvaFG68/RVvLlk5i
-	 BsCLd3Aan7/a90q7r7RagXSXA9Zd2jW+XHnYuCUk=
+	b=s7rxlWHtKUmyQcM+AzQQhXOPh+PWmorUpK9R4b328UICCVUvRL12EljwPXsk6xITU
+	 c5NZEiXlB5tsxcuw/MsTZFFhPTIvwVvzLAbKBm6zSKUts1UE32dgV3LW1C+3uTKIbj
+	 UsdUKcXQ+7tNK5Cejb4chLISFPrvigbHHS8qtnrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>
-Subject: [PATCH 6.6 427/583] x86/kvm: Do not try to disable kvmclock if it was not enabled
-Date: Mon, 22 Jan 2024 15:57:58 -0800
-Message-ID: <20240122235825.049243504@linuxfoundation.org>
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 311/417] Revert "net: rtnetlink: Enslave device before bringing it up"
+Date: Mon, 22 Jan 2024 15:57:59 -0800
+Message-ID: <20240122235802.600186498@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-commit 1c6d984f523f67ecfad1083bb04c55d91977bb15 upstream.
+commit ec4ffd100ffb396eca13ebe7d18938ea80f399c3 upstream.
 
-kvm_guest_cpu_offline() tries to disable kvmclock regardless if it is
-present in the VM. It leads to write to a MSR that doesn't exist on some
-configurations, namely in TDX guest:
+This reverts commit a4abfa627c3865c37e036bccb681619a50d3d93c.
 
-	unchecked MSR access error: WRMSR to 0x12 (tried to write 0x0000000000000000)
-	at rIP: 0xffffffff8110687c (kvmclock_disable+0x1c/0x30)
+The patch broke:
+> ip link set dummy0 up
+> ip link set dummy0 master bond0 down
 
-kvmclock enabling is gated by CLOCKSOURCE and CLOCKSOURCE2 KVM paravirt
-features.
+This last command is useful to be able to enslave an interface with only
+one netlink message.
 
-Do not disable kvmclock if it was not enabled.
+After discussion, there is no good reason to support:
+> ip link set dummy0 down
+> ip link set dummy0 master bond0 up
+because the bond interface already set the slave up when it is up.
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: c02027b5742b ("x86/kvm: Disable kvmclock on all CPUs on shutdown")
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Wanpeng Li <wanpengli@tencent.com>
 Cc: stable@vger.kernel.org
-Message-Id: <20231205004510.27164-6-kirill.shutemov@linux.intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20240108094103.2001224-2-nicolas.dichtel@6wind.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/kvmclock.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ net/core/rtnetlink.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kernel/kvmclock.c
-+++ b/arch/x86/kernel/kvmclock.c
-@@ -24,8 +24,8 @@
- 
- static int kvmclock __initdata = 1;
- static int kvmclock_vsyscall __initdata = 1;
--static int msr_kvm_system_time __ro_after_init = MSR_KVM_SYSTEM_TIME;
--static int msr_kvm_wall_clock __ro_after_init = MSR_KVM_WALL_CLOCK;
-+static int msr_kvm_system_time __ro_after_init;
-+static int msr_kvm_wall_clock __ro_after_init;
- static u64 kvm_sched_clock_offset __ro_after_init;
- 
- static int __init parse_no_kvmclock(char *arg)
-@@ -195,7 +195,8 @@ static void kvm_setup_secondary_clock(vo
- 
- void kvmclock_disable(void)
- {
--	native_write_msr(msr_kvm_system_time, 0, 0);
-+	if (msr_kvm_system_time)
-+		native_write_msr(msr_kvm_system_time, 0, 0);
- }
- 
- static void __init kvmclock_init_mem(void)
-@@ -294,7 +295,10 @@ void __init kvmclock_init(void)
- 	if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE2)) {
- 		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME_NEW;
- 		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK_NEW;
--	} else if (!kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
-+	} else if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
-+		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME;
-+		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK;
-+	} else {
- 		return;
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -2797,13 +2797,6 @@ static int do_setlink(const struct sk_bu
+ 		call_netdevice_notifiers(NETDEV_CHANGEADDR, dev);
  	}
  
+-	if (tb[IFLA_MASTER]) {
+-		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
+-		if (err)
+-			goto errout;
+-		status |= DO_SETLINK_MODIFIED;
+-	}
+-
+ 	if (ifm->ifi_flags || ifm->ifi_change) {
+ 		err = dev_change_flags(dev, rtnl_dev_combine_flags(dev, ifm),
+ 				       extack);
+@@ -2811,6 +2804,13 @@ static int do_setlink(const struct sk_bu
+ 			goto errout;
+ 	}
+ 
++	if (tb[IFLA_MASTER]) {
++		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
++		if (err)
++			goto errout;
++		status |= DO_SETLINK_MODIFIED;
++	}
++
+ 	if (tb[IFLA_CARRIER]) {
+ 		err = dev_change_carrier(dev, nla_get_u8(tb[IFLA_CARRIER]));
+ 		if (err)
 
 
 
