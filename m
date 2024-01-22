@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-13197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 291A5837AE6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A60837AE9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C7761C262CD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:56:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCEB91F23F6D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AC4133416;
-	Tue, 23 Jan 2024 00:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D173133434;
+	Tue, 23 Jan 2024 00:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEjP1UvD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZHDozmg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DED1133411;
-	Tue, 23 Jan 2024 00:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08FB13342F;
+	Tue, 23 Jan 2024 00:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969129; cv=none; b=MwcxAhtIE9xDmCW+1EFB0wf0vanm5SvJHd9HyG8wy2fURfNKxDMPZglBzqPdg3bzyp9hW7YFnAu9ffHG2EY0Xxj8HAHg8FroBHzD2KGo9jpv4V0GQKYdzGdqJPIPiz/sTNLPYEpoua7wMH/hNdPYcaaV/ItvGbusTkyJ88b/2rI=
+	t=1705969131; cv=none; b=iAUuWNP2Fy6r3X22fBogCz3iefPATKSgidH1pzBzlOnHohfJek3ki62fK+VEpFJEcNWbfSRrO+Cxikw5SUCSiMwQNQK5iDX1eumSyzs6Az2rurnRSBZXt8DtKz8/5dgYu/hIwpVArlCkPRrUM6AaOqp+NTQLirAOewAq61Qu8oQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969129; c=relaxed/simple;
-	bh=+eb8x5UyacvzGfzmn74wWjBMy7D7MBrVn80b6UpcJoc=;
+	s=arc-20240116; t=1705969131; c=relaxed/simple;
+	bh=4j5uJPv9a6Z6ZKrKerju5VuoJzFAMLD0B7Bd8Cgv8K4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nLOasxi9nmEMqqfIYOsz13UrukugAu0N3RmMOFz848p64bTbA1e9w4MrVAgmJEiNfYuYu2go9U60o+ytt8bl3fw57APf2kXZqlE/4M+l4b+p6CC3MiG7XmlGJbKP/Jau7G+RLyxl6ugwQaavVkIfJHHWJGbmy9VuycGINcfYmwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEjP1UvD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2EAC433C7;
-	Tue, 23 Jan 2024 00:18:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U+FgmvIsZ1Usm1dkspuAIxjBwZEjgJ7+xqOdPfhPCveSLHsliAFJOd6vP3xed5mlvUGGfEtAdNjA0Lar2DDRNrChGOLEZfwRJeG1wa/1a5TWqhGonRyYMXh2JNVOVwavxjfCFit8W2/r/UeKYrpMK/a1M89t/JMp5imoCWbzoqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZHDozmg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754D8C433C7;
+	Tue, 23 Jan 2024 00:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969129;
-	bh=+eb8x5UyacvzGfzmn74wWjBMy7D7MBrVn80b6UpcJoc=;
+	s=korg; t=1705969131;
+	bh=4j5uJPv9a6Z6ZKrKerju5VuoJzFAMLD0B7Bd8Cgv8K4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mEjP1UvD4NLt7qAB4JfAofd+iQrWEPJLXqHCJb/gFi0cTMn21uLpm4E7c2c6kO1tE
-	 IC2lEI6SVXxh+RLZKl2il+CNOOWsyWXCJR07/7uktBxMg4inOVsiGuh1G8cHO0Efwl
-	 FNaYEC8oWuGe3P2g4zbLWzZyOZEs59b09uYY60xk=
+	b=LZHDozmgH9/MHr6qTcQ+W03hHikEOJDn7W1FItDAtd2LXYbufP2YuUBR8DBmy7tMl
+	 TzM+rxXgywpjbhUFglZ/RMz2teKQdH1Ux4LM3X+32v7iLiZHPCMztCuXHZ9jYhMyxI
+	 7iP9MNOtD6pPQBxccJ6CSj5Y23AF+7EC97zr4/cU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	forza@tnonline.net,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Eric Paris <eparis@parisplace.org>,
+	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 040/641] cpuidle: haltpoll: Do not enable interrupts when entering idle
-Date: Mon, 22 Jan 2024 15:49:04 -0800
-Message-ID: <20240122235819.344805721@linuxfoundation.org>
+Subject: [PATCH 6.7 042/641] selinux: Fix error priority for bind with AF_UNSPEC on PF_INET6 socket
+Date: Mon, 22 Jan 2024 15:49:06 -0800
+Message-ID: <20240122235819.399059111@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -61,57 +64,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit c8f5caec3df84a02b937d6d9cda1f7ffa8dc443f ]
+[ Upstream commit bbf5a1d0e5d0fb3bdf90205aa872636122692a50 ]
 
-The cpuidle drivers' ->enter() methods are supposed to be IRQ invariant:
+The IPv6 network stack first checks the sockaddr length (-EINVAL error)
+before checking the family (-EAFNOSUPPORT error).
 
-  5e26aa933911 ("cpuidle/poll: Ensure IRQs stay disabled after cpuidle_state::enter() calls")
-  bb7b11258561 ("cpuidle: Move IRQ state validation")
+This was discovered thanks to commit a549d055a22e ("selftests/landlock:
+Add network tests").
 
-Do that in the haltpoll driver too.
-
-Fixes: 5e26aa933911 ("cpuidle/poll: Ensure IRQs stay disabled after cpuidle_state::enter() calls")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218245
-Reported-by: <forza@tnonline.net>
-Tested-by: <forza@tnonline.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Eric Paris <eparis@parisplace.org>
+Cc: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: Stephen Smalley <stephen.smalley.work@gmail.com>
+Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Closes: https://lore.kernel.org/r/0584f91c-537c-4188-9e4f-04f192565667@collabora.com
+Fixes: 0f8db8cc73df ("selinux: add AF_UNSPEC and INADDR_ANY checks to selinux_socket_bind()")
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/cpuidle-haltpoll.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ security/selinux/hooks.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/cpuidle/cpuidle-haltpoll.c b/drivers/cpuidle/cpuidle-haltpoll.c
-index e66df22f9695..d8515d5c0853 100644
---- a/drivers/cpuidle/cpuidle-haltpoll.c
-+++ b/drivers/cpuidle/cpuidle-haltpoll.c
-@@ -25,13 +25,12 @@ MODULE_PARM_DESC(force, "Load unconditionally");
- static struct cpuidle_device __percpu *haltpoll_cpuidle_devices;
- static enum cpuhp_state haltpoll_hp_state;
- 
--static int default_enter_idle(struct cpuidle_device *dev,
--			      struct cpuidle_driver *drv, int index)
-+static __cpuidle int default_enter_idle(struct cpuidle_device *dev,
-+					struct cpuidle_driver *drv, int index)
- {
--	if (current_clr_polling_and_test()) {
--		local_irq_enable();
-+	if (current_clr_polling_and_test())
- 		return index;
--	}
-+
- 	arch_cpu_idle();
- 	return index;
- }
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 340b2bbbb2dd..0fb890bd72cb 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -4661,6 +4661,13 @@ static int selinux_socket_bind(struct socket *sock, struct sockaddr *address, in
+ 				return -EINVAL;
+ 			addr4 = (struct sockaddr_in *)address;
+ 			if (family_sa == AF_UNSPEC) {
++				if (family == PF_INET6) {
++					/* Length check from inet6_bind_sk() */
++					if (addrlen < SIN6_LEN_RFC2133)
++						return -EINVAL;
++					/* Family check from __inet6_bind() */
++					goto err_af;
++				}
+ 				/* see __inet_bind(), we only want to allow
+ 				 * AF_UNSPEC if the address is INADDR_ANY
+ 				 */
 -- 
 2.43.0
 
