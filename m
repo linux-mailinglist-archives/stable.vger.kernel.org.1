@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA41837FC9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 936DD837D31
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5027EB286DC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B4E3291DC3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D10660B8D;
-	Tue, 23 Jan 2024 00:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C9026AFA;
+	Tue, 23 Jan 2024 00:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Am4WkAeu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7d8mZp/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14593FFE;
-	Tue, 23 Jan 2024 00:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A7421340;
+	Tue, 23 Jan 2024 00:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970946; cv=none; b=ndhz8sUan7WKXJcFVWIhHQhaKj/0nQQyR8fPrS/6U65R+d/Dz/RQ0bjNFHwYI62jMVJJFKxDhNHDGssXMClEQ/GyQdO1d/XhSwriVks2n0Udk0JvMGyA+gUgiufNzhyH8g6dunJWZtuYHy5Fe7OX3AnR/9Lz1xwhqcHn5HyYPZs=
+	t=1705969832; cv=none; b=EWGlMIlwKqmHsg6xYy/jjMB4RFK5+4dGLsmcrNlUbTYqEJ9UahiencNFlDl/3jDbjkoSRRTpv/9LRETgh4+fzNU1BMs9ybjmz8a7Xj9CCV6P3UjzZ2WA+R7+PtLgZOfpOEbmtVLjm3AfZXWZsLk8RL06UeoBRKZ6pHur78EeDMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970946; c=relaxed/simple;
-	bh=JejALwjfDkGcQLVmmUEFNesHqAbIdgGyN+zjpD5SPDI=;
+	s=arc-20240116; t=1705969832; c=relaxed/simple;
+	bh=ONA8VCsmsxZuh8ycUL95gPH3kvgW3U3U9LXr0xDVITg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eIYO2k3/bbm4d0InYUwk++tttYTeJuzeXWt5MefIduWlQQq2BIqlcprHAzBtC4WNG6A49FTtT0zbcFhTL4BnOodnTDaNmZS5FG2cxfqAXLATfY172Ta3DiQQqoqpifeZoDleHXFfZr3RwYBDmGYmisOSZkT9zWPSOSX4MPd4Cl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Am4WkAeu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B975BC43390;
-	Tue, 23 Jan 2024 00:49:05 +0000 (UTC)
+	 MIME-Version; b=FQR+anTEOHF3Jd2Y7Arb6csJ1vmgPRUQxtyh8rWaIveNR4UYteHEGq2yxmIYYMfJ7UMOzdEC1+PGNovvYHflXHEjrVZJroMEgGeFlVwIPDbiZzLgmTxOCh8Qz+OsCpeNhvXnRhiwk+L19zzq7SSfIScD1pqY+G4GccsUJpG3x4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7d8mZp/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77538C43390;
+	Tue, 23 Jan 2024 00:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970945;
-	bh=JejALwjfDkGcQLVmmUEFNesHqAbIdgGyN+zjpD5SPDI=;
+	s=korg; t=1705969831;
+	bh=ONA8VCsmsxZuh8ycUL95gPH3kvgW3U3U9LXr0xDVITg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Am4WkAeuoj2NtbY/h0XlNC6Rxz0a2AcyyWhFQnB2urOfbT/nrFMx7UgLgRl8lNKKy
-	 CwJsLDqtnnUWXTnTihQJb9WmLLfVPT8Q9idUy8aaPlWlOWtUjb/4FQuRhr27pQCHo8
-	 tMdxrfgfRox1vbK+gYN4DeEpW7b/DiASy/hc+s80=
+	b=W7d8mZp/UAr9FB/WCqkJOM9LcSIj1tR+m5j9yTb01QVxAPbUB+LsQnYnEQsKdeL6+
+	 ygv+MGUPBu36YLYxlqgOcMmLQOiOYChtQ00+AiZz/qWgsuYF59xxlxc95NK4crOWAZ
+	 Zwp3dT0i1954GcEYRENL1og98hLK3AMmCbkiVnCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 049/286] x86/lib: Fix overflow when counting digits
-Date: Mon, 22 Jan 2024 15:55:55 -0800
-Message-ID: <20240122235733.920115507@linuxfoundation.org>
+	Rob Clark <robdclark@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.7 452/641] iommu/arm-smmu-qcom: Add missing GMU entry to match table
+Date: Mon, 22 Jan 2024 15:55:56 -0800
+Message-ID: <20240122235832.166172745@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit a24d61c609813963aacc9f6ec8343f4fcaac7243 ]
+commit afc95681c3068956fed1241a1ff1612c066c75ac upstream.
 
-tl;dr: The num_digits() function has a theoretical overflow issue.
-But it doesn't affect any actual in-tree users.  Fix it by using
-a larger type for one of the local variables.
+In some cases the firmware expects cbndx 1 to be assigned to the GMU,
+so we also want the default domain for the GMU to be an identy domain.
+This way it does not get a context bank assigned.  Without this, both
+of_dma_configure() and drm/msm's iommu_domain_attach() will trigger
+allocating and configuring a context bank.  So GMU ends up attached to
+both cbndx 1 and later cbndx 2.  This arrangement seemingly confounds
+and surprises the firmware if the GPU later triggers a translation
+fault, resulting (on sc8280xp / lenovo x13s, at least) in the SMMU
+getting wedged and the GPU stuck without memory access.
 
-Long version:
-
-There is an overflow in variable m in function num_digits when val
-is >= 1410065408 which leads to the digit calculation loop to
-iterate more times than required. This results in either more
-digits being counted or in some cases (for example where val is
-1932683193) the value of m eventually overflows to zero and the
-while loop spins forever).
-
-Currently the function num_digits is currently only being used for
-small values of val in the SMP boot stage for digit counting on the
-number of cpus and NUMA nodes, so the overflow is never encountered.
-However it is useful to fix the overflow issue in case the function
-is used for other purposes in the future. (The issue was discovered
-while investigating the digit counting performance in various
-kernel helper functions rather than any real-world use-case).
-
-The simplest fix is to make m a long long, the overhead in
-multiplication speed for a long long is very minor for small values
-of val less than 10000 on modern processors. The alternative
-fix is to replace the multiplication with a constant division
-by 10 loop (this compiles down to an multiplication and shift)
-without needing to make m a long long, but this is slightly slower
-than the fix in this commit when measured on a range of x86
-processors).
-
-[ dhansen: subject and changelog tweaks ]
-
-Fixes: 646e29a1789a ("x86: Improve the printout of the SMP bootup CPU table")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20231102174901.2590325-1-colin.i.king%40gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/20231210180655.75542-1-robdclark@gmail.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/lib/misc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/lib/misc.c b/arch/x86/lib/misc.c
-index a018ec4fba53..c97be9a1430a 100644
---- a/arch/x86/lib/misc.c
-+++ b/arch/x86/lib/misc.c
-@@ -6,7 +6,7 @@
-  */
- int num_digits(int val)
- {
--	int m = 10;
-+	long long m = 10;
- 	int d = 1;
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -243,6 +243,7 @@ static int qcom_adreno_smmu_init_context
  
- 	if (val < 0) {
--- 
-2.43.0
-
+ static const struct of_device_id qcom_smmu_client_of_match[] __maybe_unused = {
+ 	{ .compatible = "qcom,adreno" },
++	{ .compatible = "qcom,adreno-gmu" },
+ 	{ .compatible = "qcom,mdp4" },
+ 	{ .compatible = "qcom,mdss" },
+ 	{ .compatible = "qcom,sc7180-mdss" },
 
 
 
