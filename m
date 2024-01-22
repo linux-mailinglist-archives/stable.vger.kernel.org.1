@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583B5837C51
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16457837E7D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E5701F239E8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A62B8B222C3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0B815531F;
-	Tue, 23 Jan 2024 00:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D548A13A271;
+	Tue, 23 Jan 2024 00:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQXYTCWo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIh2rbcK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8DE23C6;
-	Tue, 23 Jan 2024 00:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926C75D8FB;
+	Tue, 23 Jan 2024 00:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969577; cv=none; b=E6eHjn2cQ9algIB06frM864fIHWRc/RvIxgtCw+A5y9ZSMFD4N6KTs0iRzzD+J85W1ut7dQ00yaIyhs97RYwZu5LNjm9S9G5eIDMqWVf7BXZ+85temaA25fcu6UmeQEPEeDqO4eGmrLkFHtRKMksMesSHnoqoJ4IEnFfN1E6n3M=
+	t=1705970617; cv=none; b=MFFppXLa+b1BDreJchErILYF7FAIUkh8fd8nNIcCajDLPEG1Q8QAEqA4R1RkQQN9kZ3BFKdsmGkkwM78AhkYSpJ5jhxqkvrtto483OwWBd1MGYSb3SOJdwFkT5oin/xvb671tpbtth8fFQwrw9N6Ob0vuNxh0v5BkjLm/EanGmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969577; c=relaxed/simple;
-	bh=MCeVCTpc3KW3W+ARZWsQcRFP3bHHnMfnz4GOOglM3so=;
+	s=arc-20240116; t=1705970617; c=relaxed/simple;
+	bh=yErAR4BWXqd/mtpdqpk+InwGTsRfN/Tco9bSt68DF3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YYHASUfglqqSDMpM0f8GKhL/gp8zLLzpYqC5zcdGiGM06r649vYAEYr2fHnyiiDBf/AB/9VAV1TApyCgPk6PgZpzOCIG5V0sVeEt9CY42m2rJpUY5ndGKKzii+8BDzSPaR8Dk1mb9yyIX8J7sdBNNO7/DDF70SeJ4X1DJK7LGfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQXYTCWo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1D8C43390;
-	Tue, 23 Jan 2024 00:26:17 +0000 (UTC)
+	 MIME-Version; b=dFKbS0GdM9j8uxfbNayiF24oV6kJTMrWziiBhSXGVhp6Zh7qjMgc2OrCkJreoR3DzNiDlHULXzc+2NTGx63wsZRb18aXNGMSYYRb7J4J6/HcQ5953VDlXgExTF4X3+lOrcklsKemyUOPBypZ+0BsN+PtiPDBff2aPueBR02DevE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZIh2rbcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869FFC433C7;
+	Tue, 23 Jan 2024 00:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969577;
-	bh=MCeVCTpc3KW3W+ARZWsQcRFP3bHHnMfnz4GOOglM3so=;
+	s=korg; t=1705970617;
+	bh=yErAR4BWXqd/mtpdqpk+InwGTsRfN/Tco9bSt68DF3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lQXYTCWoL5okEg/jUleBOjIuUHsUAuvVNTqyPSnyeBBwcysRtaYF5+J1Z9nOry6mT
-	 LWlOGfnqS9XmBL3MXIBm8VyPAHiNWGHJ99ynmvLHXvyp1j4KVxpeB5rNjJ/KVBamZj
-	 7Q43zHgB3r42AUCF5gvOjG2MH0Qra20AKLObAVVY=
+	b=ZIh2rbcKmhN3BB/iQ5KmqxKXinRhuR8IQxxBKKCvzAw3ciO37WOrpSiWn8CCMzr0k
+	 Tn2e8LJVGqYSeYsJUFWTJz5mCjepHTZVbmwgJ7VnU5OpQa1mTZmuh+4nj1vSiz93+B
+	 6FUen6KqIRSjQuVM9bfXglOjIMQGuyZKbzjVHe6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Chih-Kang Chang <gary.chang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 333/641] clk: qcom: videocc-sm8150: Add missing PLL config property
+Subject: [PATCH 6.1 069/417] wifi: rtw88: fix RX filter in FIF_ALLMULTI flag
 Date: Mon, 22 Jan 2024 15:53:57 -0800
-Message-ID: <20240122235828.323896805@linuxfoundation.org>
+Message-ID: <20240122235754.095112369@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-[ Upstream commit 71f130c9193f613d497f7245365ed05ffdb0a401 ]
+[ Upstream commit 53ee0b3b99edc6a47096bffef15695f5a895386f ]
 
-When the driver was ported upstream, PLL test_ctl_hi1 register value
-was omitted. Add it to ensure the PLLs are fully configured.
+The broadcast packets will be filtered in the FIF_ALLMULTI flag in
+the original code, which causes beacon packets to be filtered out
+and disconnection. Therefore, we fix it.
 
-Fixes: 5658e8cf1a8a ("clk: qcom: add video clock controller driver for SM8150")
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231201-videocc-8150-v3-3-56bec3a5e443@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231103020851.102238-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/videocc-sm8150.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw88/mac80211.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/videocc-sm8150.c b/drivers/clk/qcom/videocc-sm8150.c
-index 1afdbe4a249d..5579463f7e46 100644
---- a/drivers/clk/qcom/videocc-sm8150.c
-+++ b/drivers/clk/qcom/videocc-sm8150.c
-@@ -33,6 +33,7 @@ static struct alpha_pll_config video_pll0_config = {
- 	.config_ctl_val = 0x20485699,
- 	.config_ctl_hi_val = 0x00002267,
- 	.config_ctl_hi1_val = 0x00000024,
-+	.test_ctl_hi1_val = 0x00000020,
- 	.user_ctl_val = 0x00000000,
- 	.user_ctl_hi_val = 0x00000805,
- 	.user_ctl_hi1_val = 0x000000D0,
+diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+index fabca307867a..0970d6bcba43 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -266,9 +266,9 @@ static void rtw_ops_configure_filter(struct ieee80211_hw *hw,
+ 
+ 	if (changed_flags & FIF_ALLMULTI) {
+ 		if (*new_flags & FIF_ALLMULTI)
+-			rtwdev->hal.rcr |= BIT_AM | BIT_AB;
++			rtwdev->hal.rcr |= BIT_AM;
+ 		else
+-			rtwdev->hal.rcr &= ~(BIT_AM | BIT_AB);
++			rtwdev->hal.rcr &= ~(BIT_AM);
+ 	}
+ 	if (changed_flags & FIF_FCSFAIL) {
+ 		if (*new_flags & FIF_FCSFAIL)
 -- 
 2.43.0
 
