@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C626B8380D7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 527398380CB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FA0228D712
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C72D3B26E88
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A3613474B;
-	Tue, 23 Jan 2024 01:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A7C612DDB3;
+	Tue, 23 Jan 2024 01:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7a6yCRG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kO1vkTFd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A587313473B;
-	Tue, 23 Jan 2024 01:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A17012DDB2;
+	Tue, 23 Jan 2024 01:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971918; cv=none; b=BWwCR4d838nSQeRmDdRGJBFf+6aPo8zhqFUesNDcVhEyFRTpJEJRBbHCQCRV8TToJazNFl0oZ8mX4jTMbhANd2U9xVxK+d0HC67MJorVkBh10bo79ZVDKZOTSeaTRVfWydsxu6/nItAD6YUV1YiiVBt3yndU5UagwyO4ku1flhs=
+	t=1705971714; cv=none; b=RpEPoLWLdHtaqQrOjWaBzdt8khd3KCh95swmUjWJbNISycdwB3h1Fogald8OoGjX48g9gI23ThUHnYUJxwAoFV9VzCdXojol0ftefpZ2VsV9/pd2eEPS/mQTMS/qMUYRtpikfxLjAo40pl1dme+j6A/HYAZ/2VzxeZ30hpaYhVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971918; c=relaxed/simple;
-	bh=eNkmMTjPm4rI0rO009IFX6MEbtFFi5KlDJ8Rf0iMkrY=;
+	s=arc-20240116; t=1705971714; c=relaxed/simple;
+	bh=DMt+idhsI6BvsR0/9+CW3L0PSWB4vYXIJG02B5ypkc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kop+2uoKzWh+FCddc3tIEfbmgE9AeINJl5teV5OKChkbAloo6RHXgeDRE9auBWEYfYDZorSuP27I5+5vo0K2BzMdPdH3XttuVRQkq4CuxwvRkv8VR0v1iC4ubpTbEONS8E8P5MC+kbpzItJRXPrMYphCFcJRv5znfSz7r5/7JwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7a6yCRG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAF2C433C7;
-	Tue, 23 Jan 2024 01:05:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FhkneUTX+vjg1YKQrF+Eesp+ztKkh13F4j0FZ5qgbWT2kwLn4oSs/dVmUnz1C8WQ80q6pF8VmkVjeWs+1zV3ap6ej9q9TKqWAA0qEQn7+94HNBQ0/sDNYfL7UkUW57CUbM5NJ7pATqsFRjntn3LwSqHh/dBpt6jbS7gDa+8S37g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kO1vkTFd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F104C43390;
+	Tue, 23 Jan 2024 01:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971918;
-	bh=eNkmMTjPm4rI0rO009IFX6MEbtFFi5KlDJ8Rf0iMkrY=;
+	s=korg; t=1705971713;
+	bh=DMt+idhsI6BvsR0/9+CW3L0PSWB4vYXIJG02B5ypkc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c7a6yCRGhbWP1UnQ4ediNasWxPsl7mHjMcRim8izCLFmzDeULmv+WiGTcZHOiRM2D
-	 8ylRVJtzyxpK7ahF1fQFjX1RBg6jwToLip1F0UaqLVqJGR7jkTdXXLj9Vx57EgpgW3
-	 /3CYUISHFOpppo+v/Opr2ZOhwoStfcQm9YTsysUs=
+	b=kO1vkTFdKwvPHlpUqXuhtNA0OLGSCLw7T/F33Sw/zHnTqjeP1jdvQeW/4c8etezVS
+	 YyCt8yvKn6w8N05LG45CcZY28FZdxFqxbKmitqwkE1ms/GYglHV0XkULlQB2nxCtqL
+	 0MrCUi0IbJaLMwSUKkVHVHGDxJjAgUTXd47tJHnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 351/417] iio: adc: ad9467: dont ignore error codes
+	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.10 213/286] Revert "usb: dwc3: Soft reset phy on probe for host"
 Date: Mon, 22 Jan 2024 15:58:39 -0800
-Message-ID: <20240122235803.956270770@linuxfoundation.org>
+Message-ID: <20240122235740.291059638@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +59,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit e072e149cfb827e0ab4cafb0547e9658e35393cd ]
+commit 7059fbebcb00554c3f31e5b5d93ef6d2d96dc7b4 upstream.
 
-Make sure functions that return errors are not ignored.
+This reverts commit 8bea147dfdf823eaa8d3baeccc7aeb041b41944b.
 
-Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20231207-iio-backend-prep-v2-2-a4a33bc4d70e@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The phy soft reset GUSB2PHYCFG.PHYSOFTRST only applies to UTMI phy, not
+ULPI. This fix is incomplete.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: 8bea147dfdf8 ("usb: dwc3: Soft reset phy on probe for host")
+Reported-by: Köry Maincent <kory.maincent@bootlin.com>
+Closes: https://lore.kernel.org/linux-usb/20231205151959.5236c231@kmaincent-XPS-13-7390
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/29a26593a60eba727de872a3e580a674807b3339.1703282469.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad9467.c | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ drivers/usb/dwc3/core.c |   39 +--------------------------------------
+ 1 file changed, 1 insertion(+), 38 deletions(-)
 
-diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-index 3e8d1e8fda07..eefd5ed7216c 100644
---- a/drivers/iio/adc/ad9467.c
-+++ b/drivers/iio/adc/ad9467.c
-@@ -162,9 +162,10 @@ static int ad9467_reg_access(struct adi_axi_adc_conv *conv, unsigned int reg,
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -277,46 +277,9 @@ int dwc3_core_soft_reset(struct dwc3 *dw
+ 	 * XHCI driver will reset the host block. If dwc3 was configured for
+ 	 * host-only mode or current role is host, then we can return early.
+ 	 */
+-	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
++	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
+ 		return 0;
  
- 	if (readval == NULL) {
- 		ret = ad9467_spi_write(spi, reg, writeval);
--		ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
--				 AN877_ADC_TRANSFER_SYNC);
--		return ret;
-+		if (ret)
-+			return ret;
-+		return ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
-+					AN877_ADC_TRANSFER_SYNC);
- 	}
- 
- 	ret = ad9467_spi_read(spi, reg);
-@@ -272,10 +273,13 @@ static int ad9467_get_scale(struct adi_axi_adc_conv *conv, int *val, int *val2)
- 	const struct ad9467_chip_info *info1 = to_ad9467_chip_info(info);
- 	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
- 	unsigned int i, vref_val;
-+	int ret;
- 
--	vref_val = ad9467_spi_read(st->spi, AN877_ADC_REG_VREF);
-+	ret = ad9467_spi_read(st->spi, AN877_ADC_REG_VREF);
-+	if (ret < 0)
-+		return ret;
- 
--	vref_val &= info1->vref_mask;
-+	vref_val = ret & info1->vref_mask;
- 
- 	for (i = 0; i < info->num_scales; i++) {
- 		if (vref_val == info->scale_table[i][1])
-@@ -296,6 +300,7 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
- 	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
- 	unsigned int scale_val[2];
- 	unsigned int i;
-+	int ret;
- 
- 	if (val != 0)
- 		return -EINVAL;
-@@ -305,11 +310,13 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
- 		if (scale_val[0] != val || scale_val[1] != val2)
- 			continue;
- 
--		ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
--				 info->scale_table[i][1]);
--		ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
--				 AN877_ADC_TRANSFER_SYNC);
+-	/*
+-	 * If the dr_mode is host and the dwc->current_dr_role is not the
+-	 * corresponding DWC3_GCTL_PRTCAP_HOST, then the dwc3_core_init_mode
+-	 * isn't executed yet. Ensure the phy is ready before the controller
+-	 * updates the GCTL.PRTCAPDIR or other settings by soft-resetting
+-	 * the phy.
+-	 *
+-	 * Note: GUSB3PIPECTL[n] and GUSB2PHYCFG[n] are port settings where n
+-	 * is port index. If this is a multiport host, then we need to reset
+-	 * all active ports.
+-	 */
+-	if (dwc->dr_mode == USB_DR_MODE_HOST) {
+-		u32 usb3_port;
+-		u32 usb2_port;
+-
+-		usb3_port = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
+-		usb3_port |= DWC3_GUSB3PIPECTL_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
+-
+-		usb2_port = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
+-		usb2_port |= DWC3_GUSB2PHYCFG_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
+-
+-		/* Small delay for phy reset assertion */
+-		usleep_range(1000, 2000);
+-
+-		usb3_port &= ~DWC3_GUSB3PIPECTL_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
+-
+-		usb2_port &= ~DWC3_GUSB2PHYCFG_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
+-
+-		/* Wait for clock synchronization */
+-		msleep(50);
 -		return 0;
-+		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
-+				       info->scale_table[i][1]);
-+		if (ret < 0)
-+			return ret;
-+
-+		return ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
-+					AN877_ADC_TRANSFER_SYNC);
- 	}
- 
- 	return -EINVAL;
--- 
-2.43.0
-
+-	}
+-
+ 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
+ 	reg |= DWC3_DCTL_CSFTRST;
+ 	reg &= ~DWC3_DCTL_RUN_STOP;
 
 
 
