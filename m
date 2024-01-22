@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-13533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B4D837C7E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF04A837C87
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA7C41C2884A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E25751C2884F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3056F1353F6;
-	Tue, 23 Jan 2024 00:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F32F135A4D;
+	Tue, 23 Jan 2024 00:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYbzagTg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="beHT0KzE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E456633097;
-	Tue, 23 Jan 2024 00:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC8F33097;
+	Tue, 23 Jan 2024 00:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969639; cv=none; b=lPqVMXMUoejlkP7ValJG1eqpuYg2aDPxcEw0vrtEZWAwbi/aKq7z493xAnzB6Iex15Ccozdg+V9y/u/SOLYEywtsxxY/2kN7qxBAVptP4Z9bJs5EDnHh4WCBTH4Ro9MoRNijNdGHG3Ekl8qox8U4XC3YYsn9X6LdVtg2PM1qwf0=
+	t=1705969656; cv=none; b=bwVMV7SDarPkgRMOnqa/Kz2dAREYx375+f66Wx6ad1rp2STQqRLubaZMM24tUSEPoibytTeol/ewpVpZEN+GVvKKM5ShBaKPkL4qRngy+D5JiVVMVRUG4zxViYLlVxVTtyYgIAJ0TeH52sMr+nUMmKeKuJPF3mN8f9iQss3fT14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969639; c=relaxed/simple;
-	bh=gbYVo1kagpnlkFm8O7IGNopHIKC5QJozS8Rn8yBt3Bo=;
+	s=arc-20240116; t=1705969656; c=relaxed/simple;
+	bh=g8wZzSA+8kCGnNtCfKutOGnhHwK+5yaxU6cJguthez0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lEa2SPMNqEnZ0zqWolfYsDYf+8vLrh9OMsEsgs5tnNoaBoh8MsBkya83YXaW1d7gKR/7TkKcuvymYn+irCO8JUV7Rw6B//oqIDmLRP2wlOH4XQEuZ6Qv3WnFy3uK4A+P/gQxPGu9y8y6i1YuZNdqEalofGjC4s9cPiKA9i3+KGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYbzagTg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A14C433F1;
-	Tue, 23 Jan 2024 00:27:18 +0000 (UTC)
+	 MIME-Version; b=DajZKZ2bRxSzrKV+2AJ4JSTk3ZviAydpNmaP7i7La2s3YURbSIzCPzz3WTFWjY6wnIEL14q74amEfKgZ4m0gyi4u2a2dcqRTaphex9Fizm7jcNkrHTIWHi9Pl1gzFYaizvkGjtRqRQbENYywBfriu9Dt/U0wDGDrHGCSRz9wc3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=beHT0KzE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82C7C433F1;
+	Tue, 23 Jan 2024 00:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969638;
-	bh=gbYVo1kagpnlkFm8O7IGNopHIKC5QJozS8Rn8yBt3Bo=;
+	s=korg; t=1705969655;
+	bh=g8wZzSA+8kCGnNtCfKutOGnhHwK+5yaxU6cJguthez0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GYbzagTg/QEXo1/WGAmv5lF+45Zaydb4ekdoPaN0Y+4xEzw5dk4lIiIHHEIkKYnze
-	 HC3s5uw6tftpnpeSbsz6VFTvAaVs213KfoBa0yWIFDikHpbfqGMcB35zNsVxivKUiD
-	 8DVB8+3AXYTFBW5gb4SP9sR7PPEX+LUqpR97rJlo=
+	b=beHT0KzE/kN/tAwOM0CQHk4Cgs1Pg4+psm0kqK8137EWQLOsFXJjYW6+pGwCwHf+H
+	 jTRKbV7wLfSvgtOoxzKZ4x3XQBD+isr0VGH8JjUhAEm0FL+GhYgVw/0YnjV+m8+MQT
+	 2+FOfAYGiWNY71UsS4sU7Q/k3wEd3qDRB4QRP8sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 368/641] drm/amd/pm/smu7: fix a memleak in smu7_hwmgr_backend_init
-Date: Mon, 22 Jan 2024 15:54:32 -0800
-Message-ID: <20240122235829.463720109@linuxfoundation.org>
+Subject: [PATCH 6.7 369/641] drm/amd/display: avoid stringop-overflow warnings for dp_decide_lane_settings()
+Date: Mon, 22 Jan 2024 15:54:33 -0800
+Message-ID: <20240122235829.497882288@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -66,51 +67,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 2f3be3ca779b11c332441b10e00443a2510f4d7b ]
+[ Upstream commit c966dc0e9d96dc44423c404a2628236f1200c24e ]
 
-The hwmgr->backend, (i.e. data) allocated by kzalloc is not freed in
-the error-handling paths of smu7_get_evv_voltages and
-smu7_update_edc_leakage_table. However, it did be freed in the
-error-handling of phm_initializa_dynamic_state_adjustment_rule_settings,
-by smu7_hwmgr_backend_fini. So the lack of free in smu7_get_evv_voltages
-and smu7_update_edc_leakage_table is considered a memleak in this patch.
+gcc prints a warning about a possible array overflow for a couple of
+callers of dp_decide_lane_settings() after commit 1b56c90018f0 ("Makefile:
+Enable -Wstringop-overflow globally"):
 
-Fixes: 599a7e9fe1b6 ("drm/amd/powerplay: implement smu7 hwmgr to manager asics with smu ip version 7.")
-Fixes: 8f0804c6b7d0 ("drm/amd/pm: add edc leakage controller setting")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c: In function 'dp_perform_fixed_vs_pe_training_sequence_legacy':
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c:426:25: error: 'dp_decide_lane_settings' accessing 4 bytes in a region of size 1 [-Werror=stringop-overflow=]
+  426 |                         dp_decide_lane_settings(lt_settings, dpcd_lane_adjust,
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  427 |                                         lt_settings->hw_lane_settings, lt_settings->dpcd_lane_settings);
+      |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c:426:25: note: referencing argument 4 of type 'union dpcd_training_lane[4]'
+
+I'm not entirely sure what caused this, but changing the prototype to expect
+a pointer instead of an array avoids the warnings.
+
+Fixes: 7727e7b60f82 ("drm/amd/display: Improve robustness of FIXED_VS link training at DP1 rates")
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ .../gpu/drm/amd/display/dc/link/protocols/link_dp_training.c    | 2 +-
+ .../gpu/drm/amd/display/dc/link/protocols/link_dp_training.h    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 11372fcc59c8..b1a8799e2dee 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -2974,6 +2974,8 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
- 		result = smu7_get_evv_voltages(hwmgr);
- 		if (result) {
- 			pr_info("Get EVV Voltage Failed.  Abort Driver loading!\n");
-+			kfree(hwmgr->backend);
-+			hwmgr->backend = NULL;
- 			return -EINVAL;
- 		}
- 	} else {
-@@ -3019,8 +3021,10 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
+index 90339c2dfd84..5a0b04518956 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.c
+@@ -807,7 +807,7 @@ void dp_decide_lane_settings(
+ 		const struct link_training_settings *lt_settings,
+ 		const union lane_adjust ln_adjust[LANE_COUNT_DP_MAX],
+ 		struct dc_lane_settings hw_lane_settings[LANE_COUNT_DP_MAX],
+-		union dpcd_training_lane dpcd_lane_settings[LANE_COUNT_DP_MAX])
++		union dpcd_training_lane *dpcd_lane_settings)
+ {
+ 	uint32_t lane;
  
- 	result = smu7_update_edc_leakage_table(hwmgr);
--	if (result)
-+	if (result) {
-+		smu7_hwmgr_backend_fini(hwmgr);
- 		return result;
-+	}
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.h b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.h
+index 7d027bac8255..851bd17317a0 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.h
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training.h
+@@ -111,7 +111,7 @@ void dp_decide_lane_settings(
+ 	const struct link_training_settings *lt_settings,
+ 	const union lane_adjust ln_adjust[LANE_COUNT_DP_MAX],
+ 	struct dc_lane_settings hw_lane_settings[LANE_COUNT_DP_MAX],
+-	union dpcd_training_lane dpcd_lane_settings[LANE_COUNT_DP_MAX]);
++	union dpcd_training_lane *dpcd_lane_settings);
  
- 	return 0;
- }
+ enum dc_dp_training_pattern decide_cr_training_pattern(
+ 		const struct dc_link_settings *link_settings);
 -- 
 2.43.0
 
