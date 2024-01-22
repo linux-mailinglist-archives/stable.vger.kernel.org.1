@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-14445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C9FE8380F2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1E1838522
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91B281C2906A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCBEA1C2A567
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8D213BE84;
-	Tue, 23 Jan 2024 01:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54B37E578;
+	Tue, 23 Jan 2024 02:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="garpBQVI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="latd46+m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C99E1350CA;
-	Tue, 23 Jan 2024 01:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E23380;
+	Tue, 23 Jan 2024 02:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971974; cv=none; b=IVprM/Xy8BkxGzi1mzQrfQKrlKJPrkZpLHuQsOtiwAGXr3AZ0u+1bb9lttr3H7/aOtkuOY3FvDVMruQyXprpKAsZFQ8DammVdPM3/fZsDJFa0UcmgMf723VlMhOLZMcKcis1yPx3LDo8P7rG6dwWm2YtYsvffzJA4AkzybQ49V0=
+	t=1705975748; cv=none; b=g5wfhUJix6xZK39zeJE6HZE8g3UajgJCrRQn1yUKos+I7rr0FfB7bKC+tFf+ghnEwOSH4PEX8whiMkoosK4Aw5Bt1JF1WhIAaBSvlF0gsRfCMOoT5O91MFyVJ1Gi27mRfwIhlPi6MlfRCyotZfH2Yu1HosQm051VAt6us8m9fvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971974; c=relaxed/simple;
-	bh=97+UPaHkSLn8uoJ42UVBHpkq7Vz4QW0v1JKQGyjuDus=;
+	s=arc-20240116; t=1705975748; c=relaxed/simple;
+	bh=ZtiaL2c9VafxhUDBIT9RH57t6VA1FhD4RfgmGarQE0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1gaQ1+d3QTZ9mfLeW6MwxSahkOHLbXMCv91htYxebZRsLd2AO7d8T0wE/Gb+pptrYDorGGag3b3chtBvA1F/zkxbvKzeH0axJG7doaLYG2n+8TfW00rxAJD3sdYAsptg13yiQisqBMVXlWFIKed0gkvrfNJyEyJUpa/d7XerTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=garpBQVI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C60C433C7;
-	Tue, 23 Jan 2024 01:06:13 +0000 (UTC)
+	 MIME-Version; b=bFsm2OGHWxTTvbFvSpuAaIUMapvETk0EmLXIEv8mN10lZs09e13oBd6ev7km0+JF6YYzOJf0zuEZ2dFDuV74UFUNoKXHuj8/NLKSod51Cs63obvNsyCPT56CVVAzLjbDizJvQykOwKb6UOGYeYnGyWDVEbaov/7706sO5RfA5vM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=latd46+m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615F1C43399;
+	Tue, 23 Jan 2024 02:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971974;
-	bh=97+UPaHkSLn8uoJ42UVBHpkq7Vz4QW0v1JKQGyjuDus=;
+	s=korg; t=1705975748;
+	bh=ZtiaL2c9VafxhUDBIT9RH57t6VA1FhD4RfgmGarQE0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=garpBQVIHE/rUUKxgP/IY11UMewSbiAJck0r6S4pcHVx41ieX2pXVFIPJWwVTA4gP
-	 5F5JbMnPsLuoxL00yEmjA2v5tSVC9ic7pI1FMCXYSOz5WjYXiUOu9X2+nMZmBoN9Ym
-	 0cB02uX/vzL2HCzAbfkVJ/ha3AgKvmyN5F1xFB5g=
+	b=latd46+mCHhzgHI62VeqvlygYxXGxOApA+0Qm4himIW6LloxQ8Ls8d8qqX1gSLztw
+	 3nOs0DNPW1eFPxO/jWZ8kv7TPwUeSviUGqdd0PaNVEulpf8pSy/7kg7OckulD6zYu/
+	 WJCUT3I8AZJmdz9LjL+4XRmZ4dbAlMJ2t1XYQEmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Westphal <fw@strlen.de>,
+	Peter Krystad <peter.krystad@linux.intel.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang.tang@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 278/286] mlxsw: spectrum: Use bitmap_zalloc() when applicable
+Subject: [PATCH 6.6 533/583] mptcp: strict validation before using mp_opt->hmac
 Date: Mon, 22 Jan 2024 15:59:44 -0800
-Message-ID: <20240122235742.774208507@linuxfoundation.org>
+Message-ID: <20240122235828.423970382@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,207 +69,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2c087dfcc9d5e7e8557d217f01f58ba42d1ddbf1 ]
+[ Upstream commit c1665273bdc7c201766c65e561c06711f2e050dc ]
 
-Use 'bitmap_zalloc()' to simplify code, improve the semantic and avoid
-some open-coded arithmetic in allocator arguments.
+mp_opt->hmac contains uninitialized data unless OPTION_MPTCP_MPJ_ACK
+was set in mptcp_parse_option().
 
-Also change the corresponding 'kfree()' into 'bitmap_free()' to keep
-consistency.
+We must refine the condition before we call subflow_hmac_valid().
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 483ae90d8f97 ("mlxsw: spectrum_acl_tcam: Fix stack corruption")
+Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Florian Westphal <fw@strlen.de>
+Cc: Peter Krystad <peter.krystad@linux.intel.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>
+Cc: Geliang Tang <geliang.tang@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20240111194917.4044654-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlxsw/spectrum_acl_atcam.c  |  8 +++-----
- .../ethernet/mellanox/mlxsw/spectrum_acl_tcam.c   | 15 ++++++---------
- .../net/ethernet/mellanox/mlxsw/spectrum_cnt.c    |  9 +++------
- .../ethernet/mellanox/mlxsw/spectrum_switchdev.c  | 11 ++++-------
- 4 files changed, 16 insertions(+), 27 deletions(-)
+ net/mptcp/subflow.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_atcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_atcam.c
-index ded4cf658680..4b713832fdd5 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_atcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_atcam.c
-@@ -119,7 +119,6 @@ mlxsw_sp_acl_atcam_region_12kb_init(struct mlxsw_sp_acl_atcam_region *aregion)
- {
- 	struct mlxsw_sp *mlxsw_sp = aregion->region->mlxsw_sp;
- 	struct mlxsw_sp_acl_atcam_region_12kb *region_12kb;
--	size_t alloc_size;
- 	u64 max_lkey_id;
- 	int err;
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index 45b8115b363b..d6ee0e52ea41 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -788,7 +788,7 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
  
-@@ -131,8 +130,7 @@ mlxsw_sp_acl_atcam_region_12kb_init(struct mlxsw_sp_acl_atcam_region *aregion)
- 	if (!region_12kb)
- 		return -ENOMEM;
- 
--	alloc_size = BITS_TO_LONGS(max_lkey_id) * sizeof(unsigned long);
--	region_12kb->used_lkey_id = kzalloc(alloc_size, GFP_KERNEL);
-+	region_12kb->used_lkey_id = bitmap_zalloc(max_lkey_id, GFP_KERNEL);
- 	if (!region_12kb->used_lkey_id) {
- 		err = -ENOMEM;
- 		goto err_used_lkey_id_alloc;
-@@ -149,7 +147,7 @@ mlxsw_sp_acl_atcam_region_12kb_init(struct mlxsw_sp_acl_atcam_region *aregion)
- 	return 0;
- 
- err_rhashtable_init:
--	kfree(region_12kb->used_lkey_id);
-+	bitmap_free(region_12kb->used_lkey_id);
- err_used_lkey_id_alloc:
- 	kfree(region_12kb);
- 	return err;
-@@ -161,7 +159,7 @@ mlxsw_sp_acl_atcam_region_12kb_fini(struct mlxsw_sp_acl_atcam_region *aregion)
- 	struct mlxsw_sp_acl_atcam_region_12kb *region_12kb = aregion->priv;
- 
- 	rhashtable_destroy(&region_12kb->lkey_ht);
--	kfree(region_12kb->used_lkey_id);
-+	bitmap_free(region_12kb->used_lkey_id);
- 	kfree(region_12kb);
- }
- 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index 7cccc41dd69c..31f7f4c3acc3 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -36,7 +36,6 @@ int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
- 	u64 max_tcam_regions;
- 	u64 max_regions;
- 	u64 max_groups;
--	size_t alloc_size;
- 	int err;
- 
- 	mutex_init(&tcam->lock);
-@@ -52,15 +51,13 @@ int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
- 	if (max_tcam_regions < max_regions)
- 		max_regions = max_tcam_regions;
- 
--	alloc_size = sizeof(tcam->used_regions[0]) * BITS_TO_LONGS(max_regions);
--	tcam->used_regions = kzalloc(alloc_size, GFP_KERNEL);
-+	tcam->used_regions = bitmap_zalloc(max_regions, GFP_KERNEL);
- 	if (!tcam->used_regions)
- 		return -ENOMEM;
- 	tcam->max_regions = max_regions;
- 
- 	max_groups = MLXSW_CORE_RES_GET(mlxsw_sp->core, ACL_MAX_GROUPS);
--	alloc_size = sizeof(tcam->used_groups[0]) * BITS_TO_LONGS(max_groups);
--	tcam->used_groups = kzalloc(alloc_size, GFP_KERNEL);
-+	tcam->used_groups = bitmap_zalloc(max_groups, GFP_KERNEL);
- 	if (!tcam->used_groups) {
- 		err = -ENOMEM;
- 		goto err_alloc_used_groups;
-@@ -76,9 +73,9 @@ int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
- 	return 0;
- 
- err_tcam_init:
--	kfree(tcam->used_groups);
-+	bitmap_free(tcam->used_groups);
- err_alloc_used_groups:
--	kfree(tcam->used_regions);
-+	bitmap_free(tcam->used_regions);
- 	return err;
- }
- 
-@@ -89,8 +86,8 @@ void mlxsw_sp_acl_tcam_fini(struct mlxsw_sp *mlxsw_sp,
- 
- 	mutex_destroy(&tcam->lock);
- 	ops->fini(mlxsw_sp, tcam->priv);
--	kfree(tcam->used_groups);
--	kfree(tcam->used_regions);
-+	bitmap_free(tcam->used_groups);
-+	bitmap_free(tcam->used_regions);
- }
- 
- int mlxsw_sp_acl_tcam_priority_get(struct mlxsw_sp *mlxsw_sp,
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_cnt.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_cnt.c
-index b65b93a2b9bc..fc2257753b9b 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_cnt.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_cnt.c
-@@ -122,7 +122,6 @@ int mlxsw_sp_counter_pool_init(struct mlxsw_sp *mlxsw_sp)
- 	unsigned int sub_pools_count = ARRAY_SIZE(mlxsw_sp_counter_sub_pools);
- 	struct devlink *devlink = priv_to_devlink(mlxsw_sp->core);
- 	struct mlxsw_sp_counter_pool *pool;
--	unsigned int map_size;
- 	int err;
- 
- 	pool = kzalloc(struct_size(pool, sub_pools, sub_pools_count),
-@@ -143,9 +142,7 @@ int mlxsw_sp_counter_pool_init(struct mlxsw_sp *mlxsw_sp)
- 	devlink_resource_occ_get_register(devlink, MLXSW_SP_RESOURCE_COUNTERS,
- 					  mlxsw_sp_counter_pool_occ_get, pool);
- 
--	map_size = BITS_TO_LONGS(pool->pool_size) * sizeof(unsigned long);
--
--	pool->usage = kzalloc(map_size, GFP_KERNEL);
-+	pool->usage = bitmap_zalloc(pool->pool_size, GFP_KERNEL);
- 	if (!pool->usage) {
- 		err = -ENOMEM;
- 		goto err_usage_alloc;
-@@ -158,7 +155,7 @@ int mlxsw_sp_counter_pool_init(struct mlxsw_sp *mlxsw_sp)
- 	return 0;
- 
- err_sub_pools_init:
--	kfree(pool->usage);
-+	bitmap_free(pool->usage);
- err_usage_alloc:
- 	devlink_resource_occ_get_unregister(devlink,
- 					    MLXSW_SP_RESOURCE_COUNTERS);
-@@ -176,7 +173,7 @@ void mlxsw_sp_counter_pool_fini(struct mlxsw_sp *mlxsw_sp)
- 	WARN_ON(find_first_bit(pool->usage, pool->pool_size) !=
- 			       pool->pool_size);
- 	WARN_ON(atomic_read(&pool->active_entries_count));
--	kfree(pool->usage);
-+	bitmap_free(pool->usage);
- 	devlink_resource_occ_get_unregister(devlink,
- 					    MLXSW_SP_RESOURCE_COUNTERS);
- 	kfree(pool);
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
-index 368fa0e5ad31..ea37f5000caa 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
-@@ -1631,16 +1631,13 @@ mlxsw_sp_mid *__mlxsw_sp_mc_alloc(struct mlxsw_sp *mlxsw_sp,
- 				  u16 fid)
- {
- 	struct mlxsw_sp_mid *mid;
--	size_t alloc_size;
- 
- 	mid = kzalloc(sizeof(*mid), GFP_KERNEL);
- 	if (!mid)
- 		return NULL;
- 
--	alloc_size = sizeof(unsigned long) *
--		     BITS_TO_LONGS(mlxsw_core_max_ports(mlxsw_sp->core));
--
--	mid->ports_in_mid = kzalloc(alloc_size, GFP_KERNEL);
-+	mid->ports_in_mid = bitmap_zalloc(mlxsw_core_max_ports(mlxsw_sp->core),
-+					  GFP_KERNEL);
- 	if (!mid->ports_in_mid)
- 		goto err_ports_in_mid_alloc;
- 
-@@ -1659,7 +1656,7 @@ mlxsw_sp_mid *__mlxsw_sp_mc_alloc(struct mlxsw_sp *mlxsw_sp,
- 	return mid;
- 
- err_write_mdb_entry:
--	kfree(mid->ports_in_mid);
-+	bitmap_free(mid->ports_in_mid);
- err_ports_in_mid_alloc:
- 	kfree(mid);
- 	return NULL;
-@@ -1676,7 +1673,7 @@ static int mlxsw_sp_port_remove_from_mid(struct mlxsw_sp_port *mlxsw_sp_port,
- 			 mlxsw_core_max_ports(mlxsw_sp->core))) {
- 		err = mlxsw_sp_mc_remove_mdb_entry(mlxsw_sp, mid);
- 		list_del(&mid->list);
--		kfree(mid->ports_in_mid);
-+		bitmap_free(mid->ports_in_mid);
- 		kfree(mid);
- 	}
- 	return err;
+ 	} else if (subflow_req->mp_join) {
+ 		mptcp_get_options(skb, &mp_opt);
+-		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPJ) ||
++		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK) ||
+ 		    !subflow_hmac_valid(req, &mp_opt) ||
+ 		    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
+ 			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
 -- 
 2.43.0
 
