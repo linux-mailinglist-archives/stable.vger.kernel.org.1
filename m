@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121EE83836E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57BF783857E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:42:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C051D285516
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 394A8B29EE6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0329F629FC;
-	Tue, 23 Jan 2024 01:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11D1D7A72A;
+	Tue, 23 Jan 2024 02:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8l0hew4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SumQO8mf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BD8629E1;
-	Tue, 23 Jan 2024 01:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A317A720;
+	Tue, 23 Jan 2024 02:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974971; cv=none; b=MCec46r3zEDxeHeSW8iaWdTamzVCq756+R5sZQV+SQgkUadjN7XnUqrqEFbdstlwQb6qnz/LNpmpSS0KDY98C5YQmieZDOd2ObmYKTGpFLy1A7CXjTl70Y2ozxcYBqPc4NmdNdhAW5ml00W9kDlakqSiscX7wwSymJjXIZ1SCgk=
+	t=1705975555; cv=none; b=RacVh8QPb4FEgGPRnsH6iafEQY0hbGbBHMwVmj4X9pvulFU0IxJInw3msXPgeX3J5WROb2i+8kYaBUfs4lFPIQcCT8DTgTGfHgueohOmke8c3V5STK6dZVdsqbfSE2hHGryAkeo8ipnspAhsC8QsswMWA4Rzp/e6UXO4PkbzrkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974971; c=relaxed/simple;
-	bh=jQPJ/pBRFtQc5EbN/cLyRoiu0R2+Od4gSytAFXBUqSk=;
+	s=arc-20240116; t=1705975555; c=relaxed/simple;
+	bh=u4e2FdkUvM3DV4YoqiKFPmVJ6xPXarNUbn8FeLtrwYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KjkjAckyz0kip7LZn8nbfvyxJkm0R2Lks0ZP2C9V49IZujQvu4I2XyK59fPnVBh0nPs3ftjoo1dDMqyb5O08cz0YN35PZTVJNrp9E4gfJWPMPcNywZdMYJYe/7Ipc0XtN5SHxEq76fMViEct/AJJjXgmoY0kyCWJrdtMksQrzzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8l0hew4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AFE4C43390;
-	Tue, 23 Jan 2024 01:56:11 +0000 (UTC)
+	 MIME-Version; b=mn7Tih6Bb3SiUZfL2pj/1UIWTT7zpK13f6YLWAwmpZ86ypt9ZxNe6Ip+4S9LF3f3aj3Ysan0vNbSzghlSsP1ZZZIj5iMharyyd4wEh1VaVd8rZftGoWD8akRTmqXO6aD9FowbON9yA2Kf0z1fDZpNxXJGhvJ+nZ3qrALItGiJlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SumQO8mf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE81C433F1;
+	Tue, 23 Jan 2024 02:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974971;
-	bh=jQPJ/pBRFtQc5EbN/cLyRoiu0R2+Od4gSytAFXBUqSk=;
+	s=korg; t=1705975555;
+	bh=u4e2FdkUvM3DV4YoqiKFPmVJ6xPXarNUbn8FeLtrwYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H8l0hew4zge/jq2ZrzOsr2S7q4QdOv2V1dJKObyelUoRE3ibISLYMYir91ZjrdYi2
-	 pm/D6lgfiupKirfE/Y0Yrt4mAvjpVmHT7PBUmj2AAvieuR9tojALhji9afsERJUaCy
-	 8hoHLzMWqDvYjWhCm5N4tkKjz8l5hG1fCOIonYYU=
+	b=SumQO8mfWX68Xt2DLxflCRtTMPbcR2EKwQXWYLwSP+2SPMUY3sedRqvylbSjoC+0e
+	 QM0stmO7ttHLE7GEW/D9cddOd8wlVDqlDm/srGQiIRKCtTyqHYwbfOoFLuWfA3xNBu
+	 RNgoZbEkGrpA8hOoc/K12EzE90lDlnwRyY8/D5E0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Jim Harris <jim.harris@samsung.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Fan Ni <fan.ni@samsung.com>,
+	Dan Williams <dan.j.williams@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 302/374] power: supply: bq256xx: fix some problem in bq256xx_hw_init
+Subject: [PATCH 6.6 507/583] cxl/region: fix x9 interleave typo
 Date: Mon, 22 Jan 2024 15:59:18 -0800
-Message-ID: <20240122235755.299302896@linuxfoundation.org>
+Message-ID: <20240122235827.561023640@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Jim Harris <jim.harris@samsung.com>
 
-[ Upstream commit b55d073e6501dc6077edaa945a6dad8ac5c8bbab ]
+[ Upstream commit c7ad3dc3649730af483ee1e78be5d0362da25bfe ]
 
-smatch complains that there is a buffer overflow and clang complains
-'ret' is never read.
+CXL supports x3, x6 and x12 - not x9.
 
-Smatch error:
-drivers/power/supply/bq256xx_charger.c:1578 bq256xx_hw_init() error:
-buffer overflow 'bq256xx_watchdog_time' 4 <= 4
-
-Clang static checker:
-Value stored to 'ret' is never read.
-
-Add check for buffer overflow and error code from regmap_update_bits().
-
-Fixes: 32e4978bb920 ("power: supply: bq256xx: Introduce the BQ256XX charger driver")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20231116041822.1378758-1-suhui@nfschina.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 80d10a6cee050 ("cxl/region: Add interleave geometry attributes")
+Signed-off-by: Jim Harris <jim.harris@samsung.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
+Link: https://lore.kernel.org/r/169904271254.204936.8580772404462743630.stgit@ubuntu
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq256xx_charger.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/cxl/core/region.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/bq256xx_charger.c b/drivers/power/supply/bq256xx_charger.c
-index f501ecd49202..9fb7b44e890a 100644
---- a/drivers/power/supply/bq256xx_charger.c
-+++ b/drivers/power/supply/bq256xx_charger.c
-@@ -1514,13 +1514,16 @@ static int bq256xx_hw_init(struct bq256xx_device *bq)
- 			wd_reg_val = i;
- 			break;
- 		}
--		if (bq->watchdog_timer > bq256xx_watchdog_time[i] &&
-+		if (i + 1 < BQ256XX_NUM_WD_VAL &&
-+		    bq->watchdog_timer > bq256xx_watchdog_time[i] &&
- 		    bq->watchdog_timer < bq256xx_watchdog_time[i + 1])
- 			wd_reg_val = i;
- 	}
- 	ret = regmap_update_bits(bq->regmap, BQ256XX_CHARGER_CONTROL_1,
- 				 BQ256XX_WATCHDOG_MASK, wd_reg_val <<
- 						BQ256XX_WDT_BIT_SHIFT);
-+	if (ret)
-+		return ret;
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index e7206367ec66..472bd510b5e2 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -397,7 +397,7 @@ static ssize_t interleave_ways_store(struct device *dev,
+ 		return rc;
  
- 	ret = power_supply_get_battery_info(bq->charger, &bat_info);
- 	if (ret) {
+ 	/*
+-	 * Even for x3, x9, and x12 interleaves the region interleave must be a
++	 * Even for x3, x6, and x12 interleaves the region interleave must be a
+ 	 * power of 2 multiple of the host bridge interleave.
+ 	 */
+ 	if (!is_power_of_2(val / cxld->interleave_ways) ||
 -- 
 2.43.0
 
