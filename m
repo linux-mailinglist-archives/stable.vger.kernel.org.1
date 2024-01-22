@@ -1,126 +1,135 @@
-Return-Path: <stable+bounces-12798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF1C8373D6
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 21:33:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBBC8373EF
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 21:38:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4397228AD60
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:33:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E924F28D344
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D04873FB10;
-	Mon, 22 Jan 2024 20:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8516947A5C;
+	Mon, 22 Jan 2024 20:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfYxuoqw"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2nxz8Zti"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAFC1DFE5
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 20:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C08246433
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 20:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705955584; cv=none; b=qvnqHFgO9JZPNTZvE+MRnnf+awNXyoP6YbWWT4R3IngGjLI4jScH0X2ge2uBX3lvG6I+dyh97hh5rzab8C06pvnlbEic8RYDGPvrm7S/CzZWQ8jiXfcriIy0BQ6fHW1xo+0VXlcMV1JwwJpuY3/9S4nz8b6OszRKmN6vsvecfHQ=
+	t=1705955895; cv=none; b=bJlxjUN5J9s97XtEzTnc6LDUJO10+LgDBsdgW0zk6d3fmd1TAHfJQ0Z703wIEFC99yKFyZXIFwdzCzpKaArT6ukNc/YNZmxSRRWtbi57JOCpuNnFmt9MSyxVlyjlG/t4EhIIkK3xiPURuQqKVfRMYN2gu88y/5GyRS2RjUuDPU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705955584; c=relaxed/simple;
-	bh=4E0JtELJBm04bRyVvU8FtadV0xdCvDDg77pBMxbZ5OM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YyCmGZ4Rdhh0uRLo/w7CQeM/q/QF2dPzXPr/fnZ5AIE2TcbenVl/bT78Yyqrjf9TbTgL+yERRQ1IppfhCPYwmbcxZeBRg5T57m+vPjLB66pWsPffi2OBqyo9Z8cNu0PAuv5T6XI1Zt+2yYc1/6PmkDRHgzH/n9Mx4d/FtW34b3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfYxuoqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51488C433C7;
-	Mon, 22 Jan 2024 20:33:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705955584;
-	bh=4E0JtELJBm04bRyVvU8FtadV0xdCvDDg77pBMxbZ5OM=;
-	h=Subject:To:Cc:From:Date:From;
-	b=QfYxuoqwQck+ThcU3ZRmTuPVjkLmk8f6rnHqsLQcUviV9seSBuWUz4lOrcIogMk6W
-	 p9xncBCfqHaSZFxuFBeRc/Le4iCxYzv474vJbKdJegStXkhjv9WYfYcSs/0O2sSQXx
-	 LgOaxy7P8HuZHAvb97v403S5nP2zcGq7mzIYoJLI=
-Subject: FAILED: patch "[PATCH] serial: sc16is7xx: add check for unsupported SPI modes during" failed to apply to 4.19-stable tree
-To: hvilleneuve@dimonoff.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 22 Jan 2024 12:32:59 -0800
-Message-ID: <2024012259-headset-sludge-38da@gregkh>
+	s=arc-20240116; t=1705955895; c=relaxed/simple;
+	bh=ht3OFOZepzevWY8LrzdZG62HQxz9zjIpaWrIyOKZiuE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=XkEMyTVo7bnfjtDrS4LoEMm+g9/FaR5CuQcnLrWl/ylWCU/0FprPuZJ7BlyISegyXO676smWtt1WzZGr9BeTpEJO5jgPuG8cYmczZtOubWZRAoNVspyPpl/8gxt0jNAbEX1/ZTkyXgq2teOO35lKlqGduUxxR6cqAg8XsNOHHLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--isaacmanjarres.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2nxz8Zti; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--isaacmanjarres.bounces.google.com
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc26605c273so5346242276.0
+        for <stable@vger.kernel.org>; Mon, 22 Jan 2024 12:38:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1705955891; x=1706560691; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ovPyY1cT5jVLmjOiRM1g4P8UYTcopXTaszvOlquJxEk=;
+        b=2nxz8ZtiJKl6Q5iGEQ0Hz1Q2wdky21x054B3PMCtxayWnc57cypLkoZGL9OlndFBfe
+         5yeesWtBsbK8gweiCgjpGc0JTshGwm/oQeAz0PJ+JDm7sgyeOY7LA+k1jd4nVkgHjJ6Y
+         NnNSkY9ThqlLZ0oXHESAnbOyL34Bvihur8r9JW3/k0RU7nP9Ba5+aiU7jTmfLEo6yCks
+         WFRW8Y0rtqj7KXOlWFvsR4UJ5+x3eDqfMDrOSprUHIl4+8UaBY57UcqkEzBYBoWBV6hE
+         i87qeIMuqu3BhnitatRMVp2aZD2S1ydAViZ6kU1EkGnmQ7/UbQjuBafq02nvU0pVsFoY
+         DKjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705955891; x=1706560691;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ovPyY1cT5jVLmjOiRM1g4P8UYTcopXTaszvOlquJxEk=;
+        b=tSeXIGQdEIuUj0SwdiG8b47W3BL1AteFT7EmmpzWHc4xNq+MzmVs9hevp+ixxyI0MY
+         vot1Uk0lKRrnm89UsvnudOL6s7PeRnHB8wJffbfgy5lDZIH7c+R4ceRDEaLdqvuVq1GV
+         yv9ORAnZD6CAcC1sMttY0pwVYqWRfio8v4/EJ5sOLOtzUN2YPGtgbuXunVll71uT49Q6
+         E3VzVN8jxOGA08ZlymYC0+8Jhrteip+1viDjAQMqfEXaxcolCfzXvTmE4q5tDGeayjky
+         vjl1bPLcUGn+25UUzf2eW+Pnsi+vF21hTSqdOOH06B6nh6ZaNNfLPGX44Z4CVonAdSWm
+         TdWA==
+X-Gm-Message-State: AOJu0YyuyK6CxCHOmLPPpNB39hGIC/A4MmpX7mnu6FwpoAk6nnLCaIsA
+	d30d3E0Klu+7IMILXoF2Tuux/DXDgUbF0A6dh8hqmJp8EG77u9k2KplcTRGgX4axXZE5JRYILpS
+	nDXIzJ1/vg2u2FKg5GGLqFjhhgtgHyI0DhfCBJfiSBooCiPWvGDIUTljvf/fVfhQ2zBHsYeyzGQ
+	R8kihsjWTwyTJCcW54dIDvjDjf0DsBhOYgjELyaL+Mpdq0MDRVlMg/Bb4tHs+htRgkmVU0QvdaM
+	p4=
+X-Google-Smtp-Source: AGHT+IHcuyW7OLB0d9E+mgnrWx8XjzFlhd+qR+sGVBcQIIrj0lVEKajyTntdzrwUU2FMLBPq3nvmH8038HWQSAIGv+XPUA==
+X-Received: from isaacmanjarres.irv.corp.google.com ([2620:15c:2d:3:17ea:d296:86a:98b0])
+ (user=isaacmanjarres job=sendgmr) by 2002:a5b:1cc:0:b0:dbe:3e36:17db with
+ SMTP id f12-20020a5b01cc000000b00dbe3e3617dbmr2237086ybp.1.1705955891476;
+ Mon, 22 Jan 2024 12:38:11 -0800 (PST)
+Date: Mon, 22 Jan 2024 12:37:54 -0800
+In-Reply-To: <2024012226-unmanned-marshy-5819@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <2024012226-unmanned-marshy-5819@gregkh>
+X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
+Message-ID: <20240122203758.1435127-1-isaacmanjarres@google.com>
+Subject: [PATCH 5.15.y] iommu/dma: Trace bounce buffer usage when mapping buffers
+From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
+To: stable@vger.kernel.org, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Tom Murphy <murphyt7@tcd.ie>
+Cc: "Isaac J. Manjarres" <isaacmanjarres@google.com>, Saravana Kannan <saravanak@google.com>, 
+	Joerg Roedel <jroedel@suse.de>, kernel-team@android.com, iommu@lists.linux-foundation.org, 
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+When commit 82612d66d51d ("iommu: Allow the dma-iommu api to
+use bounce buffers") was introduced, it did not add the logic
+for tracing the bounce buffer usage from iommu_dma_map_page().
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+All of the users of swiotlb_tbl_map_single() trace their bounce
+buffer usage, except iommu_dma_map_page(). This makes it difficult
+to track SWIOTLB usage from that function. Thus, trace bounce buffer
+usage from iommu_dma_map_page().
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
+Cc: stable@vger.kernel.org # v5.15+
+Cc: Tom Murphy <murphyt7@tcd.ie>
+Cc: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Saravana Kannan <saravanak@google.com>
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Link: https://lore.kernel.org/r/20231208234141.2356157-1-isaacmanjarres@google.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+(cherry picked from commit a63c357b9fd56ad5fe64616f5b22835252c6a76a)
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+---
+ drivers/iommu/dma-iommu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 6d710b769c1f5f0d55c9ad9bb49b7dce009ec103
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012259-headset-sludge-38da@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
-
-Possible dependencies:
-
-6d710b769c1f ("serial: sc16is7xx: add check for unsupported SPI modes during probe")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 6d710b769c1f5f0d55c9ad9bb49b7dce009ec103 Mon Sep 17 00:00:00 2001
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Date: Thu, 21 Dec 2023 18:18:09 -0500
-Subject: [PATCH] serial: sc16is7xx: add check for unsupported SPI modes during
- probe
-
-The original comment is confusing because it implies that variants other
-than the SC16IS762 supports other SPI modes beside SPI_MODE_0.
-
-Extract from datasheet:
-    The SC16IS762 differs from the SC16IS752 in that it supports SPI clock
-    speeds up to 15 Mbit/s instead of the 4 Mbit/s supported by the
-    SC16IS752... In all other aspects, the SC16IS762 is functionally and
-    electrically the same as the SC16IS752.
-
-The same is also true of the SC16IS760 variant versus the SC16IS740 and
-SC16IS750 variants.
-
-For all variants, only SPI mode 0 is supported.
-
-Change comment and abort probing if the specified SPI mode is not
-SPI_MODE_0.
-
-Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-3-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 17b90f971f96..798fa115b28a 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1733,7 +1733,10 @@ static int sc16is7xx_spi_probe(struct spi_device *spi)
+diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+index 48c6f7ff4aef..8cd63e6ccd2c 100644
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -25,6 +25,7 @@
+ #include <linux/vmalloc.h>
+ #include <linux/crash_dump.h>
+ #include <linux/dma-direct.h>
++#include <trace/events/swiotlb.h>
  
- 	/* Setup SPI bus */
- 	spi->bits_per_word	= 8;
--	/* only supports mode 0 on SC16IS762 */
-+	/* For all variants, only mode 0 is supported */
-+	if ((spi->mode & SPI_MODE_X_MASK) != SPI_MODE_0)
-+		return dev_err_probe(&spi->dev, -EINVAL, "Unsupported SPI mode\n");
+ struct iommu_dma_msi_page {
+ 	struct list_head	list;
+@@ -817,6 +818,8 @@ static dma_addr_t iommu_dma_map_page(struct device *dev, struct page *page,
+ 		void *padding_start;
+ 		size_t padding_size, aligned_size;
+ 
++		trace_swiotlb_bounced(dev, phys, size, swiotlb_force);
 +
- 	spi->mode		= spi->mode ? : SPI_MODE_0;
- 	spi->max_speed_hz	= spi->max_speed_hz ? : 15000000;
- 	ret = spi_setup(spi);
+ 		aligned_size = iova_align(iovad, size);
+ 		phys = swiotlb_tbl_map_single(dev, phys, size, aligned_size,
+ 					      iova_mask(iovad), dir, attrs);
+-- 
+2.43.0.429.g432eaa2c6b-goog
 
 
