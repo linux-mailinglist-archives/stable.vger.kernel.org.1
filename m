@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-14104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016CB837F88
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D1DB838493
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A80741F28A07
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0AF11C298FE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90FA86340D;
-	Tue, 23 Jan 2024 00:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E3B6A003;
+	Tue, 23 Jan 2024 02:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbtTOzlZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbZWFi/j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F68963409;
-	Tue, 23 Jan 2024 00:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0566F6EB61;
+	Tue, 23 Jan 2024 02:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971179; cv=none; b=IUZNYqxiokIFJ4XNIk0LHV56f4D9m4O0X8nKWAg0sp9bOTWEOx4SZqc4t/sD3bTVjXrU8eigZVr1szzZfkFJLiQmPFc0dWP54Cx/GtJ8Okd1BHjvs5qXGyfK5Fpn9cYT5hClHGphCCUdW1y02nVzLaxnN4aJyJnvkqPh9dlqJjY=
+	t=1705975429; cv=none; b=H8KO8YUmTPnFyZ0UX850gNF6on+2sfEp030av9AA003sgW+aJgdb72JmYz0456n3FpLryIo26usUihNUsOiRRnLXrg5eXLWnSictwJtKt/w5hK5bNn5BRX3PIqffrEqmBmy/GkrxFaQyMdIQ15B62KdWHA/uCXS77tNwyY0yVQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971179; c=relaxed/simple;
-	bh=3tsJPZszjcbkqklgwkMyoX8JmX1OBIGVFyHKNGk9/DA=;
+	s=arc-20240116; t=1705975429; c=relaxed/simple;
+	bh=ujA23hm7VIWdfBb4VHPszNK/QUal64RQ/LcAIBqpZPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b+Zf2apkPeKDv7etw3oBERIZ/Vm1SlCkAgMyoNRo8MmfHvmWHD4R4zT+kbphq6dKibIethnkFbUnkW2/uZa5nTzuiNgEVJxzL5OQEigxmDcrVdFLKOzHhZj5Bwv2AimJVmC/lv3KW82/JjUhOsIhG+gBBXLpntZixsflPwEJtDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbtTOzlZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F85C43390;
-	Tue, 23 Jan 2024 00:52:58 +0000 (UTC)
+	 MIME-Version; b=eEzGBT3/8FSjU39vwpKaNvGX4g1Tt8r2Efamp+ksHy7pmIOUNNSLO4tRxSC+MKFaxoMq0997ibDWtMLSSeqQNP6e+87P87Z92TuHwOMxzm4jPJmYK+LK5j2IiaM3+yE/zJ6pk1yLprJX0AtOGI+i2YXXt3t0CRZP0auT7J1oAk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbZWFi/j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC42C433C7;
+	Tue, 23 Jan 2024 02:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971179;
-	bh=3tsJPZszjcbkqklgwkMyoX8JmX1OBIGVFyHKNGk9/DA=;
+	s=korg; t=1705975428;
+	bh=ujA23hm7VIWdfBb4VHPszNK/QUal64RQ/LcAIBqpZPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hbtTOzlZs6A/qvt/rrfnDSCiUfTZVTLDIlxIAc7LGq/8yMcdKV/mdfjXtrd99xLpb
-	 CDgXK57yDtlmiwy3axtdodN4EtOwDxsXqcbAsGc6RCredjsOTG1Ple48ylDAGvxPIK
-	 vRzWgFojjbJ4xjptdx4E9Gl5M0yzFgf5t91LSEQg=
+	b=qbZWFi/jya8bdX2OOw1fW+zPLqYWQsqm62Hu5fYjZ8haWF6dAWyR8rq26VI0PiXh9
+	 JRLHA0LKKggn9VJ+3MfjkbzOmJVmX0MXsSnm9CHGaLpn8GYGBN9ZZIiHv48BEualOY
+	 5JpyvJL7US3uBdRMGEgucG6QYSaivCjsOykP07y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3eff5e51bf1db122a16e@syzkaller.appspotmail.com,
-	Chengming Zhou <zhouchengming@bytedance.com>,
-	Barry Song <v-songbaohua@oppo.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 105/286] crypto: scomp - fix req->dst buffer overflow
-Date: Mon, 22 Jan 2024 15:56:51 -0800
-Message-ID: <20240122235736.136974149@linuxfoundation.org>
+	Wesley Cheng <quic_wcheng@quicinc.com>
+Subject: [PATCH 6.6 361/583] usb: dwc3: gadget: Queue PM runtime idle on disconnect event
+Date: Mon, 22 Jan 2024 15:56:52 -0800
+Message-ID: <20240122235823.067595617@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengming Zhou <zhouchengming@bytedance.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit 744e1885922a9943458954cfea917b31064b4131 ]
+commit 3c7af52c7616c3aa6dacd2336ec748d4a65df8f4 upstream.
 
-The req->dst buffer size should be checked before copying from the
-scomp_scratch->dst to avoid req->dst buffer overflow problem.
+There is a scenario where DWC3 runtime suspend is blocked due to the
+dwc->connected flag still being true while PM usage_count is zero after
+DWC3 giveback is completed and the USB gadget session is being terminated.
+This leads to a case where nothing schedules a PM runtime idle for the
+device.
 
-Fixes: 1ab53a77b772 ("crypto: acomp - add driver-side scomp interface")
-Reported-by: syzbot+3eff5e51bf1db122a16e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/0000000000000b05cd060d6b5511@google.com/
-Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
-Reviewed-by: Barry Song <v-songbaohua@oppo.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The exact condition is seen with the following sequence:
+  1.  USB bus reset is issued by the host
+  2.  Shortly after, or concurrently, a USB PD DR SWAP request is received
+      (sink->source)
+  3.  USB bus reset event handler runs and issues
+      dwc3_stop_active_transfers(), and pending transfer are stopped
+  4.  DWC3 usage_count decremented to 0, and runtime idle occurs while
+      dwc->connected == true, returns -EBUSY
+  5.  DWC3 disconnect event seen, dwc->connected set to false due to DR
+      swap handling
+  6.  No runtime idle after this point
+
+Address this by issuing an asynchronous PM runtime idle call after the
+disconnect event is completed, as it modifies the dwc->connected flag,
+which is what blocks the initial runtime idle.
+
+Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20240103214946.2596-1-quic_wcheng@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/scompress.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/dwc3/gadget.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/crypto/scompress.c b/crypto/scompress.c
-index 738f4f8f0f41..4d6366a44400 100644
---- a/crypto/scompress.c
-+++ b/crypto/scompress.c
-@@ -124,6 +124,7 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
- 	struct crypto_scomp *scomp = *tfm_ctx;
- 	void **ctx = acomp_request_ctx(req);
- 	struct scomp_scratch *scratch;
-+	unsigned int dlen;
- 	int ret;
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3983,6 +3983,13 @@ static void dwc3_gadget_disconnect_inter
+ 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
  
- 	if (!req->src || !req->slen || req->slen > SCOMP_SCRATCH_SIZE)
-@@ -135,6 +136,8 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
- 	if (!req->dlen || req->dlen > SCOMP_SCRATCH_SIZE)
- 		req->dlen = SCOMP_SCRATCH_SIZE;
- 
-+	dlen = req->dlen;
+ 	dwc3_ep0_reset_state(dwc);
 +
- 	scratch = raw_cpu_ptr(&scomp_scratch);
- 	spin_lock(&scratch->lock);
++	/*
++	 * Request PM idle to address condition where usage count is
++	 * already decremented to zero, but waiting for the disconnect
++	 * interrupt to set dwc->connected to FALSE.
++	 */
++	pm_request_idle(dwc->dev);
+ }
  
-@@ -152,6 +155,9 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
- 				ret = -ENOMEM;
- 				goto out;
- 			}
-+		} else if (req->dlen > dlen) {
-+			ret = -ENOSPC;
-+			goto out;
- 		}
- 		scatterwalk_map_and_copy(scratch->dst, req->dst, 0, req->dlen,
- 					 1);
--- 
-2.43.0
-
+ static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
 
 
 
