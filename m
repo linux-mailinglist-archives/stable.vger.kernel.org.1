@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E65B837EA5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC5D837C6D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22D622930F6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2CB11F21CE3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2065C5026E;
-	Tue, 23 Jan 2024 00:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06868107B6;
+	Tue, 23 Jan 2024 00:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVk48pLC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NFKmj0rC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09F02B9B7;
-	Tue, 23 Jan 2024 00:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85A52581;
+	Tue, 23 Jan 2024 00:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970701; cv=none; b=rvTH8aeESXeUMMEPnS6WRNKTkj4B9bRIO8lCOYY2cxgV8+h5yZsT3yhYNIymeUZQ5fMRLQeHbgJ+yQB2N7ne8YXXUsgyu1ttrytvsER8Vb2pow3dg5yOvHRcco4Azs7k3G1WP4HVU8zsBLhv9hhN6j8HuSCVMQaoMio/u8wRj40=
+	t=1705969613; cv=none; b=Yauv3PX2C2hAz+l7p9CvpdLQ1A4XYw/gOOoRxnltGq332CWvEsigt+gUw5EEZ1aW+BfMEQs01LRlFunUPu+18qHmpdzbdH7IczS4BTzGhWt0cMPcCJUXZEUte/AePNuQYF7z+KqOXNtKj551tOczUfiUdoIi0KgSla9WpR5OJNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970701; c=relaxed/simple;
-	bh=CGVHA4Ge5vYjmcXBZKXYADpU2mW7R8zJAGQ29FV+lV8=;
+	s=arc-20240116; t=1705969613; c=relaxed/simple;
+	bh=nn+iJnfPmuifaVa3I8sT0y1W/Cm+HF/1ME0qrcg/PcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iTHXkx7MKywd4vqDdiDs8HX38w3DBvrNM0vvUWTTZ7H+2FoOyAhaheLQzQ01OMhLp2Pg4y1vpiayoMc5ezyHP2MNLNoVjN8xRtZnbL1lFB2WiqoJkk9ADS8ehqoX5LU/p0/9qURTNQwOjyGjFeziYzTKR6yFOY6r2NhUUzBbmxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVk48pLC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67999C433C7;
-	Tue, 23 Jan 2024 00:45:01 +0000 (UTC)
+	 MIME-Version; b=t6zs9eSJKAbJ374HkOMToy/4ROsBbv5rDWpW8AOPJHP5iWVi/gAFXsyriw7RH3OoefTN8X65jO57YcX1w9LM+gDGzVOdLFQqN4c+BWjOBjaP6IHZtdrTHW14Ym6XuqJc9tsimXgLIX2GaznhzQ6CKgTYTux1KWIptxwOCEuOkwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NFKmj0rC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767E0C43390;
+	Tue, 23 Jan 2024 00:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970701;
-	bh=CGVHA4Ge5vYjmcXBZKXYADpU2mW7R8zJAGQ29FV+lV8=;
+	s=korg; t=1705969613;
+	bh=nn+iJnfPmuifaVa3I8sT0y1W/Cm+HF/1ME0qrcg/PcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WVk48pLCAHpBA3kY1D/MvNYdc8l11YxWOYB3DGpbksSW9JmnQtNcmQ8EiPFFraXhW
-	 ArPITe2e/mOj1+jz3+FEGq6KrUhghu7+5W2z5v94lUFU0wL/PDz8NX0oCtMjXugt++
-	 WSzdmjosqZRq+dNMuDeh4W9wKp6Ld1ugJcDhUnvc=
+	b=NFKmj0rC8XKId6rYmPaQJZPB5ujF6oGwb5RsYizv3rvlSZR6SQ9CG/Ioj8TH3PUp7
+	 dfigcbG2BBCY/HEdGnozNZ/kPdnuHMASDZOOUoF2YZcHpVyWFDDARtbHSRXuV/KKM7
+	 9z7LyovuHHff8jjfBB+Y2VQ6ED4BEp8bHP8+t7UQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/417] bpf: Add map and need_defer parameters to .map_fd_put_ptr()
+Subject: [PATCH 6.7 359/641] ALSA: scarlett2: Add missing error check to scarlett2_usb_set_config()
 Date: Mon, 22 Jan 2024 15:54:23 -0800
-Message-ID: <20240122235754.980572922@linuxfoundation.org>
+Message-ID: <20240122235829.170974838@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,176 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-[ Upstream commit 20c20bd11a0702ce4dc9300c3da58acf551d9725 ]
+[ Upstream commit ca459dfa7d4ed9098fcf13e410963be6ae9b6bf3 ]
 
-map is the pointer of outer map, and need_defer needs some explanation.
-need_defer tells the implementation to defer the reference release of
-the passed element and ensure that the element is still alive before
-the bpf program, which may manipulate it, exits.
+scarlett2_usb_set_config() calls scarlett2_usb_get() but was not
+checking the result. Return the error if it fails rather than
+continuing with an invalid value.
 
-The following three cases will invoke map_fd_put_ptr() and different
-need_defer values will be passed to these callers:
-
-1) release the reference of the old element in the map during map update
-   or map deletion. The release must be deferred, otherwise the bpf
-   program may incur use-after-free problem, so need_defer needs to be
-   true.
-2) release the reference of the to-be-added element in the error path of
-   map update. The to-be-added element is not visible to any bpf
-   program, so it is OK to pass false for need_defer parameter.
-3) release the references of all elements in the map during map release.
-   Any bpf program which has access to the map must have been exited and
-   released, so need_defer=false will be OK.
-
-These two parameters will be used by the following patches to fix the
-potential use-after-free problem for map-in-map.
-
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20231204140425.1480317-3-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: 876673364161 ("bpf: Defer the free of inner map when necessary")
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Fixes: 9e15fae6c51a ("ALSA: usb-audio: scarlett2: Allow bit-level access to config")
+Link: https://lore.kernel.org/r/def110c5c31dbdf0a7414d258838a0a31c0fab67.1703001053.git.g@b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h     |  6 +++++-
- kernel/bpf/arraymap.c   | 12 +++++++-----
- kernel/bpf/hashtab.c    |  6 +++---
- kernel/bpf/map_in_map.c |  2 +-
- kernel/bpf/map_in_map.h |  2 +-
- 5 files changed, 17 insertions(+), 11 deletions(-)
+ sound/usb/mixer_scarlett2.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 21b192ce018a..47420a973e58 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -102,7 +102,11 @@ struct bpf_map_ops {
- 	/* funcs called by prog_array and perf_event_array map */
- 	void *(*map_fd_get_ptr)(struct bpf_map *map, struct file *map_file,
- 				int fd);
--	void (*map_fd_put_ptr)(void *ptr);
-+	/* If need_defer is true, the implementation should guarantee that
-+	 * the to-be-put element is still alive before the bpf program, which
-+	 * may manipulate it, exists.
-+	 */
-+	void (*map_fd_put_ptr)(struct bpf_map *map, void *ptr, bool need_defer);
- 	int (*map_gen_lookup)(struct bpf_map *map, struct bpf_insn *insn_buf);
- 	u32 (*map_fd_sys_lookup_elem)(void *ptr);
- 	void (*map_seq_show_elem)(struct bpf_map *map, void *key,
-diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
-index 00f23febb9a7..c04e69f34e4d 100644
---- a/kernel/bpf/arraymap.c
-+++ b/kernel/bpf/arraymap.c
-@@ -852,7 +852,7 @@ int bpf_fd_array_map_update_elem(struct bpf_map *map, struct file *map_file,
- 	}
+diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
+index 35e45c337383..a6e72862d30f 100644
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -1577,7 +1577,10 @@ static int scarlett2_usb_set_config(
+ 		size = 1;
+ 		offset = config_item->offset;
  
- 	if (old_ptr)
--		map->ops->map_fd_put_ptr(old_ptr);
-+		map->ops->map_fd_put_ptr(map, old_ptr, true);
- 	return 0;
- }
- 
-@@ -875,7 +875,7 @@ static int fd_array_map_delete_elem(struct bpf_map *map, void *key)
- 	}
- 
- 	if (old_ptr) {
--		map->ops->map_fd_put_ptr(old_ptr);
-+		map->ops->map_fd_put_ptr(map, old_ptr, true);
- 		return 0;
- 	} else {
- 		return -ENOENT;
-@@ -898,8 +898,9 @@ static void *prog_fd_array_get_ptr(struct bpf_map *map,
- 	return prog;
- }
- 
--static void prog_fd_array_put_ptr(void *ptr)
-+static void prog_fd_array_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
- {
-+	/* bpf_prog is freed after one RCU or tasks trace grace period */
- 	bpf_prog_put(ptr);
- }
- 
-@@ -1185,8 +1186,9 @@ static void *perf_event_fd_array_get_ptr(struct bpf_map *map,
- 	return ee;
- }
- 
--static void perf_event_fd_array_put_ptr(void *ptr)
-+static void perf_event_fd_array_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
- {
-+	/* bpf_perf_event is freed after one RCU grace period */
- 	bpf_event_entry_free_rcu(ptr);
- }
- 
-@@ -1239,7 +1241,7 @@ static void *cgroup_fd_array_get_ptr(struct bpf_map *map,
- 	return cgroup_get_from_fd(fd);
- }
- 
--static void cgroup_fd_array_put_ptr(void *ptr)
-+static void cgroup_fd_array_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
- {
- 	/* cgroup_put free cgrp after a rcu grace period */
- 	cgroup_put(ptr);
-diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-index ce0051eee746..88c71de0a0a9 100644
---- a/kernel/bpf/hashtab.c
-+++ b/kernel/bpf/hashtab.c
-@@ -880,7 +880,7 @@ static void htab_put_fd_value(struct bpf_htab *htab, struct htab_elem *l)
- 
- 	if (map->ops->map_fd_put_ptr) {
- 		ptr = fd_htab_map_get_ptr(map, l);
--		map->ops->map_fd_put_ptr(ptr);
-+		map->ops->map_fd_put_ptr(map, ptr, true);
- 	}
- }
- 
-@@ -2424,7 +2424,7 @@ static void fd_htab_map_free(struct bpf_map *map)
- 		hlist_nulls_for_each_entry_safe(l, n, head, hash_node) {
- 			void *ptr = fd_htab_map_get_ptr(map, l);
- 
--			map->ops->map_fd_put_ptr(ptr);
-+			map->ops->map_fd_put_ptr(map, ptr, false);
- 		}
- 	}
- 
-@@ -2465,7 +2465,7 @@ int bpf_fd_htab_map_update_elem(struct bpf_map *map, struct file *map_file,
- 
- 	ret = htab_map_update_elem(map, key, &ptr, map_flags);
- 	if (ret)
--		map->ops->map_fd_put_ptr(ptr);
-+		map->ops->map_fd_put_ptr(map, ptr, false);
- 
- 	return ret;
- }
-diff --git a/kernel/bpf/map_in_map.c b/kernel/bpf/map_in_map.c
-index 8e87f69aae60..47ecc4818c93 100644
---- a/kernel/bpf/map_in_map.c
-+++ b/kernel/bpf/map_in_map.c
-@@ -115,7 +115,7 @@ void *bpf_map_fd_get_ptr(struct bpf_map *map,
- 	return inner_map;
- }
- 
--void bpf_map_fd_put_ptr(void *ptr)
-+void bpf_map_fd_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
- {
- 	/* ptr->ops->map_free() has to go through one
- 	 * rcu grace period by itself.
-diff --git a/kernel/bpf/map_in_map.h b/kernel/bpf/map_in_map.h
-index bcb7534afb3c..7d61602354de 100644
---- a/kernel/bpf/map_in_map.h
-+++ b/kernel/bpf/map_in_map.h
-@@ -13,7 +13,7 @@ struct bpf_map *bpf_map_meta_alloc(int inner_map_ufd);
- void bpf_map_meta_free(struct bpf_map *map_meta);
- void *bpf_map_fd_get_ptr(struct bpf_map *map, struct file *map_file,
- 			 int ufd);
--void bpf_map_fd_put_ptr(void *ptr);
-+void bpf_map_fd_put_ptr(struct bpf_map *map, void *ptr, bool need_defer);
- u32 bpf_map_fd_sys_lookup_elem(void *ptr);
- 
- #endif
+-		scarlett2_usb_get(mixer, offset, &tmp, 1);
++		err = scarlett2_usb_get(mixer, offset, &tmp, 1);
++		if (err < 0)
++			return err;
++
+ 		if (value)
+ 			tmp |= (1 << index);
+ 		else
 -- 
 2.43.0
 
