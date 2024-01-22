@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-14401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B51D8380C8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E55C837E0B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E1401F2A34D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0C0A1F29C1B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43ED21339B8;
-	Tue, 23 Jan 2024 01:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEEA359B5E;
+	Tue, 23 Jan 2024 00:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdmxGk0k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rtwKwXFG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024941339B4;
-	Tue, 23 Jan 2024 01:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD5C4F204;
+	Tue, 23 Jan 2024 00:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971894; cv=none; b=LBnA+xs7RWdmi/P3zx3+IvJIUjx4di58jewlVvUu9t2hija0uVQaZYABOQ498GSe+DK3lDwKEPpu88naHWWHHIOq1d6pPHM+ScyzXyX2QMhkPZvmFoF1Tdg0sZRZ8tc4Q7gVQdkTl1pm3FOw4Gyo1hMW6CakLuaJ9TcATmctrZ0=
+	t=1705970318; cv=none; b=WM2tqM2WWYmmoYMbwmfsIPKj7GdqTZc6RtADTNJlP6qg3LCkuFwkkwtMLtyMoQw9efmfQitl3U9li7w/wqU4FSlSaN6+LTSr6KhKEuhiCrE+B/FPUV2Rxz2JbobYhd4qEWcfYwlG2LpES7cpALvRwoHEQdLdOV7fWbGnyP6Lt+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971894; c=relaxed/simple;
-	bh=9WAaShs0zB7YOEv1wn77yxF3V09uDwYRMqWq0bu/0Yo=;
+	s=arc-20240116; t=1705970318; c=relaxed/simple;
+	bh=HZhgzkqof9RJd4k1zhDkHP4QfYBogxhHoBvkvVGMugE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uvo+X4Nre+OlNQWjdAdmwAjdXCpMaO8ofC5JYbHzrLZX70odznjrKTH4kDNZktrDNPbv/F1krHPAXXoAnXQ3PHqfjMeiZeL87XcW1y9Lg91uqSdVff84hwoLeRBVPJlaeJfgWARbidPbJvHvibC4RrTEKT7bsnLpNuYtgItJswo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdmxGk0k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E64C433F1;
-	Tue, 23 Jan 2024 01:04:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VOdL9pt11UhRek20LYlWd9jhSwdaJ1SH0nVF1O8LsHQ+rIaqvbOgH4cFiYrIphiddeKAk3Ymm38+/C45QfcgA+ZXihThGlVmPHac4vNYj/KNZ/Ed2eubFr2/qMQDecMA6sfRlEqt+0+z9xfBNkywxsJDTrRvEb69iAz5slQoMxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rtwKwXFG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D223BC433F1;
+	Tue, 23 Jan 2024 00:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971893;
-	bh=9WAaShs0zB7YOEv1wn77yxF3V09uDwYRMqWq0bu/0Yo=;
+	s=korg; t=1705970318;
+	bh=HZhgzkqof9RJd4k1zhDkHP4QfYBogxhHoBvkvVGMugE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FdmxGk0k2nQRL5W/AaM0g/Y4R5QIi6uIdLD3rnoDlhsGML2M6Toif/3rxS+cO9lr1
-	 kiny5JL3RjQdYShGNPgF8+FTUbWQ1sCvaR0Cy2qjdshMxb5WmBXhkSoTgjELgnIh2N
-	 /U4nqzL2t5vAVP+mSHQDudjg2ipqdpAFBOuBtCmc=
+	b=rtwKwXFGDZvjWNxDMYcQ9UoIpUuRQLy0FykFR8q7OlkVpiQArrESbos11HYHWbjxU
+	 0xqL2E0Idji5GVbqmi3eKVS4EPhv+smp3bjPfsIE4eeLYxlOLqiIbXweBN5I8RPAx/
+	 d1BL0kwiluWRB5MaJyZ7pEJ6f9Rmv8esQsFPAJ7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 344/417] software node: Let args be NULL in software_node_get_reference_args
+Subject: [PATCH 6.7 608/641] ASoC: SOF: ipc4-loader: remove the CPC check warnings
 Date: Mon, 22 Jan 2024 15:58:32 -0800
-Message-ID: <20240122235803.710193708@linuxfoundation.org>
+Message-ID: <20240122235837.267622906@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 
-[ Upstream commit 1eaea4b3604eb9ca7d9a1e73d88fc121bb4061f5 ]
+[ Upstream commit ab09fb9c629ed3aaea6a82467f08595dbc549726 ]
 
-fwnode_get_property_reference_args() may not be called with args argument
-NULL and while OF already supports this. Add the missing NULL check.
+Warnings related to missing data in firmware manifest have
+proven to be too verbose. This relates to description of
+DSP module cost expressed in cycles per chunk (CPC). If
+a matching value is not found in the manifest, kernel will
+pass a zero value and DSP firmware will use a conservative
+value in its place.
 
-The purpose is to be able to count the references.
+Downgrade the warnings to dev_dbg().
 
-Fixes: b06184acf751 ("software node: Add software_node_get_reference_args()")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20231109101010.1329587-3-sakari.ailus@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d8a2c9879349 ("ASoC: SOF: ipc4-loader/topology: Query the CPC value from manifest")
+Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://msgid.link/r/20240115092209.7184-3-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/swnode.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/sof/ipc4-loader.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index 0a482212c7e8..44153caa893a 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -541,6 +541,9 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
- 	if (nargs > NR_FWNODE_REFERENCE_ARGS)
- 		return -EINVAL;
+diff --git a/sound/soc/sof/ipc4-loader.c b/sound/soc/sof/ipc4-loader.c
+index eaa04762eb11..4d37e89b592a 100644
+--- a/sound/soc/sof/ipc4-loader.c
++++ b/sound/soc/sof/ipc4-loader.c
+@@ -479,13 +479,10 @@ void sof_ipc4_update_cpc_from_manifest(struct snd_sof_dev *sdev,
+ 		msg = "No CPC match in the firmware file's manifest";
  
-+	if (!args)
-+		return 0;
-+
- 	args->fwnode = software_node_get(refnode);
- 	args->nargs = nargs;
+ no_cpc:
+-	dev_warn(sdev->dev, "%s (UUID: %pUL): %s (ibs/obs: %u/%u)\n",
+-		 fw_module->man4_module_entry.name,
+-		 &fw_module->man4_module_entry.uuid, msg, basecfg->ibs,
+-		 basecfg->obs);
+-	dev_warn_once(sdev->dev, "Please try to update the firmware.\n");
+-	dev_warn_once(sdev->dev, "If the issue persists, file a bug at\n");
+-	dev_warn_once(sdev->dev, "https://github.com/thesofproject/sof/issues/\n");
++	dev_dbg(sdev->dev, "%s (UUID: %pUL): %s (ibs/obs: %u/%u)\n",
++		fw_module->man4_module_entry.name,
++		&fw_module->man4_module_entry.uuid, msg, basecfg->ibs,
++		basecfg->obs);
+ }
  
+ const struct sof_ipc_fw_loader_ops ipc4_loader_ops = {
 -- 
 2.43.0
 
