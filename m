@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-15360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7629F8384E2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B9C837E01
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EC89290B0D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77D2E1C260FC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE9977F11;
-	Tue, 23 Jan 2024 02:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A76537E9;
+	Tue, 23 Jan 2024 00:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B5tTMMHW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1dPirQb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB41F77636;
-	Tue, 23 Jan 2024 02:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3B74E1D0;
+	Tue, 23 Jan 2024 00:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975526; cv=none; b=Ui6ejkPo0Vy5bZ4MoPROS+7bHA9fRjUOO3xSb8klFWsDG+uh1eaJq1jMVzRWkllimrteAg3HbNwIKansc+hvj4xNiVOAuqnVaQai3ozYBdHb1/PM1cb8MGZFELmgQyRPzDCEsiZUUunuWzENVyfNq5udluyZr9cDPCbClFD2mdY=
+	t=1705970294; cv=none; b=nvJAkuTi8xDA02tG0sDKQRA4RDvIMIbVMdoQ9F4mPIqwd0MkuEvXzT4rmGMz24ziRJ8KZPyC8qgrGPb5V3N5pQ4+a7JIg7Oc+jFzdbga3x4JoP/+mJhF9PhX+xo9HLC7OEUzPmRPqbpwhuMl6t1exT3uIOg69FV+Rj/FOQaQ9x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975526; c=relaxed/simple;
-	bh=3e/wfUcumMP2qZycfp268BBb3oe5G4ieBQEx17XU9b4=;
+	s=arc-20240116; t=1705970294; c=relaxed/simple;
+	bh=HNgLwruE2VUB0TxecPIfPPXyaNef6EXiYbtG+WUuz5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=draUmbsVMX6TF2xFZbkUJfKGunAczU1tpjEWTnS3YuBeVUdKfzgffVp96NayQqqxsb3lxVv54cLsUaign1hIeiugR3yanvHTi3PRNSn/boAoKFUglEFVPualuCD10Ve2EJ18yxjOQqreIgDimKClMwUVFm+6sDMY66G0GL3Zluo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B5tTMMHW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D34C43399;
-	Tue, 23 Jan 2024 02:05:26 +0000 (UTC)
+	 MIME-Version; b=DUpwfT7rXQrtE1zURWdypq9q0XiXs5b0x952es+hQQsel04BXg9drN3/+HuZ+kz+ngPDog58v67/b1RVRFWdRqkmqmMeUckW+KsYS4ig23kfq9N1rlyFoKbVCvi3L8eMmjEvYpI9EJO8CkIgf36R9Zvo/LqT2iEJqnmMAMHPpKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1dPirQb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7275CC433F1;
+	Tue, 23 Jan 2024 00:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975526;
-	bh=3e/wfUcumMP2qZycfp268BBb3oe5G4ieBQEx17XU9b4=;
+	s=korg; t=1705970293;
+	bh=HNgLwruE2VUB0TxecPIfPPXyaNef6EXiYbtG+WUuz5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B5tTMMHW6emTwi65seSFHe+a12FL7yt6f29DCYdvf1jo4Xb3aR8zsmjlwXW7CMcYO
-	 DdyMEz9gLjnKLak/qBGKpDZDRC55nqhxblWqzyAaPxYyqUDQZKuC+FMt0us2UlhHem
-	 783UP4uG3KvgbJFT9AWqynxkDkQlBkKb/CnaVTUU=
+	b=M1dPirQbkoE4b2WVSYfN44EA0kAx3iqFi0YQVrEnu3YA7ulqoa7CNgfllGrxBs541
+	 FIUZW+kHb8SRlKljsySXirrmKSTdMcms4ROgHcgo3jbvz/v4eRpxQxToEfgS6SsNVW
+	 KxulbjEbZhxPYg5wjPtFSCDFFaYT4TMl897kGdeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 479/583] iio: adc: ad9467: fix reset gpio handling
+Subject: [PATCH 6.7 626/641] netfilter: nf_tables: skip dead set elements in netlink dump
 Date: Mon, 22 Jan 2024 15:58:50 -0800
-Message-ID: <20240122235826.639564006@linuxfoundation.org>
+Message-ID: <20240122235837.849021487@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 76f028539cf360f750efd8cde560edda298e4c6b ]
+[ Upstream commit 6b1ca88e4bb63673dc9f9c7f23c899f22c3cb17a ]
 
-The reset gpio was being handled with inverted polarity. This means that
-as far as gpiolib is concerned we were actually leaving the pin asserted
-(in theory, this would mean reset). However, inverting the polarity in
-devicetree made things work. Fix it by doing it the proper way and how
-gpiolib expects it to be done.
+Delete from packet path relies on the garbage collector to purge
+elements with NFT_SET_ELEM_DEAD_BIT on.
 
-While at it, moved the handling to it's own function and dropped
-'reset_gpio' from the 'struct ad9467_state' as we only need it during
-probe. On top of that, refactored things so that we now request the gpio
-asserted (i.e in reset) and then de-assert it. Also note that we now use
-gpiod_set_value_cansleep() instead of gpiod_direction_output() as we
-already request the pin as output.
+Skip these dead elements from nf_tables_dump_setelem() path, I very
+rarely see tests/shell/testcases/maps/typeof_maps_add_delete reports
+[DUMP FAILED] showing a mismatch in the expected output with an element
+that should not be there.
 
-Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20231207-iio-backend-prep-v2-1-a4a33bc4d70e@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+If the netlink dump happens before GC worker run, it might show dead
+elements in the ruleset listing.
+
+nft_rhash_get() already skips dead elements in nft_rhash_cmp(),
+therefore, it already does not show the element when getting a single
+element via netlink control plane.
+
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad9467.c | 31 ++++++++++++++++++-------------
- 1 file changed, 18 insertions(+), 13 deletions(-)
+ net/netfilter/nf_tables_api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-index 39eccc28debe..4fb9e48dc782 100644
---- a/drivers/iio/adc/ad9467.c
-+++ b/drivers/iio/adc/ad9467.c
-@@ -121,7 +121,6 @@ struct ad9467_state {
- 	unsigned int			output_mode;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 7775bf5224ac..47ffb9e4c353 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -5716,7 +5716,7 @@ static int nf_tables_dump_setelem(const struct nft_ctx *ctx,
+ 	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem_priv);
+ 	struct nft_set_dump_args *args;
  
- 	struct gpio_desc		*pwrdown_gpio;
--	struct gpio_desc		*reset_gpio;
- };
+-	if (nft_set_elem_expired(ext))
++	if (nft_set_elem_expired(ext) || nft_set_elem_is_dead(ext))
+ 		return 0;
  
- static int ad9467_spi_read(struct spi_device *spi, unsigned int reg)
-@@ -378,6 +377,21 @@ static int ad9467_preenable_setup(struct adi_axi_adc_conv *conv)
- 	return ad9467_outputmode_set(st->spi, st->output_mode);
- }
- 
-+static int ad9467_reset(struct device *dev)
-+{
-+	struct gpio_desc *gpio;
-+
-+	gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR_OR_NULL(gpio))
-+		return PTR_ERR_OR_ZERO(gpio);
-+
-+	fsleep(1);
-+	gpiod_set_value_cansleep(gpio, 0);
-+	fsleep(10 * USEC_PER_MSEC);
-+
-+	return 0;
-+}
-+
- static int ad9467_probe(struct spi_device *spi)
- {
- 	const struct ad9467_chip_info *info;
-@@ -408,18 +422,9 @@ static int ad9467_probe(struct spi_device *spi)
- 	if (IS_ERR(st->pwrdown_gpio))
- 		return PTR_ERR(st->pwrdown_gpio);
- 
--	st->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset",
--						 GPIOD_OUT_LOW);
--	if (IS_ERR(st->reset_gpio))
--		return PTR_ERR(st->reset_gpio);
--
--	if (st->reset_gpio) {
--		udelay(1);
--		ret = gpiod_direction_output(st->reset_gpio, 1);
--		if (ret)
--			return ret;
--		mdelay(10);
--	}
-+	ret = ad9467_reset(&spi->dev);
-+	if (ret)
-+		return ret;
- 
- 	conv->chip_info = &info->axi_adc_info;
- 
+ 	args = container_of(iter, struct nft_set_dump_args, iter);
 -- 
 2.43.0
 
