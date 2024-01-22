@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-14528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309F88381B7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:12:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27562838401
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C450EB24FE1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EB03B21ABB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE6A1487FE;
-	Tue, 23 Jan 2024 01:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64A664CC6;
+	Tue, 23 Jan 2024 01:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l28ziOwA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOkbVK28"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA14148FE8;
-	Tue, 23 Jan 2024 01:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B9864AB3;
+	Tue, 23 Jan 2024 01:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972084; cv=none; b=tlPQKN9vbPrfw8EyK+bO5pNb/pwchwYFuWhDvtBZ/Ttw+/JH7QsT/YcunQ0TznatnX7hPTk4Sg+/jx/fTU/u/TxqeLH3uMznzHcdlFUFAOCJ48fHQOIBkcyOqL6O1E1ogl2wgGTnGrbaIv9dmXbf0gs8gDrt3ZeL5sQNAY1jO6k=
+	t=1705975049; cv=none; b=H2P0MXyVzloTTAIOfXr8GVnYO9C6BaW9s7vELQVUWNJeMsnI7O+9GFfGCKTu57CPLfZZ8nMGlYKTHjZjwzLQMqsTj1l46yUKtqRtElrQL6uHpLk8arlpyVFMjODICTdjQC6VLrnQn+b8te7b2DU/s8qmny6yErKXcxTugA30SN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972084; c=relaxed/simple;
-	bh=1aecxd9/pDUq6lX6EUeJV5PCf5lfn3jlxu/s9Va2Gec=;
+	s=arc-20240116; t=1705975049; c=relaxed/simple;
+	bh=eqpFdUvn4p2IzkXJ8MPBt9ubVMwpAQ3Fsygaugz75jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EABclmU5DaS6p9eyMkaVFUON+Oh6fudWt0weID6MuDCOUOSIm1Kxqf4NVpMUDg/MdNr82Yvr9wCHnVG58whnMSFbGtbvuuapgqvznpLLqGLLYDrU8NSnpvHNrXtAyw8ARU4tGmBrHgfIxvYLrgFTSmk4U5HKumq3WJ4lAkC/5mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l28ziOwA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B081DC43390;
-	Tue, 23 Jan 2024 01:08:03 +0000 (UTC)
+	 MIME-Version; b=GczgsTbJ8VDiSJzuHat26onPi0t4QuvLLPqsaw82L25j6T7hmmz3qu4Umr8c7Y90Qaje/yvUO1YI7OkZzQ2Hxs/BNljS93beDbPdxbGRCx/AxHHSI7zD8I7u4K7YCyn2Si8iZjH6iELyEqWR4hdnQ6zYX5npQn2BRZMtrpLTYhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOkbVK28; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E03FC433C7;
+	Tue, 23 Jan 2024 01:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972083;
-	bh=1aecxd9/pDUq6lX6EUeJV5PCf5lfn3jlxu/s9Va2Gec=;
+	s=korg; t=1705975049;
+	bh=eqpFdUvn4p2IzkXJ8MPBt9ubVMwpAQ3Fsygaugz75jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l28ziOwAIM0hdgPU1Xm6Q/WlNEkwLQ2xdpDHlmhKz8VsOkrmh6uDvkIgjQGvJZu4M
-	 P+piWoyyPgAi3CjN5+UgeEDykdlrv1BJlxhOuNOWF/od0oobNeRM9zBWKoqmF8u4U2
-	 fEqu9Sst9tJgJFzYU+Mz+I6i7SBFQPnO6cWMONk0=
+	b=IOkbVK28N8Y8JG81y/EqiYPRPanwMF4Z0A4eXOsxySaDDiG6h3UTnWLTzAHZutvza
+	 e5nY3/n2BNp97tYrHGSNruXDB6hutNXq3+G1xcIBErVAX4ZlcCVqkwDzOKF1ghq0zM
+	 gekv2207jeUzzPvws6NDc3dJtti71rmYv9trRYNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Keith Busch <kbusch@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 008/374] nvme-core: check for too small lba shift
+Subject: [PATCH 6.6 213/583] sctp: support MSG_ERRQUEUE flag in recvmsg()
 Date: Mon, 22 Jan 2024 15:54:24 -0800
-Message-ID: <20240122235744.917018880@linuxfoundation.org>
+Message-ID: <20240122235818.530586721@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 74fbc88e161424b3b96a22b23a8e3e1edab9d05c ]
+[ Upstream commit 4746b36b1abe11ca32987b2d21e1e770deab17cc ]
 
-The block layer doesn't support logical block sizes smaller than 512
-bytes. The nvme spec doesn't support that small either, but the driver
-isn't checking to make sure the device responded with usable data.
-Failing to catch this will result in a kernel bug, either from a
-division by zero when stacking, or a zero length bio.
+For some reason sctp_poll() generates EPOLLERR if sk->sk_error_queue
+is not empty but recvmsg() can not drain the error queue yet.
 
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+This is needed to better support timestamping.
+
+I had to export inet_recv_error(), since sctp
+can be compiled as a module.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://lore.kernel.org/r/20231212145550.3872051-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: a562c0a2d651 ("sctp: fix busy polling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/ipv4/af_inet.c | 1 +
+ net/sctp/socket.c  | 3 +++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 98a7649a0f06..8f06e5c1706b 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -1846,9 +1846,10 @@ static void nvme_update_disk_info(struct gendisk *disk,
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index 2713c9b06c4c..b0a5de1303b5 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -1632,6 +1632,7 @@ int inet_recv_error(struct sock *sk, struct msghdr *msg, int len, int *addr_len)
+ #endif
+ 	return -EINVAL;
+ }
++EXPORT_SYMBOL(inet_recv_error);
  
- 	/*
- 	 * The block layer can't support LBA sizes larger than the page size
--	 * yet, so catch this early and don't allow block I/O.
-+	 * or smaller than a sector size yet, so catch this early and don't
-+	 * allow block I/O.
- 	 */
--	if (ns->lba_shift > PAGE_SHIFT) {
-+	if (ns->lba_shift > PAGE_SHIFT || ns->lba_shift < SECTOR_SHIFT) {
- 		capacity = 0;
- 		bs = (1 << 9);
- 	}
+ int inet_gro_complete(struct sk_buff *skb, int nhoff)
+ {
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 7f89e43154c0..5fb02bbb4b34 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -2099,6 +2099,9 @@ static int sctp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 	pr_debug("%s: sk:%p, msghdr:%p, len:%zd, flags:0x%x, addr_len:%p)\n",
+ 		 __func__, sk, msg, len, flags, addr_len);
+ 
++	if (unlikely(flags & MSG_ERRQUEUE))
++		return inet_recv_error(sk, msg, len, addr_len);
++
+ 	lock_sock(sk);
+ 
+ 	if (sctp_style(sk, TCP) && !sctp_sstate(sk, ESTABLISHED) &&
 -- 
 2.43.0
 
