@@ -1,82 +1,80 @@
-Return-Path: <stable+bounces-12369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC1418365A5
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 15:40:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EAA38365AC
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 15:42:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 846AD2848DC
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 14:40:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C322E1F20C9E
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 14:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640603D554;
-	Mon, 22 Jan 2024 14:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="goqLtilS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926BE3D55C;
+	Mon, 22 Jan 2024 14:42:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03933D962
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 14:40:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A381A3CF6D;
+	Mon, 22 Jan 2024 14:41:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705934420; cv=none; b=L9xIgvuvYjUzRVCL4hT6Xr/coTxk4DfQqm2scqKoCcHegVZSJJM8gN1ml7l8vVg9oQyE7+z6NmhD4DPW/087G+ChKpGsIx06OJjK2aIwgKhmFXefZUtFd45Jc6dL/Zj0JWoXJPYI7utmqQo1OLQuR2sabJ+Fp396BNSqR7R6nt4=
+	t=1705934520; cv=none; b=jCAQQYirVF0LfsAgQP8x13Rcv6yQEIECdIUPOymZ14wKdAddLK2I/6NjML8aemwcW0dGeLdCnwMrekVCTqREa7NGPLi/5awI/O/mgchq1AhN3IiGwIOKmSjjGe8PaIUJVYfEp00nEo+sAlUmQukjv80ON3TXYmGEeYmEVQ/E5Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705934420; c=relaxed/simple;
-	bh=R8e5ARB4KnJAoFGM9STNwmUc2WICDKUXxG5f9RXWZL0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J1N4lMYY/P50Q1GMTc7xrbhPaJcr2zi+g/2Cx34P5rD45YiBPN8oCMmBbjQCQLUsZsZdncC+CDw/7WCbXSePDA4O+1NvJw0gZQGk540s1D6VSQJNkEwzdGa9ILRsH9j+GZDDDn37MDEw2ANxVKI6k3x4MVbVQyiTM12+KLKH0N4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=goqLtilS; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=6pOMP3fTGt6GWslB2QifweOOL01c/mzedDUrtRY3T6I=; b=goqLtilSaE6t4J2z+NmGiODd+o
-	RPNMNw6AG7qeBHkl5biKnujraUhPRIX+fL6Mr0FWZleb26t8bB0WYXGCJ/BLrV0Bxc+ZW4stAR9mK
-	4uP2mEf5gR8twhS4yyuQ7UAVtiMHYsmEYgHFVQbMvbVLI5yjP2oPsw6y9ObNnrhv0quQQyTcfN17U
-	VMl36EgcoOc5WDCJD5MoN0dvLPCHFRm16N6v02IhnbUwyZIuhFIK8PT+7m1rgp7cEaBaqU9vE+oy/
-	/RThNO6mC/PwHw2CYGo1SWxFCY/uOjcB12q7Yin8JKhGOrHxJN98bGIFXUzA6wvzbDH8W+HLqS1VB
-	ypO4HsIg==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rRvTE-000000009sT-0OeJ;
-	Mon, 22 Jan 2024 14:40:16 +0000
-Date: Mon, 22 Jan 2024 14:40:16 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Zhihao Cheng <chengzhihao1@huawei.com>
-Cc: Richard Weinberger <richard@nod.at>, linux-mtd@lists.infradead.org,
+	s=arc-20240116; t=1705934520; c=relaxed/simple;
+	bh=JvnshlR0gFiI2tKo5823WoQz/LUZa7lQ4DVNorByMPE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZEEcj8ecGTtYOesZJnAhX1530pgOLSPp+9qujq47P3bFchhlpmVaT9wD1oLajMycg4izLQHPAU4PTbcDeNxuWzzoFWxx+n8wE3y92HeDagaRJ7bYCiWKBGVPdpUXda3Mu2Qcn5dj2747jihstKoJKEJL6RYvLoHah6uxhq/SSKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 186E31FB;
+	Mon, 22 Jan 2024 06:42:44 -0800 (PST)
+Received: from usa.arm.com (e103737-lin.cambridge.arm.com [10.1.197.49])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id F21053F73F;
+	Mon, 22 Jan 2024 06:41:56 -0800 (PST)
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Cristian Marussi <cristian.marussi@arm.com>
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	vincent.guittot@linaro.org,
+	Xinglong Yang <xinglong.yang@cixtech.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 01/15] ubifs: Set page uptodate in the correct place
-Message-ID: <Za5-UJU0tqT9CYQj@casper.infradead.org>
-References: <20240120230824.2619716-1-willy@infradead.org>
- <20240120230824.2619716-2-willy@infradead.org>
- <5ad7b6ed-664b-7426-c557-1495711a6100@huawei.com>
+Subject: Re: [PATCH] firmware: arm_scmi: Check Mailbox/SMT channel for consistency
+Date: Mon, 22 Jan 2024 14:41:50 +0000
+Message-ID: <170592361006.3509502.11519593066787083768.b4-ty@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20231220172112.763539-1-cristian.marussi@arm.com>
+References: <20231220172112.763539-1-cristian.marussi@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5ad7b6ed-664b-7426-c557-1495711a6100@huawei.com>
 
-On Mon, Jan 22, 2024 at 03:22:45PM +0800, Zhihao Cheng wrote:
-> 在 2024/1/21 7:08, Matthew Wilcox (Oracle) 写道:
-> > Page cache reads are lockless, so setting the freshly allocated page
-> > uptodate before we've overwritten it with the data it's supposed to have
-> > in it will allow a simultaneous reader to see old data.  Move the call
-> > to SetPageUptodate into ubifs_write_end(), which is after we copied the
-> > new data into the page.
-> 
-> This solution looks good to me, and I think 'SetPageUptodate' should be
-> removed from write_begin_slow(slow path) too.
+On Wed, 20 Dec 2023 17:21:12 +0000, Cristian Marussi wrote:
+> On reception of a completion interrupt the SMT memory area is accessed to
+> retrieve the message header at first and then, if the message sequence
+> number identifies a transaction which is still pending, the related
+> payload is fetched too.
+>
+> When an SCMI command times out the channel ownership remains with the
+> platform until eventually a late reply is received and, as a consequence,
+> any further transmission attempt remains pending, waiting for the channel
+> to be relinquished by the platform.
+>
+> [...]
 
-I didn't bother because we have just read into the page so it is
-uptodate.  A racing read will see the data from before the write, but
-that's an acceptable ordering of events.
+Applied to sudeep.holla/linux (for-next/scmi/fixes), thanks!
+
+[1/1] firmware: arm_scmi: Check Mailbox/SMT channel for consistency
+      https://git.kernel.org/sudeep.holla/c/437a310b2224
+--
+Regards,
+Sudeep
+
 
