@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48E0838506
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:38:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA2C838124
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67BD428B901
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 776CD1F23838
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1A07C0B9;
-	Tue, 23 Jan 2024 02:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8482141997;
+	Tue, 23 Jan 2024 01:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGYdzeRL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjgnnB46"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDF767737;
-	Tue, 23 Jan 2024 02:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78689140796;
+	Tue, 23 Jan 2024 01:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975727; cv=none; b=K4V4Ww3QT1sER63zbTLi2jtEgeoz169I0PYAoT1GXvon0blZcCPcyUWt+BGWXKTw4g3wl/mRR5VhIW/90PZh6t1lZMXpX2wZFGhJ2aPTUumu8VbCIF6lhRIiicgu5P0A05bNLZFHMUyKiJ2B9k4qUHcwTCuWEOd2L4MGSm6qNYQ=
+	t=1705972044; cv=none; b=nqXWaO9/pZjxoVkJaO8UU7FoWyEQeWQ8qWD7s2LxgTutjfAGvHg9Q4lOVy0lzS20DZ4zPJuY42shh0JDWDOa/+0KTwW44L8q8xyD0Kp+RnMqXE6/X1R3zwbmd9shcAE8rXo9JBUjYMJjSptvc0xhZgPxjCWg+73rcRztorc8GY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975727; c=relaxed/simple;
-	bh=j0PEU5W8l5D/LID5QGhmbjjlhlV17EYKQDE5dQRTbys=;
+	s=arc-20240116; t=1705972044; c=relaxed/simple;
+	bh=APA+wQ0PLHAt+ThM/khiwjARNAgbxUeFVAsqtdPEtgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EU33sr3vZLNyHMW5yYPTfraQ+Nc5/5ZHHaaG9d95xbRn4pkDNvPc3suTRykD74JUSBH2tswQcEdA/uagTz3f0XrTsyW1qJyBTVOSyacwJwY7flryehfE/sGYOotvONWQYAroDJw2edOGAXThGpeAYjWPvWxDyVwHib8LRuCPlow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGYdzeRL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541C1C43390;
-	Tue, 23 Jan 2024 02:08:47 +0000 (UTC)
+	 MIME-Version; b=PD2DQtqNV/IdItK8RrMadXjLdK0CPRYomHyxqD1YBrJQ3vASFbQpax7NHmdpPYO1mynJrZOUDzwkVN4ZW++jCbZqOYTr+5Db8qan5CH8N8eogS723GbrbUz0Bbjo5FEkq/KusqDj6QBYOOn6t2vdBFN1M9W+2VK4mh6G064daRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjgnnB46; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352C9C43394;
+	Tue, 23 Jan 2024 01:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975727;
-	bh=j0PEU5W8l5D/LID5QGhmbjjlhlV17EYKQDE5dQRTbys=;
+	s=korg; t=1705972044;
+	bh=APA+wQ0PLHAt+ThM/khiwjARNAgbxUeFVAsqtdPEtgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JGYdzeRLBfNTFycpiVHCHydtLObd59N7XCfsZ9YiO63GriMtIQYjCGqRB4AmcHIE4
-	 mHM/SuOBPiPw5c09FhvYXDH6eoCLq/e4uswU881NzJuQN/9aJ01EMkkK7raLHTEeoU
-	 y29pFqJsyhNl2t7oahLhBzU+pz62ok12ULfS2qCQ=
+	b=DjgnnB46kycpdCNni7pV6Q2YgRD1N7T3Am+Gj+sFUJwY1KDE6QBWBYML7kPSb6yIx
+	 wg4mS4lIOvl23JBzDieq3MPaatVYNvoqBTBca7W8o8CVZir9+EzcZ4+UW8r4rtUjD4
+	 EEQWESSuBhqL1lHNN7YEH9hXy0+UG8wIMgUfgNyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Hao Sun <sunhao.th@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Yonghong Song <yonghong.song@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 511/583] serial: imx: Correct clock error message in function probe()
+Subject: [PATCH 6.1 394/417] bpf: Reject variable offset alu on PTR_TO_FLOW_KEYS
 Date: Mon, 22 Jan 2024 15:59:22 -0800
-Message-ID: <20240122235827.708323313@linuxfoundation.org>
+Message-ID: <20240122235805.399238965@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+From: Hao Sun <sunhao.th@gmail.com>
 
-[ Upstream commit 3e189470cad27d41a3a9dc02649f965b7ed1c90f ]
+[ Upstream commit 22c7fa171a02d310e3a3f6ed46a698ca8a0060ed ]
 
-Correct the clock error message by changing the clock name.
+For PTR_TO_FLOW_KEYS, check_flow_keys_access() only uses fixed off
+for validation. However, variable offset ptr alu is not prohibited
+for this ptr kind. So the variable offset is not checked.
 
-Fixes: 1e512d45332b ("serial: imx: add error messages when .probe fails")
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20231224093209.2612-1-cniedermaier@dh-electronics.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The following prog is accepted:
+
+  func#0 @0
+  0: R1=ctx() R10=fp0
+  0: (bf) r6 = r1                       ; R1=ctx() R6_w=ctx()
+  1: (79) r7 = *(u64 *)(r6 +144)        ; R6_w=ctx() R7_w=flow_keys()
+  2: (b7) r8 = 1024                     ; R8_w=1024
+  3: (37) r8 /= 1                       ; R8_w=scalar()
+  4: (57) r8 &= 1024                    ; R8_w=scalar(smin=smin32=0,
+  smax=umax=smax32=umax32=1024,var_off=(0x0; 0x400))
+  5: (0f) r7 += r8
+  mark_precise: frame0: last_idx 5 first_idx 0 subseq_idx -1
+  mark_precise: frame0: regs=r8 stack= before 4: (57) r8 &= 1024
+  mark_precise: frame0: regs=r8 stack= before 3: (37) r8 /= 1
+  mark_precise: frame0: regs=r8 stack= before 2: (b7) r8 = 1024
+  6: R7_w=flow_keys(smin=smin32=0,smax=umax=smax32=umax32=1024,var_off
+  =(0x0; 0x400)) R8_w=scalar(smin=smin32=0,smax=umax=smax32=umax32=1024,
+  var_off=(0x0; 0x400))
+  6: (79) r0 = *(u64 *)(r7 +0)          ; R0_w=scalar()
+  7: (95) exit
+
+This prog loads flow_keys to r7, and adds the variable offset r8
+to r7, and finally causes out-of-bounds access:
+
+  BUG: unable to handle page fault for address: ffffc90014c80038
+  [...]
+  Call Trace:
+   <TASK>
+   bpf_dispatcher_nop_func include/linux/bpf.h:1231 [inline]
+   __bpf_prog_run include/linux/filter.h:651 [inline]
+   bpf_prog_run include/linux/filter.h:658 [inline]
+   bpf_prog_run_pin_on_cpu include/linux/filter.h:675 [inline]
+   bpf_flow_dissect+0x15f/0x350 net/core/flow_dissector.c:991
+   bpf_prog_test_run_flow_dissector+0x39d/0x620 net/bpf/test_run.c:1359
+   bpf_prog_test_run kernel/bpf/syscall.c:4107 [inline]
+   __sys_bpf+0xf8f/0x4560 kernel/bpf/syscall.c:5475
+   __do_sys_bpf kernel/bpf/syscall.c:5561 [inline]
+   __se_sys_bpf kernel/bpf/syscall.c:5559 [inline]
+   __x64_sys_bpf+0x73/0xb0 kernel/bpf/syscall.c:5559
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0x3f/0x110 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+Fix this by rejecting ptr alu with variable offset on flow_keys.
+Applying the patch rejects the program with "R7 pointer arithmetic
+on flow_keys prohibited".
+
+Fixes: d58e468b1112 ("flow_dissector: implements flow dissector BPF hook")
+Signed-off-by: Hao Sun <sunhao.th@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/bpf/20240115082028.9992-1-sunhao.th@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/verifier.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index c084ac3bb441..cd36251ba1c0 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -2323,7 +2323,7 @@ static int imx_uart_probe(struct platform_device *pdev)
- 	/* For register access, we only need to enable the ipg clock. */
- 	ret = clk_prepare_enable(sport->clk_ipg);
- 	if (ret) {
--		dev_err(&pdev->dev, "failed to enable per clk: %d\n", ret);
-+		dev_err(&pdev->dev, "failed to enable ipg clk: %d\n", ret);
- 		return ret;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 95e7b638418e..23b6d57b5eef 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -8541,6 +8541,10 @@ static int adjust_ptr_min_max_vals(struct bpf_verifier_env *env,
  	}
  
+ 	switch (base_type(ptr_reg->type)) {
++	case PTR_TO_FLOW_KEYS:
++		if (known)
++			break;
++		fallthrough;
+ 	case CONST_PTR_TO_MAP:
+ 		/* smin_val represents the known value */
+ 		if (known && smin_val == 0 && opcode == BPF_ADD)
 -- 
 2.43.0
 
