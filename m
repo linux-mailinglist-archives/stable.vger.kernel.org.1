@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E40837C9F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:13:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD6B837E9F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0364B28D8E5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:13:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B87D1C24BC4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE1D145B36;
-	Tue, 23 Jan 2024 00:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3BC60DC6;
+	Tue, 23 Jan 2024 00:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLtBEFDh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXuuvLq8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A93B136658;
-	Tue, 23 Jan 2024 00:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88FC760DC3;
+	Tue, 23 Jan 2024 00:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969693; cv=none; b=fjJ/jYKqnHU8a1W+W+9j8D20kAVjJMtV0Dc6L1OMfT0bn+jLTT/mNWJvT7HqYdCv3CHV2R1ETZ8mt8Lx6cnucmfCNqiR+FETLOqGAk5OYhcD2m1tePVin0fnKpfiB6xGCE4chMPUF3W89PnImfHoLRXiiey6PX3DnrdpDYngz3Q=
+	t=1705970719; cv=none; b=A5e39eebWJdqAofPisBmig+lyRyzz+v6bPdNnqGfCAkP3DiiDGDFd2kE/mSKd/udeIjFfvoOcLXJSUI/DnvpER6ZgjGk4gxaviE61VDPzeFCnnNGowWT6nUA73SNRIm4cpkOp6tHdvfcKi7oVvLRaNacnYNzXH/UQHjyDvD+5/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969693; c=relaxed/simple;
-	bh=4eyQ/VhY88+8vh4edaqHT8z6sXTz9ob+e87YAls1RWU=;
+	s=arc-20240116; t=1705970719; c=relaxed/simple;
+	bh=l9IsJdDiUKH5P40vL+2sL64bWpDik1rFeCQtD0zqBws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ENTz5g8sc5w6ZnPWqttxUnE7h8NTldNNe72m1YOf7ESiGy1+zeUyiZzijN5X3IuEqnDTqvqY6v6RWpcYyHK/5r/l6EOEC0F/zcYEV3cki1u/nhVNnqCkSbSCyMMArjyCGn5Dq6pp112rg3mUeC7wqVry/ayapMODxqzk2YfCK6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLtBEFDh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B666AC433C7;
-	Tue, 23 Jan 2024 00:28:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G9eu21m1RxJg9+HNBOwfQooSLGUrR3chb4bV8tCSWTxTnmQPt5GeAdHrhvxD4EN3K9Eg9081aK3xQgE6RRav9FCH5sL1xEtoOI5TGjF0R2WLoxeGus9cc4BvrEgimqT6CBvQyTSbRlzXSDKwRWLkz7vvFkDeGkxk8fB/7vCF3vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXuuvLq8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEBDC433C7;
+	Tue, 23 Jan 2024 00:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969693;
-	bh=4eyQ/VhY88+8vh4edaqHT8z6sXTz9ob+e87YAls1RWU=;
+	s=korg; t=1705970719;
+	bh=l9IsJdDiUKH5P40vL+2sL64bWpDik1rFeCQtD0zqBws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uLtBEFDhbJ0mqyvYUIIcau/hiJdl1rW2DgLH2nEWrhS9oLeRIL7A9HkZGXVlyHtKK
-	 bJmmkrbxeITC1ReN2U+nXvSxuTYmypapO2w8r020RprwvF+SJP/zRpG+GL1552Es/b
-	 bt5QkEqxuidG5W8hi8yvp99X3ZyKwSMWvhk7eXtA=
+	b=FXuuvLq8oI2eHyjMbAAYaPXzoqZSxgxQsIVR1NiyAW4y0EuC6bgdZMlvE4fXsaxWF
+	 URuxJCHF8ttegPPJp0kqO0VUuArPpq9XBb1DLZAzmvbY1VhrX/UD1Vf3jP0wo34ZrQ
+	 S2oJznRH+Dt+KOFIBKnDgbr9ztUHyLNXXwriz7nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.7 408/641] dt-bindings: phy: qcom,sc8280xp-qmp-usb43dp-phy: fix path to header
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Lu Yao <yaolu@kylinos.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 006/286] drm/amdgpu: Fix cat debugfs amdgpu_regs_didt causes kernel null pointer
 Date: Mon, 22 Jan 2024 15:55:12 -0800
-Message-ID: <20240122235830.747493723@linuxfoundation.org>
+Message-ID: <20240122235732.253987450@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Lu Yao <yaolu@kylinos.cn>
 
-commit 21a1d02579ae75fd45555b84d20ba55632a14a19 upstream.
+[ Upstream commit 2161e09cd05a50d80736fe397145340d2e8f6c05 ]
 
-Fix the path to bindings header in description.
+For 'AMDGPU_FAMILY_SI' family cards, in 'si_common_early_init' func, init
+'didt_rreg' and 'didt_wreg' to 'NULL'. But in func
+'amdgpu_debugfs_regs_didt_read/write', using 'RREG32_DIDT' 'WREG32_DIDT'
+lacks of relevant judgment. And other 'amdgpu_ip_block_version' that use
+these two definitions won't be added for 'AMDGPU_FAMILY_SI'.
 
-Fixes: e1c4c5436b4a ("dt-bindings: phy: qcom,qmp-usb3-dp: fix sc8280xp binding")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231218130553.45893-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So, add null pointer judgment before calling.
+
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Lu Yao <yaolu@kylinos.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml
-+++ b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml
-@@ -62,12 +62,12 @@ properties:
-   "#clock-cells":
-     const: 1
-     description:
--      See include/dt-bindings/dt-bindings/phy/phy-qcom-qmp.h
-+      See include/dt-bindings/phy/phy-qcom-qmp.h
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+index 48df32dd352e..3e573077368b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -459,6 +459,9 @@ static ssize_t amdgpu_debugfs_regs_didt_read(struct file *f, char __user *buf,
+ 	if (size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
  
-   "#phy-cells":
-     const: 1
-     description:
--      See include/dt-bindings/dt-bindings/phy/phy-qcom-qmp.h
-+      See include/dt-bindings/phy/phy-qcom-qmp.h
++	if (!adev->didt_rreg)
++		return -EOPNOTSUPP;
++
+ 	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
+ 	if (r < 0) {
+ 		pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
+@@ -518,6 +521,9 @@ static ssize_t amdgpu_debugfs_regs_didt_write(struct file *f, const char __user
+ 	if (size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
  
-   orientation-switch:
-     description:
++	if (!adev->didt_wreg)
++		return -EOPNOTSUPP;
++
+ 	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
+ 	if (r < 0) {
+ 		pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
+-- 
+2.43.0
+
 
 
 
