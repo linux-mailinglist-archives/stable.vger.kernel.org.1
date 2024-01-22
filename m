@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40F8983806E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0FCD838584
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:43:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 734321C29722
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7737FB2D927
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CAE712DDAF;
-	Tue, 23 Jan 2024 01:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9372474E0D;
+	Tue, 23 Jan 2024 02:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6Z0X7Pe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kr7Dl4qX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8B364CFE;
-	Tue, 23 Jan 2024 01:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5363D74E09;
+	Tue, 23 Jan 2024 02:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971712; cv=none; b=r+cy1t5zkst5hZcQ1e4eBeusx4WcfevZFjXojFP/u492os+Jz8ORKCCyqN/abaqig5DKaYyKWKSyRu93Hy1x5zBjm0YM9CWiMjxRzYjPGff2VS6WoEc4T8aPYIZik00bSBi+uBweGgp/0N3yVlc7w1UoiXl4DWkfHD5mO3Mhsxc=
+	t=1705975465; cv=none; b=MXAdjdsNkxzuZotlEu1fxwvefg6xYP4SjjDpXV1jMZB5Iaiv4vqX3rCG1o0p+TuZZHlBjKdJWfJA5uVUkYOiVw3m63eWXdVxjFg/0d8ZE/opPTSvHdtHeBbk73Z8x/CQHl7UsWsLbh+/DmGprg8VpulFhyk+uitGRexEtYxHo+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971712; c=relaxed/simple;
-	bh=b4dB7RdUM/d2MjwhvQ/mv4ND/jpe0geTaSApjgvDRXE=;
+	s=arc-20240116; t=1705975465; c=relaxed/simple;
+	bh=0LuLjJindWeZlQoXofjB0fd/sgt2w7guMXvaI8Prigs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W9cW6kZT6GPBB3VWkQxkc2CSCi9MxM0USQnBz7Oln/7rO/DKGSOjAchOOAPBZdVb5rGRdBV8foc70KgId4QwGAz0Z9kleEZeh/WVV7/fxfU/VK4QnYLtC+S9Ho6DzwAsd6ADexsI9nlml4tkL5RHes9NWFBuCrThPkdjrEEg9yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6Z0X7Pe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61536C433F1;
-	Tue, 23 Jan 2024 01:01:51 +0000 (UTC)
+	 MIME-Version; b=cgAyJ5Mpw1Ep0Nex+VbqWtWaUm/mWa0ge5aLzrTbHryaMPq6tDBi88sD9zI5tcDwqH1ACOXLFHH5qA3kfA2xO+lbsbENXa6PUpXXyEJRUnUbIcaHoW0noIGOcA7E14LAGHuWau5y14VrERKNOQD/8ztgQ+il8fnnGQY47mBcJgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kr7Dl4qX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BC7C433C7;
+	Tue, 23 Jan 2024 02:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971711;
-	bh=b4dB7RdUM/d2MjwhvQ/mv4ND/jpe0geTaSApjgvDRXE=;
+	s=korg; t=1705975465;
+	bh=0LuLjJindWeZlQoXofjB0fd/sgt2w7guMXvaI8Prigs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u6Z0X7Pec8R7aTpc3030CHMi/6v14SvJNbWuqDdSMhMGgFDME4VVRt2ykEgf8mv3U
-	 7qGbdL/xtr6XJIgBsCz7FH5I1O0wYxQSGnD3SpuDFOvxsW300dxMOOXFJdGlsG/73+
-	 3BwMJhx9y+XqiyRxbZ0OuFUxSCUzonGEza6A31bc=
+	b=Kr7Dl4qX/fsFS2+B0cV7ayeDJ1kvK+48eWNjQ3ODBXHzD07KhFoYq+D+e/H6VXNPF
+	 qsnwxWdbjLwy5yKmpBwsnSnnC9UXGlMCdR3OCmm+afekHJSaKgUNbjfMayp59RjUMk
+	 dw4foGwTwFJPqAHR4EEn36FEYBKar/xCUgxxPHS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 304/417] LoongArch: Fix and simplify fcsr initialization on execve()
+	Stefan Sterz <s.sterz@proxmox.com>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 421/583] Revert "nSVM: Check for reserved encodings of TLB_CONTROL in nested VMCB"
 Date: Mon, 22 Jan 2024 15:57:52 -0800
-Message-ID: <20240122235802.360673641@linuxfoundation.org>
+Message-ID: <20240122235824.852538722@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,122 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Sean Christopherson <seanjc@google.com>
 
-commit c2396651309eba291c15e32db8fbe44c738b5921 upstream.
+commit a484755ab2526ebdbe042397cdd6e427eb4b1a68 upstream.
 
-There has been a lingering bug in LoongArch Linux systems causing some
-GCC tests to intermittently fail (see Closes link).  I've made a minimal
-reproducer:
+Revert KVM's made-up consistency check on SVM's TLB control.  The APM says
+that unsupported encodings are reserved, but the APM doesn't state that
+VMRUN checks for a supported encoding.  Unless something is called out
+in "Canonicalization and Consistency Checks" or listed as MBZ (Must Be
+Zero), AMD behavior is typically to let software shoot itself in the foot.
 
-    zsh% cat measure.s
-    .align 4
-    .globl _start
-    _start:
-        movfcsr2gr  $a0, $fcsr0
-        bstrpick.w  $a0, $a0, 16, 16
-        beqz        $a0, .ok
-        break       0
-    .ok:
-        li.w        $a7, 93
-        syscall     0
-    zsh% cc mesaure.s -o measure -nostdlib
-    zsh% echo $((1.0/3))
-    0.33333333333333331
-    zsh% while ./measure; do ; done
+This reverts commit 174a921b6975ef959dd82ee9e8844067a62e3ec1.
 
-This while loop should not stop as POSIX is clear that execve must set
-fenv to the default, where FCSR should be zero.  But in fact it will
-just stop after running for a while (normally less than 30 seconds).
-Note that "$((1.0/3))" is needed to reproduce this issue because it
-raises FE_INVALID and makes fcsr0 non-zero.
-
-The problem is we are currently relying on SET_PERSONALITY2() to reset
-current->thread.fpu.fcsr.  But SET_PERSONALITY2() is executed before
-start_thread which calls lose_fpu(0).  We can see if kernel preempt is
-enabled, we may switch to another thread after SET_PERSONALITY2() but
-before lose_fpu(0).  Then bad thing happens: during the thread switch
-the value of the fcsr0 register is stored into current->thread.fpu.fcsr,
-making it dirty again.
-
-The issue can be fixed by setting current->thread.fpu.fcsr after
-lose_fpu(0) because lose_fpu() clears TIF_USEDFPU, then the thread
-switch won't touch current->thread.fpu.fcsr.
-
-The only other architecture setting FCSR in SET_PERSONALITY2() is MIPS.
-I've ran a similar test on MIPS with mainline kernel and it turns out
-MIPS is buggy, too.  Anyway MIPS do this for supporting different FP
-flavors (NaN encodings, etc.) which do not exist on LoongArch.  So for
-LoongArch, we can simply remove the current->thread.fpu.fcsr setting
-from SET_PERSONALITY2() and do it in start_thread(), after lose_fpu(0).
-
-The while loop failing with the mainline kernel has survived one hour
-after this change on LoongArch.
-
-Fixes: 803b0fc5c3f2baa ("LoongArch: Add process management")
-Closes: https://github.com/loongson-community/discussions/issues/7
-Link: https://lore.kernel.org/linux-mips/7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site/
+Fixes: 174a921b6975 ("nSVM: Check for reserved encodings of TLB_CONTROL in nested VMCB")
+Reported-by: Stefan Sterz <s.sterz@proxmox.com>
+Closes: https://lkml.kernel.org/r/b9915c9c-4cf6-051a-2d91-44cc6380f455%40proxmox.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
+Link: https://lore.kernel.org/r/20231018194104.1896415-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/elf.h |    5 -----
- arch/loongarch/kernel/elf.c      |    5 -----
- arch/loongarch/kernel/process.c  |    1 +
- 3 files changed, 1 insertion(+), 10 deletions(-)
+ arch/x86/kvm/svm/nested.c |   15 ---------------
+ 1 file changed, 15 deletions(-)
 
---- a/arch/loongarch/include/asm/elf.h
-+++ b/arch/loongarch/include/asm/elf.h
-@@ -241,8 +241,6 @@ void loongarch_dump_regs64(u64 *uregs, c
- do {									\
- 	current->thread.vdso = &vdso_info;				\
- 									\
--	loongarch_set_personality_fcsr(state);				\
--									\
- 	if (personality(current->personality) != PER_LINUX)		\
- 		set_personality(PER_LINUX);				\
- } while (0)
-@@ -259,7 +257,6 @@ do {									\
- 	clear_thread_flag(TIF_32BIT_ADDR);				\
- 									\
- 	current->thread.vdso = &vdso_info;				\
--	loongarch_set_personality_fcsr(state);				\
- 									\
- 	p = personality(current->personality);				\
- 	if (p != PER_LINUX32 && p != PER_LINUX)				\
-@@ -340,6 +337,4 @@ extern int arch_elf_pt_proc(void *ehdr,
- extern int arch_check_elf(void *ehdr, bool has_interpreter, void *interp_ehdr,
- 			  struct arch_elf_state *state);
- 
--extern void loongarch_set_personality_fcsr(struct arch_elf_state *state);
--
- #endif /* _ASM_ELF_H */
---- a/arch/loongarch/kernel/elf.c
-+++ b/arch/loongarch/kernel/elf.c
-@@ -23,8 +23,3 @@ int arch_check_elf(void *_ehdr, bool has
- {
- 	return 0;
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -247,18 +247,6 @@ static bool nested_svm_check_bitmap_pa(s
+ 	    kvm_vcpu_is_legal_gpa(vcpu, addr + size - 1);
  }
--
--void loongarch_set_personality_fcsr(struct arch_elf_state *state)
--{
--	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
--}
---- a/arch/loongarch/kernel/process.c
-+++ b/arch/loongarch/kernel/process.c
-@@ -82,6 +82,7 @@ void start_thread(struct pt_regs *regs,
- 	euen = regs->csr_euen & ~(CSR_EUEN_FPEN);
- 	regs->csr_euen = euen;
- 	lose_fpu(0);
-+	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
  
- 	clear_thread_flag(TIF_LSX_CTX_LIVE);
- 	clear_thread_flag(TIF_LASX_CTX_LIVE);
+-static bool nested_svm_check_tlb_ctl(struct kvm_vcpu *vcpu, u8 tlb_ctl)
+-{
+-	/* Nested FLUSHBYASID is not supported yet.  */
+-	switch(tlb_ctl) {
+-		case TLB_CONTROL_DO_NOTHING:
+-		case TLB_CONTROL_FLUSH_ALL_ASID:
+-			return true;
+-		default:
+-			return false;
+-	}
+-}
+-
+ static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+ 					 struct vmcb_ctrl_area_cached *control)
+ {
+@@ -278,9 +266,6 @@ static bool __nested_vmcb_check_controls
+ 					   IOPM_SIZE)))
+ 		return false;
+ 
+-	if (CC(!nested_svm_check_tlb_ctl(vcpu, control->tlb_ctl)))
+-		return false;
+-
+ 	if (CC((control->int_ctl & V_NMI_ENABLE_MASK) &&
+ 	       !vmcb12_is_intercept(control, INTERCEPT_NMI))) {
+ 		return false;
 
 
 
