@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-12737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 690378371B5
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:02:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B272A8371B6
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:02:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13A821F32634
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:02:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54D3E1F3276D
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E554D10F;
-	Mon, 22 Jan 2024 18:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D6B5B1F8;
+	Mon, 22 Jan 2024 18:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1UV7R18"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORQABkNK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D6456771
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 18:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4663456767
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 18:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705948984; cv=none; b=ptFWQ1N5Xe7eG4wkHGT+sbxyHBUTdSW85155bjzYtEyt290EKgc62z+lbt2iQei9dTnhMRiTs69ofbTPK5Bsyo7tDmPBft4ZxK5olqWFa79Uxy/r85QkDnXvxApsUi0Pe1188VRPZfT5vGWYYQH+B2PLgT8+knjxWeF5rASbKl4=
+	t=1705948986; cv=none; b=A8YwA5+2kZKxJbDHnUnRzwueNUn+ZY4rGhCSfBG5iZitCc18rM+BFrggiT1TBPPX23Fz8yQkMlMdEZjv7u9aVhImQ/wk4pmH1BlgjPbUVU+inn1wyzxdORnrOmx7YFH/7YaR5Rhcg9Wzc5c3DlG3mIU0hbs/REJFbx2MU95RtTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705948984; c=relaxed/simple;
-	bh=JS3D2VmATxGiIm0hp6JENY5Nnn23jr+FUia4Ik2vaB0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kd+Uj0/GovIHU8gxMFy1Jvq97dmU6pfSQNd4BURAwpx0M/6TU1kreK2Fp0QD5IPtoUITK+EMzYyXf7zDFv0n0rcQ4i82EGFOHlRH4jfl6HRVjT3zZU8mGB7DUznMMdH8LwRDnZ2zhfhCwo8TzFavhi8ZTYU74tVBHpyYfxY1RZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1UV7R18; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05EDDC3278B;
-	Mon, 22 Jan 2024 18:43:03 +0000 (UTC)
+	s=arc-20240116; t=1705948986; c=relaxed/simple;
+	bh=RwR1BfXus6x8DDl/Ae5pAryffojf85WkxSYbsAG2xtM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=c0ckO45IEaRmcBZ1R5O5z2OwZ46TG2SKVaV9XhGJ8viBF6Ii0+ZZclYH3UKGtStW86zHQKQBEzYJH0CRcOpy+SgWjxiCky8GCPuvegvk34ZJigxhD6UHX/xN+Ahgt32lzX0/Y+S3pYZSYni7kstfwuT0jKyz0CLuXI38wCOT7IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORQABkNK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A217DC433A6;
+	Mon, 22 Jan 2024 18:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705948984;
-	bh=JS3D2VmATxGiIm0hp6JENY5Nnn23jr+FUia4Ik2vaB0=;
+	s=korg; t=1705948985;
+	bh=RwR1BfXus6x8DDl/Ae5pAryffojf85WkxSYbsAG2xtM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=M1UV7R18VBvIiTrVKuVSgehv/X8UhwWSedc/uP68UeJoKVn4SzngRnuR7N9QevUrF
-	 1LgX1mfyXJCdyM0OqUpkkn62qOpmKh44AOIHGHT6N5+gkxBnr0tajm+6ZWu6VKb1p8
-	 79/pzOJltdlqsIaRRCK3p8VkAfQkK2sqSHVWhNWY=
-Subject: FAILED: patch "[PATCH] usb: dwc3: gadget: Queue PM runtime idle on disconnect event" failed to apply to 5.15-stable tree
+	b=ORQABkNKbHtfhbZzNqjP6Kz+cgSr3z+Ac9aF/o/zoY4MKISo24oEqQH7G6raihb4a
+	 CdY1IpJ5fqLDiAkok+uVgtACDYOdAYIy3RsLvZ3oYkP6Jqvvg+fCzSaLn1JuiSde0d
+	 fD32SppPpsP5ZlKP9ayCFe9/LqDQHIgjau0fQmVw=
+Subject: FAILED: patch "[PATCH] usb: dwc3: gadget: Queue PM runtime idle on disconnect event" failed to apply to 5.10-stable tree
 To: quic_wcheng@quicinc.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 22 Jan 2024 10:43:02 -0800
-Message-ID: <2024012202-engraving-mute-6fac@gregkh>
+Date: Mon, 22 Jan 2024 10:43:04 -0800
+Message-ID: <2024012204-uncrown-theology-22b4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3c7af52c7616c3aa6dacd2336ec748d4a65df8f4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012202-engraving-mute-6fac@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012204-uncrown-theology-22b4@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -81,6 +81,10 @@ c96683798e27 ("usb: dwc3: ep0: Don't prepare beyond Setup stage")
 861c010a2ee1 ("usb: dwc3: gadget: Refactor pullup()")
 0066472de157 ("usb: dwc3: Issue core soft reset before enabling run/stop")
 8217f07a5023 ("usb: dwc3: gadget: Avoid starting DWC3 gadget during UDC unbind")
+4a1e25c0a029 ("usb: dwc3: gadget: Stop EP0 transfers during pullup disable")
+8212937305f8 ("usb: dwc3: gadget: Disable gadget IRQ during pullup disable")
+f09ddcfcb8c5 ("usb: dwc3: gadget: Prevent EP queuing while stopping transfers")
+a66a7d48f34a ("Merge 5.11-rc3 into usb-next")
 
 thanks,
 
