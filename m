@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-15386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD56D8384FC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:38:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7F9838127
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C27B1C28E0A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FF11B2BEDE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3575A7A726;
-	Tue, 23 Jan 2024 02:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877C91350FC;
+	Tue, 23 Jan 2024 01:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRzviFeH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyCmwWW+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EF17A720;
-	Tue, 23 Jan 2024 02:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AE41350CA;
+	Tue, 23 Jan 2024 01:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975555; cv=none; b=cMiw5vrPLvKGyKWwWrBhx+cxddbCWG0+YkTxPZuWwHFvNTixek3QbhzwRMhOUromZzpgFKspeeyH2Wx/UYWzzM1wyiOiw1bKRqDDTi0Uu+OnAyEmVyNTuzNBVdLeK80zonM1660FXCcO/UYopC2CAjMKBhDFqajkhIUsTFmCobY=
+	t=1705971961; cv=none; b=DbOVj9XFjyarcYPINmKgV1zJj6P3CB0vxhTWdyzcWtn9MGz+I38HxAJV9yit6WOISws0bch1M0VfU+5b51bL+aQ5SSRGk2Q889am3vmNDyP99mWX9sppW0VaRXCtRfrY6x1kpPhqpPlOIl2qsq8pMBFYv6kacm6wh/gx7yGcu3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975555; c=relaxed/simple;
-	bh=QcGblcRyhlsvfGz0O2rWRdfQAYaT+F5oeTyXxQkXDAk=;
+	s=arc-20240116; t=1705971961; c=relaxed/simple;
+	bh=OkTMY4vbUWSMIbd9XPVwIDxsih4h/X4YjolwXJ4NqjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=im3KdrLhRvgj6k36qwAdiv6YOh2kULgaiWIzuhYETo0A2cdJqq08ivlbK/GrL/e0uuNIJnX+MiowutV3Om9R/pj6bSgk7nkXetR4umn3sGiModo8MKqQehO1B4uzwYA6jwniZsZsCW87/rqc2slYvFBwkd5dODqjlx/MeKsr4B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRzviFeH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21CEC43330;
-	Tue, 23 Jan 2024 02:05:54 +0000 (UTC)
+	 MIME-Version; b=cfuDBouf7yb6KC980/EZzocYpOJ9aZ6jnqchJwfdWvA/iRHVSkJEQ4OpyGuyIlGHDDApUF7/9Dcm78fgdozAjl8PiYo5wxhLkdF7WDIEv6jJkqZpTL+zami894LF3Y2snzw+9otj91i6+W32a8igHoVqH5UbDnw+Fbo8h3V5mLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyCmwWW+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90C2C43390;
+	Tue, 23 Jan 2024 01:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975554;
-	bh=QcGblcRyhlsvfGz0O2rWRdfQAYaT+F5oeTyXxQkXDAk=;
+	s=korg; t=1705971961;
+	bh=OkTMY4vbUWSMIbd9XPVwIDxsih4h/X4YjolwXJ4NqjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aRzviFeHbAe4RC2SEac4DTZ/OOC32kKyn/Q0wMhzySMsppgjnl5oUW+44a6EcTikw
-	 XYHeoTx61EnbFyZ1cW7iulEaP7EjAzbL/sjKiHpsTKF5Gyn7ot42zmfGfYGtC8dVRD
-	 pJYUVmsfcC7a/cfxGttFqSilJbvTL9t4va3oCDmg=
+	b=wyCmwWW+Xi3DY1i1Pcflwdrijd1zr5W/Cq6dbEQzr5YSMkTwP6o+uXyjUPjeQEvoJ
+	 xUdl6NbbZw+53uIbN5NkWir5ezKxd8MDUP4gX4v1rO6fr7gSd97zULbi6adVsyhrgS
+	 MQSZq2tNn839NDj4HI4oMozCgnlVPY3bkqdXY9m4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Endignoux <guillaumee@google.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 506/583] perf stat: Fix hard coded LL miss units
+Subject: [PATCH 5.10 251/286] iio: adc: ad9467: fix scale setting
 Date: Mon, 22 Jan 2024 15:59:17 -0800
-Message-ID: <20240122235827.530393690@linuxfoundation.org>
+Message-ID: <20240122235741.722767292@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,49 +63,257 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit f2567e12a090f0eb22553a4468d4c4fe04aad906 ]
+[ Upstream commit b73f08bb7fe5a0901646ca5ceaa1e7a2d5ee6293 ]
 
-Copy-paste error where LL cache misses are reported as l1i.
+When reading in_voltage_scale we can get something like:
 
-Fixes: 0a57b910807ad163 ("perf stat: Use counts rather than saved_value")
-Suggested-by: Guillaume Endignoux <guillaumee@google.com>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231211181242.1721059-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+root@analog:/sys/bus/iio/devices/iio:device2# cat in_voltage_scale
+0.038146
+
+However, when reading the available options:
+
+root@analog:/sys/bus/iio/devices/iio:device2# cat
+in_voltage_scale_available
+2000.000000 2100.000006 2200.000007 2300.000008 2400.000009 2500.000010
+
+which does not make sense. Moreover, when trying to set a new scale we
+get an error because there's no call to __ad9467_get_scale() to give us
+values as given when reading in_voltage_scale. Fix it by computing the
+available scales during probe and properly pass the list when
+.read_available() is called.
+
+While at it, change to use .read_available() from iio_info. Also note
+that to properly fix this, adi-axi-adc.c has to be changed accordingly.
+
+Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://lore.kernel.org/r/20231207-iio-backend-prep-v2-4-a4a33bc4d70e@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/stat-shadow.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad9467.c            | 47 ++++++++++++++++++
+ drivers/iio/adc/adi-axi-adc.c       | 74 ++++++-----------------------
+ include/linux/iio/adc/adi-axi-adc.h |  4 ++
+ 3 files changed, 66 insertions(+), 59 deletions(-)
 
-diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
-index 1c5c3eeba4cf..e31426167852 100644
---- a/tools/perf/util/stat-shadow.c
-+++ b/tools/perf/util/stat-shadow.c
-@@ -264,7 +264,7 @@ static void print_ll_miss(struct perf_stat_config *config,
- 	static const double color_ratios[3] = {20.0, 10.0, 5.0};
+diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+index df23bceb6bb4..6b9627bfebb0 100644
+--- a/drivers/iio/adc/ad9467.c
++++ b/drivers/iio/adc/ad9467.c
+@@ -119,6 +119,7 @@ struct ad9467_state {
+ 	struct spi_device		*spi;
+ 	struct clk			*clk;
+ 	unsigned int			output_mode;
++	unsigned int                    (*scales)[2];
  
- 	print_ratio(config, evsel, aggr_idx, misses, out, STAT_LL_CACHE, color_ratios,
--		    "of all L1-icache accesses");
-+		    "of all LL-cache accesses");
+ 	struct gpio_desc		*pwrdown_gpio;
+ };
+@@ -212,6 +213,7 @@ static void __ad9467_get_scale(struct adi_axi_adc_conv *conv, int index,
+ 	.channel = _chan,						\
+ 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
+ 		BIT(IIO_CHAN_INFO_SAMP_FREQ),				\
++	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE), \
+ 	.scan_index = _si,						\
+ 	.scan_type = {							\
+ 		.sign = _sign,						\
+@@ -365,6 +367,26 @@ static int ad9467_write_raw(struct adi_axi_adc_conv *conv,
+ 	}
  }
  
- static void print_dtlb_miss(struct perf_stat_config *config,
++static int ad9467_read_avail(struct adi_axi_adc_conv *conv,
++			     struct iio_chan_spec const *chan,
++			     const int **vals, int *type, int *length,
++			     long mask)
++{
++	const struct adi_axi_adc_chip_info *info = conv->chip_info;
++	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
++
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		*vals = (const int *)st->scales;
++		*type = IIO_VAL_INT_PLUS_MICRO;
++		/* Values are stored in a 2D matrix */
++		*length = info->num_scales * 2;
++		return IIO_AVAIL_LIST;
++	default:
++		return -EINVAL;
++	}
++}
++
+ static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
+ {
+ 	int ret;
+@@ -377,6 +399,26 @@ static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
+ 				AN877_ADC_TRANSFER_SYNC);
+ }
+ 
++static int ad9467_scale_fill(struct adi_axi_adc_conv *conv)
++{
++	const struct adi_axi_adc_chip_info *info = conv->chip_info;
++	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
++	unsigned int i, val1, val2;
++
++	st->scales = devm_kmalloc_array(&st->spi->dev, info->num_scales,
++					sizeof(*st->scales), GFP_KERNEL);
++	if (!st->scales)
++		return -ENOMEM;
++
++	for (i = 0; i < info->num_scales; i++) {
++		__ad9467_get_scale(conv, i, &val1, &val2);
++		st->scales[i][0] = val1;
++		st->scales[i][1] = val2;
++	}
++
++	return 0;
++}
++
+ static int ad9467_preenable_setup(struct adi_axi_adc_conv *conv)
+ {
+ 	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+@@ -435,6 +477,10 @@ static int ad9467_probe(struct spi_device *spi)
+ 
+ 	conv->chip_info = &info->axi_adc_info;
+ 
++	ret = ad9467_scale_fill(conv);
++	if (ret)
++		return ret;
++
+ 	id = ad9467_spi_read(spi, AN877_ADC_REG_CHIP_ID);
+ 	if (id != conv->chip_info->id) {
+ 		dev_err(&spi->dev, "Mismatch CHIP_ID, got 0x%X, expected 0x%X\n",
+@@ -445,6 +491,7 @@ static int ad9467_probe(struct spi_device *spi)
+ 	conv->reg_access = ad9467_reg_access;
+ 	conv->write_raw = ad9467_write_raw;
+ 	conv->read_raw = ad9467_read_raw;
++	conv->read_avail = ad9467_read_avail;
+ 	conv->preenable_setup = ad9467_preenable_setup;
+ 
+ 	st->output_mode = info->default_output_mode |
+diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+index cbe1011a2408..d721fb1bcae7 100644
+--- a/drivers/iio/adc/adi-axi-adc.c
++++ b/drivers/iio/adc/adi-axi-adc.c
+@@ -150,6 +150,20 @@ static int adi_axi_adc_write_raw(struct iio_dev *indio_dev,
+ 	return conv->write_raw(conv, chan, val, val2, mask);
+ }
+ 
++static int adi_axi_adc_read_avail(struct iio_dev *indio_dev,
++				  struct iio_chan_spec const *chan,
++				  const int **vals, int *type, int *length,
++				  long mask)
++{
++	struct adi_axi_adc_state *st = iio_priv(indio_dev);
++	struct adi_axi_adc_conv *conv = &st->client->conv;
++
++	if (!conv->read_avail)
++		return -EOPNOTSUPP;
++
++	return conv->read_avail(conv, chan, vals, type, length, mask);
++}
++
+ static int adi_axi_adc_update_scan_mode(struct iio_dev *indio_dev,
+ 					const unsigned long *scan_mask)
+ {
+@@ -238,69 +252,11 @@ struct adi_axi_adc_conv *devm_adi_axi_adc_conv_register(struct device *dev,
+ }
+ EXPORT_SYMBOL_GPL(devm_adi_axi_adc_conv_register);
+ 
+-static ssize_t in_voltage_scale_available_show(struct device *dev,
+-					       struct device_attribute *attr,
+-					       char *buf)
+-{
+-	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+-	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+-	struct adi_axi_adc_conv *conv = &st->client->conv;
+-	size_t len = 0;
+-	int i;
+-
+-	for (i = 0; i < conv->chip_info->num_scales; i++) {
+-		const unsigned int *s = conv->chip_info->scale_table[i];
+-
+-		len += scnprintf(buf + len, PAGE_SIZE - len,
+-				 "%u.%06u ", s[0], s[1]);
+-	}
+-	buf[len - 1] = '\n';
+-
+-	return len;
+-}
+-
+-static IIO_DEVICE_ATTR_RO(in_voltage_scale_available, 0);
+-
+-enum {
+-	ADI_AXI_ATTR_SCALE_AVAIL,
+-};
+-
+-#define ADI_AXI_ATTR(_en_, _file_)			\
+-	[ADI_AXI_ATTR_##_en_] = &iio_dev_attr_##_file_.dev_attr.attr
+-
+-static struct attribute *adi_axi_adc_attributes[] = {
+-	ADI_AXI_ATTR(SCALE_AVAIL, in_voltage_scale_available),
+-	NULL
+-};
+-
+-static umode_t axi_adc_attr_is_visible(struct kobject *kobj,
+-				       struct attribute *attr, int n)
+-{
+-	struct device *dev = kobj_to_dev(kobj);
+-	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+-	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+-	struct adi_axi_adc_conv *conv = &st->client->conv;
+-
+-	switch (n) {
+-	case ADI_AXI_ATTR_SCALE_AVAIL:
+-		if (!conv->chip_info->num_scales)
+-			return 0;
+-		return attr->mode;
+-	default:
+-		return attr->mode;
+-	}
+-}
+-
+-static const struct attribute_group adi_axi_adc_attribute_group = {
+-	.attrs = adi_axi_adc_attributes,
+-	.is_visible = axi_adc_attr_is_visible,
+-};
+-
+ static const struct iio_info adi_axi_adc_info = {
+ 	.read_raw = &adi_axi_adc_read_raw,
+ 	.write_raw = &adi_axi_adc_write_raw,
+-	.attrs = &adi_axi_adc_attribute_group,
+ 	.update_scan_mode = &adi_axi_adc_update_scan_mode,
++	.read_avail = &adi_axi_adc_read_avail,
+ };
+ 
+ static const struct adi_axi_adc_core_info adi_axi_adc_10_0_a_info = {
+diff --git a/include/linux/iio/adc/adi-axi-adc.h b/include/linux/iio/adc/adi-axi-adc.h
+index c5d48e1c2d36..77b7f66e6fa8 100644
+--- a/include/linux/iio/adc/adi-axi-adc.h
++++ b/include/linux/iio/adc/adi-axi-adc.h
+@@ -41,6 +41,7 @@ struct adi_axi_adc_chip_info {
+  * @reg_access		IIO debugfs_reg_access hook for the client ADC
+  * @read_raw		IIO read_raw hook for the client ADC
+  * @write_raw		IIO write_raw hook for the client ADC
++ * @read_avail		IIO read_avail hook for the client ADC
+  */
+ struct adi_axi_adc_conv {
+ 	const struct adi_axi_adc_chip_info		*chip_info;
+@@ -54,6 +55,9 @@ struct adi_axi_adc_conv {
+ 	int (*write_raw)(struct adi_axi_adc_conv *conv,
+ 			 struct iio_chan_spec const *chan,
+ 			 int val, int val2, long mask);
++	int (*read_avail)(struct adi_axi_adc_conv *conv,
++			  struct iio_chan_spec const *chan,
++			  const int **val, int *type, int *length, long mask);
+ };
+ 
+ struct adi_axi_adc_conv *devm_adi_axi_adc_conv_register(struct device *dev,
 -- 
 2.43.0
 
