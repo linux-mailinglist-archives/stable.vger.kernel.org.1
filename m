@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242EA83816E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E1583841D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57C6A1C288D3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C73A8297E4B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CCD1420D0;
-	Tue, 23 Jan 2024 01:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D457D67E70;
+	Tue, 23 Jan 2024 02:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8WcmHjC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6Bd5zdQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF7E45009;
-	Tue, 23 Jan 2024 01:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910A367E69;
+	Tue, 23 Jan 2024 02:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972132; cv=none; b=UvHTVRWt32VOBx7bcCtVq+xvn0eTAduE/FJVMA4TNZ629jQmoHa54WaksdpW825u8eGQjE5a+RjN3hd/G+I1zMfHFUdpo5LjWeXHMigkmC3apX+T1Z1ES8glb9qBgtvkqcW8LGO7ZcFAiT0fnhX5E3+WRUcTf1gmCZrKzDGVB5c=
+	t=1705975306; cv=none; b=HGdvrI9KhfbhUpMRzeTD6/5n1v39NeSgNxJO0IIFYTtZe1Wob5ucDH2A13WELw65SDZQpTmJMVVOYa2npkQRWse5urnrnYWvtJRs/g8MrIcvf4ZADcTI/zXQfdfQ3lZNuhC4jrYQNqJCJOESN8XixcRRUhElMjtHgufrQ41/qrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972132; c=relaxed/simple;
-	bh=744mpl4BtgO+X9c6q1ns7RLM8MzRu/hgidQVAspAcT4=;
+	s=arc-20240116; t=1705975306; c=relaxed/simple;
+	bh=rtNRy6K9p9et3fzo3hAlcYC68+KBgiAUHZQ5ki0YBwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hh62lyCNtejngZbWq9hTz+uUnlpAy2AEweST6ngkjuW+9+1RT42tMI6UVNo3BkfHS3F1DAxrhljbptEXlguyM9BBNqUkjK6bykrFrbpi5nalUFxz3vLSJM1GcfL7QruoxFg5ry/68IYjL2tZ0asZCWsfIuOL2OvQXhZQ+Y/LBcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8WcmHjC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF29C43390;
-	Tue, 23 Jan 2024 01:08:51 +0000 (UTC)
+	 MIME-Version; b=UKAtWPa0kSgAAFcW1vcBQt0B6JWf/znU0l0Y+vpBwzk0+mDj0tygYh7IiIkktwHzAovqqM27bqLzWgZbVmIDErWQwl72R19/8rnuoJnPgog5oMw7kJRNjwZeI46VHh/IWKPQhEtULG0x0jHK6nC9++hPcebOa9U0yq7U/cSPpLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6Bd5zdQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BBB5C43390;
+	Tue, 23 Jan 2024 02:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972131;
-	bh=744mpl4BtgO+X9c6q1ns7RLM8MzRu/hgidQVAspAcT4=;
+	s=korg; t=1705975306;
+	bh=rtNRy6K9p9et3fzo3hAlcYC68+KBgiAUHZQ5ki0YBwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l8WcmHjCqB8HMnHC/kaeQcFGnGo29BgsS8rUhVS6Yi4SxWUYR1hI7qqFM6ewRceF2
-	 /lMd0rGsF9JIfX9n0U0rvAldzdK/AP7nOKV/iIxY582tnXGx1EWW26+pAxvZWGjzBO
-	 kidciQWrTJw0bHv5fJEyJGzxZbJzNzHqObWVzlW4=
+	b=e6Bd5zdQ6iPfZrKaO1qanD8yp1KvdnI0awKEAWxTsVJ2lNAZGIV8At+TW82+s4U7u
+	 j970/KfyneGBVVyxYgs/mHWpZRX2OkVj4B4Y8eaFBjOqqgduOUPHyFtI2KaED0Yn74
+	 pf2cfQG9uSUTFSrbCyVkqyVu1bc9wge5GgbqnKtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH 5.15 064/374] coresight: etm4x: Fix width of CCITMIN field
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	"Dr. David Alan Gilbert" <dave@treblig.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 269/583] media: bttv: add back vbi hack
 Date: Mon, 22 Jan 2024 15:55:20 -0800
-Message-ID: <20240122235746.842473087@linuxfoundation.org>
+Message-ID: <20240122235820.231492705@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit cc0271a339cc70cae914c3ec20edc2a8058407da upstream.
+[ Upstream commit 3f1faa154a4316b1b585a25394697504b3c24e98 ]
 
-CCITMIN is a 12 bit field and doesn't fit in a u8, so extend it to u16.
-This probably wasn't an issue previously because values higher than 255
-never occurred.
+The old (now removed) videobuf framework had an optional vbi hack where
+the sequence number of the frame counter was copied in the last 4 bytes
+of the buffer. This hack was active only for the read() interface
+(so not for streaming I/O), and it was enabled by bttv. This allowed
+applications that used read() for the VBI data to match it with the
+corresponding video frame.
 
-But since commit 4aff040bcc8d ("coresight: etm: Override TRCIDR3.CCITMIN
-on errata affected cpus"), a comparison with 256 was done to enable the
-errata, generating the following W=1 build error:
+When bttv was converted to vb2 this hack was forgotten, but some old
+applications rely on this.
 
-  coresight-etm4x-core.c:1188:24: error: result of comparison of
-  constant 256 with expression of type 'u8' (aka 'unsigned char') is
-  always false [-Werror,-Wtautological-constant-out-of-range-compare]
+So add this back, but this time in the bttv driver rather than in the
+vb2 framework.
 
-   if (drvdata->ccitmin == 256)
-
-Cc: stable@vger.kernel.org
-Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310302043.as36UFED-lkp@intel.com/
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Signed-off-by: James Clark <james.clark@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20231101115206.70810-1-james.clark@arm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: b7ec3212a73a ("media: bttv: convert to vb2")
+Tested-by: Dr. David Alan Gilbert <dave@treblig.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/pci/bt8xx/bttv-driver.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/drivers/hwtracing/coresight/coresight-etm4x.h
-+++ b/drivers/hwtracing/coresight/coresight-etm4x.h
-@@ -944,7 +944,7 @@ struct etmv4_drvdata {
- 	u8				ctxid_size;
- 	u8				vmid_size;
- 	u8				ccsize;
--	u8				ccitmin;
-+	u16				ccitmin;
- 	u8				s_ex_level;
- 	u8				ns_ex_level;
- 	u8				q_support;
+diff --git a/drivers/media/pci/bt8xx/bttv-driver.c b/drivers/media/pci/bt8xx/bttv-driver.c
+index 8e8c9dada67a..49a3dd70ec0f 100644
+--- a/drivers/media/pci/bt8xx/bttv-driver.c
++++ b/drivers/media/pci/bt8xx/bttv-driver.c
+@@ -2772,6 +2772,27 @@ bttv_irq_wakeup_vbi(struct bttv *btv, struct bttv_buffer *wakeup,
+ 		return;
+ 	wakeup->vbuf.vb2_buf.timestamp = ktime_get_ns();
+ 	wakeup->vbuf.sequence = btv->field_count >> 1;
++
++	/*
++	 * Ugly hack for backwards compatibility.
++	 * Some applications expect that the last 4 bytes of
++	 * the VBI data contains the sequence number.
++	 *
++	 * This makes it possible to associate the VBI data
++	 * with the video frame if you use read() to get the
++	 * VBI data.
++	 */
++	if (vb2_fileio_is_active(wakeup->vbuf.vb2_buf.vb2_queue)) {
++		u32 *vaddr = vb2_plane_vaddr(&wakeup->vbuf.vb2_buf, 0);
++		unsigned long size =
++			vb2_get_plane_payload(&wakeup->vbuf.vb2_buf, 0) / 4;
++
++		if (vaddr && size) {
++			vaddr += size - 1;
++			*vaddr = wakeup->vbuf.sequence;
++		}
++	}
++
+ 	vb2_buffer_done(&wakeup->vbuf.vb2_buf, state);
+ 	if (btv->field_count == 0)
+ 		btor(BT848_INT_VSYNC, BT848_INT_MASK);
+-- 
+2.43.0
+
 
 
 
