@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-15051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B733C8383AD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40D3E837EAD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61616294BF7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB4351F29213
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FAA6351A;
-	Tue, 23 Jan 2024 01:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8EE612FD;
+	Tue, 23 Jan 2024 00:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cd4H/ZeD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOiXyvmQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83249634FB;
-	Tue, 23 Jan 2024 01:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41121612F2;
+	Tue, 23 Jan 2024 00:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975037; cv=none; b=QQxffjb6gmDQYfK1mkL/vb5o1OFnidAAvSArp8W+tlqPyx+OJqoDmdIydhGz3GG3xPKlrWUaaS0ma7gntcjWS6tW7+SfnsoDR8Iy45j+I9jTYtLe01ZVfJW1PH7mb9RUQH3KLdXg2LtZwtgMKYNK8cEYg6kI9srvYbMmA2uwu9Q=
+	t=1705970757; cv=none; b=Ukak2WtFl2LTkBD0/1POD6Kbvd1Lf2wLEgmOJUcy1DtZIqqRd8bh/gE8h75bNnK83x0z9S3HaP9HlceNYGRqyxftb4ZEih1pgmgMcAqVW4FeAiSNi8isyQOsARKQQRJppYtVXwx9HGoA/LK9ijissfCTZJglSh5hcm9/4u38vyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975037; c=relaxed/simple;
-	bh=uJrutbwbRtQyWLKo0BU3sjQjySjcPtno2bqT+ihRECQ=;
+	s=arc-20240116; t=1705970757; c=relaxed/simple;
+	bh=c6dlXjZH8uhkSDaF4kALW9BZfuYGjsR6DE43MQh+YTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tlc8BTleu5KazQpxO4eIJxyL8r7WEZqkdwQo8aAyIn2Mpfx5mna8LN25STn0K/lnWgtG1nCDPi0AkDQ3DTugiXkSpPY9+vDJYEtsmZEbtiqS7UxDlxMXyA6ep8lMo6CAQoijSj/aovwwlB9YXmC+X7WhpgFSNkO9OwtrOmh1jyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cd4H/ZeD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4552DC433C7;
-	Tue, 23 Jan 2024 01:57:17 +0000 (UTC)
+	 MIME-Version; b=Gq5XGDkacduXvdi36phHWv7rcKy4Pp8jTvmWH116E9QF0Xsjd6a05lJRmYECmj83kElvuMgbfPma3q/wuWIeASsCr1o865GHcFVC4cXbzoJ6WfjETvY9G1QTywgA4S1uvBBwxZay+A6gqlO1i8ys9Thti3q6HCHbMOCpCxTHYUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOiXyvmQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20905C43390;
+	Tue, 23 Jan 2024 00:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975037;
-	bh=uJrutbwbRtQyWLKo0BU3sjQjySjcPtno2bqT+ihRECQ=;
+	s=korg; t=1705970756;
+	bh=c6dlXjZH8uhkSDaF4kALW9BZfuYGjsR6DE43MQh+YTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cd4H/ZeDvtkv8aks+6RWZAnDoGEZ5KknvOmZ5LHXjhKGUrwjk3YjxMAPnDzjNmDS0
-	 jToY0tnjQFiJuKdU4fcbmSuomqeSs1LAumVClb54JDNmCj724PoudEZOMH25qqLKsb
-	 krdwACl+v0M3++VwtUBTF9EMttt510duU72LlzzA=
+	b=WOiXyvmQCwMhTvo/hzXTZM2MOQeaPgCVa5emK0+Uj/hjnFj69CWUBi7BllFwtIEiI
+	 F4CZKWxFj8ADqVMJkT70spCXntSMKBmCS04rJuRanbJMJrNkUmgYYRHeRkTSHxj26f
+	 ZFc6qnuEoQSZrtPeJMVGeeHvRQVu03mXwzo0s7ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 207/583] Bluetooth: btmtkuart: fix recv_buf() return value
+Subject: [PATCH 6.1 090/417] arm64: dts: qcom: sm8250: Make watchdog bark interrupt edge triggered
 Date: Mon, 22 Jan 2024 15:54:18 -0800
-Message-ID: <20240122235818.332740027@linuxfoundation.org>
+Message-ID: <20240122235754.812812835@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 64057f051f20c2a2184b9db7f8037d928d68a4f4 ]
+[ Upstream commit 735d80e2e8e5d073ae8b1fff8b1589ea284aa5af ]
 
-Serdev recv_buf() callback is supposed to return the amount of bytes
-consumed, therefore an int in between 0 and count.
+As described in the patch ("arm64: dts: qcom: sc7180: Make watchdog
+bark interrupt edge triggered"), the Qualcomm watchdog timer's bark
+interrupt should be configured as edge triggered. Make the change.
 
-Do not return negative number in case of issue, just print an error and
-return count. This fixes a WARN in ttyport_receive_buf().
-
-Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
-Fixes: 7237c4c9ec92 ("Bluetooth: mediatek: Add protocol support for MediaTek serial devices")
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 46a4359f9156 ("arm64: dts: qcom: sm8250: Add watchdog bark interrupt")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20231106144335.v2.5.I2910e7c10493d896841e9785c1817df9b9a58701@changeid
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btmtkuart.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8250.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btmtkuart.c b/drivers/bluetooth/btmtkuart.c
-index 935feab815d9..203a000a84e3 100644
---- a/drivers/bluetooth/btmtkuart.c
-+++ b/drivers/bluetooth/btmtkuart.c
-@@ -336,7 +336,7 @@ mtk_stp_split(struct btmtkuart_dev *bdev, const unsigned char *data, int count,
- 	return data;
- }
+diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+index 4d9b30f0b284..3d02adbc0b62 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -4879,7 +4879,7 @@ watchdog@17c10000 {
+ 			compatible = "qcom,apss-wdt-sm8250", "qcom,kpss-wdt";
+ 			reg = <0 0x17c10000 0 0x1000>;
+ 			clocks = <&sleep_clk>;
+-			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
+ 		};
  
--static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
-+static void btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
- {
- 	struct btmtkuart_dev *bdev = hci_get_drvdata(hdev);
- 	const unsigned char *p_left = data, *p_h4;
-@@ -375,25 +375,20 @@ static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
- 			bt_dev_err(bdev->hdev,
- 				   "Frame reassembly failed (%d)", err);
- 			bdev->rx_skb = NULL;
--			return err;
-+			return;
- 		}
- 
- 		sz_left -= sz_h4;
- 		p_left += sz_h4;
- 	}
--
--	return 0;
- }
- 
- static int btmtkuart_receive_buf(struct serdev_device *serdev, const u8 *data,
- 				 size_t count)
- {
- 	struct btmtkuart_dev *bdev = serdev_device_get_drvdata(serdev);
--	int err;
- 
--	err = btmtkuart_recv(bdev->hdev, data, count);
--	if (err < 0)
--		return err;
-+	btmtkuart_recv(bdev->hdev, data, count);
- 
- 	bdev->hdev->stat.byte_rx += count;
- 
+ 		timer@17c20000 {
 -- 
 2.43.0
 
