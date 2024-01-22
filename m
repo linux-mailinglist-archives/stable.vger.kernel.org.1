@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88FB0838406
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E8E838157
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 403761F28AEC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C533F28B96A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DCA067720;
-	Tue, 23 Jan 2024 02:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF6413B783;
+	Tue, 23 Jan 2024 01:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8aBEDU1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzTVh3ML"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA84167749;
-	Tue, 23 Jan 2024 02:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AEF137C55;
+	Tue, 23 Jan 2024 01:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975282; cv=none; b=JaCLHX+WBegs4UCughleaKDDgH8O/ulHZUVpzh+pHLCF+Ryqf9TQGPICtJTY8uxg5A2M0Ko33VxclAlDHw0CDuzzKQrMMzJqAyCpCeOlFhh9P94O4l8WFAKgJV/UzljYSr+rG+urU23toCwdm+FrrsrmlGpjrd+fpnKTMbGRukA=
+	t=1705972105; cv=none; b=IzuFWYJT2FSR23i4/HZ3BQHjpMkpeCulFgpQLuExcYfnLUnnKTwBlFLNX6yGJxMLcWuWcK5dVhEfK34lCQNDmVo6LwLkEc5i+rjg2CiVDgwjuHvu4vEPvA/6WA/LfHsJTGFm/uCfu5mxFNKnyVOq+4khkUYvP9QPIt1H3dx5SjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975282; c=relaxed/simple;
-	bh=KHxmsmRyD3T/ZNVyd1sb08MxTwXvneaqAPE0/UF9GJ4=;
+	s=arc-20240116; t=1705972105; c=relaxed/simple;
+	bh=GTkUkJtItP5QEjKxiB0ZF4JusfE3OP1jvcXHkDMOU0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STroYrhkNLfNUzLzPFIlE1136enjNnT56s7QxHKdmqo/uGYtGmNz0m/CXpneUaGCdpib1GJUjm7SivBEVyvntFpvj0mk1MJCNQLhqx4RtlcsTqN3Vk80rOA0Feyc12Qr9mWi40ug1FfWXTlAlas44Xu1AMGfpuw9Zkvk8XzrqhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8aBEDU1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64406C433C7;
-	Tue, 23 Jan 2024 02:01:22 +0000 (UTC)
+	 MIME-Version; b=Spo9MQu9Qzw4zhhSjbGke9uY4VQxCCl8h2mL4ei9NndNP8rC6ySNdvS5/sgFf6VnO5E2Kq3LRdyl50J716KbBuX1M/fCSuRn1EPBetj0yKRLbMV2Jdy7KdoujUeDk5RYX025ZqxzPGP4fHUGToNd/bNDA4crQ7KIigYg8MEF5Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzTVh3ML; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D004BC43394;
+	Tue, 23 Jan 2024 01:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975282;
-	bh=KHxmsmRyD3T/ZNVyd1sb08MxTwXvneaqAPE0/UF9GJ4=;
+	s=korg; t=1705972105;
+	bh=GTkUkJtItP5QEjKxiB0ZF4JusfE3OP1jvcXHkDMOU0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v8aBEDU1305x981xOVN8jK4ebB+ADXtGUdmLMSJ92bV6hc4jSjuGMAZW0tYN6RFAr
-	 gSHcUJfIoNOpPKMRw6VW1l1hOvRTEHol/GGiMqQiGxYKRuKC/vTtq58qDi27ls9nNu
-	 Yjr2Qg0Q8xLb/KkzzNbqpU3IhvQehacXtMgtyerU=
+	b=zzTVh3MLsJZkdOhnVN23GW9P0EL5Zw8WVKofTa0ROahCNcHiVmKdnGcbMQ1btKV6S
+	 SZa2aYgNf5oLTFFn41XMcYqs4FDhszFGTyg1xjuRiVg1LkzpdYqHvbmyjFaXHGSDxD
+	 uVnMVceOAsiyEV1a9o8PET44c09+xBC+mKpyG5PA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	kernel test robot <lkp@intel.com>,
+	Vineet Gupta <vgupta@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 245/583] drm/tidss: Return error value from from softreset
-Date: Mon, 22 Jan 2024 15:54:56 -0800
-Message-ID: <20240122235819.497968940@linuxfoundation.org>
+Subject: [PATCH 5.15 041/374] ARC: fix spare error
+Date: Mon, 22 Jan 2024 15:54:57 -0800
+Message-ID: <20240122235746.042247212@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Vineet Gupta <vgupta@kernel.org>
 
-[ Upstream commit aceafbb5035c4bfc75a321863ed1e393d644d2d2 ]
+[ Upstream commit aca02d933f63ba8bc84258bf35f9ffaf6b664336 ]
 
-Return an error value from dispc_softreset() so that the caller can
-handle the errors.
-
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-5-ac91b5ea35c0@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Stable-dep-of: bc288a927815 ("drm/tidss: Fix dss reset")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312082320.VDN5A9hb-lkp@intel.com/
+Signed-off-by: Vineet Gupta <vgupta@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ arch/arc/kernel/signal.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index 8d822372bf94..9a29f5fa8453 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -2702,7 +2702,7 @@ static void dispc_init_errata(struct dispc_device *dispc)
- 	}
- }
+diff --git a/arch/arc/kernel/signal.c b/arch/arc/kernel/signal.c
+index cb2f88502baf..25c16eb1d90b 100644
+--- a/arch/arc/kernel/signal.c
++++ b/arch/arc/kernel/signal.c
+@@ -61,7 +61,7 @@ struct rt_sigframe {
+ 	unsigned int sigret_magic;
+ };
  
--static void dispc_softreset(struct dispc_device *dispc)
-+static int dispc_softreset(struct dispc_device *dispc)
+-static int save_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
++static int save_arcv2_regs(struct sigcontext __user *mctx, struct pt_regs *regs)
  {
- 	u32 val;
- 	int ret = 0;
-@@ -2712,8 +2712,12 @@ static void dispc_softreset(struct dispc_device *dispc)
- 	/* Wait for reset to complete */
- 	ret = readl_poll_timeout(dispc->base_common + DSS_SYSSTATUS,
- 				 val, val & 1, 100, 5000);
--	if (ret)
--		dev_warn(dispc->dev, "failed to reset dispc\n");
-+	if (ret) {
-+		dev_err(dispc->dev, "failed to reset dispc\n");
-+		return ret;
-+	}
-+
-+	return 0;
+ 	int err = 0;
+ #ifndef CONFIG_ISA_ARCOMPACT
+@@ -74,12 +74,12 @@ static int save_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
+ #else
+ 	v2abi.r58 = v2abi.r59 = 0;
+ #endif
+-	err = __copy_to_user(&mctx->v2abi, &v2abi, sizeof(v2abi));
++	err = __copy_to_user(&mctx->v2abi, (void const *)&v2abi, sizeof(v2abi));
+ #endif
+ 	return err;
  }
  
- int dispc_init(struct tidss_device *tidss)
-@@ -2826,8 +2830,11 @@ int dispc_init(struct tidss_device *tidss)
- 			     &dispc->memory_bandwidth_limit);
- 
- 	/* K2G display controller does not support soft reset */
--	if (feat->subrev != DISPC_K2G)
--		dispc_softreset(dispc);
-+	if (feat->subrev != DISPC_K2G) {
-+		r = dispc_softreset(dispc);
-+		if (r)
-+			return r;
-+	}
- 
- 	tidss->dispc = dispc;
- 
+-static int restore_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
++static int restore_arcv2_regs(struct sigcontext __user *mctx, struct pt_regs *regs)
+ {
+ 	int err = 0;
+ #ifndef CONFIG_ISA_ARCOMPACT
 -- 
 2.43.0
 
