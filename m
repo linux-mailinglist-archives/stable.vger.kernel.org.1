@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-13949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6425837EEF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2562838148
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:07:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F28029BC8B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72A371F2207C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A52C605D0;
-	Tue, 23 Jan 2024 00:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021C914A086;
+	Tue, 23 Jan 2024 01:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkW+Hylj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZesSJyZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF187604CF;
-	Tue, 23 Jan 2024 00:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B514F14A081;
+	Tue, 23 Jan 2024 01:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970833; cv=none; b=W1/RQen3BfMd5AVRZt1rz58tsLHqRrrek//UUjtybQGqKJOoM9Z06fwceBNekqFxRbtaYZ32cfO46+H2Ws9a1rwbMI8qTX0u3lBxugLaEP9r2qW+u19ytUHSkm4HLfr0GAd+pFVP29yIgrxTWmlQxCqwSLSv3RnPHZi/zbyEAxU=
+	t=1705972094; cv=none; b=Mk4wNgLU0tS6QUT3Z3a5c0Tc7SNWACgWwgnSotDtHYWVppIlgDfELLG7fqbvY3LDOHNzrO2aavafMNL330Z5jZfM14tEHDWdIC3eIMBwQJIdCaqlOQKD86oSw++8+j9VdYYAOlahy5oE42YtSoV/aO4NhN2hXdr0zNHzoDs0Krk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970833; c=relaxed/simple;
-	bh=QtRqOzQGX9Xlwi6yp5kz8eTS/Ws947WfjtkKNZOABw0=;
+	s=arc-20240116; t=1705972094; c=relaxed/simple;
+	bh=vv/9t2JFDqO05oCGvKTkh53DqMzY0dLZOxRU+YukSng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kv92xXxbx4OHmHlUscMxD84TX6C/bUNCsw2sqMVYmMWps8seTBD0npYpsKdKR4cGvXmv7ZUlw/BmJsXWORk6cZEUAwpraRbCwtlEV8xHSMvIgID16lZ7UJ/Rw3Vc5vIXJT6azW6JQSlimy5oSk1oij+UUN8NZTaVkJLWZ6QBqsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkW+Hylj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 205CAC433F1;
-	Tue, 23 Jan 2024 00:47:13 +0000 (UTC)
+	 MIME-Version; b=iZn7EXE7VZJD/fLM6UC75vvOS+YOVn9+KjffSmqK+Q1l+RQfPZjh4yWCzgVjrsBTwKMUmQuVTr1Xx9ddkiSQ4xpTHfsMkqRt5iwfDMACOaTaL8yylpGAdAvZTJT28K6ZSGwhvP1MjRHMnTbzTvtaAKFQvA0SUuGO9szspAo3pe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZesSJyZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17428C433B1;
+	Tue, 23 Jan 2024 01:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970833;
-	bh=QtRqOzQGX9Xlwi6yp5kz8eTS/Ws947WfjtkKNZOABw0=;
+	s=korg; t=1705972094;
+	bh=vv/9t2JFDqO05oCGvKTkh53DqMzY0dLZOxRU+YukSng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hkW+HyljF8toQ1MWxZFY/UnNjlWyOXIRB+8L+ivnnW4qYg2ESQYiW6amN/aVhp0dF
-	 yEGiQqMZqakHrPFHmgJ/V7XEKJAQMj5Y2pfhtEtbfyH40liEjxmFE0ZBNQIApwoytm
-	 KB4EYh0SGIkrU3+tP5adEDJWhuGH5PocPkiOVupA=
+	b=bZesSJyZ6CK92TB0ZJF5N5xIYyK7pogXL36MgOL0Y5wqvJcVVSQ7+heXrhDeuB638
+	 oU2K49gk23s+V646O2L2TJzJRaRz905NsJvYu17xa0s77tCA4HeoSI6odMHIeoGf+Z
+	 SBbJzPDAMJ+gY/0DaBD5qb7z/WL6QquqrdNo16us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leone Fernando <leone4fernando@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Yanteng Si <siyanteng@loongson.cn>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/417] ipmr: support IP_PKTINFO on cache report IGMP msg
+Subject: [PATCH 5.15 033/374] stmmac: dwmac-loongson: drop useless check for compatible fallback
 Date: Mon, 22 Jan 2024 15:54:49 -0800
-Message-ID: <20240122235755.982005412@linuxfoundation.org>
+Message-ID: <20240122235745.798169956@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leone Fernando <leone4fernando@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit bb7403655b3c3eb245d0ee330047cd3e20b3c4af ]
+[ Upstream commit 31fea092c6f9f8fb2c40a08137907f5fbeae55dd ]
 
-In order to support IP_PKTINFO on those packets, we need to call
-ipv4_pktinfo_prepare.
+Device binds to proper PCI ID (LOONGSON, 0x7a03), already listed in DTS,
+so checking for some other compatible does not make sense.  It cannot be
+bound to unsupported platform.
 
-When sending mrouted/pimd daemons a cache report IGMP msg, it is
-unnecessary to set dst on the newly created skb.
-It used to be necessary on older versions until
-commit d826eb14ecef ("ipv4: PKTINFO doesnt need dst reference") which
-changed the way IP_PKTINFO struct is been retrieved.
+Drop useless, incorrect (space in between) and undocumented compatible.
 
-Changes from v1:
-1. Undo changes in ipv4_pktinfo_prepare function. use it directly
-   and copy the control block.
-
-Fixes: d826eb14ecef ("ipv4: PKTINFO doesnt need dst reference")
-Signed-off-by: Leone Fernando <leone4fernando@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ipmr.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-index e04544ac4b45..b807197475a5 100644
---- a/net/ipv4/ipmr.c
-+++ b/net/ipv4/ipmr.c
-@@ -1025,6 +1025,10 @@ static int ipmr_cache_report(const struct mr_table *mrt,
- 	struct sk_buff *skb;
- 	int ret;
- 
-+	mroute_sk = rcu_dereference(mrt->mroute_sk);
-+	if (!mroute_sk)
-+		return -EINVAL;
-+
- 	if (assert == IGMPMSG_WHOLEPKT || assert == IGMPMSG_WRVIFWHOLE)
- 		skb = skb_realloc_headroom(pkt, sizeof(struct iphdr));
- 	else
-@@ -1069,7 +1073,8 @@ static int ipmr_cache_report(const struct mr_table *mrt,
- 		msg = (struct igmpmsg *)skb_network_header(skb);
- 		msg->im_vif = vifi;
- 		msg->im_vif_hi = vifi >> 8;
--		skb_dst_set(skb, dst_clone(skb_dst(pkt)));
-+		ipv4_pktinfo_prepare(mroute_sk, pkt);
-+		memcpy(skb->cb, pkt->cb, sizeof(skb->cb));
- 		/* Add our header */
- 		igmp = skb_put(skb, sizeof(struct igmphdr));
- 		igmp->type = assert;
-@@ -1079,12 +1084,6 @@ static int ipmr_cache_report(const struct mr_table *mrt,
- 		skb->transport_header = skb->network_header;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+index cef9734ef259..da7b5d26a589 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -59,11 +59,6 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
+ 		return -ENODEV;
  	}
  
--	mroute_sk = rcu_dereference(mrt->mroute_sk);
--	if (!mroute_sk) {
--		kfree_skb(skb);
--		return -EINVAL;
+-	if (!of_device_is_compatible(np, "loongson, pci-gmac")) {
+-		pr_info("dwmac_loongson_pci: Incompatible OF node\n");
+-		return -ENODEV;
 -	}
 -
- 	igmpmsg_netlink_event(mrt, skb);
- 
- 	/* Deliver to mrouted */
+ 	plat = devm_kzalloc(&pdev->dev, sizeof(*plat), GFP_KERNEL);
+ 	if (!plat)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
