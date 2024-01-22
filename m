@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-12916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 228DE8379AC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:44:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 802FF837A57
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0D871F27DAA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:44:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38FB31F25C6C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBED86121;
-	Tue, 23 Jan 2024 00:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3671A12BF29;
+	Tue, 23 Jan 2024 00:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNUD82Vw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKN46RDy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA17F5680;
-	Tue, 23 Jan 2024 00:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D6D12BF1C;
+	Tue, 23 Jan 2024 00:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968411; cv=none; b=UNtIdzwP0zJJs3jzhI1gapCQms7MIBnY62Zf5pwclDoLl1Tqeb+EhM/Vu4QGY0o8tTtcmTOSLhqZpbdIjTzBJMjr4FnTakWMAB8awZNJGemJeHWRJCs7qkKOY9Q7pK1JsMaFl2LykBwefcnFdMEq/kqm+PLZQ+hTXyUKhmLnwjw=
+	t=1705968903; cv=none; b=rNEE+NP9/+tZzQwPTzYPEZ6Cy20/umNRDtk20VfR4itWVYMghDZCCVXatJTGP86eT/isB+lWGbto63pFgYzxNeqjodaL0QAAaEHKFLMlUb6xLY8xU1b8dXpWjrDt7bMCn8u65Abl+A02qe1Zz1vW2/e76acztTX4m0+w+aFJiB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968411; c=relaxed/simple;
-	bh=ocNRXW4si3hems3gWKFGJRjO4/TrLg5FrEBQPRiHzvk=;
+	s=arc-20240116; t=1705968903; c=relaxed/simple;
+	bh=hlxIBXinjbm7KpZnPXegkOadJC4WlyZgpOdDoWNVoeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ChuMGrWLbVcPjUFEG/HKUSZJEvkAEwIFb5J2tZFjUWu7ACAq0/1eJy3qGFvUTP6xjthnFYaWAIBW2IaOQAgx3Y5PMBh1emR9D0s3u8Zb9OiddqyTjedxZhkaA5RuWiwseroM07n9CJnKxugveVsVFtVqDC22sDWuOCWyZE2Kk9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNUD82Vw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E890C433C7;
-	Tue, 23 Jan 2024 00:06:51 +0000 (UTC)
+	 MIME-Version; b=C5g2WZN3U5rnnwDK8Eul1nLLy5LaSteKCvcNVaAgD/NY/nowTidOIhfFtrkXMzo28Ry2U28IHBiFNmKlpPvDF07toAAEKj4SYVnajxy7PvWWiBeh2rK34izA/4GEBDLMJyDOisHiI9OW3V0MIXTtuc+tktybxjAFJXKtBu4xPGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BKN46RDy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89376C43390;
+	Tue, 23 Jan 2024 00:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968411;
-	bh=ocNRXW4si3hems3gWKFGJRjO4/TrLg5FrEBQPRiHzvk=;
+	s=korg; t=1705968902;
+	bh=hlxIBXinjbm7KpZnPXegkOadJC4WlyZgpOdDoWNVoeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eNUD82Vw2aoAy/CYCeXBSqXN7C9znia4cBf2wc1sBL0fhse1iSk7OnrR9yGQXucBb
-	 VfqSrBOjrN0e0o0CR6yNewVjKxdCs6v3fj02f1eGY6i3j22cl/TJSRJilrtECMqDdi
-	 KB7fU2vLpBjAj8MfjAiOWr187Gpobw2du/saC0FQ=
+	b=BKN46RDy9CS5ED7qRVj/ysAfESRtVvmRv2BEcTMo9bmTr/wen3D8LEBgbbR2l5v2c
+	 h0shz12m9W8UGnEux3BKEse2jTIbVU1HCY68eSQMtUHBR0VZP8genjVz3AfUJqGkuy
+	 30t9BBU5hp2RU4AkFoBsoHf7kaMBDk9VtZXkjrxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Lehner <dev@der-flo.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 064/148] bpf, lpm: Fix check prefixlen before walking trie
+Subject: [PATCH 5.4 090/194] arm64: dts: qcom: sdm845-db845c: correct LED panic indicator
 Date: Mon, 22 Jan 2024 15:57:00 -0800
-Message-ID: <20240122235714.987370226@linuxfoundation.org>
+Message-ID: <20240122235723.108644581@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Lehner <dev@der-flo.net>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 9b75dbeb36fcd9fc7ed51d370310d0518a387769 ]
+[ Upstream commit 0c90c75e663246203a2b7f6dd9e08a110f4c3c43 ]
 
-When looking up an element in LPM trie, the condition 'matchlen ==
-trie->max_prefixlen' will never return true, if key->prefixlen is larger
-than trie->max_prefixlen. Consequently all elements in the LPM trie will
-be visited and no element is returned in the end.
+There is no "panic-indicator" default trigger but a property with that
+name:
 
-To resolve this, check key->prefixlen first before walking the LPM trie.
+  sdm845-db845c.dtb: leds: led-0: Unevaluated properties are not allowed ('linux,default-trigger' was unexpected)
 
-Fixes: b95a5c4db09b ("bpf: add a longest prefix match trie map implementation")
-Signed-off-by: Florian Lehner <dev@der-flo.net>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20231105085801.3742-1-dev@der-flo.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 3f72e2d3e682 ("arm64: dts: qcom: Add Dragonboard 845c")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231111095617.16496-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/lpm_trie.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm845-db845c.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index 1a8b208f6c55..fcd3a15add41 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -194,6 +194,9 @@ static void *trie_lookup_elem(struct bpf_map *map, void *_key)
- 	struct lpm_trie_node *node, *found = NULL;
- 	struct bpf_lpm_trie_key *key = _key;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
+index bf4fde88011c..e99a58b76d86 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
+@@ -53,8 +53,8 @@ leds {
+ 		user4 {
+ 			label = "green:user4";
+ 			gpios = <&pm8998_gpio 13 GPIO_ACTIVE_HIGH>;
+-			linux,default-trigger = "panic-indicator";
+ 			default-state = "off";
++			panic-indicator;
+ 		};
  
-+	if (key->prefixlen > trie->max_prefixlen)
-+		return NULL;
-+
- 	/* Start walking the trie from the root node ... */
- 
- 	for (node = rcu_dereference(trie->root); node;) {
+ 		wlan {
 -- 
 2.43.0
 
