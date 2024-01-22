@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EB1E83832E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5A2837DFA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4017D1C29969
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0EAC1F29BB5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C842660892;
-	Tue, 23 Jan 2024 01:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4318850245;
+	Tue, 23 Jan 2024 00:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRBRPglb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukbLMnsU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CAD5024E;
-	Tue, 23 Jan 2024 01:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F974E1D0;
+	Tue, 23 Jan 2024 00:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974726; cv=none; b=ugqIDjRLe1nu3Bmy+Q9AxuCDElAEjHxbkqKUnclx73kOeqPRHGaQttJio8HJLbqgsiTvHvt76Gv6J+tp7/4hbxiOs7P3efwYX7Iur+CXzxS4SaD39JRq/Y4lk7p8PM8fk536ErU5/JT4ZKE1ozobDBW+OqhoEt0y/K8+gO51MJY=
+	t=1705970258; cv=none; b=AVcQBBrB4rSzWk9CP9pj/eu45B4I4EQai23x5OV4vfN0Jz14Iw0i/NI3vWpzxw9uSk9G5NacocqO4soRPlqL0QkoFK3n/4Cgu39FWeIcG6mAifIdwUCtup2M1teF9R+s7ZQyGEbsaPPu/cIe7LjReQeDdBh0v8q+GTiuwQMcE0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974726; c=relaxed/simple;
-	bh=S7NhL1RbTUpYrzgrp1nn1K22fgPA2Qt+QqYM3sjnxho=;
+	s=arc-20240116; t=1705970258; c=relaxed/simple;
+	bh=tiuLIYSvF8khw55+qsnZh6oeq9ZanS0K1E4CyAE2U9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nvIf4Go65xt5bqohKpKoDNOdLysb7jks/VOWGbcNxRn7k8P7FATndaE3zvdAFlembvIyxe2IfvYvrvvaiw85WmGRTyMaXN+7zJoShbpvYnKn7GnJruJdQx3ysroI2mt1AzBhe0E1sI+ZsDrr0W4D/mOEunDRzYD5HBQjaBz2LbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRBRPglb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C167C433F1;
-	Tue, 23 Jan 2024 01:52:06 +0000 (UTC)
+	 MIME-Version; b=SOlNB9uZ8hv8v/VH//Ivi39oNfuxgBJT7RQUa79wYVXTiIPFAePsUkfBZP7xh3DzOB/WVWe65sc2V5Usy57E9jz+2bzBmhE4wTtaSysgsu1vE0mGenUGHSs+7wdoe94x0y3G5pEFYyf4GQh+GyJ4Z1xLc/lzQ0fg+y1Za/cu6kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukbLMnsU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA76C433C7;
+	Tue, 23 Jan 2024 00:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974726;
-	bh=S7NhL1RbTUpYrzgrp1nn1K22fgPA2Qt+QqYM3sjnxho=;
+	s=korg; t=1705970257;
+	bh=tiuLIYSvF8khw55+qsnZh6oeq9ZanS0K1E4CyAE2U9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CRBRPglbfbJP5IHmR5TRrJHhTdJyUJ5bfg8JyCq5DIqBJ37jcG4TwV/1WruwK3tGM
-	 BMCkrdzM0d6iHx0ylyUvTd720Sb5yRwEM+AuSSGxCyJfX47n4bg1M7o0ANadwLaCp0
-	 qPIuhjP8pBVmIa/EPX9f0UjHIX+YOJhNiInVj1No=
+	b=ukbLMnsUCMtSbc8LYJ6A/Q+jj4IldDrmNd82CfxJemZlDx7qklyamdFP0XczpxPwk
+	 H2BAumZg06GdNbAdzVXltL5/EnC6K5jdlVNRf0SE7CJRzBuiOFCZLRCUhugzuIYOuG
+	 veK97pBgAC4JhSDmKOnwI9ufG/TiDWzHUnilJG38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Min Li <min15.li@samsung.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.15 269/374] block: add check that partition length needs to be aligned with block size
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 621/641] netfilter: nfnetlink_log: use proper helper for fetching physinif
 Date: Mon, 22 Jan 2024 15:58:45 -0800
-Message-ID: <20240122235754.133023117@linuxfoundation.org>
+Message-ID: <20240122235837.686269932@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Min Li <min15.li@samsung.com>
+From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 
-commit 6f64f866aa1ae6975c95d805ed51d7e9433a0016 upstream.
+[ Upstream commit c3f9fd54cd87233f53bdf0e191a86b3a5e960e02 ]
 
-Before calling add partition or resize partition, there is no check
-on whether the length is aligned with the logical block size.
-If the logical block size of the disk is larger than 512 bytes,
-then the partition size maybe not the multiple of the logical block size,
-and when the last sector is read, bio_truncate() will adjust the bio size,
-resulting in an IO error if the size of the read command is smaller than
-the logical block size.If integrity data is supported, this will also
-result in a null pointer dereference when calling bio_integrity_free.
+We don't use physindev in __build_packet_message except for getting
+physinif from it. So let's switch to nf_bridge_get_physinif to get what
+we want directly.
 
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Min Li <min15.li@samsung.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230629142517.121241-1-min15.li@samsung.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 9874808878d9 ("netfilter: bridge: replace physindev with physinif in nf_bridge_info")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/ioctl.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/netfilter/nfnetlink_log.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -18,7 +18,7 @@ static int blkpg_do_ioctl(struct block_d
- {
- 	struct gendisk *disk = bdev->bd_disk;
- 	struct blkpg_partition p;
--	long long start, length;
-+	sector_t start, length;
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index f03f4d4d7d88..134e05d31061 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -508,7 +508,7 @@ __build_packet_message(struct nfnl_log_net *log,
+ 					 htonl(br_port_get_rcu(indev)->br->dev->ifindex)))
+ 				goto nla_put_failure;
+ 		} else {
+-			struct net_device *physindev;
++			int physinif;
  
- 	if (disk->flags & GENHD_FL_NO_PART)
- 		return -EINVAL;
-@@ -35,14 +35,17 @@ static int blkpg_do_ioctl(struct block_d
- 	if (op == BLKPG_DEL_PARTITION)
- 		return bdev_del_partition(disk, p.pno);
+ 			/* Case 2: indev is bridge group, we need to look for
+ 			 * physical device (when called from ipv4) */
+@@ -516,10 +516,10 @@ __build_packet_message(struct nfnl_log_net *log,
+ 					 htonl(indev->ifindex)))
+ 				goto nla_put_failure;
  
-+	if (p.start < 0 || p.length <= 0 || p.start + p.length < 0)
-+		return -EINVAL;
-+	/* Check that the partition is aligned to the block size */
-+	if (!IS_ALIGNED(p.start | p.length, bdev_logical_block_size(bdev)))
-+		return -EINVAL;
-+
- 	start = p.start >> SECTOR_SHIFT;
- 	length = p.length >> SECTOR_SHIFT;
- 
- 	switch (op) {
- 	case BLKPG_ADD_PARTITION:
--		/* check if partition is aligned to blocksize */
--		if (p.start & (bdev_logical_block_size(bdev) - 1))
--			return -EINVAL;
- 		return bdev_add_partition(disk, p.pno, start, length);
- 	case BLKPG_RESIZE_PARTITION:
- 		return bdev_resize_partition(disk, p.pno, start, length);
+-			physindev = nf_bridge_get_physindev(skb);
+-			if (physindev &&
++			physinif = nf_bridge_get_physinif(skb);
++			if (physinif &&
+ 			    nla_put_be32(inst->skb, NFULA_IFINDEX_PHYSINDEV,
+-					 htonl(physindev->ifindex)))
++					 htonl(physinif)))
+ 				goto nla_put_failure;
+ 		}
+ #endif
+-- 
+2.43.0
+
 
 
 
