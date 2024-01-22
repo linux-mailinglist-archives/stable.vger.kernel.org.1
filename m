@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FBAB837C3F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B208837E75
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA8E31F2B7D5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF5F128DF40
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560AD14462C;
-	Tue, 23 Jan 2024 00:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D7C5A7B5;
+	Tue, 23 Jan 2024 00:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BuHkVYZm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXiASPXB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EF83C3F;
-	Tue, 23 Jan 2024 00:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1221354BD2;
+	Tue, 23 Jan 2024 00:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969551; cv=none; b=E/vk+78iJfK1SNL2yBdayrEQ4WbxOnPrxMk5AanHjIzQvd17OGX5wBmB01gySNtRn9Dyfq6uPB8uAeEcsk/cUM7jlW77mFuMXiF+fP+JPh1pHZ92fkBo1H/m3AG3qMPezMGVT1QNhpsF/L/N6StEx+9xQy/b8MwtvE2iHwqVjeQ=
+	t=1705970600; cv=none; b=ZclaK58l2MHKWmCYgdS/h70RaGGuwBpbMxyJ7C8ADPve3Et8CS749NlhBMXrxc58zneDJ5Mdb1tWXM0elH8aSWwmNTI5199rZHiQDKsSfkjQ4vlHT0RRw8wszcb/eyKvMjckn5smM2DMILzeXrPSVIOHJrly9L+fQaEdvXnB/Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969551; c=relaxed/simple;
-	bh=Qj17u9nWe8fYn4ZW2NtmDPQtdSbPWyRCUyIvmjCUBV8=;
+	s=arc-20240116; t=1705970600; c=relaxed/simple;
+	bh=VdCOKrZ2M1ZsDRcavSmmACytbCsCs41PRCe3ruWqasQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aNgrY3RjU+DUQyOq4pqKUnMnpS0/QGj0tHUJT+gTuh7YSaHiN71SnkEO7JJfmgjwe/rCrbDzm7yz/3E7v3n5XwFQfx8y+KWD5FzaetCHNW0nRUq2SHW8v7MoURC4gtvEcOYWDsQRSPLTrR5Pbm9i8+UiEyOvRtemMQnNtiPGWEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BuHkVYZm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED49C433F1;
-	Tue, 23 Jan 2024 00:25:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JiyJ6XtqX/OnsKNIH2UwTFk5mGIc9U09iSq+VhM6CLRbuJ4A7dAI498XL1lJ8xMUJ1vwKHIsj20QxFP2z3aaBsIwJaES/YkNIaf66a83eU28heBhDwUiacTyJXKLxWRSHsTNSNCo5lJPbGtT8dgEOGLxrV1Q1YXmxNDIdhmyhMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXiASPXB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C2DCC43390;
+	Tue, 23 Jan 2024 00:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969550;
-	bh=Qj17u9nWe8fYn4ZW2NtmDPQtdSbPWyRCUyIvmjCUBV8=;
+	s=korg; t=1705970599;
+	bh=VdCOKrZ2M1ZsDRcavSmmACytbCsCs41PRCe3ruWqasQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BuHkVYZmOrMop/oHfUG1KVq4lng85b2pb8wLOsEdCggnaiPWP1P2yQ9CKN+7UnZln
-	 utkkJ5DTiSgpxlOtGBpb8dsHWImBM6Nqzu7faSF2sINjEcH6ZCJh5vi+b8rb0IdMOd
-	 npsJZBZWxjwLBmg7RUcKO9WeEVfmxXlsYVM9SOc0=
+	b=GXiASPXBA6PFtitg6EpTGyKGjJLDqgKCv1L22XcrO4SFStma8vZ2FZbrTvtf/N0N9
+	 pS4A1rp5WGyrOGiczIj7PdAAWaleJuD5tF8HK6+cuJplJQUAzlFEue8wABFzDZsF7N
+	 wP7vW6y4paAA4PzgDZ5e42+GHK8smuJHBw07khJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	ZhaoLong Wang <wangzhaolong1@huawei.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 296/641] drm/radeon/trinity_dpm: fix a memleak in trinity_parse_power_table
+Subject: [PATCH 6.1 032/417] mtd: Fix gluebi NULL pointer dereference caused by ftl notifier
 Date: Mon, 22 Jan 2024 15:53:20 -0800
-Message-ID: <20240122235827.162041236@linuxfoundation.org>
+Message-ID: <20240122235752.705771636@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: ZhaoLong Wang <wangzhaolong1@huawei.com>
 
-[ Upstream commit 28c28d7f77c06ac2c0b8f9c82bc04eba22912b3b ]
+[ Upstream commit a43bdc376deab5fff1ceb93dca55bcab8dbdc1d6 ]
 
-The rdev->pm.dpm.ps allocated by kcalloc should be freed in every
-following error-handling path. However, in the error-handling of
-rdev->pm.power_state[i].clock_info the rdev->pm.dpm.ps is not freed,
-resulting in a memleak in this function.
+If both ftl.ko and gluebi.ko are loaded, the notifier of ftl
+triggers NULL pointer dereference when trying to access
+‘gluebi->desc’ in gluebi_read().
 
-Fixes: d70229f70447 ("drm/radeon/kms: add dpm support for trinity asics")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+ubi_gluebi_init
+  ubi_register_volume_notifier
+    ubi_enumerate_volumes
+      ubi_notify_all
+        gluebi_notify    nb->notifier_call()
+          gluebi_create
+            mtd_device_register
+              mtd_device_parse_register
+                add_mtd_device
+                  blktrans_notify_add   not->add()
+                    ftl_add_mtd         tr->add_mtd()
+                      scan_header
+                        mtd_read
+                          mtd_read_oob
+                            mtd_read_oob_std
+                              gluebi_read   mtd->read()
+                                gluebi->desc - NULL
+
+Detailed reproduction information available at the Link [1],
+
+In the normal case, obtain gluebi->desc in the gluebi_get_device(),
+and access gluebi->desc in the gluebi_read(). However,
+gluebi_get_device() is not executed in advance in the
+ftl_add_mtd() process, which leads to NULL pointer dereference.
+
+The solution for the gluebi module is to run jffs2 on the UBI
+volume without considering working with ftl or mtdblock [2].
+Therefore, this problem can be avoided by preventing gluebi from
+creating the mtdblock device after creating mtd partition of the
+type MTD_UBIVOLUME.
+
+Fixes: 2ba3d76a1e29 ("UBI: make gluebi a separate module")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217992 [1]
+Link: https://lore.kernel.org/lkml/441107100.23734.1697904580252.JavaMail.zimbra@nod.at/ [2]
+Signed-off-by: ZhaoLong Wang <wangzhaolong1@huawei.com>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Acked-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20231220024619.2138625-1-wangzhaolong1@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/trinity_dpm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mtd/mtd_blkdevs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/trinity_dpm.c b/drivers/gpu/drm/radeon/trinity_dpm.c
-index 08ea1c864cb2..ef1cc7bad20a 100644
---- a/drivers/gpu/drm/radeon/trinity_dpm.c
-+++ b/drivers/gpu/drm/radeon/trinity_dpm.c
-@@ -1726,8 +1726,10 @@ static int trinity_parse_power_table(struct radeon_device *rdev)
- 		non_clock_array_index = power_state->v2.nonClockInfoIndex;
- 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
- 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
--		if (!rdev->pm.power_state[i].clock_info)
-+		if (!rdev->pm.power_state[i].clock_info) {
-+			kfree(rdev->pm.dpm.ps);
- 			return -EINVAL;
-+		}
- 		ps = kzalloc(sizeof(struct sumo_ps), GFP_KERNEL);
- 		if (ps == NULL) {
- 			kfree(rdev->pm.dpm.ps);
+diff --git a/drivers/mtd/mtd_blkdevs.c b/drivers/mtd/mtd_blkdevs.c
+index 60b222799871..8ee60605a6dc 100644
+--- a/drivers/mtd/mtd_blkdevs.c
++++ b/drivers/mtd/mtd_blkdevs.c
+@@ -463,7 +463,7 @@ static void blktrans_notify_add(struct mtd_info *mtd)
+ {
+ 	struct mtd_blktrans_ops *tr;
+ 
+-	if (mtd->type == MTD_ABSENT)
++	if (mtd->type == MTD_ABSENT || mtd->type == MTD_UBIVOLUME)
+ 		return;
+ 
+ 	list_for_each_entry(tr, &blktrans_majors, list)
+@@ -503,7 +503,7 @@ int register_mtd_blktrans(struct mtd_blktrans_ops *tr)
+ 	mutex_lock(&mtd_table_mutex);
+ 	list_add(&tr->list, &blktrans_majors);
+ 	mtd_for_each_device(mtd)
+-		if (mtd->type != MTD_ABSENT)
++		if (mtd->type != MTD_ABSENT && mtd->type != MTD_UBIVOLUME)
+ 			tr->add_mtd(tr, mtd);
+ 	mutex_unlock(&mtd_table_mutex);
+ 	return 0;
 -- 
 2.43.0
 
