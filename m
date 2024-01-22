@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-14856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 842638382E7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF1E8382E9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F5901F27E80
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82DF5288790
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4895FEE9;
-	Tue, 23 Jan 2024 01:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80EE5FEF1;
+	Tue, 23 Jan 2024 01:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VihqnvLy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wk/ABxux"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F088D5FDC1;
-	Tue, 23 Jan 2024 01:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772255FEE3;
+	Tue, 23 Jan 2024 01:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974657; cv=none; b=Y/N6W0aTOsDsgrZvyBd26x0PojvAMvYqOLn17MFkRmb7+twTVuQ+gQwGrgVcuyTqNkucU6Ze4II027HbjHuV8mV+ARw/9nbXBbA+i1+TXY2r982M0wHQjU59RcwnCdycPAYWyLZY/T41Nf8LawFtgbdqn7dWjP2LXBk8xj9+3Y0=
+	t=1705974659; cv=none; b=dz9GYDMek/oMlz2F60KePJ8ysiqKtXwUfFysPGAfWrj7UsRpkzCB8D3t992YVgM5xrhDKkWMI9CzRFln70e1ov0HjbqQ8yz4cokZ2KyDcfy90lEq+2KJba2d7xwZT5usM6FslqOrMdqgIyVrN+SB2v2TLdbG8Iet/RCkF3olPAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974657; c=relaxed/simple;
-	bh=KwN0+fsQo9KSULS2LPT0XOfpbO0YGMb+tWAmtCAo2dc=;
+	s=arc-20240116; t=1705974659; c=relaxed/simple;
+	bh=E1gdM4A27ZhTx9V+clqBdN0h77vB6zAc0o1niM4r2dI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUGUc46ZO2FjVcJMb9AyGZd5ODg+Kra17hU6czOKINF2+ZFrXez6E/SqxKARnatMEcOixLA8pLwxyQW85dhYlw1ODiv5ucyM5xYWnJLheZ4gk10ewqzL3DTjvh04zbBugdHurJG6YxerqhxAsmGX7G69+dUK9Bh1IjrZDTHt/RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VihqnvLy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B5EC433F1;
-	Tue, 23 Jan 2024 01:50:56 +0000 (UTC)
+	 MIME-Version; b=XUJqymFVXJ9XdDLPDdkWEXqEdZo+DlC/0DuseBM/3OWAu33qb8jZwPym94tABVM7rkeoKeyZPmUSwDBLM08qU1tqBpW6WOMGnnBVfG4c+AwQYQEvBcZqHbNs77onrdUCGmQVMiADL5eKuK+lFnY6Gokb1PsqMi8t4uGhCYgs/hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wk/ABxux; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214AAC43394;
+	Tue, 23 Jan 2024 01:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974656;
-	bh=KwN0+fsQo9KSULS2LPT0XOfpbO0YGMb+tWAmtCAo2dc=;
+	s=korg; t=1705974659;
+	bh=E1gdM4A27ZhTx9V+clqBdN0h77vB6zAc0o1niM4r2dI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VihqnvLycMxaAEzeZiEsgospXYOWOKnjTiYylMegbOKAvxiZkYhbJ9/DkMSQrPHkX
-	 K9M4u4p3u619r8LyhvaK3JHwapLrXOf9tY8OV2LmwI5bHf3AWnxtBjUPcNhVXZFlO7
-	 Cpknz/dl2o9/+PWgOcRIn9q/fdydiRYnInh5OAqM=
+	b=Wk/ABxuxDBe94bwwsf2N0X+dhgfNw9iEsQHHqDRyxG6/WCO4Sbl34Sh1j5IUw3Uv3
+	 UAbGiaLS8uFMzck8IRqWqUdU07jL16ikd3eUC3x8rmsrWj6RPqh9/SBIwMukrFAtyR
+	 65MAHp+3RIVKJzNRZIG7ZGq59Hitg1zZ0l9AbGqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/583] arm64: dts: qcom: sc7180: Make watchdog bark interrupt edge triggered
-Date: Mon, 22 Jan 2024 15:52:41 -0800
-Message-ID: <20240122235815.531756882@linuxfoundation.org>
+Subject: [PATCH 6.6 111/583] arm64: dts: qcom: sc7280: Mark some nodes as reserved
+Date: Mon, 22 Jan 2024 15:52:42 -0800
+Message-ID: <20240122235815.562090986@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -68,53 +66,121 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit 7ac90b4cf107a3999b30844d7899e0331686b33b ]
+[ Upstream commit 6da24ba932082bae110feb917a64bb54637fa7c0 ]
 
-On sc7180 when the watchdog timer fires your logs get filled with:
-  watchdog0: pretimeout event
-  watchdog0: pretimeout event
-  watchdog0: pretimeout event
-  ...
-  watchdog0: pretimeout event
+With the standard Qualcomm TrustZone setup, components such as lpasscc,
+pdc_reset and watchdog shouldn't be touched by Linux. Mark them with
+the status 'reserved' and reenable them in the chrome-common dtsi.
 
-If you're using console-ramoops to debug crashes the above gets quite
-annoying since it blows away any other log messages that might have
-been there.
-
-The issue is that the "bark" interrupt (AKA the "pretimeout"
-interrupt) remains high until the watchdog is pet. Since we've got
-things configured as "level" triggered we'll keep getting interrupted
-over and over.
-
-Let's switch to edge triggered. Now we'll get one interrupt when the
-"bark" interrupt goes off and won't get another one until the "bark"
-interrupt is cleared and asserts again.
-
-This matches how many older Qualcomm SoCs have things configured.
-
-Fixes: 28cc13e4060c ("arm64: dts: qcom: sc7180: Add watchdog bark interrupt")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20231106144335.v2.1.Ic7577567baff921347d423b722de8b857602efb1@changeid
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Link: https://lore.kernel.org/r/20230919-fp5-initial-v2-1-14bb7cedadf5@fairphone.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 6897fac411db ("arm64: dts: qcom: sc7280: Make watchdog bark interrupt edge triggered")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../boot/dts/qcom/sc7280-chrome-common.dtsi   | 24 +++++++++++++++++++
+ arch/arm64/boot/dts/qcom/sc7280.dtsi          |  8 ++++++-
+ 2 files changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-index a79c0f2e1879..589ae40cd3cc 100644
---- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-@@ -3587,7 +3587,7 @@ watchdog@17c10000 {
- 			compatible = "qcom,apss-wdt-sc7180", "qcom,kpss-wdt";
+diff --git a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
+index 2e1cd219fc18..5d462ae14ba1 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
+@@ -46,6 +46,26 @@ wpss_mem: memory@9ae00000 {
+ 	};
+ };
+ 
++&lpass_aon {
++	status = "okay";
++};
++
++&lpass_core {
++	status = "okay";
++};
++
++&lpass_hm {
++	status = "okay";
++};
++
++&lpasscc {
++	status = "okay";
++};
++
++&pdc_reset {
++	status = "okay";
++};
++
+ /* The PMIC PON code isn't compatible w/ how Chrome EC/BIOS handle things. */
+ &pmk8350_pon {
+ 	status = "disabled";
+@@ -84,6 +104,10 @@ &scm {
+ 	dma-coherent;
+ };
+ 
++&watchdog {
++	status = "okay";
++};
++
+ &wifi {
+ 	status = "okay";
+ 
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index 91bb58c6b1a6..6f2a8f60856d 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -2255,6 +2255,7 @@ lpasscc: lpasscc@3000000 {
+ 			clocks = <&gcc GCC_CFG_NOC_LPASS_CLK>;
+ 			clock-names = "iface";
+ 			#clock-cells = <1>;
++			status = "reserved"; /* Owned by ADSP firmware */
+ 		};
+ 
+ 		lpass_rx_macro: codec@3200000 {
+@@ -2406,6 +2407,7 @@ lpass_aon: clock-controller@3380000 {
+ 			clock-names = "bi_tcxo", "bi_tcxo_ao", "iface";
+ 			#clock-cells = <1>;
+ 			#power-domain-cells = <1>;
++			status = "reserved"; /* Owned by ADSP firmware */
+ 		};
+ 
+ 		lpass_core: clock-controller@3900000 {
+@@ -2416,6 +2418,7 @@ lpass_core: clock-controller@3900000 {
+ 			power-domains = <&lpass_hm LPASS_CORE_CC_LPASS_CORE_HM_GDSC>;
+ 			#clock-cells = <1>;
+ 			#power-domain-cells = <1>;
++			status = "reserved"; /* Owned by ADSP firmware */
+ 		};
+ 
+ 		lpass_cpu: audio@3987000 {
+@@ -2486,6 +2489,7 @@ lpass_hm: clock-controller@3c00000 {
+ 			clock-names = "bi_tcxo";
+ 			#clock-cells = <1>;
+ 			#power-domain-cells = <1>;
++			status = "reserved"; /* Owned by ADSP firmware */
+ 		};
+ 
+ 		lpass_ag_noc: interconnect@3c40000 {
+@@ -4199,6 +4203,7 @@ pdc_reset: reset-controller@b5e0000 {
+ 			compatible = "qcom,sc7280-pdc-global";
+ 			reg = <0 0x0b5e0000 0 0x20000>;
+ 			#reset-cells = <1>;
++			status = "reserved"; /* Owned by firmware */
+ 		};
+ 
+ 		tsens0: thermal-sensor@c263000 {
+@@ -5195,11 +5200,12 @@ msi-controller@17a40000 {
+ 			};
+ 		};
+ 
+-		watchdog@17c10000 {
++		watchdog: watchdog@17c10000 {
+ 			compatible = "qcom,apss-wdt-sc7280", "qcom,kpss-wdt";
  			reg = <0 0x17c10000 0 0x1000>;
  			clocks = <&sleep_clk>;
--			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
+ 			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
++			status = "reserved"; /* Owned by Gunyah hyp */
  		};
  
  		timer@17c20000 {
