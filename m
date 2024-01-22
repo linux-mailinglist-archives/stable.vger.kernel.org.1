@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C87838408
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C174837EFE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77BD31C29FFD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFFBB1C2838D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC3767731;
-	Tue, 23 Jan 2024 02:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CCA2605B4;
+	Tue, 23 Jan 2024 00:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7F3XxKS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3pgJZv8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9706775D;
-	Tue, 23 Jan 2024 02:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2B460252;
+	Tue, 23 Jan 2024 00:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975284; cv=none; b=AYpEhkra8W4VnRMX3UFp/F5xq3peaRLdBzLsH2jlUmEKo9ZOo77azicpYcyAL1LW/+dzXvd2QxWRjwTPXW4ccuI7zliIzPZPBcN0F0BTxRlHTibZ41UG3yt7YNdLla0oYB4JJAS2qyv1xNTxFhdMtN+3k29LuP+vGcaTuL4jTfo=
+	t=1705970867; cv=none; b=iBdotrRAzzViqCAFxkWd75TTmOwIjBmUgpn6/Pg2KUC8pXBeLVlTr30WSTYzyNHlkq1DfRcBlZo/QD8RNMUBtQh5dVDBQgRSvYSdRwOjAhAiusBMLLZwUVk1TpG9YeoeKWSkVVE+WDLDotqkEgQEf/4lwfIknWG6l/HtTFzFYX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975284; c=relaxed/simple;
-	bh=qZm7xf8O7L+NZrPtpsaf4r7YCjDJPZ66h4Z9GF+2uNg=;
+	s=arc-20240116; t=1705970867; c=relaxed/simple;
+	bh=s0iS02lcLxIWg5viKAV406hfsJyGeDUcPDeKr6mdGWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HqkdMmoF93A2l+2EHNxQu2vDIMSxVFvH/b01g7uTgrjCqSRJrNIdLvGVe9+bHv1OkrhD4AUJkdMitEvOju/s8YqkAZSk3re0BxRKZTEI4K3JwGp86HmBpP1dauB+Y06xV85S4z7RBiIeIAK+OtiDIDuLZtFBW+ihw3l1zwcxiOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7F3XxKS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C014C43390;
-	Tue, 23 Jan 2024 02:01:24 +0000 (UTC)
+	 MIME-Version; b=Q7xQEt2Vl3YkPgI14Zgz2SPyHn9X6kHnlzZn38E2H49QVe/VxMtDOaYdQF8/uo7hWRcs++3vgpVtwCNZgDCVHZ/KFtDGWdmf2S/gwIaXghknVWXDKTLCps+hAhJsIDQnxnOpvixWocVjz/ydFSo0+UL96hONdyHWnGediwNSV2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3pgJZv8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919FDC43390;
+	Tue, 23 Jan 2024 00:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975284;
-	bh=qZm7xf8O7L+NZrPtpsaf4r7YCjDJPZ66h4Z9GF+2uNg=;
+	s=korg; t=1705970867;
+	bh=s0iS02lcLxIWg5viKAV406hfsJyGeDUcPDeKr6mdGWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7F3XxKSw/qaN5OYthRGSVWwd9cOVdB9xF0aVeDX/Dy5M6OgfRkI5BXM5iFeLR7Da
-	 w6Wzn6T6OSy4M8bU4hMG/6nhLSfDvqatyEIbMdxrUoLlmuRhZeVN08BJlrETgfDR7f
-	 KYePBk1ieA3TU4L5asmDEvaYZGcxzoZX4sHuSQ24=
+	b=i3pgJZv8R5ctkPQIufTV7ZLQsLSSbN2SpDxBe3MyVQ/21wX7lB+oiGSsXjJFf1gHQ
+	 pRfiL2IMk9EBK5lr+SB7ji0TbG+Xr/zERn4k3AShIt3HD8bn9h3fpxJu6HrR6vsnrc
+	 Sr30SFZfrOJigsPLz2UHpJCwevK/E/64gOzYJxKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 246/583] drm/tidss: Check for K2G in in dispc_softreset()
+Subject: [PATCH 6.1 129/417] arm64: dts: qcom: ipq6018: improve pcie phy pcs reg table
 Date: Mon, 22 Jan 2024 15:54:57 -0800
-Message-ID: <20240122235819.525363785@linuxfoundation.org>
+Message-ID: <20240122235756.276620120@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit 151825150cf9c2e9fb90763d35b9dff3783628ac ]
+[ Upstream commit 08f399a818b0eff552b1f23c3171950a58aea78f ]
 
-K2G doesn't have softreset feature. Instead of having every caller of
-dispc_softreset() check for K2G, move the check into dispc_softreset(),
-and make dispc_softreset() return 0 in case of K2G.
+This is not a fix on its own but more a cleanup. Phy qmp pcie driver
+currently have a workaround to handle pcs_misc not declared and add
+0x400 offset to the pcs reg if pcs_misc is not declared.
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-6-ac91b5ea35c0@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Stable-dep-of: bc288a927815 ("drm/tidss: Fix dss reset")
+Correctly declare pcs_misc reg and reduce PCS size to the common value
+of 0x1f0 as done for every other qmp based pcie phy device.
+
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Reviewed-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20221103212125.17156-2-ansuelsmth@gmail.com
+Stable-dep-of: 5c0dbe8b0584 ("arm64: dts: qcom: ipq6018: fix clock rates for GCC_USB0_MOCK_UTMI_CLK")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index 9a29f5fa8453..2af623842cfb 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -2707,6 +2707,10 @@ static int dispc_softreset(struct dispc_device *dispc)
- 	u32 val;
- 	int ret = 0;
+diff --git a/arch/arm64/boot/dts/qcom/ipq6018.dtsi b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+index d436fa64caad..f3743ef7354f 100644
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -406,7 +406,8 @@ pcie_phy: phy@84000 {
+ 			pcie_phy0: phy@84200 {
+ 				reg = <0x0 0x84200 0x0 0x16c>, /* Serdes Tx */
+ 				      <0x0 0x84400 0x0 0x200>, /* Serdes Rx */
+-				      <0x0 0x84800 0x0 0x4f4>; /* PCS: Lane0, COM, PCIE */
++				      <0x0 0x84800 0x0 0x1f0>, /* PCS: Lane0, COM, PCIE */
++				      <0x0 0x84c00 0x0 0xf4>; /* pcs_misc */
+ 				#phy-cells = <0>;
  
-+	/* K2G display controller does not support soft reset */
-+	if (dispc->feat->subrev == DISPC_K2G)
-+		return 0;
-+
- 	/* Soft reset */
- 	REG_FLD_MOD(dispc, DSS_SYSCONFIG, 1, 1, 1);
- 	/* Wait for reset to complete */
-@@ -2829,12 +2833,9 @@ int dispc_init(struct tidss_device *tidss)
- 	of_property_read_u32(dispc->dev->of_node, "max-memory-bandwidth",
- 			     &dispc->memory_bandwidth_limit);
- 
--	/* K2G display controller does not support soft reset */
--	if (feat->subrev != DISPC_K2G) {
--		r = dispc_softreset(dispc);
--		if (r)
--			return r;
--	}
-+	r = dispc_softreset(dispc);
-+	if (r)
-+		return r;
- 
- 	tidss->dispc = dispc;
- 
+ 				clocks = <&gcc GCC_PCIE0_PIPE_CLK>;
 -- 
 2.43.0
 
