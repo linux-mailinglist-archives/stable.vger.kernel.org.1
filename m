@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAFF3837D96
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F937838082
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE4041C2419B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52DB11C296AD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6BA5BAE5;
-	Tue, 23 Jan 2024 00:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A734512F5B5;
+	Tue, 23 Jan 2024 01:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJL+Sn/G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bs0driVP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEE956B68;
-	Tue, 23 Jan 2024 00:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64097657B3;
+	Tue, 23 Jan 2024 01:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970046; cv=none; b=h23vm0mSzdQv0+QFFg0v97dEGf6ZmfqnJcXcdlFzfwqWBpJsECBA+vpxbRAn9myY4uHlBb/GYjz1JrM4bwTqFOXqs+Q9zf4xamN+uAs2L2awoW6RaM3mgwBsCb46C2p6EMAaRuo3AgPxWIbCp7yOXyCF6I57410KV784mQ1yDdA=
+	t=1705971770; cv=none; b=D1LIAV8XcddDjlRDuzmJiK5XreU7379GHt9Z3C0iE/hCwwaQ3rYUMU754eTrjzIz9GyIKiHRnYMOPKM6nD6n9IDbFABYVcAGzN06aDew6hN3eLCtW7qohoSvXSzb3r6CEl1wzlVD0d5HnjBjk85ZAVrBRpI2zSSvpCDSX1Oi6vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970046; c=relaxed/simple;
-	bh=yIvZ9jDMQgW46pcV1/MPEHhIDlvawumthv4vFU/BFJY=;
+	s=arc-20240116; t=1705971770; c=relaxed/simple;
+	bh=cqhft99F011V+jt7/vZN+giKC1R/TQZ2hPMyImaBVJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQiLN0YHPig2z+0mYgls9IMnZY9lGcB8CxfFDkrTpEtOtnPeUwHaYWpKuH+b7dgUlSeU+ThFiCy9LhyyhNWY28ypDV0OmkFt79HLv651CiuuPFXpuAks3i4rkNwAyxkPUMgVCw8Pv1AliN0PT1KqbRTUAJF9oaYlGz06lqLLkHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJL+Sn/G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DD7C433F1;
-	Tue, 23 Jan 2024 00:34:04 +0000 (UTC)
+	 MIME-Version; b=vGEbpsFNmjxiOP+EU7CJxZeQwn3n5WLHoT7zAqEOt6K4Udsw4vQ24paZFn+qMjqk80kpZl/DTedPkXI5Y7kNWzKHP6y4qAmnTZ8XCaT4Cb9tujMOn3719miJYA2Bde5fL4zuvAor9ySFiOxkBJx0popFk838Ij23VXS1Hpgl4nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bs0driVP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21414C433F1;
+	Tue, 23 Jan 2024 01:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970046;
-	bh=yIvZ9jDMQgW46pcV1/MPEHhIDlvawumthv4vFU/BFJY=;
+	s=korg; t=1705971770;
+	bh=cqhft99F011V+jt7/vZN+giKC1R/TQZ2hPMyImaBVJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UJL+Sn/GE5GKgn16/1keFa9yIuXBwJWW64LeZbgKUCyHZiPOUF8ito5/mTd89a2I+
-	 zmsqo7eVZRzgc9oA2QnG7NloKLX4L6a2c/3Y/F5ilKDXPeEF4cCbzSZUVe9MhMKxKR
-	 Alp7MA5qBWUdeyFRaOISD0s8jNQ9Jc4ZtFsENIAs=
+	b=Bs0driVP1Xvx79Dc0EVKTxFonwpKVqN7EX3HOuRPVPAe1RcA69bxy46Q5MA7cL2Em
+	 WuBUokRL0N3FnfRqqyk/If3Z9TDaLxrWsaMgE2MbKsmOc8RhJ3Qc4hu5brTLCFn1cu
+	 g3/VVk09G2EogZBF7piKyo0j2cc4RAmVLCYkKWw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 555/641] nvmet-tcp: fix a missing endianess conversion in nvmet_tcp_try_peek_pdu
-Date: Mon, 22 Jan 2024 15:57:39 -0800
-Message-ID: <20240122235835.513620220@linuxfoundation.org>
+	Sathya Prakash <sathya.prakash@broadcom.com>,
+	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 292/417] scsi: mpi3mr: Block PEL Enable Command on Controller Reset and Unrecoverable State
+Date: Mon, 22 Jan 2024 15:57:40 -0800
+Message-ID: <20240122235801.947209051@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
 
-[ Upstream commit 3a96bff229d6e3016805fd6c3dba0655ccba01eb ]
+commit f8fb3f39148e8010479e4b2003ba4728818ec661 upstream.
 
-No, a __le32 cast doesn't magically byteswap on big-endian systems..
+If a controller reset is underway or the controller is in an unrecoverable
+state, the PEL enable management command will be returned as EAGAIN or
+EFAULT.
 
-Fixes: 70525e5d82f6 ("nvmet-tcp: peek icreq before starting TLS")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org> # v6.1+
+Co-developed-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+Link: https://lore.kernel.org/r/20231126053134.10133-4-chandrakanth.patil@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/tcp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/mpi3mr/mpi3mr_app.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index b4b6a8ac8089..e5a2cd9e8c13 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -1778,7 +1778,7 @@ static int nvmet_tcp_try_peek_pdu(struct nvmet_tcp_queue *queue)
- 		 (int)sizeof(struct nvme_tcp_icreq_pdu));
- 	if (hdr->type == nvme_tcp_icreq &&
- 	    hdr->hlen == sizeof(struct nvme_tcp_icreq_pdu) &&
--	    hdr->plen == (__le32)sizeof(struct nvme_tcp_icreq_pdu)) {
-+	    hdr->plen == cpu_to_le32(sizeof(struct nvme_tcp_icreq_pdu))) {
- 		pr_debug("queue %d: icreq detected\n",
- 			 queue->idx);
- 		return len;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_app.c b/drivers/scsi/mpi3mr/mpi3mr_app.c
+index 08645a99ad6b..9dacbb8570c9 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_app.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
+@@ -223,6 +223,22 @@ static long mpi3mr_bsg_pel_enable(struct mpi3mr_ioc *mrioc,
+ 		return rval;
+ 	}
+ 
++	if (mrioc->unrecoverable) {
++		dprint_bsg_err(mrioc, "%s: unrecoverable controller\n",
++			       __func__);
++		return -EFAULT;
++	}
++
++	if (mrioc->reset_in_progress) {
++		dprint_bsg_err(mrioc, "%s: reset in progress\n", __func__);
++		return -EAGAIN;
++	}
++
++	if (mrioc->stop_bsgs) {
++		dprint_bsg_err(mrioc, "%s: bsgs are blocked\n", __func__);
++		return -EAGAIN;
++	}
++
+ 	sg_copy_to_buffer(job->request_payload.sg_list,
+ 			  job->request_payload.sg_cnt,
+ 			  &pel_enable, sizeof(pel_enable));
 -- 
 2.43.0
 
