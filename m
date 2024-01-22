@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57DB3838046
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDEE8384DC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C32D28DB0D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4284A1C2A32E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32EE2657B0;
-	Tue, 23 Jan 2024 01:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329CF6774B;
+	Tue, 23 Jan 2024 02:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pY/Oqb9O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVEi1o1c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A6565193;
-	Tue, 23 Jan 2024 01:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EB6768F6;
+	Tue, 23 Jan 2024 02:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971637; cv=none; b=bbw2fVyIv7L2vS1qQo3mO+drvWQD3IbYBDJklPGOcaI242kLyyK8yrh+TfWLow6Fyl8qm5teVK/XywrCaNpUEWIXKwyQmm9kjT8jHUEqPVsTrlFCpJiya3SBAVaZvUxoilJJrpmlsmP/J6Y/6WACQb2b2MNtqKn05Kuh24UvjL0=
+	t=1705975520; cv=none; b=KrQCRGLcbHGeEAxwpy72CJ7BOyMC3PPCnMbtQqyXlP+wPBgJuzX+W+IaE2nFUu/YE30lYQMWImg2VyYOkhT7qCmFMsmSwNJ8goeJHS1T94N4yW1Cby6nXlDPHepAwXPV7eKj7peQx5Mj6Zz3qQesGS9QWnpEUn5TGMu6HaMZIy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971637; c=relaxed/simple;
-	bh=tYIBEByn7LomKA+iDkLl1urdIC8tXmegm1DbGMjDo7Q=;
+	s=arc-20240116; t=1705975520; c=relaxed/simple;
+	bh=FzhzhTtleySESND3IFj1y0oAy/Cb2amCZOXkDfvbsmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jV/jfwTkJnlfGLpbuMi7TkdJFanenhjtf3PqSbKfjBBqUfypTGgE2PWyd2Myt0I5tcVPFfNVgzwvIAOO0rpe12vBT8gFsq/oBFggTQtJ1UDYAQnjmZuIzaiVgqgVLuy5LN2W+ekPLNb4DmNnB8RmDFHks5C/rg8HhJNAJWAAEzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pY/Oqb9O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB29C433F1;
-	Tue, 23 Jan 2024 01:00:36 +0000 (UTC)
+	 MIME-Version; b=MICVO2/WpUEBEXeNTF4i2WfbuCvarClIbAgg9xN+eFcpsUtvMIe6GYH1zz+TuVyDthuauXP8JmKw8tZVFT2HQnUNkjxG72oUCger/oeYk/DQ48kYy9thpxvLSQxqvdSA4tXTq8WrnLn30BlEPALHg2ojp/9jGU9lW8yz7gGOWEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVEi1o1c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA255C433F1;
+	Tue, 23 Jan 2024 02:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971636;
-	bh=tYIBEByn7LomKA+iDkLl1urdIC8tXmegm1DbGMjDo7Q=;
+	s=korg; t=1705975519;
+	bh=FzhzhTtleySESND3IFj1y0oAy/Cb2amCZOXkDfvbsmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pY/Oqb9OkUc+6wfGc1IPkCHv0/hWcBShPMluNdNirZIXWc2VUfws5e6kMMPG4zsqS
-	 /YbRitj87oik34ue1UhYCk93Uq8DQr9TFHRaDCoAuN7xaDcXm2REX8dV1k/lg57ajY
-	 v5WJxWNDXQoE8Bl4y3nOZPBc1wNrHBml94i8FLPk=
+	b=rVEi1o1cjxQKsKcOkSqpXQr2Db41ptZ+3NGLFh3nsuInRvAV5lROT+zjM2C2hrDj7
+	 ryRvWXJ9A0qXvk5hO9cJIDy0vpB8fuN6vOCoRvboDGF09vFjzQprun9h74Om/Facdj
+	 w7Ur/8cM/Ihr2nAfp3xTBeHZlcbuvUiegsywLHl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 191/286] pwm: stm32: Fix enable count for clk in .probe()
+Subject: [PATCH 6.6 446/583] mips: dmi: Fix early remap on MIPS32
 Date: Mon, 22 Jan 2024 15:58:17 -0800
-Message-ID: <20240122235739.470979003@linuxfoundation.org>
+Message-ID: <20240122235825.623503533@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Zabel <p.zabel@pengutronix.de>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-[ Upstream commit 19f1016ea9600ed89bc24247c36ff5934ad94fbb ]
+[ Upstream commit 0d0a3748a2cb38f9da1f08d357688ebd982eb788 ]
 
-Make the driver take over hardware state without disabling in .probe()
-and enable the clock for each enabled channel.
+dmi_early_remap() has been defined as ioremap_cache() which on MIPS32 gets
+to be converted to the VM-based mapping. DMI early remapping is performed
+at the setup_arch() stage with no VM available. So calling the
+dmi_early_remap() for MIPS32 causes the system to crash at the early boot
+time. Fix that by converting dmi_early_remap() to the uncached remapping
+which is always available on both 32 and 64-bits MIPS systems.
 
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-[ukleinek: split off from a patch that also implemented .get_state()]
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Note this change shall not cause any regressions on the current DMI
+support implementation because on the early boot-up stage neither MIPS32
+nor MIPS64 has the cacheable ioremapping support anyway.
+
+Fixes: be8fa1cb444c ("MIPS: Add support for Desktop Management Interface (DMI)")
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/dmi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index 31843cc4ca76..69b7bc604946 100644
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -575,17 +575,21 @@ static void stm32_pwm_detect_complementary(struct stm32_pwm *priv)
- 	priv->have_complementary_output = (ccer != 0);
- }
+diff --git a/arch/mips/include/asm/dmi.h b/arch/mips/include/asm/dmi.h
+index 27415a288adf..dc397f630c66 100644
+--- a/arch/mips/include/asm/dmi.h
++++ b/arch/mips/include/asm/dmi.h
+@@ -5,7 +5,7 @@
+ #include <linux/io.h>
+ #include <linux/memblock.h>
  
--static unsigned int stm32_pwm_detect_channels(struct stm32_pwm *priv)
-+static unsigned int stm32_pwm_detect_channels(struct stm32_pwm *priv,
-+					      unsigned int *num_enabled)
- {
--	u32 ccer;
-+	u32 ccer, ccer_backup;
- 
- 	/*
- 	 * If channels enable bits don't exist writing 1 will have no
- 	 * effect so we can detect and count them.
- 	 */
-+	regmap_read(priv->regmap, TIM_CCER, &ccer_backup);
- 	regmap_set_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
- 	regmap_read(priv->regmap, TIM_CCER, &ccer);
--	regmap_clear_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
-+	regmap_write(priv->regmap, TIM_CCER, ccer_backup);
-+
-+	*num_enabled = hweight32(ccer_backup & TIM_CCER_CCXE);
- 
- 	return hweight32(ccer & TIM_CCER_CCXE);
- }
-@@ -596,6 +600,8 @@ static int stm32_pwm_probe(struct platform_device *pdev)
- 	struct device_node *np = dev->of_node;
- 	struct stm32_timers *ddata = dev_get_drvdata(pdev->dev.parent);
- 	struct stm32_pwm *priv;
-+	unsigned int num_enabled;
-+	unsigned int i;
- 	int ret;
- 
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-@@ -621,7 +627,11 @@ static int stm32_pwm_probe(struct platform_device *pdev)
- 	priv->chip.base = -1;
- 	priv->chip.dev = dev;
- 	priv->chip.ops = &stm32pwm_ops;
--	priv->chip.npwm = stm32_pwm_detect_channels(priv);
-+	priv->chip.npwm = stm32_pwm_detect_channels(priv, &num_enabled);
-+
-+	/* Initialize clock refcount to number of enabled PWM channels. */
-+	for (i = 0; i < num_enabled; i++)
-+		clk_enable(priv->clk);
- 
- 	ret = pwmchip_add(&priv->chip);
- 	if (ret < 0)
+-#define dmi_early_remap(x, l)		ioremap_cache(x, l)
++#define dmi_early_remap(x, l)		ioremap(x, l)
+ #define dmi_early_unmap(x, l)		iounmap(x)
+ #define dmi_remap(x, l)			ioremap_cache(x, l)
+ #define dmi_unmap(x)			iounmap(x)
 -- 
 2.43.0
 
