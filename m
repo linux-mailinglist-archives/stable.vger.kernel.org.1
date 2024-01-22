@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-13715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507F8837D85
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 424BE83802D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 827E61C223C0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3601283CF5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776DD51C41;
-	Tue, 23 Jan 2024 00:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04C0657DD;
+	Tue, 23 Jan 2024 00:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWOsvl8N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWK9DCoB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376424E1D8;
-	Tue, 23 Jan 2024 00:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9CC651AD;
+	Tue, 23 Jan 2024 00:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970001; cv=none; b=NI/HMzswDwrxi2u3cO6RLzMh057pSFrallXPvD9bEAUSwpqFIUdsrGD6eeFEG/bxk7kCAZhslWHNrht9au1OlLkUsX+n3TAkKztK3jGOvgUdne7hhtyLsTC93mfTViMIjPEe9Es0Bm7huBBguqQqH02CMMFiHDRlUPLLIp1XoNg=
+	t=1705971573; cv=none; b=DjC59kUBa9u1Br23nMP+mB5vO2neSNNoUHLvHcifK+NRLVLWX/GmoWFy67w+SYnIE8c8V4qjBWJN0ZFxFKmXJF0aGWpPq6x4CRwhODwB9ALFNtA73o7th2Z0xHwQafJE67cWtDSamaBULaJylUGGYo5ikCzFf6Um/psktm3KQJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970001; c=relaxed/simple;
-	bh=fM+0rAppxCazbbbrGk5uzgNbGDVtzgXL/zED+mfE/k8=;
+	s=arc-20240116; t=1705971573; c=relaxed/simple;
+	bh=+oNPItChcscsU4la6nUQvieAtFd3P4sp+nvXIKKfZiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utyArusJknsT8RyJght8a4jLqE48j1RSrHLODvUpOLnrVDaku+ee7aEbz8oQH+Oqvc6QVtw8mZaJYXdN+YARN7jLy4OjTd3rk2ekkxhzY0csuS7MzbDzYqNOay0vIAJQaHw5v9s7SOn5llOhPmSfN6JgTePOjMjqfUoOf3vYmP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWOsvl8N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB5EC433C7;
-	Tue, 23 Jan 2024 00:33:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MfYaKfBhKLEE2AVq7Ad8l+UBJ62VgcudRyscWn5DWGc9Bq6E+WkO3G8+TCWiA7vpBPNM6VjibT4dqjD/Xngz1NPCAsIgKGhLb5PGfOAIAne0oIBDXn3xtlttXsRgZoYFodZxYb4HSLbyRKZTQO6TIf/c9b7XWD53ReLkyYEgD20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWK9DCoB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7146BC433C7;
+	Tue, 23 Jan 2024 00:59:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970001;
-	bh=fM+0rAppxCazbbbrGk5uzgNbGDVtzgXL/zED+mfE/k8=;
+	s=korg; t=1705971573;
+	bh=+oNPItChcscsU4la6nUQvieAtFd3P4sp+nvXIKKfZiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oWOsvl8NjMH7BjaMtpKXrdqxrrdDEy7kUL2R8LWA3Ard6Dd0w8Rvke5anY/NV65Zu
-	 5/0ardrmyVoRbWlKqTyQC0Wzdl4+wR1+tIO+lyJBRxvam5rS0/yxs5SjWeRVlclrbM
-	 sKy9wuJpB3g0KwylE7UbWppQpLdOxoaFl2ofsVtM=
+	b=vWK9DCoBVr6mZdRG47X3+FQrMMv9jI9Fj479BOXpjoRRoHqyFS52uQsxhVKZvthuU
+	 wmYAY+wayCiB3hqbyTDw0f7AkpXdCp3MDU6EDX965nLOSejL5FsyRBhgeFCOdvjb4p
+	 a4lSVGc5O8RAaBqTGibaDg0ZagLpgpB6RjNcuAxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Fangrui Song <maskray@google.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Milian Wolff <milian.wolff@kdab.com>,
-	Pablo Galindo <pablogsal@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 535/641] perf unwind-libdw: Handle JIT-generated DSOs properly
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Subject: [PATCH 6.1 271/417] serial: core: make sure RS485 cannot be enabled when it is not supported
 Date: Mon, 22 Jan 2024 15:57:19 -0800
-Message-ID: <20240122235834.858701388@linuxfoundation.org>
+Message-ID: <20240122235801.239732478@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,101 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-[ Upstream commit c966d23a351a33f8a977fd7efbb6f467132f7383 ]
+commit c73986913fa47e71e0b1ad7f039f6444915e8810 upstream.
 
-Usually DSOs are mapped from the beginning of the file, so the base
-address of the DSO can be calculated by map->start - map->pgoff.
+Some uart drivers specify a rs485_config() function and then decide later
+to disable RS485 support for some reason (e.g. imx and ar933).
 
-However, JIT DSOs which are generated by `perf inject -j`, are mapped
-only the code segment.  This makes unwind-libdw code confusing and
-rejects processing unwinds in the JIT DSOs.  It should use the map
-start address as base for them to fix the confusion.
+In these cases userspace may be able to activate RS485 via TIOCSRS485
+nevertheless, since in uart_set_rs485_config() an existing rs485_config()
+function indicates that RS485 is supported.
 
-Fixes: 1fe627da30331024 ("perf unwind: Take pgoff into account when reporting elf to libdwfl")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Fangrui Song <maskray@google.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Milian Wolff <milian.wolff@kdab.com>
-Cc: Pablo Galindo <pablogsal@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231212070547.612536-3-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Make sure that this is not longer possible by checking the uarts
+rs485_supported.flags instead and bailing out if SER_RS485_ENABLED is not
+set.
+
+Furthermore instead of returning an empty structure return -ENOTTY if the
+RS485 configuration is requested via TIOCGRS485 but RS485 is not supported.
+This has a small impact on userspace visibility but it is consistent with
+the -ENOTTY error for TIOCGRS485.
+
+Fixes: e849145e1fdd ("serial: ar933x: Fill in rs485_supported")
+Fixes: 55e18c6b6d42 ("serial: imx: Remove serial_rs485 sanitization")
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc:  <stable@vger.kernel.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Link: https://lore.kernel.org/r/20240103061818.564-5-l.sanfilippo@kunbus.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/unwind-libdw.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ drivers/tty/serial/serial_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/unwind-libdw.c b/tools/perf/util/unwind-libdw.c
-index 8554db3fc0d7..6013335a8dae 100644
---- a/tools/perf/util/unwind-libdw.c
-+++ b/tools/perf/util/unwind-libdw.c
-@@ -46,6 +46,7 @@ static int __report_module(struct addr_location *al, u64 ip,
- {
- 	Dwfl_Module *mod;
- 	struct dso *dso = NULL;
-+	Dwarf_Addr base;
- 	/*
- 	 * Some callers will use al->sym, so we can't just use the
- 	 * cheaper thread__find_map() here.
-@@ -58,13 +59,25 @@ static int __report_module(struct addr_location *al, u64 ip,
- 	if (!dso)
- 		return 0;
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -1436,7 +1436,7 @@ static int uart_set_rs485_config(struct
+ 	int ret;
+ 	unsigned long flags;
  
-+	/*
-+	 * The generated JIT DSO files only map the code segment without
-+	 * ELF headers.  Since JIT codes used to be packed in a memory
-+	 * segment, calculating the base address using pgoff falls into
-+	 * a different code in another DSO.  So just use the map->start
-+	 * directly to pick the correct one.
-+	 */
-+	if (!strncmp(dso->long_name, "/tmp/jitted-", 12))
-+		base = map__start(al->map);
-+	else
-+		base = map__start(al->map) - map__pgoff(al->map);
-+
- 	mod = dwfl_addrmodule(ui->dwfl, ip);
- 	if (mod) {
- 		Dwarf_Addr s;
+-	if (!port->rs485_config)
++	if (!(port->rs485_supported.flags & SER_RS485_ENABLED))
+ 		return -ENOTTY;
  
- 		dwfl_module_info(mod, NULL, &s, NULL, NULL, NULL, NULL, NULL);
--		if (s != map__start(al->map) - map__pgoff(al->map))
--			mod = 0;
-+		if (s != base)
-+			mod = NULL;
- 	}
- 
- 	if (!mod) {
-@@ -72,14 +85,14 @@ static int __report_module(struct addr_location *al, u64 ip,
- 
- 		__symbol__join_symfs(filename, sizeof(filename), dso->long_name);
- 		mod = dwfl_report_elf(ui->dwfl, dso->short_name, filename, -1,
--				      map__start(al->map) - map__pgoff(al->map), false);
-+				      base, false);
- 	}
- 	if (!mod) {
- 		char filename[PATH_MAX];
- 
- 		if (dso__build_id_filename(dso, filename, sizeof(filename), false))
- 			mod = dwfl_report_elf(ui->dwfl, dso->short_name, filename, -1,
--					      map__start(al->map) - map__pgoff(al->map), false);
-+					      base, false);
- 	}
- 
- 	if (mod) {
--- 
-2.43.0
-
+ 	if (copy_from_user(&rs485, rs485_user, sizeof(*rs485_user)))
 
 
 
