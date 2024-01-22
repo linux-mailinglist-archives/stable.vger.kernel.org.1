@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-13107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBED1837A88
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22B8F8379C1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:45:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 741171F2323D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C07151F27C69
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:45:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC7512F58A;
-	Tue, 23 Jan 2024 00:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B59B542A8D;
+	Tue, 23 Jan 2024 00:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHF9h1Cq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoK3v7Lf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEDC12CDB0;
-	Tue, 23 Jan 2024 00:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7552D50272;
+	Tue, 23 Jan 2024 00:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968986; cv=none; b=JcAZEUY5xqWWLarF061TTqke0cwdKngAxUlJ5iLvQMHiPz02DE3kUDz8KipPhfi310AK+ddeCqYjD2k5nKwbqqNKh+XT1z3eQY9MAYwuA5rYvDN+GCYYv5uzz58lnZzVtRS4+IUu1pD+z3gxwz3k9N8urhO+/Zoxjd+z6tNiwhs=
+	t=1705968468; cv=none; b=U0tTk79GElahI8Mxoe3SFaqkFJY2qdWfrYhMYq4w1BAM1yyDyznXTB2mkwBo7ww11ZtTSeXaELtB5rjl8qywC6v2pAo+yKpRt6XajRHfnJDqaTcbD81W/el8/c5kB5GReF/MnlFxZiEKr2nG5xwKmygJTpASnhkMK0YPJ7Kcv6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968986; c=relaxed/simple;
-	bh=6rFvplW1hhj9CJP0GNSN1RFHGYyTf0RP8ROftQHLrCo=;
+	s=arc-20240116; t=1705968468; c=relaxed/simple;
+	bh=cd2EK8m4eL6DuwogKp1HwC0fDDWtBeCu0pQ4MquQ53Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J9B+b7tnSArI/uTCRxAB8D8YnsXj/DAzejRJqAZe+bQpsMqdDaNervr0gLQUeTx6WzWoaBds4w+60KdTPJkfzrWsDMEEEO4YFnNsqa9d0AfcZnYj/uauKp5pCTHV4W1wzUNwOvBR8pN56VSaCmWaXAlRbutGJ8rVxGqmh75ZmlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHF9h1Cq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19DF7C433F1;
-	Tue, 23 Jan 2024 00:16:26 +0000 (UTC)
+	 MIME-Version; b=rLK2bfv1sXW9oyG9l0zdq3ol2rx7ng7guMwWxBN44sXKO7uG/vLqCyF671ddR2Z/yrpx7BmRCsDeoO2jXx3kGm+gZ/s3ss1QTfe67SL5WX2H0c4thmwjxPd8yH0Q8tICmPfVGW4s/bxAulIfx0JnT7daV3HwtMClU+2xJzDns2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoK3v7Lf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF4E3C433C7;
+	Tue, 23 Jan 2024 00:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968986;
-	bh=6rFvplW1hhj9CJP0GNSN1RFHGYyTf0RP8ROftQHLrCo=;
+	s=korg; t=1705968468;
+	bh=cd2EK8m4eL6DuwogKp1HwC0fDDWtBeCu0pQ4MquQ53Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CHF9h1CqKVsqtxNyUZe8+s6YeIpzGTjO7LiQQykMeKpfWi78lgZSLZBVvSB5Ni11W
-	 T166rbopUGRDrtk0TDIcLZKk5m7LWmacyV5/9oyKD/ZucJRk09iOfmoYpstXwqJtgN
-	 6D5CM+JO5YPDnW9kvT+s1Pwi+TV0+zSJKRA/Kr5Y=
+	b=HoK3v7LfOrjzTLO71Jej8/D39K58VS33ddmXch1azhT3Xms4dIE13hHHtCnGosP19
+	 typjOgSaJo8x+CtDuwMJZ7F3rjkhe1d/sc/H5P4RLK/LrXdfB4PQ6tTyUQjh1Jywp+
+	 UyukKXiR2INr76/5AO5D6FkVFFDzNKwnCqA1F5iw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>,
-	Paul Durrant <paul@xen.org>
-Subject: [PATCH 5.4 143/194] xen-netback: dont produce zero-size SKB frags
+	Carlos Llamas <cmllamas@google.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH 4.19 117/148] binder: fix unused alloc->free_async_space
 Date: Mon, 22 Jan 2024 15:57:53 -0800
-Message-ID: <20240122235725.377692484@linuxfoundation.org>
+Message-ID: <20240122235717.219703943@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-commit c7ec4f2d684e17d69bbdd7c4324db0ef5daac26a upstream.
+commit c6d05e0762ab276102246d24affd1e116a46aa0c upstream.
 
-While frontends may submit zero-size requests (wasting a precious slot),
-core networking code as of at least 3ece782693c4b ("sock: skb_copy_ubufs
-support for compound pages") can't deal with SKBs when they have all
-zero-size fragments. Respond to empty requests right when populating
-fragments; all further processing is fragment based and hence won't
-encounter these empty requests anymore.
+Each transaction is associated with a 'struct binder_buffer' that stores
+the metadata about its buffer area. Since commit 74310e06be4d ("android:
+binder: Move buffer out of area shared with user space") this struct is
+no longer embedded within the buffer itself but is instead allocated on
+the heap to prevent userspace access to this driver-exclusive info.
 
-In a way this should have been that way from the beginning: When no data
-is to be transferred for a particular request, there's not even a point
-in validating the respective grant ref. That's no different from e.g.
-passing NULL into memcpy() when at the same time the size is 0.
+Unfortunately, the space of this struct is still being accounted for in
+the total buffer size calculation, specifically for async transactions.
+This results in an additional 104 bytes added to every async buffer
+request, and this area is never used.
 
-This is XSA-448 / CVE-2023-46838.
+This wasted space can be substantial. If we consider the maximum mmap
+buffer space of SZ_4M, the driver will reserve half of it for async
+transactions, or 0x200000. This area should, in theory, accommodate up
+to 262,144 buffers of the minimum 8-byte size. However, after adding
+the extra 'sizeof(struct binder_buffer)', the total number of buffers
+drops to only 18,724, which is a sad 7.14% of the actual capacity.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Paul Durrant <paul@xen.org>
+This patch fixes the buffer size calculation to enable the utilization
+of the entire async buffer space. This is expected to reduce the number
+of -ENOSPC errors that are seen on the field.
+
+Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-6-cmllamas@google.com
+[cmllamas: fix trivial conflict with missing 261e7818f06e.]
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/xen-netback/netback.c |   44 ++++++++++++++++++++++++++++++++------
- 1 file changed, 38 insertions(+), 6 deletions(-)
+ drivers/android/binder_alloc.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/drivers/net/xen-netback/netback.c
-+++ b/drivers/net/xen-netback/netback.c
-@@ -456,12 +456,25 @@ static void xenvif_get_requests(struct x
- 	}
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -402,8 +402,7 @@ static struct binder_buffer *binder_allo
+ 	/* Pad 0-size buffers so they get assigned unique addresses */
+ 	size = max(size, sizeof(void *));
  
- 	for (shinfo->nr_frags = 0; nr_slots > 0 && shinfo->nr_frags < MAX_SKB_FRAGS;
--	     shinfo->nr_frags++, gop++, nr_slots--) {
-+	     nr_slots--) {
-+		if (unlikely(!txp->size)) {
-+			unsigned long flags;
-+
-+			spin_lock_irqsave(&queue->response_lock, flags);
-+			make_tx_response(queue, txp, 0, XEN_NETIF_RSP_OKAY);
-+			push_tx_responses(queue);
-+			spin_unlock_irqrestore(&queue->response_lock, flags);
-+			++txp;
-+			continue;
-+		}
-+
- 		index = pending_index(queue->pending_cons++);
- 		pending_idx = queue->pending_ring[index];
- 		xenvif_tx_create_map_op(queue, pending_idx, txp,
- 				        txp == first ? extra_count : 0, gop);
- 		frag_set_pending_idx(&frags[shinfo->nr_frags], pending_idx);
-+		++shinfo->nr_frags;
-+		++gop;
+-	if (is_async &&
+-	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
++	if (is_async && alloc->free_async_space < size) {
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
+ 			     "%d: binder_alloc_buf size %zd failed, no async space left\n",
+ 			      alloc->pid, size);
+@@ -509,7 +508,7 @@ static struct binder_buffer *binder_allo
+ 	buffer->async_transaction = is_async;
+ 	buffer->extra_buffers_size = extra_buffers_size;
+ 	if (is_async) {
+-		alloc->free_async_space -= size + sizeof(struct binder_buffer);
++		alloc->free_async_space -= size;
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
+ 			     "%d: binder_alloc_buf size %zd async free %zd\n",
+ 			      alloc->pid, size, alloc->free_async_space);
+@@ -631,8 +630,7 @@ static void binder_free_buf_locked(struc
+ 	BUG_ON(buffer->data > alloc->buffer + alloc->buffer_size);
  
- 		if (txp == first)
- 			txp = txfrags;
-@@ -474,20 +487,39 @@ static void xenvif_get_requests(struct x
- 		shinfo = skb_shinfo(nskb);
- 		frags = shinfo->frags;
- 
--		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots;
--		     shinfo->nr_frags++, txp++, gop++) {
-+		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots; ++txp) {
-+			if (unlikely(!txp->size)) {
-+				unsigned long flags;
-+
-+				spin_lock_irqsave(&queue->response_lock, flags);
-+				make_tx_response(queue, txp, 0,
-+						 XEN_NETIF_RSP_OKAY);
-+				push_tx_responses(queue);
-+				spin_unlock_irqrestore(&queue->response_lock,
-+						       flags);
-+				continue;
-+			}
-+
- 			index = pending_index(queue->pending_cons++);
- 			pending_idx = queue->pending_ring[index];
- 			xenvif_tx_create_map_op(queue, pending_idx, txp, 0,
- 						gop);
- 			frag_set_pending_idx(&frags[shinfo->nr_frags],
- 					     pending_idx);
-+			++shinfo->nr_frags;
-+			++gop;
- 		}
- 
--		skb_shinfo(skb)->frag_list = nskb;
--	} else if (nskb) {
-+		if (shinfo->nr_frags) {
-+			skb_shinfo(skb)->frag_list = nskb;
-+			nskb = NULL;
-+		}
-+	}
-+
-+	if (nskb) {
- 		/* A frag_list skb was allocated but it is no longer needed
--		 * because enough slots were converted to copy ops above.
-+		 * because enough slots were converted to copy ops above or some
-+		 * were empty.
- 		 */
- 		kfree_skb(nskb);
- 	}
+ 	if (buffer->async_transaction) {
+-		alloc->free_async_space += buffer_size + sizeof(struct binder_buffer);
+-
++		alloc->free_async_space += buffer_size;
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
+ 			     "%d: binder_free_buf size %zd async free %zd\n",
+ 			      alloc->pid, size, alloc->free_async_space);
 
 
 
