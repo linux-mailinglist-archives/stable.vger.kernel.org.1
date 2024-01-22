@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-14984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA7CE83836D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 490AE838153
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:07:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73FD3288B03
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11CA2B2A5E8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E75629F3;
-	Tue, 23 Jan 2024 01:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6626A13F005;
+	Tue, 23 Jan 2024 01:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRe6yMN5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPZL7Y8C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F98629F1;
-	Tue, 23 Jan 2024 01:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B066774B;
+	Tue, 23 Jan 2024 01:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974970; cv=none; b=RioxrfzCyWnh9VkgrGmyPAsnXrNsDUvp9mCGlNiUeYRe7U6sXHfafmWVLIaVtKtG3cTaaaV/XTuVzsbDqfRUIJ3Fbdczh4lznCgWjNOB4zhb6B8RiE5m//Dcy9hd3uLyxMkDNkeiXmcPyMf/yl3GdSUwAEKhLI5Tt5MjYEaiwac=
+	t=1705972017; cv=none; b=Ccg8KqW5CakXWf5oArZ9sv73SwsBZOawJ9Kcz6m48awzt/BsTkUiSbQPWNhTj3B1poxMGOKSBiRtUNLH1kRyEkjfLjdxDLAN4PNypGal0oUI4SS7JmMidSLP49I1ExXsJcfwcSWcKIX+wcJPbsg/AZAt+Wmt0XSsbGa41LwnbvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974970; c=relaxed/simple;
-	bh=CX6mkZ7HTySJKvkIMSUSqhzc48CAW6nMeP8OcZgNPac=;
+	s=arc-20240116; t=1705972017; c=relaxed/simple;
+	bh=WjCpqle69H6oKSP0Qf8prkXDAs0snknlS4HKTK12SAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WUt0m21O2LfYJw0wAAgR2eK0v9gF8TtbAPqidebNPZvJ4FORWWq5tAF7iIiRBHIi/INYyh/OGGtOG8ha5L/ghyPTArUK+iOIcWe4+qEfAlg1fO32Pvw7QiZIVcGuVl7yGRntHJpwp80vTLWHw+HCdqMgJroOzGrnD58MTSYDsZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRe6yMN5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6F9C433B1;
-	Tue, 23 Jan 2024 01:56:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UXisBo1lTOw1SYq62FLpGda1MAgRY5Ji6kiayYz9pWor+On0jdNU3uTbhf1e7C6cCLHdtr4+D8snLaBfGSKFara/5Q5AN50b0s5Wx2L1UCcx3UGrMTDqnwfLneHvJYHKFcMWgOYAhdBid/fHsXxomtEBtjXhtE1KVaxhtR94IaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPZL7Y8C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B64C433C7;
+	Tue, 23 Jan 2024 01:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974969;
-	bh=CX6mkZ7HTySJKvkIMSUSqhzc48CAW6nMeP8OcZgNPac=;
+	s=korg; t=1705972017;
+	bh=WjCpqle69H6oKSP0Qf8prkXDAs0snknlS4HKTK12SAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LRe6yMN5gyxz83+sCA3bx0+xGOM2sdwyr5Li4g0gYZVrsUogxG8hIpgyDzKKa/68Y
-	 fU2PqxxVyT1yYupGMjtjd0EnUw8bnyaGQC99Dm9yA9qb3XP1B46ylcPEyHOQTQtmGq
-	 ThVQ4uVS+uk2DGEoLpNoXKinsShKanm2K0WzfAVk=
+	b=UPZL7Y8Co9olZeDw1Qx5gR3aJrKeDtSKfvdI1gEciGs9MPzBN20IAyTXwSFYIx9tn
+	 UV8ScPm2NhInqvcslJgGUXrVU7Zh7txcKuaXo3NrrzR+6YIRUbpicMI+r6MtB56+9n
+	 1BHKj87l+I+3MvJv1P2kMfahshSDyNqBIAlcKutM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Palus <jpalus@fastmail.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 301/374] power: supply: cw2015: correct time_to_empty units in sysfs
+Subject: [PATCH 6.1 389/417] net: ravb: Fix dma_addr_t truncation in error case
 Date: Mon, 22 Jan 2024 15:59:17 -0800
-Message-ID: <20240122235755.261988858@linuxfoundation.org>
+Message-ID: <20240122235805.243498868@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +63,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Palus <jpalus@fastmail.com>
+From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-[ Upstream commit f37669119423ca852ca855b24732f25c0737aa57 ]
+[ Upstream commit e327b2372bc0f18c30433ac40be07741b59231c5 ]
 
-RRT_ALRT register holds remaining battery time in minutes therefore it
-needs to be scaled accordingly when exposing TIME_TO_EMPTY via sysfs
-expressed in seconds
+In ravb_start_xmit(), ravb driver uses u32 variable to store result of
+dma_map_single() call. Since ravb hardware has 32-bit address fields in
+descriptors, this works properly when mapping is successful - it is
+platform's job to provide mapping addresses that fit into hardware
+limitations.
 
-Fixes: b4c7715c10c1 ("power: supply: add CellWise cw2015 fuel gauge driver")
-Signed-off-by: Jan Palus <jpalus@fastmail.com>
-Link: https://lore.kernel.org/r/20231111221704.5579-1-jpalus@fastmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+However, in failure case dma_map_single() returns DMA_MAPPING_ERROR
+constant that is 64-bit when dma_addr_t is 64-bit. Storing this constant
+in u32 leads to truncation, and further call to dma_mapping_error()
+fails to notice the error.
+
+Fix that by storing result of dma_map_single() in a dma_addr_t
+variable.
+
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/cw2015_battery.c | 2 +-
+ drivers/net/ethernet/renesas/ravb_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/cw2015_battery.c b/drivers/power/supply/cw2015_battery.c
-index 091868e9e9e8..587db9fd8624 100644
---- a/drivers/power/supply/cw2015_battery.c
-+++ b/drivers/power/supply/cw2015_battery.c
-@@ -490,7 +490,7 @@ static int cw_battery_get_property(struct power_supply *psy,
- 
- 	case POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW:
- 		if (cw_battery_valid_time_to_empty(cw_bat))
--			val->intval = cw_bat->time_to_empty;
-+			val->intval = cw_bat->time_to_empty * 60;
- 		else
- 			val->intval = 0;
- 		break;
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index c2c56a5289ca..e7b70006261f 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1965,7 +1965,7 @@ static netdev_tx_t ravb_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 	struct ravb_tstamp_skb *ts_skb;
+ 	struct ravb_tx_desc *desc;
+ 	unsigned long flags;
+-	u32 dma_addr;
++	dma_addr_t dma_addr;
+ 	void *buffer;
+ 	u32 entry;
+ 	u32 len;
 -- 
 2.43.0
 
