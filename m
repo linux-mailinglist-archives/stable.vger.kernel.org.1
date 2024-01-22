@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11515838056
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD1EA837FD4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E463DB267BA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90F521F2AB9E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEDC2657B9;
-	Tue, 23 Jan 2024 01:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AC712BEBD;
+	Tue, 23 Jan 2024 00:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNNEsD09"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1qlWz/77"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F79A4E1AD;
-	Tue, 23 Jan 2024 01:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED6A4E1AD;
+	Tue, 23 Jan 2024 00:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971623; cv=none; b=ZPRg6l6cOfZ5Dp9Ec0IRMG2Rouj7RYiW5tdbED1EeFH93R0jJWMXHy/eRRBS8RUf/XN4PbAVQwEP83rIdoUFUjyRIPV5DD6jFwpKTRjn9cw9a+XECRcOkjMjPaWJ48ppbdsGF03/aYMSNXj2vMBIHrfZKWOi4OHGOAUhG0El8Qs=
+	t=1705971381; cv=none; b=JlE462NHb0uOuteGsf0CQKdyHR2H5BekxzE5G2+PGmPvAeQiwMPD1cEHM76LODlO9UVv5uYZLSryI2n+USzQYuSWO+nwl7hxtjiAu0w2TvXKiOPV6rR8FCJHeS3gj9WeSCZwJ2VKXDRiWd9/Ny3cvQBkCftrs48UVYD8jWrgP4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971623; c=relaxed/simple;
-	bh=HUqte7NVpcjRd9R9taCA/2B+KpS0bhmzwT2UUi50TGk=;
+	s=arc-20240116; t=1705971381; c=relaxed/simple;
+	bh=fVsgDIvomxgnv0axbnbIOWUPNtCTpw9xbEPIc9tJLy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qtxssOn0JnVU9OfzgDFO4qD9DAOhH+ExUGzkZZuHCY3V/ZY27UiPN1HVhAQDGAGF4BHUvZ6VwbhsT8gUiHk95pqfPfHGQE/FIi0cujOtFBeR4zku9LWcS4e4mbW+C+Y9UDyaNS4eeamIlegeHyEjRLRxEkM48Yp6RC/cSMVJLAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNNEsD09; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F342C433C7;
-	Tue, 23 Jan 2024 01:00:23 +0000 (UTC)
+	 MIME-Version; b=TySwD7zyMCDG9C6XIbYVccML5aN9lbvSDhU4dp8h7qAeGfaSc5t/93MN/0dKWcEg8Lg5xli5dpQ5SqHOBh/pZ6xw0fYHHKGEMOx4NEECwo8Bg5T854poiPEwMlcpvwFkJlObxPM8uk2GbOv5VYqepR70+oZdpIw0L6a6XiXZKh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1qlWz/77; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E818FC433C7;
+	Tue, 23 Jan 2024 00:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971623;
-	bh=HUqte7NVpcjRd9R9taCA/2B+KpS0bhmzwT2UUi50TGk=;
+	s=korg; t=1705971381;
+	bh=fVsgDIvomxgnv0axbnbIOWUPNtCTpw9xbEPIc9tJLy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DNNEsD09MzVDRVSO1UFyanDJtvCPBa7dlAmLs3mkdPdBDv1aE58AIk2QLFlVAqFUq
-	 0wu43TxZjBeKH9VLJ6/yAcXC67oeL2J7+CDgn+I6Yeus3+1NVlE3VVV4EJLtKB66N5
-	 L03IGqJCyjzeQJMT2q+hWaNL662Brfiwd0l6GS7I=
+	b=1qlWz/77MhDhjXUZmtUboGbE6yH1eo57IqDDaJ06O3LxAaCRZH701fGQ3tb1SmbQK
+	 px4GFffHTj4rQAjqOpd3v+pGs1VMdjGQ/RnNQ4MBmK0ugoJajkKi/kbc9MRgHV/QFP
+	 lNElU+96JUmjTZO2AiJUqiH74X8A9fJfxTlRkPBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C3=87a=C4=9Fhan=20Demir?= <caghandemir@marun.edu.tr>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 280/417] ALSA: hda/relatek: Enable Mute LED on HP Laptop 15s-fq2xxx
-Date: Mon, 22 Jan 2024 15:57:28 -0800
-Message-ID: <20240122235801.545592045@linuxfoundation.org>
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 143/286] ARM: davinci: always select CONFIG_CPU_ARM926T
+Date: Mon, 22 Jan 2024 15:57:29 -0800
+Message-ID: <20240122235737.654796340@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Çağhan Demir <caghandemir@marun.edu.tr>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit bc7863d18677df66b2c7a0e172c91296ff380f11 upstream.
+[ Upstream commit 40974ee421b4d1fc74ac733d86899ce1b83d8f65 ]
 
-This HP Laptop uses ALC236 codec with COEF 0x07 idx 1 controlling
-the mute LED. This patch enables the already existing quirk for
-this device.
+The select was lost by accident during the multiplatform conversion.
+Any davinci-only
 
-Signed-off-by: Çağhan Demir <caghandemir@marun.edu.tr>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240115172303.4718-1-caghandemir@marun.edu.tr
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+arm-linux-gnueabi-ld: arch/arm/mach-davinci/sleep.o: in function `CACHE_FLUSH':
+(.text+0x168): undefined reference to `arm926_flush_kern_cache_all'
+
+Fixes: f962396ce292 ("ARM: davinci: support multiplatform build for ARM v5")
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20240108110055.1531153-1-arnd@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
+ arch/arm/mach-davinci/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9626,6 +9626,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x87f5, "HP", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87f6, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
- 	SND_PCI_QUIRK(0x103c, 0x87f7, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
-+	SND_PCI_QUIRK(0x103c, 0x87fe, "HP Laptop 15s-fq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8805, "HP ProBook 650 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x880d, "HP EliteBook 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8811, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
+index de11030748d0..b30221f7dfa4 100644
+--- a/arch/arm/mach-davinci/Kconfig
++++ b/arch/arm/mach-davinci/Kconfig
+@@ -3,6 +3,7 @@
+ menuconfig ARCH_DAVINCI
+ 	bool "TI DaVinci"
+ 	depends on ARCH_MULTI_V5
++	select CPU_ARM926T
+ 	select DAVINCI_TIMER
+ 	select ZONE_DMA
+ 	select PM_GENERIC_DOMAINS if PM
+-- 
+2.43.0
+
 
 
 
