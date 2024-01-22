@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-14362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AABC7838097
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:00:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10AA8380AF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63A3A285E20
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:00:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82FC2B2B962
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F159212FF94;
-	Tue, 23 Jan 2024 01:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21D5130E24;
+	Tue, 23 Jan 2024 01:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXNwC4ET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qu+SXY75"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A7712FF73;
-	Tue, 23 Jan 2024 01:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9282412FF73;
+	Tue, 23 Jan 2024 01:03:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971808; cv=none; b=rOfu+gPSCKj5W5wsFnGAPRroik/wXfKeBrp0p4II9YIXyoz9/djQRPcY+X/onS1yrqOp0QqhRX9qtuIKDpibDl8GBKXkHijRZIT5aCTj9/kHH3IH/qK7rDr7PetjmM+lvuWFKj+JzlHw8lFssNmv1hjn/k2UNBqjuz2NhmtsU1Q=
+	t=1705971811; cv=none; b=BzK9zqBAGO0MRH+cGbPCOgXJGglxUWtoR5R0ilF2Lp5R/uL8moaFwa+TaMczIumRtEbe97K4afPnN+LrKhziT6sP9KQyV3TpdzssEUQ8jaPEuYuNSKTgTQ8rssfdogvlH67kIsdgz5OBC15CtHTl756oRH00R/6lQBuSb8m4GhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971808; c=relaxed/simple;
-	bh=yNKa5JBHgZbrf9m7AGNaxrlE1FPEUxpFtVfp8R9CCDY=;
+	s=arc-20240116; t=1705971811; c=relaxed/simple;
+	bh=HaZ1XnX2iZJAw/2Y80mPzDiwUu8uiG+NvGB+CHo4CR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=raAQt7RcE4534KQJSfsThuBK6S0PgqzTiB7qa3OX2SmfodgSg/T62MqsdDnUN/OX0mtsw/WprCSAkdslpLwpxOOySyUtycrm1I168rGzgkExU1yqoSzqJeAVPsqCF/zJ1IlPu49d3yiKG1Ral7X44Ny+Hbqe0SGhkctlxxFIZLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXNwC4ET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710A6C433C7;
-	Tue, 23 Jan 2024 01:03:28 +0000 (UTC)
+	 MIME-Version; b=Fx2IIM2mEJEuyvmugqC2X6S9bh59K0057LfWSUF8v9GfrEDkfSUHq6NKn635nahyzZXUBO8HKzH7G7opBl7l52SGyaNxb+jJvq/8ZDCHGa24RveBfyuz0IsBgMJQOwPvCvz14Op7hnNd+ehggP7NnW0XiGTc71FKHeQtf6wgQng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qu+SXY75; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C42EC433F1;
+	Tue, 23 Jan 2024 01:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971808;
-	bh=yNKa5JBHgZbrf9m7AGNaxrlE1FPEUxpFtVfp8R9CCDY=;
+	s=korg; t=1705971811;
+	bh=HaZ1XnX2iZJAw/2Y80mPzDiwUu8uiG+NvGB+CHo4CR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eXNwC4ETqMVvjmkpofwcXtM7YUbY0RSxcPy7KzpPeBXYCvp5tmFOrM04nSS33M2gu
-	 lQ8gwBIkk4xjrqgPakD+8ZM6qw0x1OON1oC+ci1lrmUkrGnTX5lWCKPbJqfz9fp5Xr
-	 HAyHq24uZxd5rWz2M7LBhNKqHEnK8qOpEFd8q2a4=
+	b=Qu+SXY7542i090N7xXyKP0mSoami+x7Qg22DAGScKgmKHgOTHJFQssXFT005zAgQq
+	 y+mh3akqpDHdbCITqMHZ1GIbUcnL3y6MSjF4Q+fSdw4wWzWtdpERbGUu7x0s4u3nVX
+	 m3zAuNyUMulSxdAbRyfRvxVjaWFmMWFwKhM0PbJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dang Huynh <danct12@riseup.net>,
-	Nikita Travkin <nikita@trvn.ru>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Alex Vinarskis <alex.vinarskis@gmail.com>,
 	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 325/417] leds: aw2013: Select missing dependency REGMAP_I2C
-Date: Mon, 22 Jan 2024 15:58:13 -0800
-Message-ID: <20240122235803.061365871@linuxfoundation.org>
+Subject: [PATCH 6.1 326/417] mfd: intel-lpss: Fix the fractional clock divider flags
+Date: Mon, 22 Jan 2024 15:58:14 -0800
+Message-ID: <20240122235803.094243142@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
 References: <20240122235751.480367507@linuxfoundation.org>
@@ -67,39 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dang Huynh <danct12@riseup.net>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 75469bb0537ad2ab0fc1fb6e534a79cfc03f3b3f ]
+[ Upstream commit 03d790f04fb2507173913cad9c213272ac983a60 ]
 
-The AW2013 driver uses devm_regmap_init_i2c, so REGMAP_I2C needs to
-be selected.
+The conversion to CLK_FRAC_DIVIDER_POWER_OF_TWO_PS uses wrong flags
+in the parameters and hence miscalculates the values in the clock
+divider. Fix this by applying the flag to the proper parameter.
 
-Otherwise build process may fail with:
-  ld: drivers/leds/leds-aw2013.o: in function `aw2013_probe':
-    leds-aw2013.c:345: undefined reference to `__devm_regmap_init_i2c'
-
-Signed-off-by: Dang Huynh <danct12@riseup.net>
-Acked-by: Nikita Travkin <nikita@trvn.ru>
-Fixes: 59ea3c9faf32 ("leds: add aw2013 driver")
-Link: https://lore.kernel.org/r/20231103114203.1108922-1-danct12@riseup.net
+Fixes: 82f53f9ee577 ("clk: fractional-divider: Introduce POWER_OF_TWO_PS flag")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reported-by: Alex Vinarskis <alex.vinarskis@gmail.com>
+Link: https://lore.kernel.org/r/20231211111441.3910083-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mfd/intel-lpss.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
-index 2378cfb7443e..509d03eb3e8d 100644
---- a/drivers/leds/Kconfig
-+++ b/drivers/leds/Kconfig
-@@ -97,6 +97,7 @@ config LEDS_ARIEL
- config LEDS_AW2013
- 	tristate "LED support for Awinic AW2013"
- 	depends on LEDS_CLASS && I2C && OF
-+	select REGMAP_I2C
- 	help
- 	  This option enables support for the AW2013 3-channel
- 	  LED driver.
+diff --git a/drivers/mfd/intel-lpss.c b/drivers/mfd/intel-lpss.c
+index cfbee2cfba6b..c50387600b81 100644
+--- a/drivers/mfd/intel-lpss.c
++++ b/drivers/mfd/intel-lpss.c
+@@ -301,8 +301,8 @@ static int intel_lpss_register_clock_divider(struct intel_lpss *lpss,
+ 
+ 	snprintf(name, sizeof(name), "%s-div", devname);
+ 	tmp = clk_register_fractional_divider(NULL, name, __clk_get_name(tmp),
++					      0, lpss->priv, 1, 15, 16, 15,
+ 					      CLK_FRAC_DIVIDER_POWER_OF_TWO_PS,
+-					      lpss->priv, 1, 15, 16, 15, 0,
+ 					      NULL);
+ 	if (IS_ERR(tmp))
+ 		return PTR_ERR(tmp);
 -- 
 2.43.0
 
