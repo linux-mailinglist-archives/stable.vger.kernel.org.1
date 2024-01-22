@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B890838369
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B14838112
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:05:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CC6C1C29C50
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CB7328E12D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFB762818;
-	Tue, 23 Jan 2024 01:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDD213EFF8;
+	Tue, 23 Jan 2024 01:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auQWZq1A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OY0Y4tq0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C90522060;
-	Tue, 23 Jan 2024 01:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DCF13EFEC;
+	Tue, 23 Jan 2024 01:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974965; cv=none; b=B/jUQig6+uavKXA8EyBnFxCI2QMTkqAm/ObWutiNd2WNMVouhvCveVW3KLJ44C/aPTXcPNllInDGEuVW6wG2g6UxP8ORUZGPn7sBGKHIh6Ygyvf+JQipZ71LMxN7kovUN5TJGDNw+kQihQdSf/H9W/MFjIJAd6rSAmiMyjd6Sgo=
+	t=1705972013; cv=none; b=Mn7Oy9Qfr2HiihlawzpLCa+16YvIfdAMXbLnCbn/BvXKPzbItV4/Gg8SoyDMARyRth1FNx/7jMYShLYcsuxx7MP5ldAOQL5ghH48U7PLvz0zu2TTFl2/+mV2R56aZh20C620nDbP/Sd0cITwAcLo6Nj5QBYXDqi7qMwiLtG6zEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974965; c=relaxed/simple;
-	bh=OKA44jgN0UnmuAlrnSf9HtxEHlNukVU/wEu73vl3hh4=;
+	s=arc-20240116; t=1705972013; c=relaxed/simple;
+	bh=UZZ515LyYoZo/rxLA8UN9VLyWYCEgCFYvGAMXDYKNXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LmclwqjXTFdZgdxjwBGUuAtAUQx6V1wA/oRpqEyRaIRzsRb4L5VgvNknn4nTQ+vt9JH8mOYYF7jLo1QQ+VVQP25Wyaisyl1EPsdmSAtLHSwofVfJ1HCKFsUNeGUu4AFQSzsEgIWo1zk+yiuegqGXhDRp1RNvhEB6pR0K2gnsnxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auQWZq1A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50FA2C43399;
-	Tue, 23 Jan 2024 01:56:05 +0000 (UTC)
+	 MIME-Version; b=bJPb4oHmsQ75hqSldQY/9y7ehOGpvKduoPor/R25HG+/y0jUR2H1Y1QySD01NQUfEPA6XXs8KGbv7nDVlT8gc2l18RoZ+SRg+md17ro2a9ej3Ir3W/Ij4tj/koLbNn7mHZlg71ZrVeae3HnVcXWfiRt7szmmyq1e2s2Iwp1Wo1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OY0Y4tq0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87354C433F1;
+	Tue, 23 Jan 2024 01:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974965;
-	bh=OKA44jgN0UnmuAlrnSf9HtxEHlNukVU/wEu73vl3hh4=;
+	s=korg; t=1705972013;
+	bh=UZZ515LyYoZo/rxLA8UN9VLyWYCEgCFYvGAMXDYKNXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=auQWZq1AmAw1yjcg660qFREGtBkjLjL6KYlwUEscD4K3STtU/6KrrzOEfceu/H3fy
-	 W6vaDQ6fRjv0opYCbJi6N3hB/Hs6tZyol1vbUzDXbU+0XWTvBgBUzazveOy2ZELGly
-	 UZpthPBIKC7NqRae2K3yjZBDAB6jBTRBE1JWtFOw=
+	b=OY0Y4tq02MNBwOuTQTkoyrtwrav2cNfyqMfDeBkKvjR8gLxVu+uEthJNSGdSzrwHg
+	 yuN4IaziIMgavHtNNt7dQbVfQ4BzT8sG46ZNtbnA18c5JRINm+GFVJUq9Ji3FEgPmQ
+	 uMrwYC3BdCW6v+FxzLw9QZLBXA+b69/OlmB9e2r4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 299/374] MIPS: Alchemy: Fix an out-of-bound access in db1200_dev_setup()
+Subject: [PATCH 6.1 387/417] block: ensure we hold a queue reference when using queue limits
 Date: Mon, 22 Jan 2024 15:59:15 -0800
-Message-ID: <20240122235755.191869971@linuxfoundation.org>
+Message-ID: <20240122235805.172884438@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 89c4b588d11e9acf01d604de4b0c715884f59213 ]
+[ Upstream commit 7b4f36cd22a65b750b4cb6ac14804fb7d6e6c67d ]
 
-When calling spi_register_board_info(), we should pass the number of
-elements in 'db1200_spi_devs', not 'db1200_i2c_devs'.
+q_usage_counter is the only thing preventing us from the limits changing
+under us in __bio_split_to_limits, but blk_mq_submit_bio doesn't hold
+it while calling into it.
 
-Fixes: 63323ec54a7e ("MIPS: Alchemy: Extended DB1200 board support.")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Move the splitting inside the region where we know we've got a queue
+reference. Ideally this could still remain a shared section of code, but
+let's keep the fix simple and defer any refactoring here to later.
+
+Reported-by: Christoph Hellwig <hch@lst.de>
+Fixes: 900e08075202 ("block: move queue enter logic into blk_mq_submit_bio()")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/alchemy/devboards/db1200.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-mq.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
-index f521874ebb07..67f067706af2 100644
---- a/arch/mips/alchemy/devboards/db1200.c
-+++ b/arch/mips/alchemy/devboards/db1200.c
-@@ -847,7 +847,7 @@ int __init db1200_dev_setup(void)
- 	i2c_register_board_info(0, db1200_i2c_devs,
- 				ARRAY_SIZE(db1200_i2c_devs));
- 	spi_register_board_info(db1200_spi_devs,
--				ARRAY_SIZE(db1200_i2c_devs));
-+				ARRAY_SIZE(db1200_spi_devs));
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 368f1947c895..b3f99dda4530 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -2946,12 +2946,6 @@ void blk_mq_submit_bio(struct bio *bio)
+ 	blk_status_t ret;
  
- 	/* SWITCHES:	S6.8 I2C/SPI selector  (OFF=I2C	 ON=SPI)
- 	 *		S6.7 AC97/I2S selector (OFF=AC97 ON=I2S)
+ 	bio = blk_queue_bounce(bio, q);
+-	if (bio_may_exceed_limits(bio, &q->limits)) {
+-		bio = __bio_split_to_limits(bio, &q->limits, &nr_segs);
+-		if (!bio)
+-			return;
+-	}
+-
+ 	bio_set_ioprio(bio);
+ 
+ 	if (plug) {
+@@ -2960,6 +2954,11 @@ void blk_mq_submit_bio(struct bio *bio)
+ 			rq = NULL;
+ 	}
+ 	if (rq) {
++		if (unlikely(bio_may_exceed_limits(bio, &q->limits))) {
++			bio = __bio_split_to_limits(bio, &q->limits, &nr_segs);
++			if (!bio)
++				return;
++		}
+ 		if (!bio_integrity_prep(bio))
+ 			return;
+ 		if (blk_mq_attempt_bio_merge(q, bio, nr_segs))
+@@ -2970,6 +2969,11 @@ void blk_mq_submit_bio(struct bio *bio)
+ 	} else {
+ 		if (unlikely(bio_queue_enter(bio)))
+ 			return;
++		if (unlikely(bio_may_exceed_limits(bio, &q->limits))) {
++			bio = __bio_split_to_limits(bio, &q->limits, &nr_segs);
++			if (!bio)
++				goto fail;
++		}
+ 		if (!bio_integrity_prep(bio))
+ 			goto fail;
+ 	}
 -- 
 2.43.0
 
