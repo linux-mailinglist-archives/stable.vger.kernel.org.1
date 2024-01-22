@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-15528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58F2C838EC5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 13:49:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11220838EC2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 13:49:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07FA028A268
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 12:49:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 926F41F2538F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 12:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999C25DF39;
-	Tue, 23 Jan 2024 12:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9302D5EE87;
+	Tue, 23 Jan 2024 12:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mfhMbbMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0g779+LT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587834BAA8;
-	Tue, 23 Jan 2024 12:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE115C5FB;
+	Tue, 23 Jan 2024 12:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706014184; cv=none; b=PPPFsZdbngC65aqBFMybN5TzIONawKiXLeSYrgiPEMPoyoWNjbyIQ7UPay6+apniKSkBYx/Aj+OdEgxU9RkXvj0BIl9VNohQb/Le5GeA/yJfWsPFAGl7YeOT2Y1nWh6qGdYSoZPl1ZD8IO2Zj8q+Z33CtAxZjZBLsscaLWFHKiU=
+	t=1706014176; cv=none; b=JbfscMYkZcxOBgZDhQmsa92124XPorGFsVFhKXJqWC8kmoN4Y2rnp8at+tBXEZlJbUhLvu6k9d/+9As7XYVApGFg/Hukx+S7VNJPw2J/BL+wfgivOXZ03diG7a1NWUF4H938p4DRP4jDrE5yDfdjyOeHBUYK4gfoWlzLBX0KjKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706014184; c=relaxed/simple;
-	bh=ncAfhvvsrl5YhSet1wK+poXzXBEqjYkLx8ZYdBzFBdw=;
+	s=arc-20240116; t=1706014176; c=relaxed/simple;
+	bh=hvrxoMiGOsUX6FGhkQ0hZ/bYlfuVaEVVRR0/XyY5pbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E0hcLX7pGQ09vxcSiyFDCGOAtES3eID0v+HEJqxfdmhWOT10PlrPu6pHu8BAu4aB7JW14DnX2Z7eBsrCwbRD8SuY97iOSu+pRTix36QBF80QOx+vr6rc9rohm3vrAUzoFaWl4jK3enL9+p8mKGtV7MyCTD8V3ZkzRvR78sLyhec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mfhMbbMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D71C43394;
-	Tue, 23 Jan 2024 12:49:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pVs4LCuvfu2ldYPYZ3wKOhKxSV5+DkXxcifQ2wzYquXLi7LZ8tbWgv4LTI1mcKvH/ij0vDr1wx7muuktaLQDWLESXqRm/kueyQKhSFy9z7Lhu7CQEAuXPMUfekBOKrwx7GgMXuUdSjy/hSbATo7hlfWG2shRGor2e2FOoICO1EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0g779+LT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B697BC43394;
+	Tue, 23 Jan 2024 12:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706014184;
-	bh=ncAfhvvsrl5YhSet1wK+poXzXBEqjYkLx8ZYdBzFBdw=;
+	s=korg; t=1706014175;
+	bh=hvrxoMiGOsUX6FGhkQ0hZ/bYlfuVaEVVRR0/XyY5pbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mfhMbbMelOb1E048/gef3TO312CJ3aQUkiQ9QNEvV6jS5LMq2D2AmdH7267gSi7zi
-	 ft+Fzmj6GEMu1iPXED78P3vLHedz9w0TgSvlb0KYMTpgvrTHlsPq5XpIjjPjy4d/0N
-	 baJxrW7j/gJ6+7GNw4AXscbafKYZPJJjMjFt+dCQ=
+	b=0g779+LTIUsQB8Y1e2cejMa4OeyPNizRmdgSpeH/2YwZcU8HBXUfEAMe2hbgMgRX8
+	 gjusz3+U/hgklLl0FaB+CmGnC8/p54BHBZve+5cfDZOj7nlT8PE9RpYDBHpKhcdGMv
+	 IcR5WABY7C91WNy1t+DlEnVUZeJl/p8hBi4CCsAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.6 414/583] wifi: rtlwifi: Remove bogus and dangerous ASPM disable/enable code
-Date: Mon, 22 Jan 2024 15:57:45 -0800
-Message-ID: <20240122235824.633129156@linuxfoundation.org>
+Subject: [PATCH 6.1 308/417] wifi: rtlwifi: Remove bogus and dangerous ASPM disable/enable code
+Date: Mon, 22 Jan 2024 15:57:56 -0800
+Message-ID: <20240122235802.496914364@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -199,7 +199,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  static void rtl_pci_parse_configuration(struct pci_dev *pdev,
  					struct ieee80211_hw *hw)
  {
-@@ -2028,12 +1980,6 @@ static bool _rtl_pci_find_adapter(struct
+@@ -2033,12 +1985,6 @@ static bool _rtl_pci_find_adapter(struct
  		    PCI_SLOT(bridge_pdev->devfn);
  		pcipriv->ndis_adapter.pcibridge_funcnum =
  		    PCI_FUNC(bridge_pdev->devfn);
@@ -212,7 +212,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  		if (pcipriv->ndis_adapter.pcibridge_vendor ==
  		    PCI_BRIDGE_VENDOR_AMD) {
-@@ -2050,13 +1996,11 @@ static bool _rtl_pci_find_adapter(struct
+@@ -2055,13 +2001,11 @@ static bool _rtl_pci_find_adapter(struct
  		pdev->vendor, pcipriv->ndis_adapter.linkctrl_reg);
  
  	rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
