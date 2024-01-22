@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-13564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B20837C9E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:13:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 764A0837FE2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCC8F1F28AFB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:13:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1A50B2B4E3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB4C145B2E;
-	Tue, 23 Jan 2024 00:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F1912A172;
+	Tue, 23 Jan 2024 00:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cuyY50wI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgERpPJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D08B136658;
-	Tue, 23 Jan 2024 00:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DD212A167;
+	Tue, 23 Jan 2024 00:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969690; cv=none; b=VvaUbt5POhCeEmt7+AH73rFDEU/cCSgw8M3b6vQ/zek1EwOMDP9eUZD3b3kH/q4QvJd/LYuRKtsnkvdSFmhbXOZyx9XsERRtnGY5GbKrhpqayEWZcPew/+yjGwzs75e67XQsPNstlr5JSfyeMtY4NbGIPywZyWmMS0DOF+UZTpg=
+	t=1705971039; cv=none; b=tM6MvnLfTDUELPM4w68UhQPd4ihi+8LdFZE2m0Y1C/bSzaTIfqoPJE6OY/ODzf3vjdEEiperayvKOQJ80EjUANNjjHRtKX2HICMhSSM3cDQbTXv1u02NPJxhSZl0r3N9qs0X6KnyMDhMI7uZU7w1GF902+cN1V+leMkIP1QTBQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969690; c=relaxed/simple;
-	bh=TmFAlnmAEof6VSgcLCwEWURPwXVpP7j7ddpfXAkQ/oU=;
+	s=arc-20240116; t=1705971039; c=relaxed/simple;
+	bh=9pb6guw6F4Dx9w2zoViXs/yIvPO8Z2e0/CqIWaxIkGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=esBufT/BVLrcPTxjoXHfPmSXqtelCowfVbeosBABsehoMv3fNXskNR+5wIDzc4g1pof4rlu7XE0abhKlV8ppg1ljSB83hQtWWDtmlOxDjyjI6zwKQtePa5CyP5p7liFuS3nM4oP9jrUHVTqUq/ABGr6xHCsXOeGaPCasCHNpalY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cuyY50wI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C08C433F1;
-	Tue, 23 Jan 2024 00:28:10 +0000 (UTC)
+	 MIME-Version; b=bWltdAq26Yrwy06Nh/CmNZ2FVgetAXw6l+CW6Q3Iqu4+YkYk5nEElI4hHPAe/4srbwen8kjBfRC1MazAYW9m6uYwmVrpZCE9bi2S9gSx/9SQl5bg9XtVvNY4BU3mDQz6R+5QJpz+27VXBWAX80jrRz31Y01rF5MBw4qApVLHrB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgERpPJB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8212BC43394;
+	Tue, 23 Jan 2024 00:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969690;
-	bh=TmFAlnmAEof6VSgcLCwEWURPwXVpP7j7ddpfXAkQ/oU=;
+	s=korg; t=1705971039;
+	bh=9pb6guw6F4Dx9w2zoViXs/yIvPO8Z2e0/CqIWaxIkGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cuyY50wIkPG8penXXZgHcJZlq8w1ptEwZrWuAWXyC581zpK0hkdCcOU3SK6yxbrC3
-	 G43OfRYnLptUmIHADoZXWepQNwCh8WReYztn+L4tMvN4XhTYIyLb4IcKKGydLo+RZp
-	 DvIQ2vROEB8oPGyqhn4yzKy4XSJu7a+4MBzLF5m8=
+	b=EgERpPJB6CuEQfk38+Plhe3R0S5NsNJrE54ELiFsI2r74AfJmBfIvmUkREKAKVOhq
+	 M/RqTdAsHu8Z4esg9jr4LB84TMIjn4oJNX++I+1IUJ0fXFyaLQ8bc7rZoVMRcNpiPp
+	 O6M21VJb8ku50tF58+IcmLLT/ecjqOvEsbJRaBig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <2045gemini@gmail.com>
-Subject: [PATCH 6.7 407/641] usb: mon: Fix atomicity violation in mon_bin_vma_fault
-Date: Mon, 22 Jan 2024 15:55:11 -0800
-Message-ID: <20240122235830.713245976@linuxfoundation.org>
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 144/417] Bluetooth: Fix bogus check for re-auth no supported with non-ssp
+Date: Mon, 22 Jan 2024 15:55:12 -0800
+Message-ID: <20240122235756.820052198@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <2045gemini@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 2dd23cc4d0e6aa55cf9fb3b05f2f4165b01de81c upstream.
+[ Upstream commit d03376c185926098cb4d668d6458801eb785c0a5 ]
 
-In mon_bin_vma_fault():
-    offset = vmf->pgoff << PAGE_SHIFT;
-    if (offset >= rp->b_size)
-        return VM_FAULT_SIGBUS;
-    chunk_idx = offset / CHUNK_SIZE;
-    pageptr = rp->b_vec[chunk_idx].pg;
-The code is executed without holding any lock.
+This reverts 19f8def031bfa50c579149b200bfeeb919727b27
+"Bluetooth: Fix auth_complete_evt for legacy units" which seems to be
+working around a bug on a broken controller rather then any limitation
+imposed by the Bluetooth spec, in fact if there ws not possible to
+re-auth the command shall fail not succeed.
 
-In mon_bin_vma_close():
-    spin_lock_irqsave(&rp->b_lock, flags);
-    rp->mmap_active--;
-    spin_unlock_irqrestore(&rp->b_lock, flags);
-
-In mon_bin_ioctl():
-    spin_lock_irqsave(&rp->b_lock, flags);
-    if (rp->mmap_active) {
-        ...
-    } else {
-        ...
-        kfree(rp->b_vec);
-        rp->b_vec  = vec;
-        rp->b_size = size;
-        ...
-    }
-    spin_unlock_irqrestore(&rp->b_lock, flags);
-
-Concurrent execution of mon_bin_vma_fault() with mon_bin_vma_close() and
-mon_bin_ioctl() could lead to atomicity violations. mon_bin_vma_fault()
-accesses rp->b_size and rp->b_vec without locking, risking array
-out-of-bounds access or use-after-free bugs due to possible modifications
-in mon_bin_ioctl().
-
-This possible bug is found by an experimental static analysis tool
-developed by our team, BassCheck[1]. This tool analyzes the locking APIs
-to extract function pairs that can be concurrently executed, and then
-analyzes the instructions in the paired functions to identify possible
-concurrency bugs including data races and atomicity violations. The above
-possible bug is reported when our tool analyzes the source code of
-Linux 6.2.
-
-To address this issue, it is proposed to add a spin lock pair in
-mon_bin_vma_fault() to ensure atomicity. With this patch applied, our tool
-never reports the possible bug, with the kernel configuration allyesconfig
-for x86_64. Due to the lack of associated hardware, we cannot test the
-patch in runtime testing, and just verify it according to the code logic.
-
-[1] https://sites.google.com/view/basscheck/
-
-Fixes: 19e6317d24c2 ("usb: mon: Fix a deadlock in usbmon between ...")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
-Link: https://lore.kernel.org/r/20240105052412.9377-1-2045gemini@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 19f8def031bf ("Bluetooth: Fix auth_complete_evt for legacy units")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/mon/mon_bin.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/net/bluetooth/hci_core.h |  1 -
+ net/bluetooth/hci_conn.c         |  8 +++-----
+ net/bluetooth/hci_event.c        | 11 ++---------
+ 3 files changed, 5 insertions(+), 15 deletions(-)
 
---- a/drivers/usb/mon/mon_bin.c
-+++ b/drivers/usb/mon/mon_bin.c
-@@ -1250,14 +1250,19 @@ static vm_fault_t mon_bin_vma_fault(stru
- 	struct mon_reader_bin *rp = vmf->vma->vm_private_data;
- 	unsigned long offset, chunk_idx;
- 	struct page *pageptr;
-+	unsigned long flags;
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 5f8a534b6574..09c978f3d95d 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -942,7 +942,6 @@ void hci_inquiry_cache_flush(struct hci_dev *hdev);
+ /* ----- HCI Connections ----- */
+ enum {
+ 	HCI_CONN_AUTH_PEND,
+-	HCI_CONN_REAUTH_PEND,
+ 	HCI_CONN_ENCRYPT_PEND,
+ 	HCI_CONN_RSWITCH_PEND,
+ 	HCI_CONN_MODE_CHANGE_PEND,
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 55e0ecd88543..12d36875358b 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -2314,12 +2314,10 @@ static int hci_conn_auth(struct hci_conn *conn, __u8 sec_level, __u8 auth_type)
+ 		hci_send_cmd(conn->hdev, HCI_OP_AUTH_REQUESTED,
+ 			     sizeof(cp), &cp);
  
-+	spin_lock_irqsave(&rp->b_lock, flags);
- 	offset = vmf->pgoff << PAGE_SHIFT;
--	if (offset >= rp->b_size)
-+	if (offset >= rp->b_size) {
-+		spin_unlock_irqrestore(&rp->b_lock, flags);
- 		return VM_FAULT_SIGBUS;
-+	}
- 	chunk_idx = offset / CHUNK_SIZE;
- 	pageptr = rp->b_vec[chunk_idx].pg;
- 	get_page(pageptr);
- 	vmf->page = pageptr;
-+	spin_unlock_irqrestore(&rp->b_lock, flags);
- 	return 0;
- }
+-		/* If we're already encrypted set the REAUTH_PEND flag,
+-		 * otherwise set the ENCRYPT_PEND.
++		/* Set the ENCRYPT_PEND to trigger encryption after
++		 * authentication.
+ 		 */
+-		if (test_bit(HCI_CONN_ENCRYPT, &conn->flags))
+-			set_bit(HCI_CONN_REAUTH_PEND, &conn->flags);
+-		else
++		if (!test_bit(HCI_CONN_ENCRYPT, &conn->flags))
+ 			set_bit(HCI_CONN_ENCRYPT_PEND, &conn->flags);
+ 	}
  
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index dcb13c64e8e7..56ecc5f97b91 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -3511,14 +3511,8 @@ static void hci_auth_complete_evt(struct hci_dev *hdev, void *data,
+ 
+ 	if (!ev->status) {
+ 		clear_bit(HCI_CONN_AUTH_FAILURE, &conn->flags);
+-
+-		if (!hci_conn_ssp_enabled(conn) &&
+-		    test_bit(HCI_CONN_REAUTH_PEND, &conn->flags)) {
+-			bt_dev_info(hdev, "re-auth of legacy device is not possible.");
+-		} else {
+-			set_bit(HCI_CONN_AUTH, &conn->flags);
+-			conn->sec_level = conn->pending_sec_level;
+-		}
++		set_bit(HCI_CONN_AUTH, &conn->flags);
++		conn->sec_level = conn->pending_sec_level;
+ 	} else {
+ 		if (ev->status == HCI_ERROR_PIN_OR_KEY_MISSING)
+ 			set_bit(HCI_CONN_AUTH_FAILURE, &conn->flags);
+@@ -3527,7 +3521,6 @@ static void hci_auth_complete_evt(struct hci_dev *hdev, void *data,
+ 	}
+ 
+ 	clear_bit(HCI_CONN_AUTH_PEND, &conn->flags);
+-	clear_bit(HCI_CONN_REAUTH_PEND, &conn->flags);
+ 
+ 	if (conn->state == BT_CONFIG) {
+ 		if (!ev->status && hci_conn_ssp_enabled(conn)) {
+-- 
+2.43.0
+
 
 
 
