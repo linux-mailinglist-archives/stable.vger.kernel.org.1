@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-13293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED7D837CB0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:14:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB4A837BAD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:05:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A5B2B2EA39
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:00:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CD5AB2C352
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:59:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822B514C5BF;
-	Tue, 23 Jan 2024 00:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B7014AD0C;
+	Tue, 23 Jan 2024 00:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+tL6/5P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vpW+kLNA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4291C14AD2B;
-	Tue, 23 Jan 2024 00:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC1F14A4FA;
+	Tue, 23 Jan 2024 00:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969274; cv=none; b=oq0tIxbXQkwJJ4vZyNJSE1nWonbTWXyANPOB6G+rBdJwzfH0uhZ/EFTXTlft6z1GeoVivxD5cwGG3vvX3iqahIk9e0bQIwCRwcuHzoSjR4yMR9Xs+emR5830xlq2PLBW6XKwWxVpJigcHOf/aYOju1mEh2DrmS2CYp0FQVIn6P4=
+	t=1705969240; cv=none; b=ZlbhiJLVwtF1lGa0SOzyvnQTewaFiC7C0UEX0J5HXw3bk8b/xoXb1J36ED5CcyHU+rtTPa+juRlvJ9xFfQdAYlw3qof5HbgPBVMEK+muKkcyN23I4X4r21nZOCiplit+qH009eOhDQH0viP/mVjBbkdxwjKa6k6q3e02JEGOA/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969274; c=relaxed/simple;
-	bh=r2PXfUpxg0FbmHCo3uYFJP6xV9QaeEXrmBx3k1Cplr8=;
+	s=arc-20240116; t=1705969240; c=relaxed/simple;
+	bh=Bf+R0A9VsRIsBDDiukmGNhR1ajhjZMwVNDRZ2Ff1Ft4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k8ptrho0wYSTbifAYMdgqc07i/0FR2tvBTo3WUv8s5jG3GFlJIIuotFhkyCXnaF85opvrMvCHv48hBhx/t0ASvcf7dTLv6XuMzT363LZn22jHuLBzxcKHt+6Yqr0EHH66IBji5TjKE5EZ0UFok+NoQ96ukUzjwCKAJblZSChVoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+tL6/5P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C08C43399;
-	Tue, 23 Jan 2024 00:21:13 +0000 (UTC)
+	 MIME-Version; b=eTHXh37eyq68cY2whsUC6kTveERUVowaV7NCwOlVXUhopA9+3XBQHokpKvU7hoagt9gt+f6/egueBkunOaIAuREmWbiCkKO7Zj6Ex0qNO+SiSLtEu/pxECB5fd8Et4Mpdm9NhUCjU1f2tORn/J5rv1s8dlsDHx6DcRGVF7mLl5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vpW+kLNA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88483C433F1;
+	Tue, 23 Jan 2024 00:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969274;
-	bh=r2PXfUpxg0FbmHCo3uYFJP6xV9QaeEXrmBx3k1Cplr8=;
+	s=korg; t=1705969239;
+	bh=Bf+R0A9VsRIsBDDiukmGNhR1ajhjZMwVNDRZ2Ff1Ft4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+tL6/5PwxbEviZGTmm4cZ7A93GxnC9Yb5VcGDgCT2MOcAqy44+3vUWDhiAHZU2tp
-	 P+yAUJbp//wEPMVma8zCaVPFLlnXv2g84yx0jw26LPUxN/8UaBtxjDze/1QamLuKaw
-	 zHzF3KBZcMoUmEeRLwPdlFJjdMXLWSrntfWhNUpc=
+	b=vpW+kLNAIRuAf76fXJlKI7xKf6bLEmls2XaX3qIK2c0ayA/lZJL7LiDPJgfduHhBl
+	 fdPVROpQb4jCrRzI3d+fBL8v9klAxT9+fo41jFskH8muUUVxjUTz8OASRApUT5ehay
+	 wBAJANNuoB8c0l2hTm/7AJnbJnAPaP4fRIQ4KZ60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Nishanth Menon <nm@ti.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 112/641] arm64: dts: ti: iot2050: Re-add aliases
-Date: Mon, 22 Jan 2024 15:50:16 -0800
-Message-ID: <20240122235821.542058507@linuxfoundation.org>
+Subject: [PATCH 6.7 120/641] arm64: dts: qcom: sc8180x-primus: Fix HALL_INT polarity
+Date: Mon, 22 Jan 2024 15:50:24 -0800
+Message-ID: <20240122235821.808704390@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -66,42 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jan Kiszka <jan.kiszka@siemens.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-[ Upstream commit ad8edf4ff37ab157f6547da173aedc9f4e5c4015 ]
+[ Upstream commit 1aaa08e8de365cce59203541cafadb5053b1ec1a ]
 
-Lost while dropping them from the common dtsi.
+The hall sensor interrupt on the Primus is active low, which means that
+with the current configuration the device attempts to suspend when the
+LID is open.
 
-Fixes: ffc449e016e2 ("arm64: dts: ti: k3-am65: Drop aliases")
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-Link: https://lore.kernel.org/r/1edbc1b56ed4ff2256d7afb7db3cab4b3a423692.1699087938.git.jan.kiszka@siemens.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fix the polarity of the HALL_INT GPIO to avoid this.
+
+Fixes: 2ce38cc1e8fe ("arm64: dts: qcom: sc8180x: Introduce Primus")
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231130-sc8180x-primus-lid-polarity-v1-1-da917b59604b@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am65-iot2050-common.dtsi | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/arm64/boot/dts/qcom/sc8180x-primus.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am65-iot2050-common.dtsi b/arch/arm64/boot/dts/ti/k3-am65-iot2050-common.dtsi
-index ba1c14a54acf..b849648d51f9 100644
---- a/arch/arm64/boot/dts/ti/k3-am65-iot2050-common.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am65-iot2050-common.dtsi
-@@ -14,6 +14,16 @@
+diff --git a/arch/arm64/boot/dts/qcom/sc8180x-primus.dts b/arch/arm64/boot/dts/qcom/sc8180x-primus.dts
+index fd2fab4895b3..a40ef23a2a4f 100644
+--- a/arch/arm64/boot/dts/qcom/sc8180x-primus.dts
++++ b/arch/arm64/boot/dts/qcom/sc8180x-primus.dts
+@@ -43,7 +43,7 @@ gpio-keys {
+ 		pinctrl-0 = <&hall_int_active_state>;
  
- / {
- 	aliases {
-+		serial0 = &wkup_uart0;
-+		serial1 = &mcu_uart0;
-+		serial2 = &main_uart0;
-+		serial3 = &main_uart1;
-+		i2c0 = &wkup_i2c0;
-+		i2c1 = &mcu_i2c0;
-+		i2c2 = &main_i2c0;
-+		i2c3 = &main_i2c1;
-+		i2c4 = &main_i2c2;
-+		i2c5 = &main_i2c3;
- 		spi0 = &mcu_spi0;
- 		mmc0 = &sdhci1;
- 		mmc1 = &sdhci0;
+ 		lid-switch {
+-			gpios = <&tlmm 121 GPIO_ACTIVE_HIGH>;
++			gpios = <&tlmm 121 GPIO_ACTIVE_LOW>;
+ 			linux,input-type = <EV_SW>;
+ 			linux,code = <SW_LID>;
+ 			wakeup-source;
 -- 
 2.43.0
 
