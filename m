@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB848382E3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D3A8384D3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA6D9287423
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A9B928E92E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346175FDD1;
-	Tue, 23 Jan 2024 01:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1495774E23;
+	Tue, 23 Jan 2024 02:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIWbFKB3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TebvrXHv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D7750258;
-	Tue, 23 Jan 2024 01:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8424745F0;
+	Tue, 23 Jan 2024 02:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974651; cv=none; b=ApEOG2Q/SUJ5QPPBqvrI6AyLhyFpquU+V6PcxifjR7caqSojDrIKlxDhiAoQiQI7l8293FpJOyio64/fqN06IQuyvY1lfm2oXnPmC72CneEf6Cnq9akGZ5GFj2PDMN4m9EaNzROybtJyt5D89feUrzuMEqH8AmYBCYvtT68MvZQ=
+	t=1705975504; cv=none; b=PoYFU75PuzUbwv/ahMCVPT3las1fGCGIh/0+RyIDLNm4ItGAab83ifAr1KikoVlTnqwfBw0zxd5ZIZJdzVy3ghgbPNC/KmEBmdKEQWpQp2b8L9RHOAy5DL9Ch3VHpYcOH7lPs2DAe+NDTd43aFtM9ARAcQ8OuDQblVFEsynW6aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974651; c=relaxed/simple;
-	bh=ibjWYXDbx9NkS2W/B4surKj1UcwM2NLdmLH6VMWDtow=;
+	s=arc-20240116; t=1705975504; c=relaxed/simple;
+	bh=gW3UN6johKmXicP2sl4jdifwUGXiQDW+YG17Egz4jkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RaHHfsdUHQZb/LOO5TU8rDzprHvZKUUAUnfeaCvj9WDUyQp/RjZcWfUJTpXQIOXwfZTorg7KdvJv0gjy8UhsjhY6hvEQunDU22ypxjzicJXFa3Lhp21Kie3/pdAIKPhLAigDxz3M8wpboRrPeoanzA5g7S/F0ikIF4o1iVG/fHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIWbFKB3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1A6C433C7;
-	Tue, 23 Jan 2024 01:50:50 +0000 (UTC)
+	 MIME-Version; b=OhfhTaVwnCFPn0gymb4tqY6E7ZHOWX2G9RZfarDmi8kgJ4xwDsZzpcMYn653MRENsSHYiomFNhhRB8YUxcWakPXDxV4v3zB9MYlgNeBtTlv+tCe0CcUJ5iP7RqtG6r35Gp1H5tXnfUuaIe9EJ/CCXvwQe/rNfVnTU2oAFUGrGPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TebvrXHv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6DEC433C7;
+	Tue, 23 Jan 2024 02:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974650;
-	bh=ibjWYXDbx9NkS2W/B4surKj1UcwM2NLdmLH6VMWDtow=;
+	s=korg; t=1705975504;
+	bh=gW3UN6johKmXicP2sl4jdifwUGXiQDW+YG17Egz4jkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wIWbFKB36Z/Xeg3/4Vr9mnlP2/1e2Dg8cp1AeSvWN9Ak6OKcfBngQh2sNqGSDC5X4
-	 tjQnDrsLnrdY/6zJFvFTrVCdE29JLHQ+tzHUnHW+D8kBTZ0r86xosaEq2Jf595gmON
-	 8g6o49xhs9wBeVyCffnrXdaGx+lAaPQS6GK4HMuc=
+	b=TebvrXHvsNCW2X8qSDI7m8Y1fZC4yRGlWQxiGVhL69HcQSRdvaNhsYWj552ebDP4y
+	 bHH1qud5q5Nu9R1VF9Yz1VnyqzAqsJExMCGkgwjYlSlIYMYM9eoEy/xsQ+qWdJClqo
+	 t+l2+znzGG9jHM5Pk6l4gzxRBUG5QdGqPMUrBym0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 233/374] ALSA: scarlett2: Allow passing any output to line_out_remap()
-Date: Mon, 22 Jan 2024 15:58:09 -0800
-Message-ID: <20240122235752.822269691@linuxfoundation.org>
+Subject: [PATCH 6.6 439/583] mfd: cs42l43: Correct SoundWire port list
+Date: Mon, 22 Jan 2024 15:58:10 -0800
+Message-ID: <20240122235825.408140064@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 2190b9aea4eb92ccf3176e35c17c959e40f1a81b ]
+[ Upstream commit 47b1b03dc56ebc302620ce43e967aa8f33516f6f ]
 
-Line outputs 3 & 4 on the Gen 3 18i8 are internally the analogue 7 and
-8 outputs, and this renumbering is hidden from the user by
-line_out_remap(). By allowing higher values (representing non-analogue
-outputs) to be passed to line_out_remap(), repeated code from
-scarlett2_mux_src_enum_ctl_get() and scarlett2_mux_src_enum_ctl_put()
-can be removed.
+Two ports are missing from the port list, and the wrong port is set
+to 4 channels. Also the attempt to list them by function is rather
+misguided, there is nothing in the hardware that fixes a particular
+port to one function. Factor out the port properties to an actual
+struct, fixing the missing ports and correcting the port set to 4
+channels.
 
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://lore.kernel.org/r/3b70267931f5994628ab27306c73cddd17b93c8f.1698342632.git.g@b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: 50603a67daef ("ALSA: scarlett2: Add missing error checks to *_ctl_get()")
+Fixes: ace6d1448138 ("mfd: cs42l43: Add support for cs42l43 core driver")
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20231130115712.669180-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett_gen2.c | 25 +++++++++----------------
- 1 file changed, 9 insertions(+), 16 deletions(-)
+ drivers/mfd/cs42l43-sdw.c | 74 +++++++++++++++------------------------
+ 1 file changed, 28 insertions(+), 46 deletions(-)
 
-diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
-index f8787a4b1e13..ad46a0d3e33b 100644
---- a/sound/usb/mixer_scarlett_gen2.c
-+++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -1777,9 +1777,16 @@ static int scarlett2_master_volume_ctl_get(struct snd_kcontrol *kctl,
- static int line_out_remap(struct scarlett2_data *private, int index)
- {
- 	const struct scarlett2_device_info *info = private->info;
-+	const int (*port_count)[SCARLETT2_PORT_DIRNS] = info->port_count;
-+	int line_out_count =
-+		port_count[SCARLETT2_PORT_TYPE_ANALOGUE][SCARLETT2_PORT_OUT];
+diff --git a/drivers/mfd/cs42l43-sdw.c b/drivers/mfd/cs42l43-sdw.c
+index 7392b3d2e6b9..4be4df9dd8cf 100644
+--- a/drivers/mfd/cs42l43-sdw.c
++++ b/drivers/mfd/cs42l43-sdw.c
+@@ -17,13 +17,12 @@
  
- 	if (!info->line_out_remap_enable)
- 		return index;
+ #include "cs42l43.h"
+ 
+-enum cs42l43_sdw_ports {
+-	CS42L43_DMIC_DEC_ASP_PORT = 1,
+-	CS42L43_SPK_TX_PORT,
+-	CS42L43_SPDIF_HP_PORT,
+-	CS42L43_SPK_RX_PORT,
+-	CS42L43_ASP_PORT,
+-};
++#define CS42L43_SDW_PORT(port, chans) { \
++	.num = port, \
++	.max_ch = chans, \
++	.type = SDW_DPN_FULL, \
++	.max_word = 24, \
++}
+ 
+ static const struct regmap_config cs42l43_sdw_regmap = {
+ 	.reg_bits		= 32,
+@@ -42,65 +41,48 @@ static const struct regmap_config cs42l43_sdw_regmap = {
+ 	.num_reg_defaults	= ARRAY_SIZE(cs42l43_reg_default),
+ };
+ 
++static const struct sdw_dpn_prop cs42l43_src_port_props[] = {
++	CS42L43_SDW_PORT(1, 4),
++	CS42L43_SDW_PORT(2, 2),
++	CS42L43_SDW_PORT(3, 2),
++	CS42L43_SDW_PORT(4, 2),
++};
 +
-+	if (index >= line_out_count)
-+		return index;
++static const struct sdw_dpn_prop cs42l43_sink_port_props[] = {
++	CS42L43_SDW_PORT(5, 2),
++	CS42L43_SDW_PORT(6, 2),
++	CS42L43_SDW_PORT(7, 2),
++};
 +
- 	return info->line_out_remap[index];
+ static int cs42l43_read_prop(struct sdw_slave *sdw)
+ {
+ 	struct sdw_slave_prop *prop = &sdw->prop;
+ 	struct device *dev = &sdw->dev;
+-	struct sdw_dpn_prop *dpn;
+-	unsigned long addr;
+-	int nval;
+ 	int i;
+-	u32 bit;
+ 
+ 	prop->use_domain_irq = true;
+ 	prop->paging_support = true;
+ 	prop->wake_capable = true;
+-	prop->source_ports = BIT(CS42L43_DMIC_DEC_ASP_PORT) | BIT(CS42L43_SPK_TX_PORT);
+-	prop->sink_ports = BIT(CS42L43_SPDIF_HP_PORT) |
+-			   BIT(CS42L43_SPK_RX_PORT) | BIT(CS42L43_ASP_PORT);
+ 	prop->quirks = SDW_SLAVE_QUIRKS_INVALID_INITIAL_PARITY;
+ 	prop->scp_int1_mask = SDW_SCP_INT1_BUS_CLASH | SDW_SCP_INT1_PARITY |
+ 			      SDW_SCP_INT1_IMPL_DEF;
+ 
+-	nval = hweight32(prop->source_ports);
+-	prop->src_dpn_prop = devm_kcalloc(dev, nval, sizeof(*prop->src_dpn_prop),
+-					  GFP_KERNEL);
++	for (i = 0; i < ARRAY_SIZE(cs42l43_src_port_props); i++)
++		prop->source_ports |= BIT(cs42l43_src_port_props[i].num);
++
++	prop->src_dpn_prop = devm_kmemdup(dev, cs42l43_src_port_props,
++					  sizeof(cs42l43_src_port_props), GFP_KERNEL);
+ 	if (!prop->src_dpn_prop)
+ 		return -ENOMEM;
+ 
+-	i = 0;
+-	dpn = prop->src_dpn_prop;
+-	addr = prop->source_ports;
+-	for_each_set_bit(bit, &addr, 32) {
+-		dpn[i].num = bit;
+-		dpn[i].max_ch = 2;
+-		dpn[i].type = SDW_DPN_FULL;
+-		dpn[i].max_word = 24;
+-		i++;
+-	}
+-	/*
+-	 * All ports are 2 channels max, except the first one,
+-	 * CS42L43_DMIC_DEC_ASP_PORT.
+-	 */
+-	dpn[CS42L43_DMIC_DEC_ASP_PORT].max_ch = 4;
++	for (i = 0; i < ARRAY_SIZE(cs42l43_sink_port_props); i++)
++		prop->sink_ports |= BIT(cs42l43_sink_port_props[i].num);
+ 
+-	nval = hweight32(prop->sink_ports);
+-	prop->sink_dpn_prop = devm_kcalloc(dev, nval, sizeof(*prop->sink_dpn_prop),
+-					   GFP_KERNEL);
++	prop->sink_dpn_prop = devm_kmemdup(dev, cs42l43_sink_port_props,
++					   sizeof(cs42l43_sink_port_props), GFP_KERNEL);
+ 	if (!prop->sink_dpn_prop)
+ 		return -ENOMEM;
+ 
+-	i = 0;
+-	dpn = prop->sink_dpn_prop;
+-	addr = prop->sink_ports;
+-	for_each_set_bit(bit, &addr, 32) {
+-		dpn[i].num = bit;
+-		dpn[i].max_ch = 2;
+-		dpn[i].type = SDW_DPN_FULL;
+-		dpn[i].max_word = 24;
+-		i++;
+-	}
+-
+ 	return 0;
  }
  
-@@ -3264,14 +3271,7 @@ static int scarlett2_mux_src_enum_ctl_get(struct snd_kcontrol *kctl,
- 	struct usb_mixer_elem_info *elem = kctl->private_data;
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = mixer->private_data;
--	const struct scarlett2_device_info *info = private->info;
--	const int (*port_count)[SCARLETT2_PORT_DIRNS] = info->port_count;
--	int line_out_count =
--		port_count[SCARLETT2_PORT_TYPE_ANALOGUE][SCARLETT2_PORT_OUT];
--	int index = elem->control;
--
--	if (index < line_out_count)
--		index = line_out_remap(private, index);
-+	int index = line_out_remap(private, elem->control);
- 
- 	mutex_lock(&private->data_mutex);
- 	if (private->mux_updated)
-@@ -3288,16 +3288,9 @@ static int scarlett2_mux_src_enum_ctl_put(struct snd_kcontrol *kctl,
- 	struct usb_mixer_elem_info *elem = kctl->private_data;
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = mixer->private_data;
--	const struct scarlett2_device_info *info = private->info;
--	const int (*port_count)[SCARLETT2_PORT_DIRNS] = info->port_count;
--	int line_out_count =
--		port_count[SCARLETT2_PORT_TYPE_ANALOGUE][SCARLETT2_PORT_OUT];
--	int index = elem->control;
-+	int index = line_out_remap(private, elem->control);
- 	int oval, val, err = 0;
- 
--	if (index < line_out_count)
--		index = line_out_remap(private, index);
--
- 	mutex_lock(&private->data_mutex);
- 
- 	oval = private->mux[index];
 -- 
 2.43.0
 
