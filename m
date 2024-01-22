@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-13683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7956837D66
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AFA9838019
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 066AE1C287AD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D3E81C2956A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09ECB5A0F5;
-	Tue, 23 Jan 2024 00:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BC3664BD;
+	Tue, 23 Jan 2024 00:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/uxZgEX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYX7eDIF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC38852F7C;
-	Tue, 23 Jan 2024 00:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F0264CF1;
+	Tue, 23 Jan 2024 00:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969925; cv=none; b=rG6t7M8CBgWwE0O4OJ3DifvZeeOzXzYawz+Kx0N8McWs93jdBcOBTXhq7p0rtfqY31npehW5dycVtnh/ExHs45GnTvxtA7ty2Cv6Eg0nMM6eqCP4ad+5EkSvt+ZrJ2/IerljePYCAlg8sT4caAugg89NP+Wn+A0vy8rAebVm4M4=
+	t=1705971545; cv=none; b=k5ddnkLlR8punqjAGSrqBCper3bsXiAuDN08JSUX9KzNnNENjudx+HSPKMzdcVnJACRc4X7sWTeT4ZZpWvuwVxh8IwlEbskB+nh9BgrYaw0lS8SQWL4LUzIF5t7d30l8hRTufR+dmOxHPGAhkkIM9KeKC//5CS/gbG/JUJeP2oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969925; c=relaxed/simple;
-	bh=caCf7fq/mlPatxXQJCEVHTr6bc98v9evIaPwEQoI7yE=;
+	s=arc-20240116; t=1705971545; c=relaxed/simple;
+	bh=aEejjG+OcUCwvnhL/pD/HyYqw+Nw63nPa4es05pwyac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EaerOlvkGt7MyFwo+NEwQKezwzFM4nTpG/Gt+E6hS3M7GN484wyBs5VTFIQU3oLDh4bcuUdg0/haTjyoz/6iaQX/ziftCu/S7+/3w0FUZKF9yF9ej+rtGMD62XPyuDEFP8nRonMpngXj3Msrp/QWtzj/lDtYZQS9tvu7CoOnYvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/uxZgEX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75391C433C7;
-	Tue, 23 Jan 2024 00:32:05 +0000 (UTC)
+	 MIME-Version; b=YKSFfR3KJXDIb51VouPM8GA6VId29cu+JH8wHmrADJLkJgvZVEI2/0/mxia/27unHVQGAfDEJ6OTb6eqMhSo2ZQF6OmW2GjhRpMto0jWffiQmtWZpCQIZZ4eF5L7cibJOxXcfNkNpVhV0hbgDWgjaHDkSfVsAifjMHDMleqKr28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYX7eDIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3648C43394;
+	Tue, 23 Jan 2024 00:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969925;
-	bh=caCf7fq/mlPatxXQJCEVHTr6bc98v9evIaPwEQoI7yE=;
+	s=korg; t=1705971545;
+	bh=aEejjG+OcUCwvnhL/pD/HyYqw+Nw63nPa4es05pwyac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j/uxZgEXc/Arr2HrjZ1dTw0Y+MFdf7gb+BOvw8U7xL3CMnlablg9FJz40XPE8UmzN
-	 mpcsfFwmpl92TYrv7IueZEi64DYc6Ez/bnlDRW2gcqknmacwsaI5bmg+Ys8KVXlB5k
-	 AdjWTk8BbV+JmStIFxxBDuMo+MEyYO3nTKvdWyJM=
+	b=jYX7eDIFNJpiV+qEbwVfQVNDP+sqPR+5s6c8qr1wZBpd1AffnB8smB/Deh7oVmZCV
+	 wG0d091YAEAWVOunluWkdLAwnIpfmzzCDkL2YDnHIPabplypHEW5BE+g4pGCsOFodA
+	 HBCbKWDlqgwQc45C7tOF8aZqfSAlfm0cC/YNQRBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 526/641] selftests/sgx: Include memory clobber for inline asm in test enclave
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.1 262/417] Revert "usb: dwc3: dont reset device side if dwc3 was configured as host-only"
 Date: Mon, 22 Jan 2024 15:57:10 -0800
-Message-ID: <20240122235834.554176259@linuxfoundation.org>
+Message-ID: <20240122235800.942744518@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 853a57a43ebdb8c024160c1a0990bae85f4bcc2f ]
+commit afe28cd686aeb77e8d9140d50fb1cf06a7ecb731 upstream.
 
-Add the "memory" clobber to the EMODPE and EACCEPT asm blocks to tell the
-compiler the assembly code accesses to the secinfo struct. This ensures
-the compiler treats the asm block as a memory barrier and the write to
-secinfo will be visible to ENCLU.
+This reverts commit e835c0a4e23c38531dcee5ef77e8d1cf462658c7.
 
-Fixes: 20404a808593 ("selftests/sgx: Add test for EPCM permission changes")
-Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lore.kernel.org/all/20231005153854.25566-4-jo.vanbulck%40cs.kuleuven.be
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Don't omit soft-reset. During initialization, the driver may need to
+perform a soft reset to ensure the phy is ready when the controller
+updates the GCTL.PRTCAPDIR or other settings by issuing phy soft-reset.
+Many platforms often have access to DCTL register for soft-reset despite
+being host-only. If there are actual reported issues from the platforms
+that don't expose DCTL registers, then we will need to revisit (perhaps
+to teach dwc3 to perform xhci's soft-reset USBCMD.HCRST).
+
+Cc:  <stable@vger.kernel.org>
+Fixes: e835c0a4e23c ("usb: dwc3: don't reset device side if dwc3 was configured as host-only")
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/7668ab11a48f260820825274976eb41fec7f54d1.1703282469.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/sgx/test_encl.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/usb/dwc3/core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/sgx/test_encl.c b/tools/testing/selftests/sgx/test_encl.c
-index c0d6397295e3..ae791df3e5a5 100644
---- a/tools/testing/selftests/sgx/test_encl.c
-+++ b/tools/testing/selftests/sgx/test_encl.c
-@@ -24,10 +24,11 @@ static void do_encl_emodpe(void *_op)
- 	secinfo.flags = op->flags;
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -277,9 +277,9 @@ int dwc3_core_soft_reset(struct dwc3 *dw
+ 	/*
+ 	 * We're resetting only the device side because, if we're in host mode,
+ 	 * XHCI driver will reset the host block. If dwc3 was configured for
+-	 * host-only mode or current role is host, then we can return early.
++	 * host-only mode, then we can return early.
+ 	 */
+-	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
++	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
+ 		return 0;
  
- 	asm volatile(".byte 0x0f, 0x01, 0xd7"
--				:
-+				: /* no outputs */
- 				: "a" (EMODPE),
- 				  "b" (&secinfo),
--				  "c" (op->epc_addr));
-+				  "c" (op->epc_addr)
-+				: "memory" /* read from secinfo pointer */);
- }
- 
- static void do_encl_eaccept(void *_op)
-@@ -42,7 +43,8 @@ static void do_encl_eaccept(void *_op)
- 				: "=a" (rax)
- 				: "a" (EACCEPT),
- 				  "b" (&secinfo),
--				  "c" (op->epc_addr));
-+				  "c" (op->epc_addr)
-+				: "memory" /* read from secinfo pointer */);
- 
- 	op->ret = rax;
- }
--- 
-2.43.0
-
+ 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
 
 
 
