@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5A5838485
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D785837FA1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 809E7299BE8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80A591C291C3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB276EB6D;
-	Tue, 23 Jan 2024 02:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4088963508;
+	Tue, 23 Jan 2024 00:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgtoPFkd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LjzxYkBp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1D36EB61;
-	Tue, 23 Jan 2024 02:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3D6F634F8;
+	Tue, 23 Jan 2024 00:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975414; cv=none; b=ZRT+KehCqX/3F9iLm8zxuwFIqiA6KWp65YxN7EpmcDtDtsBdSaqTvClL1UCmM7NajvUUVixqavHTPCEfwSqX7HVb2gidV91YYxZ13C1R+C+eJerpgZhh2Tob9VEFnlNrB04mT2SZzbyevJB7w/Kkw4bATmeeTBGsEhloh0hvJqg=
+	t=1705971253; cv=none; b=SFSg9iS45KD2DGEEomt8GmimJfnOhZyU0U1XpaCO3SUlo8yyyrladIDUQ7RpODE9fa/OLWZroaE6Z15RFJUwNtQ+VvBGIvTbs66Jo6pyDtp7CYAuQZtPXN+nUI1MNwpHSPQg0V+FEwj4cZnqUXzI8z+Qc+Y0O4FgOFE6TqZtPFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975414; c=relaxed/simple;
-	bh=Gvi01fR+1rZALIfZAy6vsgdCcBlXcFcMLi6Gl1kp/9Q=;
+	s=arc-20240116; t=1705971253; c=relaxed/simple;
+	bh=/0phBy4huKOTShDZi8YemyejPHyWZ0PxejWC5euNnHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VgTxz3OCDU+0wg2ZpxG6YhKLQ/rkuw7ir9aEMIV50YiZ8No9Lr6UF3Ap4chcGsJJskkDPCy/ELWDQ310U2I1k8dcRxn1P8uaGgjvMTD+P+hrIeV6XwVUd0hWa4slLT6diZqMbp0dsFwF4Ei03w+4ddvbsJoRQDT8mi9uyEQb4KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgtoPFkd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11AB3C433C7;
-	Tue, 23 Jan 2024 02:03:34 +0000 (UTC)
+	 MIME-Version; b=FIqoc7mzpB93J6UI+gUo9lmewXfqZxmFxutNuWC+X75JzXNknxrd81UDpk+sPJWcsoHkzTTKWzQQJQTw9yJqI2cXbOlV0UJnh48O7AaIuYvQg2oJQdDixMeqQqH/mS9/fLAmwiV0EuVib3vZv8c7uYJ070hZhhoxEpJeq/TLk70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LjzxYkBp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940FCC433C7;
+	Tue, 23 Jan 2024 00:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975414;
-	bh=Gvi01fR+1rZALIfZAy6vsgdCcBlXcFcMLi6Gl1kp/9Q=;
+	s=korg; t=1705971252;
+	bh=/0phBy4huKOTShDZi8YemyejPHyWZ0PxejWC5euNnHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rgtoPFkdQnzQx4GsA78NjfhtyKpmHVqt11cRUxmOO+9zMJjwJksoL3cCPQNJxz5/l
-	 CKFS/Julv5Co6sOVImnwyLYqhFetIg3MwhTp31/YzBr2oyJ45XuiNNuVaaTf7jkf0+
-	 /E3j7p2izx0DJYa//r6BCgNxHxrb8hUSZzlonEL8=
+	b=LjzxYkBpx750nKjcSQTJnFfJPpkiCBom3Pl9QD9VkcrXEi3YTUj9bUlMDjTxII6kS
+	 ihYRw3aFqX551fHxhQZ4YEFouYQ3XsjCpLnoavDd0gmEXO2DL2Q2HP6xFjxawKlgA8
+	 noFcwGJ6Fs/QaQkDS60Ixs0jeVKtuWK+yxyCuaJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Subject: [PATCH 6.6 373/583] serial: core: make sure RS485 cannot be enabled when it is not supported
+	Su Hui <suhui@nfschina.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 118/286] wifi: rtlwifi: rtl8821ae: phy: fix an undefined bitwise shift behavior
 Date: Mon, 22 Jan 2024 15:57:04 -0800
-Message-ID: <20240122235823.421977239@linuxfoundation.org>
+Message-ID: <20240122235736.669239640@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit c73986913fa47e71e0b1ad7f039f6444915e8810 upstream.
+[ Upstream commit bc8263083af60e7e57c6120edbc1f75d6c909a35 ]
 
-Some uart drivers specify a rs485_config() function and then decide later
-to disable RS485 support for some reason (e.g. imx and ar933).
+Clang static checker warns:
 
-In these cases userspace may be able to activate RS485 via TIOCSRS485
-nevertheless, since in uart_set_rs485_config() an existing rs485_config()
-function indicates that RS485 is supported.
+drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c:184:49:
+	The result of the left shift is undefined due to shifting by '32',
+	which is greater or equal to the width of type 'u32'.
+	[core.UndefinedBinaryOperatorResult]
 
-Make sure that this is not longer possible by checking the uarts
-rs485_supported.flags instead and bailing out if SER_RS485_ENABLED is not
-set.
+If the value of the right operand is negative or is greater than or
+equal to the width of the promoted left operand, the behavior is
+undefined.[1][2]
 
-Furthermore instead of returning an empty structure return -ENOTTY if the
-RS485 configuration is requested via TIOCGRS485 but RS485 is not supported.
-This has a small impact on userspace visibility but it is consistent with
-the -ENOTTY error for TIOCGRS485.
+For example, when using different gcc's compilation optimization options
+(-O0 or -O2), the result of '(u32)data << 32' is different. One is 0, the
+other is old value of data. Let _rtl8821ae_phy_calculate_bit_shift()'s
+return value less than 32 to fix this problem. Warn if bitmask is zero.
 
-Fixes: e849145e1fdd ("serial: ar933x: Fill in rs485_supported")
-Fixes: 55e18c6b6d42 ("serial: imx: Remove serial_rs485 sanitization")
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc:  <stable@vger.kernel.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Link: https://lore.kernel.org/r/20240103061818.564-5-l.sanfilippo@kunbus.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://stackoverflow.com/questions/11270492/what-does-the-c-standard-say-about-bitshifting-more-bits-than-the-width-of-type
+[2] https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf
+
+Fixes: 21e4b0726dc6 ("rtlwifi: rtl8821ae: Move driver from staging to regular tree")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231127013511.26694-2-suhui@nfschina.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -1453,7 +1453,7 @@ static int uart_set_rs485_config(struct
- 	int ret;
- 	unsigned long flags;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+index c0c06ab6d3e7..fb143a5f9cc3 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+@@ -29,9 +29,10 @@ static void _rtl8821ae_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 					   u32 data);
+ static u32 _rtl8821ae_phy_calculate_bit_shift(u32 bitmask)
+ {
+-	u32 i = ffs(bitmask);
++	if (WARN_ON_ONCE(!bitmask))
++		return 0;
  
--	if (!port->rs485_config)
-+	if (!(port->rs485_supported.flags & SER_RS485_ENABLED))
- 		return -ENOTTY;
- 
- 	if (copy_from_user(&rs485, rs485_user, sizeof(*rs485_user)))
+-	return i ? i - 1 : 32;
++	return __ffs(bitmask);
+ }
+ static bool _rtl8821ae_phy_bb8821a_config_parafile(struct ieee80211_hw *hw);
+ /*static bool _rtl8812ae_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);*/
+-- 
+2.43.0
+
 
 
 
