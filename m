@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 446568381E3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:15:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2400837F05
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C7C5B2D8C3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA96A29BBFA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FAE413BEA8;
-	Tue, 23 Jan 2024 01:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74018605B7;
+	Tue, 23 Jan 2024 00:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHa+S9ng"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PerrAPUq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F649137C55;
-	Tue, 23 Jan 2024 01:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D3860252;
+	Tue, 23 Jan 2024 00:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972111; cv=none; b=Z869+hsLZqMl5BOlIRHQXUmjxxNwTFn/HAFETbX/I8fjwmYDID/5kXvaUzymndR1KRS8ZqTT88Kxq1t+XGkjfU0aM8v2YDnWj0mnqzWshBfswECHzv9Z0Xc92PgQ2+ApCrRKYFegop2bY3mrFRPyyVZJ1bYRTfejl11nxskdVxE=
+	t=1705970888; cv=none; b=MmGx64aChFKbi1N5GeVkvOpx8b+aHWUQnQzb194dGBcyQWjGLcL9czPVP8XMZxCCJ/Y22Jyczj6eWaTKL/aCZPzkZV5hMKK/A23609lItdimh1iGusHZZXPmQtwgm8f60xvW0SA7H7zXLvFWgVUusRAvXekQ9ohaEOZLifbQOwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972111; c=relaxed/simple;
-	bh=8scI/XzvhUNGB6fY4QDuCO5GJ4g2YNOBjg/HtFD8hz0=;
+	s=arc-20240116; t=1705970888; c=relaxed/simple;
+	bh=oDwL1LKIWfXo+fOgGpHyE6w4e/1Ko1ikrJky2izpYcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UeZ0gRIERgRBX78+MDYXY6f8NFGlxMGjvLdo64SN4SwI3cTi1K8PnJqDcEFUbHba/vCVuj4y2VDjucT7h/lAWlzPHNtBW9FlKJsdzh6ybzB/2Ksq3pESwXfcqYuR09R4qt6GvzeV2AZw8/293tDNrpgwx7TPpaaUmnYsh6OSbEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHa+S9ng; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C519BC433C7;
-	Tue, 23 Jan 2024 01:08:30 +0000 (UTC)
+	 MIME-Version; b=hWlKE2FdqxAdUDp1YYTGp+3IL0jouPUbMP8dqFVK+G21AERMkmdQKDR7FB3GYponPCp+hJT/2wbvsM53SZ1PByDQp5P1aiUmn1lbjePag8j3OsGPGkAjkEM3J1AQrBtfi/RY4roOyNpYfFu+wrxQogCTthWJ9N0YHhH4ZJqZZ+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PerrAPUq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDF1C433C7;
+	Tue, 23 Jan 2024 00:48:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972110;
-	bh=8scI/XzvhUNGB6fY4QDuCO5GJ4g2YNOBjg/HtFD8hz0=;
+	s=korg; t=1705970888;
+	bh=oDwL1LKIWfXo+fOgGpHyE6w4e/1Ko1ikrJky2izpYcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHa+S9ng9HF9B+Pd4t6CkQJMjgs4zm+3dfF7B7zgBnEN47SW06Xpi2zE/s1JTNcCC
-	 PJUrnFG0fNVEu2b3sKDK+pPerKVK4CdDWw7LkWB8YDYERKqbHBp/csFjV6yVKBez63
-	 xVH29g91Zie7mBYCf8D5Zek1AxMMbYMKJSAwY+tA=
+	b=PerrAPUq4hoj2UX66XGw70VtjELbTwh7TrBirc9aC37LGas+NNMLF6cvJP79SuhF6
+	 XqLFuMh67uCSGFeNJRYveoUuASHDltlt58M3G8luPawPyssYj7LDtxcxQ/ULLSWA+o
+	 GRQsPkO9Wy16aX9lT2ZL5zYOE2J7a6IZC/f2jOnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jensen Huang <jensenhuang@friendlyarm.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa@kernel.org>,
+	Su Hui <suhui@nfschina.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 045/374] i2c: rk3x: fix potential spinlock recursion on poll
+Subject: [PATCH 6.1 133/417] wifi: rtlwifi: add calculate_bit_shift()
 Date: Mon, 22 Jan 2024 15:55:01 -0800
-Message-ID: <20240122235746.185788225@linuxfoundation.org>
+Message-ID: <20240122235756.432560507@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jensen Huang <jensenhuang@friendlyarm.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 19cde9c92b8d3b7ee555d0da3bcb0232d3a784f4 ]
+[ Upstream commit 52221dfddbbfb5b4e029bb2efe9bb7da33ec1e46 ]
 
-Possible deadlock scenario (on reboot):
-rk3x_i2c_xfer_common(polling)
-    -> rk3x_i2c_wait_xfer_poll()
-        -> rk3x_i2c_irq(0, i2c);
-            --> spin_lock(&i2c->lock);
-            ...
-        <rk3x i2c interrupt>
-        -> rk3x_i2c_irq(0, i2c);
-            --> spin_lock(&i2c->lock); (deadlock here)
+There are many same functions like _rtl88e_phy_calculate_bit_shift(),
+_rtl92c_phy_calculate_bit_shift() and so on. And these functions can
+cause undefined bitwise shift behavior. Add calculate_bit_shift() to
+replace them and fix undefined behavior in subsequent patches.
 
-Store the IRQ number and disable/enable it around the polling transfer.
-This patch has been tested on NanoPC-T4.
-
-Signed-off-by: Jensen Huang <jensenhuang@friendlyarm.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-2-suhui@nfschina.com
+Stable-dep-of: 969bc926f04b ("wifi: rtlwifi: rtl8188ee: phy: using calculate_bit_shift()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-rk3x.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/wifi.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-rk3x.c b/drivers/i2c/busses/i2c-rk3x.c
-index 13c14eb175e9..6abcf975a2db 100644
---- a/drivers/i2c/busses/i2c-rk3x.c
-+++ b/drivers/i2c/busses/i2c-rk3x.c
-@@ -178,6 +178,7 @@ struct rk3x_i2c_soc_data {
-  * @clk: function clk for rk3399 or function & Bus clks for others
-  * @pclk: Bus clk for rk3399
-  * @clk_rate_nb: i2c clk rate change notify
-+ * @irq: irq number
-  * @t: I2C known timing information
-  * @lock: spinlock for the i2c bus
-  * @wait: the waitqueue to wait for i2c transfer
-@@ -200,6 +201,7 @@ struct rk3x_i2c {
- 	struct clk *clk;
- 	struct clk *pclk;
- 	struct notifier_block clk_rate_nb;
-+	int irq;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+index 31f9e9e5c680..0bac788ccd6e 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
++++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+@@ -3105,4 +3105,11 @@ static inline struct ieee80211_sta *rtl_find_sta(struct ieee80211_hw *hw,
+ 	return ieee80211_find_sta(mac->vif, mac_addr);
+ }
  
- 	/* Settings */
- 	struct i2c_timings t;
-@@ -1087,13 +1089,18 @@ static int rk3x_i2c_xfer_common(struct i2c_adapter *adap,
- 
- 		spin_unlock_irqrestore(&i2c->lock, flags);
- 
--		rk3x_i2c_start(i2c);
--
- 		if (!polling) {
-+			rk3x_i2c_start(i2c);
++static inline u32 calculate_bit_shift(u32 bitmask)
++{
++	if (WARN_ON_ONCE(!bitmask))
++		return 0;
 +
- 			timeout = wait_event_timeout(i2c->wait, !i2c->busy,
- 						     msecs_to_jiffies(WAIT_TIMEOUT));
- 		} else {
-+			disable_irq(i2c->irq);
-+			rk3x_i2c_start(i2c);
-+
- 			timeout = rk3x_i2c_wait_xfer_poll(i2c);
-+
-+			enable_irq(i2c->irq);
- 		}
- 
- 		spin_lock_irqsave(&i2c->lock, flags);
-@@ -1301,6 +1308,8 @@ static int rk3x_i2c_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
-+	i2c->irq = irq;
-+
- 	platform_set_drvdata(pdev, i2c);
- 
- 	if (i2c->soc_data->calc_timings == rk3x_i2c_v0_calc_timings) {
++	return __ffs(bitmask);
++}
+ #endif
 -- 
 2.43.0
 
