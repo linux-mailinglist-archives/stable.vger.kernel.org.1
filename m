@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-13966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C174837EFE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B680B837F02
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFFBB1C2838D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F0CE29BD6F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CCA2605B4;
-	Tue, 23 Jan 2024 00:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7173605B3;
+	Tue, 23 Jan 2024 00:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3pgJZv8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzMq6ey/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2B460252;
-	Tue, 23 Jan 2024 00:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673B560252;
+	Tue, 23 Jan 2024 00:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970867; cv=none; b=iBdotrRAzzViqCAFxkWd75TTmOwIjBmUgpn6/Pg2KUC8pXBeLVlTr30WSTYzyNHlkq1DfRcBlZo/QD8RNMUBtQh5dVDBQgRSvYSdRwOjAhAiusBMLLZwUVk1TpG9YeoeKWSkVVE+WDLDotqkEgQEf/4lwfIknWG6l/HtTFzFYX8=
+	t=1705970874; cv=none; b=eSJBckdzgkGTLEael2+h/VjShbIdAboXbkhGwo464HktKVYccF/YGufbkNr9qeEbYBPY7uyY8l45sTfLya1pPOF5Lir2YUFuqq11u0TdPXX8ZMOOufTzdjplqB5xwn1lo/SsefKVu4pKrDJ2bNMNZlj1a/RLiblR+rmnrKYzP0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970867; c=relaxed/simple;
-	bh=s0iS02lcLxIWg5viKAV406hfsJyGeDUcPDeKr6mdGWs=;
+	s=arc-20240116; t=1705970874; c=relaxed/simple;
+	bh=/e9pw0zPZ/YU6V4koy/j2NKkuw+1C9txEzY3PhfApTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7xQEt2Vl3YkPgI14Zgz2SPyHn9X6kHnlzZn38E2H49QVe/VxMtDOaYdQF8/uo7hWRcs++3vgpVtwCNZgDCVHZ/KFtDGWdmf2S/gwIaXghknVWXDKTLCps+hAhJsIDQnxnOpvixWocVjz/ydFSo0+UL96hONdyHWnGediwNSV2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3pgJZv8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919FDC43390;
-	Tue, 23 Jan 2024 00:47:47 +0000 (UTC)
+	 MIME-Version; b=tPaqxHqVkxX7fcUKqG8z+TElPFZ/Wy+8QW1qhJxG5VJsImo1zjnyrH8hncev+JYWIGQd+quHcY0pk/0ZHz0cx+FN7T2TT3fUoBiHVp6AiSKrx5uGCYEwNYt225tQ9GfDJ6NhkVoJgg72pmQXD6R32pLDeKo+ntH8eRouwVjq4cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzMq6ey/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AD6C433C7;
+	Tue, 23 Jan 2024 00:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970867;
-	bh=s0iS02lcLxIWg5viKAV406hfsJyGeDUcPDeKr6mdGWs=;
+	s=korg; t=1705970873;
+	bh=/e9pw0zPZ/YU6V4koy/j2NKkuw+1C9txEzY3PhfApTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i3pgJZv8R5ctkPQIufTV7ZLQsLSSbN2SpDxBe3MyVQ/21wX7lB+oiGSsXjJFf1gHQ
-	 pRfiL2IMk9EBK5lr+SB7ji0TbG+Xr/zERn4k3AShIt3HD8bn9h3fpxJu6HrR6vsnrc
-	 Sr30SFZfrOJigsPLz2UHpJCwevK/E/64gOzYJxKk=
+	b=ZzMq6ey/qY1KWg+oQiYUHAQ2EGQPyxbb6ZTf1RG/vl+YF0lJS/+o2RVQmTzRtisd4
+	 DbHz+n/mLAyWENXGq5W4QHRVxhwdoIl9Ut/fWxEkVX4u+F8bfntCJb/LvZAQRwuZHB
+	 iyFW63cs888/mQMcjA5fJZq68Cm3uPp3tbJ0KRIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/417] arm64: dts: qcom: ipq6018: improve pcie phy pcs reg table
-Date: Mon, 22 Jan 2024 15:54:57 -0800
-Message-ID: <20240122235756.276620120@linuxfoundation.org>
+Subject: [PATCH 6.1 130/417] arm64: dts: qcom: ipq6018: Use lowercase hex
+Date: Mon, 22 Jan 2024 15:54:58 -0800
+Message-ID: <20240122235756.318243514@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
 References: <20240122235751.480367507@linuxfoundation.org>
@@ -67,41 +66,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 08f399a818b0eff552b1f23c3171950a58aea78f ]
+[ Upstream commit 0431dba3733bf52dacf7382e7b0c1b4c0b59e88d ]
 
-This is not a fix on its own but more a cleanup. Phy qmp pcie driver
-currently have a workaround to handle pcs_misc not declared and add
-0x400 offset to the pcs reg if pcs_misc is not declared.
+Use lowercase hex, as that's the preferred and overwhermingly present
+style.
 
-Correctly declare pcs_misc reg and reduce PCS size to the common value
-of 0x1f0 as done for every other qmp based pcie phy device.
-
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Reviewed-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20221103212125.17156-2-ansuelsmth@gmail.com
+Link: https://lore.kernel.org/r/20221212111037.98160-2-konrad.dybcio@linaro.org
 Stable-dep-of: 5c0dbe8b0584 ("arm64: dts: qcom: ipq6018: fix clock rates for GCC_USB0_MOCK_UTMI_CLK")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/ipq6018.dtsi | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/qcom/ipq6018.dtsi b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-index d436fa64caad..f3743ef7354f 100644
+index f3743ef7354f..55f685f51c71 100644
 --- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
 +++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-@@ -406,7 +406,8 @@ pcie_phy: phy@84000 {
- 			pcie_phy0: phy@84200 {
- 				reg = <0x0 0x84200 0x0 0x16c>, /* Serdes Tx */
- 				      <0x0 0x84400 0x0 0x200>, /* Serdes Rx */
--				      <0x0 0x84800 0x0 0x4f4>; /* PCS: Lane0, COM, PCIE */
-+				      <0x0 0x84800 0x0 0x1f0>, /* PCS: Lane0, COM, PCIE */
-+				      <0x0 0x84c00 0x0 0xf4>; /* pcs_misc */
- 				#phy-cells = <0>;
+@@ -685,7 +685,7 @@ dwc_1: usb@7000000 {
  
- 				clocks = <&gcc GCC_PCIE0_PIPE_CLK>;
+ 		ssphy_0: ssphy@78000 {
+ 			compatible = "qcom,ipq6018-qmp-usb3-phy";
+-			reg = <0x0 0x78000 0x0 0x1C4>;
++			reg = <0x0 0x78000 0x0 0x1c4>;
+ 			#address-cells = <2>;
+ 			#size-cells = <2>;
+ 			ranges;
+@@ -702,7 +702,7 @@ ssphy_0: ssphy@78000 {
+ 			usb0_ssphy: phy@78200 {
+ 				reg = <0x0 0x00078200 0x0 0x130>, /* Tx */
+ 				      <0x0 0x00078400 0x0 0x200>, /* Rx */
+-				      <0x0 0x00078800 0x0 0x1F8>, /* PCS */
++				      <0x0 0x00078800 0x0 0x1f8>, /* PCS */
+ 				      <0x0 0x00078600 0x0 0x044>; /* PCS misc */
+ 				#phy-cells = <0>;
+ 				#clock-cells = <0>;
+@@ -727,7 +727,7 @@ qusb_phy_0: qusb@79000 {
+ 
+ 		usb3: usb@8af8800 {
+ 			compatible = "qcom,ipq6018-dwc3", "qcom,dwc3";
+-			reg = <0x0 0x8AF8800 0x0 0x400>;
++			reg = <0x0 0x8af8800 0x0 0x400>;
+ 			#address-cells = <2>;
+ 			#size-cells = <2>;
+ 			ranges;
+@@ -753,7 +753,7 @@ usb3: usb@8af8800 {
+ 
+ 			dwc_0: usb@8a00000 {
+ 				compatible = "snps,dwc3";
+-				reg = <0x0 0x8A00000 0x0 0xcd00>;
++				reg = <0x0 0x8a00000 0x0 0xcd00>;
+ 				interrupts = <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>;
+ 				phys = <&qusb_phy_0>, <&usb0_ssphy>;
+ 				phy-names = "usb2-phy", "usb3-phy";
 -- 
 2.43.0
 
