@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-14397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52378380C3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 900A2838311
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D4C228CF41
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A29428B452
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16CE13399E;
-	Tue, 23 Jan 2024 01:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F455604DE;
+	Tue, 23 Jan 2024 01:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1vhuZJK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnAm8qUl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815AF133435;
-	Tue, 23 Jan 2024 01:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F02450267;
+	Tue, 23 Jan 2024 01:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971887; cv=none; b=Ha9zGyVbDr5XGm1L5qx9ipI97S4eXm4cu6mq9Mb2Sm2inkOdG0CeQAXjHNcyJ47EGtDgyX5kGlB+E3Hxvg8yWobZhtaqVqgn9iJxLOysxRrcqPdB24Gwu4qw4lCUlNAx/yLtfgoBWNDE8CSKPJVdAcgZuuHF8JqIldvlXCRMzak=
+	t=1705974696; cv=none; b=eTqX3j/r/W5nWYvY5/Fkqsx3oV3cQuo3BAaaBLlF9cNCTBQBeEORkKM7BqDTapXsgLn8swwHeVChkTk9V9h+83b1DRlaS/OkEpLcVUoQ2vZWZxy24EuTf2PEwUObyWSSzhPV7JZJE3T/ZXa/LESFgqHfA4/9G7NYApCXQy16W7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971887; c=relaxed/simple;
-	bh=9GrjlRiWWpiQJMgTwDV76Ocd8Iv1pxOY8jRyQAVPjLA=;
+	s=arc-20240116; t=1705974696; c=relaxed/simple;
+	bh=tIAaZLFvP5NIdyRERNk+TpUHXiJI1hThqyUkMJ1HyM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T51qEHz73ovo8CC3Cq3Y/tUcSPBHjp9CqIwbcWSWl+NMxim/8OZYlADhoAzwsZg+PqyMxLOBM+iMYMTG4kRpY/HSWeOiDC/QTGiqwqzD/ePbx5eSEo0VJyVU7LKX4oQWpdoaKGXdz8gARVyMEvVqQu4G0b5vpdIKsijIJoGcLfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1vhuZJK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20129C433F1;
-	Tue, 23 Jan 2024 01:04:47 +0000 (UTC)
+	 MIME-Version; b=VIDDXFUPyRYJEA4GVmXv/rs0D+zam0k2WxK6a0ZJqCZ99DMxXIMmwmdIa6ZEWaQ4w2GZCUuf9zva1H6zNYNMlDUE5jB8YLCVQnV39dPPcEaGNlZduQykWkqY/jDuKVQ+6SBQjX/5A8bH1Hb7xQo4ddmoGU2FgYX3YB5HtwroD00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnAm8qUl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E39C43394;
+	Tue, 23 Jan 2024 01:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971887;
-	bh=9GrjlRiWWpiQJMgTwDV76Ocd8Iv1pxOY8jRyQAVPjLA=;
+	s=korg; t=1705974696;
+	bh=tIAaZLFvP5NIdyRERNk+TpUHXiJI1hThqyUkMJ1HyM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T1vhuZJKPdqYAOwhaUKNAXTv4nJCa2i2zFnwen1WVXTcEkuE0VzyokzRINk1bLYqT
-	 sfQgRQHi/5Bhe57sqSPiJRGXqGNArYwbuhM0i6pQqndT5DkTT0gjS+fmQERE6b1Q2Q
-	 R55y4jn8rcXhV/fAHvYuUk5mbbC7NEb+1RIIW8/E=
+	b=CnAm8qUlNAq3h38ZZ3zIn/l8gAug2IGLq79sPmbjBJ+6vk5l6/mtTjQlGET+/otYe
+	 u/upth68g+vpgyJThh+aN0/bZ8RC4edBPu0mjtrIqz+rmD5kATL5axSYA28EA1lR72
+	 BLW6iyEs9n0DOeGmrAoOUrR0jXzPRYUbOlOFHlms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Price <gregory.price@memverge.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 342/417] base/node.c: initialize the accessor list before registering
+	Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Subject: [PATCH 5.15 254/374] usb: dwc: ep0: Update request status in dwc3_ep0_stall_restart
 Date: Mon, 22 Jan 2024 15:58:30 -0800
-Message-ID: <20240122235803.642421722@linuxfoundation.org>
+Message-ID: <20240122235753.607467869@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory Price <gourry.memverge@gmail.com>
+From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
 
-[ Upstream commit 48b5928e18dc27e05cab3dc4c78cd8a15baaf1e5 ]
+commit e9d40b215e38480fd94c66b06d79045717a59e9c upstream.
 
-The current code registers the node as available in the node array
-before initializing the accessor list.  This makes it so that
-anything which might access the accessor list as a result of
-allocations will cause an undefined memory access.
+Current implementation blocks the running operations when Plug-out and
+Plug-In is performed continuously, process gets stuck in
+dwc3_thread_interrupt().
 
-In one example, an extension to access hmat data during interleave
-caused this undefined access as a result of a bulk allocation
-that occurs during node initialization but before the accessor
-list is initialized.
+Code Flow:
 
-Initialize the accessor list before making the node generally
-available to the global system.
+	CPU1
 
-Fixes: 08d9dbe72b1f ("node: Link memory nodes to their compute nodes")
-Signed-off-by: Gregory Price <gregory.price@memverge.com>
-Link: https://lore.kernel.org/r/20231030044239.971756-1-gregory.price@memverge.com
+	->Gadget_start
+	->dwc3_interrupt
+	->dwc3_thread_interrupt
+	->dwc3_process_event_buf
+	->dwc3_process_event_entry
+	->dwc3_endpoint_interrupt
+	->dwc3_ep0_interrupt
+	->dwc3_ep0_inspect_setup
+	->dwc3_ep0_stall_and_restart
+
+By this time if pending_list is not empty, it will get the next request
+on the given list and calls dwc3_gadget_giveback which will unmap request
+and call its complete() callback to notify upper layers that it has
+completed. Currently dwc3_gadget_giveback status is set to -ECONNRESET,
+whereas it should be -ESHUTDOWN based on condition if not dwc->connected
+is true.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: d742220b3577 ("usb: dwc3: ep0: giveback requests on stall_and_restart")
+Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Link: https://lore.kernel.org/r/20231222094704.20276-1-quic_uaggarwa@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/node.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/usb/dwc3/ep0.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index faf3597a96da..a4141b57b147 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -859,11 +859,15 @@ int __register_one_node(int nid)
- {
- 	int error;
- 	int cpu;
-+	struct node *node;
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -236,7 +236,10 @@ static void dwc3_ep0_stall_and_restart(s
+ 		struct dwc3_request	*req;
  
--	node_devices[nid] = kzalloc(sizeof(struct node), GFP_KERNEL);
--	if (!node_devices[nid])
-+	node = kzalloc(sizeof(struct node), GFP_KERNEL);
-+	if (!node)
- 		return -ENOMEM;
- 
-+	INIT_LIST_HEAD(&node->access_list);
-+	node_devices[nid] = node;
-+
- 	error = register_node(node_devices[nid], nid);
- 
- 	/* link cpu under this node */
-@@ -872,7 +876,6 @@ int __register_one_node(int nid)
- 			register_cpu_under_node(cpu, nid);
+ 		req = next_request(&dep->pending_list);
+-		dwc3_gadget_giveback(dep, req, -ECONNRESET);
++		if (!dwc->connected)
++			dwc3_gadget_giveback(dep, req, -ESHUTDOWN);
++		else
++			dwc3_gadget_giveback(dep, req, -ECONNRESET);
  	}
  
--	INIT_LIST_HEAD(&node_devices[nid]->access_list);
- 	node_init_caches(nid);
- 
- 	return error;
--- 
-2.43.0
-
+ 	dwc->ep0state = EP0_SETUP_PHASE;
 
 
 
