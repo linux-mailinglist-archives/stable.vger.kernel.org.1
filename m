@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77994837A62
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5953B8378B1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E7DB1F28AE6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFA3CB21093
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA9912C52E;
-	Tue, 23 Jan 2024 00:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C497F1;
+	Tue, 23 Jan 2024 00:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CikYhjh/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qt96wzYU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA1012C52C;
-	Tue, 23 Jan 2024 00:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948EB653;
+	Tue, 23 Jan 2024 00:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968925; cv=none; b=MSyw6kzTRifcOM6ui+RN8Eanheus1qxw8DTG3JgjxQ3E4iqERyrKM6Nk1efYUXWqou42x52FixDBabLjMfrs4/FrBdNwCTu6X/1CZFvWNIKur24AUSi7gdydum6UaX8yI4HQemKmm6VwsGNKBzZmTBrSrW/aFHjAsqCqfPMpm8o=
+	t=1705968203; cv=none; b=gLac16HZFjegUl9wbNkK1mHhqRpzb/x7WkoubP5M05eqeqe1YRjZj/xVsjIygdQ/kXcURFRz3seso7oqbso+D5VsFVrEiX393Yi+akiDCsFitWauvSOfE62+i/kdqiHxq/VdtyMxV3WIxe0N7j9sIelYUwzhO02bNeev/yoEEjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968925; c=relaxed/simple;
-	bh=zjlhkCDkbLl6tVBxvLr/jDPdC3pADY5RFzF9qg+AJF0=;
+	s=arc-20240116; t=1705968203; c=relaxed/simple;
+	bh=14Mpy9no3CerKOV5PpWYWMbUS4ApTV+xIaUF0ksxwMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KkaFtVltC8cuCCl2Hg3liVvgTN0+YK1cUsxdUD6uZ6GhU4RN1v11vyu7J2BVhOZKNEZxJhmcwKeznL7h079R04Y2nedhUY0Rg4FK/mlpZGddf7a4qoHypSk4+jEGT7LcfwIKGfvaA2PujPiYw6lLTNp+oj4v/4lyU62EQ/j+6TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CikYhjh/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CF7C433F1;
-	Tue, 23 Jan 2024 00:15:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gfUiwE2K5mcHNuA3oIYksAO5tbjAS8D8V6a7N+KWv7wq+nJXetdSYwunz60ZwsJ5INCEWYoPDp1mAd5GE1laj0fy7YIaM2XfMCj2VysMLYj8F1513ARnHCTzYuJBp42VCmK7pbR2bYAbi8Un70mE7dfH1TyqUG269OrKFRmbx30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qt96wzYU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7538C43394;
+	Tue, 23 Jan 2024 00:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968925;
-	bh=zjlhkCDkbLl6tVBxvLr/jDPdC3pADY5RFzF9qg+AJF0=;
+	s=korg; t=1705968203;
+	bh=14Mpy9no3CerKOV5PpWYWMbUS4ApTV+xIaUF0ksxwMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CikYhjh/TXjpVpaMCnIw/Jg5xFmRjnDBiV2B52o8wZ4NncvJtawlSWoVKHFzZvvXZ
-	 gQpXEKo5Cpv919gWgzFbr/sFfR+2GL4y/aqiHB4tk5Y2jy8jd7VlhpPR4hbYUYC5u1
-	 bGoQGIemZkHgo1Tl9CYa/xjbwykpllA6RnAs1dQM=
+	b=Qt96wzYU6+6tbvFevl7+iDLp9QYQgOO5aV5+xqOwsagFWZiD6EDG9/VH45toABE43
+	 9+Lp89lTkToxdjRo406YVR20zwSTyX/od3SZEluNV6NHVxmP5bYhKi/InmO9IP+213
+	 dlkR9Zub8iI2+tT4RpKIVimbMcdweezHPaO4wjYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Kees Cook <keescook@chromium.org>,
+	ZhaoLong Wang <wangzhaolong1@huawei.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 069/194] pstore: ram_core: fix possible overflow in persistent_ram_init_ecc()
+Subject: [PATCH 4.19 043/148] mtd: Fix gluebi NULL pointer dereference caused by ftl notifier
 Date: Mon, 22 Jan 2024 15:56:39 -0800
-Message-ID: <20240122235722.178807558@linuxfoundation.org>
+Message-ID: <20240122235714.146848250@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: ZhaoLong Wang <wangzhaolong1@huawei.com>
 
-[ Upstream commit 86222a8fc16ec517de8da2604d904c9df3a08e5d ]
+[ Upstream commit a43bdc376deab5fff1ceb93dca55bcab8dbdc1d6 ]
 
-In persistent_ram_init_ecc(), on 64-bit arches DIV_ROUND_UP() will return
-64-bit value since persistent_ram_zone::buffer_size has type size_t which
-is derived from the 64-bit *unsigned long*, while the ecc_blocks variable
-this value gets assigned to has (always 32-bit) *int* type.  Even if that
-value fits into *int* type, an overflow is still possible when calculating
-the size_t typed ecc_total variable further below since there's no cast to
-any 64-bit type before multiplication.  Declaring the ecc_blocks variable
-as *size_t* should fix this mess...
+If both ftl.ko and gluebi.ko are loaded, the notifier of ftl
+triggers NULL pointer dereference when trying to access
+‘gluebi->desc’ in gluebi_read().
 
-Found by Linux Verification Center (linuxtesting.org) with the SVACE static
-analysis tool.
+ubi_gluebi_init
+  ubi_register_volume_notifier
+    ubi_enumerate_volumes
+      ubi_notify_all
+        gluebi_notify    nb->notifier_call()
+          gluebi_create
+            mtd_device_register
+              mtd_device_parse_register
+                add_mtd_device
+                  blktrans_notify_add   not->add()
+                    ftl_add_mtd         tr->add_mtd()
+                      scan_header
+                        mtd_read
+                          mtd_read_oob
+                            mtd_read_oob_std
+                              gluebi_read   mtd->read()
+                                gluebi->desc - NULL
 
-Fixes: 9cc05ad97c57 ("staging: android: persistent_ram: refactor ecc support")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20231105202936.25694-1-s.shtylyov@omp.ru
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Detailed reproduction information available at the Link [1],
+
+In the normal case, obtain gluebi->desc in the gluebi_get_device(),
+and access gluebi->desc in the gluebi_read(). However,
+gluebi_get_device() is not executed in advance in the
+ftl_add_mtd() process, which leads to NULL pointer dereference.
+
+The solution for the gluebi module is to run jffs2 on the UBI
+volume without considering working with ftl or mtdblock [2].
+Therefore, this problem can be avoided by preventing gluebi from
+creating the mtdblock device after creating mtd partition of the
+type MTD_UBIVOLUME.
+
+Fixes: 2ba3d76a1e29 ("UBI: make gluebi a separate module")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217992 [1]
+Link: https://lore.kernel.org/lkml/441107100.23734.1697904580252.JavaMail.zimbra@nod.at/ [2]
+Signed-off-by: ZhaoLong Wang <wangzhaolong1@huawei.com>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Acked-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20231220024619.2138625-1-wangzhaolong1@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/ram_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/mtd_blkdevs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
-index 079f1a15cab0..679b250a3912 100644
---- a/fs/pstore/ram_core.c
-+++ b/fs/pstore/ram_core.c
-@@ -190,7 +190,7 @@ static int persistent_ram_init_ecc(struct persistent_ram_zone *prz,
+diff --git a/drivers/mtd/mtd_blkdevs.c b/drivers/mtd/mtd_blkdevs.c
+index 6a41dfa3c36b..a9aa1b518d81 100644
+--- a/drivers/mtd/mtd_blkdevs.c
++++ b/drivers/mtd/mtd_blkdevs.c
+@@ -521,7 +521,7 @@ static void blktrans_notify_add(struct mtd_info *mtd)
  {
- 	int numerr;
- 	struct persistent_ram_buffer *buffer = prz->buffer;
--	int ecc_blocks;
-+	size_t ecc_blocks;
- 	size_t ecc_total;
+ 	struct mtd_blktrans_ops *tr;
  
- 	if (!ecc_info || !ecc_info->ecc_size)
+-	if (mtd->type == MTD_ABSENT)
++	if (mtd->type == MTD_ABSENT || mtd->type == MTD_UBIVOLUME)
+ 		return;
+ 
+ 	list_for_each_entry(tr, &blktrans_majors, list)
+@@ -564,7 +564,7 @@ int register_mtd_blktrans(struct mtd_blktrans_ops *tr)
+ 	list_add(&tr->list, &blktrans_majors);
+ 
+ 	mtd_for_each_device(mtd)
+-		if (mtd->type != MTD_ABSENT)
++		if (mtd->type != MTD_ABSENT && mtd->type != MTD_UBIVOLUME)
+ 			tr->add_mtd(tr, mtd);
+ 
+ 	mutex_unlock(&mtd_table_mutex);
 -- 
 2.43.0
 
