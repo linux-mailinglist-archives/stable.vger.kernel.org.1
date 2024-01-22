@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-15253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F031838483
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 757FF83823E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62CDC1C2A6B5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 302FA2845C6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9F66DD10;
-	Tue, 23 Jan 2024 02:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9981B59B76;
+	Tue, 23 Jan 2024 01:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsESXM3o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WrNLlxm4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9936EB61;
-	Tue, 23 Jan 2024 02:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558782B9B7;
+	Tue, 23 Jan 2024 01:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975412; cv=none; b=WHM4T7toZmscswZQtYcVHJGj6vtY4NZnrupNXiKFtaB2LVIKnpXQO9rmY0DFCjiCkebYeuaCAVf8fNYt5kJR7/61xNCemsISVq5TGU91x5OZZ/W0VVyNngOwR2aMmZ7g59CBkEeDVZA05v9VeR8+PADRwT1ptR9wBvYGGPgvcIs=
+	t=1705974109; cv=none; b=lMBbsMAYG0thaq9j0h2vn1DnWJZ5WiPlnUifZPJ7AxgpaS6dRCMAAzXB1OgKyApfUKcyCSWGD2swUeXXmGueoNu1hI8oEIED68PIc+9bWpdzmaQLNkHXRMiwZ2WAZbmwKsewtZ5vBdv22XqaKfbcgqA00mUAP0vO55SbIyJPbVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975412; c=relaxed/simple;
-	bh=mjqMEibQVMT0DS3eHAsiBQOrjwX+DQSW75jhtsrYUK8=;
+	s=arc-20240116; t=1705974109; c=relaxed/simple;
+	bh=+p9zbJwduckakHQFo+c1iBqwImAhhsVynLP0xUhcw9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z1kuvzoO83jQQSNEmNr/i0Mm5KvQRn2sRB4LZA4u7cbyhbBGVnwIpX7Sol3dZJ22+sdFdax0i3P8zWtfITm31As74+DkAJp+xkx27Awt+1Isvg8qw+31f2LPynbDTbnAmbjXtltUbx/aeJ+ojJ+DEQb8BLBuAZHhLEbVPTa3KAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsESXM3o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269B0C43390;
-	Tue, 23 Jan 2024 02:03:32 +0000 (UTC)
+	 MIME-Version; b=du78XxASzHIi1SLY6VkDbjzOFYhtv8NlD09xDp8PqSth36SQH1mt3JysvtBK3dVR6SSKtoBTdq7TF+PCO0aRY4k9hkeCNdaDz9OF7mmIMhb3dxQdsDA9PPJeR/QfhCoum2YwkW9gQfqjWIi6Cw/iAClLvAWSKnKzbASaeQPmlcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WrNLlxm4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16352C433C7;
+	Tue, 23 Jan 2024 01:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975412;
-	bh=mjqMEibQVMT0DS3eHAsiBQOrjwX+DQSW75jhtsrYUK8=;
+	s=korg; t=1705974109;
+	bh=+p9zbJwduckakHQFo+c1iBqwImAhhsVynLP0xUhcw9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bsESXM3oHVm2uU1nd/ceuPcY7CSIFIJKTtov1nYDZhTzp/h2A1JZWJNFB0EBt/Ij2
-	 1LO5PAoMf0O00npyD9XM1Ex8N5WwAJy+eV+P3vztxqoR4yPgte1cn+02FznlMd/wtm
-	 Y+ikkXd9uVd6bZ9KrXvtz1KR3p1P+6FnFyrTuXZA=
+	b=WrNLlxm4/X6UM5A12MlEfKSxhVCey5l33/5t24UvQq4bY+y9KwXWZHKsGpiQDk+Yh
+	 ym5bHdPU19L4pP8EkEHsK2yXCRkbh/ZlvSVhMFnq4Iyf39SPbzMAUcrBHDQK2hThui
+	 GqB+0JRv751+zq3767RI/YSstF7G/53UniXR0IyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 371/583] dt-bindings: phy: qcom,sc8280xp-qmp-usb43dp-phy: fix path to header
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 166/374] Bluetooth: Fix bogus check for re-auth no supported with non-ssp
 Date: Mon, 22 Jan 2024 15:57:02 -0800
-Message-ID: <20240122235823.361348029@linuxfoundation.org>
+Message-ID: <20240122235750.388569754@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 21a1d02579ae75fd45555b84d20ba55632a14a19 upstream.
+[ Upstream commit d03376c185926098cb4d668d6458801eb785c0a5 ]
 
-Fix the path to bindings header in description.
+This reverts 19f8def031bfa50c579149b200bfeeb919727b27
+"Bluetooth: Fix auth_complete_evt for legacy units" which seems to be
+working around a bug on a broken controller rather then any limitation
+imposed by the Bluetooth spec, in fact if there ws not possible to
+re-auth the command shall fail not succeed.
 
-Fixes: e1c4c5436b4a ("dt-bindings: phy: qcom,qmp-usb3-dp: fix sc8280xp binding")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231218130553.45893-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 19f8def031bf ("Bluetooth: Fix auth_complete_evt for legacy units")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/bluetooth/hci_core.h |  1 -
+ net/bluetooth/hci_conn.c         |  8 +++-----
+ net/bluetooth/hci_event.c        | 11 ++---------
+ 3 files changed, 5 insertions(+), 15 deletions(-)
 
---- a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml
-+++ b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml
-@@ -62,12 +62,12 @@ properties:
-   "#clock-cells":
-     const: 1
-     description:
--      See include/dt-bindings/dt-bindings/phy/phy-qcom-qmp.h
-+      See include/dt-bindings/phy/phy-qcom-qmp.h
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 9a21ccbb5b5c..b6114bc0dd0f 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -852,7 +852,6 @@ void hci_inquiry_cache_flush(struct hci_dev *hdev);
+ /* ----- HCI Connections ----- */
+ enum {
+ 	HCI_CONN_AUTH_PEND,
+-	HCI_CONN_REAUTH_PEND,
+ 	HCI_CONN_ENCRYPT_PEND,
+ 	HCI_CONN_RSWITCH_PEND,
+ 	HCI_CONN_MODE_CHANGE_PEND,
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index ce538dbe89d1..700920aea39e 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1436,12 +1436,10 @@ static int hci_conn_auth(struct hci_conn *conn, __u8 sec_level, __u8 auth_type)
+ 		hci_send_cmd(conn->hdev, HCI_OP_AUTH_REQUESTED,
+ 			     sizeof(cp), &cp);
  
-   "#phy-cells":
-     const: 1
-     description:
--      See include/dt-bindings/dt-bindings/phy/phy-qcom-qmp.h
-+      See include/dt-bindings/phy/phy-qcom-qmp.h
+-		/* If we're already encrypted set the REAUTH_PEND flag,
+-		 * otherwise set the ENCRYPT_PEND.
++		/* Set the ENCRYPT_PEND to trigger encryption after
++		 * authentication.
+ 		 */
+-		if (test_bit(HCI_CONN_ENCRYPT, &conn->flags))
+-			set_bit(HCI_CONN_REAUTH_PEND, &conn->flags);
+-		else
++		if (!test_bit(HCI_CONN_ENCRYPT, &conn->flags))
+ 			set_bit(HCI_CONN_ENCRYPT_PEND, &conn->flags);
+ 	}
  
-   orientation-switch:
-     description:
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index edf5132b5dc9..2ad2f4647847 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -3017,14 +3017,8 @@ static void hci_auth_complete_evt(struct hci_dev *hdev, struct sk_buff *skb)
+ 
+ 	if (!ev->status) {
+ 		clear_bit(HCI_CONN_AUTH_FAILURE, &conn->flags);
+-
+-		if (!hci_conn_ssp_enabled(conn) &&
+-		    test_bit(HCI_CONN_REAUTH_PEND, &conn->flags)) {
+-			bt_dev_info(hdev, "re-auth of legacy device is not possible.");
+-		} else {
+-			set_bit(HCI_CONN_AUTH, &conn->flags);
+-			conn->sec_level = conn->pending_sec_level;
+-		}
++		set_bit(HCI_CONN_AUTH, &conn->flags);
++		conn->sec_level = conn->pending_sec_level;
+ 	} else {
+ 		if (ev->status == HCI_ERROR_PIN_OR_KEY_MISSING)
+ 			set_bit(HCI_CONN_AUTH_FAILURE, &conn->flags);
+@@ -3033,7 +3027,6 @@ static void hci_auth_complete_evt(struct hci_dev *hdev, struct sk_buff *skb)
+ 	}
+ 
+ 	clear_bit(HCI_CONN_AUTH_PEND, &conn->flags);
+-	clear_bit(HCI_CONN_REAUTH_PEND, &conn->flags);
+ 
+ 	if (conn->state == BT_CONFIG) {
+ 		if (!ev->status && hci_conn_ssp_enabled(conn)) {
+-- 
+2.43.0
+
 
 
 
