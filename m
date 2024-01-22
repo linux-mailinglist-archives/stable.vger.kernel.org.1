@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-12590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93FFA8369D8
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 17:13:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 884CB8369E9
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 17:14:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E71D1F24F14
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 16:13:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 325891F24FDB
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 16:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA41F12CDA1;
-	Mon, 22 Jan 2024 15:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3C75025C;
+	Mon, 22 Jan 2024 15:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q00Xc0Jy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s4aM9zD0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F4212CD98;
-	Mon, 22 Jan 2024 15:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4783F8F7;
+	Mon, 22 Jan 2024 15:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705936351; cv=none; b=JxOl9CEop29wpByLZhTVXfNNRN94L+fZkKI1HOA+iyv/oU9riIGT14X0YQ1D0FSfY+HFKBRSBGOKl+XWOPCgiKxDVpV2BqTWv48MMTNTs5xqwA8T5Ikw1/N1b4Ah3kI8YNOXiTSTzKGpA8RsRF6bvJs92t2WToHtiwo+2zeD4nw=
+	t=1705936387; cv=none; b=ay5m5swwpVAipX7yLQ9a0AoKRk4XECStZIKB0fc5GxhLCT5pTBfDh66/LzrYQ+wUE+8/P4yuZwq46qoi/OrSAtsPI5+rCofmO3G0YGcP3Z7ByZg+NUhwIXhLRqYjZsmAaMJ9UhbsyFdVHYVLis7H8a5SW8QVYa9KbEMjGEFM+Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705936351; c=relaxed/simple;
-	bh=IM0mBk72pQQiITIsPzOisHFy07r4WeQvg4rA/rcSlsQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZNLwzgfGB4RYmA+aIKIV3briHdIMP6k6u2ourKoTZbQy/2gCEsByN+EXj/HFVXbkt3hi/hUxDzkDyp8rTq/q8F6MGHNVlpKEHlZtBw4lHe8raWlY1PPDQvxRvRN17F7JyOQQRkqye68hfnlDxqULql/0y4r/DQv2WDqyYC3NFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q00Xc0Jy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F265C433C7;
-	Mon, 22 Jan 2024 15:12:30 +0000 (UTC)
+	s=arc-20240116; t=1705936387; c=relaxed/simple;
+	bh=Uye9Z16T4F7rnw5uWqM/ojOYrT953nGpjEqyI3AjPzY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gSICVB83+YFe8n1wr/7NILKaPEn+2SlHfc8mV2wA4kml5gyywESFSxl4Kvf74BGHm3cGikFEE3bicyYW2HLaN66QiNuFYwTHc1heGjOL0ttVC8XYxBvUGrnr1E5BHTux4t7BxQ/83DusJ1VPpwxenpJZIMZn1iZb/OfZMrFhGZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s4aM9zD0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8422BC43394;
+	Mon, 22 Jan 2024 15:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705936351;
-	bh=IM0mBk72pQQiITIsPzOisHFy07r4WeQvg4rA/rcSlsQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q00Xc0JytyD5dxmQSURnpfXK1+Jr5xcT+BH+wc1u7mXsbZlLu3dG6gyrLsZt3olTI
-	 cG3R1os75i+YRmWiSu4KVbsW0lOPr8xsz/83CauqLvoF2/WCI5gxFu3GTVE2fHlyNn
-	 ZQSvPrN4T96o1Lw5iL0GmpSEieN+nnWV+467in6EBJAqenCuH8K4OJO2N3Ml/BmzJj
-	 /emEm3ILOIhFl0ViSxaCDdRqmtDt6BPPlzNXhXkZexdxAjMGi9gQtSoMaaGuvcjFEb
-	 +FbqZFJfKyihSSFMQgBbzNNkjzFcLG9cMKlH1vFweFzUQuQ6N4QjoFqC5QHktY0LzP
-	 isuyyeh+xAh4g==
+	s=k20201202; t=1705936387;
+	bh=Uye9Z16T4F7rnw5uWqM/ojOYrT953nGpjEqyI3AjPzY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=s4aM9zD01Gyb+L/C/wj4XPSBnd6FmXXpz2gBDVi+AX/XieEjKtk0AOKOkIB1Kb1k6
+	 TQMC6A6xTk8JBA22WLtF+WyKt+ZPrUOUcgvCl5fr9YzJUv/q+x1xiAfnXdE6pXp6nb
+	 XRp91kmA0KpbqV0k9Iz/jsXoK4d0SYy4EecBKSFQ0vVxNg7YUh3GnbJAgoLpQWzY0o
+	 E3TBh+qFD4ucxVFgd8ebcFjOfGsNwSLpRYAG1v+l04BaMp+CM/JEpoaSI6kRLPJ5LT
+	 9ErnsxiWpG8lg+auhlyoFCP7y5zG3P4V5KOXrBGXhTxl7Rf0deOcuG/qY+mhrz3vKp
+	 JiLV6VVHeAktA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sfrench@samba.org,
-	linux-cifs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 53/53] ksmbd: send lease break notification on FILE_RENAME_INFORMATION
-Date: Mon, 22 Jan 2024 10:08:54 -0500
-Message-ID: <20240122150949.994249-53-sashal@kernel.org>
+	linux-f2fs-devel@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 5.15 01/35] f2fs: fix to check return value of f2fs_reserve_new_block()
+Date: Mon, 22 Jan 2024 10:11:58 -0500
+Message-ID: <20240122151302.995456-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122150949.994249-1-sashal@kernel.org>
-References: <20240122150949.994249-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,68 +59,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.74
+X-stable-base: Linux 5.15.147
 Content-Transfer-Encoding: 8bit
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 3fc74c65b367476874da5fe6f633398674b78e5a ]
+[ Upstream commit 956fa1ddc132e028f3b7d4cf17e6bfc8cb36c7fd ]
 
-Send lease break notification on FILE_RENAME_INFORMATION request.
-This patch fix smb2.lease.v2_epoch2 test failure.
+Let's check return value of f2fs_reserve_new_block() in do_recover_data()
+rather than letting it fails silently.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Also refactoring check condition on return value of f2fs_reserve_new_block()
+as below:
+- trigger f2fs_bug_on() only for ENOSPC case;
+- use do-while statement to avoid redundant codes;
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/oplock.c  | 9 +++++++--
- fs/smb/server/smb2pdu.c | 1 +
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ fs/f2fs/recovery.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index ebb7d100c851..252f5b96862b 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -546,6 +546,7 @@ static struct oplock_info *same_client_has_lease(struct ksmbd_inode *ci,
- 			     atomic_read(&ci->sop_count)) == 1) {
- 				if (lease->state != SMB2_LEASE_NONE_LE &&
- 				    lease->state == (lctx->req_state & lease->state)) {
-+					lease->epoch++;
- 					lease->state |= lctx->req_state;
- 					if (lctx->req_state &
- 						SMB2_LEASE_WRITE_CACHING_LE)
-@@ -556,13 +557,17 @@ static struct oplock_info *same_client_has_lease(struct ksmbd_inode *ci,
- 				    atomic_read(&ci->sop_count)) > 1) {
- 				if (lctx->req_state ==
- 				    (SMB2_LEASE_READ_CACHING_LE |
--				     SMB2_LEASE_HANDLE_CACHING_LE))
-+				     SMB2_LEASE_HANDLE_CACHING_LE)) {
-+					lease->epoch++;
- 					lease->state = lctx->req_state;
+diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
+index ba7eeb3c2738..da0801aa4118 100644
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -657,7 +657,16 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		 */
+ 		if (dest == NEW_ADDR) {
+ 			f2fs_truncate_data_blocks_range(&dn, 1);
+-			f2fs_reserve_new_block(&dn);
++			do {
++				err = f2fs_reserve_new_block(&dn);
++				if (err == -ENOSPC) {
++					f2fs_bug_on(sbi, 1);
++					break;
 +				}
- 			}
- 
- 			if (lctx->req_state && lease->state ==
--			    SMB2_LEASE_NONE_LE)
-+			    SMB2_LEASE_NONE_LE) {
-+				lease->epoch++;
- 				lease_none_upgrade(opinfo, lctx->req_state);
-+			}
++			} while (err &&
++				IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
++			if (err)
++				goto err;
+ 			continue;
  		}
- 		read_lock(&ci->m_lock);
- 	}
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 8d4e2c666c34..f5468cfb523d 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -5567,6 +5567,7 @@ static int smb2_rename(struct ksmbd_work *work,
- 	if (!file_info->ReplaceIfExists)
- 		flags = RENAME_NOREPLACE;
  
-+	smb_break_all_levII_oplock(work, fp, 0);
- 	rc = ksmbd_vfs_rename(work, &fp->filp->f_path, new_name, flags);
- out:
- 	kfree(new_name);
+@@ -665,12 +674,14 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		if (f2fs_is_valid_blkaddr(sbi, dest, META_POR)) {
+ 
+ 			if (src == NULL_ADDR) {
+-				err = f2fs_reserve_new_block(&dn);
+-				while (err &&
+-				       IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION))
++				do {
+ 					err = f2fs_reserve_new_block(&dn);
+-				/* We should not get -ENOSPC */
+-				f2fs_bug_on(sbi, err);
++					if (err == -ENOSPC) {
++						f2fs_bug_on(sbi, 1);
++						break;
++					}
++				} while (err &&
++					IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
+ 				if (err)
+ 					goto err;
+ 			}
 -- 
 2.43.0
 
