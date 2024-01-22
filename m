@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51A8838255
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:19:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3748384A6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89397B2A80B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A60D1B259FB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F0258215;
-	Tue, 23 Jan 2024 01:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF546D1D8;
+	Tue, 23 Jan 2024 02:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QiKUu6pw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2aMU35N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8495820F;
-	Tue, 23 Jan 2024 01:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEEF6BB56;
+	Tue, 23 Jan 2024 02:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974063; cv=none; b=PfR+7ev4wVQbPawusq1YzF4ut54ARlkQbtskxUzyOKkKJy3jElYgWtuVGLWA6pNGS+zEnWjkTnTGGJ6vs2oRqctChFjvFpA2+mYM1ZOChrxYh5EAJjkowA5tZFKauMG5q0+R+hyrrQhAZKu/8YzpRvHt74qFtjq8UoQAzVzAPjw=
+	t=1705975390; cv=none; b=RtSVooZgTdE6NLi0D8zhTS5dIA2HLNVKdAGsFygNxk2B0i5C5g7LvyE+2sXYBmiHDN/o0tj+l8hbnxb75/lo8/o1UzTa2DU1mk/DrRwRuP+lt0XuQ2Y30kT5kKXvOAeMBAq5rfAI5MHjIdmMwWf/BX87nc1Ae5+4El0uI4ba17o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974063; c=relaxed/simple;
-	bh=uiVEUKeXS5wEbvbQ0u9q869wnW6Rnzoy/wS8Xe1Fhls=;
+	s=arc-20240116; t=1705975390; c=relaxed/simple;
+	bh=oE46ogXbzCGExEnS1Rr9T3UloIPdyLt4Y+7xein2BdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eGhxr3g0iGOBHyDNpMkosbvpHH50ttQAPIkuUc9pnUluDNnFm4t8BOheO5nOtw2tmkzV3+uFiYnMUfpcvC57JXcB3Ntq3D1gzwHBbW5RAfemDNSyQplc6Aq7cpcnca7/om1wDt99Hcef+7gEYQ5n2oLXRLjYlu61m87mhKnxxyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QiKUu6pw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB63C43390;
-	Tue, 23 Jan 2024 01:41:03 +0000 (UTC)
+	 MIME-Version; b=tOoQVBxxt9/clir/7vvjXc3M/RQ1N0w7QPDpqa/FfDzYYqcoC6X3s6fWRtou/tDHwjBoVaN0Xg0seHesH3peefNGZhLk5DrYqO71yqbPERJI7GRAASJptWJwVoaugeaGAHouPn5epTYVACXoFWbPyDp8cbD14xMWS6Hkm7mGhyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2aMU35N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C550FC433A6;
+	Tue, 23 Jan 2024 02:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974063;
-	bh=uiVEUKeXS5wEbvbQ0u9q869wnW6Rnzoy/wS8Xe1Fhls=;
+	s=korg; t=1705975389;
+	bh=oE46ogXbzCGExEnS1Rr9T3UloIPdyLt4Y+7xein2BdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QiKUu6pwHCmSsumAPzAPuhons8XMoP17u7HDrhUGnDK1smOparwY1mCXTtQd8kfjv
-	 Tf5za04sZnfTyv4v1+vMzrnOF98IpaXIn8jOHiObkrvCAQbHosERAZpuFEuXAUbpLc
-	 XL4vpiiaDrluXf+EMDecwtAZnAYqNoJGwvMLmryE=
+	b=o2aMU35Nc6TZodlbFBofN0kucjXGwcUDM/G2AVlG6adahOW/yj1GlNh2B2tuEYMd4
+	 tVs1WElllra0G4g59e1dP47yJ+y2mP8jTc9Y+P8KXBWHMje8Faq0TNJ6yMep6CYvzj
+	 pIcHrIjiNlc0jrWeFJOSQEw9phd0bBfp08KDhDDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 144/374] scsi: hisi_sas: Replace with standard error code return value
-Date: Mon, 22 Jan 2024 15:56:40 -0800
-Message-ID: <20240122235749.639914868@linuxfoundation.org>
+	Matthew Maurer <mmaurer@google.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.6 350/583] rust: Ignore preserve-most functions
+Date: Mon, 22 Jan 2024 15:56:41 -0800
+Message-ID: <20240122235822.731854401@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Matthew Maurer <mmaurer@google.com>
 
-[ Upstream commit d34ee535705eb43885bc0f561c63046f697355ad ]
+commit bad098d76835c1379e1cf6afc935f8a7e050f83c upstream.
 
-In function hisi_sas_controller_prereset(), -ENOSYS (Function not
-implemented) should be returned if the driver does not support .soft_reset.
-Returns -EPERM (Operation not permitted) if HISI_SAS_RESETTING_BIT is
-already be set.
+Neither bindgen nor Rust know about the preserve-most calling
+convention, and Clang describes it as unstable. Since we aren't using
+functions with this calling convention from Rust, blocklist them.
 
-In function _suspend_v3_hw(), returns -EPERM (Operation not permitted) if
-HISI_SAS_RESETTING_BIT is already be set.
+These functions are only added to the build when list hardening is
+enabled, which is likely why others didn't notice this yet.
 
-Fixes: 4522204ab218 ("scsi: hisi_sas: tidy host controller reset function a bit")
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/1702525516-51258-3-git-send-email-chenxiang66@hisilicon.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20231031201945.1412345-1-mmaurer@google.com
+[ Used Markdown for consistency with the other comments in the file. ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c  | 4 ++--
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ rust/bindgen_parameters |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index 19081790f011..530f61df109a 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -1584,12 +1584,12 @@ EXPORT_SYMBOL_GPL(hisi_sas_controller_reset_done);
- static int hisi_sas_controller_prereset(struct hisi_hba *hisi_hba)
- {
- 	if (!hisi_hba->hw->soft_reset)
--		return -1;
-+		return -ENOENT;
+--- a/rust/bindgen_parameters
++++ b/rust/bindgen_parameters
+@@ -20,3 +20,7 @@
  
- 	down(&hisi_hba->sem);
- 	if (test_and_set_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags)) {
- 		up(&hisi_hba->sem);
--		return -1;
-+		return -EPERM;
- 	}
- 
- 	if (hisi_sas_debugfs_enable && hisi_hba->debugfs_itct[0].itct)
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 0e57381121d5..88af529ab100 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -4983,7 +4983,7 @@ static int _suspend_v3_hw(struct device *device)
- 	}
- 
- 	if (test_and_set_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags))
--		return -1;
-+		return -EPERM;
- 
- 	scsi_block_requests(shost);
- 	set_bit(HISI_SAS_REJECT_CMD_BIT, &hisi_hba->flags);
--- 
-2.43.0
-
+ # `seccomp`'s comment gets understood as a doctest
+ --no-doc-comments
++
++# These functions use the `__preserve_most` calling convention, which neither bindgen
++# nor Rust currently understand, and which Clang currently declares to be unstable.
++--blocklist-function __list_.*_report
 
 
 
