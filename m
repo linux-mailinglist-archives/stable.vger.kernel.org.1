@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E464B837BBE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F9F8381FB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBC85B2F5E5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:00:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BB551F23359
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6491339A4;
-	Tue, 23 Jan 2024 00:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E38D5676E;
+	Tue, 23 Jan 2024 01:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLHmKBlN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBnRFPCP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E16713398C;
-	Tue, 23 Jan 2024 00:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5308B5676A;
+	Tue, 23 Jan 2024 01:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969297; cv=none; b=KDWUOu/4NSLwXCuoPC65ahtUSGF+hCmMxjgXYQI7rmLufcAu04BKpk01F1Zrmzt+hUJTWIOsPtH+UaLQ43SmOBm5THQFuC5n9iwYEGmUOFaigG42QW0XVRRRpSbE5qK/ybWxvC3GsxWhXk+VC9DwKuFhHfkIBx7wTgY+UK02Ig0=
+	t=1705974025; cv=none; b=o5feIMje8Nxu0aIg6A1bifaLhfsVvyTWuyDdXMFadu65C6Z+yUHFYNDmWxjC4frvpcpvAYxHf0RGz2XS1LutKlolhzcryfMOlOFVaQFFMxUZWg2GTgfUfxBZOal2arDRPq5y1DGMpv4RolXKUdE+m3Gf33JzrQTsL904Uz9Ts3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969297; c=relaxed/simple;
-	bh=8Mj7bNhQYmHpXBo+0Nb6bj0seg6tu0bb4r2vER/lq7M=;
+	s=arc-20240116; t=1705974025; c=relaxed/simple;
+	bh=RUrUXapV7ctIuY6n2JaujJ+9WMVfluFwkp/QXA9DJK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cBnrIBPxtUwrn3JCKVKW996gj1W89w8gINVy4Q8oTmcKO6f/FBv26SJ+qVezaJMRMXwzgVYCpaQXkxIWYWZ+t3MCkljjM5e14JDSA39lLFVu2jeyxbWlctqEBxPRs5XfvULHHGPuYGBDmc5bt2EMQZh3mcojjwbGLQZxk9TcvVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLHmKBlN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D047C43399;
-	Tue, 23 Jan 2024 00:21:37 +0000 (UTC)
+	 MIME-Version; b=SMh6c6e5be+4MihnDeuQYjSXVsjOHgSZQmxkNOea/YcstvfLu8unAH3bhAbJG83+H36/MZ8UP8tP0MVLQHsG2w8CPp6Q+PFfj4nazdnF6aoiDC9nXRc1XO6eTsd6hJfkTd4d3LHE8ELYVzcz5xiePJSng3re++rECWgLCSKpDeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBnRFPCP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABBAC43390;
+	Tue, 23 Jan 2024 01:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969297;
-	bh=8Mj7bNhQYmHpXBo+0Nb6bj0seg6tu0bb4r2vER/lq7M=;
+	s=korg; t=1705974024;
+	bh=RUrUXapV7ctIuY6n2JaujJ+9WMVfluFwkp/QXA9DJK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NLHmKBlNK1UE3g6V77wIp2paxBNsxhmieuCwkTF11MyDo1F9nwZsfadxMkSD4mx1u
-	 pLjPAIqP0Nsma5aHY8UEb+/sQ0l26wuPqR9cU3HVVyn3AXndkL09XinK4I6YTKBtb6
-	 MpbxSnm18Wl8bP1SvvKuVy8+qe2zSBqya0Tj1W8c=
+	b=OBnRFPCPf3+UqXgO1gV3xbhksg9m6BOGLMqCTWo7Il6i/gme8RuVIY8lK5+BX3H9x
+	 twUF4dPffDNa3N0IE8KdpRIbZAe7CM8kj+8bTlvPw58Ed86kfTcQ3JIO4cRSF5BOep
+	 ftL4iWjg02qKNfHnsw9aOzYRJhLsfXBP5/JPsrrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Felix Fietkau <nbd@nbd.name>,
+	Nathan Lynch <nathanl@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 154/641] wifi: mt76: mt7996: fix mt7996_mcu_all_sta_info_event struct packing
+Subject: [PATCH 6.6 007/583] powerpc/pseries/memhp: Fix access beyond end of drmem array
 Date: Mon, 22 Jan 2024 15:50:58 -0800
-Message-ID: <20240122235822.852499908@linuxfoundation.org>
+Message-ID: <20240122235812.463933978@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-[ Upstream commit 2ee1c40daeb9a33e25c460bf87feca58e91af879 ]
+[ Upstream commit bd68ffce69f6cf8ddd3a3c32549d1d2275e49fc5 ]
 
-The internal struct and union inside mt7996_mcu_all_sta_info_event is
-marked as being aligned, which conflicts with it being unaligned
-within that structure:
+dlpar_memory_remove_by_index() may access beyond the bounds of the
+drmem lmb array when the LMB lookup fails to match an entry with the
+given DRC index. When the search fails, the cursor is left pointing to
+&drmem_info->lmbs[drmem_info->n_lmbs], which is one element past the
+last valid entry in the array. The debug message at the end of the
+function then dereferences this pointer:
 
-drivers/net/wireless/mediatek/mt76/mt7996/mcu.h:165:2: error: field  within 'struct mt7996_mcu_all_sta_info_event' is less aligned than 'union mt7996_mcu_all_sta_info_event::(anonymous at ../drivers/net/wireless/mediatek/mt76/mt7996/mcu.h:165:2)' and is usually due to 'struct mt7996_mcu_all_sta_info_event' being packed, which can lead to unaligned accesses [-Werror,-Wunaligned-access]
+        pr_debug("Failed to hot-remove memory at %llx\n",
+                 lmb->base_addr);
 
-Mark all three as being packed as well to ensure byte packing for
-the entire thing.
+This was found by inspection and confirmed with KASAN:
 
-Fixes: adde3eed4a75 ("wifi: mt76: mt7996: Add mcu commands for getting sta tx statistic")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+  pseries-hotplug-mem: Attempting to hot-remove LMB, drc index 1234
+  ==================================================================
+  BUG: KASAN: slab-out-of-bounds in dlpar_memory+0x298/0x1658
+  Read of size 8 at addr c000000364e97fd0 by task bash/949
+
+  dump_stack_lvl+0xa4/0xfc (unreliable)
+  print_report+0x214/0x63c
+  kasan_report+0x140/0x2e0
+  __asan_load8+0xa8/0xe0
+  dlpar_memory+0x298/0x1658
+  handle_dlpar_errorlog+0x130/0x1d0
+  dlpar_store+0x18c/0x3e0
+  kobj_attr_store+0x68/0xa0
+  sysfs_kf_write+0xc4/0x110
+  kernfs_fop_write_iter+0x26c/0x390
+  vfs_write+0x2d4/0x4e0
+  ksys_write+0xac/0x1a0
+  system_call_exception+0x268/0x530
+  system_call_vectored_common+0x15c/0x2ec
+
+  Allocated by task 1:
+   kasan_save_stack+0x48/0x80
+   kasan_set_track+0x34/0x50
+   kasan_save_alloc_info+0x34/0x50
+   __kasan_kmalloc+0xd0/0x120
+   __kmalloc+0x8c/0x320
+   kmalloc_array.constprop.0+0x48/0x5c
+   drmem_init+0x2a0/0x41c
+   do_one_initcall+0xe0/0x5c0
+   kernel_init_freeable+0x4ec/0x5a0
+   kernel_init+0x30/0x1e0
+   ret_from_kernel_user_thread+0x14/0x1c
+
+  The buggy address belongs to the object at c000000364e80000
+   which belongs to the cache kmalloc-128k of size 131072
+  The buggy address is located 0 bytes to the right of
+   allocated 98256-byte region [c000000364e80000, c000000364e97fd0)
+
+  ==================================================================
+  pseries-hotplug-mem: Failed to hot-remove memory at 0
+
+Log failed lookups with a separate message and dereference the
+cursor only when it points to a valid entry.
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Fixes: 51925fb3c5c9 ("powerpc/pseries: Implement memory hotplug remove in the kernel")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231114-pseries-memhp-fixes-v1-1-fb8f2bb7c557@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/platforms/pseries/hotplug-memory.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-index 14c0dd31387a..9300cd8eeb76 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-@@ -168,15 +168,15 @@ struct mt7996_mcu_all_sta_info_event {
- 			u8 rsv[2];
- 			__le32 tx_bytes[IEEE80211_NUM_ACS];
- 			__le32 rx_bytes[IEEE80211_NUM_ACS];
--		} adm_stat[0];
-+		} adm_stat[0] __packed;
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index aa4042dcd6d4..4adca5b61dab 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -435,14 +435,15 @@ static int dlpar_memory_remove_by_index(u32 drc_index)
+ 		}
+ 	}
  
- 		struct {
- 			__le16 wlan_idx;
- 			u8 rsv[2];
- 			__le32 tx_msdu_cnt;
- 			__le32 rx_msdu_cnt;
--		} msdu_cnt[0];
--	};
-+		} msdu_cnt[0] __packed;
-+	} __packed;
- } __packed;
+-	if (!lmb_found)
++	if (!lmb_found) {
++		pr_debug("Failed to look up LMB for drc index %x\n", drc_index);
+ 		rc = -EINVAL;
+-
+-	if (rc)
++	} else if (rc) {
+ 		pr_debug("Failed to hot-remove memory at %llx\n",
+ 			 lmb->base_addr);
+-	else
++	} else {
+ 		pr_debug("Memory at %llx was hot-removed\n", lmb->base_addr);
++	}
  
- enum mt7996_chan_mib_offs {
+ 	return rc;
+ }
 -- 
 2.43.0
 
