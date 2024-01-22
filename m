@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD892837FEE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C010C837D45
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59AEFB2A848
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 798C42922A8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D6A63134;
-	Tue, 23 Jan 2024 00:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E85D56750;
+	Tue, 23 Jan 2024 00:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08aLFlmP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkoe0zLL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2111E374F5;
-	Tue, 23 Jan 2024 00:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20203A8F4;
+	Tue, 23 Jan 2024 00:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971129; cv=none; b=dQOeCsaep04RTIKmp6Ad6LOWhoIrV4kmG8IqGGIIOcwm4XkChKM7ft5kjZay9pEdZXaTHOkRAt+FGsCyeWGQPehS7iLrzMZmIvfvRlzE+cd9iz/iGJ+3C4MEYMjVTqRcQbtbCFLzjNQrFPR/8CrEkX6Ib4JP7W2k7K3B2lsEqqo=
+	t=1705969869; cv=none; b=bOYwOmzYucCjN1QiIHZ9M6ByOAVxrEJf7UF3GUtFwR9lkc7nb52pTblZR6uwu5aeiDf1rJ1y8c72riVPgyB79nBl/ldJQDeuy4T9ka64Nd2temSlIYbm+pmGcGJ0Yn/q2dbk2pDEyQhH/ghbllEVPVJc/st/agjWd4ML0/EFjJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971129; c=relaxed/simple;
-	bh=VCggQD51muS2qoURjRY8Z/H2u4m0W3yepUV2DiaOqS0=;
+	s=arc-20240116; t=1705969869; c=relaxed/simple;
+	bh=jdUZ+wWHC2t4Hl+JrG1E1tW3pVuc//eIN3p/jlHxFsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=asuglQhvX9/ozMKz+Cw4C51QAKSJrhuiq54pstETAaeO2LhtfjdL0yS1eUS8BiYXlwZEitYpjuNeBwfWdOaRVxZrgrOdZT6qoxj//0bnnccgXphehKp5Yc5earRIvO51h3ctIzdlFu7rDjbZkIYy1Z/GWzj4W5MVXc5T+30EwXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08aLFlmP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852A8C43399;
-	Tue, 23 Jan 2024 00:52:08 +0000 (UTC)
+	 MIME-Version; b=nReXXN5JVvIsSQ56TjZW5AIwkaKXfow6OhCS6SRc9Jj1npfrhQgNxPgeMQDDElFYJkulMYV79En9Df6YlxeqgsrQBE4u18C2TZ9OWYj8Fpr3Rgea8PBdJIMdyJub2a9f+Lc5hfKVk9HK+nrDWvV/PABTSQMUWP+3o6SSZvSYVgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkoe0zLL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF67C433F1;
+	Tue, 23 Jan 2024 00:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971128;
-	bh=VCggQD51muS2qoURjRY8Z/H2u4m0W3yepUV2DiaOqS0=;
+	s=korg; t=1705969868;
+	bh=jdUZ+wWHC2t4Hl+JrG1E1tW3pVuc//eIN3p/jlHxFsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=08aLFlmP2qtGh+2LBu+I7LDhgf71GyqV+KERRC1WiNZ4AXfxVFRmfNIm6v6Nm+dcP
-	 sFXQbwHXPjSmqlcZnYfM/KpqMswYplqmqdvvZHD/lwLTcWR0gE7GTr+xPrsAijPOrq
-	 +tfkJoGiXkTFCLiVfTKcorXy6LBE58sdNDbt5CaQ=
+	b=lkoe0zLLpPND692z5ZaFxf5Dy2iegnIuAGyiRFtkCmmCs/5ttEBxdcgSiXfi0Ohxt
+	 NfIiqao76STIjBappAOTYKOwGkTqSYpoW8sbSephBuAPdJBsNFLtIaYRvd1/OvTPh6
+	 H1P+xUWfRivRi0TJszxkxrCHIdkQsD+0H7jrMs4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 094/286] Revert "gfs2: Dont reject a supposedly full bitmap if we have blocks reserved"
+Subject: [PATCH 6.7 496/641] riscv: Fix module_alloc() that did not reset the linear mapping permissions
 Date: Mon, 22 Jan 2024 15:56:40 -0800
-Message-ID: <20240122235735.680772695@linuxfoundation.org>
+Message-ID: <20240122235833.588642626@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 2fdc2fa21bc72ec06c0c9f0e30b88fe1f2486b75 ]
+[ Upstream commit 749b94b08005929bbc636df21a23322733166e35 ]
 
-This reverts commit e79e0e1428188b24c3b57309ffa54a33c4ae40c4.
+After unloading a module, we must reset the linear mapping permissions,
+see the example below:
 
-It turns out that we're only setting the GBF_FULL flag of a bitmap if we've
-been scanning from the beginning of the bitmap until the end and we haven't
-found a single free block, and we're not skipping reservations in that process,
-either.  This means that in gfs2_rbm_find, we can always skip bitmaps with the
-GBF_FULL flag set.
+Before unloading a module:
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Stable-dep-of: 8877243beafa ("gfs2: Fix kernel NULL pointer dereference in gfs2_rgrp_dump")
+0xffffaf809d65d000-0xffffaf809d6dc000    0x000000011d65d000       508K PTE .   ..     ..   D A G . . W R V
+0xffffaf809d6dc000-0xffffaf809d6dd000    0x000000011d6dc000         4K PTE .   ..     ..   D A G . . . R V
+0xffffaf809d6dd000-0xffffaf809d6e1000    0x000000011d6dd000        16K PTE .   ..     ..   D A G . . W R V
+0xffffaf809d6e1000-0xffffaf809d6e7000    0x000000011d6e1000        24K PTE .   ..     ..   D A G . X . R V
+
+After unloading a module:
+
+0xffffaf809d65d000-0xffffaf809d6e1000    0x000000011d65d000       528K PTE .   ..     ..   D A G . . W R V
+0xffffaf809d6e1000-0xffffaf809d6e7000    0x000000011d6e1000        24K PTE .   ..     ..   D A G . X W R V
+
+The last mapping is not reset and we end up with WX mappings in the linear
+mapping.
+
+So add VM_FLUSH_RESET_PERMS to our module_alloc() definition.
+
+Fixes: 0cff8bff7af8 ("riscv: avoid the PIC offset of static percpu data in module beyond 2G limits")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20231213134027.155327-2-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/rgrp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/riscv/kernel/module.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
-index c5bde789a16d..e05c01d5b9e6 100644
---- a/fs/gfs2/rgrp.c
-+++ b/fs/gfs2/rgrp.c
-@@ -1717,8 +1717,7 @@ static int gfs2_rbm_find(struct gfs2_rbm *rbm, u8 state, u32 *minext,
- 
- 	while(1) {
- 		bi = rbm_bi(rbm);
--		if ((ip == NULL || !gfs2_rs_active(&ip->i_res)) &&
--		    test_bit(GBF_FULL, &bi->bi_flags) &&
-+		if (test_bit(GBF_FULL, &bi->bi_flags) &&
- 		    (state == GFS2_BLKST_FREE))
- 			goto next_bitmap;
- 
+diff --git a/arch/riscv/kernel/module.c b/arch/riscv/kernel/module.c
+index aac019ed63b1..862834bb1d64 100644
+--- a/arch/riscv/kernel/module.c
++++ b/arch/riscv/kernel/module.c
+@@ -894,7 +894,8 @@ void *module_alloc(unsigned long size)
+ {
+ 	return __vmalloc_node_range(size, 1, MODULES_VADDR,
+ 				    MODULES_END, GFP_KERNEL,
+-				    PAGE_KERNEL, 0, NUMA_NO_NODE,
++				    PAGE_KERNEL, VM_FLUSH_RESET_PERMS,
++				    NUMA_NO_NODE,
+ 				    __builtin_return_address(0));
+ }
+ #endif
 -- 
 2.43.0
 
