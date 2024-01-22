@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F088F837BB1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:05:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9E1883825D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F9BB1C2537E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:05:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52310280AB9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E6D152DE1;
-	Tue, 23 Jan 2024 00:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017B45B5B4;
+	Tue, 23 Jan 2024 01:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4YEstGR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x0WSMfwz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C424D151CEA;
-	Tue, 23 Jan 2024 00:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43215A7B8;
+	Tue, 23 Jan 2024 01:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969367; cv=none; b=Sju/qdgWI0a3/t4eSDDiFMhYMSQDRdED0n64BhzmusY4zY5yhZJ1a0cMQDvOj7Envtr1bJ7+oERpaJFUh+ojkTSJMQp22KHIEtrf9IlWvhYXDs0rH8XUggHCRARlkNSv/z9rFZJr+jf9jLN6Rdzhc5spS53NM7+8Oiz5/zr/mio=
+	t=1705974334; cv=none; b=RdqD+wdCeFfwySe+A0md1TcybRrLUijA+9xEQWvFHLRi5fKGP8IQ+yzHGQB0FYZ3Vbezx2EMf/DqaI40OHOiVvweMwVE6+lltRa0yKTISe6ehrZfTqzDNaiQJ7OJxUfY0yJLvA8+Py1XCcu/olBe/m3y6Xt3iNu4z2L2wPNt4dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969367; c=relaxed/simple;
-	bh=zXcoTGpO6QWLAwCOzNCOqi0u+94ptEDsBRFkdivTMHM=;
+	s=arc-20240116; t=1705974334; c=relaxed/simple;
+	bh=0/dk9Bp0jyIfOeTXGaYJUK8RxSdErULahAKXDFTZHFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IB1ufdcLk1IVROJR2sCQPlFTA4uOlgbOdntP9i+CCV44wFCdoXO/0GYiVEzDIbTJpWUaFzqdZaF2UILU5P1w8cQIvmSVLCBeCb2bsndGiWX8PynEGU23u1FH/2kaSADkUsZ0+yYL8gj4DI/k+ioJ1xVn7cG4X0ERtk/oCnwH8aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4YEstGR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593DDC433F1;
-	Tue, 23 Jan 2024 00:22:47 +0000 (UTC)
+	 MIME-Version; b=GhSco2Srq4k5Ia47wqRalsKO7l3dmQt0mG3LV+kAjktRU6Knhkks9BLNapir4ec6TWZUWt/9quQ6pTNJsJqTorM5QRH4vJ0SJql4VxctFmfaedJLTm1UKS4ODBxRRcQm8xP+dXXy1m2SvE1enOLYg8DxmuiD2RM/VOxH+N80ozA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x0WSMfwz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D13C433F1;
+	Tue, 23 Jan 2024 01:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969367;
-	bh=zXcoTGpO6QWLAwCOzNCOqi0u+94ptEDsBRFkdivTMHM=;
+	s=korg; t=1705974334;
+	bh=0/dk9Bp0jyIfOeTXGaYJUK8RxSdErULahAKXDFTZHFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k4YEstGR8JtAYdU14oY0nbJfRWOAtkhG8SxZwb5tkSyUH3vUeu9VbR71UbBn1FG0Z
-	 06B1eDJx/R3mN9c5IeesVVHITZo0bN04Rdbtwg3IuTxiCb1AUaE+K5wENo9dYx0bvR
-	 H/LvgjbehHXm+5Mfn/d5faxmGS6XA5pmsnsAkiLY=
+	b=x0WSMfwz6Ex8difcW6yYG5VxDiqMCFpF42OxBjHALeq7UyeBKoAfeTYaKjVMFUrnU
+	 /u7AJQThDkU9rSqlciFno0/qTGxqLj6MaoSdowFG4dWuw+VF8Y2nVyQW8uU4Asi5ui
+	 IZzc6wVJClEgB8jSHz3IOx/vdI/uTFBQXnb3ZMRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 199/641] block: add check of minors and first_minor in device_add_disk()
-Date: Mon, 22 Jan 2024 15:51:43 -0800
-Message-ID: <20240122235824.187897021@linuxfoundation.org>
+Subject: [PATCH 6.6 053/583] crypto: sahara - fix error handling in sahara_hw_descriptor_create()
+Date: Mon, 22 Jan 2024 15:51:44 -0800
+Message-ID: <20240122235813.756766765@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 4c434392c4777881d01beada6701eff8c76b43fe ]
+[ Upstream commit ee6e6f0a7f5b39d50a5ef5fcc006f4f693db18a7 ]
 
-'first_minor' represents the starting minor number of disks, and
-'minors' represents the number of partitions in the device. Neither
-of them can be greater than MINORMASK + 1.
+Do not call dma_unmap_sg() for scatterlists that were not mapped
+successfully.
 
-Commit e338924bd05d ("block: check minor range in device_add_disk()")
-only added the check of 'first_minor + minors'. However, their sum might
-be less than MINORMASK but their values are wrong. Complete the checks now.
-
-Fixes: e338924bd05d ("block: check minor range in device_add_disk()")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20231219075942.840255-1-linan666@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/genhd.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/crypto/sahara.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/block/genhd.c b/block/genhd.c
-index 13db3a7943d8..d74fb5b4ae68 100644
---- a/block/genhd.c
-+++ b/block/genhd.c
-@@ -432,7 +432,9 @@ int __must_check device_add_disk(struct device *parent, struct gendisk *disk,
- 				DISK_MAX_PARTS);
- 			disk->minors = DISK_MAX_PARTS;
- 		}
--		if (disk->first_minor + disk->minors > MINORMASK + 1)
-+		if (disk->first_minor > MINORMASK ||
-+		    disk->minors > MINORMASK + 1 ||
-+		    disk->first_minor + disk->minors > MINORMASK + 1)
- 			goto out_exit_elevator;
- 	} else {
- 		if (WARN_ON(disk->minors))
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 55cfe51575b9..e86df3c51787 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -483,13 +483,14 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
+ 			 DMA_TO_DEVICE);
+ 	if (!ret) {
+ 		dev_err(dev->device, "couldn't map in sg\n");
+-		goto unmap_in;
++		return -EINVAL;
+ 	}
++
+ 	ret = dma_map_sg(dev->device, dev->out_sg, dev->nb_out_sg,
+ 			 DMA_FROM_DEVICE);
+ 	if (!ret) {
+ 		dev_err(dev->device, "couldn't map out sg\n");
+-		goto unmap_out;
++		goto unmap_in;
+ 	}
+ 
+ 	/* Create input links */
+@@ -537,9 +538,6 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
+ 
+ 	return 0;
+ 
+-unmap_out:
+-	dma_unmap_sg(dev->device, dev->out_sg, dev->nb_out_sg,
+-		DMA_FROM_DEVICE);
+ unmap_in:
+ 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
+ 		DMA_TO_DEVICE);
 -- 
 2.43.0
 
