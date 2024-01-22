@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55385837F70
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 564DE83818F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88BB41C28FAE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 890241C27683
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC610374F5;
-	Tue, 23 Jan 2024 00:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028C2DDB5;
+	Tue, 23 Jan 2024 01:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gl1x3e1O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OoqOQSz8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C14062A1B;
-	Tue, 23 Jan 2024 00:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CA137C;
+	Tue, 23 Jan 2024 01:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971132; cv=none; b=CmtJ72vW0yIvaTjDj4HZI67th4+3oK42ZcOY3Z9GQ4b1gPxCJ1SDS7w3nQsA8nL3xdlbCz2hZ/HdVDDeIjZ6M7plGFfpbWTGfNNHii80OD5L4U1X8VBf0E1JRJ82C+6xV5Z9geiBXHMBpDA1sTAJ+i8mMWCBc2LCUBGx22hD3m4=
+	t=1705972173; cv=none; b=JZR943ApM2/DzcVgt/jsV0hRuJWknRQYNYvylVxkrlwhQusaNvQkK99As1MfRUtNhxXpKr7b7bgwPvYkQHKbkLHh9H+RzrtrmdLYI1xsyi+ZwsyayaeYittfuq9PcFwYmX0mxCmRrGfAXXg/0ZeN/jJ1hCjlyEKvkaqLzTDc4Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971132; c=relaxed/simple;
-	bh=XaBA9RQxYyj8/3nLtHgvD/TbEhv+LAZD9hGcrCDkmXA=;
+	s=arc-20240116; t=1705972173; c=relaxed/simple;
+	bh=W8wmht3V9dMWnPczh0LLvSUzlLk2yZ1VsvjSgP3X4vM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Da+kbOX0fwHHtkA3FAK3SSXHR1jsJJ0YWCrCG+LnqCg/ftLvUOUilRxL8boBnKQe7IA8m7Cz41ZgIqyDk9qS0vvqnOWilc1nh7GmeXOV04pOozY6yiLrROEM9aVMYvjVt0SjmfDNLT5RIysCZHjAwzDZuQHOll+Z5SqunKD02n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gl1x3e1O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BF8C43390;
-	Tue, 23 Jan 2024 00:52:11 +0000 (UTC)
+	 MIME-Version; b=BP/KZvePe/ipFdVYCACuHes/ssC3HKaYmIiOqCKyi9a/i7wkAOIozKuEbO47uG1S3kFA5bUOrBe9Gd+I94jvVo4fjATbuaRRpBBJBqZyYrM7wIUGIr4OcSUV8edx8g2wO7XVscAGGbHAUkjcHBEZjZBscHo/pF7mr8EKR32nkCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OoqOQSz8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7014BC433C7;
+	Tue, 23 Jan 2024 01:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971132;
-	bh=XaBA9RQxYyj8/3nLtHgvD/TbEhv+LAZD9hGcrCDkmXA=;
+	s=korg; t=1705972173;
+	bh=W8wmht3V9dMWnPczh0LLvSUzlLk2yZ1VsvjSgP3X4vM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gl1x3e1OzlvFY0YxMqe1BtFjjK/w0wQogUi5M0j3y5PJujMm+gIGjuFw5uKu4SlT3
-	 YzgS6BvrlFqnRg7+TMmb3RdcKyZOxmLvmX7hNq2av8WsY/d0/Wi9eS6B+ixR11n3XR
-	 k4D8Gx+ENIAbXEWEZ5VRiJRL4uZTMgg5kGKwZh0U=
+	b=OoqOQSz8SuZAZa6qP4NLTK+iOSlJqzSkksvSaEQlvTWDFblj4zVds2m2O6s3L/Rsx
+	 porKGa0mIpfz17C/VMap6WaRuuJYMlTydMcu+1iQHUetPcZb0t81oA9MWCFqFJkZg1
+	 L5CLf6kQzjshi3exdoHo6bEJFA/+gAZodu5Rhodg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 187/417] drm/radeon/dpm: fix a memleak in sumo_parse_power_table
+Subject: [PATCH 5.15 099/374] crypto: sahara - fix cbc selftest failure
 Date: Mon, 22 Jan 2024 15:55:55 -0800
-Message-ID: <20240122235758.381190193@linuxfoundation.org>
+Message-ID: <20240122235748.039652603@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 0737df9ed0997f5b8addd6e2b9699a8c6edba2e4 ]
+[ Upstream commit 9f10bc28c0fb676ae58aa3bfa358db8f5de124bb ]
 
-The rdev->pm.dpm.ps allocated by kcalloc should be freed in every
-following error-handling path. However, in the error-handling of
-rdev->pm.power_state[i].clock_info the rdev->pm.dpm.ps is not freed,
-resulting in a memleak in this function.
+The kernel crypto API requires that all CBC implementations update the IV
+buffer to contain the last ciphertext block.
 
-Fixes: 80ea2c129c76 ("drm/radeon/kms: add dpm support for sumo asics (v2)")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This fixes the following cbc selftest error:
+alg: skcipher: sahara-cbc-aes encryption test failed (wrong output IV) on
+test vector 0, cfg="in-place (one sglist)"
+
+Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/sumo_dpm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/crypto/sahara.c | 33 +++++++++++++++++++++++++++++++--
+ 1 file changed, 31 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/sumo_dpm.c b/drivers/gpu/drm/radeon/sumo_dpm.c
-index f74f381af05f..d49c145db437 100644
---- a/drivers/gpu/drm/radeon/sumo_dpm.c
-+++ b/drivers/gpu/drm/radeon/sumo_dpm.c
-@@ -1493,8 +1493,10 @@ static int sumo_parse_power_table(struct radeon_device *rdev)
- 		non_clock_array_index = power_state->v2.nonClockInfoIndex;
- 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
- 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
--		if (!rdev->pm.power_state[i].clock_info)
-+		if (!rdev->pm.power_state[i].clock_info) {
-+			kfree(rdev->pm.dpm.ps);
- 			return -EINVAL;
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 84a7c4de537a..1f41c8eeb8fc 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -149,6 +149,7 @@ struct sahara_ctx {
+ 
+ struct sahara_aes_reqctx {
+ 	unsigned long mode;
++	u8 iv_out[AES_BLOCK_SIZE];
+ 	struct skcipher_request fallback_req;	// keep at the end
+ };
+ 
+@@ -542,8 +543,24 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
+ 	return -EINVAL;
+ }
+ 
++static void sahara_aes_cbc_update_iv(struct skcipher_request *req)
++{
++	struct crypto_skcipher *skcipher = crypto_skcipher_reqtfm(req);
++	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
++	unsigned int ivsize = crypto_skcipher_ivsize(skcipher);
++
++	/* Update IV buffer to contain the last ciphertext block */
++	if (rctx->mode & FLAGS_ENCRYPT) {
++		sg_pcopy_to_buffer(req->dst, sg_nents(req->dst), req->iv,
++				   ivsize, req->cryptlen - ivsize);
++	} else {
++		memcpy(req->iv, rctx->iv_out, ivsize);
++	}
++}
++
+ static int sahara_aes_process(struct skcipher_request *req)
+ {
++	struct crypto_skcipher *skcipher = crypto_skcipher_reqtfm(req);
+ 	struct sahara_dev *dev = dev_ptr;
+ 	struct sahara_ctx *ctx;
+ 	struct sahara_aes_reqctx *rctx;
+@@ -565,8 +582,17 @@ static int sahara_aes_process(struct skcipher_request *req)
+ 	rctx->mode &= FLAGS_MODE_MASK;
+ 	dev->flags = (dev->flags & ~FLAGS_MODE_MASK) | rctx->mode;
+ 
+-	if ((dev->flags & FLAGS_CBC) && req->iv)
+-		memcpy(dev->iv_base, req->iv, AES_KEYSIZE_128);
++	if ((dev->flags & FLAGS_CBC) && req->iv) {
++		unsigned int ivsize = crypto_skcipher_ivsize(skcipher);
++
++		memcpy(dev->iv_base, req->iv, ivsize);
++
++		if (!(dev->flags & FLAGS_ENCRYPT)) {
++			sg_pcopy_to_buffer(req->src, sg_nents(req->src),
++					   rctx->iv_out, ivsize,
++					   req->cryptlen - ivsize);
 +		}
- 		ps = kzalloc(sizeof(struct sumo_ps), GFP_KERNEL);
- 		if (ps == NULL) {
- 			kfree(rdev->pm.dpm.ps);
++	}
+ 
+ 	/* assign new context to device */
+ 	dev->ctx = ctx;
+@@ -589,6 +615,9 @@ static int sahara_aes_process(struct skcipher_request *req)
+ 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
+ 		DMA_TO_DEVICE);
+ 
++	if ((dev->flags & FLAGS_CBC) && req->iv)
++		sahara_aes_cbc_update_iv(req);
++
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
