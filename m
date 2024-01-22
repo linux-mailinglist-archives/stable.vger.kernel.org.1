@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D8883810B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D597E83835D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 690DD2896EB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FED728EE55
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46CCB13E23D;
-	Tue, 23 Jan 2024 01:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4B7627EE;
+	Tue, 23 Jan 2024 01:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XakC3dSy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kQ0Y0z3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0736613DBB7;
-	Tue, 23 Jan 2024 01:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBC461673;
+	Tue, 23 Jan 2024 01:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972005; cv=none; b=fG08MFQ08cfFwqkpo+Wk5G2DZYV8NgGRDhNPRjRhR5FJSuyvmtozfWj9F9xHiQyap672uGeF20bMzUtCJg+j8jporzHlkWONIi3CJQuiTV81Q0wbBKV9cvdZ+iMRdA7CcmAb88tOqSJk0IUeC+fi4+R2yxx8XBewslnd67uKS8A=
+	t=1705974950; cv=none; b=qCjA9N7OEfl7ZKh8BNYx7Hi4BEwZxdFthmfvuPw70dlAdziZ9ePtQg8CoLESPNPL6V3F+ok/MIm1Yw8H2VF2PMZ7Z8y4IrHhhlZT/ZvUK5r+PIx8ac4RRxwDWJvBTvsj4hlUH5xcHO+fFW4peBln2YjjlbJ3yZqyz4dg4/JbDr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972005; c=relaxed/simple;
-	bh=E/uGhRlQY1FaSYPubgMiBnSbAB4XesnbM/4ff7DnEVE=;
+	s=arc-20240116; t=1705974950; c=relaxed/simple;
+	bh=RkffaHa+FuoEImnKQ75hzZYsZjvyHYpUlvj23FbLCis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XR5vviE55DB5KMbtDEOEZcfPIcZceEemiJrLLoYO+GBAtEV3eOGxpuYZgVUcXk8oF51Rkv0RnFIaUkHZBsyBNMGGbJhLB+net02nVx6B9vR1p87rSdffRIa72Q1TpmZACx1zBhunlsIApwbAwyj547yJooHCO4tqiHSMfGmslU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XakC3dSy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F50C43399;
-	Tue, 23 Jan 2024 01:06:44 +0000 (UTC)
+	 MIME-Version; b=iTdHVumvT9uU0MLCZSprlMFob0/V93kEY9LBEiycfA3PLgK93Mo1c4lk0QdUz/wD8B2Z9/zaHIa4bSOqv8+aGmYLLHkQ0Wu6p7ngBuFRWqmO6Thxc+R3QlGDN8+GOuXgYmLQvgH+FP3Rzz2dxXllHO7rDHvddSp4fpPVPg0QoO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kQ0Y0z3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66E3C43390;
+	Tue, 23 Jan 2024 01:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972004;
-	bh=E/uGhRlQY1FaSYPubgMiBnSbAB4XesnbM/4ff7DnEVE=;
+	s=korg; t=1705974949;
+	bh=RkffaHa+FuoEImnKQ75hzZYsZjvyHYpUlvj23FbLCis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XakC3dSy7b0brJB3e2BjqSI+NjGF8W5Xhn3JXPtxNiJpjn0y6zhwRyjhgASsC5u3Z
-	 qlSDsU+3VK7irWs3uDOamYvxjCqmTcXShImuMxXs0ZaPC1Jn3p2GiTKjcEdUr6ylWr
-	 ipcr4JuY4rLfKt+B40tOZPt3bmYaSW7yw4Y0O2p0=
+	b=2kQ0Y0z39LYifnv7zinwoU0gU06w6FuzHp/D1UHe4Noqtai9xrcoCJghnWYcsbyMw
+	 zetBWbCddcc7ckUlXvdkqn+BOOw5v3Tw9mKkcrdECDCMGFwUcxIfVrpnNeSkJcRsTN
+	 pc7sRw1ssS28/RrkSFXj0xmuvqAAH3VtK2aSaioY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taehee Yoo <ap420073@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 380/417] amt: do not use overwrapped cb area
+Subject: [PATCH 5.15 292/374] mfd: syscon: Fix null pointer dereference in of_syscon_register()
 Date: Mon, 22 Jan 2024 15:59:08 -0800
-Message-ID: <20240122235804.944616586@linuxfoundation.org>
+Message-ID: <20240122235754.943550411@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taehee Yoo <ap420073@gmail.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit bec161add35b478a7746bf58bcdea6faa19129ef ]
+[ Upstream commit 41673c66b3d0c09915698fec5c13b24336f18dd1 ]
 
-amt driver uses skb->cb for storing tunnel information.
-This job is worked before TC layer and then amt driver load tunnel info
-from skb->cb after TC layer.
-So, its cb area should not be overwrapped with CB area used by TC.
-In order to not use cb area used by TC, it skips the biggest cb
-structure used by TC, which was qdisc_skb_cb.
-But it's not anymore.
-Currently, biggest structure of TC's CB is tc_skb_cb.
-So, it should skip size of tc_skb_cb instead of qdisc_skb_cb.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-Fixes: ec624fe740b4 ("net/sched: Extend qdisc control block with tc control block")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20240107144241.4169520-1-ap420073@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e15d7f2b81d2 ("mfd: syscon: Use a unique name with regmap_config")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20231204092443.2462115-1-chentao@kylinos.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/amt.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/mfd/syscon.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-index 2d20be6ffb7e..ddd087c2c3ed 100644
---- a/drivers/net/amt.c
-+++ b/drivers/net/amt.c
-@@ -11,7 +11,7 @@
- #include <linux/net.h>
- #include <linux/igmp.h>
- #include <linux/workqueue.h>
--#include <net/sch_generic.h>
-+#include <net/pkt_sched.h>
- #include <net/net_namespace.h>
- #include <net/ip.h>
- #include <net/udp.h>
-@@ -80,11 +80,11 @@ static struct mld2_grec mldv2_zero_grec;
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index 191fdb87c424..552b1861adad 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -103,6 +103,10 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
  
- static struct amt_skb_cb *amt_skb_cb(struct sk_buff *skb)
- {
--	BUILD_BUG_ON(sizeof(struct amt_skb_cb) + sizeof(struct qdisc_skb_cb) >
-+	BUILD_BUG_ON(sizeof(struct amt_skb_cb) + sizeof(struct tc_skb_cb) >
- 		     sizeof_field(struct sk_buff, cb));
- 
- 	return (struct amt_skb_cb *)((void *)skb->cb +
--		sizeof(struct qdisc_skb_cb));
-+		sizeof(struct tc_skb_cb));
- }
- 
- static void __amt_source_gc_work(void)
+ 	syscon_config.name = kasprintf(GFP_KERNEL, "%pOFn@%llx", np,
+ 				       (u64)res.start);
++	if (!syscon_config.name) {
++		ret = -ENOMEM;
++		goto err_regmap;
++	}
+ 	syscon_config.reg_stride = reg_io_width;
+ 	syscon_config.val_bits = reg_io_width * 8;
+ 	syscon_config.max_register = resource_size(&res) - reg_io_width;
 -- 
 2.43.0
 
