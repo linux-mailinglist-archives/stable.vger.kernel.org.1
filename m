@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AB3A838317
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 599A9837DE2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D78F728B7DD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1036228BFDA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040C6605C9;
-	Tue, 23 Jan 2024 01:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B7AE160872;
+	Tue, 23 Jan 2024 00:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wm1jSp9r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buXlUVW9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AA0604B5;
-	Tue, 23 Jan 2024 01:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC078160868;
+	Tue, 23 Jan 2024 00:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974700; cv=none; b=XeXE6+vsy6DTm49n+hySIrdNmPgnsjdJRQTYPAYKmNkc3IIFT0wc/UW38VId4eYhDYPdtJxzBt0nomfEs/2/215K9+lR62OIS0sXPcm7Ha5ECbp3YiEeQfdz5ouh3NXFGZ7wwbm/4+IfYawXkpod9l4LFQ3SjqwhF2do8O/2wx4=
+	t=1705970178; cv=none; b=LcsFJDLehklGfWca6iu+Jt2A5a5kJthKXTEWjNRTjAb51aZw6XrIxcmYbyvsntxDkbQxsjkx3RUeAS/gQQBNYHyzlvsdigie06h/xf3A4MS3SJI1b567WpLy6LpY5bQOc1kKW0Zqg4/MEvmVzowrJHA9/piMdTHKeq/IF5NVEmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974700; c=relaxed/simple;
-	bh=7ep2YmWZXW8KRZ79Bm404oAtp32AXYpQ1tFriZkZ+Xs=;
+	s=arc-20240116; t=1705970178; c=relaxed/simple;
+	bh=1BogL52SUDpdkO8miax+1ylF+rxMT+TbH2S70L8xrR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ov4+XyPC1HMlGr7livI3GVQxdpsuft2wV/aHDqMn9VxZuaHp5QsJcRsn5KF1OJzJFmLCxvhDpo0ypRwc3aH2I9f+srYPcVYW0E01vt5hRDU3jTnbzbWNoLwEIe/plWF2Me92hjK0feRDOHl4/9PwUIX9ANSzY7r6c/wIXf8ywV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wm1jSp9r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4D0C43394;
-	Tue, 23 Jan 2024 01:51:40 +0000 (UTC)
+	 MIME-Version; b=oFNeWx+lfDbRee6ls53M+LzntSktjZp3VdTNgx7n95LIogVodO0patiQThUpNNzUwY1cTAFqWk29lM2ZnxLcLL5I4yOJqvjaMaNt8Y1iTZ7IAbb2NdYraKVDiCm3ZcUme8RkIPzsbdOIEakjB93ZirPZN1rC3sVZb8/9pm4mS6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buXlUVW9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B36C43399;
+	Tue, 23 Jan 2024 00:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974700;
-	bh=7ep2YmWZXW8KRZ79Bm404oAtp32AXYpQ1tFriZkZ+Xs=;
+	s=korg; t=1705970178;
+	bh=1BogL52SUDpdkO8miax+1ylF+rxMT+TbH2S70L8xrR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wm1jSp9rkuc73ixDh4QKu3tsXEoe2KdD9FwE1WgoXWQNQhbValWwdHsgZRZnQQdfa
-	 qMY4pOMoovOKwqjicDdu5iwPxqpbt5ABOxprI+zkB+J6b1hIJB4r7yfCnuXufNMIOF
-	 6aiinN5SNZGi7prsqD203eCd3/RC16Q4kbxkT0AQ=
+	b=buXlUVW9xdK2qPJ61S3Lr8pRhOMKkjFAB5Xo47xNj+xSDvzvT1nk5nqh9S+HExVJK
+	 bH1VgWmXP7mhHP4bzWSx3HRfKTT32RE0D9mBy5AVc5N92CAsJqxxyVzLqzqRKbBewg
+	 nz+X/JMkhuZ69ecdUzNVHQFA0a7Lj0FHLXoom02o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+	Nithin Dabilpuram <ndabilpuram@marvell.com>,
+	Naveen Mamindlapalli <naveenm@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 231/374] ALSA: scarlett2: Add missing error check to scarlett2_config_save()
-Date: Mon, 22 Jan 2024 15:58:07 -0800
-Message-ID: <20240122235752.745368712@linuxfoundation.org>
+Subject: [PATCH 6.7 584/641] octeontx2-af: CN10KB: Fix FIFO length calculation for RPM2
+Date: Mon, 22 Jan 2024 15:58:08 -0800
+Message-ID: <20240122235836.463163792@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Nithin Dabilpuram <ndabilpuram@marvell.com>
 
-[ Upstream commit 5f6ff6931a1c0065a55448108940371e1ac8075f ]
+[ Upstream commit a0cb76a770083a22167659e64ba69af6425b1d9b ]
 
-scarlett2_config_save() was ignoring the return value from
-scarlett2_usb(). As this function is not called from user-space we
-can't return the error, so call usb_audio_err() instead.
+RPM0 and RPM1 on the CN10KB SoC have 8 LMACs each, whereas RPM2
+has only 4 LMACs. Similarly, the RPM0 and RPM1 have 256KB FIFO,
+whereas RPM2 has 128KB FIFO. This patch fixes an issue with
+improper TX credit programming for the RPM2 link.
 
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
-Link: https://lore.kernel.org/r/bf0a15332d852d7825fa6da87d2a0d9c0b702053.1703001053.git.g@b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: b9d0fedc6234 ("octeontx2-af: cn10kb: Add RPM_USX MAC support")
+Signed-off-by: Nithin Dabilpuram <ndabilpuram@marvell.com>
+Signed-off-by: Naveen Mamindlapalli <naveenm@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240108073036.8766-1-naveenm@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett_gen2.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rpm.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
-index 53ebabf42472..6e79872e68c4 100644
---- a/sound/usb/mixer_scarlett_gen2.c
-+++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -1213,9 +1213,11 @@ static void scarlett2_config_save(struct usb_mixer_interface *mixer)
- {
- 	__le32 req = cpu_to_le32(SCARLETT2_USB_CONFIG_SAVE);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+index 4728ba34b0e3..76218f1cb459 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+@@ -506,6 +506,7 @@ u32 rpm2_get_lmac_fifo_len(void *rpmd, int lmac_id)
+ 	rpm_t *rpm = rpmd;
+ 	u8 num_lmacs;
+ 	u32 fifo_len;
++	u16 max_lmac;
  
--	scarlett2_usb(mixer, SCARLETT2_USB_DATA_CMD,
--		      &req, sizeof(u32),
--		      NULL, 0);
-+	int err = scarlett2_usb(mixer, SCARLETT2_USB_DATA_CMD,
-+				&req, sizeof(u32),
-+				NULL, 0);
-+	if (err < 0)
-+		usb_audio_err(mixer->chip, "config save failed: %d\n", err);
- }
+ 	lmac_info = rpm_read(rpm, 0, RPM2_CMRX_RX_LMACS);
+ 	/* LMACs are divided into two groups and each group
+@@ -513,7 +514,11 @@ u32 rpm2_get_lmac_fifo_len(void *rpmd, int lmac_id)
+ 	 * Group0 lmac_id range {0..3}
+ 	 * Group1 lmac_id range {4..7}
+ 	 */
+-	fifo_len = rpm->mac_ops->fifo_len / 2;
++	max_lmac = (rpm_read(rpm, 0, CGX_CONST) >> 24) & 0xFF;
++	if (max_lmac > 4)
++		fifo_len = rpm->mac_ops->fifo_len / 2;
++	else
++		fifo_len = rpm->mac_ops->fifo_len;
  
- /* Delayed work to save config */
+ 	if (lmac_id < 4) {
+ 		num_lmacs = hweight8(lmac_info & 0xF);
 -- 
 2.43.0
 
