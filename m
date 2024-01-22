@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6DA8837DF3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9428C8384D9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 052A01C288E2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DCDA29082F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669135FF03;
-	Tue, 23 Jan 2024 00:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504BA77646;
+	Tue, 23 Jan 2024 02:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhwNY6nq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQ5qRh7M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249B5162E5C;
-	Tue, 23 Jan 2024 00:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF5D77636;
+	Tue, 23 Jan 2024 02:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970189; cv=none; b=LeCaPb+wVUXJ4eew8zzMsCinigZiT3W3pbzCiirkn3VXGivazjBr7DePwPfVERjxUiziPISZVWnpC7Oyp5F3VDv/KAX1o1oNaSUD0TepKqyQk84Jnv1FGhCPiQM0tX7CbZ0B2/VjsD6w4IMixROlErcwPZcYLZrTr20XZWpgL/E=
+	t=1705975512; cv=none; b=L+ZF+l3cPtfBneof/hgM0vPv/uuw4V1ziEHgfuQ8mu2gXqKbwMFPJQj3quv2bxJOWt13kJiVmZDdmwEkivOFaqSxmD22xjfjeu2ccglCroCX6bmcZcDSEvnpcFQGmJYfD35PJwYkhOvPWT+9a2qze6sFPqYHCevKT3Mo/PPILbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970189; c=relaxed/simple;
-	bh=fOf5ri59UeJGqLqiNc+MKOf5bpSfv2Ze3iJIrjh+cc4=;
+	s=arc-20240116; t=1705975512; c=relaxed/simple;
+	bh=0G6LILvVxTYkwbPTSBP6ygx+Y2YxS2XUD7MYStiNvk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fekwqkXudqVq8yzl32Obrn9iCsLCCxSuerrCeW0uR4CLKl/YXdE6MThZjIVnHZXhj0Vmhitg6GEaaewIfNO9+Uvh50WohItjM8XLT2874cd+3tABisNvLEHMdHxr6jpl6imyjc+tmLOXpSwENT1VaaO8yX9ptA4s8RkEZXM97Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhwNY6nq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1ACC43394;
-	Tue, 23 Jan 2024 00:36:28 +0000 (UTC)
+	 MIME-Version; b=qDuC3oWMH1jwyJ43DGixr7otY0mtcGQeEZckpo9pV/d7/4MmQ/E/gaoJg9zK5pcOc0k+o913lLC6UZlBE27YaTgUHs8TQvO1xoO8P7d9z5F2zP4LB/R7qp3Qzt6a3XdyhEuTZukYBaqDIYXRBh2/ZDMXys9UDfw/pS2GJWbtk7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQ5qRh7M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E84C43399;
+	Tue, 23 Jan 2024 02:05:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970189;
-	bh=fOf5ri59UeJGqLqiNc+MKOf5bpSfv2Ze3iJIrjh+cc4=;
+	s=korg; t=1705975511;
+	bh=0G6LILvVxTYkwbPTSBP6ygx+Y2YxS2XUD7MYStiNvk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RhwNY6nq+hNnjRuxBMpV6q8doLBDWfDkDJHq/m/0C15l5lYB3Fz42iIEuSsD01x4W
-	 X7VQEKlF3gKnirNQ26CFyDKAm0Jr3FZYpe+vAVCP7x4eO9O1T83c635+ShyhEpUWcW
-	 25qfdwIibmR4MitVJ23PCclgxCTlBeGC59C1xkO8=
+	b=PQ5qRh7Ml1nkzoqf0CoOXcgBngK8+0k8WBTShC/0wtP10deA6pwiFWuP95z0CWYJa
+	 IoU3Db1dP35BI/7WWNiqJWLJe7bKehSaSodVi8RR5K86SMiiv6NP0yctSt9Cveawhw
+	 h333TX8T0rAWv7TQ/owAZWApqS6xPOgIN87C42BY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chancel Liu <chancel.liu@nxp.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 587/641] ALSA: aloop: Introduce a function to get if access is interleaved mode
+Subject: [PATCH 6.6 440/583] mfd: syscon: Fix null pointer dereference in of_syscon_register()
 Date: Mon, 22 Jan 2024 15:58:11 -0800
-Message-ID: <20240122235836.579919346@linuxfoundation.org>
+Message-ID: <20240122235825.446705216@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chancel Liu <chancel.liu@nxp.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit cdac6e1f716419ce307ad3e44a718557a5469c17 ]
+[ Upstream commit 41673c66b3d0c09915698fec5c13b24336f18dd1 ]
 
-There's a use case that playback stream of a loopback cable works on
-RW_INTERLEAVED mode while capture stream works on MMAP_INTERLEAVED mode:
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-aplay -Dhw:Loopback,0,0 S32_48K_2ch.wav;
-arecord -Dplughw:Loopback,1,0 -fS32_LE -r16000 -c2 cap.wav;
-
-The plug plugin handles only slave PCM support MMAP mode. Not only plug
-plugin but also other plugins like direct plugins(dmix/dsnoop/dshare)
-work on MMAP access mode. In this case capture stream is the slave
-PCM works on MMAP_INTERLEAVED mode. However loopback_check_format()
-rejects this access setting and return:
-
-arecord: pcm_read:2240: read error: Input/output error
-
-To fix it a function called is_access_interleaved() is introduced to
-get if access is interleaved mode. If both access of capture stream and
-playback stream is interleaved mode loopback_check_format() will allow
-this kind of access setting.
-
-Fixes: 462494565c27 ("ALSA: aloop: Add support for the non-interleaved access mode")
-Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
-Link: https://lore.kernel.org/r/20240111025219.2678764-1-chancel.liu@nxp.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: e15d7f2b81d2 ("mfd: syscon: Use a unique name with regmap_config")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20231204092443.2462115-1-chentao@kylinos.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/drivers/aloop.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ drivers/mfd/syscon.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/drivers/aloop.c b/sound/drivers/aloop.c
-index e87dc67f33c6..1c65e0a3b13c 100644
---- a/sound/drivers/aloop.c
-+++ b/sound/drivers/aloop.c
-@@ -322,6 +322,17 @@ static int loopback_snd_timer_close_cable(struct loopback_pcm *dpcm)
- 	return 0;
- }
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index 57b29c325131..c9550368d9ea 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -105,6 +105,10 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
+ 	}
  
-+static bool is_access_interleaved(snd_pcm_access_t access)
-+{
-+	switch (access) {
-+	case SNDRV_PCM_ACCESS_MMAP_INTERLEAVED:
-+	case SNDRV_PCM_ACCESS_RW_INTERLEAVED:
-+		return true;
-+	default:
-+		return false;
+ 	syscon_config.name = kasprintf(GFP_KERNEL, "%pOFn@%pa", np, &res.start);
++	if (!syscon_config.name) {
++		ret = -ENOMEM;
++		goto err_regmap;
 +	}
-+};
-+
- static int loopback_check_format(struct loopback_cable *cable, int stream)
- {
- 	struct snd_pcm_runtime *runtime, *cruntime;
-@@ -341,7 +352,8 @@ static int loopback_check_format(struct loopback_cable *cable, int stream)
- 	check = runtime->format != cruntime->format ||
- 		runtime->rate != cruntime->rate ||
- 		runtime->channels != cruntime->channels ||
--		runtime->access != cruntime->access;
-+		is_access_interleaved(runtime->access) !=
-+		is_access_interleaved(cruntime->access);
- 	if (!check)
- 		return 0;
- 	if (stream == SNDRV_PCM_STREAM_CAPTURE) {
-@@ -369,7 +381,8 @@ static int loopback_check_format(struct loopback_cable *cable, int stream)
- 							&setup->channels_id);
- 			setup->channels = runtime->channels;
- 		}
--		if (setup->access != runtime->access) {
-+		if (is_access_interleaved(setup->access) !=
-+		    is_access_interleaved(runtime->access)) {
- 			snd_ctl_notify(card, SNDRV_CTL_EVENT_MASK_VALUE,
- 							&setup->access_id);
- 			setup->access = runtime->access;
-@@ -584,8 +597,7 @@ static void copy_play_buf(struct loopback_pcm *play,
- 			size = play->pcm_buffer_size - src_off;
- 		if (dst_off + size > capt->pcm_buffer_size)
- 			size = capt->pcm_buffer_size - dst_off;
--		if (runtime->access == SNDRV_PCM_ACCESS_RW_NONINTERLEAVED ||
--		    runtime->access == SNDRV_PCM_ACCESS_MMAP_NONINTERLEAVED)
-+		if (!is_access_interleaved(runtime->access))
- 			copy_play_buf_part_n(play, capt, size, src_off, dst_off);
- 		else
- 			memcpy(dst + dst_off, src + src_off, size);
-@@ -1544,8 +1556,7 @@ static int loopback_access_get(struct snd_kcontrol *kcontrol,
- 	mutex_lock(&loopback->cable_lock);
- 	access = loopback->setup[kcontrol->id.subdevice][kcontrol->id.device].access;
- 
--	ucontrol->value.enumerated.item[0] = access == SNDRV_PCM_ACCESS_RW_NONINTERLEAVED ||
--					     access == SNDRV_PCM_ACCESS_MMAP_NONINTERLEAVED;
-+	ucontrol->value.enumerated.item[0] = !is_access_interleaved(access);
- 
- 	mutex_unlock(&loopback->cable_lock);
- 	return 0;
+ 	syscon_config.reg_stride = reg_io_width;
+ 	syscon_config.val_bits = reg_io_width * 8;
+ 	syscon_config.max_register = resource_size(&res) - reg_io_width;
 -- 
 2.43.0
 
