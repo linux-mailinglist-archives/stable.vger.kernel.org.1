@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-14496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD0A838123
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A2383851D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E240B1C2661C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F5EF1F294A3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB32314078B;
-	Tue, 23 Jan 2024 01:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554907E56E;
+	Tue, 23 Jan 2024 02:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GApVKmz+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2eWQuH32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798FC140796;
-	Tue, 23 Jan 2024 01:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131267E562;
+	Tue, 23 Jan 2024 02:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972043; cv=none; b=Rtknj2wM0gwbuVxogM96ZEeuNfDtIJJziDzjipcLAuT56BH5fgoYdmLvPiQxG9BYUThwZjtKKUp+wo9WKPL2antEcdR4ZGUsQ2ewHpnIl5+UrZI4W29as8r5UwATxrxj3QxGp4qFOtMBKHMMjnyGpGZPBk6UdTx27QIntrs8jSU=
+	t=1705975744; cv=none; b=ssKUo7RZY7UQWsTjGG00VkPJEWspvLWUtkBLIRUPfvQNcGxyH68tYpq+FzcmlczQ9e9nGUMvs7s/ZgacM3I0Lp1RWd6UlRIxenHeUqqy1zB+39/oJw56BIoBghagrgF25VsC9D0ZSMocmn4heR2mdMIF3+ej8WYmEKpEgiURYe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972043; c=relaxed/simple;
-	bh=ciiqoRXOfsVlmDxJbkQRPd9/f5v0ZPSYv3fKAKRcAyY=;
+	s=arc-20240116; t=1705975744; c=relaxed/simple;
+	bh=eUEREUW863k9qwK2ucoBLFHpLu1mRE8gBLJO0xU/npU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T62oEDx5AsqdG5JtLN0gEBDga1Y5O0vTeVZucyuzCJGS6H4LP1mOIxBipFVbXFDPHtMr/t4fI8SW5mcf4RrlOlZzuJg0EF2jmZcoLInhGWRVnjBHJrClcS9rjmfBXAZzzsNzzBYA1kjjYAyUOkeHemfGWFYD6RECH2vDTcfXjW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GApVKmz+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3910CC433A6;
-	Tue, 23 Jan 2024 01:07:23 +0000 (UTC)
+	 MIME-Version; b=g9pMZXJEesrJDF7HKThQNVgCrfvpqqI6q7D6HZK+BDVOP69XV9PbF+PFYrHmokLtCZ4Ukuvj1Rj6/jOSK+4g9tJI1ncK8X0fMMCK6w1vIqJKw7ohfP09+2Odn6Np/4BYgT+rc7ChxzdIfl27A32gvy8mQQkwnzDsuMVY/kmWDYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2eWQuH32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE072C433F1;
+	Tue, 23 Jan 2024 02:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972043;
-	bh=ciiqoRXOfsVlmDxJbkQRPd9/f5v0ZPSYv3fKAKRcAyY=;
+	s=korg; t=1705975743;
+	bh=eUEREUW863k9qwK2ucoBLFHpLu1mRE8gBLJO0xU/npU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GApVKmz+WiZJ/o/wZGYtPxaYIQFYAJF4+VzUl9DU/vfNGmjWekns1gQfnzxgi/oyY
-	 wpiSsC8PEUgZFpygnkeFzr2YPngusv+0dys6XPX6P82aDF3KiRPIpd/1nEPo+g75q6
-	 4W0w2g+FV1HS7QSp6DfwqOMNf5cfxMM6lPxKzAjc=
+	b=2eWQuH3221lL8G1oME/qs5uda7HOouk56pdLF4kkiQu4lj3BpejdOSe/aC97DmiAD
+	 yi6oaMkc2IuFQ19kBWKDfZ943OSQU119p29qjlJUpd1xjCveQ+tuCklVZC+oYFJkP1
+	 8/ZGCNjsqSwWPlqnLYvbN+lFriym6nx78TS/ijLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
+	Taehee Yoo <ap420073@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 411/417] mlxsw: spectrum_acl_erp: Fix error flow of pool allocation failure
+Subject: [PATCH 6.6 528/583] amt: do not use overwrapped cb area
 Date: Mon, 22 Jan 2024 15:59:39 -0800
-Message-ID: <20240122235805.928592551@linuxfoundation.org>
+Message-ID: <20240122235828.261606422@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,187 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Cohen <amcohen@nvidia.com>
+From: Taehee Yoo <ap420073@gmail.com>
 
-[ Upstream commit 6d6eeabcfaba2fcadf5443b575789ea606f9de83 ]
+[ Upstream commit bec161add35b478a7746bf58bcdea6faa19129ef ]
 
-Lately, a bug was found when many TC filters are added - at some point,
-several bugs are printed to dmesg [1] and the switch is crashed with
-segmentation fault.
+amt driver uses skb->cb for storing tunnel information.
+This job is worked before TC layer and then amt driver load tunnel info
+from skb->cb after TC layer.
+So, its cb area should not be overwrapped with CB area used by TC.
+In order to not use cb area used by TC, it skips the biggest cb
+structure used by TC, which was qdisc_skb_cb.
+But it's not anymore.
+Currently, biggest structure of TC's CB is tc_skb_cb.
+So, it should skip size of tc_skb_cb instead of qdisc_skb_cb.
 
-The issue starts when gen_pool_free() fails because of unexpected
-behavior - a try to free memory which is already freed, this leads to BUG()
-call which crashes the switch and makes many other bugs.
-
-Trying to track down the unexpected behavior led to a bug in eRP code. The
-function mlxsw_sp_acl_erp_table_alloc() gets a pointer to the allocated
-index, sets the value and returns an error code. When gen_pool_alloc()
-fails it returns address 0, we track it and return -ENOBUFS outside, BUT
-the call for gen_pool_alloc() already override the index in erp_table
-structure. This is a problem when such allocation is done as part of
-table expansion. This is not a new table, which will not be used in case
-of allocation failure. We try to expand eRP table and override the
-current index (non-zero) with zero. Then, it leads to an unexpected
-behavior when address 0 is freed twice. Note that address 0 is valid in
-erp_table->base_index and indeed other tables use it.
-
-gen_pool_alloc() fails in case that there is no space left in the
-pre-allocated pool, in our case, the pool is limited to
-ACL_MAX_ERPT_BANK_SIZE, which is read from hardware. When more than max
-erp entries are required, we exceed the limit and return an error, this
-error leads to "Failed to migrate vregion" print.
-
-Fix this by changing erp_table->base_index only in case of a successful
-allocation.
-
-Add a test case for such a scenario. Without this fix it causes
-segmentation fault:
-
-$ TESTS="max_erp_entries_test" ./tc_flower.sh
-./tc_flower.sh: line 988:  1560 Segmentation fault      tc filter del dev $h2 ingress chain $i protocol ip pref $i handle $j flower &>/dev/null
-
-[1]:
-kernel BUG at lib/genalloc.c:508!
-invalid opcode: 0000 [#1] PREEMPT SMP
-CPU: 6 PID: 3531 Comm: tc Not tainted 6.7.0-rc5-custom-ga6893f479f5e #1
-Hardware name: Mellanox Technologies Ltd. MSN4700/VMOD0010, BIOS 5.11 07/12/2021
-RIP: 0010:gen_pool_free_owner+0xc9/0xe0
-...
-Call Trace:
- <TASK>
- __mlxsw_sp_acl_erp_table_other_dec+0x70/0xa0 [mlxsw_spectrum]
- mlxsw_sp_acl_erp_mask_destroy+0xf5/0x110 [mlxsw_spectrum]
- objagg_obj_root_destroy+0x18/0x80 [objagg]
- objagg_obj_destroy+0x12c/0x130 [objagg]
- mlxsw_sp_acl_erp_mask_put+0x37/0x50 [mlxsw_spectrum]
- mlxsw_sp_acl_ctcam_region_entry_remove+0x74/0xa0 [mlxsw_spectrum]
- mlxsw_sp_acl_ctcam_entry_del+0x1e/0x40 [mlxsw_spectrum]
- mlxsw_sp_acl_tcam_ventry_del+0x78/0xd0 [mlxsw_spectrum]
- mlxsw_sp_flower_destroy+0x4d/0x70 [mlxsw_spectrum]
- mlxsw_sp_flow_block_cb+0x73/0xb0 [mlxsw_spectrum]
- tc_setup_cb_destroy+0xc1/0x180
- fl_hw_destroy_filter+0x94/0xc0 [cls_flower]
- __fl_delete+0x1ac/0x1c0 [cls_flower]
- fl_destroy+0xc2/0x150 [cls_flower]
- tcf_proto_destroy+0x1a/0xa0
-...
-mlxsw_spectrum3 0000:07:00.0: Failed to migrate vregion
-mlxsw_spectrum3 0000:07:00.0: Failed to migrate vregion
-
-Fixes: f465261aa105 ("mlxsw: spectrum_acl: Implement common eRP core")
-Signed-off-by: Amit Cohen <amcohen@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
+Fixes: ec624fe740b4 ("net/sched: Extend qdisc control block with tc control block")
+Signed-off-by: Taehee Yoo <ap420073@gmail.com>
 Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/4cfca254dfc0e5d283974801a24371c7b6db5989.1705502064.git.petrm@nvidia.com
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://lore.kernel.org/r/20240107144241.4169520-1-ap420073@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlxsw/spectrum_acl_erp.c         |  8 +--
- .../drivers/net/mlxsw/spectrum-2/tc_flower.sh | 52 ++++++++++++++++++-
- 2 files changed, 56 insertions(+), 4 deletions(-)
+ drivers/net/amt.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c
-index 4c98950380d5..d231f4d2888b 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_erp.c
-@@ -301,6 +301,7 @@ mlxsw_sp_acl_erp_table_alloc(struct mlxsw_sp_acl_erp_core *erp_core,
- 			     unsigned long *p_index)
+diff --git a/drivers/net/amt.c b/drivers/net/amt.c
+index 2d20be6ffb7e..ddd087c2c3ed 100644
+--- a/drivers/net/amt.c
++++ b/drivers/net/amt.c
+@@ -11,7 +11,7 @@
+ #include <linux/net.h>
+ #include <linux/igmp.h>
+ #include <linux/workqueue.h>
+-#include <net/sch_generic.h>
++#include <net/pkt_sched.h>
+ #include <net/net_namespace.h>
+ #include <net/ip.h>
+ #include <net/udp.h>
+@@ -80,11 +80,11 @@ static struct mld2_grec mldv2_zero_grec;
+ 
+ static struct amt_skb_cb *amt_skb_cb(struct sk_buff *skb)
  {
- 	unsigned int num_rows, entry_size;
-+	unsigned long index;
+-	BUILD_BUG_ON(sizeof(struct amt_skb_cb) + sizeof(struct qdisc_skb_cb) >
++	BUILD_BUG_ON(sizeof(struct amt_skb_cb) + sizeof(struct tc_skb_cb) >
+ 		     sizeof_field(struct sk_buff, cb));
  
- 	/* We only allow allocations of entire rows */
- 	if (num_erps % erp_core->num_erp_banks != 0)
-@@ -309,10 +310,11 @@ mlxsw_sp_acl_erp_table_alloc(struct mlxsw_sp_acl_erp_core *erp_core,
- 	entry_size = erp_core->erpt_entries_size[region_type];
- 	num_rows = num_erps / erp_core->num_erp_banks;
- 
--	*p_index = gen_pool_alloc(erp_core->erp_tables, num_rows * entry_size);
--	if (*p_index == 0)
-+	index = gen_pool_alloc(erp_core->erp_tables, num_rows * entry_size);
-+	if (!index)
- 		return -ENOBUFS;
--	*p_index -= MLXSW_SP_ACL_ERP_GENALLOC_OFFSET;
-+
-+	*p_index = index - MLXSW_SP_ACL_ERP_GENALLOC_OFFSET;
- 
- 	return 0;
- }
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/tc_flower.sh b/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/tc_flower.sh
-index fb850e0ec837..7bf56ea161e3 100755
---- a/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/tc_flower.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/tc_flower.sh
-@@ -10,7 +10,8 @@ lib_dir=$(dirname $0)/../../../../net/forwarding
- ALL_TESTS="single_mask_test identical_filters_test two_masks_test \
- 	multiple_masks_test ctcam_edge_cases_test delta_simple_test \
- 	delta_two_masks_one_key_test delta_simple_rehash_test \
--	bloom_simple_test bloom_complex_test bloom_delta_test"
-+	bloom_simple_test bloom_complex_test bloom_delta_test \
-+	max_erp_entries_test"
- NUM_NETIFS=2
- source $lib_dir/lib.sh
- source $lib_dir/tc_common.sh
-@@ -983,6 +984,55 @@ bloom_delta_test()
- 	log_test "bloom delta test ($tcflags)"
+ 	return (struct amt_skb_cb *)((void *)skb->cb +
+-		sizeof(struct qdisc_skb_cb));
++		sizeof(struct tc_skb_cb));
  }
  
-+max_erp_entries_test()
-+{
-+	# The number of eRP entries is limited. Once the maximum number of eRPs
-+	# has been reached, filters cannot be added. This test verifies that
-+	# when this limit is reached, inserstion fails without crashing.
-+
-+	RET=0
-+
-+	local num_masks=32
-+	local num_regions=15
-+	local chain_failed
-+	local mask_failed
-+	local ret
-+
-+	if [[ "$tcflags" != "skip_sw" ]]; then
-+		return 0;
-+	fi
-+
-+	for ((i=1; i < $num_regions; i++)); do
-+		for ((j=$num_masks; j >= 0; j--)); do
-+			tc filter add dev $h2 ingress chain $i protocol ip \
-+				pref $i	handle $j flower $tcflags \
-+				dst_ip 192.1.0.0/$j &> /dev/null
-+			ret=$?
-+
-+			if [ $ret -ne 0 ]; then
-+				chain_failed=$i
-+				mask_failed=$j
-+				break 2
-+			fi
-+		done
-+	done
-+
-+	# We expect to exceed the maximum number of eRP entries, so that
-+	# insertion eventually fails. Otherwise, the test should be adjusted to
-+	# add more filters.
-+	check_fail $ret "expected to exceed number of eRP entries"
-+
-+	for ((; i >= 1; i--)); do
-+		for ((j=0; j <= $num_masks; j++)); do
-+			tc filter del dev $h2 ingress chain $i protocol ip \
-+				pref $i handle $j flower &> /dev/null
-+		done
-+	done
-+
-+	log_test "max eRP entries test ($tcflags). " \
-+		"max chain $chain_failed, mask $mask_failed"
-+}
-+
- setup_prepare()
- {
- 	h1=${NETIFS[p1]}
+ static void __amt_source_gc_work(void)
 -- 
 2.43.0
 
