@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81E79837CBD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 937758382E1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AED9B29252
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54134286E84
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5483915445E;
-	Tue, 23 Jan 2024 00:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C085FDC7;
+	Tue, 23 Jan 2024 01:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWXwJh1N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1swg/kQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13618154C05;
-	Tue, 23 Jan 2024 00:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437565FDBB;
+	Tue, 23 Jan 2024 01:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969399; cv=none; b=p4mAJp2EvV0dkEYPXpX2OcmVKp4oJ2UmuWCnQc9ru/h7T/iqQxqjObGJwJirqY06hTlDFb5DliSxCjK6kX90N6fK94xs59uf0UpglbV/6hQn3QoOgkodIMSUQj8MUqHGSwuXSui9YBK/Na1wGtnUHRr5xpVt60fzok22qjlF3MI=
+	t=1705974649; cv=none; b=WxyAl34q1e2BamnaLbj77nSwSzEnaRJi8TMv01Nw1q0Z5Oolbe0GLVp7L8KH07mXtgYkxmYlin7AYECJJm9SwwxMJ0Cv7FkaCipoZcXeKAbUoy3qnINo2hadJFWRs29dO3ea4/hck58r5DE5LV3F2NgnkhePxiylYMtgnlJ8sb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969399; c=relaxed/simple;
-	bh=zt6tEt9dr9uStX2a1XFZvKwbnk0n0kfWZqGmXyLPHZw=;
+	s=arc-20240116; t=1705974649; c=relaxed/simple;
+	bh=EEcn7JEHHpqjS7Gg50C1DxDu/1a/j+3TBFcwpXnJj5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rf1nK/30ATZC3IbM2KSWpthrcE0J550Ul1ZGNYMEn/r0RpPtDw2aetU8dpCtm4rk8/OWufUt87eLABGHAXuYLkkQrXRzxLmGn83MHQ/Z9DJaEIgaEDJuji9FPnuz/8rLSI9DvLj/jTobjjCzlB+IR9ku0I3N9VWz5ZE/HHUyVOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWXwJh1N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73835C43399;
-	Tue, 23 Jan 2024 00:23:18 +0000 (UTC)
+	 MIME-Version; b=JeG1ZdsVskJeAHedo9ANqZxPPmIkL7ziENkm8tLJvGCQhD/IoenYM6s/0cHX6DvumVebtA0Ma936zv4xhlNNm73I+HKeqiwdae4/ZbC35y8erZbigdLA+PibdPDHSW61fzjSkMh0g3xmUi3Fdl1n+H5E4zEyRPNNfCE1Ar1BY+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1swg/kQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C31C433F1;
+	Tue, 23 Jan 2024 01:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969398;
-	bh=zt6tEt9dr9uStX2a1XFZvKwbnk0n0kfWZqGmXyLPHZw=;
+	s=korg; t=1705974649;
+	bh=EEcn7JEHHpqjS7Gg50C1DxDu/1a/j+3TBFcwpXnJj5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jWXwJh1NBcaPspPJmZyURhdIBRLWYLNn/6rTF9JR3KmNG09KNDbWDZQf5v2SE1xWW
-	 xTBvtd5Vl663DwHvFDlK1mJNPNUe4l+QXtGaS8Zz7DO8adflDkTHcBB2PJ4wTqdSCz
-	 qjOVt3/kBcxooU9/B+hpkX3tWDAD1BSTVGnDOBcE=
+	b=Z1swg/kQBEqgkSBWXsiOzNYzlo0p4cGNK0Xj12L3R2p0tJj0WiruuyHMTyc15DG5Q
+	 NJYlPiCZCdBz4kVB8yvMbOsqEfyZnCN+6+0iRi9N7KMjwxEYn0NS/h9fuYGwAynY7O
+	 fBFaJgGG+rNrRxGGkM8hDm1dYIIoVWdXKQ3j/Gms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 220/641] wifi: iwlwifi: assign phy_ctxt before eSR activation
+Subject: [PATCH 6.6 073/583] crypto: sahara - do not resize req->src when doing hash operations
 Date: Mon, 22 Jan 2024 15:52:04 -0800
-Message-ID: <20240122235824.831619915@linuxfoundation.org>
+Message-ID: <20240122235814.388678943@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 9b6614e5ead5d19a71893bcca3f1a6569ca0c456 ]
+[ Upstream commit a3c6f4f4d249cecaf2f34471aadbfb4f4ef57298 ]
 
-eSR is activated when a chanctx is assigned to more than one link.
-During eSR activation we should disable RLC for both phys, and configure
-the FW with a special phy command for both phys.
-Currently we assign the phy_ctxt to the link only after eSR activation,
-so RLC is not disabled for the new phy_ctxt, and a cmd is not sent to FW.
-Fix this by first assigning the new phy_ctxt to the link and then
-doing the eSR activation.
+When testing sahara sha256 speed performance with tcrypt (mode=404) on
+imx53-qsrb board, multiple "Invalid numbers of src SG." errors are
+reported. This was traced to sahara_walk_and_recalc() resizing req->src
+and causing the subsequent dma_map_sg() call to fail.
 
-Fixes: 12bacfc2c065 ("wifi: iwlwifi: handle eSR transitions")
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231219215605.3d94507f5d9a.I537fcd73aedf94c7348c03157e486f24301fef14@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Now that the previous commit fixed sahara_sha_hw_links_create() to take
+into account the actual request size, rather than relying on sg->length
+values, the resize operation is no longer necessary.
+
+Therefore, remove sahara_walk_and_recalc() and simplify associated logic.
+
+Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/crypto/sahara.c | 38 ++------------------------------------
+ 1 file changed, 2 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index 8e263acbc763..61170173f917 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -271,17 +271,17 @@ __iwl_mvm_mld_assign_vif_chanctx(struct iwl_mvm *mvm,
- 		}
- 	}
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 477b4d8b450d..8e84dd98a273 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -886,24 +886,6 @@ static int sahara_sha_hw_context_descriptor_create(struct sahara_dev *dev,
+ 	return 0;
+ }
  
-+	mvmvif->link[link_id]->phy_ctxt = phy_ctxt;
-+
- 	if (iwl_mvm_is_esr_supported(mvm->fwrt.trans) && n_active > 1) {
- 		mvmvif->link[link_id]->listen_lmac = true;
- 		ret = iwl_mvm_esr_mode_active(mvm, vif);
- 		if (ret) {
- 			IWL_ERR(mvm, "failed to activate ESR mode (%d)\n", ret);
--			return ret;
-+			goto out;
- 		}
- 	}
- 
--	mvmvif->link[link_id]->phy_ctxt = phy_ctxt;
+-static int sahara_walk_and_recalc(struct scatterlist *sg, unsigned int nbytes)
+-{
+-	if (!sg || !sg->length)
+-		return nbytes;
 -
- 	if (switching_chanctx) {
- 		/* reactivate if we turned this off during channel switch */
- 		if (vif->type == NL80211_IFTYPE_AP)
+-	while (nbytes && sg) {
+-		if (nbytes <= sg->length) {
+-			sg->length = nbytes;
+-			sg_mark_end(sg);
+-			break;
+-		}
+-		nbytes -= sg->length;
+-		sg = sg_next(sg);
+-	}
+-
+-	return nbytes;
+-}
+-
+ static int sahara_sha_prepare_request(struct ahash_request *req)
+ {
+ 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
+@@ -940,36 +922,20 @@ static int sahara_sha_prepare_request(struct ahash_request *req)
+ 					hash_later, 0);
+ 	}
+ 
+-	/* nbytes should now be multiple of blocksize */
+-	req->nbytes = req->nbytes - hash_later;
+-
+-	sahara_walk_and_recalc(req->src, req->nbytes);
+-
++	rctx->total = len - hash_later;
+ 	/* have data from previous operation and current */
+ 	if (rctx->buf_cnt && req->nbytes) {
+ 		sg_init_table(rctx->in_sg_chain, 2);
+ 		sg_set_buf(rctx->in_sg_chain, rctx->rembuf, rctx->buf_cnt);
+-
+ 		sg_chain(rctx->in_sg_chain, 2, req->src);
+-
+-		rctx->total = req->nbytes + rctx->buf_cnt;
+ 		rctx->in_sg = rctx->in_sg_chain;
+-
+-		req->src = rctx->in_sg_chain;
+ 	/* only data from previous operation */
+ 	} else if (rctx->buf_cnt) {
+-		if (req->src)
+-			rctx->in_sg = req->src;
+-		else
+-			rctx->in_sg = rctx->in_sg_chain;
+-		/* buf was copied into rembuf above */
++		rctx->in_sg = rctx->in_sg_chain;
+ 		sg_init_one(rctx->in_sg, rctx->rembuf, rctx->buf_cnt);
+-		rctx->total = rctx->buf_cnt;
+ 	/* no data from previous operation */
+ 	} else {
+ 		rctx->in_sg = req->src;
+-		rctx->total = req->nbytes;
+-		req->src = rctx->in_sg;
+ 	}
+ 
+ 	/* on next call, we only have the remaining data in the buffer */
 -- 
 2.43.0
 
