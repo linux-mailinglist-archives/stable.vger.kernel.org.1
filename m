@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-14153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 021F7837FB4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32055838052
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3323C1C29174
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 656DC1C2969C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2467B64CC7;
-	Tue, 23 Jan 2024 00:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD64664D9;
+	Tue, 23 Jan 2024 01:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0V1HVJg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwA7kvSb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8FEF64A80;
-	Tue, 23 Jan 2024 00:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC6C664B7;
+	Tue, 23 Jan 2024 01:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971305; cv=none; b=aLbaQR1s+jgM0kHspCQS5Z8r8kRrATF7vvtTZDvThKZsc4RASHxRdE9oXVDQmhw9IE3fhWib8JgR4rwtcxDA1YMROtqkqBM+9Qn5vdfB97E/HM03J7/njqp7zcxG1PzupWEo6hszpbJExTzK2Stljq98WKJ9OhGVJ2sLSCM7i8M=
+	t=1705971665; cv=none; b=ZUpEm2S2k6xHWuSbiR6I5oWJIcRlzoZtA1uULxXpAJMkDUOYJAPoguW4b7SXU+Q0PmCYKlGwGaBRUolgtOgdb7yYQXgsH6LJtHegk/BxLDMpaEQ2Oa4/s9KUjEkqUd8qG7K/oxw1KioLWrAjwsKLiXrmbkwhPPPY03AOCNpAEUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971305; c=relaxed/simple;
-	bh=8D4l7ivfNlECMbHqm13EmdkuVBIWCXVW7aXgnNWBLp8=;
+	s=arc-20240116; t=1705971665; c=relaxed/simple;
+	bh=HV+KeWzecZmL5uGY+3ts5ft21dUgcMqF6LMpzJPahms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NPPkLlsIkgzALrjIDadLP3opbyWRqwmZZiOSq+lFio25qF5xDCecpbbY2FX/mIbzw2hedoTUBLZ8hCUlwLTsGnaV5bHctMSuQEZ59iCryVheJ7HRK2r6yul7QKQ9oakqvnEKiedKAKa2K1akRHMIxpYu3lL78MmYux+6CWIjDkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0V1HVJg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2636EC433F1;
-	Tue, 23 Jan 2024 00:55:05 +0000 (UTC)
+	 MIME-Version; b=KrIZyPWzo3Xs6uq4stw7x5I8hmcRd1JOBnit2Wh8A3qBYu6kBmP6DH5E1T2dYXn4ubDZdnm2KFZL8cdH2/6JxzTKo+4zKSTgv1j1coqULR2XQ8tgl8lDsYCnEskjQbvLhAhnQIecZ/Fn29VEtFPyl85gLhaKNvbfCdrUo13HJ6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwA7kvSb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53780C433F1;
+	Tue, 23 Jan 2024 01:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971305;
-	bh=8D4l7ivfNlECMbHqm13EmdkuVBIWCXVW7aXgnNWBLp8=;
+	s=korg; t=1705971665;
+	bh=HV+KeWzecZmL5uGY+3ts5ft21dUgcMqF6LMpzJPahms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P0V1HVJgYJf26zG7TZqPfdFuFKbqhA0o7P1OtxCSIaowQ0uYu6R1aIDLCyyg6nUUV
-	 IKajAPAwpOpNvN7W627lP2O8XcAQvqAPSL0kuXhTjWw248LeE2PhylMDiOQNcAIGft
-	 4anRIPniQeMYxItGvhPGTL645a0sVzo2Ko+G/QZs=
+	b=NwA7kvSbALeZa6kTPpb+AVVnm9PrglBEOGe0jwijl/uOAtfQE6/MJtAC/KbNfQhlp
+	 CGyR6QNQ3lH8JmPYak1TPlVxW12T9mKPuzYi7KVmDJOzbSR8LmibEKrR23nxpILwy0
+	 9DIiRozmtTgrYOkmIUaeT4fdGSOER3T1lysbkNnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 131/286] wifi: rtlwifi: rtl8188ee: phy: using calculate_bit_shift()
+	Gui-Dong Han <2045gemini@gmail.com>
+Subject: [PATCH 6.1 269/417] usb: mon: Fix atomicity violation in mon_bin_vma_fault
 Date: Mon, 22 Jan 2024 15:57:17 -0800
-Message-ID: <20240122235737.191515712@linuxfoundation.org>
+Message-ID: <20240122235801.175303302@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +60,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Gui-Dong Han <2045gemini@gmail.com>
 
-[ Upstream commit 969bc926f04b438676768aeffffffb050e480b62 ]
+commit 2dd23cc4d0e6aa55cf9fb3b05f2f4165b01de81c upstream.
 
-Using calculate_bit_shift() to replace _rtl88e_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+In mon_bin_vma_fault():
+    offset = vmf->pgoff << PAGE_SHIFT;
+    if (offset >= rp->b_size)
+        return VM_FAULT_SIGBUS;
+    chunk_idx = offset / CHUNK_SIZE;
+    pageptr = rp->b_vec[chunk_idx].pg;
+The code is executed without holding any lock.
 
-Fixes: f0eb856e0b6c ("rtlwifi: rtl8188ee: Add new driver")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-4-suhui@nfschina.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In mon_bin_vma_close():
+    spin_lock_irqsave(&rp->b_lock, flags);
+    rp->mmap_active--;
+    spin_unlock_irqrestore(&rp->b_lock, flags);
+
+In mon_bin_ioctl():
+    spin_lock_irqsave(&rp->b_lock, flags);
+    if (rp->mmap_active) {
+        ...
+    } else {
+        ...
+        kfree(rp->b_vec);
+        rp->b_vec  = vec;
+        rp->b_size = size;
+        ...
+    }
+    spin_unlock_irqrestore(&rp->b_lock, flags);
+
+Concurrent execution of mon_bin_vma_fault() with mon_bin_vma_close() and
+mon_bin_ioctl() could lead to atomicity violations. mon_bin_vma_fault()
+accesses rp->b_size and rp->b_vec without locking, risking array
+out-of-bounds access or use-after-free bugs due to possible modifications
+in mon_bin_ioctl().
+
+This possible bug is found by an experimental static analysis tool
+developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations. The above
+possible bug is reported when our tool analyzes the source code of
+Linux 6.2.
+
+To address this issue, it is proposed to add a spin lock pair in
+mon_bin_vma_fault() to ensure atomicity. With this patch applied, our tool
+never reports the possible bug, with the kernel configuration allyesconfig
+for x86_64. Due to the lack of associated hardware, we cannot test the
+patch in runtime testing, and just verify it according to the code logic.
+
+[1] https://sites.google.com/view/basscheck/
+
+Fixes: 19e6317d24c2 ("usb: mon: Fix a deadlock in usbmon between ...")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+Link: https://lore.kernel.org/r/20240105052412.9377-1-2045gemini@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/wireless/realtek/rtlwifi/rtl8188ee/phy.c   | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/usb/mon/mon_bin.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
-index 9be032e8ec95..3395601eaa59 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
-@@ -16,12 +16,6 @@ static u32 _rtl88e_phy_rf_serial_read(struct ieee80211_hw *hw,
- static void _rtl88e_phy_rf_serial_write(struct ieee80211_hw *hw,
- 					enum radio_path rfpath, u32 offset,
- 					u32 data);
--static u32 _rtl88e_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
- static bool _rtl88e_phy_bb8188e_config_parafile(struct ieee80211_hw *hw);
- static bool _rtl88e_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);
- static bool phy_config_bb_with_headerfile(struct ieee80211_hw *hw,
-@@ -51,7 +45,7 @@ u32 rtl88e_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
- 		"regaddr(%#x), bitmask(%#x)\n", regaddr, bitmask);
- 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
--	bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
+--- a/drivers/usb/mon/mon_bin.c
++++ b/drivers/usb/mon/mon_bin.c
+@@ -1247,14 +1247,19 @@ static vm_fault_t mon_bin_vma_fault(stru
+ 	struct mon_reader_bin *rp = vmf->vma->vm_private_data;
+ 	unsigned long offset, chunk_idx;
+ 	struct page *pageptr;
++	unsigned long flags;
  
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
-@@ -74,7 +68,7 @@ void rtl88e_phy_set_bb_reg(struct ieee80211_hw *hw,
++	spin_lock_irqsave(&rp->b_lock, flags);
+ 	offset = vmf->pgoff << PAGE_SHIFT;
+-	if (offset >= rp->b_size)
++	if (offset >= rp->b_size) {
++		spin_unlock_irqrestore(&rp->b_lock, flags);
+ 		return VM_FAULT_SIGBUS;
++	}
+ 	chunk_idx = offset / CHUNK_SIZE;
+ 	pageptr = rp->b_vec[chunk_idx].pg;
+ 	get_page(pageptr);
+ 	vmf->page = pageptr;
++	spin_unlock_irqrestore(&rp->b_lock, flags);
+ 	return 0;
+ }
  
- 	if (bitmask != MASKDWORD) {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
- 	}
- 
-@@ -99,7 +93,7 @@ u32 rtl88e_phy_query_rf_reg(struct ieee80211_hw *hw,
- 
- 
- 	original_value = _rtl88e_phy_rf_serial_read(hw, rfpath, regaddr);
--	bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -127,7 +121,7 @@ void rtl88e_phy_set_rf_reg(struct ieee80211_hw *hw,
- 			original_value = _rtl88e_phy_rf_serial_read(hw,
- 								    rfpath,
- 								    regaddr);
--			bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
--- 
-2.43.0
-
 
 
 
