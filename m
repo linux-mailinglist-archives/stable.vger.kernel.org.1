@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07ACB8380B1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 986B28384D4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11ECFB29082
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B26028910E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8FD66B42;
-	Tue, 23 Jan 2024 01:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0032A7762D;
+	Tue, 23 Jan 2024 02:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWDwA1Sa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/RxBPPG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1E165BC5;
-	Tue, 23 Jan 2024 01:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44C97762F;
+	Tue, 23 Jan 2024 02:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971673; cv=none; b=bKk3n58RTNLNmgOaEGNLrnpwB1QqqqSz4no5XCDFnEiblDw4gwxvVAgc5hnx0LDG4VCh6bNI7/Nd6AzB5mXtvuxwZbvSxAowvuItO8r1yeCv0PH6rWAD7QCHYjQk5/e7KZXOJ1e3JoFMh0a6ftM4RrFUVTM26J33I0gOgY/csjk=
+	t=1705975505; cv=none; b=TV1jX9kmAjsHVlny1FuvXUlw3xZlNsS+u8Ed+TT48Xo2Iw7wNzU8qr50flWfyX0PuTKmCurxV5bJpmu6go/3HQcSkWYSkZXDwld4g6nFVA94JPzNfeoa6Ua7iFlMX+7iGw1htgCmQZkangvuvhcbhnNwooCL8SxwmsE2tA9LVr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971673; c=relaxed/simple;
-	bh=LQy6MIR6KBFgrFgOterXrh53yfdvMqBqYBIqMK36Bo8=;
+	s=arc-20240116; t=1705975505; c=relaxed/simple;
+	bh=0qV7VE7cAj+yYc8TVULnv1T/PB8Vd0Axy39jPYMySvg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BgiwZsKFnvfQhkz4Z95SaE7YIZhLtazXbKnl+/R/sIpcxt3A0ygh8JFZj3HpN3dnMvNZ4l2T3BX35c1EXG5fpIzyQgAtNIxr6OGmkQrExji/dSJecVQELOUEXO82Ync4PojjHiqpL3I3uudQGgunm45d3c6CJzLEMphzY44zwnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWDwA1Sa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA3EC433C7;
-	Tue, 23 Jan 2024 01:01:12 +0000 (UTC)
+	 MIME-Version; b=DCy7HmJxnUcgA/MXLz5S//7KYLde9EW101uWyMWdDfl4kIvkz7qWEtupNIv1QzaruiNTgnQ79azWeBIxUZVVhN4om2OW9hh2HtSZ1CoO6uTL4JDwpk9IF95SI2x7GJpxKApXXYcLKM+G0sab6asGIgNrGDUDrFnwtWRNgjdOcmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/RxBPPG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D1AC433C7;
+	Tue, 23 Jan 2024 02:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971673;
-	bh=LQy6MIR6KBFgrFgOterXrh53yfdvMqBqYBIqMK36Bo8=;
+	s=korg; t=1705975505;
+	bh=0qV7VE7cAj+yYc8TVULnv1T/PB8Vd0Axy39jPYMySvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DWDwA1Sa3TwLPd9wyll4qypEBH2U8R+uwZA6QqplUR6Fo0n44bWKs/H+ZREMRbv4n
-	 xslSI0UahB+h9zrjNS1Tgur6dSPs4j0mQ7APJOLVYw7NQDHXks+pE10zIxspvE6IO4
-	 nWnB8ilrQj+nrjiLHyCMAw3LsXZ9FdRErmErbHrk=
+	b=p/RxBPPG0z18tqEhSbtzridMv+ceSW4SSB3t+AKSw/30aL44bU8dd5AzTNjVgFqvn
+	 FJd8CwlzZdGWNNyMN3/E8Rue2ytznVWMtmT6fMJQqVaNnVqsx51pvkqNggb7Svzczx
+	 KzxLQ2pa3CJqcESwuDJhM7USqMHgFb28VlptNLa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hulk Robot <hulkci@huawei.com>,
-	Ren Zhijie <renzhijie2@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 5.10 202/286] dma-mapping: Fix build error unused-value
+	Su Hui <suhui@nfschina.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 457/583] power: supply: bq256xx: fix some problem in bq256xx_hw_init
 Date: Mon, 22 Jan 2024 15:58:28 -0800
-Message-ID: <20240122235739.900667315@linuxfoundation.org>
+Message-ID: <20240122235825.950796313@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ren Zhijie <renzhijie2@huawei.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit 50d6281ce9b8412f7ef02d1bc9d23aa62ae0cf98 upstream.
+[ Upstream commit b55d073e6501dc6077edaa945a6dad8ac5c8bbab ]
 
-If CONFIG_DMA_DECLARE_COHERENT is not set,
-make ARCH=x86_64 CROSS_COMPILE=x86_64-linux-gnu- will be failed, like this:
+smatch complains that there is a buffer overflow and clang complains
+'ret' is never read.
 
-drivers/remoteproc/remoteproc_core.c: In function ‘rproc_rvdev_release’:
-./include/linux/dma-map-ops.h:182:42: error: statement with no effect [-Werror=unused-value]
- #define dma_release_coherent_memory(dev) (0)
-                                          ^
-drivers/remoteproc/remoteproc_core.c:464:2: note: in expansion of macro ‘dma_release_coherent_memory’
-  dma_release_coherent_memory(dev);
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
+Smatch error:
+drivers/power/supply/bq256xx_charger.c:1578 bq256xx_hw_init() error:
+buffer overflow 'bq256xx_watchdog_time' 4 <= 4
 
-The return type of function dma_release_coherent_memory in CONFIG_DMA_DECLARE_COHERENT area is void, so in !CONFIG_DMA_DECLARE_COHERENT area it should neither return any value nor be defined as zero.
+Clang static checker:
+Value stored to 'ret' is never read.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Fixes: e61c451476e6 ("dma-mapping: Add dma_release_coherent_memory to DMA API")
-Signed-off-by: Ren Zhijie <renzhijie2@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20220630123528.251181-1-renzhijie2@huawei.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add check for buffer overflow and error code from regmap_update_bits().
+
+Fixes: 32e4978bb920 ("power: supply: bq256xx: Introduce the BQ256XX charger driver")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20231116041822.1378758-1-suhui@nfschina.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dma-map-ops.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/bq256xx_charger.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/include/linux/dma-map-ops.h
-+++ b/include/linux/dma-map-ops.h
-@@ -185,10 +185,10 @@ static inline int dma_declare_coherent_m
- 	return -ENOSYS;
- }
+diff --git a/drivers/power/supply/bq256xx_charger.c b/drivers/power/supply/bq256xx_charger.c
+index 82d3cd5ee2f9..c8368dae69c7 100644
+--- a/drivers/power/supply/bq256xx_charger.c
++++ b/drivers/power/supply/bq256xx_charger.c
+@@ -1574,13 +1574,16 @@ static int bq256xx_hw_init(struct bq256xx_device *bq)
+ 			wd_reg_val = i;
+ 			break;
+ 		}
+-		if (bq->watchdog_timer > bq256xx_watchdog_time[i] &&
++		if (i + 1 < BQ256XX_NUM_WD_VAL &&
++		    bq->watchdog_timer > bq256xx_watchdog_time[i] &&
+ 		    bq->watchdog_timer < bq256xx_watchdog_time[i + 1])
+ 			wd_reg_val = i;
+ 	}
+ 	ret = regmap_update_bits(bq->regmap, BQ256XX_CHARGER_CONTROL_1,
+ 				 BQ256XX_WATCHDOG_MASK, wd_reg_val <<
+ 						BQ256XX_WDT_BIT_SHIFT);
++	if (ret)
++		return ret;
  
--#define dma_release_coherent_memory(dev) (0)
- #define dma_alloc_from_dev_coherent(dev, size, handle, ret) (0)
- #define dma_release_from_dev_coherent(dev, order, vaddr) (0)
- #define dma_mmap_from_dev_coherent(dev, vma, vaddr, order, ret) (0)
-+static inline void dma_release_coherent_memory(struct device *dev) { }
- 
- static inline void *dma_alloc_from_global_coherent(struct device *dev,
- 		ssize_t size, dma_addr_t *dma_handle)
+ 	ret = power_supply_get_battery_info(bq->charger, &bat_info);
+ 	if (ret == -ENOMEM)
+-- 
+2.43.0
+
 
 
 
