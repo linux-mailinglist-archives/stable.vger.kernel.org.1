@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BF1E837C85
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6425837EEF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDB6B1C2863E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F28029BC8B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7969D135A48;
-	Tue, 23 Jan 2024 00:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A52C605D0;
+	Tue, 23 Jan 2024 00:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USWhano+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkW+Hylj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39056135A46;
-	Tue, 23 Jan 2024 00:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF187604CF;
+	Tue, 23 Jan 2024 00:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969653; cv=none; b=FPIijQxv4LyzyjT4UaiU/9W21ABcg3BAykFzkN/Q6ULjQjQVFXHB6xY8rE51L48siB1f3okIGnLpTW5oChePQmG3i5Flnldw4rBF+RWuZv/DDFGmvU1YdKfk8/0/Pjq4CS8ezVI3SG177bDEf1ki++guo9sxfUW93Tnm13pz+Gw=
+	t=1705970833; cv=none; b=W1/RQen3BfMd5AVRZt1rz58tsLHqRrrek//UUjtybQGqKJOoM9Z06fwceBNekqFxRbtaYZ32cfO46+H2Ws9a1rwbMI8qTX0u3lBxugLaEP9r2qW+u19ytUHSkm4HLfr0GAd+pFVP29yIgrxTWmlQxCqwSLSv3RnPHZi/zbyEAxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969653; c=relaxed/simple;
-	bh=8rpxGzffVRS5QeVB3jL1Ao3yuAIvz+Zu8+Y0LDKzYRo=;
+	s=arc-20240116; t=1705970833; c=relaxed/simple;
+	bh=QtRqOzQGX9Xlwi6yp5kz8eTS/Ws947WfjtkKNZOABw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mQCymrwSQtF2gmg2JFkqcI9EIZGLD/bvSnE2dYFWSjl7NdDGnchc992TsdjOfkfTEivxPmOcmsm/UHR8+0hk5LVp3IAwF5lhde08FqRSSuoQacRGvByUlvVOBLfoYBVhZc5RSpLXw/eBa4csoIEn+X6T3pi8Jyrg+HbsnSCWaGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USWhano+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A70C433C7;
-	Tue, 23 Jan 2024 00:27:32 +0000 (UTC)
+	 MIME-Version; b=kv92xXxbx4OHmHlUscMxD84TX6C/bUNCsw2sqMVYmMWps8seTBD0npYpsKdKR4cGvXmv7ZUlw/BmJsXWORk6cZEUAwpraRbCwtlEV8xHSMvIgID16lZ7UJ/Rw3Vc5vIXJT6azW6JQSlimy5oSk1oij+UUN8NZTaVkJLWZ6QBqsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkW+Hylj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 205CAC433F1;
+	Tue, 23 Jan 2024 00:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969653;
-	bh=8rpxGzffVRS5QeVB3jL1Ao3yuAIvz+Zu8+Y0LDKzYRo=;
+	s=korg; t=1705970833;
+	bh=QtRqOzQGX9Xlwi6yp5kz8eTS/Ws947WfjtkKNZOABw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=USWhano+TwRI8CRvLl50U/6lecM56DxgTdXDYL9CVhvQ1xkwj2k4XAYbPLmxN+k9t
-	 2D3usbhsqgw8gFnxrTfhdUpD/+mYfm4DssGmUl7u76tvJ7M10Sv3gickVus1Ol/2L1
-	 B5J6z7sMWGn/k6vg8uTt7rAvcNLkP/1ZcmjojSLA=
+	b=hkW+HyljF8toQ1MWxZFY/UnNjlWyOXIRB+8L+ivnnW4qYg2ESQYiW6amN/aVhp0dF
+	 yEGiQqMZqakHrPFHmgJ/V7XEKJAQMj5Y2pfhtEtbfyH40liEjxmFE0ZBNQIApwoytm
+	 KB4EYh0SGIkrU3+tP5adEDJWhuGH5PocPkiOVupA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Cornwall <jay.cornwall@amd.com>,
-	Kaibo Ma <ent3rm4n@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.7 385/641] Revert "drm/amdkfd: Relocate TBA/TMA to opposite side of VM hole"
+	Leone Fernando <leone4fernando@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 121/417] ipmr: support IP_PKTINFO on cache report IGMP msg
 Date: Mon, 22 Jan 2024 15:54:49 -0800
-Message-ID: <20240122235829.997890581@linuxfoundation.org>
+Message-ID: <20240122235755.982005412@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaibo Ma <ent3rm4n@gmail.com>
+From: Leone Fernando <leone4fernando@gmail.com>
 
-commit 0f35b0a7b8fa402adbffa2565047cdcc4c480153 upstream.
+[ Upstream commit bb7403655b3c3eb245d0ee330047cd3e20b3c4af ]
 
-That commit causes NULL pointer dereferences in dmesgs when
-running applications using ROCm, including clinfo, blender,
-and PyTorch, since v6.6.1. Revert it to fix blender again.
+In order to support IP_PKTINFO on those packets, we need to call
+ipv4_pktinfo_prepare.
 
-This reverts commit 96c211f1f9ef82183493f4ceed4e347b52849149.
+When sending mrouted/pimd daemons a cache report IGMP msg, it is
+unnecessary to set dst on the newly created skb.
+It used to be necessary on older versions until
+commit d826eb14ecef ("ipv4: PKTINFO doesnt need dst reference") which
+changed the way IP_PKTINFO struct is been retrieved.
 
-Closes: https://github.com/ROCm/ROCm/issues/2596
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2991
-Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
-Signed-off-by: Kaibo Ma <ent3rm4n@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Changes from v1:
+1. Undo changes in ipv4_pktinfo_prepare function. use it directly
+   and copy the control block.
+
+Fixes: d826eb14ecef ("ipv4: PKTINFO doesnt need dst reference")
+Signed-off-by: Leone Fernando <leone4fernando@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ net/ipv4/ipmr.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
-@@ -330,12 +330,6 @@ static void kfd_init_apertures_vi(struct
- 	pdd->gpuvm_limit =
- 		pdd->dev->kfd->shared_resources.gpuvm_size - 1;
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index e04544ac4b45..b807197475a5 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -1025,6 +1025,10 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 	struct sk_buff *skb;
+ 	int ret;
  
--	/* dGPUs: the reserved space for kernel
--	 * before SVM
--	 */
--	pdd->qpd.cwsr_base = SVM_CWSR_BASE;
--	pdd->qpd.ib_base = SVM_IB_BASE;
--
- 	pdd->scratch_base = MAKE_SCRATCH_APP_BASE_VI();
- 	pdd->scratch_limit = MAKE_SCRATCH_APP_LIMIT(pdd->scratch_base);
- }
-@@ -345,18 +339,18 @@ static void kfd_init_apertures_v9(struct
- 	pdd->lds_base = MAKE_LDS_APP_BASE_V9();
- 	pdd->lds_limit = MAKE_LDS_APP_LIMIT(pdd->lds_base);
- 
--	pdd->gpuvm_base = PAGE_SIZE;
-+        /* Raven needs SVM to support graphic handle, etc. Leave the small
-+         * reserved space before SVM on Raven as well, even though we don't
-+         * have to.
-+         * Set gpuvm_base and gpuvm_limit to CANONICAL addresses so that they
-+         * are used in Thunk to reserve SVM.
-+         */
-+        pdd->gpuvm_base = SVM_USER_BASE;
- 	pdd->gpuvm_limit =
- 		pdd->dev->kfd->shared_resources.gpuvm_size - 1;
- 
- 	pdd->scratch_base = MAKE_SCRATCH_APP_BASE_V9();
- 	pdd->scratch_limit = MAKE_SCRATCH_APP_LIMIT(pdd->scratch_base);
--
--	/*
--	 * Place TBA/TMA on opposite side of VM hole to prevent
--	 * stray faults from triggering SVM on these pages.
--	 */
--	pdd->qpd.cwsr_base = pdd->dev->kfd->shared_resources.gpuvm_size;
- }
- 
- int kfd_init_apertures(struct kfd_process *process)
-@@ -413,6 +407,12 @@ int kfd_init_apertures(struct kfd_proces
- 					return -EINVAL;
- 				}
- 			}
++	mroute_sk = rcu_dereference(mrt->mroute_sk);
++	if (!mroute_sk)
++		return -EINVAL;
 +
-+                        /* dGPUs: the reserved space for kernel
-+                         * before SVM
-+                         */
-+                        pdd->qpd.cwsr_base = SVM_CWSR_BASE;
-+                        pdd->qpd.ib_base = SVM_IB_BASE;
- 		}
+ 	if (assert == IGMPMSG_WHOLEPKT || assert == IGMPMSG_WRVIFWHOLE)
+ 		skb = skb_realloc_headroom(pkt, sizeof(struct iphdr));
+ 	else
+@@ -1069,7 +1073,8 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 		msg = (struct igmpmsg *)skb_network_header(skb);
+ 		msg->im_vif = vifi;
+ 		msg->im_vif_hi = vifi >> 8;
+-		skb_dst_set(skb, dst_clone(skb_dst(pkt)));
++		ipv4_pktinfo_prepare(mroute_sk, pkt);
++		memcpy(skb->cb, pkt->cb, sizeof(skb->cb));
+ 		/* Add our header */
+ 		igmp = skb_put(skb, sizeof(struct igmphdr));
+ 		igmp->type = assert;
+@@ -1079,12 +1084,6 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 		skb->transport_header = skb->network_header;
+ 	}
  
- 		dev_dbg(kfd_device, "node id %u\n", id);
+-	mroute_sk = rcu_dereference(mrt->mroute_sk);
+-	if (!mroute_sk) {
+-		kfree_skb(skb);
+-		return -EINVAL;
+-	}
+-
+ 	igmpmsg_netlink_event(mrt, skb);
+ 
+ 	/* Deliver to mrouted */
+-- 
+2.43.0
+
 
 
 
