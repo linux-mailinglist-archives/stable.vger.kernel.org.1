@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2F88838454
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E47D837F7F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8EB42994F8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D650B29D0A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764BC6BB46;
-	Tue, 23 Jan 2024 02:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB78129A74;
+	Tue, 23 Jan 2024 00:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9ZVe7tO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LkTev5zz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C836A354;
-	Tue, 23 Jan 2024 02:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3D11292EC;
+	Tue, 23 Jan 2024 00:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975362; cv=none; b=aTobDAYNatWwg06G6DPvBCTf1kYPb5aINRdUTI9rHhfa7VgUO7pKY9NEt+Xo8P2ZaMuu7rdE27p7utWhCSUw95FZE/Ez/xpb0kb6KsoGIjHxkxWEsPbnZAqucX+y//d7R0JtrP/WkyPq1d+zslhc99CakJA5YoRjrp2bbULJ/fM=
+	t=1705971008; cv=none; b=CVqSF5xSkawFXwutnm1cD76UJuGAHDrYYa0u/pAHoosdp8NFQnAdPRpmeZq5B1adbJYWRa3XAu+iHnOTMgOMXb/gVbiEokGdNwK2PU+tf2pfccyVlgNlNQtHou+2tqDYg47y1g6DvjjNosugTXld2VLoSYbchM6oO1mQxyikAj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975362; c=relaxed/simple;
-	bh=oizQQf20BpwbQiKDouLxhqg3PgweHreqH0S7kF7jTIY=;
+	s=arc-20240116; t=1705971008; c=relaxed/simple;
+	bh=pAKDOqL5C+UheVRuqSbZsmg1bPmKaD832RDNv30Lztc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AWkz0sa9qoo9LoQy7iCwwNPAlVT8amtHETIGZxCMVN7EBhvEIKHSxnicwCsuTl06VBEiOECD9HCEKqlv8Ysfk2q24vKA2131BqX20+L/2xqMasvnzOgaH+ONPZfy8hT2hq+snQauWuvKkzlC+AbVmzCx474ipyOrDmmkRoDoBx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9ZVe7tO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC3A8C433C7;
-	Tue, 23 Jan 2024 02:02:41 +0000 (UTC)
+	 MIME-Version; b=UVxe0oYBsX8uNjRoUVP0z6T04IlC6ljX2x/6Qn2PI5JPWx8BD67nNQEdinauA2GblwjTBkutlWCiZuIZhcAgyaKFDbuaxsZreilv3pOcL4psowfJCw1gx9G+6uuYoXuGTduqeSYCZeErzpjitzEKYNPpt/ibJ7KqEYA1/YhZzCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LkTev5zz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22879C43390;
+	Tue, 23 Jan 2024 00:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975362;
-	bh=oizQQf20BpwbQiKDouLxhqg3PgweHreqH0S7kF7jTIY=;
+	s=korg; t=1705971008;
+	bh=pAKDOqL5C+UheVRuqSbZsmg1bPmKaD832RDNv30Lztc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l9ZVe7tOsK5tnLMiV1QCnclvNedhQv/CViz2hSGbBhbXst69PLwzbfpzD3JGXY8os
-	 GCRrLsC7sBZheyVilnZFFVH7xLIV47akeIJT/Qp68VtMPqrTQ7J3g4AtSfuJDTXuwr
-	 f2+GmzBFITpqgpTLmTVYRt/FMaSeg0GXxb2ji8eg=
+	b=LkTev5zzMEh+89zLcp0QyxBYuKjX6t5g2jbmUiIzeoIRmgXS0+8PLG7qDH/qBCznx
+	 zqBkG6VKG6mqL57E6546IELJ+XAHJGgT7ek3p93wPNV3AeGctvfgEcsLGbQFWGTKPD
+	 UAdNkB+mIkMawOSWFsnXN5DO6I9ph2TF3eoIUHxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paul Moore <paul@paul-moore.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 324/583] mmc: sdhci_am654: Fix TI SoC dependencies
+Subject: [PATCH 5.10 069/286] net: netlabel: Fix kerneldoc warnings
 Date: Mon, 22 Jan 2024 15:56:15 -0800
-Message-ID: <20240122235821.965820871@linuxfoundation.org>
+Message-ID: <20240122235734.677309898@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Robinson <pbrobinson@gmail.com>
+From: Andrew Lunn <andrew@lunn.ch>
 
-[ Upstream commit cb052da7f031b0d2309a4895ca236afb3b4bbf50 ]
+[ Upstream commit 294ea29113104487a905d0f81c00dfd64121b3d9 ]
 
-The sdhci_am654 is specific to recent TI SoCs, update the
-dependencies for those SoCs and compile testing. While we're
-at it update the text to reflect the wider range of
-supported TI SoCS the driver now supports.
+net/netlabel/netlabel_calipso.c:376: warning: Function parameter or member 'ops' not described in 'netlbl_calipso_ops_register'
 
-Fixes: 41fd4caeb00b ("mmc: sdhci_am654: Add Initial Support for AM654 SDHCI driver")
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-Link: https://lore.kernel.org/r/20231220135950.433588-1-pbrobinson@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Link: https://lore.kernel.org/r/20201028005350.930299-1-andrew@lunn.ch
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: ec4e9d630a64 ("calipso: fix memory leak in netlbl_calipso_add_pass()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/Kconfig | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/netlabel/netlabel_calipso.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 554e67103c1a..e1c8c5474ad7 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -1033,14 +1033,15 @@ config MMC_SDHCI_OMAP
+diff --git a/net/netlabel/netlabel_calipso.c b/net/netlabel/netlabel_calipso.c
+index 4e62f2ad3575..f28c8947c730 100644
+--- a/net/netlabel/netlabel_calipso.c
++++ b/net/netlabel/netlabel_calipso.c
+@@ -366,6 +366,7 @@ static const struct netlbl_calipso_ops *calipso_ops;
  
- config MMC_SDHCI_AM654
- 	tristate "Support for the SDHCI Controller in TI's AM654 SOCs"
-+	depends on ARCH_K3 || COMPILE_TEST
- 	depends on MMC_SDHCI_PLTFM && OF
- 	select MMC_SDHCI_IO_ACCESSORS
- 	select MMC_CQHCI
- 	select REGMAP_MMIO
- 	help
- 	  This selects the Secure Digital Host Controller Interface (SDHCI)
--	  support present in TI's AM654 SOCs. The controller supports
--	  SD/MMC/SDIO devices.
-+	  support present in TI's AM65x/AM64x/AM62x/J721E SOCs. The controller
-+	  supports SD/MMC/SDIO devices.
- 
- 	  If you have a controller with this interface, say Y or M here.
- 
+ /**
+  * netlbl_calipso_ops_register - Register the CALIPSO operations
++ * @ops: ops to register
+  *
+  * Description:
+  * Register the CALIPSO packet engine operations.
 -- 
 2.43.0
 
