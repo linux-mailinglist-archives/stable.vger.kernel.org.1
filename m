@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A86837BC7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7069483826E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 313871C27C4D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B7271C28AAD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54FF1154458;
-	Tue, 23 Jan 2024 00:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0F6482ED;
+	Tue, 23 Jan 2024 01:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWdGhRmC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsGt+yxW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1539B154441;
-	Tue, 23 Jan 2024 00:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E131A5A7B8;
+	Tue, 23 Jan 2024 01:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969382; cv=none; b=c0cJSK6JSCM7u2y+6EQvOdivkjcP0xE5Hx8zC2cQ+zitGr+wRQSgo8u4uWWp8omtkO7KHS49NFRE1ijc8DY44ObEdXzEW0gmJ/TXI7FTNZrxXr/5Z8FsdVm+ey+zP+sBLR2MMpE3YnjY+E8Nf05Sp2pvElV29jbhAeiCBLdb/yg=
+	t=1705974352; cv=none; b=GSTNoBmvpWb+o/2vvhLnk5XCDUbJ5WU8LN+4r3WCOD5vd0Xy8wNNDfKS90j4xZXe3X5ieHCv+6IKECSVAkfW36BTVu1hBCQ2xxrERmMFHcz9oBNUP/gNxKxpHumS+zqZnQByKq4ipxP83RnXTOZzjY5EmdHzqjS1fDd5E3H9mbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969382; c=relaxed/simple;
-	bh=+R3VTlMJm3JCBY/c+sgpTNhr3YyolD/QUQMv3fZTmec=;
+	s=arc-20240116; t=1705974352; c=relaxed/simple;
+	bh=fbZRUCrxvH2l9HtJWm3v+o4clJOz/kZUGEia2jAYRk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S9dDKHv3F9yBOKNP6AAuhmDZtJlVVi79cbJqYSFhP8RGOlMlFd6GxqkCI232QIwsan0eDrYpJPpDXH8sDZ51IMryDNH2tHAAtrEXnop7KRwhaPI2D0oKLTD5OJ+frm39lwOdTw5CyQQknDYcfKvavWyf60EjxpMN4yc5WMTkf5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWdGhRmC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDD5C433F1;
-	Tue, 23 Jan 2024 00:23:01 +0000 (UTC)
+	 MIME-Version; b=DS3pk0eXEWyUMCOU5W1H+1orH/Gn2VF6i21x2xdxiHPZ7ncjXoh7oe2JRZHIBP8J2RB6ICn9Rpqa9FwDQavOCOBxfW3dBCXO7FHLTA4a0e4r4ywGMUnY4QrfRN6JOurey48tSqOb0obn+xli9jMSHIuk03Jsm7Uk7oer91rLjRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsGt+yxW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCCFC433F1;
+	Tue, 23 Jan 2024 01:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969381;
-	bh=+R3VTlMJm3JCBY/c+sgpTNhr3YyolD/QUQMv3fZTmec=;
+	s=korg; t=1705974351;
+	bh=fbZRUCrxvH2l9HtJWm3v+o4clJOz/kZUGEia2jAYRk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWdGhRmCIgi3pYX/Cgqi382L2fOdbCYuM8u/hYyBYbUOrLLAQZXUofHf4P4qN2yY8
-	 wxOJp/y6GJxAAX2hIhFq/8FNknuN+eoU5NO8dG+oMDHbxyPFg/gjsRMkrPm2CKZ5iU
-	 Ybv7uuWzSYcrmdlLP+ADMzClUHESiSv9VJRNgblU=
+	b=nsGt+yxWNiycB/vPQLyYpWcD/wAweOMRxuFVeRBKD+mKrIEkMyAhDcgoKOVvM1A2z
+	 AyXWC6eAdsyqma0GXkxR1MWvraJ4acZGIhVC15LcdhmlIhAm7Oo+wzBgojKFz7pjmx
+	 ZSym+FvevygANDGLsa2+N9xjPkQmaHaXin0w/rzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Yue Hu <huyue2@coolpad.com>,
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 207/641] wifi: rtlwifi: add calculate_bit_shift()
-Date: Mon, 22 Jan 2024 15:51:51 -0800
-Message-ID: <20240122235824.429802447@linuxfoundation.org>
+Subject: [PATCH 6.6 061/583] erofs: fix memory leak on short-lived bounced pages
+Date: Mon, 22 Jan 2024 15:51:52 -0800
+Message-ID: <20240122235813.993590053@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 52221dfddbbfb5b4e029bb2efe9bb7da33ec1e46 ]
+[ Upstream commit 93d6fda7f926451a0fa1121b9558d75ca47e861e ]
 
-There are many same functions like _rtl88e_phy_calculate_bit_shift(),
-_rtl92c_phy_calculate_bit_shift() and so on. And these functions can
-cause undefined bitwise shift behavior. Add calculate_bit_shift() to
-replace them and fix undefined behavior in subsequent patches.
+Both MicroLZMA and DEFLATE algorithms can use short-lived pages on
+demand for the overlapped inplace I/O decompression.
 
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-2-suhui@nfschina.com
-Stable-dep-of: 969bc926f04b ("wifi: rtlwifi: rtl8188ee: phy: using calculate_bit_shift()")
+However, those short-lived pages are actually added to
+`be->compressed_pages`.  Thus, it should be checked instead of
+`pcl->compressed_bvecs`.
+
+The LZ4 algorithm doesn't work like this, so it won't be impacted.
+
+Fixes: 67139e36d970 ("erofs: introduce `z_erofs_parse_in_bvecs'")
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20231128180431.4116991-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/wifi.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/erofs/zdata.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index 31a481f43a07..5d842cc394aa 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -3069,4 +3069,11 @@ static inline struct ieee80211_sta *rtl_find_sta(struct ieee80211_hw *hw,
- 	return ieee80211_find_sta(mac->vif, mac_addr);
- }
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index a7e6847f6f8f..a33cd6757f98 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1309,12 +1309,11 @@ static int z_erofs_decompress_pcluster(struct z_erofs_decompress_backend *be,
+ 		put_page(page);
+ 	} else {
+ 		for (i = 0; i < pclusterpages; ++i) {
+-			page = pcl->compressed_bvecs[i].page;
++			/* consider shortlived pages added when decompressing */
++			page = be->compressed_pages[i];
  
-+static inline u32 calculate_bit_shift(u32 bitmask)
-+{
-+	if (WARN_ON_ONCE(!bitmask))
-+		return 0;
-+
-+	return __ffs(bitmask);
-+}
- #endif
+ 			if (erofs_page_is_managed(sbi, page))
+ 				continue;
+-
+-			/* recycle all individual short-lived pages */
+ 			(void)z_erofs_put_shortlivedpage(be->pagepool, page);
+ 			WRITE_ONCE(pcl->compressed_bvecs[i].page, NULL);
+ 		}
 -- 
 2.43.0
 
