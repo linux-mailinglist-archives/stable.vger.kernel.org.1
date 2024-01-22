@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-13255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03491837B1E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A603837B2A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0CC5293025
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:58:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 069DE1F277CD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2A414A0B4;
-	Tue, 23 Jan 2024 00:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BF114A4D1;
+	Tue, 23 Jan 2024 00:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSuOp+qW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziUn6SUG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF23149010;
-	Tue, 23 Jan 2024 00:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C6D14A4C6;
+	Tue, 23 Jan 2024 00:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969205; cv=none; b=blVuYOXp2Wu9VVUdxsdfxUv0+Gs/uhQqcm8DvaK+rrgsv4U/wecPWeO3UbDjbWj1wTr5I6rlOLJ3opHTaxlf4eSjffVBmeyraVHhjlvUc4dmSqfIaw86Zl9l1KULjMHquEkM2pt76Ovyfmdexc5jK2vUdxMtNx98wDdNsjBaxh0=
+	t=1705969217; cv=none; b=RN3rtS0rGSyGFl8Y3VGbnsByW5FnmRJvWsBRigIkpbsvg4phzvUWd6vcfeiNiqGDznZXXPNIps7CeoPU5ZASxSjhniN5ojrVzewQvxFMG7DufzDbkuL86b/89ZqbVlBpvcSC5uo4i8MoZfRzY44Xh6irzLaPFh6gqPgTiIJe9ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969205; c=relaxed/simple;
-	bh=gu1ePTZoDB2psYG3n5DNT78krbvJRfw2s/1Sqsz2vqM=;
+	s=arc-20240116; t=1705969217; c=relaxed/simple;
+	bh=Jdki+ZOY9SR1ppo5rxsvGhdTQzCcDSMA/WB0vLvbvkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jxb44AU2WFuM35FeEQ12mf/+kNsJC29oh74TUazXJ0LG61OJgVr8Ct5DXEVeR/TZ4Hi4WwxR4nYrFnvq8XIipISM6vi3O0WTaL4b3wEKP7oCBntOEz3htBl7CBnTDb1X+lhgbY/NJzVznS5bfmcfmtz7hzJP4jmHN/x4gWDDoH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSuOp+qW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099A0C433C7;
-	Tue, 23 Jan 2024 00:20:04 +0000 (UTC)
+	 MIME-Version; b=BrGX7/bAiW3ZZ6hkpg7iljU6ejak+omFQO/ZhR0QoI7xQOHiOHE1EGz6hUjmqsFTpjUUthEGyehgs5SOaEqwmsKh83yQtRWb6P3xQ48MK2I1WHf365RNmzSfkBUsK+dF4Si9iMJCpDiwlfs79hoSwTCbHQU8Sycea8g52uN+Z3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziUn6SUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F4DC433F1;
+	Tue, 23 Jan 2024 00:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969205;
-	bh=gu1ePTZoDB2psYG3n5DNT78krbvJRfw2s/1Sqsz2vqM=;
+	s=korg; t=1705969217;
+	bh=Jdki+ZOY9SR1ppo5rxsvGhdTQzCcDSMA/WB0vLvbvkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tSuOp+qWKn6cnqu23LJKQO6V0RuTbRhVTFT8qQWOx8nXCSNFY1NIzMRLP+UtospTm
-	 1Z2NvrsaIsisCKMNjz/fUyRW2+JOKtjNUPtPmrSZh7aNUJpxaiTIOwv/QbtEFxiEbs
-	 BJqpgeL842MSk2XdVVkVkJ/BLxdYt203wTTfEGEo=
+	b=ziUn6SUGF67k1x8Ir8w57vS4IWuvxtmr3YXBhA5Z/eul7H8pQwyMotcFQlL/xgfEl
+	 dTe9lO9zQd1qSL8Gep4NJYjy0qp4iFxE8lM37/FoSf94NWFSmPYN5OgquN+FoLouF6
+	 jdKQF+mVFkiZ2OvU4kjMXIvBwwHDXfpsyb0AfsDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ovidiu Panait <ovidiu.panait@windriver.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 080/641] crypto: sahara - fix processing hash requests with req->nbytes < sg->length
-Date: Mon, 22 Jan 2024 15:49:44 -0800
-Message-ID: <20240122235820.534033755@linuxfoundation.org>
+Subject: [PATCH 6.7 081/641] crypto: sahara - do not resize req->src when doing hash operations
+Date: Mon, 22 Jan 2024 15:49:45 -0800
+Message-ID: <20240122235820.567830516@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -68,51 +68,95 @@ Content-Transfer-Encoding: 8bit
 
 From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 7bafa74d1ba35dcc173e1ce915e983d65905f77e ]
+[ Upstream commit a3c6f4f4d249cecaf2f34471aadbfb4f4ef57298 ]
 
-It's not always the case that the entire sg entry needs to be processed.
-Currently, when nbytes is less than sg->length, "Descriptor length" errors
-are encountered.
+When testing sahara sha256 speed performance with tcrypt (mode=404) on
+imx53-qsrb board, multiple "Invalid numbers of src SG." errors are
+reported. This was traced to sahara_walk_and_recalc() resizing req->src
+and causing the subsequent dma_map_sg() call to fail.
 
-To fix this, take the actual request size into account when populating the
-hw links.
+Now that the previous commit fixed sahara_sha_hw_links_create() to take
+into account the actual request size, rather than relying on sg->length
+values, the resize operation is no longer necessary.
+
+Therefore, remove sahara_walk_and_recalc() and simplify associated logic.
 
 Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
 Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/crypto/sahara.c | 38 ++------------------------------------
+ 1 file changed, 2 insertions(+), 36 deletions(-)
 
 diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index cfb02905c1ab..dd8291a4442c 100644
+index dd8291a4442c..fabe4f381fb6 100644
 --- a/drivers/crypto/sahara.c
 +++ b/drivers/crypto/sahara.c
-@@ -776,6 +776,7 @@ static int sahara_sha_hw_links_create(struct sahara_dev *dev,
- 				       int start)
+@@ -886,24 +886,6 @@ static int sahara_sha_hw_context_descriptor_create(struct sahara_dev *dev,
+ 	return 0;
+ }
+ 
+-static int sahara_walk_and_recalc(struct scatterlist *sg, unsigned int nbytes)
+-{
+-	if (!sg || !sg->length)
+-		return nbytes;
+-
+-	while (nbytes && sg) {
+-		if (nbytes <= sg->length) {
+-			sg->length = nbytes;
+-			sg_mark_end(sg);
+-			break;
+-		}
+-		nbytes -= sg->length;
+-		sg = sg_next(sg);
+-	}
+-
+-	return nbytes;
+-}
+-
+ static int sahara_sha_prepare_request(struct ahash_request *req)
  {
- 	struct scatterlist *sg;
-+	unsigned int len;
- 	unsigned int i;
- 	int ret;
+ 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
+@@ -940,36 +922,20 @@ static int sahara_sha_prepare_request(struct ahash_request *req)
+ 					hash_later, 0);
+ 	}
  
-@@ -797,12 +798,14 @@ static int sahara_sha_hw_links_create(struct sahara_dev *dev,
- 	if (!ret)
- 		return -EFAULT;
+-	/* nbytes should now be multiple of blocksize */
+-	req->nbytes = req->nbytes - hash_later;
+-
+-	sahara_walk_and_recalc(req->src, req->nbytes);
+-
++	rctx->total = len - hash_later;
+ 	/* have data from previous operation and current */
+ 	if (rctx->buf_cnt && req->nbytes) {
+ 		sg_init_table(rctx->in_sg_chain, 2);
+ 		sg_set_buf(rctx->in_sg_chain, rctx->rembuf, rctx->buf_cnt);
+-
+ 		sg_chain(rctx->in_sg_chain, 2, req->src);
+-
+-		rctx->total = req->nbytes + rctx->buf_cnt;
+ 		rctx->in_sg = rctx->in_sg_chain;
+-
+-		req->src = rctx->in_sg_chain;
+ 	/* only data from previous operation */
+ 	} else if (rctx->buf_cnt) {
+-		if (req->src)
+-			rctx->in_sg = req->src;
+-		else
+-			rctx->in_sg = rctx->in_sg_chain;
+-		/* buf was copied into rembuf above */
++		rctx->in_sg = rctx->in_sg_chain;
+ 		sg_init_one(rctx->in_sg, rctx->rembuf, rctx->buf_cnt);
+-		rctx->total = rctx->buf_cnt;
+ 	/* no data from previous operation */
+ 	} else {
+ 		rctx->in_sg = req->src;
+-		rctx->total = req->nbytes;
+-		req->src = rctx->in_sg;
+ 	}
  
-+	len = rctx->total;
- 	for (i = start; i < dev->nb_in_sg + start; i++) {
--		dev->hw_link[i]->len = sg->length;
-+		dev->hw_link[i]->len = min(len, sg->length);
- 		dev->hw_link[i]->p = sg->dma_address;
- 		if (i == (dev->nb_in_sg + start - 1)) {
- 			dev->hw_link[i]->next = 0;
- 		} else {
-+			len -= min(len, sg->length);
- 			dev->hw_link[i]->next = dev->hw_phys_link[i + 1];
- 			sg = sg_next(sg);
- 		}
+ 	/* on next call, we only have the remaining data in the buffer */
 -- 
 2.43.0
 
