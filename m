@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-13184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03E15837C3A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71AB0837BD9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E98FB2BF9B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:55:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E676CB26DE5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975FF132C0A;
-	Tue, 23 Jan 2024 00:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97C6131744;
+	Tue, 23 Jan 2024 00:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="juBcJiKf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HczHGr9+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5778E131E54;
-	Tue, 23 Jan 2024 00:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7855313173A;
+	Tue, 23 Jan 2024 00:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969110; cv=none; b=PwMOW50WUd12CFfRXpjzye/CqjdOQnSyD7/RRcsKymzuFXduFd31CHXdJvntrSxwZhKnMptEINgjkcPUG8n2R42KTf7SuRSldNUzfkmV+m43GbkVyXlmZG66tt3TZfEw6X6//UdmC5n933bLxwsk8mnBOuGEKEpMGOCVm0Rwg70=
+	t=1705969086; cv=none; b=GIDl0nDqhlyLBOi3Z5fZsrCjTE6KfMqnDoiZZLU8He3aHcef8AgK3JbVoUan1rRS3bw4uRz0j7CL/u3Q+biWx2q0j/IalLLGECT9iOb/1rU1m40z35hO1L2loy4CSq59PfbQdpZSnJ3O/P5kJlbXNfzhWwaL93snEeG+EkKA38A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969110; c=relaxed/simple;
-	bh=UcoWoxZDHrtr8SUBTliTqDhQiYRPd7fPguPO9SIeBaM=;
+	s=arc-20240116; t=1705969086; c=relaxed/simple;
+	bh=ymhm9ePzqMpsA7CqH2bjO5QV+rrv1Sqlufi2ySSs0pM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JJhtrf7itZD3qrts6gyero1jiQTbFpA9uQiid1VtlBtg4/XgwQlXee1LfqyzY8Vot8Nm2zoA0WXHUsMcfHMsbaRWXoj+fSxt19RftRtp/GljO9vXyUjFlDyUVZLmDJLYU3iQdysvrqILCNB+Zrk0x5XM39szs0Bz8Y8IHQ+XRNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=juBcJiKf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E07D4C433F1;
-	Tue, 23 Jan 2024 00:18:29 +0000 (UTC)
+	 MIME-Version; b=YQAtx7iGZrVaCUXrVvtgIPYndsK9RB9ZhtHDr35po4jnZjDY7e9swF6bkCVkKlwhXj90edYsFHShRQ4PJ3wWHYtYtGzj4pSmyscit4Bg/MENv+YHNHr9xWgTk8mSaQV9tvVmXmAmjYN90SRB95l990Do5ffsb3zteZRRI+H6JQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HczHGr9+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE0BC433C7;
+	Tue, 23 Jan 2024 00:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969110;
-	bh=UcoWoxZDHrtr8SUBTliTqDhQiYRPd7fPguPO9SIeBaM=;
+	s=korg; t=1705969086;
+	bh=ymhm9ePzqMpsA7CqH2bjO5QV+rrv1Sqlufi2ySSs0pM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=juBcJiKfOxQOGkTA+F6V7FAi+cF2HBpacf+Ik1yU4dtJyF9YPv7mSvB8CvLcSar+h
-	 D8Kxe+5Yw2UW/rqD2r5K70gAr9b/wHm0XFOC5+/R6QCprO/ErFnSXDMMu9SASMkP50
-	 ONMP0JWcDiUwIxwr5khOWyVmlfBul2zAeZLjtqWo=
+	b=HczHGr9+q0uuRDCE+TvRpCOqTq3TPRS19wQ4j2XZK7tTnJi1hpXGK/P7Kfo8Rin6r
+	 X3v3TCOXlAOuF9lMpHxLhRuL+o2VMlg+kH+Zb0S0KaumKOikiS2Te/VS/Alw3oYvk6
+	 pxRQnLffe2rGZYQm3eMfxC7Zz8ZbteCukBSk2wmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 003/641] EDAC/thunderx: Fix possible out-of-bounds string access
-Date: Mon, 22 Jan 2024 15:48:27 -0800
-Message-ID: <20240122235818.204775343@linuxfoundation.org>
+Subject: [PATCH 6.7 013/641] selftests/powerpc: Fix error handling in FPU/VMX preemption tests
+Date: Mon, 22 Jan 2024 15:48:37 -0800
+Message-ID: <20240122235818.527166174@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -67,89 +65,86 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 475c58e1a471e9b873e3e39958c64a2d278275c8 ]
+[ Upstream commit 9dbd5927408c4a0707de73ae9dd9306b184e8fee ]
 
-Enabling -Wstringop-overflow globally exposes a warning for a common bug
-in the usage of strncat():
+The FPU & VMX preemption tests do not check for errors returned by the
+low-level asm routines, preempt_fpu() / preempt_vsx() respectively.
+That means any register corruption detected by the asm routines does not
+result in a test failure.
 
-  drivers/edac/thunderx_edac.c: In function 'thunderx_ocx_com_threaded_isr':
-  drivers/edac/thunderx_edac.c:1136:17: error: 'strncat' specified bound 1024 equals destination size [-Werror=stringop-overflow=]
-   1136 |                 strncat(msg, other, OCX_MESSAGE_SIZE);
-        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   ...
-   1145 |                                 strncat(msg, other, OCX_MESSAGE_SIZE);
-   ...
-   1150 |                                 strncat(msg, other, OCX_MESSAGE_SIZE);
+Fix it by returning the return value of the asm routines from the
+pthread child routines.
 
-   ...
-
-Apparently the author of this driver expected strncat() to behave the
-way that strlcat() does, which uses the size of the destination buffer
-as its third argument rather than the length of the source buffer. The
-result is that there is no check on the size of the allocated buffer.
-
-Change it to strlcat().
-
-  [ bp: Trim compiler output, fixup commit message. ]
-
-Fixes: 41003396f932 ("EDAC, thunderx: Add Cavium ThunderX EDAC driver")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/20231122222007.3199885-1-arnd@kernel.org
+Fixes: e5ab8be68e44 ("selftests/powerpc: Test preservation of FPU and VMX regs across preemption")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231128132748.1990179-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/thunderx_edac.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tools/testing/selftests/powerpc/math/fpu_preempt.c |  9 +++++----
+ tools/testing/selftests/powerpc/math/vmx_preempt.c | 10 ++++++----
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/edac/thunderx_edac.c b/drivers/edac/thunderx_edac.c
-index b9c5772da959..90d46e5c4ff0 100644
---- a/drivers/edac/thunderx_edac.c
-+++ b/drivers/edac/thunderx_edac.c
-@@ -1133,7 +1133,7 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(int irq, void *irq_id)
- 		decode_register(other, OCX_OTHER_SIZE,
- 				ocx_com_errors, ctx->reg_com_int);
+diff --git a/tools/testing/selftests/powerpc/math/fpu_preempt.c b/tools/testing/selftests/powerpc/math/fpu_preempt.c
+index 5235bdc8c0b1..3e5b5663d244 100644
+--- a/tools/testing/selftests/powerpc/math/fpu_preempt.c
++++ b/tools/testing/selftests/powerpc/math/fpu_preempt.c
+@@ -37,19 +37,20 @@ __thread double darray[] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
+ int threads_starting;
+ int running;
  
--		strncat(msg, other, OCX_MESSAGE_SIZE);
-+		strlcat(msg, other, OCX_MESSAGE_SIZE);
+-extern void preempt_fpu(double *darray, int *threads_starting, int *running);
++extern int preempt_fpu(double *darray, int *threads_starting, int *running);
  
- 		for (lane = 0; lane < OCX_RX_LANES; lane++)
- 			if (ctx->reg_com_int & BIT(lane)) {
-@@ -1142,12 +1142,12 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(int irq, void *irq_id)
- 					 lane, ctx->reg_lane_int[lane],
- 					 lane, ctx->reg_lane_stat11[lane]);
+ void *preempt_fpu_c(void *p)
+ {
++	long rc;
+ 	int i;
++
+ 	srand(pthread_self());
+ 	for (i = 0; i < 21; i++)
+ 		darray[i] = rand();
  
--				strncat(msg, other, OCX_MESSAGE_SIZE);
-+				strlcat(msg, other, OCX_MESSAGE_SIZE);
+-	/* Test failed if it ever returns */
+-	preempt_fpu(darray, &threads_starting, &running);
++	rc = preempt_fpu(darray, &threads_starting, &running);
  
- 				decode_register(other, OCX_OTHER_SIZE,
- 						ocx_lane_errors,
- 						ctx->reg_lane_int[lane]);
--				strncat(msg, other, OCX_MESSAGE_SIZE);
-+				strlcat(msg, other, OCX_MESSAGE_SIZE);
- 			}
+-	return p;
++	return (void *)rc;
+ }
  
- 		if (ctx->reg_com_int & OCX_COM_INT_CE)
-@@ -1217,7 +1217,7 @@ static irqreturn_t thunderx_ocx_lnk_threaded_isr(int irq, void *irq_id)
- 		decode_register(other, OCX_OTHER_SIZE,
- 				ocx_com_link_errors, ctx->reg_com_link_int);
+ int test_preempt_fpu(void)
+diff --git a/tools/testing/selftests/powerpc/math/vmx_preempt.c b/tools/testing/selftests/powerpc/math/vmx_preempt.c
+index 6761d6ce30ec..6f7cf400c687 100644
+--- a/tools/testing/selftests/powerpc/math/vmx_preempt.c
++++ b/tools/testing/selftests/powerpc/math/vmx_preempt.c
+@@ -37,19 +37,21 @@ __thread vector int varray[] = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10,11,12},
+ int threads_starting;
+ int running;
  
--		strncat(msg, other, OCX_MESSAGE_SIZE);
-+		strlcat(msg, other, OCX_MESSAGE_SIZE);
+-extern void preempt_vmx(vector int *varray, int *threads_starting, int *running);
++extern int preempt_vmx(vector int *varray, int *threads_starting, int *running);
  
- 		if (ctx->reg_com_link_int & OCX_COM_LINK_INT_UE)
- 			edac_device_handle_ue(ocx->edac_dev, 0, 0, msg);
-@@ -1896,7 +1896,7 @@ static irqreturn_t thunderx_l2c_threaded_isr(int irq, void *irq_id)
+ void *preempt_vmx_c(void *p)
+ {
+ 	int i, j;
++	long rc;
++
+ 	srand(pthread_self());
+ 	for (i = 0; i < 12; i++)
+ 		for (j = 0; j < 4; j++)
+ 			varray[i][j] = rand();
  
- 		decode_register(other, L2C_OTHER_SIZE, l2_errors, ctx->reg_int);
+-	/* Test fails if it ever returns */
+-	preempt_vmx(varray, &threads_starting, &running);
+-	return p;
++	rc = preempt_vmx(varray, &threads_starting, &running);
++
++	return (void *)rc;
+ }
  
--		strncat(msg, other, L2C_MESSAGE_SIZE);
-+		strlcat(msg, other, L2C_MESSAGE_SIZE);
- 
- 		if (ctx->reg_int & mask_ue)
- 			edac_device_handle_ue(l2c->edac_dev, 0, 0, msg);
+ int test_preempt_vmx(void)
 -- 
 2.43.0
 
