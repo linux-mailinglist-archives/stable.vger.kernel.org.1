@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-12947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D7FE8379D3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:46:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C97FA837AA7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37E60287107
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:46:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B3831F2466F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35ED4128383;
-	Tue, 23 Jan 2024 00:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ACDE12FF8D;
+	Tue, 23 Jan 2024 00:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POeDE3lf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9b66mSj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86FE128380;
-	Tue, 23 Jan 2024 00:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5939912F5A7;
+	Tue, 23 Jan 2024 00:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968674; cv=none; b=mHvNhGNzCAPyoFGcP3MSvzWu25S1gLDMGmNxO6eTpAwfwn4K6M22SLBQwRcFykgiIea5VxEcX3RWepm1FB4rVOggQ/W1PkxFkSObu85MBqGu7dhigvGhatU49Pfqf8txmcF8CroJ5qZLt6rTCdoOGotJq2EWjXMFG0JIHgharvc=
+	t=1705969039; cv=none; b=Z4R3NnuBBAc7BiWl+SR/CnacRyFgt7UQz6sEojOWzfahR39w0zukYUsM+GL3nzx4+DMdxQlvRJqq4Jzjc1a4fLJ7o76Q92iCy2nQz2UdwlpdZe8ASAB9q3C78c7LIm/zrBR599D55LfhsdFrO2HdOIk8hRpJzOZdHWyif3+Z6WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968674; c=relaxed/simple;
-	bh=0jufXtfVRhnS8RrnTVtARcEodq/1fGhDVGKCLYtoTEA=;
+	s=arc-20240116; t=1705969039; c=relaxed/simple;
+	bh=gdkABEbIH5WjtOodNZogc3jvZaQ/ZYF93jYWJe2c61U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pACUXhCyGa6DuhB98crPvmdqjDsRnv7+i1YogAT4ieZE87vSfwNHUjgA8JxWfS0atgLQlwbLnxXm0vBskcPvcbR0cJn3Cu96DfFB/O9ZY3JczSSaM6DEE4kYBW/dUvj/lpEJuLYZfArEffPtxKw2Awq0B+0yL3I0yG/RCCdJzkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POeDE3lf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4126AC433F1;
-	Tue, 23 Jan 2024 00:11:13 +0000 (UTC)
+	 MIME-Version; b=Jmg8UdLnKLYpSRZRWEWlv5RtzevoTFKTMkhSEDjghYfCpTVEnBz0wf0s6AQS5qdAk2FwbdLmr14ZTFhnvr2bsUTStuU5gK2Lmj2r5C8bZ50Qfu6wSGjzxe16QFlEHV54Mzp6rPHjglvCya/BQHkZHmBEWLWMxtXdEr5XcR9ePKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9b66mSj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04ECBC433C7;
+	Tue, 23 Jan 2024 00:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968673;
-	bh=0jufXtfVRhnS8RrnTVtARcEodq/1fGhDVGKCLYtoTEA=;
+	s=korg; t=1705969039;
+	bh=gdkABEbIH5WjtOodNZogc3jvZaQ/ZYF93jYWJe2c61U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=POeDE3lfQ6WtkUTiseEVL8fpH92QMkq2gAWBC6COKlxlTmY8gLAl3+Xx5LGrk8x1G
-	 3rl0mTgmIBgcDhSs7UzRZIzVbc3rpY6TycQGfU25MtzpwQpoGWyzrJja4oBDCdEfU/
-	 037+dSM8pGp5C6t2cEEPE6cKDhWq+reKU6miPppI=
+	b=W9b66mSjWI8a5Rtx9GsUp2Ot6y1waG1IzFd0ppBZN3QEfOxwRU3cnZXN2uRzfZFjJ
+	 FC9cOkwOul3OtQgtHNcZRjeFFgT3jKvUd5LVhd63/XeFe/kvZVTYYaTAr6s2LsNBvu
+	 RCJ/goRpHoIThCCajL+i+MrUUR5jEjgMBaC/UMiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 4.19 130/148] wifi: rtlwifi: Convert LNKCTL change to PCIe cap RMW accessors
-Date: Mon, 22 Jan 2024 15:58:06 -0800
-Message-ID: <20240122235717.805544110@linuxfoundation.org>
+	Rob Landley <rob@landley.net>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 5.4 157/194] rootfs: Fix support for rootfstype= when root= is given
+Date: Mon, 22 Jan 2024 15:58:07 -0800
+Message-ID: <20240122235725.919215332@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,83 +60,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Stefan Berger <stefanb@linux.ibm.com>
 
-commit 5894d0089cbc146063dcc0239a78ede0a8142efb upstream.
+commit 21528c69a0d8483f7c6345b1a0bc8d8975e9a172 upstream.
 
-The rtlwifi driver comes with custom code to write into PCIe Link
-Control register. RMW access for the Link Control register requires
-locking that is already provided by the standard PCIe capability
-accessors.
+Documentation/filesystems/ramfs-rootfs-initramfs.rst states:
 
-Convert the custom RMW code writing into LNKCTL register to standard
-RMW capability accessors. The accesses are changed to cover the full
-LNKCTL register instead of touching just a single byte of the register.
+  If CONFIG_TMPFS is enabled, rootfs will use tmpfs instead of ramfs by
+  default.  To force ramfs, add "rootfstype=ramfs" to the kernel command
+  line.
 
-Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20231124084725.12738-3-ilpo.jarvinen@linux.intel.com
+This currently does not work when root= is provided since then
+saved_root_name contains a string and rootfstype= is ignored. Therefore,
+ramfs is currently always chosen when root= is provided.
+
+The current behavior for rootfs's filesystem is:
+
+   root=       | rootfstype= | chosen rootfs filesystem
+   ------------+-------------+--------------------------
+   unspecified | unspecified | tmpfs
+   unspecified | tmpfs       | tmpfs
+   unspecified | ramfs       | ramfs
+    provided   | ignored     | ramfs
+
+rootfstype= should be respected regardless whether root= is given,
+as shown below:
+
+   root=       | rootfstype= | chosen rootfs filesystem
+   ------------+-------------+--------------------------
+   unspecified | unspecified | tmpfs  (as before)
+   unspecified | tmpfs       | tmpfs  (as before)
+   unspecified | ramfs       | ramfs  (as before)
+    provided   | unspecified | ramfs  (compatibility with before)
+    provided   | tmpfs       | tmpfs  (new)
+    provided   | ramfs       | ramfs  (new)
+
+This table represents the new behavior.
+
+Fixes: 6e19eded3684 ("initmpfs: use initramfs if rootfstype= or root= specified")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Rob Landley <rob@landley.net>
+Link: https://lore.kernel.org/lkml/8244c75f-445e-b15b-9dbf-266e7ca666e2@landley.net/
+Reviewed-and-Tested-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+Link: https://lore.kernel.org/r/20231120011248.396012-1-stefanb@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ init/do_mounts.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -186,21 +186,29 @@ static bool _rtl_pci_platform_switch_dev
- 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
- 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+--- a/init/do_mounts.c
++++ b/init/do_mounts.c
+@@ -643,7 +643,10 @@ struct file_system_type rootfs_fs_type =
  
-+	value &= PCI_EXP_LNKCTL_ASPMC;
-+
- 	if (rtlhal->hw_type != HARDWARE_TYPE_RTL8192SE)
--		value |= 0x40;
-+		value |= PCI_EXP_LNKCTL_CCC;
- 
--	pci_write_config_byte(rtlpci->pdev, 0x80, value);
-+	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
-+					   PCI_EXP_LNKCTL_ASPMC | value,
-+					   value);
- 
- 	return false;
- }
- 
--/*When we set 0x01 to enable clk request. Set 0x0 to disable clk req.*/
--static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u8 value)
-+/* @value is PCI_EXP_LNKCTL_CLKREQ_EN or 0 to enable/disable clk request. */
-+static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u16 value)
+ void __init init_rootfs(void)
  {
- 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
- 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
- 
--	pci_write_config_byte(rtlpci->pdev, 0x81, value);
-+	value &= PCI_EXP_LNKCTL_CLKREQ_EN;
-+
-+	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
-+					   PCI_EXP_LNKCTL_CLKREQ_EN,
-+					   value);
- 
- 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192SE)
- 		udelay(100);
-@@ -281,7 +289,8 @@ static void rtl_pci_enable_aspm(struct i
- 
- 	if (ppsc->reg_rfps_level & RT_RF_OFF_LEVL_CLK_REQ) {
- 		_rtl_pci_switch_clk_req(hw, (ppsc->reg_rfps_level &
--					     RT_RF_OFF_LEVL_CLK_REQ) ? 1 : 0);
-+					     RT_RF_OFF_LEVL_CLK_REQ) ?
-+					     PCI_EXP_LNKCTL_CLKREQ_EN : 0);
- 		RT_SET_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_CLK_REQ);
- 	}
- 	udelay(100);
+-	if (IS_ENABLED(CONFIG_TMPFS) && !saved_root_name[0] &&
+-		(!root_fs_names || strstr(root_fs_names, "tmpfs")))
+-		is_tmpfs = true;
++	if (IS_ENABLED(CONFIG_TMPFS)) {
++		if (!saved_root_name[0] && !root_fs_names)
++			is_tmpfs = true;
++		else if (root_fs_names && !!strstr(root_fs_names, "tmpfs"))
++			is_tmpfs = true;
++	}
+ }
 
 
 
