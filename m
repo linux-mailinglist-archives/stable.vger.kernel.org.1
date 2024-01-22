@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B75D8381BB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:12:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B733C8383AD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D02ACB278C5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61616294BF7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECC4131734;
-	Tue, 23 Jan 2024 01:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FAA6351A;
+	Tue, 23 Jan 2024 01:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTJ/jk7A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cd4H/ZeD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772641487DE;
-	Tue, 23 Jan 2024 01:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83249634FB;
+	Tue, 23 Jan 2024 01:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972078; cv=none; b=jVP0C5XOsrLwAE/B1v2J1jW7lh7SPIbXVSk9jSOmmK7r87ySMEmiROQixqiWTKCZ9R+jCJjiKS4u+Xnh0vJEe17vtoheMoIINJz8EDE75y2mwdQ4xbCYQVBIEroHWtGMgDYia5MyjQbf6KXOXZXRBL3FfeKDS2tJ3T7k53Yq5go=
+	t=1705975037; cv=none; b=QQxffjb6gmDQYfK1mkL/vb5o1OFnidAAvSArp8W+tlqPyx+OJqoDmdIydhGz3GG3xPKlrWUaaS0ma7gntcjWS6tW7+SfnsoDR8Iy45j+I9jTYtLe01ZVfJW1PH7mb9RUQH3KLdXg2LtZwtgMKYNK8cEYg6kI9srvYbMmA2uwu9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972078; c=relaxed/simple;
-	bh=vsCEfh/p7YkwWUN07Bhe4iVAyqRcTQyKQSi/+eHXJEw=;
+	s=arc-20240116; t=1705975037; c=relaxed/simple;
+	bh=uJrutbwbRtQyWLKo0BU3sjQjySjcPtno2bqT+ihRECQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SpMVPWyHdQ9a7aiuBzygvEB3Z4WgasEXrGDdQkMwimNp+JQP2XMyprpnxQViddHzTqxtS98rQivkxNLL9vU0bQvJ/jutIqcyhZVfp0yD5wwbASHZNiHsDFRu/nkEpsfuGzxL6GqDZaZzRjEouS+B7y0RxIYN+iRkZa1fkCCylVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTJ/jk7A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44BEC433F1;
-	Tue, 23 Jan 2024 01:07:56 +0000 (UTC)
+	 MIME-Version; b=tlc8BTleu5KazQpxO4eIJxyL8r7WEZqkdwQo8aAyIn2Mpfx5mna8LN25STn0K/lnWgtG1nCDPi0AkDQ3DTugiXkSpPY9+vDJYEtsmZEbtiqS7UxDlxMXyA6ep8lMo6CAQoijSj/aovwwlB9YXmC+X7WhpgFSNkO9OwtrOmh1jyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cd4H/ZeD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4552DC433C7;
+	Tue, 23 Jan 2024 01:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972077;
-	bh=vsCEfh/p7YkwWUN07Bhe4iVAyqRcTQyKQSi/+eHXJEw=;
+	s=korg; t=1705975037;
+	bh=uJrutbwbRtQyWLKo0BU3sjQjySjcPtno2bqT+ihRECQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mTJ/jk7AQZApuW8OSOgTGTXSNnU4FASl6UPdaRf8C5d+hXKXyV+azjYfCcrepJdOz
-	 OQ5NEMp0cqOIxlr+tQy9pTIsLe2HYobXmxi9+RqiQPN5ADUpOcpz6rFEhs7SfWtNOA
-	 7Bgk7oT+9jZL9yhb8LVrIiw61lN5AROZW5BTPGy0=
+	b=cd4H/ZeDvtkv8aks+6RWZAnDoGEZ5KknvOmZ5LHXjhKGUrwjk3YjxMAPnDzjNmDS0
+	 jToY0tnjQFiJuKdU4fcbmSuomqeSs1LAumVClb54JDNmCj724PoudEZOMH25qqLKsb
+	 krdwACl+v0M3++VwtUBTF9EMttt510duU72LlzzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 002/374] pinctrl: lochnagar: Dont build on MIPS
+Subject: [PATCH 6.6 207/583] Bluetooth: btmtkuart: fix recv_buf() return value
 Date: Mon, 22 Jan 2024 15:54:18 -0800
-Message-ID: <20240122235744.697234765@linuxfoundation.org>
+Message-ID: <20240122235818.332740027@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-[ Upstream commit 6588732445ff19f6183f0fa72ddedf67e5a5be32 ]
+[ Upstream commit 64057f051f20c2a2184b9db7f8037d928d68a4f4 ]
 
-MIPS appears to define a RST symbol at a high level, which clashes
-with some register naming in the driver. Since there is currently
-no case for running this driver on MIPS devices simply cut off the
-build of this driver on MIPS.
+Serdev recv_buf() callback is supposed to return the amount of bytes
+consumed, therefore an int in between 0 and count.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311071303.JJMAOjy4-lkp@intel.com/
-Suggested-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20231115162853.1891940-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Do not return negative number in case of issue, just print an error and
+return count. This fixes a WARN in ttyport_receive_buf().
+
+Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
+Fixes: 7237c4c9ec92 ("Bluetooth: mediatek: Add protocol support for MediaTek serial devices")
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/cirrus/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btmtkuart.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/pinctrl/cirrus/Kconfig b/drivers/pinctrl/cirrus/Kconfig
-index 530426a74f75..b3cea8d56c4f 100644
---- a/drivers/pinctrl/cirrus/Kconfig
-+++ b/drivers/pinctrl/cirrus/Kconfig
-@@ -1,7 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config PINCTRL_LOCHNAGAR
- 	tristate "Cirrus Logic Lochnagar pinctrl driver"
--	depends on MFD_LOCHNAGAR
-+	# Avoid clash caused by MIPS defining RST, which is used in the driver
-+	depends on MFD_LOCHNAGAR && !MIPS
- 	select GPIOLIB
- 	select PINMUX
- 	select PINCONF
+diff --git a/drivers/bluetooth/btmtkuart.c b/drivers/bluetooth/btmtkuart.c
+index 935feab815d9..203a000a84e3 100644
+--- a/drivers/bluetooth/btmtkuart.c
++++ b/drivers/bluetooth/btmtkuart.c
+@@ -336,7 +336,7 @@ mtk_stp_split(struct btmtkuart_dev *bdev, const unsigned char *data, int count,
+ 	return data;
+ }
+ 
+-static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
++static void btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
+ {
+ 	struct btmtkuart_dev *bdev = hci_get_drvdata(hdev);
+ 	const unsigned char *p_left = data, *p_h4;
+@@ -375,25 +375,20 @@ static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
+ 			bt_dev_err(bdev->hdev,
+ 				   "Frame reassembly failed (%d)", err);
+ 			bdev->rx_skb = NULL;
+-			return err;
++			return;
+ 		}
+ 
+ 		sz_left -= sz_h4;
+ 		p_left += sz_h4;
+ 	}
+-
+-	return 0;
+ }
+ 
+ static int btmtkuart_receive_buf(struct serdev_device *serdev, const u8 *data,
+ 				 size_t count)
+ {
+ 	struct btmtkuart_dev *bdev = serdev_device_get_drvdata(serdev);
+-	int err;
+ 
+-	err = btmtkuart_recv(bdev->hdev, data, count);
+-	if (err < 0)
+-		return err;
++	btmtkuart_recv(bdev->hdev, data, count);
+ 
+ 	bdev->hdev->stat.byte_rx += count;
+ 
 -- 
 2.43.0
 
