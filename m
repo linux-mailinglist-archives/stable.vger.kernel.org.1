@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D338083819B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35FC1837F43
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56CA8B2DB67
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB00A1F2955E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8251848;
-	Tue, 23 Jan 2024 01:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEDD12A164;
+	Tue, 23 Jan 2024 00:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgP40wnU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvdnTTdA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC3417CA;
-	Tue, 23 Jan 2024 01:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBB512A155;
+	Tue, 23 Jan 2024 00:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972148; cv=none; b=SCefGK0ewdqLizEByaLUKj1THoCsfnKvl9FSQF9nPaOYUTNWPEs9kAzmt0Y/LeMHSo8J+ZEQlFTG21i+y7NAJfU4BVPYwfTWdtGzXZmtDrvVrGizJVEZowCCgZv8qT0wCL61dPQBrMIrMDKaMduhxqN/vmfc1YrNMBV+jQko3+I=
+	t=1705971024; cv=none; b=J/iNGE3E+VnxmlbfPMRZPfjk9a+KsKLxBSn0hyReLM/fr0TVn0MUlaH2fnrO476CqJ4r4YgeCCGOoiGjKaYBc3ucgCCepJakuaXZg3uInHZcQEVg6KvSDX/4jnhDmNLQ3Vhh7xFolxG22hN7Ja/NmAmKPlzwzKRMlnJaWEafjYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972148; c=relaxed/simple;
-	bh=8RsnXrCUwB5QLUX8cujbWxaOyoymvQKQzorZqeizLyU=;
+	s=arc-20240116; t=1705971024; c=relaxed/simple;
+	bh=wLOt+cTadRQUVYZJWU0xjgfg9EuXdjfKkTMMYR8/yfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jB4KCes9tB7JnKIh7rUgvkqzu9z4bvLhpSRZApn7InojHHRmB6DvHRqYgLgFVSCUdQwLiG/ZRiPB9u1tm+oCMvfRcM3DBVPZmuj0G4NumMT3spO//9UUuZ/MrdZNuVg3mpYfUnMtZ8TMXQHIdpY0d06/QXfZFu36maTIoSpiD6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgP40wnU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0851C433C7;
-	Tue, 23 Jan 2024 01:09:07 +0000 (UTC)
+	 MIME-Version; b=VWouG8v4/MCsRM6yqaqg8aHwhZQHOK0BvOr6Z0RzoByvUu6Suwz/SZssSGYy2xwpQSWk5KjuWvoHJwOXxx43781ZulTXDvAqYJBesnbG1xfBtB/XBx4NKVfNnFiTXOw1dd4Pdvj6wzqEaLwTRbIqgDn2zOujHbDYKCMJjWKOr34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvdnTTdA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA46C43394;
+	Tue, 23 Jan 2024 00:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972148;
-	bh=8RsnXrCUwB5QLUX8cujbWxaOyoymvQKQzorZqeizLyU=;
+	s=korg; t=1705971024;
+	bh=wLOt+cTadRQUVYZJWU0xjgfg9EuXdjfKkTMMYR8/yfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SgP40wnUJjN/1HT0kKVL6DO5rKnHsAEt92MI/4iiMqJSaL5it5HgcB5JR+FH6Ob+s
-	 RQk1DfAztgukSbDEHc/Bab9L1rW7hQVhyl/DzBANOeNK/DWfY5DvWr+kApKPunOkGk
-	 YwkMufTvJWVbZiBW8Xv3TmWaHGnfAsp7Bg1LD8Lw=
+	b=AvdnTTdASrSttjbgEgDbG1GQZeXcaMUnGwJD57+JfENourh982txK30LAM1b4+Lsb
+	 G7sNTMlhERiFrYwUFfuxGvnMHeDNXe3C882MrE60CLbYd6G3dY9OjIW/FME2LawwGY
+	 lmTc9sI/4N1FJPG7Lm2EzpXFEm0p3Dj5WkGY0byA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 076/374] powerpc/powernv: Add a null pointer check in opal_powercap_init()
+Subject: [PATCH 6.1 164/417] drm/tilcdc: Fix irq free on unload
 Date: Mon, 22 Jan 2024 15:55:32 -0800
-Message-ID: <20240122235747.262852516@linuxfoundation.org>
+Message-ID: <20240122235757.529156294@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit e123015c0ba859cf48aa7f89c5016cc6e98e018d ]
+[ Upstream commit 38360bf96d816e175bc602c4ee76953cd303b71d ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+The driver only frees the reserved irq if priv->irq_enabled is set to
+true. However, the driver mistakenly sets priv->irq_enabled to false,
+instead of true, in tilcdc_irq_install(), and thus the driver never
+frees the irq, causing issues on loading the driver a second time.
 
-Fixes: b9ef7b4b867f ("powerpc: Convert to using %pOFn instead of device_node.name")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231126095739.1501990-1-chentao@kylinos.cn
+Fixes: b6366814fa77 ("drm/tilcdc: Convert to Linux IRQ interfaces")
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230919-lcdc-v1-1-ba60da7421e1@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/opal-powercap.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/tilcdc/tilcdc_drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-powercap.c b/arch/powerpc/platforms/powernv/opal-powercap.c
-index c16d44f6f1d1..ce9ec3962cef 100644
---- a/arch/powerpc/platforms/powernv/opal-powercap.c
-+++ b/arch/powerpc/platforms/powernv/opal-powercap.c
-@@ -196,6 +196,12 @@ void __init opal_powercap_init(void)
+diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.c b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
+index f72755b8ea14..86d34b77b37d 100644
+--- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
++++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
+@@ -138,7 +138,7 @@ static int tilcdc_irq_install(struct drm_device *dev, unsigned int irq)
+ 	if (ret)
+ 		return ret;
  
- 		j = 0;
- 		pcaps[i].pg.name = kasprintf(GFP_KERNEL, "%pOFn", node);
-+		if (!pcaps[i].pg.name) {
-+			kfree(pcaps[i].pattrs);
-+			kfree(pcaps[i].pg.attrs);
-+			goto out_pcaps_pattrs;
-+		}
-+
- 		if (has_min) {
- 			powercap_add_attr(min, "powercap-min",
- 					  &pcaps[i].pattrs[j]);
+-	priv->irq_enabled = false;
++	priv->irq_enabled = true;
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
