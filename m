@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75091837F24
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E74C48381DC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:14:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A7D029BE25
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CAE6B2CB14
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A04B612DA;
-	Tue, 23 Jan 2024 00:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB8B4F616;
+	Tue, 23 Jan 2024 01:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHfeZd4T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2V3mmZ0h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE7160DE3;
-	Tue, 23 Jan 2024 00:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E109223BD;
+	Tue, 23 Jan 2024 01:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970963; cv=none; b=WKCbiW9Kak91B1OnTSsMrmzV5k+BUOIYIUhqzAtFq9ujk8FSgYc5s/bt/3pm/F5ynv9iaUZBcEHl4qweBKWW+mHePVPJ9hI5ZmR910x2UmApqrIcS42v0mRshtRH7WARfNGhGEmNvS0Znd5ZkYkIqzB0SYVfN/uDvdJUu8Ts/NY=
+	t=1705972186; cv=none; b=EsHZbXihOzOiLW+IT23viT+AIgkYilgRnM69ApaaEBr9PBxUOk+JcFdBE4MYOj4OvOssaTZW0UrM+jGQGQ2V64ug7+xvGfADy2BaGldQU7QAMBGNvFeCwqmZ8HOWgmj+sQT4IzeH+jE1r4BMFGw3NyGUu6y9LbdK8Fnsk1xb0dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970963; c=relaxed/simple;
-	bh=8FCUnnW8h9KwW/Apzr2Etsioq1elSSqGsdDV5QWQeEQ=;
+	s=arc-20240116; t=1705972186; c=relaxed/simple;
+	bh=lVaStt9n67MkAkIQqmflBTNcRfssoAbzq6Yp+SizIb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QON8pu4Co3lcsvoKD6Xuk0qdyqfqFP8kpuchZdfCNm/kafUFewpJ631G6mL0+e6INJRuSa0AJehqoPASueM8gqp3tQ5OuSBqxo9W44tUlbC7H0UgT8ytSyPMv8wYZUaWmj6tJFtpSNJBzu/w8bhCThvsjleAUB/X/lqvC/JptoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHfeZd4T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B9A2C43390;
-	Tue, 23 Jan 2024 00:49:22 +0000 (UTC)
+	 MIME-Version; b=VQj8QaBzbKcs8F49TTBTk7lKheJL9POF+2FxzIn/QRYypzQpGG2hSK+g3g2lG17SUpy5aR+UVQ/oexscocCJ1Ay6wbmF1jtPRa/wBR4NYsGyQ71M+cku+ZO5fgmbMZO+O89ksxchqI1/THxkm5PUnnxwcVOnXYUo3ZYcK6mJCZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2V3mmZ0h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD82C433A6;
+	Tue, 23 Jan 2024 01:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970962;
-	bh=8FCUnnW8h9KwW/Apzr2Etsioq1elSSqGsdDV5QWQeEQ=;
+	s=korg; t=1705972185;
+	bh=lVaStt9n67MkAkIQqmflBTNcRfssoAbzq6Yp+SizIb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHfeZd4T9Kl2Rnt624+7FqhGUAbzyTrCwvpbDLsAbhFJGLrtIj6HIYJ8j/53QSfER
-	 2JL0ca1u7TY9TRTW+a7duXwbGxF4+HdnFnwEmt4w0rXkhjg5GymMUs+tsWgAwR0oJ5
-	 j8WIkFDHS+vFPIO7l/XaUMvzb4sRii2STKlQSkzA=
+	b=2V3mmZ0hzat4ox5X3awQ4kHIC2sGRCiZdItf2QDzlYVXKUL7syfy3yNyOWZT9s/xH
+	 BM2BSjTMbQatWlQ8dQ9Un26wXh5vs8RsM+wSVphtRnYJ0p+ndbFUCk3VC7kNx5Aqan
+	 hE0+S+CPqqsrdHT5WFhlwp+IbMGwib+gafqhuRAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 058/286] powerpc/powernv: Add a null pointer check in opal_event_init()
+Subject: [PATCH 5.15 108/374] crypto: sahara - handle zero-length aes requests
 Date: Mon, 22 Jan 2024 15:56:04 -0800
-Message-ID: <20240122235734.259387305@linuxfoundation.org>
+Message-ID: <20240122235748.377521962@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 8649829a1dd25199bbf557b2621cedb4bf9b3050 ]
+[ Upstream commit d1d6351e37aac14b32a291731d0855996c459d11 ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+In case of a zero-length input, exit gracefully from sahara_aes_crypt().
 
-Fixes: 2717a33d6074 ("powerpc/opal-irqchip: Use interrupt names if present")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231127030755.1546750-1-chentao@kylinos.cn
+Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/opal-irqchip.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/sahara.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-irqchip.c b/arch/powerpc/platforms/powernv/opal-irqchip.c
-index c164419e254d..dcec0f760c8f 100644
---- a/arch/powerpc/platforms/powernv/opal-irqchip.c
-+++ b/arch/powerpc/platforms/powernv/opal-irqchip.c
-@@ -278,6 +278,8 @@ int __init opal_event_init(void)
- 		else
- 			name = kasprintf(GFP_KERNEL, "opal");
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index bbd2c6474b50..3229dd180d0c 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -677,6 +677,9 @@ static int sahara_aes_crypt(struct skcipher_request *req, unsigned long mode)
+ 	struct sahara_dev *dev = dev_ptr;
+ 	int err = 0;
  
-+		if (!name)
-+			continue;
- 		/* Install interrupt handler */
- 		rc = request_irq(r->start, opal_interrupt, r->flags & IRQD_TRIGGER_MASK,
- 				 name, NULL);
++	if (!req->cryptlen)
++		return 0;
++
+ 	if (unlikely(ctx->keylen != AES_KEYSIZE_128))
+ 		return sahara_aes_fallback(req, mode);
+ 
 -- 
 2.43.0
 
