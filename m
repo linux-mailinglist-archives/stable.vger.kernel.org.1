@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-13271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A05837CAE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:14:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B2D2837C59
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8663B2140A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:59:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1DC6B28506
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024E214A4EF;
-	Tue, 23 Jan 2024 00:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6755514C58A;
+	Tue, 23 Jan 2024 00:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aY9xG6DK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/F6gbRx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F6B14A4CF;
-	Tue, 23 Jan 2024 00:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2786214C580;
+	Tue, 23 Jan 2024 00:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969230; cv=none; b=DIJZPoX5nlHFUFG14hNsSRpNlADNyDBWNcd1JLpMfystvBAXaMFqWmFz8oy+xrWLPuISOoTINERWeFnoz1KKxMGwGBqtUTBK9+LpeoCeT+l3TG2CEdGWjEZLjdY4xbCTnouoS0SWwsSedNdOKGoAmVhLDO17ewucEimnINZeHl0=
+	t=1705969269; cv=none; b=OVkyKhHwI/KME6/2lMeJVQFI19f4j2ZOAp6pmge9IrjtetjhOVGaapV+glxDWG4jn8aRWWGnT+ni/fK5TLRD6KaN34Uh/SmOcR8QCDSb4ycpm87xImcjFuWWo8rsVuR82QS7H6ZtGBrb8su3Y9E0aO+EPi1cYo+JO+ndPx+5uEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969230; c=relaxed/simple;
-	bh=Qvu+UPf/r4swf/teRwK4K4qAxxMUCc5WeTyrVAvG8X0=;
+	s=arc-20240116; t=1705969269; c=relaxed/simple;
+	bh=6Mpd4A2YYJzyotehXnNfCnfpRQRWMz8EQP8PEBPG7VQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ktRYMSWAhD+zK/lO4RIbfyJ8Z+M+Jq+N0X8+2pbbV5ZsmZaCVz2VqSYgoiHXahAuXMWGJHibi0iSBrVMgFFc7j/Ianx0DMxryrJMaNBMDQzG7+8S+s9YsLeLzOL2rfJOKzdrdVlFISb+MDNx5qy/3xiW7x62Y90uf3CYY5TFrAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aY9xG6DK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA2BC433B2;
-	Tue, 23 Jan 2024 00:20:30 +0000 (UTC)
+	 MIME-Version; b=KJdCUxOTvrY9udAUvlSEIs7VwqFiX8WF1cLsDyS5R8FMGlaB0dHYcgUUuzmuN1nUkaEk2Bl6oUKowH7YxO+CKiMU4OvN+yB76SEOocGdlJRLiNbuiYPwsrQiVkFXPZ2t26qK9EtYl/Kgjr9wn2zf2UkVmHwy/A9pf/5EYE3nh5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/F6gbRx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAABAC43399;
+	Tue, 23 Jan 2024 00:21:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969230;
-	bh=Qvu+UPf/r4swf/teRwK4K4qAxxMUCc5WeTyrVAvG8X0=;
+	s=korg; t=1705969269;
+	bh=6Mpd4A2YYJzyotehXnNfCnfpRQRWMz8EQP8PEBPG7VQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aY9xG6DKsd5uu81RmGGBobX98uKLb45XK2dfXD4M7q46j2mJkWuEUeo6f4uD5Kta8
-	 heB0hDbTH/9unQjTwa5WKsOsj1AxcAIcFUpH4FZzodOdN39cUL5/U5fkHsy8JsOHoy
-	 X2aAoDKFoZQTAGrJER+wWMhasnENmCouXw5XdR4M=
+	b=F/F6gbRx4lwJWgN/xKa10Uth8EruH4QxvZCnQmigtfh1w5B7Vl81/5p0Vr6t33YJS
+	 TA8KnlZPfOVn2zUAhLPR8qGQHJJjMAXZMCsVf8p1RkqzpcNASBh8WuIBeMpHoSriah
+	 SbtQTfXI/UZ0/01hMTU6FbWpN4us2T2MFVew6ZZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Nitin Yadav <n-yadav@ti.com>,
 	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 106/641] firmware: ti_sci: Fix an off-by-one in ti_sci_debugfs_create()
-Date: Mon, 22 Jan 2024 15:50:10 -0800
-Message-ID: <20240122235821.358260728@linuxfoundation.org>
+Subject: [PATCH 6.7 110/641] arm64: dts: ti: k3-am62a-main: Fix GPIO pin count in DT nodes
+Date: Mon, 22 Jan 2024 15:50:14 -0800
+Message-ID: <20240122235821.482230575@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -67,53 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Nitin Yadav <n-yadav@ti.com>
 
-[ Upstream commit 964946b88887089f447a9b6a28c39ee97dc76360 ]
+[ Upstream commit 7dc4af358cc382c5d20bd5b726e53ef0f526eb6d ]
 
-The ending NULL is not taken into account by strncat(), so switch to
-snprintf() to correctly build 'debug_name'.
+Fix number of gpio pins in main_gpio0 & main_gpio1 DT nodes according
+to AM62A7 datasheet[0].
 
-Using snprintf() also makes the code more readable.
-
-Fixes: aa276781a64a ("firmware: Add basic support for TI System Control Interface (TI-SCI) protocol")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/7158db0a4d7b19855ddd542ec61b666973aad8dc.1698660720.git.christophe.jaillet@wanadoo.fr
+[0] https://www.ti.com/lit/gpn/am62a3 Section: 6.3.10 GPIO (Page No. 52-55)
+Fixes: 5fc6b1b62639 ("arm64: dts: ti: Introduce AM62A7 family of SoCs")
+Signed-off-by: Nitin Yadav <n-yadav@ti.com>
+Link: https://lore.kernel.org/r/20231027065930.1187405-1-n-yadav@ti.com
 Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/ti_sci.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62a-main.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
-index 7041befc756a..8b9a2556de16 100644
---- a/drivers/firmware/ti_sci.c
-+++ b/drivers/firmware/ti_sci.c
-@@ -164,7 +164,7 @@ static int ti_sci_debugfs_create(struct platform_device *pdev,
- {
- 	struct device *dev = &pdev->dev;
- 	struct resource *res;
--	char debug_name[50] = "ti_sci_debug@";
-+	char debug_name[50];
- 
- 	/* Debug region is optional */
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
-@@ -181,10 +181,10 @@ static int ti_sci_debugfs_create(struct platform_device *pdev,
- 	/* Setup NULL termination */
- 	info->debug_buffer[info->debug_region_size] = 0;
- 
--	info->d = debugfs_create_file(strncat(debug_name, dev_name(dev),
--					      sizeof(debug_name) -
--					      sizeof("ti_sci_debug@")),
--				      0444, NULL, info, &ti_sci_debug_fops);
-+	snprintf(debug_name, sizeof(debug_name), "ti_sci_debug@%s",
-+		 dev_name(dev));
-+	info->d = debugfs_create_file(debug_name, 0444, NULL, info,
-+				      &ti_sci_debug_fops);
- 	if (IS_ERR(info->d))
- 		return PTR_ERR(info->d);
- 
+diff --git a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+index 4ae7fdc5221b..ccd708b09acd 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+@@ -462,7 +462,7 @@ main_gpio0: gpio@600000 {
+ 			     <193>, <194>, <195>;
+ 		interrupt-controller;
+ 		#interrupt-cells = <2>;
+-		ti,ngpio = <87>;
++		ti,ngpio = <92>;
+ 		ti,davinci-gpio-unbanked = <0>;
+ 		power-domains = <&k3_pds 77 TI_SCI_PD_EXCLUSIVE>;
+ 		clocks = <&k3_clks 77 0>;
+@@ -480,7 +480,7 @@ main_gpio1: gpio@601000 {
+ 			     <183>, <184>, <185>;
+ 		interrupt-controller;
+ 		#interrupt-cells = <2>;
+-		ti,ngpio = <88>;
++		ti,ngpio = <52>;
+ 		ti,davinci-gpio-unbanked = <0>;
+ 		power-domains = <&k3_pds 78 TI_SCI_PD_EXCLUSIVE>;
+ 		clocks = <&k3_clks 78 0>;
 -- 
 2.43.0
 
