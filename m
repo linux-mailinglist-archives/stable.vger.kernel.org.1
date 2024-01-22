@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F0D7837C3D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAC72838331
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 588E02965B3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C41AA2863F8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE234144631;
-	Tue, 23 Jan 2024 00:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0374D60B82;
+	Tue, 23 Jan 2024 01:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QI3wwE69"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVSlEzQB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D34614462B;
-	Tue, 23 Jan 2024 00:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FAB5025C;
+	Tue, 23 Jan 2024 01:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969547; cv=none; b=IXKcYpfmvUiEBgBqTEHH2CWdVnbgRVdxcPbaB3dQjOAeHviD0Vdf1i5/Ya0ChQmPkXXlFEZxpW6sIAcCgm6bvzmi4SUGkjZhqjgeiMyiKOJt2OO+NJuF+KJy+NfzHhW112yHYo7vI5hAr2e6KvQBDR/JoSDJ46P2/0f6dAYbNf0=
+	t=1705974731; cv=none; b=qVbkaOqyUdSek0WcVf2qasqNaHeg0lERiOybMArHBkUBWvkRT6wdxVuWXlBRbMy1D+orAoynVKSLEGQwyJBzcvoIIEdgzmCWmje2cXyIb+ppkHLS72KzjLWIjswifJT4ZW8HUVeTcMhKYqb0qrS0HlejQJ9HVEEfYMgPWm7vCnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969547; c=relaxed/simple;
-	bh=myIKsyB7GbanUc4mZAsIgHSnMEvMclo7PWP8bCjzIZE=;
+	s=arc-20240116; t=1705974731; c=relaxed/simple;
+	bh=01v0D7wxcdhCmbZnBdVqN0fuIAMpxF6zB6CjxdfxRP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWNN8pKAsvUWln/FCa7rQRsDET11CUgpOXOt/2OCOOebu+f3/2/Owxk0eQK13EjPAJrAWCugaH9uMMgUyogHZjJ4lV/FjH8HO+TJTbXU9obAzlj/OJt3sNN+PesKdBgCLVqJVD8k5btzakPcu0RkDEKHhPKabUgJTUu/GQwyOkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QI3wwE69; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41687C43394;
-	Tue, 23 Jan 2024 00:25:47 +0000 (UTC)
+	 MIME-Version; b=Ok/XZqyeqlYw9+CXgi7PBc7ItyetrA9iM7qaud2YkazIDQGz/Ya8f9aqSDRczz+JhqAlZ10pq1+u9YBfKSeJjsE7grGJGvR8GOdImSR9mWpiA46rS+KOnr8tnGAPQf9c/0gB0ftyJ69qugxOd9f4z6VWkOyLHX699v3fiyVOKSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVSlEzQB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF87C433F1;
+	Tue, 23 Jan 2024 01:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969547;
-	bh=myIKsyB7GbanUc4mZAsIgHSnMEvMclo7PWP8bCjzIZE=;
+	s=korg; t=1705974731;
+	bh=01v0D7wxcdhCmbZnBdVqN0fuIAMpxF6zB6CjxdfxRP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QI3wwE69P2qWAgMMnYPlVOMtjEbA5VQFMvYI8OUXGWUqomJU6zaJbIcpUT530qTqM
-	 Pv1fmhcJKQZJocBtOTZ3ZpYoV35zIijHMn3Vgy3DVZQGfcqorvGfw7JIqCs2612sYX
-	 Jkv/xfhMC/CKsdwxqUO1CvzBgQnlQH1HgOfgim8k=
+	b=yVSlEzQBvK+3XwwE4LywNBI4SlFlbIgebNCeHpwCjubTxnAZxPyOGd0dbXE49UOqE
+	 9kpG22D2mqhDMD/XIs61Pwhn2mLc1MvrIY6CQGpsOpHWWf5UcazsEpeg0y6yKm3fV+
+	 IK4ZfQLfjOQdMwhNb3KQbWXWWKBlvZHty67OuVXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Moudy Ho <moudy.ho@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 294/641] drm/radeon: check the alloc_workqueue return value in radeon_crtc_init()
+Subject: [PATCH 6.6 147/583] arm64: dts: mediatek: mt8183: correct MDP3 DMA-related nodes
 Date: Mon, 22 Jan 2024 15:53:18 -0800
-Message-ID: <20240122235827.093171571@linuxfoundation.org>
+Message-ID: <20240122235816.586097105@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Moudy Ho <moudy.ho@mediatek.com>
 
-[ Upstream commit 7a2464fac80d42f6f8819fed97a553e9c2f43310 ]
+[ Upstream commit 188ffcd7fea79af3cac441268fc99f60e87f03b3 ]
 
-check the alloc_workqueue return value in radeon_crtc_init()
-to avoid null-ptr-deref.
+In order to generalize the node names, the DMA-related nodes
+corresponding to MT8183 MDP3 need to be corrected.
 
-Fixes: fa7f517cb26e ("drm/radeon: rework page flip handling v4")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 60a2fb8d202a ("arm64: dts: mt8183: add MediaTek MDP3 nodes")
+Signed-off-by: Moudy Ho <moudy.ho@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon_display.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8183.dtsi | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_display.c b/drivers/gpu/drm/radeon/radeon_display.c
-index 901e75ec70ff..efd18c8d84c8 100644
---- a/drivers/gpu/drm/radeon/radeon_display.c
-+++ b/drivers/gpu/drm/radeon/radeon_display.c
-@@ -687,11 +687,16 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
- 	if (radeon_crtc == NULL)
- 		return;
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+index 976dc968b3ca..df6e9990cd5f 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+@@ -1660,7 +1660,7 @@ mmsys: syscon@14000000 {
+ 			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0 0x1000>;
+ 		};
  
-+	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
-+	if (!radeon_crtc->flip_queue) {
-+		kfree(radeon_crtc);
-+		return;
-+	}
-+
- 	drm_crtc_init(dev, &radeon_crtc->base, &radeon_crtc_funcs);
+-		mdp3-rdma0@14001000 {
++		dma-controller0@14001000 {
+ 			compatible = "mediatek,mt8183-mdp3-rdma";
+ 			reg = <0 0x14001000 0 0x1000>;
+ 			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x1000 0x1000>;
+@@ -1672,6 +1672,7 @@ mdp3-rdma0@14001000 {
+ 			iommus = <&iommu M4U_PORT_MDP_RDMA0>;
+ 			mboxes = <&gce 20 CMDQ_THR_PRIO_LOWEST 0>,
+ 				 <&gce 21 CMDQ_THR_PRIO_LOWEST 0>;
++			#dma-cells = <1>;
+ 		};
  
- 	drm_mode_crtc_set_gamma_size(&radeon_crtc->base, 256);
- 	radeon_crtc->crtc_id = index;
--	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
- 	rdev->mode_info.crtcs[index] = radeon_crtc;
+ 		mdp3-rsz0@14003000 {
+@@ -1692,7 +1693,7 @@ mdp3-rsz1@14004000 {
+ 			clocks = <&mmsys CLK_MM_MDP_RSZ1>;
+ 		};
  
- 	if (rdev->family >= CHIP_BONAIRE) {
+-		mdp3-wrot0@14005000 {
++		dma-controller@14005000 {
+ 			compatible = "mediatek,mt8183-mdp3-wrot";
+ 			reg = <0 0x14005000 0 0x1000>;
+ 			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x5000 0x1000>;
+@@ -1701,6 +1702,7 @@ mdp3-wrot0@14005000 {
+ 			power-domains = <&spm MT8183_POWER_DOMAIN_DISP>;
+ 			clocks = <&mmsys CLK_MM_MDP_WROT0>;
+ 			iommus = <&iommu M4U_PORT_MDP_WROT0>;
++			#dma-cells = <1>;
+ 		};
+ 
+ 		mdp3-wdma@14006000 {
 -- 
 2.43.0
 
