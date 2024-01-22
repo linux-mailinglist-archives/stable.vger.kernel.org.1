@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-14804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F548382A7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 230968382A9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F7F428BCB0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD2F928CF85
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410675DF3D;
-	Tue, 23 Jan 2024 01:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFF85D753;
+	Tue, 23 Jan 2024 01:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4jxN7jj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5psUq5p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002205DF19;
-	Tue, 23 Jan 2024 01:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE734F8AE;
+	Tue, 23 Jan 2024 01:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974401; cv=none; b=AdNgsOC3CpqPgs+c8FaMREFwf6AGXoLmB5xDlpqK1eT7AegklqUL9lWbSovrtiv3iDsVYEkayQIYJ4DdNPh/e9UrP1qVimx6OuiLb0FR8tGTvGkLCcNX5Vn7TzCpavl/o742Y+7AiqybrcS9k5sNPknKHLwqZnOjat2xM16ao0A=
+	t=1705974402; cv=none; b=f7nN9lHNpTnvvVo06wx2tqV3m98UKOtosc5e1VOgP78uMjW9JvtdCK0YMo2a6Dqm2mr9TmWWB8VOAhaL2mDt1fkTgd2nSrV4+FHMTK50SF1Ch80FVuRbBEKdCrjCJrryfkckPDuBWSeUIXuav4TKwWt4K0JxFPPAQmcYiesQJxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974401; c=relaxed/simple;
-	bh=S6jpGuuqJdOD4uniltOF0jQxKVnAAZ5ZOYHZKKhiTGs=;
+	s=arc-20240116; t=1705974402; c=relaxed/simple;
+	bh=LbIYW61W5RziZ8fKB1QDaCJXdF3nOWi58w/3WCfKLZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q36lpO36GiFhTo6rpOx19Qrb8JGJtZAAQFgOjyfUXMKmfuJW75pM901t7ytLiuJtHj8W9jm5Z7nLdMLyofvs88VyMEh4HwR0biiNcr1mAp5zmEztrDTNOsNFFzEuU+QCYpUQ/klE2aqGgzNM6Nl9oZjGwqbPEqhd+OA3IZaqtL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4jxN7jj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDCAC433C7;
-	Tue, 23 Jan 2024 01:46:40 +0000 (UTC)
+	 MIME-Version; b=hyx+7zOx1Yb0Lpipi9TArih76oj6A7dIm08uWQNPoeUarhH+JWrQdjQqpMPIgqEGjHswGEq9aBhipGHT++meFVm0zlgR6gjX6PLAr7yCH593M0ftJdAMoG5Zu86BRwCErlVJ8flww4A516EvqxCAMWleSg/I7vTuHvPBTejaAoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5psUq5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72495C433F1;
+	Tue, 23 Jan 2024 01:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974400;
-	bh=S6jpGuuqJdOD4uniltOF0jQxKVnAAZ5ZOYHZKKhiTGs=;
+	s=korg; t=1705974402;
+	bh=LbIYW61W5RziZ8fKB1QDaCJXdF3nOWi58w/3WCfKLZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g4jxN7jj2ifhf3les6lG9y8zufZNXxblVTwr3C5blDl1k5dV0kmtk0AsMSxisy8OM
-	 Phg7RjDJ4du6noAQtVWj5T8uFTkvv9KDsU7GQO2HRB4FlIkNQpfgdE9Kj9YVIyZcwz
-	 Kli21ByL+ljzaYx+5xQbhrxhBVNpVKaE0D4iHsEw=
+	b=d5psUq5pgKa5WxwoeFkuN0d7Zcwnr4xOZt+sGZVFONp/cj1k7k72ICvsqF7h6Rayd
+	 znVNaL+TUIcLXdlQ3m+4klkfvRdS1j6SJaK59+rSLC2t9a76WqtPRPk3epQV4H7yQG
+	 B6NA8eldPLdTQgs7YeZnYqrZmhHYFkfUKBtwawXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Chih-Kang Chang <gary.chang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/583] wifi: plfxlc: check for allocation failure in plfxlc_usb_wreq_async()
-Date: Mon, 22 Jan 2024 15:52:17 -0800
-Message-ID: <20240122235814.797904160@linuxfoundation.org>
+Subject: [PATCH 6.6 087/583] wifi: rtw88: fix RX filter in FIF_ALLMULTI flag
+Date: Mon, 22 Jan 2024 15:52:18 -0800
+Message-ID: <20240122235814.831343487@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -66,39 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-[ Upstream commit 40018a8fa9aa63ca5b26e803502138158fb0ff96 ]
+[ Upstream commit 53ee0b3b99edc6a47096bffef15695f5a895386f ]
 
-Check for if the usb_alloc_urb() failed.
+The broadcast packets will be filtered in the FIF_ALLMULTI flag in
+the original code, which causes beacon packets to be filtered out
+and disconnection. Therefore, we fix it.
 
-Fixes: 68d57a07bfe5 ("wireless: add plfxlc driver for pureLiFi X, XL, XC devices")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/e8d4a19a-f251-4101-a89b-607345e938cb@moroto.mountain
+Link: https://lore.kernel.org/r/20231103020851.102238-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/purelifi/plfxlc/usb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/mac80211.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/purelifi/plfxlc/usb.c b/drivers/net/wireless/purelifi/plfxlc/usb.c
-index 76d0a778636a..311676c1ece0 100644
---- a/drivers/net/wireless/purelifi/plfxlc/usb.c
-+++ b/drivers/net/wireless/purelifi/plfxlc/usb.c
-@@ -493,9 +493,12 @@ int plfxlc_usb_wreq_async(struct plfxlc_usb *usb, const u8 *buffer,
- 			  void *context)
- {
- 	struct usb_device *udev = interface_to_usbdev(usb->ez_usb);
--	struct urb *urb = usb_alloc_urb(0, GFP_ATOMIC);
-+	struct urb *urb;
- 	int r;
+diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+index a99b53d44267..d8d68f16014e 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -280,9 +280,9 @@ static void rtw_ops_configure_filter(struct ieee80211_hw *hw,
  
-+	urb = usb_alloc_urb(0, GFP_ATOMIC);
-+	if (!urb)
-+		return -ENOMEM;
- 	usb_fill_bulk_urb(urb, udev, usb_sndbulkpipe(udev, EP_DATA_OUT),
- 			  (void *)buffer, buffer_len, complete_fn, context);
- 
+ 	if (changed_flags & FIF_ALLMULTI) {
+ 		if (*new_flags & FIF_ALLMULTI)
+-			rtwdev->hal.rcr |= BIT_AM | BIT_AB;
++			rtwdev->hal.rcr |= BIT_AM;
+ 		else
+-			rtwdev->hal.rcr &= ~(BIT_AM | BIT_AB);
++			rtwdev->hal.rcr &= ~(BIT_AM);
+ 	}
+ 	if (changed_flags & FIF_FCSFAIL) {
+ 		if (*new_flags & FIF_FCSFAIL)
 -- 
 2.43.0
 
