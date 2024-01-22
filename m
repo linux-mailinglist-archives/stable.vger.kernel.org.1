@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB6B6837C31
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F180783832B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7430E2961C7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FD331C298B9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5034500F;
-	Tue, 23 Jan 2024 00:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE1E60888;
+	Tue, 23 Jan 2024 01:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgoT5f9W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c19Z749n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E3C747A;
-	Tue, 23 Jan 2024 00:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4DC50266;
+	Tue, 23 Jan 2024 01:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969531; cv=none; b=TW5gLsqjNXMolcGK8eGOzFXjRTVg+FND2Rql0bU+VnQSm+usEC6Cm8RqLppalWf14gKaroaDZauf+tn2LuvSL4SzzkP3v+WjKxdUWOOKxRTQ+obyd/RBZIlobf/uk74fnu7wPO3MD6VtTVGfS1h9p3PRk49GYB+bmEaT184b26M=
+	t=1705974723; cv=none; b=hppMdN1Q+bwtjyS25H9eTQ5jEp9312/Q7LQmZAAMXgQLwgJiPog2HafQrZWoeX+sRnkyIbNhA6u9YJIFQP1UmwFPyiOqxO/XK6j7f1BDeULbfTAJMFV3U0/ZKzJRhNjv/VGKFSYd6+0s46zbmOdljHL9qVxyFORDL2iWzFXm/gE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969531; c=relaxed/simple;
-	bh=opMfgBB5v5wqqf3NNQRJYCjDgAlzX1V4V8wN4YIzJxI=;
+	s=arc-20240116; t=1705974723; c=relaxed/simple;
+	bh=AcwAUkKjJl639+Rruw8ScYMhcpEMfna+5aekxIPzz5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PvPi4J9J9mpFyNrnaYMIqwfyfDlWCL1dWqTR7NSMqimnp/9QDlSbbT2AOgcL7WvoduxBC/OGYe5typXmriiH8FAOepg+qAMd4bYLhvOrXlFayjXc9mjDGXTeIXXw9NWY5ggS/PdPTFFA3u8LOzhxiHfNYx6FCjBcrhN3wdczXN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fgoT5f9W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC64BC433A6;
-	Tue, 23 Jan 2024 00:25:30 +0000 (UTC)
+	 MIME-Version; b=FnoXZ5F+pmmMCgAR+fSPS6eNVzSHgovJiZkZvOPYUNIliGuCXlETmnPRuU7lZuY92+ibVvlqe9FYN3hHLKjF0UFJXfmrj7odYgAttZXo7WTZQzC3V2NaQXAuKbcKQ7gJoZ6cmXLR7s0Z+RAci8Uz+M6l5rn6RYX6NGmW3VsCM9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c19Z749n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31241C43394;
+	Tue, 23 Jan 2024 01:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969530;
-	bh=opMfgBB5v5wqqf3NNQRJYCjDgAlzX1V4V8wN4YIzJxI=;
+	s=korg; t=1705974723;
+	bh=AcwAUkKjJl639+Rruw8ScYMhcpEMfna+5aekxIPzz5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fgoT5f9WVWNqbNp0JiwMUlmEt254BSAwtLnr457/xZ4fxe8mCX5dtEj/8W+ZuqWP5
-	 Feqr6/Eb37B+U4wQS4CN6Q+NhCgahzNjfT3x6zvHmvTwl9Qks63qRXhwccODnHmTe8
-	 Q0ii6rx6Y4Q/XbVlA8s2AuSNYXKPF8XnX95xFsmU=
+	b=c19Z749nI20/kXoXFvGoMgx3faIUwgFPeNK6P1ECT8MvteiagcifStWWiHzIsrOwM
+	 uMdSo4eHx453sMeQfZfnHs36P/Hj0JgUumrG4VOg278bZ4wtXP0VJ85aIn+3HZQNy+
+	 psZhiumKfQcXNE2YkfM/7ItDJVld1iRulkxCGS8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Paloma Arellano <quic_parellan@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Wei Xu <xuwei5@hisilicon.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 290/641] drm/msm/dpu: correct clk bit for WB2 block
+Subject: [PATCH 6.6 143/583] arm64: dts: hisilicon: hikey970-pmic: fix regulator cells properties
 Date: Mon, 22 Jan 2024 15:53:14 -0800
-Message-ID: <20240122235826.965904616@linuxfoundation.org>
+Message-ID: <20240122235816.477893777@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit e843ca2f30e630675e2d2a75c96f4844f2854430 ]
+[ Upstream commit 44ab3ee76a5a977864ba0bb6c352dcf6206804e0 ]
 
-On sc7280 there are two clk bits for WB2: vbif_cli and clk_ctrl. While
-programming the VBIF params of WB, the driver should be toggling the
-former bit, while the sc7180_mdp, sc7280_mdp and sm8250_mdp structs
-list the latter one.
+The Hi6421 PMIC regulator child nodes do not have unit addresses so drop
+the incorrect '#address-cells' and '#size-cells' properties.
 
-Correct that to ensure proper programming sequence for WB2 on these
-platforms.
-
-Fixes: 255f056181ac ("drm/msm/dpu: sc7180: add missing WB2 clock control")
-Fixes: 3ce166380567 ("drm/msm/dpu: add writeback support for sc7280")
-Fixes: 53324b99bd7b ("drm/msm/dpu: add writeback blocks to the sm8250 DPU catalog")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Tested-by: Paloma Arellano <quic_parellan@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/570185/
-Link: https://lore.kernel.org/r/20231203002437.1291595-1-dmitry.baryshkov@linaro.org
+Fixes: 6219b20e1ecd ("arm64: dts: hisilicon: Add support for Hikey 970 PMIC")
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Wei Xu <xuwei5@hisilicon.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h | 2 +-
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h | 2 +-
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/hisilicon/hikey970-pmic.dtsi | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
-index 94278a3e3483..9f8068fa0175 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
-@@ -32,7 +32,7 @@ static const struct dpu_mdp_cfg sm8250_mdp = {
- 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2bc, .bit_off = 8 },
- 		[DPU_CLK_CTRL_DMA3] = { .reg_off = 0x2c4, .bit_off = 8 },
- 		[DPU_CLK_CTRL_REG_DMA] = { .reg_off = 0x2bc, .bit_off = 20 },
--		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x3b8, .bit_off = 24 },
-+		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
- 	},
- };
+diff --git a/arch/arm64/boot/dts/hisilicon/hikey970-pmic.dtsi b/arch/arm64/boot/dts/hisilicon/hikey970-pmic.dtsi
+index 970047f2dabd..c06e011a6c3f 100644
+--- a/arch/arm64/boot/dts/hisilicon/hikey970-pmic.dtsi
++++ b/arch/arm64/boot/dts/hisilicon/hikey970-pmic.dtsi
+@@ -25,9 +25,6 @@ pmic: pmic@0 {
+ 			gpios = <&gpio28 0 0>;
  
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
-index c0d88ddccb28..9bfa15e4e645 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
-@@ -25,7 +25,7 @@ static const struct dpu_mdp_cfg sc7180_mdp = {
- 		[DPU_CLK_CTRL_DMA0] = { .reg_off = 0x2ac, .bit_off = 8 },
- 		[DPU_CLK_CTRL_DMA1] = { .reg_off = 0x2b4, .bit_off = 8 },
- 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2c4, .bit_off = 8 },
--		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x3b8, .bit_off = 24 },
-+		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
- 	},
- };
- 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
-index 15942fa5a8e0..b9c296e51e36 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
-@@ -25,7 +25,7 @@ static const struct dpu_mdp_cfg sc7280_mdp = {
- 		[DPU_CLK_CTRL_DMA0] = { .reg_off = 0x2ac, .bit_off = 8 },
- 		[DPU_CLK_CTRL_DMA1] = { .reg_off = 0x2b4, .bit_off = 8 },
- 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2c4, .bit_off = 8 },
--		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x3b8, .bit_off = 24 },
-+		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
- 	},
- };
- 
+ 			regulators {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-
+ 				ldo3: ldo3 { /* HDMI */
+ 					regulator-name = "ldo3";
+ 					regulator-min-microvolt = <1500000>;
 -- 
 2.43.0
 
