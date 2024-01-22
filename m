@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-15442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF58838569
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:41:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 765248383B9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AC6CB214AA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C45E1C29440
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530E17E596;
-	Tue, 23 Jan 2024 02:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5910064CC4;
+	Tue, 23 Jan 2024 01:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5o9bALM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRFsZcny"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F427E595;
-	Tue, 23 Jan 2024 02:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190C464AB0;
+	Tue, 23 Jan 2024 01:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975779; cv=none; b=Khnx8J8gQeGZ660mh+Y7AMvBWaDaRclaz2YaA9/jgmLsm1tCe1orlLqcak9UeYU0EtjiQKDwhRkVKqRYatOvvHhYOaCQtWTWpnwCDLq8+M82v516qJxZ9Zygxq6tnY7JDmMKCkvuoGkTEEqN3dpqap0JJyi8jVevQg605rTJdZk=
+	t=1705975046; cv=none; b=CDXZ31t4obiOCGYEpEcV+iJVWKeqHsMruAUT0VVoC85JczyHuazfBrp8mkVIp9iwV9EKHAEm4UY0kkr12YznBQWgKxpIGeKgaiICLIpx/48mhrIDIBnplTnmTCXe9EzzShVYURZ0lBytZJCkA4C1QOztuhLhr9WpG//8qcGtVO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975779; c=relaxed/simple;
-	bh=8QH6o8OweQlRdvpkEUaKek3+h8AbVSgcg0mZGt7jHa8=;
+	s=arc-20240116; t=1705975046; c=relaxed/simple;
+	bh=6l2SDmCIspASlYDKPuDVT5RY+jexk6aNvIpS4wgj9uA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W0kGHn8BySeqgIlXqgAzHeJDkp5eMohjr0oNMUSF+b1/Jv/9Owd6n09e16WttgMe29RCctMlqRQ3rFsX560rl5E7DtXK7bDh9irYl+PLp9iES9xDa7eRS/HBN4WN2PN0ygQM2MyPl/hs1AIZ0yIM8wW5dT07WHjCFU0XCQy+N58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5o9bALM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB268C43390;
-	Tue, 23 Jan 2024 02:09:38 +0000 (UTC)
+	 MIME-Version; b=rdG5MDX//q017e3Sq881qV2VwO3JNPKFNU0y5+44dTa0fSeDvWG0sY4I12gtcAWN8a6YxGTQU4gPQ7GC1S1J8GJwSoWNO5v+aQpIlqmz/BzI/5cxt4ZrZA/Wu0VT0IV2hzqGeFjch06vHWFMsxThK/kZ1GgyalRxQlKBxliWkYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRFsZcny; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74CBC433F1;
+	Tue, 23 Jan 2024 01:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975778;
-	bh=8QH6o8OweQlRdvpkEUaKek3+h8AbVSgcg0mZGt7jHa8=;
+	s=korg; t=1705975045;
+	bh=6l2SDmCIspASlYDKPuDVT5RY+jexk6aNvIpS4wgj9uA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b5o9bALMmuJRmJXxuwXYYTsPajG9TvcWNqk9n1MfFKCE4K8vm02f8y0qOIRfbnGlx
-	 14vMLC4YcxraQSROI5lEQad+96uZpouxLm9spVJeKl5AUxDV7X5EMm41MJqnL5buDM
-	 O/0c3p+CaFL+cWNv8lwvv849tm6gdhYKU47O/F7g=
+	b=zRFsZcnymCVAm78XF0DBF09pLHmATNA7+rhiPpwUrwb+Gpk/wgBNcjG92HN/bkWAP
+	 T1EcZRdcxaAnanAKKveT9zUEM/Y3YbuliYf+iERGYq6Z8ff2Sf5jsJej0MUAr1TxPR
+	 32tpsk8K6adXkGC+37gAtXrbORZjAJQTYu1iv4Sg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditi Ghag <aditi.ghag@isovalent.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Westphal <fw@strlen.de>,
+	Peter Krystad <peter.krystad@linux.intel.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang.tang@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 544/583] bpf: iter_udp: Retry with a larger batch size without going back to the previous bucket
+Subject: [PATCH 5.15 339/374] mptcp: use OPTION_MPTCP_MPJ_SYN in subflow_check_req()
 Date: Mon, 22 Jan 2024 15:59:55 -0800
-Message-ID: <20240122235828.777066961@linuxfoundation.org>
+Message-ID: <20240122235756.702727246@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +70,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 19ca0823f6eaad01d18f664a00550abe912c034c ]
+[ Upstream commit 66ff70df1a919a066942844bb095d6fcb748d78d ]
 
-The current logic is to use a default size 16 to batch the whole bucket.
-If it is too small, it will retry with a larger batch size.
+syzbot reported that subflow_check_req() was using uninitialized data in
+subflow_check_req() [1]
 
-The current code accidentally does a state->bucket-- before retrying.
-This goes back to retry with the previous bucket which has already
-been done. This patch fixed it.
+This is because mp_opt.token is only set when OPTION_MPTCP_MPJ_SYN is also set.
 
-It is hard to create a selftest. I added a WARN_ON(state->bucket < 0),
-forced a particular port to be hashed to the first bucket,
-created >16 sockets, and observed the for-loop went back
-to the "-1" bucket.
+While we are are it, fix mptcp_subflow_init_cookie_req()
+to test for OPTION_MPTCP_MPJ_ACK.
 
-Cc: Aditi Ghag <aditi.ghag@isovalent.com>
-Fixes: c96dac8d369f ("bpf: udp: Implement batching for sockets iterator")
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Aditi Ghag <aditi.ghag@isovalent.com>
-Link: https://lore.kernel.org/r/20240112190530.3751661-2-martin.lau@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[1]
+
+BUG: KMSAN: uninit-value in subflow_token_join_request net/mptcp/subflow.c:91 [inline]
+ BUG: KMSAN: uninit-value in subflow_check_req+0x1028/0x15d0 net/mptcp/subflow.c:209
+  subflow_token_join_request net/mptcp/subflow.c:91 [inline]
+  subflow_check_req+0x1028/0x15d0 net/mptcp/subflow.c:209
+  subflow_v6_route_req+0x269/0x410 net/mptcp/subflow.c:367
+  tcp_conn_request+0x153a/0x4240 net/ipv4/tcp_input.c:7164
+ subflow_v6_conn_request+0x3ee/0x510
+  tcp_rcv_state_process+0x2e1/0x4ac0 net/ipv4/tcp_input.c:6659
+  tcp_v6_do_rcv+0x11bf/0x1fe0 net/ipv6/tcp_ipv6.c:1669
+  tcp_v6_rcv+0x480b/0x4fb0 net/ipv6/tcp_ipv6.c:1900
+  ip6_protocol_deliver_rcu+0xda6/0x2a60 net/ipv6/ip6_input.c:438
+  ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
+  NF_HOOK include/linux/netfilter.h:314 [inline]
+  ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
+  dst_input include/net/dst.h:461 [inline]
+  ip6_rcv_finish+0x5db/0x870 net/ipv6/ip6_input.c:79
+  NF_HOOK include/linux/netfilter.h:314 [inline]
+  ipv6_rcv+0xda/0x390 net/ipv6/ip6_input.c:310
+  __netif_receive_skb_one_core net/core/dev.c:5532 [inline]
+  __netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5646
+  netif_receive_skb_internal net/core/dev.c:5732 [inline]
+  netif_receive_skb+0x58/0x660 net/core/dev.c:5791
+  tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1555
+  tun_get_user+0x53af/0x66d0 drivers/net/tun.c:2002
+  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
+  call_write_iter include/linux/fs.h:2020 [inline]
+  new_sync_write fs/read_write.c:491 [inline]
+  vfs_write+0x8ef/0x1490 fs/read_write.c:584
+  ksys_write+0x20f/0x4c0 fs/read_write.c:637
+  __do_sys_write fs/read_write.c:649 [inline]
+  __se_sys_write fs/read_write.c:646 [inline]
+  __x64_sys_write+0x93/0xd0 fs/read_write.c:646
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+Local variable mp_opt created at:
+  subflow_check_req+0x6d/0x15d0 net/mptcp/subflow.c:145
+  subflow_v6_route_req+0x269/0x410 net/mptcp/subflow.c:367
+
+CPU: 1 PID: 5924 Comm: syz-executor.3 Not tainted 6.7.0-rc8-syzkaller-00055-g5eff55d725a4 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
+
+Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Florian Westphal <fw@strlen.de>
+Cc: Peter Krystad <peter.krystad@linux.intel.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>
+Cc: Geliang Tang <geliang.tang@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20240111194917.4044654-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp.c | 1 -
- 1 file changed, 1 deletion(-)
+ net/mptcp/subflow.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index bd12a7658213..a4857c85a020 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -3192,7 +3192,6 @@ static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
- 		/* After allocating a larger batch, retry one more time to grab
- 		 * the whole bucket.
- 		 */
--		state->bucket--;
- 		goto again;
- 	}
- done:
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index 297d2465c413..099bdfc12da9 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -155,7 +155,7 @@ static int subflow_check_req(struct request_sock *req,
+ 	mptcp_get_options(skb, &mp_opt);
+ 
+ 	opt_mp_capable = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPC);
+-	opt_mp_join = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPJ);
++	opt_mp_join = !!(mp_opt.suboptions & OPTION_MPTCP_MPJ_SYN);
+ 	if (opt_mp_capable) {
+ 		SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_MPCAPABLEPASSIVE);
+ 
+@@ -252,7 +252,7 @@ int mptcp_subflow_init_cookie_req(struct request_sock *req,
+ 	mptcp_get_options(skb, &mp_opt);
+ 
+ 	opt_mp_capable = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPC);
+-	opt_mp_join = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPJ);
++	opt_mp_join = !!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK);
+ 	if (opt_mp_capable && opt_mp_join)
+ 		return -EINVAL;
+ 
 -- 
 2.43.0
 
