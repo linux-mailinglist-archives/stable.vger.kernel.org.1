@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B307D837F9F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B93A837F44
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50F051F29F6B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 010C229C00D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D803634FF;
-	Tue, 23 Jan 2024 00:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1C312A163;
+	Tue, 23 Jan 2024 00:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZimW36y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqX3QECM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B31B6311F;
-	Tue, 23 Jan 2024 00:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F136F129A86;
+	Tue, 23 Jan 2024 00:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971246; cv=none; b=cJNtZwekuGVisFvdJEXL3dIjAQ/e0dRyUGsxUiyy+A+jQnCOzy8ZL7+0r1HdBSHDX+0Q3i5N5k/todZov8cGqBy9nM4jgBV3mNMxtw7/aV41yc4S+//6xSArNMExNrGt7jlXOnmdUw2er8Y1Jamw5NCbkQT6cSfKg62svDyw+IQ=
+	t=1705971029; cv=none; b=s93y1yJdISe90ygnoC63oPwkhCe/8ccftbM4T3zB4C6QyRIm9s5ZF+MK26p1sP7nbyEpu980k1nka+j+glIKvC8MQZWqaqb16/UTj6drTRCwWITkGhcwFj5CmJU7UoSyWy9LErGGMP4VnQAkOE/G/8ZawZYtSDhP5zuhWevgERA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971246; c=relaxed/simple;
-	bh=RiyN3r4JXgl4D/lGSX2k8vEq6yNyQncRRlwM7MZ60Wo=;
+	s=arc-20240116; t=1705971029; c=relaxed/simple;
+	bh=fgwzBqnj/CEwqiLS8DTlGD9yS+bQ5iCyI5nF8CtQQWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZLHMfPlKlvdTtgjbZpaCmDl7wmS45zQVq6rU9VE1eun+z869x1KLC/AroC+GNg1DUQv5DdXgu0smwxWZDJxHuPd3fgCaL580UwouF3uxOGOvcjdfyfRgiFQufkql4aj1CaEE1jqCUzT/Tg2Z/dhTD9xbaj973NqwKJB8cWXzb6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZimW36y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CA3C433C7;
-	Tue, 23 Jan 2024 00:54:05 +0000 (UTC)
+	 MIME-Version; b=YXy6cFi1qeDC2zBUBuhrhfw/MfOUtKLKCWKvxHYzPS1RQulAZD2TysyCR2sD01v3cpbaCCNvoZVwROCFZt2DEJiJh9ctNSSDoGPqWE2R4nYa1b83fWhPM4rUiL+ClNUMgLoxr7DVYT8f6NN6w7D8aqhNP3p9SE0mf2shqhM/pr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SqX3QECM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9470C43394;
+	Tue, 23 Jan 2024 00:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971245;
-	bh=RiyN3r4JXgl4D/lGSX2k8vEq6yNyQncRRlwM7MZ60Wo=;
+	s=korg; t=1705971028;
+	bh=fgwzBqnj/CEwqiLS8DTlGD9yS+bQ5iCyI5nF8CtQQWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tZimW36y6EIIAswOVLbWPLLLGGtR4i+hSd4jN4aEEp9ESTRiF/pDGC28jgwyXD9qi
-	 nlmOqBEd1guiCA5k+krn9SGVDBWLan74HTopcUyt1EFy2LLLIkgM/mzbGqu9yPimfu
-	 S40tV7gTINGf1UWLz/+kP1WD8pmpSpb/wyWKpASs=
+	b=SqX3QECMBgg5uUgVVMl5gplrsGtp5VVcE/oI86EPlOcaxkadwFdePsxioTPdzVL/T
+	 E9yX237UAMLbKtfwsYJ5NiaMPOUb3I2+pnE3FXP2+Kd+iDa6NCgM2DgpHAUJnM/2/S
+	 tigeCy+bqDqxyr25ZD8Baf5nMMRV/mQTJzj1dTsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 210/417] drm/amd/pm: fix a double-free in si_dpm_init
+Subject: [PATCH 5.10 072/286] efivarfs: force RO when remounting if SetVariable is not supported
 Date: Mon, 22 Jan 2024 15:56:18 -0800
-Message-ID: <20240122235759.199024689@linuxfoundation.org>
+Message-ID: <20240122235734.790058983@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 
-[ Upstream commit ac16667237a82e2597e329eb9bc520d1cf9dff30 ]
+[ Upstream commit 0e8d2444168dd519fea501599d150e62718ed2fe ]
 
-When the allocation of
-adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries fails,
-amdgpu_free_extended_power_table is called to free some fields of adev.
-However, when the control flow returns to si_dpm_sw_init, it goes to
-label dpm_failed and calls si_dpm_fini, which calls
-amdgpu_free_extended_power_table again and free those fields again. Thus
-a double-free is triggered.
+If SetVariable at runtime is not supported by the firmware we never assign
+a callback for that function. At the same time mount the efivarfs as
+RO so no one can call that.  However, we never check the permission flags
+when someone remounts the filesystem as RW. As a result this leads to a
+crash looking like this:
 
-Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+$ mount -o remount,rw /sys/firmware/efi/efivars
+$ efi-updatevar -f PK.auth PK
+
+[  303.279166] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+[  303.280482] Mem abort info:
+[  303.280854]   ESR = 0x0000000086000004
+[  303.281338]   EC = 0x21: IABT (current EL), IL = 32 bits
+[  303.282016]   SET = 0, FnV = 0
+[  303.282414]   EA = 0, S1PTW = 0
+[  303.282821]   FSC = 0x04: level 0 translation fault
+[  303.283771] user pgtable: 4k pages, 48-bit VAs, pgdp=000000004258c000
+[  303.284913] [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
+[  303.286076] Internal error: Oops: 0000000086000004 [#1] PREEMPT SMP
+[  303.286936] Modules linked in: qrtr tpm_tis tpm_tis_core crct10dif_ce arm_smccc_trng rng_core drm fuse ip_tables x_tables ipv6
+[  303.288586] CPU: 1 PID: 755 Comm: efi-updatevar Not tainted 6.3.0-rc1-00108-gc7d0c4695c68 #1
+[  303.289748] Hardware name: Unknown Unknown Product/Unknown Product, BIOS 2023.04-00627-g88336918701d 04/01/2023
+[  303.291150] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  303.292123] pc : 0x0
+[  303.292443] lr : efivar_set_variable_locked+0x74/0xec
+[  303.293156] sp : ffff800008673c10
+[  303.293619] x29: ffff800008673c10 x28: ffff0000037e8000 x27: 0000000000000000
+[  303.294592] x26: 0000000000000800 x25: ffff000002467400 x24: 0000000000000027
+[  303.295572] x23: ffffd49ea9832000 x22: ffff0000020c9800 x21: ffff000002467000
+[  303.296566] x20: 0000000000000001 x19: 00000000000007fc x18: 0000000000000000
+[  303.297531] x17: 0000000000000000 x16: 0000000000000000 x15: 0000aaaac807ab54
+[  303.298495] x14: ed37489f673633c0 x13: 71c45c606de13f80 x12: 47464259e219acf4
+[  303.299453] x11: ffff000002af7b01 x10: 0000000000000003 x9 : 0000000000000002
+[  303.300431] x8 : 0000000000000010 x7 : ffffd49ea8973230 x6 : 0000000000a85201
+[  303.301412] x5 : 0000000000000000 x4 : ffff0000020c9800 x3 : 00000000000007fc
+[  303.302370] x2 : 0000000000000027 x1 : ffff000002467400 x0 : ffff000002467000
+[  303.303341] Call trace:
+[  303.303679]  0x0
+[  303.303938]  efivar_entry_set_get_size+0x98/0x16c
+[  303.304585]  efivarfs_file_write+0xd0/0x1a4
+[  303.305148]  vfs_write+0xc4/0x2e4
+[  303.305601]  ksys_write+0x70/0x104
+[  303.306073]  __arm64_sys_write+0x1c/0x28
+[  303.306622]  invoke_syscall+0x48/0x114
+[  303.307156]  el0_svc_common.constprop.0+0x44/0xec
+[  303.307803]  do_el0_svc+0x38/0x98
+[  303.308268]  el0_svc+0x2c/0x84
+[  303.308702]  el0t_64_sync_handler+0xf4/0x120
+[  303.309293]  el0t_64_sync+0x190/0x194
+[  303.309794] Code: ???????? ???????? ???????? ???????? (????????)
+[  303.310612] ---[ end trace 0000000000000000 ]---
+
+Fix this by adding a .reconfigure() function to the fs operations which
+we can use to check the requested flags and deny anything that's not RO
+if the firmware doesn't implement SetVariable at runtime.
+
+Fixes: f88814cc2578 ("efi/efivars: Expose RT service availability via efivars abstraction")
+Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/efivarfs/super.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index c89cfef7cafa..dc0a6fba7050 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -7379,10 +7379,9 @@ static int si_dpm_init(struct amdgpu_device *adev)
- 		kcalloc(4,
- 			sizeof(struct amdgpu_clock_voltage_dependency_entry),
- 			GFP_KERNEL);
--	if (!adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries) {
--		amdgpu_free_extended_power_table(adev);
-+	if (!adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries)
- 		return -ENOMEM;
--	}
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index 15880a68faad..3626816b174a 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -13,6 +13,7 @@
+ #include <linux/ucs2_string.h>
+ #include <linux/slab.h>
+ #include <linux/magic.h>
++#include <linux/printk.h>
+ 
+ #include "internal.h"
+ 
+@@ -231,8 +232,19 @@ static int efivarfs_get_tree(struct fs_context *fc)
+ 	return get_tree_single(fc, efivarfs_fill_super);
+ }
+ 
++static int efivarfs_reconfigure(struct fs_context *fc)
++{
++	if (!efivar_supports_writes() && !(fc->sb_flags & SB_RDONLY)) {
++		pr_err("Firmware does not support SetVariableRT. Can not remount with rw\n");
++		return -EINVAL;
++	}
 +
- 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.count = 4;
- 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[0].clk = 0;
- 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[0].v = 0;
++	return 0;
++}
++
+ static const struct fs_context_operations efivarfs_context_ops = {
+ 	.get_tree	= efivarfs_get_tree,
++	.reconfigure	= efivarfs_reconfigure,
+ };
+ 
+ static int efivarfs_init_fs_context(struct fs_context *fc)
 -- 
 2.43.0
 
