@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF35837C7D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 840138384A9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE1081C27F43
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64269B28B17
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB235135407;
-	Tue, 23 Jan 2024 00:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D25C6519E;
+	Tue, 23 Jan 2024 01:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNMq7AqQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQoqLPUr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD2733097;
-	Tue, 23 Jan 2024 00:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D17C64AB3;
+	Tue, 23 Jan 2024 01:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969637; cv=none; b=XBMYak30xLRFazNUN6sGI+rZXd7LcMo0s+YsJfSbZrWdCJd1FrCmxPbW3bPU2tMEFD9RffkcwWgzZFXErruwZMuNN/Y5l3klAjeU9GBfuvpB2wzSR/IbAf7jgMx2Y2c4e720ypzmbRZQs1BoL0lkESgKtX1hLR+Eo+cF2u/Vjfw=
+	t=1705975062; cv=none; b=iepPRhuqBLgw9ImIXlRPcPePCbJXAbWcxqyElaV77xIHZj1yenyzbroC5u0hdInG1lX2h8rlYoY55rcAFahdmHCcyLR5NEO7hcYU1HI55tp9IuA+9FTqaj9REwRVPee5T+Ynei2lceq6H5EUUjeYiDQdXTlRx7u/2J9USJJmFQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969637; c=relaxed/simple;
-	bh=9NsIF/pxjYAbZQd+8K/GSubLkcNJFj5Sk7sSLaFChZQ=;
+	s=arc-20240116; t=1705975062; c=relaxed/simple;
+	bh=O1jnaMrLva/wi7VmRRYD6s6XupDu8Yg1Nr/C+EMAJVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B00nMyrr3I0stoAP7ovuhqwoNzNkV0PBZQcAosbhEhCZbVAFeWl211EU2JzEK63KH0qDO97QwzY85XvEWsjovTc4opXVokGQO0skATuzlQuf5gT/XMoURRqvjMofJI7pYcts0cZfZB2fg9EH3FlqjjzF+u5Cd+4z3+O52VdY+FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNMq7AqQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9A7C433C7;
-	Tue, 23 Jan 2024 00:27:17 +0000 (UTC)
+	 MIME-Version; b=cdZip4UuZ/ns5PUMfL3YzWCFq/7Rrz+JYbbAmDFvFJ+v8wF/iy4iRYxfKedr6OsGSdWotux5oO/2lXPeVooW7x/s2MUbRYc6M1EkjnkF1iNdgxsK2rDUCJ6DPJT9Ua/cMADAVRpbz1518raXvDIIyUakr54OtCqLYvBGctAVrqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQoqLPUr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C8FC433C7;
+	Tue, 23 Jan 2024 01:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969637;
-	bh=9NsIF/pxjYAbZQd+8K/GSubLkcNJFj5Sk7sSLaFChZQ=;
+	s=korg; t=1705975061;
+	bh=O1jnaMrLva/wi7VmRRYD6s6XupDu8Yg1Nr/C+EMAJVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yNMq7AqQS9qBAvlkEIrtCbHobIf8x5qPF0pI36KvxZD5tS+1ys1vtVBXjelRNAqHy
-	 sUF/HMkYLycb90nviPK5f+6BeZNknOasbiB6fM0iP3yvZYvRkfMgqEs3GTQIPslpmt
-	 rVVzt38aNoZ8YALaOtl6CffwVs5+dwL/ZLOITh0Q=
+	b=aQoqLPUroSIgEj1aV2b1+08Pug+oDeEF58vPz6v4T9Yjg2MiJGftG0E/3LZZEwq/I
+	 xCgH+SBQ632BOuZTAT+g4hjI/Yvimmj82zswgU6Gzp0aqjmKF8IF3E7bp28iTqDpND
+	 ur4IML1TmM13QOZ2PO9Jrk3rxTmvx1D3soOgSHUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Manorit Chawdhry <m-chawdhry@ti.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 340/641] watchdog: rti_wdt: Drop runtime pm reference count when watchdog is unused
+Subject: [PATCH 6.6 193/583] wifi: rtlwifi: rtl8192c: using calculate_bit_shift()
 Date: Mon, 22 Jan 2024 15:54:04 -0800
-Message-ID: <20240122235828.554185440@linuxfoundation.org>
+Message-ID: <20240122235817.894746515@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Raghavendra <vigneshr@ti.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit c1a6edf3b541e44e78f10bc6024df779715723f1 ]
+[ Upstream commit 1dedc3a6699d827d345019e921b8d8f37f694333 ]
 
-Call runtime_pm_put*() if watchdog is not already started during probe and re
-enable it in watchdog start as required.
+Using calculate_bit_shift() to replace _rtl92c_phy_calculate_bit_shift().
+And fix the undefined bitwise shift behavior problem.
 
-On K3 SoCs, watchdogs and their corresponding CPUs are under same
-power-domain, so if the reference count of unused watchdogs aren't
-dropped, it will lead to CPU hotplug failures as Device Management
-firmware won't allow to turn off the power-domain due to dangling
-reference count.
-
-Fixes: 2d63908bdbfb ("watchdog: Add K3 RTI watchdog support")
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Tested-by: Manorit Chawdhry <m-chawdhry@ti.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231213140110.938129-1-vigneshr@ti.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: 4295cd254af3 ("rtlwifi: Move common parts of rtl8192ce/phy.c")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-5-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/rti_wdt.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ .../wireless/realtek/rtlwifi/rtl8192c/phy_common.c   | 12 ++----------
+ .../wireless/realtek/rtlwifi/rtl8192c/phy_common.h   |  1 -
+ 2 files changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/watchdog/rti_wdt.c b/drivers/watchdog/rti_wdt.c
-index 8e1be7ba0103..9215793a1c81 100644
---- a/drivers/watchdog/rti_wdt.c
-+++ b/drivers/watchdog/rti_wdt.c
-@@ -77,6 +77,11 @@ static int rti_wdt_start(struct watchdog_device *wdd)
- {
- 	u32 timer_margin;
- 	struct rti_wdt_device *wdt = watchdog_get_drvdata(wdd);
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(wdd->parent);
-+	if (ret)
-+		return ret;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
+index 3d29c8dbb255..144ee780e1b6 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
+@@ -17,7 +17,7 @@ u32 rtl92c_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE, "regaddr(%#x), bitmask(%#x)\n",
+ 		regaddr, bitmask);
+ 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	returnvalue = (originalvalue & bitmask) >> bitshift;
  
- 	/* set timeout period */
- 	timer_margin = (u64)wdd->timeout * wdt->freq;
-@@ -343,6 +348,9 @@ static int rti_wdt_probe(struct platform_device *pdev)
- 	if (last_ping)
- 		watchdog_set_last_hw_keepalive(wdd, last_ping);
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+@@ -40,7 +40,7 @@ void rtl92c_phy_set_bb_reg(struct ieee80211_hw *hw,
  
-+	if (!watchdog_hw_running(wdd))
-+		pm_runtime_put_sync(&pdev->dev);
-+
- 	return 0;
+ 	if (bitmask != MASKDWORD) {
+ 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-		bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
+ 	}
  
- err_iomap:
-@@ -357,7 +365,10 @@ static void rti_wdt_remove(struct platform_device *pdev)
- 	struct rti_wdt_device *wdt = platform_get_drvdata(pdev);
- 
- 	watchdog_unregister_device(&wdt->wdd);
--	pm_runtime_put(&pdev->dev);
-+
-+	if (!pm_runtime_suspended(&pdev->dev))
-+		pm_runtime_put(&pdev->dev);
-+
- 	pm_runtime_disable(&pdev->dev);
+@@ -143,14 +143,6 @@ void _rtl92c_phy_rf_serial_write(struct ieee80211_hw *hw,
  }
+ EXPORT_SYMBOL(_rtl92c_phy_rf_serial_write);
  
+-u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask)
+-{
+-	u32 i = ffs(bitmask);
+-
+-	return i ? i - 1 : 32;
+-}
+-EXPORT_SYMBOL(_rtl92c_phy_calculate_bit_shift);
+-
+ static void _rtl92c_phy_bb_config_1t(struct ieee80211_hw *hw)
+ {
+ 	rtl_set_bbreg(hw, RFPGA0_TXINFO, 0x3, 0x2);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h
+index 75afa6253ad0..e64d377dfe9e 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h
+@@ -196,7 +196,6 @@ bool rtl92c_phy_set_rf_power_state(struct ieee80211_hw *hw,
+ void rtl92ce_phy_set_rf_on(struct ieee80211_hw *hw);
+ void rtl92c_phy_set_io(struct ieee80211_hw *hw);
+ void rtl92c_bb_block_on(struct ieee80211_hw *hw);
+-u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask);
+ long _rtl92c_phy_txpwr_idx_to_dbm(struct ieee80211_hw *hw,
+ 				  enum wireless_mode wirelessmode,
+ 				  u8 txpwridx);
 -- 
 2.43.0
 
