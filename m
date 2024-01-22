@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7F0837CAA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:13:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 046EB837ED7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0BC41C2898C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:13:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEBF91F2B7C6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1DC1474BE;
-	Tue, 23 Jan 2024 00:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D409128399;
+	Tue, 23 Jan 2024 00:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzMm/Kn9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9dAJ+xE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B931E1474B5;
-	Tue, 23 Jan 2024 00:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3B51657C7;
+	Tue, 23 Jan 2024 00:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969715; cv=none; b=LxZHPEwqNJnbMDBrEKzEGyH3rJHEawJNA0iohszln1caCuM1uxNzsTF+e7Ey5yHF9JK8ubKQNtGQn/u+8h66Hnv+UdHH41/zxCjMHxGRZry8hrLzUhYKbIK8Xd4AU7M5Ixqagl6nX5DEX/ubGxE2sXYY1wzHhGaNI1YxvK8JaaE=
+	t=1705970774; cv=none; b=QsbUSJUS0Lwnky9raiPNCkkYdu/T+pQEOyL/9V+jAfPJanuL4b1dJZCLAV9Bjw39EmWxyhzA/L/mZ7HG5A0jHQ7Ys298KNYE3ME0tzJTRSgCVGURwZf/htEDI+032z5ozWbg9uA3nNgOxTUICCPXCWAstaEM7GqZX1MZWT8XYb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969715; c=relaxed/simple;
-	bh=hwhH6eEFQZCtBsZDk4V3mKNkw09/uHpxp2ObkgyIpWY=;
+	s=arc-20240116; t=1705970774; c=relaxed/simple;
+	bh=q0DrzLrSjByjmjnvJ/qogv7HdnU1IF2sWNM+yp0IvIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WgoybfnX8ObKSgKbtp4d5+leK3bFNXEGpynQdAzV6OFCXxopMj3kE1lkJYjA+cK3Id0RFD0lLsg29clOve5jpOCBLEgMUM50CmWFYlPusCqT35cdQidfKrXOPlQaudNFAe0Zw78IfIc0+ktcBp6k800HT8mJvrXPOzeueuv1bPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzMm/Kn9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633F2C433C7;
-	Tue, 23 Jan 2024 00:28:35 +0000 (UTC)
+	 MIME-Version; b=sm5bZJMAUCAlJdD9E/CyB04Spz6SLWtEpr0vUorjQJEIbYl7VeWgHvy1bh41q6W/+/BNy/RQvuxMrU6VMjyuqtLwPe8WwpxM/41ldMAjBCa+lmeRTzHSmVhhRQ9ANBW6YEIMc/5/o4YgfkT3xioPKOxGbolYzxA2iHQxFJiuhiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9dAJ+xE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75DFC433C7;
+	Tue, 23 Jan 2024 00:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969715;
-	bh=hwhH6eEFQZCtBsZDk4V3mKNkw09/uHpxp2ObkgyIpWY=;
+	s=korg; t=1705970774;
+	bh=q0DrzLrSjByjmjnvJ/qogv7HdnU1IF2sWNM+yp0IvIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gzMm/Kn9FjSYQmBhtAf4w2fLBmbg9oHABb20ODYgko33rmN/lfqEDExlXGFa9GFNG
-	 yh0ur2gb6oL+e/ObQZeral6/B25fXzFV6vb9oTKEDHnFuUYgk5CNhDo/475TWs8U+b
-	 LsDFXF12fvFOI+VqvhxfiNPdmPs+alo2azwTIqXo=
+	b=i9dAJ+xEmx/5DoToa+8Re8zCM+0jkrGh9HRqaJU2NiIFsf0RU/tOC19KRHKGXN8UK
+	 tyrQczfoP5TXlNgg6oEFqdyuzyH1OYcuIR1cLMuSejR+BJwT1udq76/e38HAfPppwX
+	 lmgiCTVcfNQYx3CbI7V5dnrewWhXof7/97qgBI+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Subject: [PATCH 6.7 416/641] serial: 8250_exar: Set missing rs485_supported flag
+	Shuming Fan <shumingf@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 014/286] ASoC: rt5650: add mutex to avoid the jack detection failure
 Date: Mon, 22 Jan 2024 15:55:20 -0800
-Message-ID: <20240122235830.992990144@linuxfoundation.org>
+Message-ID: <20240122235732.573121185@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,58 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Shuming Fan <shumingf@realtek.com>
 
-commit 0c2a5f471ce58bca8f8ab5fcb911aff91eaaa5eb upstream.
+[ Upstream commit cdba4301adda7c60a2064bf808e48fccd352aaa9 ]
 
-The UART supports an auto-RTS mode in which the RTS pin is automatically
-activated during transmission. So mark this mode as being supported even
-if RTS is not controlled by the driver but the UART.
+This patch adds the jd_mutex to protect the jack detection control flow.
+And only the headset type could check the button status.
 
-Also the serial core expects now at least one of both modes rts-on-send or
-rts-after-send to be supported. This is since during sanitization
-unsupported flags are deleted from a RS485 configuration set by userspace.
-However if the configuration ends up with both flags unset, the core prints
-a warning since it considers such a configuration invalid (see
-uart_sanitize_serial_rs485()).
-
-Cc:  <stable@vger.kernel.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Link: https://lore.kernel.org/r/20240103061818.564-8-l.sanfilippo@kunbus.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shuming Fan <shumingf@realtek.com>
+Link: https://lore.kernel.org/r/20231122100123.2831753-1-shumingf@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_exar.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/soc/codecs/rt5645.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_exar.c
-+++ b/drivers/tty/serial/8250/8250_exar.c
-@@ -480,7 +480,7 @@ static int sealevel_rs485_config(struct
- }
+diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
+index 99d91bfb8812..7dc80183921e 100644
+--- a/sound/soc/codecs/rt5645.c
++++ b/sound/soc/codecs/rt5645.c
+@@ -421,6 +421,7 @@ struct rt5645_priv {
+ 	struct regulator_bulk_data supplies[ARRAY_SIZE(rt5645_supply_names)];
+ 	struct rt5645_eq_param_s *eq_param;
+ 	struct timer_list btn_check_timer;
++	struct mutex jd_mutex;
  
- static const struct serial_rs485 generic_rs485_supported = {
--	.flags = SER_RS485_ENABLED,
-+	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND,
- };
+ 	int codec_type;
+ 	int sysclk;
+@@ -3179,6 +3180,8 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
+ 				rt5645_enable_push_button_irq(component, true);
+ 			}
+ 		} else {
++			if (rt5645->en_button_func)
++				rt5645_enable_push_button_irq(component, false);
+ 			snd_soc_dapm_disable_pin(dapm, "Mic Det Power");
+ 			snd_soc_dapm_sync(dapm);
+ 			rt5645->jack_type = SND_JACK_HEADPHONE;
+@@ -3259,6 +3262,8 @@ static void rt5645_jack_detect_work(struct work_struct *work)
+ 	if (!rt5645->component)
+ 		return;
  
- static const struct exar8250_platform exar8250_default_platform = {
-@@ -524,7 +524,8 @@ static int iot2040_rs485_config(struct u
- }
++	mutex_lock(&rt5645->jd_mutex);
++
+ 	switch (rt5645->pdata.jd_mode) {
+ 	case 0: /* Not using rt5645 JD */
+ 		if (rt5645->gpiod_hp_det) {
+@@ -3283,7 +3288,7 @@ static void rt5645_jack_detect_work(struct work_struct *work)
  
- static const struct serial_rs485 iot2040_rs485_supported = {
--	.flags = SER_RS485_ENABLED | SER_RS485_RX_DURING_TX | SER_RS485_TERMINATE_BUS,
-+	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND |
-+		 SER_RS485_RX_DURING_TX | SER_RS485_TERMINATE_BUS,
- };
+ 	if (!val && (rt5645->jack_type == 0)) { /* jack in */
+ 		report = rt5645_jack_detect(rt5645->component, 1);
+-	} else if (!val && rt5645->jack_type != 0) {
++	} else if (!val && rt5645->jack_type == SND_JACK_HEADSET) {
+ 		/* for push button and jack out */
+ 		btn_type = 0;
+ 		if (snd_soc_component_read(rt5645->component, RT5645_INT_IRQ_ST) & 0x4) {
+@@ -3339,6 +3344,8 @@ static void rt5645_jack_detect_work(struct work_struct *work)
+ 		rt5645_jack_detect(rt5645->component, 0);
+ 	}
  
- static const struct property_entry iot2040_gpio_properties[] = {
++	mutex_unlock(&rt5645->jd_mutex);
++
+ 	snd_soc_jack_report(rt5645->hp_jack, report, SND_JACK_HEADPHONE);
+ 	snd_soc_jack_report(rt5645->mic_jack, report, SND_JACK_MICROPHONE);
+ 	if (rt5645->en_button_func)
+@@ -4062,6 +4069,7 @@ static int rt5645_i2c_probe(struct i2c_client *i2c,
+ 	}
+ 	timer_setup(&rt5645->btn_check_timer, rt5645_btn_check_callback, 0);
+ 
++	mutex_init(&rt5645->jd_mutex);
+ 	INIT_DELAYED_WORK(&rt5645->jack_detect_work, rt5645_jack_detect_work);
+ 	INIT_DELAYED_WORK(&rt5645->rcclock_work, rt5645_rcclock_work);
+ 
+-- 
+2.43.0
+
 
 
 
