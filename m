@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2214C837BD4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 429DF8382BB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEC602943BC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D58451F26A40
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9725154C0D;
-	Tue, 23 Jan 2024 00:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A8E5F54D;
+	Tue, 23 Jan 2024 01:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBtlUT4D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/BIuypQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7782A154C05;
-	Tue, 23 Jan 2024 00:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6465F540;
+	Tue, 23 Jan 2024 01:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969401; cv=none; b=YA+rTVpAUvWflIp9qqb9EuWNRAbyn8qmFSQOC7UIupj+S0V/JWPOhtnkZRRSko1JZh4GzEWjRaRbG+WsBWb72JPxafVOZ0XAF5YFu+13Jm4sew3LtLdC2oo1BpwwOo9V7Ymv8XAqHUp9XSbB96tgz9K3I3UVvpwxoxEg6Q1rOjA=
+	t=1705974419; cv=none; b=uXKVdLd7UZU5VLx2Rp+gtx3OgUIvFdHFlueX0Mjwpxdu1A5xUxr1wddiOLSmn1vmzHegoQgGk6KNDpXr4RS4Fep39jHhWDXotl8lV47BzUaz6+ZhGgTsmIr8p18nHXQSVpbQLK24ZPlUzZqfwDxOUKYVa0oKUF0zcB86R/9+bME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969401; c=relaxed/simple;
-	bh=Qzy729f9Xb+K4S2r+oCudkbkloQljandwiiHRPtE+Uo=;
+	s=arc-20240116; t=1705974419; c=relaxed/simple;
+	bh=yxNjMFl+mwGj9v4E/1wOxcu0SudgbupA+aqU3mqijLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e632f1P0w3IihvOPGESaPAKauZ6pMQsvPv8PXvvi0eIz0fM3wlGLsGiDKUaSL9d7NV39dYHfzGRpeAsJXi/y54Qo4+oT+rKO97JctBCWCFB1t/ZTK8NBoVHMbCeYxYwlvoOwh03yH28u0GwQkKTb9eZvvaRjo48CMtGh7HsC3BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBtlUT4D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9C7C43390;
-	Tue, 23 Jan 2024 00:23:20 +0000 (UTC)
+	 MIME-Version; b=fzkX2ffO/1L6D9DVMeOkvejQawSZcfJ1yFUH1OLeBf1tEpk0gKLaWSxZL5lv4jy8H3aUJ9PaELf8KsigzpkN0Mpra1ikHPKjWxVityT9Hv9aqkaAVugTDKJfe9imOGxmuyrEcNGEDsittNEN/wwG1te8XpXDbAd6gz5OWeVTg14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/BIuypQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64E9C433F1;
+	Tue, 23 Jan 2024 01:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969401;
-	bh=Qzy729f9Xb+K4S2r+oCudkbkloQljandwiiHRPtE+Uo=;
+	s=korg; t=1705974419;
+	bh=yxNjMFl+mwGj9v4E/1wOxcu0SudgbupA+aqU3mqijLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DBtlUT4DbGldnxj3z6AhnIZS7wmvFyLKrDBHqYHFU0/jXHtJlcn+p4zvDg2lgRice
-	 ZyFCr/AwSj0ZTgtA+PThVIBE7aEdmAZyxvqdUAWI54HSDCJv+pgE2+mQh2Mxy7oN9+
-	 65Te6KfrvMKr90iefM6UTzOa3UzTZM/tLy+2O1bk=
+	b=R/BIuypQy2qtWHMutmjOmTxWB65hFvAwBuPJ3Aafw21lZOXuMgSl/oHBhX2vplzpc
+	 EZB681nuNK92I7JC4UIn8ZwRI5sCn3t8xsWVmxAWJA1mrNEu7nTSJrhnxqQAJ7zxuk
+	 QLR3TBbLZc6GbFgZ6ApL6lhfzXrdeFpv1DzfOwSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 222/641] netfilter: nf_tables: validate chain type update if available
-Date: Mon, 22 Jan 2024 15:52:06 -0800
-Message-ID: <20240122235824.887122851@linuxfoundation.org>
+Subject: [PATCH 6.6 076/583] blocklayoutdriver: Fix reference leak of pnfs_device_node
+Date: Mon, 22 Jan 2024 15:52:07 -0800
+Message-ID: <20240122235814.489562889@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit aaba7ddc8507f4ad5bbd07988573967632bc2385 ]
+[ Upstream commit 1530827b90025cdf80c9b0d07a166d045a0a7b81 ]
 
-Parse netlink attribute containing the chain type in this update, to
-bail out if this is different from the existing type.
+The error path for blocklayout's device lookup is missing a reference drop
+for the case where a lookup finds the device, but the device is marked with
+NFS_DEVICEID_UNAVAILABLE.
 
-Otherwise, it is possible to define a chain with the same name, hook and
-priority but different type, which is silently ignored.
-
-Fixes: 96518518cc41 ("netfilter: add nftables")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: b3dce6a2f060 ("pnfs/blocklayout: handle transient devices")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/nfs/blocklayout/blocklayout.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index bbb8d8533f77..d5f76e26ae03 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2261,7 +2261,16 @@ static int nft_chain_parse_hook(struct net *net,
- 				return -EOPNOTSUPP;
- 		}
- 
--		type = basechain->type;
-+		if (nla[NFTA_CHAIN_TYPE]) {
-+			type = __nf_tables_chain_type_lookup(nla[NFTA_CHAIN_TYPE],
-+							     family);
-+			if (!type) {
-+				NL_SET_BAD_ATTR(extack, nla[NFTA_CHAIN_TYPE]);
-+				return -ENOENT;
-+			}
-+		} else {
-+			type = basechain->type;
-+		}
+diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
+index 943aeea1eb16..1d1d7abc3205 100644
+--- a/fs/nfs/blocklayout/blocklayout.c
++++ b/fs/nfs/blocklayout/blocklayout.c
+@@ -580,6 +580,8 @@ bl_find_get_deviceid(struct nfs_server *server,
+ 		nfs4_delete_deviceid(node->ld, node->nfs_client, id);
+ 		goto retry;
  	}
++
++	nfs4_put_deviceid_node(node);
+ 	return ERR_PTR(-ENODEV);
+ }
  
- 	if (!try_module_get(type->owner)) {
 -- 
 2.43.0
 
