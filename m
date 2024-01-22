@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B3A83819C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B12837F27
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EA821F24620
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B8751F2B908
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475C8627E4;
-	Tue, 23 Jan 2024 01:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E097A712;
+	Tue, 23 Jan 2024 00:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qqv3akea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvGtX3A5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03AA323BD;
-	Tue, 23 Jan 2024 01:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3BE60DE3;
+	Tue, 23 Jan 2024 00:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972187; cv=none; b=qPh23m1Oz0G5X1xz4oQ3ouJKzwVa77/U63ENasSeIMaHfztMjQdsiaNXYBfZRKj3nH65G39w5Y3Qax/YFs5MxkLaUAgTsz0SMjK/Fu//+RTD5bLmJUhw23Ii4MKagA+Arat18bM//Qj11fNasSXLbi5w4dmPIY9CXblTOj5iKMc=
+	t=1705970969; cv=none; b=TuOxZ0mCVlkEcGceLKfZtT1eDndtA/kt8AmvMHP/8DahthxmF/9h2g31QdinFjsFuxST+Ow5im1jR4yCiTaD7DCL8GzHQ9fV8rDZAx9+fOGB1bMWlAh/9VS7dyU1ikunnhHkSH1WoaHXwjXFKuFh8htO8fSRu+FVwt+yrXNzaNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972187; c=relaxed/simple;
-	bh=LljUtltOBkx5qO9TJa7+rhRGDCHLOB73xeP5UIMp2+Q=;
+	s=arc-20240116; t=1705970969; c=relaxed/simple;
+	bh=gXE26gBYhVIS+YRZMRkKVcnnvWZ2nEZu/cv3wtQ9XeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l7fONPiRkO6ykw4HS2Z/pLgzGhFJXVprizSfwgaZ/PuOsTydFL9/5VeoTHcLxP51et/rtXuhMgkQxxNq/TBt/DmqSscT+82EvJS/a+oCciwcT8o6GJl4N5Qqrfo7KsryckQem5rZerqBfNigL6HciI4Q+i3+VdfjhF3J3qCr5kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qqv3akea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB21CC43394;
-	Tue, 23 Jan 2024 01:09:46 +0000 (UTC)
+	 MIME-Version; b=kSh1fB1zM12XMslBnATmFvAsp0Rk+IpzK75IA1iTu/zcFhujOmrkzAKgjbG8qxteEcYvL3oTKPAVFLpf/BfMlDezuFP3uRLCidNw0E0geUVLUxs3m80SEJHbXdx1xARRgwoi3+DJ4LwEYNCrz1j5uUO+KM6HVjrby9XZr+Wo3js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvGtX3A5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E786C433C7;
+	Tue, 23 Jan 2024 00:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972186;
-	bh=LljUtltOBkx5qO9TJa7+rhRGDCHLOB73xeP5UIMp2+Q=;
+	s=korg; t=1705970969;
+	bh=gXE26gBYhVIS+YRZMRkKVcnnvWZ2nEZu/cv3wtQ9XeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qqv3akeaolUFWvCekI1CZp9oTkAQDFKKwXTxk8lNDhePrDZ3GKcRvGYNDPlGbbNTb
-	 2L8JJ7F/3UrNrzbgOEiGZRIcoIiZjmfgL2fmSKWAIOK3ggPeZxQtoUHi/qOJ5XCZSz
-	 /ba9jRVljPVv3wNJVPFgFmultdBLiGo0dLh8ZAaQ=
+	b=gvGtX3A5tHMwa4kwVJncn1nYg5tQsoiDYG/mTs+em4ed6mKq2aFb5Xdyg+taAqHCH
+	 g/PWgfFBxHSU1H4g9SqEXxarRnLwqs4sk+Hs0qJ3GxiXf1TJg/lEzTG3ExNL43Imu3
+	 dMIxDAEtdAuNe29BT9PagTiL+DxJat4W7V7o2mXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 109/374] crypto: sahara - fix ahash reqsize
+Subject: [PATCH 5.10 059/286] powerpc/powernv: Add a null pointer check in opal_powercap_init()
 Date: Mon, 22 Jan 2024 15:56:05 -0800
-Message-ID: <20240122235748.410418764@linuxfoundation.org>
+Message-ID: <20240122235734.303716581@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit efcb50f41740ac55e6ccc4986c1a7740e21c62b4 ]
+[ Upstream commit e123015c0ba859cf48aa7f89c5016cc6e98e018d ]
 
-Set the reqsize for sha algorithms to sizeof(struct sahara_sha_reqctx), the
-extra space is not needed.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: b9ef7b4b867f ("powerpc: Convert to using %pOFn instead of device_node.name")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231126095739.1501990-1-chentao@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/powerpc/platforms/powernv/opal-powercap.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 3229dd180d0c..d31ccaffebb8 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -1163,8 +1163,7 @@ static int sahara_sha_import(struct ahash_request *req, const void *in)
- static int sahara_sha_cra_init(struct crypto_tfm *tfm)
- {
- 	crypto_ahash_set_reqsize(__crypto_ahash_cast(tfm),
--				 sizeof(struct sahara_sha_reqctx) +
--				 SHA_BUFFER_LEN + SHA256_BLOCK_SIZE);
-+				 sizeof(struct sahara_sha_reqctx));
+diff --git a/arch/powerpc/platforms/powernv/opal-powercap.c b/arch/powerpc/platforms/powernv/opal-powercap.c
+index c16d44f6f1d1..ce9ec3962cef 100644
+--- a/arch/powerpc/platforms/powernv/opal-powercap.c
++++ b/arch/powerpc/platforms/powernv/opal-powercap.c
+@@ -196,6 +196,12 @@ void __init opal_powercap_init(void)
  
- 	return 0;
- }
+ 		j = 0;
+ 		pcaps[i].pg.name = kasprintf(GFP_KERNEL, "%pOFn", node);
++		if (!pcaps[i].pg.name) {
++			kfree(pcaps[i].pattrs);
++			kfree(pcaps[i].pg.attrs);
++			goto out_pcaps_pattrs;
++		}
++
+ 		if (has_min) {
+ 			powercap_add_attr(min, "powercap-min",
+ 					  &pcaps[i].pattrs[j]);
 -- 
 2.43.0
 
