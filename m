@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4D7838527
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 776088380FF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 369A41F29541
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18ADE1F21582
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881987E57E;
-	Tue, 23 Jan 2024 02:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9498E13E215;
+	Tue, 23 Jan 2024 01:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYeSHqOz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZSfmP/L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E1C380;
-	Tue, 23 Jan 2024 02:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5395013DBB7;
+	Tue, 23 Jan 2024 01:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975753; cv=none; b=YduouGdEHszYpKMCBBfl+TzxzDLowxyq2ZUqS9hja0Yi821NtqyCgQHJa3YkfgH7T5ljkjXY15cOSx21PbTwoV/TQ5/W5LLmBQ2vLl94+7Lq7TGXUYO3EMUYDY2JOsWWUUyq7wkY3Km+uCKwDGV4tkaoDcShoh3VFgtBpyD2OCs=
+	t=1705971990; cv=none; b=Amg5vVh0c8R44eH1HULLsGsTNMBhtBoxiDNAFzHr7zdbCSYpKmTmLUv7CfTZT1jkqXew+2qmGV8p5MjZNQw9QGgl7zKpsid7sGnhQUSRXIofGYLDsqu6kdAhTA5CtrcDKicdVGzDSyM/cswq5V2ljys4R/qyxsUCi3lt7V2ERPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975753; c=relaxed/simple;
-	bh=DeGh+WZ7xBPjxA54FREHGAUi4xDW/UQ4RTZBRcJZv1k=;
+	s=arc-20240116; t=1705971990; c=relaxed/simple;
+	bh=pad0kKlZpHtnVm3ErMmz0hmNi2+DKs/wuMgmw/WK/tU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dDKRpOvzkE9zF5Pm2/OFoLKklqSwqk7yLyu4ynlE/rmaXJHbKlzcfoU4STV0vSiAoQ9q7z4Z9Eq1P7EGJRkYzZw3BEgWbX85ICPXFmyH/U+JVA9uq92zi+xMB7w0uPAavNZokAwGSnG04mSCMKFoDgu75b0XXNFyjtmbd2cU0XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYeSHqOz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB907C433C7;
-	Tue, 23 Jan 2024 02:09:12 +0000 (UTC)
+	 MIME-Version; b=GiONP0DBc43CQtXdxu6YwKsR73+o6mA81mqKSKAKEo+KvG+nhCDmnRIUhm7OUKWR0bp2fqfn9Nb1XS2DNmu0EufLl3jHHky7bd9t6Z2Std4SyIxl3AqD6qEKLTViN6FkeWpcK+e68tTmNRwVQTywDfErjH8yNiVmgcyw8w5l/5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZSfmP/L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E1EC43394;
+	Tue, 23 Jan 2024 01:06:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975753;
-	bh=DeGh+WZ7xBPjxA54FREHGAUi4xDW/UQ4RTZBRcJZv1k=;
+	s=korg; t=1705971990;
+	bh=pad0kKlZpHtnVm3ErMmz0hmNi2+DKs/wuMgmw/WK/tU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oYeSHqOzx8AI1Rp+NFw7DpsuoSeMdQHOlNN8X98EdEHnyvG6ECxe97iYGSTnM+lVA
-	 70sTE2IP9NVQmTgjayBGpubyJZ9b6NeNF+m52MWCe9Zr+Ruet+rPbB4wz3gSKOroqK
-	 wB/h+0V2pISskbf1niKcnSNPboranLC0VrsojQtg=
+	b=mZSfmP/L+GvB9NJKhPugIe379mz8jeb86SCPTchpDZvtA80q5N4sa6qNhaAHA915U
+	 ylxlytLh13U/ObHHKtu4t72tLN96cvxzw8Q7FOntP5iT3s575JuPxkl8ABcA85gF3K
+	 Tj+Pc+uwl3TfNgN4rGt/jL+Q6FwgGf9pFiavFw40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 537/583] block: ensure we hold a queue reference when using queue limits
-Date: Mon, 22 Jan 2024 15:59:48 -0800
-Message-ID: <20240122235828.552852326@linuxfoundation.org>
+Subject: [PATCH 5.10 283/286] selftests: mlxsw: qos_pfc: Convert to iproute2 dcb
+Date: Mon, 22 Jan 2024 15:59:49 -0800
+Message-ID: <20240122235742.951214549@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit 7b4f36cd22a65b750b4cb6ac14804fb7d6e6c67d ]
+[ Upstream commit b0bab2298ec9b3a837f8ef4a0cae4b42a4d03365 ]
 
-q_usage_counter is the only thing preventing us from the limits changing
-under us in __bio_split_to_limits, but blk_mq_submit_bio doesn't hold
-it while calling into it.
+There is a dedicated tool for configuration of DCB in iproute2 now. Use it
+in the selftest instead of mlnx_qos.
 
-Move the splitting inside the region where we know we've got a queue
-reference. Ideally this could still remain a shared section of code, but
-let's keep the fix simple and defer any refactoring here to later.
-
-Reported-by: Christoph Hellwig <hch@lst.de>
-Fixes: 900e08075202 ("block: move queue enter logic into blk_mq_submit_bio()")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: b34f4de6d30c ("selftests: mlxsw: qos_pfc: Adjust the test to support 8 lanes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ .../selftests/drivers/net/mlxsw/qos_pfc.sh    | 24 +++++++++----------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 20ecd0ab616f..6041e17492ec 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -2968,12 +2968,6 @@ void blk_mq_submit_bio(struct bio *bio)
- 	blk_status_t ret;
+diff --git a/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh b/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
+index 5c7700212f75..5d5622fc2758 100755
+--- a/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
++++ b/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
+@@ -171,7 +171,7 @@ switch_create()
+ 	# assignment.
+ 	tc qdisc replace dev $swp1 root handle 1: \
+ 	   ets bands 8 strict 8 priomap 7 6
+-	__mlnx_qos -i $swp1 --prio2buffer=0,1,0,0,0,0,0,0 >/dev/null
++	dcb buffer set dev $swp1 prio-buffer all:0 1:1
  
- 	bio = blk_queue_bounce(bio, q);
--	if (bio_may_exceed_limits(bio, &q->limits)) {
--		bio = __bio_split_to_limits(bio, &q->limits, &nr_segs);
--		if (!bio)
--			return;
--	}
--
- 	bio_set_ioprio(bio);
+ 	# $swp2
+ 	# -----
+@@ -209,8 +209,8 @@ switch_create()
+ 	# the lossless prio into a buffer of its own. Don't bother with buffer
+ 	# sizes though, there is not going to be any pressure in the "backward"
+ 	# direction.
+-	__mlnx_qos -i $swp3 --prio2buffer=0,1,0,0,0,0,0,0 >/dev/null
+-	__mlnx_qos -i $swp3 --pfc=0,1,0,0,0,0,0,0 >/dev/null
++	dcb buffer set dev $swp3 prio-buffer all:0 1:1
++	dcb pfc set dev $swp3 prio-pfc all:off 1:on
  
- 	if (plug) {
-@@ -2982,6 +2976,11 @@ void blk_mq_submit_bio(struct bio *bio)
- 			rq = NULL;
- 	}
- 	if (rq) {
-+		if (unlikely(bio_may_exceed_limits(bio, &q->limits))) {
-+			bio = __bio_split_to_limits(bio, &q->limits, &nr_segs);
-+			if (!bio)
-+				return;
-+		}
- 		if (!bio_integrity_prep(bio))
- 			return;
- 		if (blk_mq_attempt_bio_merge(q, bio, nr_segs))
-@@ -2992,6 +2991,11 @@ void blk_mq_submit_bio(struct bio *bio)
- 	} else {
- 		if (unlikely(bio_queue_enter(bio)))
- 			return;
-+		if (unlikely(bio_may_exceed_limits(bio, &q->limits))) {
-+			bio = __bio_split_to_limits(bio, &q->limits, &nr_segs);
-+			if (!bio)
-+				goto fail;
-+		}
- 		if (!bio_integrity_prep(bio))
- 			goto fail;
- 	}
+ 	# $swp4
+ 	# -----
+@@ -226,11 +226,11 @@ switch_create()
+ 	# Configure qdisc so that we can hand-tune headroom.
+ 	tc qdisc replace dev $swp4 root handle 1: \
+ 	   ets bands 8 strict 8 priomap 7 6
+-	__mlnx_qos -i $swp4 --prio2buffer=0,1,0,0,0,0,0,0 >/dev/null
+-	__mlnx_qos -i $swp4 --pfc=0,1,0,0,0,0,0,0 >/dev/null
++	dcb buffer set dev $swp4 prio-buffer all:0 1:1
++	dcb pfc set dev $swp4 prio-pfc all:off 1:on
+ 	# PG0 will get autoconfigured to Xoff, give PG1 arbitrarily 100K, which
+ 	# is (-2*MTU) about 80K of delay provision.
+-	__mlnx_qos -i $swp4 --buffer_size=0,$_100KB,0,0,0,0,0,0 >/dev/null
++	dcb buffer set dev $swp4 buffer-size all:0 1:$_100KB
+ 
+ 	# bridges
+ 	# -------
+@@ -273,9 +273,9 @@ switch_destroy()
+ 	# $swp4
+ 	# -----
+ 
+-	__mlnx_qos -i $swp4 --buffer_size=0,0,0,0,0,0,0,0 >/dev/null
+-	__mlnx_qos -i $swp4 --pfc=0,0,0,0,0,0,0,0 >/dev/null
+-	__mlnx_qos -i $swp4 --prio2buffer=0,0,0,0,0,0,0,0 >/dev/null
++	dcb buffer set dev $swp4 buffer-size all:0
++	dcb pfc set dev $swp4 prio-pfc all:off
++	dcb buffer set dev $swp4 prio-buffer all:0
+ 	tc qdisc del dev $swp4 root
+ 
+ 	devlink_tc_bind_pool_th_restore $swp4 1 ingress
+@@ -288,8 +288,8 @@ switch_destroy()
+ 	# $swp3
+ 	# -----
+ 
+-	__mlnx_qos -i $swp3 --pfc=0,0,0,0,0,0,0,0 >/dev/null
+-	__mlnx_qos -i $swp3 --prio2buffer=0,0,0,0,0,0,0,0 >/dev/null
++	dcb pfc set dev $swp3 prio-pfc all:off
++	dcb buffer set dev $swp3 prio-buffer all:0
+ 	tc qdisc del dev $swp3 root
+ 
+ 	devlink_tc_bind_pool_th_restore $swp3 1 egress
+@@ -315,7 +315,7 @@ switch_destroy()
+ 	# $swp1
+ 	# -----
+ 
+-	__mlnx_qos -i $swp1 --prio2buffer=0,0,0,0,0,0,0,0 >/dev/null
++	dcb buffer set dev $swp1 prio-buffer all:0
+ 	tc qdisc del dev $swp1 root
+ 
+ 	devlink_tc_bind_pool_th_restore $swp1 1 ingress
 -- 
 2.43.0
 
