@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32740838392
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0B8838139
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAE132943B8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 896F9B2AE4D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A428E633FB;
-	Tue, 23 Jan 2024 01:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2ACA141991;
+	Tue, 23 Jan 2024 01:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKrndZ2S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEHBlV6V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F15633F4;
-	Tue, 23 Jan 2024 01:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820A5141981;
+	Tue, 23 Jan 2024 01:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975010; cv=none; b=C4CwiqBZzNxX9KvLCU6BXjdnl/6vpd45ZeAFJ80nsQxisPudfuQMdXSGh0GYldKkSI+k37qKwhOGilStDjsOd8j5Bu9yU6UzzyhSBMjKH1r7iprPmpBkcrTgQ44L5AmH369dQDHi1Ii/8SL49KmtbxMgyvii7gS7qRY7jTKYPzA=
+	t=1705972042; cv=none; b=gx2KC2GpZpCACN5UfXyyjvYmYTFg5/PkQLY50jxc4g8SEOTTaDlpjaFfvSB0Efl5cYQFNwcOTutHIYa4r4nju4c25N/gsxgYp0jjbOW5SpJT5miPeKE0o9s6zWXn+NhXutWJqHd0rs2cCXuD2CED1Sqe15PxAA26azCkxDMSEos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975010; c=relaxed/simple;
-	bh=mPDU6rXesskhxiDSLaEeTXmyL6yHvlop6hSQSM7SqB0=;
+	s=arc-20240116; t=1705972042; c=relaxed/simple;
+	bh=a6SLNSMUW5hW/ouNgBK1nGUytOzngZeBfD4aE4ln1Uk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BYWlfdrBhjHBwMr4xnf2wHbnEBr7cG/ccns88HKVS4X/3yXX9YMIMf0pnzNbZnmAqfQyWFAI21IoNO94hOYDExiHsoVH5kcbvPeZhLqOdZrCvhHUh/NKKLlqIfEiCCD2MCno88B4gn7ffY1lvN4Aq/q/ZXbwdBwgLEJ4rUPRgNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uKrndZ2S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E0FC433C7;
-	Tue, 23 Jan 2024 01:56:50 +0000 (UTC)
+	 MIME-Version; b=YH4+oeoS07AJjkrw5duFBU7GmYDdL7MA+zhKNtJ5+mCZb9TCkGw7ydXkfxds8MHEz1eb2uA0q3VhnIgQZFuZNq61itlHFqnPUxjDpgV9u8Bs/EAnKuoxduOo104hyyfESkayb/rb5/aL00GYVnC/Y2eQAQ5Fn2G4PsaxnbN0V48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEHBlV6V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438E2C433F1;
+	Tue, 23 Jan 2024 01:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975010;
-	bh=mPDU6rXesskhxiDSLaEeTXmyL6yHvlop6hSQSM7SqB0=;
+	s=korg; t=1705972042;
+	bh=a6SLNSMUW5hW/ouNgBK1nGUytOzngZeBfD4aE4ln1Uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uKrndZ2S4vVaNqWlPNOPE5Q9xIXZJUXc/lrekc5gjSatvSvIRO7YqNMDPBLH3wba+
-	 ABScI60LiTQMbGfF5NXwJh51Bh70VVXqcxf3tfHypUF8TiravH6YoMCh0Uhas10tP3
-	 mX0CxkH5qIi+0JZRN3UvTKrO+0VEDOuR7MyQRH/I=
+	b=QEHBlV6VzQSC19eiwJfKz4sruIAyR4DkOkrHu8672dXqLY+g2zrZSw4yWa1ManxQ/
+	 0sX+DjbeArBymvtC34+902WFXeN8aOJcCOlKnKEXtjCv2pyIG8k/AB29kMhfQacBge
+	 WVRryoymkWABWHsCrhXA3hAynUT5tsyrRMVuqAh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 322/374] nvmet-tcp: Fix a kernel panic when host sends an invalid H2C PDU length
+Subject: [PATCH 6.1 410/417] loop: fix the the direct I/O support check when used on top of block devices
 Date: Mon, 22 Jan 2024 15:59:38 -0800
-Message-ID: <20240122235756.104052280@linuxfoundation.org>
+Message-ID: <20240122235805.901168245@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit efa56305908ba20de2104f1b8508c6a7401833be ]
+[ Upstream commit baa7d536077dcdfe2b70c476a8873d1745d3de0f ]
 
-If the host sends an H2CData command with an invalid DATAL,
-the kernel may crash in nvmet_tcp_build_pdu_iovec().
+__loop_update_dio only checks the alignment requirement for block backed
+file systems, but misses them for the case where the loop device is
+created directly on top of another block device.  Due to this creating
+a loop device with default option plus the direct I/O flag on a > 512 byte
+sector size file system will lead to incorrect I/O being submitted to the
+lower block device and a lot of error from the lock layer.  This can
+be seen with xfstests generic/563.
 
-Unable to handle kernel NULL pointer dereference at
-virtual address 0000000000000000
-lr : nvmet_tcp_io_work+0x6ac/0x718 [nvmet_tcp]
-Call trace:
-  process_one_work+0x174/0x3c8
-  worker_thread+0x2d0/0x3e8
-  kthread+0x104/0x110
+Fix the code in __loop_update_dio by factoring the alignment check into
+a helper, and calling that also for the struct block_device of a block
+device inode.
 
-Fix the bug by raising a fatal error if DATAL isn't coherent
-with the packet size.
-Also, the PDU length should never exceed the MAXH2CDATA parameter which
-has been communicated to the host in nvmet_tcp_handle_icreq().
+Also remove the TODO comment talking about dynamically switching between
+buffered and direct I/O, which is a would be a recipe for horrible
+performance and occasional data loss.
 
-Fixes: 872d26a391da ("nvmet-tcp: add NVMe over TCP target driver")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 2e5ab5f379f9 ("block: loop: prepare for supporing direct IO")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240117175901.871796-1-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/block/loop.c | 52 +++++++++++++++++++++-----------------------
+ 1 file changed, 25 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 6a57cf885db1..a0a7540f048e 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -18,6 +18,7 @@
- #include "nvmet.h"
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 127e3ceb5979..12ff6f58b8a9 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -165,39 +165,37 @@ static loff_t get_loop_size(struct loop_device *lo, struct file *file)
+ 	return get_size(lo->lo_offset, lo->lo_sizelimit, file);
+ }
  
- #define NVMET_TCP_DEF_INLINE_DATA_SIZE	(4 * PAGE_SIZE)
-+#define NVMET_TCP_MAXH2CDATA		0x400000 /* 16M arbitrary limit */
- 
- /* Define the socket priority to use for connections were it is desirable
-  * that the NIC consider performing optimized packet processing or filtering.
-@@ -884,7 +885,7 @@ static int nvmet_tcp_handle_icreq(struct nvmet_tcp_queue *queue)
- 	icresp->hdr.pdo = 0;
- 	icresp->hdr.plen = cpu_to_le32(icresp->hdr.hlen);
- 	icresp->pfv = cpu_to_le16(NVME_TCP_PFV_1_0);
--	icresp->maxdata = cpu_to_le32(0x400000); /* 16M arbitrary limit */
-+	icresp->maxdata = cpu_to_le32(NVMET_TCP_MAXH2CDATA);
- 	icresp->cpda = 0;
- 	if (queue->hdr_digest)
- 		icresp->digest |= NVME_TCP_HDR_DIGEST_ENABLE;
-@@ -930,6 +931,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
++/*
++ * We support direct I/O only if lo_offset is aligned with the logical I/O size
++ * of backing device, and the logical block size of loop is bigger than that of
++ * the backing device.
++ */
++static bool lo_bdev_can_use_dio(struct loop_device *lo,
++		struct block_device *backing_bdev)
++{
++	unsigned short sb_bsize = bdev_logical_block_size(backing_bdev);
++
++	if (queue_logical_block_size(lo->lo_queue) < sb_bsize)
++		return false;
++	if (lo->lo_offset & (sb_bsize - 1))
++		return false;
++	return true;
++}
++
+ static void __loop_update_dio(struct loop_device *lo, bool dio)
  {
- 	struct nvme_tcp_data_pdu *data = &queue->pdu.data;
- 	struct nvmet_tcp_cmd *cmd;
-+	unsigned int plen;
+ 	struct file *file = lo->lo_backing_file;
+-	struct address_space *mapping = file->f_mapping;
+-	struct inode *inode = mapping->host;
+-	unsigned short sb_bsize = 0;
+-	unsigned dio_align = 0;
++	struct inode *inode = file->f_mapping->host;
++	struct block_device *backing_bdev = NULL;
+ 	bool use_dio;
  
- 	if (likely(queue->nr_cmds)) {
- 		if (unlikely(data->ttag >= queue->nr_cmds)) {
-@@ -953,7 +955,16 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		return -EPROTO;
- 	}
+-	if (inode->i_sb->s_bdev) {
+-		sb_bsize = bdev_logical_block_size(inode->i_sb->s_bdev);
+-		dio_align = sb_bsize - 1;
+-	}
++	if (S_ISBLK(inode->i_mode))
++		backing_bdev = I_BDEV(inode);
++	else if (inode->i_sb->s_bdev)
++		backing_bdev = inode->i_sb->s_bdev;
  
-+	plen = le32_to_cpu(data->hdr.plen);
- 	cmd->pdu_len = le32_to_cpu(data->data_length);
-+	if (unlikely(cmd->pdu_len != (plen - sizeof(*data)) ||
-+		     cmd->pdu_len == 0 ||
-+		     cmd->pdu_len > NVMET_TCP_MAXH2CDATA)) {
-+		pr_err("H2CData PDU len %u is invalid\n", cmd->pdu_len);
-+		/* FIXME: use proper transport errors */
-+		nvmet_tcp_fatal_error(queue);
-+		return -EPROTO;
-+	}
- 	cmd->pdu_recv = 0;
- 	nvmet_tcp_map_pdu_iovec(cmd);
- 	queue->cmd = cmd;
+-	/*
+-	 * We support direct I/O only if lo_offset is aligned with the
+-	 * logical I/O size of backing device, and the logical block
+-	 * size of loop is bigger than the backing device's.
+-	 *
+-	 * TODO: the above condition may be loosed in the future, and
+-	 * direct I/O may be switched runtime at that time because most
+-	 * of requests in sane applications should be PAGE_SIZE aligned
+-	 */
+-	if (dio) {
+-		if (queue_logical_block_size(lo->lo_queue) >= sb_bsize &&
+-		    !(lo->lo_offset & dio_align) &&
+-		    (file->f_mode & FMODE_CAN_ODIRECT))
+-			use_dio = true;
+-		else
+-			use_dio = false;
+-	} else {
+-		use_dio = false;
+-	}
++	use_dio = dio && (file->f_mode & FMODE_CAN_ODIRECT) &&
++		(!backing_bdev || lo_bdev_can_use_dio(lo, backing_bdev));
+ 
+ 	if (lo->use_dio == use_dio)
+ 		return;
 -- 
 2.43.0
 
