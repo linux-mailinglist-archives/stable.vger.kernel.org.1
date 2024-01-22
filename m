@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-15254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0BD838484
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1563F83800B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 908F11C21325
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B50732897BB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72EC6EB6A;
-	Tue, 23 Jan 2024 02:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 483326519C;
+	Tue, 23 Jan 2024 00:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nP3ZqG2/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5FikxKB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9758C6EB61;
-	Tue, 23 Jan 2024 02:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D6964CFA;
+	Tue, 23 Jan 2024 00:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975413; cv=none; b=e5CftG9HJWO6T2m0E6Xx77/FtHhjtqs6ZoqfAZ+yCO9b4dvKOemIN8szhknKk8yacwEbRewqjpbOHFVEWtPQBufm2NDt/B0iYq8Afx+mjWUFxIoNDLPJM2sYiGAgDbTDLOqJFXyz4Ry+dteFV9ULZE6LGkU2fCTRbkCu/g2Luh4=
+	t=1705971517; cv=none; b=JsUBdHHF19uEGsz/2/pPQJkIpeYa3ZMCdjGD8/qC8NG9qvnzo1iUxZE58Yu2Oon+3qt4Syxjwny4yud83I+EMLfzTzkLAT6tLF5MH410IvXHL0E5xSuswsLFnZZU8KMyAeujH0dKuJko32d+Ls1WXbPJJqRpW0B+5mdZz4Dgt+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975413; c=relaxed/simple;
-	bh=JZJR6sPy54ZdoL0HiP3fzXIfhYlTc1+Si98iegLA/38=;
+	s=arc-20240116; t=1705971517; c=relaxed/simple;
+	bh=dDuGyux5xOgn63eU5LkWCt8Wi9pCQoZrF93N8COYXu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oELc0QaoH0rQoLAJcqSIuddvMpXQzf2etRQeqytmOjB+Z4uIGZsF5bFtpLR45xtRp/aRTKUxo3swa3L2zfVKnO1r0RGRAjrkXqYR0DIXNU3IPW0sibPPLaOTU71E7Ges9hXW2GCSLhrHeyse4ZzA/kxsko9S8wt2FdGTpVjQRUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nP3ZqG2/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B98C43390;
-	Tue, 23 Jan 2024 02:03:33 +0000 (UTC)
+	 MIME-Version; b=uyVaxTiYorR5EVxJrRHMu46IglCr8eAwMJWkeMhfhb2oc1wswA5z5KbhVNRnt+T/AN5fON9KGnKSqP5/QYJeim9FT49ng7HzeEF0nT0tgPtWwDulSWVze+KNKiQqkJLc6kszzYvHhg50y4uMVZJIx3sJEZph55Fg9Jv816AKTTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5FikxKB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE24C433F1;
+	Tue, 23 Jan 2024 00:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975413;
-	bh=JZJR6sPy54ZdoL0HiP3fzXIfhYlTc1+Si98iegLA/38=;
+	s=korg; t=1705971516;
+	bh=dDuGyux5xOgn63eU5LkWCt8Wi9pCQoZrF93N8COYXu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nP3ZqG2/fR1HLPYPmpiq0I+58Lwtp1eGjkvVc3lTptj+yZptlHKQhoFeximqJu26R
-	 IPEQSAtdr4zi5q0VVv4Se1xNdEATBqm0/ytct4y0bxAL93XVAjmrvCxQxxKxWYm/NA
-	 4DgsCo2ofXzyYtpEhI3Rwl3VmIoJxhgcQ2rVnNNY=
+	b=Y5FikxKBBZYTI0Ijx882BdlEqEpn+XhmtUA+g40V6hCAlQiSI+R3KeZkBAf8ghUtf
+	 /+x48qX6RTpkuzpXPWWEH0Ug4PZsmkvoGu5OV1Q0yjhBYrwfBy2Guj2zXtscxkHCxb
+	 vkKftXpNhIyk/TtIQZjuZLnPQFnVQqh/sAVmMOFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Subject: [PATCH 6.6 372/583] serial: core: fix sanitizing check for RTS settings
-Date: Mon, 22 Jan 2024 15:57:03 -0800
-Message-ID: <20240122235823.389331157@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.1 256/417] clocksource/drivers/timer-ti-dm: Fix make W=n kerneldoc warnings
+Date: Mon, 22 Jan 2024 15:57:04 -0800
+Message-ID: <20240122235800.747631416@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,84 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Tony Lindgren <tony@atomide.com>
 
-commit 4afeced55baa391490b61ed9164867e2927353ed upstream.
+commit b99a212a7697c542b460adaa15d4a98abf8223f0 upstream.
 
-Among other things uart_sanitize_serial_rs485() tests the sanity of the RTS
-settings in a RS485 configuration that has been passed by userspace.
-If RTS-on-send and RTS-after-send are both set or unset the configuration
-is adjusted and RTS-after-send is disabled and RTS-on-send enabled.
+Kernel test robot reports of kerneldoc related warnings that happen with
+make W=n for "parameter or member not described".
 
-This however makes only sense if both RTS modes are actually supported by
-the driver.
+These were caused by changes to function parameter names with
+earlier commits where the kerneldoc parts were not updated.
 
-With commit be2e2cb1d281 ("serial: Sanitize rs485_struct") the code does
-take the driver support into account but only checks if one of both RTS
-modes are supported. This may lead to the errorneous result of RTS-on-send
-being set even if only RTS-after-send is supported.
-
-Fix this by changing the implemented logic: First clear all unsupported
-flags in the RS485 configuration, then adjust an invalid RTS setting by
-taking into account which RTS mode is supported.
-
-Cc:  <stable@vger.kernel.org>
-Fixes: be2e2cb1d281 ("serial: Sanitize rs485_struct")
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Link: https://lore.kernel.org/r/20240103061818.564-4-l.sanfilippo@kunbus.com
+Fixes: 49cd16bb573e ("clocksource/drivers/timer-ti-dm: Simplify register writes with dmtimer_write()")
+Fixes: a6e543f61531 ("clocksource/drivers/timer-ti-dm: Move struct omap_dm_timer fields to driver")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311040403.DzIiBuwU-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202311040606.XL5OcR9O-lkp@intel.com/
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20231114072930.40615-1-tony@atomide.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/serial_core.c |   28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+ drivers/clocksource/timer-ti-dm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -1370,19 +1370,27 @@ static void uart_sanitize_serial_rs485(s
- 		return;
- 	}
+--- a/drivers/clocksource/timer-ti-dm.c
++++ b/drivers/clocksource/timer-ti-dm.c
+@@ -184,7 +184,7 @@ static inline u32 dmtimer_read(struct dm
+  * dmtimer_write - write timer registers in posted and non-posted mode
+  * @timer:      timer pointer over which write operation is to perform
+  * @reg:        lowest byte holds the register offset
+- * @value:      data to write into the register
++ * @val:        data to write into the register
+  *
+  * The posted mode bit is encoded in reg. Note that in posted mode, the write
+  * pending bit must be checked. Otherwise a write on a register which has a
+@@ -937,7 +937,7 @@ static int omap_dm_timer_set_int_enable(
  
-+	rs485->flags &= supported_flags;
-+
- 	/* Pick sane settings if the user hasn't */
--	if ((supported_flags & (SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND)) &&
--	    !(rs485->flags & SER_RS485_RTS_ON_SEND) ==
-+	if (!(rs485->flags & SER_RS485_RTS_ON_SEND) ==
- 	    !(rs485->flags & SER_RS485_RTS_AFTER_SEND)) {
--		dev_warn_ratelimited(port->dev,
--			"%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
--			port->name, port->line);
--		rs485->flags |= SER_RS485_RTS_ON_SEND;
--		rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
--		supported_flags |= SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND;
--	}
-+		if (supported_flags & SER_RS485_RTS_ON_SEND) {
-+			rs485->flags |= SER_RS485_RTS_ON_SEND;
-+			rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
- 
--	rs485->flags &= supported_flags;
-+			dev_warn_ratelimited(port->dev,
-+				"%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
-+				port->name, port->line);
-+		} else {
-+			rs485->flags |= SER_RS485_RTS_AFTER_SEND;
-+			rs485->flags &= ~SER_RS485_RTS_ON_SEND;
-+
-+			dev_warn_ratelimited(port->dev,
-+				"%s (%d): invalid RTS setting, using RTS_AFTER_SEND instead\n",
-+				port->name, port->line);
-+		}
-+	}
- 
- 	uart_sanitize_serial_rs485_delays(port, rs485);
- 
+ /**
+  * omap_dm_timer_set_int_disable - disable timer interrupts
+- * @timer:	pointer to timer handle
++ * @cookie:	pointer to timer cookie
+  * @mask:	bit mask of interrupts to be disabled
+  *
+  * Disables the specified timer interrupts for a timer.
 
 
 
