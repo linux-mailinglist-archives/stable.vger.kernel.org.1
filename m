@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BBC4837D99
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82EF2838034
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 241621F2517E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8CE91C2962F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FBF5A0FE;
-	Tue, 23 Jan 2024 00:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB7B65BC1;
+	Tue, 23 Jan 2024 00:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QomAitF6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNZIMROR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62ED34EB24;
-	Tue, 23 Jan 2024 00:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1F864CEB;
+	Tue, 23 Jan 2024 00:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970060; cv=none; b=QeFaxcl8dIRIn3mSnpm3RgQNXbiB43NfvOAMMGEizNNqScoqRSnQ5yNE9cEkR6gra7iOBVL0z05GsVq+mtkK+KKN5bzik/AIfuxq0W2ENlUB1FEwYS9ZJ3ZmgsdvjuE9GP5+XCaqyeUzhXK6YNvbEUuxvqaN5K+BHGKOGyFr75s=
+	t=1705971587; cv=none; b=RVUCEeDJwIf9XUFVY+meq+w6GD2/eMBuEgyaBAiJBz3gm8HxC8p1PHYfsr+ZcsGeydr9uBDuuDmExQ6t0DmMEKzpTk64uylAZ+s/d5UUnObqLV0S3LJYttyp1JaPTchQv+dq7WIq/E5S2Lnh5qUw1iWEfaHLjXMN4tPozo7kH8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970060; c=relaxed/simple;
-	bh=YpSnthyu7FYlNVxa0ewBwZiA0OwbikCbrm78ODeiJSM=;
+	s=arc-20240116; t=1705971587; c=relaxed/simple;
+	bh=eR2tHIPjvaRtkjGKkdG/jKVhDehp+9ZPQ2V67d3BOxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kXVwtXStehp+1iSlKanp6peotNGuVBHSBxE04/e/5vBWnyrtAmL9HdSRYn0x9N1fRu9zV0NAUbzUZARPfbJvXP9vPItrpWSXhibdJvSdDYK4TkelAuqoxx94cgxSh3mrgFYdDYRtHBxPJSy/73O8+dPeSh5sSWIf3KJoK+CR/6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QomAitF6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 030CFC433F1;
-	Tue, 23 Jan 2024 00:34:19 +0000 (UTC)
+	 MIME-Version; b=WO42QgXDuPcavEBw0Svc71oDEzSkhkH34uzx2kgMdyy6v8CCOTFrRIJFbr7Z5ApBbfaVEUuOcq2YxIUadIVisLJJeaWUz1+TOBNNs1ZDnSSGH/irua/Z76sJdOjNBM3Ppq6f0gk5hi32glvnekQuawxdL3YnjXgxb751y6QtkbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNZIMROR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C1AC433C7;
+	Tue, 23 Jan 2024 00:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970060;
-	bh=YpSnthyu7FYlNVxa0ewBwZiA0OwbikCbrm78ODeiJSM=;
+	s=korg; t=1705971586;
+	bh=eR2tHIPjvaRtkjGKkdG/jKVhDehp+9ZPQ2V67d3BOxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QomAitF6XOI/f76GsFGges3MZuZsBQpWDn1988G+NO0laPMmWsETB8W1kY6dY0kjW
-	 /RAyEs+wudJKVD+zGXy0x6kn2BAdwubQCsSyymEGxPU0En01sGxM+3SUxC+zxXzuIR
-	 Zy70ubxjRJAnbmCBlNGPHbrNCT2f3VePrMgUrtbE=
+	b=BNZIMRORB025tfkZkblI0XQOVBydjQgwMNeKBdZYu7veKni42kGFACvvAlzKbhC0H
+	 gVuTu9iMfQGMyAqbKwJWziThWLzjGl5fPKKSHnQsL9+Ze1H0X8ho2L9K7clwD+/HiU
+	 40wKHB0svm/Jua0OgTk+flgHGu2bVoT7qDzbtQnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 575/641] nvmet-tcp: Fix the H2C expected PDU len calculation
+Subject: [PATCH 5.10 173/286] drivers/amd/pm: fix a use-after-free in kv_parse_power_table
 Date: Mon, 22 Jan 2024 15:57:59 -0800
-Message-ID: <20240122235836.154484544@linuxfoundation.org>
+Message-ID: <20240122235738.836621834@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 9a1abc24850eb759e36a2f8869161c3b7254c904 ]
+[ Upstream commit 28dd788382c43b330480f57cd34cde0840896743 ]
 
-The nvmet_tcp_handle_h2c_data_pdu() function should take into
-consideration the possibility that the header digest and/or the data
-digests are enabled when calculating the expected PDU length, before
-comparing it to the value stored in cmd->pdu_len.
+When ps allocated by kzalloc equals to NULL, kv_parse_power_table
+frees adev->pm.dpm.ps that allocated before. However, after the control
+flow goes through the following call chains:
 
-Fixes: efa56305908b ("nvmet-tcp: Fix a kernel panic when host sends an invalid H2C PDU length")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+kv_parse_power_table
+  |-> kv_dpm_init
+        |-> kv_dpm_sw_init
+	      |-> kv_dpm_fini
+
+The adev->pm.dpm.ps is used in the for loop of kv_dpm_fini after its
+first free in kv_parse_power_table and causes a use-after-free bug.
+
+Fixes: a2e73f56fa62 ("drm/amdgpu: Add support for CIK parts")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index e5a2cd9e8c13..80db64a4b09f 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -979,7 +979,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- {
- 	struct nvme_tcp_data_pdu *data = &queue->pdu.data;
- 	struct nvmet_tcp_cmd *cmd;
--	unsigned int plen;
-+	unsigned int exp_data_len;
- 
- 	if (likely(queue->nr_cmds)) {
- 		if (unlikely(data->ttag >= queue->nr_cmds)) {
-@@ -1002,9 +1002,13 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		return -EPROTO;
- 	}
- 
--	plen = le32_to_cpu(data->hdr.plen);
-+	exp_data_len = le32_to_cpu(data->hdr.plen) -
-+			nvmet_tcp_hdgst_len(queue) -
-+			nvmet_tcp_ddgst_len(queue) -
-+			sizeof(*data);
-+
- 	cmd->pdu_len = le32_to_cpu(data->data_length);
--	if (unlikely(cmd->pdu_len != (plen - sizeof(*data)) ||
-+	if (unlikely(cmd->pdu_len != exp_data_len ||
- 		     cmd->pdu_len == 0 ||
- 		     cmd->pdu_len > NVMET_TCP_MAXH2CDATA)) {
- 		pr_err("H2CData PDU len %u is invalid\n", cmd->pdu_len);
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c b/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c
+index c8a5a5698edd..6eb6f05c1136 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c
+@@ -2733,10 +2733,8 @@ static int kv_parse_power_table(struct amdgpu_device *adev)
+ 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
+ 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
+ 		ps = kzalloc(sizeof(struct kv_ps), GFP_KERNEL);
+-		if (ps == NULL) {
+-			kfree(adev->pm.dpm.ps);
++		if (ps == NULL)
+ 			return -ENOMEM;
+-		}
+ 		adev->pm.dpm.ps[i].ps_priv = ps;
+ 		k = 0;
+ 		idx = (u8 *)&power_state->v2.clockInfoIndex[0];
 -- 
 2.43.0
 
