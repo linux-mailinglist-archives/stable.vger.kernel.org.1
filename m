@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-13795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28463837E13
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1485483856B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:41:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD98B1F29CBF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 882FCB292EB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CD355C34;
-	Tue, 23 Jan 2024 00:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF8E77627;
+	Tue, 23 Jan 2024 02:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYkJb7FP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4eqJauU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FE953E16;
-	Tue, 23 Jan 2024 00:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1B6745F0;
+	Tue, 23 Jan 2024 02:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970345; cv=none; b=su145MB/3BbasXWDkyN4hT2S6VNMrKdHmn2gmTq6c2mu/jpb1atQz0uZ2M0c/+5VqV8vgS/Jbvr6mrKrawsS6Io5V/A59Qidb8Ky64yxTND95T8ysVL+l94SiWKGGfezhSd/NM/f26QuOqGLjA6B72723b7I3OLIsZC/wTcrTSU=
+	t=1705975506; cv=none; b=nnVWHCEbxWWxScbam7mNHT4eUW6HDZcgs0EL5d/gnechSkHEnunC9mRgy9ZesmuNMYLV+61kGq0NmP0spZqjDiQGO/8eXYTahz77MBLkRJGCQ8H1kljOiotpmhsUzMO1k2xM14YmmJg7keemFdTZi228ADOzJcOLJYElaDM4hx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970345; c=relaxed/simple;
-	bh=sUrPH9xjy85NwwGk0TWQGgi/8bQ5RMY7dDdSvZ95eF0=;
+	s=arc-20240116; t=1705975506; c=relaxed/simple;
+	bh=2vatRWI28wmbIcaHzb8mSBPtB9bysN9b75iWVV2ewrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d9oI5iKHF9IywjpUlxO9PgRxFxWUEvptf7tiw8q2WL2HyI4JLciXn8Irl8QQwLNdT2l/1pNEKvU7SJdfWivzt+7vf+Hpbmw/feevBH6iEjvlK3EwTI5QPt4xhq1how7Gj0PDLLsx2R17dDSjl5qUo9bin8v4lwnR+BEcjXnJHHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYkJb7FP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CC6C433F1;
-	Tue, 23 Jan 2024 00:39:05 +0000 (UTC)
+	 MIME-Version; b=mRgCy0gAysPwl2yRivQW0LB/8w3xRzKPXuWUe7xiDG6WpLnIr4sD+Qhi6wyrTCTpqHgDumD/4iU4STWXoi3Hhavi/3wnxaXyZlxwyPHpelYUBrEDigw8z0zlqgdCU7R8bKz8gYLvPNIJaCkgYxnBWqbLelK2LdBJokHyKyT/oY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4eqJauU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6107AC433F1;
+	Tue, 23 Jan 2024 02:05:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970345;
-	bh=sUrPH9xjy85NwwGk0TWQGgi/8bQ5RMY7dDdSvZ95eF0=;
+	s=korg; t=1705975506;
+	bh=2vatRWI28wmbIcaHzb8mSBPtB9bysN9b75iWVV2ewrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYkJb7FPi4CnU9Ux5YWp3pHKOcgmzgKS27QydBdBGxcX/z3ZZGVMK9iklY55PlG8y
-	 2i8/E6jjxgwhgnboSfY3UnZSur66tnyY0T0gxAnaSfAGXy16HlL2hBoM75pEwX8xK5
-	 3TjyNaK2rPbfm9vvPXcDNc6Qnb28YBeJKW6qgzbM=
+	b=W4eqJauU5JI7+gnWqPZ6WoOEmG+C6+UsOrsdBjvdXrPSsqHB2cA9ZMebai/BcPtpS
+	 xeJs7Rd8/AgNWhCCLS0684vMXpPj8BCDwpNP0zFgGdtPcrdKdX+DxxLPwmlgvckmom
+	 ijJtqNIJdz2TifHcx5X5ukS6Nws0Xi/Q5WD0Do3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 605/641] net: ravb: Fix dma_addr_t truncation in error case
+Subject: [PATCH 6.6 458/583] PCI: Avoid potential out-of-bounds read in pci_dev_for_each_resource()
 Date: Mon, 22 Jan 2024 15:58:29 -0800
-Message-ID: <20240122235837.173414355@linuxfoundation.org>
+Message-ID: <20240122235825.983987675@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit e327b2372bc0f18c30433ac40be07741b59231c5 ]
+[ Upstream commit 3171e46d677a668eed3086da78671f1e4f5b8405 ]
 
-In ravb_start_xmit(), ravb driver uses u32 variable to store result of
-dma_map_single() call. Since ravb hardware has 32-bit address fields in
-descriptors, this works properly when mapping is successful - it is
-platform's job to provide mapping addresses that fit into hardware
-limitations.
+Coverity complains that pointer in the pci_dev_for_each_resource() may be
+wrong, i.e., might be used for the out-of-bounds read.
 
-However, in failure case dma_map_single() returns DMA_MAPPING_ERROR
-constant that is 64-bit when dma_addr_t is 64-bit. Storing this constant
-in u32 leads to truncation, and further call to dma_mapping_error()
-fails to notice the error.
+There is no actual issue right now because we have another check afterwards
+and the out-of-bounds read is not being performed. In any case it's better
+code with this fixed, hence the proposed change.
 
-Fix that by storing result of dma_map_single() in a dma_addr_t
-variable.
+As Jonas pointed out "It probably makes the code slightly less performant
+as res will now be checked for being not NULL (which will always be true),
+but I doubt it will be significant (or in any hot paths)."
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 09cc90063240 ("PCI: Introduce pci_dev_for_each_resource()")
+Reported-by: Bjorn Helgaas <bhelgaas@google.com>
+Closes: https://lore.kernel.org/r/20230509182122.GA1259567@bhelgaas
+Suggested-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://lore.kernel.org/r/20231030114218.2752236-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/pci.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 8649b3e90edb..0e3731f50fc2 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1949,7 +1949,7 @@ static netdev_tx_t ravb_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	struct ravb_tstamp_skb *ts_skb;
- 	struct ravb_tx_desc *desc;
- 	unsigned long flags;
--	u32 dma_addr;
-+	dma_addr_t dma_addr;
- 	void *buffer;
- 	u32 entry;
- 	u32 len;
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 1596b1205b8d..3af5f2998551 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -2101,14 +2101,14 @@ int pci_iobar_pfn(struct pci_dev *pdev, int bar, struct vm_area_struct *vma);
+ 	(pci_resource_end((dev), (bar)) ? 				\
+ 	 resource_size(pci_resource_n((dev), (bar))) : 0)
+ 
+-#define __pci_dev_for_each_res0(dev, res, ...)				\
+-	for (unsigned int __b = 0;					\
+-	     res = pci_resource_n(dev, __b), __b < PCI_NUM_RESOURCES;	\
++#define __pci_dev_for_each_res0(dev, res, ...)				  \
++	for (unsigned int __b = 0;					  \
++	     __b < PCI_NUM_RESOURCES && (res = pci_resource_n(dev, __b)); \
+ 	     __b++)
+ 
+-#define __pci_dev_for_each_res1(dev, res, __b)				\
+-	for (__b = 0;							\
+-	     res = pci_resource_n(dev, __b), __b < PCI_NUM_RESOURCES;	\
++#define __pci_dev_for_each_res1(dev, res, __b)				  \
++	for (__b = 0;							  \
++	     __b < PCI_NUM_RESOURCES && (res = pci_resource_n(dev, __b)); \
+ 	     __b++)
+ 
+ #define pci_dev_for_each_resource(dev, res, ...)			\
 -- 
 2.43.0
 
