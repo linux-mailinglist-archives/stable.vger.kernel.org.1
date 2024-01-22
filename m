@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1544838302
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E530837E3A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAE5D28A459
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0D4D1C27B08
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56A3604D8;
-	Tue, 23 Jan 2024 01:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE305676A;
+	Tue, 23 Jan 2024 00:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wldw5GWF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gyKMolIr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72921604CC;
-	Tue, 23 Jan 2024 01:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9F94F207;
+	Tue, 23 Jan 2024 00:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974681; cv=none; b=E5q6dK8v8Wh+ne+nkkW+31m61PKf0DdEtk7FK70T0uWoBGXsGzXV15VeBLxUl9hYYE5zD/OqMTTXAVoNPwAwbNB9puECrJRGbRI5/oxj46otqrj6I5JbSmfeZdGGO9yVGep8Inrby3yDMwSTFw42COwbfB66Mwv4vwhbjUf2WlA=
+	t=1705970460; cv=none; b=uvetEDjfWv5buZLKJoN4preKH4b1vQck4Pms6azoVZ2A3vt1PukjInxWj4jfwo6YSfCYiXaMVQ/t686V0n2YZhw7Wxc2hu4UDd8Bm9XHflGI8Drl0ZwvEwwr1x7uwO4TKmx27ybuhAmj5XsIbnUOgH06fvux69jA6px+2ne97Kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974681; c=relaxed/simple;
-	bh=SdHTSdp9Z+rcnA94uOKm7zxIOrtYWLuhXZS5/aQLGDo=;
+	s=arc-20240116; t=1705970460; c=relaxed/simple;
+	bh=9+BTKugS12MQXoTS37yzBQJlyHLZOFqKQ328/NEoWAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pqe4JDImqFI7sMdZAFe92hS6gK2jTLhaq5LWvhB3ayghVLx3Y6xt1UzpKvJYsbC2adW94oUeeafsDNPqNGV0PWzKgZSd6gf/kKayg4NYy9mIFyizRfkha1VfFwsfYcv+k3Xdkx9A9IcNwb6LF1KOp5eXu67jFgvM0ZR5yHGMnOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wldw5GWF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35769C43390;
-	Tue, 23 Jan 2024 01:51:21 +0000 (UTC)
+	 MIME-Version; b=JlrjdslTO6+CC6UQ4Dj/ouRo47VqCBCYRBYQrZCZ68ZC5bbCHWpkL8si6gxGfsgup6yvo/hLcvH7dGmxBfzu2Ire6uZ3F53NN5HdxIVTyTiilDvUOqAkwx4M6gxhf219Yk4ClLRNK0F5sM/Puv2nZgjFDorrdG6T/ajPaGozius=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gyKMolIr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE0EC433F1;
+	Tue, 23 Jan 2024 00:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974681;
-	bh=SdHTSdp9Z+rcnA94uOKm7zxIOrtYWLuhXZS5/aQLGDo=;
+	s=korg; t=1705970460;
+	bh=9+BTKugS12MQXoTS37yzBQJlyHLZOFqKQ328/NEoWAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wldw5GWFAVghmomBGDQQSesYzqyHwtUikDUo0CCa6uKtQdpb4eYPt0rnzYc+T9qME
-	 9FQE2UuH7XGoSSf+lIZ1BlYn5BcL+pi3omBUl3c34p08iauWt0W6UNxA+i4Q1DVjGg
-	 SZqNAVxd6NbD5i+JDL3R2kqFjVAaILDCnBwXzqQI=
+	b=gyKMolIrOoqBcO6ozMJhhuOMlZ9LZ9yJZO0CRvzFwu7Mp6o461I8GG65Pzkl3QC6r
+	 vRPi09VdOYYsBgqekP6tFPJB5lXVUgQq3AqW06MPUmzv9YQQpXLT0PuqP1LfqhDX7l
+	 O6ooKZUkofS8p+Bv/dvV1PRANouTtHnjdxjYnkZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 121/583] selftests/net: specify the interface when do arping
+Subject: [PATCH 6.1 004/417] powerpc: remove checks for binutils older than 2.25
 Date: Mon, 22 Jan 2024 15:52:52 -0800
-Message-ID: <20240122235815.849748568@linuxfoundation.org>
+Message-ID: <20240122235751.635715305@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 7f770d28f2e5abfd442ad689ba1129dd66593529 ]
+[ Upstream commit 54a11654de163994e32b24e3aa90ef81f4a3184d ]
 
-When do arping, the interface need to be specified. Or we will
-get error: Interface "lo" is not ARPable. And the test failed.
-]# ./arp_ndisc_untracked_subnets.sh
-    TEST: test_arp:  accept_arp=0                                       [ OK ]
-    TEST: test_arp:  accept_arp=1                                       [FAIL]
-    TEST: test_arp:  accept_arp=2  same_subnet=0                        [ OK ]
-    TEST: test_arp:  accept_arp=2  same_subnet=1                        [FAIL]
+Commit e4412739472b ("Documentation: raise minimum supported version of
+binutils to 2.25") allows us to remove the checks for old binutils.
 
-After fix:
-]# ./arp_ndisc_untracked_subnets.sh
-    TEST: test_arp:  accept_arp=0                                       [ OK ]
-    TEST: test_arp:  accept_arp=1                                       [ OK ]
-    TEST: test_arp:  accept_arp=2  same_subnet=0                        [ OK ]
-    TEST: test_arp:  accept_arp=2  same_subnet=1                        [ OK ]
+There is no more user for ld-ifversion. Remove it as well.
 
-Fixes: 0ea7b0a454ca ("selftests: net: arp_ndisc_untracked_subnets: test for arp_accept and accept_untracked_na")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230119082250.151485-1-masahiroy@kernel.org
+Stable-dep-of: 1b1e38002648 ("powerpc: add crtsavres.o to always-y instead of extra-y")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/Makefile     | 17 +----------------
+ arch/powerpc/lib/Makefile |  2 +-
+ scripts/Makefile.compiler |  4 ----
+ 3 files changed, 2 insertions(+), 21 deletions(-)
 
-diff --git a/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh b/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh
-index c899b446acb6..327427ec10f5 100755
---- a/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh
-+++ b/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh
-@@ -150,7 +150,7 @@ arp_test_gratuitous() {
- 	fi
- 	# Supply arp_accept option to set up which sets it in sysctl
- 	setup ${arp_accept}
--	ip netns exec ${HOST_NS} arping -A -U ${HOST_ADDR} -c1 2>&1 >/dev/null
-+	ip netns exec ${HOST_NS} arping -A -I ${HOST_INTF} -U ${HOST_ADDR} -c1 2>&1 >/dev/null
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index 054844153b1f..487e4967b60d 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -42,18 +42,13 @@ machine-$(CONFIG_PPC64) += 64
+ machine-$(CONFIG_CPU_LITTLE_ENDIAN) += le
+ UTS_MACHINE := $(subst $(space),,$(machine-y))
  
- 	if verify_arp $1 $2; then
- 		printf "    TEST: %-60s  [ OK ]\n" "${test_msg[*]}"
+-# XXX This needs to be before we override LD below
+-ifdef CONFIG_PPC32
+-KBUILD_LDFLAGS_MODULE += arch/powerpc/lib/crtsavres.o
+-else
+-ifeq ($(call ld-ifversion, -ge, 22500, y),y)
++ifeq ($(CONFIG_PPC64)$(CONFIG_LD_IS_BFD),yy)
+ # Have the linker provide sfpr if possible.
+ # There is a corresponding test in arch/powerpc/lib/Makefile
+ KBUILD_LDFLAGS_MODULE += --save-restore-funcs
+ else
+ KBUILD_LDFLAGS_MODULE += arch/powerpc/lib/crtsavres.o
+ endif
+-endif
+ 
+ ifdef CONFIG_CPU_LITTLE_ENDIAN
+ KBUILD_CFLAGS	+= -mlittle-endian
+@@ -391,17 +386,7 @@ endif
+ endif
+ 
+ PHONY += checkbin
+-# Check toolchain versions:
+-# - gcc-4.6 is the minimum kernel-wide version so nothing required.
+ checkbin:
+-	@if test "x${CONFIG_LD_IS_LLD}" != "xy" -a \
+-		"x$(call ld-ifversion, -le, 22400, y)" = "xy" ; then \
+-		echo -n '*** binutils 2.24 miscompiles weak symbols ' ; \
+-		echo 'in some circumstances.' ; \
+-		echo    '*** binutils 2.23 do not define the TOC symbol ' ; \
+-		echo -n '*** Please use a different binutils version.' ; \
+-		false ; \
+-	fi
+ 	@if test "x${CONFIG_FTRACE_MCOUNT_USE_RECORDMCOUNT}" = "xy" -a \
+ 		"x${CONFIG_LD_IS_BFD}" = "xy" -a \
+ 		"${CONFIG_LD_VERSION}" = "23700" ; then \
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index 8560c912186d..b705c89f3e21 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -42,7 +42,7 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)	+= error-inject.o
+ # 64-bit linker creates .sfpr on demand for final link (vmlinux),
+ # so it is only needed for modules, and only for older linkers which
+ # do not support --save-restore-funcs
+-ifeq ($(call ld-ifversion, -lt, 22500, y),y)
++ifndef CONFIG_LD_IS_BFD
+ extra-$(CONFIG_PPC64)	+= crtsavres.o
+ endif
+ 
+diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
+index 158c57f2acfd..87589a7ba27f 100644
+--- a/scripts/Makefile.compiler
++++ b/scripts/Makefile.compiler
+@@ -72,7 +72,3 @@ clang-min-version = $(shell [ $(CONFIG_CLANG_VERSION)0 -ge $(1)0 ] && echo y)
+ # ld-option
+ # Usage: KBUILD_LDFLAGS += $(call ld-option, -X, -Y)
+ ld-option = $(call try-run, $(LD) $(KBUILD_LDFLAGS) $(1) -v,$(1),$(2),$(3))
+-
+-# ld-ifversion
+-# Usage:  $(call ld-ifversion, -ge, 22252, y)
+-ld-ifversion = $(shell [ $(CONFIG_LD_VERSION)0 $(1) $(2)0 ] && echo $(3) || echo $(4))
 -- 
 2.43.0
 
