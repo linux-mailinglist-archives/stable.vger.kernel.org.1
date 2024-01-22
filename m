@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-13277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB4A837BAD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:05:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42F1A837C4F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CD5AB2C352
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:59:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51D4DB2F33A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B7014AD0C;
-	Tue, 23 Jan 2024 00:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BD714AD25;
+	Tue, 23 Jan 2024 00:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vpW+kLNA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gWbRP5O/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC1F14A4FA;
-	Tue, 23 Jan 2024 00:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571EE14AD1F;
+	Tue, 23 Jan 2024 00:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969240; cv=none; b=ZlbhiJLVwtF1lGa0SOzyvnQTewaFiC7C0UEX0J5HXw3bk8b/xoXb1J36ED5CcyHU+rtTPa+juRlvJ9xFfQdAYlw3qof5HbgPBVMEK+muKkcyN23I4X4r21nZOCiplit+qH009eOhDQH0viP/mVjBbkdxwjKa6k6q3e02JEGOA/0=
+	t=1705969253; cv=none; b=YzOIesbi9pZrqr4nJgJt1K5Uvh6RSUJl+4XgVZz39vmWrCdCyyHQ9T5sSxDko2bRObw5/5EF25zTn5OuWXZtFXdxUWsQtw5fvpOSOyh7QAlCa/FzFEtigPH8UAFFAg+bN0fhZ2meAuMl/nZxPIvBy1h6cevyzzPPbQNvsIzgWCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969240; c=relaxed/simple;
-	bh=Bf+R0A9VsRIsBDDiukmGNhR1ajhjZMwVNDRZ2Ff1Ft4=;
+	s=arc-20240116; t=1705969253; c=relaxed/simple;
+	bh=Pv3LtTty4SJpRZPWdUHcIBjTuLIO+Zdy4kb3+cjV9Ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eTHXh37eyq68cY2whsUC6kTveERUVowaV7NCwOlVXUhopA9+3XBQHokpKvU7hoagt9gt+f6/egueBkunOaIAuREmWbiCkKO7Zj6Ex0qNO+SiSLtEu/pxECB5fd8Et4Mpdm9NhUCjU1f2tORn/J5rv1s8dlsDHx6DcRGVF7mLl5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vpW+kLNA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88483C433F1;
-	Tue, 23 Jan 2024 00:20:39 +0000 (UTC)
+	 MIME-Version; b=AJ1rKhhQEWEhdpziEbeQ1PUrs8ich4NYhJRIe7NZ7c+260we3eiOcq5NWVRwSX08Co2t91hHOabNGNk+9UGkarQCXzRujjzGUwXA2Si/zojL9eaYqHwMAJD3OAPAe+7aC6QRbCYBWq4AG9klYrl/kJUrFEZuWcqR9WGKMc4/LEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gWbRP5O/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B66C433F1;
+	Tue, 23 Jan 2024 00:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969239;
-	bh=Bf+R0A9VsRIsBDDiukmGNhR1ajhjZMwVNDRZ2Ff1Ft4=;
+	s=korg; t=1705969253;
+	bh=Pv3LtTty4SJpRZPWdUHcIBjTuLIO+Zdy4kb3+cjV9Ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vpW+kLNAIRuAf76fXJlKI7xKf6bLEmls2XaX3qIK2c0ayA/lZJL7LiDPJgfduHhBl
-	 fdPVROpQb4jCrRzI3d+fBL8v9klAxT9+fo41jFskH8muUUVxjUTz8OASRApUT5ehay
-	 wBAJANNuoB8c0l2hTm/7AJnbJnAPaP4fRIQ4KZ60=
+	b=gWbRP5O/CGRb+bU2p3viq0HL2QidnbKBZmoO79OrpJ6PEdc8zLOaEESlY14wlMegw
+	 Oyu1eS4oYH1/9mTTE+hdCguZ2yyatWtdTriZwQQhIrTqRNR5YRIIedlVZQOF6slcX3
+	 BjOAcY2gY5gQ7EEN/YWy9gLVEs+z9pRKK8gOssYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 120/641] arm64: dts: qcom: sc8180x-primus: Fix HALL_INT polarity
-Date: Mon, 22 Jan 2024 15:50:24 -0800
-Message-ID: <20240122235821.808704390@linuxfoundation.org>
+Subject: [PATCH 6.7 125/641] arm64: dts: qcom: sdm845: Make watchdog bark interrupt edge triggered
+Date: Mon, 22 Jan 2024 15:50:29 -0800
+Message-ID: <20240122235821.962590325@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -67,39 +68,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 1aaa08e8de365cce59203541cafadb5053b1ec1a ]
+[ Upstream commit 263b348499454f38d36b9442c3cf9279c571bb54 ]
 
-The hall sensor interrupt on the Primus is active low, which means that
-with the current configuration the device attempts to suspend when the
-LID is open.
+As described in the patch ("arm64: dts: qcom: sc7180: Make watchdog
+bark interrupt edge triggered"), the Qualcomm watchdog timer's bark
+interrupt should be configured as edge triggered. Make the change.
 
-Fix the polarity of the HALL_INT GPIO to avoid this.
-
-Fixes: 2ce38cc1e8fe ("arm64: dts: qcom: sc8180x: Introduce Primus")
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231130-sc8180x-primus-lid-polarity-v1-1-da917b59604b@quicinc.com
+Fixes: 36c436b03c58 ("arm64: dts: qcom: sdm845: Add watchdog bark interrupt")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20231106144335.v2.3.I16675ebe5517c68453a1bd7f4334ff885f806c03@changeid
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8180x-primus.dts | 2 +-
+ arch/arm64/boot/dts/qcom/sdm845.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8180x-primus.dts b/arch/arm64/boot/dts/qcom/sc8180x-primus.dts
-index fd2fab4895b3..a40ef23a2a4f 100644
---- a/arch/arm64/boot/dts/qcom/sc8180x-primus.dts
-+++ b/arch/arm64/boot/dts/qcom/sc8180x-primus.dts
-@@ -43,7 +43,7 @@ gpio-keys {
- 		pinctrl-0 = <&hall_int_active_state>;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+index bf5e6eb9d313..9648505644ff 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -5088,7 +5088,7 @@ watchdog@17980000 {
+ 			compatible = "qcom,apss-wdt-sdm845", "qcom,kpss-wdt";
+ 			reg = <0 0x17980000 0 0x1000>;
+ 			clocks = <&sleep_clk>;
+-			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
+ 		};
  
- 		lid-switch {
--			gpios = <&tlmm 121 GPIO_ACTIVE_HIGH>;
-+			gpios = <&tlmm 121 GPIO_ACTIVE_LOW>;
- 			linux,input-type = <EV_SW>;
- 			linux,code = <SW_LID>;
- 			wakeup-source;
+ 		apss_shared: mailbox@17990000 {
 -- 
 2.43.0
 
