@@ -1,70 +1,57 @@
-Return-Path: <stable+bounces-13672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194D8837D5A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A551183823B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C63B328655A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D83D41C267E0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD85854FB4;
-	Tue, 23 Jan 2024 00:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B1C58AD2;
+	Tue, 23 Jan 2024 01:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwsKsWj5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f50ihqj2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCC652F7C;
-	Tue, 23 Jan 2024 00:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F016121;
+	Tue, 23 Jan 2024 01:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969902; cv=none; b=N8ZaTS/JGYb8vpgbMcmyGGegwYkGI29UYNpIMkZAs+IAxs0A1b0U5Cg4jv2ReGYUilCI77Z8jhot7tsoa348HXbDAc6oeOx55Z8fZXhiLT4TGravhipYozwtmf25UIHIf7ehwquYzX1X5NnKt+3QdQFE2MyIVkwk/f0NOyECHA4=
+	t=1705974103; cv=none; b=Te4dRyzYxvL3NrBmbT9fIV/7rD/wptgzZQBzQGiK/DMt4O3rOJH3PHVmkfyQYOEmUdtkeiGzKDGS2l3mqztNGCfOFkRCTJjJWSil5qIxNYIyP9jf/NR123V/537lTjLT74qNZjTlOHOK5iCYGMZBriqr6b2w3qdp90SVVjvo69Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969902; c=relaxed/simple;
-	bh=vGL3tgXdhEl8W/3Ty/2WqYnu4Y2zg/Gwx+hhq/LKHOY=;
+	s=arc-20240116; t=1705974103; c=relaxed/simple;
+	bh=Qgdw7wh5rZlb0tPq4YriUCT/DRUPU65nECWCAmwBEjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUnn1m6uGdELCI817/RuPNMjvKAtxGiI3L23REOOrGPUSiaKCXLVwtinol1ZriqVoEANSaGQ9+JnzaWC66jUJUFp0OIgWgMQtTScY0n6iN9FFYYFJ7x6uVve4r3W40AmXbybCMq1xbjqI6z+2MV7jk+jdtK041m+qpItZZWrJ50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwsKsWj5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B290C433F1;
-	Tue, 23 Jan 2024 00:31:42 +0000 (UTC)
+	 MIME-Version; b=YcsxxeltSZp+nhyoOS42YiCWQBovpUiFysYDFb0Jijw98vk+jm54C6Dnm/vM+es2mFS55+6cgm9F4VpeZ4pSO/b3Or1PU/XUnhSpDjPSUzlUfQdrscxDjkx6nBut5cZTPVFXiULxFHHJO6yhjntpmARn9x3ijBKlQo7ZK2LgHts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f50ihqj2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD54C433C7;
+	Tue, 23 Jan 2024 01:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969902;
-	bh=vGL3tgXdhEl8W/3Ty/2WqYnu4Y2zg/Gwx+hhq/LKHOY=;
+	s=korg; t=1705974103;
+	bh=Qgdw7wh5rZlb0tPq4YriUCT/DRUPU65nECWCAmwBEjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uwsKsWj5/FNtuoinwK5QcViIlziiZ2I+stdDzli04tEe3uII3JnhZlCaqedqDRqQy
-	 WcacKFinrhymmCCcQtaVr3S6wCM84H5/8sOFNipyZMQu+2OgLVK0QKrZYk+gBya5EN
-	 mq9P47XqTKoLNfRiinehhNeguqLQo+54r3xKKYA0=
+	b=f50ihqj2GJ76Tup59cxRBiq7sClEr9wf3MQlLU/ZAROPQ32zBrdDMjWT8HZAO9jGl
+	 lbjx6ZEQCEpeciTIENhspaPdGnAyt4ldzsuO3vRYOM5k7nqBzqtOFpQUa2hpM3+Vbj
+	 viTmPr3krIHNbUrMNoYwgIEm6pWf8IXPOiOSYzV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Leo Yan <leo.yan@linaro.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Will Deacon <will@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 516/641] perf vendor events arm64 AmpereOne: Rename BPU_FLUSH_MEM_FAULT to GPC_FLUSH_MEM_FAULT
+Subject: [PATCH 5.15 164/374] wifi: iwlwifi: mvm: send TX path flush in rfkill
 Date: Mon, 22 Jan 2024 15:57:00 -0800
-Message-ID: <20240122235834.234900034@linuxfoundation.org>
+Message-ID: <20240122235750.314454066@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,54 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 10a149e4b4a9187940adbfff0f216ccb5a15aa41 ]
+[ Upstream commit 2afc3dad39ea84a072d04ff40a417234326adc47 ]
 
-The documentation wrongly called the event as BPU_FLUSH_MEM_FAULT and now
-has been fixed. Correct the name in the perf tool as well.
+If we want to drop packets, that's surely a good thing to
+do when we want to enter rfkill. Send this command despite
+rfkill so we can successfully clean up everything, we need
+to handle it separately since it has CMD_WANT_SKB, so it's
+not going to automatically return success when in rfkill.
 
-Fixes: a9650b7f6fc09d16 ("perf vendor events arm64: Add AmpereOne core PMU events")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20231201021550.1109196-3-ilkka@os.amperecomputing.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: d4e3a341b87b ("iwlwifi: mvm: add support for new flush queue response")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231219215605.c528a6fa6cec.Ibe5e9560359ccc0fba60c35e01de285c376748a2@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../pmu-events/arch/arm64/ampere/ampereone/core-imp-def.json    | 2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/pmu-events/arch/arm64/ampere/ampereone/core-imp-def.json b/tools/perf/pmu-events/arch/arm64/ampere/ampereone/core-imp-def.json
-index 88b23b85e33c..879ff21e0b17 100644
---- a/tools/perf/pmu-events/arch/arm64/ampere/ampereone/core-imp-def.json
-+++ b/tools/perf/pmu-events/arch/arm64/ampere/ampereone/core-imp-def.json
-@@ -110,7 +110,7 @@
-     {
-         "PublicDescription": "Flushes due to memory hazards",
-         "EventCode": "0x121",
--        "EventName": "BPU_FLUSH_MEM_FAULT",
-+        "EventName": "GPC_FLUSH_MEM_FAULT",
-         "BriefDescription": "Flushes due to memory hazards"
-     },
-     {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index 08dd227bad4b..266d1e9a89f5 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -2054,7 +2054,7 @@ int iwl_mvm_flush_sta_tids(struct iwl_mvm *mvm, u32 sta_id, u16 tids)
+ 	WARN_ON(!iwl_mvm_has_new_tx_api(mvm));
+ 
+ 	if (iwl_fw_lookup_notif_ver(mvm->fw, LONG_GROUP, TXPATH_FLUSH, 0) > 0)
+-		cmd.flags |= CMD_WANT_SKB;
++		cmd.flags |= CMD_WANT_SKB | CMD_SEND_IN_RFKILL;
+ 
+ 	IWL_DEBUG_TX_QUEUES(mvm, "flush for sta id %d tid mask 0x%x\n",
+ 			    sta_id, tids);
 -- 
 2.43.0
 
