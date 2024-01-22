@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE1D8837F41
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A8AD83817D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E516E1F29768
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8ACB28D98E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132C512A15F;
-	Tue, 23 Jan 2024 00:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A232110A;
+	Tue, 23 Jan 2024 01:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jdsZUKPo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIhKyUuU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BC2129A86;
-	Tue, 23 Jan 2024 00:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6827E9;
+	Tue, 23 Jan 2024 01:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971017; cv=none; b=fyCt7YDuRaNWcoCuj8aUDuZ6L9W3UsLx5F813pcqaYRpeER5cy7xxATco+07blOc8PYnQ0r64j8VxXciBMoycjCAw9/hd1X/Y3qXs85M2Wv56uz2acHNqGIZf1Mo9x7Up3qqIHcACuAdCBCaA0oT5NgxEFD69XM8Hj+zwPbyXFk=
+	t=1705972146; cv=none; b=jxUW2KWRh/LRKsNvs7AfLI0eNNa53tCaayeA5ly8pqPDeCtNJiAfk8rb3dfHPeaX1f8pYWQ9vvVd4f17FN94FFDR6jgiOQqWl/0WIVoJZ7wL9JBQV+DmKD6Kup0yJFNRVMlQhvunSCV3uFc4dE+X+A1+C4/nIuC9Kf7dxobvy9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971017; c=relaxed/simple;
-	bh=B4edW0mMkmzZuv7rGHrU5EEPvx1bo1UrgqDj1rhgF0s=;
+	s=arc-20240116; t=1705972146; c=relaxed/simple;
+	bh=YfEPMrL6/6f+PIakmXTzqL7sRyem2aTqhf/D+GPpl1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nQHrDxdRPx6lfwsHL/q/Dtf0aGTMbVCmqiKuctxB81On5YI4rCFZZ6US/D1DkiAxJiKkXzWAPmTPSqAtya/IoqnbQiu/3SXndLpfoxJjrwUsXmH+H/1HJYph0owEdlFjFD631NzsEoPQcIkfllOQjAnSjnhlxrvXubU/eH5AonU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdsZUKPo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2109BC433C7;
-	Tue, 23 Jan 2024 00:50:17 +0000 (UTC)
+	 MIME-Version; b=LbxJJk0nON+Ju2VrEVNxxt1Sqoc6iXUs+TQXHaXP316ML/cbQ9ne8n+vBDVMFM1lurCbM7c7hBYXrJ80VL5VXv6kYk8pcf8CrxIrLRG/3KDm32bS2T+qzXj34ct54znQidX8dhHWgxn+FlGIkyjM49hW/vr1SEWFgVSCGLVRDNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIhKyUuU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF7A2C433C7;
+	Tue, 23 Jan 2024 01:09:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971017;
-	bh=B4edW0mMkmzZuv7rGHrU5EEPvx1bo1UrgqDj1rhgF0s=;
+	s=korg; t=1705972146;
+	bh=YfEPMrL6/6f+PIakmXTzqL7sRyem2aTqhf/D+GPpl1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jdsZUKPo6QYNPIW+hvTJN6PM43DRJMByhkmT4pHPKdZTcdJlv2KeGBNjk76ohPxJX
-	 muF38JX2bR9XN45bsxJYxyCFjfEUwU8gpK/CNzEQHpoi4/ge5cERwS729I4u1hoPJT
-	 2iFPWar3FNALqGdPiypI3To7Sp+6uzE1vCJzf15Q=
+	b=LIhKyUuUbVGqGMnzdGecKtdkM34FDXPxZ7d3nIuzxk2PqMJQ5G7gzZEY+O8Nz2Ubi
+	 myRmi2gC5tSEESMawZ+Wv4smX/qZ5Nt/pHvQP3pRcllrXWS0kfANdWdkSC7irHDf9G
+	 7zcs8OTgctw/C9/nXXdwhLoyRO34tZ9jnQ0adQhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 163/417] drm/bridge: tpd12s015: Drop buggy __exit annotation for remove function
+Subject: [PATCH 5.15 075/374] powerpc/powernv: Add a null pointer check in opal_event_init()
 Date: Mon, 22 Jan 2024 15:55:31 -0800
-Message-ID: <20240122235757.491382217@linuxfoundation.org>
+Message-ID: <20240122235747.228746641@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit ce3e112e7ae854249d8755906acc5f27e1542114 ]
+[ Upstream commit 8649829a1dd25199bbf557b2621cedb4bf9b3050 ]
 
-With tpd12s015_remove() marked with __exit this function is discarded
-when the driver is compiled as a built-in. The result is that when the
-driver unbinds there is no cleanup done which results in resource
-leakage or worse.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-Fixes: cff5e6f7e83f ("drm/bridge: Add driver for the TI TPD12S015 HDMI level shifter")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231102165640.3307820-19-u.kleine-koenig@pengutronix.de
+Fixes: 2717a33d6074 ("powerpc/opal-irqchip: Use interrupt names if present")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231127030755.1546750-1-chentao@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ti-tpd12s015.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/powernv/opal-irqchip.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/ti-tpd12s015.c b/drivers/gpu/drm/bridge/ti-tpd12s015.c
-index e0e015243a60..b588fea12502 100644
---- a/drivers/gpu/drm/bridge/ti-tpd12s015.c
-+++ b/drivers/gpu/drm/bridge/ti-tpd12s015.c
-@@ -179,7 +179,7 @@ static int tpd12s015_probe(struct platform_device *pdev)
- 	return 0;
- }
+diff --git a/arch/powerpc/platforms/powernv/opal-irqchip.c b/arch/powerpc/platforms/powernv/opal-irqchip.c
+index d55652b5f6fa..391f50535200 100644
+--- a/arch/powerpc/platforms/powernv/opal-irqchip.c
++++ b/arch/powerpc/platforms/powernv/opal-irqchip.c
+@@ -275,6 +275,8 @@ int __init opal_event_init(void)
+ 		else
+ 			name = kasprintf(GFP_KERNEL, "opal");
  
--static int __exit tpd12s015_remove(struct platform_device *pdev)
-+static int tpd12s015_remove(struct platform_device *pdev)
- {
- 	struct tpd12s015_device *tpd = platform_get_drvdata(pdev);
- 
-@@ -197,7 +197,7 @@ MODULE_DEVICE_TABLE(of, tpd12s015_of_match);
- 
- static struct platform_driver tpd12s015_driver = {
- 	.probe	= tpd12s015_probe,
--	.remove	= __exit_p(tpd12s015_remove),
-+	.remove = tpd12s015_remove,
- 	.driver	= {
- 		.name	= "tpd12s015",
- 		.of_match_table = tpd12s015_of_match,
++		if (!name)
++			continue;
+ 		/* Install interrupt handler */
+ 		rc = request_irq(r->start, opal_interrupt, r->flags & IRQD_TRIGGER_MASK,
+ 				 name, NULL);
 -- 
 2.43.0
 
