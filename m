@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E66837D22
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBBC8837ECE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:46:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71CC81F292A5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED0DA1C23ED4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B9C15EA87;
-	Tue, 23 Jan 2024 00:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47609130E40;
+	Tue, 23 Jan 2024 00:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHXOf1Fg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqBbLuXf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC70C5B5A1;
-	Tue, 23 Jan 2024 00:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F1A130E3B;
+	Tue, 23 Jan 2024 00:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969808; cv=none; b=RKpFioXQtU1Dd0NN+D9mKvXSl4Sv5EfdpFodHwseTbLjLIsRD2EQmT+yooYJIj6K/rhPIWFGu08pSbfvel4EGwkFRw2maSxsv/dxZaTo7I43wsp/6U2zrdxzYxSCUUvwavwt5Hn+2iTd6+lMisz4zcAEGs5o4CPFSAgiQeNMZLo=
+	t=1705968096; cv=none; b=IPYP/ug/g0MBUpVgcvcLWybqrif576Fs9LnozSUCH1FGE1fBRWnNLNWZM5C/sNWtw3zy8BQdF9PplzX3aw4qK7VaCjUtKT2DizFG/tU2DkncHycLCmjSyu5MfBhg9cwAKP3DOdZlizaNP0lu4Hx5WBgfOxT//fRQoBFZEKrZLFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969808; c=relaxed/simple;
-	bh=VdWkLRRjmmd8qFOLbwjIwZ6LizXZXjeBZ9xGy3LVdMM=;
+	s=arc-20240116; t=1705968096; c=relaxed/simple;
+	bh=rWaXDadMo6bzkcy7PvTqT5GNXlgohuENfoIRi5Jvra0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hz00KKPRD2APNzgniuogKh8b7gmqa/qiCNeXbJEHDi7G0qaTdSha+XrLvNhKKJ4F5WtGwC1mcdAw+5qffVLq3FFdfqoNl4ODe11A43XuD3PJtfEt+SdG55fQ1QAuDweYEoGWIyrlfkcTiBVCT5MnmoSn+xi3+5FcoDGdr2Qj5Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHXOf1Fg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41548C433B1;
-	Tue, 23 Jan 2024 00:30:07 +0000 (UTC)
+	 MIME-Version; b=nXB7CF/7Z/RfZ+twMT0UfGhybxmwW9AXAoP6ViH69isxuSLri/Tik/Bq5WSsKnIAj3sPerlTi04oQcIvButPih+NSoHFspDjHu74T7D3aj+HDx/0iDgcx52LmUrckRGvEZ4Y5QUcnb5g61y5RhPH4wvP/5uw9uBQOzt8A50qMNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqBbLuXf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E2DC433F1;
+	Tue, 23 Jan 2024 00:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969807;
-	bh=VdWkLRRjmmd8qFOLbwjIwZ6LizXZXjeBZ9xGy3LVdMM=;
+	s=korg; t=1705968095;
+	bh=rWaXDadMo6bzkcy7PvTqT5GNXlgohuENfoIRi5Jvra0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uHXOf1FgJdFuMUOE9vwyBPoiBhQXs35/pkfrfLK/hE1+FCy3b6SC+FnFlLTABQx77
-	 nGUb1Q7cm3Y3EBIUjwekj3Piw/b6UJETwWwPIWnBW3YWmqDBDLh0KDyp26jvorNHEn
-	 YZ9Krv24+z3qyofWJZuFzni2DOk42hsEVCBjpVeo=
+	b=EqBbLuXff5qGxdWZpS/M5E19TIk6guQcQHVwoZb28F1IM0NUxbB4VR1xHF2ox4E/O
+	 A5+k8tXrDi09BD+O8kRJ7g78XYh3aLU4A6bNm2nr+GPJcjJgtc2KzuzWuY0eyWCez4
+	 x2z80PaKyJ1m8/JvXwE57tKSpjMheEoPW+rAvp0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.7 462/641] Revert "net: rtnetlink: Enslave device before bringing it up"
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 010/148] jbd2: correct the printing of write_flags in jbd2_write_superblock()
 Date: Mon, 22 Jan 2024 15:56:06 -0800
-Message-ID: <20240122235832.496336255@linuxfoundation.org>
+Message-ID: <20240122235712.848182261@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-commit ec4ffd100ffb396eca13ebe7d18938ea80f399c3 upstream.
+[ Upstream commit 85559227211020b270728104c3b89918f7af27ac ]
 
-This reverts commit a4abfa627c3865c37e036bccb681619a50d3d93c.
+The write_flags print in the trace of jbd2_write_superblock() is not
+real, so move the modification before the trace.
 
-The patch broke:
-> ip link set dummy0 up
-> ip link set dummy0 master bond0 down
-
-This last command is useful to be able to enslave an interface with only
-one netlink message.
-
-After discussion, there is no good reason to support:
-> ip link set dummy0 down
-> ip link set dummy0 master bond0 up
-because the bond interface already set the slave up when it is up.
-
-Cc: stable@vger.kernel.org
-Fixes: a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20240108094103.2001224-2-nicolas.dichtel@6wind.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231129114740.2686201-1-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ fs/jbd2/journal.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -2905,13 +2905,6 @@ static int do_setlink(const struct sk_bu
- 		call_netdevice_notifiers(NETDEV_CHANGEADDR, dev);
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index 8a50722bca29..629928b19e48 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -1375,9 +1375,11 @@ static int jbd2_write_superblock(journal_t *journal, int write_flags)
+ 		return -EIO;
  	}
  
--	if (tb[IFLA_MASTER]) {
--		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
--		if (err)
--			goto errout;
--		status |= DO_SETLINK_MODIFIED;
--	}
--
- 	if (ifm->ifi_flags || ifm->ifi_change) {
- 		err = dev_change_flags(dev, rtnl_dev_combine_flags(dev, ifm),
- 				       extack);
-@@ -2919,6 +2912,13 @@ static int do_setlink(const struct sk_bu
- 			goto errout;
- 	}
- 
-+	if (tb[IFLA_MASTER]) {
-+		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
-+		if (err)
-+			goto errout;
-+		status |= DO_SETLINK_MODIFIED;
-+	}
+-	trace_jbd2_write_superblock(journal, write_flags);
+ 	if (!(journal->j_flags & JBD2_BARRIER))
+ 		write_flags &= ~(REQ_FUA | REQ_PREFLUSH);
 +
- 	if (tb[IFLA_CARRIER]) {
- 		err = dev_change_carrier(dev, nla_get_u8(tb[IFLA_CARRIER]));
- 		if (err)
++	trace_jbd2_write_superblock(journal, write_flags);
++
+ 	if (buffer_write_io_error(bh)) {
+ 		/*
+ 		 * Oh, dear.  A previous attempt to write the journal
+-- 
+2.43.0
+
 
 
 
