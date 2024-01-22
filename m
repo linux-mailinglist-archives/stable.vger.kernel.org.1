@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-15203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 281F783844F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 207CF837F6E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A9191C2A126
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 534BC1C28FD1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462476BB32;
-	Tue, 23 Jan 2024 02:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A5662813;
+	Tue, 23 Jan 2024 00:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qs29Niqf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSZm+h78"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0430E1427B;
-	Tue, 23 Jan 2024 02:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FDD374F5;
+	Tue, 23 Jan 2024 00:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975359; cv=none; b=N4QSDamrO5vWIADCdI74fEZI3VfWOsdzVQgboFhrXyp1J+WXbRa5+SJ+GhmwwsQXsS46w2An4eSMqqj1E5h37OqA80RVOJoKvknDR4yK2LXqmnKwWlB8I8OhLBUdiKnc14OheEsSTw8mW17fqL/udWSQUCX8luL4o3BqoMN6F5A=
+	t=1705971127; cv=none; b=J1+NnBmJ2ebthxRapQvniqCIg8/f1kawUJhl2LcucabiZANGynBgp6W5IDB51CVWIF1IRrqQX1Lgoaz/LNeYuDRH2uezTuAoe66zk4MFN0+Lj4RYPhboIelIypw4O3+95wMXSGocP1rilREoS+QxZJITHjBZ1LVdo+LUAqeEGQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975359; c=relaxed/simple;
-	bh=qI9R8FjIaVSby/Gi+N8DeHYiSOfy/AUP3nparIrROS4=;
+	s=arc-20240116; t=1705971127; c=relaxed/simple;
+	bh=A4bgd8vL1eX/OHqT/gMzHee+TSJ6BgYjoBlmhWxlj4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IRcLELQSHXPnYdM+QhJWbTT6iOosdpg7WVvgEeog3Vh+Hv9mMM8CN5AgHA/URC5L/q6XrVszfIoO2XQXYtpbqw8mlIP3hdyNkKkhXMlOjF6i19IO23riXPX4QoQtR7iuTnIlG+AjtelC6QHCo+wq0dP5vAFU3U3oqFt1fQoP7FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qs29Niqf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C12C43399;
-	Tue, 23 Jan 2024 02:02:38 +0000 (UTC)
+	 MIME-Version; b=O8uRs+ycOpRe6S5Y2cvX2B6Zz9G47VpxoUC1jG9maWnbbqoSOFGgtRL1nG/+MP9yREM14VKFin+2TnfG5JW7OdiFzyfDrM1e9Pv0XqOv/lOo3Gt5vGQyvrNxWZPnrBeogBgnGSTrI1IBRqYVd3r76A/gmhy1KE4qO12xYusgvt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSZm+h78; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5967FC433F1;
+	Tue, 23 Jan 2024 00:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975358;
-	bh=qI9R8FjIaVSby/Gi+N8DeHYiSOfy/AUP3nparIrROS4=;
+	s=korg; t=1705971127;
+	bh=A4bgd8vL1eX/OHqT/gMzHee+TSJ6BgYjoBlmhWxlj4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qs29NiqfmsJd4sRI2mAvtQVPKnPhWQHDWdQ0NbzolRxLcM4LaWbRoHRZg5XBx8brt
-	 MIHipWCdjiIYLuO1HOly8qg1XciHAM7z2KCcvybUpESapwWYuptFucqkQhEfZA2bpa
-	 MYrzgQ2kA9s2/EiCIbSw9O/h2ByZqcXv5onro6BA=
+	b=BSZm+h783m+kVXsHpT4szKxAwyKf5B+M/Nnp/T4k0U79gwLOOZYDwPXMqE9dvo8ji
+	 2vFLz82h1cg4rDUF2AfAlbQjJoSEX2MtiQQTnuHVC6ca7e6iE1ga9KubLsW0HNQ9pB
+	 ndAUXiNmsHRc8mU0DQNSzR295JwprAko/O6A6lkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Manorit Chawdhry <m-chawdhry@ti.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 303/583] watchdog: rti_wdt: Drop runtime pm reference count when watchdog is unused
+Subject: [PATCH 6.1 186/417] drm/radeon: check the alloc_workqueue return value in radeon_crtc_init()
 Date: Mon, 22 Jan 2024 15:55:54 -0800
-Message-ID: <20240122235821.295133377@linuxfoundation.org>
+Message-ID: <20240122235758.336075206@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Raghavendra <vigneshr@ti.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit c1a6edf3b541e44e78f10bc6024df779715723f1 ]
+[ Upstream commit 7a2464fac80d42f6f8819fed97a553e9c2f43310 ]
 
-Call runtime_pm_put*() if watchdog is not already started during probe and re
-enable it in watchdog start as required.
+check the alloc_workqueue return value in radeon_crtc_init()
+to avoid null-ptr-deref.
 
-On K3 SoCs, watchdogs and their corresponding CPUs are under same
-power-domain, so if the reference count of unused watchdogs aren't
-dropped, it will lead to CPU hotplug failures as Device Management
-firmware won't allow to turn off the power-domain due to dangling
-reference count.
-
-Fixes: 2d63908bdbfb ("watchdog: Add K3 RTI watchdog support")
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Tested-by: Manorit Chawdhry <m-chawdhry@ti.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231213140110.938129-1-vigneshr@ti.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: fa7f517cb26e ("drm/radeon: rework page flip handling v4")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/rti_wdt.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/radeon_display.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/rti_wdt.c b/drivers/watchdog/rti_wdt.c
-index 8e1be7ba0103..9215793a1c81 100644
---- a/drivers/watchdog/rti_wdt.c
-+++ b/drivers/watchdog/rti_wdt.c
-@@ -77,6 +77,11 @@ static int rti_wdt_start(struct watchdog_device *wdd)
- {
- 	u32 timer_margin;
- 	struct rti_wdt_device *wdt = watchdog_get_drvdata(wdd);
-+	int ret;
+diff --git a/drivers/gpu/drm/radeon/radeon_display.c b/drivers/gpu/drm/radeon/radeon_display.c
+index ca5598ae8bfc..1814bb8e14f1 100644
+--- a/drivers/gpu/drm/radeon/radeon_display.c
++++ b/drivers/gpu/drm/radeon/radeon_display.c
+@@ -687,11 +687,16 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
+ 	if (radeon_crtc == NULL)
+ 		return;
+ 
++	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
++	if (!radeon_crtc->flip_queue) {
++		kfree(radeon_crtc);
++		return;
++	}
 +
-+	ret = pm_runtime_resume_and_get(wdd->parent);
-+	if (ret)
-+		return ret;
+ 	drm_crtc_init(dev, &radeon_crtc->base, &radeon_crtc_funcs);
  
- 	/* set timeout period */
- 	timer_margin = (u64)wdd->timeout * wdt->freq;
-@@ -343,6 +348,9 @@ static int rti_wdt_probe(struct platform_device *pdev)
- 	if (last_ping)
- 		watchdog_set_last_hw_keepalive(wdd, last_ping);
+ 	drm_mode_crtc_set_gamma_size(&radeon_crtc->base, 256);
+ 	radeon_crtc->crtc_id = index;
+-	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
+ 	rdev->mode_info.crtcs[index] = radeon_crtc;
  
-+	if (!watchdog_hw_running(wdd))
-+		pm_runtime_put_sync(&pdev->dev);
-+
- 	return 0;
- 
- err_iomap:
-@@ -357,7 +365,10 @@ static void rti_wdt_remove(struct platform_device *pdev)
- 	struct rti_wdt_device *wdt = platform_get_drvdata(pdev);
- 
- 	watchdog_unregister_device(&wdt->wdd);
--	pm_runtime_put(&pdev->dev);
-+
-+	if (!pm_runtime_suspended(&pdev->dev))
-+		pm_runtime_put(&pdev->dev);
-+
- 	pm_runtime_disable(&pdev->dev);
- }
- 
+ 	if (rdev->family >= CHIP_BONAIRE) {
 -- 
 2.43.0
 
