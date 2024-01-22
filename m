@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97AEB837F65
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1CF83824A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:19:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA8351C25B92
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCA6BB27E66
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FDB63102;
-	Tue, 23 Jan 2024 00:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68C456B99;
+	Tue, 23 Jan 2024 01:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBStRmk+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6HqHi2h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCEA2940A;
-	Tue, 23 Jan 2024 00:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F6756B70;
+	Tue, 23 Jan 2024 01:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971107; cv=none; b=ewT6ReTF+vLIeRDhGRg3ol/jfnyCHTBhOv6WGfUZ97zIzN9+wMLY14M8lCEqCNVsySgGfCPEETfERd/8v2Xs94IyyhivHj1dN1xcwjnaSJpxTfnJYOZQ8jW4IYzAtyuzI2irQXQOAh3tvjMLMK2ekCgS991TNF6CEe9ZeAOBXnU=
+	t=1705974046; cv=none; b=syk5WRDs+O/QAv9Y96CpcoOQjKSBwT7Z0z1TDfKLGMMLeRW6rQpxvJfVzSSBCVH+kPGozPyBYI5pMsklnyzXsCP3VbwUHO/aJCcAZbqzsyZEkZ4NL+62tavS8r3QMWVOuP6mwbZj8s+qkYjfeOPKVyCSq1fYXDEgAxTGa1ejZk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971107; c=relaxed/simple;
-	bh=APgeTZxuXDCenUxD23Jc1RBV5Y7nfCZSQfUpuVDWl5Y=;
+	s=arc-20240116; t=1705974046; c=relaxed/simple;
+	bh=b9gN8bXLu2LJPTU8B/0M9NTPFSGnVHQXmfGLnJgmLL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jgup4AGGpIfxp0X903idrCXp4APwAOg5KZmN6NyADPNKALmdhjqsL3ZQS8dTv+JQwEGM4xydogevIcanBTS4tQ/vuNPWX8nVVYcrD3mdrDssDAh5CxmEFMdkUdDStMnNzmgOaDrq3sbMbPPjojA/js3z0A8ShndgNGdZl1ZRMY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBStRmk+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92C4C433F1;
-	Tue, 23 Jan 2024 00:51:46 +0000 (UTC)
+	 MIME-Version; b=ed4HrFwsRSzGWNS2LHYaTIpze514D+yFpFJ/5kabxWCenzp8a6hu8PKS0CAPmO9FYRPt92yGd293aGsYcsI0QxhAq1TMMl/43Deo/BRRnDqaVnRXpRI0kKWKstgx0ll1IJWymHukpho3MXnurkhyDDZnlX7Q7E4vOg3/1Vjw2bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6HqHi2h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91682C43390;
+	Tue, 23 Jan 2024 01:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971107;
-	bh=APgeTZxuXDCenUxD23Jc1RBV5Y7nfCZSQfUpuVDWl5Y=;
+	s=korg; t=1705974045;
+	bh=b9gN8bXLu2LJPTU8B/0M9NTPFSGnVHQXmfGLnJgmLL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nBStRmk+5023MzYjGCNNKjJAEjEeweP3IBRHOtZObmYE4nmIfBq5QWeIeQuKQCxJt
-	 bA1dCe+AtVmMGGrvCThVSNFUokydHia1qBnD/lZJjEITl97plDfjlcFGi/fnUVEvA0
-	 /vNhqUQlDhOu/EGGx3YokD4ThkLsJysRp8bVWP+k=
+	b=k6HqHi2h0M+x8JyH9Dhm9s90t53Gu8uRLda6XutKJqNElnd9eLXQYGs67j9z871JE
+	 EZx9qDJfq8FOQssheYtGtvSYRzWTE50LPu2LtOdbe6waK3fW9oqR+AjBoNITL/jZ0T
+	 eUUNFk8HhqjpwnDp6mjMSWKwksVzN2lmVqsfmZEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 089/286] crypto: sahara - fix ahash selftest failure
+Subject: [PATCH 5.15 139/374] arm64: dts: qcom: sc7280: fix usb_2 wakeup interrupt types
 Date: Mon, 22 Jan 2024 15:56:35 -0800
-Message-ID: <20240122235735.455188630@linuxfoundation.org>
+Message-ID: <20240122235749.468652595@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit afffcf3db98b9495114b79d5381f8cc3f69476fb ]
+[ Upstream commit 24f8aba9a7c77c7e9d814a5754798e8346c7dd28 ]
 
-update() calls should not modify the result buffer, so add an additional
-check for "rctx->last" to make sure that only the final hash value is
-copied into the buffer.
+The DP/DM wakeup interrupts are edge triggered and which edge to trigger
+on depends on use-case and whether a Low speed or Full/High speed device
+is connected.
 
-Fixes the following selftest failure:
-alg: ahash: sahara-sha256 update() used result buffer on test vector 3,
-cfg="init+update+final aligned buffer"
+Note that only triggering on rising edges can be used to detect resume
+events but not disconnect events.
 
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: bb9efa59c665 ("arm64: dts: qcom: sc7280: Add USB related nodes")
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231120164331.8116-6-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sc7280.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 0b6e63a763ca..2ef177680b2f 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -1047,7 +1047,7 @@ static int sahara_sha_process(struct ahash_request *req)
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index 9971b8763e08..e0c7f72773d6 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -1290,8 +1290,8 @@ usb_2: usb@8cf8800 {
+ 			assigned-clock-rates = <19200000>, <200000000>;
  
- 	memcpy(rctx->context, dev->context_base, rctx->context_size);
+ 			interrupts-extended = <&intc GIC_SPI 240 IRQ_TYPE_LEVEL_HIGH>,
+-				     <&pdc 13 IRQ_TYPE_EDGE_RISING>,
+-				     <&pdc 12 IRQ_TYPE_EDGE_RISING>;
++					      <&pdc 12 IRQ_TYPE_EDGE_BOTH>,
++					      <&pdc 13 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
  
--	if (req->result)
-+	if (req->result && rctx->last)
- 		memcpy(req->result, rctx->context, rctx->digest_size);
- 
- 	return 0;
 -- 
 2.43.0
 
