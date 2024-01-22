@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-15038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF0E8383A0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B907837C7B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0661829481F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEE9E1C28891
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01ABC634E4;
-	Tue, 23 Jan 2024 01:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83DF12581;
+	Tue, 23 Jan 2024 00:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0zsFc/P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3zz3mAn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66C06313F;
-	Tue, 23 Jan 2024 01:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438BF1353F6;
+	Tue, 23 Jan 2024 00:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975024; cv=none; b=jLuXkqmHD9nDMEyLyuQmPnN1kRKUys4xnr9gkKc3AIh9gwamE9ned3OzcSrwj4Hh8YNaoel5AJFr2KoojgBTmQw50KZ0BvqzS+rXZjkM9BABhJetGEwzbW2ydTzUJR/yQnHykXYFrfGz1zZwv5eyvnyNV9FXFty8hk1RDH2hmLY=
+	t=1705969635; cv=none; b=cH4fgcNnbAuUtQSLYncZeJ1Y6qrHv6OcS/cqjG1Rengh0CGIcFdbCS5dayseAhOx9YyCYINf4+7Crb97GhEI846ghthtKBS7d4HuljjYC0pq9Atfa/dd8tTQ6BQph2fPDSHIiGvyw/MdXaA1tOaZgPwWfQe4DTKS2vgaNOaQIgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975024; c=relaxed/simple;
-	bh=r61aYmHeE7ihlNAMhDk1gw/Ues/fxDSRuLKZ8MEDA4M=;
+	s=arc-20240116; t=1705969635; c=relaxed/simple;
+	bh=J+6ITcS1p3cujqK6IMaeWEehf1IgazOV9oa5qWAUVwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oZ1D4UTN7q7sG5Cf+INzB6RM7/nphnZiaGPFz74j6kdecBfQ88oIzXYYQJB3nhGZ7PF8joBWdxTSdybeRC6Gcz4NY0XAQQx2ukriNJs5gC2LJudq2ECRVNpBgHZ3mERIkHeLhLBsU2wPz+D0aThz7j9D1nmdHA5c0qQw3lHwy6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0zsFc/P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C00C433A6;
-	Tue, 23 Jan 2024 01:57:04 +0000 (UTC)
+	 MIME-Version; b=AS3PLrDpIpxqblMWdGgcfhoGYCOWXrJoknlPsJocoxTcYUOBZ2NYwghONiSE5WqEPuzgCXDgs8YIGfUtOSuWNps2VGbSjqZ7+685YqVEQoSXgMIEECcOPMxnJk9HCVIY+Q9UMkll28EdsUuZ6uB60+W79IxlnHHga7F3LuS+0Eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3zz3mAn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C6AC433C7;
+	Tue, 23 Jan 2024 00:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975024;
-	bh=r61aYmHeE7ihlNAMhDk1gw/Ues/fxDSRuLKZ8MEDA4M=;
+	s=korg; t=1705969635;
+	bh=J+6ITcS1p3cujqK6IMaeWEehf1IgazOV9oa5qWAUVwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R0zsFc/P4/8NW2izsyVIXHYB8+HgZ77tVbA/KN0iiywFT1q2xu18E9HKul45/kfxy
-	 UPCupN7RVW3vWpalF+ALFxgecsdtUiu+yJ7Wv4mqs41fYtO1S3JtAf9EuXY8iDtfK2
-	 G1fAeWeks6ADuRqm3tHFNrybEcpWEW38CN4NDWeg=
+	b=E3zz3mAn5KWWGhiuhRt08xWU5A8sX1WBYC+5DjTS1R31Jpv/eWAMe/neIBs11NVGC
+	 3KIiXn651yVczcWWqI03GStksjpDpPk4OClUGLTr0TInBpj6wBIooyGfpoenUtNRRX
+	 z30uB2gYuWMOzSXfJo+l+i/35pPUzlOG6ns46pY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 201/583] wifi: iwlwifi: fix out of bound copy_from_user
+Subject: [PATCH 6.7 348/641] clk: qcom: gcc-sm8550: Mark the PCIe GDSCs votable
 Date: Mon, 22 Jan 2024 15:54:12 -0800
-Message-ID: <20240122235818.135692758@linuxfoundation.org>
+Message-ID: <20240122235828.815238101@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit cb2dfacb197bed0241fbb4f84bd0995a47f4465e ]
+[ Upstream commit e7fe73fc6b68ee97b1e8f124a66a5ee50d8d5e5b ]
 
-The driver copies the userspace buffer into an internal NUL
-byte terminated buffer. While doing so, it was reading beyond
-the end of the userspace buffer, overwriting its own NUL
-termination in the process.
+The PCIe GDSCs on most Qualcomm platforms expect the OS to always
+consider collapse requests as successful. This also concerns SM8550.
 
-Fix this by only copying the correct number of bytes.
+Add the VOTABLE flag to the GDSCs in question to comply with these
+expectations.
 
-Fixes: 3f244876ef73 ("wifi: iwlwifi: make debugfs entries link specific")
-Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231219215605.e4913deb2ad4.Idcf6a7e909ff4b7801cd49c2f691f84a2f68eff9@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 955f2ea3b9e9 ("clk: qcom: Add GCC driver for SM8550")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231218-topic-8550_fixes-v1-4-ce1272d77540@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-sm8550.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-index cf27f106d4d5..7057421e513b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-@@ -1673,7 +1673,7 @@ static ssize_t _iwl_dbgfs_link_sta_##name##_write(struct file *file,	\
- 	char buf[buflen] = {};						\
- 	size_t buf_size = min(count, sizeof(buf) -  1);			\
- 									\
--	if (copy_from_user(buf, user_buf, sizeof(buf)))			\
-+	if (copy_from_user(buf, user_buf, buf_size))			\
- 		return -EFAULT;						\
- 									\
- 	return _iwl_dbgfs_link_sta_wrap_write(iwl_dbgfs_##name##_write,	\
+diff --git a/drivers/clk/qcom/gcc-sm8550.c b/drivers/clk/qcom/gcc-sm8550.c
+index 1c3d78500392..a16d07426b71 100644
+--- a/drivers/clk/qcom/gcc-sm8550.c
++++ b/drivers/clk/qcom/gcc-sm8550.c
+@@ -3002,7 +3002,7 @@ static struct gdsc pcie_0_gdsc = {
+ 		.name = "pcie_0_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
++	.flags = VOTABLE | POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
+ static struct gdsc pcie_0_phy_gdsc = {
+@@ -3011,7 +3011,7 @@ static struct gdsc pcie_0_phy_gdsc = {
+ 		.name = "pcie_0_phy_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
++	.flags = VOTABLE | POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
+ static struct gdsc pcie_1_gdsc = {
+@@ -3020,7 +3020,7 @@ static struct gdsc pcie_1_gdsc = {
+ 		.name = "pcie_1_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
++	.flags = VOTABLE | POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
+ static struct gdsc pcie_1_phy_gdsc = {
+@@ -3029,7 +3029,7 @@ static struct gdsc pcie_1_phy_gdsc = {
+ 		.name = "pcie_1_phy_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
++	.flags = VOTABLE | POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
+ };
+ 
+ static struct gdsc ufs_phy_gdsc = {
 -- 
 2.43.0
 
