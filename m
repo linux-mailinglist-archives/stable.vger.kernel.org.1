@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875118380D8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 755A68380E4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2788CB2ADFE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C9BC285052
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AF812F59A;
-	Tue, 23 Jan 2024 01:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13CFD1350DC;
+	Tue, 23 Jan 2024 01:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SV2Qwkkr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQF499BQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB25812BF34;
-	Tue, 23 Jan 2024 01:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63FE1350CA;
+	Tue, 23 Jan 2024 01:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971753; cv=none; b=UkPOJErhiF5IAWah5ROlEJddIqkv5tknJJ95B88ThkQSWLk8xehSWA/D/uIdQve5jm3pKhgZS3YZK1+frWrLrzhvE3rgtIGghAwpq54MFo+HvXiw+y3U2Rjq0CcDoO5qGQ0SkaVhBoA5i+RS8tgqWSkO3wflg3IITGJiHTelHlM=
+	t=1705971942; cv=none; b=P3FYKOlAa9KGgDX9XviU2Q62iQrvr7G4Or60rf+eCYl7mp06irlmuUUIvtUPkg5LxaOlFJrLpU3Tv/eoQu/Zdf2eDXnisiu9rfJE+HQjzpt0KmwM77nCfeGEf9dBKlxuEZDbIzCqp1CYUTC0mzEQ2s9IMV8IYTebGInadRRL7dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971753; c=relaxed/simple;
-	bh=C25frbqcO9aEOlFcbzkKiV4XKHpxrYT5SYfRNefekSc=;
+	s=arc-20240116; t=1705971942; c=relaxed/simple;
+	bh=KXmmigsUlY6+W1D6AF/nT4HqRJ4MLnPZQmBGeLviZg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9hXGsLUj1dBiffW91Q8UlFWHEEc2XpHBM11KormCme+Q8fla/u8IVZIk6C/CSRfHQLvQnMjCIYE86oC3XrI+43S7Id8hosNjTPp1AOsvrD5oLUKM8JSD1ZdzUq8d3YJg2vmHPAWs8rjwPbClV4TfDveiDvUuN063fC9IRv3gnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SV2Qwkkr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B6AC433C7;
-	Tue, 23 Jan 2024 01:02:32 +0000 (UTC)
+	 MIME-Version; b=TsTtg2qXGfkU5ruQb7FBtwMVQPGRzwCacaw4wGxJv+XkIkzTWDxRoLkcjVMvRiZteGqZbV3mhFH4Ndd/gN0TtfRIw8TPK7XZoeKNzRospyQFSahxkDnwViAWH31q/Lb4U/ql7bLEcMDDXS1IS0BrXqntKd9tcNZTc4CVXgBuREw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQF499BQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2076DC433C7;
+	Tue, 23 Jan 2024 01:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971752;
-	bh=C25frbqcO9aEOlFcbzkKiV4XKHpxrYT5SYfRNefekSc=;
+	s=korg; t=1705971942;
+	bh=KXmmigsUlY6+W1D6AF/nT4HqRJ4MLnPZQmBGeLviZg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SV2Qwkkrvc/sYAZ+Y+iZLHSt/63u1UtqrqorS9fAoKm31yA6KDpz40+piKfm9Mr4z
-	 yaPN1GoHdw8IsevoIaLS3LkICk5yNQTZeDmo5aoQh8sZLAYmKyKLHz3MZ8y0fIdn9o
-	 FxGkXKQAk76oKd/kzkPOjpjHW2QPDBqM7dRvPofM=
+	b=lQF499BQGnxndLUhWR/EcZu3bepdlgNe3oFeaMpfiUBzBchU/8/nxUK1mgtxoMkYK
+	 H/Law1B8g0snTNmKgzBfQaANKqp/Vpzncx8c5ddeLDFqGrfL/1DQNT0nYUw1qQo856
+	 YXo81UQMyjvdaM1OGCtR1WkJ1W3ECmzaKwCMfR5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH 5.10 219/286] serial: imx: Ensure that imx_uart_rs485_config() is called with enabled clock
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 357/417] tty: early return from send_break() on TTY_DRIVER_HARDWARE_BREAK
 Date: Mon, 22 Jan 2024 15:58:45 -0800
-Message-ID: <20240122235740.505571909@linuxfoundation.org>
+Message-ID: <20240122235804.184885096@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-commit 7c45eaa813476bd195ac1227a64b52f9cf2e2030 upstream.
+[ Upstream commit 66619686d187b4a6395316b7f39881e945dce4bc ]
 
-There are register accesses in the function imx_uart_rs485_config(). The
-clock must be enabled for these accesses. This was ensured by calling it
-via the function uart_rs485_config() in the probe() function within the
-range where the clock is enabled. With the commit 7c7f9bc986e6 ("serial:
-Deassert Transmit Enable on probe in driver-specific way") it was removed
-from the probe() function and is now only called through the function
-uart_add_one_port() which is located at the end of the probe() function.
-But the clock is already switched off in this area. To ensure that the
-clock is enabled during register access, move the disabling of the clock
-to the very end of the probe() function. To avoid leaking enabled clocks
-on error also add an error path for exiting with disabling the clock.
+If the driver sets TTY_DRIVER_HARDWARE_BREAK, we leave ops->break_ctl()
+to the driver and return from send_break(). But we do it using a local
+variable and keep the code flowing through the end of the function.
+Instead, do 'return' immediately with the ops->break_ctl()'s return
+value.
 
-Fixes: 7c7f9bc986e6 ("serial: Deassert Transmit Enable on probe in driver-specific way")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Link: https://lore.kernel.org/r/20231226113647.39376-1-cniedermaier@dh-electronics.com
+This way, we don't have to stuff the 'else' branch of the 'if' with the
+software break handling. And we can re-indent the function too.
+
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20230919085156.1578-14-jirislaby@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 66aad7d8d3ec ("usb: cdc-acm: return correct error code on unsupported break")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c |   23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/tty/tty_io.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -2358,10 +2358,8 @@ static int imx_uart_probe(struct platfor
- 	sport->ufcr = readl(sport->port.membase + UFCR);
+diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
+index 860990719d14..745fc4ec4399 100644
+--- a/drivers/tty/tty_io.c
++++ b/drivers/tty/tty_io.c
+@@ -2472,22 +2472,24 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
+ 		return 0;
  
- 	ret = uart_get_rs485_mode(&sport->port);
--	if (ret) {
--		clk_disable_unprepare(sport->clk_ipg);
--		return ret;
+ 	if (tty->driver->flags & TTY_DRIVER_HARDWARE_BREAK)
+-		retval = tty->ops->break_ctl(tty, duration);
+-	else {
+-		/* Do the work ourselves */
+-		if (tty_write_lock(tty, false) < 0)
+-			return -EINTR;
+-		retval = tty->ops->break_ctl(tty, -1);
+-		if (retval)
+-			goto out;
+-		if (!signal_pending(current))
+-			msleep_interruptible(duration);
+-		retval = tty->ops->break_ctl(tty, 0);
++		return tty->ops->break_ctl(tty, duration);
++
++	/* Do the work ourselves */
++	if (tty_write_lock(tty, false) < 0)
++		return -EINTR;
++
++	retval = tty->ops->break_ctl(tty, -1);
++	if (retval)
++		goto out;
++	if (!signal_pending(current))
++		msleep_interruptible(duration);
++	retval = tty->ops->break_ctl(tty, 0);
+ out:
+-		tty_write_unlock(tty);
+-		if (signal_pending(current))
+-			retval = -EINTR;
 -	}
-+	if (ret)
-+		goto err_clk;
- 
- 	if (sport->port.rs485.flags & SER_RS485_ENABLED &&
- 	    (!sport->have_rtscts && !sport->have_rtsgpio))
-@@ -2415,8 +2413,6 @@ static int imx_uart_probe(struct platfor
- 		imx_uart_writel(sport, ucr3, UCR3);
- 	}
- 
--	clk_disable_unprepare(sport->clk_ipg);
--
- 	hrtimer_init(&sport->trigger_start_tx, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
- 	hrtimer_init(&sport->trigger_stop_tx, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
- 	sport->trigger_start_tx.function = imx_trigger_start_tx;
-@@ -2432,7 +2428,7 @@ static int imx_uart_probe(struct platfor
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request rx irq: %d\n",
- 				ret);
--			return ret;
-+			goto err_clk;
- 		}
- 
- 		ret = devm_request_irq(&pdev->dev, txirq, imx_uart_txint, 0,
-@@ -2440,7 +2436,7 @@ static int imx_uart_probe(struct platfor
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request tx irq: %d\n",
- 				ret);
--			return ret;
-+			goto err_clk;
- 		}
- 
- 		ret = devm_request_irq(&pdev->dev, rtsirq, imx_uart_rtsint, 0,
-@@ -2448,14 +2444,14 @@ static int imx_uart_probe(struct platfor
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request rts irq: %d\n",
- 				ret);
--			return ret;
-+			goto err_clk;
- 		}
- 	} else {
- 		ret = devm_request_irq(&pdev->dev, rxirq, imx_uart_int, 0,
- 				       dev_name(&pdev->dev), sport);
- 		if (ret) {
- 			dev_err(&pdev->dev, "failed to request irq: %d\n", ret);
--			return ret;
-+			goto err_clk;
- 		}
- 	}
- 
-@@ -2463,7 +2459,12 @@ static int imx_uart_probe(struct platfor
- 
- 	platform_set_drvdata(pdev, sport);
- 
--	return uart_add_one_port(&imx_uart_uart_driver, &sport->port);
-+	ret = uart_add_one_port(&imx_uart_uart_driver, &sport->port);
++	tty_write_unlock(tty);
 +
-+err_clk:
-+	clk_disable_unprepare(sport->clk_ipg);
++	if (signal_pending(current))
++		retval = -EINTR;
 +
-+	return ret;
+ 	return retval;
  }
  
- static int imx_uart_remove(struct platform_device *pdev)
+-- 
+2.43.0
+
 
 
 
