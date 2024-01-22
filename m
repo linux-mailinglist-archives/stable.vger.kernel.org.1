@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-15452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10061838548
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF0648383BF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42F551C2A5FF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AD651F28E82
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC577E775;
-	Tue, 23 Jan 2024 02:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3415664CE2;
+	Tue, 23 Jan 2024 01:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2lJwJ3W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHMU7cdW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF1A2114;
-	Tue, 23 Jan 2024 02:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E741F64AB0;
+	Tue, 23 Jan 2024 01:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975790; cv=none; b=ux662wgmsG0/BY3caHcN5j+8nuW+K1WddboeqEGOdTXzDMjSnY2Fnuq8QCdwLByO4uS6qiyfUCLPAGZwyqfXSm5Rm6GKGob7NHD+Lsmys8tsilW8CLimS8L3ozLKedeuncASQ1uBadnChAgTqRjiqfQ+PHOS+pX0zIAy3ehQDq0=
+	t=1705975054; cv=none; b=gbOsdFfjBsxStjuHM4qkOcuNw8fEC7NVE69CWmT0ciM66IqpWsrx/H+GfgEvLtt8dE7TWFuAFg60yJKkmOh00rs8VUVhHfMrhAyQUBWXPmaMhAfRFCrPtks4kqS6oZc9TJXR/1K/7KYjP5a22j9/FceFt5DGk/CK1iT+OKfdQtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975790; c=relaxed/simple;
-	bh=zCzBOdUGeRoQWlLGi/br9hqXLcfWy9zCYE/v80qWm2Q=;
+	s=arc-20240116; t=1705975054; c=relaxed/simple;
+	bh=5r2z2HeRP/WhLTxa+enQC853bz6Go9lHd1MB8nLtN4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QhxwbYSBi35lkps58NJ6M9i9akibYb0Mw146JWWP2mj7hh4LNfbI9cM2yDTxURSRMGf8Jr2Na0ZUuT2+F1uh7YcR0dfdRJHNCSrGzNKcz5itqwA1aqs4/h33J3To0w3S7z7yW1u3ZWUa2J1JYywNnrSkQrKZht9M8p+lm0fCXDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2lJwJ3W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F063CC43394;
-	Tue, 23 Jan 2024 02:09:49 +0000 (UTC)
+	 MIME-Version; b=Wad4lMpmqYOWpGYnhZ2G0rSVB5N4OIi7Ze1Smrfn/vGpuF/UWMJc4MF4q/ScGFsMJjo2oLMNGwUULq1FEl70BGoS5AwSGLhPu9lr8aJFvpgkfuUOUgqiEjrpNCYcQPmyD5jV+PSxtpuNLXxoGt48Xy5DQYSZDRoL7LAwSBIAJkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHMU7cdW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C60C433C7;
+	Tue, 23 Jan 2024 01:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975790;
-	bh=zCzBOdUGeRoQWlLGi/br9hqXLcfWy9zCYE/v80qWm2Q=;
+	s=korg; t=1705975053;
+	bh=5r2z2HeRP/WhLTxa+enQC853bz6Go9lHd1MB8nLtN4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t2lJwJ3WV/k+LzXx14VQgXRGdmee+kU0dXPYBLei5WD+b2wya6reE5hce+9s/PoBG
-	 QlTWYBtjOFUZHTuFwRs0wcAX8ypvh0AEmQSUPlyIG9wxyvpFX7NTDrR0un8rU3NHLJ
-	 LsRtaf5x6rv0OtsoJR4SEiCc6bsZa6t3EJNbNFdM=
+	b=GHMU7cdWCPmoNBn16ePcCp4LeScInkCm+0dU0UlJ/3m5l9g5pKxAx5hEG/R7/IEpY
+	 mglHpnfCU6dZ0HwY9L9XxZ/uzr9AkaPNmGTi66ThbG4Ee4aki/9hk+ZcyqIz818p4Y
+	 txnLA+bRWrBnfFlhiPyAWR0ADqTkG9uCZvwUlo1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Hao Sun <sunhao.th@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Yonghong Song <yonghong.song@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 547/583] net: ravb: Fix dma_addr_t truncation in error case
+Subject: [PATCH 5.15 342/374] bpf: Reject variable offset alu on PTR_TO_FLOW_KEYS
 Date: Mon, 22 Jan 2024 15:59:58 -0800
-Message-ID: <20240122235828.878049694@linuxfoundation.org>
+Message-ID: <20240122235756.819083650@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +61,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+From: Hao Sun <sunhao.th@gmail.com>
 
-[ Upstream commit e327b2372bc0f18c30433ac40be07741b59231c5 ]
+[ Upstream commit 22c7fa171a02d310e3a3f6ed46a698ca8a0060ed ]
 
-In ravb_start_xmit(), ravb driver uses u32 variable to store result of
-dma_map_single() call. Since ravb hardware has 32-bit address fields in
-descriptors, this works properly when mapping is successful - it is
-platform's job to provide mapping addresses that fit into hardware
-limitations.
+For PTR_TO_FLOW_KEYS, check_flow_keys_access() only uses fixed off
+for validation. However, variable offset ptr alu is not prohibited
+for this ptr kind. So the variable offset is not checked.
 
-However, in failure case dma_map_single() returns DMA_MAPPING_ERROR
-constant that is 64-bit when dma_addr_t is 64-bit. Storing this constant
-in u32 leads to truncation, and further call to dma_mapping_error()
-fails to notice the error.
+The following prog is accepted:
 
-Fix that by storing result of dma_map_single() in a dma_addr_t
-variable.
+  func#0 @0
+  0: R1=ctx() R10=fp0
+  0: (bf) r6 = r1                       ; R1=ctx() R6_w=ctx()
+  1: (79) r7 = *(u64 *)(r6 +144)        ; R6_w=ctx() R7_w=flow_keys()
+  2: (b7) r8 = 1024                     ; R8_w=1024
+  3: (37) r8 /= 1                       ; R8_w=scalar()
+  4: (57) r8 &= 1024                    ; R8_w=scalar(smin=smin32=0,
+  smax=umax=smax32=umax32=1024,var_off=(0x0; 0x400))
+  5: (0f) r7 += r8
+  mark_precise: frame0: last_idx 5 first_idx 0 subseq_idx -1
+  mark_precise: frame0: regs=r8 stack= before 4: (57) r8 &= 1024
+  mark_precise: frame0: regs=r8 stack= before 3: (37) r8 /= 1
+  mark_precise: frame0: regs=r8 stack= before 2: (b7) r8 = 1024
+  6: R7_w=flow_keys(smin=smin32=0,smax=umax=smax32=umax32=1024,var_off
+  =(0x0; 0x400)) R8_w=scalar(smin=smin32=0,smax=umax=smax32=umax32=1024,
+  var_off=(0x0; 0x400))
+  6: (79) r0 = *(u64 *)(r7 +0)          ; R0_w=scalar()
+  7: (95) exit
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This prog loads flow_keys to r7, and adds the variable offset r8
+to r7, and finally causes out-of-bounds access:
+
+  BUG: unable to handle page fault for address: ffffc90014c80038
+  [...]
+  Call Trace:
+   <TASK>
+   bpf_dispatcher_nop_func include/linux/bpf.h:1231 [inline]
+   __bpf_prog_run include/linux/filter.h:651 [inline]
+   bpf_prog_run include/linux/filter.h:658 [inline]
+   bpf_prog_run_pin_on_cpu include/linux/filter.h:675 [inline]
+   bpf_flow_dissect+0x15f/0x350 net/core/flow_dissector.c:991
+   bpf_prog_test_run_flow_dissector+0x39d/0x620 net/bpf/test_run.c:1359
+   bpf_prog_test_run kernel/bpf/syscall.c:4107 [inline]
+   __sys_bpf+0xf8f/0x4560 kernel/bpf/syscall.c:5475
+   __do_sys_bpf kernel/bpf/syscall.c:5561 [inline]
+   __se_sys_bpf kernel/bpf/syscall.c:5559 [inline]
+   __x64_sys_bpf+0x73/0xb0 kernel/bpf/syscall.c:5559
+   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+   do_syscall_64+0x3f/0x110 arch/x86/entry/common.c:83
+   entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+Fix this by rejecting ptr alu with variable offset on flow_keys.
+Applying the patch rejects the program with "R7 pointer arithmetic
+on flow_keys prohibited".
+
+Fixes: d58e468b1112 ("flow_dissector: implements flow dissector BPF hook")
+Signed-off-by: Hao Sun <sunhao.th@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/bpf/20240115082028.9992-1-sunhao.th@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/verifier.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 3c2a6b23c202..8fec0dbbbe7b 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1949,7 +1949,7 @@ static netdev_tx_t ravb_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	struct ravb_tstamp_skb *ts_skb;
- 	struct ravb_tx_desc *desc;
- 	unsigned long flags;
--	u32 dma_addr;
-+	dma_addr_t dma_addr;
- 	void *buffer;
- 	u32 entry;
- 	u32 len;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index c2ecf349523d..88a468cc0510 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -7295,6 +7295,10 @@ static int adjust_ptr_min_max_vals(struct bpf_verifier_env *env,
+ 	}
+ 
+ 	switch (base_type(ptr_reg->type)) {
++	case PTR_TO_FLOW_KEYS:
++		if (known)
++			break;
++		fallthrough;
+ 	case CONST_PTR_TO_MAP:
+ 		/* smin_val represents the known value */
+ 		if (known && smin_val == 0 && opcode == BPF_ADD)
 -- 
 2.43.0
 
