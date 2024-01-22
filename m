@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-15368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C578384EC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C49083808D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95C871C2A406
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D7D72865C8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC7677F24;
-	Tue, 23 Jan 2024 02:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F94E12FF71;
+	Tue, 23 Jan 2024 01:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgRcMSSn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtMH4fQB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0ECE77636;
-	Tue, 23 Jan 2024 02:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBF1657B3;
+	Tue, 23 Jan 2024 01:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975535; cv=none; b=n5dC/ng/bU8ftMzwmvJjE5ELpquHtSKQ6AYRYLegTCL/DeeDxYmA/qLvjErtKIcCbiBS1F8dV7S3CFVB3h7qVUBt9ecqS5zAcEjs0IKCZW53Ptw4Anfgb16T/nK4Fs1RcDCr+Ey5edUcPOZF89Tfwox/qlCcz7SL4ahEBxky3Aw=
+	t=1705971788; cv=none; b=ILESKQM2Z5W/e5r7tECP5gD0e9pfmNIZSY1JrGklvnP+Y9Mr7G186x5oEU7nE16b5qRIjB/ZmSqPCLTalGwEHKPASYyFdz49/wAqtpdZM0YDTkXTVfEF6O9jSo8zrBjxtEt1bvltuGDVcybZ6R4HPbxHFkfAY1V+tIKGXe7c6D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975535; c=relaxed/simple;
-	bh=HfWA4T+p9MSJQ8DvhkODRyFBo+TRZpF1N1Q7K2n4+jU=;
+	s=arc-20240116; t=1705971788; c=relaxed/simple;
+	bh=7YEf8rEhj0FiBGheFJe3qG0b82x4CbN6EKsZAQJ6DE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bwy0TjbQCu6NYenS1Uo7MThoZNruemvkg20kjgXki1BgNpmi2Z5zp0piu0GR7eUwHLIHYJN4UK/3KPxShp6+bmROmha9JWh/k98lm78EpScMX8MaJlO+pySb+7rA5cJEuKbm3IGniEMvVB6vV1AXTdyfgn28DTFUh/6AoemPvoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgRcMSSn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C260C43390;
-	Tue, 23 Jan 2024 02:05:35 +0000 (UTC)
+	 MIME-Version; b=gNDC8Vkwz20rqUBq3gRDccizRfzz9ORRehO586Pce5pr3iPd4rHRl25HSueB7B7MC7Iy/1BDN+h4po3IaGBOpolAEjv10u6d3tpfqugKg9uqlMPDZ4WnBtrVr7VP3MhLUcmJ6yI5ZegIO387oplz9xHJGF0y6rJTrUiaGTHg3Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtMH4fQB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061D7C433C7;
+	Tue, 23 Jan 2024 01:03:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975535;
-	bh=HfWA4T+p9MSJQ8DvhkODRyFBo+TRZpF1N1Q7K2n4+jU=;
+	s=korg; t=1705971788;
+	bh=7YEf8rEhj0FiBGheFJe3qG0b82x4CbN6EKsZAQJ6DE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LgRcMSSngpiXdx0paYCcpLxfp0rjy3XmSWGTlDKB6+m/3WdTRCTJSJrvweiJA5n/J
-	 sWNB93z+Lc49pt23O5+gZxqF+CaY0V1gKThz4qkPWf0F1wNGLbYHqwrDlang5wFxIS
-	 pwFOO2horUrSGBbD3CXaoUIXyv9G26YuETrBORrc=
+	b=NtMH4fQB6m8EgTR5XWLu+WnB98auCLYxRKFIvnNs8yFftZZOoyifWY6AVfte5zvdi
+	 urWOUMzThoN/Oipis/WkZAur7ZCZ+RqrCzenAzPConw20SMLO7fI/xWGjnQv2NrJ0u
+	 gh775DlOZiTfXvHeLGqrKrBZ3XR2PECasdooKfFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Fangrui Song <maskray@google.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Milian Wolff <milian.wolff@kdab.com>,
-	Pablo Galindo <pablogsal@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 486/583] perf unwind-libdw: Handle JIT-generated DSOs properly
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>
+Subject: [PATCH 5.10 231/286] x86/kvm: Do not try to disable kvmclock if it was not enabled
 Date: Mon, 22 Jan 2024 15:58:57 -0800
-Message-ID: <20240122235826.881729273@linuxfoundation.org>
+Message-ID: <20240122235740.971693522@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,99 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit c966d23a351a33f8a977fd7efbb6f467132f7383 ]
+commit 1c6d984f523f67ecfad1083bb04c55d91977bb15 upstream.
 
-Usually DSOs are mapped from the beginning of the file, so the base
-address of the DSO can be calculated by map->start - map->pgoff.
+kvm_guest_cpu_offline() tries to disable kvmclock regardless if it is
+present in the VM. It leads to write to a MSR that doesn't exist on some
+configurations, namely in TDX guest:
 
-However, JIT DSOs which are generated by `perf inject -j`, are mapped
-only the code segment.  This makes unwind-libdw code confusing and
-rejects processing unwinds in the JIT DSOs.  It should use the map
-start address as base for them to fix the confusion.
+	unchecked MSR access error: WRMSR to 0x12 (tried to write 0x0000000000000000)
+	at rIP: 0xffffffff8110687c (kvmclock_disable+0x1c/0x30)
 
-Fixes: 1fe627da30331024 ("perf unwind: Take pgoff into account when reporting elf to libdwfl")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Fangrui Song <maskray@google.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Milian Wolff <milian.wolff@kdab.com>
-Cc: Pablo Galindo <pablogsal@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231212070547.612536-3-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+kvmclock enabling is gated by CLOCKSOURCE and CLOCKSOURCE2 KVM paravirt
+features.
+
+Do not disable kvmclock if it was not enabled.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Fixes: c02027b5742b ("x86/kvm: Disable kvmclock on all CPUs on shutdown")
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Wanpeng Li <wanpengli@tencent.com>
+Cc: stable@vger.kernel.org
+Message-Id: <20231205004510.27164-6-kirill.shutemov@linux.intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/unwind-libdw.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ arch/x86/kernel/kvmclock.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/unwind-libdw.c b/tools/perf/util/unwind-libdw.c
-index 8554db3fc0d7..6013335a8dae 100644
---- a/tools/perf/util/unwind-libdw.c
-+++ b/tools/perf/util/unwind-libdw.c
-@@ -46,6 +46,7 @@ static int __report_module(struct addr_location *al, u64 ip,
+--- a/arch/x86/kernel/kvmclock.c
++++ b/arch/x86/kernel/kvmclock.c
+@@ -24,8 +24,8 @@
+ 
+ static int kvmclock __initdata = 1;
+ static int kvmclock_vsyscall __initdata = 1;
+-static int msr_kvm_system_time __ro_after_init = MSR_KVM_SYSTEM_TIME;
+-static int msr_kvm_wall_clock __ro_after_init = MSR_KVM_WALL_CLOCK;
++static int msr_kvm_system_time __ro_after_init;
++static int msr_kvm_wall_clock __ro_after_init;
+ static u64 kvm_sched_clock_offset __ro_after_init;
+ 
+ static int __init parse_no_kvmclock(char *arg)
+@@ -196,7 +196,8 @@ static void kvm_setup_secondary_clock(vo
+ 
+ void kvmclock_disable(void)
  {
- 	Dwfl_Module *mod;
- 	struct dso *dso = NULL;
-+	Dwarf_Addr base;
- 	/*
- 	 * Some callers will use al->sym, so we can't just use the
- 	 * cheaper thread__find_map() here.
-@@ -58,13 +59,25 @@ static int __report_module(struct addr_location *al, u64 ip,
- 	if (!dso)
- 		return 0;
+-	native_write_msr(msr_kvm_system_time, 0, 0);
++	if (msr_kvm_system_time)
++		native_write_msr(msr_kvm_system_time, 0, 0);
+ }
  
-+	/*
-+	 * The generated JIT DSO files only map the code segment without
-+	 * ELF headers.  Since JIT codes used to be packed in a memory
-+	 * segment, calculating the base address using pgoff falls into
-+	 * a different code in another DSO.  So just use the map->start
-+	 * directly to pick the correct one.
-+	 */
-+	if (!strncmp(dso->long_name, "/tmp/jitted-", 12))
-+		base = map__start(al->map);
-+	else
-+		base = map__start(al->map) - map__pgoff(al->map);
-+
- 	mod = dwfl_addrmodule(ui->dwfl, ip);
- 	if (mod) {
- 		Dwarf_Addr s;
- 
- 		dwfl_module_info(mod, NULL, &s, NULL, NULL, NULL, NULL, NULL);
--		if (s != map__start(al->map) - map__pgoff(al->map))
--			mod = 0;
-+		if (s != base)
-+			mod = NULL;
+ static void __init kvmclock_init_mem(void)
+@@ -292,7 +293,10 @@ void __init kvmclock_init(void)
+ 	if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE2)) {
+ 		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME_NEW;
+ 		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK_NEW;
+-	} else if (!kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
++	} else if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
++		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME;
++		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK;
++	} else {
+ 		return;
  	}
  
- 	if (!mod) {
-@@ -72,14 +85,14 @@ static int __report_module(struct addr_location *al, u64 ip,
- 
- 		__symbol__join_symfs(filename, sizeof(filename), dso->long_name);
- 		mod = dwfl_report_elf(ui->dwfl, dso->short_name, filename, -1,
--				      map__start(al->map) - map__pgoff(al->map), false);
-+				      base, false);
- 	}
- 	if (!mod) {
- 		char filename[PATH_MAX];
- 
- 		if (dso__build_id_filename(dso, filename, sizeof(filename), false))
- 			mod = dwfl_report_elf(ui->dwfl, dso->short_name, filename, -1,
--					      map__start(al->map) - map__pgoff(al->map), false);
-+					      base, false);
- 	}
- 
- 	if (mod) {
--- 
-2.43.0
-
 
 
 
