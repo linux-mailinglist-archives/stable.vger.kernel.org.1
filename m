@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-13145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67CA6837AAE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C054837AC2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B4A91C24B10
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E70AB29117B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0434F130E2B;
-	Tue, 23 Jan 2024 00:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40E9131733;
+	Tue, 23 Jan 2024 00:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wug8pJ4R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlEiCt85"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30D412FF86;
-	Tue, 23 Jan 2024 00:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B471C130E42;
+	Tue, 23 Jan 2024 00:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969050; cv=none; b=ud8slfM+38R2CW/Wv5GAA6dy7Gjz/8D/czPAfZVQKJXHFDKA6hm8/bUkaF3R0mwe5L5EJ1ujm7iMNGsoBqNHi4nZI4zCgLOBN4Z5EdnolPCgse4jUkMogUfEIMh+R5D2nOBdhGm4OfG2xFl5X4ao0DQlAce6+Jcpf/iPf5bLB9k=
+	t=1705969079; cv=none; b=jN1p7ewXYMW5CUu5/54CZBu5XSkHahEzeW4nIdem6WkxQktJ1agNpQwMG/3oblUfOey5ElvmdRsXesOFFTlz0bjx+b2Q4M7SmkZ/tKXWpQLqvHh/pzhpQYYyNg64W/rVfz7F+wrMJpE0oJLl4YSVNLIXPW7rjykwwcVUHAsNJ4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969050; c=relaxed/simple;
-	bh=uiLA4hmYfLuAVFvtUaXa7SK5n98JDh/y9/1hO5jEdlY=;
+	s=arc-20240116; t=1705969079; c=relaxed/simple;
+	bh=1oMv62C+Ht9C4ohbKqojMFisCXyWHwUa+GmPxYq4AKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rSHY7xM1Um+hfOzT3MhuGxKS202cA5dd0x53+A7yRikZqq6IIXTXxpMi9Fw3vHgHO9V18T045c2vOkb3Mo1kJ+4WxAIjEdDaZSJHnD9itKYMyLOOfRcPBgikuC3quktupxMVI1FuRqsHohVSiEMud1BwWND7iw1t/3JWFlZeJaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wug8pJ4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB5EC433F1;
-	Tue, 23 Jan 2024 00:17:30 +0000 (UTC)
+	 MIME-Version; b=sZ1E84bHmL3RySdXMILISEq3YE/+GViC5dOPAnA0q6EGYTDjzgyrDn9dK54vYaVDftz72um00dajc5HqixSJ+dNICmRwPMFozpLnfpLn7l36TcnGsR0UdSqbFtgn2uLpv5knIKVBXIJJG5he1fZp74LU8NQlaNI7OH2HiQvCBKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlEiCt85; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71683C43390;
+	Tue, 23 Jan 2024 00:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969050;
-	bh=uiLA4hmYfLuAVFvtUaXa7SK5n98JDh/y9/1hO5jEdlY=;
+	s=korg; t=1705969079;
+	bh=1oMv62C+Ht9C4ohbKqojMFisCXyWHwUa+GmPxYq4AKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wug8pJ4R6OmofRSWTthxApmf0w80hsYfnYFxpXgaLne3IdW3RtGjHMDpIupNp3pSm
-	 UtcZylItaDhByVb4fFAksgzoCtljxdlnd6vF0qInQeLdjz1xzxnKLdXjV35RQvd4x5
-	 0lE1dINx2hJF3BcQ/ttiWjvAZsCnVcTF9MN/iLj4=
+	b=JlEiCt85JHOYW3i8lWonybhiFuqF7Z8GfIP4oUR7GFpoWLnKJnNJs0ohtgUee1/GL
+	 ruQY+OInCqU/iGBpt81yQHAy267Ae4X5btv6dfbqKKS+q7j/2Z18GQcbldtKIpktvf
+	 3XKYJ/JhHQVSOJtMjJ0Xkjkbcu1n1J6rEbVjQW/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 181/194] PCI: keystone: Fix race condition when initializing PHYs
-Date: Mon, 22 Jan 2024 15:58:31 -0800
-Message-ID: <20240122235726.993379163@linuxfoundation.org>
+Subject: [PATCH 5.4 182/194] s390/pci: fix max size calculation in zpci_memcpy_toio()
+Date: Mon, 22 Jan 2024 15:58:32 -0800
+Message-ID: <20240122235727.032691047@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
 References: <20240122235719.206965081@linuxfoundation.org>
@@ -61,66 +61,149 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit c12ca110c613a81cb0f0099019c839d078cd0f38 ]
+[ Upstream commit 80df7d6af7f6d229b34cf237b2cc9024c07111cd ]
 
-The PCI driver invokes the PHY APIs using the ks_pcie_enable_phy()
-function. The PHY in this case is the Serdes. It is possible that the
-PCI instance is configured for two lane operation across two different
-Serdes instances, using one lane of each Serdes.
+The zpci_get_max_write_size() helper is used to determine the maximum
+size a PCI store or load can use at a given __iomem address.
 
-In such a configuration, if the reference clock for one Serdes is
-provided by the other Serdes, it results in a race condition. After the
-Serdes providing the reference clock is initialized by the PCI driver by
-invoking its PHY APIs, it is not guaranteed that this Serdes remains
-powered on long enough for the PHY APIs based initialization of the
-dependent Serdes. In such cases, the PLL of the dependent Serdes fails
-to lock due to the absence of the reference clock from the former Serdes
-which has been powered off by the PM Core.
+For the PCI block store the following restrictions apply:
 
-Fix this by obtaining reference to the PHYs before invoking the PHY
-initialization APIs and releasing reference after the initialization is
-complete.
+1. The dst + len must not cross a 4K boundary in the (pseudo-)MMIO space
+2. len must not exceed ZPCI_MAX_WRITE_SIZE
+3. len must be a multiple of 8 bytes
+4. The src address must be double word (8 byte) aligned
+5. The dst address must be double word (8 byte) aligned
 
-Link: https://lore.kernel.org/linux-pci/20230927041845.1222080-1-s-vadapalli@ti.com
-Fixes: 49229238ab47 ("PCI: keystone: Cleanup PHY handling")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Acked-by: Ravi Gunasekaran <r-gunasekaran@ti.com>
+Otherwise only a normal PCI store which takes its src value from
+a register can be used. For these PCI store restriction 1 still applies.
+Similarly 1 also applies to PCI loads.
+
+It turns out zpci_max_write_size() instead implements stricter
+conditions which prevents PCI block stores from being used where they
+can and should be used. In particular instead of conditions 4 and 5 it
+wrongly enforces both dst and src to be size aligned. This indirectly
+covers condition 1 but also prevents many legal PCI block stores.
+
+On top of the functional shortcomings the zpci_get_max_write_size() is
+misnamed as it is used for both read and write size calculations. Rename
+it to zpci_get_max_io_size() and implement the listed conditions
+explicitly.
+
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Fixes: cd24834130ac ("s390/pci: base support")
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+[agordeev@linux.ibm.com replaced spaces with tabs]
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/s390/include/asm/pci_io.h | 32 ++++++++++++++++++--------------
+ arch/s390/pci/pci_mmio.c       | 12 ++++++------
+ 2 files changed, 24 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index 920444b1cfc7..b18ddb2b9ef8 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -1305,7 +1305,16 @@ static int ks_pcie_probe(struct platform_device *pdev)
- 		goto err_link;
- 	}
+diff --git a/arch/s390/include/asm/pci_io.h b/arch/s390/include/asm/pci_io.h
+index 287bb88f7698..2686bee800e3 100644
+--- a/arch/s390/include/asm/pci_io.h
++++ b/arch/s390/include/asm/pci_io.h
+@@ -11,6 +11,8 @@
+ /* I/O size constraints */
+ #define ZPCI_MAX_READ_SIZE	8
+ #define ZPCI_MAX_WRITE_SIZE	128
++#define ZPCI_BOUNDARY_SIZE	(1 << 12)
++#define ZPCI_BOUNDARY_MASK	(ZPCI_BOUNDARY_SIZE - 1)
  
-+	/* Obtain references to the PHYs */
-+	for (i = 0; i < num_lanes; i++)
-+		phy_pm_runtime_get_sync(ks_pcie->phy[i]);
+ /* I/O Map */
+ #define ZPCI_IOMAP_SHIFT		48
+@@ -125,16 +127,18 @@ static inline int zpci_read_single(void *dst, const volatile void __iomem *src,
+ int zpci_write_block(volatile void __iomem *dst, const void *src,
+ 		     unsigned long len);
+ 
+-static inline u8 zpci_get_max_write_size(u64 src, u64 dst, int len, int max)
++static inline int zpci_get_max_io_size(u64 src, u64 dst, int len, int max)
+ {
+-	int count = len > max ? max : len, size = 1;
++	int offset = dst & ZPCI_BOUNDARY_MASK;
++	int size;
+ 
+-	while (!(src & 0x1) && !(dst & 0x1) && ((size << 1) <= count)) {
+-		dst = dst >> 1;
+-		src = src >> 1;
+-		size = size << 1;
+-	}
+-	return size;
++	size = min3(len, ZPCI_BOUNDARY_SIZE - offset, max);
++	if (IS_ALIGNED(src, 8) && IS_ALIGNED(dst, 8) && IS_ALIGNED(size, 8))
++		return size;
 +
- 	ret = ks_pcie_enable_phy(ks_pcie);
-+
-+	/* Release references to the PHYs */
-+	for (i = 0; i < num_lanes; i++)
-+		phy_pm_runtime_put_sync(ks_pcie->phy[i]);
-+
- 	if (ret) {
- 		dev_err(dev, "failed to enable phy\n");
- 		goto err_link;
++	if (size >= 8)
++		return 8;
++	return rounddown_pow_of_two(size);
+ }
+ 
+ static inline int zpci_memcpy_fromio(void *dst,
+@@ -144,9 +148,9 @@ static inline int zpci_memcpy_fromio(void *dst,
+ 	int size, rc = 0;
+ 
+ 	while (n > 0) {
+-		size = zpci_get_max_write_size((u64 __force) src,
+-					       (u64) dst, n,
+-					       ZPCI_MAX_READ_SIZE);
++		size = zpci_get_max_io_size((u64 __force) src,
++					    (u64) dst, n,
++					    ZPCI_MAX_READ_SIZE);
+ 		rc = zpci_read_single(dst, src, size);
+ 		if (rc)
+ 			break;
+@@ -166,9 +170,9 @@ static inline int zpci_memcpy_toio(volatile void __iomem *dst,
+ 		return -EINVAL;
+ 
+ 	while (n > 0) {
+-		size = zpci_get_max_write_size((u64 __force) dst,
+-					       (u64) src, n,
+-					       ZPCI_MAX_WRITE_SIZE);
++		size = zpci_get_max_io_size((u64 __force) dst,
++					    (u64) src, n,
++					    ZPCI_MAX_WRITE_SIZE);
+ 		if (size > 8) /* main path */
+ 			rc = zpci_write_block(dst, src, size);
+ 		else
+diff --git a/arch/s390/pci/pci_mmio.c b/arch/s390/pci/pci_mmio.c
+index a4d5048b7eee..675e6cb50584 100644
+--- a/arch/s390/pci/pci_mmio.c
++++ b/arch/s390/pci/pci_mmio.c
+@@ -100,9 +100,9 @@ static inline int __memcpy_toio_inuser(void __iomem *dst,
+ 
+ 	old_fs = enable_sacf_uaccess();
+ 	while (n > 0) {
+-		size = zpci_get_max_write_size((u64 __force) dst,
+-					       (u64 __force) src, n,
+-					       ZPCI_MAX_WRITE_SIZE);
++		size = zpci_get_max_io_size((u64 __force) dst,
++					    (u64 __force) src, n,
++					    ZPCI_MAX_WRITE_SIZE);
+ 		if (size > 8) /* main path */
+ 			rc = __pcistb_mio_inuser(dst, src, size, &status);
+ 		else
+@@ -250,9 +250,9 @@ static inline int __memcpy_fromio_inuser(void __user *dst,
+ 
+ 	old_fs = enable_sacf_uaccess();
+ 	while (n > 0) {
+-		size = zpci_get_max_write_size((u64 __force) src,
+-					       (u64 __force) dst, n,
+-					       ZPCI_MAX_READ_SIZE);
++		size = zpci_get_max_io_size((u64 __force) src,
++					    (u64 __force) dst, n,
++					    ZPCI_MAX_READ_SIZE);
+ 		rc = __pcilg_mio_inuser(dst, src, size, &status);
+ 		if (rc)
+ 			break;
 -- 
 2.43.0
 
