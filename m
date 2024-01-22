@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 350D4838351
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6050837C29
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF9BA1F27631
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF1EC1C28807
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461DF6166C;
-	Tue, 23 Jan 2024 01:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7120BEAE3;
+	Tue, 23 Jan 2024 00:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjnx4lQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QR19QYPB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCEC61674;
-	Tue, 23 Jan 2024 01:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BD31EEEB;
+	Tue, 23 Jan 2024 00:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974936; cv=none; b=TFOGqoiY1XAGsYclWX+OxkF1W5tN42h8kLO7hsW91fv5vODxXMz1BRzeyjgUCBdpLyHfjOmmd0hjDBC6BBn402j1Xp2NRYtYEo87Af6OwIBzp9esk7OWIrywnucrclNLeXCd//Pc/GTmy+4NRuExj4+sLlNTMPyECu61+8d74sM=
+	t=1705969522; cv=none; b=SdlNbSGd5z1OqkLK1ADRsMT63JUCDJgA8TZeeyW8pfx3tS5kyQUdao3E4+iP5I78U1jD2DeioZUYx7RIiyoMBrHFMTPtaRgDOhaTHK+EWDXzhUdyoUsKVYW7rpa97sFQOyIovomEZonYUMnK1IULqUk4JO6fk5C46Dtgk7Jmxn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974936; c=relaxed/simple;
-	bh=ctEYgXlZoauO3JU3e8u1o6ZsHeXoF7iUcT6eGbLLzNA=;
+	s=arc-20240116; t=1705969522; c=relaxed/simple;
+	bh=wfM8h/+H/BRrZztxNf0NJ0HK9y0+l9lqFAaBwtqSWjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gbBjZGN3nZ2QH7Hvu/R5kHebcd0sJjis9oIsyP9SOE3ZvBBHH3GCa2tdWimW96xw+Cmld/yrsbvcy0ujlu5NKncJEfol/WZXiOV3a7BcP6crQFKysRDHs126C1ValGRqJJpSwhizvuhuqz8+RHc08nbTFwThSOwrcm2BK7rodh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjnx4lQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951B8C433F1;
-	Tue, 23 Jan 2024 01:55:35 +0000 (UTC)
+	 MIME-Version; b=jdTm5MOSmoJpauamxTbYS2ksNb54JEFqsudFll0A4MAe0N6g+1gUXGi0qo3irStPp1q8xgIT3oNP+eYyRvuJWWej4pLVCqFMMp/OthrKzY0KJFn3cksPadLYlsyxTuIfuk737ZurqK2UGh3rmTWPVPA3ARN926LIr7/3LLo3cpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QR19QYPB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C833FC433B1;
+	Tue, 23 Jan 2024 00:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974935;
-	bh=ctEYgXlZoauO3JU3e8u1o6ZsHeXoF7iUcT6eGbLLzNA=;
+	s=korg; t=1705969522;
+	bh=wfM8h/+H/BRrZztxNf0NJ0HK9y0+l9lqFAaBwtqSWjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yjnx4lQvVJXzQdSc654GZ2q5e+Um/QsIjG3prmTVDp1pVKKuorRfDHYJa99MdE2xB
-	 2Yk1i4nngGRpPY1Dbaa1EuIRt1QIoj5wdY+QxjDJP4c+gDJbYO/gIZdOoyzmv9Uf6S
-	 /yL9GP9v+Qgykc9VKB1j5mM6BVGCl0YqWOvHXTx8=
+	b=QR19QYPB98shfCVFwqOtDVjcP6DbyHT8pSSGBd6zn8cokTlGjbXRvKnI2CHFdNnnl
+	 RhklzJz+Ut6hYxXCt+T75uO73S7ybeP4NgxLbTVZKbAYvDIwYezJX3UUwYPjG5Ujk5
+	 nMAYnCC9lbOi82++WVQwypWuOeXFQSY0N2tPUSwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Daniel Rosenberg <drosen@google.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 156/583] arm64: dts: renesas: white-hawk-cpu: Fix missing serial console pin control
+Subject: [PATCH 6.7 303/641] f2fs: Restrict max filesize for 16K f2fs
 Date: Mon, 22 Jan 2024 15:53:27 -0800
-Message-ID: <20240122235816.825490977@linuxfoundation.org>
+Message-ID: <20240122235827.396410521@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Daniel Rosenberg <drosen@google.com>
 
-[ Upstream commit fc67495680f60e88bb8ca43421c1dd628928d581 ]
+[ Upstream commit a6a010f5def544af3efcfe21683905a712b60536 ]
 
-The pin control description for the serial console was added, but not
-enabled, due to missing pinctrl properties in the serial port device
-node.
+Blocks are tracked by u32, so the max permitted filesize is
+(U32_MAX + 1) * BLOCK_SIZE. Additionally, in order to support crypto
+data unit sizes of 4K with a 16K block with IV_INO_LBLK_{32,64}, we must
+further restrict max filesize to (U32_MAX + 1) * 4096. This does not
+affect 4K blocksize f2fs as the natural limit for files are well below
+that.
 
-Fixes: 7a8d590de8132853 ("arm64: dts: renesas: white-hawk-cpu: Add serial port pin control")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/8a51516581cd71ecbfa174af9c7cebad1fc83c5b.1702459865.git.geert+renesas@glider.be
+Fixes: d7e9a9037de2 ("f2fs: Support Block Size == Page Size")
+Signed-off-by: Daniel Rosenberg <drosen@google.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/f2fs/super.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi
-index bb4a5270f71b..913f70fe6c5c 100644
---- a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi
-@@ -187,6 +187,9 @@ &extalr_clk {
- };
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 033af907c3b1..5dfbc6b4c0ac 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -3364,6 +3364,14 @@ loff_t max_file_blocks(struct inode *inode)
+ 	leaf_count *= NIDS_PER_BLOCK;
+ 	result += leaf_count;
  
- &hscif0 {
-+	pinctrl-0 = <&hscif0_pins>;
-+	pinctrl-names = "default";
++	/*
++	 * For compatibility with FSCRYPT_POLICY_FLAG_IV_INO_LBLK_{64,32} with
++	 * a 4K crypto data unit, we must restrict the max filesize to what can
++	 * fit within U32_MAX + 1 data units.
++	 */
 +
- 	status = "okay";
- };
++	result = min(result, (((loff_t)U32_MAX + 1) * 4096) >> F2FS_BLKSIZE_BITS);
++
+ 	return result;
+ }
  
 -- 
 2.43.0
