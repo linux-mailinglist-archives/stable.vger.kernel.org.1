@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-14126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C58837F9B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C21837D5B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C45A429358D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F34191F295B8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746D5634EA;
-	Tue, 23 Jan 2024 00:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5844A55E62;
+	Tue, 23 Jan 2024 00:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIfQKotk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDIrg2hM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B76634E0;
-	Tue, 23 Jan 2024 00:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D2C52F7C;
+	Tue, 23 Jan 2024 00:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971232; cv=none; b=ONN+lB++4fPFX7zfdZHm0lrbXZ7jos21wypG7CpMYKyGF5ELqS+knyyjdR1pctSW69prfhrPerXDhWfMdCOmfbedIU7ogMLMEYXaCh7FJRJSmGM/yZuOwOSSPb/gct/MIeI22NcoiRguVMG3IbHgTeiPGHRa7dq4RDhkT+tTokk=
+	t=1705969904; cv=none; b=ln3Uk3rGOcBeEul77K2OkTlyCzmRvlrrnxoiOA735X1PhHgAXj48f4hXcyqCivu85rnQ3V9ak5hrJcSVZLaF6fG/wDVb8wSLsKnvWyToOoy/AyE9R7c+YrannUrDoKr4DfavVIs7km4ZynP4CdCbW68oMzPS8z0TfrFK95duZks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971232; c=relaxed/simple;
-	bh=QRXlS8tSx64bqYH0EnWmcr2chbp8rQ1qyI/MKRfQIqo=;
+	s=arc-20240116; t=1705969904; c=relaxed/simple;
+	bh=/VFijyGUyqLRqtlhxMy5svCwoF1Y6febeOHzpKCwrKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9pEhfd5Fu0Z0alVOpnDoOU+HPDxE6G8ak983X23f9CeNAx8uqNBsQYiDIWvEWGRiq/iKQcIRANxc1yJQRAP+FGT+XCFmMZdQrHXys2N9Qj/FpXwXbjJUzJJzAxgViMyFMb1Jn02hY7ZtSnDXbkKPQZVor/BQHbkNONrNtHFvkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zIfQKotk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E84C43390;
-	Tue, 23 Jan 2024 00:53:51 +0000 (UTC)
+	 MIME-Version; b=RK3IQqAhfH6PJdaYwrHN59hqYv7WSKF4FjTceBVuf8qWmE5302Brxh78IL+0iUUXGkS1uTv4TA55vInVOWCz8Mssvi+IYcJE0S9+mwu8HNN9AUPOn8kGMEODAqe6V/PWwq4BcspFDP9jSCwxl6MVqarWLAqnik8S12RJ0PuCC9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDIrg2hM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F79FC433C7;
+	Tue, 23 Jan 2024 00:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971232;
-	bh=QRXlS8tSx64bqYH0EnWmcr2chbp8rQ1qyI/MKRfQIqo=;
+	s=korg; t=1705969903;
+	bh=/VFijyGUyqLRqtlhxMy5svCwoF1Y6febeOHzpKCwrKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zIfQKotkazC17MZocIV511nxwQuvOWCXdYo0jl6hN2pSmt9N/WwMJRLI4S0d4gC5t
-	 NsHGBkVQNGyGLzO0lKK/1YRfSSen4XYzurGQWZxJgniogOmMi37WSbjOC8HFzIDNck
-	 McrrTBn+hxGwX7ncb4zsGNvC/qSd2VlTE2l2otwE=
+	b=kDIrg2hMnxpOGmtPW0GWWYHrCsyq9AXN7XpE9D0PLpUR23azQhemFJtpL/OEBWFF/
+	 GrkD92mjwC/sZhBIIuVfAjuRbxrBfqvrpJcWkT3vKlyKf5B3t2cGQLX32GpiB6tXaS
+	 D/Uv1CacADLXRSalP2awwcFNdHRZGgzb5PRgDqxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Delevoryas <peter@pjd.dev>,
-	"David S. Miller" <davem@davemloft.net>,
+	Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
+	Disha Goel <disgoel@linux.ibm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Disha Goel <disgoel@linux.vnet.ibm.com>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 115/286] net/ncsi: Fix netlink major/minor version numbers
+Subject: [PATCH 6.7 517/641] perf vendor events powerpc: Update datasource event name to fix duplicate events
 Date: Mon, 22 Jan 2024 15:57:01 -0800
-Message-ID: <20240122235736.537366863@linuxfoundation.org>
+Message-ID: <20240122235834.268643936@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,204 +72,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Delevoryas <peter@pjd.dev>
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-[ Upstream commit 3084b58bfd0b9e4b5e034f31f31b42977db35f12 ]
+[ Upstream commit 9eef41014fe01287dae79fe208b9b433b13040bb ]
 
-The netlink interface for major and minor version numbers doesn't actually
-return the major and minor version numbers.
+Running "perf list" on powerpc fails with segfault as below:
 
-It reports a u32 that contains the (major, minor, update, alpha1)
-components as the major version number, and then alpha2 as the minor
-version number.
+   $ ./perf list
+   Segmentation fault (core dumped)
+   $
 
-For whatever reason, the u32 byte order was reversed (ntohl): maybe it was
-assumed that the encoded value was a single big-endian u32, and alpha2 was
-the minor version.
+This happens because of duplicate events in the JSON list.  The powerpc
+JSON event list contains some event with same event name, but different
+event code. They are:
 
-The correct way to get the supported NC-SI version from the network
-controller is to parse the Get Version ID response as described in 8.4.44
-of the NC-SI spec[1].
+- PM_INST_FROM_L3MISS (Present in datasource and frontend)
+- PM_MRK_DATA_FROM_L2MISS (Present in datasource and marked)
+- PM_MRK_INST_FROM_L3MISS (Present in datasource and marked)
+- PM_MRK_DATA_FROM_L3MISS (Present in datasource and marked)
 
-    Get Version ID Response Packet Format
+pmu_events_table__num_events() uses the value from table_pmu->num_entries
+which includes duplicate events as well. This causes issue during "perf
+list" and results in a segmentation fault.
 
-              Bits
-            +--------+--------+--------+--------+
-     Bytes  | 31..24 | 23..16 | 15..8  | 7..0   |
-    +-------+--------+--------+--------+--------+
-    | 0..15 | NC-SI Header                      |
-    +-------+--------+--------+--------+--------+
-    | 16..19| Response code   | Reason code     |
-    +-------+--------+--------+--------+--------+
-    |20..23 | Major  | Minor  | Update | Alpha1 |
-    +-------+--------+--------+--------+--------+
-    |24..27 |         reserved         | Alpha2 |
-    +-------+--------+--------+--------+--------+
-    |            .... other stuff ....          |
+Since both event codes are valid, append _DSRC to the Data Source events
+(datasource.json), so that they would have a unique name.
 
-The major, minor, and update fields are all binary-coded decimal (BCD)
-encoded [2]. The spec provides examples below the Get Version ID response
-format in section 8.4.44.1, but for practical purposes, this is an example
-from a live network card:
+Also add PM_DATA_FROM_L2MISS_DSRC and PM_DATA_FROM_L3MISS_DSRC events.
 
-    root@bmc:~# ncsi-util 0x15
-    NC-SI Command Response:
-    cmd: GET_VERSION_ID(0x15)
-    Response: COMMAND_COMPLETED(0x0000)  Reason: NO_ERROR(0x0000)
-    Payload length = 40
+With the fix, 'perf list' works as expected.
 
-    20: 0xf1 0xf1 0xf0 0x00 <<<<<<<<< (major, minor, update, alpha1)
-    24: 0x00 0x00 0x00 0x00 <<<<<<<<< (_, _, _, alpha2)
-
-    28: 0x6d 0x6c 0x78 0x30
-    32: 0x2e 0x31 0x00 0x00
-    36: 0x00 0x00 0x00 0x00
-    40: 0x16 0x1d 0x07 0xd2
-    44: 0x10 0x1d 0x15 0xb3
-    48: 0x00 0x17 0x15 0xb3
-    52: 0x00 0x00 0x81 0x19
-
-This should be parsed as "1.1.0".
-
-"f" in the upper-nibble means to ignore it, contributing zero.
-
-If both nibbles are "f", I think the whole field is supposed to be ignored.
-Major and minor are "required", meaning they're not supposed to be "ff",
-but the update field is "optional" so I think it can be ff. I think the
-simplest thing to do is just set the major and minor to zero instead of
-juggling some conditional logic or something.
-
-bcd2bin() from "include/linux/bcd.h" seems to assume both nibbles are 0-9,
-so I've provided a custom BCD decoding function.
-
-Alpha1 and alpha2 are ISO/IEC 8859-1 encoded, which just means ASCII
-characters as far as I can tell, although the full encoding table for
-non-alphabetic characters is slightly different (I think).
-
-I imagine the alpha fields are just supposed to be alphabetic characters,
-but I haven't seen any network cards actually report a non-zero value for
-either.
-
-If people wrote software against this netlink behavior, and were parsing
-the major and minor versions themselves from the u32, then this would
-definitely break their code.
-
-[1] https://www.dmtf.org/sites/default/files/standards/documents/DSP0222_1.0.0.pdf
-[2] https://en.wikipedia.org/wiki/Binary-coded_decimal
-[2] https://en.wikipedia.org/wiki/ISO/IEC_8859-1
-
-Signed-off-by: Peter Delevoryas <peter@pjd.dev>
-Fixes: 138635cc27c9 ("net/ncsi: NCSI response packet handler")
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: fc143580753348c6 ("perf vendor events power10: Update JSON/events")
+Signed-off-by: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
+Tested-by: Disha Goel <disgoel@linux.ibm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20231123160110.94090-1-atrajeev@linux.vnet.ibm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ncsi/internal.h     |  7 +++++--
- net/ncsi/ncsi-netlink.c |  4 ++--
- net/ncsi/ncsi-pkt.h     |  7 +++++--
- net/ncsi/ncsi-rsp.c     | 26 ++++++++++++++++++++++++--
- 4 files changed, 36 insertions(+), 8 deletions(-)
+ .../arch/powerpc/power10/datasource.json       | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
-index 49031f804276..ec765f2a7569 100644
---- a/net/ncsi/internal.h
-+++ b/net/ncsi/internal.h
-@@ -98,8 +98,11 @@ enum {
- 
- 
- struct ncsi_channel_version {
--	u32 version;		/* Supported BCD encoded NCSI version */
--	u32 alpha2;		/* Supported BCD encoded NCSI version */
-+	u8   major;		/* NCSI version major */
-+	u8   minor;		/* NCSI version minor */
-+	u8   update;		/* NCSI version update */
-+	char alpha1;		/* NCSI version alpha1 */
-+	char alpha2;		/* NCSI version alpha2 */
- 	u8  fw_name[12];	/* Firmware name string                */
- 	u32 fw_version;		/* Firmware version                   */
- 	u16 pci_ids[4];		/* PCI identification                 */
-diff --git a/net/ncsi/ncsi-netlink.c b/net/ncsi/ncsi-netlink.c
-index c189b4c8a182..db350b8f5d88 100644
---- a/net/ncsi/ncsi-netlink.c
-+++ b/net/ncsi/ncsi-netlink.c
-@@ -71,8 +71,8 @@ static int ncsi_write_channel_info(struct sk_buff *skb,
- 	if (nc == nc->package->preferred_channel)
- 		nla_put_flag(skb, NCSI_CHANNEL_ATTR_FORCED);
- 
--	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MAJOR, nc->version.version);
--	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MINOR, nc->version.alpha2);
-+	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MAJOR, nc->version.major);
-+	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MINOR, nc->version.minor);
- 	nla_put_string(skb, NCSI_CHANNEL_ATTR_VERSION_STR, nc->version.fw_name);
- 
- 	vid_nest = nla_nest_start_noflag(skb, NCSI_CHANNEL_ATTR_VLAN_LIST);
-diff --git a/net/ncsi/ncsi-pkt.h b/net/ncsi/ncsi-pkt.h
-index 80938b338fee..3fbea7e74fb1 100644
---- a/net/ncsi/ncsi-pkt.h
-+++ b/net/ncsi/ncsi-pkt.h
-@@ -191,9 +191,12 @@ struct ncsi_rsp_gls_pkt {
- /* Get Version ID */
- struct ncsi_rsp_gvi_pkt {
- 	struct ncsi_rsp_pkt_hdr rsp;          /* Response header */
--	__be32                  ncsi_version; /* NCSI version    */
-+	unsigned char           major;        /* NCSI version major */
-+	unsigned char           minor;        /* NCSI version minor */
-+	unsigned char           update;       /* NCSI version update */
-+	unsigned char           alpha1;       /* NCSI version alpha1 */
- 	unsigned char           reserved[3];  /* Reserved        */
--	unsigned char           alpha2;       /* NCSI version    */
-+	unsigned char           alpha2;       /* NCSI version alpha2 */
- 	unsigned char           fw_name[12];  /* f/w name string */
- 	__be32                  fw_version;   /* f/w version     */
- 	__be16                  pci_ids[4];   /* PCI IDs         */
-diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-index 888ccc2d4e34..6a4638811660 100644
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -19,6 +19,19 @@
- #include "ncsi-pkt.h"
- #include "ncsi-netlink.h"
- 
-+/* Nibbles within [0xA, 0xF] add zero "0" to the returned value.
-+ * Optional fields (encoded as 0xFF) will default to zero.
-+ */
-+static u8 decode_bcd_u8(u8 x)
-+{
-+	int lo = x & 0xF;
-+	int hi = x >> 4;
-+
-+	lo = lo < 0xA ? lo : 0;
-+	hi = hi < 0xA ? hi : 0;
-+	return lo + hi * 10;
-+}
-+
- static int ncsi_validate_rsp_pkt(struct ncsi_request *nr,
- 				 unsigned short payload)
- {
-@@ -755,9 +768,18 @@ static int ncsi_rsp_handler_gvi(struct ncsi_request *nr)
- 	if (!nc)
- 		return -ENODEV;
- 
--	/* Update to channel's version info */
-+	/* Update channel's version info
-+	 *
-+	 * Major, minor, and update fields are supposed to be
-+	 * unsigned integers encoded as packed BCD.
-+	 *
-+	 * Alpha1 and alpha2 are ISO/IEC 8859-1 characters.
-+	 */
- 	ncv = &nc->version;
--	ncv->version = ntohl(rsp->ncsi_version);
-+	ncv->major = decode_bcd_u8(rsp->major);
-+	ncv->minor = decode_bcd_u8(rsp->minor);
-+	ncv->update = decode_bcd_u8(rsp->update);
-+	ncv->alpha1 = rsp->alpha1;
- 	ncv->alpha2 = rsp->alpha2;
- 	memcpy(ncv->fw_name, rsp->fw_name, 12);
- 	ncv->fw_version = ntohl(rsp->fw_version);
+diff --git a/tools/perf/pmu-events/arch/powerpc/power10/datasource.json b/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
+index 6b0356f2d301..0eeaaf1a95b8 100644
+--- a/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
++++ b/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
+@@ -99,6 +99,11 @@
+     "EventName": "PM_INST_FROM_L2MISS",
+     "BriefDescription": "The processor's instruction cache was reloaded from a source beyond the local core's L2 due to a demand miss."
+   },
++  {
++    "EventCode": "0x0003C0000000C040",
++    "EventName": "PM_DATA_FROM_L2MISS_DSRC",
++    "BriefDescription": "The processor's L1 data cache was reloaded from a source beyond the local core's L2 due to a demand miss."
++  },
+   {
+     "EventCode": "0x000380000010C040",
+     "EventName": "PM_INST_FROM_L2MISS_ALL",
+@@ -161,9 +166,14 @@
+   },
+   {
+     "EventCode": "0x000780000000C040",
+-    "EventName": "PM_INST_FROM_L3MISS",
++    "EventName": "PM_INST_FROM_L3MISS_DSRC",
+     "BriefDescription": "The processor's instruction cache was reloaded from beyond the local core's L3 due to a demand miss."
+   },
++  {
++    "EventCode": "0x0007C0000000C040",
++    "EventName": "PM_DATA_FROM_L3MISS_DSRC",
++    "BriefDescription": "The processor's L1 data cache was reloaded from beyond the local core's L3 due to a demand miss."
++  },
+   {
+     "EventCode": "0x000780000010C040",
+     "EventName": "PM_INST_FROM_L3MISS_ALL",
+@@ -981,7 +991,7 @@
+   },
+   {
+     "EventCode": "0x0003C0000000C142",
+-    "EventName": "PM_MRK_DATA_FROM_L2MISS",
++    "EventName": "PM_MRK_DATA_FROM_L2MISS_DSRC",
+     "BriefDescription": "The processor's L1 data cache was reloaded from a source beyond the local core's L2 due to a demand miss for a marked instruction."
+   },
+   {
+@@ -1046,12 +1056,12 @@
+   },
+   {
+     "EventCode": "0x000780000000C142",
+-    "EventName": "PM_MRK_INST_FROM_L3MISS",
++    "EventName": "PM_MRK_INST_FROM_L3MISS_DSRC",
+     "BriefDescription": "The processor's instruction cache was reloaded from beyond the local core's L3 due to a demand miss for a marked instruction."
+   },
+   {
+     "EventCode": "0x0007C0000000C142",
+-    "EventName": "PM_MRK_DATA_FROM_L3MISS",
++    "EventName": "PM_MRK_DATA_FROM_L3MISS_DSRC",
+     "BriefDescription": "The processor's L1 data cache was reloaded from beyond the local core's L3 due to a demand miss for a marked instruction."
+   },
+   {
 -- 
 2.43.0
 
