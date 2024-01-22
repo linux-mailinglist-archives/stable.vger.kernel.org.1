@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E6EA8382DD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A8283809B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:00:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2BE21F27B8F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4028E1C2349C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E5B5FDB0;
-	Tue, 23 Jan 2024 01:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F15130E31;
+	Tue, 23 Jan 2024 01:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PL5QAwht"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hH7+cKZ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2082B5FDAB;
-	Tue, 23 Jan 2024 01:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C9012FF73;
+	Tue, 23 Jan 2024 01:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974642; cv=none; b=PFaGBZp0f5J+NrpVlpi5baG8WGMDtU5RRdufRq3G/N9btctAPkSzzBnZG5bRKfvzYZpC61KI6Rmft+GmQqtL8xwPLJwwmDzl4rIghcEw1wKw9GcEAJ8Ak8fZBHYoq1h7cdEUzKsTN+koAAPL0Gv51JVq1ZzCxEhJWcZ/7oUPxvM=
+	t=1705971815; cv=none; b=eYAiyDKWuuppxCZYb+y/aU1EOLQkId+98Ew51hKnu0a5LSl0j8RMShZA8kQHW/DMsGngiOYiVqCn3zaCLi02RGVLGnRHMrzAKk0CvU2e5nil44m1o4npH/F+Sf0EFoQJhEToAMoTYLauzTJYG1cbwdRz+Pc25RZYpSuKPkFXbus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974642; c=relaxed/simple;
-	bh=1TYCCYOnwqU63Zq02rdGoGwhZSeUB8JEd47No2RQ/NQ=;
+	s=arc-20240116; t=1705971815; c=relaxed/simple;
+	bh=je5Tsq2XRTktAm8erw/ArwLc8XaONn/6uYve+v6vfyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kggawyh78mBItd8rOWMuCDWmf2SM/x3GdCNRb2WCNg6h6R3clOn85Foao4I6xPf3IGL3ziL2tgW1VIeexuhEC/FFyMBSLYnQrrofppk6wLKgvEFD7QPRngO1qf6mHIkL9TwREA6wS/rQCPOo3xJbjyKsh7qBE3ApUm4RD59qENw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PL5QAwht; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D50DC43399;
-	Tue, 23 Jan 2024 01:50:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H2/WMB53XiFngJf1a8DCn/pr6D9OkrFHblShw9UVb3oc+D2TUwCl/n8fhNWZCaNj6AFIQOvLsXtSpKz55LbQmE9DcTgFIw+z6UxrZ21N7rH2dHkKJ0bfcDp3po2WHyfgDABNZ1njF6x3WVq7EW6hl8RbydaqLEVDj+5zQ0QQDp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hH7+cKZ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62117C43390;
+	Tue, 23 Jan 2024 01:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974641;
-	bh=1TYCCYOnwqU63Zq02rdGoGwhZSeUB8JEd47No2RQ/NQ=;
+	s=korg; t=1705971815;
+	bh=je5Tsq2XRTktAm8erw/ArwLc8XaONn/6uYve+v6vfyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PL5QAwhtY+CimX5XdGU6AzxkLimMEH1D82+Xtkv/oZmrJdfPuUYO/erifyZ+aX2yJ
-	 JFLt4sm+wfzefzH5tP7ahPOwth3xXLy5oYC2b0QoJmZFZdc0XHGWrNPyug3/IdLQ8o
-	 YHLcycqLcYskm3KynPJg6ve2NYbgVvvyFj01tX0E=
+	b=hH7+cKZ/6S2hTCceQuPti5E9lSDEkrwqpCay2N7ztFGny7pn9shcsyh1ZX+tcOGjW
+	 8Zrwz6Kw6rT9b38mXb4xX6QmDFi+qkX+Tq7O6Qnn9nEmkM2vOBq62xxbmyzbYSYd2d
+	 asidVDLSM1odGbxn+/oOu030kIK5F7iWBTXlnewA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 226/374] clk: fixed-rate: fix clk_hw_register_fixed_rate_with_accuracy_parent_hw
+	Niklas Cassel <niklas.cassel@wdc.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>
+Subject: [PATCH 6.1 314/417] PCI: dwc: endpoint: Fix dw_pcie_ep_raise_msix_irq() alignment support
 Date: Mon, 22 Jan 2024 15:58:02 -0800
-Message-ID: <20240122235752.558025862@linuxfoundation.org>
+Message-ID: <20240122235802.692374956@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,50 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Théo Lebrun <theo.lebrun@bootlin.com>
+From: Niklas Cassel <niklas.cassel@wdc.com>
 
-[ Upstream commit ee0cf5e07f44a10fce8f1bfa9db226c0b5ecf880 ]
+commit 2217fffcd63f86776c985d42e76daa43a56abdf1 upstream.
 
-Add missing comma and remove extraneous NULL argument. The macro is
-currently used by no one which explains why the typo slipped by.
+Commit 6f5e193bfb55 ("PCI: dwc: Fix dw_pcie_ep_raise_msix_irq() to get
+correct MSI-X table address") modified dw_pcie_ep_raise_msix_irq() to
+support iATUs which require a specific alignment.
 
-Fixes: 2d34f09e79c9 ("clk: fixed-rate: Add support for specifying parents via DT/pointers")
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Link: https://lore.kernel.org/r/20231218-mbly-clk-v1-1-44ce54108f06@bootlin.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, this support cannot have been properly tested.
+
+The whole point is for the iATU to map an address that is aligned,
+using dw_pcie_ep_map_addr(), and then let the writel() write to
+ep->msi_mem + aligned_offset.
+
+Thus, modify the address that is mapped such that it is aligned.
+With this change, dw_pcie_ep_raise_msix_irq() matches the logic in
+dw_pcie_ep_raise_msi_irq().
+
+Link: https://lore.kernel.org/linux-pci/20231128132231.2221614-1-nks@flawful.org
+Fixes: 6f5e193bfb55 ("PCI: dwc: Fix dw_pcie_ep_raise_msix_irq() to get correct MSI-X table address")
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: stable@vger.kernel.org # 5.7
+Cc: Kishon Vijay Abraham I <kishon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/clk-provider.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
-index 43e177b3a4d3..6cace09ba63d 100644
---- a/include/linux/clk-provider.h
-+++ b/include/linux/clk-provider.h
-@@ -434,8 +434,8 @@ struct clk *clk_register_fixed_rate(struct device *dev, const char *name,
-  */
- #define clk_hw_register_fixed_rate_with_accuracy_parent_hw(dev, name,	      \
- 		parent_hw, flags, fixed_rate, fixed_accuracy)		      \
--	__clk_hw_register_fixed_rate((dev), NULL, (name), NULL, (parent_hw)   \
--				     NULL, NULL, (flags), (fixed_rate),	      \
-+	__clk_hw_register_fixed_rate((dev), NULL, (name), NULL, (parent_hw),  \
-+				     NULL, (flags), (fixed_rate),	      \
- 				     (fixed_accuracy), 0, false)
- /**
-  * clk_hw_register_fixed_rate_with_accuracy_parent_data - register fixed-rate
--- 
-2.43.0
-
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -600,6 +600,7 @@ int dw_pcie_ep_raise_msix_irq(struct dw_
+ 	}
+ 
+ 	aligned_offset = msg_addr & (epc->mem->window.page_size - 1);
++	msg_addr &= ~aligned_offset;
+ 	ret = dw_pcie_ep_map_addr(epc, func_no, 0, ep->msi_mem_phys, msg_addr,
+ 				  epc->mem->window.page_size);
+ 	if (ret)
 
 
 
