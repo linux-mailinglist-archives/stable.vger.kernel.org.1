@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BDA18382C6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:23:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A1EE838480
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A334B22076
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0760299B6A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999952C1BC;
-	Tue, 23 Jan 2024 01:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AF16EB5E;
+	Tue, 23 Jan 2024 02:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXI/T1g3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZGasgIX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5980D2B9B7;
-	Tue, 23 Jan 2024 01:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0D46DD10;
+	Tue, 23 Jan 2024 02:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974100; cv=none; b=Qquhdu4XEsIqtSEoja4mkmSsTNfhFH/96cwV81v8CqNcTLxKpMS9M1JcYlYfz0XHcQovH+LL8aBqKLogXyE2OmGwSD2Cs5MIaRwaPGqfQU+210SkqGgp4dYCBdRWuyHK2XGf5y0Izw7Kkz2dQVvgpaapFH4USQUhYlKO6D/T4dI=
+	t=1705975407; cv=none; b=RXw/hlg7qrMIAXpWOakQrqihzqpyUUUiwXRvbngA9rl2Xx57e0dfqlP9MxOCAbrv3tlCF77jOmliW4NhPvPRmU19DU+cfX8c2xcqZqwNbTvf6tcFEMQNGSlZDnVtif11NcLI05GXW3Pri6DuX7ldMuP+WdaEkd8Nwq8yRe/k+Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974100; c=relaxed/simple;
-	bh=siULYyd6sn4kxKk5ZuXEEX+KWBkpR5pIWDSQD7DWMNs=;
+	s=arc-20240116; t=1705975407; c=relaxed/simple;
+	bh=+l8iZyOfREXCxpiuw7Gupg/sZMV5c6Pc1tqJPSEU+Ug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lorg1WBW2EwVYlIHqC2I6foXlVCO+tFpjLtONTAPEkJMHF1tm8tVub956ucOgYQrcfR4hsxV04eGpffPYoTQdmoJahLOc8W5pPmdmwKyb1jwktSxutbJwkhRs5GWYdskjY6zi2Hzmh8Xhlc26F2NA6zDBNQk5Alnza+rsjrPt18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXI/T1g3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB08C433C7;
-	Tue, 23 Jan 2024 01:41:39 +0000 (UTC)
+	 MIME-Version; b=DCiMvt6GTA7BDc/cbiJBq0Bo7BU67SCPsDd4xc2JkX+AnGkJFyLKSRo1ISPV0dp42NIX/JJYgYsiaAOzsI+Hn+N+oZ3Ni4IjtvAUEMxrkkRH9RRQwYToknxJc/CNm7ixBqu9bh58Trc+b0eOUOsM69+hM/m4mPTMrsc+QwbBets=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZGasgIX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90575C43394;
+	Tue, 23 Jan 2024 02:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974099;
-	bh=siULYyd6sn4kxKk5ZuXEEX+KWBkpR5pIWDSQD7DWMNs=;
+	s=korg; t=1705975407;
+	bh=+l8iZyOfREXCxpiuw7Gupg/sZMV5c6Pc1tqJPSEU+Ug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VXI/T1g3JuFPnLcnA4wcBS0X57f3+JP9U22olWcQP4CVwjPPPXMYqDDnYjMIIU+lu
-	 +ZKH1noVlRExuEPYdm3X4wXaNr7UF3kmn+jS6vjD2Bt1nTvrCqWMgTYjk2Mi/HX3aP
-	 cetnym2xq0JnTIiuy4WQo+uTM1zVDS+vFxZ3x1Dg=
+	b=oZGasgIXMMV6cmCe2HavCHs68YgV3W3O6c6nfnvtg29yYJDVU2c9KWdGMrR15o0nD
+	 zoW7lIFLJCe3gfZzAiNY94H/Va4dh3HE2k8A2NrU6EZkCKfU1v6Sng0hrOk+a0SYrK
+	 SX4UWYoKItZ5WhvlmHMApH6c3Sl++6Elz8qf22pk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Luciano Coelho <luciano.coelho@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 163/374] wifi: iwlwifi: mvm: set siso/mimo chains to 1 in FW SMPS request
+	RD Babiera <rdbabiera@google.com>,
+	Chris Bainbridge <chris.bainbridge@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 368/583] Revert "usb: typec: class: fix typec_altmode_put_partner to put plugs"
 Date: Mon, 22 Jan 2024 15:56:59 -0800
-Message-ID: <20240122235750.276192954@linuxfoundation.org>
+Message-ID: <20240122235823.275430556@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-[ Upstream commit b1a2e5c310e063560760806d2cc5d2233c596067 ]
+commit 9c6b789e954fae73c548f39332bcc56bdf0d4373 upstream.
 
-The firmware changed their mind, don't set the chains to zero,
-instead set them to 1 as we normally would for connections to
-APs that don't use MIMO.
+This reverts commit b17b7fe6dd5c6ff74b38b0758ca799cdbb79e26e.
 
-Fixes: 2a7ce54ccc23 ("iwlwifi: mvm: honour firmware SMPS requests")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231219215605.7f031f1a127f.Idc816e0f604b07d22a9d5352bc23c445512fad14@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That commit messed up the reference counting, so it needs to
+be rethought.
+
+Fixes: b17b7fe6dd5c ("usb: typec: class: fix typec_altmode_put_partner to put plugs")
+Cc:  <stable@vger.kernel.org>
+Cc: RD Babiera <rdbabiera@google.com>
+Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Closes: https://lore.kernel.org/lkml/CAP-bSRb3SXpgo_BEdqZB-p1K5625fMegRZ17ZkPE1J8ZYgEHDg@mail.gmail.com/
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240102091142.2136472-1-heikki.krogerus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ drivers/usb/typec/class.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-index 6d82725cb87d..32ed8227d985 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-@@ -99,17 +99,6 @@ static void iwl_mvm_phy_ctxt_set_rxchain(struct iwl_mvm *mvm,
- 		active_cnt = 2;
- 	}
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -266,7 +266,7 @@ static void typec_altmode_put_partner(st
+ 	if (!partner)
+ 		return;
  
--	/*
--	 * If the firmware requested it, then we know that it supports
--	 * getting zero for the values to indicate "use one, but pick
--	 * which one yourself", which means it can dynamically pick one
--	 * that e.g. has better RSSI.
--	 */
--	if (mvm->fw_static_smps_request && active_cnt == 1 && idle_cnt == 1) {
--		idle_cnt = 0;
--		active_cnt = 0;
--	}
--
- 	*rxchain_info = cpu_to_le32(iwl_mvm_get_valid_rx_ant(mvm) <<
- 					PHY_RX_CHAIN_VALID_POS);
- 	*rxchain_info |= cpu_to_le32(idle_cnt << PHY_RX_CHAIN_CNT_POS);
--- 
-2.43.0
-
+-	adev = &altmode->adev;
++	adev = &partner->adev;
+ 
+ 	if (is_typec_plug(adev->dev.parent)) {
+ 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
+@@ -496,8 +496,7 @@ static void typec_altmode_release(struct
+ {
+ 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
+ 
+-	if (!is_typec_port(dev->parent))
+-		typec_altmode_put_partner(alt);
++	typec_altmode_put_partner(alt);
+ 
+ 	altmode_id_remove(alt->adev.dev.parent, alt->id);
+ 	kfree(alt);
 
 
 
