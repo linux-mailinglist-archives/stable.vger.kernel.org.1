@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313A7838064
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E59B08384F6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D51021F2CC66
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 054611C2A407
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4AC6775D;
-	Tue, 23 Jan 2024 01:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8517D7A711;
+	Tue, 23 Jan 2024 02:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="id9F4y0i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wlq8hhaO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6F46774B;
-	Tue, 23 Jan 2024 01:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446F97A706;
+	Tue, 23 Jan 2024 02:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971696; cv=none; b=ak7w2TwQGPyGTyg6BDAbtgPYDYHGV6e+r/DfY3EWi+rSZLKwqNXbXZ+ZVqufNDoCZV2WMlxeb50bvTxsOfBRYUSmnaEi2NYA+awzTmB4YKxZGB/YcKTL+u8PvxKPMqz1iaurhJbBJ5qNvMvsWv+wlnDhjUPh4jPXGY+CFQ+yJ14=
+	t=1705975547; cv=none; b=MkXYsgsuhyqQgPLIQxZ+foJPYZWKk8dRadN2DQNTCdNqtVgn+OCEYshfcXVwul3AsWn5YVex8jHpb3TR5slmF1X7REGoRnUoSEXqW+io6VP6HvyRU512dh55ySOJrLWLPbBIOAGhdOQx5B6ucRE6xToQrUMtIg5Pl5ftXV2w13Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971696; c=relaxed/simple;
-	bh=0m0bBbL/f8mqGwnFR2Xz4uSYkeiw2c1NhO1HaY3Rebc=;
+	s=arc-20240116; t=1705975547; c=relaxed/simple;
+	bh=pD+19n2ZrYi3N06Y/zsHOgIkZZJlrz0wqubDaLzR++o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XrUIRw+9tuWDEo4YDQbuFImbO+mSMa9ol1ixItp/lp7Yz8JDdcQPdYwaOGcceyOPV0+1POUmLsiH2A/OSu5mO4rrYpnAaZq4fe2p9pEUIt0YBpuzeacS5zSfcwjFKapw7IiDlH8y0mEwc/iBMejPcQchdjmE2+qAThvWiwbENOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=id9F4y0i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E79C43390;
-	Tue, 23 Jan 2024 01:01:36 +0000 (UTC)
+	 MIME-Version; b=r956rtZKBMKhXVLDJcSiJhTMwnDSeo5tBowmE/EZ4BYb1rZzExpcWx7x1jdlem4oNYiccm3V24nV5IQO1APSavM4ASVCb9XA8oPO++tPOyTces/nOA4scE+be2UzOSYpnyOxAGmZFzQ81LguA7r5NJUt9GJZQSC1Uab7nOriFN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wlq8hhaO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0169FC433F1;
+	Tue, 23 Jan 2024 02:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971696;
-	bh=0m0bBbL/f8mqGwnFR2Xz4uSYkeiw2c1NhO1HaY3Rebc=;
+	s=korg; t=1705975547;
+	bh=pD+19n2ZrYi3N06Y/zsHOgIkZZJlrz0wqubDaLzR++o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=id9F4y0ik1xaCGRmOni61tAGsCSSVFe6wZ6gQByCEiwbhzzts7PaxYz09k6YhLDhU
-	 W4Cjnlf5lx/CUSdGU55RC0lb3864JmY3JuSJk9T4g7Tx06NjVhtXoTmwimShRPf7pE
-	 4g9MuR09S1qz6YQcZ89AyfA57qQ3ornDDANpsg88=
+	b=Wlq8hhaOQl2PvqhTLZYdDJxn/65UQGj5j81fWXYQu4zAUEIUre5LzfVZka+gWe5Ay
+	 GVGoCpstk60RJwJvNQ7jpSA3abImHdJ1X6LRSfmFXsqdtVSPvbSFt5yJqOncrOZo8s
+	 X4OlOucHeOirAZFqlA5QZSekEO3s6unXWkfWsXo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.10 209/286] binder: fix race between mmput() and do_exit()
+	Alan Stern <stern@rowland.harvard.edu>,
+	Douglas Anderson <dianders@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 464/583] usb: core: Allow subclassed USB drivers to override usb_choose_configuration()
 Date: Mon, 22 Jan 2024 15:58:35 -0800
-Message-ID: <20240122235740.147072632@linuxfoundation.org>
+Message-ID: <20240122235826.181781624@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit 9a9ab0d963621d9d12199df9817e66982582d5a5 upstream.
+[ Upstream commit a87b8e3be926af0fc3b9b1af42b1127bd1ff077c ]
 
-Task A calls binder_update_page_range() to allocate and insert pages on
-a remote address space from Task B. For this, Task A pins the remote mm
-via mmget_not_zero() first. This can race with Task B do_exit() and the
-final mmput() refcount decrement will come from Task A.
+For some USB devices we might want to do something different for
+usb_choose_configuration(). One example here is the r8152 driver where
+we want to end up using the vendor driver with the preferred
+interface.
 
-  Task A            | Task B
-  ------------------+------------------
-  mmget_not_zero()  |
-                    |  do_exit()
-                    |    exit_mm()
-                    |      mmput()
-  mmput()           |
-    exit_mmap()     |
-      remove_vma()  |
-        fput()      |
+The r8152 driver tried to make things work by implementing a USB
+generic_subclass driver and then overriding the normal config
+selection after it happened. This is less than ideal and also caused
+breakage if someone deauthorized and re-authorized the USB device
+because the USB core ended up going back to it's default logic for
+choosing the best config. I made an attempt to fix this [1] but it was
+a bit ugly.
 
-In this case, the work of ____fput() from Task B is queued up in Task A
-as TWA_RESUME. So in theory, Task A returns to userspace and the cleanup
-work gets executed. However, Task A instead sleep, waiting for a reply
-from Task B that never comes (it's dead).
+Let's do this better and allow USB generic_subclass drivers to
+override usb_choose_configuration().
 
-This means the binder_deferred_release() is blocked until an unrelated
-binder event forces Task A to go back to userspace. All the associated
-death notifications will also be delayed until then.
+[1] https://lore.kernel.org/r/20231130154337.1.Ie00e07f07f87149c9ce0b27ae4e26991d307e14b@changeid
 
-In order to fix this use mmput_async() that will schedule the work in
-the corresponding mm->async_put_work WQ instead of Task A.
-
-Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-4-cmllamas@google.com
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20231201102946.v2.2.Iade5fa31997f1a0ca3e1dec0591633b02471df12@changeid
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: aa4f2b3e418e ("r8152: Choose our USB config with choose_configuration() rather than probe()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/core/generic.c | 7 +++++++
+ include/linux/usb.h        | 6 ++++++
+ 2 files changed, 13 insertions(+)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -271,7 +271,7 @@ static int binder_update_page_range(stru
- 	}
- 	if (mm) {
- 		mmap_write_unlock(mm);
--		mmput(mm);
-+		mmput_async(mm);
- 	}
- 	return 0;
+diff --git a/drivers/usb/core/generic.c b/drivers/usb/core/generic.c
+index 740342a2812a..dcb897158228 100644
+--- a/drivers/usb/core/generic.c
++++ b/drivers/usb/core/generic.c
+@@ -59,10 +59,17 @@ int usb_choose_configuration(struct usb_device *udev)
+ 	int num_configs;
+ 	int insufficient_power = 0;
+ 	struct usb_host_config *c, *best;
++	struct usb_device_driver *udriver = to_usb_device_driver(udev->dev.driver);
  
-@@ -304,7 +304,7 @@ err_page_ptr_cleared:
- err_no_vma:
- 	if (mm) {
- 		mmap_write_unlock(mm);
--		mmput(mm);
-+		mmput_async(mm);
- 	}
- 	return vma ? -ENOMEM : -ESRCH;
- }
+ 	if (usb_device_is_owned(udev))
+ 		return 0;
+ 
++	if (udriver->choose_configuration) {
++		i = udriver->choose_configuration(udev);
++		if (i >= 0)
++			return i;
++	}
++
+ 	best = NULL;
+ 	c = udev->config;
+ 	num_configs = udev->descriptor.bNumConfigurations;
+diff --git a/include/linux/usb.h b/include/linux/usb.h
+index a21074861f91..bfd77ece0643 100644
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -1264,6 +1264,9 @@ struct usb_driver {
+  *	module is being unloaded.
+  * @suspend: Called when the device is going to be suspended by the system.
+  * @resume: Called when the device is being resumed by the system.
++ * @choose_configuration: If non-NULL, called instead of the default
++ *	usb_choose_configuration(). If this returns an error then we'll go
++ *	on to call the normal usb_choose_configuration().
+  * @dev_groups: Attributes attached to the device that will be created once it
+  *	is bound to the driver.
+  * @drvwrap: Driver-model core structure wrapper.
+@@ -1287,6 +1290,9 @@ struct usb_device_driver {
+ 
+ 	int (*suspend) (struct usb_device *udev, pm_message_t message);
+ 	int (*resume) (struct usb_device *udev, pm_message_t message);
++
++	int (*choose_configuration) (struct usb_device *udev);
++
+ 	const struct attribute_group **dev_groups;
+ 	struct usbdrv_wrap drvwrap;
+ 	const struct usb_device_id *id_table;
+-- 
+2.43.0
+
 
 
 
