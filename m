@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-14685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9C64838222
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB914838224
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 611D12890F9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BB16288925
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5927D58AB6;
-	Tue, 23 Jan 2024 01:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3790F58AAC;
+	Tue, 23 Jan 2024 01:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="foqzr/gL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLj84+lo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198206AA6;
-	Tue, 23 Jan 2024 01:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8ED96121;
+	Tue, 23 Jan 2024 01:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974072; cv=none; b=L9RmEi40eXbV80O5cRAlUqz+hc+GQHAIdDISxWhGSbATChDr5xpfVNF/dMCZEh+XcW3HnT3yMok2yCn1EKKBexmRs2KA0sOyF1oCYG9J2HatZaoWVGGuuYg6sLUmge9wg5i3GpTufid8PSVuaVyVF3MalmTMYEfmNWuflG69rcE=
+	t=1705974074; cv=none; b=GeEuFBFhlFEUJcWpKwiNdanU8BmDMu/YXZJLpYku30PR8AwDKk5O85uqi4izP6yvtJFtXoZ1Duf+tb5R9c1w3dEz43Dr7500eKTo3NxAWdCCXUWGD1Yus3yBIarFxVdz6l5ZkjNul99VsLVYDndwl5gCImPSYY731V6z9qBcklg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974072; c=relaxed/simple;
-	bh=K/T8+aLoHHH01xsiYVUADmcC4KN2/VIM8yxH1yvkbh4=;
+	s=arc-20240116; t=1705974074; c=relaxed/simple;
+	bh=3d3gKPG8mOT/7X0QGoNR1KXa7O5OXsC8DCwhKTyhp+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3vihgb8CJncyDgE0UTlsgz73JxhVVhUu5ztjezuSoyhm4D2jqe8xKLMhHI9ToYbkkw/I4D9eMeqd1clJDfVsqaYD7XMWFmaW6lq2NUCP/8knlo2mWRgi/TKe4nx/XhHaZYOxJwyoX2IyLZDzTISpYqLnXTvjQCre/kiAojEyQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=foqzr/gL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75844C43390;
-	Tue, 23 Jan 2024 01:41:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pBwBDZjwr54DfXYrGfAe73KkOxKzCwPNN10gzHxhKRzNKGn/2RhwjKlbUYoTcYRFJ9kqZLnFJ6WKU65dPdMO8dcpYxP7nd1zO4RTq5UGfnXRXaQyRs8CaWaCKfLarI4XgkHpnZPWqRO1ch52lo9r88qW4+Lcq6xqKmj5QpttDMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLj84+lo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63F3C43399;
+	Tue, 23 Jan 2024 01:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974071;
-	bh=K/T8+aLoHHH01xsiYVUADmcC4KN2/VIM8yxH1yvkbh4=;
+	s=korg; t=1705974073;
+	bh=3d3gKPG8mOT/7X0QGoNR1KXa7O5OXsC8DCwhKTyhp+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=foqzr/gL4Whv7BFSBABVfvLfBu1PE/C9YGPmdzvK+lUPe5USS/8MmMffazPcERF51
-	 m/IcQkiPDSW11xJRLOFr+eUoO67I1tEkT2LQDphRz/9bS0W8vHrBpOf0CHw+QYhRiX
-	 IunD6Ya9F7C1MraWPN/knZBEadbKJzj8ilD4+uwA=
+	b=LLj84+lo6Z+20e5AOFk453skuRagXLFP6TKDgJPPE+9GiN9JYXFoU2iPO1ujSoPcC
+	 60Nj7hSS6rfZe4tX8NDWepNOOhcI+IVHkkKy5E50KE//h9mmQ7taUf9nvfpC4SXHCd
+	 GDNaLed/VECo3UDDa1YdvlSzoNn9KMKS/q0Cb5ZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	"David E. Box" <david.e.box@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/583] spi: cadence-quadspi: add missing clk_disable_unprepare() in cqspi_probe()
-Date: Mon, 22 Jan 2024 15:51:18 -0800
-Message-ID: <20240122235813.022604180@linuxfoundation.org>
+Subject: [PATCH 6.6 028/583] platform/x86/intel/vsec: Fix xa_alloc memory leak
+Date: Mon, 22 Jan 2024 15:51:19 -0800
+Message-ID: <20240122235813.046653163@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -60,54 +61,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: David E. Box <david.e.box@linux.intel.com>
 
-[ Upstream commit 5cb475174cce1bfedf1025b6e235e2c43d81144f ]
+[ Upstream commit 8cbcc1dbf8a62c730fadd60de761e0658547a589 ]
 
-cqspi_jh7110_clk_init() is called after clk_prepare_enable(cqspi->clk),
-if it fails, it should goto label 'probe_reset_failed' to disable
-cqspi->clk.
+Commit 936874b77dd0 ("platform/x86/intel/vsec: Add PCI error recovery
+support to Intel PMT") added an xarray to track the list of vsec devices to
+be recovered after a PCI error. But it did not provide cleanup for the list
+leading to a memory leak that was caught by kmemleak.  Do xa_alloc() before
+devm_add_action_or_reset() so that the list may be cleaned up with
+xa_erase() in the release function.
 
-In the error path after calling cqspi_jh7110_clk_init(),
-cqspi_jh7110_disable_clk() need be called.
-
-Fixes: 33f1ef6d4eb6 ("spi: cadence-quadspi: Add clock configuration for StarFive JH7110 QSPI")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Link: https://lore.kernel.org/r/20231129081147.628004-1-yangyingliang@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 936874b77dd0 ("platform/x86/intel/vsec: Add PCI error recovery support to Intel PMT")
+Signed-off-by: David E. Box <david.e.box@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20231129222132.2331261-2-david.e.box@linux.intel.com
+[hdegoede@redhat.com: Add missing xa_erase() on error-exit
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/platform/x86/intel/vsec.c | 25 +++++++++++++++----------
+ drivers/platform/x86/intel/vsec.h |  1 +
+ 2 files changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index b50db71ac4cc..2064dc4ea935 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1825,7 +1825,7 @@ static int cqspi_probe(struct platform_device *pdev)
- 		if (ddata->jh7110_clk_init) {
- 			ret = cqspi_jh7110_clk_init(pdev, cqspi);
- 			if (ret)
--				goto probe_clk_failed;
-+				goto probe_reset_failed;
- 		}
+diff --git a/drivers/platform/x86/intel/vsec.c b/drivers/platform/x86/intel/vsec.c
+index c1f9e4471b28..343ab6a82c01 100644
+--- a/drivers/platform/x86/intel/vsec.c
++++ b/drivers/platform/x86/intel/vsec.c
+@@ -120,6 +120,8 @@ static void intel_vsec_dev_release(struct device *dev)
+ {
+ 	struct intel_vsec_device *intel_vsec_dev = dev_to_ivdev(dev);
  
- 		if (of_device_is_compatible(pdev->dev.of_node,
-@@ -1872,6 +1872,8 @@ static int cqspi_probe(struct platform_device *pdev)
- probe_setup_failed:
- 	cqspi_controller_enable(cqspi, 0);
- probe_reset_failed:
-+	if (cqspi->is_jh7110)
-+		cqspi_jh7110_disable_clk(pdev, cqspi);
- 	clk_disable_unprepare(cqspi->clk);
- probe_clk_failed:
- 	pm_runtime_put_sync(dev);
++	xa_erase(&auxdev_array, intel_vsec_dev->id);
++
+ 	mutex_lock(&vsec_ida_lock);
+ 	ida_free(intel_vsec_dev->ida, intel_vsec_dev->auxdev.id);
+ 	mutex_unlock(&vsec_ida_lock);
+@@ -135,19 +137,28 @@ int intel_vsec_add_aux(struct pci_dev *pdev, struct device *parent,
+ 	struct auxiliary_device *auxdev = &intel_vsec_dev->auxdev;
+ 	int ret, id;
+ 
+-	mutex_lock(&vsec_ida_lock);
+-	ret = ida_alloc(intel_vsec_dev->ida, GFP_KERNEL);
+-	mutex_unlock(&vsec_ida_lock);
++	ret = xa_alloc(&auxdev_array, &intel_vsec_dev->id, intel_vsec_dev,
++		       PMT_XA_LIMIT, GFP_KERNEL);
+ 	if (ret < 0) {
+ 		kfree(intel_vsec_dev->resource);
+ 		kfree(intel_vsec_dev);
+ 		return ret;
+ 	}
+ 
++	mutex_lock(&vsec_ida_lock);
++	id = ida_alloc(intel_vsec_dev->ida, GFP_KERNEL);
++	mutex_unlock(&vsec_ida_lock);
++	if (id < 0) {
++		xa_erase(&auxdev_array, intel_vsec_dev->id);
++		kfree(intel_vsec_dev->resource);
++		kfree(intel_vsec_dev);
++		return id;
++	}
++
+ 	if (!parent)
+ 		parent = &pdev->dev;
+ 
+-	auxdev->id = ret;
++	auxdev->id = id;
+ 	auxdev->name = name;
+ 	auxdev->dev.parent = parent;
+ 	auxdev->dev.release = intel_vsec_dev_release;
+@@ -169,12 +180,6 @@ int intel_vsec_add_aux(struct pci_dev *pdev, struct device *parent,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	/* Add auxdev to list */
+-	ret = xa_alloc(&auxdev_array, &id, intel_vsec_dev, PMT_XA_LIMIT,
+-		       GFP_KERNEL);
+-	if (ret)
+-		return ret;
+-
+ 	return 0;
+ }
+ EXPORT_SYMBOL_NS_GPL(intel_vsec_add_aux, INTEL_VSEC);
+diff --git a/drivers/platform/x86/intel/vsec.h b/drivers/platform/x86/intel/vsec.h
+index 0fd042c171ba..0a6201b4a0e9 100644
+--- a/drivers/platform/x86/intel/vsec.h
++++ b/drivers/platform/x86/intel/vsec.h
+@@ -45,6 +45,7 @@ struct intel_vsec_device {
+ 	struct ida *ida;
+ 	struct intel_vsec_platform_info *info;
+ 	int num_resources;
++	int id; /* xa */
+ 	void *priv_data;
+ 	size_t priv_data_size;
+ };
 -- 
 2.43.0
 
