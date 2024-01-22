@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F78837CB7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:15:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE348384AA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87446B2A03D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E851B23DC7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B1D3C36;
-	Tue, 23 Jan 2024 00:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38DA62817;
+	Tue, 23 Jan 2024 01:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTAF0f/S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iEDbwyeh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B1E23C6;
-	Tue, 23 Jan 2024 00:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B251562806;
+	Tue, 23 Jan 2024 01:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969589; cv=none; b=M5UfdaerYccmnBd7mN4D8KT7uMzFUO8Xi01L4DKj9R1HgK4/Hux0gv+hHAddodrq0lo3F8pwI8q9mdlEP3BC5kbF17iu1qor9R+zDjV/wcRhpby+5/b67tD6SXztVPKDA/BEtnx4SiRzRm2yRJ+NKdf/sOi9+zJ5xRL6hruaSTo=
+	t=1705974962; cv=none; b=l0RCH/MWpCCZH4F+d6+8HyyoWBu9GQu4eYAG489vyDPwlJmlg/NbEJpCqjBxyr8XKmopIi/AVVMgDdhNhip5pICUq4RRkbMSyfJA+vq3ypAqiO7WMuJQbO8pPMqvx47Foq3BIAaStDAGsFbATDjtI3lXQ47ti5Z61W9poOPzJbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969589; c=relaxed/simple;
-	bh=46iopOS9QSX7wU+OmJciXctQvU1oR1G8rYt0OhQ/9fs=;
+	s=arc-20240116; t=1705974962; c=relaxed/simple;
+	bh=eFK6QNCx+gc09KdgvD8FtJ/dlskP+TTF705f88xQrT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xd2AWIf4OUdgWZGR9PrGAMqlBPHqZ45tuNqF0C3e9w6YgaoUlH7qTWocQapYZH6g14Bi8+3TEnK/F/ikjlgJeNSgGGJVRmQnC5f18dXNRhPrYVhVZQLnFFFLnzvdhQfaL0V5GDuBzfLIutSMxgK5Vq+vjexNv+IceZTVyQ9GjAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTAF0f/S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629D6C43390;
-	Tue, 23 Jan 2024 00:26:29 +0000 (UTC)
+	 MIME-Version; b=R21pHhtmnatJ8P+7t713XYo4AbLv+MthEuMhwZGfoHq5/m5nrKh8jY2oNhpKAG3I2t3PPE9cMTkA0+YjDvkhvjgTFMpwCkn/djbIk7rDsmoX1Y7hb8u4EHoXUsEhekt6HiUDvZdEalQleeQIah0ERfeEqDKe9NiLyg7kMjvJpB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iEDbwyeh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752E7C433C7;
+	Tue, 23 Jan 2024 01:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969589;
-	bh=46iopOS9QSX7wU+OmJciXctQvU1oR1G8rYt0OhQ/9fs=;
+	s=korg; t=1705974962;
+	bh=eFK6QNCx+gc09KdgvD8FtJ/dlskP+TTF705f88xQrT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rTAF0f/SHo0GomMa7cRcd1jqHdyaPGLs1MeYglsK39nFU7n8ChaAMNjDmO2xx2J14
-	 WMt+kkGD1SCTlgXdy+qwnDcIyuA6h9tv1NjeIo7d4+/nhtFhfr39y2qn5yrijKUwph
-	 x+mNNpG/JDRqDTfb4FGmHEAObm9zB/8WrijXqwhs=
+	b=iEDbwyehAxI4qqJ4CAQCSygQmWnKpYRdcZURbwANF6RIK8s4vkWVcwSFl97ph8hsB
+	 xlcmU3LT1/0risX1W91usNQOAOUOl21Ko7OnqCW4nl663EvLkORnqfAIwSSl/t5MGb
+	 96s9uCj6+zC5CdWocBLfjj5A4sJZ5RRMEt6VlNzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Joakim Zhang <joakim.zhang@cixtech.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 317/641] media: dvbdev: drop refcount on error path in dvb_device_open()
+Subject: [PATCH 6.6 170/583] dma-mapping: clear dev->dma_mem to NULL after freeing it
 Date: Mon, 22 Jan 2024 15:53:41 -0800
-Message-ID: <20240122235827.804890807@linuxfoundation.org>
+Message-ID: <20240122235817.231188911@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Joakim Zhang <joakim.zhang@cixtech.com>
 
-[ Upstream commit a2dd235df435a05d389240be748909ada91201d2 ]
+[ Upstream commit b07bc2347672cc8c7293c64499f1488278c5ca3d ]
 
-If call to file->f_op->open() fails, then call dvb_device_put(dvbdev).
+Reproduced with below sequence:
+dma_declare_coherent_memory()->dma_release_coherent_memory()
+->dma_declare_coherent_memory()->"return -EBUSY" error
 
-Fixes: 0fc044b2b5e2 ("media: dvbdev: adopts refcnt to avoid UAF")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+It will return -EBUSY from the dma_assign_coherent_memory()
+in dma_declare_coherent_memory(), the reason is that dev->dma_mem
+pointer has not been set to NULL after it's freed.
+
+Fixes: cf65a0f6f6ff ("dma-mapping: move all DMA mapping code to kernel/dma")
+Signed-off-by: Joakim Zhang <joakim.zhang@cixtech.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-core/dvbdev.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/dma/coherent.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
-index 305bb21d843c..49f0eb7d0b9d 100644
---- a/drivers/media/dvb-core/dvbdev.c
-+++ b/drivers/media/dvb-core/dvbdev.c
-@@ -104,6 +104,8 @@ static int dvb_device_open(struct inode *inode, struct file *file)
- 			err = file->f_op->open(inode, file);
- 		up_read(&minor_rwsem);
- 		mutex_unlock(&dvbdev_mutex);
-+		if (err)
-+			dvb_device_put(dvbdev);
- 		return err;
- 	}
- fail:
+diff --git a/kernel/dma/coherent.c b/kernel/dma/coherent.c
+index c21abc77c53e..ff5683a57f77 100644
+--- a/kernel/dma/coherent.c
++++ b/kernel/dma/coherent.c
+@@ -132,8 +132,10 @@ int dma_declare_coherent_memory(struct device *dev, phys_addr_t phys_addr,
+ 
+ void dma_release_coherent_memory(struct device *dev)
+ {
+-	if (dev)
++	if (dev) {
+ 		_dma_release_coherent_memory(dev->dma_mem);
++		dev->dma_mem = NULL;
++	}
+ }
+ 
+ static void *__dma_alloc_from_coherent(struct device *dev,
 -- 
 2.43.0
 
