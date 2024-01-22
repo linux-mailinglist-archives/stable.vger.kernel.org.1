@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9BEB837B8C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C78FC8379D9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:46:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C135B2C27D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:52:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CD091F23701
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8622412CD9A;
-	Tue, 23 Jan 2024 00:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C969D128399;
+	Tue, 23 Jan 2024 00:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqoOrtup"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFziXNAy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467E912BF3D;
-	Tue, 23 Jan 2024 00:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F0312838A;
+	Tue, 23 Jan 2024 00:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968954; cv=none; b=Sscjm5yXwXxgxVEYnnsgIBRx/aoNfV3glUu/nduCk8c5pky4Nt9sTS3B15MCNQzMyQLF4rzFj6e+YDwL39CcukZQhcQdOcr5Nk6a5eX6jSyRN648OCTHS0ZAc0mFZYPR51ov9uJadQxXpJ/Muv3KNtWhJiCI6laRxuvb8voI6sc=
+	t=1705968687; cv=none; b=ufPX3/R4ppFagREHbxgmcQZHYIr+7bX45j48HgpIJgjLVBbeaoCrCKvB1+J/BcBLQ8iHMB4N8eYeAb/T8BDt+qSVr90cO/MVKRtFxCvkh5iOiLth4b55hti+MDh7j7AUqW0VadyUJxfgY2EIomdopcQ83NbWzib6j+L2rwfHdBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968954; c=relaxed/simple;
-	bh=Iji4IUNsfvdBLTX6JX77wPG6hDs2B2FxWEz2i6Cuq0c=;
+	s=arc-20240116; t=1705968687; c=relaxed/simple;
+	bh=FJJcbuKg0EYjyvsS12slHRJ2eCO37SHcK/wbDaxl++w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nRinB4TaVMPRqkjeA23Z85iRiIWHX1G4Re5akSTPgFBSzbFDQbPfWtfk8U2OapTCdyy11v3eTFy1+3W3gPxuKHnJdUGwPfoo52ujh1xmlZDorfXKu65Nf8IoVJB0n6/s8XQqJKmi3CXGV/lBB1uoHaVeq6yckZL4Z0S96kTSthA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqoOrtup; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D773AC43390;
-	Tue, 23 Jan 2024 00:15:53 +0000 (UTC)
+	 MIME-Version; b=gqm9AI2wZfsAxOMDeD5TIJA5tf9i/Scm/ReQMAJzGYSIHFAnL0CBr2jEGMRWSsVlWz6soVc67UXo5+XjopS1CMG5X8v2W9BX5tYjs0RiJnwZOkVRI/cTP5yTglJW2vMCgH/BmA9720bh3a+UgMt8XCHmkwdFnNFqFmxp55xva5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFziXNAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061A8C433F1;
+	Tue, 23 Jan 2024 00:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968954;
-	bh=Iji4IUNsfvdBLTX6JX77wPG6hDs2B2FxWEz2i6Cuq0c=;
+	s=korg; t=1705968687;
+	bh=FJJcbuKg0EYjyvsS12slHRJ2eCO37SHcK/wbDaxl++w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QqoOrtupgjafF7JuxyHtztGU/h+V8/3uvWNaLziMYg08IrFTBCFkbuUOT16GpvaU6
-	 X1BV3dhBYVr3OR4aQgy8cSDYkFmsSv6wxvx6r2TUlxdDHT/pU1DxWxPf/kHneIVGK9
-	 Uy9rH3JHzeV+LlzETWFfrr4LB9Qh52TLSZl1qNGw=
+	b=OFziXNAyxNCHW+bgi5vf2BV/uih6VBcz5lsZOpUYw+aku8OTFXA6JfMrOkA2SIpnh
+	 5J+2wwQPfpUByHJ4dBgFJ6uvZv9gn+fQTMkpXKdEDDKnys+VOn7pqvZxlBLRBbJcxP
+	 uaKmjsVesH0ASLn5+Oa1qjKvSCYNLkYj60H2PdlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Maxime Ripard <mripard@kernel.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 120/194] drm/drv: propagate errors from drm_modeset_register_all()
+Subject: [PATCH 4.19 094/148] ASoC: cs35l34: Fix GPIO name and drop legacy include
 Date: Mon, 22 Jan 2024 15:57:30 -0800
-Message-ID: <20240122235724.372404284@linuxfoundation.org>
+Message-ID: <20240122235716.191289312@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 5f8dec200923a76dc57187965fd59c1136f5d085 ]
+[ Upstream commit a6122b0b4211d132934ef99e7b737910e6d54d2f ]
 
-In case the drm_modeset_register_all() function fails, its error code
-will be ignored. Instead make the drm_dev_register() bail out in case of
-such an error.
+This driver includes the legacy GPIO APIs <linux/gpio.h> and
+<linux/of_gpio.h> but does not use any symbols from any of
+them.
 
-Fixes: 79190ea2658a ("drm: Add callbacks for late registering")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231202225552.1283638-1-dmitry.baryshkov@linaro.org
+Drop the includes.
+
+Further the driver is requesting "reset-gpios" rather than
+just "reset" from the GPIO framework. This is wrong because
+the gpiolib core will add "-gpios" before processing the
+request from e.g. device tree. Drop the suffix.
+
+The last problem means that the optional RESET GPIO has
+never been properly retrieved and used even if it existed,
+but nobody noticed.
+
+Fixes: c1124c09e103 ("ASoC: cs35l34: Initial commit of the cs35l34 CODEC driver.")
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20231201-descriptors-sound-cirrus-v2-3-ee9f9d4655eb@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_drv.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ sound/soc/codecs/cs35l34.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_drv.c b/drivers/gpu/drm/drm_drv.c
-index 769feefeeeef..c9529a808b8e 100644
---- a/drivers/gpu/drm/drm_drv.c
-+++ b/drivers/gpu/drm/drm_drv.c
-@@ -984,8 +984,11 @@ int drm_dev_register(struct drm_device *dev, unsigned long flags)
- 			goto err_minors;
- 	}
+diff --git a/sound/soc/codecs/cs35l34.c b/sound/soc/codecs/cs35l34.c
+index 5063c05afa27..72c7c8426f3f 100644
+--- a/sound/soc/codecs/cs35l34.c
++++ b/sound/soc/codecs/cs35l34.c
+@@ -24,14 +24,12 @@
+ #include <linux/regulator/machine.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/of_device.h>
+-#include <linux/of_gpio.h>
+ #include <linux/of_irq.h>
+ #include <sound/core.h>
+ #include <sound/pcm.h>
+ #include <sound/pcm_params.h>
+ #include <sound/soc.h>
+ #include <sound/soc-dapm.h>
+-#include <linux/gpio.h>
+ #include <linux/gpio/consumer.h>
+ #include <sound/initval.h>
+ #include <sound/tlv.h>
+@@ -1062,7 +1060,7 @@ static int cs35l34_i2c_probe(struct i2c_client *i2c_client,
+ 		dev_err(&i2c_client->dev, "Failed to request IRQ: %d\n", ret);
  
--	if (drm_core_check_feature(dev, DRIVER_MODESET))
--		drm_modeset_register_all(dev);
-+	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
-+		ret = drm_modeset_register_all(dev);
-+		if (ret)
-+			goto err_unload;
-+	}
+ 	cs35l34->reset_gpio = devm_gpiod_get_optional(&i2c_client->dev,
+-				"reset-gpios", GPIOD_OUT_LOW);
++				"reset", GPIOD_OUT_LOW);
+ 	if (IS_ERR(cs35l34->reset_gpio))
+ 		return PTR_ERR(cs35l34->reset_gpio);
  
- 	ret = 0;
- 
-@@ -997,6 +1000,9 @@ int drm_dev_register(struct drm_device *dev, unsigned long flags)
- 
- 	goto out_unlock;
- 
-+err_unload:
-+	if (dev->driver->unload)
-+		dev->driver->unload(dev);
- err_minors:
- 	remove_compat_control_link(dev);
- 	drm_minor_unregister(dev, DRM_MINOR_PRIMARY);
 -- 
 2.43.0
 
