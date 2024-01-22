@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-13203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0339A837AF0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A65FA837AFA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB6771F2534A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:56:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C13D1F274E0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E23F13AA54;
-	Tue, 23 Jan 2024 00:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318D41487CF;
+	Tue, 23 Jan 2024 00:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xR1tC3Ph"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2o5ha95c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB18133982;
-	Tue, 23 Jan 2024 00:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67131487C4;
+	Tue, 23 Jan 2024 00:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969138; cv=none; b=lxG491Bkt+juUUc3exGKkETs9FicDOwjLnW12mECx8ydNyBJlzWasrrhFcQtX63u639iOYBnRUmcktljkollohOLlfPO5kFQpaL72VmIolJ+mkL44sBVdXS/f6YL+0OFRVWrAdWGE615+Y4dTAytdF7M3LiwTltW3PxgHxm1USo=
+	t=1705969146; cv=none; b=BOLZnYP/BWyw6iTfQi3Y+6xxD5qhwrt7DiUItUEch1hpoXpEMHENnVaaP9mgakk68JOCDkeVj+13dmOZ7OEX0qbXONNeTQppNStuYGrno9pRuEsv4KhC01vegHJaV+OnCvxl8hgtdo0c0UT2Kc/lCZ8AWMd5ID8ofiuxwwQcbWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969138; c=relaxed/simple;
-	bh=yulhMnlcCyhP+cwuh9marxmIJlKF2h7sw6TP9TiF1vU=;
+	s=arc-20240116; t=1705969146; c=relaxed/simple;
+	bh=3tROXfNka0I+koYB0yUCBXEyCKtXnboUCZlEpqAWKwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uyd7E70HMlqpWOVRak+4bPGyOXr1j6+pknrPWIaltAqa+u9VI5iijSBZsLcUBgMZimgLWSlUu/ijDRkp71Gsr6SDg14+VKiB6Zm8fdzDyqjUiB6pBDe5k1q56iGX9/NgloZKipLZHy02MsD0bH0LS1z9fODpEypaL2ytXeKUoPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xR1tC3Ph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D2AC433F1;
-	Tue, 23 Jan 2024 00:18:57 +0000 (UTC)
+	 MIME-Version; b=nTzj7fdpKZOlTod4fK5eiJp8dO+UQ01Dg9DpFrBRYKAwuCyIAdHkQAmE50We6EYLiHy/b6yWjvwgDOxkPAMAkpEuJIx2Z4aEH02irWBs/tl0ltXiUn5w9Q4u+pn5J9bYnVkQMQ12GC51vlPSIRUpF4YCADjSBaXt7jkt+9o+d2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2o5ha95c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CBFFC433A6;
+	Tue, 23 Jan 2024 00:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969137;
-	bh=yulhMnlcCyhP+cwuh9marxmIJlKF2h7sw6TP9TiF1vU=;
+	s=korg; t=1705969146;
+	bh=3tROXfNka0I+koYB0yUCBXEyCKtXnboUCZlEpqAWKwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xR1tC3Phs0nype/mf10f3A2/hcGeQZh088Tggt0QUwWbN6+0Xje6s9AgJw2CEHTpP
-	 LewWebpTD6acnT6WEvjs7/q4bbmr61aPr8esGY3LrnA4zE9kwgSJChIJqZVyXsD1MF
-	 Fs5ASYVc7J85fSidg6d/oWDp46cxqMT/zYaT+suY=
+	b=2o5ha95cHAMaqpC07IMGHRo0UWwSrKwpAiIs2oUhEUFVHoSpBQPzQBB1Z474/+cFm
+	 yP2f8U8IQryKUxOrfSHzz1pSun0yP0jP72fXPXZYWfJINv0jI2qDXQfCdE7SvlZi9H
+	 7Wd7FQ9T+68806kSAMeWWs+vzA4yzHuwkMqV41F0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Alexandra Diupina <adiupina@astralinux.ru>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 028/641] platform/x86/intel/vsec: Fix xa_alloc memory leak
-Date: Mon, 22 Jan 2024 15:48:52 -0800
-Message-ID: <20240122235818.972537624@linuxfoundation.org>
+Subject: [PATCH 6.7 029/641] cpufreq: scmi: process the result of devm_of_clk_add_hw_provider()
+Date: Mon, 22 Jan 2024 15:48:53 -0800
+Message-ID: <20240122235819.001067013@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -61,107 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David E. Box <david.e.box@linux.intel.com>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-[ Upstream commit 8cbcc1dbf8a62c730fadd60de761e0658547a589 ]
+[ Upstream commit c4a5118a3ae1eadc687d84eef9431f9e13eb015c ]
 
-Commit 936874b77dd0 ("platform/x86/intel/vsec: Add PCI error recovery
-support to Intel PMT") added an xarray to track the list of vsec devices to
-be recovered after a PCI error. But it did not provide cleanup for the list
-leading to a memory leak that was caught by kmemleak.  Do xa_alloc() before
-devm_add_action_or_reset() so that the list may be cleaned up with
-xa_erase() in the release function.
+devm_of_clk_add_hw_provider() may return an errno, so
+add a return value check
 
-Fixes: 936874b77dd0 ("platform/x86/intel/vsec: Add PCI error recovery support to Intel PMT")
-Signed-off-by: David E. Box <david.e.box@linux.intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20231129222132.2331261-2-david.e.box@linux.intel.com
-[hdegoede@redhat.com: Add missing xa_erase() on error-exit
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 8410e7f3b31e ("cpufreq: scmi: Fix OPP addition failure with a dummy clock provider")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/vsec.c | 25 +++++++++++++++----------
- drivers/platform/x86/intel/vsec.h |  1 +
- 2 files changed, 16 insertions(+), 10 deletions(-)
+ drivers/cpufreq/scmi-cpufreq.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/vsec.c b/drivers/platform/x86/intel/vsec.c
-index c1f9e4471b28..343ab6a82c01 100644
---- a/drivers/platform/x86/intel/vsec.c
-+++ b/drivers/platform/x86/intel/vsec.c
-@@ -120,6 +120,8 @@ static void intel_vsec_dev_release(struct device *dev)
- {
- 	struct intel_vsec_device *intel_vsec_dev = dev_to_ivdev(dev);
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index c8a7ccc42c16..4ee23f4ebf4a 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -334,8 +334,11 @@ static int scmi_cpufreq_probe(struct scmi_device *sdev)
  
-+	xa_erase(&auxdev_array, intel_vsec_dev->id);
-+
- 	mutex_lock(&vsec_ida_lock);
- 	ida_free(intel_vsec_dev->ida, intel_vsec_dev->auxdev.id);
- 	mutex_unlock(&vsec_ida_lock);
-@@ -135,19 +137,28 @@ int intel_vsec_add_aux(struct pci_dev *pdev, struct device *parent,
- 	struct auxiliary_device *auxdev = &intel_vsec_dev->auxdev;
- 	int ret, id;
- 
--	mutex_lock(&vsec_ida_lock);
--	ret = ida_alloc(intel_vsec_dev->ida, GFP_KERNEL);
--	mutex_unlock(&vsec_ida_lock);
-+	ret = xa_alloc(&auxdev_array, &intel_vsec_dev->id, intel_vsec_dev,
-+		       PMT_XA_LIMIT, GFP_KERNEL);
- 	if (ret < 0) {
- 		kfree(intel_vsec_dev->resource);
- 		kfree(intel_vsec_dev);
- 		return ret;
- 	}
- 
-+	mutex_lock(&vsec_ida_lock);
-+	id = ida_alloc(intel_vsec_dev->ida, GFP_KERNEL);
-+	mutex_unlock(&vsec_ida_lock);
-+	if (id < 0) {
-+		xa_erase(&auxdev_array, intel_vsec_dev->id);
-+		kfree(intel_vsec_dev->resource);
-+		kfree(intel_vsec_dev);
-+		return id;
+ #ifdef CONFIG_COMMON_CLK
+ 	/* dummy clock provider as needed by OPP if clocks property is used */
+-	if (of_property_present(dev->of_node, "#clock-cells"))
+-		devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, NULL);
++	if (of_property_present(dev->of_node, "#clock-cells")) {
++		ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, NULL);
++		if (ret)
++			return dev_err_probe(dev, ret, "%s: registering clock provider failed\n", __func__);
 +	}
-+
- 	if (!parent)
- 		parent = &pdev->dev;
+ #endif
  
--	auxdev->id = ret;
-+	auxdev->id = id;
- 	auxdev->name = name;
- 	auxdev->dev.parent = parent;
- 	auxdev->dev.release = intel_vsec_dev_release;
-@@ -169,12 +180,6 @@ int intel_vsec_add_aux(struct pci_dev *pdev, struct device *parent,
- 	if (ret < 0)
- 		return ret;
- 
--	/* Add auxdev to list */
--	ret = xa_alloc(&auxdev_array, &id, intel_vsec_dev, PMT_XA_LIMIT,
--		       GFP_KERNEL);
--	if (ret)
--		return ret;
--
- 	return 0;
- }
- EXPORT_SYMBOL_NS_GPL(intel_vsec_add_aux, INTEL_VSEC);
-diff --git a/drivers/platform/x86/intel/vsec.h b/drivers/platform/x86/intel/vsec.h
-index 0fd042c171ba..0a6201b4a0e9 100644
---- a/drivers/platform/x86/intel/vsec.h
-+++ b/drivers/platform/x86/intel/vsec.h
-@@ -45,6 +45,7 @@ struct intel_vsec_device {
- 	struct ida *ida;
- 	struct intel_vsec_platform_info *info;
- 	int num_resources;
-+	int id; /* xa */
- 	void *priv_data;
- 	size_t priv_data_size;
- };
+ 	ret = cpufreq_register_driver(&scmi_cpufreq_driver);
 -- 
 2.43.0
 
