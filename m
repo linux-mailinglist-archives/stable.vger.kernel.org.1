@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-13863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B208837E75
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D0F837E48
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF5F128DF40
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B71628C2C6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D7C5A7B5;
-	Tue, 23 Jan 2024 00:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA895EE9E;
+	Tue, 23 Jan 2024 00:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXiASPXB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jxA3riE+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1221354BD2;
-	Tue, 23 Jan 2024 00:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5E05EE8F;
+	Tue, 23 Jan 2024 00:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970600; cv=none; b=ZclaK58l2MHKWmCYgdS/h70RaGGuwBpbMxyJ7C8ADPve3Et8CS749NlhBMXrxc58zneDJ5Mdb1tWXM0elH8aSWwmNTI5199rZHiQDKsSfkjQ4vlHT0RRw8wszcb/eyKvMjckn5smM2DMILzeXrPSVIOHJrly9L+fQaEdvXnB/Ws=
+	t=1705970493; cv=none; b=c4zmBzLnTpelVql4UuQvlmQF0QUlxp/U6UbH6yr0CDeauzeJesX4J9pYUKWej69cLsawbxti+FbYRasrixk/6Jj5eXRD+q7mH9xlarfPsx7CkgHL3PyRtsw7hM2fKgabjufLWZyHpQytdaIlRAEc5CiYf4gG4N2fwnAWCBJM6EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970600; c=relaxed/simple;
-	bh=VdCOKrZ2M1ZsDRcavSmmACytbCsCs41PRCe3ruWqasQ=;
+	s=arc-20240116; t=1705970493; c=relaxed/simple;
+	bh=h+SrUA8nZplgPreCpVCDoshGtH7JgcF9z8clCtE9PDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JiyJ6XtqX/OnsKNIH2UwTFk5mGIc9U09iSq+VhM6CLRbuJ4A7dAI498XL1lJ8xMUJ1vwKHIsj20QxFP2z3aaBsIwJaES/YkNIaf66a83eU28heBhDwUiacTyJXKLxWRSHsTNSNCo5lJPbGtT8dgEOGLxrV1Q1YXmxNDIdhmyhMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXiASPXB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C2DCC43390;
-	Tue, 23 Jan 2024 00:43:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h/YYgPbEC61Ct0rfpbVYemMSrbK8hr1l5N43VYKSU+s9U/qQGwvnopx7hqOj2BiV9Cnw5774Tvtjj7iME6/5V8M/GrKApZS8ESf3l0daguffoydAg4bUnSfxtfd+HL1ytGRS5h9c/qwA2szCSrIYJ5LVNNl1hHzJguPnAy9hNwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jxA3riE+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7762AC43390;
+	Tue, 23 Jan 2024 00:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970599;
-	bh=VdCOKrZ2M1ZsDRcavSmmACytbCsCs41PRCe3ruWqasQ=;
+	s=korg; t=1705970492;
+	bh=h+SrUA8nZplgPreCpVCDoshGtH7JgcF9z8clCtE9PDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GXiASPXBA6PFtitg6EpTGyKGjJLDqgKCv1L22XcrO4SFStma8vZ2FZbrTvtf/N0N9
-	 pS4A1rp5WGyrOGiczIj7PdAAWaleJuD5tF8HK6+cuJplJQUAzlFEue8wABFzDZsF7N
-	 wP7vW6y4paAA4PzgDZ5e42+GHK8smuJHBw07khJo=
+	b=jxA3riE+rV4wGq0IY8AHwlE7Sc4sv0j57gXJ65zdbgD+IA24S5cro75DkaCx4pl59
+	 bM0/yFfmrDmFNcYgPCdLJHxRNcS9fF9OsDz93AW2ieA1hNF6UcAspX859D1pB3kIFP
+	 1coKyuAfTIHp+PZmER8o7PYv6hJNFS7Q1Q9l7PYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhaoLong Wang <wangzhaolong1@huawei.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Eric Paris <eparis@parisplace.org>,
+	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/417] mtd: Fix gluebi NULL pointer dereference caused by ftl notifier
-Date: Mon, 22 Jan 2024 15:53:20 -0800
-Message-ID: <20240122235752.705771636@linuxfoundation.org>
+Subject: [PATCH 6.1 033/417] selinux: Fix error priority for bind with AF_UNSPEC on PF_INET6 socket
+Date: Mon, 22 Jan 2024 15:53:21 -0800
+Message-ID: <20240122235752.752990406@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
 References: <20240122235751.480367507@linuxfoundation.org>
@@ -69,80 +71,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: ZhaoLong Wang <wangzhaolong1@huawei.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit a43bdc376deab5fff1ceb93dca55bcab8dbdc1d6 ]
+[ Upstream commit bbf5a1d0e5d0fb3bdf90205aa872636122692a50 ]
 
-If both ftl.ko and gluebi.ko are loaded, the notifier of ftl
-triggers NULL pointer dereference when trying to access
-‘gluebi->desc’ in gluebi_read().
+The IPv6 network stack first checks the sockaddr length (-EINVAL error)
+before checking the family (-EAFNOSUPPORT error).
 
-ubi_gluebi_init
-  ubi_register_volume_notifier
-    ubi_enumerate_volumes
-      ubi_notify_all
-        gluebi_notify    nb->notifier_call()
-          gluebi_create
-            mtd_device_register
-              mtd_device_parse_register
-                add_mtd_device
-                  blktrans_notify_add   not->add()
-                    ftl_add_mtd         tr->add_mtd()
-                      scan_header
-                        mtd_read
-                          mtd_read_oob
-                            mtd_read_oob_std
-                              gluebi_read   mtd->read()
-                                gluebi->desc - NULL
+This was discovered thanks to commit a549d055a22e ("selftests/landlock:
+Add network tests").
 
-Detailed reproduction information available at the Link [1],
-
-In the normal case, obtain gluebi->desc in the gluebi_get_device(),
-and access gluebi->desc in the gluebi_read(). However,
-gluebi_get_device() is not executed in advance in the
-ftl_add_mtd() process, which leads to NULL pointer dereference.
-
-The solution for the gluebi module is to run jffs2 on the UBI
-volume without considering working with ftl or mtdblock [2].
-Therefore, this problem can be avoided by preventing gluebi from
-creating the mtdblock device after creating mtd partition of the
-type MTD_UBIVOLUME.
-
-Fixes: 2ba3d76a1e29 ("UBI: make gluebi a separate module")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217992 [1]
-Link: https://lore.kernel.org/lkml/441107100.23734.1697904580252.JavaMail.zimbra@nod.at/ [2]
-Signed-off-by: ZhaoLong Wang <wangzhaolong1@huawei.com>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Acked-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20231220024619.2138625-1-wangzhaolong1@huawei.com
+Cc: Eric Paris <eparis@parisplace.org>
+Cc: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: Stephen Smalley <stephen.smalley.work@gmail.com>
+Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Closes: https://lore.kernel.org/r/0584f91c-537c-4188-9e4f-04f192565667@collabora.com
+Fixes: 0f8db8cc73df ("selinux: add AF_UNSPEC and INADDR_ANY checks to selinux_socket_bind()")
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/mtd_blkdevs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ security/selinux/hooks.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/mtd/mtd_blkdevs.c b/drivers/mtd/mtd_blkdevs.c
-index 60b222799871..8ee60605a6dc 100644
---- a/drivers/mtd/mtd_blkdevs.c
-+++ b/drivers/mtd/mtd_blkdevs.c
-@@ -463,7 +463,7 @@ static void blktrans_notify_add(struct mtd_info *mtd)
- {
- 	struct mtd_blktrans_ops *tr;
- 
--	if (mtd->type == MTD_ABSENT)
-+	if (mtd->type == MTD_ABSENT || mtd->type == MTD_UBIVOLUME)
- 		return;
- 
- 	list_for_each_entry(tr, &blktrans_majors, list)
-@@ -503,7 +503,7 @@ int register_mtd_blktrans(struct mtd_blktrans_ops *tr)
- 	mutex_lock(&mtd_table_mutex);
- 	list_add(&tr->list, &blktrans_majors);
- 	mtd_for_each_device(mtd)
--		if (mtd->type != MTD_ABSENT)
-+		if (mtd->type != MTD_ABSENT && mtd->type != MTD_UBIVOLUME)
- 			tr->add_mtd(tr, mtd);
- 	mutex_unlock(&mtd_table_mutex);
- 	return 0;
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index d88c399b0e86..d45e9fa74e62 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -4690,6 +4690,13 @@ static int selinux_socket_bind(struct socket *sock, struct sockaddr *address, in
+ 				return -EINVAL;
+ 			addr4 = (struct sockaddr_in *)address;
+ 			if (family_sa == AF_UNSPEC) {
++				if (family == PF_INET6) {
++					/* Length check from inet6_bind_sk() */
++					if (addrlen < SIN6_LEN_RFC2133)
++						return -EINVAL;
++					/* Family check from __inet6_bind() */
++					goto err_af;
++				}
+ 				/* see __inet_bind(), we only want to allow
+ 				 * AF_UNSPEC if the address is INADDR_ANY
+ 				 */
 -- 
 2.43.0
 
