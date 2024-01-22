@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-14192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFD5837FDF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA1D837D50
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B02D1C268AC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B5241C2486B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3F012BF28;
-	Tue, 23 Jan 2024 00:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981595BAF1;
+	Tue, 23 Jan 2024 00:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wri16M7A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYkDfyfa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A246412BF17;
-	Tue, 23 Jan 2024 00:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D984F5EB;
+	Tue, 23 Jan 2024 00:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971427; cv=none; b=AuwccWxGzq4vS77QMoeEDx5WvjVIOm9ddmE4OCJfmVc/ZVH66egx0RQV4E41fKtGPK7cTWYQxArrlzrGdIHE8QyVD8byIiXwv7Qy2G78qe9WHTj4yJldkzZSYgJox7XS4klAuu9r49aw/VdiFJkC6D+BICd52dWZGNo5gCGZs6U=
+	t=1705969885; cv=none; b=ipUMxBwMi/pcmOgxWobicqvEDYdDs7jb8bqGzCjWyoBS9x5dx8HqrqBRJuDP6wVj7UKhN+GdSnjUrQod/8cGodYNBruDaJrtqGM/jITGBASGGGS0jzy3txwgzhY1ohRR3u5zkasDo+Kt/3dw2cqiNzekecHVqkIHB11lqDCMWK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971427; c=relaxed/simple;
-	bh=QsF8BXX3HOxnrYjT+cPGySH4j7S1YK7YNHBU5L4+XpQ=;
+	s=arc-20240116; t=1705969885; c=relaxed/simple;
+	bh=fffo6dKiNSqsMzI2ffgAW2bhoDRlTngWPUfdwUxxDI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jcPpO9p9h4a7Czo6hCmH+n1zUwZJKS37rZHIUoRaje3hlEQ3HxNDn2lRUXe0rPxfKdYf5XTAuI8oRkZ1nkWt3+8DvzS8DvYv7Y93x2sckVqNeqeVp579yzJby2uPN1xgkF5RltKUbZMM+jqXJcf2py0HuWx80dpGeXilShNjypQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wri16M7A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16182C433F1;
-	Tue, 23 Jan 2024 00:57:06 +0000 (UTC)
+	 MIME-Version; b=C8fZwBEnjKZhj4E1tyqbNgZvp5XEoEdVCSzbM64pEWm2JXNr2oELA5RgJJMSwJ6kuVXFsgonkig644LATPxiuzFcjXVBefmNr/2hEJM9fGIhdyIm3IUby4ob3WmsEmR/2bAq+ve6BL3GJ/GAbEc9Ep9E/6l0DXD2t1a/uhu7Cf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYkDfyfa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD2C0C433C7;
+	Tue, 23 Jan 2024 00:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971427;
-	bh=QsF8BXX3HOxnrYjT+cPGySH4j7S1YK7YNHBU5L4+XpQ=;
+	s=korg; t=1705969883;
+	bh=fffo6dKiNSqsMzI2ffgAW2bhoDRlTngWPUfdwUxxDI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wri16M7AW8nc9s8RlBQDcaw24jt44tW7Z+Y06X01mCSJ3EbqcsjgO9R86HjHEa8nB
-	 3lf/05qS0DTyweqhc6nnh0Mr6rNEZ3jj747FL7v8QA5zaVSepGGoM9QXQM8hYMiptc
-	 4b5IEtzpk9d6PsR1IYmNvqQoXpZ6o5FejsfubxBQ=
+	b=UYkDfyfag3K+5ZQIlx6ZnSt8CIWCNISuDIcKnE6yV/b2wqTjdfni45020f4XZ0tIn
+	 VYn7njT+8ht63lfTdACB5h0rojg+2WxVgwQS6CFCmLzAsy6Mn9T+NeyNnwHM6A7ew+
+	 V6XD1jgL/vEZJ4Znm9q+v2AyoLQkIN4u94HkkZhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	kernel test robot <lkp@intel.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Arnd Bergmann <arnd@arndb.de>,
+	linux-arm-kernel@lists.infradead.org,
+	patches@armlinux.org.uk,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 217/417] clk: qcom: videocc-sm8150: Add missing PLL config property
+Subject: [PATCH 6.7 481/641] ARM: 9330/1: davinci: also select PINCTRL
 Date: Mon, 22 Jan 2024 15:56:25 -0800
-Message-ID: <20240122235759.438781905@linuxfoundation.org>
+Message-ID: <20240122235833.119778255@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +67,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 71f130c9193f613d497f7245365ed05ffdb0a401 ]
+[ Upstream commit f54e8634d1366926c807e2af6125b33cff555fa7 ]
 
-When the driver was ported upstream, PLL test_ctl_hi1 register value
-was omitted. Add it to ensure the PLLs are fully configured.
+kconfig warns when PINCTRL_SINGLE is selected but PINCTRL is not
+set, so also set PINCTRL for ARCH_DAVINCI. This prevents a
+kconfig/build warning:
 
-Fixes: 5658e8cf1a8a ("clk: qcom: add video clock controller driver for SM8150")
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231201-videocc-8150-v3-3-56bec3a5e443@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+   WARNING: unmet direct dependencies detected for PINCTRL_SINGLE
+     Depends on [n]: PINCTRL [=n] && OF [=y] && HAS_IOMEM [=y]
+     Selected by [y]:
+     - ARCH_DAVINCI [=y] && ARCH_MULTI_V5 [=y]
+
+Closes: lore.kernel.org/r/202311070548.0f6XfBrh-lkp@intel.com
+
+Fixes: f962396ce292 ("ARM: davinci: support multiplatform build for ARM v5")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: patches@armlinux.org.uk
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/videocc-sm8150.c | 1 +
+ arch/arm/mach-davinci/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/qcom/videocc-sm8150.c b/drivers/clk/qcom/videocc-sm8150.c
-index 6a5f89f53da8..52a9a453a143 100644
---- a/drivers/clk/qcom/videocc-sm8150.c
-+++ b/drivers/clk/qcom/videocc-sm8150.c
-@@ -33,6 +33,7 @@ static struct alpha_pll_config video_pll0_config = {
- 	.config_ctl_val = 0x20485699,
- 	.config_ctl_hi_val = 0x00002267,
- 	.config_ctl_hi1_val = 0x00000024,
-+	.test_ctl_hi1_val = 0x00000020,
- 	.user_ctl_val = 0x00000000,
- 	.user_ctl_hi_val = 0x00000805,
- 	.user_ctl_hi1_val = 0x000000D0,
+diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
+index 59de137c6f53..2a8a9fe46586 100644
+--- a/arch/arm/mach-davinci/Kconfig
++++ b/arch/arm/mach-davinci/Kconfig
+@@ -11,6 +11,7 @@ menuconfig ARCH_DAVINCI
+ 	select PM_GENERIC_DOMAINS_OF if PM && OF
+ 	select REGMAP_MMIO
+ 	select RESET_CONTROLLER
++	select PINCTRL
+ 	select PINCTRL_SINGLE
+ 
+ if ARCH_DAVINCI
 -- 
 2.43.0
 
