@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4595838284
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2FD837BE7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DE6A28AD6D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3426B294946
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5945C8E9;
-	Tue, 23 Jan 2024 01:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5381813DBB8;
+	Tue, 23 Jan 2024 00:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bg8jNNLP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsGXBWHt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCF85C8F3;
-	Tue, 23 Jan 2024 01:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC8C13BEA7;
+	Tue, 23 Jan 2024 00:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974372; cv=none; b=csqTu/UF1LfDpPUPqd6hcJbJoQ5IQgWCeqqybbfCbCRIP7wn/qMU2GnyZhy16JhAlQxYSKXjUkkAgkXkhbmTSa6BsV7gVvQs39G7KkUFcIdk9zAiEJzS6NQCjQgm2zZcbxNuBkG9EgE4t737xiAtW5Rvk8KWTE9tQ5+vX6vtMPE=
+	t=1705969432; cv=none; b=AbuMfwjNt/zGFKq+pAYeRo+hXuqbJEPrHY1Ok2JTlx/QSIpz2z3hbqoFY+U3fVwkiUb8JuYRl1UnhhrLSvQnuObFB+C07yffv2kTGQktf+thH9NeCMmNL1nMCeie9QAqD5SiD2jI/n0vhZ0UwtFtWOP1ooJAo+5sDW1eWKMIT4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974372; c=relaxed/simple;
-	bh=8ars6G2/19OestMGYX/DwX0sPeMwcfLJPUcML8bMNDE=;
+	s=arc-20240116; t=1705969432; c=relaxed/simple;
+	bh=uzYQy4NT+HMjvMrSiKiJNL7fWfOVF6HGxSTC7dvAAao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cgpqjp4R9R1DFjJf2QDAn7h55shM7O01uzVn+qZZOQUZvcQfvrGIb9C/KnRYKfdG7uIVQkaSnHN8OaZ96HWQDiyXhCuCucCWtFsFwwT4/ARgYD2jxWvmr14av62MCA2snDVZZ4nRw5B2wbT9lu0LhGO22KWHpQMVV/bF0bhUozc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bg8jNNLP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16FDC43394;
-	Tue, 23 Jan 2024 01:46:11 +0000 (UTC)
+	 MIME-Version; b=ZrP/Mkf9OjVbY6GDQkGpch+5l03qKEwz31aP3fGIYT0yNVrIAXwefkuih890qVlDnlEWn6xYi3LF4ZFKM/0BaVvhzsOF7nkHmULZjDD5x/bcBOrmii28+fPKlPHhjuU/wLxSOEZ5YczOKBzjsd6WK8neIJ2vByW9GtwaDyA53uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsGXBWHt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EA9C43390;
+	Tue, 23 Jan 2024 00:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974371;
-	bh=8ars6G2/19OestMGYX/DwX0sPeMwcfLJPUcML8bMNDE=;
+	s=korg; t=1705969431;
+	bh=uzYQy4NT+HMjvMrSiKiJNL7fWfOVF6HGxSTC7dvAAao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bg8jNNLPVWeW3naX9OtOmAtwk67WQ5q6CSww/SDjK3UJgnLvJVpS+fTE50WALB361
-	 KNyQGiOZ2i+chu7amC35qMrREPs+6eB/tSTM2ZrT5IvmLjkrdA6mGqbNrUPM2cpZQd
-	 moGvAo220BxChEyKnV5BY+rhHmzDgsfBPqTcPy9U=
+	b=gsGXBWHtdIqY+V9YOyRBtbwWIsdRci2husnLl/ytjwv1b9gFSTCEd18cANb15/4Nu
+	 qUigA87YvL6/lb7Akfx28kCWU7XIQaVA5Zzx2DScQgpO8gBLbmn4phRkBNHybIsDgu
+	 zglK5FaBZ8TNwbcfkaLNiWUO8LpsdvxeglSNbTx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/583] crypto: sahara - fix wait_for_completion_timeout() error handling
+Subject: [PATCH 6.7 217/641] wifi: iwlwifi: mvm: send TX path flush in rfkill
 Date: Mon, 22 Jan 2024 15:52:01 -0800
-Message-ID: <20240122235814.296116091@linuxfoundation.org>
+Message-ID: <20240122235824.732984473@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 2dba8e1d1a7957dcbe7888846268538847b471d1 ]
+[ Upstream commit 2afc3dad39ea84a072d04ff40a417234326adc47 ]
 
-The sg lists are not unmapped in case of timeout errors. Fix this.
+If we want to drop packets, that's surely a good thing to
+do when we want to enter rfkill. Send this command despite
+rfkill so we can successfully clean up everything, we need
+to handle it separately since it has CMD_WANT_SKB, so it's
+not going to automatically return success when in rfkill.
 
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: d4e3a341b87b ("iwlwifi: mvm: add support for new flush queue response")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231219215605.c528a6fa6cec.Ibe5e9560359ccc0fba60c35e01de285c376748a2@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 80d419d6a609..86ff5add2e15 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -607,16 +607,17 @@ static int sahara_aes_process(struct skcipher_request *req)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index ae5cd13cd6dd..db986bfc4dc3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -2256,7 +2256,7 @@ int iwl_mvm_flush_sta_tids(struct iwl_mvm *mvm, u32 sta_id, u16 tids)
+ 	WARN_ON(!iwl_mvm_has_new_tx_api(mvm));
  
- 	timeout = wait_for_completion_timeout(&dev->dma_completion,
- 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
--	if (!timeout) {
--		dev_err(dev->device, "AES timeout\n");
--		return -ETIMEDOUT;
--	}
+ 	if (iwl_fw_lookup_notif_ver(mvm->fw, LONG_GROUP, TXPATH_FLUSH, 0) > 0)
+-		cmd.flags |= CMD_WANT_SKB;
++		cmd.flags |= CMD_WANT_SKB | CMD_SEND_IN_RFKILL;
  
- 	dma_unmap_sg(dev->device, dev->out_sg, dev->nb_out_sg,
- 		DMA_FROM_DEVICE);
- 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
- 		DMA_TO_DEVICE);
- 
-+	if (!timeout) {
-+		dev_err(dev->device, "AES timeout\n");
-+		return -ETIMEDOUT;
-+	}
-+
- 	if ((dev->flags & FLAGS_CBC) && req->iv)
- 		sahara_aes_cbc_update_iv(req);
- 
-@@ -1007,15 +1008,16 @@ static int sahara_sha_process(struct ahash_request *req)
- 
- 	timeout = wait_for_completion_timeout(&dev->dma_completion,
- 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
--	if (!timeout) {
--		dev_err(dev->device, "SHA timeout\n");
--		return -ETIMEDOUT;
--	}
- 
- 	if (rctx->sg_in_idx)
- 		dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
- 			     DMA_TO_DEVICE);
- 
-+	if (!timeout) {
-+		dev_err(dev->device, "SHA timeout\n");
-+		return -ETIMEDOUT;
-+	}
-+
- 	memcpy(rctx->context, dev->context_base, rctx->context_size);
- 
- 	if (req->result && rctx->last)
+ 	IWL_DEBUG_TX_QUEUES(mvm, "flush for sta id %d tid mask 0x%x\n",
+ 			    sta_id, tids);
 -- 
 2.43.0
 
