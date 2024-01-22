@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-14349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF7FF83808A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E96F837DDC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E8A31C29792
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E04491F23EFF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF1212FF68;
-	Tue, 23 Jan 2024 01:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BB415F327;
+	Tue, 23 Jan 2024 00:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gkrBSh/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6KMFyv5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBABC657B3;
-	Tue, 23 Jan 2024 01:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4934C5F875;
+	Tue, 23 Jan 2024 00:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971783; cv=none; b=QSNy479f9qP5xDK2Y1YjHOBnv7y0TCjM/fshnxsV+XPs9p6HT6OTPkVkvcN6s54IWWnHApEh96J6ZI3UIx8kvdqtgvjUGF7nRPMMsDan8vJJgtK1RZ8cBGls1jFkYCVtv10TWxruu16T7UAfPZcfe3tJxoT/ve2n6pCFUIrtXGQ=
+	t=1705970175; cv=none; b=miyX+3fiElRv6JBoqQ78bLzbQjsi7O2jRHCb+Mkt6RdkliEXH/f1YGeQhQJy02Bh2KDFrHE06GFVFl7yNvgDpeV2tghbloxS5SwUHcMW1bTkktGlpkha5TD4JDTzOhb4lMJ5Zn9SV/iojf9ECSF581ju1+MNQ2DvypqnTdzipfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971783; c=relaxed/simple;
-	bh=7zs+r3xLG3SQjK33dRK/wftUr7LIMcADoYCZKgJPtvY=;
+	s=arc-20240116; t=1705970175; c=relaxed/simple;
+	bh=XxaMc/KcPxjwYVg0sUFjkeG2Bbi9dy7HTXMzAQ4lEm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ffj7GPUcWCUh+7l42Atov4FDd2nvpSeKbnpgQ61cwMYj7LFlcesd7BnDYAUKWVYASq5YKFMMqlfGKqEf9w2eiUutGV0bCVRXguI+E/PgPh6/mw/aLJug73YAquJ7lFDNf/EPkjoGc5SJqxofScgOEbxYsusxVq0vYKkBBgJvPns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gkrBSh/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578F8C433F1;
-	Tue, 23 Jan 2024 01:03:02 +0000 (UTC)
+	 MIME-Version; b=SUY1xugu4APJDTSWuXLgMJTqsyckYAhxhwgmlK+GD0BsJboJV0LvY6FxuKPigF3LgQKUcrN7MO+IrgfMgwXVWjmG5KmOYzd0dA3piAiDCt2/tvU0mPqmOPrmEBtuBN3LvnLg6QBuZ/sJ3+zFzOP7COr9ZpbXC0Hy54YSaXmHb/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6KMFyv5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55CAC433C7;
+	Tue, 23 Jan 2024 00:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971782;
-	bh=7zs+r3xLG3SQjK33dRK/wftUr7LIMcADoYCZKgJPtvY=;
+	s=korg; t=1705970175;
+	bh=XxaMc/KcPxjwYVg0sUFjkeG2Bbi9dy7HTXMzAQ4lEm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gkrBSh/TB3RRjOXjIlMTgZ+or5Zh4QbYRSQX1dyg+7LYjUbl6SzbG0CcQ+ZHBD0O8
-	 j3p52EuoIYBDX2OEfGbyXUr8M6o3IoHDm82K+/sO8gplIecob8ghJusXl2XHONmWIR
-	 8iYztmW3sB0E7QYp7vP7J7zSfwmnDqrykb/S6IU0=
+	b=D6KMFyv5jGFvjhaiQLWCVp35bvc3BKk6+6rWzFgGkObl+cV7HOjHM3ub+s8r6CSd9
+	 UpvULcy0ECYRLt7c7cQuIK9LBEBMFZh9YrStc0D3wyXqh/GxPtu9GoEM+btywooOfW
+	 6iMPt9BBSvYFtlCMsEvbjEI47dWLRHe+uR0L07rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 319/417] iio: adc: ad7091r: Pass iio_dev to event handler
+	Marc Dionne <marc.dionne@auristor.com>,
+	David Howells <dhowells@redhat.com>,
+	linux-afs@lists.infradead.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 583/641] rxrpc: Fix use of Dont Fragment flag
 Date: Mon, 22 Jan 2024 15:58:07 -0800
-Message-ID: <20240122235802.864187277@linuxfoundation.org>
+Message-ID: <20240122235836.430153523@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +65,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+From: David Howells <dhowells@redhat.com>
 
-commit a25a7df518fc71b1ba981d691e9322e645d2689c upstream.
+[ Upstream commit 8722014311e613244f33952354956a82fa4b0472 ]
 
-Previous version of ad7091r event handler received the ADC state pointer
-and retrieved the iio device from driver data field with dev_get_drvdata().
-However, no driver data have ever been set, which led to null pointer
-dereference when running the event handler.
+rxrpc normally has the Don't Fragment flag set on the UDP packets it
+transmits, except when it has decided that DATA packets aren't getting
+through - in which case it turns it off just for the DATA transmissions.
+This can be a problem, however, for RESPONSE packets that convey
+authentication and crypto data from the client to the server as ticket may
+be larger than can fit in the MTU.
 
-Pass the iio device to the event handler and retrieve the ADC state struct
-from it so we avoid the null pointer dereference and save the driver from
-filling the driver data field.
+In such a case, rxrpc gets itself into an infinite loop as the sendmsg
+returns an error (EMSGSIZE), which causes rxkad_send_response() to return
+-EAGAIN - and the CHALLENGE packet is put back on the Rx queue to retry,
+leading to the I/O thread endlessly attempting to perform the transmission.
 
-Fixes: ca69300173b6 ("iio: adc: Add support for AD7091R5 ADC")
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Link: https://lore.kernel.org/r/5024b764107463de9578d5b3b0a3d5678e307b1a.1702746240.git.marcelo.schmitt1@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by disabling DF on RESPONSE packets for now.  The use of DF and
+best data MTU determination needs reconsidering at some point in the
+future.
+
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: linux-afs@lists.infradead.org
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/1581852.1704813048@warthog.procyon.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7091r-base.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/rxrpc/ar-internal.h  |  1 +
+ net/rxrpc/local_object.c | 13 ++++++++++++-
+ net/rxrpc/output.c       |  6 ++----
+ net/rxrpc/rxkad.c        |  2 ++
+ 4 files changed, 17 insertions(+), 5 deletions(-)
 
---- a/drivers/iio/adc/ad7091r-base.c
-+++ b/drivers/iio/adc/ad7091r-base.c
-@@ -174,8 +174,8 @@ static const struct iio_info ad7091r_inf
+diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
+index e8e14c6f904d..e8b43408136a 100644
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -1076,6 +1076,7 @@ void rxrpc_send_version_request(struct rxrpc_local *local,
+ /*
+  * local_object.c
+  */
++void rxrpc_local_dont_fragment(const struct rxrpc_local *local, bool set);
+ struct rxrpc_local *rxrpc_lookup_local(struct net *, const struct sockaddr_rxrpc *);
+ struct rxrpc_local *rxrpc_get_local(struct rxrpc_local *, enum rxrpc_local_trace);
+ struct rxrpc_local *rxrpc_get_local_maybe(struct rxrpc_local *, enum rxrpc_local_trace);
+diff --git a/net/rxrpc/local_object.c b/net/rxrpc/local_object.c
+index c553a30e9c83..34d307368135 100644
+--- a/net/rxrpc/local_object.c
++++ b/net/rxrpc/local_object.c
+@@ -36,6 +36,17 @@ static void rxrpc_encap_err_rcv(struct sock *sk, struct sk_buff *skb, int err,
+ 		return ipv6_icmp_error(sk, skb, err, port, info, payload);
+ }
  
- static irqreturn_t ad7091r_event_handler(int irq, void *private)
- {
--	struct ad7091r_state *st = (struct ad7091r_state *) private;
--	struct iio_dev *iio_dev = dev_get_drvdata(st->dev);
-+	struct iio_dev *iio_dev = private;
-+	struct ad7091r_state *st = iio_priv(iio_dev);
- 	unsigned int i, read_val;
- 	int ret;
- 	s64 timestamp = iio_get_time_ns(iio_dev);
-@@ -234,7 +234,7 @@ int ad7091r_probe(struct device *dev, co
- 	if (irq) {
- 		ret = devm_request_threaded_irq(dev, irq, NULL,
- 				ad7091r_event_handler,
--				IRQF_TRIGGER_FALLING | IRQF_ONESHOT, name, st);
-+				IRQF_TRIGGER_FALLING | IRQF_ONESHOT, name, iio_dev);
- 		if (ret)
- 			return ret;
- 	}
++/*
++ * Set or clear the Don't Fragment flag on a socket.
++ */
++void rxrpc_local_dont_fragment(const struct rxrpc_local *local, bool set)
++{
++	if (set)
++		ip_sock_set_mtu_discover(local->socket->sk, IP_PMTUDISC_DO);
++	else
++		ip_sock_set_mtu_discover(local->socket->sk, IP_PMTUDISC_DONT);
++}
++
+ /*
+  * Compare a local to an address.  Return -ve, 0 or +ve to indicate less than,
+  * same or greater than.
+@@ -203,7 +214,7 @@ static int rxrpc_open_socket(struct rxrpc_local *local, struct net *net)
+ 		ip_sock_set_recverr(usk);
+ 
+ 		/* we want to set the don't fragment bit */
+-		ip_sock_set_mtu_discover(usk, IP_PMTUDISC_DO);
++		rxrpc_local_dont_fragment(local, true);
+ 
+ 		/* We want receive timestamps. */
+ 		sock_enable_timestamps(usk);
+diff --git a/net/rxrpc/output.c b/net/rxrpc/output.c
+index 5e53429c6922..a0906145e829 100644
+--- a/net/rxrpc/output.c
++++ b/net/rxrpc/output.c
+@@ -494,14 +494,12 @@ int rxrpc_send_data_packet(struct rxrpc_call *call, struct rxrpc_txbuf *txb)
+ 	switch (conn->local->srx.transport.family) {
+ 	case AF_INET6:
+ 	case AF_INET:
+-		ip_sock_set_mtu_discover(conn->local->socket->sk,
+-					 IP_PMTUDISC_DONT);
++		rxrpc_local_dont_fragment(conn->local, false);
+ 		rxrpc_inc_stat(call->rxnet, stat_tx_data_send_frag);
+ 		ret = do_udp_sendmsg(conn->local->socket, &msg, len);
+ 		conn->peer->last_tx_at = ktime_get_seconds();
+ 
+-		ip_sock_set_mtu_discover(conn->local->socket->sk,
+-					 IP_PMTUDISC_DO);
++		rxrpc_local_dont_fragment(conn->local, true);
+ 		break;
+ 
+ 	default:
+diff --git a/net/rxrpc/rxkad.c b/net/rxrpc/rxkad.c
+index 1bf571a66e02..b52dedcebce0 100644
+--- a/net/rxrpc/rxkad.c
++++ b/net/rxrpc/rxkad.c
+@@ -724,7 +724,9 @@ static int rxkad_send_response(struct rxrpc_connection *conn,
+ 	serial = atomic_inc_return(&conn->serial);
+ 	whdr.serial = htonl(serial);
+ 
++	rxrpc_local_dont_fragment(conn->local, false);
+ 	ret = kernel_sendmsg(conn->local->socket, &msg, iov, 3, len);
++	rxrpc_local_dont_fragment(conn->local, true);
+ 	if (ret < 0) {
+ 		trace_rxrpc_tx_fail(conn->debug_id, serial, ret,
+ 				    rxrpc_tx_point_rxkad_response);
+-- 
+2.43.0
+
 
 
 
