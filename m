@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-12777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C38683736B
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 21:02:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72D7C837367
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 21:01:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3E0EB22380
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDDA02888C2
 	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF3D40C11;
-	Mon, 22 Jan 2024 20:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67C12405C6;
+	Mon, 22 Jan 2024 20:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uU8F3tag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDdy0Q2J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3353B790
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 20:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298203B790
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 20:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705953698; cv=none; b=lfADsSu1AoGDti1CMfu8zP00JhHADiNAhwvIhLlKoQ0lOCzVokKHk4wClK2fZYSqMGLie3y1xtlPa1lyE0KLU5n6pPTrlppbNkz3BZYcVJ9fqgKYbUQrldXphc7GwJdGDyccQZT6dv6n/FxK/IlPVvaIGlqg+gabP4QvFdnHesI=
+	t=1705953701; cv=none; b=Ta9090aiKMNceqPDGseZDvdQDCo5Qw1UHO/ZPAaU8dZRQpP2oCtozPyRB2uLoQEda/ssOVdmIcxj4OZw4+xtT91E2OcNaAW38UrBtqfPzZkK4kcZuV6OsdlKsnajtQeYkU1XUwB4UlVZABhye7hb5PnytOl2x8Wtcd/m04cSYtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705953698; c=relaxed/simple;
-	bh=TS9Z08o0zmx1lpgKoglmkeWg6TdPkYjVtyX2or3gh4o=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sWLE9IhX972Yx3Q1gtaO+MYpXHFQAbLkLnOcU6zIek/gnQfpZSXWKHbMfgI+S+Tf79CeefAd68owpLTVAagW5758dQF/f2swgdBpxKtNjyu4Ya2R6z78Xg6WyCAVqNK7rtJaKx1LF7KMcUSIl0r6LuwCKwoHcRSPyL+tO/U8J6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uU8F3tag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB54C433C7;
-	Mon, 22 Jan 2024 20:01:37 +0000 (UTC)
+	s=arc-20240116; t=1705953701; c=relaxed/simple;
+	bh=u8V0E5EP5mUByES5lAdvxOUCH6s9k2CACklPMRxNuo8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Wwc/vrVV+UEhNDKd78G4bJ71Gc5EPNPj+Lk9IeKiTke+MM72jGqwjs7a6/zBLT0a/WzQrmIL9ygsgF2T7eLg3wWIDzjWEUwO0qKvx5jNw0egTsyzxqHu+K9r7Hq/P9He4TuYdUuUDEkQa2flZgWC4rVOacavwaV9dtyvsc1f7CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDdy0Q2J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C71C433C7;
+	Mon, 22 Jan 2024 20:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705953697;
-	bh=TS9Z08o0zmx1lpgKoglmkeWg6TdPkYjVtyX2or3gh4o=;
+	s=korg; t=1705953701;
+	bh=u8V0E5EP5mUByES5lAdvxOUCH6s9k2CACklPMRxNuo8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=uU8F3tagOceJusEk1DPfbrAGJVQTQ9fuCRlvPJ+EjbVcl4dozzqXAIpYt2W3diZ2L
-	 7lIB9n8pvW9TFRAB8fHRspd+xEL6flpGxTERYQcRYKIAEdS85s2qgOD2sXImEIJwMG
-	 toz4Jv1w8wuoj+IMnpxAudn5IYOioPXxFfyMSNZU=
-Subject: FAILED: patch "[PATCH] soundwire: fix initializing sysfs for same devices on" failed to apply to 6.1-stable tree
+	b=XDdy0Q2JFT6sbVpJWwFdc+vtpANPKviuVdW284T5FHOYAsjL5VT3t7lN9SC8dk8ZA
+	 migEbrWBy47fdhPZXH3gPtPJsOdJS3g8o3Q7DWV4rjNJkk0Ez5pKlf+Og4X6lQeZgB
+	 07Cfgt8o0udQCUP16ewqlEIVg/WurI8XM2dsCMA4=
+Subject: FAILED: patch "[PATCH] soundwire: fix initializing sysfs for same devices on" failed to apply to 5.15-stable tree
 To: krzysztof.kozlowski@linaro.org,Vijendar.Mukunda@amd.com,broonie@kernel.org,pierre-louis.bossart@linux.intel.com,srinivas.kandagatla@linaro.org,vkoul@kernel.org,yung-chuan.liao@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 22 Jan 2024 12:01:34 -0800
-Message-ID: <2024012234-shaded-iodize-5eb6@gregkh>
+Date: Mon, 22 Jan 2024 12:01:36 -0800
+Message-ID: <2024012236-undertow-petroleum-5828@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8a8a9ac8a4972ee69d3dd3d1ae43963ae39cee18
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012234-shaded-iodize-5eb6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012236-undertow-petroleum-5828@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -88,6 +88,7 @@ c8db7b50128b ("ASoC: Intel: sof_sdw: support different devices on the same sdw l
 06b830bd73ec ("ASoC: Intel: sof_sdw: remove late_probe flag in struct sof_sdw_codec_info")
 ba7523bb0f49 ("ASoC: Intel: sof_nau8825: add variant with nau8318 amplifier.")
 5c10da436ebd ("ASoC: Intel: sof_sdw: use common helpers for all Realtek amps")
+8c4b3a8ea2c0 ("ASoC: intel: sof_sdw: add rt1318 codec support.")
 
 thanks,
 
