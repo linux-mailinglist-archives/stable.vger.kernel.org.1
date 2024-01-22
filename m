@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-14428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5849F8380E3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D055D8381BA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:12:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD31C1F25320
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64243B271C1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8CE1350D8;
-	Tue, 23 Jan 2024 01:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E459141988;
+	Tue, 23 Jan 2024 01:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ubr/0rfk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIezNz+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C4E1350CA;
-	Tue, 23 Jan 2024 01:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6E6140796;
+	Tue, 23 Jan 2024 01:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971940; cv=none; b=iy8yBCpy7Cx9n74mkT/llMu6r1roIs3wVVcXH3+/r/B89oy7V3bnu0q5RKawiqgihF5+wC263JsmjGO+e9AJNKLlHzKO8eEtQlWZQs5FMLTVNcDiXkUaik4fgOopxKX8mV5KVKh9T/+pYvc2WMZgk9T5gD/j3qeYT6GeGEm8PyU=
+	t=1705972039; cv=none; b=Pvb5jsB7R6bsfVvObx9tC4RetjXOOGLlHDryXMpax5O9s9u5OGGNwVdy6+nk92E+yJZ7FvINNyWC1G39GhM9EYsxAT7heHAdWbTKFse2IuD193cibXJvqbDk7IOXw38nbAxG++zHneZQY1Spj4a5ktx4XKfQlqj1v3WOOPvqnHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971940; c=relaxed/simple;
-	bh=lwuJ03xo6N88D/scfQGgAgYJSRjSmhn+zU9vzG2RuNM=;
+	s=arc-20240116; t=1705972039; c=relaxed/simple;
+	bh=hakS+i9Wb1f7Jxx73fA1/Cskn2vJYfbu/C1MnXSPfhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CsLBc2BsOuy8qo6R0S00AtnLdH30DowtkQOJB54PVYKsZPSRt8OXUM2w8e9FlVgL0hC/G+k362SDJZOLvDwe8C+sHAyQ3XCjAcnahrP1w89TKqthdDyKDZjWUkqFmsNX4a324Pm7pRLScN2KsAnTYx/WwemDo+UUBr8wDUEkXRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ubr/0rfk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7461BC43390;
-	Tue, 23 Jan 2024 01:05:39 +0000 (UTC)
+	 MIME-Version; b=YT0KYdlefZdhxdHzN91COXrLkP9AYNdbX75GWmJXF7d/M8bfg6qkBgvjsv1yy5biKyD9Xz5mkRkJ/Ih3BRMUo/lM3Vd+4Lb5Nf0bjJ8X4SaDNVzGwbzihy5c+eiQ1qk5v+NBfpIpcWsHAPtQqkiFqDIiv4YWp03eol1nBeaNcxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIezNz+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE79C433F1;
+	Tue, 23 Jan 2024 01:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971939;
-	bh=lwuJ03xo6N88D/scfQGgAgYJSRjSmhn+zU9vzG2RuNM=;
+	s=korg; t=1705972039;
+	bh=hakS+i9Wb1f7Jxx73fA1/Cskn2vJYfbu/C1MnXSPfhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ubr/0rfkqNY9YVNq5ibuOTqDJHKHrTqG+4ZqkeIvAkgjyxw350Q6uTp1faXCvtPDV
-	 TAp6db6vW9Xg+BW6OJxO2xr/BkXxCLfApGkPqBiU5T65xJPk3WBOv8nnl8D8P4YwR9
-	 RHyhD2VUAcmZBXTyy8wrUgrFBMSXVD6oO8HEkkIk=
+	b=xIezNz+Y8FejcWfbNCuyMaQgPMEv6F9FsQo8n2j0REahBF+fKI9cL3VRi4qCXdRLs
+	 pevMWo/1DnmylqyxkQwPRzFlC2o/7FBnuUeta6jD08WN2BD3Tz+9xpmLJrp2MiiaU/
+	 fHm1X/0uDlwvuOZpsXXUbP0MR36fbQZzR5Zy5L2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Julian Anastasov <ja@ssi.bg>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 269/286] net: ravb: Fix dma_addr_t truncation in error case
+Subject: [PATCH 6.1 407/417] ipvs: avoid stat macros calls from preemptible context
 Date: Mon, 22 Jan 2024 15:59:35 -0800
-Message-ID: <20240122235742.406796243@linuxfoundation.org>
+Message-ID: <20240122235805.804335461@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit e327b2372bc0f18c30433ac40be07741b59231c5 ]
+[ Upstream commit d6938c1c76c64f42363d0d1f051e1b4641c2ad40 ]
 
-In ravb_start_xmit(), ravb driver uses u32 variable to store result of
-dma_map_single() call. Since ravb hardware has 32-bit address fields in
-descriptors, this works properly when mapping is successful - it is
-platform's job to provide mapping addresses that fit into hardware
-limitations.
+Inside decrement_ttl() upon discovering that the packet ttl has exceeded,
+__IP_INC_STATS and __IP6_INC_STATS macros can be called from preemptible
+context having the following backtrace:
 
-However, in failure case dma_map_single() returns DMA_MAPPING_ERROR
-constant that is 64-bit when dma_addr_t is 64-bit. Storing this constant
-in u32 leads to truncation, and further call to dma_mapping_error()
-fails to notice the error.
+check_preemption_disabled: 48 callbacks suppressed
+BUG: using __this_cpu_add() in preemptible [00000000] code: curl/1177
+caller is decrement_ttl+0x217/0x830
+CPU: 5 PID: 1177 Comm: curl Not tainted 6.7.0+ #34
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xbd/0xe0
+ check_preemption_disabled+0xd1/0xe0
+ decrement_ttl+0x217/0x830
+ __ip_vs_get_out_rt+0x4e0/0x1ef0
+ ip_vs_nat_xmit+0x205/0xcd0
+ ip_vs_in_hook+0x9b1/0x26a0
+ nf_hook_slow+0xc2/0x210
+ nf_hook+0x1fb/0x770
+ __ip_local_out+0x33b/0x640
+ ip_local_out+0x2a/0x490
+ __ip_queue_xmit+0x990/0x1d10
+ __tcp_transmit_skb+0x288b/0x3d10
+ tcp_connect+0x3466/0x5180
+ tcp_v4_connect+0x1535/0x1bb0
+ __inet_stream_connect+0x40d/0x1040
+ inet_stream_connect+0x57/0xa0
+ __sys_connect_file+0x162/0x1a0
+ __sys_connect+0x137/0x160
+ __x64_sys_connect+0x72/0xb0
+ do_syscall_64+0x6f/0x140
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
+RIP: 0033:0x7fe6dbbc34e0
 
-Fix that by storing result of dma_map_single() in a dma_addr_t
-variable.
+Use the corresponding preemption-aware variants: IP_INC_STATS and
+IP6_INC_STATS.
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 8d8e20e2d7bb ("ipvs: Decrement ttl")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Acked-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/ipvs/ip_vs_xmit.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index f092f468016b..8a4dff0566f7 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1500,7 +1500,7 @@ static netdev_tx_t ravb_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	struct ravb_tstamp_skb *ts_skb;
- 	struct ravb_tx_desc *desc;
- 	unsigned long flags;
--	u32 dma_addr;
-+	dma_addr_t dma_addr;
- 	void *buffer;
- 	u32 entry;
- 	u32 len;
+diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
+index b452eb3ddcec..d40a4ca2b27f 100644
+--- a/net/netfilter/ipvs/ip_vs_xmit.c
++++ b/net/netfilter/ipvs/ip_vs_xmit.c
+@@ -271,7 +271,7 @@ static inline bool decrement_ttl(struct netns_ipvs *ipvs,
+ 			skb->dev = dst->dev;
+ 			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
+ 				    ICMPV6_EXC_HOPLIMIT, 0);
+-			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
++			IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
+ 
+ 			return false;
+ 		}
+@@ -286,7 +286,7 @@ static inline bool decrement_ttl(struct netns_ipvs *ipvs,
+ 	{
+ 		if (ip_hdr(skb)->ttl <= 1) {
+ 			/* Tell the sender its packet died... */
+-			__IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
++			IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
+ 			icmp_send(skb, ICMP_TIME_EXCEEDED, ICMP_EXC_TTL, 0);
+ 			return false;
+ 		}
 -- 
 2.43.0
 
