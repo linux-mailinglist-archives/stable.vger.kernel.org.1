@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-13101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536FD837A80
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3387C837B76
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:01:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09D921F231D4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:52:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4000B262B7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A917812DD98;
-	Tue, 23 Jan 2024 00:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8484612F59A;
+	Tue, 23 Jan 2024 00:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7vBWwFn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vy+6W+1S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689BB12DD90;
-	Tue, 23 Jan 2024 00:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4527312CDB0;
+	Tue, 23 Jan 2024 00:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968979; cv=none; b=PokaM2gFxLz/ySHK+KeNoh4zv5t3/15zasQdmcEARudqqH+pWn/X7ebk8xTtb6obuufcBYGKkC1sqGu9Ny11Lw2Ee/Kg8nlX3L8GViirAb7mKP0J7JSXkEBfYllMEXFd/fxHPFtUfyp8g1yXJcWg44XTGL2MzG/KeLtHHnFcapA=
+	t=1705968994; cv=none; b=kx5PanpInwTbRxenXxeM6tavPkNe6t2Cej4ENGdhXvliPHkWrYFiUojg+rK8a3nFadfhtk1dNrjPmACqRmopXeox83hL7AdRV3af6lJvdTL8ndLj9lYxVgw/XY9CyCYhd6kZvXol4vTPY/UAHvPpW/lFysvOz8gxWYgx0A2YGcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968979; c=relaxed/simple;
-	bh=5e50xMsVTJ4wRDKtCn/pIcLx1kINXQDi7j9XjwxwpYk=;
+	s=arc-20240116; t=1705968994; c=relaxed/simple;
+	bh=GmGhFr6mXnQ+IT00XjsJaHqfWrJn3HXm2CRFVO7dHk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCMO2yQDErYbMRd/BbT0TT6LGpuUfEf+NwZUvi1/crd0nup5O+bbXdCDc3KqysNkWRuixCRZrzgylchLoiQtt9EIoKeNA7pHXNuuoFQlDZrSH9XI/GjmDbfKz/RE/8no7X+Kqbe1T0i82k0R1iM1qlchrNnAxmgHXyEDzBYQSPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7vBWwFn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5AAC433F1;
-	Tue, 23 Jan 2024 00:16:18 +0000 (UTC)
+	 MIME-Version; b=ey1I29FpwEaTb0VuTQvvLjtRqCoT7vXQJAQeRasTOySq0WimHdY9T0Je7L5HaX+grZ0wojWoD7IPgLmQA9pP/4QJ5QKLNvYDPk3zJ+iFqcL1pQc3y55JliqbOCR/wEAvYEojt9z962obe10dzUWsVKIWm8T+XE4qnxgOhAY5R6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vy+6W+1S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0056EC433F1;
+	Tue, 23 Jan 2024 00:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968978;
-	bh=5e50xMsVTJ4wRDKtCn/pIcLx1kINXQDi7j9XjwxwpYk=;
+	s=korg; t=1705968994;
+	bh=GmGhFr6mXnQ+IT00XjsJaHqfWrJn3HXm2CRFVO7dHk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i7vBWwFnv/qEB339CoJCGMojKeiWeTzmXPkoE++WpuMvp4mbVmgL+0DSmyYRCs+Ne
-	 NMtQ9QRViLkVmDs/SvDiBjm5uO7c3aUXKKxl/n7bpw/DGTqnXjzwjPIKyVkjfImEZP
-	 E250Y8CceqLQQErYjRrOPxAsBGRQqs0dXESCi1Wo=
+	b=vy+6W+1SWb5zFW8iagI8CwhkQnxW0EtrNoweYtALjaOr8Eewbd1XRQuoc3/r/+aye
+	 LCKjJs8yov4Gb52Hu4sLgqWWausqCrnfbCMDCZCI8IZZyoQTWJolZjRvVQ0fz9SZrj
+	 P4EIVXPWRhw8FL9dibYaTU829jw0sIh6PnW5BO48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Zhipeng Lu <alexious@zju.edu.cn>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 129/194] drivers/amd/pm: fix a use-after-free in kv_parse_power_table
-Date: Mon, 22 Jan 2024 15:57:39 -0800
-Message-ID: <20240122235724.767800641@linuxfoundation.org>
+Subject: [PATCH 5.4 130/194] gpu/drm/radeon: fix two memleaks in radeon_vm_init
+Date: Mon, 22 Jan 2024 15:57:40 -0800
+Message-ID: <20240122235724.808238551@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
 References: <20240122235719.206965081@linuxfoundation.org>
@@ -68,44 +68,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 28dd788382c43b330480f57cd34cde0840896743 ]
+[ Upstream commit c2709b2d6a537ca0fa0f1da36fdaf07e48ef447d ]
 
-When ps allocated by kzalloc equals to NULL, kv_parse_power_table
-frees adev->pm.dpm.ps that allocated before. However, after the control
-flow goes through the following call chains:
+When radeon_bo_create and radeon_vm_clear_bo fail, the vm->page_tables
+allocated before need to be freed. However, neither radeon_vm_init
+itself nor its caller have done such deallocation.
 
-kv_parse_power_table
-  |-> kv_dpm_init
-        |-> kv_dpm_sw_init
-	      |-> kv_dpm_fini
-
-The adev->pm.dpm.ps is used in the for loop of kv_dpm_fini after its
-first free in kv_parse_power_table and causes a use-after-free bug.
-
-Fixes: a2e73f56fa62 ("drm/amdgpu: Add support for CIK parts")
+Fixes: 6d2f2944e95e ("drm/radeon: use normal BOs for the page tables v4")
 Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/kv_dpm.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/radeon/radeon_vm.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/kv_dpm.c b/drivers/gpu/drm/amd/amdgpu/kv_dpm.c
-index c8a5a5698edd..6eb6f05c1136 100644
---- a/drivers/gpu/drm/amd/amdgpu/kv_dpm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/kv_dpm.c
-@@ -2733,10 +2733,8 @@ static int kv_parse_power_table(struct amdgpu_device *adev)
- 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
- 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
- 		ps = kzalloc(sizeof(struct kv_ps), GFP_KERNEL);
--		if (ps == NULL) {
--			kfree(adev->pm.dpm.ps);
-+		if (ps == NULL)
- 			return -ENOMEM;
--		}
- 		adev->pm.dpm.ps[i].ps_priv = ps;
- 		k = 0;
- 		idx = (u8 *)&power_state->v2.clockInfoIndex[0];
+diff --git a/drivers/gpu/drm/radeon/radeon_vm.c b/drivers/gpu/drm/radeon/radeon_vm.c
+index e0ad547786e8..ef20c1f9b895 100644
+--- a/drivers/gpu/drm/radeon/radeon_vm.c
++++ b/drivers/gpu/drm/radeon/radeon_vm.c
+@@ -1206,13 +1206,17 @@ int radeon_vm_init(struct radeon_device *rdev, struct radeon_vm *vm)
+ 	r = radeon_bo_create(rdev, pd_size, align, true,
+ 			     RADEON_GEM_DOMAIN_VRAM, 0, NULL,
+ 			     NULL, &vm->page_directory);
+-	if (r)
++	if (r) {
++		kfree(vm->page_tables);
++		vm->page_tables = NULL;
+ 		return r;
+-
++	}
+ 	r = radeon_vm_clear_bo(rdev, vm->page_directory);
+ 	if (r) {
+ 		radeon_bo_unref(&vm->page_directory);
+ 		vm->page_directory = NULL;
++		kfree(vm->page_tables);
++		vm->page_tables = NULL;
+ 		return r;
+ 	}
+ 
 -- 
 2.43.0
 
