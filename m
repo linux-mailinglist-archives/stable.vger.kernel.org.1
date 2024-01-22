@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C59D2837E4F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A59838354
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EC8C1F250E6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:38:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F65928E4F0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B126852F6B;
-	Tue, 23 Jan 2024 00:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E177F61674;
+	Tue, 23 Jan 2024 01:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyUutT7Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWWZNwu4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682933984D;
-	Tue, 23 Jan 2024 00:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F259612D1;
+	Tue, 23 Jan 2024 01:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970514; cv=none; b=nYwMQB/PyLeLMPMJkUqR9SE72ZRhc0d5Av2QEla7puZOqbJy/Z8zn44qiZAv7rg8Ibl+VnvEMNCbeSggI0otBoQJSUz11qRfRKJN5DWYfybm/T52beRiQebDyPOFmROT9RJhR9Gu0QnWgaDGQ4eLlBjlhmoFsX8lTUMTmoddlnQ=
+	t=1705974937; cv=none; b=dJx+r9BIhKhlaZWKbfY16edgB3FjcCNmrxPVhkZB0Ppe16dNzCHom/XnV194gdLDHeNol2aTZK8kibtNCDMkQCukjpcA2p21vA/QuSq/5EOKot7aJr7cDCBQE4DHg4fnBjE9gAgKYqDcNMVYBFQ2GtjZM24rYeqsR/OvNHnBM1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970514; c=relaxed/simple;
-	bh=nNh6/8KZNYPnJY6hZ0Wy2phbydG3/vI+Iak0J2kJl+E=;
+	s=arc-20240116; t=1705974937; c=relaxed/simple;
+	bh=7NvYO46M9iIyoSA4MoM9RPX7gpfOUK3qJ7mI5siC9nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mF7PbpzOlxy6EK9HFUiQ7ugmSEyZzTelyTkMxaZl70ydBB5c9vRdc5SwMIs2Ykn7zcfKak2Ex2eCXDKkDzpCA6R8uZKQhM6i5SybL/Qe50gbdrpj+ZIWfFMctbpy8vUKq/KGx+L+btgD+FVC7JxNVlDSOsa6Mi4xX7LQJIZly0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyUutT7Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E271AC433C7;
-	Tue, 23 Jan 2024 00:41:53 +0000 (UTC)
+	 MIME-Version; b=gOSDs+3LWROy09ZeHGUj7uoMloxeWKSxTP8Fft0HeLPh8vJxPOoTegLiVX+y2NSak1ptzoQrllVnRDbmXe01dAZXX2JprnVEX+cWQy2Y55cQXCobkLxjlh2QZ3UHdRA/Skb6w7q9+wTIu1g4zF/pTPmg8BTNriFMcwfJQGahAJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWWZNwu4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD62C433C7;
+	Tue, 23 Jan 2024 01:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970514;
-	bh=nNh6/8KZNYPnJY6hZ0Wy2phbydG3/vI+Iak0J2kJl+E=;
+	s=korg; t=1705974937;
+	bh=7NvYO46M9iIyoSA4MoM9RPX7gpfOUK3qJ7mI5siC9nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QyUutT7YQLq1zTcxK0dW087zNmaoi9qMI+0RY2d/NKpBszOBK1uRNeGd4aTcrRknZ
-	 AK5ZEbz5DhhMrxTVaufUQ+qGZ++EsSLZy9KNJdcv6BS90Aak8x30lu+YwSsVGrnoSX
-	 1rUvR1BAlX3ksT0IvA4Z/Id3PWbAaK5aE9MAlH1k=
+	b=tWWZNwu4go3KfJrFI5SvmWb9rWyG7uBHJartwLwfJWN38bw6StQ3j64ZGBdOmDuvN
+	 cM9dtx9QVdcmtg+k3Ral6yjEGm/OQeiwqqQPystVTdMbE7Fkpjaaq8VnZiTseo/9Wi
+	 qLPd1EdRTtgZs/qo+7iVzrEV/C6I9+1m0fWXTGfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Adam Ford <aford173@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/417] crypto: sahara - fix cbc selftest failure
+Subject: [PATCH 6.6 157/583] arm64: dts: imx8mm: Reduce GPU to nominal speed
 Date: Mon, 22 Jan 2024 15:53:28 -0800
-Message-ID: <20240122235753.024968207@linuxfoundation.org>
+Message-ID: <20240122235816.853793691@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit 9f10bc28c0fb676ae58aa3bfa358db8f5de124bb ]
+[ Upstream commit 1f794d3eed5345413c2b0cf1bcccc92d77681220 ]
 
-The kernel crypto API requires that all CBC implementations update the IV
-buffer to contain the last ciphertext block.
+When the GPU nodes were added, the GPU_PLL_OUT was configured
+for 1000MHz, but this requires the SoC to run in overdrive mode
+which requires an elevated voltage operating point.
 
-This fixes the following cbc selftest error:
-alg: skcipher: sahara-cbc-aes encryption test failed (wrong output IV) on
-test vector 0, cfg="in-place (one sglist)"
+Since this may run some boards out of spec, the default clock
+should be set to 800MHz for nominal operating mode. Boards
+that run at the higher voltage can update their clocks
+accordingly.
 
-Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 4523be8e46be ("arm64: dts: imx8mm: Add GPU nodes for 2D and 3D core")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 0e30d36b0a71..aa9c45ff0f5a 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -149,6 +149,7 @@ struct sahara_ctx {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+index 738024baaa57..54faf83cb436 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+@@ -1408,7 +1408,7 @@ gpu_3d: gpu@38000000 {
+ 			assigned-clocks = <&clk IMX8MM_CLK_GPU3D_CORE>,
+ 					  <&clk IMX8MM_GPU_PLL_OUT>;
+ 			assigned-clock-parents = <&clk IMX8MM_GPU_PLL_OUT>;
+-			assigned-clock-rates = <0>, <1000000000>;
++			assigned-clock-rates = <0>, <800000000>;
+ 			power-domains = <&pgc_gpu>;
+ 		};
  
- struct sahara_aes_reqctx {
- 	unsigned long mode;
-+	u8 iv_out[AES_BLOCK_SIZE];
- 	struct skcipher_request fallback_req;	// keep at the end
- };
- 
-@@ -542,8 +543,24 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 	return -EINVAL;
- }
- 
-+static void sahara_aes_cbc_update_iv(struct skcipher_request *req)
-+{
-+	struct crypto_skcipher *skcipher = crypto_skcipher_reqtfm(req);
-+	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
-+	unsigned int ivsize = crypto_skcipher_ivsize(skcipher);
-+
-+	/* Update IV buffer to contain the last ciphertext block */
-+	if (rctx->mode & FLAGS_ENCRYPT) {
-+		sg_pcopy_to_buffer(req->dst, sg_nents(req->dst), req->iv,
-+				   ivsize, req->cryptlen - ivsize);
-+	} else {
-+		memcpy(req->iv, rctx->iv_out, ivsize);
-+	}
-+}
-+
- static int sahara_aes_process(struct skcipher_request *req)
- {
-+	struct crypto_skcipher *skcipher = crypto_skcipher_reqtfm(req);
- 	struct sahara_dev *dev = dev_ptr;
- 	struct sahara_ctx *ctx;
- 	struct sahara_aes_reqctx *rctx;
-@@ -565,8 +582,17 @@ static int sahara_aes_process(struct skcipher_request *req)
- 	rctx->mode &= FLAGS_MODE_MASK;
- 	dev->flags = (dev->flags & ~FLAGS_MODE_MASK) | rctx->mode;
- 
--	if ((dev->flags & FLAGS_CBC) && req->iv)
--		memcpy(dev->iv_base, req->iv, AES_KEYSIZE_128);
-+	if ((dev->flags & FLAGS_CBC) && req->iv) {
-+		unsigned int ivsize = crypto_skcipher_ivsize(skcipher);
-+
-+		memcpy(dev->iv_base, req->iv, ivsize);
-+
-+		if (!(dev->flags & FLAGS_ENCRYPT)) {
-+			sg_pcopy_to_buffer(req->src, sg_nents(req->src),
-+					   rctx->iv_out, ivsize,
-+					   req->cryptlen - ivsize);
-+		}
-+	}
- 
- 	/* assign new context to device */
- 	dev->ctx = ctx;
-@@ -589,6 +615,9 @@ static int sahara_aes_process(struct skcipher_request *req)
- 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
- 		DMA_TO_DEVICE);
- 
-+	if ((dev->flags & FLAGS_CBC) && req->iv)
-+		sahara_aes_cbc_update_iv(req);
-+
- 	return 0;
- }
+@@ -1423,7 +1423,7 @@ gpu_2d: gpu@38008000 {
+ 			assigned-clocks = <&clk IMX8MM_CLK_GPU2D_CORE>,
+ 					  <&clk IMX8MM_GPU_PLL_OUT>;
+ 			assigned-clock-parents = <&clk IMX8MM_GPU_PLL_OUT>;
+-			assigned-clock-rates = <0>, <1000000000>;
++			assigned-clock-rates = <0>, <800000000>;
+ 			power-domains = <&pgc_gpu>;
+ 		};
  
 -- 
 2.43.0
