@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-14130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18BAD837F9E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EAF5837D5D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B1DB1C2920E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1709E28453F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E623F634FB;
-	Tue, 23 Jan 2024 00:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D216355E6C;
+	Tue, 23 Jan 2024 00:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlKPx1/1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQg7+y+v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60E8634F7;
-	Tue, 23 Jan 2024 00:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9173C52F7C;
+	Tue, 23 Jan 2024 00:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971242; cv=none; b=e0iaoRH9GimTuesGlY3j3lSLMHEAMnJ4WYsUwqyEWBQ+wxtwHHpoZCnCuPL7mEV4Ecu5AX39eX2rO5CInQX+2viKmgtjtUutV0gHtZHPMPNyz3nuo0qkkRmmBdKmQTCI/oNs0sH4ECuy3OY6mNOMtHDfz9hdsgULMZQc8pewizk=
+	t=1705969907; cv=none; b=FJ1NcvGonFG0oNLAc7dvUcAJHEkgviHCv/8z8TJ22c5liq3zyvwNm7gdpuKsEOkh05wbUgJEH8itxa/LKTycejHyztfjGFMzbrf9TcB36+nyF2wwCti3eHsqhWYvQj1SSI/pX/QacxlhWgj8YK5A18PXOmuBRFu4Mtby6Ev8xRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971242; c=relaxed/simple;
-	bh=ZMCSA2ICz09hGS69XkKIAZodHsobBlETofQ/OYhQCYo=;
+	s=arc-20240116; t=1705969907; c=relaxed/simple;
+	bh=hQAf0+OYJU7mThztzqfO4l9jMWCKVlrVunvoCMw2HA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z/kF9jKq5/GmiLWxsvX2Owmlcxe5RqtrH3F2FRBtxyx1tmkDYrUPI1or1yHMdGXiFeerFuWDcunxKcpiOtlSzCGhvoncqN7XzPSvXmPQ1jRYzTea8cMDi3qTxaVyPdcg5sAg+yRFaeDfhUUlEiBwnGcT2eYfQ5V3lqEV3/3sfVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlKPx1/1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA1DC433F1;
-	Tue, 23 Jan 2024 00:54:02 +0000 (UTC)
+	 MIME-Version; b=siBymXfB64MGEkeIrCPx4iaQuU7V1SuGAg6YI2KB0OpqrpxJKFiFw2FE1HSt7ezEbqWxZaCm49JnDbgeo3HLMF5w+nUybEJwHzD11kjoFvLhqPcd6rx+LSL3xwHR6FyUZ9P1LTLaegtB8I+FTFwqNMkD+IZ/a5zLj3FpRL6gpLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQg7+y+v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE1FC433F1;
+	Tue, 23 Jan 2024 00:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971242;
-	bh=ZMCSA2ICz09hGS69XkKIAZodHsobBlETofQ/OYhQCYo=;
+	s=korg; t=1705969907;
+	bh=hQAf0+OYJU7mThztzqfO4l9jMWCKVlrVunvoCMw2HA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlKPx1/1MrVGcFkqbJ7ugLaD41Av5PxCgr88iUw0vpitrtWyM+I7qF0XzWFBAQ4Ph
-	 SyYqxWmQ0jG23NZRQQ3Rq3h3X74zFIMQIqZN9YytoiuTcWxY8vUHJmBBdwOriEkguh
-	 S9AyuUZvEVsdMMN4uPjZAW8LJWfL0FFrTT/1yydo=
+	b=aQg7+y+vOqCRNLvneOgfRuUl0I4y+lGz5GBs0eaFPzlX9OFxrz8CFJ29Zvkh/OZEO
+	 f6w57PqewiyAtNpqAZqMAopSe7Wq4mSwC7Rkyp+R3GIPIkfnoae6s4sXeBVy2HNLxf
+	 YDxvdQSQqwaRJfRech8dgrry71cHn7BKxnOxU/wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Rokosov <ddrokosov@sberdevices.ru>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 117/286] firmware: meson_sm: populate platform devices from sm device tree data
+Subject: [PATCH 6.7 519/641] perf stat: Exit perf stat if parse groups fails
 Date: Mon, 22 Jan 2024 15:57:03 -0800
-Message-ID: <20240122235736.621267633@linuxfoundation.org>
+Message-ID: <20240122235834.337210499@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +69,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit e45f243409db98d610248c843b25435e7fb0baf3 ]
+[ Upstream commit 0713ab3bd169da82c35eefd012b07b715e4ebcf7 ]
 
-In some meson boards, secure monitor device has children, for example,
-power secure controller. By default, secure monitor isn't the bus in terms
-of device tree subsystem, so the of_platform initialization code doesn't
-populate its device tree data. As a result, secure monitor's children
-aren't probed at all.
+Metrics were added by a callback but commit a4b8cfcabb1d90ec ("perf
+stat: Delay metric parsing") postponed this to allow optimizations based
+on the CPU configuration.
 
-Run the 'of_platform_populate()' routine manually to resolve such issues.
+In doing so it stopped errors in metric parsing from causing 'perf stat'
+termination.
 
-Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/20230324145557.27797-1-ddrokosov@sberdevices.ru
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Stable-dep-of: d8385d7433f9 ("firmware: meson-sm: unmap out_base shmem in error path")
+This change adds the termination for bad metric names back in.
+
+Fixes: a4b8cfcabb1d90ec ("perf stat: Delay metric parsing")
+Reported-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Closes: https://lore.kernel.org/lkml/ZXByT1K6enTh2EHT@kernel.org/
+Link: https://lore.kernel.org/r/20231206183533.972028-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/meson/meson_sm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/perf/builtin-stat.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/firmware/meson/meson_sm.c b/drivers/firmware/meson/meson_sm.c
-index ed27ff2e503e..7dff8833132d 100644
---- a/drivers/firmware/meson/meson_sm.c
-+++ b/drivers/firmware/meson/meson_sm.c
-@@ -313,11 +313,14 @@ static int __init meson_sm_probe(struct platform_device *pdev)
+diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
+index a3af805a1d57..78c104922181 100644
+--- a/tools/perf/builtin-stat.c
++++ b/tools/perf/builtin-stat.c
+@@ -2695,15 +2695,19 @@ int cmd_stat(int argc, const char **argv)
+ 	 */
+ 	if (metrics) {
+ 		const char *pmu = parse_events_option_args.pmu_filter ?: "all";
++		int ret = metricgroup__parse_groups(evsel_list, pmu, metrics,
++						stat_config.metric_no_group,
++						stat_config.metric_no_merge,
++						stat_config.metric_no_threshold,
++						stat_config.user_requested_cpu_list,
++						stat_config.system_wide,
++						&stat_config.metric_events);
  
- 	platform_set_drvdata(pdev, fw);
+-		metricgroup__parse_groups(evsel_list, pmu, metrics,
+-					stat_config.metric_no_group,
+-					stat_config.metric_no_merge,
+-					stat_config.metric_no_threshold,
+-					stat_config.user_requested_cpu_list,
+-					stat_config.system_wide,
+-					&stat_config.metric_events);
+ 		zfree(&metrics);
++		if (ret) {
++			status = ret;
++			goto out;
++		}
+ 	}
  
--	pr_info("secure-monitor enabled\n");
-+	if (devm_of_platform_populate(dev))
-+		goto out_in_base;
- 
- 	if (sysfs_create_group(&pdev->dev.kobj, &meson_sm_sysfs_attr_group))
- 		goto out_in_base;
- 
-+	pr_info("secure-monitor enabled\n");
-+
- 	return 0;
- 
- out_in_base:
+ 	if (add_default_attributes())
 -- 
 2.43.0
 
