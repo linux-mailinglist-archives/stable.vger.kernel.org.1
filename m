@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A94CA837C75
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B663D838396
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AD881F27C28
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FB812944AE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1793433AE;
-	Tue, 23 Jan 2024 00:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B059C63405;
+	Tue, 23 Jan 2024 01:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBUY7qAw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxRutcWl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF3433097;
-	Tue, 23 Jan 2024 00:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B2163404;
+	Tue, 23 Jan 2024 01:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969626; cv=none; b=HTa7Ij9izoU4jn+QG5IWwBLWtbdG1sQDtl5Aw1hdOiMWnioJ4rAsOH9SjeDJrfFRXcZhS4jhA13AXUraiKyQ4B1TsxqoGkB+32monYELVyQCcRyTmu2vtCAGdi30XZXDS2xYA47IwzaGI/pgxQQlIvgP93vzDupHQ5ypFZgObPI=
+	t=1705975015; cv=none; b=Y8sFX+H9r0ge5akT0HohHcn6IJdX3kY9FszE0Hp4eDi0c89ubXjchvlQViDi+BLJZu+UD456798dwGPufyi/VGl54f6eSSMwHR9RUxIcq32hgsOiwhbwRTqcxy2iG77SSEvXPoi35MI0wkE1tipInGgn56vSQL9jZEanoRBYz2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969626; c=relaxed/simple;
-	bh=nGQNSTrYnprGBqoy/9SUVzVTAbDf5k0pLJjfvATqGUU=;
+	s=arc-20240116; t=1705975015; c=relaxed/simple;
+	bh=nJZ4pOYag90ZdOEv//9l2lDMsZhuc5QPUPwIV/WQAMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbMEVqVqJeV3yufOapFd0CCHMg2T53kz+vMCuvkHR3PU8bd9LnKqmdQA+bANnIDTDfDzg4vEIYu29jWjSeGUPLbnGQ5rMOMbnt/8YMJtmBVsbhf8tmgSwSnGQCEqxGdt/yxRaloX6N61tk6l/GwCA15ckcsLRI2j0mMGW/LKQ3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBUY7qAw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A6C2C433C7;
-	Tue, 23 Jan 2024 00:27:06 +0000 (UTC)
+	 MIME-Version; b=DlQToi7Ng3eUAPmX7xKWpL0fsdETUfNH4dFMZSAI33FijKGqsb4aAIYGWvZLkFw74js1JR2hVm40XPOB1+8GA8MLJ6pf8KnLJKewpGKGbr2mrLpjzHv/XqgHsigi8oLlJW9eCnjcUVMhWJbfQk+uY8Ex1wV9XMFIQFfqYbOwQmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxRutcWl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A8CC433F1;
+	Tue, 23 Jan 2024 01:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969626;
-	bh=nGQNSTrYnprGBqoy/9SUVzVTAbDf5k0pLJjfvATqGUU=;
+	s=korg; t=1705975015;
+	bh=nJZ4pOYag90ZdOEv//9l2lDMsZhuc5QPUPwIV/WQAMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pBUY7qAwvHf1Jx/vDmQSAnlAUT4MJk3/eCeptpIan12ApIU4CkEgkb6siIogCn9zh
-	 AtAC42lPWjwjr/HgLZ0gE3EcsDMM6UKjVsl1tKXsIF5FeHtJOxODazl93T7JFHQFQQ
-	 ZfL3B9udTNbKr0EHycydEZ4WXeJ+dqXdPSqtHH5M=
+	b=sxRutcWlzz1Fnco3ayqFDktOzKHePw36UgNXpCju5zgguhlwEc11vNxVIw2as6El9
+	 6aqIjG6n0qs1VFnUl3U4RoW3Dwx3ABgX2o74PV/MZCwb2Y4oqG7LL/ahtgHQXYj4li
+	 mcwQuPrxzfKTo+KiJdBjFdmCUwtw5SurAIjd95t0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Emil Velikov <emil.velikov@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 343/641] ASoC: amd: vangogh: Drop conflicting ACPI-based probing
-Date: Mon, 22 Jan 2024 15:54:07 -0800
-Message-ID: <20240122235828.657876424@linuxfoundation.org>
+Subject: [PATCH 6.6 197/583] wifi: rtlwifi: rtl8192ee: using calculate_bit_shift()
+Date: Mon, 22 Jan 2024 15:54:08 -0800
+Message-ID: <20240122235818.007108782@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit ddd1ee12a8fb6e4d6f86eddeba64c135eee56623 ]
+[ Upstream commit 63526897fc0d086069bcab67c3a112caaec751cb ]
 
-The Vangogh machine driver variant based on the MAX98388 amplifier, as
-found on Valve's Steam Deck OLED, relies on probing via an ACPI match
-table.  This worked fine until commit 197b1f7f0df1 ("ASoC: amd: Add new
-dmi entries to config entry") enabled SOF support for the target machine
-(i.e. Galileo product), causing the sound card to enter the deferred
-probe state indefinitely:
+Using calculate_bit_shift() to replace _rtl92ee_phy_calculate_bit_shift().
+And fix the undefined bitwise shift behavior problem.
 
-$ cat /sys/kernel/debug/devices_deferred
-AMDI8821:00	acp5x_mach: Register card (acp5x-max98388) failed
-
-The issue is related to commit e89f45edb747 ("ASoC: amd: vangogh: Add
-check for acp config flags in vangogh platform"), which tries to
-mitigate potential conflicts between SOF and generic ACP Vangogh
-drivers, due to sharing the PCI device IDs.
-
-However, the solution is effective only if the machine driver is
-directly probed by pci-acp5x through platform_device_register_full().
-
-Hence, remove the conflicting ACPI based probing and rely exclusively on
-DMI quirks for sound card setup.
-
-Fixes: dba22efd0d17 ("ASoC: amd: vangogh: Add support for NAU8821/MAX98388 variant")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Reviewed-by: Emil Velikov <emil.velikov@collabora.com>
-Link: https://msgid.link/r/20231209203229.878730-2-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: b1a3bfc97cd9 ("rtlwifi: rtl8192ee: Move driver from staging to the regular tree")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-9-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/vangogh/acp5x-mach.c | 35 +++++++++++-------------------
- 1 file changed, 13 insertions(+), 22 deletions(-)
+ .../net/wireless/realtek/rtlwifi/rtl8192ee/phy.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/sound/soc/amd/vangogh/acp5x-mach.c b/sound/soc/amd/vangogh/acp5x-mach.c
-index de4b478a983d..7878e061ecb9 100644
---- a/sound/soc/amd/vangogh/acp5x-mach.c
-+++ b/sound/soc/amd/vangogh/acp5x-mach.c
-@@ -439,7 +439,15 @@ static const struct dmi_system_id acp5x_vg_quirk_table[] = {
- 		.matches = {
- 			DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "Valve"),
- 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Jupiter"),
--		}
-+		},
-+		.driver_data = (void *)&acp5x_8821_35l41_card,
-+	},
-+	{
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "Valve"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Galileo"),
-+		},
-+		.driver_data = (void *)&acp5x_8821_98388_card,
- 	},
- 	{}
- };
-@@ -452,25 +460,15 @@ static int acp5x_probe(struct platform_device *pdev)
- 	struct snd_soc_card *card;
- 	int ret;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
+index cc0bcaf13e96..73ef602bfb01 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
+@@ -16,7 +16,6 @@ static u32 _rtl92ee_phy_rf_serial_read(struct ieee80211_hw *hw,
+ static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 					 enum radio_path rfpath, u32 offset,
+ 					 u32 data);
+-static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask);
+ static bool _rtl92ee_phy_bb8192ee_config_parafile(struct ieee80211_hw *hw);
+ static bool _rtl92ee_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);
+ static bool phy_config_bb_with_hdr_file(struct ieee80211_hw *hw,
+@@ -46,7 +45,7 @@ u32 rtl92ee_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+ 		"regaddr(%#x), bitmask(%#x)\n", regaddr, bitmask);
+ 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	returnvalue = (originalvalue & bitmask) >> bitshift;
  
--	card = (struct snd_soc_card *)device_get_match_data(dev);
--	if (!card) {
--		/*
--		 * This is normally the result of directly probing the driver
--		 * in pci-acp5x through platform_device_register_full(), which
--		 * is necessary for the CS35L41 variant, as it doesn't support
--		 * ACPI probing and relies on DMI quirks.
--		 */
--		dmi_id = dmi_first_match(acp5x_vg_quirk_table);
--		if (!dmi_id)
--			return -ENODEV;
--
--		card = &acp5x_8821_35l41_card;
--	}
-+	dmi_id = dmi_first_match(acp5x_vg_quirk_table);
-+	if (!dmi_id || !dmi_id->driver_data)
-+		return -ENODEV;
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+@@ -68,7 +67,7 @@ void rtl92ee_phy_set_bb_reg(struct ieee80211_hw *hw, u32 regaddr,
  
- 	machine = devm_kzalloc(dev, sizeof(*machine), GFP_KERNEL);
- 	if (!machine)
- 		return -ENOMEM;
+ 	if (bitmask != MASKDWORD) {
+ 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
+ 	}
  
-+	card = dmi_id->driver_data;
- 	card->dev = dev;
- 	platform_set_drvdata(pdev, card);
- 	snd_soc_card_set_drvdata(card, machine);
-@@ -482,17 +480,10 @@ static int acp5x_probe(struct platform_device *pdev)
- 	return 0;
+@@ -92,7 +91,7 @@ u32 rtl92ee_phy_query_rf_reg(struct ieee80211_hw *hw,
+ 	spin_lock(&rtlpriv->locks.rf_lock);
+ 
+ 	original_value = _rtl92ee_phy_rf_serial_read(hw , rfpath, regaddr);
+-	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
+ 
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -119,7 +118,7 @@ void rtl92ee_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 
+ 	if (bitmask != RFREG_OFFSET_MASK) {
+ 		original_value = _rtl92ee_phy_rf_serial_read(hw, rfpath, addr);
+-		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = (original_value & (~bitmask)) | (data << bitshift);
+ 	}
+ 
+@@ -201,13 +200,6 @@ static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 		pphyreg->rf3wire_offset, data_and_addr);
  }
  
--static const struct acpi_device_id acp5x_acpi_match[] = {
--	{ "AMDI8821", (kernel_ulong_t)&acp5x_8821_98388_card },
--	{},
--};
--MODULE_DEVICE_TABLE(acpi, acp5x_acpi_match);
+-static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask)
+-{
+-	u32 i = ffs(bitmask);
 -
- static struct platform_driver acp5x_mach_driver = {
- 	.driver = {
- 		.name = DRV_NAME,
- 		.pm = &snd_soc_pm_ops,
--		.acpi_match_table = acp5x_acpi_match,
- 	},
- 	.probe = acp5x_probe,
- };
+-	return i ? i - 1 : 32;
+-}
+-
+ bool rtl92ee_phy_mac_config(struct ieee80211_hw *hw)
+ {
+ 	return _rtl92ee_phy_config_mac_with_headerfile(hw);
 -- 
 2.43.0
 
