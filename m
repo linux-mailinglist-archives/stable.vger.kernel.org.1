@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-12861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E6A8378B3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBBD837A64
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E493D1C273D6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EC321F28B51
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0A31846;
-	Tue, 23 Jan 2024 00:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1810412C536;
+	Tue, 23 Jan 2024 00:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auHesldm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2yCIZnn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8EB1845;
-	Tue, 23 Jan 2024 00:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC1612BF3D;
+	Tue, 23 Jan 2024 00:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968206; cv=none; b=tCLqS0pK/wYOxSLu/thgjXpG2hHTl6v9s1OIiKEkdadt2TFrfUx5Xuy0yPJXidxD0u7PYlP+jNiHbfA/hnShlj6XTGWkZ+WPY5JWYJ5FUynlZeaYVXhsjdMgHv+L+gFuOq+KAK9WvWn6t+1ffCZLJq1t4M2yAHsv0ICzzU3xgMk=
+	t=1705968929; cv=none; b=VSoh/VdvouiCpyPCHwN2pWl/H5QPhQM4tG5C9UyWzDRzd2mSEb0W89M2n08S8jndQfQf8VmeAsd8j02hX4vkFSddOV6VoURKn9XDexKWxqF0TM4rtMTEt3AnbGBQB8dyLsQ0sqh6grMA0jB8a4/ew2b6mT9P9KMB7bVAUP6UGJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968206; c=relaxed/simple;
-	bh=Oo3n235QM13HIIRhFal+Y/d7lekL/PaZ6NE7uIHiuZM=;
+	s=arc-20240116; t=1705968929; c=relaxed/simple;
+	bh=L+uQorPjA+9cGjMgTrgP+N7g8gvBa0HdhIgB8upmWMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q5wmA6fmWm9eT+ZXA5fIbRkleUf923ySTTqg2HOMYaVcNSWbNeFni0j3nCPxwo8gTGn42rXZJOPlrYfEifF+q4YsXT3HG7pr6ljRKJIQZKMumU2AAKEM9tKTL7Y9vjk+ypMBtAz/gb1J7GFnxMupFmdam67JFXN7cn/YMFacKnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auHesldm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94827C433C7;
-	Tue, 23 Jan 2024 00:03:25 +0000 (UTC)
+	 MIME-Version; b=FD98GJL5fQIfp3nJA51yz7DMIfYJwuWAUviAhR4RdYTa08xSmtyY2XZv4CHPNAkZOOrN1tENQMQRqLQlnISHdRFB/W/P+LQaEhEl1Q0XqZFbdAnoRNrK7lMopYNca2L55tZJJcVSFNuruZndN+OSjzmBzTkDbUONCx/uMux7v6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2yCIZnn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A2EDC433F1;
+	Tue, 23 Jan 2024 00:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968206;
-	bh=Oo3n235QM13HIIRhFal+Y/d7lekL/PaZ6NE7uIHiuZM=;
+	s=korg; t=1705968929;
+	bh=L+uQorPjA+9cGjMgTrgP+N7g8gvBa0HdhIgB8upmWMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=auHesldmrJCsyd7YMjPvnJGpoxYvbY7/psymtpZTZ467Bz/DZKlv+q3lJ7i9ZPITl
-	 TBUrPdrjLMJJht0s0hN9CJiCj4Nq43BY8Bboq5d8r03Z6ce/41T5gDgPRKs0iD9Sl5
-	 iz5QUTnGLdL3UioimhBLIJQW2+r2Re8rxDQMROHA=
+	b=P2yCIZnnSjEH1qVkWxDuBr9abtjV36c34wxVM3Kel1qTpLS5dJut15lutc3bgeaHk
+	 jwIGtNHjx+wjZfcIA+Qs6++Gf2NH+oP1jcUzFCr6tuRSLRX80DTFs9qlPwR5QWnUSj
+	 bONJFt2wa3omVUOAdtMiR/OrU3rN4WXy6SdtChKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Paris <eparis@parisplace.org>,
-	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	wangyangxin <wangyangxin1@huawei.com>,
+	Gonglei <arei.gonglei@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 044/148] selinux: Fix error priority for bind with AF_UNSPEC on PF_INET6 socket
-Date: Mon, 22 Jan 2024 15:56:40 -0800
-Message-ID: <20240122235714.195925799@linuxfoundation.org>
+Subject: [PATCH 5.4 071/194] crypto: virtio - Wait for tasklet to complete on device remove
+Date: Mon, 22 Jan 2024 15:56:41 -0800
+Message-ID: <20240122235722.277630139@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: wangyangxin <wangyangxin1@huawei.com>
 
-[ Upstream commit bbf5a1d0e5d0fb3bdf90205aa872636122692a50 ]
+[ Upstream commit 67cc511e8d436456cc98033e6d4ba83ebfc8e672 ]
 
-The IPv6 network stack first checks the sockaddr length (-EINVAL error)
-before checking the family (-EAFNOSUPPORT error).
+The scheduled tasklet needs to be executed on device remove.
 
-This was discovered thanks to commit a549d055a22e ("selftests/landlock:
-Add network tests").
-
-Cc: Eric Paris <eparis@parisplace.org>
-Cc: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
-Cc: Paul Moore <paul@paul-moore.com>
-Cc: Stephen Smalley <stephen.smalley.work@gmail.com>
-Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Closes: https://lore.kernel.org/r/0584f91c-537c-4188-9e4f-04f192565667@collabora.com
-Fixes: 0f8db8cc73df ("selinux: add AF_UNSPEC and INADDR_ANY checks to selinux_socket_bind()")
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
-Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
+Signed-off-by: wangyangxin <wangyangxin1@huawei.com>
+Signed-off-by: Gonglei <arei.gonglei@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/selinux/hooks.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/crypto/virtio/virtio_crypto_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 41e24df986eb..749dbf9f2cfc 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -4700,6 +4700,13 @@ static int selinux_socket_bind(struct socket *sock, struct sockaddr *address, in
- 				return -EINVAL;
- 			addr4 = (struct sockaddr_in *)address;
- 			if (family_sa == AF_UNSPEC) {
-+				if (family == PF_INET6) {
-+					/* Length check from inet6_bind_sk() */
-+					if (addrlen < SIN6_LEN_RFC2133)
-+						return -EINVAL;
-+					/* Family check from __inet6_bind() */
-+					goto err_af;
-+				}
- 				/* see __inet_bind(), we only want to allow
- 				 * AF_UNSPEC if the address is INADDR_ANY
- 				 */
+diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
+index 7c64862f1194..469da86c4084 100644
+--- a/drivers/crypto/virtio/virtio_crypto_core.c
++++ b/drivers/crypto/virtio/virtio_crypto_core.c
+@@ -434,11 +434,14 @@ static void virtcrypto_free_unused_reqs(struct virtio_crypto *vcrypto)
+ static void virtcrypto_remove(struct virtio_device *vdev)
+ {
+ 	struct virtio_crypto *vcrypto = vdev->priv;
++	int i;
+ 
+ 	dev_info(&vdev->dev, "Start virtcrypto_remove.\n");
+ 
+ 	if (virtcrypto_dev_started(vcrypto))
+ 		virtcrypto_dev_stop(vcrypto);
++	for (i = 0; i < vcrypto->max_data_queues; i++)
++		tasklet_kill(&vcrypto->data_vq[i].done_task);
+ 	vdev->config->reset(vdev);
+ 	virtcrypto_free_unused_reqs(vcrypto);
+ 	virtcrypto_clear_crypto_engines(vcrypto);
 -- 
 2.43.0
 
