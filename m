@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA57C838221
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3351837FA9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FAD81F23B35
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E4231F2A0CD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD1558AB7;
-	Tue, 23 Jan 2024 01:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D3064A96;
+	Tue, 23 Jan 2024 00:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcvSNUlR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSPTS7RU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC66C63BF;
-	Tue, 23 Jan 2024 01:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F96634F8;
+	Tue, 23 Jan 2024 00:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974070; cv=none; b=D62xc8UH/xyv+TBxUHGYzoWonzqMZOpnZxGztnXFgEjtwWALvLBLU7YrEFhXHGE1sL+M9xIFqzineoC6slg+fvR6LggkRM/091b5GhEnNUTtjmG+HxgdsffvDmvzcBgeU/kp3jm5o3/jZNx4I05LDnYgVXEVV3KftUbnGkZfrZQ=
+	t=1705971274; cv=none; b=L55pBTWFjXJFVHNeiSF47axWQu5er0LHafibrXR1KSoTdI+vgG2PJaBQP2TKNr//uB/98t706Hrttb8KNEa8pQHtn/dHGwZJtG+aitRkNQIdpqdvrd2L/c8Ql4USumaRth0oLQprk7OWQJkLq3PaPXd4YWcRTaKG3nGtvdjIulc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974070; c=relaxed/simple;
-	bh=QHxo855qmypYgjKF6ryMgijqptHfZJCN8QILIO0bF98=;
+	s=arc-20240116; t=1705971274; c=relaxed/simple;
+	bh=KN08VdIYh9MVXEY/7gcCxxx9MkUhI0jKCVATYPJBgxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/pf4s2xiMkkGyv+bdGBCPmNZ9ROFYmUY0DXpVffdgJGtsZArL+SzSSd3U0+FlavwlPyqxB3kKpG8xxHzhh/8uPgHzu0s1tQI6PFDWDxSgRBFbMJU4KSmK6ZA6Yj/ZWcR2r2/AF2KCZrirhHoEffMxr1fj7j49ywTMDSbk06xQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcvSNUlR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0DAC433A6;
-	Tue, 23 Jan 2024 01:41:10 +0000 (UTC)
+	 MIME-Version; b=DgvaGq70834x8/eeP/+GasFKMcdG2xS5ToHrD5gZYCKjZSfX38U6dy+/uk+ws5rTkNQebhmtP7D5e6esIVoHiMY5QpKzFWXFwSBukT3Xky/rSuUTgRIgxLuKi7Vo/uUpGZgMKnyOSoC7aeUA9VOKMHPscWqtup0i61TRNaXF/ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSPTS7RU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC516C433F1;
+	Tue, 23 Jan 2024 00:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974070;
-	bh=QHxo855qmypYgjKF6ryMgijqptHfZJCN8QILIO0bF98=;
+	s=korg; t=1705971274;
+	bh=KN08VdIYh9MVXEY/7gcCxxx9MkUhI0jKCVATYPJBgxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcvSNUlRbfGiIQjwJG/fXqZng4wXn7TUfIkz6ktJj6JY2p8dJVbsj/YuBL2SwADWp
-	 W66gliOUoatcC8BuiGx8qBxtx+/FBZoH1fnU52j7Anj4bPiCWpVG9gB+VyfJjU8gHu
-	 CWQhKBFsV86e0IGFj9dEjnE6pq7DwMIveemiaRfU=
+	b=FSPTS7RUACqFR1gDaQXRYAOVt+2hn6Zq2qWkMqdzEq9YG0ZJVFFXKKIQz0uOkXBEJ
+	 ic6bGWn454NEW2c0q2+RnIgEaCLd2rwFOzrcy2H9BW7IKvTiX1fAtZG/+Ch9sULVse
+	 AQImkoQ/9RILSknDaSLfbjscgkef6fWqDBTnj2s4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Atul Dhudase <quic_adhudase@quicinc.com>,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 151/374] soc: qcom: llcc: Fix dis_cap_alloc and retain_on_pc configuration
+Subject: [PATCH 5.10 101/286] crypto: sahara - fix wait_for_completion_timeout() error handling
 Date: Mon, 22 Jan 2024 15:56:47 -0800
-Message-ID: <20240122235749.875556569@linuxfoundation.org>
+Message-ID: <20240122235735.962486698@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Atul Dhudase <quic_adhudase@quicinc.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit eed6e57e9f3e2beac37563eb6a0129549daa330e ]
+[ Upstream commit 2dba8e1d1a7957dcbe7888846268538847b471d1 ]
 
-Commit c14e64b46944 ("soc: qcom: llcc: Support chipsets that can
- write to llcc") add the support for chipset where capacity based
-allocation and retention through power collapse can be programmed
-based on content of SCT table mentioned in the llcc driver where
-the target like sdm845 where the entire programming related to it
-is controlled in firmware. However, the commit introduces a bug
-where capacity/retention register get overwritten each time it
-gets programmed for each slice and that results in misconfiguration
-of the register based on SCT table and that is not expected
-behaviour instead it should be read modify write to retain the
-configuration of other slices.
+The sg lists are not unmapped in case of timeout errors. Fix this.
 
-This issue is totally caught from code review and programming test
-and not through any power/perf numbers so, it is not known what
-impact this could make if we don't have this change however,
-this feature are for these targets and they should have been
-programmed accordingly as per their configuration mentioned in
-SCT table like others bits information.
-
-This change brings one difference where it keeps capacity/retention
-bits of the slices that are not mentioned in SCT table in unknown
-state where as earlier it was initialized to zero.
-
-Fixes: c14e64b46944 ("soc: qcom: llcc: Support chipsets that can write to llcc")
-Signed-off-by: Atul Dhudase <quic_adhudase@quicinc.com>
-Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/1701876771-10695-1-git-send-email-quic_mojha@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
+Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/llcc-qcom.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/crypto/sahara.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
-index fabc5ce828af..59e359e9062b 100644
---- a/drivers/soc/qcom/llcc-qcom.c
-+++ b/drivers/soc/qcom/llcc-qcom.c
-@@ -450,14 +450,14 @@ static int _qcom_llcc_cfg_program(const struct llcc_slice_config *config,
- 		u32 disable_cap_alloc, retain_pc;
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index a97b1dadf6a4..67960acd786a 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -607,16 +607,17 @@ static int sahara_aes_process(struct skcipher_request *req)
  
- 		disable_cap_alloc = config->dis_cap_alloc << config->slice_id;
--		ret = regmap_write(drv_data->bcast_regmap,
--				LLCC_TRP_SCID_DIS_CAP_ALLOC, disable_cap_alloc);
-+		ret = regmap_update_bits(drv_data->bcast_regmap, LLCC_TRP_SCID_DIS_CAP_ALLOC,
-+					 BIT(config->slice_id), disable_cap_alloc);
- 		if (ret)
- 			return ret;
+ 	timeout = wait_for_completion_timeout(&dev->dma_completion,
+ 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
+-	if (!timeout) {
+-		dev_err(dev->device, "AES timeout\n");
+-		return -ETIMEDOUT;
+-	}
  
- 		retain_pc = config->retain_on_pc << config->slice_id;
--		ret = regmap_write(drv_data->bcast_regmap,
--				LLCC_TRP_PCB_ACT, retain_pc);
-+		ret = regmap_update_bits(drv_data->bcast_regmap, LLCC_TRP_PCB_ACT,
-+					 BIT(config->slice_id), retain_pc);
- 		if (ret)
- 			return ret;
- 	}
+ 	dma_unmap_sg(dev->device, dev->out_sg, dev->nb_out_sg,
+ 		DMA_FROM_DEVICE);
+ 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
+ 		DMA_TO_DEVICE);
+ 
++	if (!timeout) {
++		dev_err(dev->device, "AES timeout\n");
++		return -ETIMEDOUT;
++	}
++
+ 	if ((dev->flags & FLAGS_CBC) && req->iv)
+ 		sahara_aes_cbc_update_iv(req);
+ 
+@@ -1007,15 +1008,16 @@ static int sahara_sha_process(struct ahash_request *req)
+ 
+ 	timeout = wait_for_completion_timeout(&dev->dma_completion,
+ 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
+-	if (!timeout) {
+-		dev_err(dev->device, "SHA timeout\n");
+-		return -ETIMEDOUT;
+-	}
+ 
+ 	if (rctx->sg_in_idx)
+ 		dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
+ 			     DMA_TO_DEVICE);
+ 
++	if (!timeout) {
++		dev_err(dev->device, "SHA timeout\n");
++		return -ETIMEDOUT;
++	}
++
+ 	memcpy(rctx->context, dev->context_base, rctx->context_size);
+ 
+ 	if (req->result && rctx->last)
 -- 
 2.43.0
 
