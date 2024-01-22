@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B256B838353
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3AB1837BA7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 386FBB24E5A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54859B2BE02
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D155EE66;
-	Tue, 23 Jan 2024 01:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8F312DDA5;
+	Tue, 23 Jan 2024 00:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGQqybZE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2mD7EWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7117B5EE61;
-	Tue, 23 Jan 2024 01:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A13B12DD9D;
+	Tue, 23 Jan 2024 00:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974404; cv=none; b=Mp682IMKF3KrwXfW+tc5eTFrxGmEY1pHXsXwZEIREEJSgMlMEVePWINUJfOmMDAeQFgKdQJ4e3vW8ebpqL4Jxk6R9pgHoQKWCkFjfjsypAXjv0a2B9OUxHY7L84KTvMGQqMGfpgCHfJds1KMJxm1M6zLrXczdwgWRggnq1J6u+A=
+	t=1705968980; cv=none; b=Oq6ghcpXnXSgZ4NRGTD6dvjtpTI2FNv4ALzV64IWoX7uZP0o6G9Ujak9cAoMpvZTlqImVuF6FeIffs25Y6uXkFH7mKjpfq4JjBvRuf4QusLNDgZULYHbjrVl9zkRJgAiQVC/47SJJpzFhkigGiw91UGdIrPTWOLt3VOZ10Wc9fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974404; c=relaxed/simple;
-	bh=dI7GnipMvdB0WbtAKu+NwBqFRq5VtrH/Z4qtR6tanfg=;
+	s=arc-20240116; t=1705968980; c=relaxed/simple;
+	bh=rUwMN39GDUvtKksVMV4P0jt3DHHrkYUNI8TRh6e3/gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBih/XG1sHn98Yr6MxisMe0omrJCz/4qNjud/UV8Be40JnDWfNdLRgVNKPi/m+90vUB4IVgXUsOusKrZCuHecGGbbrvoYeZiaq9Qx3pKxvCDat1u39MMs79POXxl/Qm9P0xn4JITiQTjPDs5zKhN9zjnQqYlb94Xy16sj9jmFYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGQqybZE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1683C433C7;
-	Tue, 23 Jan 2024 01:46:43 +0000 (UTC)
+	 MIME-Version; b=dEjFdUoNPGQUzSPWeI6aDluhlSzSri4G9EH68VaYSLvohtXeTmXevAWr3SZgezJD+w2EdVzTlNCmqpCNDf7lcUJVd8vCncNaJDa7OjSF+CriYkVs1Zu3z9ktrClncwaCoEqwFTnpJ0ma0pmErDVN7MNudUVUOdXJZ3+3ZWTrN3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2mD7EWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1894C433C7;
+	Tue, 23 Jan 2024 00:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974404;
-	bh=dI7GnipMvdB0WbtAKu+NwBqFRq5VtrH/Z4qtR6tanfg=;
+	s=korg; t=1705968979;
+	bh=rUwMN39GDUvtKksVMV4P0jt3DHHrkYUNI8TRh6e3/gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGQqybZEUpQObpTT9QHCEXiVgEM25fGpa2u+QbA00JnJhJ5feqeS+sCK38bTUABw5
-	 8LldJNNVn4KePq/v0KeViqIUXqngDLPrg19sJ7wodXcZUzopaVZ0bIIO8fOLzn0wIX
-	 YzWBTCY+hE2hQvidDn+NT2UCQz90gDzxZ34ezoa4=
+	b=c2mD7EWdsnG6xgUsfCgXZg1PrP0ofTnkrpat1nUr8Yf7Cux9R0UQf+PWjCt2GgHQ2
+	 oDx6ZZBQYMpmoRj/L5Lwba8zY19xTL1E7djOm5NSSnSRiCNLGsWAyNRKHYPzho1ogg
+	 Em9iKz3faAXdSqRCaxBNEiyIux1lbaLrSNc50Fe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 212/374] dt-bindings: clock: Update the videocc resets for sm8150
+Subject: [PATCH 5.4 138/194] of: unittest: Fix of_count_phandle_with_args() expected value message
 Date: Mon, 22 Jan 2024 15:57:48 -0800
-Message-ID: <20240122235752.011043514@linuxfoundation.org>
+Message-ID: <20240122235725.154230881@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 3185f96968eedd117ec72ee7b87ead44b6d1bbbd ]
+[ Upstream commit 716089b417cf98d01f0dc1b39f9c47e1d7b4c965 ]
 
-Add all the available resets for the video clock controller
-on sm8150.
+The expected result value for the call to of_count_phandle_with_args()
+was updated from 7 to 8, but the accompanying error message was
+forgotten.
 
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20231201-videocc-8150-v3-1-56bec3a5e443@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 1fd9a939db24 ("clk: qcom: videocc-sm8150: Update the videocc resets")
+Fixes: 4dde83569832f937 ("of: Fix double free in of_parse_phandle_with_args_map")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20240111085025.2073894-1-geert+renesas@glider.be
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/clock/qcom,videocc-sm8150.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/of/unittest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/dt-bindings/clock/qcom,videocc-sm8150.h b/include/dt-bindings/clock/qcom,videocc-sm8150.h
-index e24ee840cfdb..c557b78dc572 100644
---- a/include/dt-bindings/clock/qcom,videocc-sm8150.h
-+++ b/include/dt-bindings/clock/qcom,videocc-sm8150.h
-@@ -16,6 +16,10 @@
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index b1924062c939..1ed470b03cd7 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -500,7 +500,7 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+ 	}
  
- /* VIDEO_CC Resets */
- #define VIDEO_CC_MVSC_CORE_CLK_BCR	0
-+#define VIDEO_CC_INTERFACE_BCR		1
-+#define VIDEO_CC_MVS0_BCR		2
-+#define VIDEO_CC_MVS1_BCR		3
-+#define VIDEO_CC_MVSC_BCR		4
+ 	rc = of_count_phandle_with_args(np, "phandle-list", "#phandle-cells");
+-	unittest(rc == 8, "of_count_phandle_with_args() returned %i, expected 7\n", rc);
++	unittest(rc == 8, "of_count_phandle_with_args() returned %i, expected 8\n", rc);
  
- /* VIDEO_CC GDSCRs */
- #define VENUS_GDSC			0
+ 	for (i = 0; i < 9; i++) {
+ 		bool passed = true;
 -- 
 2.43.0
 
