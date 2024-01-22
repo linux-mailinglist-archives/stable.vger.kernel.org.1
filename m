@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-13553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A93E837C91
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B322D838142
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:07:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1369B28B083
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E55F41C24C1F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C32E136645;
-	Tue, 23 Jan 2024 00:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94045149001;
+	Tue, 23 Jan 2024 01:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1UqVKyBG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G980kFlL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2183E135A7A;
-	Tue, 23 Jan 2024 00:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53407148FE8;
+	Tue, 23 Jan 2024 01:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969673; cv=none; b=p2LOabqKkGYWdt6U29TFwF8enkVAT91cPdIsIjQsrgfi9AyfD4cVD7wFjfUlb62v7BjJag/WGQdT/sgWUNQyQc0f2/p1NHC5ipNVwptf94Uq3hwUG1iUBOomOLDo37Mwot+jk9v7IyNV6fI0vnFFvOEDnQGrajvS7gbsRXmEj8E=
+	t=1705972087; cv=none; b=VWyZyK5MwqfdG/Q0tSMbKGSmGwCS6QuTs2kawGozT91q37bJShX6IbRZPJ0gaWqyHb8+qs+3M9d4rqmoCm3Y+jOUO77vlkLniL4uMNXGkQFXd4jB7RI7fmss9QZb6fUZ3wZNcpaBPAsgUqMxYRRuipVJj8Xvk1oSg2XFjYSYZps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969673; c=relaxed/simple;
-	bh=0FNrusc4PLat6vAf0NRD8TEgqwzb2lCIG2ku+GSVspU=;
+	s=arc-20240116; t=1705972087; c=relaxed/simple;
+	bh=TGXd0TdVD+oOw1nQGLyPqhdhkHtfsBjdBgKadocCOC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cr+20AUjhx8R/yw9CQ3a9YbN+f9TQSQmzqMzVmn/4n1cqGr1Dacg6211jV2Nex4f+QxpUV0vtInJKFnwj/0nNvDAPIKsUwxMMcCPN6sh39onAi+onaeVIVMl/kUj4AYCnd2DPTIkQDVR5IlcgZ38MwD6m/uVyFJI+W4s43pxS2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1UqVKyBG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2363C433C7;
-	Tue, 23 Jan 2024 00:27:52 +0000 (UTC)
+	 MIME-Version; b=rAJDpCJIGthKVe6+RVzuupETlzdXOIbR7ht7tQxJmVwvMCPSSj3QsP4S4ARbZduiu1Y7e2uIWnKNNj9Ox1WVL9x62l0wVEE+lirdzxLu0+eemMSPQZip28xO+TSp3yeqXUKT/ZNnD74wKPfBB2AQ0kdojSqCk6K8i3bHLfXrdiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G980kFlL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16CE7C433A6;
+	Tue, 23 Jan 2024 01:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969673;
-	bh=0FNrusc4PLat6vAf0NRD8TEgqwzb2lCIG2ku+GSVspU=;
+	s=korg; t=1705972087;
+	bh=TGXd0TdVD+oOw1nQGLyPqhdhkHtfsBjdBgKadocCOC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1UqVKyBG1Tqune6XnFgAwWTNAP27tidlsY97ScMX5D6XexEzNLLCDipkfJDkghB7N
-	 His7ZSZ3q5R8jReq4WRHAFWp6ogsmOWYTULRmT659WVANIfjESc2Yywg/FqnNyPgy0
-	 jIdlhiEmta4YvS3TZwX7ILJ2uKlqDmIhn/8Ksjvc=
+	b=G980kFlLgDh4o2yqiiN4NW9XJj270ssLvB/o71kKHEiKRN4CUs4CV6aWghnqel9GU
+	 HrhAJXc7f2jJuX0rSpMGEJGy4VI0HwgtRq/+Jke0erazUXzQB/qifoJ5xuEGdD9+nu
+	 1GSkJ6MBDAzvnOvLg/0T+DxLfwP253mBbX5RO6AI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-sound@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-	Takashi Iwai <tiwai@suse.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 371/641] kselftest/alsa - mixer-test: Fix the print format specifier warning
-Date: Mon, 22 Jan 2024 15:54:35 -0800
-Message-ID: <20240122235829.563209643@linuxfoundation.org>
+Subject: [PATCH 5.15 020/374] nvme: introduce helper function to get ctrl state
+Date: Mon, 22 Jan 2024 15:54:36 -0800
+Message-ID: <20240122235745.326723553@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,66 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 3f47c1ebe5ca9c5883e596c7888dec4bec0176d8 ]
+[ Upstream commit 5c687c287c46fadb14644091823298875a5216aa ]
 
-The GCC 13.2.0 compiler issued the following warning:
+The controller state is typically written by another CPU, so reading it
+should ensure no optimizations are taken. This is a repeated pattern in
+the driver, so start with adding a convenience function that returns the
+controller state with READ_ONCE().
 
-mixer-test.c: In function ‘ctl_value_index_valid’:
-mixer-test.c:322:79: warning: format ‘%lld’ expects argument of type ‘long long int’, \
-			      but argument 5 has type ‘long int’ [-Wformat=]
-  322 |                         ksft_print_msg("%s.%d value %lld more than maximum %lld\n",
-      |                                                                            ~~~^
-      |                                                                               |
-      |                                                                               long long int
-      |                                                                            %ld
-  323 |                                        ctl->name, index, int64_val,
-  324 |                                        snd_ctl_elem_info_get_max(ctl->info));
-      |                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                                        |
-      |                                        long int
-
-Fixing the format specifier as advised by the compiler suggestion removes the
-warning.
-
-Fixes: 3f48b137d88e7 ("kselftest: alsa: Factor out check that values meet constraints")
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: linux-sound@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240107173704.937824-3-mirsad.todorovac@alu.unizg.hr
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/alsa/mixer-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/nvme.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/alsa/mixer-test.c b/tools/testing/selftests/alsa/mixer-test.c
-index 208c2170c074..df942149c6f6 100644
---- a/tools/testing/selftests/alsa/mixer-test.c
-+++ b/tools/testing/selftests/alsa/mixer-test.c
-@@ -319,7 +319,7 @@ static bool ctl_value_index_valid(struct ctl_data *ctl,
- 		}
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index 415b01707599..f9bfd6a549f3 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -365,6 +365,11 @@ struct nvme_ctrl {
+ 	struct nvme_fault_inject fault_inject;
+ };
  
- 		if (int64_val > snd_ctl_elem_info_get_max64(ctl->info)) {
--			ksft_print_msg("%s.%d value %lld more than maximum %lld\n",
-+			ksft_print_msg("%s.%d value %lld more than maximum %ld\n",
- 				       ctl->name, index, int64_val,
- 				       snd_ctl_elem_info_get_max(ctl->info));
- 			return false;
++static inline enum nvme_ctrl_state nvme_ctrl_state(struct nvme_ctrl *ctrl)
++{
++	return READ_ONCE(ctrl->state);
++}
++
+ enum nvme_iopolicy {
+ 	NVME_IOPOLICY_NUMA,
+ 	NVME_IOPOLICY_RR,
 -- 
 2.43.0
 
