@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-12917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F8C8379AD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:44:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA0A837A59
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 478031F27DD8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:44:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7EAD28AB7C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2596134;
-	Tue, 23 Jan 2024 00:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66F812BF2F;
+	Tue, 23 Jan 2024 00:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oyYWSkFL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Li3qukx+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE735680;
-	Tue, 23 Jan 2024 00:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C9312BF15;
+	Tue, 23 Jan 2024 00:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968414; cv=none; b=MyZi+7GLbVsNRETnU9hiv7Wa830IWmI+NEFmbc4NoL8fWTDMckLojf92vTHIXHbe7MiiR92GmoROC+VTCYEfalmBb2LNinmcq+MGJuVG5qLIGu9aFaUKHYVkgM1R1wtRfX00X+A1PtTuzcL04Vy6aV6GCc3fU+N8Cbmv/TgiEsg=
+	t=1705968906; cv=none; b=O7dOcLfoKAchrMP/CuNStMpLzXKCa4aBsav+pU1qdzm26u54CAUKY/O9XyMSizM7vFvUsnY6nTmWfOi6xFloWpmcmq6mlMf5NnrUyUkrPGn6QgsS0NvzIX4YVUojyyfRJeWnGWwzRZLlYJgoriZENd7RGtNvNoAVvcMa2c1yf6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968414; c=relaxed/simple;
-	bh=c3QV8F4uFjhqKWN1Ajma9+uXnf84a1jBVnKS0BilwBg=;
+	s=arc-20240116; t=1705968906; c=relaxed/simple;
+	bh=VwnhC8k8NQbdFdMTawoiQDa1l4YvEzm97IiyEs7Gwkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I7jHXI8COWm230DWTPFmHJGsELt/xXQcrCJrLjoPS1Su93ZHG/UjeLhr1qfmb5DeHkCsVzYEilGnl8Rb6aoKd0R4TpT5ZSd14lLaN9IJKbxjSBKENKL6jYEN2CgI+8T4HckyhoU+tPrLTm+vIy5yX+O8QrCEPoOSlNaXv0zUwPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oyYWSkFL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 334A0C433C7;
-	Tue, 23 Jan 2024 00:06:54 +0000 (UTC)
+	 MIME-Version; b=VMcsz0xVrtgWCkj+ouVkQjvMlepOhONFtSmKbx6+MtAIpN3gs4DwUU98WViqzvdsVoOUX1jN7GOx671kKHI9uKMVCwode0rPVXfHp/nxsYDygNbtVEQer7IFSJjvHyQDTtsngahbi6e7ZDSuhkCzaj4nZFBLh4VdavjdvFhHxAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Li3qukx+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39C5C43390;
+	Tue, 23 Jan 2024 00:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968414;
-	bh=c3QV8F4uFjhqKWN1Ajma9+uXnf84a1jBVnKS0BilwBg=;
+	s=korg; t=1705968906;
+	bh=VwnhC8k8NQbdFdMTawoiQDa1l4YvEzm97IiyEs7Gwkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oyYWSkFLYA9QpG4ovsw4DsEGcIf6f8yQJWQSN5uDhPFaUK6DLw6wWs26+pASJORv1
-	 7ungiagL8V3yyBjFgHn3Kwg/vJydgIS6uzP+LXm2MlSIrWOFS7Jkb3P4jfqKhqHMig
-	 s1/+1tEESdNA70/QSVSWw36EA2qyqdIvDax/zAXw=
+	b=Li3qukx+iGsI/xGaTChDmlo/bwKk+db2VdDyLnEM4FNg2h5iMYEHBeyG9PEhM0UHS
+	 93wfxpzrseTSRwO1gS9W+z8euf26yFJVDrPlEwrzsASpF+8b65/5Y75mXBmiXRltoJ
+	 OdFngMr8QVM0SR7gj6Ygeqb097ny46CHRW9VdGT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Kalle Valo <kvalo@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 065/148] wifi: libertas: stop selecting wext
-Date: Mon, 22 Jan 2024 15:57:01 -0800
-Message-ID: <20240122235715.020032620@linuxfoundation.org>
+Subject: [PATCH 5.4 092/194] selftests/net: fix grep checking for fib_nexthop_multiprefix
+Date: Mon, 22 Jan 2024 15:57:02 -0800
+Message-ID: <20240122235723.191454698@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 8170b04c2c92eee52ea50b96db4c54662197e512 ]
+[ Upstream commit a33e9da3470499e9ff476138f271fb52d6bfe767 ]
 
-Libertas no longer references the iw_handler infrastructure or wext_spy,
-so neither of the 'select' statements are used any more.
+When running fib_nexthop_multiprefix test I saw all IPv6 test failed.
+e.g.
 
-Fixes: e86dc1ca4676 ("Libertas: cfg80211 support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20231108153409.1065286-1-arnd@kernel.org
+ ]# ./fib_nexthop_multiprefix.sh
+ TEST: IPv4: host 0 to host 1, mtu 1300                              [ OK ]
+ TEST: IPv6: host 0 to host 1, mtu 1300                              [FAIL]
+
+ With -v it shows
+
+ COMMAND: ip netns exec h0 /usr/sbin/ping6 -s 1350 -c5 -w5 2001:db8:101::1
+ PING 2001:db8:101::1(2001:db8:101::1) 1350 data bytes
+ From 2001:db8:100::64 icmp_seq=1 Packet too big: mtu=1300
+
+ --- 2001:db8:101::1 ping statistics ---
+ 1 packets transmitted, 0 received, +1 errors, 100% packet loss, time 0ms
+
+ Route get
+ 2001:db8:101::1 via 2001:db8:100::64 dev eth0 src 2001:db8:100::1 metric 1024 expires 599sec mtu 1300 pref medium
+ Searching for:
+     2001:db8:101::1 from :: via 2001:db8:100::64 dev eth0 src 2001:db8:100::1 .* mtu 1300
+
+The reason is when CONFIG_IPV6_SUBTREES is not enabled, rt6_fill_node() will
+not put RTA_SRC info. After fix:
+
+]# ./fib_nexthop_multiprefix.sh
+TEST: IPv4: host 0 to host 1, mtu 1300                              [ OK ]
+TEST: IPv6: host 0 to host 1, mtu 1300                              [ OK ]
+
+Fixes: 735ab2f65dce ("selftests: Add test with multiple prefixes using single nexthop")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20231213060856.4030084-7-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/libertas/Kconfig | 2 --
- 1 file changed, 2 deletions(-)
+ tools/testing/selftests/net/fib_nexthop_multiprefix.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas/Kconfig b/drivers/net/wireless/marvell/libertas/Kconfig
-index e6268ceacbf1..28985cdac541 100644
---- a/drivers/net/wireless/marvell/libertas/Kconfig
-+++ b/drivers/net/wireless/marvell/libertas/Kconfig
-@@ -1,8 +1,6 @@
- config LIBERTAS
- 	tristate "Marvell 8xxx Libertas WLAN driver support"
- 	depends on CFG80211
--	select WIRELESS_EXT
--	select WEXT_SPY
- 	select LIB80211
- 	select FW_LOADER
- 	---help---
+diff --git a/tools/testing/selftests/net/fib_nexthop_multiprefix.sh b/tools/testing/selftests/net/fib_nexthop_multiprefix.sh
+index 51df5e305855..b52d59547fc5 100755
+--- a/tools/testing/selftests/net/fib_nexthop_multiprefix.sh
++++ b/tools/testing/selftests/net/fib_nexthop_multiprefix.sh
+@@ -209,12 +209,12 @@ validate_v6_exception()
+ 		echo "Route get"
+ 		ip -netns h0 -6 ro get ${dst}
+ 		echo "Searching for:"
+-		echo "    ${dst} from :: via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
++		echo "    ${dst}.* via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
+ 		echo
+ 	fi
+ 
+ 	ip -netns h0 -6 ro get ${dst} | \
+-	grep -q "${dst} from :: via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
++	grep -q "${dst}.* via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
+ 	rc=$?
+ 
+ 	log_test $rc 0 "IPv6: host 0 to host ${i}, mtu ${mtu}"
 -- 
 2.43.0
 
