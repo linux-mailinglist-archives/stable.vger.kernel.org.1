@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE955837FCD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C33838272
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FF971F2A9E1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 074E11F27ACC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD7464CDA;
-	Tue, 23 Jan 2024 00:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2475BAFC;
+	Tue, 23 Jan 2024 01:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgSka64n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eloXQoSK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCA712BE95;
-	Tue, 23 Jan 2024 00:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18515BAD4;
+	Tue, 23 Jan 2024 01:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971359; cv=none; b=SJm1/rSsgrplUU0VhQ/PFAbe6bAjJmKCbh4ri8b/+Hc9pW1aEDy7CxMY8kF83O+TJIjEh/qa+htJirUxVFC3Ub8qXcm8B0rfOlEaW8xZVRvW0x1vrlOIHNLKGT5Vd6BbtynDze2Z6f3MJDxOsrOqaXYX1LvIv36/yOMZc6AtZVg=
+	t=1705974354; cv=none; b=d601IkT6FmF3d8nmRu1EwRsHcjIlapvqbw2JzkQfWDpL5P2ag2ObpUqu5J7FH4ZyyUwfC8bHiTxgsJ6eutrdbGStROzFcCvDckM7wEqClSewUbdwXGG34vSL5i/5x4aY6hihtODDXuyqtFhyEm1olqy40z5W3pIVWiIGtSyVxf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971359; c=relaxed/simple;
-	bh=fBlNP/b52ZxxI8+CZYUG6KWOjEXlW1chseacXGWvDmo=;
+	s=arc-20240116; t=1705974354; c=relaxed/simple;
+	bh=48fK7Isn32jsFUWHkVOxxaPqAyi7JG/SdbLpXKMyagI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cmrh6K4CZHdteBhOQh/CX8BugviRHeTwsriNtgj5mK2Pz2KdrfcCBlqyWlrDEGTkaRFLJafIJs5K3h+tLoizGfWJiP2821z1WPqKVi5V1SZ6Nbakf0gDi4YECKmURQUlXJo60T73UU6UOVaX2f75GL29ePWV8Ji0dOzFDVpdI+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgSka64n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C75BCC433F1;
-	Tue, 23 Jan 2024 00:55:58 +0000 (UTC)
+	 MIME-Version; b=dLxDojyPwefmCxDd2pxI/LmgNJrLDkOnVMNT40JXgFV8Ghaz8vaiVmwEoaooq0BNDa1pUNxTFPyHi+AvC/G3+GhIaM8S6K6qg37dvn99Ials47I6be+boem4QN0RwxTjd/abr99/GZfvfPNl7yAVudYo7r08RB7R9Pml6DbApME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eloXQoSK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94692C43390;
+	Tue, 23 Jan 2024 01:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971359;
-	bh=fBlNP/b52ZxxI8+CZYUG6KWOjEXlW1chseacXGWvDmo=;
+	s=korg; t=1705974354;
+	bh=48fK7Isn32jsFUWHkVOxxaPqAyi7JG/SdbLpXKMyagI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MgSka64nR2FovOsxZ33Wz6QKXgOtisdLNb+Ty7ZxKHEXmzWamscadwsSUpvk7sNq+
-	 V3RMExfwCuEQG7GbL9KoUnRQj84Lca8b84rRtcS5n0X8cr++mVPQ/EEfqVvUJ1r5WY
-	 M1ZZXCm3cOjtEfRgSuKjaIQzd67yH7cuTcRi1rtU=
+	b=eloXQoSKeOEbOuvFLBvGB++IXx0nS60ZCy6qg+xSN9K8DHPe+/Peok6E0mCpz3xVz
+	 hn5YBWyXWvFeo9HA2laTZ5I0queTwMuPvpIu6LYrvj/utKvxDXmC5F3UuXcDw7yEav
+	 1rd0wl8EHJN09Vh9CC8WaHXkxkVX4xKsvlsHK4O0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 139/286] netfilter: nf_tables: mark newset as dead on transaction abort
+Subject: [PATCH 5.15 189/374] drm/radeon: check return value of radeon_ring_lock()
 Date: Mon, 22 Jan 2024 15:57:25 -0800
-Message-ID: <20240122235737.485818847@linuxfoundation.org>
+Message-ID: <20240122235751.192997850@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 08e4c8c5919fd405a4d709b4ba43d836894a26eb ]
+[ Upstream commit 71225e1c930942cb1e042fc08c5cc0c4ef30e95e ]
 
-If a transaction is aborted, we should mark the to-be-released NEWSET dead,
-just like commit path does for DEL and DESTROYSET commands.
+In the unlikely event of radeon_ring_lock() failing, its errno return
+value should be processed. This patch checks said return value and
+prints a debug message in case of an error.
 
-In both cases all remaining elements will be released via
-set->ops->destroy().
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
 
-The existing abort code does NOT post the actual release to the work queue.
-Also the entire __nf_tables_abort() function is wrapped in gc_seq
-begin/end pair.
-
-Therefore, async gc worker will never try to release the pending set
-elements, as gc sequence is always stale.
-
-It might be possible to speed up transaction aborts via work queue too,
-this would result in a race and a possible use-after-free.
-
-So fix this before it becomes an issue.
-
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 48c0c902e2e6 ("drm/radeon/kms: add support for CP setup on SI")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/radeon/si.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 4d1a009dab45..6e91c743a4d4 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -8840,6 +8840,7 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
- 				nft_trans_destroy(trans);
- 				break;
- 			}
-+			nft_trans_set(trans)->dead = 1;
- 			list_del_rcu(&nft_trans_set(trans)->list);
- 			break;
- 		case NFT_MSG_DELSET:
+diff --git a/drivers/gpu/drm/radeon/si.c b/drivers/gpu/drm/radeon/si.c
+index 4679b798a038..e4481e5a15e1 100644
+--- a/drivers/gpu/drm/radeon/si.c
++++ b/drivers/gpu/drm/radeon/si.c
+@@ -3611,6 +3611,10 @@ static int si_cp_start(struct radeon_device *rdev)
+ 	for (i = RADEON_RING_TYPE_GFX_INDEX; i <= CAYMAN_RING_TYPE_CP2_INDEX; ++i) {
+ 		ring = &rdev->ring[i];
+ 		r = radeon_ring_lock(rdev, ring, 2);
++		if (r) {
++			DRM_ERROR("radeon: cp failed to lock ring (%d).\n", r);
++			return r;
++		}
+ 
+ 		/* clear the compute context state */
+ 		radeon_ring_write(ring, PACKET3_COMPUTE(PACKET3_CLEAR_STATE, 0));
 -- 
 2.43.0
 
