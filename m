@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 561D18380BA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A4DB838084
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89EDE1C264ED
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E8D828AFBD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61438133433;
-	Tue, 23 Jan 2024 01:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F2612F5BD;
+	Tue, 23 Jan 2024 01:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PgkcIKjp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+F2Udik"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F597133419;
-	Tue, 23 Jan 2024 01:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D67657B3;
+	Tue, 23 Jan 2024 01:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971857; cv=none; b=Uu6Rlr+YrTmqkqGdlBQfWKoZcMD9AhExZ9H6m1PaIDSuO7Ne1tL/QhM31WoTlrjckq10zFdcA5RnQzgcQR6KgYMkVdIDstw5b31sYX3LmHeX/8W+oJnJSzqZ1nFgB/2oiXucWClFrDOEuxBux0C0xbQPH/Ilc3DoTcIm9UMXOQI=
+	t=1705971773; cv=none; b=PugXL6uFjJZvbNdcmBNH/bV5DKPE1T2msEGxvsBmW3XpYSXnLrlT5Aw7ckSx9D5A4dMz8+JOgNYehTuTI0fBWfroOR9PVUqM5WDUeOKqYapGMn51o24SICUQyKe3quBaLIjKJhKtSHygKOQd+KH6oAVFSSI1xg7m8PcwvCgPNQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971857; c=relaxed/simple;
-	bh=FhI/BsLepawv459E8nDz5k0wecIK5/mLEbAwVj/YZRE=;
+	s=arc-20240116; t=1705971773; c=relaxed/simple;
+	bh=AxFRtAQw8bEbezvtxfcY7PunHo9MAcjSI7yboVM/R5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+MBXA3D8Oyd55welkMiAIoSI4bQkbt27lYh/CfL+s5LR/7Vd82QJenEyNpWB9nZ1pygUBkYW8djm1RzOYc7I3YLMxaim3n5emON9rPN4hydX72DRmp6JrxzgamB5LC+nFvpTq9r2u2OUSJ7mRXp6AYGiBqA7EsGJxXlHJTysH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PgkcIKjp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3704BC433C7;
-	Tue, 23 Jan 2024 01:04:16 +0000 (UTC)
+	 MIME-Version; b=uHl3/HMaYiHLgShelatnuMNsBP0ybCmIdgpUKMBBAn8dFvGHo6ifyxiuyvfS0OXb6+7keqpIXei9q/IGLYSd9rYm7hTphjVzGTZiQIAU5z41FSAePw5HwjrUjrUkoSojAzQhKGy0BSSmDVzKzHugh8L1UTUDZAWy5K+1mz5hmQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+F2Udik; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D446C433C7;
+	Tue, 23 Jan 2024 01:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971857;
-	bh=FhI/BsLepawv459E8nDz5k0wecIK5/mLEbAwVj/YZRE=;
+	s=korg; t=1705971773;
+	bh=AxFRtAQw8bEbezvtxfcY7PunHo9MAcjSI7yboVM/R5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PgkcIKjpVjl4QSrVT6MQ1zuSy5HqE7yYvh/6Hbnq8vNNFTem/j/3YGtQ66KmP/QfK
-	 cHpV3QnF2qnkAc1Di+4tmvTewl/IEShqDvxom6kd2GAFJKmf3FPX24aWQvVO9P9nZN
-	 oQFAooz9LAbdMYI5rIuW8qaOnzl1KOyk246qpG/0=
+	b=s+F2UdikKealcFjIdl5CL2Z2z1Sp4rKDkWXV/bQEqMbSNj8IKhbWp5OBIdREp9AQw
+	 gRjZKi7SiYytXdS4YBWG7kZhrxpSCHDk46z1NtsS+rNDkTBq7XAEop/6Tw3ITMJhOM
+	 MJIkRke5aoO4lCa4eXI58U55GRdtVlT2wMieSEGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 334/417] MIPS: Alchemy: Fix an out-of-bound access in db1200_dev_setup()
+Subject: [PATCH 5.10 196/286] of: unittest: Fix of_count_phandle_with_args() expected value message
 Date: Mon, 22 Jan 2024 15:58:22 -0800
-Message-ID: <20240122235803.355504157@linuxfoundation.org>
+Message-ID: <20240122235739.667497726@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 89c4b588d11e9acf01d604de4b0c715884f59213 ]
+[ Upstream commit 716089b417cf98d01f0dc1b39f9c47e1d7b4c965 ]
 
-When calling spi_register_board_info(), we should pass the number of
-elements in 'db1200_spi_devs', not 'db1200_i2c_devs'.
+The expected result value for the call to of_count_phandle_with_args()
+was updated from 7 to 8, but the accompanying error message was
+forgotten.
 
-Fixes: 63323ec54a7e ("MIPS: Alchemy: Extended DB1200 board support.")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 4dde83569832f937 ("of: Fix double free in of_parse_phandle_with_args_map")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20240111085025.2073894-1-geert+renesas@glider.be
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/alchemy/devboards/db1200.c | 2 +-
+ drivers/of/unittest.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
-index f521874ebb07..67f067706af2 100644
---- a/arch/mips/alchemy/devboards/db1200.c
-+++ b/arch/mips/alchemy/devboards/db1200.c
-@@ -847,7 +847,7 @@ int __init db1200_dev_setup(void)
- 	i2c_register_board_info(0, db1200_i2c_devs,
- 				ARRAY_SIZE(db1200_i2c_devs));
- 	spi_register_board_info(db1200_spi_devs,
--				ARRAY_SIZE(db1200_i2c_devs));
-+				ARRAY_SIZE(db1200_spi_devs));
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index 197abe33b65c..f9083c868a36 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -565,7 +565,7 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+ 	}
  
- 	/* SWITCHES:	S6.8 I2C/SPI selector  (OFF=I2C	 ON=SPI)
- 	 *		S6.7 AC97/I2S selector (OFF=AC97 ON=I2S)
+ 	rc = of_count_phandle_with_args(np, "phandle-list", "#phandle-cells");
+-	unittest(rc == 8, "of_count_phandle_with_args() returned %i, expected 7\n", rc);
++	unittest(rc == 8, "of_count_phandle_with_args() returned %i, expected 8\n", rc);
+ 
+ 	for (i = 0; i < 9; i++) {
+ 		bool passed = true;
 -- 
 2.43.0
 
