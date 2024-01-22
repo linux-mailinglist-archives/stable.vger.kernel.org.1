@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0731F8383D2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A3D837EDB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A0EC1C267A3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B060C29BBC8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7DC657A3;
-	Tue, 23 Jan 2024 01:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2AA605C3;
+	Tue, 23 Jan 2024 00:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgWZBinD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtOUZopT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF78F63400;
-	Tue, 23 Jan 2024 01:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACCB6024F;
+	Tue, 23 Jan 2024 00:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975073; cv=none; b=mZrypUP70yknT7v8Hh6tpNVCeDlQJR+P/x4cq8e3OMhz1KHkkfQBOQaDepYG4JOCsHjj+IZuh2LozF45gcsM77h1l9YsviwZ9GzGu5PXN/IeRKukKNCawq9GBeV+gs3uClAjuxE8moXX8aNPuroTEoKuYs8/ftg8UxJnQNW+oLw=
+	t=1705970786; cv=none; b=VfkHgwemgVbSGYmFhBaIMtzjYCd8D293Vke0R8rLBZlRjjNMS7aPyd0CVFXN293CPohajkRgeq1BkMNEGVylFaqO1+Mm6D4Rx1s+Oy+s2rQTycU43ZIIkqmMpTC8MdcNE7OCeP/0fgBLGU+ASIyRjGHWJv4jxMKZ/pi08rNOaxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975073; c=relaxed/simple;
-	bh=na4F7ZzWklNgq2621xmUJ/l626rkR01p+44BT35vloM=;
+	s=arc-20240116; t=1705970786; c=relaxed/simple;
+	bh=V7vAGg6NRSU6jMQkREV1sxp+3ouAnyCh58S7KfyI2V0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PnI3IjMBOvZED6N7lIl40AFeNpuz4tMXM41uG8FKcNulDThPMo74jvntpQDdtpcSpnkNILupMfwyxzs2TEPSQRFAAKD0kaCPKN6ZaiwM2eYEjxXOTgo5cdEH6wwKACednVgP0s9GxsSvXAcJnuuR3OpEpGamAumakDJjgz74RQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgWZBinD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4746C433F1;
-	Tue, 23 Jan 2024 01:57:52 +0000 (UTC)
+	 MIME-Version; b=To1eu2xxoEoj3wXEhqsy4b2P9pOL3PX+/rgF93Dus7SYm9w67xPlVqnJfFpTOxJ7YMQBxl+Bn6/Wk4wY9g+I43pXSsrEKNNK+ovqNH6gfQX2fqCw1lO+1nbNWDXiUq/yRkt7NGXEuOGkF8wp+wS71i2mN85/sBrXZjHAA8iywp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtOUZopT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931B0C43390;
+	Tue, 23 Jan 2024 00:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975072;
-	bh=na4F7ZzWklNgq2621xmUJ/l626rkR01p+44BT35vloM=;
+	s=korg; t=1705970786;
+	bh=V7vAGg6NRSU6jMQkREV1sxp+3ouAnyCh58S7KfyI2V0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lgWZBinD/eTOIeQxvfEGK5F1bbXh4aF/lGQ3AaT2gYvxK3XFHCmW3AqPB5s62is7e
-	 ROoCcO90EQHF6mDRThB4Zd7s7PeaOnqVFNoI0zac+iicpRw8PedR5gJiXrCaEkd+rN
-	 K1kOFz+rlzgK/DEJCBZrli134/ft8rjWnMo5ahhM=
+	b=DtOUZopT7cx7c16tR/8CnHoFaEgU1/7Y2Ysu5DRhDOib5uJjI/BX5GO3ppIOrpITs
+	 uw/wfJVt8qhoO4LI1B3/qCButwkydRzTIGAZU8x5lCPSU4ToDJt6azk6OD/ZB0GzqR
+	 Z23hT5iUm3wfg4RzNnIwPAe/49UJRDw4rjD2qcJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Leon Romanovsky <leonro@nvidia.com>,
+	Moudy Ho <moudy.ho@mediatek.com>,
+	Rob Herring <robh@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 226/583] RDMA/usnic: Silence uninitialized symbol smatch warnings
+Subject: [PATCH 6.1 109/417] dt-bindings: media: mediatek: mdp3: correct RDMA and WROT node with generic names
 Date: Mon, 22 Jan 2024 15:54:37 -0800
-Message-ID: <20240122235818.918738366@linuxfoundation.org>
+Message-ID: <20240122235755.514146798@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Moudy Ho <moudy.ho@mediatek.com>
 
-[ Upstream commit b9a85e5eec126d6ae6c362f94b447c223e8fe6e4 ]
+[ Upstream commit f5f185bf7c42f6ca885202fefc40fc871d08a722 ]
 
-The patch 1da177e4c3f4: "Linux-2.6.12-rc2" from Apr 16, 2005
-(linux-next), leads to the following Smatch static checker warning:
+The DMA-related nodes RDMA/WROT in MDP3 should be changed to generic names.
+In addition, fix improper space indent in example.
 
-        drivers/infiniband/hw/mthca/mthca_cmd.c:644 mthca_SYS_EN()
-        error: uninitialized symbol 'out'.
-
-drivers/infiniband/hw/mthca/mthca_cmd.c
-    636 int mthca_SYS_EN(struct mthca_dev *dev)
-    637 {
-    638         u64 out;
-    639         int ret;
-    640
-    641         ret = mthca_cmd_imm(dev, 0, &out, 0, 0, CMD_SYS_EN, CMD_TIME_CLASS_D);
-
-We pass out here and it gets used without being initialized.
-
-        err = mthca_cmd_post(dev, in_param,
-                             out_param ? *out_param : 0,
-                                         ^^^^^^^^^^
-                             in_modifier, op_modifier,
-                             op, context->token, 1);
-
-It's the same in mthca_cmd_wait() and mthca_cmd_poll().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/533bc3df-8078-4397-b93d-d1f6cec9b636@moroto.mountain
-Link: https://lore.kernel.org/r/c559cb7113158c02d75401ac162652072ef1b5f0.1699867650.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Fixes: 4ad7b39623ab ("media: dt-binding: mediatek: add bindings for MediaTek MDP3 components")
+Signed-off-by: Moudy Ho <moudy.ho@mediatek.com>
+Acked-by: Rob Herring <robh@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mthca/mthca_cmd.c  | 4 ++--
- drivers/infiniband/hw/mthca/mthca_main.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ .../bindings/media/mediatek,mdp3-rdma.yaml    | 29 +++++++++++--------
+ .../bindings/media/mediatek,mdp3-wrot.yaml    | 23 +++++++++------
+ 2 files changed, 31 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mthca/mthca_cmd.c b/drivers/infiniband/hw/mthca/mthca_cmd.c
-index f330ce895d88..8fe0cef7e2be 100644
---- a/drivers/infiniband/hw/mthca/mthca_cmd.c
-+++ b/drivers/infiniband/hw/mthca/mthca_cmd.c
-@@ -635,7 +635,7 @@ void mthca_free_mailbox(struct mthca_dev *dev, struct mthca_mailbox *mailbox)
+diff --git a/Documentation/devicetree/bindings/media/mediatek,mdp3-rdma.yaml b/Documentation/devicetree/bindings/media/mediatek,mdp3-rdma.yaml
+index 9cfc0c7d23e0..46730687c662 100644
+--- a/Documentation/devicetree/bindings/media/mediatek,mdp3-rdma.yaml
++++ b/Documentation/devicetree/bindings/media/mediatek,mdp3-rdma.yaml
+@@ -61,6 +61,9 @@ properties:
+       - description: used for 1st data pipe from RDMA
+       - description: used for 2nd data pipe from RDMA
  
- int mthca_SYS_EN(struct mthca_dev *dev)
- {
--	u64 out;
-+	u64 out = 0;
- 	int ret;
++  '#dma-cells':
++    const: 1
++
+ required:
+   - compatible
+   - reg
+@@ -70,6 +73,7 @@ required:
+   - clocks
+   - iommus
+   - mboxes
++  - '#dma-cells'
  
- 	ret = mthca_cmd_imm(dev, 0, &out, 0, 0, CMD_SYS_EN, CMD_TIME_CLASS_D);
-@@ -1955,7 +1955,7 @@ int mthca_WRITE_MGM(struct mthca_dev *dev, int index,
- int mthca_MGID_HASH(struct mthca_dev *dev, struct mthca_mailbox *mailbox,
- 		    u16 *hash)
- {
--	u64 imm;
-+	u64 imm = 0;
- 	int err;
+ additionalProperties: false
  
- 	err = mthca_cmd_imm(dev, mailbox->dma, &imm, 0, 0, CMD_MGID_HASH,
-diff --git a/drivers/infiniband/hw/mthca/mthca_main.c b/drivers/infiniband/hw/mthca/mthca_main.c
-index b54bc8865dae..1ab268b77096 100644
---- a/drivers/infiniband/hw/mthca/mthca_main.c
-+++ b/drivers/infiniband/hw/mthca/mthca_main.c
-@@ -382,7 +382,7 @@ static int mthca_init_icm(struct mthca_dev *mdev,
- 			  struct mthca_init_hca_param *init_hca,
- 			  u64 icm_size)
- {
--	u64 aux_pages;
-+	u64 aux_pages = 0;
- 	int err;
+@@ -80,16 +84,17 @@ examples:
+     #include <dt-bindings/power/mt8183-power.h>
+     #include <dt-bindings/memory/mt8183-larb-port.h>
  
- 	err = mthca_SET_ICM_SIZE(mdev, icm_size, &aux_pages);
+-    mdp3_rdma0: mdp3-rdma0@14001000 {
+-      compatible = "mediatek,mt8183-mdp3-rdma";
+-      reg = <0x14001000 0x1000>;
+-      mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x1000 0x1000>;
+-      mediatek,gce-events = <CMDQ_EVENT_MDP_RDMA0_SOF>,
+-                            <CMDQ_EVENT_MDP_RDMA0_EOF>;
+-      power-domains = <&spm MT8183_POWER_DOMAIN_DISP>;
+-      clocks = <&mmsys CLK_MM_MDP_RDMA0>,
+-               <&mmsys CLK_MM_MDP_RSZ1>;
+-      iommus = <&iommu>;
+-      mboxes = <&gce 20 CMDQ_THR_PRIO_LOWEST>,
+-               <&gce 21 CMDQ_THR_PRIO_LOWEST>;
++    dma-controller@14001000 {
++        compatible = "mediatek,mt8183-mdp3-rdma";
++        reg = <0x14001000 0x1000>;
++        mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x1000 0x1000>;
++        mediatek,gce-events = <CMDQ_EVENT_MDP_RDMA0_SOF>,
++                              <CMDQ_EVENT_MDP_RDMA0_EOF>;
++        power-domains = <&spm MT8183_POWER_DOMAIN_DISP>;
++        clocks = <&mmsys CLK_MM_MDP_RDMA0>,
++                 <&mmsys CLK_MM_MDP_RSZ1>;
++        iommus = <&iommu>;
++        mboxes = <&gce 20 CMDQ_THR_PRIO_LOWEST>,
++                 <&gce 21 CMDQ_THR_PRIO_LOWEST>;
++        #dma-cells = <1>;
+     };
+diff --git a/Documentation/devicetree/bindings/media/mediatek,mdp3-wrot.yaml b/Documentation/devicetree/bindings/media/mediatek,mdp3-wrot.yaml
+index 0baa77198fa2..64ea98aa0592 100644
+--- a/Documentation/devicetree/bindings/media/mediatek,mdp3-wrot.yaml
++++ b/Documentation/devicetree/bindings/media/mediatek,mdp3-wrot.yaml
+@@ -50,6 +50,9 @@ properties:
+   iommus:
+     maxItems: 1
+ 
++  '#dma-cells':
++    const: 1
++
+ required:
+   - compatible
+   - reg
+@@ -58,6 +61,7 @@ required:
+   - power-domains
+   - clocks
+   - iommus
++  - '#dma-cells'
+ 
+ additionalProperties: false
+ 
+@@ -68,13 +72,14 @@ examples:
+     #include <dt-bindings/power/mt8183-power.h>
+     #include <dt-bindings/memory/mt8183-larb-port.h>
+ 
+-    mdp3_wrot0: mdp3-wrot0@14005000 {
+-      compatible = "mediatek,mt8183-mdp3-wrot";
+-      reg = <0x14005000 0x1000>;
+-      mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x5000 0x1000>;
+-      mediatek,gce-events = <CMDQ_EVENT_MDP_WROT0_SOF>,
+-                            <CMDQ_EVENT_MDP_WROT0_EOF>;
+-      power-domains = <&spm MT8183_POWER_DOMAIN_DISP>;
+-      clocks = <&mmsys CLK_MM_MDP_WROT0>;
+-      iommus = <&iommu>;
++    dma-controller@14005000 {
++        compatible = "mediatek,mt8183-mdp3-wrot";
++        reg = <0x14005000 0x1000>;
++        mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x5000 0x1000>;
++        mediatek,gce-events = <CMDQ_EVENT_MDP_WROT0_SOF>,
++                              <CMDQ_EVENT_MDP_WROT0_EOF>;
++        power-domains = <&spm MT8183_POWER_DOMAIN_DISP>;
++        clocks = <&mmsys CLK_MM_MDP_WROT0>;
++        iommus = <&iommu>;
++        #dma-cells = <1>;
+     };
 -- 
 2.43.0
 
