@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-15525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11220838EC2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 13:49:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB494838EBA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 13:48:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 926F41F2538F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 12:49:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A80328A29D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 12:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9302D5EE87;
-	Tue, 23 Jan 2024 12:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6452F5EE66;
+	Tue, 23 Jan 2024 12:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0g779+LT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YlfrMcwz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE115C5FB;
-	Tue, 23 Jan 2024 12:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACA64BAA8;
+	Tue, 23 Jan 2024 12:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706014176; cv=none; b=JbfscMYkZcxOBgZDhQmsa92124XPorGFsVFhKXJqWC8kmoN4Y2rnp8at+tBXEZlJbUhLvu6k9d/+9As7XYVApGFg/Hukx+S7VNJPw2J/BL+wfgivOXZ03diG7a1NWUF4H938p4DRP4jDrE5yDfdjyOeHBUYK4gfoWlzLBX0KjKg=
+	t=1706014102; cv=none; b=gtRcFNZEqDocstwN/5XJYodFW1l3Sl+7WQA6v1hUcwMFyQ59hGIMJM/G0XAr2sinoJ7UykThhXDjJ+IFwpoGWj3lXYyTaBlOB1Q3QZ69ZtLS7ghnVD/RoEEAmwBmWPMHQPa1zwvOdQ7crtTZKMzIY/OMPVvWhCYjgx3aBKKQDAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706014176; c=relaxed/simple;
-	bh=hvrxoMiGOsUX6FGhkQ0hZ/bYlfuVaEVVRR0/XyY5pbU=;
+	s=arc-20240116; t=1706014102; c=relaxed/simple;
+	bh=Xf1/GwBsrgTjNKHX73/bhz6f6WxBaZNWXPxl33ow9rs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pVs4LCuvfu2ldYPYZ3wKOhKxSV5+DkXxcifQ2wzYquXLi7LZ8tbWgv4LTI1mcKvH/ij0vDr1wx7muuktaLQDWLESXqRm/kueyQKhSFy9z7Lhu7CQEAuXPMUfekBOKrwx7GgMXuUdSjy/hSbATo7hlfWG2shRGor2e2FOoICO1EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0g779+LT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B697BC43394;
-	Tue, 23 Jan 2024 12:49:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Eky1e3tBEpYLMvvs0Ii4Fg76xqQ1sOjs3RMGi2SC3cNV5mrHwm0HO6hB2YfL5tfq0tosGbfppTXMcaiJlZyiH7bkLlVmD1bqes6ZXzGOTk3Gb9G8D3acNYGacNPXB1jckJkq0UHxO1fzsgCfpdumUJc7JDiXH4DmSetEVFF0cUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YlfrMcwz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B20C433C7;
+	Tue, 23 Jan 2024 12:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706014175;
-	bh=hvrxoMiGOsUX6FGhkQ0hZ/bYlfuVaEVVRR0/XyY5pbU=;
+	s=korg; t=1706014101;
+	bh=Xf1/GwBsrgTjNKHX73/bhz6f6WxBaZNWXPxl33ow9rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0g779+LTIUsQB8Y1e2cejMa4OeyPNizRmdgSpeH/2YwZcU8HBXUfEAMe2hbgMgRX8
-	 gjusz3+U/hgklLl0FaB+CmGnC8/p54BHBZve+5cfDZOj7nlT8PE9RpYDBHpKhcdGMv
-	 IcR5WABY7C91WNy1t+DlEnVUZeJl/p8hBi4CCsAc=
+	b=YlfrMcwzbhJ1mRQCwoyfJXvzbt7YReKSiHDTNsnG4IUI/CGuz0dRAQYxCcW8aaurV
+	 vv3Qfy3HBXnf+7pIuy+z+ZZY37JJiC2J6NPH8qN2ukGRDMI9cuoResxaWqtCDfR3MC
+	 KL7dKquIe/YWTCYSpQnGB5KcRXti8/OsRRwPSqlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.1 308/417] wifi: rtlwifi: Remove bogus and dangerous ASPM disable/enable code
-Date: Mon, 22 Jan 2024 15:57:56 -0800
-Message-ID: <20240122235802.496914364@linuxfoundation.org>
+Subject: [PATCH 4.19 129/148] wifi: rtlwifi: Remove bogus and dangerous ASPM disable/enable code
+Date: Mon, 22 Jan 2024 15:58:05 -0800
+Message-ID: <20240122235717.765411332@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -111,7 +111,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/net/wireless/realtek/rtlwifi/pci.c
 +++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -192,11 +192,8 @@ static void rtl_pci_disable_aspm(struct
+@@ -214,11 +214,8 @@ static void rtl_pci_disable_aspm(struct
  	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
  	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
  	u8 pcibridge_vendor = pcipriv->ndis_adapter.pcibridge_vendor;
@@ -123,7 +123,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	u16 aspmlevel = 0;
  	u8 tmp_u1b = 0;
  
-@@ -221,16 +218,8 @@ static void rtl_pci_disable_aspm(struct
+@@ -243,16 +240,8 @@ static void rtl_pci_disable_aspm(struct
  	/*Set corresponding value. */
  	aspmlevel |= BIT(0) | BIT(1);
  	linkctrl_reg &= ~aspmlevel;
@@ -140,7 +140,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  }
  
  /*Enable RTL8192SE ASPM & Enable Pci Bridge ASPM for
-@@ -245,9 +234,7 @@ static void rtl_pci_enable_aspm(struct i
+@@ -267,9 +256,7 @@ static void rtl_pci_enable_aspm(struct i
  	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
  	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
  	u8 pcibridge_vendor = pcipriv->ndis_adapter.pcibridge_vendor;
@@ -150,7 +150,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	u8 u_device_aspmsetting;
  
  	if (!ppsc->support_aspm)
-@@ -259,25 +246,6 @@ static void rtl_pci_enable_aspm(struct i
+@@ -281,25 +268,6 @@ static void rtl_pci_enable_aspm(struct i
  		return;
  	}
  
@@ -176,8 +176,8 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	/*Get ASPM level (with/without Clock Req) */
  	aspmlevel = rtlpci->const_devicepci_aspm_setting;
  	u_device_aspmsetting = pcipriv->ndis_adapter.linkctrl_reg;
-@@ -358,22 +326,6 @@ static bool rtl_pci_check_buddy_priv(str
- 	return tpriv != NULL;
+@@ -381,22 +349,6 @@ static bool rtl_pci_check_buddy_priv(str
+ 	return find_buddy_priv;
  }
  
 -static void rtl_pci_get_linkcontrol_field(struct ieee80211_hw *hw)
@@ -199,7 +199,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  static void rtl_pci_parse_configuration(struct pci_dev *pdev,
  					struct ieee80211_hw *hw)
  {
-@@ -2033,12 +1985,6 @@ static bool _rtl_pci_find_adapter(struct
+@@ -2063,12 +2015,6 @@ static bool _rtl_pci_find_adapter(struct
  		    PCI_SLOT(bridge_pdev->devfn);
  		pcipriv->ndis_adapter.pcibridge_funcnum =
  		    PCI_FUNC(bridge_pdev->devfn);
@@ -212,7 +212,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  		if (pcipriv->ndis_adapter.pcibridge_vendor ==
  		    PCI_BRIDGE_VENDOR_AMD) {
-@@ -2055,13 +2001,11 @@ static bool _rtl_pci_find_adapter(struct
+@@ -2085,13 +2031,11 @@ static bool _rtl_pci_find_adapter(struct
  		pdev->vendor, pcipriv->ndis_adapter.linkctrl_reg);
  
  	rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
@@ -229,7 +229,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	rtl_pci_parse_configuration(pdev, hw);
 --- a/drivers/net/wireless/realtek/rtlwifi/pci.h
 +++ b/drivers/net/wireless/realtek/rtlwifi/pci.h
-@@ -236,11 +236,6 @@ struct mp_adapter {
+@@ -258,11 +258,6 @@ struct mp_adapter {
  	u16 pcibridge_vendorid;
  	u16 pcibridge_deviceid;
  
