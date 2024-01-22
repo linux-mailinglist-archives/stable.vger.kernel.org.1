@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C121837D06
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:23:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84F1A8381ED
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 042D62911F5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA4D51C247E8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E76A5F55F;
-	Tue, 23 Jan 2024 00:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C37D54BDA;
+	Tue, 23 Jan 2024 01:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RuqONe+b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePPf9nbi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BFB5D909;
-	Tue, 23 Jan 2024 00:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AC850A83;
+	Tue, 23 Jan 2024 01:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969771; cv=none; b=RIqNOKxcI6n+L//4QNnwSL2jK1h7ICPmy+UbU74hIjNiSnVMt17aXZpg4V6Tb2zmV3Z+WZ3CU55+rZluA8/y/CqlTTtgvor5Qii3bHLgPGzX/GqAY/SGdLEXwa70xtoj+7YJnYqinc/KrEaeNdtqx43zu+l0HGGfvBTPPM0b8wk=
+	t=1705974007; cv=none; b=i3YJsrMG6JAnzIXLqHCxuF5o4RgM3Bt6vfwbpApPy3t5i1vd0ey6wYFrDfJOdYnAEJ+LLiYso9MSBW5Ykh88B02fG2ajb0aq3Mr2/N4vcofnb9Qxs7hlXRESf2i1rdClDZuP8sZX8CZbyi2Zeu/QgPg3yo1IROd/slTUxk1ix64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969771; c=relaxed/simple;
-	bh=kRwuIpKxgKz+6RpYRijGQjIlOSYrOv/1ayU4mJ1cksA=;
+	s=arc-20240116; t=1705974007; c=relaxed/simple;
+	bh=7zPWNrbsRMkmUbdvqQPHtqGB7OzfB6UbGu324xz0g+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZcgD0cfePrAyy2YuRLfkWdBRlWw3btAbrfMywB04SJXF9COcs9zKDgVagC406hBuk/TC41DKPLlPW7A5nJxnFcIv4Uyz4V4zWK3hOaIpHiJuj/xzfRBEKIJIqCAl2gq/TvMw5U0pknVwHCGPuZMQ6VTDoRvzl0HdEmTj0bgJtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuqONe+b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80631C43390;
-	Tue, 23 Jan 2024 00:29:30 +0000 (UTC)
+	 MIME-Version; b=WV6AvnN1/dSL3wfJQb87gDWJ8AhG3uGvSZynN0BF85xMHsCYPQ7s0o3c1hsNf6vQPDP+8aVEXe8DIlwDX5dxYteajHMr0nT3oEL40iG7OsAhExt4t9N6GlxdoW2mhXKV6AY6RxLABAZ2kyNOU6kjlcIGommSTRlXF5AIdDnr9HQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePPf9nbi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46059C43390;
+	Tue, 23 Jan 2024 01:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969770;
-	bh=kRwuIpKxgKz+6RpYRijGQjIlOSYrOv/1ayU4mJ1cksA=;
+	s=korg; t=1705974006;
+	bh=7zPWNrbsRMkmUbdvqQPHtqGB7OzfB6UbGu324xz0g+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RuqONe+bgmmnhiVcmFzFL9OH4FtQL2BxldKuIeItrRtkepzpeujcgG4FaHZmD3jTr
-	 eEM63LOQ88axlW9q1sJQ8ZOmBcore29qUhgdv/3+fsRVof4L3cEH6Q4yoWktfPuXlQ
-	 E/CsTevsmWYm4MuAAylvaENuJndu1kG4wOSsQMUQ=
+	b=ePPf9nbijWKiows34yhUG0JF4cRs3vWb+I/HyTNlY4DyUZo9yRSHNxZf+JBKTpWUB
+	 EpOnpF/AvcR21Gbd5RdKQpcWPejuo7zbk7CT03YXINPkvtDviBoooPtBtyuiLvKU0g
+	 snjG1XRaJ/SqVx8TsznxtNvAjxA5iqrRm0QyO+ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>
-Subject: [PATCH 6.7 439/641] md: Fix md_seq_ops() regressions
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 087/374] efivarfs: force RO when remounting if SetVariable is not supported
 Date: Mon, 22 Jan 2024 15:55:43 -0800
-Message-ID: <20240122235831.752230131@linuxfoundation.org>
+Message-ID: <20240122235747.648684849@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,119 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 
-commit f9cfe7e7f96a9414a17d596e288693c4f2325d49 upstream.
+[ Upstream commit 0e8d2444168dd519fea501599d150e62718ed2fe ]
 
-Commit cf1b6d4441ff ("md: simplify md_seq_ops") introduce following
-regressions:
+If SetVariable at runtime is not supported by the firmware we never assign
+a callback for that function. At the same time mount the efivarfs as
+RO so no one can call that.  However, we never check the permission flags
+when someone remounts the filesystem as RW. As a result this leads to a
+crash looking like this:
 
-1) If list all_mddevs is emptly, personalities and unused devices won't
-   be showed to user anymore.
-2) If seq_file buffer overflowed from md_seq_show(), then md_seq_start()
-   will be called again, hence personalities will be showed to user
-   again.
-3) If seq_file buffer overflowed from md_seq_stop(), seq_read_iter()
-   doesn't handle this, hence unused devices won't be showed to user.
+$ mount -o remount,rw /sys/firmware/efi/efivars
+$ efi-updatevar -f PK.auth PK
 
-Fix above problems by printing personalities and unused devices in
-md_seq_show().
+[  303.279166] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+[  303.280482] Mem abort info:
+[  303.280854]   ESR = 0x0000000086000004
+[  303.281338]   EC = 0x21: IABT (current EL), IL = 32 bits
+[  303.282016]   SET = 0, FnV = 0
+[  303.282414]   EA = 0, S1PTW = 0
+[  303.282821]   FSC = 0x04: level 0 translation fault
+[  303.283771] user pgtable: 4k pages, 48-bit VAs, pgdp=000000004258c000
+[  303.284913] [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
+[  303.286076] Internal error: Oops: 0000000086000004 [#1] PREEMPT SMP
+[  303.286936] Modules linked in: qrtr tpm_tis tpm_tis_core crct10dif_ce arm_smccc_trng rng_core drm fuse ip_tables x_tables ipv6
+[  303.288586] CPU: 1 PID: 755 Comm: efi-updatevar Not tainted 6.3.0-rc1-00108-gc7d0c4695c68 #1
+[  303.289748] Hardware name: Unknown Unknown Product/Unknown Product, BIOS 2023.04-00627-g88336918701d 04/01/2023
+[  303.291150] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  303.292123] pc : 0x0
+[  303.292443] lr : efivar_set_variable_locked+0x74/0xec
+[  303.293156] sp : ffff800008673c10
+[  303.293619] x29: ffff800008673c10 x28: ffff0000037e8000 x27: 0000000000000000
+[  303.294592] x26: 0000000000000800 x25: ffff000002467400 x24: 0000000000000027
+[  303.295572] x23: ffffd49ea9832000 x22: ffff0000020c9800 x21: ffff000002467000
+[  303.296566] x20: 0000000000000001 x19: 00000000000007fc x18: 0000000000000000
+[  303.297531] x17: 0000000000000000 x16: 0000000000000000 x15: 0000aaaac807ab54
+[  303.298495] x14: ed37489f673633c0 x13: 71c45c606de13f80 x12: 47464259e219acf4
+[  303.299453] x11: ffff000002af7b01 x10: 0000000000000003 x9 : 0000000000000002
+[  303.300431] x8 : 0000000000000010 x7 : ffffd49ea8973230 x6 : 0000000000a85201
+[  303.301412] x5 : 0000000000000000 x4 : ffff0000020c9800 x3 : 00000000000007fc
+[  303.302370] x2 : 0000000000000027 x1 : ffff000002467400 x0 : ffff000002467000
+[  303.303341] Call trace:
+[  303.303679]  0x0
+[  303.303938]  efivar_entry_set_get_size+0x98/0x16c
+[  303.304585]  efivarfs_file_write+0xd0/0x1a4
+[  303.305148]  vfs_write+0xc4/0x2e4
+[  303.305601]  ksys_write+0x70/0x104
+[  303.306073]  __arm64_sys_write+0x1c/0x28
+[  303.306622]  invoke_syscall+0x48/0x114
+[  303.307156]  el0_svc_common.constprop.0+0x44/0xec
+[  303.307803]  do_el0_svc+0x38/0x98
+[  303.308268]  el0_svc+0x2c/0x84
+[  303.308702]  el0t_64_sync_handler+0xf4/0x120
+[  303.309293]  el0t_64_sync+0x190/0x194
+[  303.309794] Code: ???????? ???????? ???????? ???????? (????????)
+[  303.310612] ---[ end trace 0000000000000000 ]---
 
-Fixes: cf1b6d4441ff ("md: simplify md_seq_ops")
-Cc: stable@vger.kernel.org # v6.7+
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240109133957.2975272-1-yukuai1@huaweicloud.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by adding a .reconfigure() function to the fs operations which
+we can use to check the requested flags and deny anything that's not RO
+if the firmware doesn't implement SetVariable at runtime.
+
+Fixes: f88814cc2578 ("efi/efivars: Expose RT service availability via efivars abstraction")
+Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c |   40 +++++++++++++++++++++++++++-------------
- 1 file changed, 27 insertions(+), 13 deletions(-)
+ fs/efivarfs/super.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -8123,6 +8123,19 @@ static void status_unused(struct seq_fil
- 	seq_printf(seq, "\n");
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index 15880a68faad..3626816b174a 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -13,6 +13,7 @@
+ #include <linux/ucs2_string.h>
+ #include <linux/slab.h>
+ #include <linux/magic.h>
++#include <linux/printk.h>
+ 
+ #include "internal.h"
+ 
+@@ -231,8 +232,19 @@ static int efivarfs_get_tree(struct fs_context *fc)
+ 	return get_tree_single(fc, efivarfs_fill_super);
  }
  
-+static void status_personalities(struct seq_file *seq)
++static int efivarfs_reconfigure(struct fs_context *fc)
 +{
-+	struct md_personality *pers;
-+
-+	seq_puts(seq, "Personalities : ");
-+	spin_lock(&pers_lock);
-+	list_for_each_entry(pers, &pers_list, list)
-+		seq_printf(seq, "[%s] ", pers->name);
-+
-+	spin_unlock(&pers_lock);
-+	seq_puts(seq, "\n");
-+}
-+
- static int status_resync(struct seq_file *seq, struct mddev *mddev)
- {
- 	sector_t max_sectors, resync, res;
-@@ -8264,20 +8277,10 @@ static int status_resync(struct seq_file
- static void *md_seq_start(struct seq_file *seq, loff_t *pos)
- 	__acquires(&all_mddevs_lock)
- {
--	struct md_personality *pers;
--
--	seq_puts(seq, "Personalities : ");
--	spin_lock(&pers_lock);
--	list_for_each_entry(pers, &pers_list, list)
--		seq_printf(seq, "[%s] ", pers->name);
--
--	spin_unlock(&pers_lock);
--	seq_puts(seq, "\n");
- 	seq->poll_event = atomic_read(&md_event_count);
--
- 	spin_lock(&all_mddevs_lock);
- 
--	return seq_list_start(&all_mddevs, *pos);
-+	return seq_list_start_head(&all_mddevs, *pos);
- }
- 
- static void *md_seq_next(struct seq_file *seq, void *v, loff_t *pos)
-@@ -8288,16 +8291,23 @@ static void *md_seq_next(struct seq_file
- static void md_seq_stop(struct seq_file *seq, void *v)
- 	__releases(&all_mddevs_lock)
- {
--	status_unused(seq);
- 	spin_unlock(&all_mddevs_lock);
- }
- 
- static int md_seq_show(struct seq_file *seq, void *v)
- {
--	struct mddev *mddev = list_entry(v, struct mddev, all_mddevs);
-+	struct mddev *mddev;
- 	sector_t sectors;
- 	struct md_rdev *rdev;
- 
-+	if (v == &all_mddevs) {
-+		status_personalities(seq);
-+		if (list_empty(&all_mddevs))
-+			status_unused(seq);
-+		return 0;
++	if (!efivar_supports_writes() && !(fc->sb_flags & SB_RDONLY)) {
++		pr_err("Firmware does not support SetVariableRT. Can not remount with rw\n");
++		return -EINVAL;
 +	}
 +
-+	mddev = list_entry(v, struct mddev, all_mddevs);
- 	if (!mddev_get(mddev))
- 		return 0;
- 
-@@ -8373,6 +8383,10 @@ static int md_seq_show(struct seq_file *
- 	}
- 	spin_unlock(&mddev->lock);
- 	spin_lock(&all_mddevs_lock);
++	return 0;
++}
 +
-+	if (mddev == list_last_entry(&all_mddevs, struct mddev, all_mddevs))
-+		status_unused(seq);
-+
- 	if (atomic_dec_and_test(&mddev->active))
- 		__mddev_put(mddev);
+ static const struct fs_context_operations efivarfs_context_ops = {
+ 	.get_tree	= efivarfs_get_tree,
++	.reconfigure	= efivarfs_reconfigure,
+ };
  
+ static int efivarfs_init_fs_context(struct fs_context *fc)
+-- 
+2.43.0
+
 
 
 
