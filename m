@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046EB837ED7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C9B837F2A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEBF91F2B7C6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 902D229BE17
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D409128399;
-	Tue, 23 Jan 2024 00:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E06112839E;
+	Tue, 23 Jan 2024 00:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9dAJ+xE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUhYf4w+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3B51657C7;
-	Tue, 23 Jan 2024 00:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D174B7C0A5;
+	Tue, 23 Jan 2024 00:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970774; cv=none; b=QsbUSJUS0Lwnky9raiPNCkkYdu/T+pQEOyL/9V+jAfPJanuL4b1dJZCLAV9Bjw39EmWxyhzA/L/mZ7HG5A0jHQ7Ys298KNYE3ME0tzJTRSgCVGURwZf/htEDI+032z5ozWbg9uA3nNgOxTUICCPXCWAstaEM7GqZX1MZWT8XYb0=
+	t=1705970974; cv=none; b=j5tVJ92kWfL80aHH9KTCsTdXQpLMzviYqm5m+4SBGKQ7S81LFHy8fsfrT1Mz2ofkc4R8iSH6K4tPYpEquV5fI8/slqUg8i9BLgFEt+5rPAPwCJdRairNpxC/j2VR/weblbWTB5bszcEX467K43M6BJf+7M2qKR/V9vxkVFWPLgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970774; c=relaxed/simple;
-	bh=q0DrzLrSjByjmjnvJ/qogv7HdnU1IF2sWNM+yp0IvIQ=;
+	s=arc-20240116; t=1705970974; c=relaxed/simple;
+	bh=Cg26YXIzqjDrhwl5/KvBsgX+9couq384p/o3CA9izfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sm5bZJMAUCAlJdD9E/CyB04Spz6SLWtEpr0vUorjQJEIbYl7VeWgHvy1bh41q6W/+/BNy/RQvuxMrU6VMjyuqtLwPe8WwpxM/41ldMAjBCa+lmeRTzHSmVhhRQ9ANBW6YEIMc/5/o4YgfkT3xioPKOxGbolYzxA2iHQxFJiuhiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9dAJ+xE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75DFC433C7;
-	Tue, 23 Jan 2024 00:46:12 +0000 (UTC)
+	 MIME-Version; b=S98l53tZiViyxvXI7z3bbMU1lFk3+yj5I3P8qLBX/hPKM/dYdbQKNfaapaRlOuKxN6VU10sBVufOpa1fk9D1Bz6V7Vm1iiHXIq4RX+rDDI7Xfq8b/k+f3Zb3D9c4k/JvEdkp+tPPoxK2Lj8WWApKNbAITQ1psSx4MMVG7g0DMYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUhYf4w+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFF2C43394;
+	Tue, 23 Jan 2024 00:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970774;
-	bh=q0DrzLrSjByjmjnvJ/qogv7HdnU1IF2sWNM+yp0IvIQ=;
+	s=korg; t=1705970974;
+	bh=Cg26YXIzqjDrhwl5/KvBsgX+9couq384p/o3CA9izfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i9dAJ+xEmx/5DoToa+8Re8zCM+0jkrGh9HRqaJU2NiIFsf0RU/tOC19KRHKGXN8UK
-	 tyrQczfoP5TXlNgg6oEFqdyuzyH1OYcuIR1cLMuSejR+BJwT1udq76/e38HAfPppwX
-	 lmgiCTVcfNQYx3CbI7V5dnrewWhXof7/97qgBI+M=
+	b=uUhYf4w+RJmZaqV9UwAO7Hx+MU1zuTkF+N8xPyxrgE17+aeZoDiV29xmHHNdQsPHM
+	 FyfjtFcf6wnYoHJNPtBhxKuscGBw98MalvIDURw0yKJH0Z165F+hm/hxcuKAIfVJ0g
+	 UO/2wF4gJiKXl1sIXkX+wsKGPNM7Hy5IvsaYHzl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuming Fan <shumingf@realtek.com>,
-	Mark Brown <broonie@kernel.org>,
+	David Thompson <davthompson@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 014/286] ASoC: rt5650: add mutex to avoid the jack detection failure
-Date: Mon, 22 Jan 2024 15:55:20 -0800
-Message-ID: <20240122235732.573121185@linuxfoundation.org>
+Subject: [PATCH 6.1 153/417] mlxbf_gige: Enable the GigE port in mlxbf_gige_open
+Date: Mon, 22 Jan 2024 15:55:21 -0800
+Message-ID: <20240122235757.136890327@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuming Fan <shumingf@realtek.com>
+From: Asmaa Mnebhi <asmaa@nvidia.com>
 
-[ Upstream commit cdba4301adda7c60a2064bf808e48fccd352aaa9 ]
+[ Upstream commit a460f4a684511e007bbf1700758a41f05d9981e6 ]
 
-This patch adds the jd_mutex to protect the jack detection control flow.
-And only the headset type could check the button status.
+At the moment, the GigE port is enabled in the mlxbf_gige_probe
+function. If the mlxbf_gige_open is not executed, this could cause
+pause frames to increase in the case where there is high backgroud
+traffic. This results in clogging the port.
+So move enabling the OOB port to mlxbf_gige_open.
 
-Signed-off-by: Shuming Fan <shumingf@realtek.com>
-Link: https://lore.kernel.org/r/20231122100123.2831753-1-shumingf@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5645.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c   | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
-index 99d91bfb8812..7dc80183921e 100644
---- a/sound/soc/codecs/rt5645.c
-+++ b/sound/soc/codecs/rt5645.c
-@@ -421,6 +421,7 @@ struct rt5645_priv {
- 	struct regulator_bulk_data supplies[ARRAY_SIZE(rt5645_supply_names)];
- 	struct rt5645_eq_param_s *eq_param;
- 	struct timer_list btn_check_timer;
-+	struct mutex jd_mutex;
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+index eafc0d3313fd..83c4659390fd 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+@@ -130,9 +130,15 @@ static int mlxbf_gige_open(struct net_device *netdev)
+ {
+ 	struct mlxbf_gige *priv = netdev_priv(netdev);
+ 	struct phy_device *phydev = netdev->phydev;
++	u64 control;
+ 	u64 int_en;
+ 	int err;
  
- 	int codec_type;
- 	int sysclk;
-@@ -3179,6 +3180,8 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
- 				rt5645_enable_push_button_irq(component, true);
- 			}
- 		} else {
-+			if (rt5645->en_button_func)
-+				rt5645_enable_push_button_irq(component, false);
- 			snd_soc_dapm_disable_pin(dapm, "Mic Det Power");
- 			snd_soc_dapm_sync(dapm);
- 			rt5645->jack_type = SND_JACK_HEADPHONE;
-@@ -3259,6 +3262,8 @@ static void rt5645_jack_detect_work(struct work_struct *work)
- 	if (!rt5645->component)
- 		return;
- 
-+	mutex_lock(&rt5645->jd_mutex);
++	/* Perform general init of GigE block */
++	control = readq(priv->base + MLXBF_GIGE_CONTROL);
++	control |= MLXBF_GIGE_CONTROL_PORT_EN;
++	writeq(control, priv->base + MLXBF_GIGE_CONTROL);
 +
- 	switch (rt5645->pdata.jd_mode) {
- 	case 0: /* Not using rt5645 JD */
- 		if (rt5645->gpiod_hp_det) {
-@@ -3283,7 +3288,7 @@ static void rt5645_jack_detect_work(struct work_struct *work)
+ 	err = mlxbf_gige_request_irqs(priv);
+ 	if (err)
+ 		return err;
+@@ -279,7 +285,6 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
+ 	void __iomem *plu_base;
+ 	void __iomem *base;
+ 	int addr, phy_irq;
+-	u64 control;
+ 	int err;
  
- 	if (!val && (rt5645->jack_type == 0)) { /* jack in */
- 		report = rt5645_jack_detect(rt5645->component, 1);
--	} else if (!val && rt5645->jack_type != 0) {
-+	} else if (!val && rt5645->jack_type == SND_JACK_HEADSET) {
- 		/* for push button and jack out */
- 		btn_type = 0;
- 		if (snd_soc_component_read(rt5645->component, RT5645_INT_IRQ_ST) & 0x4) {
-@@ -3339,6 +3344,8 @@ static void rt5645_jack_detect_work(struct work_struct *work)
- 		rt5645_jack_detect(rt5645->component, 0);
- 	}
+ 	base = devm_platform_ioremap_resource(pdev, MLXBF_GIGE_RES_MAC);
+@@ -294,11 +299,6 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
+ 	if (IS_ERR(plu_base))
+ 		return PTR_ERR(plu_base);
  
-+	mutex_unlock(&rt5645->jd_mutex);
-+
- 	snd_soc_jack_report(rt5645->hp_jack, report, SND_JACK_HEADPHONE);
- 	snd_soc_jack_report(rt5645->mic_jack, report, SND_JACK_MICROPHONE);
- 	if (rt5645->en_button_func)
-@@ -4062,6 +4069,7 @@ static int rt5645_i2c_probe(struct i2c_client *i2c,
- 	}
- 	timer_setup(&rt5645->btn_check_timer, rt5645_btn_check_callback, 0);
- 
-+	mutex_init(&rt5645->jd_mutex);
- 	INIT_DELAYED_WORK(&rt5645->jack_detect_work, rt5645_jack_detect_work);
- 	INIT_DELAYED_WORK(&rt5645->rcclock_work, rt5645_rcclock_work);
- 
+-	/* Perform general init of GigE block */
+-	control = readq(base + MLXBF_GIGE_CONTROL);
+-	control |= MLXBF_GIGE_CONTROL_PORT_EN;
+-	writeq(control, base + MLXBF_GIGE_CONTROL);
+-
+ 	netdev = devm_alloc_etherdev(&pdev->dev, sizeof(*priv));
+ 	if (!netdev)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
