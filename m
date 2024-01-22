@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B663D838396
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD30837C77
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FB812944AE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58FCF283AD3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B059C63405;
-	Tue, 23 Jan 2024 01:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26D21353F2;
+	Tue, 23 Jan 2024 00:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxRutcWl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0Qog0LW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B2163404;
-	Tue, 23 Jan 2024 01:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4E833CC3;
+	Tue, 23 Jan 2024 00:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975015; cv=none; b=Y8sFX+H9r0ge5akT0HohHcn6IJdX3kY9FszE0Hp4eDi0c89ubXjchvlQViDi+BLJZu+UD456798dwGPufyi/VGl54f6eSSMwHR9RUxIcq32hgsOiwhbwRTqcxy2iG77SSEvXPoi35MI0wkE1tipInGgn56vSQL9jZEanoRBYz2E=
+	t=1705969628; cv=none; b=lF7gDlv1MDC1onNjnX5uH1flPJQYJFiRHStshR07ihkTDhckfMVCr/BHCEzxIcet3Z1Zkt2vZNj9fpDH6uaVhPfx7X1DVt15v3kCxtZDxMbC3EUIfUJI1UhmKIdcZs8zCCmcEceakSvKbFyDjFsMQCKaQ8/o54Rb6qaY/M5cblU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975015; c=relaxed/simple;
-	bh=nJZ4pOYag90ZdOEv//9l2lDMsZhuc5QPUPwIV/WQAMk=;
+	s=arc-20240116; t=1705969628; c=relaxed/simple;
+	bh=NEUeNftfmukrS54J+hzYqFc3ffVBtnKi7O/v1OymfG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DlQToi7Ng3eUAPmX7xKWpL0fsdETUfNH4dFMZSAI33FijKGqsb4aAIYGWvZLkFw74js1JR2hVm40XPOB1+8GA8MLJ6pf8KnLJKewpGKGbr2mrLpjzHv/XqgHsigi8oLlJW9eCnjcUVMhWJbfQk+uY8Ex1wV9XMFIQFfqYbOwQmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxRutcWl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A8CC433F1;
-	Tue, 23 Jan 2024 01:56:54 +0000 (UTC)
+	 MIME-Version; b=BS4eli+uGU+UYz7+DsKz6JlOsN8y+T/bd8PThaO8VxdniYB8B55vogMlCBs8LoZvqgct6gSWeg56Hu4NbmH7wzRtPHUV3J2ryM/vFCIOXf4Pw5w2N1XfT4Dm9kGRjniVSPRfwxjy4jIpACEPW14xF57VbQc/SluBo3pqWBdcEMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0Qog0LW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EEFC433F1;
+	Tue, 23 Jan 2024 00:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975015;
-	bh=nJZ4pOYag90ZdOEv//9l2lDMsZhuc5QPUPwIV/WQAMk=;
+	s=korg; t=1705969628;
+	bh=NEUeNftfmukrS54J+hzYqFc3ffVBtnKi7O/v1OymfG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sxRutcWlzz1Fnco3ayqFDktOzKHePw36UgNXpCju5zgguhlwEc11vNxVIw2as6El9
-	 6aqIjG6n0qs1VFnUl3U4RoW3Dwx3ABgX2o74PV/MZCwb2Y4oqG7LL/ahtgHQXYj4li
-	 mcwQuPrxzfKTo+KiJdBjFdmCUwtw5SurAIjd95t0=
+	b=u0Qog0LWGytmzfKymYmQkjfAVnHMaA+9191QUFd7jax7kxq3QJvNX8jmVlKz5XozL
+	 y5AxSVGoafgJna+o39Yv0aBpdql48+CJM/kjO6BeR0Fp+h44opFLe1e1OqfTkB2E3q
+	 PQhfLuvbLsIwFZRTTT1LeRGiLdaJFJqhEHViA2uU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Gergo Koteles <soyer@irl.hu>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 197/583] wifi: rtlwifi: rtl8192ee: using calculate_bit_shift()
+Subject: [PATCH 6.7 344/641] ASoC: tas2781: add support for FW version 0x0503
 Date: Mon, 22 Jan 2024 15:54:08 -0800
-Message-ID: <20240122235818.007108782@linuxfoundation.org>
+Message-ID: <20240122235828.689985957@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Gergo Koteles <soyer@irl.hu>
 
-[ Upstream commit 63526897fc0d086069bcab67c3a112caaec751cb ]
+[ Upstream commit ee00330a5b78e2acf4b3aac32913da43e2c12a26 ]
 
-Using calculate_bit_shift() to replace _rtl92ee_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+Layout of FW version 0x0503 is compatible with 0x0502.
+Already supported by TI's tas2781-linux-driver tree.
+https://git.ti.com/cgit/tas2781-linux-drivers/tas2781-linux-driver/
 
-Fixes: b1a3bfc97cd9 ("rtlwifi: rtl8192ee: Move driver from staging to the regular tree")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-9-suhui@nfschina.com
+Fixes: 915f5eadebd2 ("ASoC: tas2781: firmware lib")
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Link: https://msgid.link/r/98d4ee4e01e834af72a1a0bea6736facf43582e0.1702513517.git.soyer@irl.hu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/realtek/rtlwifi/rtl8192ee/phy.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ sound/soc/codecs/tas2781-fmwlib.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-index cc0bcaf13e96..73ef602bfb01 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-@@ -16,7 +16,6 @@ static u32 _rtl92ee_phy_rf_serial_read(struct ieee80211_hw *hw,
- static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
- 					 enum radio_path rfpath, u32 offset,
- 					 u32 data);
--static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask);
- static bool _rtl92ee_phy_bb8192ee_config_parafile(struct ieee80211_hw *hw);
- static bool _rtl92ee_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);
- static bool phy_config_bb_with_hdr_file(struct ieee80211_hw *hw,
-@@ -46,7 +45,7 @@ u32 rtl92ee_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
- 		"regaddr(%#x), bitmask(%#x)\n", regaddr, bitmask);
- 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
--	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
- 
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
-@@ -68,7 +67,7 @@ void rtl92ee_phy_set_bb_reg(struct ieee80211_hw *hw, u32 regaddr,
- 
- 	if (bitmask != MASKDWORD) {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
- 	}
- 
-@@ -92,7 +91,7 @@ u32 rtl92ee_phy_query_rf_reg(struct ieee80211_hw *hw,
- 	spin_lock(&rtlpriv->locks.rf_lock);
- 
- 	original_value = _rtl92ee_phy_rf_serial_read(hw , rfpath, regaddr);
--	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -119,7 +118,7 @@ void rtl92ee_phy_set_rf_reg(struct ieee80211_hw *hw,
- 
- 	if (bitmask != RFREG_OFFSET_MASK) {
- 		original_value = _rtl92ee_phy_rf_serial_read(hw, rfpath, addr);
--		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = (original_value & (~bitmask)) | (data << bitshift);
- 	}
- 
-@@ -201,13 +200,6 @@ static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
- 		pphyreg->rf3wire_offset, data_and_addr);
- }
- 
--static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
--
- bool rtl92ee_phy_mac_config(struct ieee80211_hw *hw)
- {
- 	return _rtl92ee_phy_config_mac_with_headerfile(hw);
+diff --git a/sound/soc/codecs/tas2781-fmwlib.c b/sound/soc/codecs/tas2781-fmwlib.c
+index 5c09e441a936..85e14ff61769 100644
+--- a/sound/soc/codecs/tas2781-fmwlib.c
++++ b/sound/soc/codecs/tas2781-fmwlib.c
+@@ -1982,6 +1982,7 @@ static int tasdevice_dspfw_ready(const struct firmware *fmw,
+ 	case 0x301:
+ 	case 0x302:
+ 	case 0x502:
++	case 0x503:
+ 		tas_priv->fw_parse_variable_header =
+ 			fw_parse_variable_header_kernel;
+ 		tas_priv->fw_parse_program_data =
 -- 
 2.43.0
 
