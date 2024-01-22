@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD0A837FFF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F5738384FA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:38:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C2F9B25023
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C5CEB28AD6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC7412C52A;
-	Tue, 23 Jan 2024 00:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A8B73171;
+	Tue, 23 Jan 2024 02:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6F2uu2a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WStUAwB9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1963B12C525;
-	Tue, 23 Jan 2024 00:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA046EB67;
+	Tue, 23 Jan 2024 02:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971433; cv=none; b=AID5l/g1Kb3RmEQp6qV0DiwJvUaBqh9h+4BL+RdQdJ62akJZaQ4DBnQaVKYnE1p+LrCN5kYb8VTVJS1r5AAnbTfr4wtIIU6AAraMr00WW+FQ7ewO1aZx6a/y8PKt9Su/PjeFJ5Dp1CBNflgrSSEYm7qtbn74mLMyH073qg5tDXs=
+	t=1705975425; cv=none; b=gpN7tA+qoGCShQJNe6sF5Lf/ZsqobE5hqIp7aNswj3JHwiqpEzkaXrz/i2vk2k+rz1nHOb0LkqVNpg1Z35S1m9P5wYDC7DLTmrlfk64ZuEZbLokFEAtCuciYWFm+mdRjCLLT+1viWvO4yvhngtsHfUjsCxpjHEn6bExtRPcyf4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971433; c=relaxed/simple;
-	bh=c79XDCiAo+vA/Kd1qILf1Y7n7ydazvZuTnejby+6650=;
+	s=arc-20240116; t=1705975425; c=relaxed/simple;
+	bh=Q9cBlMkE/gBUhNWPd1bHV/fDRApPa97i9Nfa2mR/J0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DC7a2sXbJTwoGMXUKdppg9zDijUwE6F6cQGPa995Xzx3bwU/Z+2bJJssxcoYhOem7hgIYWnzRz5Wo6BwrMHuSGtyrAi7z6G8+uWgLnlT/Lil2TXkkFQSP1ImXeqXDOMj/tuu5N1r644hTz46YyIPijcUzFnQa8s88HbD0y6ebXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6F2uu2a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5713BC43390;
-	Tue, 23 Jan 2024 00:57:12 +0000 (UTC)
+	 MIME-Version; b=sAijrnzO0RC0VoVatZKfyuenStB/MhGzlmvwsZvl0ZYNIbeD1kFu/CrTsdfNPRvy2ojQd+ATmBrj2gcCvUVMfrDp6aSw6yM01dF0OL0j9P5SJowPwENktSDi8dIb66N7n8EL8J7BF/xbDa2/7XnvQIwxuPxjBFw8ZfC9d6ZHuXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WStUAwB9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84328C43390;
+	Tue, 23 Jan 2024 02:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971432;
-	bh=c79XDCiAo+vA/Kd1qILf1Y7n7ydazvZuTnejby+6650=;
+	s=korg; t=1705975425;
+	bh=Q9cBlMkE/gBUhNWPd1bHV/fDRApPa97i9Nfa2mR/J0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W6F2uu2aKPUO/R71+OVkrsWJ9ZpWAHEdHzttEFJVPWtpoAXu4OjTH4kvKzMPaY2+u
-	 VnfLdtYCVmj+ZbuyiauJQBMggWHJ7r/CfyyD9CDUOx438eoT46+2ucRXGE00RuXdmE
-	 9gvkRh89oHWv4UFN+4noAX8CeQnsuw53EFUKxZm4=
+	b=WStUAwB9AZXmRV/9hRBnj+JnMDMs9tVGUF9ImxGF5lWvuUSaL8v9KWm/8RwUf6kOg
+	 bSx6ogFATPPN/AACf7ateaqdnUQtxhULWCXgi3UA7islC1Ken9kif41ryWUjF/5GlL
+	 90YnfwJ9XKID4SCpYAekWzVsR3UDEOaHYjMCbuQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark-PK Tsai <mark-pk.tsai@mediatek.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 128/286] dma-mapping: Add dma_release_coherent_memory to DMA API
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.6 383/583] ksmbd: validate mech token in session setup
 Date: Mon, 22 Jan 2024 15:57:14 -0800
-Message-ID: <20240122235737.069915124@linuxfoundation.org>
+Message-ID: <20240122235823.717350633@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit e61c451476e61450f6771ce03bbc01210a09be16 ]
+commit 92e470163d96df8db6c4fa0f484e4a229edb903d upstream.
 
-Add dma_release_coherent_memory to DMA API to allow dma
-user call it to release dev->dma_mem when the device is
-removed.
+If client send invalid mech token in session setup request, ksmbd
+validate and make the error if it is invalid.
 
-Signed-off-by: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
-Acked-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20220422062436.14384-2-mark-pk.tsai@mediatek.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Stable-dep-of: b07bc2347672 ("dma-mapping: clear dev->dma_mem to NULL after freeing it")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-22890
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/dma-map-ops.h |  3 +++
- kernel/dma/coherent.c       | 10 ++++++++--
- 2 files changed, 11 insertions(+), 2 deletions(-)
+ fs/smb/server/asn1.c       |    5 +++++
+ fs/smb/server/connection.h |    1 +
+ fs/smb/server/smb2pdu.c    |   22 +++++++++++++++++-----
+ 3 files changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
-index a5f89fc4d6df..22e3bfebdc34 100644
---- a/include/linux/dma-map-ops.h
-+++ b/include/linux/dma-map-ops.h
-@@ -165,6 +165,7 @@ static inline void dma_pernuma_cma_reserve(void) { }
- #ifdef CONFIG_DMA_DECLARE_COHERENT
- int dma_declare_coherent_memory(struct device *dev, phys_addr_t phys_addr,
- 		dma_addr_t device_addr, size_t size);
-+void dma_release_coherent_memory(struct device *dev);
- int dma_alloc_from_dev_coherent(struct device *dev, ssize_t size,
- 		dma_addr_t *dma_handle, void **ret);
- int dma_release_from_dev_coherent(struct device *dev, int order, void *vaddr);
-@@ -183,6 +184,8 @@ static inline int dma_declare_coherent_memory(struct device *dev,
+--- a/fs/smb/server/asn1.c
++++ b/fs/smb/server/asn1.c
+@@ -214,10 +214,15 @@ static int ksmbd_neg_token_alloc(void *c
  {
- 	return -ENOSYS;
- }
+ 	struct ksmbd_conn *conn = context;
+ 
++	if (!vlen)
++		return -EINVAL;
 +
-+#define dma_release_coherent_memory(dev) (0)
- #define dma_alloc_from_dev_coherent(dev, size, handle, ret) (0)
- #define dma_release_from_dev_coherent(dev, order, vaddr) (0)
- #define dma_mmap_from_dev_coherent(dev, vma, vaddr, order, ret) (0)
-diff --git a/kernel/dma/coherent.c b/kernel/dma/coherent.c
-index 5b5b6c7ec7f2..b79d8d0433dd 100644
---- a/kernel/dma/coherent.c
-+++ b/kernel/dma/coherent.c
-@@ -84,7 +84,7 @@ static int dma_init_coherent_memory(phys_addr_t phys_addr,
- 	return ret;
- }
+ 	conn->mechToken = kmemdup_nul(value, vlen, GFP_KERNEL);
+ 	if (!conn->mechToken)
+ 		return -ENOMEM;
  
--static void dma_release_coherent_memory(struct dma_coherent_mem *mem)
-+static void _dma_release_coherent_memory(struct dma_coherent_mem *mem)
- {
- 	if (!mem)
- 		return;
-@@ -136,10 +136,16 @@ int dma_declare_coherent_memory(struct device *dev, phys_addr_t phys_addr,
- 
- 	ret = dma_assign_coherent_memory(dev, mem);
- 	if (ret)
--		dma_release_coherent_memory(mem);
-+		_dma_release_coherent_memory(mem);
- 	return ret;
- }
- 
-+void dma_release_coherent_memory(struct device *dev)
-+{
-+	if (dev)
-+		_dma_release_coherent_memory(dev->dma_mem);
-+}
++	conn->mechTokenLen = (unsigned int)vlen;
 +
- static void *__dma_alloc_from_coherent(struct device *dev,
- 				       struct dma_coherent_mem *mem,
- 				       ssize_t size, dma_addr_t *dma_handle)
--- 
-2.43.0
-
+ 	return 0;
+ }
+ 
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -88,6 +88,7 @@ struct ksmbd_conn {
+ 	__u16				dialect;
+ 
+ 	char				*mechToken;
++	unsigned int			mechTokenLen;
+ 
+ 	struct ksmbd_conn_ops	*conn_ops;
+ 
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1414,7 +1414,10 @@ static struct ksmbd_user *session_user(s
+ 	char *name;
+ 	unsigned int name_off, name_len, secbuf_len;
+ 
+-	secbuf_len = le16_to_cpu(req->SecurityBufferLength);
++	if (conn->use_spnego && conn->mechToken)
++		secbuf_len = conn->mechTokenLen;
++	else
++		secbuf_len = le16_to_cpu(req->SecurityBufferLength);
+ 	if (secbuf_len < sizeof(struct authenticate_message)) {
+ 		ksmbd_debug(SMB, "blob len %d too small\n", secbuf_len);
+ 		return NULL;
+@@ -1505,7 +1508,10 @@ static int ntlm_authenticate(struct ksmb
+ 		struct authenticate_message *authblob;
+ 
+ 		authblob = user_authblob(conn, req);
+-		sz = le16_to_cpu(req->SecurityBufferLength);
++		if (conn->use_spnego && conn->mechToken)
++			sz = conn->mechTokenLen;
++		else
++			sz = le16_to_cpu(req->SecurityBufferLength);
+ 		rc = ksmbd_decode_ntlmssp_auth_blob(authblob, sz, conn, sess);
+ 		if (rc) {
+ 			set_user_flag(sess->user, KSMBD_USER_FLAG_BAD_PASSWORD);
+@@ -1778,8 +1784,7 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 
+ 	negblob_off = le16_to_cpu(req->SecurityBufferOffset);
+ 	negblob_len = le16_to_cpu(req->SecurityBufferLength);
+-	if (negblob_off < offsetof(struct smb2_sess_setup_req, Buffer) ||
+-	    negblob_len < offsetof(struct negotiate_message, NegotiateFlags)) {
++	if (negblob_off < offsetof(struct smb2_sess_setup_req, Buffer)) {
+ 		rc = -EINVAL;
+ 		goto out_err;
+ 	}
+@@ -1788,8 +1793,15 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 			negblob_off);
+ 
+ 	if (decode_negotiation_token(conn, negblob, negblob_len) == 0) {
+-		if (conn->mechToken)
++		if (conn->mechToken) {
+ 			negblob = (struct negotiate_message *)conn->mechToken;
++			negblob_len = conn->mechTokenLen;
++		}
++	}
++
++	if (negblob_len < offsetof(struct negotiate_message, NegotiateFlags)) {
++		rc = -EINVAL;
++		goto out_err;
+ 	}
+ 
+ 	if (server_conf.auth_mechs & conn->auth_mechs) {
 
 
 
