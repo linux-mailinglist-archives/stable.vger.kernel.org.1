@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA11837C5D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B773383836C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F5811F28A29
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DCD128F3F1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B53446B7;
-	Tue, 23 Jan 2024 00:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEF2629E2;
+	Tue, 23 Jan 2024 01:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UK55KOR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4p7OSJO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B56A46AB;
-	Tue, 23 Jan 2024 00:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A74B629E9;
+	Tue, 23 Jan 2024 01:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969592; cv=none; b=G1L9f9LVvfoJbjv4Ddr5pgo7T/3OLgckwmEq9kA2iBLyDohVfRhO6q4O2L/H/dzsTHfAqbpF4VJGmsQS++DzrL+HVFHlbfejaW16jcL6gJ3nNfTEnHmSuwIH3E1vMR7yEELy5BaAXn7o1OQeaLQJuhcGczQVoYCWzrxwVuiHd/Y=
+	t=1705974969; cv=none; b=iz3bsaqULgsqsx8txAf2pnZYcppqvmjyjC9Ory9kZQwBBPyw574kOi9gNTJrpKD6lu+kGgDbw8ZPJum8Di33p8MIpY56yg+bHDn9mztW9wEvtJPNo+leqplZpsIzW5DZUsZbQxbPinxppu67/sUaPz2vxmqTY9+3AoF86y7WQws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969592; c=relaxed/simple;
-	bh=AbMro5CdaBH6WD73EaMHskp32iEEY9KfBTvNKlNHTBA=;
+	s=arc-20240116; t=1705974969; c=relaxed/simple;
+	bh=lwvUqJbpC/K8fuUtnvaFrttbpCc8poTJ569Pi3voZmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ub0nm//95ApHSksV1Wb9CriEYd9OI5Q0EVsYI2HycgJhyxwAa+wztMEEMfNiaDoJhqwB/5hZ54DdFSjoVI2izR8Ptk/xUQOLxhoEIKpDfBcr6Khq/XmgZKdA6Uvl+e49mSf5RhQn4owMiIhZRdw2yBbnCN9GjV2jCBEkYXw5MNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UK55KOR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016A8C433A6;
-	Tue, 23 Jan 2024 00:26:31 +0000 (UTC)
+	 MIME-Version; b=Xnlu0UIN52v5JwvjfMzpimGgrKGKoHmg91p90BouM7Bhkz0gZRcWvS4s+gH+QPd/q0S1p5ku+GHWUsO3nyM8h4gHTxmCrPb5lAsM54pnc49e0/9CiuNHTEpZRDYEFO1FO2B2ep2gACb7dsXFJJRJsPPJxPvpJk487XKLdH5zXRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4p7OSJO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D221BC433F1;
+	Tue, 23 Jan 2024 01:56:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969592;
-	bh=AbMro5CdaBH6WD73EaMHskp32iEEY9KfBTvNKlNHTBA=;
+	s=korg; t=1705974968;
+	bh=lwvUqJbpC/K8fuUtnvaFrttbpCc8poTJ569Pi3voZmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0UK55KOR9gzsZKvMMzLyf5cC/gneq8XcitqIoRFePLyTprAL2gJAXOlkhEryfjpzL
-	 WskAVp+gnVsXBEUP/uTNGG6Y/E+5ePStbjoiNS/Cn0x8DkPauw72v3tQlX0YaH6hOA
-	 33lk45fTKduXhhuTbP+7DRxL7b++Pmlelb43vvyQ=
+	b=N4p7OSJOCpfwrZIRvSj3KjKCv3eYEpoQb7kBPWzD3Zuk6vEBN3BkFYePMS7IekD09
+	 Is8cp49Ogkol/V+IPKb0Tk0+9yw7HS2zX2Y41toCLQyMwiFj56VwBCJe7ouAYbriDJ
+	 7wAv3TiIbl+wCeP/FHhGmfNP3CALphC6v0lnhxm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Nikita Travkin <nikita@trvn.ru>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 319/641] clk: renesas: rzg2l-cpg: Reuse code in rzg2l_cpg_reset()
-Date: Mon, 22 Jan 2024 15:53:43 -0800
-Message-ID: <20240122235827.858735495@linuxfoundation.org>
+Subject: [PATCH 6.6 173/583] arm64: dts: qcom: acer-aspire1: Correct audio codec definition
+Date: Mon, 22 Jan 2024 15:53:44 -0800
+Message-ID: <20240122235817.321933679@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Nikita Travkin <nikita@trvn.ru>
 
-[ Upstream commit 5f9e29b9159a41fcf6733c3b59fa46a90ce3ae20 ]
+[ Upstream commit feec9f0add432a867f23e29afcd2f7088889b8e2 ]
 
-Code in rzg2l_cpg_reset() is equivalent with the combined code of
-rzg2l_cpg_assert() and rzg2l_cpg_deassert(). There is no need to have
-different versions thus re-use rzg2l_cpg_assert() and rzg2l_cpg_deassert().
+When initially added, a mistake was made in the definition of the codec.
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20231120070024.4079344-2-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Stable-dep-of: da235d2fac21 ("clk: renesas: rzg2l: Check reset monitor registers")
+Despite the fact that the DMIC line is connected on the side of the
+codec chip, and relevant passive components, including 0-ohm resistors
+connecting the dmics, are present, the dmic line is still cut in
+another place on the board, which was overlooked.
+
+Correct this by replacing the dmic configuration with a comment
+describing this hardware detail.
+
+While at it, also add missing regulators definitions. This is not a
+functional change as all the relevant regulators were already added via
+the other rail supplies.
+
+Fixes: 4a9f8f8f2ada ("arm64: dts: qcom: Add Acer Aspire 1")
+Signed-off-by: Nikita Travkin <nikita@trvn.ru>
+Link: https://lore.kernel.org/r/20231205-aspire1-sound-v2-2-443b7ac0a06f@trvn.ru
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzg2l-cpg.c | 38 +++++++++++++--------------------
- 1 file changed, 15 insertions(+), 23 deletions(-)
+ .../arm64/boot/dts/qcom/sc7180-acer-aspire1.dts | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
-index 764bd72cf059..3189c3167ba8 100644
---- a/drivers/clk/renesas/rzg2l-cpg.c
-+++ b/drivers/clk/renesas/rzg2l-cpg.c
-@@ -1410,29 +1410,6 @@ rzg2l_cpg_register_mod_clk(const struct rzg2l_mod_clk *mod,
+diff --git a/arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts b/arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts
+index dbb48934d499..3342cb048038 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts
++++ b/arch/arm64/boot/dts/qcom/sc7180-acer-aspire1.dts
+@@ -209,9 +209,22 @@ alc5682: codec@1a {
+ 		AVDD-supply = <&vreg_l15a_1p8>;
+ 		MICVDD-supply = <&reg_codec_3p3>;
+ 		VBAT-supply = <&reg_codec_3p3>;
++		DBVDD-supply = <&vreg_l15a_1p8>;
++		LDO1-IN-supply = <&vreg_l15a_1p8>;
++
++		/*
++		 * NOTE: The board has a path from this codec to the
++		 * DMIC microphones in the lid, however some of the option
++		 * resistors are absent and the microphones are connected
++		 * to the SoC instead.
++		 *
++		 * If the resistors were to be changed by the user to
++		 * connect the codec, the following could be used:
++		 *
++		 * realtek,dmic1-data-pin = <1>;
++		 * realtek,dmic1-clk-pin = <1>;
++		 */
  
- #define rcdev_to_priv(x)	container_of(x, struct rzg2l_cpg_priv, rcdev)
- 
--static int rzg2l_cpg_reset(struct reset_controller_dev *rcdev,
--			   unsigned long id)
--{
--	struct rzg2l_cpg_priv *priv = rcdev_to_priv(rcdev);
--	const struct rzg2l_cpg_info *info = priv->info;
--	unsigned int reg = info->resets[id].off;
--	u32 dis = BIT(info->resets[id].bit);
--	u32 we = dis << 16;
--
--	dev_dbg(rcdev->dev, "reset id:%ld offset:0x%x\n", id, CLK_RST_R(reg));
--
--	/* Reset module */
--	writel(we, priv->base + CLK_RST_R(reg));
--
--	/* Wait for at least one cycle of the RCLK clock (@ ca. 32 kHz) */
--	udelay(35);
--
--	/* Release module from reset state */
--	writel(we | dis, priv->base + CLK_RST_R(reg));
--
--	return 0;
--}
--
- static int rzg2l_cpg_assert(struct reset_controller_dev *rcdev,
- 			    unsigned long id)
- {
-@@ -1463,6 +1440,21 @@ static int rzg2l_cpg_deassert(struct reset_controller_dev *rcdev,
- 	return 0;
- }
- 
-+static int rzg2l_cpg_reset(struct reset_controller_dev *rcdev,
-+			   unsigned long id)
-+{
-+	int ret;
-+
-+	ret = rzg2l_cpg_assert(rcdev, id);
-+	if (ret)
-+		return ret;
-+
-+	/* Wait for at least one cycle of the RCLK clock (@ ca. 32 kHz) */
-+	udelay(35);
-+
-+	return rzg2l_cpg_deassert(rcdev, id);
-+}
-+
- static int rzg2l_cpg_status(struct reset_controller_dev *rcdev,
- 			    unsigned long id)
- {
+-		realtek,dmic1-data-pin = <1>;
+-		realtek,dmic1-clk-pin = <1>;
+ 		realtek,jd-src = <1>;
+ 	};
+ };
 -- 
 2.43.0
 
