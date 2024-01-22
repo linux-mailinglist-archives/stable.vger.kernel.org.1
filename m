@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-15001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5578583837B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F51483812E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 879321C29C7F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDBFD286B15
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB580629E1;
-	Tue, 23 Jan 2024 01:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EFAF1419B7;
+	Tue, 23 Jan 2024 01:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LYkzBpKJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vGXCGecD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405E46310D;
-	Tue, 23 Jan 2024 01:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13781419B4;
+	Tue, 23 Jan 2024 01:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974986; cv=none; b=UHIY420hzz9xrolok4shnRSoxBSaCLPnV/TcAophLuWHhLSxMi6mVg7MvFO7FGLoB2wZMGA0Nw0zlVCpODE4eGUWm2lF68QhVwbKbolyws2Eml/UFf1d+Emo8mmSZGObyi9oQEl9uzF7nCzEzI62yBLj8X9UWM+/KISsoq7NyNo=
+	t=1705972056; cv=none; b=Lzb0YAptZMd4JiKCAfQCZzIqnyzBEs0lthKKiACPdI38py2fIHoFV7JHXIkYhhFfpuJe77r30BLWOILL5et9RjTc9nwZ9kMJdIxTLikRdLw5+Uysi0ocWJ7OiNvoxAGhs5jru8ehNMnnx/57r9sjlvg6qeUMJTJgQu4qo4xTlJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974986; c=relaxed/simple;
-	bh=e9OQs14uXUaveVA5ICKUlyLmIjeoDZnCqRoFBuf5/uo=;
+	s=arc-20240116; t=1705972056; c=relaxed/simple;
+	bh=e75AmnpnwUH66IQcvlY2EXA0cJeQYxTLvNMldM5p5DM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SLhTqRJwpEPYwyzxBY3BGbtsvP6ex6bwaseCr/8pkrbMCJpGoQQj6kjdaIBb6pC8mFbgoyykqXEfZWLTHjyeXfA6p4nJZBuGf1lZ51ObNo7XpmOjHUMhgEXf+OhzVr1UneahhqscCgVn79q8gzXoLR3cwwPsajxQSBfvAH+7tW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LYkzBpKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7E3C433C7;
-	Tue, 23 Jan 2024 01:56:25 +0000 (UTC)
+	 MIME-Version; b=ZZZrwTa8CW1Tm60Z4uEnLYrc7IJ3iNC4SYhbqmHAgV6YabXmpv5zx0nSb4bLQpaaBOprDWE+knZ8KjCJwYmBRywIJ4jt/+8gfVuupg3C750ubQwI5gwYKD+jQOugczAZD4z6uTZmjUMS8uW4rdQpsCi4Or100UJDw85LHfHguxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vGXCGecD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA6C2C433F1;
+	Tue, 23 Jan 2024 01:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974986;
-	bh=e9OQs14uXUaveVA5ICKUlyLmIjeoDZnCqRoFBuf5/uo=;
+	s=korg; t=1705972055;
+	bh=e75AmnpnwUH66IQcvlY2EXA0cJeQYxTLvNMldM5p5DM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LYkzBpKJErECTc66KQme7akO50Ygl4Qd1tkUu0zPqBMiOMNILL3CkZ8tuayR/stI1
-	 pNYWPw/fNTmA01E1eIMYuOgWJ0sVZn/A/PfWmM+cU/IyhHjOTMBQPfYrBIBb5hKfSb
-	 eXzmHp6Bvpf5FGJ0rEhZHT1tJ5drq2u1ljgwYDFA=
+	b=vGXCGecDwImHJfXl3Rap/Jf3i2XdmKZQZhg8jh9VIlFhI8hjqkUdBFqYimQcOev2a
+	 4to9t0OQccEqaRjG2dvqxK4pY3DQiz0Tos1KHbvopb2xVQYoKZsi9R6tQJZSFMdwHV
+	 37r4d8YGuN2j2UeHGUyQodqSy3Rf5zDGi4Py+c2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Kai Huang <kai.huang@intel.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 309/374] selftests/sgx: Fix uninitialized pointer dereference in error path
+Subject: [PATCH 6.1 397/417] mptcp: relax check on MPC passive fallback
 Date: Mon, 22 Jan 2024 15:59:25 -0800
-Message-ID: <20240122235755.607438732@linuxfoundation.org>
+Message-ID: <20240122235805.493070659@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 79eba8c924f7decfa71ddf187d38cb9f5f2cd7b3 ]
+[ Upstream commit c0f5aec28edf98906d28f08daace6522adf9ee7a ]
 
-Ensure ctx is zero-initialized, such that the encl_measure function will
-not call EVP_MD_CTX_destroy with an uninitialized ctx pointer in case of an
-early error during key generation.
+While testing the blamed commit below, I was able to miss (!)
+packetdrill failures in the fastopen test-cases.
 
-Fixes: 2adcba79e69d ("selftests/x86: Add a selftest for SGX")
-Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Link: https://lore.kernel.org/all/20231005153854.25566-2-jo.vanbulck%40cs.kuleuven.be
+On passive fastopen the child socket is created by incoming TCP MPC syn,
+allow for both MPC_SYN and MPC_ACK header.
+
+Fixes: 724b00c12957 ("mptcp: refine opt_mp_capable determination")
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/sgx/sigstruct.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/mptcp/subflow.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/sgx/sigstruct.c b/tools/testing/selftests/sgx/sigstruct.c
-index 92bbc5a15c39..a201d64f9b49 100644
---- a/tools/testing/selftests/sgx/sigstruct.c
-+++ b/tools/testing/selftests/sgx/sigstruct.c
-@@ -310,9 +310,9 @@ bool encl_measure(struct encl *encl)
- 	struct sgx_sigstruct *sigstruct = &encl->sigstruct;
- 	struct sgx_sigstruct_payload payload;
- 	uint8_t digest[SHA256_DIGEST_LENGTH];
-+	EVP_MD_CTX *ctx = NULL;
- 	unsigned int siglen;
- 	RSA *key = NULL;
--	EVP_MD_CTX *ctx;
- 	int i;
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index f0ebf39db6cc..45d20e20cfc0 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -713,7 +713,8 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
+ 		 * options.
+ 		 */
+ 		mptcp_get_options(skb, &mp_opt);
+-		if (!(mp_opt.suboptions & OPTION_MPTCP_MPC_ACK))
++		if (!(mp_opt.suboptions &
++		      (OPTION_MPTCP_MPC_SYN | OPTION_MPTCP_MPC_ACK)))
+ 			fallback = true;
  
- 	memset(sigstruct, 0, sizeof(*sigstruct));
-@@ -376,7 +376,8 @@ bool encl_measure(struct encl *encl)
- 	return true;
- 
- err:
--	EVP_MD_CTX_destroy(ctx);
-+	if (ctx)
-+		EVP_MD_CTX_destroy(ctx);
- 	RSA_free(key);
- 	return false;
- }
+ 	} else if (subflow_req->mp_join) {
 -- 
 2.43.0
 
