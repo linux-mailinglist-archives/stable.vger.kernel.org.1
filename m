@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30FAB83826C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A86837BC7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DBCA1C28995
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 313871C27C4D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28CD85BAE9;
-	Tue, 23 Jan 2024 01:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54FF1154458;
+	Tue, 23 Jan 2024 00:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0WvsuP+d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWdGhRmC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3B65A7B8;
-	Tue, 23 Jan 2024 01:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1539B154441;
+	Tue, 23 Jan 2024 00:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974349; cv=none; b=Ti0RPHG0TGFblxeIgn+DdHy4gxgXiVmYChDToxEvgcEFpMCzzqvmBBYovL8+Qx7RQz0xvRorawSWVN5qsUWK1Fy2vqzPx6JggMJWoKcohQRe66f1FVQSuK5mtHm0QWABBP04Do+joUxVykws9svlgNlaw4o2uo7ZjSlSYytr4Z8=
+	t=1705969382; cv=none; b=c0cJSK6JSCM7u2y+6EQvOdivkjcP0xE5Hx8zC2cQ+zitGr+wRQSgo8u4uWWp8omtkO7KHS49NFRE1ijc8DY44ObEdXzEW0gmJ/TXI7FTNZrxXr/5Z8FsdVm+ey+zP+sBLR2MMpE3YnjY+E8Nf05Sp2pvElV29jbhAeiCBLdb/yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974349; c=relaxed/simple;
-	bh=YEgBQMDirgHf/Nm3CxJOR0JL4VLzSNRFQfi6P23YbRU=;
+	s=arc-20240116; t=1705969382; c=relaxed/simple;
+	bh=+R3VTlMJm3JCBY/c+sgpTNhr3YyolD/QUQMv3fZTmec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJCEBAscHRMUHK3MOIIcPim6emerhJToXlhWAqLXgJKb6frKOMlw5UzEJDGjtun2FsCogcmqYtBzkDKvNZVKf973Unqop1WOQ/IrxQ6gFd7oHsNub0GumoRoN+JQH+Vr1O53Z5iNTNiZpHUZYj+CirHQZ8Weq1WiCnGuH0i2pdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0WvsuP+d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6B2C433F1;
-	Tue, 23 Jan 2024 01:45:49 +0000 (UTC)
+	 MIME-Version; b=S9dDKHv3F9yBOKNP6AAuhmDZtJlVVi79cbJqYSFhP8RGOlMlFd6GxqkCI232QIwsan0eDrYpJPpDXH8sDZ51IMryDNH2tHAAtrEXnop7KRwhaPI2D0oKLTD5OJ+frm39lwOdTw5CyQQknDYcfKvavWyf60EjxpMN4yc5WMTkf5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWdGhRmC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFDD5C433F1;
+	Tue, 23 Jan 2024 00:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974349;
-	bh=YEgBQMDirgHf/Nm3CxJOR0JL4VLzSNRFQfi6P23YbRU=;
+	s=korg; t=1705969381;
+	bh=+R3VTlMJm3JCBY/c+sgpTNhr3YyolD/QUQMv3fZTmec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0WvsuP+dlo+ofgGtVuJDdvwmCRE+wt5hDrtUWXdsyg92F8NKU0yMm9B3VOYzx80fW
-	 4jpUwvHbn2uPyD074F0VsfYtaIA8UnTcE77YuwqDqTz9/saI0IwgoLo4At5Ypydjxa
-	 Ua/sg9PIN4p4TRtwzB9APAOw1Jux70FE4FsAGZCM=
+	b=sWdGhRmCIgi3pYX/Cgqi382L2fOdbCYuM8u/hYyBYbUOrLLAQZXUofHf4P4qN2yY8
+	 wxOJp/y6GJxAAX2hIhFq/8FNknuN+eoU5NO8dG+oMDHbxyPFg/gjsRMkrPm2CKZ5iU
+	 Ybv7uuWzSYcrmdlLP+ADMzClUHESiSv9VJRNgblU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Kees Cook <keescook@chromium.org>,
+	Su Hui <suhui@nfschina.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/583] pstore: ram_core: fix possible overflow in persistent_ram_init_ecc()
+Subject: [PATCH 6.7 207/641] wifi: rtlwifi: add calculate_bit_shift()
 Date: Mon, 22 Jan 2024 15:51:51 -0800
-Message-ID: <20240122235813.962623006@linuxfoundation.org>
+Message-ID: <20240122235824.429802447@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 86222a8fc16ec517de8da2604d904c9df3a08e5d ]
+[ Upstream commit 52221dfddbbfb5b4e029bb2efe9bb7da33ec1e46 ]
 
-In persistent_ram_init_ecc(), on 64-bit arches DIV_ROUND_UP() will return
-64-bit value since persistent_ram_zone::buffer_size has type size_t which
-is derived from the 64-bit *unsigned long*, while the ecc_blocks variable
-this value gets assigned to has (always 32-bit) *int* type.  Even if that
-value fits into *int* type, an overflow is still possible when calculating
-the size_t typed ecc_total variable further below since there's no cast to
-any 64-bit type before multiplication.  Declaring the ecc_blocks variable
-as *size_t* should fix this mess...
+There are many same functions like _rtl88e_phy_calculate_bit_shift(),
+_rtl92c_phy_calculate_bit_shift() and so on. And these functions can
+cause undefined bitwise shift behavior. Add calculate_bit_shift() to
+replace them and fix undefined behavior in subsequent patches.
 
-Found by Linux Verification Center (linuxtesting.org) with the SVACE static
-analysis tool.
-
-Fixes: 9cc05ad97c57 ("staging: android: persistent_ram: refactor ecc support")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20231105202936.25694-1-s.shtylyov@omp.ru
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-2-suhui@nfschina.com
+Stable-dep-of: 969bc926f04b ("wifi: rtlwifi: rtl8188ee: phy: using calculate_bit_shift()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/ram_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/wifi.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
-index 650e437b55e6..f1848cdd6d34 100644
---- a/fs/pstore/ram_core.c
-+++ b/fs/pstore/ram_core.c
-@@ -190,7 +190,7 @@ static int persistent_ram_init_ecc(struct persistent_ram_zone *prz,
- {
- 	int numerr;
- 	struct persistent_ram_buffer *buffer = prz->buffer;
--	int ecc_blocks;
-+	size_t ecc_blocks;
- 	size_t ecc_total;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+index 31a481f43a07..5d842cc394aa 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
++++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+@@ -3069,4 +3069,11 @@ static inline struct ieee80211_sta *rtl_find_sta(struct ieee80211_hw *hw,
+ 	return ieee80211_find_sta(mac->vif, mac_addr);
+ }
  
- 	if (!ecc_info || !ecc_info->ecc_size)
++static inline u32 calculate_bit_shift(u32 bitmask)
++{
++	if (WARN_ON_ONCE(!bitmask))
++		return 0;
++
++	return __ffs(bitmask);
++}
+ #endif
 -- 
 2.43.0
 
