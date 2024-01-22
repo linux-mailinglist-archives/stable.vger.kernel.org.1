@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-14767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385A5838279
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0EAB83827C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5327288BFF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46DD228AA37
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CDF85C5F8;
-	Tue, 23 Jan 2024 01:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805145C601;
+	Tue, 23 Jan 2024 01:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkwsnuBl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JsGlXOlM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294B75BAFD;
-	Tue, 23 Jan 2024 01:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA405C5FB;
+	Tue, 23 Jan 2024 01:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974363; cv=none; b=bXhlvI83zUz6hkGedaEXz9lpoz55Wtkz7IuXnEuFauzDikq9bSmKLBT6Abn4DlC09ZlKZnu9l8xAbqLdUsa8hwDswVovbhhJ9pt9KdJlprJ1UR50EsftDXVSVtwy6/npAChIkKolekt+f51+t80c04d+kPnZtnaDkT7NG01p5zc=
+	t=1705974366; cv=none; b=timqU3sVayWFW6KjEKxiwObLu0qDcOjODG3Y7vZUL3rh5pxJFTNVMaJ/pDoelAuC13c2SJ7+JZrFSUniPSRCxbGfREfY08AuqWZCUIa6b1Ajd2qThe+DxRbY52pE2wYr41hOdKBWON+3qWMMe8h4kYfKOUKXWCC6BGOFCxbMk+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974363; c=relaxed/simple;
-	bh=I0nF9wzn4Nb51WINtjz0iYi8eTKxAZjirIjiEJveHk4=;
+	s=arc-20240116; t=1705974366; c=relaxed/simple;
+	bh=nkZo1iJCnHMqcWCLvP+v5c6XOT0p2b/9ZCgtDuksOB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GB2xDciZEfgExX9XCGb7hV+ptphZEZ/EL0/moGq3bPH8C8Kw3tBoleLUm1rk+B7mRNBmOQce101ex3TXTeEHdQ+hbwZBGAgcStcwb5J41qMB/F6xFpN1F2kUb1NNo8WaDvWjH2jXc0ZjnOvFQv5WoSyegoJvjMF8m1IZ9kHqwNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkwsnuBl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D00C43390;
-	Tue, 23 Jan 2024 01:46:02 +0000 (UTC)
+	 MIME-Version; b=NM379idZJ5ytGf3rfQs/Px1jkx4ePLm3bBviTcc7TgC/0JHKCzXQfp9ibOywtWb1vfPGPjU/QFeuxcaZs/IiX+xWac74FesNcMpfLEFmqRZ8F/9mH2jf8DtzemSEbl0sGIxDafumXOGrHIaBLaV6YNkWc2vo9tg0wxHtuzoLYfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JsGlXOlM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3C1C43390;
+	Tue, 23 Jan 2024 01:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974362;
-	bh=I0nF9wzn4Nb51WINtjz0iYi8eTKxAZjirIjiEJveHk4=;
+	s=korg; t=1705974365;
+	bh=nkZo1iJCnHMqcWCLvP+v5c6XOT0p2b/9ZCgtDuksOB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XkwsnuBlyC81SlYWbAsvk69SW44wVScdQZMkBwMEE+3Kp8zEWQUh4ZjxiaAwN8gUl
-	 NQnCkQKM3rWqnEW3+PQUaeDNKwn7gRJnljJqnbvHFz6xoOFndKR3BMQQIapny5Whe6
-	 oIyviGHg/pX0UhwmRmgdrw1vQz8vmxVktjGNXcuo=
+	b=JsGlXOlMudwgCzsQeRUsJ8wykgsan4SDwSZ9o9hebvm4bRG4PgsJANbux+6kqROKf
+	 x6XvhED0iYG1irrPT0iCU3hb2fqb/32d9SoQBPyxx87pbufIfltvrZyr5DcCYwBRC7
+	 OhCwgGi/hzUU6dM9fKus7sOH9rhNI0RLMmxZGl/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangyangxin <wangyangxin1@huawei.com>,
-	Gonglei <arei.gonglei@huawei.com>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/583] crypto: virtio - Wait for tasklet to complete on device remove
-Date: Mon, 22 Jan 2024 15:51:57 -0800
-Message-ID: <20240122235814.164404090@linuxfoundation.org>
+Subject: [PATCH 6.6 067/583] crypto: sahara - avoid skcipher fallback code duplication
+Date: Mon, 22 Jan 2024 15:51:58 -0800
+Message-ID: <20240122235814.195027947@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -67,41 +66,146 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: wangyangxin <wangyangxin1@huawei.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 67cc511e8d436456cc98033e6d4ba83ebfc8e672 ]
+[ Upstream commit 01d70a4bbff20ea05cadb4c208841985a7cc6596 ]
 
-The scheduled tasklet needs to be executed on device remove.
+Factor out duplicated skcipher fallback handling code to a helper function
+sahara_aes_fallback(). Also, keep a single check if fallback is required in
+sahara_aes_crypt().
 
-Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
-Signed-off-by: wangyangxin <wangyangxin1@huawei.com>
-Signed-off-by: Gonglei <arei.gonglei@huawei.com>
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: d1d6351e37aa ("crypto: sahara - handle zero-length aes requests")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/virtio/virtio_crypto_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/crypto/sahara.c | 85 ++++++++++++-----------------------------
+ 1 file changed, 25 insertions(+), 60 deletions(-)
 
-diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
-index 428d76562447..b909c6a2bf1c 100644
---- a/drivers/crypto/virtio/virtio_crypto_core.c
-+++ b/drivers/crypto/virtio/virtio_crypto_core.c
-@@ -500,12 +500,15 @@ static void virtcrypto_free_unused_reqs(struct virtio_crypto *vcrypto)
- static void virtcrypto_remove(struct virtio_device *vdev)
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index e86df3c51787..a109f9bdbe04 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -648,12 +648,37 @@ static int sahara_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
+ 	return crypto_skcipher_setkey(ctx->fallback, key, keylen);
+ }
+ 
++static int sahara_aes_fallback(struct skcipher_request *req, unsigned long mode)
++{
++	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
++	struct sahara_ctx *ctx = crypto_skcipher_ctx(
++		crypto_skcipher_reqtfm(req));
++
++	skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
++	skcipher_request_set_callback(&rctx->fallback_req,
++				      req->base.flags,
++				      req->base.complete,
++				      req->base.data);
++	skcipher_request_set_crypt(&rctx->fallback_req, req->src,
++				   req->dst, req->cryptlen, req->iv);
++
++	if (mode & FLAGS_ENCRYPT)
++		return crypto_skcipher_encrypt(&rctx->fallback_req);
++
++	return crypto_skcipher_decrypt(&rctx->fallback_req);
++}
++
+ static int sahara_aes_crypt(struct skcipher_request *req, unsigned long mode)
  {
- 	struct virtio_crypto *vcrypto = vdev->priv;
-+	int i;
+ 	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
++	struct sahara_ctx *ctx = crypto_skcipher_ctx(
++		crypto_skcipher_reqtfm(req));
+ 	struct sahara_dev *dev = dev_ptr;
+ 	int err = 0;
  
- 	dev_info(&vdev->dev, "Start virtcrypto_remove.\n");
++	if (unlikely(ctx->keylen != AES_KEYSIZE_128))
++		return sahara_aes_fallback(req, mode);
++
+ 	dev_dbg(dev->device, "nbytes: %d, enc: %d, cbc: %d\n",
+ 		req->cryptlen, !!(mode & FLAGS_ENCRYPT), !!(mode & FLAGS_CBC));
  
- 	flush_work(&vcrypto->config_work);
- 	if (virtcrypto_dev_started(vcrypto))
- 		virtcrypto_dev_stop(vcrypto);
-+	for (i = 0; i < vcrypto->max_data_queues; i++)
-+		tasklet_kill(&vcrypto->data_vq[i].done_task);
- 	virtio_reset_device(vdev);
- 	virtcrypto_free_unused_reqs(vcrypto);
- 	virtcrypto_clear_crypto_engines(vcrypto);
+@@ -676,81 +701,21 @@ static int sahara_aes_crypt(struct skcipher_request *req, unsigned long mode)
+ 
+ static int sahara_aes_ecb_encrypt(struct skcipher_request *req)
+ {
+-	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
+-	struct sahara_ctx *ctx = crypto_skcipher_ctx(
+-		crypto_skcipher_reqtfm(req));
+-
+-	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
+-		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
+-		skcipher_request_set_callback(&rctx->fallback_req,
+-					      req->base.flags,
+-					      req->base.complete,
+-					      req->base.data);
+-		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
+-					   req->dst, req->cryptlen, req->iv);
+-		return crypto_skcipher_encrypt(&rctx->fallback_req);
+-	}
+-
+ 	return sahara_aes_crypt(req, FLAGS_ENCRYPT);
+ }
+ 
+ static int sahara_aes_ecb_decrypt(struct skcipher_request *req)
+ {
+-	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
+-	struct sahara_ctx *ctx = crypto_skcipher_ctx(
+-		crypto_skcipher_reqtfm(req));
+-
+-	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
+-		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
+-		skcipher_request_set_callback(&rctx->fallback_req,
+-					      req->base.flags,
+-					      req->base.complete,
+-					      req->base.data);
+-		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
+-					   req->dst, req->cryptlen, req->iv);
+-		return crypto_skcipher_decrypt(&rctx->fallback_req);
+-	}
+-
+ 	return sahara_aes_crypt(req, 0);
+ }
+ 
+ static int sahara_aes_cbc_encrypt(struct skcipher_request *req)
+ {
+-	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
+-	struct sahara_ctx *ctx = crypto_skcipher_ctx(
+-		crypto_skcipher_reqtfm(req));
+-
+-	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
+-		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
+-		skcipher_request_set_callback(&rctx->fallback_req,
+-					      req->base.flags,
+-					      req->base.complete,
+-					      req->base.data);
+-		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
+-					   req->dst, req->cryptlen, req->iv);
+-		return crypto_skcipher_encrypt(&rctx->fallback_req);
+-	}
+-
+ 	return sahara_aes_crypt(req, FLAGS_ENCRYPT | FLAGS_CBC);
+ }
+ 
+ static int sahara_aes_cbc_decrypt(struct skcipher_request *req)
+ {
+-	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
+-	struct sahara_ctx *ctx = crypto_skcipher_ctx(
+-		crypto_skcipher_reqtfm(req));
+-
+-	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
+-		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
+-		skcipher_request_set_callback(&rctx->fallback_req,
+-					      req->base.flags,
+-					      req->base.complete,
+-					      req->base.data);
+-		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
+-					   req->dst, req->cryptlen, req->iv);
+-		return crypto_skcipher_decrypt(&rctx->fallback_req);
+-	}
+-
+ 	return sahara_aes_crypt(req, FLAGS_CBC);
+ }
+ 
 -- 
 2.43.0
 
