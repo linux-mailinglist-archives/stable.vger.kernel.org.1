@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-14079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 182FB837F6A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 515F283818B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6AFB28F475
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E24D91F2430C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2554822062;
-	Tue, 23 Jan 2024 00:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA30E2CA6;
+	Tue, 23 Jan 2024 01:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSX92Lt2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEXR4rr2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D634162805;
-	Tue, 23 Jan 2024 00:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B33184;
+	Tue, 23 Jan 2024 01:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971119; cv=none; b=H0xJbrjbmp15+9FqmnGmPLQBnEEsx9z5LJXkChTvOHyaE2sp61/hhH04g4KSiBnjpC5mVz2fIMThInIcUvuEBADimM397p0Z2TEGPH//X/RTdxLCEnhjlvfn7gYvwxncSJvhtnoT5Mak0WQ7eP8WMQ1NKYQsnuUcAlROVLhZULc=
+	t=1705972170; cv=none; b=gXm6/rvcjhdTp/KvhWFZV7LsMoEvtMWQdQISNI4Re5SdaRT9upiEn/1dzsyHTsSuwqhJQoM3TnL1JMKwHQvkK3ZOrG7V5fE4b2PiyXUPuQgdJOnjQmf0ry7iaa99Hokj3Gm1+Zh40qIjpYndmDsoVdERULzUQtV90qt39NUS9co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971119; c=relaxed/simple;
-	bh=Spbv1FuG2mWKI1Rnmy9YHWTMG9kKgiufphQyCICvCZQ=;
+	s=arc-20240116; t=1705972170; c=relaxed/simple;
+	bh=NaXztnZaYQ7c26l080pQCu2Igr2ozjmNO0XvYTSkrus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8RC+2zg9VN63/H4UKNsPKzLNvJuFSwCMVsEU6s1lt+0uWEYzUilPi73nq6eJijkajuKVJAaeqt/Jx7xbTi32PsEkXCqr+600icMgPD8ziNsbQZdNTArIB6WEgqyKcUSKyJKR5Mdk0ntSn8e4PDJQkMA8G64ws6Qji5UGynRZpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSX92Lt2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317E9C43390;
-	Tue, 23 Jan 2024 00:51:59 +0000 (UTC)
+	 MIME-Version; b=Bi5ITJKwGkIpEBrcjQMlrQBpjnbZqkRsBhuvNWUMOENwwQjWflZQL2IHUrhRINAWOf+akyqDiORvpb8seFYVXSN1EwAjNNPe1fSFdrfI/ezJJQxPcGq5G16BzIO0aNVdzIL1mbKn1etErlXkVm7Z2vqJgsmVvaAHfcCbqhCqRS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEXR4rr2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F3E4C43394;
+	Tue, 23 Jan 2024 01:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971119;
-	bh=Spbv1FuG2mWKI1Rnmy9YHWTMG9kKgiufphQyCICvCZQ=;
+	s=korg; t=1705972170;
+	bh=NaXztnZaYQ7c26l080pQCu2Igr2ozjmNO0XvYTSkrus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSX92Lt2i/FNwiEItzekGCRgT0+uwZTxBU+eiqTgMCSOeMSD9UEIPWeywte5gIeVz
-	 AvlZJY0AVKM+wR91bGdikQCr4x61zriv2Kap2ZIX0+y21Q6tjbAXf39g+Isx8zM8Ii
-	 CROnqnfczS6JNHw5g2pwIEpbT14Yr7Qy9N5xkBvI=
+	b=QEXR4rr2BcmnyRkWFv95IQwqt1gDqtkr/PVsxUUAcOZzlvI53b1+k+4YLkwExID4j
+	 wnEQk4NDdesTygxfmBlcmjbph8EGM8o7BLgpVa3k3s/kOZeu1XCeYUNFmg/d/3T+wx
+	 f/OSsit6Oa6Y5q1vyPdoqRAxtPNSz85yISfzOWhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Curtis Malainey <cujomalainey@chromium.org>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Brent Lu <brent.lu@intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 184/417] ASoC: Intel: glk_rt5682_max98357a: fix board id mismatch
+Subject: [PATCH 5.15 096/374] crypto: ccp - fix memleak in ccp_init_dm_workarea
 Date: Mon, 22 Jan 2024 15:55:52 -0800
-Message-ID: <20240122235758.247310216@linuxfoundation.org>
+Message-ID: <20240122235747.942985226@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brent Lu <brent.lu@intel.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-[ Upstream commit 486ede0df82dd74472c6f5651e38ff48f7f766c1 ]
+[ Upstream commit a1c95dd5bc1d6a5d7a75a376c2107421b7d6240d ]
 
-The drv_name in enumeration table for ALC5682I-VS codec does not match
-the board id string in machine driver. Modify the entry of "10EC5682"
-to enumerate "RTL5682" as well and remove invalid entry.
+When dma_map_single() fails, wa->address is supposed to be freed
+by the callers of ccp_init_dm_workarea() through ccp_dm_free().
+However, many of the call spots don't expect to have to call
+ccp_dm_free() on failure of ccp_init_dm_workarea(), which may
+lead to a memleak. Let's free wa->address in ccp_init_dm_workarea()
+when dma_map_single() fails.
 
-Fixes: 88b4d77d6035 ("ASoC: Intel: glk_rt5682_max98357a: support ALC5682I-VS codec")
-Reported-by: Curtis Malainey <cujomalainey@chromium.org>
-Reviewed-by: Curtis Malainey <cujomalainey@chromium.org>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Brent Lu <brent.lu@intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20231204214200.203100-4-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 63b945091a07 ("crypto: ccp - CCP device driver and interface support")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/common/soc-acpi-intel-glk-match.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/crypto/ccp/ccp-ops.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/common/soc-acpi-intel-glk-match.c b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
-index 387e73100884..8911c90bbaf6 100644
---- a/sound/soc/intel/common/soc-acpi-intel-glk-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
-@@ -19,6 +19,11 @@ static const struct snd_soc_acpi_codecs glk_codecs = {
- 	.codecs = {"MX98357A"}
- };
+diff --git a/drivers/crypto/ccp/ccp-ops.c b/drivers/crypto/ccp/ccp-ops.c
+index aa4e1a500691..cb8e99936abb 100644
+--- a/drivers/crypto/ccp/ccp-ops.c
++++ b/drivers/crypto/ccp/ccp-ops.c
+@@ -179,8 +179,11 @@ static int ccp_init_dm_workarea(struct ccp_dm_workarea *wa,
  
-+static const struct snd_soc_acpi_codecs glk_rt5682_rt5682s_hp = {
-+	.num_codecs = 2,
-+	.codecs = {"10EC5682", "RTL5682"},
-+};
-+
- struct snd_soc_acpi_mach snd_soc_acpi_intel_glk_machines[] = {
- 	{
- 		.id = "INT343A",
-@@ -35,20 +40,13 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_glk_machines[] = {
- 		.sof_tplg_filename = "sof-glk-da7219.tplg",
- 	},
- 	{
--		.id = "10EC5682",
-+		.comp_ids = &glk_rt5682_rt5682s_hp,
- 		.drv_name = "glk_rt5682_mx98357a",
- 		.fw_filename = "intel/dsp_fw_glk.bin",
- 		.machine_quirk = snd_soc_acpi_codec_list,
- 		.quirk_data = &glk_codecs,
- 		.sof_tplg_filename = "sof-glk-rt5682.tplg",
- 	},
--	{
--		.id = "RTL5682",
--		.drv_name = "glk_rt5682_max98357a",
--		.machine_quirk = snd_soc_acpi_codec_list,
--		.quirk_data = &glk_codecs,
--		.sof_tplg_filename = "sof-glk-rt5682.tplg",
--	},
- 	{
- 		.id = "10134242",
- 		.drv_name = "glk_cs4242_mx98357a",
+ 		wa->dma.address = dma_map_single(wa->dev, wa->address, len,
+ 						 dir);
+-		if (dma_mapping_error(wa->dev, wa->dma.address))
++		if (dma_mapping_error(wa->dev, wa->dma.address)) {
++			kfree(wa->address);
++			wa->address = NULL;
+ 			return -ENOMEM;
++		}
+ 
+ 		wa->dma.length = len;
+ 	}
 -- 
 2.43.0
 
