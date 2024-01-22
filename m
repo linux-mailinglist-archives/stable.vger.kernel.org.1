@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C338380ED
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB8BA838087
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7609B1F26D40
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8382128604A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DF01353E6;
-	Tue, 23 Jan 2024 01:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332F812F5BF;
+	Tue, 23 Jan 2024 01:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtwh79Vw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhvHC16E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C0E1350CA;
-	Tue, 23 Jan 2024 01:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4838657B3;
+	Tue, 23 Jan 2024 01:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971966; cv=none; b=l+ii64EdWLBWT1DQG0eubvbJqc4ZLmCFBF6TI75zdM/dLkXmKm8p5nn/0Zy4H15giINzGjtzhu0LvC8Egjozx937d5KT87Jn8AjEW3cCmDBN6NWNUnvtZY3Gr/tsEUoImpNfNJF0VoxsszmcDr3JIsq+JrL2AL3t0/Ngs2GlDyY=
+	t=1705971776; cv=none; b=AEYDB6ikB8BpGLLTSMEJUTCA1V4LmwfRt9T3VkduSK+aCYw0N/9MtHmJgEdmsfDqy6P0P65utYFoacibcmsg0hFbx5pXKd440EJL5qf5FgaAU1w7Fv2Ct26IA5A41JdZPkC9AzEbnmeF6uK0VU2G7sh5vjOK2HbpZKoztWw+9sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971966; c=relaxed/simple;
-	bh=tGS4t30J65YdQZ1088v0wGOafuAuvu0bg4hPNeLwgtc=;
+	s=arc-20240116; t=1705971776; c=relaxed/simple;
+	bh=6Ml6X4iqHkOLfjC0Ed0zbsFyvvAPcnNqRyJo8VC/DHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AvWz0whI3ahLjW5dlIVBQihBN0/peSY8yE6Qnl0hqEtq7DDzmBaHQbMLiBdiuL9X0zmEhsp/SQjVlkxWbvIYqfpplbKgReFmVwTNVyQpl7rnVZP8saFh/xXn85Rt2EcP35450PUFx6fqmAMFsbOAT+YnH1UxPgc4dJGC91RBEkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtwh79Vw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32134C433F1;
-	Tue, 23 Jan 2024 01:06:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mR/16jJR9glr3vM5Pwrm6NwlqxnQyqwjOisAwd8yeMP0A1ze3TdnWhiGreR0UWNhMolBxUDrQsSBujsI30nYJZcs6DJskReZQynb7qaE9Nyzx05l9E4Pjg1Wng3u6AeyVjh04xEczmsr+AMwsaEEfmoYGQWehs5u2ysZwidvJiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhvHC16E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F47C433C7;
+	Tue, 23 Jan 2024 01:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971966;
-	bh=tGS4t30J65YdQZ1088v0wGOafuAuvu0bg4hPNeLwgtc=;
+	s=korg; t=1705971775;
+	bh=6Ml6X4iqHkOLfjC0Ed0zbsFyvvAPcnNqRyJo8VC/DHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xtwh79VwgYTG4J/J1msNMQsSFqL+mbMe2HMhhsM9bhKyvr+7NRFxtmlGXvyuDkGKs
-	 yLg4y0IYYOuBX6TFSOnqfZ7mPN9DGB7jkpFktGTLRjc/J0bqd5g+Ei17EekDz+FGsz
-	 GyOEvIY9kaeKMHLwGWXak3fBr+eA92zFXCE70lUI=
+	b=xhvHC16EK28xLmDgirKAIpUBcSxMEw5NTmsIsi8fjqZHlFnVFkwg2J8hYxHncegOZ
+	 fuvmgj+tDbYiLdbljRaA80UT5En/Z0qfHBINc8Doho/3tpf9wa8+M9wSnfOErAnf3B
+	 pseTO+021IndcprXeWYlkQxNV2cJuFjxfKYw5Xkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Douglas Anderson <dianders@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 361/417] usb: core: Fix crash w/ usb_choose_configuration() if no driver
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 5.10 223/286] pwm: jz4740: Dont use dev_err_probe() in .request()
 Date: Mon, 22 Jan 2024 15:58:49 -0800
-Message-ID: <20240122235804.329671347@linuxfoundation.org>
+Message-ID: <20240122235740.668517204@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +59,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 44995e6f07028f798efd0c3c11a1efc78330f600 ]
+commit 9320fc509b87b4d795fb37112931e2f4f8b5c55f upstream.
 
-It's possible that usb_choose_configuration() can get called when a
-USB device has no driver. In this case the recent commit a87b8e3be926
-("usb: core: Allow subclassed USB drivers to override
-usb_choose_configuration()") can cause a crash since it dereferenced
-the driver structure without checking for NULL. Let's add a check.
+dev_err_probe() is only supposed to be used in probe functions. While it
+probably doesn't hurt, both the EPROBE_DEFER handling and calling
+device_set_deferred_probe_reason() are conceptually wrong in the request
+callback. So replace the call by dev_err() and a separate return
+statement.
 
-A USB device with no driver is an anomaly, so make
-usb_choose_configuration() return immediately if there is no driver.
+This effectively reverts commit c0bfe9606e03 ("pwm: jz4740: Simplify
+with dev_err_probe()").
 
-This was seen in the real world when usbguard got ahold of a r8152
-device at the wrong time. It can also be simulated via this on a
-computer with one r8152-based USB Ethernet adapter:
-  cd /sys/bus/usb/drivers/r8152-cfgselector
-  to_unbind="$(ls -d *-*)"
-  real_dir="$(readlink -f "${to_unbind}")"
-  echo "${to_unbind}" > unbind
-  cd "${real_dir}"
-  echo 0 > authorized
-  echo 1 > authorized
-
-Fixes: a87b8e3be926 ("usb: core: Allow subclassed USB drivers to override usb_choose_configuration()")
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20231211073237.v3.1.If27eb3bf7812f91ab83810f232292f032f4203e0@changeid
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240106141302.1253365-2-u.kleine-koenig@pengutronix.de
+Fixes: c0bfe9606e03 ("pwm: jz4740: Simplify with dev_err_probe()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/generic.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/pwm/pwm-jz4740.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/core/generic.c b/drivers/usb/core/generic.c
-index dcb897158228..b134bff5c3fe 100644
---- a/drivers/usb/core/generic.c
-+++ b/drivers/usb/core/generic.c
-@@ -59,7 +59,16 @@ int usb_choose_configuration(struct usb_device *udev)
- 	int num_configs;
- 	int insufficient_power = 0;
- 	struct usb_host_config *c, *best;
--	struct usb_device_driver *udriver = to_usb_device_driver(udev->dev.driver);
-+	struct usb_device_driver *udriver;
-+
-+	/*
-+	 * If a USB device (not an interface) doesn't have a driver then the
-+	 * kernel has no business trying to select or install a configuration
-+	 * for it.
-+	 */
-+	if (!udev->dev.driver)
-+		return -1;
-+	udriver = to_usb_device_driver(udev->dev.driver);
+--- a/drivers/pwm/pwm-jz4740.c
++++ b/drivers/pwm/pwm-jz4740.c
+@@ -60,9 +60,10 @@ static int jz4740_pwm_request(struct pwm
+ 	snprintf(name, sizeof(name), "timer%u", pwm->hwpwm);
  
- 	if (usb_device_is_owned(udev))
- 		return 0;
--- 
-2.43.0
-
+ 	clk = clk_get(chip->dev, name);
+-	if (IS_ERR(clk))
+-		return dev_err_probe(chip->dev, PTR_ERR(clk),
+-				     "Failed to get clock\n");
++	if (IS_ERR(clk)) {
++		dev_err(chip->dev, "error %pe: Failed to get clock\n", clk);
++		return PTR_ERR(clk);
++	}
+ 
+ 	err = clk_prepare_enable(clk);
+ 	if (err < 0) {
 
 
 
