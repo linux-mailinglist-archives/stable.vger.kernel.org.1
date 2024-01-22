@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-15261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E3D83848A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A55838259
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:19:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26112299A40
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 141CB1F27610
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:19:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262C973163;
-	Tue, 23 Jan 2024 02:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A791B5B5C5;
+	Tue, 23 Jan 2024 01:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2PazCkZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCe2seuF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3C56EB61;
-	Tue, 23 Jan 2024 02:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657C55B5A1;
+	Tue, 23 Jan 2024 01:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975419; cv=none; b=dTyQqOvaIuTUwwcrcC1sbWDvZfUS9pDcTBxwX1mA6W82zR3dbMS/gULPfr54IeOv1Ms+iaEo7KQD1LIbXrF4dEf0MSfSY8kICqAkJMN5b+Sls4pJ8EOkcDGW9RftyjE3XWIocPvkTSZcOMdcscGz6jiQpZ0dQLkLjlKDMVfPiec=
+	t=1705974330; cv=none; b=B9fhsjSSXN+YaJHIsGURqcD7ItSCVIivVsyXGI5Jxny7cUsY8MMyGX5PPH9XKeJu9u87S+VQl1szlGBdHsK3Vqw2l40oewA/r/X0fkAB59AyQ/eZ6f0CXINQQ3rx0Y24Qh/cSaz98vSlEA8VkHpLLutpOKWYlUMXcCYU8Zvexmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975419; c=relaxed/simple;
-	bh=sTmNAHE0BjYD50YvA+/ucgu40Yvz+8jLKdECi6SOzIY=;
+	s=arc-20240116; t=1705974330; c=relaxed/simple;
+	bh=ghL55uhOregF0OtdBzomylxIwCVsOp95o8N8lInDr1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VbHGlXeldN9mP9uhfVEiDoWTQ1i9aSVWVrXnT07VdeOB7tGjj98YNEofs/WgLbxdO/J3egDFISWFHevfp8ITkDcLXYnT/05u0echo5lP6a8WT51zUYivMB0fQzelJowybXs61p1Mzef8Qz5IYVVCO/UMTmEpqqmHrjKY6WZCCsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2PazCkZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7D8C433C7;
-	Tue, 23 Jan 2024 02:03:39 +0000 (UTC)
+	 MIME-Version; b=P1SaUdAKdByf5yvpFEEM67Pdoa4b1iobqCYegCs8FjEgQrYkHN47549Cda1YXZpSXX558rKypLMkHBgDQ4kw9zB/Z7zS5bABi3e23ryGqol8s6a3htY3szBcU64OsNfpKzWcxqfhpW+1IE+fBQEckdYG0ILvoNG/H/29EvrqZ9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCe2seuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B9AC43394;
+	Tue, 23 Jan 2024 01:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975419;
-	bh=sTmNAHE0BjYD50YvA+/ucgu40Yvz+8jLKdECi6SOzIY=;
+	s=korg; t=1705974330;
+	bh=ghL55uhOregF0OtdBzomylxIwCVsOp95o8N8lInDr1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z2PazCkZ2k8ABUYxxYPtZpl8jaOPBZWDwhAWqgjbEOP76Gr0gzwntd+ZYgJA+ZAVf
-	 7m2Nn0yHoN9zWtvZXa+fIRk0mSCV566EZHuHWUsfbqcsQP+WeBUMSNQnV+YjX9TuGk
-	 zD816R0JiMUeE40eAVyKNFoQk+4OuA/g4Ah+Zb8Q=
+	b=mCe2seuF2m6Yv7fZb1TuHEbzc6VBrHlaIyKfoZOs9eITGkkZYx1dKSjQ/+D9pQSuE
+	 Y7thvd3LJFCUAdxEtBf/6WJ1i84HNnj7KHSU6ifXYQ2IuTmiXzZETiPjDB8N2PS2iw
+	 lDj+F936gCkgUOQNf5okvXA+8BDtXqCCOMwGv8CE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.6 378/583] serial: omap: do not override settings for RS485 support
+	David Thompson <davthompson@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 173/374] mlxbf_gige: Enable the GigE port in mlxbf_gige_open
 Date: Mon, 22 Jan 2024 15:57:09 -0800
-Message-ID: <20240122235823.577973688@linuxfoundation.org>
+Message-ID: <20240122235750.655011515@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,109 +62,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Asmaa Mnebhi <asmaa@nvidia.com>
 
-commit 51f93776b84dee23e44a7be880736669a01cec2b upstream.
+[ Upstream commit a460f4a684511e007bbf1700758a41f05d9981e6 ]
 
-The drivers RS485 support is deactivated if there is no RTS GPIO available.
-This is done by nullifying the ports rs485_supported struct. After that
-however the settings in serial_omap_rs485_supported are assigned to the
-same structure unconditionally, which results in an unintended reactivation
-of RS485 support.
+At the moment, the GigE port is enabled in the mlxbf_gige_probe
+function. If the mlxbf_gige_open is not executed, this could cause
+pause frames to increase in the case where there is high backgroud
+traffic. This results in clogging the port.
+So move enabling the OOB port to mlxbf_gige_open.
 
-Fix this by moving the assignment to the beginning of
-serial_omap_probe_rs485() and thus before uart_get_rs485_mode() gets
-called.
-
-Also replace the assignment of rs485_config() to have the complete RS485
-setup in one function.
-
-Fixes: e2752ae3cfc9 ("serial: omap: Disallow RS-485 if rts-gpio is not specified")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240103061818.564-7-l.sanfilippo@kunbus.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/omap-serial.c |   27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c   | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/tty/serial/omap-serial.c
-+++ b/drivers/tty/serial/omap-serial.c
-@@ -1483,6 +1483,13 @@ static struct omap_uart_port_info *of_ge
- 	return omap_up_info;
- }
- 
-+static const struct serial_rs485 serial_omap_rs485_supported = {
-+	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND |
-+		 SER_RS485_RX_DURING_TX,
-+	.delay_rts_before_send = 1,
-+	.delay_rts_after_send = 1,
-+};
-+
- static int serial_omap_probe_rs485(struct uart_omap_port *up,
- 				   struct device *dev)
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+index 181a0845a105..679415a64f25 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+@@ -132,9 +132,15 @@ static int mlxbf_gige_open(struct net_device *netdev)
  {
-@@ -1497,6 +1504,9 @@ static int serial_omap_probe_rs485(struc
- 	if (!np)
- 		return 0;
+ 	struct mlxbf_gige *priv = netdev_priv(netdev);
+ 	struct phy_device *phydev = netdev->phydev;
++	u64 control;
+ 	u64 int_en;
+ 	int err;
  
-+	up->port.rs485_config = serial_omap_config_rs485;
-+	up->port.rs485_supported = serial_omap_rs485_supported;
++	/* Perform general init of GigE block */
++	control = readq(priv->base + MLXBF_GIGE_CONTROL);
++	control |= MLXBF_GIGE_CONTROL_PORT_EN;
++	writeq(control, priv->base + MLXBF_GIGE_CONTROL);
 +
- 	ret = uart_get_rs485_mode(&up->port);
- 	if (ret)
- 		return ret;
-@@ -1531,13 +1541,6 @@ static int serial_omap_probe_rs485(struc
- 	return 0;
- }
+ 	err = mlxbf_gige_request_irqs(priv);
+ 	if (err)
+ 		return err;
+@@ -281,7 +287,6 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
+ 	void __iomem *plu_base;
+ 	void __iomem *base;
+ 	int addr, phy_irq;
+-	u64 control;
+ 	int err;
  
--static const struct serial_rs485 serial_omap_rs485_supported = {
--	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND |
--		 SER_RS485_RX_DURING_TX,
--	.delay_rts_before_send = 1,
--	.delay_rts_after_send = 1,
--};
+ 	base = devm_platform_ioremap_resource(pdev, MLXBF_GIGE_RES_MAC);
+@@ -296,11 +301,6 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
+ 	if (IS_ERR(plu_base))
+ 		return PTR_ERR(plu_base);
+ 
+-	/* Perform general init of GigE block */
+-	control = readq(base + MLXBF_GIGE_CONTROL);
+-	control |= MLXBF_GIGE_CONTROL_PORT_EN;
+-	writeq(control, base + MLXBF_GIGE_CONTROL);
 -
- static int serial_omap_probe(struct platform_device *pdev)
- {
- 	struct omap_uart_port_info *omap_up_info = dev_get_platdata(&pdev->dev);
-@@ -1604,17 +1607,11 @@ static int serial_omap_probe(struct plat
- 		dev_info(up->port.dev, "no wakeirq for uart%d\n",
- 			 up->port.line);
- 
--	ret = serial_omap_probe_rs485(up, &pdev->dev);
--	if (ret < 0)
--		goto err_rs485;
--
- 	sprintf(up->name, "OMAP UART%d", up->port.line);
- 	up->port.mapbase = mem->start;
- 	up->port.membase = base;
- 	up->port.flags = omap_up_info->flags;
- 	up->port.uartclk = omap_up_info->uartclk;
--	up->port.rs485_config = serial_omap_config_rs485;
--	up->port.rs485_supported = serial_omap_rs485_supported;
- 	if (!up->port.uartclk) {
- 		up->port.uartclk = DEFAULT_CLK_SPEED;
- 		dev_warn(&pdev->dev,
-@@ -1622,6 +1619,10 @@ static int serial_omap_probe(struct plat
- 			 DEFAULT_CLK_SPEED);
- 	}
- 
-+	ret = serial_omap_probe_rs485(up, &pdev->dev);
-+	if (ret < 0)
-+		goto err_rs485;
-+
- 	up->latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
- 	up->calc_latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
- 	cpu_latency_qos_add_request(&up->pm_qos_request, up->latency);
+ 	netdev = devm_alloc_etherdev(&pdev->dev, sizeof(*priv));
+ 	if (!netdev)
+ 		return -ENOMEM;
+-- 
+2.43.0
+
 
 
 
