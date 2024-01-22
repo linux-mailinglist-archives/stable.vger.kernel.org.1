@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-12874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4096E8378C8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B0B837A30
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C92AEB23563
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61A891F288BC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8DA5662;
-	Tue, 23 Jan 2024 00:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D244412AAE5;
+	Tue, 23 Jan 2024 00:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JqhhPdv/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="awIUjtcc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEA33205;
-	Tue, 23 Jan 2024 00:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91AE012A17F;
+	Tue, 23 Jan 2024 00:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968247; cv=none; b=r1gtRVwcdGmrJfIn5hxQ4KqRp0Ckr8oDxgu7BHFvgS+ipX+S0v5O+vha836ncXiYWF2KnJ4WqwDkW//qcJrPUDbwS46/S6qzJUhMfLBnjN2zFL1emttIoNNjCPeKZSZ1wxWld05RuOFahMabGiRHw1EZ96kaGvqKubu+EqueVbI=
+	t=1705968783; cv=none; b=hkew9BhSzp+sl0hbI0B7wglFXoQMGuaOK8jyZLFLJPWErAuUjEaNH5FGCTvgLfKqRnGuSqvPRXxq9eh6SA6a0DsSznKRO7DcFWleJvPUw1o2V0++yrjqSO9MlgH/bkQnvO6vgU7G0zhAOtlRp/KeWJwsnfc4Zw8m5FM89MddZpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968247; c=relaxed/simple;
-	bh=VccSRJGDjsoiNrVXuORq4aOmdhwBYINX5Qy4HZmB3Jg=;
+	s=arc-20240116; t=1705968783; c=relaxed/simple;
+	bh=es8+dCoBIJRSpq6NOc9mJ0xOOnNfMRc4ZCPvv7Hc4Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qYTBEWKl2zcBeE9SNJ7mMGUjfoEIdBtIs0qrL9xRtYpTOhA0tSD3cN0jRHYIpzizu2ltjysb2TAjT3E3ofSSnpmNNpEN6IHs/n7zaP+QLIk9Nu7MsBqLZAM7MYKsX3lXicleIlNZ6aQkpVPaGBJL1rXnvderWL9DrUu7Dql0Gjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JqhhPdv/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D26C433F1;
-	Tue, 23 Jan 2024 00:04:06 +0000 (UTC)
+	 MIME-Version; b=aekAKUvgr1P2BshLsAU8TwPyD0BLtGLfnp3u8PEJfWMVfa1eNH+gB7YKEFNmS+Dvg14e7JTfTuz96dpQ+/u2Ew1Ug3PIJWfWN+15w7TndGMuS2TF+pJy1kA0fwE0z5KcjUqwuwiyBLwyuWYVojPHTanSr6Og/NJlLOUK42kzHyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awIUjtcc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409F6C433F1;
+	Tue, 23 Jan 2024 00:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968246;
-	bh=VccSRJGDjsoiNrVXuORq4aOmdhwBYINX5Qy4HZmB3Jg=;
+	s=korg; t=1705968783;
+	bh=es8+dCoBIJRSpq6NOc9mJ0xOOnNfMRc4ZCPvv7Hc4Bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JqhhPdv/njv+TyZ2fpHsRHJlbEYQj93Vc2p0q+n18p3iaasM/HuC4j4+eyTTGRoK1
-	 hPEv39TZDQ5E+AUyFzLFSpV+BMoi3kqmxdQ8pdoPaCWDlny/gi59/HtwGi0nXO8W3W
-	 gQ9xzYGx28B6o3Fanq2hb9pe8dKVIzLhFDmJz86U=
+	b=awIUjtcc81hy+HJySixEv3amqwD/0ec6KFV7Sb3VbiaP2MPyE496+A74tQpUZjWXl
+	 v+81/7I9+Yh6HX1bcJqFpmOa6+XdbTzaPWxTw2x0oDw8Okk2xu+7qi1qdr1STUkm7v
+	 n/ToBT3n2IcxG20CDieTD0kLcyhUzlhz0eVonLrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 4.19 023/148] binder: use EPOLLERR from eventpoll.h
+	Kunwu Chan <chentao@kylinos.cn>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 049/194] powerpc/powernv: Add a null pointer check in opal_powercap_init()
 Date: Mon, 22 Jan 2024 15:56:19 -0800
-Message-ID: <20240122235713.366562646@linuxfoundation.org>
+Message-ID: <20240122235721.306906945@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-commit 6ac061db9c58ca5b9270b1b3940d2464fb3ff183 upstream.
+[ Upstream commit e123015c0ba859cf48aa7f89c5016cc6e98e018d ]
 
-Use EPOLLERR instead of POLLERR to make sure it is cast to the correct
-__poll_t type. This fixes the following sparse issue:
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-  drivers/android/binder.c:5030:24: warning: incorrect type in return expression (different base types)
-  drivers/android/binder.c:5030:24:    expected restricted __poll_t
-  drivers/android/binder.c:5030:24:    got int
-
-Fixes: f88982679f54 ("binder: check for binder_thread allocation failure in binder_poll()")
-Cc: stable@vger.kernel.org
-Cc: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-2-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b9ef7b4b867f ("powerpc: Convert to using %pOFn instead of device_node.name")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231126095739.1501990-1-chentao@kylinos.cn
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/powernv/opal-powercap.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -4462,7 +4462,7 @@ static __poll_t binder_poll(struct file
+diff --git a/arch/powerpc/platforms/powernv/opal-powercap.c b/arch/powerpc/platforms/powernv/opal-powercap.c
+index dc599e787f78..0de530b5fead 100644
+--- a/arch/powerpc/platforms/powernv/opal-powercap.c
++++ b/arch/powerpc/platforms/powernv/opal-powercap.c
+@@ -196,6 +196,12 @@ void __init opal_powercap_init(void)
  
- 	thread = binder_get_thread(proc);
- 	if (!thread)
--		return POLLERR;
-+		return EPOLLERR;
- 
- 	binder_inner_proc_lock(thread->proc);
- 	thread->looper |= BINDER_LOOPER_STATE_POLL;
+ 		j = 0;
+ 		pcaps[i].pg.name = kasprintf(GFP_KERNEL, "%pOFn", node);
++		if (!pcaps[i].pg.name) {
++			kfree(pcaps[i].pattrs);
++			kfree(pcaps[i].pg.attrs);
++			goto out_pcaps_pattrs;
++		}
++
+ 		if (has_min) {
+ 			powercap_add_attr(min, "powercap-min",
+ 					  &pcaps[i].pattrs[j]);
+-- 
+2.43.0
+
 
 
 
