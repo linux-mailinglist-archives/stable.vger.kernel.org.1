@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-12852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2653D8378A7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE23837A40
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5900B1C27461
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63EA91C2866A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063D52B9CB;
-	Tue, 23 Jan 2024 00:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A95E12BE94;
+	Tue, 23 Jan 2024 00:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBb+Xe4f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sF/z/TML"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60182B9A0;
-	Tue, 23 Jan 2024 00:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADB712BE87;
+	Tue, 23 Jan 2024 00:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968181; cv=none; b=ena4ZM2CcaWS0F58KM4fB1xRjftg4S4lvrfcOzc0ZhRI5uL5VCS7d3TEKanbpmMIdhbPzErnm0kuOMlidGvhlXnnJeqgr5T11ALdIsKfvuGpeP3B+iVewQ0EAiSnGd/tFOEP9h8Ec2fzu/szxOUTAXkMNJ55OmHR173/b7JmAro=
+	t=1705968827; cv=none; b=VwKHm59fD2i0M/q5iBB3GtxDko+Z8AtmzpJIYfXOfeLy2ogwlnCTPRv3UxNZk236eQ7vyDkuDsRAAysBWZIQuvIAWC+66+0eBq7jTJk9/n5j+7mH7ChC9X5lnpngj+ypRu/SeKNflvGbh4IlnuZ+NKODCblXDgDLH1RZDNKfthg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968181; c=relaxed/simple;
-	bh=KSMG2LTj8pnRkYyr8e1ETYzxiGs/Fre+DVSP/OdfLTM=;
+	s=arc-20240116; t=1705968827; c=relaxed/simple;
+	bh=eTxkAu3JyJfxYCVHC8la8AvNnLwj5bIFuP7pndkD1jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mNl5qOBDuKLF1EH8iiUUXqjDH6j2ZaUgrjk/15E5Y2iULU9D/GLTbtt9AG6+lQUqoaiZP6lE2cdW2q0ylZxtu8628qHpHEVtoz6AsDMBZO6NTUG9oKGhTHSyG3UpXRW2NFGZ3SH3qGVAR/0B9/024iv2+CWiCNcDklWZXFAmWyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBb+Xe4f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65524C433C7;
-	Tue, 23 Jan 2024 00:03:01 +0000 (UTC)
+	 MIME-Version; b=UafUPVlp5TARlxNn0eaiA/40PreQShR3+H5YpTsubaMP7byte/KsBH5LgfKywefY5UQpoybjXHV3mVop44o0OSRtL47nRRBF0Gf4rP/UEMpKSYjdD9meuXi2LgPNmoZsv9M7fo5zt58vhrQwXnK5lk8s6OqoeeP6aJSuLKRV2Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sF/z/TML; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A07C433F1;
+	Tue, 23 Jan 2024 00:13:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968181;
-	bh=KSMG2LTj8pnRkYyr8e1ETYzxiGs/Fre+DVSP/OdfLTM=;
+	s=korg; t=1705968827;
+	bh=eTxkAu3JyJfxYCVHC8la8AvNnLwj5bIFuP7pndkD1jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBb+Xe4fvOVsj6wD2e4DFbhgX9FlWbMNUTAgKvOa5ppZWs0gbGIO7t1I2njSOSSJd
-	 Jd4vVpMM/PA0dSc8XbFMKQnqeA7fy7pCbsP5A5q0bDKuoVJxS6Hxe4AE3Ej0eTwLO/
-	 nVkPlgyj2fswTZBbcR4Qe+2dGaqkNeP8F0D+QihE=
+	b=sF/z/TMLgux0jCR84vCtCBD7PQM7ziFIJ585QIKoItRp0h54NpfoGHWgw7larEMu3
+	 48ZlaUVxWhQ7xdJJB1lZB9DH7rdd6J4ar/6IBy/stykG4mz/c6QlhzJ+Y91AkbLy2y
+	 Ij+o2umRJ7Kj/RWpzv3zDKkA5FHrTHEU7bJD/780=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Gonglei <arei.gonglei@huawei.com>,
+	zhenwei pi <pizhenwei@bytedance.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 036/148] powerpc/imc-pmu: Add a null pointer check in update_events_in_group()
+Subject: [PATCH 5.4 062/194] virtio_crypto: Introduce VIRTIO_CRYPTO_NOSPC
 Date: Mon, 22 Jan 2024 15:56:32 -0800
-Message-ID: <20240122235713.868033863@linuxfoundation.org>
+Message-ID: <20240122235721.868276093@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: zhenwei pi <pizhenwei@bytedance.com>
 
-[ Upstream commit 0a233867a39078ebb0f575e2948593bbff5826b3 ]
+[ Upstream commit 13d640a3e9a3ac7ec694843d3d3b785e85fb8cb8 ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+Base on the lastest virtio crypto spec, define VIRTIO_CRYPTO_NOSPC.
 
-Fixes: 885dcd709ba9 ("powerpc/perf: Add nest IMC PMU support")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231126093719.1440305-1-chentao@kylinos.cn
+Reviewed-by: Gonglei <arei.gonglei@huawei.com>
+Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+Link: https://lore.kernel.org/r/20220302033917.1295334-2-pizhenwei@bytedance.com
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Stable-dep-of: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/imc-pmu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/uapi/linux/virtio_crypto.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-index 555322677074..65ee4fe863b2 100644
---- a/arch/powerpc/perf/imc-pmu.c
-+++ b/arch/powerpc/perf/imc-pmu.c
-@@ -261,6 +261,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
- 	attr_group->attrs = attrs;
- 	do {
- 		ev_val_str = kasprintf(GFP_KERNEL, "event=0x%x", pmu->events[i].value);
-+		if (!ev_val_str)
-+			continue;
- 		dev_str = device_str_attr_create(pmu->events[i].name, ev_val_str);
- 		if (!dev_str)
- 			continue;
-@@ -268,6 +270,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
- 		attrs[j++] = dev_str;
- 		if (pmu->events[i].scale) {
- 			ev_scale_str = kasprintf(GFP_KERNEL, "%s.scale", pmu->events[i].name);
-+			if (!ev_scale_str)
-+				continue;
- 			dev_str = device_str_attr_create(ev_scale_str, pmu->events[i].scale);
- 			if (!dev_str)
- 				continue;
-@@ -277,6 +281,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
+diff --git a/include/uapi/linux/virtio_crypto.h b/include/uapi/linux/virtio_crypto.h
+index 50cdc8aebfcf..05330284eb59 100644
+--- a/include/uapi/linux/virtio_crypto.h
++++ b/include/uapi/linux/virtio_crypto.h
+@@ -408,6 +408,7 @@ struct virtio_crypto_op_data_req {
+ #define VIRTIO_CRYPTO_BADMSG    2
+ #define VIRTIO_CRYPTO_NOTSUPP   3
+ #define VIRTIO_CRYPTO_INVSESS   4 /* Invalid session id */
++#define VIRTIO_CRYPTO_NOSPC     5 /* no free session ID */
  
- 		if (pmu->events[i].unit) {
- 			ev_unit_str = kasprintf(GFP_KERNEL, "%s.unit", pmu->events[i].name);
-+			if (!ev_unit_str)
-+				continue;
- 			dev_str = device_str_attr_create(ev_unit_str, pmu->events[i].unit);
- 			if (!dev_str)
- 				continue;
+ /* The accelerator hardware is ready */
+ #define VIRTIO_CRYPTO_S_HW_READY  (1 << 0)
 -- 
 2.43.0
 
