@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB88F8381C4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:12:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1ECD837E9D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C66DB2857C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3E541C24097
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651C1148FF9;
-	Tue, 23 Jan 2024 01:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1B560B89;
+	Tue, 23 Jan 2024 00:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZ/oXkYf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frxg5l0g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23010148FF4;
-	Tue, 23 Jan 2024 01:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA142B9D2;
+	Tue, 23 Jan 2024 00:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972085; cv=none; b=fSsisuC1JHyQBJzNhi8GHZJW5MqSE7SuiXVcwPnJw0GUX1tNI+2IY8MjpjHvgmvG8FklYcIHIJd6s676zK1VztXUMBcr2WaYvR2M7csqXxBNz3cEzRyFd13lqIDTysuPeGGyoZC/JaPOeCgJaIxW/Y81VcXxjc7mEQiXqiH122s=
+	t=1705970713; cv=none; b=WF5xGx/sQhIa2CCZa2JIYhagJzT75GH8mUAWTYuqvCEA8MpQc60wHekInmbZShOh81otb5Y6CGDFxhWgxNvATaslFoc6bqT2wrj2vRB97UjYLAisD2QIbW+Ctrf6ffvzzOjVreYvjX/CAYtdUAaT/OGF2vePho5R63dP/R0S+U0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972085; c=relaxed/simple;
-	bh=sob86fwMh4bPwDXhQUtiDiHe/tMNdxekpkIoDdIHd6c=;
+	s=arc-20240116; t=1705970713; c=relaxed/simple;
+	bh=UVeUWIpbDec+uBSA3KkuQg7zLrIq0Qa7sZSP5EDmy+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=odvzCiRo6Fq0IAZq4+NfcSOsegkVGPoDYpUfGrxaGztP75+eWlBh5M+W50uiM1SHwcx5uw1kqV5saXduwz+BB2a8l75uDZF+ve+wL3sio6T9bXwsSK0CZP1LGdQOjvnxqQwjyT9ZLasz5Dn15LJDsJGjSI5W5GKU6k9Awf1nRcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZ/oXkYf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8777C43394;
-	Tue, 23 Jan 2024 01:08:04 +0000 (UTC)
+	 MIME-Version; b=OKjGvU2oD4u5KSNeZVfcWIaQLeLuUbWTeDDtpqsm67Xb3Z2QMjU8BtsTN8JUhw8Ly0qdjtndgZ4DeGHQb5f/4wlqyHx4YiLL0gCp+NbiCMMbOIP0rRHfRSQBcevHZd/L3v19YbjqF4vZQJN7Q4b7do+lLKuYHs3RifX92JKN5dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frxg5l0g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BE3C433F1;
+	Tue, 23 Jan 2024 00:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972085;
-	bh=sob86fwMh4bPwDXhQUtiDiHe/tMNdxekpkIoDdIHd6c=;
+	s=korg; t=1705970713;
+	bh=UVeUWIpbDec+uBSA3KkuQg7zLrIq0Qa7sZSP5EDmy+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BZ/oXkYfC7F5smKZKoWKLTXqZwPTk0dhukQ9RwcFD64072JLkyY76pTK03oo5rP/A
-	 tHi7+4rVXf9Ux69MKVFKj3EI7KKyFznsdC+p6iWvZB8b67ILZU+9VaeDLok2ZOqrZS
-	 wvIFtEF2CFqe7gxTgPhLiZBCBi1TM8aQfVtgfcfI=
+	b=frxg5l0ggliQieaktLee19/au3dUXZRq5ni84Asnsxxxp0VBc/3vnM/pECI92d791
+	 QYQO6tjdKlGP/3iozn1T1dv+vdEDq7j7ZaeFP3KUlDOER/+etIL3N7Vy0oE/j2hqAa
+	 nIu7/RXlZDt1R1emOnPFI4rruMNzmIZ4/AW++HYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 009/374] ASoC: wm8974: Correct boost mixer inputs
+Subject: [PATCH 6.1 097/417] selftests/net: specify the interface when do arping
 Date: Mon, 22 Jan 2024 15:54:25 -0800
-Message-ID: <20240122235744.949594317@linuxfoundation.org>
+Message-ID: <20240122235755.052178839@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 37e6fd0cebf0b9f71afb38fd95b10408799d1f0b ]
+[ Upstream commit 7f770d28f2e5abfd442ad689ba1129dd66593529 ]
 
-Bit 6 of INPPGA (INPPGAMUTE) does not control the Aux path, it controls
-the input PGA path, as can been seen from Figure 8 Input Boost Stage in
-the datasheet. Update the naming of things in the driver to match this
-and update the routing to also reflect this.
+When do arping, the interface need to be specified. Or we will
+get error: Interface "lo" is not ARPable. And the test failed.
+]# ./arp_ndisc_untracked_subnets.sh
+    TEST: test_arp:  accept_arp=0                                       [ OK ]
+    TEST: test_arp:  accept_arp=1                                       [FAIL]
+    TEST: test_arp:  accept_arp=2  same_subnet=0                        [ OK ]
+    TEST: test_arp:  accept_arp=2  same_subnet=1                        [FAIL]
 
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20231113155916.1741027-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+After fix:
+]# ./arp_ndisc_untracked_subnets.sh
+    TEST: test_arp:  accept_arp=0                                       [ OK ]
+    TEST: test_arp:  accept_arp=1                                       [ OK ]
+    TEST: test_arp:  accept_arp=2  same_subnet=0                        [ OK ]
+    TEST: test_arp:  accept_arp=2  same_subnet=1                        [ OK ]
+
+Fixes: 0ea7b0a454ca ("selftests: net: arp_ndisc_untracked_subnets: test for arp_accept and accept_untracked_na")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wm8974.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wm8974.c b/sound/soc/codecs/wm8974.c
-index fdc68ab49742..9eeac3443566 100644
---- a/sound/soc/codecs/wm8974.c
-+++ b/sound/soc/codecs/wm8974.c
-@@ -186,7 +186,7 @@ SOC_DAPM_SINGLE("PCM Playback Switch", WM8974_MONOMIX, 0, 1, 0),
+diff --git a/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh b/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh
+index c899b446acb6..327427ec10f5 100755
+--- a/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh
++++ b/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh
+@@ -150,7 +150,7 @@ arp_test_gratuitous() {
+ 	fi
+ 	# Supply arp_accept option to set up which sets it in sysctl
+ 	setup ${arp_accept}
+-	ip netns exec ${HOST_NS} arping -A -U ${HOST_ADDR} -c1 2>&1 >/dev/null
++	ip netns exec ${HOST_NS} arping -A -I ${HOST_INTF} -U ${HOST_ADDR} -c1 2>&1 >/dev/null
  
- /* Boost mixer */
- static const struct snd_kcontrol_new wm8974_boost_mixer[] = {
--SOC_DAPM_SINGLE("Aux Switch", WM8974_INPPGA, 6, 1, 1),
-+SOC_DAPM_SINGLE("PGA Switch", WM8974_INPPGA, 6, 1, 1),
- };
- 
- /* Input PGA */
-@@ -246,8 +246,8 @@ static const struct snd_soc_dapm_route wm8974_dapm_routes[] = {
- 
- 	/* Boost Mixer */
- 	{"ADC", NULL, "Boost Mixer"},
--	{"Boost Mixer", "Aux Switch", "Aux Input"},
--	{"Boost Mixer", NULL, "Input PGA"},
-+	{"Boost Mixer", NULL, "Aux Input"},
-+	{"Boost Mixer", "PGA Switch", "Input PGA"},
- 	{"Boost Mixer", NULL, "MICP"},
- 
- 	/* Input PGA */
+ 	if verify_arp $1 $2; then
+ 		printf "    TEST: %-60s  [ OK ]\n" "${test_msg[*]}"
 -- 
 2.43.0
 
