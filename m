@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C7983854A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D008383C1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B3CA1C2A5D1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C917B1C211CC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6421CEAEF;
-	Tue, 23 Jan 2024 02:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A6664CED;
+	Tue, 23 Jan 2024 01:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtrCW9Pn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmnOwKx7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DBA2114;
-	Tue, 23 Jan 2024 02:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B231464AB3;
+	Tue, 23 Jan 2024 01:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975791; cv=none; b=cqSC/tqzfaVaf+J2zv/DdAky1g229dOeiBSZiUk+DcUSsjg5jEsRmP6dUFKGP4s+0Nras1+Zu4Bky2pVqLJppT8Q/41eoAV/avqTKrSG2Q/WhGpn4NCiTt0AhiH6TO+WwbD7L9l0te7EbaB/mH5LwPDTlMp7i2sS8rsCtGNxHEY=
+	t=1705975055; cv=none; b=qhgEdfEGiTOfcxdfpfHFy6/ET4vHnB/MD2oxk2lzRlg8Hc7jf+d35Kj57aDe8GGGjeF4fskSg2w4uoynzbhjbmvsOy9mh3K37YE1BBFSi3WZ2+gY0nxAz/2WsBtEO1Bh1oyYugWp7his5EWtBWAzV/3CjVMV6YqPwgd+78iH9gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975791; c=relaxed/simple;
-	bh=M25ZV1IEkHuK05dUZPGq5hFFubISw+1JmO+TYsoKFgc=;
+	s=arc-20240116; t=1705975055; c=relaxed/simple;
+	bh=NimYrkwWSFuS+i6DFNzilxKxUadc0vxiHCAZj8Ec1Ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rmtlal15LTcY1hqBDh8O5hyhvaZejhOWZxq8uLxRtai9ecOY8xEAa+jGVRjb1ofG1JbD9hrT4628B3Vt3PLGQgGpSnQ6IrxRQnWAlm8Q8KXMT9n0CzEt5xUcmfL+Xa9z7MIlgoQdKsOaipdm+wxeqliHGyXKbDvAif3wVzpuAVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtrCW9Pn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC837C43390;
-	Tue, 23 Jan 2024 02:09:50 +0000 (UTC)
+	 MIME-Version; b=jzSi+F8DvEbDjRA/tefV5wihS/d6mJ+g2ls+N1H53IIx9VRouM8wByKxdYh1dMDgGZNeMdGKigQf6JUk5y2NHrVpKgssozuM75hOG2M+6Vp/cQNxjvup58aHQBnFxRZrg5Jsn2GahhkesUDHYxc4zHH/Fu5it17VdIcQ8l6EkwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QmnOwKx7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7871BC43394;
+	Tue, 23 Jan 2024 01:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975791;
-	bh=M25ZV1IEkHuK05dUZPGq5hFFubISw+1JmO+TYsoKFgc=;
+	s=korg; t=1705975055;
+	bh=NimYrkwWSFuS+i6DFNzilxKxUadc0vxiHCAZj8Ec1Ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DtrCW9Pnz1tRkKh1sex0k1f8pF6zEmDe2PhVI++e9VU6YT9UEExeQoyNV+6bZMpRj
-	 H0I4LNE29MQAmY8lALPY5hse/+TW2fbLTlRZF+8Eh/i5OcDO1G9piK9kaq2fz3bb0a
-	 RLvyLEnIwRn+5MsWngrJ9++u/5gNqTCcaYBU0SzA=
+	b=QmnOwKx7acUfW8adNzK6eW7yXTzg84PbvlUqW0SvX/591ceYgrscXpXR9TRJhK8H/
+	 n3D2ufhu3JchByytalhfmELduVAVJQ8oK8I9efRd0rsAVz931wGb7CD+8jHVpYEHOB
+	 GFam4u8Q9/TxvBrNTBre0KaO0j1piNAQelCR1MT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Simek <michal.simek@amd.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 548/583] dt-bindings: gpio: xilinx: Fix node address in gpio
+Subject: [PATCH 5.15 343/374] net: dsa: vsc73xx: Add null pointer check to vsc73xx_gpio_probe
 Date: Mon, 22 Jan 2024 15:59:59 -0800
-Message-ID: <20240122235828.916579872@linuxfoundation.org>
+Message-ID: <20240122235756.854684479@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Simek <michal.simek@amd.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 314c020c4ed3de72b15603eb6892250bc4b51702 ]
+[ Upstream commit 776dac5a662774f07a876b650ba578d0a62d20db ]
 
-Node address doesn't match reg property which is not correct.
+devm_kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-Fixes: ba96b2e7974b ("dt-bindings: gpio: gpio-xilinx: Convert Xilinx axi gpio binding to YAML")
-Signed-off-by: Michal Simek <michal.simek@amd.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240111072018.75971-1-chentao@kylinos.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/vitesse-vsc73xx-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml b/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
-index c1060e5fcef3..d3d8a2e143ed 100644
---- a/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
-+++ b/Documentation/devicetree/bindings/gpio/xlnx,gpio-xilinx.yaml
-@@ -126,7 +126,7 @@ examples:
-   - |
-     #include <dt-bindings/interrupt-controller/arm-gic.h>
+diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
+index 0c0bc78b1788..6b6470ef2ae9 100644
+--- a/drivers/net/dsa/vitesse-vsc73xx-core.c
++++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
+@@ -1119,6 +1119,8 @@ static int vsc73xx_gpio_probe(struct vsc73xx *vsc)
  
--        gpio@e000a000 {
-+        gpio@a0020000 {
-             compatible = "xlnx,xps-gpio-1.00.a";
-             reg = <0xa0020000 0x10000>;
-             #gpio-cells = <2>;
+ 	vsc->gc.label = devm_kasprintf(vsc->dev, GFP_KERNEL, "VSC%04x",
+ 				       vsc->chipid);
++	if (!vsc->gc.label)
++		return -ENOMEM;
+ 	vsc->gc.ngpio = 4;
+ 	vsc->gc.owner = THIS_MODULE;
+ 	vsc->gc.parent = vsc->dev;
 -- 
 2.43.0
 
