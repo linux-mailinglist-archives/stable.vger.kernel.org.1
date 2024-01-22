@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FAF837BEA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3211D8382B1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CB112949CA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 650211C28CA5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2905A1419A4;
-	Tue, 23 Jan 2024 00:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DDE15EE8A;
+	Tue, 23 Jan 2024 01:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvMtq152"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RuwLIVor"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4BB13BEA7;
-	Tue, 23 Jan 2024 00:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7635EE84;
+	Tue, 23 Jan 2024 01:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969436; cv=none; b=Nj0ReOYbD6UQpz17MQ176KlsnR3AHtROtWQSgQo7niZzSxWp584AOP6ftLCaG4k3pzC23fXUi9DQilX8v6v2xcL/HNgGqR5JdUzftEHIpuV6mHkt4QsWSPtOAIhbbcTe/mK+J66GZInwGzokS3oIs1UNuJrAWE3vdHd+ldnnPrY=
+	t=1705974411; cv=none; b=f6uyvHMwqzq8v5kHU7q38W+tvMzlDYeObPejXwKLU3cftJzH39xb09yj4cQjONHT/OrtKxW9bN4ph2mIeDf9pXlsMG+qolIvYyCSWV7OLrjsgOobRyfY89J0GRqGQOk8P2ZGuno6gmU2n1HXG1xO/zQ99hn9g2P2w94w6vuPBK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969436; c=relaxed/simple;
-	bh=rwjm8k329G/b6F6zLBeVaX9cQNrVz3T0cvGGbvkgoEU=;
+	s=arc-20240116; t=1705974411; c=relaxed/simple;
+	bh=OQlwQXBaUcnA1H32umP3sNoNkMr8oqg1CchWhAhdHz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mm28vIbAn9WDnEFunhTdj/0yhy8feUZqptr8ION0JNh1cFIQ3fySRJFiNZRZQYXIh+tLoc08ZZtE2n26QteKq/R0Vrkh0gv8lkwYew2u3/DdB24Nt0CqMbs5Tyy4omxJ8uakzYljp1HmjzCmsFFmdxPvvBUr6OXt1BSWkThGt1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvMtq152; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E145C433F1;
-	Tue, 23 Jan 2024 00:23:55 +0000 (UTC)
+	 MIME-Version; b=gtxpPyCBJS9nMnQI7lRkk10Dg1yT69IN0esPEAut+VEctwzTh8fRJhB5hk8QQ9YE1b81qF65RRqNO8l5MAQHRPBLP/5bun34Eyh2QhYd1saEwQ+DYK5EzWgjABlN1P63sDh/7kxHgkLtOILRj+k2dYaevuPFw41mIkO3e0gxLOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuwLIVor; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0BCC43394;
+	Tue, 23 Jan 2024 01:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969436;
-	bh=rwjm8k329G/b6F6zLBeVaX9cQNrVz3T0cvGGbvkgoEU=;
+	s=korg; t=1705974411;
+	bh=OQlwQXBaUcnA1H32umP3sNoNkMr8oqg1CchWhAhdHz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JvMtq152eRrunQfijCtOS+P++/KnkRD79JVR6hrNFIOPc8nmQS52tOiySqdQyuHcK
-	 MkgwJpN1lJ8r5ilrbS9Totsn0xGAFugNOqemyf86vNHriyWm9IZPajR8t9AtFAbXdJ
-	 yhwaWJ6iaPvDdD42CscpDZzw7sMd2OtwoZdbIQkg=
+	b=RuwLIVor0ILNWv3WN8CWBMFvylAyyQGwHgUt9zH8i3ynGLtkZv1JwgOV5hIkze9eH
+	 DHiSyutPSpcVCP4QRWVJ2eF0IgTTpvPgOL6wVPkGi0/g43k93LZvHtcGA6Axl4fFoR
+	 AyWbX04ww46Ib4JSTpVlhGbwdO8/0GCXzqxK8cNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 237/641] mlxbf_gige: Fix intermittent no ip issue
+Subject: [PATCH 6.6 090/583] wifi: ath11k: Defer on rproc_get failure
 Date: Mon, 22 Jan 2024 15:52:21 -0800
-Message-ID: <20240122235825.344956804@linuxfoundation.org>
+Message-ID: <20240122235814.922348486@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asmaa Mnebhi <asmaa@nvidia.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit ef210ef85d5cb543ce34a57803ed856d0c8c08c2 ]
+[ Upstream commit 2a3ec40b98b46c339adb57313d3b933ee5e7a8e8 ]
 
-Although the link is up, there is no ip assigned on setups with high background
-traffic. Nothing is transmitted nor received. The RX error count keeps on
-increasing. After several minutes, the RX error count stagnates and the
-GigE interface finally gets an ip.
+If we already have gotten the rproc_handle (meaning the "qcom,rproc"
+property is defined in the devicetree), it's a valid state that the
+remoteproc module hasn't probed yet so we should defer probing instead
+of just failing to probe.
 
-The issue is that mlxbf_gige_rx_init() is called before phy_start().
-As soon as the RX DMA is enabled in mlxbf_gige_rx_init(), the RX CI reaches the max
-of 128, and becomes equal to RX PI. RX CI doesn't decrease since the code hasn't
-ran phy_start yet.
-Bring the PHY up before starting the RX.
+This resolves a race condition when the ath11k driver probes and fails
+before the wpss remoteproc driver has probed, like the following:
 
-Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
-Reviewed-by: David Thompson <davthompson@nvidia.com>
-Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+  [    6.232360] ath11k 17a10040.wifi: failed to get rproc
+  [    6.232366] ath11k 17a10040.wifi: failed to get rproc: -22
+  [    6.232478] ath11k: probe of 17a10040.wifi failed with error -22
+       ...
+  [    6.252415] remoteproc remoteproc2: 8a00000.remoteproc is available
+  [    6.252776] remoteproc remoteproc2: powering up 8a00000.remoteproc
+  [    6.252781] remoteproc remoteproc2: Booting fw image qcom/qcm6490/fairphone5/wpss.mdt, size 7188
+
+So, defer the probe if we hit that so we can retry later once the wpss
+remoteproc is available.
+
+Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.1.0.1-01264-QCAMSLSWPLZ-1.37886.3
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231027-ath11k-rproc-defer-v1-1-f6b6a812cd18@fairphone.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c | 14 +++++++-------
- .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c   |  6 +++---
- 2 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/net/wireless/ath/ath11k/ahb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-index 954ba0826c61..ac7f0128619c 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-@@ -147,14 +147,14 @@ static int mlxbf_gige_open(struct net_device *netdev)
- 	 */
- 	priv->valid_polarity = 0;
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 1215ebdf173a..ef11c138bf30 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -802,8 +802,8 @@ static int ath11k_core_get_rproc(struct ath11k_base *ab)
  
--	err = mlxbf_gige_rx_init(priv);
-+	phy_start(phydev);
-+
-+	err = mlxbf_gige_tx_init(priv);
- 	if (err)
- 		goto free_irqs;
--	err = mlxbf_gige_tx_init(priv);
-+	err = mlxbf_gige_rx_init(priv);
- 	if (err)
--		goto rx_deinit;
--
--	phy_start(phydev);
-+		goto tx_deinit;
+ 	prproc = rproc_get_by_phandle(rproc_phandle);
+ 	if (!prproc) {
+-		ath11k_err(ab, "failed to get rproc\n");
+-		return -EINVAL;
++		ath11k_dbg(ab, ATH11K_DBG_AHB, "failed to get rproc, deferring\n");
++		return -EPROBE_DEFER;
+ 	}
+ 	ab_ahb->tgt_rproc = prproc;
  
- 	netif_napi_add(netdev, &priv->napi, mlxbf_gige_poll);
- 	napi_enable(&priv->napi);
-@@ -176,8 +176,8 @@ static int mlxbf_gige_open(struct net_device *netdev)
- 
- 	return 0;
- 
--rx_deinit:
--	mlxbf_gige_rx_deinit(priv);
-+tx_deinit:
-+	mlxbf_gige_tx_deinit(priv);
- 
- free_irqs:
- 	mlxbf_gige_free_irqs(priv);
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
-index 227d01cace3f..699984358493 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
-@@ -142,6 +142,9 @@ int mlxbf_gige_rx_init(struct mlxbf_gige *priv)
- 	writeq(MLXBF_GIGE_RX_MAC_FILTER_COUNT_PASS_EN,
- 	       priv->base + MLXBF_GIGE_RX_MAC_FILTER_COUNT_PASS);
- 
-+	writeq(ilog2(priv->rx_q_entries),
-+	       priv->base + MLXBF_GIGE_RX_WQE_SIZE_LOG2);
-+
- 	/* Clear MLXBF_GIGE_INT_MASK 'receive pkt' bit to
- 	 * indicate readiness to receive interrupts
- 	 */
-@@ -154,9 +157,6 @@ int mlxbf_gige_rx_init(struct mlxbf_gige *priv)
- 	data |= MLXBF_GIGE_RX_DMA_EN;
- 	writeq(data, priv->base + MLXBF_GIGE_RX_DMA);
- 
--	writeq(ilog2(priv->rx_q_entries),
--	       priv->base + MLXBF_GIGE_RX_WQE_SIZE_LOG2);
--
- 	return 0;
- 
- free_wqe_and_skb:
 -- 
 2.43.0
 
