@@ -1,66 +1,75 @@
-Return-Path: <stable+bounces-12700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3CD836B86
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 17:47:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68793836C81
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 18:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BEFE1F2230C
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 16:47:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 212C828703C
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 17:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FBC154C06;
-	Mon, 22 Jan 2024 15:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507DA4B5AA;
+	Mon, 22 Jan 2024 15:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XQutGVTB"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VjBj6HWP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE55C154C01;
-	Mon, 22 Jan 2024 15:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20673DB9A
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 15:53:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705936767; cv=none; b=L3GgV3tEUlBv2MDM9XfzJaf5vYSYKqxWM1v5dY0cNdqvq6FNK7QgLCFqOUIsB/pw6az2VxCoHqj7qUzEnki20Mn2+lv1jVfLcpSEvgB6/ClBDHRxavzdm2k8BoXJtu8Z23UHR9pBBQ8JYWac4Xn3BxDfc7q3S5LzOcSFOhAQHzA=
+	t=1705938808; cv=none; b=uwbJhf0rZDPqNKTH3foWhs2Qb2yeMlVP4IKBVyYeTF0NmadXViRd8Nktn21OK+suXVZDw1eWx8M+6EkYFX18DOvFbBn3yWmZ3YrxtvwkUEWfuRsitQwPeJcS3aJwU18gCqaqbkxat0JBHOLGEt0nNuCPuXf43oQZAMJ+M7Xbztc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705936767; c=relaxed/simple;
-	bh=VJgGLZRJj1/aRH1kDurCsLU64GVGU7ctEoU9UEy2bcI=;
+	s=arc-20240116; t=1705938808; c=relaxed/simple;
+	bh=z9ec84LTNQxrzMH3mbPk9MiChnTFnB/bKKQmPAxhz7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YgKQut2NDJH/Tlse47UPIf1GiywUYSzxN0QTJZ0tIRghx2Wyk9tuRv0rHii6gje0CIhJmRjxkzKg2aLNehiJV5axv/DDaXGAsO+iITNSG6Z7sBL+ta1446EdTMcVzlQ/woKM3tI1NxPaWvntdasZD9ZNeX/Gl+q7D3aDsr0s9FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XQutGVTB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD9DC433C7;
-	Mon, 22 Jan 2024 15:19:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705936767;
-	bh=VJgGLZRJj1/aRH1kDurCsLU64GVGU7ctEoU9UEy2bcI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQutGVTBjWbHogczdreGzFmydJVKfs/n1PrN/2Gp6h3M86dwnNOLC1EaJIYjoAwWg
-	 g+QHbBuUYi/1kfCnGEcRLY/Odl061oBR4bDyMhZS36nU8kZVtEtcoVH63liOYmAO7i
-	 61jlhUyFiS3gC8/KbIAvPOuggd5K+aqN+IlLw9c1TaFSHaLtgodlUtMmyUdm6q6BVz
-	 blcHy1LUmwKAmv4AC8xxAxtNE6iyW/SK5iev0CIQRgv0hdClorIVUPkxFV3NhEHtp6
-	 mmfkZGNO3dpfD/zDBsZOjPR9jSxdFIZmscGca8bR6XvJJOzIbYpgJgOpMCOMSL9nKO
-	 1EE4wsqqi+c6A==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
+	 MIME-Version:Content-Type; b=aO/TyT+Kw77jQOwKypD5zwKchGyQRH6+H2rin2Ke6iseq9aN0qReQDjy30Lff0pMCFOCxVJDFdr5zIblaz/yi0YBBETMnvuuia/UcvhfNUdMsQtvoAbH+tR+QKbB5A3nrLcC7uYmNlp54cBU/MNSLFaXyV9MoBeeTLKk6OHRf8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VjBj6HWP; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1705938805;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z9ec84LTNQxrzMH3mbPk9MiChnTFnB/bKKQmPAxhz7c=;
+	b=VjBj6HWPIqmCslhO5WwYx2eehEwcXKGktuilfTYiStrklvMnUinNZOeAa56szrCe73zqpv
+	xEBZtjJo+G+HNa0C7LTV7LgvJDZC0Ayywccv+HzXPNLWy6zXqFRFC7YAiUlAN9p2S/Tgyd
+	9hor6yEA4KKjxd81QKDAWX+8Z2aWmxc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-599-JWOpoJGAP6W7FtoNqXo_0Q-1; Mon, 22 Jan 2024 10:53:22 -0500
+X-MC-Unique: JWOpoJGAP6W7FtoNqXo_0Q-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C5C5186D4D4;
+	Mon, 22 Jan 2024 15:53:21 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.39.192.175])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 52EC85012;
+	Mon, 22 Jan 2024 15:53:19 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: masahiroy@kernel.org
+Cc: dcavalca@meta.com,
+	jtornosm@redhat.com,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	nathan@kernel.org,
+	ndesaulniers@google.com,
+	nicolas@fjasle.eu,
 	stable@vger.kernel.org
-Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 4.19 23/23] drm/amdgpu: Drop 'fence' check in 'to_amdgpu_amdkfd_fence()'
-Date: Mon, 22 Jan 2024 10:18:03 -0500
-Message-ID: <20240122151823.997644-23-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122151823.997644-1-sashal@kernel.org>
-References: <20240122151823.997644-1-sashal@kernel.org>
+Subject: Re: [PATCH V5 2/2] rpm-pkg: avoid install/remove the running kernel
+Date: Mon, 22 Jan 2024 16:53:15 +0100
+Message-ID: <20240122155318.13848-1-jtornosm@redhat.com>
+In-Reply-To: <CAK7LNARNgp_oYWf69tw4+y0SMp=Hi2rixAt5h8R5=GaMkQLQYA@mail.gmail.com>
+References: <CAK7LNARNgp_oYWf69tw4+y0SMp=Hi2rixAt5h8R5=GaMkQLQYA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,46 +77,21 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.305
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+> You can proceed with 'rpm -i --force', but
+> that is the user's responsibility if something bad happens.
 
-[ Upstream commit bf2ad4fb8adca89374b54b225d494e0b1956dbea ]
+> No, not OK.
+Ok, understood and maybe it is interesting for the user.
+Indeed, zypper tool from openSUSE can be configured to protect the running
+kernel as dnf.
+I drop this patch.
 
-Return value of container_of(...) can't be null, so null check is not
-required for 'fence'. Hence drop its NULL check.
+Thanks
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c:93 to_amdgpu_amdkfd_fence() warn: can 'fence' even be NULL?
-
-Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c
-index 574c1181ae9a..75e4f1abb4c9 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_fence.c
-@@ -88,7 +88,7 @@ struct amdgpu_amdkfd_fence *to_amdgpu_amdkfd_fence(struct dma_fence *f)
- 		return NULL;
- 
- 	fence = container_of(f, struct amdgpu_amdkfd_fence, base);
--	if (fence && f->ops == &amdkfd_fence_ops)
-+	if (f->ops == &amdkfd_fence_ops)
- 		return fence;
- 
- 	return NULL;
--- 
-2.43.0
+Best regards
+José Ignacio
 
 
