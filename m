@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-15250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A1EE838480
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0047F838000
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0760299B6A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 335D21C2950D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AF16EB5E;
-	Tue, 23 Jan 2024 02:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5F712DD93;
+	Tue, 23 Jan 2024 00:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZGasgIX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lbuq9Zr1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0D46DD10;
-	Tue, 23 Jan 2024 02:03:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785FB62805;
+	Tue, 23 Jan 2024 00:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975407; cv=none; b=RXw/hlg7qrMIAXpWOakQrqihzqpyUUUiwXRvbngA9rl2Xx57e0dfqlP9MxOCAbrv3tlCF77jOmliW4NhPvPRmU19DU+cfX8c2xcqZqwNbTvf6tcFEMQNGSlZDnVtif11NcLI05GXW3Pri6DuX7ldMuP+WdaEkd8Nwq8yRe/k+Xw=
+	t=1705971489; cv=none; b=kq27L9Bmi0qCI6ci70EaUAgk7rD3BSU5qslC1RrVLQzBOgT4a9VMqUQbl9jCxzt6+SbKgr0pQhc/y0sEVHMD8vMhlzFNH/QKPvOz07Ohnuy0G2QFw2SVX5IkWovAoADRpe66r6srlCBeQqcNty9vM+k/BD0qKMSp0uzi8oj5HAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975407; c=relaxed/simple;
-	bh=+l8iZyOfREXCxpiuw7Gupg/sZMV5c6Pc1tqJPSEU+Ug=;
+	s=arc-20240116; t=1705971489; c=relaxed/simple;
+	bh=QqrQby347UrsZQXYsrnc0PMM1Pjk4G+qC/fNMyfsopQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DCiMvt6GTA7BDc/cbiJBq0Bo7BU67SCPsDd4xc2JkX+AnGkJFyLKSRo1ISPV0dp42NIX/JJYgYsiaAOzsI+Hn+N+oZ3Ni4IjtvAUEMxrkkRH9RRQwYToknxJc/CNm7ixBqu9bh58Trc+b0eOUOsM69+hM/m4mPTMrsc+QwbBets=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZGasgIX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90575C43394;
-	Tue, 23 Jan 2024 02:03:27 +0000 (UTC)
+	 MIME-Version; b=ShsEH5Rz57c1feX35Y+FXFS3QXgNRtKDJGcqlzEoumYUVp6dMvzALMez+3izKDeiQZTjrVvElhGK27cc8OCYKJw1pFQU7Lsqz4OKyGH7vlg+ib4u/z8r9L3yF/7uwTNAyjke72qsry5U/ftot/4yKYFBJRkhsZvVIXYBF0qgbqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lbuq9Zr1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002B0C433C7;
+	Tue, 23 Jan 2024 00:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975407;
-	bh=+l8iZyOfREXCxpiuw7Gupg/sZMV5c6Pc1tqJPSEU+Ug=;
+	s=korg; t=1705971489;
+	bh=QqrQby347UrsZQXYsrnc0PMM1Pjk4G+qC/fNMyfsopQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZGasgIXMMV6cmCe2HavCHs68YgV3W3O6c6nfnvtg29yYJDVU2c9KWdGMrR15o0nD
-	 zoW7lIFLJCe3gfZzAiNY94H/Va4dh3HE2k8A2NrU6EZkCKfU1v6Sng0hrOk+a0SYrK
-	 SX4UWYoKItZ5WhvlmHMApH6c3Sl++6Elz8qf22pk=
+	b=Lbuq9Zr1U82QuYEHsdTkzDMpu0jDWAVwsKSEyRmIOzZi5/sWzSvIWysWgu4Xwm5+w
+	 hmUntOMPE+Vp4hvtvIe5pz8h2bnd33AkzFO5VW0AL8Bqy29YgIlsqpZKsiWN1BIo0E
+	 L1zjcmFwT3Wd4+pZC/MQtWh8N72ilKn//iWEjr9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	RD Babiera <rdbabiera@google.com>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 368/583] Revert "usb: typec: class: fix typec_altmode_put_partner to put plugs"
+	Carlos Llamas <cmllamas@google.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH 6.1 251/417] binder: fix unused alloc->free_async_space
 Date: Mon, 22 Jan 2024 15:56:59 -0800
-Message-ID: <20240122235823.275430556@linuxfoundation.org>
+Message-ID: <20240122235800.572305912@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-commit 9c6b789e954fae73c548f39332bcc56bdf0d4373 upstream.
+commit c6d05e0762ab276102246d24affd1e116a46aa0c upstream.
 
-This reverts commit b17b7fe6dd5c6ff74b38b0758ca799cdbb79e26e.
+Each transaction is associated with a 'struct binder_buffer' that stores
+the metadata about its buffer area. Since commit 74310e06be4d ("android:
+binder: Move buffer out of area shared with user space") this struct is
+no longer embedded within the buffer itself but is instead allocated on
+the heap to prevent userspace access to this driver-exclusive info.
 
-That commit messed up the reference counting, so it needs to
-be rethought.
+Unfortunately, the space of this struct is still being accounted for in
+the total buffer size calculation, specifically for async transactions.
+This results in an additional 104 bytes added to every async buffer
+request, and this area is never used.
 
-Fixes: b17b7fe6dd5c ("usb: typec: class: fix typec_altmode_put_partner to put plugs")
-Cc:  <stable@vger.kernel.org>
-Cc: RD Babiera <rdbabiera@google.com>
-Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAP-bSRb3SXpgo_BEdqZB-p1K5625fMegRZ17ZkPE1J8ZYgEHDg@mail.gmail.com/
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240102091142.2136472-1-heikki.krogerus@linux.intel.com
+This wasted space can be substantial. If we consider the maximum mmap
+buffer space of SZ_4M, the driver will reserve half of it for async
+transactions, or 0x200000. This area should, in theory, accommodate up
+to 262,144 buffers of the minimum 8-byte size. However, after adding
+the extra 'sizeof(struct binder_buffer)', the total number of buffers
+drops to only 18,724, which is a sad 7.14% of the actual capacity.
+
+This patch fixes the buffer size calculation to enable the utilization
+of the entire async buffer space. This is expected to reduce the number
+of -ENOSPC errors that are seen on the field.
+
+Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-6-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/class.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/android/binder_alloc.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -266,7 +266,7 @@ static void typec_altmode_put_partner(st
- 	if (!partner)
- 		return;
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -344,8 +344,7 @@ static bool debug_low_async_space_locked
+ 			continue;
+ 		if (!buffer->async_transaction)
+ 			continue;
+-		total_alloc_size += binder_alloc_buffer_size(alloc, buffer)
+-			+ sizeof(struct binder_buffer);
++		total_alloc_size += binder_alloc_buffer_size(alloc, buffer);
+ 		num_buffers++;
+ 	}
  
--	adev = &altmode->adev;
-+	adev = &partner->adev;
+@@ -411,8 +410,7 @@ static struct binder_buffer *binder_allo
+ 	/* Pad 0-size buffers so they get assigned unique addresses */
+ 	size = max(size, sizeof(void *));
  
- 	if (is_typec_plug(adev->dev.parent)) {
- 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
-@@ -496,8 +496,7 @@ static void typec_altmode_release(struct
- {
- 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
+-	if (is_async &&
+-	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
++	if (is_async && alloc->free_async_space < size) {
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
+ 			     "%d: binder_alloc_buf size %zd failed, no async space left\n",
+ 			      alloc->pid, size);
+@@ -520,7 +518,7 @@ static struct binder_buffer *binder_allo
+ 	buffer->pid = pid;
+ 	buffer->oneway_spam_suspect = false;
+ 	if (is_async) {
+-		alloc->free_async_space -= size + sizeof(struct binder_buffer);
++		alloc->free_async_space -= size;
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
+ 			     "%d: binder_alloc_buf size %zd async free %zd\n",
+ 			      alloc->pid, size, alloc->free_async_space);
+@@ -658,8 +656,7 @@ static void binder_free_buf_locked(struc
+ 	BUG_ON(buffer->user_data > alloc->buffer + alloc->buffer_size);
  
--	if (!is_typec_port(dev->parent))
--		typec_altmode_put_partner(alt);
-+	typec_altmode_put_partner(alt);
- 
- 	altmode_id_remove(alt->adev.dev.parent, alt->id);
- 	kfree(alt);
+ 	if (buffer->async_transaction) {
+-		alloc->free_async_space += buffer_size + sizeof(struct binder_buffer);
+-
++		alloc->free_async_space += buffer_size;
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
+ 			     "%d: binder_free_buf size %zd async free %zd\n",
+ 			      alloc->pid, size, alloc->free_async_space);
 
 
 
