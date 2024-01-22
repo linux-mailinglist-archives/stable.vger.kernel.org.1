@@ -1,123 +1,110 @@
-Return-Path: <stable+bounces-12707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2673836E1C
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 18:45:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CF4836FB4
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 890A91F27121
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 17:45:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68FDDB2CE58
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 17:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21B63DB84;
-	Mon, 22 Jan 2024 17:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF0A50A84;
+	Mon, 22 Jan 2024 17:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfju6/uT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hnCXtn/l"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F98C3D99F;
-	Mon, 22 Jan 2024 17:07:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FAE75FDC3
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 17:21:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705943251; cv=none; b=Vbl8vNUryzhRAzZI8+kG9Oltg2/As6XVu5aBY6lg58yA/Q++cVDUB5Q1eAvz15X4s8FLmwOyx7v3C6unR0l/+h0Y1ZGn9cR66Boj5I8Y/nRlzz4DNd3O3x7t0oXWE6VywUX5X0ih4tSPfxzJu9QQ2l3w8IzCqpJOzt3M7LyrKB4=
+	t=1705944094; cv=none; b=uxIlSkZvb/9H2DZp3KU4xmJvXKTuKTazVejO206c/pQoVL5Jb0DI5ryWUkdNsj2u/C9h3gA8XPG03T9kyp+NpWljDomBTu6BdWAhnMra2iZ4GsItoipDX7tftMHzuLjuKQPx6dVaQ4rr+EXgRhV1uXjrLz7tF5zYsS/Aos/txLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705943251; c=relaxed/simple;
-	bh=+JZz32rW4JTCFtXIffKZnVlpE+3nMpJ5etJGZvkKUt8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xbj4sI4LXUMBKJkV6F+rrjLFIWTZe2Spjc9AoZpeXAgOhsQup+L/tVaRQvbx9e0JJS4ZqdRmFHLR2P90mKLH6IYbSyAbmEXA2bYsC65HqHSMICUB3bp71jGs/8yJpEWwixH5FPtGX0edRpgxAHyQV4U/nG5a4vxrX2VKc5odcPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfju6/uT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E083C433F1;
-	Mon, 22 Jan 2024 17:07:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705943251;
-	bh=+JZz32rW4JTCFtXIffKZnVlpE+3nMpJ5etJGZvkKUt8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vfju6/uTQDFy/inOO9Cv8BylCzmPH+WOUs2vKtKq+86zr9Iic/k0ivgFtFVKMEoBM
-	 z/wP15XKNngZzQbsiw/FTySNTZfYIYbriqSONjALL2bQb8cM7jRUX5vWnq1tqOl0Ha
-	 WSwmIc1v5GQXReigkzAOvcuAWPZ8G3J2UJ5usaUw=
-Date: Mon, 22 Jan 2024 09:07:28 -0800
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Florian Fainelli <f.fainelli@gmail.com>
-Cc: Stefan Wiehler <stefan.wiehler@nokia.com>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: Re: [PATCH] mips/smp: Call rcu_cpu_starting() earlier
-Message-ID: <2024012219-retiring-superbowl-1570@gregkh>
-References: <2024011935-snowman-regain-b820@gregkh>
- <20240119163811.3884999-1-stefan.wiehler@nokia.com>
- <2024012047-prompter-driveway-c418@gregkh>
- <b3ddf95a-7f4a-4f15-b701-c37cfe95a4cb@gmail.com>
+	s=arc-20240116; t=1705944094; c=relaxed/simple;
+	bh=AKfsnPJjBxMQwg0RWLJL1I3S8Xk9KtI5BLW9GcXdXJo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qfFadBx2+Y/RUrDhhUxB1DjiAUbvZYV5DHlMk9QtflQINkdw17H4jFG5TzA3gCPFUZETMZxYZpDPJ7N7+MmZkZemGmnpTRCXwE3S8blwCJrZG435/+2muFfWEmbX4frZWKhV/SmByMdmz6R/KC5PdzOZgM43Ai6PGWq3p9fLgJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hnCXtn/l; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1705944091;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YRefZ/wsrn6xc/POzLXdqCo2wo2k5mzHvh76/txm/d0=;
+	b=hnCXtn/lKNfpsO4DLtpVB6nu04g8lTlTinw7hvO0AvZe56sFPZeOdnfWh53ysfCU2Qv/AU
+	I/cTYIYH7kj2jHosYUYbg5xo9YzGY/UcCLH4rLu/sKyq4HPy060sElqHRZBiFym5FmZkRE
+	MHWNLzg3EQPCnbvV1t4LxXy2RsRPQK8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-630-HDr-DmkRM0ymMmHIgC6W3g-1; Mon, 22 Jan 2024 12:21:27 -0500
+X-MC-Unique: HDr-DmkRM0ymMmHIgC6W3g-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4E397185A783;
+	Mon, 22 Jan 2024 17:21:26 +0000 (UTC)
+Received: from hydra.redhat.com (unknown [10.39.194.5])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 8DE8840C1430;
+	Mon, 22 Jan 2024 17:21:25 +0000 (UTC)
+From: Jocelyn Falempe <jfalempe@redhat.com>
+To: zack.rusin@broadcom.com,
+	stable@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH 0/2] drm/vmwgfx backport two fixes to v6.1.x branch
+Date: Mon, 22 Jan 2024 18:10:11 +0100
+Message-ID: <20240122172031.243604-1-jfalempe@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b3ddf95a-7f4a-4f15-b701-c37cfe95a4cb@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 
-On Sun, Jan 21, 2024 at 08:52:55AM -0800, Florian Fainelli wrote:
-> 
-> 
-> On 1/19/2024 10:38 PM, Greg Kroah-Hartman wrote:
-> > On Fri, Jan 19, 2024 at 05:38:11PM +0100, Stefan Wiehler wrote:
-> > > rcu_cpu_starting() must be called before clockevents_register_device() to avoid
-> > > the following lockdep splat triggered by calling list_add() when
-> > > CONFIG_PROVE_RCU_LIST=y:
-> > > 
-> > >    WARNING: suspicious RCU usage
-> > >    ...
-> > >    -----------------------------
-> > >    kernel/locking/lockdep.c:3680 RCU-list traversed in non-reader section!!
-> > > 
-> > >    other info that might help us debug this:
-> > > 
-> > >    RCU used illegally from offline CPU!
-> > >    rcu_scheduler_active = 1, debug_locks = 1
-> > >    no locks held by swapper/1/0.
-> > >    ...
-> > >    Call Trace:
-> > >    [<ffffffff8012a434>] show_stack+0x64/0x158
-> > >    [<ffffffff80a93d98>] dump_stack_lvl+0x90/0xc4
-> > >    [<ffffffff801c9e9c>] __lock_acquire+0x1404/0x2940
-> > >    [<ffffffff801cbf3c>] lock_acquire+0x14c/0x448
-> > >    [<ffffffff80aa4260>] _raw_spin_lock_irqsave+0x50/0x88
-> > >    [<ffffffff8021e0c8>] clockevents_register_device+0x60/0x1e8
-> > >    [<ffffffff80130ff0>] r4k_clockevent_init+0x220/0x3a0
-> > >    [<ffffffff801339d0>] start_secondary+0x50/0x3b8
-> > > 
-> > > raw_smp_processor_id() is required in order to avoid calling into lockdep
-> > > before RCU has declared the CPU to be watched for readers.
-> > > 
-> > > See also commit 29368e093921 ("x86/smpboot:  Move rcu_cpu_starting() earlier"),
-> > > commit de5d9dae150c ("s390/smp: move rcu_cpu_starting() earlier") and commit
-> > > 99f070b62322 ("powerpc/smp: Call rcu_cpu_starting() earlier").
-> > > 
-> > > Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-> > > Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> > > ---
-> > >   arch/mips/kernel/smp.c | 4 ++--
-> > >   1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > What is the git commit id of this change in Linus's tree?  What
-> > kernel(s) should this be applied to?
-> 
-> The upstream commit is 55702ec9603ebeffb15e6f7b113623fe1d8872f4 ("mips/smp:
-> Call rcutree_report_cpu_starting() earlier") and this change from Stefan
-> should be applied to both the 6.1 stable and 6.6 stable branches. Thanks!
+Hi,
 
-Thanks, now queued up.
+I've backported this two commits:
+f9e96bf19054 drm/vmwgfx: Fix possible invalid drm gem put calls
+91398b413d03 drm/vmwgfx: Keep a gem reference to user bos in surfaces
 
-greg k-h
+They both fixes a950b989ea29 ("drm/vmwgfx: Do not drop the reference
+to the handle too soon")
+which has been backported to v6.1.x branch as 0a127ac97240
+
+There was a lot of conflicts, and as I'm not familiar with the vmwgfx
+driver, it's better to review and test them.
+I've run a short test, and it worked, but that's certainly not enough.
+
+Thanks,
+
+Zack Rusin (2):
+  drm/vmwgfx: Fix possible invalid drm gem put calls
+  drm/vmwgfx: Keep a gem reference to user bos in surfaces
+
+ drivers/gpu/drm/vmwgfx/vmwgfx_bo.c       |  7 ++----
+ drivers/gpu/drm/vmwgfx/vmwgfx_cotable.c  |  8 +++----
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.h      | 20 ++++++++++++++++++
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c  | 12 +++++------
+ drivers/gpu/drm/vmwgfx/vmwgfx_gem.c      | 24 ++++++++++++++++-----
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c      | 10 ++++-----
+ drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c  |  3 +--
+ drivers/gpu/drm/vmwgfx/vmwgfx_resource.c | 18 ++++++++--------
+ drivers/gpu/drm/vmwgfx/vmwgfx_shader.c   |  5 ++---
+ drivers/gpu/drm/vmwgfx/vmwgfx_surface.c  | 27 +++++++-----------------
+ 10 files changed, 75 insertions(+), 59 deletions(-)
+
+
+base-commit: fec3b1451d5febbc9e04250f879c10f8952e6bed
+-- 
+2.43.0
+
 
