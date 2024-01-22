@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFA183852A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3EF583818A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CD54B24B2A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E564285803
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9832F6A330;
-	Tue, 23 Jan 2024 02:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6442599;
+	Tue, 23 Jan 2024 01:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0O+6okNA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2Fofbly"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EBD6A03B;
-	Tue, 23 Jan 2024 02:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F02D2114;
+	Tue, 23 Jan 2024 01:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975339; cv=none; b=D7hN71dQ+YoBOMliSzuJPYleSspQmYHCYQcq1koWrvMhFzjMN+PkJLNqs6gdhZJ7fwLwFoTW2Fd1pB/ar8ctyqKx2VBKJzE3JiGMo8g79cH5aob6URT1SM/YfFE6IyeV7ixl30yZMqmm5q0Rsr1r/Au8pCHpXzFXN5dkI5oXwkg=
+	t=1705972169; cv=none; b=DL7tdHkKG5z4f9sUSHVrpASxgSbit88HOW+NlmN/i80Ntd/NQEPjLX9FzAR13vFHV9cKIHs9uJOX7dBiVgWmnZ6yUUU4gc+7npr9DddK8CjIKfh/W9G7ZUzkdSXeHk2niLLiYbkgOpJgnuXqQk2DodVxes87Og705mBbrWXslM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975339; c=relaxed/simple;
-	bh=P9hACG/G3/8Zb4jwbiKKHwB4gCSNycoWHQDYbXnZ1iQ=;
+	s=arc-20240116; t=1705972169; c=relaxed/simple;
+	bh=GBxiZugJPlgnCVHSaGq/HigkOfC7nbNaS6azTLT/JQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZDbXsNIzlt4O30I0OH1W5UX2MUa6Uf08txr4dQpmV40NoWml1GV31VI7F4dOGZde1ndwzrfL6gMx/zNlEyz5WkrosMRaH9wOO9pA3daz4QFOdnRRGOpCKuLNmxDF0v6pwF/UPzyKO6tclx50ajqC8IebyojwtpoWe+o7BkdQXb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0O+6okNA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA38C43394;
-	Tue, 23 Jan 2024 02:02:19 +0000 (UTC)
+	 MIME-Version; b=K9tRjIUA6dxoQ0VWz2A7iOSvMW6fhGvR/u6cyTLQ7z9S9QJ6Km1R4A0aikFK++WvGj9CuFOSubznDDN0LJpheZveA5JVr5F/cL2iwKW7XyghAduhqJboBzK2Scrw0CkPlkhK7ZNxRetH6sROwKKobijN91pCvlKaZOokL9+296o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2Fofbly; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F7BC433C7;
+	Tue, 23 Jan 2024 01:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975339;
-	bh=P9hACG/G3/8Zb4jwbiKKHwB4gCSNycoWHQDYbXnZ1iQ=;
+	s=korg; t=1705972169;
+	bh=GBxiZugJPlgnCVHSaGq/HigkOfC7nbNaS6azTLT/JQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0O+6okNA63ojQrrROp+5YOKLGSJecyXt6s3ON/IWUxzkRzxcRe9pP/0TgcdcV1MAF
-	 2y4YhZq/3BPWpMSqco4pbCte7nAHzKZwKNUpx/2f9z3m080IXA83o0b4th+yNBdKGs
-	 Drg7kqlNbO7bTt2A5ZHzWpFFSddC0XUtrQa3YKHg=
+	b=l2FofblyROxzNYugcl+vAIdcoxcTLeuMAnq1vrceEnCt0iFRoxuqp3TdCM85nJ9+Y
+	 +iWC9e+BpzC+l/gLYiPjwmSYjgPKdNJNku6OJ0lGNm9ppQDiGgTXpqz/8Hdi1dNLS3
+	 RX/DFBvXkTOasonpyImwTeWT5PAtwjEgfYpHEGaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Curtis Klein <curtis.klein@hpe.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 300/583] watchdog: set cdev owner before adding
+Subject: [PATCH 5.15 095/374] crypto: sa2ul - Return crypto_aead_setkey to transfer the error
 Date: Mon, 22 Jan 2024 15:55:51 -0800
-Message-ID: <20240122235821.198704241@linuxfoundation.org>
+Message-ID: <20240122235747.908812531@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Curtis Klein <curtis.klein@hpe.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 38d75297745f04206db9c29bdd75557f0344c7cc ]
+[ Upstream commit ce852f1308ac738e61c5b2502517deea593a1554 ]
 
-When the new watchdog character device is registered, it becomes
-available for opening. This creates a race where userspace may open the
-device before the character device's owner is set. This results in an
-imbalance in module_get calls as the cdev_get in cdev_open will not
-increment the reference count on the watchdog driver module.
+Return crypto_aead_setkey() in order to transfer the error if
+it fails.
 
-This causes problems when the watchdog character device is released as
-the module loader's reference will also be released. This makes it
-impossible to open the watchdog device later on as it now appears that
-the module is being unloaded. The open will fail with -ENXIO from
-chrdev_open.
-
-The legacy watchdog device will fail with -EBUSY from the try_module_get
-in watchdog_open because it's module owner is the watchdog core module
-so it can still be opened but it will fail to get a refcount on the
-underlying watchdog device driver.
-
-Fixes: 72139dfa2464 ("watchdog: Fix the race between the release of watchdog_core_data and cdev")
-Signed-off-by: Curtis Klein <curtis.klein@hpe.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231205190522.55153-1-curtis.klein@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: d2c8ac187fc9 ("crypto: sa2ul - Add AEAD algorithm support")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/watchdog_dev.c | 3 +--
+ drivers/crypto/sa2ul.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/watchdog_dev.c b/drivers/watchdog/watchdog_dev.c
-index 15df74e11a59..e2bd266b1b5b 100644
---- a/drivers/watchdog/watchdog_dev.c
-+++ b/drivers/watchdog/watchdog_dev.c
-@@ -1073,6 +1073,7 @@ static int watchdog_cdev_register(struct watchdog_device *wdd)
+diff --git a/drivers/crypto/sa2ul.c b/drivers/crypto/sa2ul.c
+index 544d7040cfc5..91ab33690ccf 100644
+--- a/drivers/crypto/sa2ul.c
++++ b/drivers/crypto/sa2ul.c
+@@ -1868,9 +1868,8 @@ static int sa_aead_setkey(struct crypto_aead *authenc,
+ 	crypto_aead_set_flags(ctx->fallback.aead,
+ 			      crypto_aead_get_flags(authenc) &
+ 			      CRYPTO_TFM_REQ_MASK);
+-	crypto_aead_setkey(ctx->fallback.aead, key, keylen);
  
- 	/* Fill in the data structures */
- 	cdev_init(&wd_data->cdev, &watchdog_fops);
-+	wd_data->cdev.owner = wdd->ops->owner;
+-	return 0;
++	return crypto_aead_setkey(ctx->fallback.aead, key, keylen);
+ }
  
- 	/* Add the device */
- 	err = cdev_device_add(&wd_data->cdev, &wd_data->dev);
-@@ -1087,8 +1088,6 @@ static int watchdog_cdev_register(struct watchdog_device *wdd)
- 		return err;
- 	}
- 
--	wd_data->cdev.owner = wdd->ops->owner;
--
- 	/* Record time of most recent heartbeat as 'just before now'. */
- 	wd_data->last_hw_keepalive = ktime_sub(ktime_get(), 1);
- 	watchdog_set_open_deadline(wd_data);
+ static int sa_aead_setauthsize(struct crypto_aead *tfm, unsigned int authsize)
 -- 
 2.43.0
 
