@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-15118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C8C8383F6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ACD8837EF2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F6031F24414
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E706F29BC72
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715FD664B1;
-	Tue, 23 Jan 2024 01:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B867604CB;
+	Tue, 23 Jan 2024 00:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWKGwzys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ktJrUpq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314DF664A6;
-	Tue, 23 Jan 2024 01:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A46560274;
+	Tue, 23 Jan 2024 00:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975105; cv=none; b=Sc/cwLiy+3+nqNlJbSf9O1GWFrLW4kUgfN1kkIjAfgLZTHRxsoILR3XgP8CMf2auZiWvu67BmFSyaQtYmeNXUfGXceTkUkGPzsFWMQXdCwRGIPMqggtPl1wpEkujauRSDPRgPW8pYvuASSPEGYOuluuRkfoK6Jca7r2gT2/qtwY=
+	t=1705970841; cv=none; b=hOyBqqD5/hY/2z10U8XsJij+UnSN0SALY1UCLsUBu83cc/GbjiFiSTqi3tzNIe0utgqsQZKGbn2rUV8zsETSWXz33V4DV4xGTvWyRLEnjlRMDNfCqDzOkecne/s2Q/yC7SHju8AsGjN5TZnRcmG0b7z3TN19E3HYHo/LXaZKW+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975105; c=relaxed/simple;
-	bh=t/w17yUKIbwoUFo5iyripnqEI4Xw5LMIyDlihZAgtqk=;
+	s=arc-20240116; t=1705970841; c=relaxed/simple;
+	bh=7V3/Y51cDklvX0CtTRpsHWmxgvsWB2WvQwfESe/K61M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QBX0n6x8870VnPnqc+E1mkd8TppDQsUba2IxREajDwEaS6+qDuQYfAt/iriwN6nYS3Ydo248NYZgP5RI9hyBIRqPA/Ljk4wASmvaNBCuirUQPxtVU9LSjr4z5+p1657VJHe2X6u/yuGmFpO2U0uoQ+sAYdLjsCBWR4uVuM5FpzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zWKGwzys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B80C433C7;
-	Tue, 23 Jan 2024 01:58:24 +0000 (UTC)
+	 MIME-Version; b=pymsfnmlrlxoSPeWtf+iIX7Nrf+javz6WBi1RNMIvqfssHZqiyee2ZGamWv89BK1BgcFSHTP36YKBvGadVqzfhoaCf+48/uVtP5bBGyqIuveps1GvrRhsLXnjIJYVDQtf745oWUbZT6K+VwQdlffCfhb3yDeZ4Bstj83IStDXHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ktJrUpq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3ACC43390;
+	Tue, 23 Jan 2024 00:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975105;
-	bh=t/w17yUKIbwoUFo5iyripnqEI4Xw5LMIyDlihZAgtqk=;
+	s=korg; t=1705970841;
+	bh=7V3/Y51cDklvX0CtTRpsHWmxgvsWB2WvQwfESe/K61M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zWKGwzysVAMOJGlvmvyWMfgg4OIjkWArVjbxOaAUnZfpY9e0766XwsJv/Ou8woQuj
-	 lPOqKDIutujYEi+v0k3BVVubN83jC2DzYiXI1iutK/HIPu/rXfW/v1RpmMAhvDGjYB
-	 XRjKP/qENhquxcIKnww1Ik982Kqn6afHzExnT5SE=
+	b=0ktJrUpqc1z7i7SDwt9l2X2/doV+wP13lmZHzTLgTsLk8UhPwFuJ1gs81Fukw1R0s
+	 JugawNBmHYOaxSLilyGIQxHjovUViMRBZ/5f/SESRJL33ey8htxxIFNaPMY9Cq354w
+	 NNPcRt/poQMAyFncVpEA40JIeYo4XMxeicjpwQ54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Joakim Zhang <joakim.zhang@cixtech.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 240/583] f2fs: fix to avoid dirent corruption
+Subject: [PATCH 6.1 123/417] dma-mapping: clear dev->dma_mem to NULL after freeing it
 Date: Mon, 22 Jan 2024 15:54:51 -0800
-Message-ID: <20240122235819.344227992@linuxfoundation.org>
+Message-ID: <20240122235756.060040401@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Joakim Zhang <joakim.zhang@cixtech.com>
 
-[ Upstream commit 53edb549565f55ccd0bdf43be3d66ce4c2d48b28 ]
+[ Upstream commit b07bc2347672cc8c7293c64499f1488278c5ca3d ]
 
-As Al reported in link[1]:
+Reproduced with below sequence:
+dma_declare_coherent_memory()->dma_release_coherent_memory()
+->dma_declare_coherent_memory()->"return -EBUSY" error
 
-f2fs_rename()
-...
-	if (old_dir != new_dir && !whiteout)
-		f2fs_set_link(old_inode, old_dir_entry,
-					old_dir_page, new_dir);
-	else
-		f2fs_put_page(old_dir_page, 0);
+It will return -EBUSY from the dma_assign_coherent_memory()
+in dma_declare_coherent_memory(), the reason is that dev->dma_mem
+pointer has not been set to NULL after it's freed.
 
-You want correct inumber in the ".." link.  And cross-directory
-rename does move the source to new parent, even if you'd been asked
-to leave a whiteout in the old place.
-
-[1] https://lore.kernel.org/all/20231017055040.GN800259@ZenIV/
-
-With below testcase, it may cause dirent corruption, due to it missed
-to call f2fs_set_link() to update ".." link to new directory.
-- mkdir -p dir/foo
-- renameat2 -w dir/foo bar
-
-[ASSERT] (__chk_dots_dentries:1421)  --> Bad inode number[0x4] for '..', parent parent ino is [0x3]
-[FSCK] other corrupted bugs                           [Fail]
-
-Fixes: 7e01e7ad746b ("f2fs: support RENAME_WHITEOUT")
-Cc: Jan Kara <jack@suse.cz>
-Reported-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: cf65a0f6f6ff ("dma-mapping: move all DMA mapping code to kernel/dma")
+Signed-off-by: Joakim Zhang <joakim.zhang@cixtech.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/namei.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/dma/coherent.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
-index 193b22a2d6bf..02d9c47797be 100644
---- a/fs/f2fs/namei.c
-+++ b/fs/f2fs/namei.c
-@@ -1106,7 +1106,7 @@ static int f2fs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- 	}
+diff --git a/kernel/dma/coherent.c b/kernel/dma/coherent.c
+index c21abc77c53e..ff5683a57f77 100644
+--- a/kernel/dma/coherent.c
++++ b/kernel/dma/coherent.c
+@@ -132,8 +132,10 @@ int dma_declare_coherent_memory(struct device *dev, phys_addr_t phys_addr,
  
- 	if (old_dir_entry) {
--		if (old_dir != new_dir && !whiteout)
-+		if (old_dir != new_dir)
- 			f2fs_set_link(old_inode, old_dir_entry,
- 						old_dir_page, new_dir);
- 		else
+ void dma_release_coherent_memory(struct device *dev)
+ {
+-	if (dev)
++	if (dev) {
+ 		_dma_release_coherent_memory(dev->dma_mem);
++		dev->dma_mem = NULL;
++	}
+ }
+ 
+ static void *__dma_alloc_from_coherent(struct device *dev,
 -- 
 2.43.0
 
