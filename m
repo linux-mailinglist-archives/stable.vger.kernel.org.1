@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8959837F1D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC0A8837F96
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6242D29BE70
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78E15292BC1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FA460887;
-	Tue, 23 Jan 2024 00:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330296280E;
+	Tue, 23 Jan 2024 00:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iGWegJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfDDhuAo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E9B3FFE;
-	Tue, 23 Jan 2024 00:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F8762807;
+	Tue, 23 Jan 2024 00:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970947; cv=none; b=p8n11tbHAy639XeU8GDg4SKoz909lWwOS0Xj2fKgy4nMSfXgECP+6/QAKje6UBBEjfKyw+bffw2tRm6HY9EU9+Q620CGvBBDZWiy6lQso+MThf9Sd6SyQFXBYPiUgcngCfCun07aDfZtpAiuHHsDso150eo+IdA7OJqf18JXF3c=
+	t=1705971213; cv=none; b=VSGotXjcB/bv16ZwJF+tz5ZTUGAJFxB4YcGTs5Op8NVKe4uEz3co8DsWUjD8N8a2AtWl2zi0JzIwCH+bz60I+MaSIsdBn7C3R1lllTRYrTjDXDEHbERpIQcNpUim+z5YK2F6Gsfh1KTav02UzGJXB8RbG4UY9t58dQ+h+AUgm5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970947; c=relaxed/simple;
-	bh=HgQTH1kdWtXMahbMNUddfZWidp655py30ovrrIp7Txo=;
+	s=arc-20240116; t=1705971213; c=relaxed/simple;
+	bh=YOC1xYfbhCbM2QJsbKk0BU6OP8XBr70VecR5eIqrGdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WwPnGtyd2VT5uxefJvCV6OsIOE4HGg5OvJQrM5xszIoUt5nfQ7v4MK9nzQZSrW9mIGul8UEKTWY1+fyzT5kvndBGKC5tEExZY1faxo5oPlzMMEsnuJh6HsCiBAndAt8fK8YetwXUgYO8OHfPWYNuNv23IzHbaXEHukjOwEevBn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iGWegJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17191C433C7;
-	Tue, 23 Jan 2024 00:49:07 +0000 (UTC)
+	 MIME-Version; b=l+Md4mqsvev7st8p+bwd3orEmKUiXfpuAoSrA5vVhYKuWKp3/JXe7OAqEaQWvW8LYgSU6N/b3Lk8McTqS1DqgiO+kMYIoqsUFFz4n8E6YLm/sTphM4k0ycUgiNfK+ZruAqy9Sr1xZfLWujkpPPgbz65tdg4eCrpuiOEzBrcrdJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cfDDhuAo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C116DC433F1;
+	Tue, 23 Jan 2024 00:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970947;
-	bh=HgQTH1kdWtXMahbMNUddfZWidp655py30ovrrIp7Txo=;
+	s=korg; t=1705971212;
+	bh=YOC1xYfbhCbM2QJsbKk0BU6OP8XBr70VecR5eIqrGdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1iGWegJ8XJSEbr5gJrD4JeceTWVAVoCPAAvvJyRYMZuIvu1keA5asvM00aFwj3y2l
-	 s5Tp/AXmpuEk+r/mvUuuSy4/qhfwniQVbyo+boeWwwVLmCrWYeGDsUS8ykAJ3jy/jP
-	 ScDWi6cgq5RdBHt15AqAMT7CWzVytoJEtxMFGGlQ=
+	b=cfDDhuAooJmq0sBHSyc+Cf1wItQrzmV55pThwPrA2M+B/wiKEORB27xMRh1396DOK
+	 Phi7K3dCvu4TRmaA40O0bUsN79kVewzo3w+M4XwpPYbqv8lDad7CfHijMl73ChI/Zy
+	 qnobebNDiuxnIlpUHyEe5TFB0XoSwpEb8RwdFrqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Dufour <ldufour@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 054/286] powerpc/pseries/memhotplug: Quieten some DLPAR operations
+Subject: [PATCH 6.1 192/417] RDMA/hns: Fix memory leak in free_mr_init()
 Date: Mon, 22 Jan 2024 15:56:00 -0800
-Message-ID: <20240122235734.110995873@linuxfoundation.org>
+Message-ID: <20240122235758.574456568@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Dufour <ldufour@linux.ibm.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit 20e9de85edae3a5866f29b6cce87c9ec66d62a1b ]
+[ Upstream commit 288f535951aa81ed674f5e5477ab11b9d9351b8c ]
 
-When attempting to remove by index a set of LMBs a lot of messages are
-displayed on the console, even when everything goes fine:
+When a reserved QP fails to be created, the memory of the remaining
+created reserved QPs is leaked.
 
-  pseries-hotplug-mem: Attempting to hot-remove LMB, drc index 8000002d
-  Offlined Pages 4096
-  pseries-hotplug-mem: Memory at 2d0000000 was hot-removed
-
-The 2 messages prefixed by "pseries-hotplug-mem" are not really
-helpful for the end user, they should be debug outputs.
-
-In case of error, because some of the LMB's pages couldn't be
-offlined, the following is displayed on the console:
-
-  pseries-hotplug-mem: Attempting to hot-remove LMB, drc index 8000003e
-  pseries-hotplug-mem: Failed to hot-remove memory at 3e0000000
-  dlpar: Could not handle DLPAR request "memory remove index 0x8000003e"
-
-Again, the 2 messages prefixed by "pseries-hotplug-mem" are useless,
-and the generic DLPAR prefixed message should be enough.
-
-These 2 first changes are mainly triggered by the changes introduced
-in drmgr:
-  https://groups.google.com/g/powerpc-utils-devel/c/Y6ef4NB3EzM/m/9cu5JHRxAQAJ
-
-Also, when adding a bunch of LMBs, a message is displayed in the console per LMB
-like these ones:
-  pseries-hotplug-mem: Memory at 7e0000000 (drc index 8000007e) was hot-added
-  pseries-hotplug-mem: Memory at 7f0000000 (drc index 8000007f) was hot-added
-  pseries-hotplug-mem: Memory at 800000000 (drc index 80000080) was hot-added
-  pseries-hotplug-mem: Memory at 810000000 (drc index 80000081) was hot-added
-
-When adding 1TB of memory and LMB size is 256MB, this leads to 4096
-messages to be displayed on the console. These messages are not really
-helpful for the end user, so moving them to the DEBUG level.
-
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-[mpe: Tweak change log wording]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20201211145954.90143-1-ldufour@linux.ibm.com
-Stable-dep-of: bd68ffce69f6 ("powerpc/pseries/memhp: Fix access beyond end of drmem array")
+Fixes: 70f92521584f ("RDMA/hns: Use the reserved loopback QPs to free MR before destroying MPT")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20231207114231.2872104-6-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/hotplug-memory.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index a5f968b5fa3a..0e602c3b01ea 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -481,7 +481,7 @@ static int dlpar_memory_remove_by_index(u32 drc_index)
- 	int lmb_found;
- 	int rc;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 280a3458bb53..58fbb1d3b7f4 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -2819,6 +2819,10 @@ static int free_mr_alloc_res(struct hns_roce_dev *hr_dev)
+ 	return 0;
  
--	pr_info("Attempting to hot-remove LMB, drc index %x\n", drc_index);
-+	pr_debug("Attempting to hot-remove LMB, drc index %x\n", drc_index);
+ create_failed_qp:
++	for (i--; i >= 0; i--) {
++		hns_roce_v2_destroy_qp(&free_mr->rsv_qp[i]->ibqp, NULL);
++		kfree(free_mr->rsv_qp[i]);
++	}
+ 	hns_roce_destroy_cq(cq, NULL);
+ 	kfree(cq);
  
- 	lmb_found = 0;
- 	for_each_drmem_lmb(lmb) {
-@@ -499,10 +499,10 @@ static int dlpar_memory_remove_by_index(u32 drc_index)
- 		rc = -EINVAL;
- 
- 	if (rc)
--		pr_info("Failed to hot-remove memory at %llx\n",
--			lmb->base_addr);
-+		pr_debug("Failed to hot-remove memory at %llx\n",
-+			 lmb->base_addr);
- 	else
--		pr_info("Memory at %llx was hot-removed\n", lmb->base_addr);
-+		pr_debug("Memory at %llx was hot-removed\n", lmb->base_addr);
- 
- 	return rc;
- }
-@@ -719,8 +719,8 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
- 			if (!drmem_lmb_reserved(lmb))
- 				continue;
- 
--			pr_info("Memory at %llx (drc index %x) was hot-added\n",
--				lmb->base_addr, lmb->drc_index);
-+			pr_debug("Memory at %llx (drc index %x) was hot-added\n",
-+				 lmb->base_addr, lmb->drc_index);
- 			drmem_remove_lmb_reservation(lmb);
- 		}
- 		rc = 0;
 -- 
 2.43.0
 
