@@ -1,122 +1,98 @@
-Return-Path: <stable+bounces-12342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0EF835811
-	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 23:13:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 415B18358D6
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 01:04:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F53C281615
-	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 22:13:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C85001F22985
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 00:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B5B38DF9;
-	Sun, 21 Jan 2024 22:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CAB364;
+	Mon, 22 Jan 2024 00:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="LM4qngJR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V8kyjonA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B7031A78;
-	Sun, 21 Jan 2024 22:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11E11FA1;
+	Mon, 22 Jan 2024 00:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705875235; cv=none; b=odfDJ786e9slMRyF7wuFebCdomLIhgPVNGnY7IeKdXoId8LgD0Ldtz9JZq/fnlSL/1UUUUROn8lojc4kX0b4LYnAQeraVDLrb7gQQEeI5SjL71h4O4wu+H4H0eKONUtytVpadotorL7F58i6ytNybrnR0b6btbWTrEOyosVE+cQ=
+	t=1705881840; cv=none; b=ejpdWbkbley3Y0AnPrw5cBZywMk07ZfwxDorPncpL5F78goaGgoFzjNxpB+4PGDBRAXrL7GTtDFUYReq4OGA9QrT8FQaJC9j1hKVwbfY77r0ORHxssn3QcXS37CM/I9Vh2LxeLD6sCpSkOPHWVYhuObIFwyjmzs8/UvQwNDmoL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705875235; c=relaxed/simple;
-	bh=KSqALTixM5vYaqW5ZAi1Xh0NLYQMP+PJoTN5lg+7UQA=;
-	h=Date:To:From:Subject:Message-Id; b=PEWodEZeZKi6Ub61jBBHiC7iworp/gL+kIqQuKPvDVa/9Dj1ArmI2qDUE3xrm9klE7fckz+5E4bjSf/2sSfxW0kzJWOmwxC9BjBT4tLkdWh1ppi64IYNB9UHmM5t7Zcn3ns3imApx1CvNPTDSpjowXa74aagU3tYBHbWCT0NePs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=LM4qngJR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8E8C433F1;
-	Sun, 21 Jan 2024 22:13:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1705875234;
-	bh=KSqALTixM5vYaqW5ZAi1Xh0NLYQMP+PJoTN5lg+7UQA=;
-	h=Date:To:From:Subject:From;
-	b=LM4qngJRCy71/Sj/IXxdCMei2usiK3XWLLAVYq0P90c11KuKfLxvm7rUv6AzG4wgR
-	 xt79gvH/YJA4ehHDqBzLZ8AFVGWoQdZc96UXM4FoSgYYDuuzc6moZcMWr3SragB9T9
-	 Zkf39TTwY0SgcFR3ktGLULrcbSO3x3OlX+4VMopI=
-Date: Sun, 21 Jan 2024 14:13:50 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,raquini@redhat.com,adam@wowsignal.io,audra@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + selftests-mm-update-va_high_addr_switchsh-to-check-cpu-for-la57-flag.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240121221354.1E8E8C433F1@smtp.kernel.org>
+	s=arc-20240116; t=1705881840; c=relaxed/simple;
+	bh=7oDI1XO154l1iaa0RraSQw5ES7TxoMVaLBOvKr6NGIU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iMCcHpak7TP4gafOBUbvkw8ZLd0lDiWVcZkkM6Eamx3yT3DlFg5A0qM26b0PWogqD9BfwJpaOdIZ7Yez5grp9o7Dpl1CSKX2AAGPo7TdXHGcSVGrYdZ3/RpWT7A3cEUQp4jvj+xrWCC+0V9sBv6gQHJS/TXtXJSUQ1q8M7Asn14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V8kyjonA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181DDC433C7;
+	Mon, 22 Jan 2024 00:03:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705881840;
+	bh=7oDI1XO154l1iaa0RraSQw5ES7TxoMVaLBOvKr6NGIU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V8kyjonAFPfiubxozhOruWdoQ+UXUjbDUSLOYRIMizyMt/Y/BCZz5sbuvgDDM1qX9
+	 CvMVvcUha21MNi25rvqb5XINYtoNHVzyNTi8rkYfd/bTLwbgJcnZDM5+9lKeYrAe8g
+	 xgs7Pfv5KvD+eWAfBZ74aGZbLgUmkBXiD/0+WL9Zgq5TQQm07M18YfBSZbBgriDJK4
+	 Ad3aH+qNe53hChAvwcQVkyF9ZCdLwInlX3wXe6lbUCLbrvhA4Axl0fn3ST/S10diAo
+	 jlpAHKsB8UIF9EbZs6hPLOQ8LutAmlEvoGlivfAyn4JMreVapHTDWSlt0Z7CxmknB2
+	 3Bir742GDmMrQ==
+Date: Mon, 22 Jan 2024 00:03:55 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Banajit Goswami <bgoswami@quicinc.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4 2/4] ASoC: qcom: sc8280xp: limit speaker volumes
+Message-ID: <d54d3640-49bf-4a2f-903b-4beeb0ebd56c@sirena.org.uk>
+References: <20240119112420.7446-1-johan+linaro@kernel.org>
+ <20240119112420.7446-3-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ddqYfjTpQJcp+t1u"
+Content-Disposition: inline
+In-Reply-To: <20240119112420.7446-3-johan+linaro@kernel.org>
+X-Cookie: 1: No code table for op: ++post
 
 
-The patch titled
-     Subject: selftests/mm: Update va_high_addr_switch.sh to check CPU for la57 flag
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     selftests-mm-update-va_high_addr_switchsh-to-check-cpu-for-la57-flag.patch
+--ddqYfjTpQJcp+t1u
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-update-va_high_addr_switchsh-to-check-cpu-for-la57-flag.patch
+On Fri, Jan 19, 2024 at 12:24:18PM +0100, Johan Hovold wrote:
+> The UCM configuration for the Lenovo ThinkPad X13s has up until now
+> been setting the speaker PA volume to the minimum -3 dB when enabling
+> the speakers, but this does not prevent the user from increasing the
+> volume further.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+This doesn't apply against current code, please check and resend.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+--ddqYfjTpQJcp+t1u
+Content-Type: application/pgp-signature; name="signature.asc"
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+-----BEGIN PGP SIGNATURE-----
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWtsOoACgkQJNaLcl1U
+h9A6sAf+MNxmG+32Oty1qqRKXBZ5RVX6g9r56r3iFPMAmhMHoSZSvmXUvPk2aG29
+7Oy3y1c5yFMKmSVNq5Oi8XzLAua0Prpx1ziOSwRCgQSdZ+DRjcgxnh3lfFjH4gJI
+8GbfQuWO6XYIU0Poi972LR/dofiuSOkcU6SriIdmoUIdWaplFT/hK0b9LwFMejzD
+7p8XuQw/G0JQgztd/KGtTr1S/UyqTKbcg5hK7ON4woYsSQKWCdKq+hqXx67tyTAv
+4fiRWsQoRqtTeAw2PCt0xi3yT6aMfeciOiScaz1uZwmym3Hs8gQ1H4TSV/ee6ieu
+nUHFZS8Xq3xiYmO7DN+Fnx/eYSi46Q==
+=0JpU
+-----END PGP SIGNATURE-----
 
-------------------------------------------------------
-From: Audra Mitchell <audra@redhat.com>
-Subject: selftests/mm: Update va_high_addr_switch.sh to check CPU for la57 flag
-Date: Fri, 19 Jan 2024 15:58:01 -0500
-
-In order for the page table level 5 to be in use, the CPU must have the
-setting enabled in addition to the CONFIG option. Check for the flag to be
-set to avoid false test failures on systems that do not have this cpu flag
-set.
-
-Link: https://lkml.kernel.org/r/20240119205801.62769-1-audra@redhat.com
-Fixes: 4f2930c6718a ("selftests/vm: only run 128TBswitch with 5-level paging")
-Signed-off-by: Audra Mitchell <audra@redhat.com>
-Cc: Rafael Aquini <raquini@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Adam Sindelar <adam@wowsignal.io>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- tools/testing/selftests/mm/va_high_addr_switch.sh |    6 ++++++
- 1 file changed, 6 insertions(+)
-
---- a/tools/testing/selftests/mm/va_high_addr_switch.sh~selftests-mm-update-va_high_addr_switchsh-to-check-cpu-for-la57-flag
-+++ a/tools/testing/selftests/mm/va_high_addr_switch.sh
-@@ -29,9 +29,15 @@ check_supported_x86_64()
- 	# See man 1 gzip under '-f'.
- 	local pg_table_levels=$(gzip -dcfq "${config}" | grep PGTABLE_LEVELS | cut -d'=' -f 2)
- 
-+	local cpu_supports_pl5=$(awk '/^flags/ {if (/la57/) {print 0;}
-+		else {print 1}; exit}' /proc/cpuinfo 2>/dev/null)
-+
- 	if [[ "${pg_table_levels}" -lt 5 ]]; then
- 		echo "$0: PGTABLE_LEVELS=${pg_table_levels}, must be >= 5 to run this test"
- 		exit $ksft_skip
-+	elif [[ "${cpu_supports_pl5}" -ne 0 ]]; then
-+		echo "$0: CPU does not have the necessary la57 flag to support page table level 5"
-+		exit $ksft_skip
- 	fi
- }
- 
-_
-
-Patches currently in -mm which might be from audra@redhat.com are
-
-selftests-mm-update-va_high_addr_switchsh-to-check-cpu-for-la57-flag.patch
-
+--ddqYfjTpQJcp+t1u--
 
