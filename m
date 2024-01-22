@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-15194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6E9838446
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 852F9837D1F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D06851C2A25F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FCC61F2936C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1364E6BB21;
-	Tue, 23 Jan 2024 02:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FFCD59B70;
+	Tue, 23 Jan 2024 00:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zp5Zt9gG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCTUqXve"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AF46A354;
-	Tue, 23 Jan 2024 02:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE5E59B72;
+	Tue, 23 Jan 2024 00:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975350; cv=none; b=tTt09PKwEiOKMN8zJeoB2EsI/LhE0d33RcM8iWLgyMW0cZxxMYlThbPhffxUmPh7lKIOl0L16D5sEArVlHOAxdYRcdH1tEoUwlVgQNiQ3Y509qNpAopsF4tkxt3gHu83cjbtCksq2TDNWajN+KkT+hr1D+EDTPtdjTNYL3p0Bl8=
+	t=1705969803; cv=none; b=tdewWTFMGTDqE7f200lT6VN+oJvAvv02Enohr30K/fCEqlue0zSzrRJGyzGAjgGjJhYaYVksP87mv74bscStqZQA9DVVJYhqF3yEkUURJhKn2PQi9ctuuY4m9CFaqE+yg9ZCOtnX3w2GOTfd/rO4ONsw+xZVE7elI+J2bsP60es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975350; c=relaxed/simple;
-	bh=fjYN60atLbsyutMG5sOWPs99csFJGyHrXneY7lpUkTs=;
+	s=arc-20240116; t=1705969803; c=relaxed/simple;
+	bh=GorgIaBc1dtvBg+2Efny89nUoodAmqH/pWipFuMvb7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qzq7YxumHa+ssuy3BzDLBYTfs0D1NTce3P40Ike5agcja6+kTVz1zzaTCUrevqi5vMw8kyH+BOyVbIDmsVw4PwQQfYUnYq7RwthucfusOeG0MxztQVnj9pMxc3AoFiHd5kyVxpGXmS0hM5HtyStnNSeyZGu4DDtD9MGf+T5FbnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zp5Zt9gG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320E1C433C7;
-	Tue, 23 Jan 2024 02:02:30 +0000 (UTC)
+	 MIME-Version; b=rg+5PToUEFN9r4uBwdelN+fC0Krh7d1LJdT449vY8Pruq+aLU6F8vqTcb8sA47c+INRM4pp9nScda4uA/c5PDLkQ2cveQhCGv4ut9/sdpftMt6cXKOpsQW89FIrwF/OBodbpZRRyOALWc7iQRYYECV4WoRecIfNsP5MPb6x8Vjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCTUqXve; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4C2C433F1;
+	Tue, 23 Jan 2024 00:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975350;
-	bh=fjYN60atLbsyutMG5sOWPs99csFJGyHrXneY7lpUkTs=;
+	s=korg; t=1705969803;
+	bh=GorgIaBc1dtvBg+2Efny89nUoodAmqH/pWipFuMvb7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zp5Zt9gG4+wSdzGWqFMugg15W9pVuVZZ9jJ/WeEB8nqBX6sMJOm2CuWgJhFZ3/gck
-	 Xjw0UngM1O6ASswJdFiSpd8R6yskZzPLTkcozzpCFjmzIG+9n1j1ZC4+Mr7uip/B7l
-	 NyTulOe4xX68jJO6i2ts612q1aXP/P5EqjGnf63M=
+	b=GCTUqXveVlivqzrEo9IS/5F0rbxloVSHqQpBljYvtcOMehEIyIGW6tMnVs5UxFjwz
+	 TXdyretYbeTkAodCKKYFQxWq49UA5rXQFgmBJjCpsfmM3oiJb8i/R0DZJJSNmHSQbK
+	 XizJpkge14Lq2TvwxKr/QXxwewZH4P1hdr/1zkC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 312/583] clk: qcom: gcc-sm8550: use collapse-voting for PCIe GDSCs
+	David Lin <yu-hao.lin@nxp.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.7 459/641] wifi: mwifiex: fix uninitialized firmware_stat
 Date: Mon, 22 Jan 2024 15:56:03 -0800
-Message-ID: <20240122235821.573464826@linuxfoundation.org>
+Message-ID: <20240122235832.395373172@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: David Lin <yu-hao.lin@nxp.com>
 
-[ Upstream commit 7e77a39265293ea4f05e20fff180755503c49918 ]
+commit 3df95e265924ac898c1a38a0c01846dd0bd3b354 upstream.
 
-The PCIe GDSCs can be shared with other masters and should use the APCS
-collapse-vote register when updating the power state.
+Variable firmware_stat is possible to be used without initialization.
 
-This is specifically also needed to be able to disable power domains
-that have been enabled by boot firmware using the vote register.
-
-Following other recent Qualcomm platforms, describe this register and
-the corresponding mask for the PCIe (and _phy) GDSCs.
-
-Fixes: 955f2ea3b9e9 ("clk: qcom: Add GCC driver for SM8550")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231218-topic-8550_fixes-v1-5-ce1272d77540@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+Fixes: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202312192236.ZflaWYCw-lkp@intel.com/
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231221015511.1032128-1-yu-hao.lin@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-sm8550.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/wireless/marvell/mwifiex/sdio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-sm8550.c b/drivers/clk/qcom/gcc-sm8550.c
-index a16d07426b71..73bda0d03aa7 100644
---- a/drivers/clk/qcom/gcc-sm8550.c
-+++ b/drivers/clk/qcom/gcc-sm8550.c
-@@ -2998,6 +2998,8 @@ static struct clk_branch gcc_video_axi1_clk = {
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.c
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+@@ -779,7 +779,7 @@ static int mwifiex_check_fw_status(struc
+ {
+ 	struct sdio_mmc_card *card = adapter->card;
+ 	int ret = 0;
+-	u16 firmware_stat;
++	u16 firmware_stat = 0;
+ 	u32 tries;
  
- static struct gdsc pcie_0_gdsc = {
- 	.gdscr = 0x6b004,
-+	.collapse_ctrl = 0x52020,
-+	.collapse_mask = BIT(0),
- 	.pd = {
- 		.name = "pcie_0_gdsc",
- 	},
-@@ -3007,6 +3009,8 @@ static struct gdsc pcie_0_gdsc = {
- 
- static struct gdsc pcie_0_phy_gdsc = {
- 	.gdscr = 0x6c000,
-+	.collapse_ctrl = 0x52020,
-+	.collapse_mask = BIT(3),
- 	.pd = {
- 		.name = "pcie_0_phy_gdsc",
- 	},
-@@ -3016,6 +3020,8 @@ static struct gdsc pcie_0_phy_gdsc = {
- 
- static struct gdsc pcie_1_gdsc = {
- 	.gdscr = 0x8d004,
-+	.collapse_ctrl = 0x52020,
-+	.collapse_mask = BIT(1),
- 	.pd = {
- 		.name = "pcie_1_gdsc",
- 	},
-@@ -3025,6 +3031,8 @@ static struct gdsc pcie_1_gdsc = {
- 
- static struct gdsc pcie_1_phy_gdsc = {
- 	.gdscr = 0x8e000,
-+	.collapse_ctrl = 0x52020,
-+	.collapse_mask = BIT(4),
- 	.pd = {
- 		.name = "pcie_1_phy_gdsc",
- 	},
--- 
-2.43.0
-
+ 	for (tries = 0; tries < poll_num; tries++) {
 
 
 
