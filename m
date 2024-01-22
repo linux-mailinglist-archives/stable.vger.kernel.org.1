@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFB18384B3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A8D2838050
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0FAF1C27528
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F1521C26BC5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFBF574E00;
-	Tue, 23 Jan 2024 02:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197ED664D3;
+	Tue, 23 Jan 2024 01:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLdE4lzk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYclWEvQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEFA745D6;
-	Tue, 23 Jan 2024 02:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF10664B6;
+	Tue, 23 Jan 2024 01:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975462; cv=none; b=WHtffkCZDUDY4UFPAGDNlDIyE2zECVZZRYcGHmzA5SIhNDQPTMOlYOhU1LC8d6Boni0mGVGb4mqJ7WK3b6nQfMEJBmpKyKpCX+tbo7gymaTSvZ7JkJTcGs2U1T16GfbE4sGOrhyJL7p4oIf8i7utPkbBZfkcw96ljBEcz0vIOSQ=
+	t=1705971662; cv=none; b=OitWBYVDlBtSktgTYV6pkznlzhuLWIPG/j0fGe0VSzfI4s7Dm9Fod12aUxGUI5iEya2EtQS2dNusymL+eEAWbSN+0GM7Te4t0+/WNRjFF17ZEEgg/cRGqk2Q66/JuM4SKye8GcQRo1Q+AluvtBt2GM4vJ3GMlNsrgXZww1S19iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975462; c=relaxed/simple;
-	bh=kVSw27/vRYf7zFQJ2c3UbKwzD9BL2MFYUdg7bwocrww=;
+	s=arc-20240116; t=1705971662; c=relaxed/simple;
+	bh=K4gTiJnRUatIJjYoVpuSt9VigozGH/XQ70zPESvIbJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fDD5vbi7BCMq+R6RBNcNI/2kJHl+hD0JDYZQOLAXdKjuLluQxGHvY69kDosADyqRHKXa7roADbFyFQCRZ76BEaIzeLf7akQ/6WMkdOsHdzvlLDFm0v62oiwZKEXtsd/fw++HCZiI9d9lbjdf+qmxJsUNlfgd7M+zwvFlxMcqh1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLdE4lzk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524E1C43399;
-	Tue, 23 Jan 2024 02:04:22 +0000 (UTC)
+	 MIME-Version; b=htbkRl73meylvlbCD/A8nq6+jb8pz5c/S199s1qzoY2n0TSMs7SCzk+Kw56Rlal530qdwpuhlGYZM1IOHG9fzstnujD5PQOlv1umWHROUNeuTHohoKwzgCCYIPsb49R8yjMpVhmUB3yi/8LQYMyE1BrowrrKbxfxxWHfV00FyOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYclWEvQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E56C433F1;
+	Tue, 23 Jan 2024 01:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975462;
-	bh=kVSw27/vRYf7zFQJ2c3UbKwzD9BL2MFYUdg7bwocrww=;
+	s=korg; t=1705971662;
+	bh=K4gTiJnRUatIJjYoVpuSt9VigozGH/XQ70zPESvIbJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wLdE4lzk1a5ENQKHmkxxX665VeUgR2SVblKNoCQu2Xe7PSAdAxf/9U0bycYRt5v6f
-	 WXMtj8uLGLXTPprLd4kwCgfTZ074c5zkY9wDzQxScisH5mObTYlwhPfLViO94Dv63W
-	 NrG29k82KAaFt54zYQ38OKncGR3GFKnf7NNNGbes=
+	b=cYclWEvQ2m1+fKBBv0iPkLzxYMn5CyFa01ZWutYnFbEp22kqmJQTQWGzU5HuqsmK7
+	 prXgfo50DAHL1OdJnkcmIa6rUF3DqrIVJUGJ8uJJSsdMwwusQzZVrlPt1pHzPDpiiQ
+	 0GiGS3QY+13+LIyd9prXlsFPVmktytMb139HCH0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.6 384/583] ksmbd: fix UAF issue in ksmbd_tcp_new_connection()
-Date: Mon, 22 Jan 2024 15:57:15 -0800
-Message-ID: <20240122235823.747261159@linuxfoundation.org>
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	RD Babiera <rdbabiera@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.1 268/417] usb: typec: class: fix typec_altmode_put_partner to put plugs
+Date: Mon, 22 Jan 2024 15:57:16 -0800
+Message-ID: <20240122235801.145747627@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: RD Babiera <rdbabiera@google.com>
 
-commit 38d20c62903d669693a1869aa68c4dd5674e2544 upstream.
+commit 5962ded777d689cd8bf04454273e32228d7fb71f upstream.
 
-The race is between the handling of a new TCP connection and
-its disconnection. It leads to UAF on `struct tcp_transport` in
-ksmbd_tcp_new_connection() function.
+When typec_altmode_put_partner is called by a plug altmode upon release,
+the port altmode the plug belongs to will not remove its reference to the
+plug. The check to see if the altmode being released is a plug evaluates
+against the released altmode's partner instead of the calling altmode, so
+change adev in typec_altmode_put_partner to properly refer to the altmode
+being released.
 
-Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-22991
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Because typec_altmode_set_partner calls get_device() on the port altmode,
+add partner_adev that points to the port altmode in typec_put_partner to
+call put_device() on. typec_altmode_set_partner is not called for port
+altmodes, so add a check in typec_altmode_release to prevent
+typec_altmode_put_partner() calls on port altmode release.
+
+Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
+Cc:  <stable@vger.kernel.org>
+Co-developed-by: Christian A. Ehrhardt <lk@c--e.de>
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Tested-by: Christian A. Ehrhardt <lk@c--e.de>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240103181754.2492492-2-rdbabiera@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/connection.c     |    6 ------
- fs/smb/server/connection.h     |    1 -
- fs/smb/server/transport_rdma.c |   11 ++++++-----
- fs/smb/server/transport_tcp.c  |   13 +++++++------
- 4 files changed, 13 insertions(+), 18 deletions(-)
+ drivers/usb/typec/class.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -415,13 +415,7 @@ static void stop_sessions(void)
- again:
- 	down_read(&conn_list_lock);
- 	list_for_each_entry(conn, &conn_list, conns_list) {
--		struct task_struct *task;
--
- 		t = conn->transport;
--		task = t->handler;
--		if (task)
--			ksmbd_debug(CONN, "Stop session handler %s/%d\n",
--				    task->comm, task_pid_nr(task));
- 		ksmbd_conn_set_exiting(conn);
- 		if (t->ops->shutdown) {
- 			up_read(&conn_list_lock);
---- a/fs/smb/server/connection.h
-+++ b/fs/smb/server/connection.h
-@@ -135,7 +135,6 @@ struct ksmbd_transport_ops {
- struct ksmbd_transport {
- 	struct ksmbd_conn		*conn;
- 	struct ksmbd_transport_ops	*ops;
--	struct task_struct		*handler;
- };
- 
- #define KSMBD_TCP_RECV_TIMEOUT	(7 * HZ)
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -2039,6 +2039,7 @@ static bool rdma_frwr_is_supported(struc
- static int smb_direct_handle_connect_request(struct rdma_cm_id *new_cm_id)
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -263,11 +263,13 @@ static void typec_altmode_put_partner(st
  {
- 	struct smb_direct_transport *t;
-+	struct task_struct *handler;
- 	int ret;
+ 	struct altmode *partner = altmode->partner;
+ 	struct typec_altmode *adev;
++	struct typec_altmode *partner_adev;
  
- 	if (!rdma_frwr_is_supported(&new_cm_id->device->attrs)) {
-@@ -2056,11 +2057,11 @@ static int smb_direct_handle_connect_req
- 	if (ret)
- 		goto out_err;
+ 	if (!partner)
+ 		return;
  
--	KSMBD_TRANS(t)->handler = kthread_run(ksmbd_conn_handler_loop,
--					      KSMBD_TRANS(t)->conn, "ksmbd:r%u",
--					      smb_direct_port);
--	if (IS_ERR(KSMBD_TRANS(t)->handler)) {
--		ret = PTR_ERR(KSMBD_TRANS(t)->handler);
-+	handler = kthread_run(ksmbd_conn_handler_loop,
-+			      KSMBD_TRANS(t)->conn, "ksmbd:r%u",
-+			      smb_direct_port);
-+	if (IS_ERR(handler)) {
-+		ret = PTR_ERR(handler);
- 		pr_err("Can't start thread\n");
- 		goto out_err;
+-	adev = &partner->adev;
++	adev = &altmode->adev;
++	partner_adev = &partner->adev;
+ 
+ 	if (is_typec_plug(adev->dev.parent)) {
+ 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
+@@ -276,7 +278,7 @@ static void typec_altmode_put_partner(st
+ 	} else {
+ 		partner->partner = NULL;
  	}
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -185,6 +185,7 @@ static int ksmbd_tcp_new_connection(stru
- 	struct sockaddr *csin;
- 	int rc = 0;
- 	struct tcp_transport *t;
-+	struct task_struct *handler;
+-	put_device(&adev->dev);
++	put_device(&partner_adev->dev);
+ }
  
- 	t = alloc_transport(client_sk);
- 	if (!t) {
-@@ -199,13 +200,13 @@ static int ksmbd_tcp_new_connection(stru
- 		goto out_error;
- 	}
+ /**
+@@ -497,7 +499,8 @@ static void typec_altmode_release(struct
+ {
+ 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
  
--	KSMBD_TRANS(t)->handler = kthread_run(ksmbd_conn_handler_loop,
--					      KSMBD_TRANS(t)->conn,
--					      "ksmbd:%u",
--					      ksmbd_tcp_get_port(csin));
--	if (IS_ERR(KSMBD_TRANS(t)->handler)) {
-+	handler = kthread_run(ksmbd_conn_handler_loop,
-+			      KSMBD_TRANS(t)->conn,
-+			      "ksmbd:%u",
-+			      ksmbd_tcp_get_port(csin));
-+	if (IS_ERR(handler)) {
- 		pr_err("cannot start conn thread\n");
--		rc = PTR_ERR(KSMBD_TRANS(t)->handler);
-+		rc = PTR_ERR(handler);
- 		free_transport(t);
- 	}
- 	return rc;
+-	typec_altmode_put_partner(alt);
++	if (!is_typec_port(dev->parent))
++		typec_altmode_put_partner(alt);
+ 
+ 	altmode_id_remove(alt->adev.dev.parent, alt->id);
+ 	kfree(alt);
 
 
 
