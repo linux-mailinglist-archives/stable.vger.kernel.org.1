@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74FF8380B2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1FC8838511
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EED91F2A073
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69F2328C719
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF7E131E31;
-	Tue, 23 Jan 2024 01:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259E57CF36;
+	Tue, 23 Jan 2024 02:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjezm5pf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHnDJ1N5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BCB13340E;
-	Tue, 23 Jan 2024 01:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66537CF21;
+	Tue, 23 Jan 2024 02:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971829; cv=none; b=bydaKTRI+4AsOTb+vO/RJo+vg0jUuXJmkdBESlECuoT+2n+SOZVY9lPreHOMC4P936ad/t6UE3jQG2k/Aw9XWfZwBOhLTed+6t3GrUgAIxkOZmgZaueYS5CAdPj7QgFfsuXJ141stUkf31e3gSLToUene/vcFJCCZOc+z6KQG0Q=
+	t=1705975733; cv=none; b=uQtWHPO8Voo+AhUGGdvB1OWtoWcO1ySLYL1qPcJMXwhsijJ2VLYUt3triGi/i/Wb4cnqS8VF2xQWkoIjaJGAxn8tNd6HOS0vRvYWsBwB3QA5xvDaM7BRx67BVXTdVii5kUeo5w5F9PlzKO+PP1ZX8BLFmiqBLZcyvBq12ws811k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971829; c=relaxed/simple;
-	bh=cVCBAv0EZocQ+AOrLTW2UGmXZY+K98S/AiWcTL1JnW4=;
+	s=arc-20240116; t=1705975733; c=relaxed/simple;
+	bh=WNmPayOZVp7vMy5g9BFKt3TRx8Baw3X4cYoUkmgbcY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oADBR7D6uTwq103u2l8wWiwCMrzLxqdV6meIZ8mbpagPm0E4Ms6kB/f9n7xbnmK506qmjsrIJdyr1i6rEwPeYTPkUAFPYBKK0gAqgJ9MHiT7tXFeBpES8pHcME8vUPA/7ZZ0NCVm2HFyWQp1fE8P1I65sv+4wXBcO2oUsY9PpVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjezm5pf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D7CC433F1;
-	Tue, 23 Jan 2024 01:03:48 +0000 (UTC)
+	 MIME-Version; b=OZFo1WxxzOY4sDaCDuKmqMJkCDgNhFzZbe+TV5yf9JkEJL4vw/Zko4A5RWTK4Iibusn9cblAiryP7ee/Cpw2hlQMrzglwGdbN2KT3u1LTanLmd9R6087534ExUWpxIxTWDNikqGUmIZxUDVfGBUQv3BsF9ZFjSREshXygLwWoVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHnDJ1N5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975A0C43390;
+	Tue, 23 Jan 2024 02:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971829;
-	bh=cVCBAv0EZocQ+AOrLTW2UGmXZY+K98S/AiWcTL1JnW4=;
+	s=korg; t=1705975733;
+	bh=WNmPayOZVp7vMy5g9BFKt3TRx8Baw3X4cYoUkmgbcY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zjezm5pfK+HDCfs6MVjVgks8VseQ5aGM6GxtBUg1cmAfpaL52YddQ2RLMHQ61A/rA
-	 2MSW0nwHmGOfDXdy0TnpCgN9+bScVFhTY6RjFRO/sAoVdYFwujV4c3iG6KYnh82GX5
-	 HZzFuGyXNeL1IJFlconIN+PXbOdBuOUGQXj7YTVo=
+	b=NHnDJ1N5bh+cLzYtCPIyNrmkBKjNV9ZOnp1RBqOJ2lopTgwdd6WNk4ler5+YSjc5I
+	 +KfoV4AOc0SgJKLv7u2kbMTnH5X9BB3GaiImfcVxbyIn7V+Wg1GSsUqmx/nqq8TYcm
+	 cSOpARuH3j3xMBQgw2Upas2wWwf+XfMrCkB0WRi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Oliver Neukum <oneukum@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 240/286] MIPS: Alchemy: Fix an out-of-bound access in db1200_dev_setup()
+Subject: [PATCH 6.6 495/583] usb: cdc-acm: return correct error code on unsupported break
 Date: Mon, 22 Jan 2024 15:59:06 -0800
-Message-ID: <20240122235741.304998703@linuxfoundation.org>
+Message-ID: <20240122235827.162559175@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 89c4b588d11e9acf01d604de4b0c715884f59213 ]
+[ Upstream commit 66aad7d8d3ec5a3a8ec2023841bcec2ded5f65c9 ]
 
-When calling spi_register_board_info(), we should pass the number of
-elements in 'db1200_spi_devs', not 'db1200_i2c_devs'.
+In ACM support for sending breaks to devices is optional.
+If a device says that it doenot support sending breaks,
+the host must respect that.
+Given the number of optional features providing tty operations
+for each combination is not practical and errors need to be
+returned dynamically if unsupported features are requested.
 
-Fixes: 63323ec54a7e ("MIPS: Alchemy: Extended DB1200 board support.")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+In case a device does not support break, we want the tty layer
+to treat that like it treats drivers that statically cannot
+support sending a break. It ignores the inability and does nothing.
+This patch uses EOPNOTSUPP to indicate that.
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: 9e98966c7bb94 ("tty: rework break handling")
+Link: https://lore.kernel.org/r/20231207132639.18250-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/alchemy/devboards/db1200.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/tty_io.c        | 3 +++
+ drivers/usb/class/cdc-acm.c | 3 +++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
-index 414f92eacb5e..9ad26215b004 100644
---- a/arch/mips/alchemy/devboards/db1200.c
-+++ b/arch/mips/alchemy/devboards/db1200.c
-@@ -847,7 +847,7 @@ int __init db1200_dev_setup(void)
- 	i2c_register_board_info(0, db1200_i2c_devs,
- 				ARRAY_SIZE(db1200_i2c_devs));
- 	spi_register_board_info(db1200_spi_devs,
--				ARRAY_SIZE(db1200_i2c_devs));
-+				ARRAY_SIZE(db1200_spi_devs));
+diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
+index 724ebf82f2cd..493fc4742895 100644
+--- a/drivers/tty/tty_io.c
++++ b/drivers/tty/tty_io.c
+@@ -2485,6 +2485,9 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
+ 	if (!retval) {
+ 		msleep_interruptible(duration);
+ 		retval = tty->ops->break_ctl(tty, 0);
++	} else if (retval == -EOPNOTSUPP) {
++		/* some drivers can tell only dynamically */
++		retval = 0;
+ 	}
+ 	tty_write_unlock(tty);
  
- 	/* SWITCHES:	S6.8 I2C/SPI selector  (OFF=I2C	 ON=SPI)
- 	 *		S6.7 AC97/I2S selector (OFF=AC97 ON=I2S)
+diff --git a/drivers/usb/class/cdc-acm.c b/drivers/usb/class/cdc-acm.c
+index a1f4e1ead97f..0e7439dba8fe 100644
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -916,6 +916,9 @@ static int acm_tty_break_ctl(struct tty_struct *tty, int state)
+ 	struct acm *acm = tty->driver_data;
+ 	int retval;
+ 
++	if (!(acm->ctrl_caps & USB_CDC_CAP_BRK))
++		return -EOPNOTSUPP;
++
+ 	retval = acm_send_break(acm, state ? 0xffff : 0);
+ 	if (retval < 0)
+ 		dev_dbg(&acm->control->dev,
 -- 
 2.43.0
 
