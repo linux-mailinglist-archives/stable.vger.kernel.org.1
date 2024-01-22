@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41C04837FAF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F21837D65
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D634E1F29A80
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E78331C28AEE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D325164AA8;
-	Tue, 23 Jan 2024 00:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3174059B4D;
+	Tue, 23 Jan 2024 00:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJJTsYWa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XaZ+4/V9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FBB634F8;
-	Tue, 23 Jan 2024 00:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CC452F7C;
+	Tue, 23 Jan 2024 00:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971284; cv=none; b=G0Rt0f+xt1AZUGVBEKV+2C1LMNZJ6tC6te4jw8YZkqjh6ntM7hB7SLQNUqhsHNRV4BFKIZQoWDgXzH3StIy5JAKDyt/e9PUPxc82IgJVd5K1Rd45Wkgj5RoFzCIuKkRHd2iHRHS1zP0yiYDSu3ad4Om+9Mft3eLcRBX74lCLfbg=
+	t=1705969924; cv=none; b=F+GF9hNUteiaYaexjdNfJUgqK3QJV6lu/lJVCA7CrpwHnCYnnxh19VgXdmFVmsj8kh9TMyKO7XyeyD4yxLXEYfQaHlZJekA+HADjDzu60Dud0PFApJ2r8WvJaahNetq1lRDkdDJW4J5qid72ezyHMs5UA3SSa8lEFUsSqEpCCEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971284; c=relaxed/simple;
-	bh=p+QmbL6IYC0pnfkfZ36ddKISoYA8aFBhEQoJMrVcvCQ=;
+	s=arc-20240116; t=1705969924; c=relaxed/simple;
+	bh=+pUQod179hXjWtwFanM//hEjMFZMFja1M9ItkEoM7FM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lRC9G93kGHK1A3rrhIlc/3oD7COacLauCEJ7V8f4wHUjr3xes5o1tqvxYJo2XR+5avrmjbSWBgy46LQCM62Es8lA0kUjROacZG7C+T6bBlgQ8IzP4JWm/7hnX3EJxtdL1i/kQ78y0p1Y9XUvU0Lta7P6z5xYd39DwWOyhfEbCc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJJTsYWa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13419C433F1;
-	Tue, 23 Jan 2024 00:54:43 +0000 (UTC)
+	 MIME-Version; b=KPDNiWAeLNACvwRGxOamS10BLDKAP5jIqbzOKFU/GGk4ondDnBKcE9d713wMwMXDTdqQjJrp/RU32ztSNTXuAaubuwIoMlDPepbY0/7QuBGOPnDI+cBOa3nIXqaikUxlMNcOHhZVfjesl3CQWmneGl7nNL3b+qQcECfy0x0S7V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XaZ+4/V9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9272DC43390;
+	Tue, 23 Jan 2024 00:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971284;
-	bh=p+QmbL6IYC0pnfkfZ36ddKISoYA8aFBhEQoJMrVcvCQ=;
+	s=korg; t=1705969923;
+	bh=+pUQod179hXjWtwFanM//hEjMFZMFja1M9ItkEoM7FM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZJJTsYWaBEj4YHF4eiadxE93Lf+kyZT11LJUQGVcdFAEsASqxpT1lvKpPIAUKVZ87
-	 +XWRWjgV9EVTHL2qnqTbmroqhPD+445qN9n2UA3e2ycKdEE+5ZgPo5ZQEXhaiJo/4s
-	 rCgWROZN4t4hGH27RESok3FLNLV+jEWU9tVUHVV4=
+	b=XaZ+4/V9CFS24YQUUdmmsThVoEwdy55BN2W6gqze/SHKKdckhznJHOMMKpGk4a/1t
+	 o8o0FikygeOhVtjxrN3aEDtscoc4nt++kcOy6FtHbn0LVN1mW1Uly6uWYMujAoT7u2
+	 n5OjE3hR08XFIblOcHgOkpXmc1n/qPIkNKoGoG/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 123/286] arm64: dts: qcom: sdm845-db845c: correct LED panic indicator
+Subject: [PATCH 6.7 525/641] selftests/sgx: Fix uninitialized pointer dereferences in encl_get_entry
 Date: Mon, 22 Jan 2024 15:57:09 -0800
-Message-ID: <20240122235736.872269409@linuxfoundation.org>
+Message-ID: <20240122235834.523175449@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
 
-[ Upstream commit 0c90c75e663246203a2b7f6dd9e08a110f4c3c43 ]
+[ Upstream commit b84fc2e0139ba4b23b8039bd7cfd242894fe8f8b ]
 
-There is no "panic-indicator" default trigger but a property with that
-name:
+Ensure sym_tab and sym_names are zero-initialized and add an early-out
+condition in the unlikely (erroneous) case that the enclave ELF file would
+not contain a symbol table.
 
-  sdm845-db845c.dtb: leds: led-0: Unevaluated properties are not allowed ('linux,default-trigger' was unexpected)
+This addresses -Werror=maybe-uninitialized compiler warnings for gcc -O2.
 
-Fixes: 3f72e2d3e682 ("arm64: dts: qcom: Add Dragonboard 845c")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231111095617.16496-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 33c5aac3bf32 ("selftests/sgx: Test complete changing of page type flow")
+Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lore.kernel.org/all/20231005153854.25566-3-jo.vanbulck%40cs.kuleuven.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-db845c.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/sgx/load.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
-index 1e889ca932e4..31f4f0575094 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
-@@ -55,8 +55,8 @@ leds {
- 		user4 {
- 			label = "green:user4";
- 			gpios = <&pm8998_gpio 13 GPIO_ACTIVE_HIGH>;
--			linux,default-trigger = "panic-indicator";
- 			default-state = "off";
-+			panic-indicator;
- 		};
+diff --git a/tools/testing/selftests/sgx/load.c b/tools/testing/selftests/sgx/load.c
+index 94bdeac1cf04..c9f658e44de6 100644
+--- a/tools/testing/selftests/sgx/load.c
++++ b/tools/testing/selftests/sgx/load.c
+@@ -136,11 +136,11 @@ static bool encl_ioc_add_pages(struct encl *encl, struct encl_segment *seg)
+  */
+ uint64_t encl_get_entry(struct encl *encl, const char *symbol)
+ {
++	Elf64_Sym *symtab = NULL;
++	char *sym_names = NULL;
+ 	Elf64_Shdr *sections;
+-	Elf64_Sym *symtab;
+ 	Elf64_Ehdr *ehdr;
+-	char *sym_names;
+-	int num_sym;
++	int num_sym = 0;
+ 	int i;
  
- 		wlan {
+ 	ehdr = encl->bin;
+@@ -161,6 +161,9 @@ uint64_t encl_get_entry(struct encl *encl, const char *symbol)
+ 		}
+ 	}
+ 
++	if (!symtab || !sym_names)
++		return 0;
++
+ 	for (i = 0; i < num_sym; i++) {
+ 		Elf64_Sym *sym = &symtab[i];
+ 
 -- 
 2.43.0
 
