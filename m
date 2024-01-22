@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BDD18380B7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5620083804C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F5C61C23835
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 893E21C2968D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B93133424;
-	Tue, 23 Jan 2024 01:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E3A65BD3;
+	Tue, 23 Jan 2024 01:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KaaAL9YE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVjew0m9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8672133416;
-	Tue, 23 Jan 2024 01:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C846B65BC5;
+	Tue, 23 Jan 2024 01:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971844; cv=none; b=dfQZNU43ljP4z1BgRrII0jT2+o4vjELfh1EMp3db3r7Ua7F4TLMK0o9l844Y1EAYeFYk+Puiz4JxayMwrd0mOc2+0XKngKF2z9IrHSyUCFpZD5Vk33CsVrvNlEXoKs6fsk9pxv9t3Rjh4r5U3E2L9CoFnUrXKc7sxklMEgcJHS4=
+	t=1705971650; cv=none; b=KTYEvqXHZDz/L667e+xsQeNhlOrsjYSEKBHG1UU+aFlKa3YyMwAxwi11XCp+nwD3gmPLLDpOlj5IEdAy11TQbwYQyTkmdkAJX1XNRWJCivXwRezlYEDrFqaBzBc82FeSU025WO78XSvv5a72Rji2euVHnU/NZKoPYjrT8xSTbHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971844; c=relaxed/simple;
-	bh=2ShETt64QWZVqMPpdXZLvwMzFKcAcGgeDWueEUJmH7s=;
+	s=arc-20240116; t=1705971650; c=relaxed/simple;
+	bh=jgzpJFy0D21xmqB1jFlxTbwyJwW+e5FP4e82dQkPQSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jocAPnWrVCzbGVp+pNiEYtTYctPW4Gw/lxS0u8Y28kLcTTN9lwk1srHjElk+qyYHRI3jL0ZwhQfFGW/k+Vb4st3Vwtqmg8EO7oLPHnriespBHb7vCVHiPUIyU4K/KzNYuQPUgTc2ZI5tX+9N6fhnWYoYvkK6QJyV02zhZNs0/Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KaaAL9YE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0734C433C7;
-	Tue, 23 Jan 2024 01:04:03 +0000 (UTC)
+	 MIME-Version; b=dVowDYnt/8SGrGBbwcxhh4UfCsZ2I52SE9vwPOZzajoQXxvfppXAOLTCiSHuS2vLBa1yjtH1MUpofYK943yinMp5iWo3FzOtyEQrHFTYoJWDMPcsDGC+zqLNERHQ/jw5GblTk9b8WOS5nl88VS/08+MxCEATefsJusoWfM60D8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVjew0m9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89450C433F1;
+	Tue, 23 Jan 2024 01:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971843;
-	bh=2ShETt64QWZVqMPpdXZLvwMzFKcAcGgeDWueEUJmH7s=;
+	s=korg; t=1705971650;
+	bh=jgzpJFy0D21xmqB1jFlxTbwyJwW+e5FP4e82dQkPQSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KaaAL9YEEvjwri+d14GlhSlnMaVKZkg69/OiQ8cV3XxXU0sMH8jSvPbki4Oc10UAH
-	 XxlwL9FOwjeGGSjYi7OyvSzlOnyEFsc8eqquAfxSJRcxWOEnspUpczDbjNzMyygOua
-	 29yQmLSAF2Q0gGX0491WNP5oYdu+NKJ6sfqmggUo=
+	b=vVjew0m9TTMb4ELKsbceJeF2IRYCTBE/ibe1VsLicIPELlkqpUuHlBmxLBX+WgSLR
+	 W4iaCsPO+YIRsSLnGlW5FoZ21YQW58X8k4BVoSqEMjFyuNqdPVDOfIW8XHOrZALJp+
+	 C17syl+tSygLuomhCaD/N9UhzyAp6FbSsrWhtOSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Max Gurtovoy <mgurtovoy@nvidia.com>,
+	Sergey Gorenko <sergeygo@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 332/417] riscv: Fix set_direct_map_default_noflush() to reset _PAGE_EXEC
+Subject: [PATCH 5.10 194/286] IB/iser: Prevent invalidating wrong MR
 Date: Mon, 22 Jan 2024 15:58:20 -0800
-Message-ID: <20240122235803.290995480@linuxfoundation.org>
+Message-ID: <20240122235739.595587649@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Sergey Gorenko <sergeygo@nvidia.com>
 
-[ Upstream commit b8b2711336f03ece539de61479d6ffc44fb603d3 ]
+[ Upstream commit 2f1888281e67205bd80d3e8f54dbd519a9653f26 ]
 
-When resetting the linear mapping permissions, we must make sure that we
-clear the X bit so that do not end up with WX mappings (since we set
-PAGE_KERNEL).
+The iser_reg_resources structure has two pointers to MR but only one
+mr_valid field. The implementation assumes that we use only *sig_mr when
+pi_enable is true. Otherwise, we use only *mr. However, it is only
+sometimes correct. Read commands without protection information occur even
+when pi_enble is true. For example, the following SCSI commands have a
+Data-In buffer but never have protection information: READ CAPACITY (16),
+INQUIRY, MODE SENSE(6), MAINTENANCE IN. So, we use
+*sig_mr for some SCSI commands and *mr for the other SCSI commands.
 
-Fixes: 395a21ff859c ("riscv: add ARCH_HAS_SET_DIRECT_MAP support")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20231213134027.155327-3-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+In most cases, it works fine because the remote invalidation is applied.
+However, there are two cases when the remote invalidation is not
+applicable.
+ 1. Small write commands when all data is sent as an immediate.
+ 2. The target does not support the remote invalidation feature.
+
+The lazy invalidation is used if the remote invalidation is impossible.
+Since, at the lazy invalidation, we always invalidate the MR we want to
+use, the wrong MR may be invalidated.
+
+To fix the issue, we need a field per MR that indicates the MR needs
+invalidation. Since the ib_mr structure already has such a field, let's
+use ib_mr.need_inval instead of iser_reg_resources.mr_valid.
+
+Fixes: b76a439982f8 ("IB/iser: Use IB_WR_REG_MR_INTEGRITY for PI handover")
+Link: https://lore.kernel.org/r/20231219072311.40989-1-sergeygo@nvidia.com
+Acked-by: Max Gurtovoy <mgurtovoy@nvidia.com>
+Signed-off-by: Sergey Gorenko <sergeygo@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/pageattr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/ulp/iser/iscsi_iser.h     | 2 --
+ drivers/infiniband/ulp/iser/iser_initiator.c | 5 ++++-
+ drivers/infiniband/ulp/iser/iser_memory.c    | 8 ++++----
+ drivers/infiniband/ulp/iser/iser_verbs.c     | 1 -
+ 4 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
-index 62a9219686cd..43a0b6b69579 100644
---- a/arch/riscv/mm/pageattr.c
-+++ b/arch/riscv/mm/pageattr.c
-@@ -377,7 +377,7 @@ int set_direct_map_invalid_noflush(struct page *page)
- int set_direct_map_default_noflush(struct page *page)
- {
- 	return __set_memory((unsigned long)page_address(page), 1,
--			    PAGE_KERNEL, __pgprot(0));
-+			    PAGE_KERNEL, __pgprot(_PAGE_EXEC));
- }
+diff --git a/drivers/infiniband/ulp/iser/iscsi_iser.h b/drivers/infiniband/ulp/iser/iscsi_iser.h
+index 78ee9445f801..45a2d2b82b09 100644
+--- a/drivers/infiniband/ulp/iser/iscsi_iser.h
++++ b/drivers/infiniband/ulp/iser/iscsi_iser.h
+@@ -322,12 +322,10 @@ struct iser_device {
+  *
+  * @mr:         memory region
+  * @sig_mr:     signature memory region
+- * @mr_valid:   is mr valid indicator
+  */
+ struct iser_reg_resources {
+ 	struct ib_mr                     *mr;
+ 	struct ib_mr                     *sig_mr;
+-	u8				  mr_valid:1;
+ };
  
- #ifdef CONFIG_DEBUG_PAGEALLOC
+ /**
+diff --git a/drivers/infiniband/ulp/iser/iser_initiator.c b/drivers/infiniband/ulp/iser/iser_initiator.c
+index 27a6f75a9912..9ea88dd6a414 100644
+--- a/drivers/infiniband/ulp/iser/iser_initiator.c
++++ b/drivers/infiniband/ulp/iser/iser_initiator.c
+@@ -602,7 +602,10 @@ iser_inv_desc(struct iser_fr_desc *desc, u32 rkey)
+ 		return -EINVAL;
+ 	}
+ 
+-	desc->rsc.mr_valid = 0;
++	if (desc->sig_protected)
++		desc->rsc.sig_mr->need_inval = false;
++	else
++		desc->rsc.mr->need_inval = false;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/infiniband/ulp/iser/iser_memory.c b/drivers/infiniband/ulp/iser/iser_memory.c
+index d4e057fac219..519fea5ec3a1 100644
+--- a/drivers/infiniband/ulp/iser/iser_memory.c
++++ b/drivers/infiniband/ulp/iser/iser_memory.c
+@@ -250,7 +250,7 @@ iser_reg_sig_mr(struct iscsi_iser_task *iser_task,
+ 
+ 	iser_set_prot_checks(iser_task->sc, &sig_attrs->check_mask);
+ 
+-	if (rsc->mr_valid)
++	if (rsc->sig_mr->need_inval)
+ 		iser_inv_rkey(&tx_desc->inv_wr, mr, cqe, &wr->wr);
+ 
+ 	ib_update_fast_reg_key(mr, ib_inc_rkey(mr->rkey));
+@@ -274,7 +274,7 @@ iser_reg_sig_mr(struct iscsi_iser_task *iser_task,
+ 	wr->access = IB_ACCESS_LOCAL_WRITE |
+ 		     IB_ACCESS_REMOTE_READ |
+ 		     IB_ACCESS_REMOTE_WRITE;
+-	rsc->mr_valid = 1;
++	rsc->sig_mr->need_inval = true;
+ 
+ 	sig_reg->sge.lkey = mr->lkey;
+ 	sig_reg->rkey = mr->rkey;
+@@ -299,7 +299,7 @@ static int iser_fast_reg_mr(struct iscsi_iser_task *iser_task,
+ 	struct ib_reg_wr *wr = &tx_desc->reg_wr;
+ 	int n;
+ 
+-	if (rsc->mr_valid)
++	if (rsc->mr->need_inval)
+ 		iser_inv_rkey(&tx_desc->inv_wr, mr, cqe, &wr->wr);
+ 
+ 	ib_update_fast_reg_key(mr, ib_inc_rkey(mr->rkey));
+@@ -322,7 +322,7 @@ static int iser_fast_reg_mr(struct iscsi_iser_task *iser_task,
+ 		     IB_ACCESS_REMOTE_WRITE |
+ 		     IB_ACCESS_REMOTE_READ;
+ 
+-	rsc->mr_valid = 1;
++	rsc->mr->need_inval = true;
+ 
+ 	reg->sge.lkey = mr->lkey;
+ 	reg->rkey = mr->rkey;
+diff --git a/drivers/infiniband/ulp/iser/iser_verbs.c b/drivers/infiniband/ulp/iser/iser_verbs.c
+index 2bd18b006893..b5127479860d 100644
+--- a/drivers/infiniband/ulp/iser/iser_verbs.c
++++ b/drivers/infiniband/ulp/iser/iser_verbs.c
+@@ -136,7 +136,6 @@ iser_create_fastreg_desc(struct iser_device *device,
+ 			goto err_alloc_mr_integrity;
+ 		}
+ 	}
+-	desc->rsc.mr_valid = 0;
+ 
+ 	return desc;
+ 
 -- 
 2.43.0
 
