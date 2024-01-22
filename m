@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-15354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 498428384DE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13CF7838358
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C7D91C2A2C3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A87121F2893C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1567765F;
-	Tue, 23 Jan 2024 02:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE1A6168C;
+	Tue, 23 Jan 2024 01:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cntJEcIg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rEaT4oYG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB3D768F6;
-	Tue, 23 Jan 2024 02:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5C661673;
+	Tue, 23 Jan 2024 01:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975521; cv=none; b=UYeCOy8g34dLVt+rxbhauvHFQAaTcSRqawrmZfAeUhZOpQ8GrO2Wp/nvciy/HnR06MK/cQjNZ9/sbkNDPGxAZJgWkmrvKJJtd2jZrvEzoq25KGpo67vaux8QPwsfH54C+17uZ6YCmLe9ETA8Ti67nYdAjMsDK/IqHv2i57DAu4g=
+	t=1705974941; cv=none; b=OcuCAYn1HBJPlyDst9tFl97r73nrWtqR5dxGUR28ISnLjnr/NPU4/eCPKhjm5HnSnu/oGvaA9YM8x53xg0J7izlFSlDrBtWrKlE3em8SSlMfBmsZ7Q/GvWa8V0WFP5ssPQb34qwGX3YutpC1G1N7SI+raw8b8A7+fwcYmKNPqWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975521; c=relaxed/simple;
-	bh=gtHjBfq3jTpoowGZLSW/SUi7DM5Eakb5W3dRND937YE=;
+	s=arc-20240116; t=1705974941; c=relaxed/simple;
+	bh=ze7TUIHzgZiwN/A14NftMzvy5/stjoDNMwDDKFc2R7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KnbkIym7cFF7Xnt86JmhA0VFFJqKk8vmL15ZpbR4TZXebszTDnF8d/eSNYlq6NqqL8WDwO6cESzrGQ99AD2PDNDeKyev/dJlzmu0Stl8WbSFb/L5Rz37bgehvW/VijPvEW4Aelxfam4lsm0mfrCEzeH6akZuw6c8UMbdMKKfGVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cntJEcIg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63386C433F1;
-	Tue, 23 Jan 2024 02:05:21 +0000 (UTC)
+	 MIME-Version; b=ezBm0m9wgNFpVlapJmP8EbHuDLJce6E5e42GMnR5h/qKb/HEyJsvQ+LEeXgrW6cJ/QAuJP/i30Jd4y2/N+QQjcDNFJOHISebDy0WfheAeDGOBYoAJ5E2SCyR6iNMMeXvvuGZy5bNJNKN6OwEDT/mInLLPYgE4sjgq5usjlwFfvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rEaT4oYG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F79C433C7;
+	Tue, 23 Jan 2024 01:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975521;
-	bh=gtHjBfq3jTpoowGZLSW/SUi7DM5Eakb5W3dRND937YE=;
+	s=korg; t=1705974940;
+	bh=ze7TUIHzgZiwN/A14NftMzvy5/stjoDNMwDDKFc2R7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cntJEcIgw1Zf/nfCFGrTz1C9zwopSFhJMtiZzxKP/e8NCjpxwbr6tOvgErFZCGNdu
-	 MmKtTRksUxYONWIBSRHpKYtDO+YNPyhVF3UtUARY45EPITTvjCpA/6vMKUXygCEw/D
-	 pcj6zNEy58tv5CxQ6m0QJ1+5c7+GiQtOW4pzavLQ=
+	b=rEaT4oYGgaePofU7w6zZuPcnZXIR9SV6l3JVsPCjDXZtl7SVheIE8cm541mLcuyD5
+	 mPU18A4g4f662MxA/ISHbGrnL8vwHStSLRnMXd+utpSIr4v2v0SrE4BCXAm/mpcj0y
+	 Jlur/b0nqP5Sm9CACIqRF8sAKx/oIBsyBvtsUYyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Douglas Anderson <dianders@chromium.org>,
-	Grant Grundler <grundler@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 465/583] r8152: Choose our USB config with choose_configuration() rather than probe()
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 5.15 260/374] usb: cdns3: Fix uvc fail when DMA cross 4k boundery since sg enabled
 Date: Mon, 22 Jan 2024 15:58:36 -0800
-Message-ID: <20240122235826.215051259@linuxfoundation.org>
+Message-ID: <20240122235753.806837018@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +60,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit aa4f2b3e418e8673e55145de8b8016a7a9920306 ]
+commit 40c304109e866a7dc123661a5c8ca72f6b5e14e0 upstream.
 
-If you deauthorize the r8152 device (by writing 0 to the "authorized"
-field in sysfs) and then reauthorize it (by writing a 1) then it no
-longer works. This is because when you do the above we lose the
-special configuration that we set in rtl8152_cfgselector_probe().
-Deauthorizing causes the config to be set to -1 and then reauthorizing
-runs the default logic for choosing the best config.
+Supposed DMA cross 4k bounder problem should be fixed at DEV_VER_V2, but
+still met problem when do ISO transfer if sg enabled.
 
-I made an attempt to fix it so that the config is kept across
-deauthorizing / reauthorizing [1] but it was a bit ugly.
+Data pattern likes below when sg enabled, package size is 1k and mult is 2
+	[UVC Header(8B) ] [data(3k - 8)] ...
 
-Let's instead use the new USB core feature to override
-choose_configuration().
+The received data at offset 0xd000 will get 0xc000 data, len 0x70. Error
+happen position as below pattern:
+	0xd000: wrong
+	0xe000: wrong
+	0xf000: correct
+	0x10000: wrong
+	0x11000: wrong
+	0x12000: correct
+	...
 
-This patch relies upon the patches ("usb: core: Don't force USB
-generic_subclass drivers to define probe()") and ("usb: core: Allow
-subclassed USB drivers to override usb_choose_configuration()")
+To avoid DMA cross 4k bounder at ISO transfer, reduce burst len according
+to start DMA address's alignment.
 
-[1] https://lore.kernel.org/r/20231130154337.1.Ie00e07f07f87149c9ce0b27ae4e26991d307e14b@changeid
-
-Fixes: ec51fbd1b8a2 ("r8152: add USB device driver for config selection")
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Grant Grundler <grundler@chromium.org>
-Link: https://lore.kernel.org/r/20231201102946.v2.3.Ie00e07f07f87149c9ce0b27ae4e26991d307e14b@changeid
+Cc:  <stable@vger.kernel.org>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231224153816.1664687-4-Frank.Li@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ drivers/usb/cdns3/cdns3-gadget.c |   32 +++++++++++++++++++++++++++++++-
+ 1 file changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 127b34dcc5b3..cca5b81c8b18 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -10036,7 +10036,7 @@ static struct usb_driver rtl8152_driver = {
- 	.disable_hub_initiated_lpm = 1,
- };
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -1118,6 +1118,7 @@ static int cdns3_ep_run_transfer(struct
+ 	u32 togle_pcs = 1;
+ 	int sg_iter = 0;
+ 	int num_trb_req;
++	int trb_burst;
+ 	int num_trb;
+ 	int address;
+ 	u32 control;
+@@ -1240,7 +1241,36 @@ static int cdns3_ep_run_transfer(struct
+ 			total_tdl += DIV_ROUND_UP(length,
+ 					       priv_ep->endpoint.maxpacket);
  
--static int rtl8152_cfgselector_probe(struct usb_device *udev)
-+static int rtl8152_cfgselector_choose_configuration(struct usb_device *udev)
- {
- 	struct usb_host_config *c;
- 	int i, num_configs;
-@@ -10063,19 +10063,13 @@ static int rtl8152_cfgselector_probe(struct usb_device *udev)
- 	if (i == num_configs)
- 		return -ENODEV;
+-		trb->length |= cpu_to_le32(TRB_BURST_LEN(priv_ep->trb_burst_size) |
++		trb_burst = priv_ep->trb_burst_size;
++
++		/*
++		 * Supposed DMA cross 4k bounder problem should be fixed at DEV_VER_V2, but still
++		 * met problem when do ISO transfer if sg enabled.
++		 *
++		 * Data pattern likes below when sg enabled, package size is 1k and mult is 2
++		 *       [UVC Header(8B) ] [data(3k - 8)] ...
++		 *
++		 * The received data at offset 0xd000 will get 0xc000 data, len 0x70. Error happen
++		 * as below pattern:
++		 *	0xd000: wrong
++		 *	0xe000: wrong
++		 *	0xf000: correct
++		 *	0x10000: wrong
++		 *	0x11000: wrong
++		 *	0x12000: correct
++		 *	...
++		 *
++		 * But it is still unclear about why error have not happen below 0xd000, it should
++		 * cross 4k bounder. But anyway, the below code can fix this problem.
++		 *
++		 * To avoid DMA cross 4k bounder at ISO transfer, reduce burst len according to 16.
++		 */
++		if (priv_ep->type == USB_ENDPOINT_XFER_ISOC && priv_dev->dev_ver <= DEV_VER_V2)
++			if (ALIGN_DOWN(trb->buffer, SZ_4K) !=
++			    ALIGN_DOWN(trb->buffer + length, SZ_4K))
++				trb_burst = 16;
++
++		trb->length |= cpu_to_le32(TRB_BURST_LEN(trb_burst) |
+ 					TRB_LEN(length));
+ 		pcs = priv_ep->pcs ? TRB_CYCLE : 0;
  
--	if (usb_set_configuration(udev, c->desc.bConfigurationValue)) {
--		dev_err(&udev->dev, "Failed to set configuration %d\n",
--			c->desc.bConfigurationValue);
--		return -ENODEV;
--	}
--
--	return 0;
-+	return c->desc.bConfigurationValue;
- }
- 
- static struct usb_device_driver rtl8152_cfgselector_driver = {
--	.name =		MODULENAME "-cfgselector",
--	.probe =	rtl8152_cfgselector_probe,
--	.id_table =	rtl8152_table,
-+	.name =	MODULENAME "-cfgselector",
-+	.choose_configuration = rtl8152_cfgselector_choose_configuration,
-+	.id_table = rtl8152_table,
- 	.generic_subclass = 1,
- 	.supports_autosuspend = 1,
- };
--- 
-2.43.0
-
 
 
 
