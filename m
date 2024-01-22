@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-14546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E8E838157
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A39837C8D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C533F28B96A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B74E1C2890D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF6413B783;
-	Tue, 23 Jan 2024 01:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067E633097;
+	Tue, 23 Jan 2024 00:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzTVh3ML"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ljp3KzNJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AEF137C55;
-	Tue, 23 Jan 2024 01:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACFF135A5D;
+	Tue, 23 Jan 2024 00:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972105; cv=none; b=IzuFWYJT2FSR23i4/HZ3BQHjpMkpeCulFgpQLuExcYfnLUnnKTwBlFLNX6yGJxMLcWuWcK5dVhEfK34lCQNDmVo6LwLkEc5i+rjg2CiVDgwjuHvu4vEPvA/6WA/LfHsJTGFm/uCfu5mxFNKnyVOq+4khkUYvP9QPIt1H3dx5SjI=
+	t=1705969669; cv=none; b=Fbdvls/TtqXfzsQNlFBbAMc2ov70pB50Ic1LOfgoSTQknjd1KDaKnSHgpbEShzvyxIeGr3Gwguu41MnLjTRJXHDeMzj4kqdJgd5u4CLo0rdlCR/XJmSr8HEMXtMH5Urz1jZ9U3617c4kNeEPOo60M8cPhGq9L61nJ5FWiiOXeoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972105; c=relaxed/simple;
-	bh=GTkUkJtItP5QEjKxiB0ZF4JusfE3OP1jvcXHkDMOU0A=;
+	s=arc-20240116; t=1705969669; c=relaxed/simple;
+	bh=5a78W5Im1W2+xc+sAQv41tfzSwvuMVqpejVftvB82gQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Spo9MQu9Qzw4zhhSjbGke9uY4VQxCCl8h2mL4ei9NndNP8rC6ySNdvS5/sgFf6VnO5E2Kq3LRdyl50J716KbBuX1M/fCSuRn1EPBetj0yKRLbMV2Jdy7KdoujUeDk5RYX025ZqxzPGP4fHUGToNd/bNDA4crQ7KIigYg8MEF5Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzTVh3ML; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D004BC43394;
-	Tue, 23 Jan 2024 01:08:24 +0000 (UTC)
+	 MIME-Version; b=tkHjzaCZ9daLkAuhAfT0UuR/22CmWAQwStkYOur3c/Ek5XBftMdD11JQ1ahVtLaSNC1YiMnyhQSuVxmS5vPRVhZE1hpf9g49f5j0TKFNqKXiQ/jMnxaYIfcMc7KcN35/0HLtR9Sl9/Y1l5SZ1J45FLueVmRpXwMoj0iAQpczDEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ljp3KzNJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69986C433C7;
+	Tue, 23 Jan 2024 00:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972105;
-	bh=GTkUkJtItP5QEjKxiB0ZF4JusfE3OP1jvcXHkDMOU0A=;
+	s=korg; t=1705969669;
+	bh=5a78W5Im1W2+xc+sAQv41tfzSwvuMVqpejVftvB82gQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zzTVh3MLsJZkdOhnVN23GW9P0EL5Zw8WVKofTa0ROahCNcHiVmKdnGcbMQ1btKV6S
-	 SZa2aYgNf5oLTFFn41XMcYqs4FDhszFGTyg1xjuRiVg1LkzpdYqHvbmyjFaXHGSDxD
-	 uVnMVceOAsiyEV1a9o8PET44c09+xBC+mKpyG5PA=
+	b=Ljp3KzNJaAC6s/9UKZazpIjKNXB5RqysffceznpyJRl70GUCB8ComOMTrFqzYid3+
+	 jGrLpyg5pYAJ1TGxjp11NsvKLlDd2xQPwxgnnF1uGUKYBCKQHVgkaohpS2ie8yyLBr
+	 tL5xE/47FHuXksDf3x31DmHEkm8M4Z+cOUyEzEkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 041/374] ARC: fix spare error
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.7 393/641] Revert "usb: gadget: f_uvc: change endpoint allocation in uvc_function_bind()"
 Date: Mon, 22 Jan 2024 15:54:57 -0800
-Message-ID: <20240122235746.042247212@linuxfoundation.org>
+Message-ID: <20240122235830.254702478@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +60,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vineet Gupta <vgupta@kernel.org>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit aca02d933f63ba8bc84258bf35f9ffaf6b664336 ]
+commit 895ee5aefb7e24203de5dffae7ce9a02d78fa3d1 upstream.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312082320.VDN5A9hb-lkp@intel.com/
-Signed-off-by: Vineet Gupta <vgupta@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This reverts commit 3c5b006f3ee800b4bd9ed37b3a8f271b8560126e.
+
+gadget_is_{super|dual}speed() API check UDC controller capitblity. It
+should pass down highest speed endpoint descriptor to UDC controller. So
+UDC controller driver can reserve enough resource at check_config(),
+especially mult and maxburst. So UDC driver (such as cdns3) can know need
+at least (mult + 1) * (maxburst + 1) * wMaxPacketSize internal memory for
+this uvc functions.
+
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231224153816.1664687-5-Frank.Li@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arc/kernel/signal.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/function/f_uvc.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arc/kernel/signal.c b/arch/arc/kernel/signal.c
-index cb2f88502baf..25c16eb1d90b 100644
---- a/arch/arc/kernel/signal.c
-+++ b/arch/arc/kernel/signal.c
-@@ -61,7 +61,7 @@ struct rt_sigframe {
- 	unsigned int sigret_magic;
- };
+--- a/drivers/usb/gadget/function/f_uvc.c
++++ b/drivers/usb/gadget/function/f_uvc.c
+@@ -722,13 +722,29 @@ uvc_function_bind(struct usb_configurati
+ 	}
+ 	uvc->enable_interrupt_ep = opts->enable_interrupt_ep;
  
--static int save_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
-+static int save_arcv2_regs(struct sigcontext __user *mctx, struct pt_regs *regs)
- {
- 	int err = 0;
- #ifndef CONFIG_ISA_ARCOMPACT
-@@ -74,12 +74,12 @@ static int save_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
- #else
- 	v2abi.r58 = v2abi.r59 = 0;
- #endif
--	err = __copy_to_user(&mctx->v2abi, &v2abi, sizeof(v2abi));
-+	err = __copy_to_user(&mctx->v2abi, (void const *)&v2abi, sizeof(v2abi));
- #endif
- 	return err;
- }
+-	ep = usb_ep_autoconfig(cdev->gadget, &uvc_fs_streaming_ep);
++	/*
++	 * gadget_is_{super|dual}speed() API check UDC controller capitblity. It should pass down
++	 * highest speed endpoint descriptor to UDC controller. So UDC controller driver can reserve
++	 * enough resource at check_config(), especially mult and maxburst. So UDC driver (such as
++	 * cdns3) can know need at least (mult + 1) * (maxburst + 1) * wMaxPacketSize internal
++	 * memory for this uvc functions. This is the only straightforward method to resolve the UDC
++	 * resource allocation issue in the current gadget framework.
++	 */
++	if (gadget_is_superspeed(c->cdev->gadget))
++		ep = usb_ep_autoconfig_ss(cdev->gadget, &uvc_ss_streaming_ep,
++					  &uvc_ss_streaming_comp);
++	else if (gadget_is_dualspeed(cdev->gadget))
++		ep = usb_ep_autoconfig(cdev->gadget, &uvc_hs_streaming_ep);
++	else
++		ep = usb_ep_autoconfig(cdev->gadget, &uvc_fs_streaming_ep);
++
+ 	if (!ep) {
+ 		uvcg_info(f, "Unable to allocate streaming EP\n");
+ 		goto error;
+ 	}
+ 	uvc->video.ep = ep;
  
--static int restore_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
-+static int restore_arcv2_regs(struct sigcontext __user *mctx, struct pt_regs *regs)
- {
- 	int err = 0;
- #ifndef CONFIG_ISA_ARCOMPACT
--- 
-2.43.0
-
++	uvc_fs_streaming_ep.bEndpointAddress = uvc->video.ep->address;
+ 	uvc_hs_streaming_ep.bEndpointAddress = uvc->video.ep->address;
+ 	uvc_ss_streaming_ep.bEndpointAddress = uvc->video.ep->address;
+ 
 
 
 
