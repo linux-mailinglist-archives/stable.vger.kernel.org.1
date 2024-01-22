@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E365837DFF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63C2E83832A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43171291EEE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06E391F2286B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C0DF56756;
-	Tue, 23 Jan 2024 00:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C460260886;
+	Tue, 23 Jan 2024 01:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17Q04y4C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCC0Owah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A00E524BD;
-	Tue, 23 Jan 2024 00:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C9F605DF;
+	Tue, 23 Jan 2024 01:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970239; cv=none; b=n2ldtWUXVc3KJfjLNlZlISxFd5dhXMjvBAOcbgoVtOr5QlVCVBoOUehX4SEbCNMWnU1FLy0ols/evUHiC1nyp9upgpHSQNX5pOqo+Bd7sPpPWZ5JJaO1EX9mR37XPEiGCCG7xuB52oOiErVYLiDzgHJTetybOlwl/7a0QE/Ks8A=
+	t=1705974722; cv=none; b=MRVrpC5cgR9Hr0z7rsmy+emMwrTg+8lKcAuDPOZ8xgB38PIdTVlPTExrR0J+q4t4Qj9JEuBpUS4BoIHrwO/Zj8/LOLr8fNiGiXGw6nJPhtrNM1BPgIAYL5WDMdPM267do+vD+YwfgA29rtTDz/aYROzeTp87jdBqhQ/vPSBMYTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970239; c=relaxed/simple;
-	bh=qIDYOukiUFg/kBiuf0EJypfNWiLZRMkbKlObc4TPjWM=;
+	s=arc-20240116; t=1705974722; c=relaxed/simple;
+	bh=XgerihxOGvozz/V4gL4f8890vDJ7tdpWN6cJOPNK2LM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYgjqSdnaSnt91SHlH+ywY506DmGdczyNu6Wzk119PRBywFMDkhEXmSGSo/JtSoXjVtW8ruFazu5bWN4ZXtoTYiGqMpJt6goefDo7XU2ANswUb9cXnenaPpA6YQpXzNGppqmcu6+xEoJqnaI4aRdSuRyoxQXDIPYIWkmDVc/hRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17Q04y4C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BDDC433C7;
-	Tue, 23 Jan 2024 00:37:16 +0000 (UTC)
+	 MIME-Version; b=H4CNAj0h3o2FNjNZ+YNfdcMUKDha420658at7b1cIIdDC8pFcQrq3TU+LlNgslp2EhK4LZDFx+5oiAPLTZzfzc8Kc9/3kzeokmik+Exm/dduLuz5lA+J/ZXKldwlP6pT0zJ+FHquEpAfYrp9PDBnU2iYRh8NK9VxaPyQVBZuSTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCC0Owah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCC9C433F1;
+	Tue, 23 Jan 2024 01:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970239;
-	bh=qIDYOukiUFg/kBiuf0EJypfNWiLZRMkbKlObc4TPjWM=;
+	s=korg; t=1705974722;
+	bh=XgerihxOGvozz/V4gL4f8890vDJ7tdpWN6cJOPNK2LM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=17Q04y4ChRXYBtf0Bit11aOVac+O9EWUsKQz4zubX0Yfbe1I1ugJK2uA59qzcfrb8
-	 7BPzIKWVVWY+nMfSO4IE6ya2EXkLLT7zpiXd6Bw/qmpxvO8tFL4F5UeBcQvP9xrbQH
-	 UlTieqWHdWRbIFIJPH7O0bp9XmBc702ikp3nc4eM=
+	b=bCC0OwahvhOvzSQJtLVtAN68c7FJo6AvDzU75spqdAvw5v78Ej+JBlUVEOnkOb+6S
+	 yzEJhi16sv+ZmMKeD70H93E/vdJ8MFTXfNov5P5Mqt/tdWmrKURnwWMfhQKA4Scu2q
+	 wajVKjbZKxvRtreVcTa77/sZ5a9QQvHD22pK6DbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 619/641] netfilter: nf_tables: reject invalid set policy
+	Nam Cao <namcao@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.15 267/374] fbdev: flush deferred work in fb_deferred_io_fsync()
 Date: Mon, 22 Jan 2024 15:58:43 -0800
-Message-ID: <20240122235837.613723970@linuxfoundation.org>
+Message-ID: <20240122235754.060598100@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit 0617c3de9b4026b87be12b0cb5c35f42c7c66fcb ]
+commit 15e4c1f462279b4e128f27de48133e0debe9e0df upstream.
 
-Report -EINVAL in case userspace provides a unsupported set backend
-policy.
+The driver's fsync() is supposed to flush any pending operation to
+hardware. It is implemented in this driver by cancelling the queued
+deferred IO first, then schedule it for "immediate execution" by calling
+schedule_delayed_work() again with delay=0. However, setting delay=0
+only means the work is scheduled immediately, it does not mean the work
+is executed immediately. There is no guarantee that the work is finished
+after schedule_delayed_work() returns. After this driver's fsync()
+returns, there can still be pending work. Furthermore, if close() is
+called by users immediately after fsync(), the pending work gets
+cancelled and fsync() may do nothing.
 
-Fixes: c50b960ccc59 ("netfilter: nf_tables: implement proper set selection")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To ensure that the deferred IO completes, use flush_delayed_work()
+instead. Write operations to this driver either write to the device
+directly, or invoke schedule_delayed_work(); so by flushing the
+workqueue, it can be guaranteed that all previous writes make it to the
+device.
+
+Fixes: 5e841b88d23d ("fb: fsync() method for deferred I/O flush.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/core/fb_defio.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 5e7994898c76..3912a133324c 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5048,8 +5048,16 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
- 	}
+--- a/drivers/video/fbdev/core/fb_defio.c
++++ b/drivers/video/fbdev/core/fb_defio.c
+@@ -78,11 +78,7 @@ int fb_deferred_io_fsync(struct file *fi
+ 		return 0;
  
- 	desc.policy = NFT_SET_POL_PERFORMANCE;
--	if (nla[NFTA_SET_POLICY] != NULL)
-+	if (nla[NFTA_SET_POLICY] != NULL) {
- 		desc.policy = ntohl(nla_get_be32(nla[NFTA_SET_POLICY]));
-+		switch (desc.policy) {
-+		case NFT_SET_POL_PERFORMANCE:
-+		case NFT_SET_POL_MEMORY:
-+			break;
-+		default:
-+			return -EOPNOTSUPP;
-+		}
-+	}
+ 	inode_lock(inode);
+-	/* Kill off the delayed work */
+-	cancel_delayed_work_sync(&info->deferred_work);
+-
+-	/* Run it immediately */
+-	schedule_delayed_work(&info->deferred_work, 0);
++	flush_delayed_work(&info->deferred_work);
+ 	inode_unlock(inode);
  
- 	if (nla[NFTA_SET_DESC] != NULL) {
- 		err = nf_tables_set_desc_parse(&desc, nla[NFTA_SET_DESC]);
--- 
-2.43.0
-
+ 	return 0;
 
 
 
