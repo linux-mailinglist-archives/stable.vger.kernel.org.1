@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-14256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EAF5838031
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BA98384B0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72D1C1C29631
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDFA2299D83
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA77566B36;
-	Tue, 23 Jan 2024 00:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6849745F4;
+	Tue, 23 Jan 2024 02:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IMMdpbzi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1WfBKz3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B3F657AB;
-	Tue, 23 Jan 2024 00:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48C6745F2;
+	Tue, 23 Jan 2024 02:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971580; cv=none; b=dPPC1I5Qr+qh1Uhy4Sbt9D5fI4LSapFreY7v71+y5NjRA3u4abbCQc5L55/H3S4MjC3MpnNKnRf8ve1oFdHNLCojcghMdPgT9kbOvEWYmt3vw0ztn9kV9Z6rhxBDk1cmGCQCHMmhsKENPpo0Ia5jE4my0TEg0AvJMsROvAIEdpU=
+	t=1705975458; cv=none; b=o+NqUTiMrlM0uhv32l07CUzwkOPJ2dkMqNdLg8FWE6crr4iHQ4EJCAsmThLkVFoy/01INvH4MZFPc6nTdWfVuOfTLMLbimHfa0Nhhb3rm2fQ5cDyiEwTG52A5FPa7APh4lbRb7uaErenEHg3xqixZv/Kt5XKCD4WNLPe/M3HrNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971580; c=relaxed/simple;
-	bh=AUT75iNh/GrPMDYO1q6i/EIx9eom2WS80aNvXoqydGY=;
+	s=arc-20240116; t=1705975458; c=relaxed/simple;
+	bh=zKaEJDmFzjA8SRzGqj367ri58R7eAtMx2wEYzs6yNNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G0pNtNdrIs+Ilq2R12lLloyOmqBcm6H8Aeejb0qORHmam0r+ACKY4Lx5o36flq8wUcPHZw//g0Peq6xlYcVEWr7/rEeUjgHBEoX9yXPQA5bln+w0bJ7m7l+xJocBTREKK7Fcob6IhanD8lgvzlMejWY17YJ8uwkaxAEJWsjdi+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMMdpbzi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C86EDC433F1;
-	Tue, 23 Jan 2024 00:59:39 +0000 (UTC)
+	 MIME-Version; b=c9lEfmF5wAGEHKjhyX1zY9Wvgrddnq4PDFlZg31zdGzbBCoc2J9e8RL54HBULUaSztfB7wDdjPu3Myw8e0EBnneI51neISB9z/j39HlleeSrReM6gyE82LBNg/xuk+7lyE7gohd4s50aBXa3TKCocitwggrmAYelPwJrg4vXvVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1WfBKz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C35C43390;
+	Tue, 23 Jan 2024 02:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971580;
-	bh=AUT75iNh/GrPMDYO1q6i/EIx9eom2WS80aNvXoqydGY=;
+	s=korg; t=1705975458;
+	bh=zKaEJDmFzjA8SRzGqj367ri58R7eAtMx2wEYzs6yNNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IMMdpbzi+oSJOFIb0hmb7u9+Tq+n9a91K5t5q18Fb9AApBX196cn0RYqdADdpFUhd
-	 lBcIGmLA6AzM7yP7e7q7zC3G5CUjzzVdP5tdB2zBOeFul/xbzc0AhmS5uOA/X1KoTD
-	 iNNkNoIE3M4TpJqyBhth4caiHoNkPMtTeQa1B4no=
+	b=g1WfBKz3e42+LVGu6P5toBixcqu6zXc7kab2/ZSp3DqRpvE7qzPn1p9GHHpZR7z/H
+	 F/nPYsfixL3XiScmf12z3OTiEgRlpyDletve6fg6jlCmLuz9iiy16uhltCB2KTXZLH
+	 L+9FPu/rveiBuqBYvGA+w6nR8G5vY08hODNSX34M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.1 273/417] serial: core, imx: do not set RS485 enabled if it is not supported
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 390/583] io_uring: ensure local task_work is run on wait timeout
 Date: Mon, 22 Jan 2024 15:57:21 -0800
-Message-ID: <20240122235801.309496249@linuxfoundation.org>
+Message-ID: <20240122235823.919922980@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +58,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 74eab89b26ac433ad857292f4707b43c1a8f0209 upstream.
+commit 6ff1407e24e6fdfa4a16ba9ba551e3d253a26391 upstream.
 
-If the imx driver cannot support RS485 it nullifies the ports
-rs485_supported structure. But it still calls uart_get_rs485_mode() which
-may set the RS485_ENABLED flag nevertheless.
+A previous commit added an earlier break condition here, which is fine if
+we're using non-local task_work as it'll be run on return to userspace.
+However, if DEFER_TASKRUN is used, then we could be leaving local
+task_work that is ready to process in the ctx list until next time that
+we enter the kernel to wait for events.
 
-This may lead to an attempt to configure RS485 even if it is not supported
-when the flag is evaluated in uart_configure_port() at port startup.
+Move the break condition to _after_ we have run task_work.
 
-Avoid this by bailing out of uart_get_rs485_mode() if the RS485_ENABLED
-flag is not supported by the caller.
-
-With this fix a check for RTS availability is now obsolete in the imx
-driver, since it can not evaluate to true any more. So remove this check.
-
-Furthermore the explicit nullifcation of rs485_supported is not needed,
-since the memory has already been set to zeros at allocation. So remove
-this, too.
-
-Fixes: 00d7a00e2a6f ("serial: imx: Fill in rs485_supported")
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc:  <stable@vger.kernel.org>
-Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240103061818.564-6-l.sanfilippo@kunbus.com
+Cc: stable@vger.kernel.org
+Fixes: 846072f16eed ("io_uring: mimimise io_cqring_wait_schedule")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/imx.c         |    7 -------
- drivers/tty/serial/serial_core.c |    3 +++
- 2 files changed, 3 insertions(+), 7 deletions(-)
+ io_uring/io_uring.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -2229,7 +2229,6 @@ static enum hrtimer_restart imx_trigger_
- 	return HRTIMER_NORESTART;
- }
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2630,8 +2630,6 @@ static int io_cqring_wait(struct io_ring
+ 		__set_current_state(TASK_RUNNING);
+ 		atomic_set(&ctx->cq_wait_nr, 0);
  
--static const struct serial_rs485 imx_no_rs485 = {};	/* No RS485 if no RTS */
- static const struct serial_rs485 imx_rs485_supported = {
- 	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND |
- 		 SER_RS485_RX_DURING_TX,
-@@ -2319,8 +2318,6 @@ static int imx_uart_probe(struct platfor
- 	/* RTS is required to control the RS485 transmitter */
- 	if (sport->have_rtscts || sport->have_rtsgpio)
- 		sport->port.rs485_supported = imx_rs485_supported;
--	else
--		sport->port.rs485_supported = imx_no_rs485;
- 	sport->port.flags = UPF_BOOT_AUTOCONF;
- 	timer_setup(&sport->timer, imx_uart_timeout, 0);
+-		if (ret < 0)
+-			break;
+ 		/*
+ 		 * Run task_work after scheduling and before io_should_wake().
+ 		 * If we got woken because of task_work being processed, run it
+@@ -2641,6 +2639,18 @@ static int io_cqring_wait(struct io_ring
+ 		if (!llist_empty(&ctx->work_llist))
+ 			io_run_local_work(ctx);
  
-@@ -2364,10 +2361,6 @@ static int imx_uart_probe(struct platfor
- 		return ret;
- 	}
- 
--	if (sport->port.rs485.flags & SER_RS485_ENABLED &&
--	    (!sport->have_rtscts && !sport->have_rtsgpio))
--		dev_err(&pdev->dev, "no RTS control, disabling rs485\n");
--
- 	/*
- 	 * If using the i.MX UART RTS/CTS control then the RTS (CTS_B)
- 	 * signal cannot be set low during transmission in case the
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -3428,6 +3428,9 @@ int uart_get_rs485_mode(struct uart_port
- 	u32 rs485_delay[2];
- 	int ret;
- 
-+	if (!(port->rs485_supported.flags & SER_RS485_ENABLED))
-+		return 0;
++		/*
++		 * Non-local task_work will be run on exit to userspace, but
++		 * if we're using DEFER_TASKRUN, then we could have waited
++		 * with a timeout for a number of requests. If the timeout
++		 * hits, we could have some requests ready to process. Ensure
++		 * this break is _after_ we have run task_work, to avoid
++		 * deferring running potentially pending requests until the
++		 * next time we wait for events.
++		 */
++		if (ret < 0)
++			break;
 +
- 	ret = device_property_read_u32_array(dev, "rs485-rts-delay",
- 					     rs485_delay, 2);
- 	if (!ret) {
+ 		check_cq = READ_ONCE(ctx->check_cq);
+ 		if (unlikely(check_cq)) {
+ 			/* let the caller flush overflows, retry */
 
 
 
