@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CEB6837A3A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 043468378A4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 252B31F289B9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 354C01C273D3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A915712BE85;
-	Tue, 23 Jan 2024 00:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70821420DA;
+	Tue, 23 Jan 2024 00:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZvS025N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8xlrB1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692DE12A17F;
-	Tue, 23 Jan 2024 00:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BB71420CE;
+	Tue, 23 Jan 2024 00:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968812; cv=none; b=IzqlnDtByFS4h1/QCtpDXFFNylPvVnViCru5YbB6CYXZAtvlcE30jh/k1sswzTH9nS8bYQ9zHflmx4YvIPHXix/fuSqgtcmXH6V7asNVn/bi47KqW6ICLT/nlk6ffkxDc4ofAZuLnTCHgG8CFa7lQ1id5XQi0RTxYY3pZbKPOas=
+	t=1705968173; cv=none; b=nylEUCGBbmPIOQyL2wesgqkzMffG3aYG9kSbw8GkLeCR8cm8nxKDTuUV3eIoMttNMVw1BvoCqn7+hzfr8iNyiqoyVdyfphNfKhSUfJXN9Nsi8RoKo2f/bDVTY49ARL0VhmW6bjkKkGdlg/Xbl7irOJOISG9zrlKLou5pQ9IN+MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968812; c=relaxed/simple;
-	bh=r5c5mSmYD9S3nF6jnK0qViHsSbjyDT2oNoadyT7SBDw=;
+	s=arc-20240116; t=1705968173; c=relaxed/simple;
+	bh=GXjMxiC6L50ONq3f3AJtbl73/R71VrJO0zAWLAAO5Cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MbNEQe6gR+y/8+T7uoB3Q8On1mzOpAs31co/918lwn3GsKF7nW6Fw0OiXNwdlZO79MboFeYTfX9iW8V3frzPWSZD1HqEtL3dV5ru9mwkMyJRLM5e/lhEHDSXRs4rKXWT3aeJgc3m6I7a8wXcaTcOoHPL22Wq0b81jyOvcv0molg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZvS025N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E2DC433C7;
-	Tue, 23 Jan 2024 00:13:31 +0000 (UTC)
+	 MIME-Version; b=Z2cJkPjaOG3lhGbZiZWAm/iaUh7iafAcr8sXmMpDxEFnadW/KbIdaWaSXxamjQ4Pjwj0+L2kU8T1YYQE+ViS9GuURpeLTsORjWYiKjloI2+eBczXyXzxScHQnCN5ky4yI6tWg8TzxFeMbRKqGlcUMFD1B90rcGrWwfHQYfap1+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8xlrB1Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EA7C433F1;
+	Tue, 23 Jan 2024 00:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968812;
-	bh=r5c5mSmYD9S3nF6jnK0qViHsSbjyDT2oNoadyT7SBDw=;
+	s=korg; t=1705968173;
+	bh=GXjMxiC6L50ONq3f3AJtbl73/R71VrJO0zAWLAAO5Cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yZvS025NdpqK70jYeOz3sP5x+cE5arIzt7ySqlrl+TbSyBeFLwXkV17/KEFOux7dZ
-	 L04n27B30QSnCfHuFDZQur3P8S6jaj4Xt7JVvz/RMOrSG1O42MRu29eGS3J8DW69eo
-	 JvpWBCsVJEUOsC+EiaoAEDjNFAFC8/aqTQHqZMIY=
+	b=F8xlrB1ZqJWicF17ztkeI08F+7M/QzPgCmPEQRVOmySDlXQngtkEX4By03UhDq6tW
+	 ooHVg9TGxLNb0Ed3dogT1QVNAaBQVJIK/+4cOeKxoS3YNwGBZSr1xG64fnjNmwl9xf
+	 0gSYyt70E3+qq9n+U9DUSYKS+ysb/O6nDrQggAGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhaoLong Wang <wangzhaolong1@huawei.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Nathan Lynch <nathanl@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 058/194] mtd: Fix gluebi NULL pointer dereference caused by ftl notifier
-Date: Mon, 22 Jan 2024 15:56:28 -0800
-Message-ID: <20240122235721.687806578@linuxfoundation.org>
+Subject: [PATCH 4.19 033/148] powerpc/pseries/memhp: Fix access beyond end of drmem array
+Date: Mon, 22 Jan 2024 15:56:29 -0800
+Message-ID: <20240122235713.745080050@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +60,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhaoLong Wang <wangzhaolong1@huawei.com>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-[ Upstream commit a43bdc376deab5fff1ceb93dca55bcab8dbdc1d6 ]
+[ Upstream commit bd68ffce69f6cf8ddd3a3c32549d1d2275e49fc5 ]
 
-If both ftl.ko and gluebi.ko are loaded, the notifier of ftl
-triggers NULL pointer dereference when trying to access
-‘gluebi->desc’ in gluebi_read().
+dlpar_memory_remove_by_index() may access beyond the bounds of the
+drmem lmb array when the LMB lookup fails to match an entry with the
+given DRC index. When the search fails, the cursor is left pointing to
+&drmem_info->lmbs[drmem_info->n_lmbs], which is one element past the
+last valid entry in the array. The debug message at the end of the
+function then dereferences this pointer:
 
-ubi_gluebi_init
-  ubi_register_volume_notifier
-    ubi_enumerate_volumes
-      ubi_notify_all
-        gluebi_notify    nb->notifier_call()
-          gluebi_create
-            mtd_device_register
-              mtd_device_parse_register
-                add_mtd_device
-                  blktrans_notify_add   not->add()
-                    ftl_add_mtd         tr->add_mtd()
-                      scan_header
-                        mtd_read
-                          mtd_read_oob
-                            mtd_read_oob_std
-                              gluebi_read   mtd->read()
-                                gluebi->desc - NULL
+        pr_debug("Failed to hot-remove memory at %llx\n",
+                 lmb->base_addr);
 
-Detailed reproduction information available at the Link [1],
+This was found by inspection and confirmed with KASAN:
 
-In the normal case, obtain gluebi->desc in the gluebi_get_device(),
-and access gluebi->desc in the gluebi_read(). However,
-gluebi_get_device() is not executed in advance in the
-ftl_add_mtd() process, which leads to NULL pointer dereference.
+  pseries-hotplug-mem: Attempting to hot-remove LMB, drc index 1234
+  ==================================================================
+  BUG: KASAN: slab-out-of-bounds in dlpar_memory+0x298/0x1658
+  Read of size 8 at addr c000000364e97fd0 by task bash/949
 
-The solution for the gluebi module is to run jffs2 on the UBI
-volume without considering working with ftl or mtdblock [2].
-Therefore, this problem can be avoided by preventing gluebi from
-creating the mtdblock device after creating mtd partition of the
-type MTD_UBIVOLUME.
+  dump_stack_lvl+0xa4/0xfc (unreliable)
+  print_report+0x214/0x63c
+  kasan_report+0x140/0x2e0
+  __asan_load8+0xa8/0xe0
+  dlpar_memory+0x298/0x1658
+  handle_dlpar_errorlog+0x130/0x1d0
+  dlpar_store+0x18c/0x3e0
+  kobj_attr_store+0x68/0xa0
+  sysfs_kf_write+0xc4/0x110
+  kernfs_fop_write_iter+0x26c/0x390
+  vfs_write+0x2d4/0x4e0
+  ksys_write+0xac/0x1a0
+  system_call_exception+0x268/0x530
+  system_call_vectored_common+0x15c/0x2ec
 
-Fixes: 2ba3d76a1e29 ("UBI: make gluebi a separate module")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217992 [1]
-Link: https://lore.kernel.org/lkml/441107100.23734.1697904580252.JavaMail.zimbra@nod.at/ [2]
-Signed-off-by: ZhaoLong Wang <wangzhaolong1@huawei.com>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Acked-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20231220024619.2138625-1-wangzhaolong1@huawei.com
+  Allocated by task 1:
+   kasan_save_stack+0x48/0x80
+   kasan_set_track+0x34/0x50
+   kasan_save_alloc_info+0x34/0x50
+   __kasan_kmalloc+0xd0/0x120
+   __kmalloc+0x8c/0x320
+   kmalloc_array.constprop.0+0x48/0x5c
+   drmem_init+0x2a0/0x41c
+   do_one_initcall+0xe0/0x5c0
+   kernel_init_freeable+0x4ec/0x5a0
+   kernel_init+0x30/0x1e0
+   ret_from_kernel_user_thread+0x14/0x1c
+
+  The buggy address belongs to the object at c000000364e80000
+   which belongs to the cache kmalloc-128k of size 131072
+  The buggy address is located 0 bytes to the right of
+   allocated 98256-byte region [c000000364e80000, c000000364e97fd0)
+
+  ==================================================================
+  pseries-hotplug-mem: Failed to hot-remove memory at 0
+
+Log failed lookups with a separate message and dereference the
+cursor only when it points to a valid entry.
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Fixes: 51925fb3c5c9 ("powerpc/pseries: Implement memory hotplug remove in the kernel")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231114-pseries-memhp-fixes-v1-1-fb8f2bb7c557@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/mtd_blkdevs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/pseries/hotplug-memory.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/mtd_blkdevs.c b/drivers/mtd/mtd_blkdevs.c
-index 0c05f77f9b21..dd0d0bf5f57f 100644
---- a/drivers/mtd/mtd_blkdevs.c
-+++ b/drivers/mtd/mtd_blkdevs.c
-@@ -533,7 +533,7 @@ static void blktrans_notify_add(struct mtd_info *mtd)
- {
- 	struct mtd_blktrans_ops *tr;
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index 93675a0b853b..2a26decef8b0 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -501,14 +501,15 @@ static int dlpar_memory_remove_by_index(u32 drc_index)
+ 		}
+ 	}
  
--	if (mtd->type == MTD_ABSENT)
-+	if (mtd->type == MTD_ABSENT || mtd->type == MTD_UBIVOLUME)
- 		return;
+-	if (!lmb_found)
++	if (!lmb_found) {
++		pr_debug("Failed to look up LMB for drc index %x\n", drc_index);
+ 		rc = -EINVAL;
+-
+-	if (rc)
++	} else if (rc) {
+ 		pr_debug("Failed to hot-remove memory at %llx\n",
+ 			 lmb->base_addr);
+-	else
++	} else {
+ 		pr_debug("Memory at %llx was hot-removed\n", lmb->base_addr);
++	}
  
- 	list_for_each_entry(tr, &blktrans_majors, list)
-@@ -576,7 +576,7 @@ int register_mtd_blktrans(struct mtd_blktrans_ops *tr)
- 	list_add(&tr->list, &blktrans_majors);
- 
- 	mtd_for_each_device(mtd)
--		if (mtd->type != MTD_ABSENT)
-+		if (mtd->type != MTD_ABSENT && mtd->type != MTD_UBIVOLUME)
- 			tr->add_mtd(tr, mtd);
- 
- 	mutex_unlock(&mtd_table_mutex);
+ 	return rc;
+ }
 -- 
 2.43.0
 
