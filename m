@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21DA5838168
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE96837C6C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8E77B2B4E3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79F25296AB1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54EFD1487F4;
-	Tue, 23 Jan 2024 01:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F67EAEE;
+	Tue, 23 Jan 2024 00:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWjjrLug"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ai9Ffd6p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B991487EA;
-	Tue, 23 Jan 2024 01:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5EE2581;
+	Tue, 23 Jan 2024 00:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972082; cv=none; b=RwDED+tRLl9YmpPRRmtOhkTUKtOfbGfNW0jtMqNQ63HYFMAVgAWkpVRPOio9HyC9UQP3rpBarVpyjOsf0N70k8FBetmqCvgWmjuhWdOMj4s+sdfHh0/LRrbthpuiX2GY7U1BIz/zvAL1ld9yiXZqqVSiNemk3ifSXiinFEhCg/Q=
+	t=1705969612; cv=none; b=GwTamJk1YRQbY/2AVQm8YUKHqEggO/xHkDozquC2XP6Fb4oruXL91rOlR3EVMz/e1Anwwgy90XRYsT8eThVDeUQYtdpXybcsAt7vjrEqo4MG8ztwI6BPwzFqd+1ILGQWd52lp8rBm3TMZ1Uppflu8eu0QSNbXiW+DqqvWmGHKaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972082; c=relaxed/simple;
-	bh=bJbid+rd9vrP9AXncu/tl+9gK85nbedBJsSC6e/o2Nw=;
+	s=arc-20240116; t=1705969612; c=relaxed/simple;
+	bh=qD3Yyq5dgTRyKcZk2Gz2cdTK2OBElVGGlpK0tbT7bCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNNlzkNwLOzpWvWue3Kp+Eg1xGaWDqRYmovQk2vFrGd/LfXXDFAJQJrhthI2rsij+vpGDyw9Ji7wdB+t9jmI/u/LIwHT5k+vUyfTuC+3mIMNxOVN0GW5LwoGunMetnD4wUc1e9pklJNOti2AUUuw23DarG3tj6l/Y3MO8M9dZws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWjjrLug; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7910C43390;
-	Tue, 23 Jan 2024 01:08:01 +0000 (UTC)
+	 MIME-Version; b=oE72O46PIo1P6INH/dapgDAkegpRxNnH/hrcDlT8bokfg10sotyDIQ/Nxma16oDKg4P+MDrMwCoueFXbRVzifeuSPjEGA5SOi/8rCUkT9ZyLaRN/56sJGEe2uYySqVsdQ1Gb5cYzLV6kcsrK/BliywgRjzXa4wYGZ3SK6LPc7rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ai9Ffd6p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E3CC433C7;
+	Tue, 23 Jan 2024 00:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972081;
-	bh=bJbid+rd9vrP9AXncu/tl+9gK85nbedBJsSC6e/o2Nw=;
+	s=korg; t=1705969612;
+	bh=qD3Yyq5dgTRyKcZk2Gz2cdTK2OBElVGGlpK0tbT7bCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DWjjrLug0RDOlV3oDVCFQVl6W7KzJBd2g9Lp4j8bYM3nbMahXSDcUYDVGOkdpaxw+
-	 kjgBrApkGLxCKUInKChdJEugxgY/OkJOysO1ul1DTupRRkFP1QT+ejpjOPPBLcuphy
-	 MEXuEdCRe6YL9An0pm9qaRtiP66GxLK9pYWq2zio=
+	b=Ai9Ffd6p1ivKhftd8UT/7qxwIg3uv1bYHIlTlxLfLh538uafPKJfSvh9jBsRiyqA7
+	 13yKq3U81/RqzcqT73rNH/icyVlACe1L7npY43YMgvuhr9ZfVHwqjrNPUrSWfv/Ivr
+	 BdD27eyhHrkyAxuuIFKCrV+/NE5DjdCXYoX6dOrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 006/374] debugfs: fix automount d_fsdata usage
+Subject: [PATCH 6.7 358/641] ALSA: scarlett2: Add missing error check to scarlett2_config_save()
 Date: Mon, 22 Jan 2024 15:54:22 -0800
-Message-ID: <20240122235744.846569148@linuxfoundation.org>
+Message-ID: <20240122235829.140156767@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,151 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-[ Upstream commit 0ed04a1847a10297595ac24dc7d46b35fb35f90a ]
+[ Upstream commit 5f6ff6931a1c0065a55448108940371e1ac8075f ]
 
-debugfs_create_automount() stores a function pointer in d_fsdata,
-but since commit 7c8d469877b1 ("debugfs: add support for more
-elaborate ->d_fsdata") debugfs_release_dentry() will free it, now
-conditionally on DEBUGFS_FSDATA_IS_REAL_FOPS_BIT, but that's not
-set for the function pointer in automount. As a result, removing
-an automount dentry would attempt to free the function pointer.
-Luckily, the only user of this (tracing) never removes it.
+scarlett2_config_save() was ignoring the return value from
+scarlett2_usb(). As this function is not called from user-space we
+can't return the error, so call usb_audio_err() instead.
 
-Nevertheless, it's safer if we just handle the fsdata in one way,
-namely either DEBUGFS_FSDATA_IS_REAL_FOPS_BIT or allocated. Thus,
-change the automount to allocate it, and use the real_fops in the
-data to indicate whether or not automount is filled, rather than
-adding a type tag. At least for now this isn't actually needed,
-but the next changes will require it.
-
-Also check in debugfs_file_get() that it gets only called
-on regular files, just to make things clearer.
-
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
+Link: https://lore.kernel.org/r/bf0a15332d852d7825fa6da87d2a0d9c0b702053.1703001053.git.g@b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/debugfs/file.c     |  8 ++++++++
- fs/debugfs/inode.c    | 27 ++++++++++++++++++++-------
- fs/debugfs/internal.h | 10 ++++++++--
- 3 files changed, 36 insertions(+), 9 deletions(-)
+ sound/usb/mixer_scarlett2.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/fs/debugfs/file.c b/fs/debugfs/file.c
-index 38930d9b0bb7..df5c2162e729 100644
---- a/fs/debugfs/file.c
-+++ b/fs/debugfs/file.c
-@@ -84,6 +84,14 @@ int debugfs_file_get(struct dentry *dentry)
- 	struct debugfs_fsdata *fsd;
- 	void *d_fsd;
- 
-+	/*
-+	 * This could only happen if some debugfs user erroneously calls
-+	 * debugfs_file_get() on a dentry that isn't even a file, let
-+	 * them know about it.
-+	 */
-+	if (WARN_ON(!d_is_reg(dentry)))
-+		return -EINVAL;
-+
- 	d_fsd = READ_ONCE(dentry->d_fsdata);
- 	if (!((unsigned long)d_fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)) {
- 		fsd = d_fsd;
-diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
-index 26f9cd328291..5290a721a703 100644
---- a/fs/debugfs/inode.c
-+++ b/fs/debugfs/inode.c
-@@ -214,17 +214,19 @@ static const struct super_operations debugfs_super_operations = {
- 
- static void debugfs_release_dentry(struct dentry *dentry)
+diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
+index 33a3d1161885..35e45c337383 100644
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -1524,9 +1524,11 @@ static void scarlett2_config_save(struct usb_mixer_interface *mixer)
  {
--	void *fsd = dentry->d_fsdata;
-+	struct debugfs_fsdata *fsd = dentry->d_fsdata;
+ 	__le32 req = cpu_to_le32(SCARLETT2_USB_CONFIG_SAVE);
  
--	if (!((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT))
--		kfree(dentry->d_fsdata);
-+	if ((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)
-+		return;
-+
-+	kfree(fsd);
+-	scarlett2_usb(mixer, SCARLETT2_USB_DATA_CMD,
+-		      &req, sizeof(u32),
+-		      NULL, 0);
++	int err = scarlett2_usb(mixer, SCARLETT2_USB_DATA_CMD,
++				&req, sizeof(u32),
++				NULL, 0);
++	if (err < 0)
++		usb_audio_err(mixer->chip, "config save failed: %d\n", err);
  }
  
- static struct vfsmount *debugfs_automount(struct path *path)
- {
--	debugfs_automount_t f;
--	f = (debugfs_automount_t)path->dentry->d_fsdata;
--	return f(path->dentry, d_inode(path->dentry)->i_private);
-+	struct debugfs_fsdata *fsd = path->dentry->d_fsdata;
-+
-+	return fsd->automount(path->dentry, d_inode(path->dentry)->i_private);
- }
- 
- static const struct dentry_operations debugfs_dops = {
-@@ -602,13 +604,23 @@ struct dentry *debugfs_create_automount(const char *name,
- 					void *data)
- {
- 	struct dentry *dentry = start_creating(name, parent);
-+	struct debugfs_fsdata *fsd;
- 	struct inode *inode;
- 
- 	if (IS_ERR(dentry))
- 		return dentry;
- 
-+	fsd = kzalloc(sizeof(*fsd), GFP_KERNEL);
-+	if (!fsd) {
-+		failed_creating(dentry);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+
-+	fsd->automount = f;
-+
- 	if (!(debugfs_allow & DEBUGFS_ALLOW_API)) {
- 		failed_creating(dentry);
-+		kfree(fsd);
- 		return ERR_PTR(-EPERM);
- 	}
- 
-@@ -616,13 +628,14 @@ struct dentry *debugfs_create_automount(const char *name,
- 	if (unlikely(!inode)) {
- 		pr_err("out of free dentries, can not create automount '%s'\n",
- 		       name);
-+		kfree(fsd);
- 		return failed_creating(dentry);
- 	}
- 
- 	make_empty_dir_inode(inode);
- 	inode->i_flags |= S_AUTOMOUNT;
- 	inode->i_private = data;
--	dentry->d_fsdata = (void *)f;
-+	dentry->d_fsdata = fsd;
- 	/* directory inodes start off with i_nlink == 2 (for "." entry) */
- 	inc_nlink(inode);
- 	d_instantiate(dentry, inode);
-diff --git a/fs/debugfs/internal.h b/fs/debugfs/internal.h
-index 92af8ae31313..f7c489b5a368 100644
---- a/fs/debugfs/internal.h
-+++ b/fs/debugfs/internal.h
-@@ -17,8 +17,14 @@ extern const struct file_operations debugfs_full_proxy_file_operations;
- 
- struct debugfs_fsdata {
- 	const struct file_operations *real_fops;
--	refcount_t active_users;
--	struct completion active_users_drained;
-+	union {
-+		/* automount_fn is used when real_fops is NULL */
-+		debugfs_automount_t automount;
-+		struct {
-+			refcount_t active_users;
-+			struct completion active_users_drained;
-+		};
-+	};
- };
- 
- /*
+ /* Delayed work to save config */
 -- 
 2.43.0
 
