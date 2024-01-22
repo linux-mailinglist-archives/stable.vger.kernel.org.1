@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-14353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C8183808E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FC55837BA1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE7AA28BC2B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC16FB26892
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE6B12FF74;
-	Tue, 23 Jan 2024 01:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0748130E2F;
+	Tue, 23 Jan 2024 00:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtHirYTD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhB0fZ2j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A979E657B3;
-	Tue, 23 Jan 2024 01:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C49812FF86;
+	Tue, 23 Jan 2024 00:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971790; cv=none; b=G2XSedJBG0BsW1h+V21Wx6AVdlzm3rxje7wLs3QnbZ0N5n0fWNx5S2/36PJQ43aUR79Gg7ZSFfUZhSwtwOvggMfByjey/8eeQqnooZ7yTGSKtE/qtMxn+sc1ty7STX4/FzhvGOfTOqckhtt7wScrpGaqZaOCE6tMlHYBnza8Rwc=
+	t=1705969053; cv=none; b=aE8RWve7j4cczvIZR8NwKl88GgIpmad8a2PlQejVF+lYxa7zkpXQ5K9VmTCiLJh5ZBu+tGPWWasbe8lNrfv+gYUmffnnG0gCwdgn8gPtFNpijZX2ast39dZq7JvA+CfnyI3C4Iz+Td5hq4sWKE2Ck0W94mel1ES2Oce6e0PqqVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971790; c=relaxed/simple;
-	bh=BBvrTcNv/2fr1JPn5Hc/egkv/T9wl1v1PnEfJmVUn3M=;
+	s=arc-20240116; t=1705969053; c=relaxed/simple;
+	bh=mX15Ke6ULD4L8eN5xB68M/qrIcjhXtQunvVemJUr5YA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gtzQFM5/FdIN8SnTIxC4LALnj+hY5EbBlSebdgB1Kdsh/TSytDQfsvj36jzbqp3SnAXcfz6hdW7K0eRQLQm9SS6O6VEYQLXCZQdqTdN8+h8s0+u/Zg++I4nQuTYH6yjppbXtufJJnJsH9m6P7FzDqznDhh5uSSFnhrpPx7+MEjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtHirYTD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FEFC433F1;
-	Tue, 23 Jan 2024 01:03:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U7Is57P0u7UcWELBlFb2c5GJWTE7SDvblNQeXGiEMQujlzWbydZW/yh+4Ar3iwgAQVHxUc5dbBpp6pMR3WQ3VSZuGvzFaK5gwFTKSsIrvpy98SF8ISCm1ODNFNbnoNKut2qmfPlNu1GPsbROwYa5ndiiGAG4CaERhMddNxTshA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhB0fZ2j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CBB8C433F1;
+	Tue, 23 Jan 2024 00:17:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971790;
-	bh=BBvrTcNv/2fr1JPn5Hc/egkv/T9wl1v1PnEfJmVUn3M=;
+	s=korg; t=1705969053;
+	bh=mX15Ke6ULD4L8eN5xB68M/qrIcjhXtQunvVemJUr5YA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TtHirYTDRMQ9aSVk3WgmenueksnqMK1ve8QGVzppCakWuK9XXsnG2heRtUPD+6nQb
-	 Rdrg+JUjb9k8puCQ8nk5g3In5VulfTS+FKMQQdHkL+lIQJ+bn7UzCzHs8Aicza6o1V
-	 4wPEucIQVH13rH1z95SnQU70RehA3WfDGYQbo2TI=
+	b=nhB0fZ2j5Hdv0Dmob2NxynMcM2Pjh1udhwpuk4uTWb8L5h+w5m2Dxf5Kk59I/UEiZ
+	 A+wQjjVdJrN7+9SspW2KaiSnyIBxOMKvgrd8rOePG87laMhZQBBo3E1vPhdSQvba8d
+	 Yf8gLPTw5ac9fGrztPfXKeRYs9vGg3cxTc1xkJjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.1 321/417] serial: sc16is7xx: add check for unsupported SPI modes during probe
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 5.4 159/194] wifi: rtlwifi: Convert LNKCTL change to PCIe cap RMW accessors
 Date: Mon, 22 Jan 2024 15:58:09 -0800
-Message-ID: <20240122235802.929032551@linuxfoundation.org>
+Message-ID: <20240122235726.012181140@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,56 +59,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 6d710b769c1f5f0d55c9ad9bb49b7dce009ec103 upstream.
+commit 5894d0089cbc146063dcc0239a78ede0a8142efb upstream.
 
-The original comment is confusing because it implies that variants other
-than the SC16IS762 supports other SPI modes beside SPI_MODE_0.
+The rtlwifi driver comes with custom code to write into PCIe Link
+Control register. RMW access for the Link Control register requires
+locking that is already provided by the standard PCIe capability
+accessors.
 
-Extract from datasheet:
-    The SC16IS762 differs from the SC16IS752 in that it supports SPI clock
-    speeds up to 15 Mbit/s instead of the 4 Mbit/s supported by the
-    SC16IS752... In all other aspects, the SC16IS762 is functionally and
-    electrically the same as the SC16IS752.
+Convert the custom RMW code writing into LNKCTL register to standard
+RMW capability accessors. The accesses are changed to cover the full
+LNKCTL register instead of touching just a single byte of the register.
 
-The same is also true of the SC16IS760 variant versus the SC16IS740 and
-SC16IS750 variants.
-
-For all variants, only SPI mode 0 is supported.
-
-Change comment and abort probing if the specified SPI mode is not
-SPI_MODE_0.
-
-Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-3-hugo@hugovil.com
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231124084725.12738-3-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/pci.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1716,7 +1716,10 @@ static int sc16is7xx_spi_probe(struct sp
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -164,21 +164,29 @@ static bool _rtl_pci_platform_switch_dev
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+ 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
  
- 	/* Setup SPI bus */
- 	spi->bits_per_word	= 8;
--	/* only supports mode 0 on SC16IS762 */
-+	/* For all variants, only mode 0 is supported */
-+	if ((spi->mode & SPI_MODE_X_MASK) != SPI_MODE_0)
-+		return dev_err_probe(&spi->dev, -EINVAL, "Unsupported SPI mode\n");
++	value &= PCI_EXP_LNKCTL_ASPMC;
 +
- 	spi->mode		= spi->mode ? : SPI_MODE_0;
- 	spi->max_speed_hz	= spi->max_speed_hz ? : 15000000;
- 	ret = spi_setup(spi);
+ 	if (rtlhal->hw_type != HARDWARE_TYPE_RTL8192SE)
+-		value |= 0x40;
++		value |= PCI_EXP_LNKCTL_CCC;
+ 
+-	pci_write_config_byte(rtlpci->pdev, 0x80, value);
++	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_ASPMC | value,
++					   value);
+ 
+ 	return false;
+ }
+ 
+-/*When we set 0x01 to enable clk request. Set 0x0 to disable clk req.*/
+-static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u8 value)
++/* @value is PCI_EXP_LNKCTL_CLKREQ_EN or 0 to enable/disable clk request. */
++static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u16 value)
+ {
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+ 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+ 
+-	pci_write_config_byte(rtlpci->pdev, 0x81, value);
++	value &= PCI_EXP_LNKCTL_CLKREQ_EN;
++
++	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_CLKREQ_EN,
++					   value);
+ 
+ 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192SE)
+ 		udelay(100);
+@@ -259,7 +267,8 @@ static void rtl_pci_enable_aspm(struct i
+ 
+ 	if (ppsc->reg_rfps_level & RT_RF_OFF_LEVL_CLK_REQ) {
+ 		_rtl_pci_switch_clk_req(hw, (ppsc->reg_rfps_level &
+-					     RT_RF_OFF_LEVL_CLK_REQ) ? 1 : 0);
++					     RT_RF_OFF_LEVL_CLK_REQ) ?
++					     PCI_EXP_LNKCTL_CLKREQ_EN : 0);
+ 		RT_SET_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_CLK_REQ);
+ 	}
+ 	udelay(100);
 
 
 
