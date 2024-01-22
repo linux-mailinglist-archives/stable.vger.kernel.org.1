@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E8A8382FE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E41E1837C19
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96E981F27F5E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93F1C295763
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D5F604C4;
-	Tue, 23 Jan 2024 01:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92303155306;
+	Tue, 23 Jan 2024 00:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XeOGlY3F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wcb9aBXz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4305604B4;
-	Tue, 23 Jan 2024 01:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4720D155300;
+	Tue, 23 Jan 2024 00:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974679; cv=none; b=LqEOokPRXi9yuX1ua8tfRYywaRxRFL+4bWuKPHLrHEjKahOeZ4eStx1WixA42sk5iaxMUz9tAwI1TPpbtjvADrgYLu95iRMoxgGVIkkzjdtn7Tzx6TsGy211Ax6tdgY5P06SGAH0eFP7xcNC7HUhFYWm7WK3aOsn/IfeRVFoti4=
+	t=1705969506; cv=none; b=TmyhCkEQd9zo5oG4f8OGD3+oTv7aiJnsYh3bnOudzzi6qFmxAiOypItBP3bpwl4AZZFEGgyyohZpwrJsSanufNLM3Rwq8/tAyxo3QyvWQwoeNCovJ7At7sPQax5uvpYNz+nXzju5QzP8go/jEEb8R94XAPmd9svG05YXVKxzhPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974679; c=relaxed/simple;
-	bh=v+enESAMYssOrt3LxEzMDUWK7A5hyjZXHIVrmqSV03s=;
+	s=arc-20240116; t=1705969506; c=relaxed/simple;
+	bh=4KJTbmjCXpw50K6oc0vwgOqS+MXlexCRnOJjteYyneY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aNeIhCJpTMG9dc5sz5aJ9X2YABrO2epbejEQBGMekK7gNU5QRfLMplGBMwxpzyjVKc6ozSZDqvt/fiGEP8ucVUAXOxVj4AoUAE//p14x3xB/atsLilS8p1qAYumLMhwT6C0/6EKhNxD4F0YVHP0TQYn2FxxAL4nSVQZnaCS624A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeOGlY3F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8603EC433C7;
-	Tue, 23 Jan 2024 01:51:19 +0000 (UTC)
+	 MIME-Version; b=MI1Ikx/MGQN+067K6UGJ0Kt3N6odu/HLoaJld3+kJz9YYCvPzGnap5+tPMx/ZJXMPaIwphl6l/NLkb30m5aMeoAgFvqOUgmDZbba7+0LPJ76o7qAX2znXGohKD79t3IQj/Gevfkl04JidHOVi6IptKZd8TqhYxch6c4ikrU3xfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wcb9aBXz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D9CC433A6;
+	Tue, 23 Jan 2024 00:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974679;
-	bh=v+enESAMYssOrt3LxEzMDUWK7A5hyjZXHIVrmqSV03s=;
+	s=korg; t=1705969505;
+	bh=4KJTbmjCXpw50K6oc0vwgOqS+MXlexCRnOJjteYyneY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XeOGlY3FfZK/Gk+lAF4w9GoQ0KoqiKJV0neWC5STH5lwVqhf3rxZxg+RTpl50GjZg
-	 slUnV2IivYzCm+wKISsJEouBpNvdwny2PqMPaDZacP1gAwn0FHnoEKumhHzPGzMVsE
-	 Vu9Dt4qrKYnHHVSZDHmdIYaslqY2RGVWk5YOus2E=
+	b=Wcb9aBXzs0i7ERGXIIML0XjPTw9emZxCNtu9FNCp+mXEs14wob3+4uNYGtamYaGh+
+	 3C90t1MxIo3TkkJpFYjaUx+8UeH6b8RdF1d7WzGORQqWcl38P8u9mRNxBytDCoB+IU
+	 UnA/gfpkL+iOmVJKZJL9AKEzYIKUGTPi0mzImgnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 120/583] bpf: Defer the free of inner map when necessary
+Subject: [PATCH 6.7 267/641] drm/radeon/r600_cs: Fix possible int overflows in r600_cs_check_reg()
 Date: Mon, 22 Jan 2024 15:52:51 -0800
-Message-ID: <20240122235815.815293022@linuxfoundation.org>
+Message-ID: <20240122235826.274610978@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,143 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 876673364161da50eed6b472d746ef88242b2368 ]
+[ Upstream commit 39c960bbf9d9ea862398759e75736cfb68c3446f ]
 
-When updating or deleting an inner map in map array or map htab, the map
-may still be accessed by non-sleepable program or sleepable program.
-However bpf_map_fd_put_ptr() decreases the ref-counter of the inner map
-directly through bpf_map_put(), if the ref-counter is the last one
-(which is true for most cases), the inner map will be freed by
-ops->map_free() in a kworker. But for now, most .map_free() callbacks
-don't use synchronize_rcu() or its variants to wait for the elapse of a
-RCU grace period, so after the invocation of ops->map_free completes,
-the bpf program which is accessing the inner map may incur
-use-after-free problem.
+While improbable, there may be a chance of hitting integer
+overflow when the result of radeon_get_ib_value() gets shifted
+left.
 
-Fix the free of inner map by invoking bpf_map_free_deferred() after both
-one RCU grace period and one tasks trace RCU grace period if the inner
-map has been removed from the outer map before. The deferment is
-accomplished by using call_rcu() or call_rcu_tasks_trace() when
-releasing the last ref-counter of bpf map. The newly-added rcu_head
-field in bpf_map shares the same storage space with work field to
-reduce the size of bpf_map.
+Avoid it by casting one of the operands to larger data type (u64).
 
-Fixes: bba1dc0b55ac ("bpf: Remove redundant synchronize_rcu.")
-Fixes: 638e4b825d52 ("bpf: Allows per-cpu maps and map-in-map in sleepable programs")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20231204140425.1480317-5-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 1729dd33d20b ("drm/radeon/kms: r600 CS parser fixes")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h     |  7 ++++++-
- kernel/bpf/map_in_map.c | 11 ++++++++---
- kernel/bpf/syscall.c    | 32 +++++++++++++++++++++++++++-----
- 3 files changed, 41 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/radeon/r600_cs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 4bed78e47347..9b08d792fa95 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -275,7 +275,11 @@ struct bpf_map {
- 	 */
- 	atomic64_t refcnt ____cacheline_aligned;
- 	atomic64_t usercnt;
--	struct work_struct work;
-+	/* rcu is used before freeing and work is only used during freeing */
-+	union {
-+		struct work_struct work;
-+		struct rcu_head rcu;
-+	};
- 	struct mutex freeze_mutex;
- 	atomic64_t writecnt;
- 	/* 'Ownership' of program-containing map is claimed by the first program
-@@ -291,6 +295,7 @@ struct bpf_map {
- 	} owner;
- 	bool bypass_spec_v1;
- 	bool frozen; /* write-once; write-protected by freeze_mutex */
-+	bool free_after_mult_rcu_gp;
- 	s64 __percpu *elem_count;
- };
- 
-diff --git a/kernel/bpf/map_in_map.c b/kernel/bpf/map_in_map.c
-index 2dfeb5835e16..3248ff5d8161 100644
---- a/kernel/bpf/map_in_map.c
-+++ b/kernel/bpf/map_in_map.c
-@@ -129,10 +129,15 @@ void *bpf_map_fd_get_ptr(struct bpf_map *map,
- 
- void bpf_map_fd_put_ptr(struct bpf_map *map, void *ptr, bool need_defer)
- {
--	/* ptr->ops->map_free() has to go through one
--	 * rcu grace period by itself.
-+	struct bpf_map *inner_map = ptr;
-+
-+	/* The inner map may still be used by both non-sleepable and sleepable
-+	 * bpf program, so free it after one RCU grace period and one tasks
-+	 * trace RCU grace period.
- 	 */
--	bpf_map_put(ptr);
-+	if (need_defer)
-+		WRITE_ONCE(inner_map->free_after_mult_rcu_gp, true);
-+	bpf_map_put(inner_map);
- }
- 
- u32 bpf_map_fd_sys_lookup_elem(void *ptr)
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index d77b2f8b9364..1625b9d5202c 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -717,6 +717,28 @@ static void bpf_map_put_uref(struct bpf_map *map)
- 	}
- }
- 
-+static void bpf_map_free_in_work(struct bpf_map *map)
-+{
-+	INIT_WORK(&map->work, bpf_map_free_deferred);
-+	/* Avoid spawning kworkers, since they all might contend
-+	 * for the same mutex like slab_mutex.
-+	 */
-+	queue_work(system_unbound_wq, &map->work);
-+}
-+
-+static void bpf_map_free_rcu_gp(struct rcu_head *rcu)
-+{
-+	bpf_map_free_in_work(container_of(rcu, struct bpf_map, rcu));
-+}
-+
-+static void bpf_map_free_mult_rcu_gp(struct rcu_head *rcu)
-+{
-+	if (rcu_trace_implies_rcu_gp())
-+		bpf_map_free_rcu_gp(rcu);
-+	else
-+		call_rcu(rcu, bpf_map_free_rcu_gp);
-+}
-+
- /* decrement map refcnt and schedule it for freeing via workqueue
-  * (underlying map implementation ops->map_free() might sleep)
-  */
-@@ -726,11 +748,11 @@ void bpf_map_put(struct bpf_map *map)
- 		/* bpf_map_free_id() must be called first */
- 		bpf_map_free_id(map);
- 		btf_put(map->btf);
--		INIT_WORK(&map->work, bpf_map_free_deferred);
--		/* Avoid spawning kworkers, since they all might contend
--		 * for the same mutex like slab_mutex.
--		 */
--		queue_work(system_unbound_wq, &map->work);
-+
-+		if (READ_ONCE(map->free_after_mult_rcu_gp))
-+			call_rcu_tasks_trace(&map->rcu, bpf_map_free_mult_rcu_gp);
-+		else
-+			bpf_map_free_in_work(map);
- 	}
- }
- EXPORT_SYMBOL_GPL(bpf_map_put);
+diff --git a/drivers/gpu/drm/radeon/r600_cs.c b/drivers/gpu/drm/radeon/r600_cs.c
+index 638f861af80f..6cf54a747749 100644
+--- a/drivers/gpu/drm/radeon/r600_cs.c
++++ b/drivers/gpu/drm/radeon/r600_cs.c
+@@ -1275,7 +1275,7 @@ static int r600_cs_check_reg(struct radeon_cs_parser *p, u32 reg, u32 idx)
+ 			return -EINVAL;
+ 		}
+ 		tmp = (reg - CB_COLOR0_BASE) / 4;
+-		track->cb_color_bo_offset[tmp] = radeon_get_ib_value(p, idx) << 8;
++		track->cb_color_bo_offset[tmp] = (u64)radeon_get_ib_value(p, idx) << 8;
+ 		ib[idx] += (u32)((reloc->gpu_offset >> 8) & 0xffffffff);
+ 		track->cb_color_base_last[tmp] = ib[idx];
+ 		track->cb_color_bo[tmp] = reloc->robj;
+@@ -1302,7 +1302,7 @@ static int r600_cs_check_reg(struct radeon_cs_parser *p, u32 reg, u32 idx)
+ 					"0x%04X\n", reg);
+ 			return -EINVAL;
+ 		}
+-		track->htile_offset = radeon_get_ib_value(p, idx) << 8;
++		track->htile_offset = (u64)radeon_get_ib_value(p, idx) << 8;
+ 		ib[idx] += (u32)((reloc->gpu_offset >> 8) & 0xffffffff);
+ 		track->htile_bo = reloc->robj;
+ 		track->db_dirty = true;
 -- 
 2.43.0
 
