@@ -1,310 +1,171 @@
-Return-Path: <stable+bounces-15519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9987838DF6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 12:53:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3224C838E10
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 12:59:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 639C31F24AA6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 11:53:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D8451F25021
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 11:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FC05D902;
-	Tue, 23 Jan 2024 11:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4345D91C;
+	Tue, 23 Jan 2024 11:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=friedrich.vock@gmx.de header.b="SC8RGv5i"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dmjmp3k5"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C05A5DF34
-	for <stable@vger.kernel.org>; Tue, 23 Jan 2024 11:52:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4985D90C
+	for <stable@vger.kernel.org>; Tue, 23 Jan 2024 11:59:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706010769; cv=none; b=kOMebAavCeA6lfH7ZeKfR20ldUV1kxA1WxbkqI/0O8NuLBiO0875zorg/ONd+mO1s0AdAaZkOHOFyxBVqCNQCJRVLnERY/28qlEVYisBPinBhrFSib17lSkqRSO3XUB1jpI4+L1R0JzFaAFf5Qtuk1vLS13R/4YSeOuQLfLtVps=
+	t=1706011154; cv=none; b=jgvRbbVWdbSmm8jWtf2Zy1HbHQChsJ1HSurpZRHfYAeYehCXWWOB6ncuBKets87glWh16pD8fJp4ZEP/SHoGDOOEaf/4Q4w7YSYlx+FNU2ZY/hJCvl/ufVd9Xh2MlOTtNcwC0A3eom/K2ozHH3/rZx2F+VsMFtfuD0tMEXiMEvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706010769; c=relaxed/simple;
-	bh=kLRu9ltHtid3Zj0YJvK3iTr6QmXC8OKaq03zaMF8bgk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FufnmCwhrYGbWYGwGsD4VhJVoGDDpIzSnkxJIP8P+Pun+8r6NJ0kZpgNnnciIzyXBcpMq84UDw4O5tLEsIsIFZvUdd1LwdSAXAIe2LZC4dEiQ1gYJbGK78usITSDaaHrsZwETc2FNxkUsk6EhLhD0eKQtfDrFMvDi3Bh98eqFts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=friedrich.vock@gmx.de header.b=SC8RGv5i; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1706010759; x=1706615559; i=friedrich.vock@gmx.de;
-	bh=kLRu9ltHtid3Zj0YJvK3iTr6QmXC8OKaq03zaMF8bgk=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
-	 References;
-	b=SC8RGv5i2V8MYSm7p+PuwKVM9kYJRzKbS13nf+N07xpeP7cMCfmZ1ofNVBJk87Pr
-	 VmqDXdd5OuGyusdSvUtFubmJsKMmogXBAwZRG5EUHqTPRBgVTzEUb7dd8GqB8zaHs
-	 fDGVfJEXD7/oATzLEP2g6y2ZnB8GhHZzA+djKr0leZbWlgfql8yenKwLz5G6imfXS
-	 N891OqzzA0clglY9LqTs8UwVwmdnQZ6TrgZglQcPfFyRAz6SnjG4uD9isKfvzS+c4
-	 LlgZr+FeaRzwQ3BMQ1n7FCXhv6tueyRGrZA7dtgJx+H5BAvz6h/8Sss3YTSBYUtjH
-	 ltnaR5x7cy+GJcY81Q==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from arch.fritz.box ([213.152.113.218]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MRCK6-1rnEf50FPA-00N8hd; Tue, 23
- Jan 2024 12:52:39 +0100
-From: Friedrich Vock <friedrich.vock@gmx.de>
-To: amd-gfx@lists.freedesktop.org
-Cc: Friedrich Vock <friedrich.vock@gmx.de>,
-	Joshua Ashton <joshua@froggi.es>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] drm/amdgpu: Process fences on IH overflow
-Date: Tue, 23 Jan 2024 12:52:04 +0100
-Message-ID: <20240123115204.194523-2-friedrich.vock@gmx.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240123115204.194523-1-friedrich.vock@gmx.de>
-References: <20240123115204.194523-1-friedrich.vock@gmx.de>
+	s=arc-20240116; t=1706011154; c=relaxed/simple;
+	bh=Os8hIlLsFkGBkZeoXT/YcKzJ5GoXqLCjF3yLXjabNzc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cZIsv8gFvrLzK+Mnw+9+opJT3yFgDLLrgW8kGCFNxmBhpKygUFdmuVU41pcGxRTL3mQlLEVc+02GOzL6H97goRtvkLJKE5MyhvacNiqJoQmOCJP+3Kr3Fehp9htrzjCsidbh3jqeL/S9Px9gHu9+Pp0FOZTFhWOugKUtMRHtNus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dmjmp3k5; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6d9344f30caso2611170b3a.1
+        for <stable@vger.kernel.org>; Tue, 23 Jan 2024 03:59:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706011153; x=1706615953; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QEI0es0Fh9CjmQ9+goIQ3glo1dNpAV2T7ObrjAwh6Bw=;
+        b=dmjmp3k5S3iOWWnCHxXf9rjyCNK6GnzsbCuYCuyL8gnqVf817JiEGbybYIc0EXbgil
+         7INAjF0lrMpA2vLsC4O2gYSDojuBegJamf0uxAE1QVTkl/JOdj+og3lPUI8zTODpfRKZ
+         Oqw5Kwm/4UwrD+Yrq7tqeYSL9em1IKaJ739FkL0ZLmGgeC1/m6rXDnwgRMAem1emNdEM
+         1rxJSa/V/1icF1PUc9AxfFKs1zIPFN2cWfsEpZbLlQbepucgOVyZ9OTxIbbGhGNaw8EY
+         MGGnjCdkJgpJwm1E74F+hmRi5DsP5tUxCGj1qQPBQC24WNdLCyDxwRVeGXw5WSLfucFf
+         CHWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706011153; x=1706615953;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QEI0es0Fh9CjmQ9+goIQ3glo1dNpAV2T7ObrjAwh6Bw=;
+        b=Lb2NEfJrvAKg2kjenrHrnmCVb8CSleonoQZ8tsY2HVzIolnXfxvq9Wfp4Ul0hL2HT4
+         K0MynfDrRei6iWAydat6HFNBlhAVfYjgmksjWobxZQHM9k+4F6SSpbtWZrvFyjxWQBbI
+         CooQihgM5ieJxd4gXJBT0cFspJ9iob94xOZfm1a3Iquelp30VTNRwhCTdnchO/eYfZwY
+         j6i8VGpGBfL7PTnXf3AIiNFRzYdaklb3fAVRW/t7ehbZ6DNh62buP8+a8zCcPaJUObcj
+         7amUdGBfRj+9MFAbUHW26K6MqMsRb/+mRYPNFVJV4/dozO0FHqfl230u6t2cgEEAjQS9
+         z12Q==
+X-Gm-Message-State: AOJu0YyS6KcIGNk506lUSDleChhQyGnrTWApXCdhCk2Dd076cF/mS6mo
+	+A74fnwZ6IQyER+syvtT6zLNplOU9hh3U9WD4uKWcic1b7xPUGC/TQuT8qJGzgWV1e3osXA8MXJ
+	QkNsYEQTlNcwjBb349PBoVrlQ5wQ2TwNVZW9O
+X-Google-Smtp-Source: AGHT+IGx72UbdOpW3i/0sgcjdJBt1MEPY7k67MDAMdIFzUHdiD++kJWWcxdSo5/N8e6JggX3TWq7yKj0n+9drNmZF7o=
+X-Received: by 2002:a05:6a00:1405:b0:6d9:955a:d3bb with SMTP id
+ l5-20020a056a00140500b006d9955ad3bbmr7944003pfu.10.1706011152521; Tue, 23 Jan
+ 2024 03:59:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20240117113806.2584341-1-badhri@google.com> <CA+XFjioEL4ZcdDZgK2N3squudx8T_DJGrwNDCaN-2XJ3Nb4sXQ@mail.gmail.com>
+In-Reply-To: <CA+XFjioEL4ZcdDZgK2N3squudx8T_DJGrwNDCaN-2XJ3Nb4sXQ@mail.gmail.com>
+From: Badhri Jagan Sridharan <badhri@google.com>
+Date: Tue, 23 Jan 2024 03:58:30 -0800
+Message-ID: <CAPTae5Lz3dW6Qw4izJFa7XGiBHmRr24vPWkoieijWd0TaLUBCA@mail.gmail.com>
+Subject: Re: [PATCH v1] Revert "usb: typec: tcpm: fix cc role at port reset"
+To: =?UTF-8?Q?G=C3=A1bor_Stefanik?= <netrolller.3d@gmail.com>
+Cc: gregkh@linuxfoundation.org, linux@roeck-us.net, 
+	heikki.krogerus@linux.intel.com, kyletso@google.com, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, rdbabiera@google.com, 
+	amitsd@google.com, stable@vger.kernel.org, stable@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:tTIIWK9syZwuWsiicA9LKVhLcHPAm5YGDVDqAOgoCCkW4zEGr5k
- 9JacC4c82AiHKqTtNO8ymUsp03JbbgCo6X1+CJ8e9s6QTTwgnb/qfd+vdJ3khZiFtVZ5234
- ABrMbcyKGP7NU4joLNe3TYKdr5uwo6fI0UogIW6lhGm4s7aYKsYNuC1AxMhxQof6NqsNVpn
- vDv12WwoOAxZyGBUpxjxA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:xkqNDeqaY1c=;mckF7hrHFGCgvb5OLDuZoD4NZPz
- hMC5gUO3qGnG+qC4XqkhPuQIg59qikrl4g7YrSVSXKuspj1m/3D4CXsrNfy/dpWeHFrzstDwo
- rPSI9gUgABpopGTRagtxjKh/3nN8U7EafzONQMH4N987ouwq9CDYWUShURIzwL6ZPxeAjJyT1
- g1LYVP4+zIM2iR6e1PQmjbOEDRZNgAWKeJw51yHl9WC9VRuJkdSCJ0ZlV4zdSFY5CtGU2sxBd
- pn2FmxY3uLjRp4utMwG/WNBmYv3xFTblAyxMROCzvTuWb+JiS53iG72StmbxEe18KG+4Y8NLE
- uJdglOZYlho2ZT8cLfAJ7JPzCiC01DWeFVfyD17LfrGW3Q5DfngLvNT1lsPZOOhJ1/KD/yNBg
- iQR/ZgFUUFe8dfob06Vtby/cLxQDPmM/sUIgtKRh8UD7ND5crO49rJSxihrSJGbSUImIkOhcE
- h5i9/ZXDQQst/0ScH5gNxKOBTsXsTHcoV/riD/14TpbfBsA4oS9sIEYMgyU2GYeZnopLblo3v
- qlsbHSJyvvRgFDlFO+BKdmdNcM8APwrq67vlX5Y130D/lrlzpOg7Eo/l5Yhc5e+FG/PE5gihR
- Wi3zUMXpjNTgWLUrJeTjYxbD5VfV5UIJp/4QWyNsT1Jehs5X4thFfSxXSL+8Fbu2p6zXUBXy9
- jB0oaly3FZjcqKqSlE8OzRBDkLye1j18eYbO4snJfb91JZ2PHKf1irnrwTPeav6zx6h3w+QbX
- 3uT7Dvw4c5xllMqiv6Fe8LrvAMhQSx6lGqueDcIV391XjLsNZfP0+2Z0M3VaTngcCF31wtbj7
- qzWQq65dUZ+oHD/CY6YWtmGtLLbMGQJEEUoaUkrG9FIm/BJw96aCKb7Hz8nT0DgJI8yDBhvE/
- 718eoymX7fbYC+YHSutfd3itPKu4ARHLt9MF/VGabk54HN1dOaiY8KHZLWqPY+4EA46UXsozq
- RJEfCMFChbEIOdp7DGA6vTtBK00=
 
-If the IH ring buffer overflows, it's possible that fence signal events
-were lost. Check each ring for progress to prevent job timeouts/GPU
-hangs due to the fences staying unsignaled despite the work being done.
+Hi Gabor,
 
-Cc: Joshua Ashton <joshua@froggi.es>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
-Cc: stable@vger.kernel.org
+While HI-Zing CC pins disrupts power for batteryless devices, not
+Hi-Zing CC pins would prevent clean error recovery for self powered
+devices.
+Hi-Zing CC pins would make the port partner recognize it as disconnect
+and will result in bringup the connection back cleanly.
 
-Signed-off-by: Friedrich Vock <friedrich.vock@gmx.de>
-=2D--
-v2: Set ih->overflow to false after processing fence
-v3: Move everything related to fence processing on overflow to patch 2
+How about leveraging "self-powered" device tree property and Hi-Zing
+CC pins only when using "self-powered" ?
 
- drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c  | 16 ++++++++++++++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h  |  2 ++
- drivers/gpu/drm/amd/amdgpu/cik_ih.c     |  1 +
- drivers/gpu/drm/amd/amdgpu/cz_ih.c      |  1 +
- drivers/gpu/drm/amd/amdgpu/iceland_ih.c |  1 +
- drivers/gpu/drm/amd/amdgpu/ih_v6_0.c    |  1 +
- drivers/gpu/drm/amd/amdgpu/ih_v6_1.c    |  1 +
- drivers/gpu/drm/amd/amdgpu/navi10_ih.c  |  1 +
- drivers/gpu/drm/amd/amdgpu/si_ih.c      |  1 +
- drivers/gpu/drm/amd/amdgpu/tonga_ih.c   |  1 +
- drivers/gpu/drm/amd/amdgpu/vega10_ih.c  |  1 +
- drivers/gpu/drm/amd/amdgpu/vega20_ih.c  |  1 +
- 12 files changed, 28 insertions(+)
+Regards,
+Badhri
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c b/drivers/gpu/drm/amd/=
-amdgpu/amdgpu_ih.c
-index f3b0aaf3ebc6..4e061f7741d8 100644
-=2D-- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c
-@@ -209,6 +209,7 @@ int amdgpu_ih_process(struct amdgpu_device *adev, stru=
-ct amdgpu_ih_ring *ih)
- {
- 	unsigned int count;
- 	u32 wptr;
-+	int i;
-
- 	if (!ih->enabled || adev->shutdown)
- 		return IRQ_NONE;
-@@ -227,6 +228,21 @@ int amdgpu_ih_process(struct amdgpu_device *adev, str=
-uct amdgpu_ih_ring *ih)
- 		ih->rptr &=3D ih->ptr_mask;
- 	}
-
-+	/* If the ring buffer overflowed, we might have lost some fence
-+	 * signal interrupts. Check if there was any activity so the signal
-+	 * doesn't get lost.
-+	 */
-+	if (ih->overflow) {
-+		for (i =3D 0; i < AMDGPU_MAX_RINGS; ++i) {
-+			struct amdgpu_ring *ring =3D adev->rings[i];
-+
-+			if (!ring || !ring->fence_drv.initialized)
-+				continue;
-+			amdgpu_fence_process(ring);
-+		}
-+		ih->overflow =3D false;
-+	}
-+
- 	amdgpu_ih_set_rptr(adev, ih);
- 	wake_up_all(&ih->wait_process);
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h b/drivers/gpu/drm/amd/=
-amdgpu/amdgpu_ih.h
-index 508f02eb0cf8..6041ec727f06 100644
-=2D-- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h
-@@ -69,6 +69,8 @@ struct amdgpu_ih_ring {
- 	unsigned		rptr;
- 	struct amdgpu_ih_regs	ih_regs;
-
-+	bool overflow;
-+
- 	/* For waiting on IH processing at checkpoint. */
- 	wait_queue_head_t wait_process;
- 	uint64_t		processed_timestamp;
-diff --git a/drivers/gpu/drm/amd/amdgpu/cik_ih.c b/drivers/gpu/drm/amd/amd=
-gpu/cik_ih.c
-index f24e34dc33d1..bbadf2e530b8 100644
-=2D-- a/drivers/gpu/drm/amd/amdgpu/cik_ih.c
-+++ b/drivers/gpu/drm/amd/amdgpu/cik_ih.c
-@@ -210,6 +210,7 @@ static u32 cik_ih_get_wptr(struct amdgpu_device *adev,
- 		 */
- 		tmp &=3D ~IH_RB_CNTL__WPTR_OVERFLOW_CLEAR_MASK;
- 		WREG32(mmIH_RB_CNTL, tmp);
-+		ih->overflow =3D true;
- 	}
- 	return (wptr & ih->ptr_mask);
- }
-diff --git a/drivers/gpu/drm/amd/amdgpu/cz_ih.c b/drivers/gpu/drm/amd/amdg=
-pu/cz_ih.c
-index c19681492efa..e5c4ed44bad9 100644
-=2D-- a/drivers/gpu/drm/amd/amdgpu/cz_ih.c
-+++ b/drivers/gpu/drm/amd/amdgpu/cz_ih.c
-@@ -221,6 +221,7 @@ static u32 cz_ih_get_wptr(struct amdgpu_device *adev,
- 	 */
- 	tmp =3D REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
- 	WREG32(mmIH_RB_CNTL, tmp);
-+	ih->overflow =3D true;
-
- out:
- 	return (wptr & ih->ptr_mask);
-diff --git a/drivers/gpu/drm/amd/amdgpu/iceland_ih.c b/drivers/gpu/drm/amd=
-/amdgpu/iceland_ih.c
-index 2c02ae69883d..075e5c1a5549 100644
-=2D-- a/drivers/gpu/drm/amd/amdgpu/iceland_ih.c
-+++ b/drivers/gpu/drm/amd/amdgpu/iceland_ih.c
-@@ -220,6 +220,7 @@ static u32 iceland_ih_get_wptr(struct amdgpu_device *a=
-dev,
- 	 */
- 	tmp =3D REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
- 	WREG32(mmIH_RB_CNTL, tmp);
-+	ih->overflow =3D true;
-
- out:
- 	return (wptr & ih->ptr_mask);
-diff --git a/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c b/drivers/gpu/drm/amd/am=
-dgpu/ih_v6_0.c
-index ad4ad39f128f..d0a5a08edd55 100644
-=2D-- a/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
-@@ -424,6 +424,7 @@ static u32 ih_v6_0_get_wptr(struct amdgpu_device *adev=
-,
- 	 */
- 	tmp =3D REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
- 	WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
-+	ih->overflow =3D true;
- out:
- 	return (wptr & ih->ptr_mask);
- }
-diff --git a/drivers/gpu/drm/amd/amdgpu/ih_v6_1.c b/drivers/gpu/drm/amd/am=
-dgpu/ih_v6_1.c
-index b8da0fc29378..6bf4f210ef74 100644
-=2D-- a/drivers/gpu/drm/amd/amdgpu/ih_v6_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/ih_v6_1.c
-@@ -424,6 +424,7 @@ static u32 ih_v6_1_get_wptr(struct amdgpu_device *adev=
-,
- 	 */
- 	tmp =3D REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
- 	WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
-+	ih->overflow =3D true;
-
- out:
- 	return (wptr & ih->ptr_mask);
-diff --git a/drivers/gpu/drm/amd/amdgpu/navi10_ih.c b/drivers/gpu/drm/amd/=
-amdgpu/navi10_ih.c
-index de93614726c9..cdbe7d01490e 100644
-=2D-- a/drivers/gpu/drm/amd/amdgpu/navi10_ih.c
-+++ b/drivers/gpu/drm/amd/amdgpu/navi10_ih.c
-@@ -448,6 +448,7 @@ static u32 navi10_ih_get_wptr(struct amdgpu_device *ad=
-ev,
- 	 */
- 	tmp =3D REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
- 	WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
-+	ih->overflow =3D true;
- out:
- 	return (wptr & ih->ptr_mask);
- }
-diff --git a/drivers/gpu/drm/amd/amdgpu/si_ih.c b/drivers/gpu/drm/amd/amdg=
-pu/si_ih.c
-index cada9f300a7f..398fbc296cac 100644
-=2D-- a/drivers/gpu/drm/amd/amdgpu/si_ih.c
-+++ b/drivers/gpu/drm/amd/amdgpu/si_ih.c
-@@ -125,6 +125,7 @@ static u32 si_ih_get_wptr(struct amdgpu_device *adev,
- 		 */
- 		tmp &=3D ~IH_RB_CNTL__WPTR_OVERFLOW_CLEAR_MASK;
- 		WREG32(IH_RB_CNTL, tmp);
-+		ih->overflow =3D true;
- 	}
- 	return (wptr & ih->ptr_mask);
- }
-diff --git a/drivers/gpu/drm/amd/amdgpu/tonga_ih.c b/drivers/gpu/drm/amd/a=
-mdgpu/tonga_ih.c
-index 450b6e831509..1d1e064be7d8 100644
-=2D-- a/drivers/gpu/drm/amd/amdgpu/tonga_ih.c
-+++ b/drivers/gpu/drm/amd/amdgpu/tonga_ih.c
-@@ -224,6 +224,7 @@ static u32 tonga_ih_get_wptr(struct amdgpu_device *ade=
-v,
- 	 */
- 	tmp =3D REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
- 	WREG32(mmIH_RB_CNTL, tmp);
-+	ih->overflow =3D true;
-
- out:
- 	return (wptr & ih->ptr_mask);
-diff --git a/drivers/gpu/drm/amd/amdgpu/vega10_ih.c b/drivers/gpu/drm/amd/=
-amdgpu/vega10_ih.c
-index bf68e18e3824..619087a4c4ae 100644
-=2D-- a/drivers/gpu/drm/amd/amdgpu/vega10_ih.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vega10_ih.c
-@@ -378,6 +378,7 @@ static u32 vega10_ih_get_wptr(struct amdgpu_device *ad=
-ev,
- 	 */
- 	tmp =3D REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
- 	WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
-+	ih->overflow =3D true;
-
- out:
- 	return (wptr & ih->ptr_mask);
-diff --git a/drivers/gpu/drm/amd/amdgpu/vega20_ih.c b/drivers/gpu/drm/amd/=
-amdgpu/vega20_ih.c
-index db66e6cccaf2..f42f8e5dbe23 100644
-=2D-- a/drivers/gpu/drm/amd/amdgpu/vega20_ih.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vega20_ih.c
-@@ -426,6 +426,7 @@ static u32 vega20_ih_get_wptr(struct amdgpu_device *ad=
-ev,
- 	 */
- 	tmp =3D REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
- 	WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
-+	ih->overflow =3D true;
-
- out:
- 	return (wptr & ih->ptr_mask);
-=2D-
-2.43.0
-
+On Wed, Jan 17, 2024 at 8:07=E2=80=AFAM G=C3=A1bor Stefanik <netrolller.3d@=
+gmail.com> wrote:
+>
+> This will break operation of batteryless devices relying on a USB
+> Type-C port for their power needs, as the port reset upon controller
+> initialization will cause power to be cut to the device, resulting in
+> a boot loop.
+> Devices using the FUSB302C port controller are especially severely
+> affected, as upon losing power, this controller can retain CC states
+> for a very long time (potentially forever if some parasitic source of
+> power is present), requiring a full mechanical disconnect-reconnect
+> cycle before the device receives power again.
+>
+> While the USB Type C specification does require this behavior, I would
+> consider this an oversight in the standard (perhaps left over from
+> when USB Power Delivery was still going to be USB Battery Charging
+> 2.0).
+>
+> Badhri Jagan Sridharan <badhri@google.com> ezt =C3=ADrta (id=C5=91pont: 2=
+024.
+> jan. 17., Sze, 12:38):
+> >
+> > This reverts commit 1e35f074399dece73d5df11847d4a0d7a6f49434.
+> >
+> > Given that ERROR_RECOVERY calls into PORT_RESET for Hi-Zing
+> > the CC pins, setting CC pins to default state during PORT_RESET
+> > breaks error recovery.
+> >
+> > 4.5.2.2.2.1 ErrorRecovery State Requirements
+> > The port shall not drive VBUS or VCONN, and shall present a
+> > high-impedance to ground (above zOPEN) on its CC1 and CC2 pins.
+> >
+> > Hi-Zing the CC pins is the inteded behavior for PORT_RESET.
+> > CC pins are set to default state after tErrorRecovery in
+> > PORT_RESET_WAIT_OFF.
+> >
+> > 4.5.2.2.2.2 Exiting From ErrorRecovery State
+> > A Sink shall transition to Unattached.SNK after tErrorRecovery.
+> > A Source shall transition to Unattached.SRC after tErrorRecovery.
+> >
+> > Cc: stable@kernel.org
+> > Fixes: 1e35f074399d ("usb: typec: tcpm: fix cc role at port reset")
+> > Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+> > ---
+> >  drivers/usb/typec/tcpm/tcpm.c | 3 +--
+> >  1 file changed, 1 insertion(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcp=
+m.c
+> > index 5945e3a2b0f7..9d410718eaf4 100644
+> > --- a/drivers/usb/typec/tcpm/tcpm.c
+> > +++ b/drivers/usb/typec/tcpm/tcpm.c
+> > @@ -4876,8 +4876,7 @@ static void run_state_machine(struct tcpm_port *p=
+ort)
+> >                 break;
+> >         case PORT_RESET:
+> >                 tcpm_reset_port(port);
+> > -               tcpm_set_cc(port, tcpm_default_state(port) =3D=3D SNK_U=
+NATTACHED ?
+> > -                           TYPEC_CC_RD : tcpm_rp_cc(port));
+> > +               tcpm_set_cc(port, TYPEC_CC_OPEN);
+> >                 tcpm_set_state(port, PORT_RESET_WAIT_OFF,
+> >                                PD_T_ERROR_RECOVERY);
+> >                 break;
+> >
+> > base-commit: 933bb7b878ddd0f8c094db45551a7daddf806e00
+> > --
+> > 2.43.0.429.g432eaa2c6b-goog
+> >
+> >
 
