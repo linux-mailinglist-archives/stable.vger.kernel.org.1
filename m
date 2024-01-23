@@ -1,108 +1,107 @@
-Return-Path: <stable+bounces-15576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75ED8398F2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 20:01:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC6178398F6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 20:02:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ED6B28574A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 19:01:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C8191F2CA75
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 19:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E36012BEB2;
-	Tue, 23 Jan 2024 18:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCA3823B0;
+	Tue, 23 Jan 2024 18:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=svenjoac@gmx.de header.b="q7jY+PFq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qwg+fSiR"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E2612BEAE;
-	Tue, 23 Jan 2024 18:54:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FF347F43;
+	Tue, 23 Jan 2024 18:55:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706036098; cv=none; b=JPq5jULn6cl2krHXtiDn1wJZ1iDHgUyGO11AmnVOwdxnqRehCcvLDwv4SvnMtrQ1MksOsdlEBGNkoHyqWf20t4XlnBAVjp9hRJ7NCiHidJo7llh646FtT0rNP3KvLQ22r8yWtE/7WUx3A5Jb/nLLPnqc57xYbkhQhMcR+ZPCbJk=
+	t=1706036152; cv=none; b=AiH+3u14Qj2AAv+v5w7WDl+DQg+qP0QI/AgiXX/VtyA8ZHtJb4EVJylRrQtqAB9RcPBk2NULrEYosUlpLDrqrvTlU82w6RTF6SH+VLOukD4/BAn7ll8Ybw1ZGd6N6jyVS6f/l1l8dgaSxQE52xkxo13nWszHp4jatMvvjy332DU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706036098; c=relaxed/simple;
-	bh=Zq83BY/6gby8jx+0PqbiYFZI9HfPYSVZXXbRmBjHK0U=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=hNtjO68jo2A4iNFbs41o7ULYGM/Xfd1gifSoCrVXBEPnXdihpPA/G/xDez4HMKh/Ydy2q4VLsCPX2vMXTH3CcygKK6wjJOCyYw/DfdP6ctKyWEko4fNf48eTrUlMSBti8YUuKc9D0QFkgcRJXtCTduYsfEb+1f12lPgCmA+MkDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=svenjoac@gmx.de header.b=q7jY+PFq; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1706036070; x=1706640870; i=svenjoac@gmx.de;
-	bh=Zq83BY/6gby8jx+0PqbiYFZI9HfPYSVZXXbRmBjHK0U=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:In-Reply-To:References:
-	 Date;
-	b=q7jY+PFqc27lMwwc9IChsZoxlq/bXZuI3jygYu6iPCeN53rVSbd8ZWBz0K6W5E3X
-	 UBYLLMLN0Vlh6hKF6tUM7N1cQvz5zOoS3UmEfFGZEppMISphHDQogyDGChsvuXB57
-	 9Hzr53WbZ4w1CEQZB+C7O70XDdzOA0cQcnkpCu8swmx/02vSjEYLOENuaSzqjfzft
-	 EUGitjxy1RooT4N68vjWCNCCfO/ez71aMnx+Li9pymXMdQ5fPjHNARLBeKaUm9kER
-	 FiM/TDIHecWvzE4N9EaSvla8T0YJep6y1tvFmjCLz58r3bUwZ1fy66q0u4qaRUqQ2
-	 /ioA8Lq2JWFqRPnBcQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from localhost.localdomain ([79.203.86.131]) by mail.gmx.net
- (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
- 1MDysg-1rKgvy0Ylw-009zLT; Tue, 23 Jan 2024 19:54:30 +0100
-Received: by localhost.localdomain (Postfix, from userid 1000)
-	id 65B7380110; Tue, 23 Jan 2024 19:54:27 +0100 (CET)
-From: Sven Joachim <svenjoac@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org,  patches@lists.linux.dev,
-  linux-kernel@vger.kernel.org,  torvalds@linux-foundation.org,
-  akpm@linux-foundation.org,  linux@roeck-us.net,  shuah@kernel.org,
-  patches@kernelci.org,  lkft-triage@lists.linaro.org,  pavel@denx.de,
-  jonathanh@nvidia.com,  f.fainelli@gmail.com,  sudipm.mukherjee@gmail.com,
-  srw@sladewatkins.net,  rwarsow@gmx.de,  conor@kernel.org,
-  allen.lkml@gmail.com
-Subject: Re: [PATCH 6.1 000/417] 6.1.75-rc1 review
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org> (Greg
-	Kroah-Hartman's message of "Mon, 22 Jan 2024 15:52:48 -0800")
-References: <20240122235751.480367507@linuxfoundation.org>
-Date: Tue, 23 Jan 2024 19:54:27 +0100
-Message-ID: <874jf3hod8.fsf@turtle.gmx.de>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1706036152; c=relaxed/simple;
+	bh=LbUKSvKEEnCK/ONAHtaYUgJW5qcQlDle3dKpVkI4v/w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ecyHBwkefDUpIDMcnhKjCWzLi9/3ev4ClzdNsHG4CzXVtidOjadVyx6SGPNJfPGXrUsWKxYZI88//lUv7IqGRakZiXdvA4eRT3IxERzbtsTDU5rZsEUtUCl7Cl5nBwMGfK+X6ow/y2cZAJ/5R8HBoCky1l8ZvMcEEjLOg712mtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qwg+fSiR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EE8C433C7;
+	Tue, 23 Jan 2024 18:55:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706036151;
+	bh=LbUKSvKEEnCK/ONAHtaYUgJW5qcQlDle3dKpVkI4v/w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qwg+fSiRkGh0CLOkYlQshenLD1ZSxXz+wcv25k+VgxT+U8oJXTxmlrWu40N5+dx76
+	 NArsJxk3O+WdtxjDBGaFyRSuwknT+ew7yRCg0qVqigPS1k9VdNWyDKeAqo92TatKDZ
+	 KTU/aNXgmAeZwquqWgcWsWB4KBJaX0/WqX5LdvWJ7E0N68xmkb71u9CNBOyDlknPo0
+	 NT51jUMsXUVkRIoEX6dJVwHBF+JZhQJEifpE2YaczapEY1n0A8gkCMVnho/dytGxzU
+	 TzfES/fUDANwzZENJecqK4hnect0HUvtOY7AKE49oGktGXg1Y0HVvVDEFKIpiW8cIH
+	 QD4Pjv7+a1UOA==
+Date: Tue, 23 Jan 2024 18:55:45 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Dave Martin <Dave.Martin@arm.com>
+Cc: Catalin Marinas <Catalin.Marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] arm64/signal: Don't assume that TIF_SVE means we saved
+ SVE state
+Message-ID: <1ce926bc-537f-492e-9e4d-6e7c9f5fc057@sirena.org.uk>
+References: <20240119-arm64-sve-signal-regs-v1-1-b9fd61b0289a@kernel.org>
+ <Zaqj0V82LD8wu6g+@e133380.arm.com>
+ <Zaq1y9XpmzTsXDp8@finisterre.sirena.org.uk>
+ <Za/YD/0a5Mn4IOAk@e133380.arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Provags-ID: V03:K1:doAmV5KqM2/Cz0caglCAVH8AQTXpevCKwLUyqEu0d176D4SdO4B
- L3h5BhP84x8cP9EpIog+FuN2w8WBJlGKkoQCoV5FolAsgFiBKeHse7qZ33ly0kso4JvEXD5
- uMHQqOtWjlNXe9EvOs1R4y5+Xzc99hfd1bjkvsJnRhQQSDh3+NgxRQ5chzdr0Tptp2PO74I
- coc2EWDr2kQmhfOMrHnbA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:DklUbd5GSsE=;JoZZEj5+xUKVIKh4T+CyjC3NgTx
- MtePDiA67uA8+xEUPDzMyP2siJ37OnpY2W9WCgc/R7cePVqPCsR7aE68/5zHQP2MR3hCxgyUH
- LbjwAThxswzz9gCE5Nm9HqN8jpWodp8CyEWryk0zlK3o2CV+Bv8H9coNDnFqhPLjpBL7Kvzqz
- OSzy+M+grQipkKo0FwXt0o5tRA6T/S1Wxoid8/w1I4Ij0brXTsZ2+BO/MqNKWa3vmQVgrA/Jt
- d23V7xtzJnCs/PPtS/M7awbezgWXJfS+Hqh3y+rEVIDmb6yLmlyODNZ/AanGs47vNtrMpTRfK
- Pnjf5zzgd9xbPASHTJq1jQzEsvli79sOkTzQjdE+YYu5DmF+ZIxi1LdTo+Alhynpt6hnMN2xX
- M9j0FSw4+x3bCy8PaH94Lk1Gh7c+lnrlZAKPi1jT2sg1O9VdHaKD9kp8yYwGKbdNq1xNhX2cP
- ZFbOTrniqHfCXWVFTTpalmNtvBLMnoQFCBbp58Q4RCaREfmGi+080NFmhZ3uj69Ifspg//GfV
- jjbEyWjyQWm5kaWRJ5iiB/KAJARLudZqe/yTW1Xo7tzUdfkhKP8CPG9eyHkrprCrW5+7ce5vN
- e9NDfS3s9OlGU5EvdIWiG6MxXVNkQrAbooXhQndXKGPOH7YhY5JdEntQBNBoIxXtaxe+rPI21
- Pf5ciuAvXkxu04Ba45So2bkTzFzZEUDlRC+yM2+090TDPjlfIxz/h1AXXUYe9eJoQgqObju5W
- PjJxl7pW+uq8rraYKz5PL7K6jekNJqUuC5uDYG/oKkolLLkxgTWfLa6r+p7i21U1oMewFUlbT
- Lq4sA+cJ71a5vf0JavBMUYSEpToBTcaXdKblN/XTjXl2Ep2KE7q2+nFz6c5rupSFJ94jZnZuD
- T+UNehTLpjeemF4JsdrL+emS8p2fEhquNragajMV39I6GirFtYipefbzaB7C7+vQ9t5YiUWlb
- T7vFiw==
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="IiAKNAKMl0gnu4G/"
+Content-Disposition: inline
+In-Reply-To: <Za/YD/0a5Mn4IOAk@e133380.arm.com>
+X-Cookie: Stay together, drag each other down.
 
-On 2024-01-22 15:52 -0800, Greg Kroah-Hartman wrote:
 
-> This is the start of the stable review cycle for the 6.1.75 release.
-> There are 417 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+--IiAKNAKMl0gnu4G/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Works fine for me on x86_64.
+On Tue, Jan 23, 2024 at 03:15:27PM +0000, Dave Martin wrote:
+> On Fri, Jan 19, 2024 at 05:47:55PM +0000, Mark Brown wrote:
 
-Tested-by: Sven Joachim <svenjoac@gmx.de>
+> > There's a couple more, but this is all of them in the signal handling
+> > code - I should have one or two more patches.  Most of the usage is
+> > actually checking the trapping and therefore fine.
 
-Cheers,
-       Sven
+> I see, I guess this area needs keeping an eye on generally, but if there
+> are no more cases considered urgent then I guess that's fine for now
+> (modulo other patches in flight).
+
+Yeah, it needs keeping an eye on going forwards and there should be at
+least one more patch to come probably this week but orthogonal to this
+one in content (similar changes in different parts of the code).
+
+--IiAKNAKMl0gnu4G/
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWwC7EACgkQJNaLcl1U
+h9BJTgf+I0kR+cPHQZfvqZ6cXjEhHFpVcYkXSaH79lkoFkjblsMnW0CZ0SuxhlnZ
+X5iS0SWtUdcKUCiyzErfdsZQeJHHmcA0yenLBM56RCcwVt7odNKv8XRWrTxOAkxn
+6gIK4tPIC54iByVK3q5An6s3vL3AAxv8vnM1VWugs7kCHShKk8e4t9pF64cIhKRR
+v95Y/QX8JbS+/T6JMGXoqUgaldLVN6Sv17sunSf+8jcq4W4cPiSwZklLOh9qXfvY
+Nj/3lf13TJTWTiC+UR6ShBrpeVXQIRnqZXEsyCj7FLp0AE0ULzMZRz89i6dTf8X6
+ulhJxv7RZsw0GXZJFt7cYaCCopatKg==
+=Z1QX
+-----END PGP SIGNATURE-----
+
+--IiAKNAKMl0gnu4G/--
 
