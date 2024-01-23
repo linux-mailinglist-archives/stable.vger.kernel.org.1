@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-15112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD2AF8383ED
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A543838538
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 977F129642E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5FCE1F294A4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059DB65BB2;
-	Tue, 23 Jan 2024 01:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237FA1FCC;
+	Tue, 23 Jan 2024 02:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diuclUDj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9kpHSnt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A1765BB9;
-	Tue, 23 Jan 2024 01:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D737B110A;
+	Tue, 23 Jan 2024 02:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975099; cv=none; b=Il3o7ZTEShynku4YHBtRwgH19MsjmciU6zj33pBzH+qSJIU2bavOQY4y5i3jLvyxKWeGN/uhS3ehXhwxcLxLMrEaF0407figt/fr0zmm6nYm1VH2/0dOdjOxSQkWSRch0f/UmL9r/wqN9cvv6huxvbRWlyKcKPP4vquxZvqrzXc=
+	t=1705975769; cv=none; b=PbzKbsA6WdvV1jUYNZU280Kyji9a7jyepXsw9rT2DflZTVB9vsvnnmWoRczod/SgRkSLuhcfckiES0JGHK6UsAOTMvM+BQDkBk9dH1kzCbreRdlCemA99ro3Cux2xAObrCWIAicdqZXxsQ5uVmKM0Kr8o8kZ/oC+A9lTefzr6vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975099; c=relaxed/simple;
-	bh=TucIF5faZD3XjtBOwC6XJr7Sq/Mr3FVc0y3eBnaXSAg=;
+	s=arc-20240116; t=1705975769; c=relaxed/simple;
+	bh=xXKfRFOVnODuREsB59BHNHDCYybwnFMxfnrjdtOx44g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M33ktp0lSz03zBsq4E3nN9HMtpdCRdIBxxU8XN0tIhF2zXl65euMcRvaH91GneI4zkPTu1yNfsvpbVeolzsKdH10XH6TnGlryiIQf+6kXXBECWiXEXDQP2+5n79fLxQchZgILBfOOgkMA54lgWbrZy916b/UuULtdlgrNG79xaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diuclUDj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F914C43394;
-	Tue, 23 Jan 2024 01:58:19 +0000 (UTC)
+	 MIME-Version; b=chBkISd8ZswCpmKLWlV0ongjrgq2UjNY8scb/zdeOXlzsgvtlHaCF0E0li9S6Tr3yOmf4vvIC9IjyYNykpM0ss507mH6DUnZ51thrtBg7PY7HeRvxn2XOrtkXM7gBaL8CA86Bn18lsD3gSvm3LtDyQ3HXNLgQDpyJNbXuI1/fpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9kpHSnt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63610C433C7;
+	Tue, 23 Jan 2024 02:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975099;
-	bh=TucIF5faZD3XjtBOwC6XJr7Sq/Mr3FVc0y3eBnaXSAg=;
+	s=korg; t=1705975769;
+	bh=xXKfRFOVnODuREsB59BHNHDCYybwnFMxfnrjdtOx44g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=diuclUDjsJ5PffHH8OA43VXOKoXho4nRo/aeM49O/sQognGV0Zyi3vALrPbCiuzY2
-	 6AJtJuT36TWQr0K2FoKslE40hzlFSGTrNp6Qy1IpE7WGQN7NJI+iA8/6Sq7rxDvy3S
-	 vv4d2GeezleA3crII71DDAiaumekvBK52oXvp/2E=
+	b=r9kpHSntHmD1XEhugil46lyOTxoPhd8Rd5SQw3jZtgQ04oiJMsp/FR1XSaPtOqM1w
+	 p9gC4i211rvXgM3as/kE6F3oKDEM3YlHmZF1Ap+nGuyQUHAZGtDcC8cmnb+P9YDNg1
+	 vWqppihZbAiOV9Dp7QM9AH/14OXcCL1YySTd7NLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 347/374] netfilter: nft_quota: move stateful fields out of expression data
-Date: Mon, 22 Jan 2024 16:00:03 -0800
-Message-ID: <20240122235756.993868390@linuxfoundation.org>
+Subject: [PATCH 6.6 553/583] selftests: bonding: Change script interpreter
+Date: Mon, 22 Jan 2024 16:00:04 -0800
+Message-ID: <20240122235829.071426949@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,143 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Benjamin Poirier <bpoirier@nvidia.com>
 
-[ Upstream commit ed0a0c60f0e50fa52853620672af97edde3d3a03 ]
+[ Upstream commit c2518da8e6b0e248cfff1d4b6682e14020bd4d3f ]
 
-In preparation for the rule blob representation.
+The tests changed by this patch, as well as the scripts they source, use
+features which are not part of POSIX sh (ex. 'source' and 'local'). As a
+result, these tests fail when /bin/sh is dash such as on Debian. Change the
+interpreter to bash so that these tests can run successfully.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 91a139cee120 ("netfilter: nft_limit: do not ignore unsupported flags")
+Fixes: d43eff0b85ae ("selftests: bonding: up/down delay w/ slave link flapping")
+Tested-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_quota.c | 52 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 47 insertions(+), 5 deletions(-)
+ .../selftests/drivers/net/bonding/mode-1-recovery-updelay.sh    | 2 +-
+ .../selftests/drivers/net/bonding/mode-2-recovery-updelay.sh    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_quota.c b/net/netfilter/nft_quota.c
-index c4d1389f7185..0484aef74273 100644
---- a/net/netfilter/nft_quota.c
-+++ b/net/netfilter/nft_quota.c
-@@ -15,13 +15,13 @@
- struct nft_quota {
- 	atomic64_t	quota;
- 	unsigned long	flags;
--	atomic64_t	consumed;
-+	atomic64_t	*consumed;
- };
+diff --git a/tools/testing/selftests/drivers/net/bonding/mode-1-recovery-updelay.sh b/tools/testing/selftests/drivers/net/bonding/mode-1-recovery-updelay.sh
+index ad4c845a4ac7..b76bf5030952 100755
+--- a/tools/testing/selftests/drivers/net/bonding/mode-1-recovery-updelay.sh
++++ b/tools/testing/selftests/drivers/net/bonding/mode-1-recovery-updelay.sh
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
  
- static inline bool nft_overquota(struct nft_quota *priv,
- 				 const struct sk_buff *skb)
- {
--	return atomic64_add_return(skb->len, &priv->consumed) >=
-+	return atomic64_add_return(skb->len, priv->consumed) >=
- 	       atomic64_read(&priv->quota);
- }
+ # Regression Test:
+diff --git a/tools/testing/selftests/drivers/net/bonding/mode-2-recovery-updelay.sh b/tools/testing/selftests/drivers/net/bonding/mode-2-recovery-updelay.sh
+index 2330d37453f9..8c2619002147 100755
+--- a/tools/testing/selftests/drivers/net/bonding/mode-2-recovery-updelay.sh
++++ b/tools/testing/selftests/drivers/net/bonding/mode-2-recovery-updelay.sh
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
  
-@@ -90,13 +90,23 @@ static int nft_quota_do_init(const struct nlattr * const tb[],
- 			return -EOPNOTSUPP;
- 	}
- 
-+	priv->consumed = kmalloc(sizeof(*priv->consumed), GFP_KERNEL);
-+	if (!priv->consumed)
-+		return -ENOMEM;
-+
- 	atomic64_set(&priv->quota, quota);
- 	priv->flags = flags;
--	atomic64_set(&priv->consumed, consumed);
-+	atomic64_set(priv->consumed, consumed);
- 
- 	return 0;
- }
- 
-+static void nft_quota_do_destroy(const struct nft_ctx *ctx,
-+				 struct nft_quota *priv)
-+{
-+	kfree(priv->consumed);
-+}
-+
- static int nft_quota_obj_init(const struct nft_ctx *ctx,
- 			      const struct nlattr * const tb[],
- 			      struct nft_object *obj)
-@@ -128,7 +138,7 @@ static int nft_quota_do_dump(struct sk_buff *skb, struct nft_quota *priv,
- 	 * that we see, don't go over the quota boundary in what we send to
- 	 * userspace.
- 	 */
--	consumed = atomic64_read(&priv->consumed);
-+	consumed = atomic64_read(priv->consumed);
- 	quota = atomic64_read(&priv->quota);
- 	if (consumed >= quota) {
- 		consumed_cap = quota;
-@@ -145,7 +155,7 @@ static int nft_quota_do_dump(struct sk_buff *skb, struct nft_quota *priv,
- 		goto nla_put_failure;
- 
- 	if (reset) {
--		atomic64_sub(consumed, &priv->consumed);
-+		atomic64_sub(consumed, priv->consumed);
- 		clear_bit(NFT_QUOTA_DEPLETED_BIT, &priv->flags);
- 	}
- 	return 0;
-@@ -162,11 +172,20 @@ static int nft_quota_obj_dump(struct sk_buff *skb, struct nft_object *obj,
- 	return nft_quota_do_dump(skb, priv, reset);
- }
- 
-+static void nft_quota_obj_destroy(const struct nft_ctx *ctx,
-+				  struct nft_object *obj)
-+{
-+	struct nft_quota *priv = nft_obj_data(obj);
-+
-+	return nft_quota_do_destroy(ctx, priv);
-+}
-+
- static struct nft_object_type nft_quota_obj_type;
- static const struct nft_object_ops nft_quota_obj_ops = {
- 	.type		= &nft_quota_obj_type,
- 	.size		= sizeof(struct nft_quota),
- 	.init		= nft_quota_obj_init,
-+	.destroy	= nft_quota_obj_destroy,
- 	.eval		= nft_quota_obj_eval,
- 	.dump		= nft_quota_obj_dump,
- 	.update		= nft_quota_obj_update,
-@@ -205,12 +224,35 @@ static int nft_quota_dump(struct sk_buff *skb, const struct nft_expr *expr)
- 	return nft_quota_do_dump(skb, priv, false);
- }
- 
-+static void nft_quota_destroy(const struct nft_ctx *ctx,
-+			      const struct nft_expr *expr)
-+{
-+	struct nft_quota *priv = nft_expr_priv(expr);
-+
-+	return nft_quota_do_destroy(ctx, priv);
-+}
-+
-+static int nft_quota_clone(struct nft_expr *dst, const struct nft_expr *src)
-+{
-+	struct nft_quota *priv_dst = nft_expr_priv(dst);
-+
-+	priv_dst->consumed = kmalloc(sizeof(*priv_dst->consumed), GFP_ATOMIC);
-+	if (priv_dst->consumed)
-+		return -ENOMEM;
-+
-+	atomic64_set(priv_dst->consumed, 0);
-+
-+	return 0;
-+}
-+
- static struct nft_expr_type nft_quota_type;
- static const struct nft_expr_ops nft_quota_ops = {
- 	.type		= &nft_quota_type,
- 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_quota)),
- 	.eval		= nft_quota_eval,
- 	.init		= nft_quota_init,
-+	.destroy	= nft_quota_destroy,
-+	.clone		= nft_quota_clone,
- 	.dump		= nft_quota_dump,
- };
- 
+ # Regression Test:
 -- 
 2.43.0
 
