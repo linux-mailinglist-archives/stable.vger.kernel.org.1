@@ -1,118 +1,111 @@
-Return-Path: <stable+bounces-15595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E2E7839CA4
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 00:00:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3A34839CAC
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 00:00:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2C0DB2606F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 23:00:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85039B26176
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 23:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5471053E04;
-	Tue, 23 Jan 2024 23:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA3653E2F;
+	Tue, 23 Jan 2024 23:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="eB+dbyzQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JaNthWnX"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7642DDB5;
-	Tue, 23 Jan 2024 22:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36514120C;
+	Tue, 23 Jan 2024 23:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706050802; cv=none; b=QurVKzUWbU8qatWBH50Fe2EHMBA1ITo8J5+w+dlTCMDcAQLFFkeDg0Eg41Zcou6g+GE9CISi7HDsd3TqznE+3QOagVVUZr7BX+Nzoin7D3yGcl/mMG8BC3MUx+fILTYTHvdcmt7SSzep06P83YkP1PJOPfbEQ31ad6SHhaCFvE4=
+	t=1706050809; cv=none; b=QWoxtgYm8vA3rq9n7V0DNMcJC3Ccjk5c1xVrEVhbbiDX6Z+GZePyPrHHDr/ADbHiKqGhBk1X24KfXQaQ5RTLIvBfRWV1R9oitTxhijv+yMdwpx+A7BOGbh//Tj0UKRR+WvESjxZGJAbwAeiQbOjEuysannOAMqNl8RZVSsghr0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706050802; c=relaxed/simple;
-	bh=8xwlc7MGcqCvMRjkHOZubnZy5/7P87qpf0FVev832cM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K51Zrpm+sz3hFIVQIAM+vhYdqTxO1k4QebxB8rRF6uoyvH2WCjG+oqWRK+m5iywN0xiuSH51LN5iVuIXaI9G49kS/v8fq9NgkhNGv3BKzT61Vy4tOMERA4hBaM5QVlQnZ/OELSw05H9RZKtq+np8R055PE6UI4afn9FH+bwc3Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=eB+dbyzQ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=p+okpn5rGPjYb8kKdD5Ih+F44qguZfi/1iKVDlb0xSo=; b=eB+dbyzQt+aQZ0ZIzJ4XZAHFEC
-	JbMo0Beke50gs/spknsDN7GT1X1vBnYI3fjPFZB+j8twrEpuVdz5fKPVdcuwvAZdvAIcdMtGbXlQE
-	u7Brxbjy491kA5LTOd4Caxu8uD0DrssDkxdPcTcX2GlhiMLUT2hdSDCZiGMz3yFg496Y=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1rSPkB-005t0I-GU; Tue, 23 Jan 2024 23:59:47 +0100
-Date: Tue, 23 Jan 2024 23:59:47 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Tim Menninger <tmenninger@purestorage.com>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
-	netdev-maintainers <edumazet@google.com>, kuba@kernel.org,
-	pabeni@redhat.com, davem@davemloft.net,
-	netdev <netdev@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH net v1] net: dsa: mv88e6xxx: Make unsupported C45 reads
- return 0xffff
-Message-ID: <32d96dd3-7fbb-49e5-8b05-269eac1ac80d@lunn.ch>
-References: <20240120192125.1340857-1-andrew@lunn.ch>
- <20240122122457.jt6xgvbiffhmmksr@skbuf>
- <0d9e0412-6ca3-407a-b2a1-b18ab4c20714@lunn.ch>
- <CAO-L_45iCb+TFMSqZJex-mZKfopBXxR=KH5aV4Wfx5eF5_N_8Q@mail.gmail.com>
- <5f449e47-fc39-48c3-a784-77b808c31050@lunn.ch>
- <CAO-L_46Ltq0Ju_BO+rfvAbe7F=T6m0hZZKu9gzv7=bMV5n6naw@mail.gmail.com>
+	s=arc-20240116; t=1706050809; c=relaxed/simple;
+	bh=67FZIBdOOMCQ00N5ExH/7I5y2V442bu28UsHFtb9aa8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hEPS1nMgvsdkkPC9+1b0jLtCig7Eoyi0UDmRf9/nNKxg4pEdpUMd3DgEvHkFXhp6+LTqgVgMPcPj+DZ5ETh90L8tUExk+NpkheD1/86lwWV7vx+BPQ62HCfPgmnXwuAe8ROsJGLhXcLB1lMXyAKTeVyuZwXBRcbBUO/gjR9IwYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JaNthWnX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938A2C433F1;
+	Tue, 23 Jan 2024 23:00:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706050808;
+	bh=67FZIBdOOMCQ00N5ExH/7I5y2V442bu28UsHFtb9aa8=;
+	h=From:Subject:Date:To:Cc:From;
+	b=JaNthWnXcGwKpArT4gZBJLpz0LIWEXmCpSDD0+/8ZuNXyS2CWAwvKCmYXJq+DYD4U
+	 LnS7oKY33pmSxtlKQoD/rgTNf/egd/gKNvmrpb+Z66FnOzMbrjifw6SKak4nuUgHIK
+	 XeVstqf0j6Twv0YiV5mFl4qmC2qH+65woTdelyT8MRxzyKz556XrVBJ85kQnFCY5UW
+	 fV/y/mU4sbDiC0wyBzP3zlFa0TIMOv509gqAmj4oiSlyrj/8RXiqKhcM7SZQAxXFTv
+	 DXityBgBNutwWEv804J54v8W6jsnhgTJvGQmX/ReSmeF2qhjopSEsZZ3VkhWnkDm9o
+	 Y6WWicXzEF+8Q==
+From: Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 0/2] Fix UML build with clang-18 and newer
+Date: Tue, 23 Jan 2024 15:59:53 -0700
+Message-Id: <20240123-fix-uml-clang-18-v1-0-efc095519cf9@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAO-L_46Ltq0Ju_BO+rfvAbe7F=T6m0hZZKu9gzv7=bMV5n6naw@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOlEsGUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDQ0ML3bTMCt3S3Bzd5BygrC5QINXYzDTJwNTAONHIUgmoraAoFagGbGR
+ 0bG0tAKpI5MxiAAAA
+To: richard@nod.at, anton.ivanov@cambridgegreys.com, 
+ johannes@sipsolutions.net, masahiroy@kernel.org
+Cc: nathan@kernel.org, nicolas@fjasle.eu, ndesaulniers@google.com, 
+ morbo@google.com, justinstitt@google.com, linux-um@lists.infradead.org, 
+ linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.13-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1383; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=67FZIBdOOMCQ00N5ExH/7I5y2V442bu28UsHFtb9aa8=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDKkbXL4LvJZlsGizYPisv8E0OzhMcnZHkoH7u5p9BR9rO
+ BLff/nfUcrCIMbFICumyFL9WPW4oeGcs4w3Tk2CmcPKBDKEgYtTACai/JmRYab++ijpXc8kine8
+ mrJv8+RIo90Zk+8s836w1e9xjcgR/kMMfwXuGnXtO7tSPqfhUY306w0zZ+X5Pjzf+H7GlX1+Ud7
+ c3UwA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-> Does that mean if there's a device there but it doesn't support C45 (no
-> phy_read_c45), it will now return ENODEV?
+Hi all,
 
-Yes, mv88e6xxx_mdio_read_c45() will return -ENODEV if
-chip->info->ops->phy_read_c45 is NULL. That will cause the scan of
-that address to immediately skip to the next address. This is old
-behaviour for C22:
+This series resolves two independent but related issues that were
+recently exposed by two LLVM changes.
 
-commit 02a6efcab675fe32815d824837784c3f42a7d892
-Author: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Date:   Tue Apr 24 18:09:04 2018 +0200
+https://github.com/llvm/llvm-project/commit/ec92d74a0ef89b9dd46aee6ec8aca6bfd3c66a54
+exposes that '-no-pie' is not getting added to the linker flags with
+clang, resulting in building objects with '-fno-PIE' that are linked
+with '-pie', to which the linker rightfully errors with:
 
-    net: phy: allow scanning busses with missing phys
-    
-    Some MDIO busses will error out when trying to read a phy address with no
-    phy present at that address. In that case, probing the bus will fail
-    because __mdiobus_register() is scanning the bus for all possible phys
-    addresses.
-    
-    In case MII_PHYSID1 returns -EIO or -ENODEV, consider there is no phy at
-    this address and set the phy ID to 0xffffffff which is then properly
-    handled in get_phy_device().
+  /usr/sbin/ld: init/main.o: relocation R_X86_64_32 against symbol `saved_command_line' can not be used when making a PIE object; recompile with -fPIE
+  /usr/sbin/ld: failed to set dynamic section sizes: bad value
 
-And there are a few MDIO bus drivers which make use of this, e.g.
+https://github.com/llvm/llvm-project/commit/4bf8a688956a759b7b6b8d94f42d25c13c7af130
+adds '.ltext' (and '.ltext.*' with '-ffunction-sections') when using
+'-mcmodel=large' (which UML does), which causes a segmentation fault
+with modpost.
 
-static int lan9303_phy_read(struct dsa_switch *ds, int phy, int regnum)
-{
-        struct lan9303 *chip = ds->priv;
-        int phy_base = chip->phy_addr_base;
+I have tested these patches with all supported versions of clang,
+noticing no regressions.
 
-        if (phy == phy_base)
-                return lan9303_virt_phy_reg_read(chip, regnum);
-        if (phy > phy_base + 2)
-                return -ENODEV;
+---
+Nathan Chancellor (2):
+      um: Fix adding '-no-pie' for clang
+      modpost: Add '.ltext' and '.ltext.*' to TEXT_SECTIONS
 
-        return chip->ops->phy_read(chip, phy, regnum);
+ arch/um/Makefile      | 4 +++-
+ scripts/mod/modpost.c | 3 ++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+---
+base-commit: 0dd3ee31125508cd67f7e7172247f05b7fd1753a
+change-id: 20240118-fix-uml-clang-18-e365b0503a29
 
-This Ethernet switch supports only a number of PHY addresses, and
-returns -ENODEV for the rest.
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
 
-So its a legitimate way to say there is nothing here.
-
-You suggestion of allowing ENOPSUPP for C45 would of fixed the
-problem, but C22 and C45 would support different error codes, which i
-don't like. Its better to be uniform.
-
-	Andrew
 
