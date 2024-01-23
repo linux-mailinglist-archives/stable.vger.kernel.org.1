@@ -1,111 +1,136 @@
-Return-Path: <stable+bounces-15482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 393F4838785
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 07:36:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D5D838791
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 07:39:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5138289E96
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 06:36:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF231B2146C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 06:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485F550265;
-	Tue, 23 Jan 2024 06:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O08CoUY2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E1A50265;
+	Tue, 23 Jan 2024 06:39:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3E950250;
-	Tue, 23 Jan 2024 06:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE08524A4;
+	Tue, 23 Jan 2024 06:39:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705991760; cv=none; b=l7sfNtBspBdkw67JLvmbcebmcSdi/ORgM3riuj6AQeY8w2DHvVJWrYJMkT9nlEf3HCKj+AMGcAA6G+84x4hGNHYGAo8DEUHY83M92R2BGsDRNyWKbyBUs27Dybmz8LGZPjIaXQ0Wp2ijz0rFD68DOR0ZWbrPUk1E0h0yq7JkXyc=
+	t=1705991978; cv=none; b=I+jpSyVH6Hiwp3FYsFnsD85Fw6HtjQQqlwvQCKae0kH6S8Yeu/GRdX+BAllonfQ/jpo6clA1Uebn5103eKX5BXAqEy0wt2qeoEq7TWEDLadXZS/qB7ssGq540DVgj0ZQ3mnZ1bXAVYMmqyrMyFegqQjdAsUINC9z4V09FNSLb2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705991760; c=relaxed/simple;
-	bh=Cp9ShYD3/g1NkziTguOY/YTVXL1V4HipzP3G0kiKiJo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tFvT0Sr4yUvUA+vuJB8IZ7PusQNbEQS2qHsfxcWWSA7mFhhaw5gNdUfGv/ZKwfM8vcin1xfHZWDjYdaD7KtWwgpK7eoWU5/Y7HofELvZWUv4D+3cGhqnACmLVH+v1WJijck2J7c/iOsv+Zj9C572cX3kP6PpXJsJWo5YMCpK+pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O08CoUY2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FACDC43394;
-	Tue, 23 Jan 2024 06:35:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705991759;
-	bh=Cp9ShYD3/g1NkziTguOY/YTVXL1V4HipzP3G0kiKiJo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=O08CoUY2JqTphDaXUkfRc9cIKdBT3Lzmt42DnKubKB23ZpTed7ovpNgbEs4qpPjE4
-	 30skrBvNa7ljXBiXhCXAp2fao1/TrtZSdr7UYffHnze8K1U93DpTs72XCvQTzZ+Y7j
-	 Bo00T5/YPVW3hmXIJhfP5blTPaGmteThFMDaIKzY+j7ZZ/FF0OAAPf8VQmBCIm+ypI
-	 LOQdLCY3R3RawdqM5PJ7Z/d9MnSIZ7Ec4x3EZT0ig2pQesur/iaEDidtMC/JuidwC5
-	 yUcbYm1+MewXBwWdaESDrl8iy/xwso4kK4NWrqz4h5ZwXnqM4ib+SZW2/PKkmW7YS6
-	 mGsSzW+84a5Tw==
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2cf108d8dbeso3060441fa.3;
-        Mon, 22 Jan 2024 22:35:59 -0800 (PST)
-X-Gm-Message-State: AOJu0YzAfyPITLeGJMuD4qKU3ZiG6sI8n0rs972QXUIZwCDVL3XCfOnZ
-	55EQ1Tg+wmc147sMxrXGKOwECSUjmg6Pq9iusUVE7dm9br5KRHNkC+cApzl2fuxNoYV5YrlcFto
-	yNNtMM/RveqFV42Fz9JpEukq4xjY=
-X-Google-Smtp-Source: AGHT+IEFMyJYGoD/zw1ra4iPupSfes2/6WWvBigxgQK3ozT24qyaAc2/3AKYbZ/kQ1eX47RFfrU4NzDzNn1hhpx+Vgo=
-X-Received: by 2002:a2e:7d13:0:b0:2cd:2acc:e9ff with SMTP id
- y19-20020a2e7d13000000b002cd2acce9ffmr2106757ljc.26.1705991757758; Mon, 22
- Jan 2024 22:35:57 -0800 (PST)
+	s=arc-20240116; t=1705991978; c=relaxed/simple;
+	bh=o7h8LhDkV9Em6vHKMR8WG3LnUB3TLO86qfqho4SKvXE=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=QwoO61odrgcmDW2oW2YYuqlr8LMmYuGJnbQ/AHOj+uoXPngshFBM9m9r75ARZiNk+x4t0D3Mwu2G+8AnI60ijcGEp0XMieszZo8SxAW+XuMVQWbub/Uu+HoS2pAhvdXXUtCgBhOd7Bw0HRCasAFF3sp0Czfc49tHDN7i6jZpbLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rSARZ-0006oH-HC; Tue, 23 Jan 2024 07:39:33 +0100
+Message-ID: <bbac350b-7a94-475e-88c9-35f6f8700af8@leemhuis.info>
+Date: Tue, 23 Jan 2024 07:39:32 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240123005700.9302-1-dan@danm.net> <20240123013514.7366-1-dan@danm.net>
-In-Reply-To: <20240123013514.7366-1-dan@danm.net>
-From: Song Liu <song@kernel.org>
-Date: Mon, 22 Jan 2024 22:35:46 -0800
-X-Gmail-Original-Message-ID: <CAPhsuW7-r=UAO8f7Ok08vCx2kdVx6mZADyZ-LknNE8csnX+L8g@mail.gmail.com>
-Message-ID: <CAPhsuW7-r=UAO8f7Ok08vCx2kdVx6mZADyZ-LknNE8csnX+L8g@mail.gmail.com>
-Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system;
- successfully bisected
-To: Dan Moulding <dan@danm.net>, Yu Kuai <yukuai1@huaweicloud.com>
-Cc: gregkh@linuxfoundation.org, junxiao.bi@oracle.com, 
-	linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org, 
-	regressions@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] 6.6.10+ and 6.7+ kernels lock up early in init.
+Content-Language: en-US, de-DE
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: stable@vger.kernel.org, Linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Chuck Lever
+ <chuck.lever@oracle.com>, Paul Thompson <set48035@gmail.com>,
+ regressions@lists.linux.dev
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>,
+ Linux regressions mailing list <regressions@lists.linux.dev>
+References: <Za9DUZoJbV0PYGN2@squish.home.loc>
+ <6939adb3-c270-481f-8547-e267d642beea@leemhuis.info>
+In-Reply-To: <6939adb3-c270-481f-8547-e267d642beea@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1705991976;5b94feee;
+X-HE-SMSGID: 1rSARZ-0006oH-HC
 
-Hi Dan,
+[a quick follow up with an important correction from the reporter for
+those I added to the list of recipients]
 
-On Mon, Jan 22, 2024 at 5:35=E2=80=AFPM Dan Moulding <dan@danm.net> wrote:
->
-> Some additional new information: I realized after filing this report
-> that on the mainline there is a second commit, part of a pair, that
-> was supposed to go with commit 0de40f76d567. That second commit
-> upstream is d6e035aad6c0 ("md: bypass block throttle for superblock
-> update"). That commit probably also was supposed to have been
-> backported to stable along with the first, but was not, since it
-> provides what is supposed to be a replacement for the fix that has
-> been reverted.
->
-> So I rebuilt my kernel with the missed commit also backported instead
-> of just reverting the first commit (i.e. I have now built 6.7.1 with
-> just commit d6e035aad6c0 on top). Unfortunately, I can still reproduce
-> the hang after applying this second commit. So it looks
-> like even with that fix applied the regression is still present.
->
-> Coincidentally, I see it seems this second commit was picked up for
-> inclusion in 6.7.2 just today. I think that needs to NOT be
-> done. Instead the stable series should probably revert 0de40f76d567
-> until the regression is successfully dealt with on master. Probably no
-> further changes related to this patch series should be backported
-> until then.
+On 23.01.24 06:37, Linux regression tracking (Thorsten Leemhuis) wrote:
+> On 23.01.24 05:40, Paul Thompson wrote:
+>>
+>> 	With my longstanding configuration, kernels upto 6.6.9 work fine.
+>> Kernels 6.6.1[0123] and 6.7.[01] all lock up in early (open-rc) init,
+>> before even the virtual filesystems are mounted.
+>>
+>> 	The last thing visible on the console is the nfsclient service
+>> being started and:
+>>
+>> Call to flock failed: Funtion not implemented. (twice)
+>>
+>> 	Then the machine is unresponsive, numlock doesnt toggle the keyboard led,
+>> and the alt-sysrq chords appear to do nothing.
+>>
+>> 	The problem is solved by changing my 6.6.9 config option:
+>>
+>> # CONFIG_FILE_LOCKING is not set
+>> to
+>> CONFIG_FILE_LOCKING=y
+>>
+>> (This option is under File Systems > Enable POSIX file locking API)
 
-I think we still want d6e035aad6c0 in 6.7.2. We may need to revert
-0de40f76d567 on top of that. Could you please test it out? (6.7.1 +
-d6e035aad6c0 + revert 0de40f76d567.
+The reporter replied out-of-thread:
+https://lore.kernel.org/all/Za9TRtSjubbX0bVu@squish.home.loc/
 
-OTOH, I am not able to reproduce the issue. Could you please help
-get more information:
-  cat /proc/mdstat
-  profile (perf, etc.) of the md thread
+"""
+	Now I feel stupid or like Im losing it, but I went back and grepped for
+the CONFIG_FILE_LOCKING in my old Configs, and it was turned on in all
+but 6.6.9. So, somehow I turned that off *after I built 6.6.9? Argh. I
+just built 6.6.4 with it unset and that locked up too.
+	Sorry if this is just noise, though one would have hoped the failure
+was less severe...
+"""
 
-Thanks,
-Song
+>> 	I do not recall why I unset that, but it was working for I think the
+>> entire 6.6 series until 6.6.10. Anyway thought I would mention it in case
+>> anyone else hits it.
+> 
+> Thx for the report.
+> 
+> CCing a few people to let them known about this. Among them Jeff, who
+> had a few fs patches that were backported to 6.6.10 (at the end of
+> the list below).
+> 
+> FWIW, in case anyone wonders what went into that stable release, here
+> is a slightly trimmed down list:
+> 
+> $ git log v6.6.9..v6.6.10 --oneline  | grep -v -e wifi -e ftrace -e kexec -e ksmb -e 'platform/'  -e tracing: -e netfilter: -e mptcp
+> c9a51ebb4bac69 Linux 6.6.10
+> baa88944038bbe ring-buffer: Fix wake ups when buffer_percent is set to 100
+> c62b9a2daf2866 Revert "nvme-fc: fix race between error recovery and creating association"
+> d16c5d215b53b3 mm/memory-failure: check the mapcount of the precise page
+> 8c7da70d9ae4c1 mm/memory-failure: cast index to loff_t before shifting it
+> 07550b1461d4d0 mm: migrate high-order folios in swap cache correctly
+> d16eb52c176ccf mm/filemap: avoid buffered read/write race to read inconsistent data
+> 09141f08fdf69a selftests: secretmem: floor the memory size to the multiple of page_size
+> 2c30b8b105d690 maple_tree: do not preallocate nodes for slot stores
+> b5f63f5e8a6820 block: renumber QUEUE_FLAG_HW_WC
+> 183c8972b6a6f8 linux/export: Ensure natural alignment of kcrctab array
+> 466e9af1550724 linux/export: Fix alignment for 64-bit ksymtab entries
+> 28d6cde17f2191 virtio_ring: fix syncs DMA memory with different direction
+> 9a49874443307c fs: cifs: Fix atime update check
+> 23171df51f601c client: convert to new timestamp accessors
+> 5b5599a7eee5e6 fs: new accessor methods for atime and mtime
+> 
+> Ciao, Thorsten
+> 
+> 
 
