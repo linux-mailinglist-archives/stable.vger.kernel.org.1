@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-15119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 711B58383F8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4862B838557
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AC5E296B0D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 013C2292061
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5993D664B4;
-	Tue, 23 Jan 2024 01:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151E87E77F;
+	Tue, 23 Jan 2024 02:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hs0H75dw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRIumtC0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E6965BB4;
-	Tue, 23 Jan 2024 01:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64791FBF;
+	Tue, 23 Jan 2024 02:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975106; cv=none; b=atUuqrCNFM0TxnOse3GewPKEWOgS2ZbIkrNnR63NxEp0hqrWC3BNdOLqZ6GUAeVSXHEhvoGsGvD/Bfa89aoFlV3u+OVOtQ3yPEI9CvPtBkwZaziQq+SvDeb2u+8v+r0ChdhesBe+0XDH5I6KcYAETn4DrIXhXOukQgVvXkfL0FM=
+	t=1705975804; cv=none; b=nhx17kZfqLmbxMkOLZHKl0QIUB08cHxkTqDwei6EkSfzKRAoAFflZB76TjzmS9cBx286h2C4wwa9cAp90t8nHCZ88xVqvriNc6oU1MIufhYsJcYCk5XgW9qElqG8qb4SGiOwhifl3OqW5TUjHtctCwzP3dBL30Qor+ufjtf7D8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975106; c=relaxed/simple;
-	bh=xdpy8mT8kDQG1lC+o5sTNatXyzNIXOTqGAcVjpcZEIM=;
+	s=arc-20240116; t=1705975804; c=relaxed/simple;
+	bh=vBK5WmC558aC6lrbU6ZApHu7YWx0Yf4CS3fBZalpODs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cb7LS0qySHCn9va0gWqhLNB4Epdm5EQo+M7d9B39uedMpjjNuFQcUIkKqbhykxB5qAWdDhrN5t4pA4m7JlPJi4b9AOBSq0zkS/S7zs5vIAlPxaMRrciRj7+2MfN9UA/YhX3yW/7pmxmWk7QW7g/uPGDtNdQjzf3mManA5gV3NM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hs0H75dw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B0BC43394;
-	Tue, 23 Jan 2024 01:58:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=asxOzhSOFUv4vjR9HiyIj1jiKSpIM/rL5DHMQDRAVr+zjltmW9CPVr2sMoxuO4HZ9WJSNynqt/gWPGXLxelatWloTaCaiVBbwg1ssLu/uppG/dZ1i0iOUTxNghAhA9eIoaLixaXcnwVksoTtC0t8CJWJSutseSTY0IzjC0W5vCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRIumtC0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8767BC433F1;
+	Tue, 23 Jan 2024 02:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975105;
-	bh=xdpy8mT8kDQG1lC+o5sTNatXyzNIXOTqGAcVjpcZEIM=;
+	s=korg; t=1705975804;
+	bh=vBK5WmC558aC6lrbU6ZApHu7YWx0Yf4CS3fBZalpODs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hs0H75dwbpQxvj99us+W6vOtjur3yaKXikwS/aOuw6gHSvYZXHoj/BYiJR7qxWlBb
-	 7eqvvtZIe1ZZeouKXHkYS35lw0NvmHYTw10kGnhMr0rGe2ZnWJ7cJCgeYE/6rmyX9y
-	 r6HetCvobJxetDzcDjT2ikRNNiHxulhk96cxCx/Q=
+	b=rRIumtC0xVjXpWi7bNef5bUXpkxy3gu2cKMSss907U9NT28DArF6a1vH0YjezY1xv
+	 H0TlLF/vw3Vp62pJ351UqrlYuOiPHxy1/FgbHPsf/JJDX4xhRCNTpzoScP7pL5l9+I
+	 WAuRD/lyr72ZCbnLd6HXgiJ1x62jrVitXDc8Elrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.15 368/374] block: Remove special-casing of compound pages
+	=?UTF-8?q?Ludvig=20P=C3=A4rsson?= <ludvig.parsson@axis.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 573/583] ethtool: netlink: Add missing ethnl_ops_begin/complete
 Date: Mon, 22 Jan 2024 16:00:24 -0800
-Message-ID: <20240122235757.765760980@linuxfoundation.org>
+Message-ID: <20240122235829.725573707@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,86 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Ludvig Pärsson <ludvig.parsson@axis.com>
 
-commit 1b151e2435fc3a9b10c8946c6aebe9f3e1938c55 upstream.
+[ Upstream commit f1172f3ee3a98754d95b968968920a7d03fdebcc ]
 
-The special casing was originally added in pre-git history; reproducing
-the commit log here:
+Accessing an ethernet device that is powered off or clock gated might
+cause the CPU to hang. Add ethnl_ops_begin/complete in
+ethnl_set_features() to protect against this.
 
-> commit a318a92567d77
-> Author: Andrew Morton <akpm@osdl.org>
-> Date:   Sun Sep 21 01:42:22 2003 -0700
->
->     [PATCH] Speed up direct-io hugetlbpage handling
->
->     This patch short-circuits all the direct-io page dirtying logic for
->     higher-order pages.  Without this, we pointlessly bounce BIOs up to
->     keventd all the time.
-
-In the last twenty years, compound pages have become used for more than
-just hugetlb.  Rewrite these functions to operate on folios instead
-of pages and remove the special case for hugetlbfs; I don't think
-it's needed any more (and if it is, we can put it back in as a call
-to folio_test_hugetlb()).
-
-This was found by inspection; as far as I can tell, this bug can lead
-to pages used as the destination of a direct I/O read not being marked
-as dirty.  If those pages are then reclaimed by the MM without being
-dirtied for some other reason, they won't be written out.  Then when
-they're faulted back in, they will not contain the data they should.
-It'll take a pretty unusual setup to produce this problem with several
-races all going the wrong way.
-
-This problem predates the folio work; it could for example have been
-triggered by mmaping a THP in tmpfs and using that as the target of an
-O_DIRECT read.
-
-Fixes: 800d8c63b2e98 ("shmem: add huge pages support")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0980bfcd6954 ("ethtool: set netdev features with FEATURES_SET request")
+Signed-off-by: Ludvig Pärsson <ludvig.parsson@axis.com>
+Link: https://lore.kernel.org/r/20240117-etht2-v2-1-1a96b6e8c650@axis.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/ethtool/features.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -1026,7 +1026,7 @@ void bio_release_pages(struct bio *bio,
- 		return;
+diff --git a/net/ethtool/features.c b/net/ethtool/features.c
+index a79af8c25a07..b6cb101d7f19 100644
+--- a/net/ethtool/features.c
++++ b/net/ethtool/features.c
+@@ -234,17 +234,20 @@ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info)
+ 	dev = req_info.dev;
  
- 	bio_for_each_segment_all(bvec, bio, iter_all) {
--		if (mark_dirty && !PageCompound(bvec->bv_page))
-+		if (mark_dirty)
- 			set_page_dirty_lock(bvec->bv_page);
- 		put_page(bvec->bv_page);
- 	}
-@@ -1345,8 +1345,7 @@ void bio_set_pages_dirty(struct bio *bio
- 	struct bvec_iter_all iter_all;
- 
- 	bio_for_each_segment_all(bvec, bio, iter_all) {
--		if (!PageCompound(bvec->bv_page))
--			set_page_dirty_lock(bvec->bv_page);
-+		set_page_dirty_lock(bvec->bv_page);
- 	}
- }
- 
-@@ -1394,7 +1393,7 @@ void bio_check_pages_dirty(struct bio *b
- 	struct bvec_iter_all iter_all;
- 
- 	bio_for_each_segment_all(bvec, bio, iter_all) {
--		if (!PageDirty(bvec->bv_page) && !PageCompound(bvec->bv_page))
-+		if (!PageDirty(bvec->bv_page))
- 			goto defer;
+ 	rtnl_lock();
++	ret = ethnl_ops_begin(dev);
++	if (ret < 0)
++		goto out_rtnl;
+ 	ethnl_features_to_bitmap(old_active, dev->features);
+ 	ethnl_features_to_bitmap(old_wanted, dev->wanted_features);
+ 	ret = ethnl_parse_bitset(req_wanted, req_mask, NETDEV_FEATURE_COUNT,
+ 				 tb[ETHTOOL_A_FEATURES_WANTED],
+ 				 netdev_features_strings, info->extack);
+ 	if (ret < 0)
+-		goto out_rtnl;
++		goto out_ops;
+ 	if (ethnl_bitmap_to_features(req_mask) & ~NETIF_F_ETHTOOL_BITS) {
+ 		GENL_SET_ERR_MSG(info, "attempt to change non-ethtool features");
+ 		ret = -EINVAL;
+-		goto out_rtnl;
++		goto out_ops;
  	}
  
+ 	/* set req_wanted bits not in req_mask from old_wanted */
+@@ -281,6 +284,8 @@ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info)
+ 	if (mod)
+ 		netdev_features_change(dev);
+ 
++out_ops:
++	ethnl_ops_complete(dev);
+ out_rtnl:
+ 	rtnl_unlock();
+ 	ethnl_parse_header_dev_put(&req_info);
+-- 
+2.43.0
+
 
 
 
