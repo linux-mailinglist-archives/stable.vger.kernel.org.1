@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0906A8383DB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DABD7838541
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F3281F29109
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9336C28A0A7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7270F657BF;
-	Tue, 23 Jan 2024 01:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2442C2F2C;
+	Tue, 23 Jan 2024 02:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUyeLxec"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQvWNu71"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9A863400;
-	Tue, 23 Jan 2024 01:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D865823CA;
+	Tue, 23 Jan 2024 02:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975082; cv=none; b=O7KwFqBLd0d2PvAcWGGhfvYg+dfp2EUMH218H/lKh1dV1r/2qXDv+ydSMf5Q41ZpQeR2qDWwOXcjUX6dTFXu4JTCQ76ryILhfgphGE10MMYsFPSl3Nr4TGce/shRgXiSlFZFaAs0pk2ahITLwQHIvsx+iDkDMLYCyzR/5fDBBGA=
+	t=1705975779; cv=none; b=QnkgQ+tTPDYWqeX1fGUdk7Wmk0yLRYHKuqpQbhJWKPcIEcUYr2bTClYu1p2l7zuCLYGvW+93kDxcejg5AKxxohD1EZwHMr4ENaZ4LIcE9oWAWU9bDH2POyvhswL19psjD8WbpI6gY9UejwaNxfJqY5gWvr4nMyJeHkJ0ANJE6iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975082; c=relaxed/simple;
-	bh=A4qta6Q9iaSe5lYq3ilwUOYYfFbCJWDcwF1lcVTh37E=;
+	s=arc-20240116; t=1705975779; c=relaxed/simple;
+	bh=nKUh8jelO/JGTdISYsgqzYsWrFdV8NYNysDn2y2Uwyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tIi+ANWicmVddihrS5pNXV2qCvRasES+5JxhnPfP2GRPHKXmGCoAgOnloR9Tp99dyApiwj3Fob6V1FcCHULD+YJvqwHcLtu69sJjSgAD53s/CAXYJHowEyLe4tTmDrZdgZg2jswe+5QpWquc48m51dNE8OUTX4MT4IwAiXyCLwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUyeLxec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C48C433C7;
-	Tue, 23 Jan 2024 01:58:01 +0000 (UTC)
+	 MIME-Version; b=KfDL5M1avNIsrPzS0H0bWSsbxynyQenzgoinQ2v9N/mfhBPBHiRvYklG2TnAlB3FJAEh2FBS2+s/EfjscxqdeRuRL4fgGVFgrqKcWYWLx3tKs61IdniupY4F7jdwy0QVHtN5HhSipbHn9phipRzg+BSoRCg5MDCTo9YXt4kHMmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQvWNu71; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF14C433F1;
+	Tue, 23 Jan 2024 02:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975082;
-	bh=A4qta6Q9iaSe5lYq3ilwUOYYfFbCJWDcwF1lcVTh37E=;
+	s=korg; t=1705975779;
+	bh=nKUh8jelO/JGTdISYsgqzYsWrFdV8NYNysDn2y2Uwyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YUyeLxec+2P/XOJOrOtKu9bU6nb09vUCkgAvSrUjgFylDPI7B3ryFrFp9beY1RPdN
-	 poitwrBBcyKdkgYZ7XjfDAf0gtxdpeB8GjPVbmdh7SGX4RRt8btKOUziJoDbaXrUSR
-	 dsMhMoNM0rOHB1/s5iANW1aFkTeUKtDrnl21SovM=
+	b=gQvWNu71wVh11IR+S1400WVMcyfDHJyYjJ7Yjlf4ZIpHazgRicLcb2tdvkQCg6h5C
+	 +YmO/scvZoKXxnu/YkAKslAuMlnrM14k14+/s+FW2HhkF/YdXpO/hPc9bUoJqP16yn
+	 UStstE+YIv+h/QHvYCpCzgcUMVh5J+NI4jaB8avI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ludvig=20P=C3=A4rsson?= <ludvig.parsson@axis.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 357/374] ethtool: netlink: Add missing ethnl_ops_begin/complete
+Subject: [PATCH 6.6 562/583] netfilter: nfnetlink_log: use proper helper for fetching physinif
 Date: Mon, 22 Jan 2024 16:00:13 -0800
-Message-ID: <20240122235757.366546902@linuxfoundation.org>
+Message-ID: <20240122235829.366210865@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ludvig Pärsson <ludvig.parsson@axis.com>
+From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 
-[ Upstream commit f1172f3ee3a98754d95b968968920a7d03fdebcc ]
+[ Upstream commit c3f9fd54cd87233f53bdf0e191a86b3a5e960e02 ]
 
-Accessing an ethernet device that is powered off or clock gated might
-cause the CPU to hang. Add ethnl_ops_begin/complete in
-ethnl_set_features() to protect against this.
+We don't use physindev in __build_packet_message except for getting
+physinif from it. So let's switch to nf_bridge_get_physinif to get what
+we want directly.
 
-Fixes: 0980bfcd6954 ("ethtool: set netdev features with FEATURES_SET request")
-Signed-off-by: Ludvig Pärsson <ludvig.parsson@axis.com>
-Link: https://lore.kernel.org/r/20240117-etht2-v2-1-1a96b6e8c650@axis.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 9874808878d9 ("netfilter: bridge: replace physindev with physinif in nf_bridge_info")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/features.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/netfilter/nfnetlink_log.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/ethtool/features.c b/net/ethtool/features.c
-index 1c9f4df273bd..faccab84d865 100644
---- a/net/ethtool/features.c
-+++ b/net/ethtool/features.c
-@@ -235,17 +235,20 @@ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info)
- 	dev = req_info.dev;
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index f03f4d4d7d88..134e05d31061 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -508,7 +508,7 @@ __build_packet_message(struct nfnl_log_net *log,
+ 					 htonl(br_port_get_rcu(indev)->br->dev->ifindex)))
+ 				goto nla_put_failure;
+ 		} else {
+-			struct net_device *physindev;
++			int physinif;
  
- 	rtnl_lock();
-+	ret = ethnl_ops_begin(dev);
-+	if (ret < 0)
-+		goto out_rtnl;
- 	ethnl_features_to_bitmap(old_active, dev->features);
- 	ethnl_features_to_bitmap(old_wanted, dev->wanted_features);
- 	ret = ethnl_parse_bitset(req_wanted, req_mask, NETDEV_FEATURE_COUNT,
- 				 tb[ETHTOOL_A_FEATURES_WANTED],
- 				 netdev_features_strings, info->extack);
- 	if (ret < 0)
--		goto out_rtnl;
-+		goto out_ops;
- 	if (ethnl_bitmap_to_features(req_mask) & ~NETIF_F_ETHTOOL_BITS) {
- 		GENL_SET_ERR_MSG(info, "attempt to change non-ethtool features");
- 		ret = -EINVAL;
--		goto out_rtnl;
-+		goto out_ops;
- 	}
+ 			/* Case 2: indev is bridge group, we need to look for
+ 			 * physical device (when called from ipv4) */
+@@ -516,10 +516,10 @@ __build_packet_message(struct nfnl_log_net *log,
+ 					 htonl(indev->ifindex)))
+ 				goto nla_put_failure;
  
- 	/* set req_wanted bits not in req_mask from old_wanted */
-@@ -282,6 +285,8 @@ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info)
- 	if (mod)
- 		netdev_features_change(dev);
- 
-+out_ops:
-+	ethnl_ops_complete(dev);
- out_rtnl:
- 	rtnl_unlock();
- 	dev_put(dev);
+-			physindev = nf_bridge_get_physindev(skb);
+-			if (physindev &&
++			physinif = nf_bridge_get_physinif(skb);
++			if (physinif &&
+ 			    nla_put_be32(inst->skb, NFULA_IFINDEX_PHYSINDEV,
+-					 htonl(physindev->ifindex)))
++					 htonl(physinif)))
+ 				goto nla_put_failure;
+ 		}
+ #endif
 -- 
 2.43.0
 
