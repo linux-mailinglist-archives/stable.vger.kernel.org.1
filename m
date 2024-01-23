@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-15536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A000B838FC9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 14:27:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D8D48390A2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 14:58:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C41731C23AEC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 13:27:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AA78B25FD4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 13:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384755FF13;
-	Tue, 23 Jan 2024 13:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2BC5F844;
+	Tue, 23 Jan 2024 13:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DbvZZiM4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mW8P8mgH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BB75FF09;
-	Tue, 23 Jan 2024 13:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4479D5F573;
+	Tue, 23 Jan 2024 13:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706015968; cv=none; b=YO8QComVVnvwAOcE5/8DHJ14Or9rdzSheF60OINZR1gp9N9bvFDlkskN1B5YVPmM6YIY9VdZiUETfIFUi9bRXqnD9ya9o+3hw/fshRYpLsb2oi0vm6yf7kC/1SMm9++oCog+Tj8LcpuecXwN2qBLsulXJVUlpzhilM7nynQSbl4=
+	t=1706018273; cv=none; b=qmWe8CdsUmawRf364H0H+H5lFK9RvsUdZdKQyvAPP8WNnYeETVlN0v7B48Tj97dbHPAgW3RP+X1fhjYHrp5Kqn+V3bK7tvdMizErvmW/2hKaiUzT+gxtA/j5VarXpnCbcHhWGeQfkFJp6IL4sgHSWq2mnI3i10EtRVJq+YfZB38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706015968; c=relaxed/simple;
-	bh=Gq1+mEQ6ja2G8UP94ctjJ4FgOtBLuB/h5zt9GfFjNFw=;
+	s=arc-20240116; t=1706018273; c=relaxed/simple;
+	bh=K7rw+OEulUZBusH7tnKTuqRlyjTk4wtY/ytPOPZccRI=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GWc+bkFINzJ9x/9kVcldeV9r7uqJCcosnQQBUH/6TMRkOVlman7oPWf8eJ3RSzOrraaonBnVUEC2XfJ1XbMm5dbbetNf7ivJO9WZZ/sSYQTUqgYjIUBB9d8+7wfWAYkjWHdh68vN9LSkzrwlZskvoJuwhNjXNsOYFc6Fh/MBKTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DbvZZiM4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD9CC433B1;
-	Tue, 23 Jan 2024 13:19:26 +0000 (UTC)
+	 Content-Type:MIME-Version; b=f6r3zfWOpQFgNc+tS4Ad0+A24OnF6Upj0GdG2pyNePjbFDppTO47a/TOGNVINkzQIIEO+la1ppQp3S/J1dtFJWe1ibitqJXCrP/0yF5+ztp2c/5pubPFajZB4dW/b5/URrJysieg6XSuL76FTQQw50tB9CrYx0tgfXLoQWH3B0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mW8P8mgH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31F4C43143;
+	Tue, 23 Jan 2024 13:57:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706015967;
-	bh=Gq1+mEQ6ja2G8UP94ctjJ4FgOtBLuB/h5zt9GfFjNFw=;
+	s=k20201202; t=1706018272;
+	bh=K7rw+OEulUZBusH7tnKTuqRlyjTk4wtY/ytPOPZccRI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=DbvZZiM4AGbX7yMeU/S7ieI6TnYlGRWYnadhMDUfSqGZDkVkoK3IaR+6kAaQLE8vn
-	 p/8x1//Z9jG5XUhj/JQPVAOkPHMeQrB4gekevEpY5ChnYBnYlh8P8ObIjDKfN5gMBp
-	 xpBgSa6Jg9edoRIUm4kTV3zGIMIbsr1zp/FFG1xSCcChH8Ra4XtRbyJmJ/Wb9ggIfP
-	 IBOz97R0V8ZUT6pRJiyUSwEczf4qRu891bGNzuTidbzLP9xDBaWHCTMOOq7vqdLfok
-	 LTTaHBcYyMJrgtPyg5kzQZJlj/Rn2uofCuVVSm7+pbxuEHBYyLzhkUj30mWQryDy0Y
-	 AC5m6OZ5MHJQA==
-Message-ID: <7f615e3a3edabc706879e218f62dfe4425fbc236.camel@kernel.org>
+	b=mW8P8mgHkLb2kV9CdZA1Lh4vamikg5CwsilZVg8MAfruzc5HVjiNXbzCEx0f5lahS
+	 UKCveTFcOSoasq4XQj6MBYPZrljxMkhWJHuYWTi0+XmvxfreLdhr+gfwU3zCPnts41
+	 /AOi1i4LGedxnN0V/hNSZFQly6hJ2IgH/LxNiUQ5dxnEw1DZ/YS3VZ7zxDut6xgDat
+	 QX8NiUmncFxbqLIO3p61kLE/oXWxqnsGRwIrQhUhk41nDwX5IX0o/xj0ahriE/aU6t
+	 wbR+/zqR/QywtKa1czT+wEtkbZX386Tl2X1IosUDX/szjDYbPNdpue4rdBbBMrxttS
+	 GR/qopq5R2WEg==
+Message-ID: <67cd0e4cb2559a6e75131c19ad9f0fb9a6b3d11f.camel@kernel.org>
 Subject: Re: [REGRESSION] 6.6.10+ and 6.7+ kernels lock up early in init.
 From: Jeff Layton <jlayton@kernel.org>
 To: sedat.dilek@gmail.com
@@ -50,13 +50,14 @@ Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
  Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
  <brauner@kernel.org>, Chuck Lever <chuck.lever@oracle.com>, Paul Thompson
  <set48035@gmail.com>
-Date: Tue, 23 Jan 2024 08:19:25 -0500
-In-Reply-To: <CA+icZUXaxysi1Oq1wKeDZ5LZVp7i585vmPQi67hw1CdW7nGC6A@mail.gmail.com>
+Date: Tue, 23 Jan 2024 08:57:50 -0500
+In-Reply-To: <7f615e3a3edabc706879e218f62dfe4425fbc236.camel@kernel.org>
 References: <Za9DUZoJbV0PYGN2@squish.home.loc>
 	 <6939adb3-c270-481f-8547-e267d642beea@leemhuis.info>
 	 <bbac350b-7a94-475e-88c9-35f6f8700af8@leemhuis.info>
 	 <e2f791e51feb09e671d59afbbb233c4d6128a8d2.camel@kernel.org>
 	 <CA+icZUXaxysi1Oq1wKeDZ5LZVp7i585vmPQi67hw1CdW7nGC6A@mail.gmail.com>
+	 <7f615e3a3edabc706879e218f62dfe4425fbc236.camel@kernel.org>
 Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
  keydata=mQINBE6V0TwBEADXhJg7s8wFDwBMEvn0qyhAnzFLTOCHooMZyx7XO7dAiIhDSi7G1NPxwn8jdFUQMCR/GlpozMFlSFiZXiObE7sef9rTtM68ukUyZM4pJ9l0KjQNgDJ6Fr342Htkjxu/kFV1WvegyjnSsFt7EGoDjdKqr1TS9syJYFjagYtvWk/UfHlW09X+jOh4vYtfX7iYSx/NfqV3W1D7EDi0PqVT2h6v8i8YqsATFPwO4nuiTmL6I40ZofxVd+9wdRI4Db8yUNA4ZSP2nqLcLtFjClYRBoJvRWvsv4lm0OX6MYPtv76hka8lW4mnRmZqqx3UtfHX/hF/zH24Gj7A6sYKYLCU3YrI2Ogiu7/ksKcl7goQjpvtVYrOOI5VGLHge0awt7bhMCTM9KAfPc+xL/ZxAMVWd3NCk5SamL2cE99UWgtvNOIYU8m6EjTLhsj8snVluJH0/RcxEeFbnSaswVChNSGa7mXJrTR22lRL6ZPjdMgS2Km90haWPRc8Wolcz07Y2se0xpGVLEQcDEsvv5IMmeMe1/qLZ6NaVkNuL3WOXvxaVT9USW1+/SGipO2IpKJjeDZfehlB/kpfF24+RrK+seQfCBYyUE8QJpvTZyfUHNYldXlrjO6n5MdOempLqWpfOmcGkwnyNRBR46g/jf8KnPRwXs509yAqDB6sELZH+yWr9LQZEwARAQABtCVKZWZmIExheXRvbiA8amxheXRvbkBwb29jaGllcmVkcy5uZXQ+iQI7BBMBAgAlAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAUCTpXWPAIZAQAKCRAADmhBGVaCFc65D/4gBLNMHopQYgG/9RIM3kgFCCQV0pLv0hcg1cjr+bPI5f1PzJoOVi9s0wBDHwp8+vtHgYhM54yt43uI7Htij0RHFL5eFqoVT4TSfAg2qlvNemJEOY0e4daljjmZM7UtmpGs9NN0r9r50W82eb5Kw5bc/
 	r0kmR/arUS2st+ecRsCnwAOj6HiURwIgfDMHGPtSkoPpu3DDp/cjcYUg3HaOJuTjtGHFH963B+f+hyQ2BrQZBBE76ErgTDJ2Db9Ey0kw7VEZ4I2nnVUY9B5dE2pJFVO5HJBMp30fUGKvwaKqYCU2iAKxdmJXRIONb7dSde8LqZahuunPDMZyMA5+mkQl7kpIpR6kVDIiqmxzRuPeiMP7O2FCUlS2DnJnRVrHmCljLkZWf7ZUA22wJpepBligemtSRSbqCyZ3B48zJ8g5B8xLEntPo/NknSJaYRvfEQqGxgk5kkNWMIMDkfQOlDSXZvoxqU9wFH/9jTv1/6p8dHeGM0BsbBLMqQaqnWiVt5mG92E1zkOW69LnoozE6Le+12DsNW7RjiR5K+27MObjXEYIW7FIvNN/TQ6U1EOsdxwB8o//Yfc3p2QqPr5uS93SDDan5ehH59BnHpguTc27XiQQZ9EGiieCUx6Zh2ze3X2UW9YNzE15uKwkkuEIj60NvQRmEDfweYfOfPVOueC+iFifbQgSmVmZiBMYXl0b24gPGpsYXl0b25AcmVkaGF0LmNvbT6JAjgEEwECACIFAk6V0q0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEAAOaEEZVoIViKUQALpvsacTMWWOd7SlPFzIYy2/fjvKlfB/Xs4YdNcf9qLqF+lk2RBUHdR/dGwZpvw/OLmnZ8TryDo2zXVJNWEEUFNc7wQpl3i78r6UU/GUY/RQmOgPhs3epQC3PMJj4xFx+VuVcf/MXgDDdBUHaCTT793hyBeDbQuciARDJAW24Q1RCmjcwWIV/pgrlFa4lAXsmhoac8UPc82Ijrs6ivlTweFf16VBc4nSLX5FB3ls7S5noRhm5/Zsd4PGPgIHgCZcPgkAnU1S/A/rSqf3FLpU+CbVBDvlVAnOq9gfNF+QiTlOHdZVIe4gEYAU3CUjbleywQqV02BKxPVM0C5/oVjMVx
@@ -76,135 +77,173 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Tue, 2024-01-23 at 12:46 +0100, Sedat Dilek wrote:
-> On Tue, Jan 23, 2024 at 12:16=E2=80=AFPM Jeff Layton <jlayton@kernel.org>=
- wrote:
-> >=20
-> > On Tue, 2024-01-23 at 07:39 +0100, Linux regression tracking (Thorsten
-> > Leemhuis) wrote:
-> > > [a quick follow up with an important correction from the reporter for
-> > > those I added to the list of recipients]
+On Tue, 2024-01-23 at 08:19 -0500, Jeff Layton wrote:
+> On Tue, 2024-01-23 at 12:46 +0100, Sedat Dilek wrote:
+> > On Tue, Jan 23, 2024 at 12:16=E2=80=AFPM Jeff Layton <jlayton@kernel.or=
+g> wrote:
 > > >=20
-> > > On 23.01.24 06:37, Linux regression tracking (Thorsten Leemhuis) wrot=
-e:
-> > > > On 23.01.24 05:40, Paul Thompson wrote:
-> > > > >=20
-> > > > >   With my longstanding configuration, kernels upto 6.6.9 work fin=
-e.
-> > > > > Kernels 6.6.1[0123] and 6.7.[01] all lock up in early (open-rc) i=
-nit,
-> > > > > before even the virtual filesystems are mounted.
-> > > > >=20
-> > > > >   The last thing visible on the console is the nfsclient service
-> > > > > being started and:
-> > > > >=20
-> > > > > Call to flock failed: Funtion not implemented. (twice)
-> > > > >=20
-> > > > >   Then the machine is unresponsive, numlock doesnt toggle the key=
-board led,
-> > > > > and the alt-sysrq chords appear to do nothing.
-> > > > >=20
-> > > > >   The problem is solved by changing my 6.6.9 config option:
-> > > > >=20
-> > > > > # CONFIG_FILE_LOCKING is not set
-> > > > > to
-> > > > > CONFIG_FILE_LOCKING=3Dy
-> > > > >=20
-> > > > > (This option is under File Systems > Enable POSIX file locking AP=
-I)
-> > >=20
-> > > The reporter replied out-of-thread:
-> > > https://lore.kernel.org/all/Za9TRtSjubbX0bVu@squish.home.loc/
-> > >=20
-> > > """
-> > >       Now I feel stupid or like Im losing it, but I went back and gre=
-pped for
-> > > the CONFIG_FILE_LOCKING in my old Configs, and it was turned on in al=
-l
-> > > but 6.6.9. So, somehow I turned that off *after I built 6.6.9? Argh. =
-I
-> > > just built 6.6.4 with it unset and that locked up too.
-> > >       Sorry if this is just noise, though one would have hoped the fa=
-ilure
-> > > was less severe...
-> > > """
-> > >=20
-> >=20
-> > Ok, so not necessarily a regression? It might be helpful to know the
-> > earliest kernel you can boot with CONFIG_FILE_LOCKING turned off.
-> >=20
+> > > On Tue, 2024-01-23 at 07:39 +0100, Linux regression tracking (Thorste=
+n
+> > > Leemhuis) wrote:
+> > > > [a quick follow up with an important correction from the reporter f=
+or
+> > > > those I added to the list of recipients]
 > > > >=20
-> > I'll give a try reproducing this later though.
+> > > > On 23.01.24 06:37, Linux regression tracking (Thorsten Leemhuis) wr=
+ote:
+> > > > > On 23.01.24 05:40, Paul Thompson wrote:
+> > > > > >=20
+> > > > > >   With my longstanding configuration, kernels upto 6.6.9 work f=
+ine.
+> > > > > > Kernels 6.6.1[0123] and 6.7.[01] all lock up in early (open-rc)=
+ init,
+> > > > > > before even the virtual filesystems are mounted.
+> > > > > >=20
+> > > > > >   The last thing visible on the console is the nfsclient servic=
+e
+> > > > > > being started and:
+> > > > > >=20
+> > > > > > Call to flock failed: Funtion not implemented. (twice)
+> > > > > >=20
+> > > > > >   Then the machine is unresponsive, numlock doesnt toggle the k=
+eyboard led,
+> > > > > > and the alt-sysrq chords appear to do nothing.
+> > > > > >=20
+> > > > > >   The problem is solved by changing my 6.6.9 config option:
+> > > > > >=20
+> > > > > > # CONFIG_FILE_LOCKING is not set
+> > > > > > to
+> > > > > > CONFIG_FILE_LOCKING=3Dy
+> > > > > >=20
+> > > > > > (This option is under File Systems > Enable POSIX file locking =
+API)
+> > > >=20
+> > > > The reporter replied out-of-thread:
+> > > > https://lore.kernel.org/all/Za9TRtSjubbX0bVu@squish.home.loc/
+> > > >=20
+> > > > """
+> > > >       Now I feel stupid or like Im losing it, but I went back and g=
+repped for
+> > > > the CONFIG_FILE_LOCKING in my old Configs, and it was turned on in =
+all
+> > > > but 6.6.9. So, somehow I turned that off *after I built 6.6.9? Argh=
+. I
+> > > > just built 6.6.4 with it unset and that locked up too.
+> > > >       Sorry if this is just noise, though one would have hoped the =
+failure
+> > > > was less severe...
+> > > > """
+> > > >=20
+> > >=20
+> > > Ok, so not necessarily a regression? It might be helpful to know the
+> > > earliest kernel you can boot with CONFIG_FILE_LOCKING turned off.
+> > >=20
+> > > > >=20
+> > > I'll give a try reproducing this later though.
+> >=20
+> > Quote from Paul:
+> > "
+> > Now I feel stupid or like Im losing it, but I went back and grepped
+> > for the CONFIG_FILE_LOCKING in my old Configs, and it was turned on in =
+all
+> > but 6.6.9. So, somehow I turned that off *after I built 6.6.9? Argh. I =
+just
+> > built 6.6.4 with it unset and that locked up too.
+> > Sorry if this is just noise, though one would have hoped the failure
+> > was less severe...
+> > "
+> >=20
+> > -Sedat-
+> >=20
+> > https://lore.kernel.org/all/Za9TRtSjubbX0bVu@squish.home.loc/#t
+> >=20
+> >=20
 >=20
-> Quote from Paul:
-> "
-> Now I feel stupid or like Im losing it, but I went back and grepped
-> for the CONFIG_FILE_LOCKING in my old Configs, and it was turned on in al=
-l
-> but 6.6.9. So, somehow I turned that off *after I built 6.6.9? Argh. I ju=
-st
-> built 6.6.4 with it unset and that locked up too.
-> Sorry if this is just noise, though one would have hoped the failure
-> was less severe...
-> "
+> Ok, I can reproduce this in KVM, which should make this a bit simpler:
 >=20
-> -Sedat-
+> I tried turning off CONFIG_FILE_LOCKING on mainline kernels and it also
+> hung for me at boot here (I think it was trying to enable the nvme disks
+> attached to this host):
 >=20
-> https://lore.kernel.org/all/Za9TRtSjubbX0bVu@squish.home.loc/#t
+> [  OK  ] Reached target sysinit.target - System Initialization.
+> [  OK  ] Finished dracut-pre-mount.service - dracut pre-mount hook.
+> [  OK  ] Started plymouth-start.service - Show Plymouth Boot Screen.
+> [  OK  ] Started systemd-ask-password-plymo=E2=80=A6quests to Plymouth Di=
+rectory Watch.
+> [  OK  ] Reached target paths.target - Path Units.
+> [  OK  ] Reached target basic.target - Basic System.
+> [    4.647183] cryptd: max_cpu_qlen set to 1000
+> [    4.650280] AVX2 version of gcm_enc/dec engaged.
+> [    4.651252] AES CTR mode by8 optimization enabled
+>          Starting systemd-vconsole-setup.service - Virtual Console Setup.=
+..
+> [FAILED] Failed to start systemd-vconsole-s=E2=80=A6up.service - Virtual =
+Console Setup.
+> See 'systemctl status systemd-vconsole-setup.service' for details.
+> [    5.777176] virtio_blk virtio3: 8/0/0 default/read/poll queues
+> [    5.784633] virtio_blk virtio3: [vda] 41943040 512-byte logical blocks=
+ (21.5 GB/20.0 GiB)
+> [    5.791351]  vda: vda1 vda2 vda3
+> [    5.792672] virtio_blk virtio6: 8/0/0 default/read/poll queues
+> [    5.801796] virtio_blk virtio6: [vdb] 209715200 512-byte logical block=
+s (107 GB/100 GiB)
+> [    5.807839] virtio_blk virtio7: 8/0/0 default/read/poll queues
+> [    5.813098] virtio_blk virtio7: [vdc] 209715200 512-byte logical block=
+s (107 GB/100 GiB)
+> [    5.818500] virtio_blk virtio8: 8/0/0 default/read/poll queues
+> [    5.823969] virtio_blk virtio8: [vdd] 209715200 512-byte logical block=
+s (107 GB/100 GiB)
+> [    5.829217] virtio_blk virtio9: 8/0/0 default/read/poll queues
+> [    5.834636] virtio_blk virtio9: [vde] 209715200 512-byte logical block=
+s (107 GB/100 GiB)
+> [    **] Job dev-disk-by\x2duuid-5a8a135f\x2=E2=80=A6art running (13min 4=
+6s / no limit)
 >=20
 >=20
+> The last part will just keep spinning forever.
+>=20
+> I've gone back as far as v6.0, and I see the same behavior. I then tried
+> changing the disks in the VM to be attached by virtio instead of NVMe,
+> and that also didn't help.
+>=20
+> That said, I'm using a fedora 39 cloud image here. I'm not sure it's
+> reasonable to expect that to boot properly with file locking disabled.
+> =20
+> Paul, what distro are you running? When you say that it's hung, are you
+> seeing similar behavior?
 
-Ok, I can reproduce this in KVM, which should make this a bit simpler:
+FWIW, I grabbed a dump of the VM's memory and took a quick look with
+crash. All of the tasks are either idle, or waiting in epoll. Perhaps
+there is some subtle dependency between epoll and CONFIG_FILE_LOCKING?
 
-I tried turning off CONFIG_FILE_LOCKING on mainline kernels and it also
-hung for me at boot here (I think it was trying to enable the nvme disks
-attached to this host):
+PID: 190      TASK: ffff8fa846eb3080  CPU: 7    COMMAND: "systemd-journal"
+ #0 [ffffb5560063bd18] __schedule at ffffffffa10e8d39
+ #1 [ffffb5560063bd88] schedule at ffffffffa10e9491
+ #2 [ffffb5560063bda0] schedule_hrtimeout_range_clock at ffffffffa10eff99
+ #3 [ffffb5560063be10] do_epoll_wait at ffffffffa0a08106
+ #4 [ffffb5560063bee8] __x64_sys_epoll_wait at ffffffffa0a0872d
+ #5 [ffffb5560063bf38] do_syscall_64 at ffffffffa10d3af4
+ #6 [ffffb5560063bf50] entry_SYSCALL_64_after_hwframe at ffffffffa12000e6
+    RIP: 00007f975753cac7  RSP: 00007ffe07ab17b8  RFLAGS: 00000202
+    RAX: ffffffffffffffda  RBX: 000000000000001e  RCX: 00007f975753cac7
+    RDX: 000000000000001e  RSI: 000055d723ad8ca0  RDI: 0000000000000007
+    RBP: 00007ffe07ab18d0   R8: 000055d723ad79ac   R9: 0000000000000007
+    R10: 00000000ffffffff  R11: 0000000000000202  R12: 000055d723ad8ca0
+    R13: 0000000000000010  R14: 000055d723ad33b0  R15: ffffffffffffffff
+    ORIG_RAX: 00000000000000e8  CS: 0033  SS: 002b
 
-[  OK  ] Reached target sysinit.target - System Initialization.
-[  OK  ] Finished dracut-pre-mount.service - dracut pre-mount hook.
-[  OK  ] Started plymouth-start.service - Show Plymouth Boot Screen.
-[  OK  ] Started systemd-ask-password-plymo=E2=80=A6quests to Plymouth Dire=
-ctory Watch.
-[  OK  ] Reached target paths.target - Path Units.
-[  OK  ] Reached target basic.target - Basic System.
-[    4.647183] cryptd: max_cpu_qlen set to 1000
-[    4.650280] AVX2 version of gcm_enc/dec engaged.
-[    4.651252] AES CTR mode by8 optimization enabled
-         Starting systemd-vconsole-setup.service - Virtual Console Setup...
-[FAILED] Failed to start systemd-vconsole-s=E2=80=A6up.service - Virtual Co=
-nsole Setup.
-See 'systemctl status systemd-vconsole-setup.service' for details.
-[    5.777176] virtio_blk virtio3: 8/0/0 default/read/poll queues
-[    5.784633] virtio_blk virtio3: [vda] 41943040 512-byte logical blocks (=
-21.5 GB/20.0 GiB)
-[    5.791351]  vda: vda1 vda2 vda3
-[    5.792672] virtio_blk virtio6: 8/0/0 default/read/poll queues
-[    5.801796] virtio_blk virtio6: [vdb] 209715200 512-byte logical blocks =
-(107 GB/100 GiB)
-[    5.807839] virtio_blk virtio7: 8/0/0 default/read/poll queues
-[    5.813098] virtio_blk virtio7: [vdc] 209715200 512-byte logical blocks =
-(107 GB/100 GiB)
-[    5.818500] virtio_blk virtio8: 8/0/0 default/read/poll queues
-[    5.823969] virtio_blk virtio8: [vdd] 209715200 512-byte logical blocks =
-(107 GB/100 GiB)
-[    5.829217] virtio_blk virtio9: 8/0/0 default/read/poll queues
-[    5.834636] virtio_blk virtio9: [vde] 209715200 512-byte logical blocks =
-(107 GB/100 GiB)
-[    **] Job dev-disk-by\x2duuid-5a8a135f\x2=E2=80=A6art running (13min 46s=
- / no limit)
+Whether this is a regression or not, a lot of userland software relies
+on file locking these days. Maybe this is a good time to consider
+getting rid of CONFIG_FILE_LOCKING and just hardcoding it on.
 
+By disabling it, it looks like you save 4 bytes in struct inode. I'm not
+sure that's worth the hassle of having to deal with the extra test
+matrix dimension. In a really stripped down configuration where you
+don't need file locking, are you likely to have a lot of inodes in core
+anyway?
 
-The last part will just keep spinning forever.
-
-I've gone back as far as v6.0, and I see the same behavior. I then tried
-changing the disks in the VM to be attached by virtio instead of NVMe,
-and that also didn't help.
-
-That said, I'm using a fedora 39 cloud image here. I'm not sure it's
-reasonable to expect that to boot properly with file locking disabled.
-=20
-Paul, what distro are you running? When you say that it's hung, are you
-seeing similar behavior?
+I guess you also save a little kernel text too, but I still have to
+wonder if it's worth it.
 --=20
 Jeff Layton <jlayton@kernel.org>
 
