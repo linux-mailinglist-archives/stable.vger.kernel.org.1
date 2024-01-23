@@ -1,107 +1,116 @@
-Return-Path: <stable+bounces-15577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC6178398F6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 20:02:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90A38839A2C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 21:20:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C8191F2CA75
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 19:02:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF0A21C2345C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 20:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCA3823B0;
-	Tue, 23 Jan 2024 18:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE7185C47;
+	Tue, 23 Jan 2024 20:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qwg+fSiR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Slrg1J/D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FF347F43;
-	Tue, 23 Jan 2024 18:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8553350276;
+	Tue, 23 Jan 2024 20:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706036152; cv=none; b=AiH+3u14Qj2AAv+v5w7WDl+DQg+qP0QI/AgiXX/VtyA8ZHtJb4EVJylRrQtqAB9RcPBk2NULrEYosUlpLDrqrvTlU82w6RTF6SH+VLOukD4/BAn7ll8Ybw1ZGd6N6jyVS6f/l1l8dgaSxQE52xkxo13nWszHp4jatMvvjy332DU=
+	t=1706041224; cv=none; b=Crmkx4PtQtS72/MjSwpmn6172FRqfgEuallN2Em49duiVzMeU8PAd1m1OYcPbKVBl6E1//1kEO3CGCAziXpHnwZdvaMNedDMp/G9YdU5CxTXh1ZHCrQ0STwTPS9csr2uH3KtumKyfxCRnf6uPelmuWYO1lwHZUCjxGhnoHO8RxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706036152; c=relaxed/simple;
-	bh=LbUKSvKEEnCK/ONAHtaYUgJW5qcQlDle3dKpVkI4v/w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ecyHBwkefDUpIDMcnhKjCWzLi9/3ev4ClzdNsHG4CzXVtidOjadVyx6SGPNJfPGXrUsWKxYZI88//lUv7IqGRakZiXdvA4eRT3IxERzbtsTDU5rZsEUtUCl7Cl5nBwMGfK+X6ow/y2cZAJ/5R8HBoCky1l8ZvMcEEjLOg712mtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qwg+fSiR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EE8C433C7;
-	Tue, 23 Jan 2024 18:55:49 +0000 (UTC)
+	s=arc-20240116; t=1706041224; c=relaxed/simple;
+	bh=xM133hD/HSCXT1KX4H7xbcfslhLaVzrqvIsmxWzuX+4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=ObrBzYTIEwN7S+fJXrku0iveS4Wo7TlISb+G1zFezykxVq+nbTLpegf3jjloUUNZ273v1PtT+uwI1l/vOfakVcwpVsV4zXmalkhvUTzVgcgEspXWW43zmE7JnaKv36RdhYiFza3kQ7pMvlIZFq2tWZDBAfX2QQDB4/6f5PwbHLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Slrg1J/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B4BC433C7;
+	Tue, 23 Jan 2024 20:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706036151;
-	bh=LbUKSvKEEnCK/ONAHtaYUgJW5qcQlDle3dKpVkI4v/w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qwg+fSiRkGh0CLOkYlQshenLD1ZSxXz+wcv25k+VgxT+U8oJXTxmlrWu40N5+dx76
-	 NArsJxk3O+WdtxjDBGaFyRSuwknT+ew7yRCg0qVqigPS1k9VdNWyDKeAqo92TatKDZ
-	 KTU/aNXgmAeZwquqWgcWsWB4KBJaX0/WqX5LdvWJ7E0N68xmkb71u9CNBOyDlknPo0
-	 NT51jUMsXUVkRIoEX6dJVwHBF+JZhQJEifpE2YaczapEY1n0A8gkCMVnho/dytGxzU
-	 TzfES/fUDANwzZENJecqK4hnect0HUvtOY7AKE49oGktGXg1Y0HVvVDEFKIpiW8cIH
-	 QD4Pjv7+a1UOA==
-Date: Tue, 23 Jan 2024 18:55:45 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Dave Martin <Dave.Martin@arm.com>
-Cc: Catalin Marinas <Catalin.Marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] arm64/signal: Don't assume that TIF_SVE means we saved
- SVE state
-Message-ID: <1ce926bc-537f-492e-9e4d-6e7c9f5fc057@sirena.org.uk>
-References: <20240119-arm64-sve-signal-regs-v1-1-b9fd61b0289a@kernel.org>
- <Zaqj0V82LD8wu6g+@e133380.arm.com>
- <Zaq1y9XpmzTsXDp8@finisterre.sirena.org.uk>
- <Za/YD/0a5Mn4IOAk@e133380.arm.com>
+	s=k20201202; t=1706041224;
+	bh=xM133hD/HSCXT1KX4H7xbcfslhLaVzrqvIsmxWzuX+4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=Slrg1J/DScPziQN8aDITgYI9KV9hL7CVUWaDyVEig+sEaT86kWUWDlf1pBHqNorQ2
+	 D7uAMrxpbUsQ2XESO3soOP8uR/JkEXjbHKIU9fIvov8K6SDdb4jgXgQBj9HoixB+qe
+	 8VoXP5mbwqnR9u08d/bIFDOH+3SUVQeMBM0m95fjlqZG2HpH79124uVsUFaRTnS2GY
+	 GgHc3BmbLMhFncHqIV+F0WIAWNnLi/lJPPrcbng9gZ/JdPY1IQQ0VZl2ihzbIWHSwS
+	 iKvCNYAWzY8pKBd5VDpn+NYFnrvcMzWEexhF4OMNt+G5GpcSUldUvF6EK9jwpgKV4G
+	 Qjz4j8Gxn+y7g==
+Date: Tue, 23 Jan 2024 14:20:22 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Randy Dunlap <rdunlap@infradead.org>, NeilBrown <neilb@suse.de>,
+	John Sanpe <sanpeqf@gmail.com>,
+	Kent Overstreet <kent.overstreet@gmail.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Uladzislau Koshchanka <koshchanka@gmail.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	David Gow <davidgow@google.com>, Kees Cook <keescook@chromium.org>,
+	Rae Moar <rmoar@google.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	"wuqiang.matt" <wuqiang.matt@bytedance.com>,
+	Yury Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ben Dooks <ben.dooks@codethink.co.uk>, dakr@redhat.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arch@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v5 RESEND 2/5] lib: move pci_iomap.c to drivers/pci/
+Message-ID: <20240123202022.GA325908@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="IiAKNAKMl0gnu4G/"
-Content-Disposition: inline
-In-Reply-To: <Za/YD/0a5Mn4IOAk@e133380.arm.com>
-X-Cookie: Stay together, drag each other down.
-
-
---IiAKNAKMl0gnu4G/
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20240111085540.7740-3-pstanner@redhat.com>
 
-On Tue, Jan 23, 2024 at 03:15:27PM +0000, Dave Martin wrote:
-> On Fri, Jan 19, 2024 at 05:47:55PM +0000, Mark Brown wrote:
+On Thu, Jan 11, 2024 at 09:55:37AM +0100, Philipp Stanner wrote:
+> This file is guarded by an #ifdef CONFIG_PCI. It, consequently, does not
+> belong to lib/ because it is not generic infrastructure.
+> 
+> Move the file to drivers/pci/ and implement the necessary changes to
+> Makefiles and Kconfigs.
+> ...
 
-> > There's a couple more, but this is all of them in the signal handling
-> > code - I should have one or two more patches.  Most of the usage is
-> > actually checking the trapping and therefore fine.
+> --- a/drivers/pci/Kconfig
+> +++ b/drivers/pci/Kconfig
+> @@ -13,6 +13,11 @@ config FORCE_PCI
+>  	select HAVE_PCI
+>  	select PCI
+>  
+> +# select this to provide a generic PCI iomap,
+> +# without PCI itself having to be defined
+> +config GENERIC_PCI_IOMAP
+> +	bool
 
-> I see, I guess this area needs keeping an eye on generally, but if there
-> are no more cases considered urgent then I guess that's fine for now
-> (modulo other patches in flight).
+> --- a/lib/pci_iomap.c
+> +++ b/drivers/pci/iomap.c
+> @@ -9,7 +9,6 @@
+>  
+>  #include <linux/export.h>
+>  
+> -#ifdef CONFIG_PCI
 
-Yeah, it needs keeping an eye on going forwards and there should be at
-least one more patch to come probably this week but orthogonal to this
-one in content (similar changes in different parts of the code).
+IIUC, in the case where CONFIG_GENERIC_PCI_IOMAP=y but CONFIG_PCI was
+not set, pci_iomap.c was compiled but produced no code because the
+entire file was wrapped with this #ifdef.
 
---IiAKNAKMl0gnu4G/
-Content-Type: application/pgp-signature; name="signature.asc"
+But after this patch, it looks like pci_iomap_range(),
+pci_iomap_wc_range(), etc., *will* be compiled?
 
------BEGIN PGP SIGNATURE-----
+Is that what you intend, or did I miss something?
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWwC7EACgkQJNaLcl1U
-h9BJTgf+I0kR+cPHQZfvqZ6cXjEhHFpVcYkXSaH79lkoFkjblsMnW0CZ0SuxhlnZ
-X5iS0SWtUdcKUCiyzErfdsZQeJHHmcA0yenLBM56RCcwVt7odNKv8XRWrTxOAkxn
-6gIK4tPIC54iByVK3q5An6s3vL3AAxv8vnM1VWugs7kCHShKk8e4t9pF64cIhKRR
-v95Y/QX8JbS+/T6JMGXoqUgaldLVN6Sv17sunSf+8jcq4W4cPiSwZklLOh9qXfvY
-Nj/3lf13TJTWTiC+UR6ShBrpeVXQIRnqZXEsyCj7FLp0AE0ULzMZRz89i6dTf8X6
-ulhJxv7RZsw0GXZJFt7cYaCCopatKg==
-=Z1QX
------END PGP SIGNATURE-----
-
---IiAKNAKMl0gnu4G/--
+Bjorn
 
