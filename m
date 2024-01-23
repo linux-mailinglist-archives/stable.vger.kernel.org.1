@@ -1,107 +1,131 @@
-Return-Path: <stable+bounces-15515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47189838DB1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 12:42:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22C61838DCB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 12:46:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F37AE28A85B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 11:42:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DB661F22F8A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 11:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3815A114;
-	Tue, 23 Jan 2024 11:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E545D753;
+	Tue, 23 Jan 2024 11:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="IbWTGkWD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E872D5D8E7
-	for <stable@vger.kernel.org>; Tue, 23 Jan 2024 11:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F105C8E4
+	for <stable@vger.kernel.org>; Tue, 23 Jan 2024 11:46:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706010177; cv=none; b=iOujV/7R/7k9S84IV+e2oJIu4/zkT/phmqXrKhM8hr70OsQ5NtloQ54EIQTR+I3G7052ioIfE8anWTtG1/gn9Q6/50gyt9Og1O+zI4wJbXQn2OCxqeik6Yw8+etNKTxFUy12HDGm6JH1k0bUZSzIbAzbj2ZifHaeystX8zREbwE=
+	t=1706010381; cv=none; b=Hbq7n7ExHZGM7W+8oIFpBW3VU5tKAESGW2XfIXOFxsXE+9jdlRvTCEJ2T94c9r99mWeNVqV/5BFBwQGTWEgks51nCQd4VJjSjaCn1/5PV7eyhBa5IjInjqTn6C5GpwJHlQa7uECGJlvGQ/xyRB/AU8GnoV8bWKqVKGY9Mg23cL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706010177; c=relaxed/simple;
-	bh=tK6v9aORzX4ixcv0LSWjDn1VygpILM01+OlKHVyuh/g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nLwgfN6UQonGDfWRPqFES6aHKqB6J/pMEHfmR3emFqKe1BEa5B12DA4VThpeGp4c3KUHrAZ+MlpVDbqJ1gJrcNBMIRdum1APpLgebIUIf5iCQK9G+wK9qMIdKyqZzyi2123Uq9oPBl28AamUnFBOd8WJAyyrU6Zv9qUydbS+4UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6db9e52bbccso2418350b3a.3
-        for <stable@vger.kernel.org>; Tue, 23 Jan 2024 03:42:55 -0800 (PST)
+	s=arc-20240116; t=1706010381; c=relaxed/simple;
+	bh=u+vnMh0bDwsz8C9HM93KCNUrx9aKpW+7M6cJvDcuWDI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hVWjt9CRpTogWwj0B7pLrUdYP5anaalAyeALYts5BNi6hl/HO+aHM6V4tLWiSOfP7CAwF51VB9cZ4Y5j4fQ6IdNpPCNBB7oOFMeV4QUAoJ90NAXOitGCSND2YtkOaPEEjdB8Pc9Zg8ZV/TWWHvtGpjSzlVrxv6p5DvSeAPzOjWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=IbWTGkWD; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-28bec6ae0ffso2026076a91.3
+        for <stable@vger.kernel.org>; Tue, 23 Jan 2024 03:46:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1706010379; x=1706615179; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LwSEZTvPmPib/iq3ufXx/1zhqV62G5jcQEWDJ/1dtko=;
+        b=IbWTGkWDJSVPJpCRMxStkmeCiKbjxdbbQL9elf6Fvsfd1WvyeDc6EymTBw/4VftOcz
+         /a2mhVDMUe9tvAVqHPNW3bQ2SSMOdVDgy9ZERgmwQ0UZfSSW4EFTlhnF7FMZZq5fcM0i
+         +RbUBNLh+Swp6QkNRJ7gd3rRnuqOjulLO6+vv11UgIuqDQSxeZs6hQEHhnvLfdSf5EtJ
+         mZu6Ktgo49r2y8sbkFKt8On9aJg+ouSAT4ZPXhTPPfOS5Bv+bX8L9XJUVFP+i9pZBQ9m
+         cFscjJOkmRW3KfM4KnMcS6NwAfxLBa0oWDfaxrtO8GPfJ7NERdt/5UChf2TGriac5oxW
+         /XMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706010175; x=1706614975;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1706010379; x=1706615179;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=20gUQOJAZW0kG7Ci1YYJ0HN2QiW6jLcyMlXsRmSf2b8=;
-        b=qqAB7B7AVhmxxhQF93ujy5vnTdaVzr/bwqlTpabhgE05fyjzFsSozCFz+FDycCn8Px
-         twVHEEXTqUFwBwALO+bdMIn5XxWI8CNdUNTP0jhxfJuTzUZZ3fnZonyVE229ke7jvmvE
-         FkqWyiJf3gXIrlE0IrQczBWqQaLOFYNDhOHa823Kr3tioUxyHle+EbwGaO/iR0M1pU+c
-         8QnWfCtnRSryOLWgRuxH6V0OCTWwUSy1BHtH7wodCzVMJDin90LSfFD+8gCZMcaRz6yD
-         2Io0LOteSK2IZeIU8TpgIf+JsXvI4LJPeSWtjQXoOW0ArVwZ6C8zUXeH3POdwD1iMrtJ
-         ZLbw==
-X-Gm-Message-State: AOJu0YwUji6k7c0JpNFGBiDzLSYd+ephY+6nENNzHa7tTLMve8rL7Rc9
-	hJxYfxnA+FIGm4c1fN8YEgtbkgWzZBw+uVbBH81EzTfe6BQCFIo6
-X-Google-Smtp-Source: AGHT+IG2kAYSn/dnlMQ765t4y0CUmcIvwdL36vi62lVoreZEJ+8XYwlSTfEznc1GJVpJy04X7eoDeg==
-X-Received: by 2002:a05:6a00:4612:b0:6db:c6a6:c9eb with SMTP id ko18-20020a056a00461200b006dbc6a6c9ebmr4409157pfb.1.1706010175173;
-        Tue, 23 Jan 2024 03:42:55 -0800 (PST)
-Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id c20-20020aa781d4000000b006d9a6a9992dsm11405182pfn.123.2024.01.23.03.42.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jan 2024 03:42:54 -0800 (PST)
-From: Namjae Jeon <linkinjeon@kernel.org>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org
-Cc: stable@vger.kernel.org,
-	Kevin Hao <haokexin@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.7.y 5/5] ksmbd: Add missing set_freezable() for freezable kthread
-Date: Tue, 23 Jan 2024 20:42:28 +0900
-Message-Id: <20240123114228.205260-6-linkinjeon@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240123114228.205260-1-linkinjeon@kernel.org>
-References: <20240123114228.205260-1-linkinjeon@kernel.org>
+        bh=LwSEZTvPmPib/iq3ufXx/1zhqV62G5jcQEWDJ/1dtko=;
+        b=pLn/8sXxmusD0FwJkaG6XLaA1nUMX3ehrye1X6/2qlKLuIURUDfjFYUPS4a6sZ7e/Z
+         VMkvdZxiqGaiOJ1+CWZbTd316N9OWxNcrgdTqgCcVou7oHi9FstKN9rP6CLk9RQXeDDM
+         NHiN9RSy7u7QaoTQ5UILjz7QaspkE0PS6kkv/JEV8hYpR+YJ5r0N+rRq2vxL3kIJswck
+         sk7FHWnSjo3G/QBMWTCGFvQ9jjNll1JFdbs0Fbdf1TbuME1Hd0dTL6tC/n3IJRmg0Frm
+         PXWjM7oaK9AjXtjG0FcSTxxDUSTMox2VqvpcUdAlUYI/psFW8g7w5IUPIIbrBzK1FiF0
+         nHOA==
+X-Gm-Message-State: AOJu0Yx1cZJV/kVv3TNcJhCqu1GSLREzO0P5vpxo8i9kPAxhiVIbOFk3
+	nZF7lKQcEc/fqFA9boN9fkvJes0IwFVxRLSVUSxKrKw25XDkozUzCyG/+ph+X+4OJY3w0xe/yaK
+	+VLU0+uRaAuflv0+hf6LUr6Cb9HBF5fukNbte1w==
+X-Google-Smtp-Source: AGHT+IEACBp9H8QI1TqOIOZDLZgpEkwSJrj7m5dkRr4i9ZL9tXNUnb1GT+Fl2iLJmxsq+b68QpV00sU4bXL7cu2SlKk=
+X-Received: by 2002:a17:90b:10f:b0:28d:f182:b85 with SMTP id
+ p15-20020a17090b010f00b0028df1820b85mr2536584pjz.87.1706010379397; Tue, 23
+ Jan 2024 03:46:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Tue, 23 Jan 2024 20:46:08 +0900
+Message-ID: <CAKL4bV55aK_qpQ-ubYKGrZ+=2tnr5zLqTgdaGuMUEVvNEe2w4Q@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/583] 6.6.14-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Kevin Hao <haokexin@gmail.com>
+Hi Greg
 
-[ Upstream commit 8fb7b723924cc9306bc161f45496497aec733904 ]
+On Tue, Jan 23, 2024 at 11:17=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.14 release.
+> There are 583 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 24 Jan 2024 23:56:49 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.14-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-The kernel thread function ksmbd_conn_handler_loop() invokes
-the try_to_freeze() in its loop. But all the kernel threads are
-non-freezable by default. So if we want to make a kernel thread to be
-freezable, we have to invoke set_freezable() explicitly.
+6.6.14-rc1 tested.
 
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
----
- fs/smb/server/connection.c | 1 +
- 1 file changed, 1 insertion(+)
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
-index 7977827c6541..09e1e7771592 100644
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -284,6 +284,7 @@ int ksmbd_conn_handler_loop(void *p)
- 		goto out;
- 
- 	conn->last_active = jiffies;
-+	set_freezable();
- 	while (ksmbd_conn_alive(conn)) {
- 		if (try_to_freeze())
- 			continue;
--- 
-2.25.1
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
+[    0.000000] Linux version 6.6.14-rc1rv
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 13.2.1 20230801, GNU ld (GNU
+Binutils) 2.41.0) #1 SMP PREEMPT_DYNAMIC Tue Jan 23 20:11:26 JST 2024
+
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
