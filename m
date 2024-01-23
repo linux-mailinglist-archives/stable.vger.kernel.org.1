@@ -1,118 +1,119 @@
-Return-Path: <stable+bounces-15593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987E9839C5E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 23:37:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A401839C83
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 23:50:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBA791C261BF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 22:37:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9962EB24562
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 22:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55986537E5;
-	Tue, 23 Jan 2024 22:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843BF53E00;
+	Tue, 23 Jan 2024 22:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dNLkpDN4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BRvL/T77"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C846ADE;
-	Tue, 23 Jan 2024 22:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E761351024;
+	Tue, 23 Jan 2024 22:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706049411; cv=none; b=V09aFliwMFz6RtyUDhPBODM0oRIEV0+E0nDuqDRv0mkBHuLNc7m0p4fXSd7HW84gCnmTn+A+HnAl4kShlbjSbzubtm4o8DuYQImLjg1wMd9U8sfLqRIVIUz4qsCgtQYelkWloAfmQ4212j4JrAz+ZSJJ3APeoo8j1MdQtMCjm8s=
+	t=1706050227; cv=none; b=CrrM7XqXWqCFvhXJR2U+fT2uRG3/Ou/zjXjZlZOy6O8KZ9e7bmyZBK/Dr5WU8KUciYOjSzMRSsSPHjVOtZvDVdkxWj3zDP+WA7gMrBynvhBTL4RAvJph7mTDzqO6L9bUlMBUDQQ6Omb00eXrNXt6A9chERH4r2qBidt8ib6xc7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706049411; c=relaxed/simple;
-	bh=i3m70T+5zzUlf58J0B9B0D1OflXZeDncmnHWK4wEutg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=BvjWNXSLPvA76SvJo21+SEeue7vz95MuV37hGAlWySwA1IyUlrMYYxLPJ5dYDj7bysgiUtVATu0FAa4jUbBtkhfth0kHl0nK/FIPVOBjLpp0lPS0kQTLXpgNJCn3I2mdZ3REopUGYeyFVxWXd4YdVoA7kMxYG+sOT81GihY0xJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dNLkpDN4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43FC1C433C7;
-	Tue, 23 Jan 2024 22:36:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706049410;
-	bh=i3m70T+5zzUlf58J0B9B0D1OflXZeDncmnHWK4wEutg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=dNLkpDN4H52ijtCLMWY2NA6XJSHRlAjeRammwO5Rm8QwmskNN21hKO/5tx9+lK34W
-	 kOmk6rkQUwb3MseYXDOzyskrEUIYN2Kdkl6+L/dHW8Bi6W6kmfPtKDrkRQjW7aWVxU
-	 zh/4js6IAEy6R31SrT5nMi++OHZcglvHJVUDsTy+Ex4cLxNE+nLC1532YEV/Ng7zvY
-	 bBOmENC4l7GTfh6QhncACTf5lzIlnd/AKDRlO/S4K0cEj7KvU4nd5z0aX0S6Eafafn
-	 QmEkV3OMLWUsjRuqAOHd/Jnpdn74/nlvpsCxMoO5bnVUWRb6+28YHQrHrIFJWvVzyT
-	 cHApnliKCa7Bg==
-Date: Tue, 23 Jan 2024 16:36:48 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Michael Schaller <michael@5challer.de>,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev,
-	"Maciej W . Rozycki" <macro@orcam.me.uk>,
-	Ajay Agarwal <ajayagarwal@google.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org,
-	regressions@leemhuis.info
-Subject: Re: PCI/ASPM locking regression in 6.7-final (was: Re: [PATCH]
- Revert "PCI/ASPM: Remove pcie_aspm_pm_state_change()")
-Message-ID: <20240123223648.GA331671@bhelgaas>
+	s=arc-20240116; t=1706050227; c=relaxed/simple;
+	bh=zA8h2hgvGIm7xCc7pkw2uK7so5TYfseQahtnnzFpgFg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X58hGNVOFYdcHob8YCZ3NyII0ncZcH4rjAuiChyoRfbVFdgaSUjBOwlIZ3wbX8/K+4Fsb5Le8wSKF7eLYcSkSfSLbo14NFY0jgEfJ8upjYBskyHw2KqpFyMzqUB6vjxWpVYMwpsJY83+wjdbwL2sn+jV2D/uypNM2i/0nVV/PRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BRvL/T77; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-429f53f0b0bso31901891cf.2;
+        Tue, 23 Jan 2024 14:50:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706050225; x=1706655025; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=70lzYBb2kXF1e/6clrMDT/m2Y9gDx8gUW5Ok8l0+bHs=;
+        b=BRvL/T77FjH3FvYeTT6FO+s7x+mDbaqr6XKqCr1vQhowmgUMy76osWt9YabuPdUOpZ
+         FvM3zp5FaI5i0GqbxKCT7p/kuIVzmNcUAScdaNjNwuIPIYq/BrPQmvisju6An7xknjJk
+         xh9/HGK6AnEqn3IDUHZ9BPmcR7VrW7tmfYbITxEmVhPdTEClr+7Ghscs8ratpdLfv/E0
+         vXTDMdBf6Tt67akNYntVN/7IUJEw9w867NtclVq4k63XbZxYWeyhFt3t9WrBHfQXbNmp
+         RxdBD0ffKS9utpV+KQBfx+XWhJF3re1O80qYg2NkTcOaVsZljmLJpbGemfxZqOrDnjDh
+         EVWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706050225; x=1706655025;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=70lzYBb2kXF1e/6clrMDT/m2Y9gDx8gUW5Ok8l0+bHs=;
+        b=PCtank9mtRYlsJhP7256YKK38agSHW8wPzKcKajYVGMlH3kduRnvM/2Rr1PlhXl6h/
+         Iv4D00hJeYCfmGJ8jJ0guvxXjoGIAQclFjjrbX6V5UhSbqSButSNTnpfonS+9AeWCAF3
+         NwlQOsKBWW2Y5u6E1nSny955jGlOo+UwFyqcJFF7jn5QZLEW4tJZFa7C0Q2VhONmBaEn
+         IFR3MT4f3QvUc00u/YA/5kjoT94ThHF4ooqbGL22P+DVP6Pvu4p2nTq1mWNDKAtYvsE3
+         zhSb+hMFoSwA8hbiLwyxoFxvCEAwXLKOxGIQgZz7s1AT7z7r9qfU71djOHWb9ieM8UZ9
+         VoNA==
+X-Gm-Message-State: AOJu0YzkXIoknq/WGI1FmajuJseknJmldBVVG8NaW6U6+CbDREgiaqVA
+	oLBWz3THpzByhM9EYS37IalnQBb9UZxdHDb4lrOu52+BjhG2iccl
+X-Google-Smtp-Source: AGHT+IHsqpQPGlTs+KXEhp1WVTBfD8OW9Rc1aNAYsdwz/JyF964LUi/EdJcqSpaYwrgcNJ/UU8e1nw==
+X-Received: by 2002:ac8:7e8d:0:b0:429:bfca:bed0 with SMTP id w13-20020ac87e8d000000b00429bfcabed0mr1489145qtj.137.1706050224679;
+        Tue, 23 Jan 2024 14:50:24 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id bp44-20020a05622a1bac00b004299f09e3aesm3863091qtb.51.2024.01.23.14.50.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Jan 2024 14:50:24 -0800 (PST)
+Message-ID: <840d1ee4-6ee2-4fb3-a604-cf25ab83d9fe@gmail.com>
+Date: Tue, 23 Jan 2024 14:50:21 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Za_2oKTUksw8Di5E@hovoldconsulting.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/414] 6.1.75-rc2 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20240123174510.372863442@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240123174510.372863442@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 23, 2024 at 06:25:52PM +0100, Johan Hovold wrote:
-> On Mon, Jan 22, 2024 at 12:26:15PM -0600, Bjorn Helgaas wrote:
-> > On Mon, Jan 22, 2024 at 11:53:35AM +0100, Johan Hovold wrote:
-> > > I never got a reply to this one so resending with updated Subject in
-> > > case it got buried in your inbox.
-> > 
-> > I did see it but decided it was better to fix the problem with resume
-> > causing an unintended reboot, even though fixing that meant breaking
-> > lockdep again, since I don't think we have user reports of the
-> > potential deadlock lockdep finds.
+On 1/23/24 09:47, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.75 release.
+> There are 414 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> That may be because I fixed the previous regression in 6.7-rc1 before
-> any users had a chance to hit the deadlock on Qualcomm platforms.
+> Responses should be made by Thu, 25 Jan 2024 17:44:16 +0000.
+> Anything received after that time might be too late.
 > 
-> I can easily trigger a deadlock on the X13s by instrumenting 6.7-final
-> with a delay to increase the race window.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.75-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
 > 
-> And any user hitting this occasionally is likely not going to be able to
-> track it down to this lock inversion (unless they have lockdep enabled).
-
-I agree, it's a problem we need to fix.
-
-> > 08d0cc5f3426 ("PCI/ASPM: Remove pcie_aspm_pm_state_change()") was a
-> > start at fixing other problems and also improving the ASPM style, so I
-> > hope somebody steps up to fix both it and the lockdep issue.  I
-> > haven't looked at it enough to have a preference for *how* to fix it.
+> thanks,
 > 
-> Ok, but since you were the one introducing the locking regression in
-> 6.7-final shouldn't you look into fixing it?
-> 
-> Especially if there were alternatives to restoring the offending commit
-> which would solve the underlying issue for the resume failure without
-> breaking other platforms.
+> greg k-h
 
-Did somebody propose an alternate patch?  If so, I missed it, but we
-could look at it now.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-> I don't want to spend more time on this if the offending commit could
-> simply be reverted.
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
-I don't quite follow.  By simply reverting, do you mean to revert
-f93e71aea6c6 ("Revert "PCI/ASPM: Remove
-pcie_aspm_pm_state_change()"")?  IIUC that would break Michael's
-machine again.
-
-Bjorn
 
