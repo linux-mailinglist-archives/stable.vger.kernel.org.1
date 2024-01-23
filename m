@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-15072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313F08383C4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDEFB83854C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC2431F2904C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 860DE2859AE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C741864CFA;
-	Tue, 23 Jan 2024 01:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EED14F613;
+	Tue, 23 Jan 2024 02:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+6g2g2h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLfU+iHI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B2164AB3;
-	Tue, 23 Jan 2024 01:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3AD83D69;
+	Tue, 23 Jan 2024 02:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975057; cv=none; b=qW24hI7MWlvPOkMa5uuWZ+9M9xAd0s4eCI6u6S8zSrQBy2Yg/MxL+Bhr01NbtaeGs0qDwRhm60pmBkIDg4lOCbqWmWdmLJYy/nbdI08JIPOWsULMb2MiV2Y4EVy6NmFwW256lWL2anGDyQ/Wpo80SJiCL+od4rMBQeoH0xUzrRI=
+	t=1705975792; cv=none; b=q5iniAvX/UUMGYn+O+FLnk/FEsxQkcCkd4TrWU/0mtMmn9qh9R9enqRtJPRjte50+dd+snFeOo8OKbIeuCyHVfcE4wdQK8SRMjvhYEDVJy8UkTt0SqDkm1zBFL/DTZToQlw+tcWfXLy2/yDXtb/29NV9mXrU1QyLbjO8PNMc+rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975057; c=relaxed/simple;
-	bh=Nxzg65ZT5OLhfqhDUJ1JzZRcvBM5DwVqZD+QnlmRqkE=;
+	s=arc-20240116; t=1705975792; c=relaxed/simple;
+	bh=cAqsoXe6r0Jo8H3UD2xHqLnQ4x6hRPsCzwlqWjpvmJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m3ykaYE2dtWNYFrhaSHSgHYmryXo5hGyW7kCYb2MZO1P6wmKHwOoX0i+VDbki/yiMUs0oFRIYHP1P3sSXIChQa8KxqytFffDAVME4ki48L4Sv3hGTUFrl6lCIyB4vpyoMaXgA8VZBZzfuqnBt/X8IY/aJfVLiWN/GlRm9AMzUgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+6g2g2h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D06EC43394;
-	Tue, 23 Jan 2024 01:57:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fNl3fn4ypamaEnQ1klCNvScS7H7hInALFtQTsoYHJyhsLQiXtP1yM9iVddhhJgX6oXQonPmFEdalsVcAM8fGN6i4vCCREZn+Mowh2bNegEfMTcvhOLSCX0v2TXHCfoQb5ARQElRatV9J94YefYyboJnvJfh34EkDMWZvQLadsqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLfU+iHI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F8DC433C7;
+	Tue, 23 Jan 2024 02:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975057;
-	bh=Nxzg65ZT5OLhfqhDUJ1JzZRcvBM5DwVqZD+QnlmRqkE=;
+	s=korg; t=1705975792;
+	bh=cAqsoXe6r0Jo8H3UD2xHqLnQ4x6hRPsCzwlqWjpvmJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I+6g2g2h9+s4lmteKvE0b625mIPz1s3srYhLl7MAPCVtEQZvTd6K6QTvJUbL7CfKr
-	 xJzUpsKm5d4d8wllE1RiZscYEO28TZtqoXApzEKImjSd/jv4hn0iKPj+K+SfkWnetc
-	 xOFkPOQA+nSlhsjaTXB4XCEsZ9OYBUgT7wu49Z7c=
+	b=kLfU+iHIZB+mzsea9Ul0WDuYC9FngirD38PuPdFqqlZ1o7D0Qk2/51kaSsbsNa6IV
+	 04vFrQK3v2aw8GKOUZD31SeJzn7HBC3pNxmIkTkMowi2tBYcCJ6IOLd0eLWMMey3T9
+	 KFqEoJR+5/STdzo3rD6czIQNLx8QMyVcKsEc4pD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Liam Girdwood <liam.r.girdwood@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 344/374] netfilter: nf_tables: reject invalid set policy
-Date: Mon, 22 Jan 2024 16:00:00 -0800
-Message-ID: <20240122235756.890179876@linuxfoundation.org>
+Subject: [PATCH 6.6 550/583] ASoC: SOF: ipc4-loader: remove the CPC check warnings
+Date: Mon, 22 Jan 2024 16:00:01 -0800
+Message-ID: <20240122235828.976300110@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +63,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 
-[ Upstream commit 0617c3de9b4026b87be12b0cb5c35f42c7c66fcb ]
+[ Upstream commit ab09fb9c629ed3aaea6a82467f08595dbc549726 ]
 
-Report -EINVAL in case userspace provides a unsupported set backend
-policy.
+Warnings related to missing data in firmware manifest have
+proven to be too verbose. This relates to description of
+DSP module cost expressed in cycles per chunk (CPC). If
+a matching value is not found in the manifest, kernel will
+pass a zero value and DSP firmware will use a conservative
+value in its place.
 
-Fixes: c50b960ccc59 ("netfilter: nf_tables: implement proper set selection")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Downgrade the warnings to dev_dbg().
+
+Fixes: d8a2c9879349 ("ASoC: SOF: ipc4-loader/topology: Query the CPC value from manifest")
+Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://msgid.link/r/20240115092209.7184-3-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ sound/soc/sof/ipc4-loader.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 54ff4d3bcd54..8a5fca1e61be 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4683,8 +4683,16 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
- 	}
+diff --git a/sound/soc/sof/ipc4-loader.c b/sound/soc/sof/ipc4-loader.c
+index eaa04762eb11..4d37e89b592a 100644
+--- a/sound/soc/sof/ipc4-loader.c
++++ b/sound/soc/sof/ipc4-loader.c
+@@ -479,13 +479,10 @@ void sof_ipc4_update_cpc_from_manifest(struct snd_sof_dev *sdev,
+ 		msg = "No CPC match in the firmware file's manifest";
  
- 	desc.policy = NFT_SET_POL_PERFORMANCE;
--	if (nla[NFTA_SET_POLICY] != NULL)
-+	if (nla[NFTA_SET_POLICY] != NULL) {
- 		desc.policy = ntohl(nla_get_be32(nla[NFTA_SET_POLICY]));
-+		switch (desc.policy) {
-+		case NFT_SET_POL_PERFORMANCE:
-+		case NFT_SET_POL_MEMORY:
-+			break;
-+		default:
-+			return -EOPNOTSUPP;
-+		}
-+	}
+ no_cpc:
+-	dev_warn(sdev->dev, "%s (UUID: %pUL): %s (ibs/obs: %u/%u)\n",
+-		 fw_module->man4_module_entry.name,
+-		 &fw_module->man4_module_entry.uuid, msg, basecfg->ibs,
+-		 basecfg->obs);
+-	dev_warn_once(sdev->dev, "Please try to update the firmware.\n");
+-	dev_warn_once(sdev->dev, "If the issue persists, file a bug at\n");
+-	dev_warn_once(sdev->dev, "https://github.com/thesofproject/sof/issues/\n");
++	dev_dbg(sdev->dev, "%s (UUID: %pUL): %s (ibs/obs: %u/%u)\n",
++		fw_module->man4_module_entry.name,
++		&fw_module->man4_module_entry.uuid, msg, basecfg->ibs,
++		basecfg->obs);
+ }
  
- 	if (nla[NFTA_SET_DESC] != NULL) {
- 		err = nf_tables_set_desc_parse(&desc, nla[NFTA_SET_DESC]);
+ const struct sof_ipc_fw_loader_ops ipc4_loader_ops = {
 -- 
 2.43.0
 
