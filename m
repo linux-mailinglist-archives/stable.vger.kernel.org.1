@@ -1,40 +1,51 @@
-Return-Path: <stable+bounces-15573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29FE839737
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 19:06:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07DA983975A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 19:11:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA68A1F2A80D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 18:06:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CAF61B29087
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 18:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9688120A;
-	Tue, 23 Jan 2024 18:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E2881214;
+	Tue, 23 Jan 2024 18:11:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="B7FhG8M2"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820E97FBC4;
-	Tue, 23 Jan 2024 18:06:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C73B61674;
+	Tue, 23 Jan 2024 18:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706033183; cv=none; b=fIrFz7+2Tck8NUEvrBy/FKYe+joHmDtNXXn041BnLXXJ7mZYs8LmYhBb8FlWFfzcJKUTMeO+z50DvNGqoQB5/j5Xy0Pyo7JqRCBIhLSn5W8RHwVsfiAWD23nMkFsIHdGU6gvOqmO6g4A32UZE9yaqSbVli+MnHAvwvrmTk5PEQ8=
+	t=1706033478; cv=none; b=oVLlOMRLGZt+BrRV5mWEhJN7Ni0S6CPyD59uGYGyeN/0hhaYa8vX8kwgd/UZztg79sMvWtEgrOp26bRm6izqSU0OZeQdq7/FeHUhom1+sHnaX496LLeeNBC9RKou1/l5tT5a/nHt9BQausanYAzea4b/cfRdcrGCJMHsVZ4PFUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706033183; c=relaxed/simple;
-	bh=mpukHrJGQfkSvb2i5G7GCeHO/07bhGWWUAkmqYst/Z0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lfn2ouovJOKYZxL8jlBO9M65zagNQqEghoe0rGyEp3pfviYMGK80zykzfSBRq0aQldnjF6pzxTcMzNWKJlUtAnc3D5ncpoYdeYR39OBrm22lh1VN6tXFSTRavcn1jX06il1/SgHJUOy9N6XowyPMT9YncAucfRnWrXwRgrxkYKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C8BCD1FB;
-	Tue, 23 Jan 2024 10:07:04 -0800 (PST)
-Received: from [10.57.77.165] (unknown [10.57.77.165])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8441B3F7F4;
-	Tue, 23 Jan 2024 10:06:18 -0800 (PST)
-Message-ID: <47364d76-4eb9-42fe-bbbf-dec483cda2af@arm.com>
-Date: Tue, 23 Jan 2024 18:06:17 +0000
+	s=arc-20240116; t=1706033478; c=relaxed/simple;
+	bh=c/DzI/EJtwNTt/biOBCBJkuhhi5FFYaQGErDt8KLdHg=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=uXJKnGALDzDFR5mJqGxT4LHt2FI+L+M5YTAetmKACdL2V9RcmZdXW5MktKtgbBobfbO8283JBr4W+3XvRVLE2OiAY+gSgWGVk8B390a34iFXQ4mE+PYhccUbgBKl1Kt8F07BHutxJiBTz4Go+97g/ME3rw5/z0foqV5RQKHe9uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=B7FhG8M2; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1706033473; x=1706638273; i=rwarsow@gmx.de;
+	bh=c/DzI/EJtwNTt/biOBCBJkuhhi5FFYaQGErDt8KLdHg=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+	b=B7FhG8M2wEcLcV/hVgxC2aiIVNG8comhnxzoTu4/ks7rBQze2xYjPJSOgESskViQ
+	 aTyNor96n8hg0N8trviIXPYmjUkfevz54RUQFNBU+n5kpLGn+LH4LgLkeOnWRkc/b
+	 aXxG8qkwtsdYJ/Apnm1cb2RjPTucleBLprd4k0oL5KVIY3Qch0tzVz2+LWHagbdPv
+	 215S0J8p8uZSuq3BoczbLBAWJZmbhcNJO6ZrVt/OGSWjpErvRaFz4SCX2vccFxlY1
+	 HJD44XqGsBlgPfCbK0RFg4bY4v43LRRNqDfdFruiRyg0cUPpMmc4Zh+Po3aMSk2xF
+	 OfJ5TQdxzOoeWQeNGQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.33.246]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MmlT2-1qmAo33d8o-00jstl; Tue, 23
+ Jan 2024 19:11:13 +0100
+Message-ID: <e7a25e06-c91d-40bc-8695-4e44cdf2ddc0@gmx.de>
+Date: Tue, 23 Jan 2024 19:11:13 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,142 +53,40 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm: thp_get_unmapped_area must honour topdown
- preference
-Content-Language: en-GB
-To: Yang Shi <shy828301@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Rik van Riel
- <riel@surriel.com>, Matthew Wilcox <willy@infradead.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240123171420.3970220-1-ryan.roberts@arm.com>
- <CAHbLzkpXNDJy+p96maDeYa7rrqHUG+Go6epdqeUog-0xabiGiw@mail.gmail.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <CAHbLzkpXNDJy+p96maDeYa7rrqHUG+Go6epdqeUog-0xabiGiw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.7 000/638] 6.7.2-rc2 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:NX+PSeyRHvFQjWXcdeESU+lS8VsWoYYshfQ4ZW45Vw8lCJovVjv
+ flkF7RUTqZCPYqwXGDHhmDOshdIwJY6H1tn1lcB1567HHyI2NLPFDAsMyacIDHa674CnPbp
+ llIAJXeJ0y0SiP/mUWjwlpJdLvTTB6IVrvlaILNWbHjeGlwloUJoaniPoIKrst6GV+8zXW4
+ qVap9FgP86xgro4EYkyyg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:pehPlRCHpn8=;CT5q0Z2BbHFw693tb0lIaJmuszb
+ 91cZwZvjvwX6FuG9b9PAxzdCEtKQdHioBAS34P0st8hwpq80Wjg0QNBdtDY7COa/8Y2GIo89C
+ vhbgmV1h3kuekI89ish2XmsvKUmw8Pzvmrr29KK6G1yAuSgRqm+Z8Yhx2VVqGiXAy397pRsT0
+ 5TFIu8nv80B6wHli7gH1HZSJ/p67xu6nhv9kRq+sHBfXZr6iJRgoL8r8jYUeAyJik7oP0JaQJ
+ 0KiNDYYEhu1XpatGH4c7Y8pEAIK2M1IkCnhGBrddXggoZ3TQ03dec+5n5bAwhI3SldAxvXaFF
+ XfQoQm6wI3HD3gxHWh8PYfHICWBmmGP6Y8AMTE7YmALDkFOmCNnev60ylOdE5AXGbD1tvljHo
+ jel9PY4WcILXO6nS65Z28vEWX3BHAvm0EonQ7XidkZXkLvPy2QKxntPFSRNnsFCzFPBN1A3nj
+ ZiPSBBZpP9SfEfPvT5Qxe3+LXI84NhA9sSg0YInH1xym4VAEgqBRjYx137xxc/0OzO2Qw8Azn
+ Q3qfeoMDgyBafVaUWmor7ZiEHh7UKT4MPo+5BFJk6aiWPTgKKA/idwrjgltaaw4uGQwHKT6AC
+ jhPIq8RvmzMRctO7YNXdMhk33Jn4GtK/Y3JqNQV1+iAmbu8BFjkNW8y0e9ZAwN5QFq9P1pMJU
+ eBm9l7FqxxWK+hglfRcGybsXV2KkWMt+KwfNtHv9V/1W62dDDMjn4MZjIHEsAKhQYrqfw+2ZD
+ SzIzPNhwl79rCFfqUR5vwCud4snjd5QnWxPLui8I2CSwP3G9eGxtTiql8KUJxKSRvAblRO6or
+ p2fG27PdUgF40hXrMlSP5ar9VQqWUF1Gn9kSCvqnTIQ712/ANw4zM2O11I0/CSyiAY+NRysMb
+ HaV2eiMXfYSzT0WOdRPcAbz1bkYQWDOMz5C4xj1iyIGRZF8jq2mZt8aEtUUEX+ETnfhTtAwg4
+ MJsy6g==
 
-On 23/01/2024 17:52, Yang Shi wrote:
-> On Tue, Jan 23, 2024 at 9:14 AM Ryan Roberts <ryan.roberts@arm.com> wrote:
->>
->> The addition of commit efa7df3e3bb5 ("mm: align larger anonymous
->> mappings on THP boundaries") caused the "virtual_address_range" mm
->> selftest to start failing on arm64. Let's fix that regression.
->>
->> There were 2 visible problems when running the test; 1) it takes much
->> longer to execute, and 2) the test fails. Both are related:
->>
->> The (first part of the) test allocates as many 1GB anonymous blocks as
->> it can in the low 256TB of address space, passing NULL as the addr hint
->> to mmap. Before the faulty patch, all allocations were abutted and
->> contained in a single, merged VMA. However, after this patch, each
->> allocation is in its own VMA, and there is a 2M gap between each VMA.
->> This causes the 2 problems in the test: 1) mmap becomes MUCH slower
->> because there are so many VMAs to check to find a new 1G gap. 2) mmap
->> fails once it hits the VMA limit (/proc/sys/vm/max_map_count). Hitting
->> this limit then causes a subsequent calloc() to fail, which causes the
->> test to fail.
->>
->> The problem is that arm64 (unlike x86) selects
->> ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT. But __thp_get_unmapped_area()
->> allocates len+2M then always aligns to the bottom of the discovered gap.
->> That causes the 2M hole.
->>
->> Fix this by detecting cases where we can still achive the alignment goal
->> when moved to the top of the allocated area, if configured to prefer
->> top-down allocation.
->>
->> While we are at it, fix thp_get_unmapped_area's use of pgoff, which
->> should always be zero for anonymous mappings. Prior to the faulty
->> change, while it was possible for user space to pass in pgoff!=0, the
->> old mm->get_unmapped_area() handler would not use it.
->> thp_get_unmapped_area() does use it, so let's explicitly zero it before
->> calling the handler. This should also be the correct behavior for arches
->> that define their own get_unmapped_area() handler.
->>
->> Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries")
->> Closes: https://lore.kernel.org/linux-mm/1e8f5ac7-54ce-433a-ae53-81522b2320e1@arm.com/
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> 
-> Thanks for debugging this. Looks good to me. Reviewed-by: Yang Shi
-> <shy828301@gmail.com>
+Hi Greg
 
-Thanks!
+no regressions here on x86_64 (Intel Rocket Lake: i5-11400)
 
-> 
->> ---
->>
->> Applies on top of v6.8-rc1. Would be good to get this into the next -rc.
-> 
-> This may have a conflict with my fix (" mm: huge_memory: don't force
-> huge page alignment on 32 bit") which is on mm-unstable now.
+Thanks
 
-It applies cleanly to mm-unstable. You change modifies the top part of
-__thp_get_unmapped_area() and mine modifies the bottom :)
-
-> 
->>
->> Thanks,
->> Ryan
->>
->>  mm/huge_memory.c | 10 ++++++++--
->>  mm/mmap.c        |  6 ++++--
->>  2 files changed, 12 insertions(+), 4 deletions(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 94ef5c02b459..8c66f88e71e9 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -809,7 +809,7 @@ static unsigned long __thp_get_unmapped_area(struct file *filp,
->>  {
->>         loff_t off_end = off + len;
->>         loff_t off_align = round_up(off, size);
->> -       unsigned long len_pad, ret;
->> +       unsigned long len_pad, ret, off_sub;
->>
->>         if (off_end <= off_align || (off_end - off_align) < size)
->>                 return 0;
->> @@ -835,7 +835,13 @@ static unsigned long __thp_get_unmapped_area(struct file *filp,
->>         if (ret == addr)
->>                 return addr;
->>
->> -       ret += (off - ret) & (size - 1);
->> +       off_sub = (off - ret) & (size - 1);
->> +
->> +       if (current->mm->get_unmapped_area == arch_get_unmapped_area_topdown &&
->> +           !off_sub)
->> +               return ret + size;
->> +
->> +       ret += off_sub;
->>         return ret;
->>  }
->>
->> diff --git a/mm/mmap.c b/mm/mmap.c
->> index b78e83d351d2..d89770eaab6b 100644
->> --- a/mm/mmap.c
->> +++ b/mm/mmap.c
->> @@ -1825,15 +1825,17 @@ get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
->>                 /*
->>                  * mmap_region() will call shmem_zero_setup() to create a file,
->>                  * so use shmem's get_unmapped_area in case it can be huge.
->> -                * do_mmap() will clear pgoff, so match alignment.
->>                  */
->> -               pgoff = 0;
->>                 get_area = shmem_get_unmapped_area;
->>         } else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
->>                 /* Ensures that larger anonymous mappings are THP aligned. */
->>                 get_area = thp_get_unmapped_area;
->>         }
->>
->> +       /* Always treat pgoff as zero for anonymous memory. */
->> +       if (!file)
->> +               pgoff = 0;
->> +
->>         addr = get_area(file, addr, len, pgoff, flags);
->>         if (IS_ERR_VALUE(addr))
->>                 return addr;
->> --
->> 2.25.1
->>
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
 
