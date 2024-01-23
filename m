@@ -1,104 +1,133 @@
-Return-Path: <stable+bounces-15591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04A4839C00
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 23:20:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2255E839C04
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 23:22:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 676AE1F2A4CD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 22:20:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FF191F2A218
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 22:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885B14F20E;
-	Tue, 23 Jan 2024 22:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C754F20D;
+	Tue, 23 Jan 2024 22:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2yDW+g0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nCuDScnk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BBE525B;
-	Tue, 23 Jan 2024 22:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D8D3FB32;
+	Tue, 23 Jan 2024 22:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706048436; cv=none; b=E1wlhhtsfiIAuJt/wfQrlt91iMaXWjK0oJ/63rhJ64nKUsF9dGBfeI82KL/4WlZSSGJngpsnYc2sj56j4h0PlyMm1dL8AEPgm81RYdoNyhJqfRoxAzxkm1r0yJVto598cqNFE5SKfaEfkyuhFVDtZOwqIqj6MmMZfDdHHzYOsyM=
+	t=1706048527; cv=none; b=nDx33MtTWN5PdnOidlr8ouz5ngw1WjKjJCpgCev4mBYSjHpJORUt8XX8cyt3KPQwzWJzfuR1JNHMQMOc4P+n1s+KTI7kdkBbJUK3CbP31OwMV3TsbVovzfzRWqHPAosH8d0IPKBApgvJbgGvszS4xP4kuZpmFLG+kAwF5aiMvvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706048436; c=relaxed/simple;
-	bh=QKCxb0axNEVzTfzpxzzyg4pfr6WqDHOVtYtpncNdvjY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K+iPPb5MFwkNiotesiRd0GWVeuET5/UxcT/Ds4+3fvfjcVuauQ3XiTHtbOVlGlq0xFpmGXzmFB9dY23T+U08kVTVKq1G6jIMTPJrvy4RLT+dOHvqJVI14xbJiPMZE7uvJ75AuIr+hND1LTrZ7Je2kePSxUOCPMLeI+I5D9B8H6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2yDW+g0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F04CC433F1;
-	Tue, 23 Jan 2024 22:20:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706048435;
-	bh=QKCxb0axNEVzTfzpxzzyg4pfr6WqDHOVtYtpncNdvjY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f2yDW+g0ktQNn9brNx3h0uxnM8EO4VJCZCdrqU00/fOJ/7BE/wB/yOFtZFZtZNfQA
-	 YXG9500gf+EM4CetK3qPaenda1CoZ7mAy86QBtpXBMgq6Q6EsHjNUKSNMOt14ovwn2
-	 sM1M9Dsu+jXp++K6lP3WjFv/WT3mZbz64haaXbFg=
-Date: Tue, 23 Jan 2024 14:20:35 -0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Dan Moulding <dan@danm.net>
-Cc: junxiao.bi@oracle.com, logang@deltatee.com, patches@lists.linux.dev,
-	song@kernel.org, stable@vger.kernel.org, yukuai3@huawei.com
-Subject: Re: [PATCH 6.7 438/641] md: bypass block throttle for superblock
- update
-Message-ID: <2024012316-phonebook-shrewdly-31f2@gregkh>
-References: <2024012320-coaster-ensnare-237c@gregkh>
- <20240123213515.7535-1-dan@danm.net>
+	s=arc-20240116; t=1706048527; c=relaxed/simple;
+	bh=EzwRwlhyI9kA9Jd55DwG+gIrmMJ8fBPSINqDqU0+1SM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cBUFDB23saf0YPzcx0dajlL0KxxLUh8H2k69ELqHmdOVX4z62pRhRY/QU2QHKjTLXFglXGTuQ6vQ0pxS6CsnTVsX+h4JSB+PrwRI4FMp3zIPBTKC2CY0u1Ph5NYZrTj8Vpu24aTA6YVc+UIZfuUJsonq2+syKtMekInu8w63cv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nCuDScnk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE971C433F1;
+	Tue, 23 Jan 2024 22:22:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706048527;
+	bh=EzwRwlhyI9kA9Jd55DwG+gIrmMJ8fBPSINqDqU0+1SM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=nCuDScnk5OMkc0SF7hb4kstl87dZz28o9lnN91iCFE15A3nNkVSGiauCYJV+ETIs0
+	 0fj+9tD1d4ls045IQABfYhs8xknV49SYHXeeuBBcoya7hnt4b6RWJ8OqtNvaCXmgxw
+	 OhODmj+Z3H2wZxjOSCPIJtzfwCS6/BI/TvcZvwvvPRynLwLsVbrMC3x3DeQJ12g+wP
+	 a72oX3WFJpXP+4SyhQiqawXqfieVdc4cQp8WpCiIpwUkkBKQwjZQFmyx6gKJaRY9oD
+	 k9dp+iNwkRVQ7fmKr3flfJAYL12B2Uel4dw648sHh2W3lQ3jp+HdPsd5zOJagr7GPn
+	 hCq1P1S2Tj21g==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-50f1c524010so5248966e87.3;
+        Tue, 23 Jan 2024 14:22:06 -0800 (PST)
+X-Gm-Message-State: AOJu0Yy8B8txMzYH7M6+XZfxnEm49N3D2qqFfi4lCMNpNXBACuwT6F+h
+	iw+00r2aYe4+Rtw6UnzcTh9cp9lOyInzvFJBrMECXNoQYvD+5yoYm+64cY6/KFipYiOFjyuaLMT
+	ghyOzd3jzyssmjIaJLO9t/jXBMQQ=
+X-Google-Smtp-Source: AGHT+IF1CUodDtCMAW+NVQPE7jGtYRkmWBnHNrxZXeGF1ISeA10pmyI6sPx3p8WupA3heZ8MeYXxHsOu3FAUZ9mxDAM=
+X-Received: by 2002:a05:6512:138f:b0:50e:f724:5b0 with SMTP id
+ fc15-20020a056512138f00b0050ef72405b0mr1723376lfb.97.1706048525166; Tue, 23
+ Jan 2024 14:22:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240123213515.7535-1-dan@danm.net>
+References: <CAPhsuW7-r=UAO8f7Ok08vCx2kdVx6mZADyZ-LknNE8csnX+L8g@mail.gmail.com>
+ <20240123215307.8083-1-dan@danm.net>
+In-Reply-To: <20240123215307.8083-1-dan@danm.net>
+From: Song Liu <song@kernel.org>
+Date: Tue, 23 Jan 2024 14:21:53 -0800
+X-Gmail-Original-Message-ID: <CAPhsuW7KMLHHrcyZhKS_m_fwWSKM66VFXaLj9fmY+ab5Mu3pvA@mail.gmail.com>
+Message-ID: <CAPhsuW7KMLHHrcyZhKS_m_fwWSKM66VFXaLj9fmY+ab5Mu3pvA@mail.gmail.com>
+Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system;
+ successfully bisected
+To: Dan Moulding <dan@danm.net>
+Cc: gregkh@linuxfoundation.org, junxiao.bi@oracle.com, 
+	linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org, 
+	regressions@lists.linux.dev, stable@vger.kernel.org, yukuai1@huaweicloud.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 23, 2024 at 02:35:15PM -0700, Dan Moulding wrote:
-> > Or is the regression also in Linus's tree and both of these should be
-> > reverted/dropped in order to keep systems ok until the bug is fixed in
-> > Linus's tree?
-> 
-> The regression is in Linus' tree and appeared with commit
-> bed9e27baf52. I was operating under the assumption that the two
-> commits (bed9e27baf52 and d6e035aad6c0) are intended to exist as a
-> pair that should go together (the commit messages led me to believe
-> so).
-> 
-> The commit that caused the regression has already appeared in the
-> 6.7.1 release (but without the second commit). Since I thought the two
-> commits are a pair and the regression needs to be reverted, that the
-> second commit should not be backported for 6.7.2 until the issue is
-> properly resolved in Linus' tree.
-> 
-> But it sounds like Song Liu is saying that the second commit
-> (d6e035aad6c0) should actually be fine to accept on its own even
-> though the other one needs to be reverted, and is not really dependent
-> on the one that caused the regression [1]. So maybe it's fine to pick
-> it up for 6.7.2.
-> 
-> I can say that I have tested 6.7.1 plus just commit d6e035aad6c0 and I
-> cannot reproduce the regression with it. But 6.7.1 plus both commits,
-> I can still reproduce the regression. So bed9e27baf52 definitely needs
-> to be reverted to eliminate the regression.
-> 
-> I hope that clears things up some.
+Hi Dan,
 
-Nope, not at all :)
+On Tue, Jan 23, 2024 at 1:53=E2=80=AFPM Dan Moulding <dan@danm.net> wrote:
+>
+> > I think we still want d6e035aad6c0 in 6.7.2. We may need to revert
+> > 0de40f76d567 on top of that. Could you please test it out? (6.7.1 +
+> > d6e035aad6c0 + revert 0de40f76d567.
+>
+> I was operating under the assumption that the two commits were
+> intended to exist as a pair (the one reverts the old fix, because the
+> next commit has what is supposed to be a better fix). But since the
+> regression still exists, even with both patches applied, the old fix
+> must be reapplied to resolve the current regression.
+>
+> But, as you've requested, I have tested 6.7.1 + d6e035aad6c0 + revert
+> 0de40f76d567 and it seems fine. So I have no issue if you think it
+> makes sense to accept d6e035aad6c0 on its own, even though it would
+> break up the pair of commits.
 
-For now, I'm going to keep both commits in the stable trees, as that
-matches what is in Linus's tree as this seems to be hard to reproduce
-and I haven't seen any other reports of issues.  Being in sync with what
-is in Linus's tree is almost always good, that way if a fix happens
-there, we can easily backport it to the stable trees too.
+Thanks for running the test!
 
-So unless the maintainer(s) say otherwise, I'll just let this be.
+>
+> > OTOH, I am not able to reproduce the issue. Could you please help
+> > get more information:
+> >   cat /proc/mdstat
+>
+> Here is /proc/mdstat from one of the systems where I can reproduce it:
+>
+>     $ cat /proc/mdstat
+>     Personalities : [raid6] [raid5] [raid4]
+>     md0 : active raid5 dm-0[4](J) sdc[3] sda[0] sdb[1]
+>           3906764800 blocks super 1.2 level 5, 512k chunk, algorithm 2 [3=
+/3] [UUU]
+>
+>     unused devices: <none>
+>
+> dm-0 is an LVM logical volume which is backed by an NVMe SSD. The
+> others are run-of-the-mill SATA SSDs.
+>
+> >  profile (perf, etc.) of the md thread
+>
+> I might need a little more pointing in the direction of what exactly
+> to look for and under what conditions (i.e. should I run perf while
+> the thread is stuck in the 100% CPU loop? what kind of report should I
+> ask perf for?). Also, are there any debug options I could enable in
+> the kernel configuration that might help gather more information?
+> Maybe something in debugfs? I currently get absolutely no warnings or
+> errors in dmesg when the problem occurs.
 
-thanks,
+This appears the md thread hit some infinite loop, so I would like to
+know what it is doing. We can probably get the information with the
+perf tool, something like:
 
-greg k-h
+perf record -a
+perf report
+
+Thanks,
+Song
 
