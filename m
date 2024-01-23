@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FBDA838543
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EB618383DF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DF641C2362F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11BC329577E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80667E76C;
-	Tue, 23 Jan 2024 02:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5DD657BD;
+	Tue, 23 Jan 2024 01:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NF0r+al/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0BTx8BL/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A692F7E769;
-	Tue, 23 Jan 2024 02:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7ED657B0;
+	Tue, 23 Jan 2024 01:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975781; cv=none; b=GG6+jtotcN5z/9rOGALv/iNUVuiekzslA0ToeiZ79PouYhZYYEhEd6HLmaVNeV9TPJ07N0qiYo9EEwxRs8OMKE6EdBv7t+eJYpxuSyXDSWjxtqPZiT5/ZROPWRcJo4V0hE/+X4RZfYAURf00A1+y0QsB7E6yvTF8HgcpFJ5floI=
+	t=1705975085; cv=none; b=Dqd9R4Ti3KQD9lH5KRusIJdklJRLxtnpAGVS41Bsestwgx4q0ow+sdiMDB3o7g/M690BEdIb1ZY5FQI+uJ5X2Qh582lcRlrLrYsg6r1O/RNfCyAqiwwh9AWMqUgOf/IfdcxUjJD96NltvYHCRJQz+nC4UxsRyAI/3r6weC52U+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975781; c=relaxed/simple;
-	bh=8nt+uMsPCTOCECOTJ1Km9cYVuOr2iZwhCP7jYGjMOxM=;
+	s=arc-20240116; t=1705975085; c=relaxed/simple;
+	bh=td9JhF917QBLWPpkwLjWdakPwP7i9SPFMGYQtY25G4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/sZB76yflxx4UByR6mxMxW8RcLb/uw+Kd7txGYjNoWXk5AQWGWSQQwaA43mLOuYGrw3XUw0UL0uCC/3WGB+6UGEtXKEUgYOGkmhkNnHukwFH53OZLErPieSwVgXNujo+5cmc0DCCMIGV/8jXZs1k4IFsC2EqqmzwhgfQuFhBoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NF0r+al/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C38CC433F1;
-	Tue, 23 Jan 2024 02:09:41 +0000 (UTC)
+	 MIME-Version; b=JWpPsUT6gk/sq2Eg1fzQ8QCnuCTf+W0ezGrlcKZNaCVMW5Sj6so3F06ARnCnIl4Q91GyVW+sZLjkKyxmfdLIjgIv7yW9hmGZy17XSfF1LUZmHcxyXaDq8AtSp1mjpsz7t5E26kd1bhmVaZlCti3Ry303huNfFsLEmUmzv+FF3n8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0BTx8BL/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C87C433C7;
+	Tue, 23 Jan 2024 01:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975781;
-	bh=8nt+uMsPCTOCECOTJ1Km9cYVuOr2iZwhCP7jYGjMOxM=;
+	s=korg; t=1705975085;
+	bh=td9JhF917QBLWPpkwLjWdakPwP7i9SPFMGYQtY25G4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NF0r+al/NgtKYRAAu2Ey0U1LgdoGIm54WL9ILHBZTsWcuhA2pNedIyFmySAVEc+JG
-	 Z7fQ7bAVYHv7fRY9Vfl9YvqCzdF/ix7sa+YFabYSyBhm/kjeWX0HqO9HvElX24Bwol
-	 meigq9uEmaF9s2tQcX7PWVvrciiGyr6Av93GapIc=
+	b=0BTx8BL/6fny85nXOed1H2aaZxtnSXeQhTBWj4d+mlYvKRINU+rgPOWEVj6DtgT/1
+	 ED1MljqDQ0gGEy9hzwq+4c9FIfxTdrsHU82jm7JuBO9AaAOprcYXAgX4QESyaQIEdi
+	 z2rPBUWIpVcU+BbHtnmThXPe4tNJzsfTCjjnPdNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 564/583] netfilter: propagate net to nf_bridge_get_physindev
+Subject: [PATCH 5.15 359/374] mlxsw: spectrum: Use bitmap_zalloc() when applicable
 Date: Mon, 22 Jan 2024 16:00:15 -0800
-Message-ID: <20240122235829.422635475@linuxfoundation.org>
+Message-ID: <20240122235757.439400575@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,191 +63,207 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit a54e72197037d2c9bfcd70dddaac8c8ccb5b41ba ]
+[ Upstream commit 2c087dfcc9d5e7e8557d217f01f58ba42d1ddbf1 ]
 
-This is a preparation patch for replacing physindev with physinif on
-nf_bridge_info structure. We will use dev_get_by_index_rcu to resolve
-device, when needed, and it requires net to be available.
+Use 'bitmap_zalloc()' to simplify code, improve the semantic and avoid
+some open-coded arithmetic in allocator arguments.
 
-Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 9874808878d9 ("netfilter: bridge: replace physindev with physinif in nf_bridge_info")
+Also change the corresponding 'kfree()' into 'bitmap_free()' to keep
+consistency.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 483ae90d8f97 ("mlxsw: spectrum_acl_tcam: Fix stack corruption")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netfilter_bridge.h           |  2 +-
- net/ipv4/netfilter/nf_reject_ipv4.c        |  2 +-
- net/ipv6/netfilter/nf_reject_ipv6.c        |  2 +-
- net/netfilter/ipset/ip_set_hash_netiface.c |  8 ++++----
- net/netfilter/nf_log_syslog.c              | 13 +++++++------
- net/netfilter/nf_queue.c                   |  2 +-
- net/netfilter/xt_physdev.c                 |  2 +-
- 7 files changed, 16 insertions(+), 15 deletions(-)
+ .../ethernet/mellanox/mlxsw/spectrum_acl_atcam.c  |  8 +++-----
+ .../ethernet/mellanox/mlxsw/spectrum_acl_tcam.c   | 15 ++++++---------
+ .../net/ethernet/mellanox/mlxsw/spectrum_cnt.c    |  9 +++------
+ .../ethernet/mellanox/mlxsw/spectrum_switchdev.c  | 11 ++++-------
+ 4 files changed, 16 insertions(+), 27 deletions(-)
 
-diff --git a/include/linux/netfilter_bridge.h b/include/linux/netfilter_bridge.h
-index f980edfdd278..e927b9a15a55 100644
---- a/include/linux/netfilter_bridge.h
-+++ b/include/linux/netfilter_bridge.h
-@@ -56,7 +56,7 @@ static inline int nf_bridge_get_physoutif(const struct sk_buff *skb)
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_atcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_atcam.c
+index ded4cf658680..4b713832fdd5 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_atcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_atcam.c
+@@ -119,7 +119,6 @@ mlxsw_sp_acl_atcam_region_12kb_init(struct mlxsw_sp_acl_atcam_region *aregion)
+ {
+ 	struct mlxsw_sp *mlxsw_sp = aregion->region->mlxsw_sp;
+ 	struct mlxsw_sp_acl_atcam_region_12kb *region_12kb;
+-	size_t alloc_size;
+ 	u64 max_lkey_id;
+ 	int err;
+ 
+@@ -131,8 +130,7 @@ mlxsw_sp_acl_atcam_region_12kb_init(struct mlxsw_sp_acl_atcam_region *aregion)
+ 	if (!region_12kb)
+ 		return -ENOMEM;
+ 
+-	alloc_size = BITS_TO_LONGS(max_lkey_id) * sizeof(unsigned long);
+-	region_12kb->used_lkey_id = kzalloc(alloc_size, GFP_KERNEL);
++	region_12kb->used_lkey_id = bitmap_zalloc(max_lkey_id, GFP_KERNEL);
+ 	if (!region_12kb->used_lkey_id) {
+ 		err = -ENOMEM;
+ 		goto err_used_lkey_id_alloc;
+@@ -149,7 +147,7 @@ mlxsw_sp_acl_atcam_region_12kb_init(struct mlxsw_sp_acl_atcam_region *aregion)
+ 	return 0;
+ 
+ err_rhashtable_init:
+-	kfree(region_12kb->used_lkey_id);
++	bitmap_free(region_12kb->used_lkey_id);
+ err_used_lkey_id_alloc:
+ 	kfree(region_12kb);
+ 	return err;
+@@ -161,7 +159,7 @@ mlxsw_sp_acl_atcam_region_12kb_fini(struct mlxsw_sp_acl_atcam_region *aregion)
+ 	struct mlxsw_sp_acl_atcam_region_12kb *region_12kb = aregion->priv;
+ 
+ 	rhashtable_destroy(&region_12kb->lkey_ht);
+-	kfree(region_12kb->used_lkey_id);
++	bitmap_free(region_12kb->used_lkey_id);
+ 	kfree(region_12kb);
  }
  
- static inline struct net_device *
--nf_bridge_get_physindev(const struct sk_buff *skb)
-+nf_bridge_get_physindev(const struct sk_buff *skb, struct net *net)
- {
- 	const struct nf_bridge_info *nf_bridge = nf_bridge_info_get(skb);
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index 7cccc41dd69c..31f7f4c3acc3 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -36,7 +36,6 @@ int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
+ 	u64 max_tcam_regions;
+ 	u64 max_regions;
+ 	u64 max_groups;
+-	size_t alloc_size;
+ 	int err;
  
-diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
-index f33aeab9424f..297000b05f18 100644
---- a/net/ipv4/netfilter/nf_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nf_reject_ipv4.c
-@@ -289,7 +289,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	 * build the eth header using the original destination's MAC as the
- 	 * source, and send the RST packet directly.
- 	 */
--	br_indev = nf_bridge_get_physindev(oldskb);
-+	br_indev = nf_bridge_get_physindev(oldskb, net);
- 	if (br_indev) {
- 		struct ethhdr *oeth = eth_hdr(oldskb);
+ 	mutex_init(&tcam->lock);
+@@ -52,15 +51,13 @@ int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
+ 	if (max_tcam_regions < max_regions)
+ 		max_regions = max_tcam_regions;
  
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index 58ccdb08c0fd..0a5ef7abf583 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -354,7 +354,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	 * build the eth header using the original destination's MAC as the
- 	 * source, and send the RST packet directly.
- 	 */
--	br_indev = nf_bridge_get_physindev(oldskb);
-+	br_indev = nf_bridge_get_physindev(oldskb, net);
- 	if (br_indev) {
- 		struct ethhdr *oeth = eth_hdr(oldskb);
+-	alloc_size = sizeof(tcam->used_regions[0]) * BITS_TO_LONGS(max_regions);
+-	tcam->used_regions = kzalloc(alloc_size, GFP_KERNEL);
++	tcam->used_regions = bitmap_zalloc(max_regions, GFP_KERNEL);
+ 	if (!tcam->used_regions)
+ 		return -ENOMEM;
+ 	tcam->max_regions = max_regions;
  
-diff --git a/net/netfilter/ipset/ip_set_hash_netiface.c b/net/netfilter/ipset/ip_set_hash_netiface.c
-index 95aeb31c60e0..30a655e5c4fd 100644
---- a/net/netfilter/ipset/ip_set_hash_netiface.c
-+++ b/net/netfilter/ipset/ip_set_hash_netiface.c
-@@ -138,9 +138,9 @@ hash_netiface4_data_next(struct hash_netiface4_elem *next,
- #include "ip_set_hash_gen.h"
+ 	max_groups = MLXSW_CORE_RES_GET(mlxsw_sp->core, ACL_MAX_GROUPS);
+-	alloc_size = sizeof(tcam->used_groups[0]) * BITS_TO_LONGS(max_groups);
+-	tcam->used_groups = kzalloc(alloc_size, GFP_KERNEL);
++	tcam->used_groups = bitmap_zalloc(max_groups, GFP_KERNEL);
+ 	if (!tcam->used_groups) {
+ 		err = -ENOMEM;
+ 		goto err_alloc_used_groups;
+@@ -76,9 +73,9 @@ int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
+ 	return 0;
  
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
--static const char *get_physindev_name(const struct sk_buff *skb)
-+static const char *get_physindev_name(const struct sk_buff *skb, struct net *net)
- {
--	struct net_device *dev = nf_bridge_get_physindev(skb);
-+	struct net_device *dev = nf_bridge_get_physindev(skb, net);
- 
- 	return dev ? dev->name : NULL;
+ err_tcam_init:
+-	kfree(tcam->used_groups);
++	bitmap_free(tcam->used_groups);
+ err_alloc_used_groups:
+-	kfree(tcam->used_regions);
++	bitmap_free(tcam->used_regions);
+ 	return err;
  }
-@@ -177,7 +177,7 @@ hash_netiface4_kadt(struct ip_set *set, const struct sk_buff *skb,
  
- 	if (opt->cmdflags & IPSET_FLAG_PHYSDEV) {
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
--		const char *eiface = SRCDIR ? get_physindev_name(skb) :
-+		const char *eiface = SRCDIR ? get_physindev_name(skb, xt_net(par)) :
- 					      get_physoutdev_name(skb);
+@@ -89,8 +86,8 @@ void mlxsw_sp_acl_tcam_fini(struct mlxsw_sp *mlxsw_sp,
  
- 		if (!eiface)
-@@ -395,7 +395,7 @@ hash_netiface6_kadt(struct ip_set *set, const struct sk_buff *skb,
+ 	mutex_destroy(&tcam->lock);
+ 	ops->fini(mlxsw_sp, tcam->priv);
+-	kfree(tcam->used_groups);
+-	kfree(tcam->used_regions);
++	bitmap_free(tcam->used_groups);
++	bitmap_free(tcam->used_regions);
+ }
  
- 	if (opt->cmdflags & IPSET_FLAG_PHYSDEV) {
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
--		const char *eiface = SRCDIR ? get_physindev_name(skb) :
-+		const char *eiface = SRCDIR ? get_physindev_name(skb, xt_net(par)) :
- 					      get_physoutdev_name(skb);
+ int mlxsw_sp_acl_tcam_priority_get(struct mlxsw_sp *mlxsw_sp,
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_cnt.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_cnt.c
+index b65b93a2b9bc..fc2257753b9b 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_cnt.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_cnt.c
+@@ -122,7 +122,6 @@ int mlxsw_sp_counter_pool_init(struct mlxsw_sp *mlxsw_sp)
+ 	unsigned int sub_pools_count = ARRAY_SIZE(mlxsw_sp_counter_sub_pools);
+ 	struct devlink *devlink = priv_to_devlink(mlxsw_sp->core);
+ 	struct mlxsw_sp_counter_pool *pool;
+-	unsigned int map_size;
+ 	int err;
  
- 		if (!eiface)
-diff --git a/net/netfilter/nf_log_syslog.c b/net/netfilter/nf_log_syslog.c
-index c66689ad2b49..58402226045e 100644
---- a/net/netfilter/nf_log_syslog.c
-+++ b/net/netfilter/nf_log_syslog.c
-@@ -111,7 +111,8 @@ nf_log_dump_packet_common(struct nf_log_buf *m, u8 pf,
- 			  unsigned int hooknum, const struct sk_buff *skb,
- 			  const struct net_device *in,
- 			  const struct net_device *out,
--			  const struct nf_loginfo *loginfo, const char *prefix)
-+			  const struct nf_loginfo *loginfo, const char *prefix,
-+			  struct net *net)
+ 	pool = kzalloc(struct_size(pool, sub_pools, sub_pools_count),
+@@ -143,9 +142,7 @@ int mlxsw_sp_counter_pool_init(struct mlxsw_sp *mlxsw_sp)
+ 	devlink_resource_occ_get_register(devlink, MLXSW_SP_RESOURCE_COUNTERS,
+ 					  mlxsw_sp_counter_pool_occ_get, pool);
+ 
+-	map_size = BITS_TO_LONGS(pool->pool_size) * sizeof(unsigned long);
+-
+-	pool->usage = kzalloc(map_size, GFP_KERNEL);
++	pool->usage = bitmap_zalloc(pool->pool_size, GFP_KERNEL);
+ 	if (!pool->usage) {
+ 		err = -ENOMEM;
+ 		goto err_usage_alloc;
+@@ -158,7 +155,7 @@ int mlxsw_sp_counter_pool_init(struct mlxsw_sp *mlxsw_sp)
+ 	return 0;
+ 
+ err_sub_pools_init:
+-	kfree(pool->usage);
++	bitmap_free(pool->usage);
+ err_usage_alloc:
+ 	devlink_resource_occ_get_unregister(devlink,
+ 					    MLXSW_SP_RESOURCE_COUNTERS);
+@@ -176,7 +173,7 @@ void mlxsw_sp_counter_pool_fini(struct mlxsw_sp *mlxsw_sp)
+ 	WARN_ON(find_first_bit(pool->usage, pool->pool_size) !=
+ 			       pool->pool_size);
+ 	WARN_ON(atomic_read(&pool->active_entries_count));
+-	kfree(pool->usage);
++	bitmap_free(pool->usage);
+ 	devlink_resource_occ_get_unregister(devlink,
+ 					    MLXSW_SP_RESOURCE_COUNTERS);
+ 	kfree(pool);
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
+index 22fede5cb32c..81c7e8a7fcf5 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_switchdev.c
+@@ -1635,16 +1635,13 @@ mlxsw_sp_mid *__mlxsw_sp_mc_alloc(struct mlxsw_sp *mlxsw_sp,
+ 				  u16 fid)
  {
- 	const struct net_device *physoutdev __maybe_unused;
- 	const struct net_device *physindev __maybe_unused;
-@@ -121,7 +122,7 @@ nf_log_dump_packet_common(struct nf_log_buf *m, u8 pf,
- 			in ? in->name : "",
- 			out ? out->name : "");
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
--	physindev = nf_bridge_get_physindev(skb);
-+	physindev = nf_bridge_get_physindev(skb, net);
- 	if (physindev && in != physindev)
- 		nf_log_buf_add(m, "PHYSIN=%s ", physindev->name);
- 	physoutdev = nf_bridge_get_physoutdev(skb);
-@@ -148,7 +149,7 @@ static void nf_log_arp_packet(struct net *net, u_int8_t pf,
- 		loginfo = &default_loginfo;
+ 	struct mlxsw_sp_mid *mid;
+-	size_t alloc_size;
  
- 	nf_log_dump_packet_common(m, pf, hooknum, skb, in, out, loginfo,
--				  prefix);
-+				  prefix, net);
- 	dump_arp_packet(m, loginfo, skb, skb_network_offset(skb));
+ 	mid = kzalloc(sizeof(*mid), GFP_KERNEL);
+ 	if (!mid)
+ 		return NULL;
  
- 	nf_log_buf_close(m);
-@@ -845,7 +846,7 @@ static void nf_log_ip_packet(struct net *net, u_int8_t pf,
- 		loginfo = &default_loginfo;
+-	alloc_size = sizeof(unsigned long) *
+-		     BITS_TO_LONGS(mlxsw_core_max_ports(mlxsw_sp->core));
+-
+-	mid->ports_in_mid = kzalloc(alloc_size, GFP_KERNEL);
++	mid->ports_in_mid = bitmap_zalloc(mlxsw_core_max_ports(mlxsw_sp->core),
++					  GFP_KERNEL);
+ 	if (!mid->ports_in_mid)
+ 		goto err_ports_in_mid_alloc;
  
- 	nf_log_dump_packet_common(m, pf, hooknum, skb, in,
--				  out, loginfo, prefix);
-+				  out, loginfo, prefix, net);
+@@ -1663,7 +1660,7 @@ mlxsw_sp_mid *__mlxsw_sp_mc_alloc(struct mlxsw_sp *mlxsw_sp,
+ 	return mid;
  
- 	if (in)
- 		dump_mac_header(m, loginfo, skb);
-@@ -880,7 +881,7 @@ static void nf_log_ip6_packet(struct net *net, u_int8_t pf,
- 		loginfo = &default_loginfo;
- 
- 	nf_log_dump_packet_common(m, pf, hooknum, skb, in, out,
--				  loginfo, prefix);
-+				  loginfo, prefix, net);
- 
- 	if (in)
- 		dump_mac_header(m, loginfo, skb);
-@@ -916,7 +917,7 @@ static void nf_log_unknown_packet(struct net *net, u_int8_t pf,
- 		loginfo = &default_loginfo;
- 
- 	nf_log_dump_packet_common(m, pf, hooknum, skb, in, out, loginfo,
--				  prefix);
-+				  prefix, net);
- 
- 	dump_mac_header(m, loginfo, skb);
- 
-diff --git a/net/netfilter/nf_queue.c b/net/netfilter/nf_queue.c
-index 3dfcb3ac5cb4..e2f334f70281 100644
---- a/net/netfilter/nf_queue.c
-+++ b/net/netfilter/nf_queue.c
-@@ -84,7 +84,7 @@ static void __nf_queue_entry_init_physdevs(struct nf_queue_entry *entry)
- 	const struct sk_buff *skb = entry->skb;
- 
- 	if (nf_bridge_info_exists(skb)) {
--		entry->physin = nf_bridge_get_physindev(skb);
-+		entry->physin = nf_bridge_get_physindev(skb, entry->state.net);
- 		entry->physout = nf_bridge_get_physoutdev(skb);
- 	} else {
- 		entry->physin = NULL;
-diff --git a/net/netfilter/xt_physdev.c b/net/netfilter/xt_physdev.c
-index ec6ed6fda96c..343e65f377d4 100644
---- a/net/netfilter/xt_physdev.c
-+++ b/net/netfilter/xt_physdev.c
-@@ -59,7 +59,7 @@ physdev_mt(const struct sk_buff *skb, struct xt_action_param *par)
- 	    (!!outdev ^ !(info->invert & XT_PHYSDEV_OP_BRIDGED)))
- 		return false;
- 
--	physdev = nf_bridge_get_physindev(skb);
-+	physdev = nf_bridge_get_physindev(skb, xt_net(par));
- 	indev = physdev ? physdev->name : NULL;
- 
- 	if ((info->bitmask & XT_PHYSDEV_OP_ISIN &&
+ err_write_mdb_entry:
+-	kfree(mid->ports_in_mid);
++	bitmap_free(mid->ports_in_mid);
+ err_ports_in_mid_alloc:
+ 	kfree(mid);
+ 	return NULL;
+@@ -1680,7 +1677,7 @@ static int mlxsw_sp_port_remove_from_mid(struct mlxsw_sp_port *mlxsw_sp_port,
+ 			 mlxsw_core_max_ports(mlxsw_sp->core))) {
+ 		err = mlxsw_sp_mc_remove_mdb_entry(mlxsw_sp, mid);
+ 		list_del(&mid->list);
+-		kfree(mid->ports_in_mid);
++		bitmap_free(mid->ports_in_mid);
+ 		kfree(mid);
+ 	}
+ 	return err;
 -- 
 2.43.0
 
