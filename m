@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-15128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B58838405
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C742283855A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28EF61F28A7E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77424292032
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83B36774C;
-	Tue, 23 Jan 2024 02:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21F71EF1E;
+	Tue, 23 Jan 2024 02:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBSJcWLd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hn4LTcvW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5130767733;
-	Tue, 23 Jan 2024 02:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CC21FBF;
+	Tue, 23 Jan 2024 02:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975282; cv=none; b=gRNCapCLF7Y/UAUaclM/m+jhU8fmIOmoZ+K7ltIj+sIaZlasjBUFeWFHgQ0Bkn0tPGbNVZcLo9fmcIwRJ6Hvy8pbgyPYPjs4SjGjnC7CeCHBjlPO6WaaYmgRgGx51JSPtPrwFp7X1zus9s6yYixSQu9o0MQEYDvbNDvQl5W6H2g=
+	t=1705975808; cv=none; b=soI6xRm0l53XTJ0zVn1p4+UGQDozrpzOmnsqZO+VV1/T5NWRHaOHhUNiCDGBNlkU40xvxnH7GDQG6VQTj7OA+bAkdP/TJZ/pNhrQfOUm6HI7YhI8pnAISXWUzdc6mPkv+EFi7YeH6qGw63NA4PgOEcguwtKM0KZ+tJYnLnJKLQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975282; c=relaxed/simple;
-	bh=skEIN/W+TGUZY5k/Rvvi4ryeL+y4p+x7TLDh1PgEcsQ=;
+	s=arc-20240116; t=1705975808; c=relaxed/simple;
+	bh=gwtb5Gf3wozleSv61PWxOmOcqKw2nuQODiGsmcLbB0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EeKI6QB7OjWpYOb2zL2HpKIPvyJoJ66hhkt/gEUtDlZlSApBEPHmWE3Jo8WMpgsYt7dendRqneznqo87Kc5RSllMUUKPLf7m7owtj311yCmXRvzpTsSeVow9g92OyfRJm99POX7dr46f7ffp2CeROnY2xxk0d36P7QKVRh2qDHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBSJcWLd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83329C43601;
-	Tue, 23 Jan 2024 02:01:21 +0000 (UTC)
+	 MIME-Version; b=QtgTn5pP5lyEcfYZjCTGQuQtb9FUol9/IboF6c/RCJkLucPMtmc8j+8LTVT7VGBFtJi7U6pXlOAXm1Ri0ey0LowGhtYeklmN+z2UX/0cOKyUCCHrGHxsW7Ki+TeKVw/Epz3y6RDwCwm24UaMc5T4V3K5Vt5q/Ef/DEJPY/b4IFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hn4LTcvW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E64C433C7;
+	Tue, 23 Jan 2024 02:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975281;
-	bh=skEIN/W+TGUZY5k/Rvvi4ryeL+y4p+x7TLDh1PgEcsQ=;
+	s=korg; t=1705975808;
+	bh=gwtb5Gf3wozleSv61PWxOmOcqKw2nuQODiGsmcLbB0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xBSJcWLdNJFljOBx2ZkWXxG6W3FbR9TiTRT4/8n7pgDTDzOr5oRNZtBIKd+9RjXc8
-	 TsgkbMHOeByJ8mCa7jszi11+RuziXXVFNJda8qzzyVbqW1J4LB1lS95rInWdYdFBUB
-	 wxStW62gSBy8OCppHZCc8yBZAkaav/6Y2aTPuMqM=
+	b=Hn4LTcvWAa1sdZy9quUe1HcSSMngQfrEW/sk0YJtv+cTKeG6CybHijs5qR49u/g91
+	 T91wsAxbKXiNpDQLSoCNtPghEPCzvrawwp14hQwHdgVEYKC7x6WaIbYAVg2KxsJaDV
+	 Nx5mOpNKnJB6R6C7q5H7+TRzAJqa3p/Y2AtYDeVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 372/374] netfilter: nft_limit: Clone packet limits cost value
+	Orel Hagag <orelh@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 577/583] mlxsw: spectrum_acl_tcam: Fix stack corruption
 Date: Mon, 22 Jan 2024 16:00:28 -0800
-Message-ID: <20240122235757.920225147@linuxfoundation.org>
+Message-ID: <20240122235829.864868197@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +66,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 558254b0b602b8605d7246a10cfeb584b1fcabfc upstream.
+[ Upstream commit 483ae90d8f976f8339cf81066312e1329f2d3706 ]
 
-When cloning a packet-based limit expression, copy the cost value as
-well. Otherwise the new limit is not functional anymore.
+When tc filters are first added to a net device, the corresponding local
+port gets bound to an ACL group in the device. The group contains a list
+of ACLs. In turn, each ACL points to a different TCAM region where the
+filters are stored. During forwarding, the ACLs are sequentially
+evaluated until a match is found.
 
-Fixes: 3b9e2ea6c11bf ("netfilter: nft_limit: move stateful fields out of expression data")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+One reason to place filters in different regions is when they are added
+with decreasing priorities and in an alternating order so that two
+consecutive filters can never fit in the same region because of their
+key usage.
+
+In Spectrum-2 and newer ASICs the firmware started to report that the
+maximum number of ACLs in a group is more than 16, but the layout of the
+register that configures ACL groups (PAGT) was not updated to account
+for that. It is therefore possible to hit stack corruption [1] in the
+rare case where more than 16 ACLs in a group are required.
+
+Fix by limiting the maximum ACL group size to the minimum between what
+the firmware reports and the maximum ACLs that fit in the PAGT register.
+
+Add a test case to make sure the machine does not crash when this
+condition is hit.
+
+[1]
+Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: mlxsw_sp_acl_tcam_group_update+0x116/0x120
+[...]
+ dump_stack_lvl+0x36/0x50
+ panic+0x305/0x330
+ __stack_chk_fail+0x15/0x20
+ mlxsw_sp_acl_tcam_group_update+0x116/0x120
+ mlxsw_sp_acl_tcam_group_region_attach+0x69/0x110
+ mlxsw_sp_acl_tcam_vchunk_get+0x492/0xa20
+ mlxsw_sp_acl_tcam_ventry_add+0x25/0xe0
+ mlxsw_sp_acl_rule_add+0x47/0x240
+ mlxsw_sp_flower_replace+0x1a9/0x1d0
+ tc_setup_cb_add+0xdc/0x1c0
+ fl_hw_replace_filter+0x146/0x1f0
+ fl_change+0xc17/0x1360
+ tc_new_tfilter+0x472/0xb90
+ rtnetlink_rcv_msg+0x313/0x3b0
+ netlink_rcv_skb+0x58/0x100
+ netlink_unicast+0x244/0x390
+ netlink_sendmsg+0x1e4/0x440
+ ____sys_sendmsg+0x164/0x260
+ ___sys_sendmsg+0x9a/0xe0
+ __sys_sendmsg+0x7a/0xc0
+ do_syscall_64+0x40/0xe0
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+Fixes: c3ab435466d5 ("mlxsw: spectrum: Extend to support Spectrum-2 ASIC")
+Reported-by: Orel Hagag <orelh@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Amit Cohen <amcohen@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/2d91c89afba59c22587b444994ae419dbea8d876.1705502064.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_limit.c |    2 ++
- 1 file changed, 2 insertions(+)
+ .../mellanox/mlxsw/spectrum_acl_tcam.c        |  2 +
+ .../drivers/net/mlxsw/spectrum-2/tc_flower.sh | 56 ++++++++++++++++++-
+ 2 files changed, 57 insertions(+), 1 deletion(-)
 
---- a/net/netfilter/nft_limit.c
-+++ b/net/netfilter/nft_limit.c
-@@ -218,6 +218,8 @@ static int nft_limit_pkts_clone(struct n
- 	struct nft_limit_priv_pkts *priv_dst = nft_expr_priv(dst);
- 	struct nft_limit_priv_pkts *priv_src = nft_expr_priv(src);
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index 7d1e91196e94..50ea1eff02b2 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -1564,6 +1564,8 @@ int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
+ 	tcam->max_groups = max_groups;
+ 	tcam->max_group_size = MLXSW_CORE_RES_GET(mlxsw_sp->core,
+ 						  ACL_MAX_GROUP_SIZE);
++	tcam->max_group_size = min_t(unsigned int, tcam->max_group_size,
++				     MLXSW_REG_PAGT_ACL_MAX_NUM);
  
-+	priv_dst->cost = priv_src->cost;
-+
- 	return nft_limit_clone(&priv_dst->limit, &priv_src->limit);
+ 	err = ops->init(mlxsw_sp, tcam->priv, tcam);
+ 	if (err)
+diff --git a/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/tc_flower.sh b/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/tc_flower.sh
+index 7bf56ea161e3..616d3581419c 100755
+--- a/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/tc_flower.sh
++++ b/tools/testing/selftests/drivers/net/mlxsw/spectrum-2/tc_flower.sh
+@@ -11,7 +11,7 @@ ALL_TESTS="single_mask_test identical_filters_test two_masks_test \
+ 	multiple_masks_test ctcam_edge_cases_test delta_simple_test \
+ 	delta_two_masks_one_key_test delta_simple_rehash_test \
+ 	bloom_simple_test bloom_complex_test bloom_delta_test \
+-	max_erp_entries_test"
++	max_erp_entries_test max_group_size_test"
+ NUM_NETIFS=2
+ source $lib_dir/lib.sh
+ source $lib_dir/tc_common.sh
+@@ -1033,6 +1033,60 @@ max_erp_entries_test()
+ 		"max chain $chain_failed, mask $mask_failed"
  }
  
++max_group_size_test()
++{
++	# The number of ACLs in an ACL group is limited. Once the maximum
++	# number of ACLs has been reached, filters cannot be added. This test
++	# verifies that when this limit is reached, insertion fails without
++	# crashing.
++
++	RET=0
++
++	local num_acls=32
++	local max_size
++	local ret
++
++	if [[ "$tcflags" != "skip_sw" ]]; then
++		return 0;
++	fi
++
++	for ((i=1; i < $num_acls; i++)); do
++		if [[ $(( i % 2 )) == 1 ]]; then
++			tc filter add dev $h2 ingress pref $i proto ipv4 \
++				flower $tcflags dst_ip 198.51.100.1/32 \
++				ip_proto tcp tcp_flags 0x01/0x01 \
++				action drop &> /dev/null
++		else
++			tc filter add dev $h2 ingress pref $i proto ipv6 \
++				flower $tcflags dst_ip 2001:db8:1::1/128 \
++				action drop &> /dev/null
++		fi
++
++		ret=$?
++		[[ $ret -ne 0 ]] && max_size=$((i - 1)) && break
++	done
++
++	# We expect to exceed the maximum number of ACLs in a group, so that
++	# insertion eventually fails. Otherwise, the test should be adjusted to
++	# add more filters.
++	check_fail $ret "expected to exceed number of ACLs in a group"
++
++	for ((; i >= 1; i--)); do
++		if [[ $(( i % 2 )) == 1 ]]; then
++			tc filter del dev $h2 ingress pref $i proto ipv4 \
++				flower $tcflags dst_ip 198.51.100.1/32 \
++				ip_proto tcp tcp_flags 0x01/0x01 \
++				action drop &> /dev/null
++		else
++			tc filter del dev $h2 ingress pref $i proto ipv6 \
++				flower $tcflags dst_ip 2001:db8:1::1/128 \
++				action drop &> /dev/null
++		fi
++	done
++
++	log_test "max ACL group size test ($tcflags). max size $max_size"
++}
++
+ setup_prepare()
+ {
+ 	h1=${NETIFS[p1]}
+-- 
+2.43.0
+
 
 
 
