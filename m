@@ -1,110 +1,136 @@
-Return-Path: <stable+bounces-15463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061C1838554
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3AD1837E41
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B072C1F29641
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E83291C26425
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B5D1078B;
-	Tue, 23 Jan 2024 02:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307ED5C610;
+	Tue, 23 Jan 2024 00:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9vfdN19"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Hq1NIcDe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB0E2114;
-	Tue, 23 Jan 2024 02:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF715BAFC;
+	Tue, 23 Jan 2024 00:41:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975801; cv=none; b=ru1AzjN3BaZezias3sK7j1qDcH94jmb9QzU0M3zyk3MLPlgRUThtIp8uprkm/BCJyzCN18JNxD4pG5fZwxiq5qUV4lUcYAkeQpnFvj0r0IMFM25gY5oMJ8BQmaxA68tZeJ/bLJ0YKzm9l5ahtVAPIY4lIdGuiFlhVUqJa/yw9/0=
+	t=1705970475; cv=none; b=cNkh2PlQUtghhHzLScYszT93Qbp0NR8X0BOPWtkqqE++BsTSOPfMXyxWVzk+DE5dzkUP8nAXp5GtZVzU9qBZnkZyaZPmH3k8AGCT+VYg+c8iYBuQBcQa5YszO9rJW4X8niSgAeMRXyEwOGEGR67lIzTW910PalAEJ2ekMRu3BRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975801; c=relaxed/simple;
-	bh=LJAfSZjEuriNuJhpYqFDtRQgaieivjR2nic9tA+nxIg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jlbvX1c+oQ8dwOqrIXsiLwD+K5bo1dcYv40Mxv3piZfZyWFAnOFzdt7Co0Gt/d/zNEOgUDXYZEHdLiP6aFye/yDpfyiSxtoGJecDpbhsM4O1/qd4J5k66k1y4Hny0wdAnylDJrYC4HGZPJcLGqMNp2x2D1EKK0GMFRAVG8kroIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9vfdN19; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5712CC433F1;
-	Tue, 23 Jan 2024 02:10:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975801;
-	bh=LJAfSZjEuriNuJhpYqFDtRQgaieivjR2nic9tA+nxIg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g9vfdN19Oy5xS0ddqxpUGeWsasSd9wb7MTe7Q+wm3VCxbHqWoa/vbaoGBWto/Qef1
-	 CFlMhQcsbQP5kOg9wlGpa9nU0CqqXwT9RdtVm2Wlej60EADTjD0ECZM5c7M4Or+at4
-	 BsMVVuZzUTxhMXnZqzmsteZHtby6DnoNrs111xKc=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	syzbot+afb726d49f84c8d95ee1@syzkaller.appspotmail.com,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 583/583] riscv: Fix wrong usage of lm_alias() when splitting a huge linear mapping
-Date: Mon, 22 Jan 2024 16:00:34 -0800
-Message-ID: <20240122235830.065122899@linuxfoundation.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1705970475; c=relaxed/simple;
+	bh=mTM28tfU7sJ6G7/wpfJjg6i8xRSAKb06EWY2zBt7bes=;
+	h=Date:To:From:Subject:Message-Id; b=SPeDSw5E1VCCOaGaI+JL8tEtOwejpfR7cFlGhJxrCZJJm6z4mMiKam08vsg5WDq4iHtTYfqeaB0ncKoBRjj6QuVM3Kx/d9ua2J5ezTR6lDxQzsVSOZU9+0HACy+3d88UdxJ8pH4Vn+zgYhHP2+mslpWJ3/zOFEaGzQDgzMYaNRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Hq1NIcDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E63C433F1;
+	Tue, 23 Jan 2024 00:41:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1705970474;
+	bh=mTM28tfU7sJ6G7/wpfJjg6i8xRSAKb06EWY2zBt7bes=;
+	h=Date:To:From:Subject:From;
+	b=Hq1NIcDeodBZLWtDI0+wh/BN1lvNmX8VEhIQ46EJtAww86H5Z8cH+PodXjtiP2tTi
+	 3jGGI+ZhwIV/9453pCf4Bws0ujrq8fdKCcotrz858K49c9qtZTtxuIfShUH7UU2utO
+	 jc0t6Dn3ssWPXv7Lck0VQILQUDaEmoWnaXCGasPs=
+Date: Mon, 22 Jan 2024 16:41:10 -0800
+To: mm-commits@vger.kernel.org,yuzhao@google.com,yangyifei03@kuaishou.com,stable@vger.kernel.org,shakeelb@google.com,roman.gushchin@linux.dev,muchun.song@linux.dev,mhocko@kernel.org,hannes@cmpxchg.org,tjmercier@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240123004113.D0E63C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
 
-------------------
+The patch titled
+     Subject: Revert "mm:vmscan: fix inaccurate reclaim during proactive reclaim"
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim.patch
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim.patch
 
-commit c29fc621e1a49949a14c7fa031dd4760087bfb29 upstream.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-lm_alias() can only be used on kernel mappings since it explicitly uses
-__pa_symbol(), so simply fix this by checking where the address belongs
-to before.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Fixes: 311cd2f6e253 ("riscv: Fix set_memory_XX() and set_direct_map_XX() by splitting huge linear mappings")
-Reported-by: syzbot+afb726d49f84c8d95ee1@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-riscv/000000000000620dd0060c02c5e1@google.com/
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Link: https://lore.kernel.org/r/20231212195400.128457-1-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: "T.J. Mercier" <tjmercier@google.com>
+Subject: Revert "mm:vmscan: fix inaccurate reclaim during proactive reclaim"
+Date: Sun, 21 Jan 2024 21:44:12 +0000
+
+This reverts commit 0388536ac29104a478c79b3869541524caec28eb.
+
+Proactive reclaim on the root cgroup is 10x slower after this patch when
+MGLRU is enabled, and completion times for proactive reclaim on much
+smaller non-root cgroups take ~30% longer (with or without MGLRU).  With
+root reclaim before the patch, I observe average reclaim rates of ~70k
+pages/sec before try_to_free_mem_cgroup_pages starts to fail and the
+nr_retries counter starts to decrement, eventually ending the proactive
+reclaim attempt.  After the patch the reclaim rate is consistently ~6.6k
+pages/sec due to the reduced nr_pages value causing scan aborts as soon as
+SWAP_CLUSTER_MAX pages are reclaimed.  The proactive reclaim doesn't
+complete after several minutes because try_to_free_mem_cgroup_pages is
+still capable of reclaiming pages in tiny SWAP_CLUSTER_MAX page chunks and
+nr_retries is never decremented.
+
+The docs for memory.reclaim say, "the kernel can over or under reclaim
+from the target cgroup" which this patch was trying to fix.  Revert it
+until a less costly solution is found.
+
+Link: https://lkml.kernel.org/r/20240121214413.833776-1-tjmercier@google.com
+Fixes: 0388536ac291 ("mm:vmscan: fix inaccurate reclaim during proactive reclaim")
+Signed-off-by: T.J. Mercier <tjmercier@google.com>
+Cc: Efly Young <yangyifei03@kuaishou.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shakeel Butt <shakeelb@google.com>
+Cc: T.J. Mercier <tjmercier@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- arch/riscv/mm/pageattr.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/arch/riscv/mm/pageattr.c
-+++ b/arch/riscv/mm/pageattr.c
-@@ -305,8 +305,13 @@ static int __set_memory(unsigned long ad
- 				goto unlock;
- 		}
- 	} else if (is_kernel_mapping(start) || is_linear_mapping(start)) {
--		lm_start = (unsigned long)lm_alias(start);
--		lm_end = (unsigned long)lm_alias(end);
-+		if (is_kernel_mapping(start)) {
-+			lm_start = (unsigned long)lm_alias(start);
-+			lm_end = (unsigned long)lm_alias(end);
-+		} else {
-+			lm_start = start;
-+			lm_end = end;
-+		}
+ mm/memcontrol.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/mm/memcontrol.c~revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim
++++ a/mm/memcontrol.c
+@@ -6977,8 +6977,8 @@ static ssize_t memory_reclaim(struct ker
+ 			lru_add_drain_all();
  
- 		ret = split_linear_mapping(lm_start, lm_end);
- 		if (ret)
+ 		reclaimed = try_to_free_mem_cgroup_pages(memcg,
+-					min(nr_to_reclaim - nr_reclaimed, SWAP_CLUSTER_MAX),
+-					GFP_KERNEL, reclaim_options);
++						nr_to_reclaim - nr_reclaimed,
++						GFP_KERNEL, reclaim_options);
+ 
+ 		if (!reclaimed && !nr_retries--)
+ 			return -EAGAIN;
+_
 
+Patches currently in -mm which might be from tjmercier@google.com are
+
+revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim.patch
 
 
