@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-15093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45E78383D9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0906A8383DB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D8001F290B7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F3281F29109
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3727C657B2;
-	Tue, 23 Jan 2024 01:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7270F657BF;
+	Tue, 23 Jan 2024 01:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnxEpI/N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUyeLxec"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC8F4E1AD;
-	Tue, 23 Jan 2024 01:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9A863400;
+	Tue, 23 Jan 2024 01:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975079; cv=none; b=EyCJ9MTvagX4rVjdklJO6Y8Ipz8PgZaj/ug7nJy98yarSpDSKJ51ZccMrFj1MyAUe1YyDm3CSWBr8NzFf3wQKc+lrOTJftUSAjue1DbGjm4iDKucScX6KY/3DHNRU4OqNDBEM2ORnuv6VgYAvEhi0LF45DY2WR87Lq62P9lbwC4=
+	t=1705975082; cv=none; b=O7KwFqBLd0d2PvAcWGGhfvYg+dfp2EUMH218H/lKh1dV1r/2qXDv+ydSMf5Q41ZpQeR2qDWwOXcjUX6dTFXu4JTCQ76ryILhfgphGE10MMYsFPSl3Nr4TGce/shRgXiSlFZFaAs0pk2ahITLwQHIvsx+iDkDMLYCyzR/5fDBBGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975079; c=relaxed/simple;
-	bh=7E+0oduQjXiZLLuPPQlQbywNgINTGR4rZ3XpBjeM/kA=;
+	s=arc-20240116; t=1705975082; c=relaxed/simple;
+	bh=A4qta6Q9iaSe5lYq3ilwUOYYfFbCJWDcwF1lcVTh37E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gufb/HfhHAB3XO2W0BEk6gdaBN0mSkpqxDQkc2UqEgt4nZvuidJXIXEM1vFU5x1ITeQb6TXEDEgfcEqtT9w5agh3tr1TeR0oGFLZbdgawmRY+BvjWh/iEofbuLFOFgtaOAZx+mcMY3ZaMceHg5X4swj3EJYzv3bGLZetNpeFc/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnxEpI/N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A9D4C433F1;
-	Tue, 23 Jan 2024 01:57:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tIi+ANWicmVddihrS5pNXV2qCvRasES+5JxhnPfP2GRPHKXmGCoAgOnloR9Tp99dyApiwj3Fob6V1FcCHULD+YJvqwHcLtu69sJjSgAD53s/CAXYJHowEyLe4tTmDrZdgZg2jswe+5QpWquc48m51dNE8OUTX4MT4IwAiXyCLwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUyeLxec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C48C433C7;
+	Tue, 23 Jan 2024 01:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975078;
-	bh=7E+0oduQjXiZLLuPPQlQbywNgINTGR4rZ3XpBjeM/kA=;
+	s=korg; t=1705975082;
+	bh=A4qta6Q9iaSe5lYq3ilwUOYYfFbCJWDcwF1lcVTh37E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MnxEpI/NmDVeAaSOV20AOmTHaBaJqUoQBD9fUqqg5bu/IkD7iaVCs6mOXCLdh9QCo
-	 RNlUIZzJjIHgdrCwtbVPcVnCU1h3ThXWjsw+jxX2fSFr9zjiAuOITl9Q0BlUW0r69r
-	 btypZEj21A0ius8lglUuHUOLcWsSkYHQQ2YF8edA=
+	b=YUyeLxec+2P/XOJOrOtKu9bU6nb09vUCkgAvSrUjgFylDPI7B3ryFrFp9beY1RPdN
+	 poitwrBBcyKdkgYZ7XjfDAf0gtxdpeB8GjPVbmdh7SGX4RRt8btKOUziJoDbaXrUSR
+	 dsMhMoNM0rOHB1/s5iANW1aFkTeUKtDrnl21SovM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Douglas Anderson <dianders@chromium.org>,
+	=?UTF-8?q?Ludvig=20P=C3=A4rsson?= <ludvig.parsson@axis.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 356/374] kdb: Fix a potential buffer overflow in kdb_local()
-Date: Mon, 22 Jan 2024 16:00:12 -0800
-Message-ID: <20240122235757.327557487@linuxfoundation.org>
+Subject: [PATCH 5.15 357/374] ethtool: netlink: Add missing ethnl_ops_begin/complete
+Date: Mon, 22 Jan 2024 16:00:13 -0800
+Message-ID: <20240122235757.366546902@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
 References: <20240122235744.598274724@linuxfoundation.org>
@@ -60,49 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Ludvig Pärsson <ludvig.parsson@axis.com>
 
-[ Upstream commit 4f41d30cd6dc865c3cbc1a852372321eba6d4e4c ]
+[ Upstream commit f1172f3ee3a98754d95b968968920a7d03fdebcc ]
 
-When appending "[defcmd]" to 'kdb_prompt_str', the size of the string
-already in the buffer should be taken into account.
+Accessing an ethernet device that is powered off or clock gated might
+cause the CPU to hang. Add ethnl_ops_begin/complete in
+ethnl_set_features() to protect against this.
 
-An option could be to switch from strncat() to strlcat() which does the
-correct test to avoid such an overflow.
-
-However, this actually looks as dead code, because 'defcmd_in_progress'
-can't be true here.
-See a more detailed explanation at [1].
-
-[1]: https://lore.kernel.org/all/CAD=FV=WSh7wKN7Yp-3wWiDgX4E3isQ8uh0LCzTmd1v9Cg9j+nQ@mail.gmail.com/
-
-Fixes: 5d5314d6795f ("kdb: core for kgdb back end (1 of 2)")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Fixes: 0980bfcd6954 ("ethtool: set netdev features with FEATURES_SET request")
+Signed-off-by: Ludvig Pärsson <ludvig.parsson@axis.com>
+Link: https://lore.kernel.org/r/20240117-etht2-v2-1-1a96b6e8c650@axis.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/debug/kdb/kdb_main.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/ethtool/features.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/debug/kdb/kdb_main.c b/kernel/debug/kdb/kdb_main.c
-index ead4da947127..23723c5727aa 100644
---- a/kernel/debug/kdb/kdb_main.c
-+++ b/kernel/debug/kdb/kdb_main.c
-@@ -1350,8 +1350,6 @@ static int kdb_local(kdb_reason_t reason, int error, struct pt_regs *regs,
- 		/* PROMPT can only be set if we have MEM_READ permission. */
- 		snprintf(kdb_prompt_str, CMD_BUFLEN, kdbgetenv("PROMPT"),
- 			 raw_smp_processor_id());
--		if (defcmd_in_progress)
--			strncat(kdb_prompt_str, "[defcmd]", CMD_BUFLEN);
+diff --git a/net/ethtool/features.c b/net/ethtool/features.c
+index 1c9f4df273bd..faccab84d865 100644
+--- a/net/ethtool/features.c
++++ b/net/ethtool/features.c
+@@ -235,17 +235,20 @@ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info)
+ 	dev = req_info.dev;
  
- 		/*
- 		 * Fetch command from keyboard
+ 	rtnl_lock();
++	ret = ethnl_ops_begin(dev);
++	if (ret < 0)
++		goto out_rtnl;
+ 	ethnl_features_to_bitmap(old_active, dev->features);
+ 	ethnl_features_to_bitmap(old_wanted, dev->wanted_features);
+ 	ret = ethnl_parse_bitset(req_wanted, req_mask, NETDEV_FEATURE_COUNT,
+ 				 tb[ETHTOOL_A_FEATURES_WANTED],
+ 				 netdev_features_strings, info->extack);
+ 	if (ret < 0)
+-		goto out_rtnl;
++		goto out_ops;
+ 	if (ethnl_bitmap_to_features(req_mask) & ~NETIF_F_ETHTOOL_BITS) {
+ 		GENL_SET_ERR_MSG(info, "attempt to change non-ethtool features");
+ 		ret = -EINVAL;
+-		goto out_rtnl;
++		goto out_ops;
+ 	}
+ 
+ 	/* set req_wanted bits not in req_mask from old_wanted */
+@@ -282,6 +285,8 @@ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info)
+ 	if (mod)
+ 		netdev_features_change(dev);
+ 
++out_ops:
++	ethnl_ops_complete(dev);
+ out_rtnl:
+ 	rtnl_unlock();
+ 	dev_put(dev);
 -- 
 2.43.0
 
