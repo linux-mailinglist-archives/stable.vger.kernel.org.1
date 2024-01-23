@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-13841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 574BC837E56
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14794837E77
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D10A51F259DC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:38:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44A471C28F4A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D6A5FB93;
-	Tue, 23 Jan 2024 00:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC215B5AC;
+	Tue, 23 Jan 2024 00:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OzRrEvZw"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="EYMbh/Sz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9995FB83;
-	Tue, 23 Jan 2024 00:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A49954BD2;
+	Tue, 23 Jan 2024 00:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970522; cv=none; b=PxAJGefEJkJdc2if6JZqnBp5DHZqSnd0nFSdMnIQMyoSE1yHgTIqDNSfL31qoRWBJOzUaijnOKOhwpE5LXRJpSmlD05aSGKn4zjJ4C+lgI5JzsP66DXbVbQht9/MBce71jBvIIfAgdhKHI03DkxwBy9AeKomMyvsqu+nsjfrDp8=
+	t=1705970606; cv=none; b=Ca8+TMH3gnG01Lo8dYjzJRpjYiXfPOpHQneG6KTym0oPPiWzlJedlsb2GRl+0jiT3lgkWkNSwVfyNOW8F2131krEg11xOIIlDd2t/KRwmS9kvi80Su3a0CfXx4lfSQplgGV0HVdJ3wXjv1p+vFsL9qqVZKvSjbN3QVyOLCwh+48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970522; c=relaxed/simple;
-	bh=d52TbtdH78GZdSKh8DVgIWskwZM2FCFKoPKksAh/FUk=;
-	h=Date:To:From:Subject:Message-Id; b=ViWz+HjPznPa9vQcTZPlxf5i2MJRpAzo270iy+0S1bIA/eVhGAJnhytYpNIggVlAte5lnS2/kfoMQbZxRdmE2NVF71b9asUUaG6V7W82zbLMLrGocOyqJ90K63Jr0ErT6sOv/swXkzrdfNRcPS9RR/bNeyOekjwNh6dOomHEOV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OzRrEvZw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE11C433F1;
-	Tue, 23 Jan 2024 00:42:01 +0000 (UTC)
+	s=arc-20240116; t=1705970606; c=relaxed/simple;
+	bh=DarTQDS2EqlDOvv1Kd8o0FMx/asimx2EljmyVNjzxaU=;
+	h=Date:To:From:Subject:Message-Id; b=fuphgSqgR18FW1TxYP3rt61I+f05WaTV3pqHG4wGLmNbSpUaaXmNSqNfajx4ayLttluHyfNb3hviDMEQnX6sxr5svuu2w5pHAx2CtjLx3RF4jKz11n+iNox/G9vYRLllHnezZk6leMyTGXCUYAppOQcsR11C2C4DWSl8gw6CanI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=EYMbh/Sz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60651C433C7;
+	Tue, 23 Jan 2024 00:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1705970521;
-	bh=d52TbtdH78GZdSKh8DVgIWskwZM2FCFKoPKksAh/FUk=;
+	s=korg; t=1705970605;
+	bh=DarTQDS2EqlDOvv1Kd8o0FMx/asimx2EljmyVNjzxaU=;
 	h=Date:To:From:Subject:From;
-	b=OzRrEvZwyWnvG9/3tg/sY+L81SyVYK/9QjJztC7nKluFpfZLyLK6BfP/gtHiNj7jN
-	 Ot9sfr9ofQpZEWTlzQLqCChiu+pOo1hTWU0HsBJtFGSFWeUKU/U2vrDbFMCNgt5ESx
-	 H5Ob4aMhPukdHvszxd5gZSm6hsmqzH+Q+FXK0JGM=
-Date: Mon, 22 Jan 2024 16:41:58 -0800
-To: mm-commits@vger.kernel.org,will@kernel.org,stable@vger.kernel.org,samitolvanen@google.com,samuel.holland@sifive.com,akpm@linux-foundation.org
+	b=EYMbh/SzXLpiYNfHAoB58NC4U+s/uKg457QeYgbBk7MVioI9kCCAcuMALnNMuEFYh
+	 MQO+ZvoQSezLdKj4l2Ma09RXlvVM6bG+opOcngC5AhBNHY7tGSQfZEjRA9iTaGdo+l
+	 vynaeIGLZn7kLuCXrpokRkLM0wpe4v7hRbTabYIA=
+Date: Mon, 22 Jan 2024 16:43:22 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,pedrodemargomes@gmail.com,ryan.roberts@arm.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + scs-add-config_mmu-dependency-for-vfree_atomic.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240123004201.4EE11C433F1@smtp.kernel.org>
+Subject: + selftests-mm-ksm_tests-should-only-madv_hugepage-valid-memory.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240123004325.60651C433C7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: scs: add CONFIG_MMU dependency for vfree_atomic()
+     Subject: selftests/mm: ksm_tests should only MADV_HUGEPAGE valid memory
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     scs-add-config_mmu-dependency-for-vfree_atomic.patch
+     selftests-mm-ksm_tests-should-only-madv_hugepage-valid-memory.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/scs-add-config_mmu-dependency-for-vfree_atomic.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-ksm_tests-should-only-madv_hugepage-valid-memory.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,42 +73,48 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Samuel Holland <samuel.holland@sifive.com>
-Subject: scs: add CONFIG_MMU dependency for vfree_atomic()
-Date: Mon, 22 Jan 2024 09:52:01 -0800
+From: Ryan Roberts <ryan.roberts@arm.com>
+Subject: selftests/mm: ksm_tests should only MADV_HUGEPAGE valid memory
+Date: Mon, 22 Jan 2024 12:05:54 +0000
 
-The shadow call stack implementation fails to build without CONFIG_MMU:
+ksm_tests was previously mmapping a region of memory, aligning the
+returned pointer to a PMD boundary, then setting MADV_HUGEPAGE, but was
+setting it past the end of the mmapped area due to not taking the pointer
+alignment into consideration.  Fix this behaviour.
 
-  ld.lld: error: undefined symbol: vfree_atomic
-  >>> referenced by scs.c
-  >>>               kernel/scs.o:(scs_free) in archive vmlinux.a
+Up until commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
+boundaries"), this buggy behavior was (usually) masked because the
+alignment difference was always less than PMD-size.  But since the
+mentioned commit, `ksm_tests -H -s 100` started failing.
 
-Link: https://lkml.kernel.org/r/20240122175204.2371009-1-samuel.holland@sifive.com
-Fixes: a2abe7cbd8fe ("scs: switch to vmapped shadow stacks")
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Cc: Will Deacon <will@kernel.org>
+Link: https://lkml.kernel.org/r/20240122120554.3108022-1-ryan.roberts@arm.com
+Fixes: 325254899684 ("selftests: vm: add KSM huge pages merging time test")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+Cc: Shuah Khan <shuah@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- arch/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/mm/ksm_tests.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/Kconfig~scs-add-config_mmu-dependency-for-vfree_atomic
-+++ a/arch/Kconfig
-@@ -668,6 +668,7 @@ config SHADOW_CALL_STACK
- 	bool "Shadow Call Stack"
- 	depends on ARCH_SUPPORTS_SHADOW_CALL_STACK
- 	depends on DYNAMIC_FTRACE_WITH_ARGS || DYNAMIC_FTRACE_WITH_REGS || !FUNCTION_GRAPH_TRACER
-+	depends on MMU
- 	help
- 	  This option enables the compiler's Shadow Call Stack, which
- 	  uses a shadow stack to protect function return addresses from
+--- a/tools/testing/selftests/mm/ksm_tests.c~selftests-mm-ksm_tests-should-only-madv_hugepage-valid-memory
++++ a/tools/testing/selftests/mm/ksm_tests.c
+@@ -566,7 +566,7 @@ static int ksm_merge_hugepages_time(int
+ 	if (map_ptr_orig == MAP_FAILED)
+ 		err(2, "initial mmap");
+ 
+-	if (madvise(map_ptr, len + HPAGE_SIZE, MADV_HUGEPAGE))
++	if (madvise(map_ptr, len, MADV_HUGEPAGE))
+ 		err(2, "MADV_HUGEPAGE");
+ 
+ 	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
 _
 
-Patches currently in -mm which might be from samuel.holland@sifive.com are
+Patches currently in -mm which might be from ryan.roberts@arm.com are
 
-scs-add-config_mmu-dependency-for-vfree_atomic.patch
+selftests-mm-ksm_tests-should-only-madv_hugepage-valid-memory.patch
+tools-mm-add-thpmaps-script-to-dump-thp-usage-info.patch
 
 
