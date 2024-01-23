@@ -1,150 +1,108 @@
-Return-Path: <stable+bounces-13894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D40C837E9E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D5EE837FE3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 655D8291EFB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AFA01C2699B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAEA60B84;
-	Tue, 23 Jan 2024 00:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C6B12BF2A;
+	Tue, 23 Jan 2024 00:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="EYTQWPim"
+	dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b="OzH+f9lN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mr85p00im-zteg06021901.me.com (mr85p00im-zteg06021901.me.com [17.58.23.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8B263AF;
-	Tue, 23 Jan 2024 00:44:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BECC12BF17
+	for <stable@vger.kernel.org>; Tue, 23 Jan 2024 00:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970691; cv=none; b=CA1KD/2e3PCdtG6/YCeS6Fjw1V3zbUF/Ib+XBs1+zrrOixMshfCD20FIYrh+GtERn7IM4YpkQNZB1MDFBGIhrKvKEg5tbEZfl4CD7XGPHCgXVDPIM73NhzK6u73V7pl6V0iJrCnNRk+vE5hX+e8oltnd34udadP4cFBuAfI4LO8=
+	t=1705971431; cv=none; b=UdTEnCkfK9fTB8RpsyKwXh6ZcAsEmaYQQKmQQUJ7jMsHvKJuiBwaRyE7E3Xs1387roOx3n0Aptgvoi14+R+l6z6Uyd/QxcOPFeEsgSS5TdX8nrZnhkXD1yZwkioaQq+SeUwCg35621a4Q4z2/LNxSEIvkqBBdUTI6z7fR2ORRJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970691; c=relaxed/simple;
-	bh=sdWOILis3ANCa3Z/eN76kpIF4XgAUHfxB71qYiGgf5o=;
-	h=Date:To:From:Subject:Message-Id; b=CjW9hgY1jQ52cpr2QyZZVB+9EzeN2G6ATZ6Py44K8SkYADqP1XyXwyGFvCbF13GMY/O2PC8xEIm946geUTC5Kbgvaa1w3BuA5JRCB/20XaKnctOgBxc/M60QgIuXkiXvbkkW5rQUSYEBas7DG0VNe5DV5LwmeiwzMrnxo4807BM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=EYTQWPim; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6884C43390;
-	Tue, 23 Jan 2024 00:44:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1705970691;
-	bh=sdWOILis3ANCa3Z/eN76kpIF4XgAUHfxB71qYiGgf5o=;
-	h=Date:To:From:Subject:From;
-	b=EYTQWPimVCoTLOlXiSKeq67rS746vKRwz6fygIufVBSRum1fOBTnALdKIdHNqXw9Q
-	 JRKWjsRMa2IoFIwzykooKkD4DFljmFwEEDeJFRlYNI0rmpHMOFn0UvsNwQzeP9JFY8
-	 n84pP2opupAzXiD97KjhYdkQRCNiPW8grPx4o64g=
-Date: Mon, 22 Jan 2024 16:44:48 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,riel@surriel.com,muchun.song@linux.dev,lstoakes@gmail.com,leitao@debian.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hugetlb-restore-the-reservation-if-needed.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240123004450.C6884C43390@smtp.kernel.org>
+	s=arc-20240116; t=1705971431; c=relaxed/simple;
+	bh=QuFQTE9exHrJRr35+dJ3UyDgS7P65rSpnJVRQHYSrNQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rAGFAfjfftNElh3JtJYFgzk9W7mLXpMQjt3HJtyN7jM1GCGbPf65U3uHHQL4clfdursoip/ksGxLjxJ7R52pHVUHzurDUzu5ZbF0P2qIBThiZRGBmSeHRfpP+hhX+O/M4tKps5dPnEmfTLsu3kljYuLVPyn7h4JzRV1i3Isszfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net; spf=pass smtp.mailfrom=danm.net; dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b=OzH+f9lN; arc=none smtp.client-ip=17.58.23.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danm.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=danm.net; s=sig1;
+	t=1705971428; bh=i6qwIcb65hKUVeZw2T4gWRTYt29i3qmG0p6UeSGRy4Q=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=OzH+f9lNDTKyqDq+9UkocpvxWjiRST4Pn44zrNJZ4u7atAUlTTeX9W4UCrCgzZHu8
+	 fZtynv2toBLM5fBgmcyJi4ZrMOyUpJ9EbU3Aw/4bERZUipTpc7o0zPIk7vyYzNipXs
+	 R/sgifIZ6nnVjKBdxQkAIPrurSFXQfpw6ICGxENGL9UB9kgC89CJecN1IQxBpvf9OA
+	 eJUP28lrNuQe7HDPq8Lv/lJhGDoLLhWiIusqVUr0EL1B603X1BWXJzjG3Rznap+1E5
+	 8p8KuC5zFYvM9Eo1rRMukvHtj/+m1UhrOrytrTWr2SFV8rb3ATaRMZRKfVCrFC52xS
+	 O6TUR7tNx1jHQ==
+Received: from hitch.danm.net (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-zteg06021901.me.com (Postfix) with ESMTPSA id 9522A740228;
+	Tue, 23 Jan 2024 00:57:07 +0000 (UTC)
+From: Dan Moulding <dan@danm.net>
+To: Song Liu <song@kernel.org>
+Cc: regressions@lists.linux.dev,
+	linux-raid@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dan Moulding <dan@danm.net>
+Subject: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system; successfully bisected
+Date: Mon, 22 Jan 2024 17:56:58 -0700
+Message-ID: <20240123005700.9302-1-dan@danm.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: roqiKP-niqHYz2b0Fa5A3TKVMmmoX9S6
+X-Proofpoint-ORIG-GUID: roqiKP-niqHYz2b0Fa5A3TKVMmmoX9S6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-22_12,2024-01-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=4 mlxlogscore=137 mlxscore=4
+ clxscore=1030 suspectscore=0 bulkscore=0 phishscore=0 spamscore=4
+ malwarescore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2308100000 definitions=main-2401230006
 
+After upgrading from 6.7.0 to 6.7.1 a couple of my systems with md
+RAID-5 arrays started experiencing hangs. It starts with some
+processes which write to the array getting stuck. The whole system
+eventually becomes unresponsive and unclean shutdown must be performed
+(poweroff and reboot don't work).
 
-The patch titled
-     Subject: mm/hugetlb: restore the reservation if needed
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-hugetlb-restore-the-reservation-if-needed.patch
+While trying to diagnose the issue, I noticed that the md0_raid5
+kernel thread consumes 100% CPU after the issue occurs. No relevant
+warnings or errors were found in dmesg.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-restore-the-reservation-if-needed.patch
+On 6.7.1, I can reproduce the issue somewhat reliably by copying a
+large amount of data to the array. I am unable to reproduce the issue
+at all on 6.7.0. The bisection was a bit difficult since I don't have
+a 100% reliable method to reproduce the problem, but with some
+perseverence I eventually managed to whittle it down to commit
+0de40f76d567 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in
+raid5d"). After reverting that commit (i.e. reapplying the reverted
+commit) on top of 6.7.1 I can no longer reproduce the problem at all.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Some details that might be relevant:
+- Both systems are running MD RAID-5 with a journal device.
+- mdadm in monitor mode is always running on both systems.
+- Both systems were previously running 6.7.0 and earlier just fine.
+- The older of the two systems has been running a raid5 array without
+  incident for many years (kernel going back to at least 5.1) -- this
+  is the first raid5 issue it has encountered.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Please let me know if there is any other helpful information that I
+might be able to provide.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+-- Dan
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Breno Leitao <leitao@debian.org>
-Subject: mm/hugetlb: restore the reservation if needed
-Date: Wed, 17 Jan 2024 09:10:57 -0800
-
-Currently there is a bug that a huge page could be stolen, and when the
-original owner tries to fault in it, it causes a page fault.
-
-You can achieve that by:
-  1) Creating a single page
-	echo 1 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
-
-  2) mmap() the page above with MAP_HUGETLB into (void *ptr1).
-	* This will mark the page as reserved
-  3) touch the page, which causes a page fault and allocates the page
-	* This will move the page out of the free list.
-	* It will also unreserved the page, since there is no more free
-	  page
-  4) madvise(MADV_DONTNEED) the page
-	* This will free the page, but not mark it as reserved.
-  5) Allocate a secondary page with mmap(MAP_HUGETLB) into (void *ptr2).
-	* it should fail, but, since there is no more available page.
-	* But, since the page above is not reserved, this mmap() succeed.
-  6) Faulting at ptr1 will cause a SIGBUS
-	* it will try to allocate a huge page, but there is none
-	  available
-
-A full reproducer is in selftest. See
-https://lore.kernel.org/all/20240105155419.1939484-1-leitao@debian.org/
-
-Fix this by restoring the reserved page if necessary.  If the page being
-unmapped has HPAGE_RESV_OWNER set, and needs a reservation, set the
-restore_reserve flag, which will move the page from free to reserved.
-
-Link: https://lkml.kernel.org/r/20240117171058.2192286-1-leitao@debian.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Suggested-by: Rik van Riel <riel@surriel.com>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
-
---- a/mm/hugetlb.c~mm-hugetlb-restore-the-reservation-if-needed
-+++ a/mm/hugetlb.c
-@@ -5677,6 +5677,16 @@ void __unmap_hugepage_range(struct mmu_g
- 		hugetlb_count_sub(pages_per_huge_page(h), mm);
- 		hugetlb_remove_rmap(page_folio(page));
- 
-+		if (is_vma_resv_set(vma, HPAGE_RESV_OWNER) &&
-+		    vma_needs_reservation(h, vma, start)) {
-+			/*
-+			 * Restore the reservation if needed, otherwise the
-+			 * backing page could be stolen by someone.
-+			 */
-+			folio_set_hugetlb_restore_reserve(page_folio(page));
-+			vma_add_reservation(h, vma, address);
-+		}
-+
- 		spin_unlock(ptl);
- 		tlb_remove_page_size(tlb, page, huge_page_size(h));
- 		/*
-_
-
-Patches currently in -mm which might be from leitao@debian.org are
-
-mm-hugetlb-restore-the-reservation-if-needed.patch
-selftests-mm-run_vmtestssh-add-hugetlb_madv_vs_map.patch
-selftests-mm-new-test-that-steals-pages.patch
-
+#regzbot introduced: 0de40f76d567133b871cd6ad46bb87afbce46983
 
