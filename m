@@ -1,176 +1,148 @@
-Return-Path: <stable+bounces-15540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B08B8391D5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 15:57:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82B50839208
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 16:06:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9729E2862AC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 14:57:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C255B22B1A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 15:06:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156A65DF3C;
-	Tue, 23 Jan 2024 14:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756785D8F5;
+	Tue, 23 Jan 2024 15:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rMN7XytF"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bZhT6h4X"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5738F50A6D
-	for <stable@vger.kernel.org>; Tue, 23 Jan 2024 14:57:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE5A5FDB4
+	for <stable@vger.kernel.org>; Tue, 23 Jan 2024 15:06:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706021841; cv=none; b=RvPKeIHq0J03PL9JjLjuUQSMWdV4I9HkMcqMCNEduvhz+POHMUxfcsgdB3qz2MesWfGSSHuh6MnFD7A+DbrcWMZfPzfRH/KLvQO6Mvve0rYbMHG3jchGRQ3T+KCHEW23Kx7MWoIpI6eVoTQbhkMv9Nu/hSCKXTXwiAM6rRyjQK4=
+	t=1706022374; cv=none; b=ZhKHKylO0y5jRSKv2fXWjdkVMr5Kl3UmkL4s1neAuVOfFgVl6SRbOSbslBNUZAH+9mWjK4aCvfR2cyZmP1o/YBhHJdAVjgQyWuyfkhfFiKLzS2iQBDVjphgGUoqrcr0F1umoRGRTYud5z35UW9ouPiNbckm7tudT6hJCBu0TqlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706021841; c=relaxed/simple;
-	bh=OEOMWTOeHMC8LbMpgkDs4kdAWbWi7Wm2wLN/YTNKjnc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tlxDhPRZnn2RpGvD+WpXfEpq+X9xjr/hxBoS+dzaz9yIDt195LS/7v9ypLnNDYM8Q661/splGLzK8cfndK7gq1U8CoNDiODdJiPzJcdWuum632IVpCTDRNw6tRnyFbw6EhscNFv4TPb4DagDMt3qdbOkNMgnuHfaThhhQj21440=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rMN7XytF; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6002a655d77so13640737b3.2
-        for <stable@vger.kernel.org>; Tue, 23 Jan 2024 06:57:20 -0800 (PST)
+	s=arc-20240116; t=1706022374; c=relaxed/simple;
+	bh=Hvxo1xL/yAymti2UB/udHZzJ/RVBSls+IizfWvbqLak=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=so8X4eFq8BVBE/K733E+dHx/B41BcmTJKGMy+ot4gtYPE4ENkt7AN6hIzRnlV/83TQMujnry0iVRaAhWWk6qIBEKG3Cn8LVoPPQSxFWKB96OcEh3KQ8h7J2yvkGE252M/BujTZDDC8aqzba2R881gcixdZ7NjhzQXU0ihC0VDQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bZhT6h4X; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1d7610c5f4aso11932075ad.3
+        for <stable@vger.kernel.org>; Tue, 23 Jan 2024 07:06:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706021839; x=1706626639; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vrNkOuwNFtND2EG7v6Xrvesdx8TZWr4RyzW0Ux+jECA=;
-        b=rMN7XytFOseBayyXnhtUAQXmHzgkoWTKH//alztgbsJmJHeByUMNHWxY2mMiyAIhoe
-         1xxHO7XatUTMIcR+6uON6am1dmTkWZ4EFpaA6WPu4uKB0NvjbM54sJrADASZhA8uTUO4
-         vk1kNPO+rmUy6ntc6maxC+iT3f16gzA5P6DYFuoq9atk0H8AxUCRJvwqVscSY3YIrW+Q
-         AHaQedQxDaJrMw/qWolcHyiaoirkybJtUHPUBcuqIVDMtpgQo1mG/0/cEbeujusPGpq5
-         Jt7hpIOkqiGhJUOhaQvD5JeMYlCK/z0LUxuA2jL+kcMKPs1pqPzAtXPr7+B1mpU1EK/U
-         HlWA==
+        d=google.com; s=20230601; t=1706022371; x=1706627171; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0Glva58k+YPNkEy53xnJkJEf4Saze9aPKJ5KXvwWKR8=;
+        b=bZhT6h4X1y0xIYlsTCZj5rtLeRLEQ8Kx7vuZafOeJmlHtwEBGHYa/tEw1NgvW1DgsW
+         eZe2EHlpxuHEnF3ofpooglR5LY/jyKx+X4JHPJk3rYFR7V45LgCqHCEaVm69VUAjEMoj
+         m0rnJlwnYuTggR2Tqawm0r7sZOkkVA0cr48QiCkt6hUTqbVMS2HqxkSxAHCzWNFlbvyZ
+         6hLw6qe8uDB/Nk7eFhuXdFwgfCZcvCefjqTMn5IMlWLYnMsz0iaCdFshocF8sogePQJV
+         OcBcPaAEgjMyb1LJOB87FIcc93i52w6NGCCux1eE4tODAE5gYD0xwoU2Mu/PMCXdAPam
+         zS1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706021839; x=1706626639;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vrNkOuwNFtND2EG7v6Xrvesdx8TZWr4RyzW0Ux+jECA=;
-        b=Dyu/uqCNcCYkm8L948LLs03a49UVJ1lanZ696BdQjgyg4EVR+ouGj/LlA5Dv049rFe
-         jsQCodk3KmGnXbqxRZeCDcIgRtJzTGOsE6sLMh0Qp/Moiv7MNbi5KO4w7hapQw6L+rYZ
-         wfxE0I1nADZSxad7s3phBhrNcwO1XauXT+dLyXS+WnbPJyhRKQoo3db8qZ8vj+ZXMqD6
-         0VEhqrfUnfcDhGTK1pKcH5CiQdtNbWe7tv0R0DbTga4QfFdIVrLKn9qOkrvFmDfJu5U2
-         +hYFkfN6luiy2AKRFSLRV7s1GS37xzQNibY8+Jjwes2EjpKzuLuvwumsQ9rvl8FYSlrx
-         2r3w==
-X-Gm-Message-State: AOJu0YyXaV5JvIwyCNtUmDsXMX6XlNTB2nXzGcq7JqWju6AfcfRuu9nt
-	+pSbn2uHnCYpueekWLfjmQ+TmFNR4Ye8Hjvq+LEE5Gr1Ssi51D6dixPjpIs1sTop96VGWXQFMz0
-	V9vdrlS5XWBvATxSLPmB/wtKl9ET9T8TPyEie0vQ9oAg4O6q3
-X-Google-Smtp-Source: AGHT+IEwGgdGS6j3b73t2bhroV+V2DhZ194hO3IyNOEKWxVRBICLfz6Jfxh3BFZyQ1qS138iqow8DinpWu4m+InBsR4=
-X-Received: by 2002:a25:d0cd:0:b0:dc2:28e7:193f with SMTP id
- h196-20020a25d0cd000000b00dc228e7193fmr3583852ybg.35.1706021839284; Tue, 23
- Jan 2024 06:57:19 -0800 (PST)
+        d=1e100.net; s=20230601; t=1706022371; x=1706627171;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0Glva58k+YPNkEy53xnJkJEf4Saze9aPKJ5KXvwWKR8=;
+        b=c7SuZisTjLvE+9iJVcDuqL5374EstGlvjf6/0On6u8Uuxm6tnEYDdsmPc6qi4ga9kP
+         429v3JOHUELZeYbqr+gl/+vm4U11oSaa4A3dBHu5TPQroQzyGi95OkwPdqCrGTeHXzJH
+         mQY3UycZmmSlT7Q79mgdJP8oy1GEzF43+NvqqIwfAcbZMR0FaX4FJUPHCXpCZTB+sdNR
+         Dl5Ov+46KS/JGULiCzHLMaaeMUMN4ApoP1n1Cl0scAS9z65jner/DRfbNpo7R1oHNrxN
+         3ZtRGxAp0UaiHV/uwC/c2IhTSrvQk03nu4S4tvYWR4svgvICJWleL3T9kSsOOYQEU5fj
+         wMUw==
+X-Gm-Message-State: AOJu0YyI9E2mrIWr/wXsYhbwNSUl7uQgvMTJijpAM5RkB/hl6BJLa/l4
+	VN54+CorAdXBHCMhAxlv/xOwzI6+mRf5LyETFURAubydzi99dqaIUytKotW/eQ==
+X-Google-Smtp-Source: AGHT+IFaUu6MulGNobBRg7zVXgcE4Zx+tJD59jwWQePg9cWYYloysGr59cpxq43TgRsCpLZqR0LAmA==
+X-Received: by 2002:a17:902:ec8b:b0:1d7:4f89:b107 with SMTP id x11-20020a170902ec8b00b001d74f89b107mr4053062plg.134.1706022370847;
+        Tue, 23 Jan 2024 07:06:10 -0800 (PST)
+Received: from google.com (77.62.105.34.bc.googleusercontent.com. [34.105.62.77])
+        by smtp.gmail.com with ESMTPSA id 21-20020a170902c25500b001d756bc2396sm3253890plg.192.2024.01.23.07.06.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jan 2024 07:06:09 -0800 (PST)
+Date: Tue, 23 Jan 2024 15:06:06 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Martijn Coenen <maco@android.com>, Todd Kjos <tkjos@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.4 167/194] binder: print warnings when detecting oneway
+ spamming.
+Message-ID: <Za_V3pUCssU9we2u@google.com>
+References: <20240122235719.206965081@linuxfoundation.org>
+ <20240122235726.366071549@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240122235812.238724226@linuxfoundation.org> <20240122235822.085816226@linuxfoundation.org>
- <CACMJSevr71oSy-CjUKkyXa4ur=mQL3R+PBnJUWQB-Pw3yp+kgA@mail.gmail.com>
- <2024012314-distill-womanlike-77bb@gregkh> <CACMJSevTCk+HkeBC4YbmiRrzViwBNi9r30wdDKrB8J92YBcu4A@mail.gmail.com>
- <2024012300-print-deceased-ea31@gregkh>
-In-Reply-To: <2024012300-print-deceased-ea31@gregkh>
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Date: Tue, 23 Jan 2024 15:57:08 +0100
-Message-ID: <CACMJSet6xZ3CDpiz3JRr8Z2u1EKUacfrxLXzWyxUS1vvPuYLMg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 328/583] gpiolib: provide gpio_device_find()
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Linus Walleij <linus.walleij@linaro.org>, Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240122235726.366071549@linuxfoundation.org>
 
-On Tue, 23 Jan 2024 at 15:32, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Tue, Jan 23, 2024 at 02:13:40PM +0100, Bartosz Golaszewski wrote:
-> > On Tue, 23 Jan 2024 at 13:48, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Tue, Jan 23, 2024 at 10:56:50AM +0100, Bartosz Golaszewski wrote:
-> > > > On Tue, 23 Jan 2024 at 03:03, Greg Kroah-Hartman
-> > > > <gregkh@linuxfoundation.org> wrote:
-> > > > >
-> > > > > 6.6-stable review patch.  If anyone has any objections, please let me know.
-> > > > >
-> > > > > ------------------
-> > > > >
-> > > > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > > > >
-> > > > > [ Upstream commit cfe102f63308c8c8e01199a682868a64b83f653e ]
-> > > > >
-> > > > > gpiochip_find() is wrong and its kernel doc is misleading as the
-> > > > > function doesn't return a reference to the gpio_chip but just a raw
-> > > > > pointer. The chip itself is not guaranteed to stay alive, in fact it can
-> > > > > be deleted at any point. Also: other than GPIO drivers themselves,
-> > > > > nobody else has any business accessing gpio_chip structs.
-> > > > >
-> > > > > Provide a new gpio_device_find() function that returns a real reference
-> > > > > to the opaque gpio_device structure that is guaranteed to stay alive for
-> > > > > as long as there are active users of it.
-> > > > >
-> > > > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > > > > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> > > > > Stable-dep-of: 48e1b4d369cf ("gpiolib: remove the GPIO device from the list when it's unregistered")
-> > > > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > > > ---
-> > > >
-> > > > Greg,
-> > > >
-> > > > I think there's something not quite right with the system for picking
-> > > > up patches into stable lately. This is the third email where I'm
-> > > > stopping Sasha or you from picking up changes that are clearly new
-> > > > features and not fixes suitable for backporting.
-> > > >
-> > > > Providing a new, improved function to replace an old interface should
-> > > > not be considered for stable branches IMO. Please drop it.
-> > >
-> > > Even if it is required for a valid bugfix that affects users?  This is a
-> > > dependency of the commit 48e1b4d369cf ("gpiolib: remove the GPIO device
-> > > from the list when it's unregistered"), shouldn't that be backported to
-> > > all affected kernels properly?
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
-> >
-> > Eh... It is technically a fix but also this has been like it since
-> > 2014 and nobody ever hit the bug (or bothered to report it). Ok do as
-> > you wish with this one.
->
-> You all marked the commit as a fix for an issue, so that's why we
-> backported all of this.  If something is NOT a fix, don't tag it as
-> such?  :)
->
-> Or, if you want, we can ignore all patches in the gpio subsystem that
-> are NOT explicitly tagged with a cc: stable@ tag, if you agree that you
-> will properly tag everything.  Some other subsytems do this, but that
-> increases the responsibility on the maintainers of the subsystem, which
-> is not something I would ever ask anyone to do.
->
-> Heck, for my subsystems, I miss tagging stable a lot, but the scripts
-> pick up those that get Fixes: tags, so it's a good back-stop to solve
-> problems.
->
-> Again, if you want us to ignore any portion of the tree that you are the
-> maintainer, just let me know the directory(ies) that you want and I can
-> add it to the "ignore list" or you can send a patch for this file:
->         https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/ignore_list
->
-> thanks!
->
-> gre gk-h
+On Mon, Jan 22, 2024 at 03:58:17PM -0800, Greg Kroah-Hartman wrote:
+> 5.4-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Martijn Coenen <maco@android.com>
+> 
+> [ Upstream commit 261e7818f06ec51e488e007f787ccd7e77272918 ]
+> 
+> The most common cause of the binder transaction buffer filling up is a
+> client rapidly firing oneway transactions into a process, before it has
+> a chance to handle them. Yet the root cause of this is often hard to
+> debug, because either the system or the app will stop, and by that time
+> binder debug information we dump in bugreports is no longer relevant.
+> 
+> This change warns as soon as a process dips below 80% of its oneway
+> space (less than 100kB available in the configuration), when any one
+> process is responsible for either more than 50 transactions, or more
+> than 50% of the oneway space.
+> 
+> Signed-off-by: Martijn Coenen <maco@android.com>
+> Acked-by: Todd Kjos <tkjos@google.com>
+> Link: https://lore.kernel.org/r/20200821122544.1277051-1-maco@android.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Stable-dep-of: c6d05e0762ab ("binder: fix unused alloc->free_async_space")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
 
-No, I don't want you to ignore the commits without Cc: stable. I may
-have been too eager to react but earlier today I saw Sasha pick up
-patches that were clearly adding new features and *did not* have any
-Fixes tags on them.
+I think we should drop this patch from the 5.4 stable queue. I assume it
+was pulled in as a dependency of patch c6d05e0762ab ("binder: fix unused
+alloc->free_async_space"). However, I have instead fixed the conflicts
+for that backport here:
+https://lore.kernel.org/all/20240122235725.449688589@linuxfoundation.org/
 
-Nevermind this message.
+I was not aware that this patch was being backported and now we have the
+following missing hunk in this v5.4 series:
 
-Thanks
-Bartosz
+diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+index abff1bafcc43..9b5c4d446efa 100644
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -344,8 +344,7 @@ static bool debug_low_async_space_locked(struct binder_alloc *alloc, int pid)
+                        continue;
+                if (!buffer->async_transaction)
+                        continue;
+-               total_alloc_size += binder_alloc_buffer_size(alloc, buffer)
+-                       + sizeof(struct binder_buffer);
++               total_alloc_size += binder_alloc_buffer_size(alloc, buffer);
+                num_buffers++;
+        }
+
+
+Dropping this patch fixes this problem. After all it doesn't fix
+anything so we don't need it here.
+
+Sorry for all the binder backporting mess.
+
+Thanks,
+Carlos Llamas
 
