@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-15113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3838383EE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FD0F8383F3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8A781F28A5F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDBAC2966E0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1ADC65BC0;
-	Tue, 23 Jan 2024 01:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC19165BBD;
+	Tue, 23 Jan 2024 01:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDJgSmDA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAFEgk3i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B109B657D6;
-	Tue, 23 Jan 2024 01:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0BD65BD3;
+	Tue, 23 Jan 2024 01:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975100; cv=none; b=ncvPRqEkHfRTlV1X9pqlq2VnW96xZNUZVNu+hkgYW8BR+CJk1UNvRZ30FVewXMcxghTNQV3UDFrLR/8sC/2iOnyV98oJ4rl5UJJqKDEi5jGMb+mIiPWJKPrwXRHvqjc71c6PhkdQ4CY9oj+MqTYgiyMnfTU74/YEuV7oI2iF7Qs=
+	t=1705975102; cv=none; b=MQekc27cR314SnztuH69Bd+BLoJTyD/dLZ0ywe7rj7TdzW2EmIIa3AKLfmxf3z8Jm++veIDeEMvYlHCBkACQI+XYgYpQ4zEKGwNRH1TobGdkUZHzgn0Y/hzWQfGDN3geIh7A7+C0udipBHFIiZ4UwSEOGTM12sgqeTXqeVaIgAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975100; c=relaxed/simple;
-	bh=6dOQ85NqEXn7wjcSi16F4tDqdSPQEsqso3DrNSKZYC4=;
+	s=arc-20240116; t=1705975102; c=relaxed/simple;
+	bh=EG8XbP3GIwhxk8LpXG99jpLF7PsDuM1zo3nKA4LbNMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bjkcvsdVeTtdJqc/NqqUHbT4ZSrCRvIHbvJlmk0YdcYQSiqROi+JqN7DWQcFFp3/yUVv25kozGHqTSVUQlQzGaD1N46b9E96e8kUdSYe/nVONc4btdO7q4wxflFK/zJFkL62n9/0u6s7d/I4zJ7aXH6Hv6/q42+m2f3oMyZtXOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LDJgSmDA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C61C433C7;
-	Tue, 23 Jan 2024 01:58:20 +0000 (UTC)
+	 MIME-Version; b=tJpWLayajZWJFHeTpL7aKSrB6EZn+HTkLUjP2UvxJtsxIsj4ZDmeK82svAi2jxTDWAVdNQO+vXtP8YxWYgQHvpdoWZWOwqldRlidWLnI7v+0ro3ivfh7nIuD1w/iJO72RL84DYlCF9d+uboec50euT3VSEVfqoHQaXmXUR/advg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAFEgk3i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446E0C433C7;
+	Tue, 23 Jan 2024 01:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975100;
-	bh=6dOQ85NqEXn7wjcSi16F4tDqdSPQEsqso3DrNSKZYC4=;
+	s=korg; t=1705975102;
+	bh=EG8XbP3GIwhxk8LpXG99jpLF7PsDuM1zo3nKA4LbNMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LDJgSmDAytuUtjakMQ0FjTfV+UIjmEQ723ejc17DRQQIkU04eAMKx34NJQXXQ3D23
-	 KXhtonjISmddFfRi4eA0GMnT7QHdeO16TDZMsfWMvXYq4y5HUlJ3B9uqTw2XiKUfNr
-	 ff1m2oFCYOpLB/dGuy1ZrWnJHtVYCCdvenX3djRU=
+	b=IAFEgk3iAvePfbeP8n3yQEpX6DwAAaaPP3X7zWpFPNUM6moRNIHcjHfc0h1pb6o+H
+	 gh8vLpKOAV7BX/NitWkxf60iPNt10tVD79iDsztuxzZTcUekMBtlOdKj8avKNpRqXJ
+	 TLL+oqjPqhT07L5uHl9Eahkr1JInz/atKFfXB+84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a9400cabb1d784e49abf@syzkaller.appspotmail.com,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Taehee Yoo <ap420073@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Chanho Park <chanho61.park@samsung.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 365/374] ipv6: mcast: fix data-race in ipv6_mc_down / mld_ifc_work
-Date: Mon, 22 Jan 2024 16:00:21 -0800
-Message-ID: <20240122235757.655246991@linuxfoundation.org>
+Subject: [PATCH 5.15 366/374] i2c: s3c24xx: fix read transfers in polling mode
+Date: Mon, 22 Jan 2024 16:00:22 -0800
+Message-ID: <20240122235757.694471644@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
 References: <20240122235744.598274724@linuxfoundation.org>
@@ -70,79 +68,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 2e7ef287f07c74985f1bf2858bedc62bd9ebf155 ]
+[ Upstream commit 0d9cf23ed55d7ba3ab26d617a3ae507863674c8f ]
 
-idev->mc_ifc_count can be written over without proper locking.
+To properly handle read transfers in polling mode, no waiting for the ACK
+state is needed as it will never come. Just wait a bit to ensure start
+state is on the bus and continue processing next bytes.
 
-Originally found by syzbot [1], fix this issue by encapsulating calls
-to mld_ifc_stop_work() (and mld_gq_stop_work() for good measure) with
-mutex_lock() and mutex_unlock() accordingly as these functions
-should only be called with mc_lock per their declarations.
-
-[1]
-BUG: KCSAN: data-race in ipv6_mc_down / mld_ifc_work
-
-write to 0xffff88813a80c832 of 1 bytes by task 3771 on cpu 0:
- mld_ifc_stop_work net/ipv6/mcast.c:1080 [inline]
- ipv6_mc_down+0x10a/0x280 net/ipv6/mcast.c:2725
- addrconf_ifdown+0xe32/0xf10 net/ipv6/addrconf.c:3949
- addrconf_notify+0x310/0x980
- notifier_call_chain kernel/notifier.c:93 [inline]
- raw_notifier_call_chain+0x6b/0x1c0 kernel/notifier.c:461
- __dev_notify_flags+0x205/0x3d0
- dev_change_flags+0xab/0xd0 net/core/dev.c:8685
- do_setlink+0x9f6/0x2430 net/core/rtnetlink.c:2916
- rtnl_group_changelink net/core/rtnetlink.c:3458 [inline]
- __rtnl_newlink net/core/rtnetlink.c:3717 [inline]
- rtnl_newlink+0xbb3/0x1670 net/core/rtnetlink.c:3754
- rtnetlink_rcv_msg+0x807/0x8c0 net/core/rtnetlink.c:6558
- netlink_rcv_skb+0x126/0x220 net/netlink/af_netlink.c:2545
- rtnetlink_rcv+0x1c/0x20 net/core/rtnetlink.c:6576
- netlink_unicast_kernel net/netlink/af_netlink.c:1342 [inline]
- netlink_unicast+0x589/0x650 net/netlink/af_netlink.c:1368
- netlink_sendmsg+0x66e/0x770 net/netlink/af_netlink.c:1910
- ...
-
-write to 0xffff88813a80c832 of 1 bytes by task 22 on cpu 1:
- mld_ifc_work+0x54c/0x7b0 net/ipv6/mcast.c:2653
- process_one_work kernel/workqueue.c:2627 [inline]
- process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2700
- worker_thread+0x525/0x730 kernel/workqueue.c:2781
- ...
-
-Fixes: 2d9a93b4902b ("mld: convert from timer to delayed work")
-Reported-by: syzbot+a9400cabb1d784e49abf@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/000000000000994e09060ebcdffb@google.com/
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Acked-by: Taehee Yoo <ap420073@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20240117172102.12001-1-n.zhandarovich@fintech.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 117053f77a5a ("i2c: s3c2410: Add polling mode support")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Chanho Park <chanho61.park@samsung.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/mcast.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i2c/busses/i2c-s3c2410.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index 87c699d57b36..0ea7d97cdc02 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -2725,8 +2725,12 @@ void ipv6_mc_down(struct inet6_dev *idev)
- 	synchronize_net();
- 	mld_query_stop_work(idev);
- 	mld_report_stop_work(idev);
-+
-+	mutex_lock(&idev->mc_lock);
- 	mld_ifc_stop_work(idev);
- 	mld_gq_stop_work(idev);
-+	mutex_unlock(&idev->mc_lock);
-+
- 	mld_dad_stop_work(idev);
- }
+diff --git a/drivers/i2c/busses/i2c-s3c2410.c b/drivers/i2c/busses/i2c-s3c2410.c
+index b49a1b170bb2..9a6fbb38a5ba 100644
+--- a/drivers/i2c/busses/i2c-s3c2410.c
++++ b/drivers/i2c/busses/i2c-s3c2410.c
+@@ -220,8 +220,17 @@ static bool is_ack(struct s3c24xx_i2c *i2c)
+ 	int tries;
  
+ 	for (tries = 50; tries; --tries) {
+-		if (readl(i2c->regs + S3C2410_IICCON)
+-			& S3C2410_IICCON_IRQPEND) {
++		unsigned long tmp = readl(i2c->regs + S3C2410_IICCON);
++
++		if (!(tmp & S3C2410_IICCON_ACKEN)) {
++			/*
++			 * Wait a bit for the bus to stabilize,
++			 * delay estimated experimentally.
++			 */
++			usleep_range(100, 200);
++			return true;
++		}
++		if (tmp & S3C2410_IICCON_IRQPEND) {
+ 			if (!(readl(i2c->regs + S3C2410_IICSTAT)
+ 				& S3C2410_IICSTAT_LASTBIT))
+ 				return true;
 -- 
 2.43.0
 
