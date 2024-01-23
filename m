@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-15432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C35568385AC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:46:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD2AF8383ED
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A230B21C43
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 977F129642E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E31D1878;
-	Tue, 23 Jan 2024 02:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059DB65BB2;
+	Tue, 23 Jan 2024 01:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TdItdwc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diuclUDj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E40C110A;
-	Tue, 23 Jan 2024 02:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A1765BB9;
+	Tue, 23 Jan 2024 01:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975768; cv=none; b=tIKc4wKLrL7FsTVr4+ldQJ83MLmkafAI5K7zaaNJlSTeXv+tx2RM6VdRrh8mG3JbMrntQ3gjyKU6PiwmlmTrhn4VOh9bSthqZJmBSNukZr7BlpGfF2FNuwIFmY2YW41HKdSEdm+Qz2Ulgxv1oDChPFxHXbTsQNC++JeEC5iv2Vw=
+	t=1705975099; cv=none; b=Il3o7ZTEShynku4YHBtRwgH19MsjmciU6zj33pBzH+qSJIU2bavOQY4y5i3jLvyxKWeGN/uhS3ehXhwxcLxLMrEaF0407figt/fr0zmm6nYm1VH2/0dOdjOxSQkWSRch0f/UmL9r/wqN9cvv6huxvbRWlyKcKPP4vquxZvqrzXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975768; c=relaxed/simple;
-	bh=bKnbIOexUhN6L6inpDUZGw6dIQlpDheyLwTrqGXWL7I=;
+	s=arc-20240116; t=1705975099; c=relaxed/simple;
+	bh=TucIF5faZD3XjtBOwC6XJr7Sq/Mr3FVc0y3eBnaXSAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPXgafXJ3pmQFgxHYQ7wICiHBeM5EvMe/+biKUaA4AjN4GF/hNB2gp+1e2zr+MM/0Kv78cZKOAnyTBFuyTve8fccKMkJZCJsYfG4E4w2Nuy3fkzg+1FlxlPrclYbnnMo4T9yLLK7lFDBxkclPfdAK5L0uLCrV3I7b96NsDhG2u8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TdItdwc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE248C43390;
-	Tue, 23 Jan 2024 02:09:27 +0000 (UTC)
+	 MIME-Version; b=M33ktp0lSz03zBsq4E3nN9HMtpdCRdIBxxU8XN0tIhF2zXl65euMcRvaH91GneI4zkPTu1yNfsvpbVeolzsKdH10XH6TnGlryiIQf+6kXXBECWiXEXDQP2+5n79fLxQchZgILBfOOgkMA54lgWbrZy916b/UuULtdlgrNG79xaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diuclUDj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F914C43394;
+	Tue, 23 Jan 2024 01:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975768;
-	bh=bKnbIOexUhN6L6inpDUZGw6dIQlpDheyLwTrqGXWL7I=;
+	s=korg; t=1705975099;
+	bh=TucIF5faZD3XjtBOwC6XJr7Sq/Mr3FVc0y3eBnaXSAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2TdItdwclTsrxpQiaGSNOLzMhkmEB1oC3g9iGyhRwnCyFWk9R6zrlQ2PrIXTaGix9
-	 n7msZszE00CIxammTxvXsDdLp5581xekyieefWzj2+gdsK6po7K5eWyOVwY6beOg8d
-	 UtnyG0deB2nUNWtCmRhn6KzWr+6+yz/RP5xm4fd8=
+	b=diuclUDjsJ5PffHH8OA43VXOKoXho4nRo/aeM49O/sQognGV0Zyi3vALrPbCiuzY2
+	 6AJtJuT36TWQr0K2FoKslE40hzlFSGTrNp6Qy1IpE7WGQN7NJI+iA8/6Sq7rxDvy3S
+	 vv4d2GeezleA3crII71DDAiaumekvBK52oXvp/2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 552/583] drm/amdgpu: fall back to INPUT power for AVG power via INFO IOCTL
+Subject: [PATCH 5.15 347/374] netfilter: nft_quota: move stateful fields out of expression data
 Date: Mon, 22 Jan 2024 16:00:03 -0800
-Message-ID: <20240122235829.037301426@linuxfoundation.org>
+Message-ID: <20240122235756.993868390@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit d02069850fc102b07ae923535d5e212f2c8a34e9 ]
+[ Upstream commit ed0a0c60f0e50fa52853620672af97edde3d3a03 ]
 
-For backwards compatibility with userspace.
+In preparation for the rule blob representation.
 
-Fixes: 47f1724db4fe ("drm/amd: Introduce `AMDGPU_PP_SENSOR_GPU_INPUT_POWER`")
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2897
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 91a139cee120 ("netfilter: nft_limit: do not ignore unsupported flags")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/netfilter/nft_quota.c | 52 +++++++++++++++++++++++++++++++++++----
+ 1 file changed, 47 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-index d30dc0b718c7..58dab4f73a9a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_kms.c
-@@ -1026,7 +1026,12 @@ int amdgpu_info_ioctl(struct drm_device *dev, void *data, struct drm_file *filp)
- 			if (amdgpu_dpm_read_sensor(adev,
- 						   AMDGPU_PP_SENSOR_GPU_AVG_POWER,
- 						   (void *)&ui32, &ui32_size)) {
--				return -EINVAL;
-+				/* fall back to input power for backwards compat */
-+				if (amdgpu_dpm_read_sensor(adev,
-+							   AMDGPU_PP_SENSOR_GPU_INPUT_POWER,
-+							   (void *)&ui32, &ui32_size)) {
-+					return -EINVAL;
-+				}
- 			}
- 			ui32 >>= 8;
- 			break;
+diff --git a/net/netfilter/nft_quota.c b/net/netfilter/nft_quota.c
+index c4d1389f7185..0484aef74273 100644
+--- a/net/netfilter/nft_quota.c
++++ b/net/netfilter/nft_quota.c
+@@ -15,13 +15,13 @@
+ struct nft_quota {
+ 	atomic64_t	quota;
+ 	unsigned long	flags;
+-	atomic64_t	consumed;
++	atomic64_t	*consumed;
+ };
+ 
+ static inline bool nft_overquota(struct nft_quota *priv,
+ 				 const struct sk_buff *skb)
+ {
+-	return atomic64_add_return(skb->len, &priv->consumed) >=
++	return atomic64_add_return(skb->len, priv->consumed) >=
+ 	       atomic64_read(&priv->quota);
+ }
+ 
+@@ -90,13 +90,23 @@ static int nft_quota_do_init(const struct nlattr * const tb[],
+ 			return -EOPNOTSUPP;
+ 	}
+ 
++	priv->consumed = kmalloc(sizeof(*priv->consumed), GFP_KERNEL);
++	if (!priv->consumed)
++		return -ENOMEM;
++
+ 	atomic64_set(&priv->quota, quota);
+ 	priv->flags = flags;
+-	atomic64_set(&priv->consumed, consumed);
++	atomic64_set(priv->consumed, consumed);
+ 
+ 	return 0;
+ }
+ 
++static void nft_quota_do_destroy(const struct nft_ctx *ctx,
++				 struct nft_quota *priv)
++{
++	kfree(priv->consumed);
++}
++
+ static int nft_quota_obj_init(const struct nft_ctx *ctx,
+ 			      const struct nlattr * const tb[],
+ 			      struct nft_object *obj)
+@@ -128,7 +138,7 @@ static int nft_quota_do_dump(struct sk_buff *skb, struct nft_quota *priv,
+ 	 * that we see, don't go over the quota boundary in what we send to
+ 	 * userspace.
+ 	 */
+-	consumed = atomic64_read(&priv->consumed);
++	consumed = atomic64_read(priv->consumed);
+ 	quota = atomic64_read(&priv->quota);
+ 	if (consumed >= quota) {
+ 		consumed_cap = quota;
+@@ -145,7 +155,7 @@ static int nft_quota_do_dump(struct sk_buff *skb, struct nft_quota *priv,
+ 		goto nla_put_failure;
+ 
+ 	if (reset) {
+-		atomic64_sub(consumed, &priv->consumed);
++		atomic64_sub(consumed, priv->consumed);
+ 		clear_bit(NFT_QUOTA_DEPLETED_BIT, &priv->flags);
+ 	}
+ 	return 0;
+@@ -162,11 +172,20 @@ static int nft_quota_obj_dump(struct sk_buff *skb, struct nft_object *obj,
+ 	return nft_quota_do_dump(skb, priv, reset);
+ }
+ 
++static void nft_quota_obj_destroy(const struct nft_ctx *ctx,
++				  struct nft_object *obj)
++{
++	struct nft_quota *priv = nft_obj_data(obj);
++
++	return nft_quota_do_destroy(ctx, priv);
++}
++
+ static struct nft_object_type nft_quota_obj_type;
+ static const struct nft_object_ops nft_quota_obj_ops = {
+ 	.type		= &nft_quota_obj_type,
+ 	.size		= sizeof(struct nft_quota),
+ 	.init		= nft_quota_obj_init,
++	.destroy	= nft_quota_obj_destroy,
+ 	.eval		= nft_quota_obj_eval,
+ 	.dump		= nft_quota_obj_dump,
+ 	.update		= nft_quota_obj_update,
+@@ -205,12 +224,35 @@ static int nft_quota_dump(struct sk_buff *skb, const struct nft_expr *expr)
+ 	return nft_quota_do_dump(skb, priv, false);
+ }
+ 
++static void nft_quota_destroy(const struct nft_ctx *ctx,
++			      const struct nft_expr *expr)
++{
++	struct nft_quota *priv = nft_expr_priv(expr);
++
++	return nft_quota_do_destroy(ctx, priv);
++}
++
++static int nft_quota_clone(struct nft_expr *dst, const struct nft_expr *src)
++{
++	struct nft_quota *priv_dst = nft_expr_priv(dst);
++
++	priv_dst->consumed = kmalloc(sizeof(*priv_dst->consumed), GFP_ATOMIC);
++	if (priv_dst->consumed)
++		return -ENOMEM;
++
++	atomic64_set(priv_dst->consumed, 0);
++
++	return 0;
++}
++
+ static struct nft_expr_type nft_quota_type;
+ static const struct nft_expr_ops nft_quota_ops = {
+ 	.type		= &nft_quota_type,
+ 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_quota)),
+ 	.eval		= nft_quota_eval,
+ 	.init		= nft_quota_init,
++	.destroy	= nft_quota_destroy,
++	.clone		= nft_quota_clone,
+ 	.dump		= nft_quota_dump,
+ };
+ 
 -- 
 2.43.0
 
