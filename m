@@ -1,121 +1,144 @@
-Return-Path: <stable+bounces-15493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69625838B27
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 10:57:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 671A4838B5B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 11:05:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E91AB21141
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 09:57:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17D6929029B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 10:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A939E5C5FA;
-	Tue, 23 Jan 2024 09:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA7C5A0F9;
+	Tue, 23 Jan 2024 10:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aKWG7d2A"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="YQmDWkOh";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="YQmDWkOh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC41F5C8E2
-	for <stable@vger.kernel.org>; Tue, 23 Jan 2024 09:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA6D5C5ED;
+	Tue, 23 Jan 2024 10:05:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706003825; cv=none; b=pLJ1dQwwVzSsWzq1EpOXZ8b11tZaBw3yScx9LzT4xLZDL4/AvTHNfcIoJBZa74yqyPDOIV7sUTAGSA/XwXt2dFDTYOfouIkLmQ/FXez8VvgrWQBmmD93GDD76Qn/HdLlvKp1nRPtO2jtGx4S0H5JHxonOu+wTYqwI9elokDXCIY=
+	t=1706004318; cv=none; b=ZR3HR1VU0vIxOe0XkUh1eJATKbiTlYtNbwY6knWypLJ5PNHFU5Oh2cTt2p8c7nOli9qfe82Fryot4ObuezLD4Wi+vVzwcGrxvPJW+hgTIwDEbchRjEoJM4b5laz2ZjI1eYbslBlCfsSi/9Wp+FfKa4oHITpO6qUJ2CezrnVnfO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706003825; c=relaxed/simple;
-	bh=2a4zx/E4HXHMQCrFRTMcQxxbfLKxlGBDrsmWNtMNU34=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X0rb1fDoKne9MJ3J/mbJ7HoXjp7dahG0Pc0JU6n3F2psmPXYMepfqCY9Q3xgNaSaJOFH/9f3l+OWjFdvu6HU+6Kp1jJaGJzI6V7RmqUx6eiy/QUAl9kWBdRJXmevD4sbNbJUZqiqcRn8oM2EJdrrarJ7Li75z24OsWnMEYao+PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aKWG7d2A; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-5ff7ec8772dso33577497b3.0
-        for <stable@vger.kernel.org>; Tue, 23 Jan 2024 01:57:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706003821; x=1706608621; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dx8VNoB5xNb50VoOTbN0kgG1Wr33n3CjaRFmMnrWwK8=;
-        b=aKWG7d2AAtAQ3IS0zLB5rK9qODcfiag9L6TgtMpkg/j/BhWyG6sLfyJIquJO/DVN0l
-         3XQbp0HabPnTiasRZiSaQW7H3f9TPalsgpO1OQnttq5U4lvVZ0fYw03O+acvhYrBGWAw
-         2lMdP4ytAYyIpGYiZBtnQrZ2VZZlHXU6a3aGMv9/fS3gMhst7x2BSL3v8ILIMTRGooDy
-         Mwd1R9vyAs5wjJ4LHW5o/SsIKHImhOD3H97C+ZvwddfT8lPajLrYWU6P0GSHIUBpGUq4
-         51bqUc0y26QmPU93WvA0CkAjQi1/KvkOaL4DL5yMImiHZKewVqFZ5iXpbIGK5LUaHhnB
-         F7bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706003821; x=1706608621;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Dx8VNoB5xNb50VoOTbN0kgG1Wr33n3CjaRFmMnrWwK8=;
-        b=Jqzejb9jfZfBupckJfbLjBpDJrM8uO+I9F7yEqJ/ze+1/w/2PQ1h98eMgAey1fZqLi
-         M7pdoTip+vf47oy5v2BTgGAtIeD9xAVyqSQ0zzm7qHK3+enRFaHQ4NcTInYsnSP0egcZ
-         octg5PvCe+zaKBPaXQ7lCx1lupAlskscMQ4Ulv1vpMOyd44WertIJ9Dg2gLCX+X4Sijd
-         pHoz0lqtfPrzTnom5zXts+BzwTMr19uS8Wxh+U1fEGqelRciDmnIcw6RxWPpaqEdcy7K
-         XOlwVVxaurj6nKqquUR3HCu91yc2WGTZk/x/naEpA74gDIhkWiZ18PzP1/kl99JGRpH9
-         DdZg==
-X-Gm-Message-State: AOJu0YyX0AsEmOOrnebzDqqb1yd8CdjDgb5Mv3+ILCGB5hx9KDra1GJo
-	lhd9LLF1AVl6vdQqqV1L0fp2YmwbcChy3yNGHfBzKFAZVR1YupEFEaFFaX6ngjcYmDH7nqKXxo5
-	xemEplq64cnhjK2vD4yNHnrqgXASctvTusSGZWQ==
-X-Google-Smtp-Source: AGHT+IE+Y1hSMZGHVELT5QGI6zTMJ5w8f3ijh0TFj72VdyzH5fdSw5hkSKV2Fl3eI9tm1tzHr+S15Vy8GashmMFemPE=
-X-Received: by 2002:a81:4809:0:b0:5ff:a40c:5fc1 with SMTP id
- v9-20020a814809000000b005ffa40c5fc1mr4105759ywa.54.1706003821481; Tue, 23 Jan
- 2024 01:57:01 -0800 (PST)
+	s=arc-20240116; t=1706004318; c=relaxed/simple;
+	bh=dod4ySizz+UXy9hLArED1qnGN6vM5M8n8D354HPBERk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S2r/1ALIJLhpAM+Dn1ZWHExYC0LwM7EAfBmnTSdbdKwf62o8qntORTu1IUDHiyQEyWojjfClN9V/PAvy2G6kzsaRxEnZWdG+8dCf9ff77zHFtZJKS1PHHRuOzK9Z32c+/uhRUsfwRhbPeQLrLwCHTKHs0+FK9TO7PXUpV5/mQ2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=YQmDWkOh; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=YQmDWkOh; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7B4221FD48;
+	Tue, 23 Jan 2024 10:05:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1706004314; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hCbpUW79UBQklyQUgghM/5s8J/FybqEF+7dXOs7C6RM=;
+	b=YQmDWkOho0o9ZGR4Yz5FT2ornPOxmnaXzF1wFcirQzSlzqcZ1+L9N59/6ddEgse4ImivCc
+	h/g0vRBjHe/GxLL9CXT3pnbv5FNc+gHynszHaDZQFNAQ2/8oVRsQ/UzBCijfdt/1eVnLLg
+	jeAmopyVcBKlmkgDTg/Cxt2GNC4BZ70=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1706004314; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hCbpUW79UBQklyQUgghM/5s8J/FybqEF+7dXOs7C6RM=;
+	b=YQmDWkOho0o9ZGR4Yz5FT2ornPOxmnaXzF1wFcirQzSlzqcZ1+L9N59/6ddEgse4ImivCc
+	h/g0vRBjHe/GxLL9CXT3pnbv5FNc+gHynszHaDZQFNAQ2/8oVRsQ/UzBCijfdt/1eVnLLg
+	jeAmopyVcBKlmkgDTg/Cxt2GNC4BZ70=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 55E5013786;
+	Tue, 23 Jan 2024 10:05:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id CuWXElqPr2WJEQAAD6G6ig
+	(envelope-from <mhocko@suse.com>); Tue, 23 Jan 2024 10:05:14 +0000
+Date: Tue, 23 Jan 2024 11:05:13 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
+Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"david@redhat.com" <david@redhat.com>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"hannes@cmpxchg.org" <hannes@cmpxchg.org>,
+	"mgorman@techsingularity.net" <mgorman@techsingularity.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"quic_pkondeti@quicinc.com" <quic_pkondeti@quicinc.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>,
+	"quic_charante@quicinc.com" <quic_charante@quicinc.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"quic_cgoldswo@quicinc.com" <quic_cgoldswo@quicinc.com>
+Subject: Re: [RESEND PATCH V2] mm: page_alloc: unreserve highatomic page
+ blocks before oom
+Message-ID: <Za-PWcwmHFl3wmth@tiehlicka>
+References: <1700823445-27531-1-git-send-email-quic_charante@quicinc.com>
+ <3fe3b3edd33cd784071dd9b459d20a79605ec918.camel@infinera.com>
+ <2024012205-undrilled-those-2435@gregkh>
+ <PH0PR10MB461565CEE892267025BC697BF4752@PH0PR10MB4615.namprd10.prod.outlook.com>
+ <2024012210-outshoot-dragonish-fe8e@gregkh>
+ <01010dd280badd149291cf4d2a4a88847113cf6d.camel@infinera.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240122235812.238724226@linuxfoundation.org> <20240122235822.085816226@linuxfoundation.org>
-In-Reply-To: <20240122235822.085816226@linuxfoundation.org>
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Date: Tue, 23 Jan 2024 10:56:50 +0100
-Message-ID: <CACMJSevr71oSy-CjUKkyXa4ur=mQL3R+PBnJUWQB-Pw3yp+kgA@mail.gmail.com>
-Subject: Re: [PATCH 6.6 328/583] gpiolib: provide gpio_device_find()
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Linus Walleij <linus.walleij@linaro.org>, Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <01010dd280badd149291cf4d2a4a88847113cf6d.camel@infinera.com>
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Level: 
+X-Spam-Score: 0.70
+X-Spamd-Result: default: False [0.70 / 50.00];
+	 TO_DN_EQ_ADDR_SOME(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 NEURAL_HAM_SHORT(-0.20)[-0.996];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 BAYES_HAM(-0.01)[45.75%];
+	 ARC_NA(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MIME_GOOD(-0.10)[text/plain];
+	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	 RCPT_COUNT_TWELVE(0.00)[13];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 MID_RHS_NOT_FQDN(0.50)[];
+	 RCVD_TLS_ALL(0.00)[];
+	 SUSPICIOUS_RECIPS(1.50)[]
+X-Spam-Flag: NO
 
-On Tue, 23 Jan 2024 at 03:03, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> 6.6-stable review patch.  If anyone has any objections, please let me know.
->
-> ------------------
->
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> [ Upstream commit cfe102f63308c8c8e01199a682868a64b83f653e ]
->
-> gpiochip_find() is wrong and its kernel doc is misleading as the
-> function doesn't return a reference to the gpio_chip but just a raw
-> pointer. The chip itself is not guaranteed to stay alive, in fact it can
-> be deleted at any point. Also: other than GPIO drivers themselves,
-> nobody else has any business accessing gpio_chip structs.
->
-> Provide a new gpio_device_find() function that returns a real reference
-> to the opaque gpio_device structure that is guaranteed to stay alive for
-> as long as there are active users of it.
->
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Stable-dep-of: 48e1b4d369cf ("gpiolib: remove the GPIO device from the list when it's unregistered")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
+On Mon 22-01-24 23:14:59, Joakim Tjernlund wrote:
+> On Mon, 2024-01-22 at 15:04 -0800, Greg KH wrote:
+[...]
+> > For mm patches like this, that are not explicitly tagged by the
+> > maintainers to be included in the stable tree, we need their ack to be
+> > able to apply them based on their requests.  So can you get that for
+> > this change and provide tested patches, we will be glad to queue them
+> > up.
+> 
+> I asked the author and he acknowledged it could be backported. Charan, please chim in.
 
-Greg,
-
-I think there's something not quite right with the system for picking
-up patches into stable lately. This is the third email where I'm
-stopping Sasha or you from picking up changes that are clearly new
-features and not fixes suitable for backporting.
-
-Providing a new, improved function to replace an old interface should
-not be considered for stable branches IMO. Please drop it.
-
-Bartosz
+The patch itself is safe to backport but it would be great to here what
+kind of problem you are trying to deal with. The issue fixed by this
+patch is more on a corner case side than something that many users
+should see. Could you share oom report you are seeing?
+-- 
+Michal Hocko
+SUSE Labs
 
