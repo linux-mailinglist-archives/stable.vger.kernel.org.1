@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-15465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4220D838556
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 711B58383F8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF0CB28AF9E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AC5E296B0D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CAB627E4;
-	Tue, 23 Jan 2024 02:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5993D664B4;
+	Tue, 23 Jan 2024 01:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrzYtJVT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hs0H75dw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0095B1FBF;
-	Tue, 23 Jan 2024 02:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E6965BB4;
+	Tue, 23 Jan 2024 01:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975804; cv=none; b=E18su+7FQUwRbmw639BfuomnaOy6kaaAOMuRRnekoAOeKscGng/GhrW60+Ttf5ijszGhCzXnqZul9x4y2gOeIGrB0leRahL6GHpr34qKKi9T8jsfyuvZ34TAVUJDB26QkjsAskJKwcV07WYZxWUk/BDo7DRZOQ2DDGrWGTOLQFg=
+	t=1705975106; cv=none; b=atUuqrCNFM0TxnOse3GewPKEWOgS2ZbIkrNnR63NxEp0hqrWC3BNdOLqZ6GUAeVSXHEhvoGsGvD/Bfa89aoFlV3u+OVOtQ3yPEI9CvPtBkwZaziQq+SvDeb2u+8v+r0ChdhesBe+0XDH5I6KcYAETn4DrIXhXOukQgVvXkfL0FM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975804; c=relaxed/simple;
-	bh=MuvmWwLJAT1CPr1RizmHMYj4Jb8aOiYXv8dWFJ9m6uY=;
+	s=arc-20240116; t=1705975106; c=relaxed/simple;
+	bh=xdpy8mT8kDQG1lC+o5sTNatXyzNIXOTqGAcVjpcZEIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IxqjPiC43DvtJDC+Kkiw/wzkiWGcW8zFHNZs67/ngdKkemK4mnYgGDPLzmb3j3Eo3bKQLEWkn8PT1nUXy4LDKiDLUuMUtasA95bTIqZ0shgJEbdnBa9LIx/94PEeZ/t9BQwci06r5fuZQj8N6fOJD8k+uaiWhef7L8V+ZgIiV1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrzYtJVT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32E1C43390;
-	Tue, 23 Jan 2024 02:10:03 +0000 (UTC)
+	 MIME-Version; b=Cb7LS0qySHCn9va0gWqhLNB4Epdm5EQo+M7d9B39uedMpjjNuFQcUIkKqbhykxB5qAWdDhrN5t4pA4m7JlPJi4b9AOBSq0zkS/S7zs5vIAlPxaMRrciRj7+2MfN9UA/YhX3yW/7pmxmWk7QW7g/uPGDtNdQjzf3mManA5gV3NM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hs0H75dw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B0BC43394;
+	Tue, 23 Jan 2024 01:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975803;
-	bh=MuvmWwLJAT1CPr1RizmHMYj4Jb8aOiYXv8dWFJ9m6uY=;
+	s=korg; t=1705975105;
+	bh=xdpy8mT8kDQG1lC+o5sTNatXyzNIXOTqGAcVjpcZEIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vrzYtJVTKDtfhQjaIAJCYwSRWywnRnZp6IJppWTnpImILivno3zbtY5BSVkoYsPCV
-	 TMNj9p/NAWdFk5oo3wHLPf1OrFstuRpXSQBoN4rsWhK6s9dHJh8d6ptHc8cQdrDaH6
-	 VZGqWh5KMqxt6rZXAXvl8UIf68o7cYzfl26d2JZ4=
+	b=hs0H75dwbpQxvj99us+W6vOtjur3yaKXikwS/aOuw6gHSvYZXHoj/BYiJR7qxWlBb
+	 7eqvvtZIe1ZZeouKXHkYS35lw0NvmHYTw10kGnhMr0rGe2ZnWJ7cJCgeYE/6rmyX9y
+	 r6HetCvobJxetDzcDjT2ikRNNiHxulhk96cxCx/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 572/583] arm64/ptrace: Dont flush ZA/ZT storage when writing ZA via ptrace
-Date: Mon, 22 Jan 2024 16:00:23 -0800
-Message-ID: <20240122235829.689365677@linuxfoundation.org>
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 368/374] block: Remove special-casing of compound pages
+Date: Mon, 22 Jan 2024 16:00:24 -0800
+Message-ID: <20240122235757.765760980@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit b7c510d049049409e8945b932f4b0b357fa17415 ]
+commit 1b151e2435fc3a9b10c8946c6aebe9f3e1938c55 upstream.
 
-When writing ZA we currently unconditionally flush the buffer used to store
-it as part of ensuring that it is allocated. Since this buffer is shared
-with ZT0 this means that a write to ZA when PSTATE.ZA is already set will
-corrupt the value of ZT0 on a SME2 system. Fix this by only flushing the
-backing storage if PSTATE.ZA was not previously set.
+The special casing was originally added in pre-git history; reproducing
+the commit log here:
 
-This will mean that short or failed writes may leave stale data in the
-buffer, this seems as correct as our current behaviour and unlikely to be
-something that userspace will rely on.
+> commit a318a92567d77
+> Author: Andrew Morton <akpm@osdl.org>
+> Date:   Sun Sep 21 01:42:22 2003 -0700
+>
+>     [PATCH] Speed up direct-io hugetlbpage handling
+>
+>     This patch short-circuits all the direct-io page dirtying logic for
+>     higher-order pages.  Without this, we pointlessly bounce BIOs up to
+>     keventd all the time.
 
-Fixes: f90b529bcbe5 ("arm64/sme: Implement ZT0 ptrace support")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240115-arm64-fix-ptrace-za-zt-v1-1-48617517028a@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In the last twenty years, compound pages have become used for more than
+just hugetlb.  Rewrite these functions to operate on folios instead
+of pages and remove the special case for hugetlbfs; I don't think
+it's needed any more (and if it is, we can put it back in as a call
+to folio_test_hugetlb()).
+
+This was found by inspection; as far as I can tell, this bug can lead
+to pages used as the destination of a direct I/O read not being marked
+as dirty.  If those pages are then reclaimed by the MM without being
+dirtied for some other reason, they won't be written out.  Then when
+they're faulted back in, they will not contain the data they should.
+It'll take a pretty unusual setup to produce this problem with several
+races all going the wrong way.
+
+This problem predates the folio work; it could for example have been
+triggered by mmaping a THP in tmpfs and using that as the target of an
+O_DIRECT read.
+
+Fixes: 800d8c63b2e98 ("shmem: add huge pages support")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/ptrace.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ block/bio.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
-index 20d7ef82de90..b3f64144b5cd 100644
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -1107,12 +1107,13 @@ static int za_set(struct task_struct *target,
- 		}
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -1026,7 +1026,7 @@ void bio_release_pages(struct bio *bio,
+ 		return;
+ 
+ 	bio_for_each_segment_all(bvec, bio, iter_all) {
+-		if (mark_dirty && !PageCompound(bvec->bv_page))
++		if (mark_dirty)
+ 			set_page_dirty_lock(bvec->bv_page);
+ 		put_page(bvec->bv_page);
+ 	}
+@@ -1345,8 +1345,7 @@ void bio_set_pages_dirty(struct bio *bio
+ 	struct bvec_iter_all iter_all;
+ 
+ 	bio_for_each_segment_all(bvec, bio, iter_all) {
+-		if (!PageCompound(bvec->bv_page))
+-			set_page_dirty_lock(bvec->bv_page);
++		set_page_dirty_lock(bvec->bv_page);
+ 	}
+ }
+ 
+@@ -1394,7 +1393,7 @@ void bio_check_pages_dirty(struct bio *b
+ 	struct bvec_iter_all iter_all;
+ 
+ 	bio_for_each_segment_all(bvec, bio, iter_all) {
+-		if (!PageDirty(bvec->bv_page) && !PageCompound(bvec->bv_page))
++		if (!PageDirty(bvec->bv_page))
+ 			goto defer;
  	}
  
--	/* Allocate/reinit ZA storage */
--	sme_alloc(target, true);
--	if (!target->thread.sme_state) {
--		ret = -ENOMEM;
--		goto out;
--	}
-+	/*
-+	 * Only flush the storage if PSTATE.ZA was not already set,
-+	 * otherwise preserve any existing data.
-+	 */
-+	sme_alloc(target, !thread_za_enabled(&target->thread));
-+	if (!target->thread.sme_state)
-+		return -ENOMEM;
- 
- 	/* If there is no data then disable ZA */
- 	if (!count) {
--- 
-2.43.0
-
 
 
 
