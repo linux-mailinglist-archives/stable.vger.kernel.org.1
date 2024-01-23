@@ -1,39 +1,51 @@
-Return-Path: <stable+bounces-15483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D5D838791
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 07:39:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03EB8838932
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 09:38:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF231B2146C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 06:39:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B033128F753
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 08:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E1A50265;
-	Tue, 23 Jan 2024 06:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B8B56B79;
+	Tue, 23 Jan 2024 08:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="uIoMOH3a"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE08524A4;
-	Tue, 23 Jan 2024 06:39:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06F351C33;
+	Tue, 23 Jan 2024 08:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705991978; cv=none; b=I+jpSyVH6Hiwp3FYsFnsD85Fw6HtjQQqlwvQCKae0kH6S8Yeu/GRdX+BAllonfQ/jpo6clA1Uebn5103eKX5BXAqEy0wt2qeoEq7TWEDLadXZS/qB7ssGq540DVgj0ZQ3mnZ1bXAVYMmqyrMyFegqQjdAsUINC9z4V09FNSLb2Y=
+	t=1705999012; cv=none; b=ZXUZCvSTrkrSW/kwZyqfmGnmcPAB+KKnFzNp8e2+d7nLikEfSLjj0via23ncyVy4Nf/wVfWxPdPb6VKM/Fhug7njEgM8RxFZNJe0+ts6lrcg/aMjivkuZx1BFcB9y8S9l0tzVwG3arjmCVlSI1P6AEN14+GE9kIU7PbMdV37pKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705991978; c=relaxed/simple;
-	bh=o7h8LhDkV9Em6vHKMR8WG3LnUB3TLO86qfqho4SKvXE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=QwoO61odrgcmDW2oW2YYuqlr8LMmYuGJnbQ/AHOj+uoXPngshFBM9m9r75ARZiNk+x4t0D3Mwu2G+8AnI60ijcGEp0XMieszZo8SxAW+XuMVQWbub/Uu+HoS2pAhvdXXUtCgBhOd7Bw0HRCasAFF3sp0Czfc49tHDN7i6jZpbLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rSARZ-0006oH-HC; Tue, 23 Jan 2024 07:39:33 +0100
-Message-ID: <bbac350b-7a94-475e-88c9-35f6f8700af8@leemhuis.info>
-Date: Tue, 23 Jan 2024 07:39:32 +0100
+	s=arc-20240116; t=1705999012; c=relaxed/simple;
+	bh=c/DzI/EJtwNTt/biOBCBJkuhhi5FFYaQGErDt8KLdHg=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=nVSFzI6QNN0c8qLCt77EQMPIkg0QdgMfZkVdPQxmyqViHXW5AnRR5ZDUjU1vq+LzbG3yXtHoPnWLSEzVMEQ51KPsMXA0JqegwpbH+FaGaxeCBoqAP3Br0Z5PLNsgOpByDX5EN6+aJyme37OkE4TyTjuLNTd1v56EZnuz2c9ov7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=uIoMOH3a; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1705999007; x=1706603807; i=rwarsow@gmx.de;
+	bh=c/DzI/EJtwNTt/biOBCBJkuhhi5FFYaQGErDt8KLdHg=;
+	h=X-UI-Sender-Class:Date:From:Subject:To:Cc;
+	b=uIoMOH3a1lw75o7/YyqrkoSYkrwdZmW5EdF5Atver+r5C5jrBP5jcJ6zCfcLeRoK
+	 qTnxRChbomXEvC2O374mUI3JHfxGMKCEsHPvrKHfowvzFLNRANR885dzpcrB8uhY1
+	 5FMOE4f+O6H5HN2ZlUfPezuhlTS/eEmi7NZZJ3PZQaSLJ9jH0QmzzJVJEJxg15jWN
+	 /61VFHKuPw+O0+Iw0gatdEtDhBs7xfCrMu55kUfROWoiLYTmOx9V69eMp+ZkiEVZ3
+	 xNd8Cv82WI6lLVb8aeLGMySLa1Y8y6EChVUBaJAnkQeWtwTvsDoHhHO0RCYx9cRF+
+	 avrmQ7mkZTrH7NbEug==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.33.246]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N8XU1-1r5wQo0lHN-014PU6; Tue, 23
+ Jan 2024 09:36:47 +0100
+Message-ID: <82336412-3c43-469e-89c9-86a1014e77a7@gmx.de>
+Date: Tue, 23 Jan 2024 09:36:46 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -41,96 +53,40 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] 6.6.10+ and 6.7+ kernels lock up early in init.
-Content-Language: en-US, de-DE
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: stable@vger.kernel.org, Linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Chuck Lever
- <chuck.lever@oracle.com>, Paul Thompson <set48035@gmail.com>,
- regressions@lists.linux.dev
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>,
- Linux regressions mailing list <regressions@lists.linux.dev>
-References: <Za9DUZoJbV0PYGN2@squish.home.loc>
- <6939adb3-c270-481f-8547-e267d642beea@leemhuis.info>
-In-Reply-To: <6939adb3-c270-481f-8547-e267d642beea@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
+From: Ronald Warsow <rwarsow@gmx.de>
+Subject: Re: [PATCH 6.7 000/641] 6.7.2-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1705991976;5b94feee;
-X-HE-SMSGID: 1rSARZ-0006oH-HC
+X-Provags-ID: V03:K1:jPNyUrqyywUiH7zi0WZeS+Fp2P4SSfX8Vc12JCm0fM7vMwQwzJR
+ R4Fadc9MWFkKOEQG7A9fiap9Kch4zPF+kbXU1k4OYLvAfOe4zw4vDFRngCpK/4g6gvxfbPq
+ 9hnrRLyW0UTXEB2MZniatBubC4Mvi1WlPiFI0yTbJaIFSc8tQQJ43W1TPJSjyBWnEth15QJ
+ SaSDFfdmpP7vtPEIr8OAA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:L4QHpBP5Lyo=;oCbYo+FZtrRHG3KObX//WgzzriY
+ tl6pO4hK6qItwLkZSCcyeP1QUbkR/m3bHroWmF7cZGRYBh/pZuoHGU5W6rr8iY5PcS7Ezd8yy
+ ngOvJ67AwF2XrywlXsbyCZ61qDogxO7qimmdFEjgrxrool9kQTWddLTo7jowgVp0IjHQYHtB5
+ CcazYArotovLjCQTF0bjjPG7CL9Nl3J5kg5I2fAiji2q7KN1IcTk2E28DkblRO8CFlvjClc3H
+ VEq6+zUUbm+Ki5482T8xGPnLN47gMuE3ONh/I+eTXEw3X6VZGsMfd678YApiA8e+L36t46IH1
+ HKmMixsJD0bQ8hutELW5yDQyjboXqIM9rmzChJxAw9ZjFyelw5eB2Eg0OS9fS5WdUl2U0bdyS
+ 97sfkB/MmeDmbdvwKB3dP4YSCKC3GKvT/yoggub8NidpJN7WtUp8Cm0kYl7yJnDpKnKU61Smm
+ REQHfO6vDaUenFw+29hbs+kl2Mvjh5xFfW8EhbNwDTi7h1IaH2KcD5vLkfGzG2K7VI/glONF2
+ S/FVHx3JqAwSOOtcfL78rQXzB7lOoOy5Y9jRMExjpQtm8G0ISLOjpH+rJvuYYAarFXCMg70pF
+ Z1C+hMKZlI/WUXOcP6TxLeV1Ov6BU8PUkjIp0F4zYMDlC7OKeoW3TaoA2tqfISUlW6TAm2L1E
+ FKM7j4+REM780/xBiBWPVJ2KyOR0eLIvlmCK1k182CknMSoGygo3xLPHVTU4U63GcmaieABbo
+ P39Iq1ZM2M7b4cThNu6DqhsT0OBluvW+DR4wxKlQkCgeF/qxm0VfaqkP0odBa3BavMW9MRZpg
+ m7hzn1/9FiYVIzDNzmbIO3nxzQilon5XO7egdkdRJ64eEKW0GW10u+D/5uWX+vL5iktXMdIj5
+ phRL15sIUHZ5auICz8+DxDaHy0WskjSIIc2CsjalzoMdzXR6nNhITqhM9xGzWV9FXiYCUHBur
+ CSCdgQ==
 
-[a quick follow up with an important correction from the reporter for
-those I added to the list of recipients]
+Hi Greg
 
-On 23.01.24 06:37, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 23.01.24 05:40, Paul Thompson wrote:
->>
->> 	With my longstanding configuration, kernels upto 6.6.9 work fine.
->> Kernels 6.6.1[0123] and 6.7.[01] all lock up in early (open-rc) init,
->> before even the virtual filesystems are mounted.
->>
->> 	The last thing visible on the console is the nfsclient service
->> being started and:
->>
->> Call to flock failed: Funtion not implemented. (twice)
->>
->> 	Then the machine is unresponsive, numlock doesnt toggle the keyboard led,
->> and the alt-sysrq chords appear to do nothing.
->>
->> 	The problem is solved by changing my 6.6.9 config option:
->>
->> # CONFIG_FILE_LOCKING is not set
->> to
->> CONFIG_FILE_LOCKING=y
->>
->> (This option is under File Systems > Enable POSIX file locking API)
+no regressions here on x86_64 (Intel Rocket Lake: i5-11400)
 
-The reporter replied out-of-thread:
-https://lore.kernel.org/all/Za9TRtSjubbX0bVu@squish.home.loc/
+Thanks
 
-"""
-	Now I feel stupid or like Im losing it, but I went back and grepped for
-the CONFIG_FILE_LOCKING in my old Configs, and it was turned on in all
-but 6.6.9. So, somehow I turned that off *after I built 6.6.9? Argh. I
-just built 6.6.4 with it unset and that locked up too.
-	Sorry if this is just noise, though one would have hoped the failure
-was less severe...
-"""
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
->> 	I do not recall why I unset that, but it was working for I think the
->> entire 6.6 series until 6.6.10. Anyway thought I would mention it in case
->> anyone else hits it.
-> 
-> Thx for the report.
-> 
-> CCing a few people to let them known about this. Among them Jeff, who
-> had a few fs patches that were backported to 6.6.10 (at the end of
-> the list below).
-> 
-> FWIW, in case anyone wonders what went into that stable release, here
-> is a slightly trimmed down list:
-> 
-> $ git log v6.6.9..v6.6.10 --oneline  | grep -v -e wifi -e ftrace -e kexec -e ksmb -e 'platform/'  -e tracing: -e netfilter: -e mptcp
-> c9a51ebb4bac69 Linux 6.6.10
-> baa88944038bbe ring-buffer: Fix wake ups when buffer_percent is set to 100
-> c62b9a2daf2866 Revert "nvme-fc: fix race between error recovery and creating association"
-> d16c5d215b53b3 mm/memory-failure: check the mapcount of the precise page
-> 8c7da70d9ae4c1 mm/memory-failure: cast index to loff_t before shifting it
-> 07550b1461d4d0 mm: migrate high-order folios in swap cache correctly
-> d16eb52c176ccf mm/filemap: avoid buffered read/write race to read inconsistent data
-> 09141f08fdf69a selftests: secretmem: floor the memory size to the multiple of page_size
-> 2c30b8b105d690 maple_tree: do not preallocate nodes for slot stores
-> b5f63f5e8a6820 block: renumber QUEUE_FLAG_HW_WC
-> 183c8972b6a6f8 linux/export: Ensure natural alignment of kcrctab array
-> 466e9af1550724 linux/export: Fix alignment for 64-bit ksymtab entries
-> 28d6cde17f2191 virtio_ring: fix syncs DMA memory with different direction
-> 9a49874443307c fs: cifs: Fix atime update check
-> 23171df51f601c client: convert to new timestamp accessors
-> 5b5599a7eee5e6 fs: new accessor methods for atime and mtime
-> 
-> Ciao, Thorsten
-> 
-> 
 
