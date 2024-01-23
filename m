@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-15447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD5C8385B3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:49:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2252E8383E7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92F05B2D51C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 454441C28A07
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CAD53AB;
-	Tue, 23 Jan 2024 02:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF3965BA5;
+	Tue, 23 Jan 2024 01:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yHEWBm+t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5QlC9NO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156621FBF;
-	Tue, 23 Jan 2024 02:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2F765BA3;
+	Tue, 23 Jan 2024 01:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975784; cv=none; b=lf0bRcbAOrEX9qgKhvOA+X1wbNpuvwqBQShmxf35dt3t3oOrp8uLNafNT7PbLGCqi3iV4MW4t8x42bdLg09xIqQfjZoGBinXjH/u3Eq6/CLVeS7Va56hkL3vgGoz4NhV1EY36pzgDr/oB97GYe0QNiAF3aJrTyoO1vTX6uM0n0Q=
+	t=1705975092; cv=none; b=CqBqy39cXql/pCFLw/bsKuaY9mZeV3iKbreszYQSR1QxxXFBBeKqMt/Q92eTupOMzt7raFYP8pzFYHR6/eG90MVbDbu71KvZHJ2Web78StTHDCVyx+4PtQkNHAPqd2C7LjhEbRxBhBQcnp416+d15GINlsd1mLpuA28Fp90yt9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975784; c=relaxed/simple;
-	bh=+Cn9/wlLg5ZMgdMy48+IvjnKns317xfezGWEAidXsGA=;
+	s=arc-20240116; t=1705975092; c=relaxed/simple;
+	bh=g+wVENAQbpo3E0op0UInfB5Hu283zTGHi8z0zyt7cAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uS1263M3hHPtgDgmEUOgj4tu5ocpPuJcD3SN3T1tUtH7eYcVzAgXaAYG0BAQdM5ahQxZTAPAvRiXBZ8OsbIO4bBq4+uSvo2XVnaNSSn264A+q00Ad5osQd7/KH0HjcrKbnuG+Hj55Rp8sUwPauB3Jn754sY6iF+k08P6imbUcVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yHEWBm+t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACB1C433F1;
-	Tue, 23 Jan 2024 02:09:43 +0000 (UTC)
+	 MIME-Version; b=r5rS01GHSQVO+vsaXP6JFYZh7NgHrbIvU3ST9RypYGbqRlXyExrC/46o7LpkLjc7mzyFQ3KdSqQKKAeRqBrNuVNXPlJVfMUvELrQTeW+H/ACEKzkUfzpXrUm1j24+1dBcmgPvXgzFDkkYmmYwJoDGYzh/ahe35wyB3XyVS+STzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5QlC9NO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5692C43394;
+	Tue, 23 Jan 2024 01:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975783;
-	bh=+Cn9/wlLg5ZMgdMy48+IvjnKns317xfezGWEAidXsGA=;
+	s=korg; t=1705975092;
+	bh=g+wVENAQbpo3E0op0UInfB5Hu283zTGHi8z0zyt7cAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yHEWBm+tU/7opqlZRjyXSG/25nSwOuU/hvoP1u1qRnn/4oLzuKnVN3zZq1j0NwErt
-	 F6Cl2HCShhKsyIs7KnU7tLiAFaRXW/PkIpsx0j2MUMcXM9ZAjnH1KEldoSX9jNPQnt
-	 SFV7AJcXgTpJoX6ISyfmu7oZIbNygnOF4EGxnfGQ=
+	b=H5QlC9NOQpVgdUCx6wwyV+mz9f2cGuEv0tisFFirKvRTYintXXKh4anExaJzNp54q
+	 7+t0Ns8wY8FVdYmNnhRflltcn9z5qkD0yijwCgDjBqJEXicHh1v7m8gTttl67vDlLB
+	 fvJKjGxkQacuf1+dATy3AjnDHwpX7PIGNhTQ5ToQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 566/583] netfilter: nf_tables: do not allow mismatch field size and set key length
-Date: Mon, 22 Jan 2024 16:00:17 -0800
-Message-ID: <20240122235829.484941821@linuxfoundation.org>
+Subject: [PATCH 5.15 362/374] mlxsw: spectrum_acl_tcam: Reorder functions to avoid forward declarations
+Date: Mon, 22 Jan 2024 16:00:18 -0800
+Message-ID: <20240122235757.538541596@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +65,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 3ce67e3793f48c1b9635beb9bb71116ca1e51b58 ]
+[ Upstream commit 194ab9476089bbfc021073214e071a404e375ee6 ]
 
-The set description provides the size of each field in the set whose sum
-should not mismatch the set key length, bail out otherwise.
+Move the initialization and de-initialization code further below in
+order to avoid forward declarations in the next patch. No functional
+changes.
 
-I did not manage to crash nft_set_pipapo with mismatch fields and set key
-length so far, but this is UB which must be disallowed.
-
-Fixes: f3a2181e16f1 ("netfilter: nf_tables: Support for sets with multiple ranged fields")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 483ae90d8f97 ("mlxsw: spectrum_acl_tcam: Fix stack corruption")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ .../mellanox/mlxsw/spectrum_acl_tcam.c        | 130 +++++++++---------
+ 1 file changed, 65 insertions(+), 65 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 55cd82190888..5730f9a1f47d 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4753,8 +4753,8 @@ static int nft_set_desc_concat_parse(const struct nlattr *attr,
- static int nft_set_desc_concat(struct nft_set_desc *desc,
- 			       const struct nlattr *nla)
- {
-+	u32 num_regs = 0, key_num_regs = 0;
- 	struct nlattr *attr;
--	u32 num_regs = 0;
- 	int rem, err, i;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index 08d91bfa7b39..ab897b8be39f 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -29,71 +29,6 @@ size_t mlxsw_sp_acl_tcam_priv_size(struct mlxsw_sp *mlxsw_sp)
+ #define MLXSW_SP_ACL_TCAM_VREGION_REHASH_INTRVL_MIN 3000 /* ms */
+ #define MLXSW_SP_ACL_TCAM_VREGION_REHASH_CREDITS 100 /* number of entries */
  
- 	nla_for_each_nested(attr, nla, rem) {
-@@ -4769,6 +4769,10 @@ static int nft_set_desc_concat(struct nft_set_desc *desc,
- 	for (i = 0; i < desc->field_count; i++)
- 		num_regs += DIV_ROUND_UP(desc->field_len[i], sizeof(u32));
+-int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
+-			   struct mlxsw_sp_acl_tcam *tcam)
+-{
+-	const struct mlxsw_sp_acl_tcam_ops *ops = mlxsw_sp->acl_tcam_ops;
+-	u64 max_tcam_regions;
+-	u64 max_regions;
+-	u64 max_groups;
+-	int err;
+-
+-	mutex_init(&tcam->lock);
+-	tcam->vregion_rehash_intrvl =
+-			MLXSW_SP_ACL_TCAM_VREGION_REHASH_INTRVL_DFLT;
+-	INIT_LIST_HEAD(&tcam->vregion_list);
+-
+-	max_tcam_regions = MLXSW_CORE_RES_GET(mlxsw_sp->core,
+-					      ACL_MAX_TCAM_REGIONS);
+-	max_regions = MLXSW_CORE_RES_GET(mlxsw_sp->core, ACL_MAX_REGIONS);
+-
+-	/* Use 1:1 mapping between ACL region and TCAM region */
+-	if (max_tcam_regions < max_regions)
+-		max_regions = max_tcam_regions;
+-
+-	tcam->used_regions = bitmap_zalloc(max_regions, GFP_KERNEL);
+-	if (!tcam->used_regions) {
+-		err = -ENOMEM;
+-		goto err_alloc_used_regions;
+-	}
+-	tcam->max_regions = max_regions;
+-
+-	max_groups = MLXSW_CORE_RES_GET(mlxsw_sp->core, ACL_MAX_GROUPS);
+-	tcam->used_groups = bitmap_zalloc(max_groups, GFP_KERNEL);
+-	if (!tcam->used_groups) {
+-		err = -ENOMEM;
+-		goto err_alloc_used_groups;
+-	}
+-	tcam->max_groups = max_groups;
+-	tcam->max_group_size = MLXSW_CORE_RES_GET(mlxsw_sp->core,
+-						 ACL_MAX_GROUP_SIZE);
+-
+-	err = ops->init(mlxsw_sp, tcam->priv, tcam);
+-	if (err)
+-		goto err_tcam_init;
+-
+-	return 0;
+-
+-err_tcam_init:
+-	bitmap_free(tcam->used_groups);
+-err_alloc_used_groups:
+-	bitmap_free(tcam->used_regions);
+-err_alloc_used_regions:
+-	mutex_destroy(&tcam->lock);
+-	return err;
+-}
+-
+-void mlxsw_sp_acl_tcam_fini(struct mlxsw_sp *mlxsw_sp,
+-			    struct mlxsw_sp_acl_tcam *tcam)
+-{
+-	const struct mlxsw_sp_acl_tcam_ops *ops = mlxsw_sp->acl_tcam_ops;
+-
+-	ops->fini(mlxsw_sp, tcam->priv);
+-	bitmap_free(tcam->used_groups);
+-	bitmap_free(tcam->used_regions);
+-	mutex_destroy(&tcam->lock);
+-}
+-
+ int mlxsw_sp_acl_tcam_priority_get(struct mlxsw_sp *mlxsw_sp,
+ 				   struct mlxsw_sp_acl_rule_info *rulei,
+ 				   u32 *priority, bool fillup_priority)
+@@ -1546,6 +1481,71 @@ mlxsw_sp_acl_tcam_vregion_rehash(struct mlxsw_sp *mlxsw_sp,
+ 		mlxsw_sp_acl_tcam_vregion_rehash_end(mlxsw_sp, vregion, ctx);
+ }
  
-+	key_num_regs = DIV_ROUND_UP(desc->klen, sizeof(u32));
-+	if (key_num_regs != num_regs)
-+		return -EINVAL;
++int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
++			   struct mlxsw_sp_acl_tcam *tcam)
++{
++	const struct mlxsw_sp_acl_tcam_ops *ops = mlxsw_sp->acl_tcam_ops;
++	u64 max_tcam_regions;
++	u64 max_regions;
++	u64 max_groups;
++	int err;
 +
- 	if (num_regs > NFT_REG32_COUNT)
- 		return -E2BIG;
- 
++	mutex_init(&tcam->lock);
++	tcam->vregion_rehash_intrvl =
++			MLXSW_SP_ACL_TCAM_VREGION_REHASH_INTRVL_DFLT;
++	INIT_LIST_HEAD(&tcam->vregion_list);
++
++	max_tcam_regions = MLXSW_CORE_RES_GET(mlxsw_sp->core,
++					      ACL_MAX_TCAM_REGIONS);
++	max_regions = MLXSW_CORE_RES_GET(mlxsw_sp->core, ACL_MAX_REGIONS);
++
++	/* Use 1:1 mapping between ACL region and TCAM region */
++	if (max_tcam_regions < max_regions)
++		max_regions = max_tcam_regions;
++
++	tcam->used_regions = bitmap_zalloc(max_regions, GFP_KERNEL);
++	if (!tcam->used_regions) {
++		err = -ENOMEM;
++		goto err_alloc_used_regions;
++	}
++	tcam->max_regions = max_regions;
++
++	max_groups = MLXSW_CORE_RES_GET(mlxsw_sp->core, ACL_MAX_GROUPS);
++	tcam->used_groups = bitmap_zalloc(max_groups, GFP_KERNEL);
++	if (!tcam->used_groups) {
++		err = -ENOMEM;
++		goto err_alloc_used_groups;
++	}
++	tcam->max_groups = max_groups;
++	tcam->max_group_size = MLXSW_CORE_RES_GET(mlxsw_sp->core,
++						  ACL_MAX_GROUP_SIZE);
++
++	err = ops->init(mlxsw_sp, tcam->priv, tcam);
++	if (err)
++		goto err_tcam_init;
++
++	return 0;
++
++err_tcam_init:
++	bitmap_free(tcam->used_groups);
++err_alloc_used_groups:
++	bitmap_free(tcam->used_regions);
++err_alloc_used_regions:
++	mutex_destroy(&tcam->lock);
++	return err;
++}
++
++void mlxsw_sp_acl_tcam_fini(struct mlxsw_sp *mlxsw_sp,
++			    struct mlxsw_sp_acl_tcam *tcam)
++{
++	const struct mlxsw_sp_acl_tcam_ops *ops = mlxsw_sp->acl_tcam_ops;
++
++	ops->fini(mlxsw_sp, tcam->priv);
++	bitmap_free(tcam->used_groups);
++	bitmap_free(tcam->used_regions);
++	mutex_destroy(&tcam->lock);
++}
++
+ static const enum mlxsw_afk_element mlxsw_sp_acl_tcam_pattern_ipv4[] = {
+ 	MLXSW_AFK_ELEMENT_SRC_SYS_PORT,
+ 	MLXSW_AFK_ELEMENT_DMAC_32_47,
 -- 
 2.43.0
 
