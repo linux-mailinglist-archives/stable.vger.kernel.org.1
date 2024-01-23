@@ -1,230 +1,183 @@
-Return-Path: <stable+bounces-15572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B230F839718
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 18:58:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F29FE839737
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 19:06:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 424301F26593
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 17:58:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA68A1F2A80D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 18:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71138005F;
-	Tue, 23 Jan 2024 17:58:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="HxMlGxDI";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Er6rgKv4";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="HxMlGxDI";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Er6rgKv4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9688120A;
+	Tue, 23 Jan 2024 18:06:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA8F612FA;
-	Tue, 23 Jan 2024 17:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820E97FBC4;
+	Tue, 23 Jan 2024 18:06:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706032718; cv=none; b=XHIsJjF+eIlnkv2Cer7tVxTCTnwLsIllVYOPPiPT0Ec5iMVl/5CO2qH0Bhs3AMt5+1v7kGlZ/L8Q4IC5M1sbdSF5T3waHjeOwjIySMs5O4b9EiOfw3FNCvRWANf+1JDfWyn9abpbh2DacVz6TEUmUV+9rCyqwnblSIBlhN2TNvo=
+	t=1706033183; cv=none; b=fIrFz7+2Tck8NUEvrBy/FKYe+joHmDtNXXn041BnLXXJ7mZYs8LmYhBb8FlWFfzcJKUTMeO+z50DvNGqoQB5/j5Xy0Pyo7JqRCBIhLSn5W8RHwVsfiAWD23nMkFsIHdGU6gvOqmO6g4A32UZE9yaqSbVli+MnHAvwvrmTk5PEQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706032718; c=relaxed/simple;
-	bh=jpLoGydIB3tav2QE6M4GnD7Apq48ELE0E5GJMLGOCc4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ItIdc91/HpbXzEpfq/MKfrsLLuEDgcDQQrwDHHQEQK50nMhkhXmJVNtGwELEv4JhofwaQ0182W39NneNLKqvDuJgF4G3nO69UMoJpyNJgqK0HlnCQU/5Z6kRDkw71zhk9HtDFtrT2cbQxUohukXlVC3VxMaPposKpiSSR2B+1ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=HxMlGxDI; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Er6rgKv4; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=HxMlGxDI; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Er6rgKv4; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DF1B12229B;
-	Tue, 23 Jan 2024 17:58:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1706032714; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=ZjAYddRoJjm/AdsSm5U0TY8TiC0zrK+IKe/4Cv1WMIs=;
-	b=HxMlGxDIe85OL5RU7U57wA3ufP5HCB5C8uID6j5eTJYEgdxaUXueZmjy3r6OmkFsa9ZQNI
-	VhNrSPwX+M/2IrNMH7tGgZtqKts663nkKC74Jp4MhB1MViigNDRnqBQ3dGddzgSPpeC4e7
-	50cyeEcqpzlgeYfPbNwFPNmxtzWbFgw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1706032714;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=ZjAYddRoJjm/AdsSm5U0TY8TiC0zrK+IKe/4Cv1WMIs=;
-	b=Er6rgKv4P5qf2ERWCvjWR2fVGKXV6CVbKENrYNfH7jA9cbfHQxQZ+tgkG7tVs4V5A3ccsS
-	6E0zhiKpelNYBSAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1706032714; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=ZjAYddRoJjm/AdsSm5U0TY8TiC0zrK+IKe/4Cv1WMIs=;
-	b=HxMlGxDIe85OL5RU7U57wA3ufP5HCB5C8uID6j5eTJYEgdxaUXueZmjy3r6OmkFsa9ZQNI
-	VhNrSPwX+M/2IrNMH7tGgZtqKts663nkKC74Jp4MhB1MViigNDRnqBQ3dGddzgSPpeC4e7
-	50cyeEcqpzlgeYfPbNwFPNmxtzWbFgw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1706032714;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=ZjAYddRoJjm/AdsSm5U0TY8TiC0zrK+IKe/4Cv1WMIs=;
-	b=Er6rgKv4P5qf2ERWCvjWR2fVGKXV6CVbKENrYNfH7jA9cbfHQxQZ+tgkG7tVs4V5A3ccsS
-	6E0zhiKpelNYBSAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CE24B136A4;
-	Tue, 23 Jan 2024 17:58:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 3vULMkr+r2UVKAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 23 Jan 2024 17:58:34 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 52A38A0803; Tue, 23 Jan 2024 18:58:34 +0100 (CET)
-From: Jan Kara <jack@suse.cz>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: <linux-block@vger.kernel.org>,
-	<linux-mm@kvack.org>,
-	Jan Kara <jack@suse.cz>,
-	stable@vger.kernel.org
-Subject: [PATCH] blk-wbt: Fix detection of dirty-throttled tasks
-Date: Tue, 23 Jan 2024 18:58:26 +0100
-Message-Id: <20240123175826.21452-1-jack@suse.cz>
-X-Mailer: git-send-email 2.35.3
+	s=arc-20240116; t=1706033183; c=relaxed/simple;
+	bh=mpukHrJGQfkSvb2i5G7GCeHO/07bhGWWUAkmqYst/Z0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lfn2ouovJOKYZxL8jlBO9M65zagNQqEghoe0rGyEp3pfviYMGK80zykzfSBRq0aQldnjF6pzxTcMzNWKJlUtAnc3D5ncpoYdeYR39OBrm22lh1VN6tXFSTRavcn1jX06il1/SgHJUOy9N6XowyPMT9YncAucfRnWrXwRgrxkYKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C8BCD1FB;
+	Tue, 23 Jan 2024 10:07:04 -0800 (PST)
+Received: from [10.57.77.165] (unknown [10.57.77.165])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8441B3F7F4;
+	Tue, 23 Jan 2024 10:06:18 -0800 (PST)
+Message-ID: <47364d76-4eb9-42fe-bbbf-dec483cda2af@arm.com>
+Date: Tue, 23 Jan 2024 18:06:17 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3970; i=jack@suse.cz; h=from:subject; bh=jpLoGydIB3tav2QE6M4GnD7Apq48ELE0E5GJMLGOCc4=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBlr/4IlwLEdVGJQTlCFa9sj6UVm5KCFerHaP+6XiHI OXTGhjyJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCZa/+CAAKCRCcnaoHP2RA2Um7B/ 499x13YeG9oMijMrENiH8eWvlaAW6r15qa5/mQFniTSKNcvtqkzcaZ8ES78IJYbbbn3fdCd7R9UF4M UTKtn1/zarUpM3ac9sdtZ1MSAZRp4B1bBc8eQZ5IDhmai2KcfadVU0ycF8gCsc0KJkf1f0dEMloiW7 I1JLuWrRxvbS9EzOeONPJILgj9IZGDAyE7DDUW9ZDTtWIio2QasgL4PmGI3YZtUhvx2uLLpSV/+kSX VCaATee4g+oG692AxBchc/koFia1pBFlfSg4J9QBBiKV9NrHVBA1dU5+qPCfUZrl1JH49waDDtvQSl JrDWIkqh/K3N2/Q5tnElQFu2iofJi9
-X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] mm: thp_get_unmapped_area must honour topdown
+ preference
+Content-Language: en-GB
+To: Yang Shi <shy828301@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Rik van Riel
+ <riel@surriel.com>, Matthew Wilcox <willy@infradead.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240123171420.3970220-1-ryan.roberts@arm.com>
+ <CAHbLzkpXNDJy+p96maDeYa7rrqHUG+Go6epdqeUog-0xabiGiw@mail.gmail.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <CAHbLzkpXNDJy+p96maDeYa7rrqHUG+Go6epdqeUog-0xabiGiw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Level: ********
-X-Spam-Score: 8.80
-X-Spamd-Result: default: False [8.80 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 BAYES_SPAM(5.10)[100.00%];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 R_MISSING_CHARSET(2.50)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 RCPT_COUNT_FIVE(0.00)[5];
-	 NEURAL_HAM_LONG(-1.00)[-0.999];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[]
-X-Spam-Flag: NO
 
-The detection of dirty-throttled tasks in blk-wbt has been subtly broken
-since its beginning in 2016. Namely if we are doing cgroup writeback and
-the throttled task is not in the root cgroup, balance_dirty_pages() will
-set dirty_sleep for the non-root bdi_writeback structure. However
-blk-wbt checks dirty_sleep only in the root cgroup bdi_writeback
-structure. Thus detection of recently throttled tasks is not working in
-this case (we noticed this when we switched to cgroup v2 and suddently
-writeback was slow).
+On 23/01/2024 17:52, Yang Shi wrote:
+> On Tue, Jan 23, 2024 at 9:14 AM Ryan Roberts <ryan.roberts@arm.com> wrote:
+>>
+>> The addition of commit efa7df3e3bb5 ("mm: align larger anonymous
+>> mappings on THP boundaries") caused the "virtual_address_range" mm
+>> selftest to start failing on arm64. Let's fix that regression.
+>>
+>> There were 2 visible problems when running the test; 1) it takes much
+>> longer to execute, and 2) the test fails. Both are related:
+>>
+>> The (first part of the) test allocates as many 1GB anonymous blocks as
+>> it can in the low 256TB of address space, passing NULL as the addr hint
+>> to mmap. Before the faulty patch, all allocations were abutted and
+>> contained in a single, merged VMA. However, after this patch, each
+>> allocation is in its own VMA, and there is a 2M gap between each VMA.
+>> This causes the 2 problems in the test: 1) mmap becomes MUCH slower
+>> because there are so many VMAs to check to find a new 1G gap. 2) mmap
+>> fails once it hits the VMA limit (/proc/sys/vm/max_map_count). Hitting
+>> this limit then causes a subsequent calloc() to fail, which causes the
+>> test to fail.
+>>
+>> The problem is that arm64 (unlike x86) selects
+>> ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT. But __thp_get_unmapped_area()
+>> allocates len+2M then always aligns to the bottom of the discovered gap.
+>> That causes the 2M hole.
+>>
+>> Fix this by detecting cases where we can still achive the alignment goal
+>> when moved to the top of the allocated area, if configured to prefer
+>> top-down allocation.
+>>
+>> While we are at it, fix thp_get_unmapped_area's use of pgoff, which
+>> should always be zero for anonymous mappings. Prior to the faulty
+>> change, while it was possible for user space to pass in pgoff!=0, the
+>> old mm->get_unmapped_area() handler would not use it.
+>> thp_get_unmapped_area() does use it, so let's explicitly zero it before
+>> calling the handler. This should also be the correct behavior for arches
+>> that define their own get_unmapped_area() handler.
+>>
+>> Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries")
+>> Closes: https://lore.kernel.org/linux-mm/1e8f5ac7-54ce-433a-ae53-81522b2320e1@arm.com/
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> 
+> Thanks for debugging this. Looks good to me. Reviewed-by: Yang Shi
+> <shy828301@gmail.com>
 
-Since blk-wbt has no easy way to get to proper bdi_writeback and
-furthermore its intention has always been to work on the whole device
-rather than on individual cgroups, just move the dirty_sleep timestamp
-from bdi_writeback to backing_dev_info. That fixes the checking for
-recently throttled task and saves memory for everybody as a bonus.
+Thanks!
 
-CC: stable@vger.kernel.org
-Fixes: b57d74aff9ab ("writeback: track if we're sleeping on progress in balance_dirty_pages()")
-Signed-off-by: Jan Kara <jack@suse.cz>
----
- block/blk-wbt.c                  | 4 ++--
- include/linux/backing-dev-defs.h | 7 +++++--
- mm/backing-dev.c                 | 2 +-
- mm/page-writeback.c              | 2 +-
- 4 files changed, 9 insertions(+), 6 deletions(-)
+> 
+>> ---
+>>
+>> Applies on top of v6.8-rc1. Would be good to get this into the next -rc.
+> 
+> This may have a conflict with my fix (" mm: huge_memory: don't force
+> huge page alignment on 32 bit") which is on mm-unstable now.
 
-diff --git a/block/blk-wbt.c b/block/blk-wbt.c
-index 5ba3cd574eac..0c0e270a8265 100644
---- a/block/blk-wbt.c
-+++ b/block/blk-wbt.c
-@@ -163,9 +163,9 @@ static void wb_timestamp(struct rq_wb *rwb, unsigned long *var)
-  */
- static bool wb_recent_wait(struct rq_wb *rwb)
- {
--	struct bdi_writeback *wb = &rwb->rqos.disk->bdi->wb;
-+	struct backing_dev_info *bdi = rwb->rqos.disk->bdi;
- 
--	return time_before(jiffies, wb->dirty_sleep + HZ);
-+	return time_before(jiffies, bdi->last_bdp_sleep + HZ);
- }
- 
- static inline struct rq_wait *get_rq_wait(struct rq_wb *rwb,
-diff --git a/include/linux/backing-dev-defs.h b/include/linux/backing-dev-defs.h
-index ae12696ec492..ad17739a2e72 100644
---- a/include/linux/backing-dev-defs.h
-+++ b/include/linux/backing-dev-defs.h
-@@ -141,8 +141,6 @@ struct bdi_writeback {
- 	struct delayed_work dwork;	/* work item used for writeback */
- 	struct delayed_work bw_dwork;	/* work item used for bandwidth estimate */
- 
--	unsigned long dirty_sleep;	/* last wait */
--
- 	struct list_head bdi_node;	/* anchored at bdi->wb_list */
- 
- #ifdef CONFIG_CGROUP_WRITEBACK
-@@ -179,6 +177,11 @@ struct backing_dev_info {
- 	 * any dirty wbs, which is depended upon by bdi_has_dirty().
- 	 */
- 	atomic_long_t tot_write_bandwidth;
-+	/*
-+	 * Jiffies when last process was dirty throttled on this bdi. Used by
-+ 	 * blk-wbt.
-+	*/
-+	unsigned long last_bdp_sleep;
- 
- 	struct bdi_writeback wb;  /* the root writeback info for this bdi */
- 	struct list_head wb_list; /* list of all wbs */
-diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-index 1e3447bccdb1..e039d05304dd 100644
---- a/mm/backing-dev.c
-+++ b/mm/backing-dev.c
-@@ -436,7 +436,6 @@ static int wb_init(struct bdi_writeback *wb, struct backing_dev_info *bdi,
- 	INIT_LIST_HEAD(&wb->work_list);
- 	INIT_DELAYED_WORK(&wb->dwork, wb_workfn);
- 	INIT_DELAYED_WORK(&wb->bw_dwork, wb_update_bandwidth_workfn);
--	wb->dirty_sleep = jiffies;
- 
- 	err = fprop_local_init_percpu(&wb->completions, gfp);
- 	if (err)
-@@ -921,6 +920,7 @@ int bdi_init(struct backing_dev_info *bdi)
- 	INIT_LIST_HEAD(&bdi->bdi_list);
- 	INIT_LIST_HEAD(&bdi->wb_list);
- 	init_waitqueue_head(&bdi->wb_waitq);
-+	bdi->last_bdp_sleep = jiffies;
- 
- 	return cgwb_bdi_init(bdi);
- }
-diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index cd4e4ae77c40..cc37fa7f3364 100644
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -1921,7 +1921,7 @@ static int balance_dirty_pages(struct bdi_writeback *wb,
- 			break;
- 		}
- 		__set_current_state(TASK_KILLABLE);
--		wb->dirty_sleep = now;
-+		bdi->last_bdp_sleep = jiffies;
- 		io_schedule_timeout(pause);
- 
- 		current->dirty_paused_when = now + pause;
--- 
-2.35.3
+It applies cleanly to mm-unstable. You change modifies the top part of
+__thp_get_unmapped_area() and mine modifies the bottom :)
+
+> 
+>>
+>> Thanks,
+>> Ryan
+>>
+>>  mm/huge_memory.c | 10 ++++++++--
+>>  mm/mmap.c        |  6 ++++--
+>>  2 files changed, 12 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 94ef5c02b459..8c66f88e71e9 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -809,7 +809,7 @@ static unsigned long __thp_get_unmapped_area(struct file *filp,
+>>  {
+>>         loff_t off_end = off + len;
+>>         loff_t off_align = round_up(off, size);
+>> -       unsigned long len_pad, ret;
+>> +       unsigned long len_pad, ret, off_sub;
+>>
+>>         if (off_end <= off_align || (off_end - off_align) < size)
+>>                 return 0;
+>> @@ -835,7 +835,13 @@ static unsigned long __thp_get_unmapped_area(struct file *filp,
+>>         if (ret == addr)
+>>                 return addr;
+>>
+>> -       ret += (off - ret) & (size - 1);
+>> +       off_sub = (off - ret) & (size - 1);
+>> +
+>> +       if (current->mm->get_unmapped_area == arch_get_unmapped_area_topdown &&
+>> +           !off_sub)
+>> +               return ret + size;
+>> +
+>> +       ret += off_sub;
+>>         return ret;
+>>  }
+>>
+>> diff --git a/mm/mmap.c b/mm/mmap.c
+>> index b78e83d351d2..d89770eaab6b 100644
+>> --- a/mm/mmap.c
+>> +++ b/mm/mmap.c
+>> @@ -1825,15 +1825,17 @@ get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
+>>                 /*
+>>                  * mmap_region() will call shmem_zero_setup() to create a file,
+>>                  * so use shmem's get_unmapped_area in case it can be huge.
+>> -                * do_mmap() will clear pgoff, so match alignment.
+>>                  */
+>> -               pgoff = 0;
+>>                 get_area = shmem_get_unmapped_area;
+>>         } else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
+>>                 /* Ensures that larger anonymous mappings are THP aligned. */
+>>                 get_area = thp_get_unmapped_area;
+>>         }
+>>
+>> +       /* Always treat pgoff as zero for anonymous memory. */
+>> +       if (!file)
+>> +               pgoff = 0;
+>> +
+>>         addr = get_area(file, addr, len, pgoff, flags);
+>>         if (IS_ERR_VALUE(addr))
+>>                 return addr;
+>> --
+>> 2.25.1
+>>
 
 
