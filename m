@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-13826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3AD1837E41
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 574BC837E56
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E83291C26425
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:37:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D10A51F259DC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307ED5C610;
-	Tue, 23 Jan 2024 00:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D6A5FB93;
+	Tue, 23 Jan 2024 00:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Hq1NIcDe"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OzRrEvZw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF715BAFC;
-	Tue, 23 Jan 2024 00:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9995FB83;
+	Tue, 23 Jan 2024 00:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970475; cv=none; b=cNkh2PlQUtghhHzLScYszT93Qbp0NR8X0BOPWtkqqE++BsTSOPfMXyxWVzk+DE5dzkUP8nAXp5GtZVzU9qBZnkZyaZPmH3k8AGCT+VYg+c8iYBuQBcQa5YszO9rJW4X8niSgAeMRXyEwOGEGR67lIzTW910PalAEJ2ekMRu3BRM=
+	t=1705970522; cv=none; b=PxAJGefEJkJdc2if6JZqnBp5DHZqSnd0nFSdMnIQMyoSE1yHgTIqDNSfL31qoRWBJOzUaijnOKOhwpE5LXRJpSmlD05aSGKn4zjJ4C+lgI5JzsP66DXbVbQht9/MBce71jBvIIfAgdhKHI03DkxwBy9AeKomMyvsqu+nsjfrDp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970475; c=relaxed/simple;
-	bh=mTM28tfU7sJ6G7/wpfJjg6i8xRSAKb06EWY2zBt7bes=;
-	h=Date:To:From:Subject:Message-Id; b=SPeDSw5E1VCCOaGaI+JL8tEtOwejpfR7cFlGhJxrCZJJm6z4mMiKam08vsg5WDq4iHtTYfqeaB0ncKoBRjj6QuVM3Kx/d9ua2J5ezTR6lDxQzsVSOZU9+0HACy+3d88UdxJ8pH4Vn+zgYhHP2+mslpWJ3/zOFEaGzQDgzMYaNRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Hq1NIcDe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E63C433F1;
-	Tue, 23 Jan 2024 00:41:13 +0000 (UTC)
+	s=arc-20240116; t=1705970522; c=relaxed/simple;
+	bh=d52TbtdH78GZdSKh8DVgIWskwZM2FCFKoPKksAh/FUk=;
+	h=Date:To:From:Subject:Message-Id; b=ViWz+HjPznPa9vQcTZPlxf5i2MJRpAzo270iy+0S1bIA/eVhGAJnhytYpNIggVlAte5lnS2/kfoMQbZxRdmE2NVF71b9asUUaG6V7W82zbLMLrGocOyqJ90K63Jr0ErT6sOv/swXkzrdfNRcPS9RR/bNeyOekjwNh6dOomHEOV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OzRrEvZw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE11C433F1;
+	Tue, 23 Jan 2024 00:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1705970474;
-	bh=mTM28tfU7sJ6G7/wpfJjg6i8xRSAKb06EWY2zBt7bes=;
+	s=korg; t=1705970521;
+	bh=d52TbtdH78GZdSKh8DVgIWskwZM2FCFKoPKksAh/FUk=;
 	h=Date:To:From:Subject:From;
-	b=Hq1NIcDeodBZLWtDI0+wh/BN1lvNmX8VEhIQ46EJtAww86H5Z8cH+PodXjtiP2tTi
-	 3jGGI+ZhwIV/9453pCf4Bws0ujrq8fdKCcotrz858K49c9qtZTtxuIfShUH7UU2utO
-	 jc0t6Dn3ssWPXv7Lck0VQILQUDaEmoWnaXCGasPs=
-Date: Mon, 22 Jan 2024 16:41:10 -0800
-To: mm-commits@vger.kernel.org,yuzhao@google.com,yangyifei03@kuaishou.com,stable@vger.kernel.org,shakeelb@google.com,roman.gushchin@linux.dev,muchun.song@linux.dev,mhocko@kernel.org,hannes@cmpxchg.org,tjmercier@google.com,akpm@linux-foundation.org
+	b=OzRrEvZwyWnvG9/3tg/sY+L81SyVYK/9QjJztC7nKluFpfZLyLK6BfP/gtHiNj7jN
+	 Ot9sfr9ofQpZEWTlzQLqCChiu+pOo1hTWU0HsBJtFGSFWeUKU/U2vrDbFMCNgt5ESx
+	 H5Ob4aMhPukdHvszxd5gZSm6hsmqzH+Q+FXK0JGM=
+Date: Mon, 22 Jan 2024 16:41:58 -0800
+To: mm-commits@vger.kernel.org,will@kernel.org,stable@vger.kernel.org,samitolvanen@google.com,samuel.holland@sifive.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240123004113.D0E63C433F1@smtp.kernel.org>
+Subject: + scs-add-config_mmu-dependency-for-vfree_atomic.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240123004201.4EE11C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: Revert "mm:vmscan: fix inaccurate reclaim during proactive reclaim"
+     Subject: scs: add CONFIG_MMU dependency for vfree_atomic()
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim.patch
+     scs-add-config_mmu-dependency-for-vfree_atomic.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/scs-add-config_mmu-dependency-for-vfree_atomic.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,64 +73,42 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: "T.J. Mercier" <tjmercier@google.com>
-Subject: Revert "mm:vmscan: fix inaccurate reclaim during proactive reclaim"
-Date: Sun, 21 Jan 2024 21:44:12 +0000
+From: Samuel Holland <samuel.holland@sifive.com>
+Subject: scs: add CONFIG_MMU dependency for vfree_atomic()
+Date: Mon, 22 Jan 2024 09:52:01 -0800
 
-This reverts commit 0388536ac29104a478c79b3869541524caec28eb.
+The shadow call stack implementation fails to build without CONFIG_MMU:
 
-Proactive reclaim on the root cgroup is 10x slower after this patch when
-MGLRU is enabled, and completion times for proactive reclaim on much
-smaller non-root cgroups take ~30% longer (with or without MGLRU).  With
-root reclaim before the patch, I observe average reclaim rates of ~70k
-pages/sec before try_to_free_mem_cgroup_pages starts to fail and the
-nr_retries counter starts to decrement, eventually ending the proactive
-reclaim attempt.  After the patch the reclaim rate is consistently ~6.6k
-pages/sec due to the reduced nr_pages value causing scan aborts as soon as
-SWAP_CLUSTER_MAX pages are reclaimed.  The proactive reclaim doesn't
-complete after several minutes because try_to_free_mem_cgroup_pages is
-still capable of reclaiming pages in tiny SWAP_CLUSTER_MAX page chunks and
-nr_retries is never decremented.
+  ld.lld: error: undefined symbol: vfree_atomic
+  >>> referenced by scs.c
+  >>>               kernel/scs.o:(scs_free) in archive vmlinux.a
 
-The docs for memory.reclaim say, "the kernel can over or under reclaim
-from the target cgroup" which this patch was trying to fix.  Revert it
-until a less costly solution is found.
-
-Link: https://lkml.kernel.org/r/20240121214413.833776-1-tjmercier@google.com
-Fixes: 0388536ac291 ("mm:vmscan: fix inaccurate reclaim during proactive reclaim")
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Cc: Efly Young <yangyifei03@kuaishou.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeelb@google.com>
-Cc: T.J. Mercier <tjmercier@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
+Link: https://lkml.kernel.org/r/20240122175204.2371009-1-samuel.holland@sifive.com
+Fixes: a2abe7cbd8fe ("scs: switch to vmapped shadow stacks")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Cc: Will Deacon <will@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/memcontrol.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/memcontrol.c~revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim
-+++ a/mm/memcontrol.c
-@@ -6977,8 +6977,8 @@ static ssize_t memory_reclaim(struct ker
- 			lru_add_drain_all();
- 
- 		reclaimed = try_to_free_mem_cgroup_pages(memcg,
--					min(nr_to_reclaim - nr_reclaimed, SWAP_CLUSTER_MAX),
--					GFP_KERNEL, reclaim_options);
-+						nr_to_reclaim - nr_reclaimed,
-+						GFP_KERNEL, reclaim_options);
- 
- 		if (!reclaimed && !nr_retries--)
- 			return -EAGAIN;
+--- a/arch/Kconfig~scs-add-config_mmu-dependency-for-vfree_atomic
++++ a/arch/Kconfig
+@@ -668,6 +668,7 @@ config SHADOW_CALL_STACK
+ 	bool "Shadow Call Stack"
+ 	depends on ARCH_SUPPORTS_SHADOW_CALL_STACK
+ 	depends on DYNAMIC_FTRACE_WITH_ARGS || DYNAMIC_FTRACE_WITH_REGS || !FUNCTION_GRAPH_TRACER
++	depends on MMU
+ 	help
+ 	  This option enables the compiler's Shadow Call Stack, which
+ 	  uses a shadow stack to protect function return addresses from
 _
 
-Patches currently in -mm which might be from tjmercier@google.com are
+Patches currently in -mm which might be from samuel.holland@sifive.com are
 
-revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim.patch
+scs-add-config_mmu-dependency-for-vfree_atomic.patch
 
 
