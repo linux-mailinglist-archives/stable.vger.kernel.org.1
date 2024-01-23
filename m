@@ -1,159 +1,108 @@
-Return-Path: <stable+bounces-15575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFCEA83982E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 19:47:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C75ED8398F2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 20:01:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E9D61C25D59
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 18:47:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ED6B28574A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 19:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE17823D0;
-	Tue, 23 Jan 2024 18:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E36012BEB2;
+	Tue, 23 Jan 2024 18:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r++rzSzb"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=svenjoac@gmx.de header.b="q7jY+PFq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3ABC823A8;
-	Tue, 23 Jan 2024 18:46:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E2612BEAE;
+	Tue, 23 Jan 2024 18:54:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706035585; cv=none; b=BuK6ob6D3rQhSSs6nbPhB5C4corp9mVDj5WEMfWp4rRGaxeIgtqX+zdWgJ1XPpGp9wb/VaaN/zuDc/k9g0UYfagC9SQVUiEcdZbeJQDeA2EPTZIwMU/htSGe/FVRS0G0oZ+PTsnzI1yzYvtwB4+TfBDh5r7xzYfSJAxXMKlGYy4=
+	t=1706036098; cv=none; b=JPq5jULn6cl2krHXtiDn1wJZ1iDHgUyGO11AmnVOwdxnqRehCcvLDwv4SvnMtrQ1MksOsdlEBGNkoHyqWf20t4XlnBAVjp9hRJ7NCiHidJo7llh646FtT0rNP3KvLQ22r8yWtE/7WUx3A5Jb/nLLPnqc57xYbkhQhMcR+ZPCbJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706035585; c=relaxed/simple;
-	bh=xlETS4vfNKM7NA6UlEXX0jTXt3XzQwXBLD5Nx+jrOU4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=naKaqtqBScPjwxf/mUlJFu8mq0jHUyn1mXA5uGc0VFXKumFSqyIUnOOf85KULFuKfg3kXi2lcjKW6QqGEkm/rQMafuf1ppmSbuNx1cBAsj5UXgsuUEatKFX5HwiCO6IIPfnqoX6XQkPBnjeKYNrwBHHqusa5yjjZ92eTaghbZ7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r++rzSzb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D114C433F1;
-	Tue, 23 Jan 2024 18:46:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706035584;
-	bh=xlETS4vfNKM7NA6UlEXX0jTXt3XzQwXBLD5Nx+jrOU4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=r++rzSzbdOdCg4Bk0FX/ltZades3wcWMo1/cZDk8BsIK2avLSDgrXRVlu66sDs15D
-	 k9AJPhr/bXSZRZkZCSMtl/swPKxnNzYP7gn4ONuOqeD1aVEW2yg4OwVIu+k/mJ0V5p
-	 krJMR+aBE/hp+oRzL9ujwC2hhYqZMOXu/oP1uMcmGMZoMLskHgeCBIANhwRT+aDUam
-	 nv0iym9WNfKYAmSszPhqcOIvlTk6VjKMJmJFMuHvLfnBdIf0NbbI3m+qnVJPhV2zKi
-	 IzcaQcLcfGDGKvUxQW0cQFt/pOLPqir/dfbCKLBahPOjoMGsogXqEkKVSMEpuBl/QO
-	 CKjRk1JRsUkFQ==
-Date: Tue, 23 Jan 2024 12:46:22 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Randy Dunlap <rdunlap@infradead.org>, NeilBrown <neilb@suse.de>,
-	John Sanpe <sanpeqf@gmail.com>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Uladzislau Koshchanka <koshchanka@gmail.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	David Gow <davidgow@google.com>, Kees Cook <keescook@chromium.org>,
-	Rae Moar <rmoar@google.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	"wuqiang.matt" <wuqiang.matt@bytedance.com>,
-	Yury Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ben Dooks <ben.dooks@codethink.co.uk>, dakr@redhat.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arch@vger.kernel.org, stable@vger.kernel.org,
-	Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH v5 RESEND 1/5] lib/pci_iomap.c: fix cleanup bugs in
- pci_iounmap()
-Message-ID: <20240123184622.GA322265@bhelgaas>
+	s=arc-20240116; t=1706036098; c=relaxed/simple;
+	bh=Zq83BY/6gby8jx+0PqbiYFZI9HfPYSVZXXbRmBjHK0U=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=hNtjO68jo2A4iNFbs41o7ULYGM/Xfd1gifSoCrVXBEPnXdihpPA/G/xDez4HMKh/Ydy2q4VLsCPX2vMXTH3CcygKK6wjJOCyYw/DfdP6ctKyWEko4fNf48eTrUlMSBti8YUuKc9D0QFkgcRJXtCTduYsfEb+1f12lPgCmA+MkDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=svenjoac@gmx.de header.b=q7jY+PFq; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1706036070; x=1706640870; i=svenjoac@gmx.de;
+	bh=Zq83BY/6gby8jx+0PqbiYFZI9HfPYSVZXXbRmBjHK0U=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:In-Reply-To:References:
+	 Date;
+	b=q7jY+PFqc27lMwwc9IChsZoxlq/bXZuI3jygYu6iPCeN53rVSbd8ZWBz0K6W5E3X
+	 UBYLLMLN0Vlh6hKF6tUM7N1cQvz5zOoS3UmEfFGZEppMISphHDQogyDGChsvuXB57
+	 9Hzr53WbZ4w1CEQZB+C7O70XDdzOA0cQcnkpCu8swmx/02vSjEYLOENuaSzqjfzft
+	 EUGitjxy1RooT4N68vjWCNCCfO/ez71aMnx+Li9pymXMdQ5fPjHNARLBeKaUm9kER
+	 FiM/TDIHecWvzE4N9EaSvla8T0YJep6y1tvFmjCLz58r3bUwZ1fy66q0u4qaRUqQ2
+	 /ioA8Lq2JWFqRPnBcQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from localhost.localdomain ([79.203.86.131]) by mail.gmx.net
+ (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1MDysg-1rKgvy0Ylw-009zLT; Tue, 23 Jan 2024 19:54:30 +0100
+Received: by localhost.localdomain (Postfix, from userid 1000)
+	id 65B7380110; Tue, 23 Jan 2024 19:54:27 +0100 (CET)
+From: Sven Joachim <svenjoac@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,  patches@lists.linux.dev,
+  linux-kernel@vger.kernel.org,  torvalds@linux-foundation.org,
+  akpm@linux-foundation.org,  linux@roeck-us.net,  shuah@kernel.org,
+  patches@kernelci.org,  lkft-triage@lists.linaro.org,  pavel@denx.de,
+  jonathanh@nvidia.com,  f.fainelli@gmail.com,  sudipm.mukherjee@gmail.com,
+  srw@sladewatkins.net,  rwarsow@gmx.de,  conor@kernel.org,
+  allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 000/417] 6.1.75-rc1 review
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org> (Greg
+	Kroah-Hartman's message of "Mon, 22 Jan 2024 15:52:48 -0800")
+References: <20240122235751.480367507@linuxfoundation.org>
+Date: Tue, 23 Jan 2024 19:54:27 +0100
+Message-ID: <874jf3hod8.fsf@turtle.gmx.de>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240111085540.7740-2-pstanner@redhat.com>
+Content-Type: text/plain
+X-Provags-ID: V03:K1:doAmV5KqM2/Cz0caglCAVH8AQTXpevCKwLUyqEu0d176D4SdO4B
+ L3h5BhP84x8cP9EpIog+FuN2w8WBJlGKkoQCoV5FolAsgFiBKeHse7qZ33ly0kso4JvEXD5
+ uMHQqOtWjlNXe9EvOs1R4y5+Xzc99hfd1bjkvsJnRhQQSDh3+NgxRQ5chzdr0Tptp2PO74I
+ coc2EWDr2kQmhfOMrHnbA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:DklUbd5GSsE=;JoZZEj5+xUKVIKh4T+CyjC3NgTx
+ MtePDiA67uA8+xEUPDzMyP2siJ37OnpY2W9WCgc/R7cePVqPCsR7aE68/5zHQP2MR3hCxgyUH
+ LbjwAThxswzz9gCE5Nm9HqN8jpWodp8CyEWryk0zlK3o2CV+Bv8H9coNDnFqhPLjpBL7Kvzqz
+ OSzy+M+grQipkKo0FwXt0o5tRA6T/S1Wxoid8/w1I4Ij0brXTsZ2+BO/MqNKWa3vmQVgrA/Jt
+ d23V7xtzJnCs/PPtS/M7awbezgWXJfS+Hqh3y+rEVIDmb6yLmlyODNZ/AanGs47vNtrMpTRfK
+ Pnjf5zzgd9xbPASHTJq1jQzEsvli79sOkTzQjdE+YYu5DmF+ZIxi1LdTo+Alhynpt6hnMN2xX
+ M9j0FSw4+x3bCy8PaH94Lk1Gh7c+lnrlZAKPi1jT2sg1O9VdHaKD9kp8yYwGKbdNq1xNhX2cP
+ ZFbOTrniqHfCXWVFTTpalmNtvBLMnoQFCBbp58Q4RCaREfmGi+080NFmhZ3uj69Ifspg//GfV
+ jjbEyWjyQWm5kaWRJ5iiB/KAJARLudZqe/yTW1Xo7tzUdfkhKP8CPG9eyHkrprCrW5+7ce5vN
+ e9NDfS3s9OlGU5EvdIWiG6MxXVNkQrAbooXhQndXKGPOH7YhY5JdEntQBNBoIxXtaxe+rPI21
+ Pf5ciuAvXkxu04Ba45So2bkTzFzZEUDlRC+yM2+090TDPjlfIxz/h1AXXUYe9eJoQgqObju5W
+ PjJxl7pW+uq8rraYKz5PL7K6jekNJqUuC5uDYG/oKkolLLkxgTWfLa6r+p7i21U1oMewFUlbT
+ Lq4sA+cJ71a5vf0JavBMUYSEpToBTcaXdKblN/XTjXl2Ep2KE7q2+nFz6c5rupSFJ94jZnZuD
+ T+UNehTLpjeemF4JsdrL+emS8p2fEhquNragajMV39I6GirFtYipefbzaB7C7+vQ9t5YiUWlb
+ T7vFiw==
 
-On Thu, Jan 11, 2024 at 09:55:36AM +0100, Philipp Stanner wrote:
-> pci_iounmap() in lib/pci_iomap.c is supposed to check whether an address
-> is within ioport-range IF the config specifies that ioports exist. If
-> so, the port should be unmapped with ioport_unmap(). If not, it's a
-> generic MMIO address that has to be passed to iounmap().
-> 
-> The bugs are:
->   1. ioport_unmap() is missing entirely, so this function will never
->      actually unmap a port.
+On 2024-01-22 15:52 -0800, Greg Kroah-Hartman wrote:
 
-The preceding comment suggests that in this default implementation,
-the ioport does not need unmapping, and it wasn't something it was
-supposed to do but just failed to do:
+> This is the start of the stable review cycle for the 6.1.75 release.
+> There are 417 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
- * NOTE! This default implementation assumes that if the architecture
- * support ioport mapping (HAS_IOPORT_MAP), the ioport mapping will
- * be fixed to the range [ PCI_IOBASE, PCI_IOBASE+IO_SPACE_LIMIT [,
- * and does not need unmapping with 'ioport_unmap()'.
- *
- * If you have different rules for your architecture, you need to
- * implement your own pci_iounmap() that knows the rules for where
- * and how IO vs MEM get mapped.
+Works fine for me on x86_64.
 
-Almost all ioport_unmap() implementations are empty, so in most cases
-it's a no-op (parisc is an exception).
+Tested-by: Sven Joachim <svenjoac@gmx.de>
 
-I'm happy to add the ioport_unmap() even just for symmetry, but if we
-do, I think we should update or remove that comment.
-
->   2. the #ifdef for the ioport-ranges accidentally also guards
->      iounmap(), potentially compiling an empty function. This would
->      cause the mapping to be leaked.
-> 
-> Implement the missing call to ioport_unmap().
-> 
-> Move the guard so that iounmap() will always be part of the function.
-
-I think we should fix this bug in a separate patch because the
-ioport_unmap() is much more subtle and doesn't need to be complicated
-with this fix.
-
-> CC: <stable@vger.kernel.org> # v5.15+
-> Fixes: 316e8d79a095 ("pci_iounmap'2: Electric Boogaloo: try to make sense of it all")
-> Reported-by: Danilo Krummrich <dakr@redhat.com>
-
-Is there a URL we can include for Danilo's report?  I found
-https://lore.kernel.org/all/a6ef92ae-0747-435b-822d-d0229da4683c@redhat.com/,
-but I'm not sure that's the right part of the conversation.
-
-> Suggested-by: Arnd Bergmann <arnd@kernel.org>
-> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  lib/pci_iomap.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/pci_iomap.c b/lib/pci_iomap.c
-> index ce39ce9f3526..6e144b017c48 100644
-> --- a/lib/pci_iomap.c
-> +++ b/lib/pci_iomap.c
-> @@ -168,10 +168,12 @@ void pci_iounmap(struct pci_dev *dev, void __iomem *p)
->  	uintptr_t start = (uintptr_t) PCI_IOBASE;
->  	uintptr_t addr = (uintptr_t) p;
->  
-> -	if (addr >= start && addr < start + IO_SPACE_LIMIT)
-> +	if (addr >= start && addr < start + IO_SPACE_LIMIT) {
-> +		ioport_unmap(p);
->  		return;
-> -	iounmap(p);
-> +	}
->  #endif
-> +	iounmap(p);
->  }
->  EXPORT_SYMBOL(pci_iounmap);
->  
-> -- 
-> 2.43.0
-> 
+Cheers,
+       Sven
 
