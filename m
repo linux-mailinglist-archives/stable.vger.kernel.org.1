@@ -1,232 +1,119 @@
-Return-Path: <stable+bounces-15584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046B9839AD5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 22:06:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C4C839AF0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 22:19:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27C5C1C29667
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 21:06:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C194E1F275F6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 21:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE442C1A7;
-	Tue, 23 Jan 2024 21:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9460A376E6;
+	Tue, 23 Jan 2024 21:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fooOJ8Om"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dFZM/XZf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E472C1B7;
-	Tue, 23 Jan 2024 21:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EEC2C681;
+	Tue, 23 Jan 2024 21:19:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706043955; cv=none; b=PZGgKQfIcpLItRIESsVFLtkqYg1Lwmphhj2HIWvAJoDe1kKGhi+AfeOLGbge0zM+S6UuoQH85IEUXXZqvZ1EvADRJ95h5Kng8h7H5btNL0v2oUtcx1kkR+9MMMdUtgguXQ/0YswmKCIroBkSVUkjr8Aqux21B6b30+4UoKSDGsQ=
+	t=1706044790; cv=none; b=pQYk8FfhR+ib4Odd5tYlmLiKa4yIibdMLD14E48noW3fgwMxm7WVHXk9zQ6D0x5BITppZNuaU4QSBvp4s7TiZSK2t4mOkb6HBaxtgC+Z8yjMXwwHnm2H3Tq48dOly0LeF2T7mMu8iYXg8od701r5pWAC6J/uNYU1a7GxSED8Pm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706043955; c=relaxed/simple;
-	bh=m2HBN4VZRC/C+9nNuZ2wRcZhlWr2WEDdSTFp4kKy/w0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Nt5Xsf00D9gnfkhfNqvVT7kQxyEuNOPx8B3RlcLG6KamIWvfq3WEZDDDuFaAWs/rZ+mzI1zThJL2mObQTweLD/wuHNkKBnE1PzRoqzlrKXc03fVTAyMDFOSYiA9QqlZiO7D9XA4oU6vezyim+S4yIaC2zOeQcX/KrFk3PCGLm5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fooOJ8Om; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7367C433C7;
-	Tue, 23 Jan 2024 21:05:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706043955;
-	bh=m2HBN4VZRC/C+9nNuZ2wRcZhlWr2WEDdSTFp4kKy/w0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=fooOJ8OmjLLi2sPby3Nl9MIdlHEvrfpFAihuYVxQo7hw3kXFFU5BBhxtw9Es1zdAj
-	 uoOB0eSr5ODQnl0ytYcy3OkfxpRzQjFJnBKHZ+fDCK4snp9/hH0t4zU8HwzlbMDR3/
-	 6Tehk2Yr5ZO4dq1HTqpQ6d5YAaspS+XcH8hzvVwTpn0ASuhQKN1mQ0SmO1glocZcQh
-	 F9OwjtAM5s13GqLhpK3eXiVzhE8v353r8oXsa0D6rKk/mOrD4YWC4g6FNOARHFrJgH
-	 slQkXMU46b2Z4Y1akcI+nN92cTY2qvr2mqsrUq7FPm2h/3xD6dzXXXdBBeHkAQn8DD
-	 i3/gzB5+uueSg==
-Date: Tue, 23 Jan 2024 15:05:53 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Randy Dunlap <rdunlap@infradead.org>, NeilBrown <neilb@suse.de>,
-	John Sanpe <sanpeqf@gmail.com>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Uladzislau Koshchanka <koshchanka@gmail.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	David Gow <davidgow@google.com>, Kees Cook <keescook@chromium.org>,
-	Rae Moar <rmoar@google.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	"wuqiang.matt" <wuqiang.matt@bytedance.com>,
-	Yury Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ben Dooks <ben.dooks@codethink.co.uk>, dakr@redhat.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arch@vger.kernel.org, stable@vger.kernel.org,
-	Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH v5 RESEND 5/5] lib, pci: unify generic pci_iounmap()
-Message-ID: <20240123210553.GA326783@bhelgaas>
+	s=arc-20240116; t=1706044790; c=relaxed/simple;
+	bh=VXPP3Yfv+aN5927BzSpWYPembSi2sAsppWfJkocPaiU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WVP7j3ri2AhQ4qNc146r1rqG+LzbE3wCGoZKUz2Fmc3y00iYvClMwfEf9UqCmw32hLVxEeL/G4ldNnU/vkpgfUQ0myRhwUpexRSrl8I48okUToC/MFHjq3qQJKOUg+ebfftbOjzpICDQXQLbKIxDZNH9MJDgjKNg4cpsDo8VgFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dFZM/XZf; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-5c65ca2e1eeso2469974a12.2;
+        Tue, 23 Jan 2024 13:19:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706044788; x=1706649588; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Io8epyIIIUF8bbtlZ2MdvLDPjTnzIChAR6sGUafC630=;
+        b=dFZM/XZfgdZ2eNmnAYBDZPWpyk4x/VnD5iZVMuAP7VO60GKN7Kwi9qWsY/BogACVpj
+         P66yHZ13ZWGq+LAiRx4pz6MD+Cl+nvlRERZwE7MiNghd7+KkOCjpmXG+GbXC+I3qJ779
+         DhyKDsmdaIwAVQKJa1HI7NDJS3FL42pGtsEVlpYox6R49QINqF4uClwI8Pkk+z28QiSy
+         t0REoxWHbIIhh1mPqecba3Fi+BxIkz/aGHfCgHw7LilnhM6MkG77Ft67B5oOBR6LmQmo
+         WeQ78f/weKYJ2IHA52YGWM6Ay5P190xzeU4UMn7yhiFcbzS9GojyBWcQmuS35GObHkfy
+         7RgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706044788; x=1706649588;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Io8epyIIIUF8bbtlZ2MdvLDPjTnzIChAR6sGUafC630=;
+        b=ZFEtX7Q4j4OPUktv75wkL+pWP3KqG11MBTAFPKS+B4jN2Et9DQyLNQ+tpL7uR7ZZlO
+         VoqMxRGFwyOjAkgXLnfmWKTWX0g+ZH4BnA9zdRYbh7C5R9nDKPTpYs62hHANsB4dQ8tz
+         j1H6vxIrsMTAx5Hu5pNBnJl5Uj3TbVa7nuqnBoFRxtnO/wjDKCV0uu5DufmksTN9uZb0
+         q/OEIKGrHLFxjeFPfZmR2njzFFG5OXIA+yi4QwvA1vuD48lCk0EaVxdX6ZG/kN0Jy4Ik
+         bPXdDVuBDnZCIpkkg1vvpAFCLcd149PaeK97gxC+3NrhMJiSclE8bgckl9YdKEAR5M1q
+         1/Pg==
+X-Gm-Message-State: AOJu0YzrC3j2XTaXobCAf5puaqrVZTiJGX0ENrWPIhYcP+qolpHL6FkB
+	vRoaSpEzpzXCcjTJXsoaSddjHeI7j8oxlE/bCp2CMDZE0oKsngnH
+X-Google-Smtp-Source: AGHT+IEh48OvAcikgSeMaSejKjwWPjve5WVTLz/rCnmWG7U/d6hF4BScscCeT86idN2WSeJF0cHMkA==
+X-Received: by 2002:a05:6a20:6da2:b0:19b:1eda:ab61 with SMTP id gl34-20020a056a206da200b0019b1edaab61mr2927864pzb.54.1706044758541;
+        Tue, 23 Jan 2024 13:19:18 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id q81-20020a632a54000000b005d39e412031sm1588892pgq.36.2024.01.23.13.19.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 23 Jan 2024 13:19:18 -0800 (PST)
+Message-ID: <c8ac1c40-3944-43a6-b64d-a9b9ec98c7ff@gmail.com>
+Date: Tue, 23 Jan 2024 13:19:16 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240111085540.7740-6-pstanner@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 000/286] 5.10.209-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20240122235732.009174833@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jan 11, 2024 at 09:55:40AM +0100, Philipp Stanner wrote:
-> The implementation of pci_iounmap() is currently scattered over two
-> files, drivers/pci/iomap.c and lib/iomap.c. Additionally,
-> architectures can define their own version.
+On 1/22/24 15:55, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.209 release.
+> There are 286 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> To have only one version, it's necessary to create a helper function,
-> iomem_is_ioport(), that tells pci_iounmap() whether the passed address
-> points to an ioport or normal memory.
+> Responses should be made by Wed, 24 Jan 2024 23:56:49 +0000.
+> Anything received after that time might be too late.
 > 
-> iomem_is_ioport() can be provided through two different ways:
->   1. The architecture itself provides it. As of today, the version
->      coming from lib/iomap.c de facto is the x86-specific version and
->      comes into play when CONFIG_GENERIC_IOMAP is selected. This rather
->      confusing naming is an artifact left by the removal of IA64.
->   2. As a default version in include/asm-generic/io.h for those
->      architectures that don't use CONFIG_GENERIC_IOMAP, but also don't
->      provide their own version of iomem_is_ioport().
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.209-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 > 
-> Once all architectures that support ports provide iomem_is_ioport(), the
-> arch-specific definitions for pci_iounmap() can be removed and the archs
-> can use the generic implementation, instead.
+> thanks,
 > 
-> Create a unified version of pci_iounmap() in drivers/pci/iomap.c.
-> Provide the function iomem_is_ioport() in include/asm-generic/io.h
-> (generic) and lib/iomap.c ("pseudo-generic" for x86).
-> 
-> Remove the CONFIG_GENERIC_IOMAP guard around
-> ARCH_WANTS_GENERIC_PCI_IOUNMAP so that configs that set
-> CONFIG_GENERIC_PCI_IOMAP without CONFIG_GENERIC_IOMAP still get the
-> function.
-> 
-> Add TODOs for follow-up work on the "generic is not generic but
-> x86-specific"-Problem.
-> ...
+> greg k-h
 
-> +++ b/drivers/pci/iomap.c
-> @@ -135,44 +135,30 @@ void __iomem *pci_iomap_wc(struct pci_dev *dev, int bar, unsigned long maxlen)
->  EXPORT_SYMBOL_GPL(pci_iomap_wc);
->  
->  /*
-> - * pci_iounmap() somewhat illogically comes from lib/iomap.c for the
-> - * CONFIG_GENERIC_IOMAP case, because that's the code that knows about
-> - * the different IOMAP ranges.
-> + * This check is still necessary due to legacy reasons.
->   *
-> - * But if the architecture does not use the generic iomap code, and if
-> - * it has _not_ defined it's own private pci_iounmap function, we define
-> - * it here.
-> - *
-> - * NOTE! This default implementation assumes that if the architecture
-> - * support ioport mapping (HAS_IOPORT_MAP), the ioport mapping will
-> - * be fixed to the range [ PCI_IOBASE, PCI_IOBASE+IO_SPACE_LIMIT [,
-> - * and does not need unmapping with 'ioport_unmap()'.
-> - *
-> - * If you have different rules for your architecture, you need to
-> - * implement your own pci_iounmap() that knows the rules for where
-> - * and how IO vs MEM get mapped.
-> - *
-> - * This code is odd, and the ARCH_HAS/ARCH_WANTS #define logic comes
-> - * from legacy <asm-generic/io.h> header file behavior. In particular,
-> - * it would seem to make sense to do the iounmap(p) for the non-IO-space
-> - * case here regardless, but that's not what the old header file code
-> - * did. Probably incorrectly, but this is meant to be bug-for-bug
-> - * compatible.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels build tested on 
+BMIPS_GENERIC:
 
-Moving this comment update to the patch that adds the ioport_unmap()
-call would make that patch more consistent and simplify this patch.
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
-> + * TODO: Have all architectures that provide their own pci_iounmap() provide
-> + * iomem_is_ioport() instead. Remove this #if afterwards.
->   */
->  #if defined(ARCH_WANTS_GENERIC_PCI_IOUNMAP)
->  
-> -void pci_iounmap(struct pci_dev *dev, void __iomem *p)
-> +/**
-> + * pci_iounmap - Unmapp a mapping
-> + * @dev: PCI device the mapping belongs to
-> + * @addr: start address of the mapping
-> + *
-> + * Unmapp a PIO or MMIO mapping.
-
-s/Unmapp/Unmap/ (twice)
-
-> + */
-> +void pci_iounmap(struct pci_dev *dev, void __iomem *addr)
-
-Maybe move the "p" to "addr" rename to the patch that fixes the
-pci_iounmap() #ifdef problem, since that's a trivial change that
-already has to do with handling both PIO and MMIO?  Then this patch
-would be a little more focused.
-
-The kernel-doc addition could possibly also move there since it isn't
-related to the unification.
-
->  {
-> -#ifdef ARCH_HAS_GENERIC_IOPORT_MAP
-> -	uintptr_t start = (uintptr_t) PCI_IOBASE;
-> -	uintptr_t addr = (uintptr_t) p;
-> -
-> -	if (addr >= start && addr < start + IO_SPACE_LIMIT) {
-> -		ioport_unmap(p);
-> +#ifdef CONFIG_HAS_IOPORT_MAP
-> +	if (iomem_is_ioport(addr)) {
-> +		ioport_unmap(addr);
->  		return;
->  	}
->  #endif
-> -	iounmap(p);
-> +
-> +	iounmap(addr);
->  }
-
-> + * If CONFIG_GENERIC_IOMAP is selected and the architecture does NOT provide its
-> + * own version, ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT makes sure that the generic
-> + * version from asm-generic/io.h is NOT used and instead the second "generic"
-> + * version from this file here is used.
-> + *
-> + * There are currently two generic versions because of a difficult cleanup
-> + * process. Namely, the version in lib/iomap.c once was really generic when IA64
-> + * still existed. Today, it's only really used by x86.
-> + *
-> + * TODO: Move this function to x86-specific code.
-
-Some of these TODOs look fairly simple.  Are they actually hard, or
-could they just be done now?
-
-It seems like implementing iomem_is_ioport() for the other arches
-would be straightforward and if done first, could make this patch look
-tidier.
-
-Or if the TODOs can't be done now, maybe the iomem_is_ioport()
-addition could be done as a separate patch to make the unification
-more obvious.
-
-> + */
-> +#if defined(ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT)
-> +bool iomem_is_ioport(void __iomem *addr)
->  {
-> -	IO_COND(addr, /* nothing */, iounmap(addr));
-> +	unsigned long port = (unsigned long __force)addr;
-> +
-> +	if (port > PIO_OFFSET && port < PIO_RESERVED)
-> +		return true;
-> +
-> +	return false;
->  }
-> -EXPORT_SYMBOL(pci_iounmap);
-> -#endif /* CONFIG_PCI */
-> +#endif /* ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT */
-> -- 
-> 2.43.0
-> 
 
