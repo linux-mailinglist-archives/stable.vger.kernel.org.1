@@ -1,119 +1,123 @@
-Return-Path: <stable+bounces-15589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72056839B62
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 22:47:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7256839B7D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 22:53:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3FF91C21207
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 21:47:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16B941C22129
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 21:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342F03CF5B;
-	Tue, 23 Jan 2024 21:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445F64EB25;
+	Tue, 23 Jan 2024 21:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EzlnRknR"
+	dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b="AFuFreAq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mr85p00im-zteg06022001.me.com (mr85p00im-zteg06022001.me.com [17.58.23.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD93620F1;
-	Tue, 23 Jan 2024 21:47:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB854B5A6
+	for <stable@vger.kernel.org>; Tue, 23 Jan 2024 21:53:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706046465; cv=none; b=ULPqh7VL9YM4/mXCv6nJeKzgkQmT/+ghC9OkuSDt38bm2OqFiX+C56onm18Px3gPzyXxajSyBMLL9eG2On0fVdM+srPfjxXjohjdrgLeKC5HZwoSFtLjm4bB9mSfv075Mc3J//UyKWiNPGvqvpEaofoZPJcHz2a7npHU4H2vU2U=
+	t=1706046792; cv=none; b=TzgcHr6gu8Ihec2/vtojh+eW48xH5E+5NS4g9INbRpEehfyi5JceZo7cw0YdUE5rmtFoJqnH5f340Of8WRkflWAAd/BWNa15eph6+EuX8w5AqmG3I4dKqiLSIJu8vUDzcvukS20kB814flETaje5HcEUWMpR9eLFDcKCeIJKjsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706046465; c=relaxed/simple;
-	bh=7E3YVZzzXAbjUcjPgylzTyklVGOBXlBAL15X5b1iNJc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ngkRm2kDa3g1oHqznT7Bv43lb92PCnMINJoBkgT+WzRr6CDyDBdKhYytzxLRquAQCE4p+LkR/xejjgVuLLxEGkoDwCUBbpHH1/+qCxrPFM5E+gzmkDZKQ3NvUy3r5YNg7vvOOlnUMorcKTKY8kgj4bQLu+rPGiJrBptYe7kys2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EzlnRknR; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-5cf2d73a183so4078183a12.1;
-        Tue, 23 Jan 2024 13:47:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706046463; x=1706651263; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aopPrOg9IfHu/8HlGzikxm2eVGOvpCFKpLoXHZfm0CQ=;
-        b=EzlnRknRP1QUfYh0h1bRLEmtiGhzL8e7/oM5rEso/BIlVH57fr7sjorDIEUtHSAFFt
-         MBVr0+3/440HgGzS7EOU6MtkmpbNmjxTb7o4vAP142M7RjPiY2yF4cSGOwNBmXAYdJLv
-         ARt92ieP9TDlj8SU0Wb6OBJEI2DYUCS4cBpO6MOL8ueEc439r0EIHJ9iKyd9lVMhvSRb
-         GP2w4ACsrJmyCbSt7jiijv9VZNmCx/oGawhHg5LiabEZPArnwRs2QEgFi4nSdFx+fu92
-         yRWAWP9k1gGU3OAjY+kjbw0U4xFmfRC+eIL+EM6iu/2murYO623L93fXgBccmW69aPsj
-         bwEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706046463; x=1706651263;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aopPrOg9IfHu/8HlGzikxm2eVGOvpCFKpLoXHZfm0CQ=;
-        b=OwtFTJXX1Xz9Q7xG9fVgdMSnT1XUKJDrI6rYrvkeDfk4DJ1gsAPo4M+7mVsWf2UKhr
-         vL548fwvbFwIPwM6LrIZ/s+ZohS1HxZTFw8eSSI5vFejBJn8olQ65lvbsQs+hh0AvBZP
-         kkOKBW4vsqYAHuHcoVX9ESDKsxDlkQYFBHZ6wNIpJwKgria4PiTyaJbnEFAz/mJnofQQ
-         eFbYCTBVWgcOk586rtyV7gumrYrghQvm+/WKHO2tpk5ZGOyaYZ/YUJsML5VxTYpr6zZD
-         OPurNvjBLNtyiCG7u4W1P/tgDzsNsA0VvD4h63UKtjm4zzo0lTAR2Dr1ZuDKWlL+toxK
-         znOQ==
-X-Gm-Message-State: AOJu0YzSjsJbiF0cA3y9+63DvpInqS26NBO/NL100H2ae3GFFCICjfh5
-	4wpB6PK0ALQjBCVkpBGNlRj2JerpykUuD8uee6lDQJmeiEMPZ11d
-X-Google-Smtp-Source: AGHT+IGcgc35znDY6cVDFy3PwGVXEd7jCbUBfwp/3XnamNiSfMv+XJTh7GTu/MJKZ8xpoVspgITTZQ==
-X-Received: by 2002:a17:90b:1e44:b0:28b:5031:55f6 with SMTP id pi4-20020a17090b1e4400b0028b503155f6mr289155pjb.47.1706046463068;
-        Tue, 23 Jan 2024 13:47:43 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id js4-20020a17090b148400b0028e7577015asm820519pjb.0.2024.01.23.13.47.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jan 2024 13:47:42 -0800 (PST)
-Message-ID: <ff991af0-9e13-4cbf-9223-b49470dc1776@gmail.com>
-Date: Tue, 23 Jan 2024 13:47:40 -0800
+	s=arc-20240116; t=1706046792; c=relaxed/simple;
+	bh=nezbIq/D3ENhfCPuWNhv3F47gynsXBfOjGxNVePJ7fE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nW2259nhfe5AM2min0HWz2ImQWYGo6olDO23hshG5GmM2SO12f10+hIhxIVZIRZDiDsHTBpkTc7jTPsdKr+dfgONJGtgAFmko/w+q+jF13T8kU94SWyh4b2O0TdWbMWSGvf+AyPktBfhvMgaxf/ukxfToeU5Hb1RUpvBeGIyFQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net; spf=pass smtp.mailfrom=danm.net; dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b=AFuFreAq; arc=none smtp.client-ip=17.58.23.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danm.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=danm.net; s=sig1;
+	t=1706046790; bh=wNJHkz8AkFLOOTSoO2V4Be1p2DmOhk/MoD05yij4/20=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=AFuFreAqntFxUNMn6XQf/yaVdt6ae2KPtCS6gGRRRsUM8FOqeq9RNAiS4yANqrzZr
+	 SBmkUdPpJ8MyHjekq40rMKc64a0zguzumjIVsuM7eJorJvcYyfeqbrXuc7X/Mp5q7K
+	 /xnmfO0NRaVUro4W07pOz27CP0l1PfoVDbrHAqq64nMSoIXHr5Oj0yHR4BoPtN9Z9u
+	 Ony6bYOEY/NoGKJy0Q7lypOQYppI9j6fnr6NF5fEJ1WwTuckKrOx8zOaqnJAYwVqGf
+	 M+r8D3UGA1XfZ63bkOltZFWemzwWQbWHRWaMswONZiPFNtocL9/lRwLatNEZyE6Drn
+	 R+V2IG0qe76rA==
+Received: from hitch.danm.net (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-zteg06022001.me.com (Postfix) with ESMTPSA id CE79C8002B6;
+	Tue, 23 Jan 2024 21:53:08 +0000 (UTC)
+From: Dan Moulding <dan@danm.net>
+To: song@kernel.org
+Cc: dan@danm.net,
+	gregkh@linuxfoundation.org,
+	junxiao.bi@oracle.com,
+	linux-kernel@vger.kernel.org,
+	linux-raid@vger.kernel.org,
+	regressions@lists.linux.dev,
+	stable@vger.kernel.org,
+	yukuai1@huaweicloud.com
+Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system; successfully bisected
+Date: Tue, 23 Jan 2024 14:53:07 -0700
+Message-ID: <20240123215307.8083-1-dan@danm.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAPhsuW7-r=UAO8f7Ok08vCx2kdVx6mZADyZ-LknNE8csnX+L8g@mail.gmail.com>
+References: <CAPhsuW7-r=UAO8f7Ok08vCx2kdVx6mZADyZ-LknNE8csnX+L8g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/371] 5.15.148-rc2 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com
-References: <20240123174500.819179356@linuxfoundation.org>
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240123174500.819179356@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: kXPpc39gOyrjU3mX9CFKgWRDEzE30LnH
+X-Proofpoint-GUID: kXPpc39gOyrjU3mX9CFKgWRDEzE30LnH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-23_13,2024-01-23_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=917 bulkscore=0
+ adultscore=0 mlxscore=0 phishscore=0 spamscore=0 malwarescore=0
+ suspectscore=0 clxscore=1030 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2308100000 definitions=main-2401230162
 
-On 1/23/24 09:46, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.148 release.
-> There are 371 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 25 Jan 2024 17:44:14 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.148-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> I think we still want d6e035aad6c0 in 6.7.2. We may need to revert
+> 0de40f76d567 on top of that. Could you please test it out? (6.7.1 +
+> d6e035aad6c0 + revert 0de40f76d567.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+I was operating under the assumption that the two commits were
+intended to exist as a pair (the one reverts the old fix, because the
+next commit has what is supposed to be a better fix). But since the
+regression still exists, even with both patches applied, the old fix
+must be reapplied to resolve the current regression.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+But, as you've requested, I have tested 6.7.1 + d6e035aad6c0 + revert
+0de40f76d567 and it seems fine. So I have no issue if you think it
+makes sense to accept d6e035aad6c0 on its own, even though it would
+break up the pair of commits.
 
+> OTOH, I am not able to reproduce the issue. Could you please help
+> get more information:
+>   cat /proc/mdstat
+
+Here is /proc/mdstat from one of the systems where I can reproduce it:
+
+    $ cat /proc/mdstat
+    Personalities : [raid6] [raid5] [raid4]
+    md0 : active raid5 dm-0[4](J) sdc[3] sda[0] sdb[1]
+          3906764800 blocks super 1.2 level 5, 512k chunk, algorithm 2 [3/3] [UUU]
+
+    unused devices: <none>
+
+dm-0 is an LVM logical volume which is backed by an NVMe SSD. The
+others are run-of-the-mill SATA SSDs.
+
+>  profile (perf, etc.) of the md thread
+
+I might need a little more pointing in the direction of what exactly
+to look for and under what conditions (i.e. should I run perf while
+the thread is stuck in the 100% CPU loop? what kind of report should I
+ask perf for?). Also, are there any debug options I could enable in
+the kernel configuration that might help gather more information?
+Maybe something in debugfs? I currently get absolutely no warnings or
+errors in dmesg when the problem occurs.
+
+Cheers,
+
+-- Dan
 
