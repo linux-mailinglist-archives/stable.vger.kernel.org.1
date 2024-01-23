@@ -1,133 +1,118 @@
-Return-Path: <stable+bounces-15592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2255E839C04
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 23:22:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 987E9839C5E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 23:37:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FF191F2A218
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 22:22:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBA791C261BF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 22:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C754F20D;
-	Tue, 23 Jan 2024 22:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55986537E5;
+	Tue, 23 Jan 2024 22:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nCuDScnk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dNLkpDN4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D8D3FB32;
-	Tue, 23 Jan 2024 22:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C846ADE;
+	Tue, 23 Jan 2024 22:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706048527; cv=none; b=nDx33MtTWN5PdnOidlr8ouz5ngw1WjKjJCpgCev4mBYSjHpJORUt8XX8cyt3KPQwzWJzfuR1JNHMQMOc4P+n1s+KTI7kdkBbJUK3CbP31OwMV3TsbVovzfzRWqHPAosH8d0IPKBApgvJbgGvszS4xP4kuZpmFLG+kAwF5aiMvvA=
+	t=1706049411; cv=none; b=V09aFliwMFz6RtyUDhPBODM0oRIEV0+E0nDuqDRv0mkBHuLNc7m0p4fXSd7HW84gCnmTn+A+HnAl4kShlbjSbzubtm4o8DuYQImLjg1wMd9U8sfLqRIVIUz4qsCgtQYelkWloAfmQ4212j4JrAz+ZSJJ3APeoo8j1MdQtMCjm8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706048527; c=relaxed/simple;
-	bh=EzwRwlhyI9kA9Jd55DwG+gIrmMJ8fBPSINqDqU0+1SM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cBUFDB23saf0YPzcx0dajlL0KxxLUh8H2k69ELqHmdOVX4z62pRhRY/QU2QHKjTLXFglXGTuQ6vQ0pxS6CsnTVsX+h4JSB+PrwRI4FMp3zIPBTKC2CY0u1Ph5NYZrTj8Vpu24aTA6YVc+UIZfuUJsonq2+syKtMekInu8w63cv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nCuDScnk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE971C433F1;
-	Tue, 23 Jan 2024 22:22:06 +0000 (UTC)
+	s=arc-20240116; t=1706049411; c=relaxed/simple;
+	bh=i3m70T+5zzUlf58J0B9B0D1OflXZeDncmnHWK4wEutg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=BvjWNXSLPvA76SvJo21+SEeue7vz95MuV37hGAlWySwA1IyUlrMYYxLPJ5dYDj7bysgiUtVATu0FAa4jUbBtkhfth0kHl0nK/FIPVOBjLpp0lPS0kQTLXpgNJCn3I2mdZ3REopUGYeyFVxWXd4YdVoA7kMxYG+sOT81GihY0xJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dNLkpDN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43FC1C433C7;
+	Tue, 23 Jan 2024 22:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706048527;
-	bh=EzwRwlhyI9kA9Jd55DwG+gIrmMJ8fBPSINqDqU0+1SM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nCuDScnk5OMkc0SF7hb4kstl87dZz28o9lnN91iCFE15A3nNkVSGiauCYJV+ETIs0
-	 0fj+9tD1d4ls045IQABfYhs8xknV49SYHXeeuBBcoya7hnt4b6RWJ8OqtNvaCXmgxw
-	 OhODmj+Z3H2wZxjOSCPIJtzfwCS6/BI/TvcZvwvvPRynLwLsVbrMC3x3DeQJ12g+wP
-	 a72oX3WFJpXP+4SyhQiqawXqfieVdc4cQp8WpCiIpwUkkBKQwjZQFmyx6gKJaRY9oD
-	 k9dp+iNwkRVQ7fmKr3flfJAYL12B2Uel4dw648sHh2W3lQ3jp+HdPsd5zOJagr7GPn
-	 hCq1P1S2Tj21g==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-50f1c524010so5248966e87.3;
-        Tue, 23 Jan 2024 14:22:06 -0800 (PST)
-X-Gm-Message-State: AOJu0Yy8B8txMzYH7M6+XZfxnEm49N3D2qqFfi4lCMNpNXBACuwT6F+h
-	iw+00r2aYe4+Rtw6UnzcTh9cp9lOyInzvFJBrMECXNoQYvD+5yoYm+64cY6/KFipYiOFjyuaLMT
-	ghyOzd3jzyssmjIaJLO9t/jXBMQQ=
-X-Google-Smtp-Source: AGHT+IF1CUodDtCMAW+NVQPE7jGtYRkmWBnHNrxZXeGF1ISeA10pmyI6sPx3p8WupA3heZ8MeYXxHsOu3FAUZ9mxDAM=
-X-Received: by 2002:a05:6512:138f:b0:50e:f724:5b0 with SMTP id
- fc15-20020a056512138f00b0050ef72405b0mr1723376lfb.97.1706048525166; Tue, 23
- Jan 2024 14:22:05 -0800 (PST)
+	s=k20201202; t=1706049410;
+	bh=i3m70T+5zzUlf58J0B9B0D1OflXZeDncmnHWK4wEutg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=dNLkpDN4H52ijtCLMWY2NA6XJSHRlAjeRammwO5Rm8QwmskNN21hKO/5tx9+lK34W
+	 kOmk6rkQUwb3MseYXDOzyskrEUIYN2Kdkl6+L/dHW8Bi6W6kmfPtKDrkRQjW7aWVxU
+	 zh/4js6IAEy6R31SrT5nMi++OHZcglvHJVUDsTy+Ex4cLxNE+nLC1532YEV/Ng7zvY
+	 bBOmENC4l7GTfh6QhncACTf5lzIlnd/AKDRlO/S4K0cEj7KvU4nd5z0aX0S6Eafafn
+	 QmEkV3OMLWUsjRuqAOHd/Jnpdn74/nlvpsCxMoO5bnVUWRb6+28YHQrHrIFJWvVzyT
+	 cHApnliKCa7Bg==
+Date: Tue, 23 Jan 2024 16:36:48 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Michael Schaller <michael@5challer.de>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev,
+	"Maciej W . Rozycki" <macro@orcam.me.uk>,
+	Ajay Agarwal <ajayagarwal@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org,
+	regressions@leemhuis.info
+Subject: Re: PCI/ASPM locking regression in 6.7-final (was: Re: [PATCH]
+ Revert "PCI/ASPM: Remove pcie_aspm_pm_state_change()")
+Message-ID: <20240123223648.GA331671@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPhsuW7-r=UAO8f7Ok08vCx2kdVx6mZADyZ-LknNE8csnX+L8g@mail.gmail.com>
- <20240123215307.8083-1-dan@danm.net>
-In-Reply-To: <20240123215307.8083-1-dan@danm.net>
-From: Song Liu <song@kernel.org>
-Date: Tue, 23 Jan 2024 14:21:53 -0800
-X-Gmail-Original-Message-ID: <CAPhsuW7KMLHHrcyZhKS_m_fwWSKM66VFXaLj9fmY+ab5Mu3pvA@mail.gmail.com>
-Message-ID: <CAPhsuW7KMLHHrcyZhKS_m_fwWSKM66VFXaLj9fmY+ab5Mu3pvA@mail.gmail.com>
-Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system;
- successfully bisected
-To: Dan Moulding <dan@danm.net>
-Cc: gregkh@linuxfoundation.org, junxiao.bi@oracle.com, 
-	linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org, 
-	regressions@lists.linux.dev, stable@vger.kernel.org, yukuai1@huaweicloud.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Za_2oKTUksw8Di5E@hovoldconsulting.com>
 
-Hi Dan,
+On Tue, Jan 23, 2024 at 06:25:52PM +0100, Johan Hovold wrote:
+> On Mon, Jan 22, 2024 at 12:26:15PM -0600, Bjorn Helgaas wrote:
+> > On Mon, Jan 22, 2024 at 11:53:35AM +0100, Johan Hovold wrote:
+> > > I never got a reply to this one so resending with updated Subject in
+> > > case it got buried in your inbox.
+> > 
+> > I did see it but decided it was better to fix the problem with resume
+> > causing an unintended reboot, even though fixing that meant breaking
+> > lockdep again, since I don't think we have user reports of the
+> > potential deadlock lockdep finds.
+> 
+> That may be because I fixed the previous regression in 6.7-rc1 before
+> any users had a chance to hit the deadlock on Qualcomm platforms.
+> 
+> I can easily trigger a deadlock on the X13s by instrumenting 6.7-final
+> with a delay to increase the race window.
+> 
+> And any user hitting this occasionally is likely not going to be able to
+> track it down to this lock inversion (unless they have lockdep enabled).
 
-On Tue, Jan 23, 2024 at 1:53=E2=80=AFPM Dan Moulding <dan@danm.net> wrote:
->
-> > I think we still want d6e035aad6c0 in 6.7.2. We may need to revert
-> > 0de40f76d567 on top of that. Could you please test it out? (6.7.1 +
-> > d6e035aad6c0 + revert 0de40f76d567.
->
-> I was operating under the assumption that the two commits were
-> intended to exist as a pair (the one reverts the old fix, because the
-> next commit has what is supposed to be a better fix). But since the
-> regression still exists, even with both patches applied, the old fix
-> must be reapplied to resolve the current regression.
->
-> But, as you've requested, I have tested 6.7.1 + d6e035aad6c0 + revert
-> 0de40f76d567 and it seems fine. So I have no issue if you think it
-> makes sense to accept d6e035aad6c0 on its own, even though it would
-> break up the pair of commits.
+I agree, it's a problem we need to fix.
 
-Thanks for running the test!
+> > 08d0cc5f3426 ("PCI/ASPM: Remove pcie_aspm_pm_state_change()") was a
+> > start at fixing other problems and also improving the ASPM style, so I
+> > hope somebody steps up to fix both it and the lockdep issue.  I
+> > haven't looked at it enough to have a preference for *how* to fix it.
+> 
+> Ok, but since you were the one introducing the locking regression in
+> 6.7-final shouldn't you look into fixing it?
+> 
+> Especially if there were alternatives to restoring the offending commit
+> which would solve the underlying issue for the resume failure without
+> breaking other platforms.
 
->
-> > OTOH, I am not able to reproduce the issue. Could you please help
-> > get more information:
-> >   cat /proc/mdstat
->
-> Here is /proc/mdstat from one of the systems where I can reproduce it:
->
->     $ cat /proc/mdstat
->     Personalities : [raid6] [raid5] [raid4]
->     md0 : active raid5 dm-0[4](J) sdc[3] sda[0] sdb[1]
->           3906764800 blocks super 1.2 level 5, 512k chunk, algorithm 2 [3=
-/3] [UUU]
->
->     unused devices: <none>
->
-> dm-0 is an LVM logical volume which is backed by an NVMe SSD. The
-> others are run-of-the-mill SATA SSDs.
->
-> >  profile (perf, etc.) of the md thread
->
-> I might need a little more pointing in the direction of what exactly
-> to look for and under what conditions (i.e. should I run perf while
-> the thread is stuck in the 100% CPU loop? what kind of report should I
-> ask perf for?). Also, are there any debug options I could enable in
-> the kernel configuration that might help gather more information?
-> Maybe something in debugfs? I currently get absolutely no warnings or
-> errors in dmesg when the problem occurs.
+Did somebody propose an alternate patch?  If so, I missed it, but we
+could look at it now.
 
-This appears the md thread hit some infinite loop, so I would like to
-know what it is doing. We can probably get the information with the
-perf tool, something like:
+> I don't want to spend more time on this if the offending commit could
+> simply be reverted.
 
-perf record -a
-perf report
+I don't quite follow.  By simply reverting, do you mean to revert
+f93e71aea6c6 ("Revert "PCI/ASPM: Remove
+pcie_aspm_pm_state_change()"")?  IIUC that would break Michael's
+machine again.
 
-Thanks,
-Song
+Bjorn
 
