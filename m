@@ -1,127 +1,109 @@
-Return-Path: <stable+bounces-15476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6598385A7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:46:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2D283860E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 04:33:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C0FB1C2790D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:46:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2404DB2531D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5064B290F;
-	Tue, 23 Jan 2024 02:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C98110A;
+	Tue, 23 Jan 2024 03:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="3TINPxLK";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="uGqyq7q3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170ED2570;
-	Tue, 23 Jan 2024 02:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CE71FAD;
+	Tue, 23 Jan 2024 03:32:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705977738; cv=none; b=nfCJN3C/yefW8eL7eP9Y7uOSbDQ88dDOydpSGwzH/VXRCpeynIBgnDVjRdCmmePoOEt1cNGQN9Tw+WnaHyA0ELegGqAJOfCWmTvLbhgVQFQFTxrt8rjB0SHrgC3A8MqRB6iHYtyZl02oz9TxXHldtcQ3g0p0chVtXsCMNNlBNHM=
+	t=1705980778; cv=none; b=Prn6JIz6pAqUXP9EEbYn7kKmt8ad+rN6SCo++Rrh4ecC7qMiKrGPY1EJEhMdu4wrwnCVZp2CnS1sbD/4/Gl4VeLqBqtLS2tCiPX2G35GTg7IuMapt9vHwJYxpPg1Noo9oXCnKDMT4x2a5i4VsAJFnBt6eQCwS/CsJkYiuHZFXGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705977738; c=relaxed/simple;
-	bh=2KAfxXRILTyRg7HhJoRIjIBq03f0zaVqF8HojyrwGec=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JiXXS8V2XqaYSuPE+tnpvBhUDg5plg76XYU9+e/vwzsjL0YdFqeG0LCIlfKlWHTwmlOBLfsb4Wh18S7KyWOmucbyPMjfugTVdKdSufFFUPN50v5cxfp83fdHL+D+SYxLZOvwLluppOPgEiC4eQ2umFKubpDH0uCDtgSMQbRaYM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D314CC433C7;
-	Tue, 23 Jan 2024 02:42:14 +0000 (UTC)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Arnd Bergmann <arnd@arndb.de>,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: loongarch@lists.linux.dev,
-	linux-arch@vger.kernel.org,
-	stable@vger.kernel.org,
-	Guo Ren <guoren@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	linux-kernel@vger.kernel.org,
-	loongson-kernel@lists.loongnix.cn,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1.y and 6.6.y] LoongArch/smp: Call rcutree_report_cpu_starting() earlier
-Date: Tue, 23 Jan 2024 10:41:51 +0800
-Message-Id: <20240123024151.1365379-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.39.3
+	s=arc-20240116; t=1705980778; c=relaxed/simple;
+	bh=7fxI+iyyNWSoSUmsJMgY6DVZ2y7voll3MUa2FDfiIq4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NRrcpAG898zZ4GefKTSJOTtmtUCltFCpLf2/FnIVYXcHq4v2WbaDQV+hU1zdinRx9AHL/ZAQPp23dSZk8NoK7/PBMj12/6D8vcGwRYzb+z5R/ErwONsVBptD9Kuauk4BrvgxlxFHLhfS4nwu7Wr6iBEESMqyGln9Xfu7j1eN6sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=3TINPxLK; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=uGqyq7q3; arc=none smtp.client-ip=91.121.71.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id 4E57AC01C; Tue, 23 Jan 2024 04:32:48 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1705980768; bh=b93yNmc+VBgXRL09Mp5+7dMbMPdweACw/yHwyKfZMKg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=3TINPxLKpzP+CnAOS8ruiRLuGUN1PORXrQJGS2SflN0ep/ND4RH1KRK/D4Txlcdyw
+	 4OHNrH2MXfF+TDLSupxSRbU8ulpBuathC/jRKnSQ3a2khN+yCpQkadYfQqkTztoo+s
+	 1Fi4jbo4xptftj0hj0nT/I1myEWAqLmFkSLfJMHgR8YdCuLYeCWkaduhSI+/KJvh15
+	 Lapn4qgDtw+ZxLcHFppj4/oTOLk6T3Dy4ssajMNcdUak/ltVkIEpvl+f93gXB0trHN
+	 8eL9G1mLYyLtsJ/bR1P3HuoiUhW3f/Z1TjLNtaV3mZaDKpOQ6J+B7HXjgwS2CpJAcx
+	 2TlIPbkdWrk6w==
+X-Spam-Level: 
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id C0C17C009;
+	Tue, 23 Jan 2024 04:32:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1705980766; bh=b93yNmc+VBgXRL09Mp5+7dMbMPdweACw/yHwyKfZMKg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uGqyq7q3dtVz1Wuap29NUBqW+tgGwLJWWHGmTDAGJw5xMX8FNcwxUheP58fmPzsbs
+	 336aRtXaEnjOanTSAVTZHg9Q3tNGXIB+EysKQRg2a7Z0BtiylYGhTqzice5S/qpOLt
+	 IIyDSwXdcqWYwji4jCsh+GThzprzt2gWwxqRcJTgFXN8jt7mhQLeH8k4HZEmxDnhNY
+	 2UkFbsoK31jie5WjYB2Q+5olw4Y0j8QJCTJHZpVIDQ1XpDYZlux9qTu1D/NVuVXJJv
+	 o72Cw2xKL0WF2HoIf9PprLW+2Isxf4kFGItMHBP78y7j/3qsQ8HDLex8zRVG+ZPCRQ
+	 kxSmm+0rBUXTQ==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 130446ff;
+	Tue, 23 Jan 2024 03:32:35 +0000 (UTC)
+Date: Tue, 23 Jan 2024 12:32:20 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 5.10 000/286] 5.10.209-rc1 review
+Message-ID: <Za8zRHpPN1jqKiiu@codewreck.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
 
-rcutree_report_cpu_starting() must be called before cpu_probe() to avoid
-the following lockdep splat that triggered by calling __alloc_pages() when
-CONFIG_PROVE_RCU_LIST=y:
+Greg Kroah-Hartman wrote on Mon, Jan 22, 2024 at 03:55:06PM -0800:
+> This is the start of the stable review cycle for the 5.10.209 release.
+> There are 286 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 24 Jan 2024 23:56:49 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.209-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 
- =============================
- WARNING: suspicious RCU usage
- 6.6.0+ #980 Not tainted
- -----------------------------
- kernel/locking/lockdep.c:3761 RCU-list traversed in non-reader section!!
- other info that might help us debug this:
- RCU used illegally from offline CPU!
- rcu_scheduler_active = 1, debug_locks = 1
- 1 lock held by swapper/1/0:
-  #0: 900000000c82ef98 (&pcp->lock){+.+.}-{2:2}, at: get_page_from_freelist+0x894/0x1790
- CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.0+ #980
- Stack : 0000000000000001 9000000004f79508 9000000004893670 9000000100310000
-         90000001003137d0 0000000000000000 90000001003137d8 9000000004f79508
-         0000000000000000 0000000000000001 0000000000000000 90000000048a3384
-         203a656d616e2065 ca43677b3687e616 90000001002c3480 0000000000000008
-         000000000000009d 0000000000000000 0000000000000001 80000000ffffe0b8
-         000000000000000d 0000000000000033 0000000007ec0000 13bbf50562dad831
-         9000000005140748 0000000000000000 9000000004f79508 0000000000000004
-         0000000000000000 9000000005140748 90000001002bad40 0000000000000000
-         90000001002ba400 0000000000000000 9000000003573ec8 0000000000000000
-         00000000000000b0 0000000000000004 0000000000000000 0000000000070000
-         ...
- Call Trace:
- [<9000000003573ec8>] show_stack+0x38/0x150
- [<9000000004893670>] dump_stack_lvl+0x74/0xa8
- [<900000000360d2bc>] lockdep_rcu_suspicious+0x14c/0x190
- [<900000000361235c>] __lock_acquire+0xd0c/0x2740
- [<90000000036146f4>] lock_acquire+0x104/0x2c0
- [<90000000048a955c>] _raw_spin_lock_irqsave+0x5c/0x90
- [<900000000381cd5c>] rmqueue_bulk+0x6c/0x950
- [<900000000381fc0c>] get_page_from_freelist+0xd4c/0x1790
- [<9000000003821c6c>] __alloc_pages+0x1bc/0x3e0
- [<9000000003583b40>] tlb_init+0x150/0x2a0
- [<90000000035742a0>] per_cpu_trap_init+0xf0/0x110
- [<90000000035712fc>] cpu_probe+0x3dc/0x7a0
- [<900000000357ed20>] start_secondary+0x40/0xb0
- [<9000000004897138>] smpboot_entry+0x54/0x58
+Tested 3c264a5f70c7 ("Linux 5.10.209-rc1") on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
 
-raw_smp_processor_id() is required in order to avoid calling into lockdep
-before RCU has declared the CPU to be watched for readers.
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-See also commit 29368e093921 ("x86/smpboot: Move rcu_cpu_starting() earlier"),
-commit de5d9dae150c ("s390/smp: move rcu_cpu_starting() earlier") and commit
-99f070b62322 ("powerpc/smp: Call rcu_cpu_starting() earlier").
-
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- arch/loongarch/kernel/smp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
-index d19c2ebdf47b..1b5f266813a2 100644
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -504,8 +504,9 @@ asmlinkage void start_secondary(void)
- 	unsigned int cpu;
- 
- 	sync_counter();
--	cpu = smp_processor_id();
-+	cpu = raw_smp_processor_id();
- 	set_my_cpu_offset(per_cpu_offset(cpu));
-+	rcu_cpu_starting(cpu);
- 
- 	cpu_probe();
- 	constant_clockevent_init();
 -- 
-2.39.3
-
+Dominique
 
