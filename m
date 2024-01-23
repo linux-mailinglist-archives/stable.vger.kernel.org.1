@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-15110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D09AE8383EB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC82383855B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A0AD29639F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F13A51C28E36
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2812F6518A;
-	Tue, 23 Jan 2024 01:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7D32C1AE;
+	Tue, 23 Jan 2024 02:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIgobwA7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dN/Wgfq6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA68A65BA6;
-	Tue, 23 Jan 2024 01:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC371FB4;
+	Tue, 23 Jan 2024 02:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975097; cv=none; b=VsenfYx7xpsc32q9Lwz4Kc1C9IGcY1jGkozAL5xdHaOL4fL2zfwbvXErN9Vv9dm2IlaM7yB3368UyFKsAeqOAKLuSLRIXJt1S0nwK54LCVxqeB6NcwOJgQEifVmkOeJXCYp/6uBHJiZc8qE1Xu5P+9SaFEhoZ4JO+B7JGroG+0A=
+	t=1705975810; cv=none; b=ZXT9DLVP5nXGzh/9M4L1DM5kSNrWlAJ6lBNZLkwKJmXgn7L1CwGcdLOywOjQaprvw09EwtRGQsgwtEIyDtW4m8+cHNCbCEaIFjYOAoIgvaXADE/Pwz5KgMyyzwb9ESHhxj/BPjST+gkEnFV9KszFNQBNh+pzoBhF4GO0C8MVnc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975097; c=relaxed/simple;
-	bh=wFSxH8mcDvrRJ5+jBgAzeWciw4KbgN5lGi8GyxYUZro=;
+	s=arc-20240116; t=1705975810; c=relaxed/simple;
+	bh=+D+XakJWCTUcoE4HUaQoMJ9k996bjSu/0FEd0JqZOq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TJerqR212JG5JfC5oEWvEUuQwIcfrf2VR/k1h3epRueWM98cYMaeYG8jXaZ0hqDbf49nnI7n6XTqYdtN3qcn6KbwrRRwq9vDHeT8ZVZjpGi8kEk91mjVNsKgAh8ECWNxUQxrRdQB+z/b59PgrFjCYsYE9olGQYhl39hfJ/qJFWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIgobwA7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973F8C43394;
-	Tue, 23 Jan 2024 01:58:17 +0000 (UTC)
+	 MIME-Version; b=dqCMts0X637GwhfMpiJZIN4+CdJCTHs+wx3lH08rjqX6MQeEEvvTZ3daoBErX+4E9aBZk5HBx6t2lVR4WyxlvdZFjeUlRA4qW+SuEAYCdgu+dDQsKoUPiowlW5G1v/59df+BPE5v7AaWMMO/GJyPi1r7r4fbr3WrSBAz9QZ0mDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dN/Wgfq6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4264C433C7;
+	Tue, 23 Jan 2024 02:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975097;
-	bh=wFSxH8mcDvrRJ5+jBgAzeWciw4KbgN5lGi8GyxYUZro=;
+	s=korg; t=1705975809;
+	bh=+D+XakJWCTUcoE4HUaQoMJ9k996bjSu/0FEd0JqZOq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XIgobwA7uIC2Tq90OUuGi2uOPzrk1E4WiWAWYpgDm0INBkmplb4km/GpAmWj1UFHb
-	 ReiUuSQ3AUatzs+0P5ojpMlJtvqY48/FbuWto8hLhknPyeDqm0TK6wFWPX9/8QRsD9
-	 WX8QFlFIauKQgesR8tCPgJv9/yDU2DsrBA7a3Q1Y=
+	b=dN/Wgfq6yssjFgJYvUcD9gx/L9pTf3lJ21ixLPW6rrntfy4yvmBivjvP5H9EzttDw
+	 Rb6ZA7IdZQi5aLRe0jIZ7w61SwJylTaAhaoA+E4FUozxkc2oqaCD0qZgdEkoD+FdzJ
+	 /lm+dJiY1Xt8pNSglrOXeTvvldYHmx84IGgGW6ak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <shuah@kernel.org>,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Julian Anastasov <ja@ssi.bg>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 364/374] selftests: mlxsw: qos_pfc: Adjust the test to support 8 lanes
+Subject: [PATCH 6.6 569/583] ipvs: avoid stat macros calls from preemptible context
 Date: Mon, 22 Jan 2024 16:00:20 -0800
-Message-ID: <20240122235757.616884223@linuxfoundation.org>
+Message-ID: <20240122235829.579837184@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,90 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Cohen <amcohen@nvidia.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit b34f4de6d30cbaa8fed905a5080b6eace8c84dc7 ]
+[ Upstream commit d6938c1c76c64f42363d0d1f051e1b4641c2ad40 ]
 
-'qos_pfc' test checks PFC behavior. The idea is to limit the traffic
-using a shaper somewhere in the flow of the packets. In this area, the
-buffer is smaller than the buffer at the beginning of the flow, so it fills
-up until there is no more space left. The test configures there PFC
-which is supposed to notice that the headroom is filling up and send PFC
-Xoff to indicate the transmitter to stop sending traffic for the priorities
-sharing this PG.
+Inside decrement_ttl() upon discovering that the packet ttl has exceeded,
+__IP_INC_STATS and __IP6_INC_STATS macros can be called from preemptible
+context having the following backtrace:
 
-The Xon/Xoff threshold is auto-configured and always equal to
-2*(MTU rounded up to cell size). Even after sending the PFC Xoff packet,
-traffic will keep arriving until the transmitter receives and processes
-the PFC packet. This amount of traffic is known as the PFC delay allowance.
+check_preemption_disabled: 48 callbacks suppressed
+BUG: using __this_cpu_add() in preemptible [00000000] code: curl/1177
+caller is decrement_ttl+0x217/0x830
+CPU: 5 PID: 1177 Comm: curl Not tainted 6.7.0+ #34
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xbd/0xe0
+ check_preemption_disabled+0xd1/0xe0
+ decrement_ttl+0x217/0x830
+ __ip_vs_get_out_rt+0x4e0/0x1ef0
+ ip_vs_nat_xmit+0x205/0xcd0
+ ip_vs_in_hook+0x9b1/0x26a0
+ nf_hook_slow+0xc2/0x210
+ nf_hook+0x1fb/0x770
+ __ip_local_out+0x33b/0x640
+ ip_local_out+0x2a/0x490
+ __ip_queue_xmit+0x990/0x1d10
+ __tcp_transmit_skb+0x288b/0x3d10
+ tcp_connect+0x3466/0x5180
+ tcp_v4_connect+0x1535/0x1bb0
+ __inet_stream_connect+0x40d/0x1040
+ inet_stream_connect+0x57/0xa0
+ __sys_connect_file+0x162/0x1a0
+ __sys_connect+0x137/0x160
+ __x64_sys_connect+0x72/0xb0
+ do_syscall_64+0x6f/0x140
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
+RIP: 0033:0x7fe6dbbc34e0
 
-Currently the buffer for the delay traffic is configured as 100KB. The
-MTU in the test is 10KB, therefore the threshold for Xoff is about 20KB.
-This allows 80KB extra to be stored in this buffer.
+Use the corresponding preemption-aware variants: IP_INC_STATS and
+IP6_INC_STATS.
 
-8-lane ports use two buffers among which the configured buffer is split,
-the Xoff threshold then applies to each buffer in parallel.
+Found by Linux Verification Center (linuxtesting.org).
 
-The test does not take into account the behavior of 8-lane ports, when the
-ports are configured to 400Gbps with 8 lanes or 800Gbps with 8 lanes,
-packets are dropped and the test fails.
-
-Check if the relevant ports use 8 lanes, in such case double the size of
-the buffer, as the headroom is split half-half.
-
-Cc: Shuah Khan <shuah@kernel.org>
-Fixes: bfa804784e32 ("selftests: mlxsw: Add a PFC test")
-Signed-off-by: Amit Cohen <amcohen@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/23ff11b7dff031eb04a41c0f5254a2b636cd8ebb.1705502064.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8d8e20e2d7bb ("ipvs: Decrement ttl")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Acked-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/drivers/net/mlxsw/qos_pfc.sh     | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ net/netfilter/ipvs/ip_vs_xmit.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh b/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
-index 5d5622fc2758..56761de1ca3b 100755
---- a/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
-@@ -121,6 +121,9 @@ h2_destroy()
+diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
+index 9193e109e6b3..65e0259178da 100644
+--- a/net/netfilter/ipvs/ip_vs_xmit.c
++++ b/net/netfilter/ipvs/ip_vs_xmit.c
+@@ -271,7 +271,7 @@ static inline bool decrement_ttl(struct netns_ipvs *ipvs,
+ 			skb->dev = dst->dev;
+ 			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
+ 				    ICMPV6_EXC_HOPLIMIT, 0);
+-			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
++			IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
  
- switch_create()
- {
-+	local lanes_swp4
-+	local pg1_size
-+
- 	# pools
- 	# -----
- 
-@@ -230,7 +233,20 @@ switch_create()
- 	dcb pfc set dev $swp4 prio-pfc all:off 1:on
- 	# PG0 will get autoconfigured to Xoff, give PG1 arbitrarily 100K, which
- 	# is (-2*MTU) about 80K of delay provision.
--	dcb buffer set dev $swp4 buffer-size all:0 1:$_100KB
-+	pg1_size=$_100KB
-+
-+	setup_wait_dev_with_timeout $swp4
-+
-+	lanes_swp4=$(ethtool $swp4 | grep 'Lanes:')
-+	lanes_swp4=${lanes_swp4#*"Lanes: "}
-+
-+	# 8-lane ports use two buffers among which the configured buffer
-+	# is split, so double the size to get twice (20K + 80K).
-+	if [[ $lanes_swp4 -eq 8 ]]; then
-+		pg1_size=$((pg1_size * 2))
-+	fi
-+
-+	dcb buffer set dev $swp4 buffer-size all:0 1:$pg1_size
- 
- 	# bridges
- 	# -------
+ 			return false;
+ 		}
+@@ -286,7 +286,7 @@ static inline bool decrement_ttl(struct netns_ipvs *ipvs,
+ 	{
+ 		if (ip_hdr(skb)->ttl <= 1) {
+ 			/* Tell the sender its packet died... */
+-			__IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
++			IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
+ 			icmp_send(skb, ICMP_TIME_EXCEEDED, ICMP_EXC_TTL, 0);
+ 			return false;
+ 		}
 -- 
 2.43.0
 
