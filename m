@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-15115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD0F8383F3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB01838555
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDBAC2966E0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2A6C1C22CF8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC19165BBD;
-	Tue, 23 Jan 2024 01:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537C31854;
+	Tue, 23 Jan 2024 02:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAFEgk3i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMO47cGu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0BD65BD3;
-	Tue, 23 Jan 2024 01:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E26D1FBF;
+	Tue, 23 Jan 2024 02:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975102; cv=none; b=MQekc27cR314SnztuH69Bd+BLoJTyD/dLZ0ywe7rj7TdzW2EmIIa3AKLfmxf3z8Jm++veIDeEMvYlHCBkACQI+XYgYpQ4zEKGwNRH1TobGdkUZHzgn0Y/hzWQfGDN3geIh7A7+C0udipBHFIiZ4UwSEOGTM12sgqeTXqeVaIgAA=
+	t=1705975803; cv=none; b=abI72/B6jCAPpZO37384+sho7m1lGvdPGFc1bausM36rR0ut/hN8WEfJgm8cqAK18ltkhO/OSQUk1z1Lukie5rUCUh0cWC3l3+N3GclLJaJpVmEAWL3K9P5WhVlVwHqrLNifdDVlbHLMw5khqC9GZTA+b2beEksuT8yR6CpylJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975102; c=relaxed/simple;
-	bh=EG8XbP3GIwhxk8LpXG99jpLF7PsDuM1zo3nKA4LbNMg=;
+	s=arc-20240116; t=1705975803; c=relaxed/simple;
+	bh=zXeh48iVDtpx3L5KguVJiCPxgQ5RFK/VwJiAdcrvSAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJpWLayajZWJFHeTpL7aKSrB6EZn+HTkLUjP2UvxJtsxIsj4ZDmeK82svAi2jxTDWAVdNQO+vXtP8YxWYgQHvpdoWZWOwqldRlidWLnI7v+0ro3ivfh7nIuD1w/iJO72RL84DYlCF9d+uboec50euT3VSEVfqoHQaXmXUR/advg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAFEgk3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446E0C433C7;
-	Tue, 23 Jan 2024 01:58:22 +0000 (UTC)
+	 MIME-Version; b=suH7QEBK3VJSA6p6mA+w8TR2Y3jBGUDNY/TI0pmVtBPcnYsaLxqa9nFkFwbKHHudK6LbsWVfCsxBx9SgKZ4aBmgB01u2XGVU7b+HkqTFQFZoSHWkSZLKfKiPoOxX1UZmm5UN50MjRh4WHAfpWAzqevUqK+eOJ5c9dgoDmjM+C30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMO47cGu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3B0C433C7;
+	Tue, 23 Jan 2024 02:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975102;
-	bh=EG8XbP3GIwhxk8LpXG99jpLF7PsDuM1zo3nKA4LbNMg=;
+	s=korg; t=1705975802;
+	bh=zXeh48iVDtpx3L5KguVJiCPxgQ5RFK/VwJiAdcrvSAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IAFEgk3iAvePfbeP8n3yQEpX6DwAAaaPP3X7zWpFPNUM6moRNIHcjHfc0h1pb6o+H
-	 gh8vLpKOAV7BX/NitWkxf60iPNt10tVD79iDsztuxzZTcUekMBtlOdKj8avKNpRqXJ
-	 TLL+oqjPqhT07L5uHl9Eahkr1JInz/atKFfXB+84=
+	b=gMO47cGu+hIJhp08kXyqpi5SO5s6mXejMacdVfThfWCV8VAkZMt2YbSjwRbxJjTL6
+	 f+hBojC5kSWzFEf89F5u0rP7lvrw5jc99Sk2ea3SO57yTOcqj/UvhPi3gqAHKaB9X9
+	 zk/PVaYhNVEKs5VHMYa4546JQL9mvLGI2JzMe6bY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Chanho Park <chanho61.park@samsung.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 366/374] i2c: s3c24xx: fix read transfers in polling mode
+Subject: [PATCH 6.6 571/583] kdb: Fix a potential buffer overflow in kdb_local()
 Date: Mon, 22 Jan 2024 16:00:22 -0800
-Message-ID: <20240122235757.694471644@linuxfoundation.org>
+Message-ID: <20240122235829.650908603@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 0d9cf23ed55d7ba3ab26d617a3ae507863674c8f ]
+[ Upstream commit 4f41d30cd6dc865c3cbc1a852372321eba6d4e4c ]
 
-To properly handle read transfers in polling mode, no waiting for the ACK
-state is needed as it will never come. Just wait a bit to ensure start
-state is on the bus and continue processing next bytes.
+When appending "[defcmd]" to 'kdb_prompt_str', the size of the string
+already in the buffer should be taken into account.
 
-Fixes: 117053f77a5a ("i2c: s3c2410: Add polling mode support")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Chanho Park <chanho61.park@samsung.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+An option could be to switch from strncat() to strlcat() which does the
+correct test to avoid such an overflow.
+
+However, this actually looks as dead code, because 'defcmd_in_progress'
+can't be true here.
+See a more detailed explanation at [1].
+
+[1]: https://lore.kernel.org/all/CAD=FV=WSh7wKN7Yp-3wWiDgX4E3isQ8uh0LCzTmd1v9Cg9j+nQ@mail.gmail.com/
+
+Fixes: 5d5314d6795f ("kdb: core for kgdb back end (1 of 2)")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-s3c2410.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ kernel/debug/kdb/kdb_main.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-s3c2410.c b/drivers/i2c/busses/i2c-s3c2410.c
-index b49a1b170bb2..9a6fbb38a5ba 100644
---- a/drivers/i2c/busses/i2c-s3c2410.c
-+++ b/drivers/i2c/busses/i2c-s3c2410.c
-@@ -220,8 +220,17 @@ static bool is_ack(struct s3c24xx_i2c *i2c)
- 	int tries;
+diff --git a/kernel/debug/kdb/kdb_main.c b/kernel/debug/kdb/kdb_main.c
+index 438b868cbfa9..35aa2e98a92a 100644
+--- a/kernel/debug/kdb/kdb_main.c
++++ b/kernel/debug/kdb/kdb_main.c
+@@ -1349,8 +1349,6 @@ static int kdb_local(kdb_reason_t reason, int error, struct pt_regs *regs,
+ 		/* PROMPT can only be set if we have MEM_READ permission. */
+ 		snprintf(kdb_prompt_str, CMD_BUFLEN, kdbgetenv("PROMPT"),
+ 			 raw_smp_processor_id());
+-		if (defcmd_in_progress)
+-			strncat(kdb_prompt_str, "[defcmd]", CMD_BUFLEN);
  
- 	for (tries = 50; tries; --tries) {
--		if (readl(i2c->regs + S3C2410_IICCON)
--			& S3C2410_IICCON_IRQPEND) {
-+		unsigned long tmp = readl(i2c->regs + S3C2410_IICCON);
-+
-+		if (!(tmp & S3C2410_IICCON_ACKEN)) {
-+			/*
-+			 * Wait a bit for the bus to stabilize,
-+			 * delay estimated experimentally.
-+			 */
-+			usleep_range(100, 200);
-+			return true;
-+		}
-+		if (tmp & S3C2410_IICCON_IRQPEND) {
- 			if (!(readl(i2c->regs + S3C2410_IICSTAT)
- 				& S3C2410_IICSTAT_LASTBIT))
- 				return true;
+ 		/*
+ 		 * Fetch command from keyboard
 -- 
 2.43.0
 
