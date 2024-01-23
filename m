@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D008383C1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F9183854B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C917B1C211CC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D5E61C2A5E1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A6664CED;
-	Tue, 23 Jan 2024 01:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B73B1119C;
+	Tue, 23 Jan 2024 02:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmnOwKx7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+tPotCb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B231464AB3;
-	Tue, 23 Jan 2024 01:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B67A3D69;
+	Tue, 23 Jan 2024 02:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975055; cv=none; b=qhgEdfEGiTOfcxdfpfHFy6/ET4vHnB/MD2oxk2lzRlg8Hc7jf+d35Kj57aDe8GGGjeF4fskSg2w4uoynzbhjbmvsOy9mh3K37YE1BBFSi3WZ2+gY0nxAz/2WsBtEO1Bh1oyYugWp7his5EWtBWAzV/3CjVMV6YqPwgd+78iH9gg=
+	t=1705975792; cv=none; b=ULmxMEYqOoN5ab9IrV5iSKTkcFh6Kew6R7edUabyLu4COYqNPXvA42DbeWuN2iP13yzDrABCEDp+feCLxBexEd636wuvQypH3DOqyV3wqPNCWlHPud8tiFcGRJKj87yWpGkHZbkExx36LQ+36yV9NlEFzFUOo3LQT47wtNHq0Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975055; c=relaxed/simple;
-	bh=NimYrkwWSFuS+i6DFNzilxKxUadc0vxiHCAZj8Ec1Ng=;
+	s=arc-20240116; t=1705975792; c=relaxed/simple;
+	bh=4Tm5IOmZm8KtqbXDgK0a8Bend+R5G2OCFqlG6AR+ceQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jzSi+F8DvEbDjRA/tefV5wihS/d6mJ+g2ls+N1H53IIx9VRouM8wByKxdYh1dMDgGZNeMdGKigQf6JUk5y2NHrVpKgssozuM75hOG2M+6Vp/cQNxjvup58aHQBnFxRZrg5Jsn2GahhkesUDHYxc4zHH/Fu5it17VdIcQ8l6EkwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QmnOwKx7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7871BC43394;
-	Tue, 23 Jan 2024 01:57:35 +0000 (UTC)
+	 MIME-Version; b=Z3yi5aCOCHAiwk2Z4345sQRiQYxEEVNWs8qs5xSTiEFHonehgpeQYOjLudzuJuUiTAc0AsWZMMDF3FY9R2UEhUsC5Cxoy3hAaSsX6fJM91XI8V3gCed3gT4PJMhUfx986kBv8/21nA2lc4B2Faq9u50ZMYiGMPS84Wprbjob+UE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+tPotCb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C735CC43394;
+	Tue, 23 Jan 2024 02:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975055;
-	bh=NimYrkwWSFuS+i6DFNzilxKxUadc0vxiHCAZj8Ec1Ng=;
+	s=korg; t=1705975791;
+	bh=4Tm5IOmZm8KtqbXDgK0a8Bend+R5G2OCFqlG6AR+ceQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QmnOwKx7acUfW8adNzK6eW7yXTzg84PbvlUqW0SvX/591ceYgrscXpXR9TRJhK8H/
-	 n3D2ufhu3JchByytalhfmELduVAVJQ8oK8I9efRd0rsAVz931wGb7CD+8jHVpYEHOB
-	 GFam4u8Q9/TxvBrNTBre0KaO0j1piNAQelCR1MT0=
+	b=E+tPotCbLPUVSeiFw+wbsevNnAgNxZ78UwxTerun6Fkk1K4h81BD5udU+EwzDRI9x
+	 PNPL5r9H/6jqAcaenYg6EsYf4TgGtNS8laWx67ASIHFdevWBGh5bROht2Vf7RoWG3H
+	 yKxx7owtmMm2DjWY8oJHevij5RBg6Scq2vEPhRzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
+	Su Hui <suhui@nfschina.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 343/374] net: dsa: vsc73xx: Add null pointer check to vsc73xx_gpio_probe
-Date: Mon, 22 Jan 2024 15:59:59 -0800
-Message-ID: <20240122235756.854684479@linuxfoundation.org>
+Subject: [PATCH 6.6 549/583] gpio: mlxbf3: add an error code check in mlxbf3_gpio_probe
+Date: Mon, 22 Jan 2024 16:00:00 -0800
+Message-ID: <20240122235828.943758160@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 776dac5a662774f07a876b650ba578d0a62d20db ]
+[ Upstream commit d460e9c2075164e9b1fa9c4c95f8c05517bd8752 ]
 
-devm_kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+Clang static checker warning: Value stored to 'ret' is never read.
+bgpio_init() returns error code if failed, it's better to add this
+check.
 
-Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240111072018.75971-1-chentao@kylinos.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: cd33f216d241 ("gpio: mlxbf3: Add gpio driver support")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+[Bartosz: add the Fixes: tag]
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 2 ++
+ drivers/gpio/gpio-mlxbf3.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index 0c0bc78b1788..6b6470ef2ae9 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -1119,6 +1119,8 @@ static int vsc73xx_gpio_probe(struct vsc73xx *vsc)
+diff --git a/drivers/gpio/gpio-mlxbf3.c b/drivers/gpio/gpio-mlxbf3.c
+index 7a3e1760fc5b..d5906d419b0a 100644
+--- a/drivers/gpio/gpio-mlxbf3.c
++++ b/drivers/gpio/gpio-mlxbf3.c
+@@ -215,6 +215,8 @@ static int mlxbf3_gpio_probe(struct platform_device *pdev)
+ 			gs->gpio_clr_io + MLXBF_GPIO_FW_DATA_OUT_CLEAR,
+ 			gs->gpio_set_io + MLXBF_GPIO_FW_OUTPUT_ENABLE_SET,
+ 			gs->gpio_clr_io + MLXBF_GPIO_FW_OUTPUT_ENABLE_CLEAR, 0);
++	if (ret)
++		return dev_err_probe(dev, ret, "%s: bgpio_init() failed", __func__);
  
- 	vsc->gc.label = devm_kasprintf(vsc->dev, GFP_KERNEL, "VSC%04x",
- 				       vsc->chipid);
-+	if (!vsc->gc.label)
-+		return -ENOMEM;
- 	vsc->gc.ngpio = 4;
- 	vsc->gc.owner = THIS_MODULE;
- 	vsc->gc.parent = vsc->dev;
+ 	gc->request = gpiochip_generic_request;
+ 	gc->free = gpiochip_generic_free;
 -- 
 2.43.0
 
