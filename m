@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-15130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2FC9838407
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA3B83840A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50ABD1F218F4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64883297820
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1601664D0;
-	Tue, 23 Jan 2024 02:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB0367732;
+	Tue, 23 Jan 2024 02:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvBvqXCe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EG6fW4nR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EB66773D;
-	Tue, 23 Jan 2024 02:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990B867741;
+	Tue, 23 Jan 2024 02:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975283; cv=none; b=TIBiKYjBsVK/6DA/ZDXj2LlkG/rOKurmy9fksiZS6ODo6A5Korx4twMwH710FjTltnOI6fYMNrcKpuJcI3tPZhYwtVigP3TzbeS56Oh2mylcdFN7HLEUhQZyIlILFxMPC3T99ph8ABUlBXXB9XDGohB6z6TOyX1xLekrSsg9/mE=
+	t=1705975285; cv=none; b=Qf4x+stmbhWjJdToHj0TifseUIUnoNJt8unqtlf8KkCg0vVPX2y8C6qMIRsep30X3Z2PtNQR46zZjgiw7j6sqKNOaQWsvA8p+hkWQirO50VN83DVHOf4bgc5P+27e9EkmsEnWCSUZ8g+MgM7iKMVwonCP6BQy7Nu5ibyuaP91KE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975283; c=relaxed/simple;
-	bh=n9lScoswzZ7BtDUgZG5yDZDTlAI8ZxCvGIWFyuWnpBM=;
+	s=arc-20240116; t=1705975285; c=relaxed/simple;
+	bh=XmACvI3lyroW9SPfoyTgE3WyVMMZsmGwXqkryas+hTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QWopRGlFWTLoDGimmoayFVtUOLdBvK9gscGm3mXmrQOuAv9FtS+89kpK0CxFYaYT5T2WyM/2nmDqaPOeFLocAQd30WGBOow4MQxunKgw4Ryuc07bYI/yUQJaoBR/qit3CurI2UuhvEznCA8P1qb4oMoWQAnmMCHX15PKnLs1aak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvBvqXCe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AEA5C43390;
-	Tue, 23 Jan 2024 02:01:23 +0000 (UTC)
+	 MIME-Version; b=TMt01qE8IdXzDB+p0OPHuQeP1O8fOPypb5MP2X9lJg3dMMTbiG+UfBRwXNVZwjWigRW3IVvRaSpKQYbDywoZABSZOVkeLghOB+1c7GzcJpdT2RcERunvsOIKDsY+dxRHb3Wlce8HULPmGs6GgywoOqD40DC+XxHwkZP18CyZhcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EG6fW4nR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F914C433C7;
+	Tue, 23 Jan 2024 02:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975283;
-	bh=n9lScoswzZ7BtDUgZG5yDZDTlAI8ZxCvGIWFyuWnpBM=;
+	s=korg; t=1705975285;
+	bh=XmACvI3lyroW9SPfoyTgE3WyVMMZsmGwXqkryas+hTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SvBvqXCeCDc4VfbkasAQgfykrOGS1VTPgL9j9N1n/Rf44zaBUkozVZEvCMN3J21y8
-	 MSQto7aVNtegRzmbNX9FhlHIIbq/YU14PNZpx5mRFKXPsugVd0Fy5QvyfEy0AQYp66
-	 Nhe1bsDzIoMLVF7WQzcMjvcwbmOTxSi2aj6BqT5g=
+	b=EG6fW4nRAe0co2+kX38bIHmNSEwxn4dgXpk1MNz2i+Db0oNX8fNJSNFiuMJt++RZc
+	 /V6K3NO7FrdfErwusRlqBe2VURmYmuDXPaGlrVZlvQkw5mKgV01l1jJCuEi/gKGRxj
+	 IDuAh96AKB1PUasFQ65dgCYkgiHn9uElZ/Y9G0L4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 373/374] netfilter: nft_last: copy content when cloning expression
-Date: Mon, 22 Jan 2024 16:00:29 -0800
-Message-ID: <20240122235757.958990409@linuxfoundation.org>
+Subject: [PATCH 5.15 374/374] netfilter: nft_quota: copy content when cloning expression
+Date: Mon, 22 Jan 2024 16:00:30 -0800
+Message-ID: <20240122235758.000457628@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
 References: <20240122235744.598274724@linuxfoundation.org>
@@ -66,36 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 860e874290fb3be08e966c9c8ffc510c5b0f2bd8 upstream.
+commit aabef97a35160461e9c576848ded737558d89055 upstream.
 
-If the ruleset contains last timestamps, restore them accordingly.
+If the ruleset contains consumed quota, restore them accordingly.
 Otherwise, listing after restoration shows never used items.
 
-Fixes: 33a24de37e81 ("netfilter: nft_last: move stateful fields out of expression data")
+Restore the user-defined quota and flags too.
+
+Fixes: ed0a0c60f0e5 ("netfilter: nft_quota: move stateful fields out of expression data")
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_last.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/netfilter/nft_quota.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/netfilter/nft_last.c
-+++ b/net/netfilter/nft_last.c
-@@ -104,11 +104,15 @@ static void nft_last_destroy(const struc
- static int nft_last_clone(struct nft_expr *dst, const struct nft_expr *src)
+--- a/net/netfilter/nft_quota.c
++++ b/net/netfilter/nft_quota.c
+@@ -235,12 +235,16 @@ static void nft_quota_destroy(const stru
+ static int nft_quota_clone(struct nft_expr *dst, const struct nft_expr *src)
  {
- 	struct nft_last_priv *priv_dst = nft_expr_priv(dst);
-+	struct nft_last_priv *priv_src = nft_expr_priv(src);
+ 	struct nft_quota *priv_dst = nft_expr_priv(dst);
++	struct nft_quota *priv_src = nft_expr_priv(src);
++
++	priv_dst->quota = priv_src->quota;
++	priv_dst->flags = priv_src->flags;
  
- 	priv_dst->last = kzalloc(sizeof(*priv_dst->last), GFP_ATOMIC);
- 	if (!priv_dst->last)
+ 	priv_dst->consumed = kmalloc(sizeof(*priv_dst->consumed), GFP_ATOMIC);
+ 	if (!priv_dst->consumed)
  		return -ENOMEM;
  
-+	priv_dst->last->set = priv_src->last->set;
-+	priv_dst->last->jiffies = priv_src->last->jiffies;
-+
+-	atomic64_set(priv_dst->consumed, 0);
++	*priv_dst->consumed = *priv_src->consumed;
+ 
  	return 0;
  }
- 
 
 
 
