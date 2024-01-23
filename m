@@ -1,272 +1,161 @@
-Return-Path: <stable+bounces-15553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A25A839522
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 17:46:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9492839573
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 17:55:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE4E81C20DE2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 16:46:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A193028ECF4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 16:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B378082D60;
-	Tue, 23 Jan 2024 16:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD068615C;
+	Tue, 23 Jan 2024 16:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iaHV1lvm"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L7zxGhFK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C25823D5;
-	Tue, 23 Jan 2024 16:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4937686156
+	for <stable@vger.kernel.org>; Tue, 23 Jan 2024 16:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706028061; cv=none; b=sfedGh95Jpuxx+W6zfeJ6KNMCzdx6shsKVOLWZMJi13ko8rnIRtlOKYYfUm8rpkKyrrWsN9UEGk11WogTuwHBp6JUpAbWRt+5kldaKCJAXGq+C6FbYhjA/xNwPr3I/RAFdPNBs/Mstyh+WK/1GbWIShP2/g6kyK5DHAiZYAZeSI=
+	t=1706028518; cv=none; b=cM9FeK5tw58MYPo9J5fHDdYfKEi87qe4YrAYg4THBvv59pFI0t7iWdzJWmo1Xeg5BKY2qsFHeZdIeu72hIMXIDwWhErcJhiUY1gYGCKmSvmtwK44705Vk0Pqxrc+VzI0zlaJScyhr8GGIm+Fbu8kdlihsNBUMbPPwAVOsPGDiVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706028061; c=relaxed/simple;
-	bh=sCdPQ4YhBeymXhJimO5RK/sYdEZSwG7jOkn2T00muOY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=f2nwTlpwn2oQ0iCQi/FaGuQ2KkctyAGUENHDz0F8Shv5XCIS9Y+h728c7wrqEQ2pkX2vBDDdQbvE1BfQkWHKRRDas2HTreDmEdwUKyxgu+bf+diMFHEjHixVUlzkYYNvRYF0Qqw9gogIXo8K53QM7YNpYyJokr2A6aFtR7KKF8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iaHV1lvm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37771C43390;
-	Tue, 23 Jan 2024 16:40:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706028060;
-	bh=sCdPQ4YhBeymXhJimO5RK/sYdEZSwG7jOkn2T00muOY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=iaHV1lvmINnPhODKpmO4Q0NmgmCOTgoRdI0W/Nie0TU6pedJVe3Rbtnx1LZGKsCgR
-	 3UWGQUIzaJ7OxcklBMUWn7fPlxdparorG2WwlsLFRwCMm2G5mgjLmAYeYAlx7Gbsyw
-	 RRUNPwmUPPGkpnzexWaJCEngfbh7APJfmb6UK5KIcsF4L5vhwEGZYC+pWZ7H/nj54u
-	 31xigk7JOMDWQIqZLxbjTJntUAL4NyInJXmO4Sfq99kOuj61EAETMl/XPE2tlmkuwL
-	 FOpzNxrEofHHlNBH8J++Iu59/ULOjDC9cB2+XykOHn0wKqgQr9tpNDK0O4+JHhqA0+
-	 XNKZxIJQmrakA==
-From: Benjamin Tissoires <bentiss@kernel.org>
-Date: Tue, 23 Jan 2024 17:40:43 +0100
-Subject: [PATCH 1/2] HID: bpf: remove double fdget()
+	s=arc-20240116; t=1706028518; c=relaxed/simple;
+	bh=xeMH/PTY9RvVC0crS+oE1ldLHgl6NeMg+38kZCLwc40=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=VyEGbXE5aMktEk7SUcv1zQHO6Eis/mXYCqUdaJze+Rq0ln2iaNkL/xZQgiy+9PDSx0WwjspWK1waIgZ3MOglRUOqCz7wsP8hWQa3Rz2rihxiY5nlDryf4p/EDGvMXWUDROYoFe20UGP2Gh3TFF5eRGTJ+8WLfDDfvEU5pe6I5Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--sebastianene.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L7zxGhFK; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--sebastianene.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-40e863cb806so43598505e9.2
+        for <stable@vger.kernel.org>; Tue, 23 Jan 2024 08:48:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706028515; x=1706633315; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OBfCCDyzKoRpaf1abp6hy1jxU0Vk3dNquTbtYZnKWbE=;
+        b=L7zxGhFKy7FtlxaeEt2ZTtalxk9MbHeWeLtUNTV+tGdIoXzWFzdCv2WnCe5Vj3Luv+
+         OuhOq9jd6du87x1MBp4Wre00ADYn5lkIGF2VWfrtSEMDdWMwiWZuvLQPcbgfGAcKcCXY
+         8zlzPnN74BmDS4JC9a+v6YCMFn6bkDfEolH0rm5IDB/xn2hFEhrjSPj0ynsjJ4A9dZSh
+         VtRRZpVkcIBOvHvvAt5+jRPCjo1U8RgdaI+KxtAI+IoUrrifIXs2D2J6dX3YAEKxlW4S
+         s+lR2r63QNUcwtO4ljcbnlBC7a31C9oPvi7VyT68Xt+aefXiOfjAi33tXNoOLy6LPn6P
+         Pbcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706028515; x=1706633315;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OBfCCDyzKoRpaf1abp6hy1jxU0Vk3dNquTbtYZnKWbE=;
+        b=wgjeE/7/xr2SYkMH40y1ZMgsMQOKEhFV2zaFXqWyED94OGswD1/OKMLZwVQWJVfX3u
+         EXv+hDe1KYjbzHGSo9gxyzENEDdVZaWR1p7oeRhiMAhri5NbAJa0dDeiGhgbBkHmZZN/
+         R86ynIvl5m3CUntVB7eF6IxG92UiDAKd+sBP0XUXZW2zA8kQb+uM670HJ5zieUN5poae
+         JOpKhzme1h5AXCzJr1bXyDL8xPe20qNf/RXkoJRz0+JaqAgbx7vhmmhPHBqU43SKP4m+
+         FrBidmo/Ji35SguJhLQyyaxSy3hq4XA5jL3P8JpqJs/E+y3dB83bnDq+WGSdgyhAaftc
+         V23Q==
+X-Gm-Message-State: AOJu0YxUJ1Wmg/Un+nHjH3Hm1z5o8twetKh6hZrFs5OlL6gPjQ60kB9n
+	kuWZtLYCHlf2vGDUEGYg1305zGIMVTfHS59oFr2VLMQvzyW+du79MSkE+eOodlUuK7w4VerleXy
+	kFRgyneZCWxmmKYsnPfvrqJc1Rg==
+X-Google-Smtp-Source: AGHT+IH+Mlr6tHRfY6bx2hXJSMKsnWPJRGl4NYKa0sp9VUfpgnmD9gh0uN5EJJTqznNM7e5Ct5DDTXdfW1jXBoCyNNc=
+X-Received: from sebkvm.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:cd5])
+ (user=sebastianene job=sendgmr) by 2002:a05:600c:4e50:b0:40e:bf1e:9e84 with
+ SMTP id e16-20020a05600c4e5000b0040ebf1e9e84mr17364wmq.5.1706028515271; Tue,
+ 23 Jan 2024 08:48:35 -0800 (PST)
+Date: Tue, 23 Jan 2024 16:48:19 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240123-b4-hid-bpf-fixes-v1-1-aa1fac734377@kernel.org>
-References: <20240123-b4-hid-bpf-fixes-v1-0-aa1fac734377@kernel.org>
-In-Reply-To: <20240123-b4-hid-bpf-fixes-v1-0-aa1fac734377@kernel.org>
-To: Jiri Kosina <jikos@kernel.org>, 
- Benjamin Tissoires <benjamin.tissoires@redhat.com>, 
- Dan Carpenter <dan.carpenter@linaro.org>, 
- Daniel Borkmann <daniel@iogearbox.net>
-Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org, Benjamin Tissoires <bentiss@kernel.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1706028056; l=5900;
- i=bentiss@kernel.org; s=20230215; h=from:subject:message-id;
- bh=sCdPQ4YhBeymXhJimO5RK/sYdEZSwG7jOkn2T00muOY=;
- b=UoeV+HyX1qYOXe+AaUpD4BFYfu0Tt4awtWhz3OIx81Ptoho+cQQotkpFYDNRpwX8+th9XWXbF
- xWxpxCcDuyfBJGvEouExda03CVKXnH8Rb441cYVvYdct0AOND9l5UHq
-X-Developer-Key: i=bentiss@kernel.org; a=ed25519;
- pk=7D1DyAVh6ajCkuUTudt/chMuXWIJHlv2qCsRkIizvFw=
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
+Message-ID: <20240123164818.1306122-2-sebastianene@google.com>
+Subject: [PATCH] KVM: arm64: Fix circular locking dependency
+From: Sebastian Ene <sebastianene@google.com>
+To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	James Morse <james.morse@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kernel-team@android.com, 
+	Sebastian Ene <sebastianene@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-When the kfunc hid_bpf_attach_prog() is called, we called twice fdget():
-one for fetching the type of the bpf program, and one for actually
-attaching the program to the device.
+The rule inside kvm enforces that the vcpu->mutex is taken *inside*
+kvm->lock. The rule is violated by the pkvm_create_hyp_vm which acquires
+the kvm->lock while already holding the vcpu->mutex lock from
+kvm_vcpu_ioctl. Follow the rule by taking the config lock while getting the
+VM handle and make sure that this is cleaned on VM destroy under the
+same lock.
 
-The problem is that between those two calls, we have no guarantees that
-the prog_fd is still the same file descriptor for the given program.
-
-Solve this by calling bpf_prog_get() earlier, and use this to fetch the
-program type.
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/bpf/CAO-hwJJ8vh8JD3-P43L-_CLNmPx0hWj44aom0O838vfP4=_1CA@mail.gmail.com/T/#t
+Signed-off-by: Sebastian Ene <sebastianene@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 ---
- drivers/hid/bpf/hid_bpf_dispatch.c  | 66 ++++++++++++++++++++++++-------------
- drivers/hid/bpf/hid_bpf_dispatch.h  |  4 +--
- drivers/hid/bpf/hid_bpf_jmp_table.c | 20 ++---------
- 3 files changed, 49 insertions(+), 41 deletions(-)
+ arch/arm64/kvm/pkvm.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/hid/bpf/hid_bpf_dispatch.c b/drivers/hid/bpf/hid_bpf_dispatch.c
-index d9ef45fcaeab..5111d1fef0d3 100644
---- a/drivers/hid/bpf/hid_bpf_dispatch.c
-+++ b/drivers/hid/bpf/hid_bpf_dispatch.c
-@@ -241,6 +241,39 @@ int hid_bpf_reconnect(struct hid_device *hdev)
- 	return 0;
+diff --git a/arch/arm64/kvm/pkvm.c b/arch/arm64/kvm/pkvm.c
+index 8350fb8fee0b..b7be96a53597 100644
+--- a/arch/arm64/kvm/pkvm.c
++++ b/arch/arm64/kvm/pkvm.c
+@@ -101,6 +101,17 @@ void __init kvm_hyp_reserve(void)
+ 		 hyp_mem_base);
  }
  
-+static int do_hid_bpf_attach_prog(struct hid_device *hdev, int prog_fd, struct bpf_prog *prog,
-+				  __u32 flags)
++static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
 +{
-+	int fd, err, prog_type;
-+
-+	prog_type = hid_bpf_get_prog_attach_type(prog);
-+	if (prog_type < 0)
-+		return prog_type;
-+
-+	if (prog_type >= HID_BPF_PROG_TYPE_MAX)
-+		return -EINVAL;
-+
-+	if (prog_type == HID_BPF_PROG_TYPE_DEVICE_EVENT) {
-+		err = hid_bpf_allocate_event_data(hdev);
-+		if (err)
-+			return err;
++	if (host_kvm->arch.pkvm.handle) {
++		WARN_ON(kvm_call_hyp_nvhe(__pkvm_teardown_vm,
++					  host_kvm->arch.pkvm.handle));
 +	}
 +
-+	fd = __hid_bpf_attach_prog(hdev, prog_type, prog_fd, prog, flags);
-+	if (fd < 0)
-+		return fd;
-+
-+	if (prog_type == HID_BPF_PROG_TYPE_RDESC_FIXUP) {
-+		err = hid_bpf_reconnect(hdev);
-+		if (err) {
-+			close_fd(fd);
-+			return err;
-+		}
-+	}
-+
-+	return fd;
++	host_kvm->arch.pkvm.handle = 0;
++	free_hyp_memcache(&host_kvm->arch.pkvm.teardown_mc);
 +}
 +
- /**
-  * hid_bpf_attach_prog - Attach the given @prog_fd to the given HID device
+ /*
+  * Allocates and donates memory for hypervisor VM structs at EL2.
   *
-@@ -257,18 +290,13 @@ noinline int
- hid_bpf_attach_prog(unsigned int hid_id, int prog_fd, __u32 flags)
+@@ -181,7 +192,7 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
+ 	return 0;
+ 
+ destroy_vm:
+-	pkvm_destroy_hyp_vm(host_kvm);
++	__pkvm_destroy_hyp_vm(host_kvm);
+ 	return ret;
+ free_vm:
+ 	free_pages_exact(hyp_vm, hyp_vm_sz);
+@@ -194,23 +205,19 @@ int pkvm_create_hyp_vm(struct kvm *host_kvm)
  {
- 	struct hid_device *hdev;
-+	struct bpf_prog *prog;
- 	struct device *dev;
--	int fd, err, prog_type = hid_bpf_get_prog_attach_type(prog_fd);
-+	int fd;
+ 	int ret = 0;
  
- 	if (!hid_bpf_ops)
- 		return -EINVAL;
+-	mutex_lock(&host_kvm->lock);
++	mutex_lock(&host_kvm->arch.config_lock);
+ 	if (!host_kvm->arch.pkvm.handle)
+ 		ret = __pkvm_create_hyp_vm(host_kvm);
+-	mutex_unlock(&host_kvm->lock);
++	mutex_unlock(&host_kvm->arch.config_lock);
  
--	if (prog_type < 0)
--		return prog_type;
--
--	if (prog_type >= HID_BPF_PROG_TYPE_MAX)
--		return -EINVAL;
--
- 	if ((flags & ~HID_BPF_FLAG_MASK))
- 		return -EINVAL;
+ 	return ret;
+ }
  
-@@ -278,23 +306,17 @@ hid_bpf_attach_prog(unsigned int hid_id, int prog_fd, __u32 flags)
- 
- 	hdev = to_hid_device(dev);
- 
--	if (prog_type == HID_BPF_PROG_TYPE_DEVICE_EVENT) {
--		err = hid_bpf_allocate_event_data(hdev);
--		if (err)
--			return err;
+ void pkvm_destroy_hyp_vm(struct kvm *host_kvm)
+ {
+-	if (host_kvm->arch.pkvm.handle) {
+-		WARN_ON(kvm_call_hyp_nvhe(__pkvm_teardown_vm,
+-					  host_kvm->arch.pkvm.handle));
 -	}
-+	/*
-+	 * take a ref on the prog itself, it will be released
-+	 * on errors or when it'll be detached
-+	 */
-+	prog = bpf_prog_get(prog_fd);
-+	if (IS_ERR(prog))
-+		return PTR_ERR(prog);
- 
--	fd = __hid_bpf_attach_prog(hdev, prog_type, prog_fd, flags);
-+	fd = do_hid_bpf_attach_prog(hdev, prog_fd, prog, flags);
- 	if (fd < 0)
--		return fd;
 -
--	if (prog_type == HID_BPF_PROG_TYPE_RDESC_FIXUP) {
--		err = hid_bpf_reconnect(hdev);
--		if (err) {
--			close_fd(fd);
--			return err;
--		}
--	}
-+		bpf_prog_put(prog);
- 
- 	return fd;
- }
-diff --git a/drivers/hid/bpf/hid_bpf_dispatch.h b/drivers/hid/bpf/hid_bpf_dispatch.h
-index 63dfc8605cd2..fbe0639d09f2 100644
---- a/drivers/hid/bpf/hid_bpf_dispatch.h
-+++ b/drivers/hid/bpf/hid_bpf_dispatch.h
-@@ -12,9 +12,9 @@ struct hid_bpf_ctx_kern {
- 
- int hid_bpf_preload_skel(void);
- void hid_bpf_free_links_and_skel(void);
--int hid_bpf_get_prog_attach_type(int prog_fd);
-+int hid_bpf_get_prog_attach_type(struct bpf_prog *prog);
- int __hid_bpf_attach_prog(struct hid_device *hdev, enum hid_bpf_prog_type prog_type, int prog_fd,
--			  __u32 flags);
-+			  struct bpf_prog *prog, __u32 flags);
- void __hid_bpf_destroy_device(struct hid_device *hdev);
- int hid_bpf_prog_run(struct hid_device *hdev, enum hid_bpf_prog_type type,
- 		     struct hid_bpf_ctx_kern *ctx_kern);
-diff --git a/drivers/hid/bpf/hid_bpf_jmp_table.c b/drivers/hid/bpf/hid_bpf_jmp_table.c
-index eca34b7372f9..12f7cebddd73 100644
---- a/drivers/hid/bpf/hid_bpf_jmp_table.c
-+++ b/drivers/hid/bpf/hid_bpf_jmp_table.c
-@@ -333,15 +333,10 @@ static int hid_bpf_insert_prog(int prog_fd, struct bpf_prog *prog)
- 	return err;
+-	host_kvm->arch.pkvm.handle = 0;
+-	free_hyp_memcache(&host_kvm->arch.pkvm.teardown_mc);
++	mutex_lock(&host_kvm->arch.config_lock);
++	__pkvm_destroy_hyp_vm(host_kvm);
++	mutex_unlock(&host_kvm->arch.config_lock);
  }
  
--int hid_bpf_get_prog_attach_type(int prog_fd)
-+int hid_bpf_get_prog_attach_type(struct bpf_prog *prog)
- {
--	struct bpf_prog *prog = NULL;
--	int i;
- 	int prog_type = HID_BPF_PROG_TYPE_UNDEF;
--
--	prog = bpf_prog_get(prog_fd);
--	if (IS_ERR(prog))
--		return PTR_ERR(prog);
-+	int i;
- 
- 	for (i = 0; i < HID_BPF_PROG_TYPE_MAX; i++) {
- 		if (hid_bpf_btf_ids[i] == prog->aux->attach_btf_id) {
-@@ -350,8 +345,6 @@ int hid_bpf_get_prog_attach_type(int prog_fd)
- 		}
- 	}
- 
--	bpf_prog_put(prog);
--
- 	return prog_type;
- }
- 
-@@ -388,19 +381,13 @@ static const struct bpf_link_ops hid_bpf_link_lops = {
- /* called from syscall */
- noinline int
- __hid_bpf_attach_prog(struct hid_device *hdev, enum hid_bpf_prog_type prog_type,
--		      int prog_fd, __u32 flags)
-+		      int prog_fd, struct bpf_prog *prog, __u32 flags)
- {
- 	struct bpf_link_primer link_primer;
- 	struct hid_bpf_link *link;
--	struct bpf_prog *prog = NULL;
- 	struct hid_bpf_prog_entry *prog_entry;
- 	int cnt, err = -EINVAL, prog_table_idx = -1;
- 
--	/* take a ref on the prog itself */
--	prog = bpf_prog_get(prog_fd);
--	if (IS_ERR(prog))
--		return PTR_ERR(prog);
--
- 	mutex_lock(&hid_bpf_attach_lock);
- 
- 	link = kzalloc(sizeof(*link), GFP_USER);
-@@ -467,7 +454,6 @@ __hid_bpf_attach_prog(struct hid_device *hdev, enum hid_bpf_prog_type prog_type,
-  err_unlock:
- 	mutex_unlock(&hid_bpf_attach_lock);
- 
--	bpf_prog_put(prog);
- 	kfree(link);
- 
- 	return err;
-
+ int pkvm_init_host_vm(struct kvm *host_kvm)
 -- 
-2.43.0
+2.43.0.429.g432eaa2c6b-goog
 
 
