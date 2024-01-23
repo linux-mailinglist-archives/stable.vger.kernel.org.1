@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-15454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F9183854B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 313F08383C4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D5E61C2A5E1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC2431F2904C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B73B1119C;
-	Tue, 23 Jan 2024 02:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C741864CFA;
+	Tue, 23 Jan 2024 01:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+tPotCb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+6g2g2h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B67A3D69;
-	Tue, 23 Jan 2024 02:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B2164AB3;
+	Tue, 23 Jan 2024 01:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975792; cv=none; b=ULmxMEYqOoN5ab9IrV5iSKTkcFh6Kew6R7edUabyLu4COYqNPXvA42DbeWuN2iP13yzDrABCEDp+feCLxBexEd636wuvQypH3DOqyV3wqPNCWlHPud8tiFcGRJKj87yWpGkHZbkExx36LQ+36yV9NlEFzFUOo3LQT47wtNHq0Uk=
+	t=1705975057; cv=none; b=qW24hI7MWlvPOkMa5uuWZ+9M9xAd0s4eCI6u6S8zSrQBy2Yg/MxL+Bhr01NbtaeGs0qDwRhm60pmBkIDg4lOCbqWmWdmLJYy/nbdI08JIPOWsULMb2MiV2Y4EVy6NmFwW256lWL2anGDyQ/Wpo80SJiCL+od4rMBQeoH0xUzrRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975792; c=relaxed/simple;
-	bh=4Tm5IOmZm8KtqbXDgK0a8Bend+R5G2OCFqlG6AR+ceQ=;
+	s=arc-20240116; t=1705975057; c=relaxed/simple;
+	bh=Nxzg65ZT5OLhfqhDUJ1JzZRcvBM5DwVqZD+QnlmRqkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3yi5aCOCHAiwk2Z4345sQRiQYxEEVNWs8qs5xSTiEFHonehgpeQYOjLudzuJuUiTAc0AsWZMMDF3FY9R2UEhUsC5Cxoy3hAaSsX6fJM91XI8V3gCed3gT4PJMhUfx986kBv8/21nA2lc4B2Faq9u50ZMYiGMPS84Wprbjob+UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+tPotCb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C735CC43394;
-	Tue, 23 Jan 2024 02:09:51 +0000 (UTC)
+	 MIME-Version; b=m3ykaYE2dtWNYFrhaSHSgHYmryXo5hGyW7kCYb2MZO1P6wmKHwOoX0i+VDbki/yiMUs0oFRIYHP1P3sSXIChQa8KxqytFffDAVME4ki48L4Sv3hGTUFrl6lCIyB4vpyoMaXgA8VZBZzfuqnBt/X8IY/aJfVLiWN/GlRm9AMzUgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+6g2g2h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D06EC43394;
+	Tue, 23 Jan 2024 01:57:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975791;
-	bh=4Tm5IOmZm8KtqbXDgK0a8Bend+R5G2OCFqlG6AR+ceQ=;
+	s=korg; t=1705975057;
+	bh=Nxzg65ZT5OLhfqhDUJ1JzZRcvBM5DwVqZD+QnlmRqkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E+tPotCbLPUVSeiFw+wbsevNnAgNxZ78UwxTerun6Fkk1K4h81BD5udU+EwzDRI9x
-	 PNPL5r9H/6jqAcaenYg6EsYf4TgGtNS8laWx67ASIHFdevWBGh5bROht2Vf7RoWG3H
-	 yKxx7owtmMm2DjWY8oJHevij5RBg6Scq2vEPhRzI=
+	b=I+6g2g2h9+s4lmteKvE0b625mIPz1s3srYhLl7MAPCVtEQZvTd6K6QTvJUbL7CfKr
+	 xJzUpsKm5d4d8wllE1RiZscYEO28TZtqoXApzEKImjSd/jv4hn0iKPj+K+SfkWnetc
+	 xOFkPOQA+nSlhsjaTXB4XCEsZ9OYBUgT7wu49Z7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 549/583] gpio: mlxbf3: add an error code check in mlxbf3_gpio_probe
+Subject: [PATCH 5.15 344/374] netfilter: nf_tables: reject invalid set policy
 Date: Mon, 22 Jan 2024 16:00:00 -0800
-Message-ID: <20240122235828.943758160@linuxfoundation.org>
+Message-ID: <20240122235756.890179876@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit d460e9c2075164e9b1fa9c4c95f8c05517bd8752 ]
+[ Upstream commit 0617c3de9b4026b87be12b0cb5c35f42c7c66fcb ]
 
-Clang static checker warning: Value stored to 'ret' is never read.
-bgpio_init() returns error code if failed, it's better to add this
-check.
+Report -EINVAL in case userspace provides a unsupported set backend
+policy.
 
-Fixes: cd33f216d241 ("gpio: mlxbf3: Add gpio driver support")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-[Bartosz: add the Fixes: tag]
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: c50b960ccc59 ("netfilter: nf_tables: implement proper set selection")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-mlxbf3.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/nf_tables_api.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-mlxbf3.c b/drivers/gpio/gpio-mlxbf3.c
-index 7a3e1760fc5b..d5906d419b0a 100644
---- a/drivers/gpio/gpio-mlxbf3.c
-+++ b/drivers/gpio/gpio-mlxbf3.c
-@@ -215,6 +215,8 @@ static int mlxbf3_gpio_probe(struct platform_device *pdev)
- 			gs->gpio_clr_io + MLXBF_GPIO_FW_DATA_OUT_CLEAR,
- 			gs->gpio_set_io + MLXBF_GPIO_FW_OUTPUT_ENABLE_SET,
- 			gs->gpio_clr_io + MLXBF_GPIO_FW_OUTPUT_ENABLE_CLEAR, 0);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "%s: bgpio_init() failed", __func__);
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 54ff4d3bcd54..8a5fca1e61be 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4683,8 +4683,16 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
+ 	}
  
- 	gc->request = gpiochip_generic_request;
- 	gc->free = gpiochip_generic_free;
+ 	desc.policy = NFT_SET_POL_PERFORMANCE;
+-	if (nla[NFTA_SET_POLICY] != NULL)
++	if (nla[NFTA_SET_POLICY] != NULL) {
+ 		desc.policy = ntohl(nla_get_be32(nla[NFTA_SET_POLICY]));
++		switch (desc.policy) {
++		case NFT_SET_POL_PERFORMANCE:
++		case NFT_SET_POL_MEMORY:
++			break;
++		default:
++			return -EOPNOTSUPP;
++		}
++	}
+ 
+ 	if (nla[NFTA_SET_DESC] != NULL) {
+ 		err = nf_tables_set_desc_parse(&desc, nla[NFTA_SET_DESC]);
 -- 
 2.43.0
 
