@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-15448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0CDA8385A4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:46:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0042838545
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AEC57B28CA2
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8DBF28543F
 	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8F07E59A;
-	Tue, 23 Jan 2024 02:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D020C8DD;
+	Tue, 23 Jan 2024 02:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmf4mIV+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iULpLytM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC161FBF;
-	Tue, 23 Jan 2024 02:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFF123CA;
+	Tue, 23 Jan 2024 02:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975785; cv=none; b=m82bRNAI/duRAfxvjWwBOIEk8mC5zCKrR/3a5yenyzMZU8ahdKtEZCK6rj76S7GyZez7xFUe0rxMFNFh79Jg/ZideAR3664jiJgUV9YxVoV4AGVgOkxGqPvHHwHEAQYE6rcByGFnkl8tbROgoHTOXQi8fbX2Bwmc1cMVvi69gAo=
+	t=1705975787; cv=none; b=iAq7SPPYvQFaQBpoHRl5q39JbR8KtUKo6bqO/esIsdyCaOoaCvUmsIWtyC+nP11EQ29QjcIKa6BzREjyEDW/CZPZwGdi5gBLQCpeyKfCAQoiB14yOY+JpjqA4+uosWnv2XYSHnpU3CVyKI0HS8Z3auuWKghMzxWgBOJrwSdrk64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975785; c=relaxed/simple;
-	bh=tQQRDBgCOyeCnkY2asTkwJ8shfeWPfYyBFdRrvxD1uo=;
+	s=arc-20240116; t=1705975787; c=relaxed/simple;
+	bh=0dYFj5Po7uGix2WNxcQh6wou5Cswi+rWJvO7gW66pUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bF2GTUEoJG5dPEnUxmlWOikk85Djy9STzs/xwVCE9cKRVpM/MPPBMneYVANO4iFTwYrQSD3CoxvR0VWzWxk4rYrqAptAUO8nYZwQeUPAHEQotpVc6YCaBoaoxDyresf2VgSXT645K9D72QRaAhRpU9WhfN/qAkWtcDpnF+cX3nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmf4mIV+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE8BC433F1;
-	Tue, 23 Jan 2024 02:09:45 +0000 (UTC)
+	 MIME-Version; b=m8WlhpdBZ1HRxhp5Sez2BiTfzs+H2+j7Rhp2OlkDJ4zPnVLhAiMcFxONdp7MQ1UYdM8MlMKjJnm1lxJsiMZNVy017y6o2Q7vg0nxMmjx6t84TPFPGjibM0eqkiBuTca2Gq7OKNqCTdFx0znayuqCUlFa0fqaFiDrLS/hJ7gdG0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iULpLytM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08680C433F1;
+	Tue, 23 Jan 2024 02:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975785;
-	bh=tQQRDBgCOyeCnkY2asTkwJ8shfeWPfYyBFdRrvxD1uo=;
+	s=korg; t=1705975787;
+	bh=0dYFj5Po7uGix2WNxcQh6wou5Cswi+rWJvO7gW66pUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmf4mIV+hqq2NqStoymhT0UFhDHM2mXFToMOBBY/G44VafJPrhyw8x76IG6m97t9V
-	 BDGUFFCROMH7HE2wG+OaGiY88FmRzMbCATuDMSC6pLa/5yYCefUzdO8PGBxx5thH5I
-	 jJrNCd1vfVjKDz0W34JWLfwy5j2GYoY+wIUJwnms=
+	b=iULpLytMSpS2WcZOyRmXNWaA25lSG1pHQFvXyFkWnvgdGciqRXQgFn/xiEy/Obp1G
+	 KQGlxUug3V14MHgysv3asOFfsED2zEtzW7Z6HNpbxiTDpoNUb1w7c6fuOro+iWAgGa
+	 JkuvB7SqoBdqnzA4ZNXoX3eWm5Oiz2+U9Oh8kW0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 567/583] netfilter: nf_tables: skip dead set elements in netlink dump
-Date: Mon, 22 Jan 2024 16:00:18 -0800
-Message-ID: <20240122235829.518366348@linuxfoundation.org>
+Subject: [PATCH 6.6 568/583] netfilter: nf_tables: reject NFT_SET_CONCAT with not field length description
+Date: Mon, 22 Jan 2024 16:00:19 -0800
+Message-ID: <20240122235829.551571094@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -67,43 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 6b1ca88e4bb63673dc9f9c7f23c899f22c3cb17a ]
+[ Upstream commit 113661e07460a6604aacc8ae1b23695a89e7d4b3 ]
 
-Delete from packet path relies on the garbage collector to purge
-elements with NFT_SET_ELEM_DEAD_BIT on.
+It is still possible to set on the NFT_SET_CONCAT flag by specifying a
+set size and no field description, report EINVAL in such case.
 
-Skip these dead elements from nf_tables_dump_setelem() path, I very
-rarely see tests/shell/testcases/maps/typeof_maps_add_delete reports
-[DUMP FAILED] showing a mismatch in the expected output with an element
-that should not be there.
-
-If the netlink dump happens before GC worker run, it might show dead
-elements in the ruleset listing.
-
-nft_rhash_get() already skips dead elements in nft_rhash_cmp(),
-therefore, it already does not show the element when getting a single
-element via netlink control plane.
-
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Fixes: 1b6345d4160e ("netfilter: nf_tables: check NFT_SET_CONCAT flag if field_count is specified")
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 5730f9a1f47d..1f6d5ffbe34a 100644
+index 1f6d5ffbe34a..b28fbcb86e94 100644
 --- a/net/netfilter/nf_tables_api.c
 +++ b/net/netfilter/nf_tables_api.c
-@@ -5662,7 +5662,7 @@ static int nf_tables_dump_setelem(const struct nft_ctx *ctx,
- 	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
- 	struct nft_set_dump_args *args;
+@@ -5010,8 +5010,12 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
+ 		if (err < 0)
+ 			return err;
  
--	if (nft_set_elem_expired(ext))
-+	if (nft_set_elem_expired(ext) || nft_set_elem_is_dead(ext))
- 		return 0;
- 
- 	args = container_of(iter, struct nft_set_dump_args, iter);
+-		if (desc.field_count > 1 && !(flags & NFT_SET_CONCAT))
++		if (desc.field_count > 1) {
++			if (!(flags & NFT_SET_CONCAT))
++				return -EINVAL;
++		} else if (flags & NFT_SET_CONCAT) {
+ 			return -EINVAL;
++		}
+ 	} else if (flags & NFT_SET_CONCAT) {
+ 		return -EINVAL;
+ 	}
 -- 
 2.43.0
 
