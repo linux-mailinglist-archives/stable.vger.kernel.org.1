@@ -1,105 +1,127 @@
-Return-Path: <stable+bounces-15475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5848083859B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:44:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6598385A7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:46:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A3A41C2A8B0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:44:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C0FB1C2790D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B94352F8A;
-	Tue, 23 Jan 2024 02:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5064B290F;
+	Tue, 23 Jan 2024 02:42:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5B652F90
-	for <stable@vger.kernel.org>; Tue, 23 Jan 2024 02:36:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170ED2570;
+	Tue, 23 Jan 2024 02:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705977381; cv=none; b=cC1DlgX1a6Gdu+j4DUUirL/yZgqZQUPpHXN9qO/xS4R3p+Eac2L1QkBYMjltmu97fngOXXZoidpbdSis3NUKgnfXcDgjftDXNGVtV3QReMDka90gbQpF46TXrlFfzYRfBSMb7FNstCYsQdQDyc9d4vG1yHlPyxNWs0xDzxcnQxY=
+	t=1705977738; cv=none; b=nfCJN3C/yefW8eL7eP9Y7uOSbDQ88dDOydpSGwzH/VXRCpeynIBgnDVjRdCmmePoOEt1cNGQN9Tw+WnaHyA0ELegGqAJOfCWmTvLbhgVQFQFTxrt8rjB0SHrgC3A8MqRB6iHYtyZl02oz9TxXHldtcQ3g0p0chVtXsCMNNlBNHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705977381; c=relaxed/simple;
-	bh=zNxDVW38JyLg3jZ1PcNm18UbP3pEowtjd0NZBk51UKs=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=CdVmu4wxjC8SRXzgg6l8gDw5H5i0eg/qwMaYoRPAib6kq/vvTsEuakl9DI83DWWc7XsE2/vs1mjpOvrgNv5mU+OTamISh2MkVn4H5+S0ADkqh5dGiHK6W0lq/QiaUziYbsN7obJdWwk/JGl1PQKOjn/TgVYviJeGfviuWb/bkq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4TJrmp4ZGBz1wnBJ;
-	Tue, 23 Jan 2024 10:35:54 +0800 (CST)
-Received: from kwepemm600013.china.huawei.com (unknown [7.193.23.68])
-	by mail.maildlp.com (Postfix) with ESMTPS id 23122140416;
-	Tue, 23 Jan 2024 10:36:16 +0800 (CST)
-Received: from [10.174.178.46] (10.174.178.46) by
- kwepemm600013.china.huawei.com (7.193.23.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 23 Jan 2024 10:36:15 +0800
-Subject: Re: [PATCH 01/15] ubifs: Set page uptodate in the correct place
-To: Matthew Wilcox <willy@infradead.org>
-CC: Richard Weinberger <richard@nod.at>, <linux-mtd@lists.infradead.org>,
-	<stable@vger.kernel.org>
-References: <20240120230824.2619716-1-willy@infradead.org>
- <20240120230824.2619716-2-willy@infradead.org>
- <5ad7b6ed-664b-7426-c557-1495711a6100@huawei.com>
- <Za5-UJU0tqT9CYQj@casper.infradead.org>
-From: Zhihao Cheng <chengzhihao1@huawei.com>
-Message-ID: <f96965c0-8464-c12c-7e5c-95ba74d10b7d@huawei.com>
-Date: Tue, 23 Jan 2024 10:36:14 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+	s=arc-20240116; t=1705977738; c=relaxed/simple;
+	bh=2KAfxXRILTyRg7HhJoRIjIBq03f0zaVqF8HojyrwGec=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JiXXS8V2XqaYSuPE+tnpvBhUDg5plg76XYU9+e/vwzsjL0YdFqeG0LCIlfKlWHTwmlOBLfsb4Wh18S7KyWOmucbyPMjfugTVdKdSufFFUPN50v5cxfp83fdHL+D+SYxLZOvwLluppOPgEiC4eQ2umFKubpDH0uCDtgSMQbRaYM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D314CC433C7;
+	Tue, 23 Jan 2024 02:42:14 +0000 (UTC)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Arnd Bergmann <arnd@arndb.de>,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: loongarch@lists.linux.dev,
+	linux-arch@vger.kernel.org,
+	stable@vger.kernel.org,
+	Guo Ren <guoren@kernel.org>,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	linux-kernel@vger.kernel.org,
+	loongson-kernel@lists.loongnix.cn,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1.y and 6.6.y] LoongArch/smp: Call rcutree_report_cpu_starting() earlier
+Date: Tue, 23 Jan 2024 10:41:51 +0800
+Message-Id: <20240123024151.1365379-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <Za5-UJU0tqT9CYQj@casper.infradead.org>
-Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemm600013.china.huawei.com (7.193.23.68)
 
-在 2024/1/22 22:40, Matthew Wilcox 写道:
-> On Mon, Jan 22, 2024 at 03:22:45PM +0800, Zhihao Cheng wrote:
->> 在 2024/1/21 7:08, Matthew Wilcox (Oracle) 写道:
->>> Page cache reads are lockless, so setting the freshly allocated page
->>> uptodate before we've overwritten it with the data it's supposed to have
->>> in it will allow a simultaneous reader to see old data.  Move the call
->>> to SetPageUptodate into ubifs_write_end(), which is after we copied the
->>> new data into the page.
->>
->> This solution looks good to me, and I think 'SetPageUptodate' should be
->> removed from write_begin_slow(slow path) too.
-> 
-> I didn't bother because we have just read into the page so it is
-> uptodate.  A racing read will see the data from before the write, but
-> that's an acceptable ordering of events.
-> .
-> 
+rcutree_report_cpu_starting() must be called before cpu_probe() to avoid
+the following lockdep splat that triggered by calling __alloc_pages() when
+CONFIG_PROVE_RCU_LIST=y:
 
-I can't find where the page is read and set uptodate. I think the 
-uninitialized data can be found in following path:
+ =============================
+ WARNING: suspicious RCU usage
+ 6.6.0+ #980 Not tainted
+ -----------------------------
+ kernel/locking/lockdep.c:3761 RCU-list traversed in non-reader section!!
+ other info that might help us debug this:
+ RCU used illegally from offline CPU!
+ rcu_scheduler_active = 1, debug_locks = 1
+ 1 lock held by swapper/1/0:
+  #0: 900000000c82ef98 (&pcp->lock){+.+.}-{2:2}, at: get_page_from_freelist+0x894/0x1790
+ CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.0+ #980
+ Stack : 0000000000000001 9000000004f79508 9000000004893670 9000000100310000
+         90000001003137d0 0000000000000000 90000001003137d8 9000000004f79508
+         0000000000000000 0000000000000001 0000000000000000 90000000048a3384
+         203a656d616e2065 ca43677b3687e616 90000001002c3480 0000000000000008
+         000000000000009d 0000000000000000 0000000000000001 80000000ffffe0b8
+         000000000000000d 0000000000000033 0000000007ec0000 13bbf50562dad831
+         9000000005140748 0000000000000000 9000000004f79508 0000000000000004
+         0000000000000000 9000000005140748 90000001002bad40 0000000000000000
+         90000001002ba400 0000000000000000 9000000003573ec8 0000000000000000
+         00000000000000b0 0000000000000004 0000000000000000 0000000000070000
+         ...
+ Call Trace:
+ [<9000000003573ec8>] show_stack+0x38/0x150
+ [<9000000004893670>] dump_stack_lvl+0x74/0xa8
+ [<900000000360d2bc>] lockdep_rcu_suspicious+0x14c/0x190
+ [<900000000361235c>] __lock_acquire+0xd0c/0x2740
+ [<90000000036146f4>] lock_acquire+0x104/0x2c0
+ [<90000000048a955c>] _raw_spin_lock_irqsave+0x5c/0x90
+ [<900000000381cd5c>] rmqueue_bulk+0x6c/0x950
+ [<900000000381fc0c>] get_page_from_freelist+0xd4c/0x1790
+ [<9000000003821c6c>] __alloc_pages+0x1bc/0x3e0
+ [<9000000003583b40>] tlb_init+0x150/0x2a0
+ [<90000000035742a0>] per_cpu_trap_init+0xf0/0x110
+ [<90000000035712fc>] cpu_probe+0x3dc/0x7a0
+ [<900000000357ed20>] start_secondary+0x40/0xb0
+ [<9000000004897138>] smpboot_entry+0x54/0x58
 
-       writer               reader
-ubifs_write_begin
-  page1 = grab_cache_page_write_begin
-  err = allocate_budget // ENOSPC
-  unlock_page(page1)
-  put_page(page1)
-  write_begin_slow
-   page2 = grab_cache_page_write_begin
-   SetPageChecked(page2)
-   SetPageUptodate(page2)
-                 generic_file_read_iter
-                  filemap_read
-                   filemap_get_pages
-                    filemap_get_read_batch
-                    if (!folio_test_uptodate) // page2 is uptodate
-                   copy_folio_to_iter // read uninitialized page content!
-copy_page_from_iter_atomic // copy data to cover uninitialized page content
+raw_smp_processor_id() is required in order to avoid calling into lockdep
+before RCU has declared the CPU to be watched for readers.
+
+See also commit 29368e093921 ("x86/smpboot: Move rcu_cpu_starting() earlier"),
+commit de5d9dae150c ("s390/smp: move rcu_cpu_starting() earlier") and commit
+99f070b62322 ("powerpc/smp: Call rcu_cpu_starting() earlier").
+
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ arch/loongarch/kernel/smp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
+index d19c2ebdf47b..1b5f266813a2 100644
+--- a/arch/loongarch/kernel/smp.c
++++ b/arch/loongarch/kernel/smp.c
+@@ -504,8 +504,9 @@ asmlinkage void start_secondary(void)
+ 	unsigned int cpu;
+ 
+ 	sync_counter();
+-	cpu = smp_processor_id();
++	cpu = raw_smp_processor_id();
+ 	set_my_cpu_offset(per_cpu_offset(cpu));
++	rcu_cpu_starting(cpu);
+ 
+ 	cpu_probe();
+ 	constant_clockevent_init();
+-- 
+2.39.3
+
 
