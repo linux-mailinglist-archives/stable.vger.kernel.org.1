@@ -1,119 +1,118 @@
-Return-Path: <stable+bounces-15594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A401839C83
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 23:50:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2E7839CA4
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 00:00:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9962EB24562
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 22:50:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2C0DB2606F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 23:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843BF53E00;
-	Tue, 23 Jan 2024 22:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5471053E04;
+	Tue, 23 Jan 2024 23:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BRvL/T77"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="eB+dbyzQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E761351024;
-	Tue, 23 Jan 2024 22:50:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7642DDB5;
+	Tue, 23 Jan 2024 22:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706050227; cv=none; b=CrrM7XqXWqCFvhXJR2U+fT2uRG3/Ou/zjXjZlZOy6O8KZ9e7bmyZBK/Dr5WU8KUciYOjSzMRSsSPHjVOtZvDVdkxWj3zDP+WA7gMrBynvhBTL4RAvJph7mTDzqO6L9bUlMBUDQQ6Omb00eXrNXt6A9chERH4r2qBidt8ib6xc7M=
+	t=1706050802; cv=none; b=QurVKzUWbU8qatWBH50Fe2EHMBA1ITo8J5+w+dlTCMDcAQLFFkeDg0Eg41Zcou6g+GE9CISi7HDsd3TqznE+3QOagVVUZr7BX+Nzoin7D3yGcl/mMG8BC3MUx+fILTYTHvdcmt7SSzep06P83YkP1PJOPfbEQ31ad6SHhaCFvE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706050227; c=relaxed/simple;
-	bh=zA8h2hgvGIm7xCc7pkw2uK7so5TYfseQahtnnzFpgFg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X58hGNVOFYdcHob8YCZ3NyII0ncZcH4rjAuiChyoRfbVFdgaSUjBOwlIZ3wbX8/K+4Fsb5Le8wSKF7eLYcSkSfSLbo14NFY0jgEfJ8upjYBskyHw2KqpFyMzqUB6vjxWpVYMwpsJY83+wjdbwL2sn+jV2D/uypNM2i/0nVV/PRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BRvL/T77; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-429f53f0b0bso31901891cf.2;
-        Tue, 23 Jan 2024 14:50:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706050225; x=1706655025; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=70lzYBb2kXF1e/6clrMDT/m2Y9gDx8gUW5Ok8l0+bHs=;
-        b=BRvL/T77FjH3FvYeTT6FO+s7x+mDbaqr6XKqCr1vQhowmgUMy76osWt9YabuPdUOpZ
-         FvM3zp5FaI5i0GqbxKCT7p/kuIVzmNcUAScdaNjNwuIPIYq/BrPQmvisju6An7xknjJk
-         xh9/HGK6AnEqn3IDUHZ9BPmcR7VrW7tmfYbITxEmVhPdTEClr+7Ghscs8ratpdLfv/E0
-         vXTDMdBf6Tt67akNYntVN/7IUJEw9w867NtclVq4k63XbZxYWeyhFt3t9WrBHfQXbNmp
-         RxdBD0ffKS9utpV+KQBfx+XWhJF3re1O80qYg2NkTcOaVsZljmLJpbGemfxZqOrDnjDh
-         EVWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706050225; x=1706655025;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=70lzYBb2kXF1e/6clrMDT/m2Y9gDx8gUW5Ok8l0+bHs=;
-        b=PCtank9mtRYlsJhP7256YKK38agSHW8wPzKcKajYVGMlH3kduRnvM/2Rr1PlhXl6h/
-         Iv4D00hJeYCfmGJ8jJ0guvxXjoGIAQclFjjrbX6V5UhSbqSButSNTnpfonS+9AeWCAF3
-         NwlQOsKBWW2Y5u6E1nSny955jGlOo+UwFyqcJFF7jn5QZLEW4tJZFa7C0Q2VhONmBaEn
-         IFR3MT4f3QvUc00u/YA/5kjoT94ThHF4ooqbGL22P+DVP6Pvu4p2nTq1mWNDKAtYvsE3
-         zhSb+hMFoSwA8hbiLwyxoFxvCEAwXLKOxGIQgZz7s1AT7z7r9qfU71djOHWb9ieM8UZ9
-         VoNA==
-X-Gm-Message-State: AOJu0YzkXIoknq/WGI1FmajuJseknJmldBVVG8NaW6U6+CbDREgiaqVA
-	oLBWz3THpzByhM9EYS37IalnQBb9UZxdHDb4lrOu52+BjhG2iccl
-X-Google-Smtp-Source: AGHT+IHsqpQPGlTs+KXEhp1WVTBfD8OW9Rc1aNAYsdwz/JyF964LUi/EdJcqSpaYwrgcNJ/UU8e1nw==
-X-Received: by 2002:ac8:7e8d:0:b0:429:bfca:bed0 with SMTP id w13-20020ac87e8d000000b00429bfcabed0mr1489145qtj.137.1706050224679;
-        Tue, 23 Jan 2024 14:50:24 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id bp44-20020a05622a1bac00b004299f09e3aesm3863091qtb.51.2024.01.23.14.50.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jan 2024 14:50:24 -0800 (PST)
-Message-ID: <840d1ee4-6ee2-4fb3-a604-cf25ab83d9fe@gmail.com>
-Date: Tue, 23 Jan 2024 14:50:21 -0800
+	s=arc-20240116; t=1706050802; c=relaxed/simple;
+	bh=8xwlc7MGcqCvMRjkHOZubnZy5/7P87qpf0FVev832cM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K51Zrpm+sz3hFIVQIAM+vhYdqTxO1k4QebxB8rRF6uoyvH2WCjG+oqWRK+m5iywN0xiuSH51LN5iVuIXaI9G49kS/v8fq9NgkhNGv3BKzT61Vy4tOMERA4hBaM5QVlQnZ/OELSw05H9RZKtq+np8R055PE6UI4afn9FH+bwc3Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=eB+dbyzQ; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=p+okpn5rGPjYb8kKdD5Ih+F44qguZfi/1iKVDlb0xSo=; b=eB+dbyzQt+aQZ0ZIzJ4XZAHFEC
+	JbMo0Beke50gs/spknsDN7GT1X1vBnYI3fjPFZB+j8twrEpuVdz5fKPVdcuwvAZdvAIcdMtGbXlQE
+	u7Brxbjy491kA5LTOd4Caxu8uD0DrssDkxdPcTcX2GlhiMLUT2hdSDCZiGMz3yFg496Y=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1rSPkB-005t0I-GU; Tue, 23 Jan 2024 23:59:47 +0100
+Date: Tue, 23 Jan 2024 23:59:47 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Tim Menninger <tmenninger@purestorage.com>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
+	netdev-maintainers <edumazet@google.com>, kuba@kernel.org,
+	pabeni@redhat.com, davem@davemloft.net,
+	netdev <netdev@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH net v1] net: dsa: mv88e6xxx: Make unsupported C45 reads
+ return 0xffff
+Message-ID: <32d96dd3-7fbb-49e5-8b05-269eac1ac80d@lunn.ch>
+References: <20240120192125.1340857-1-andrew@lunn.ch>
+ <20240122122457.jt6xgvbiffhmmksr@skbuf>
+ <0d9e0412-6ca3-407a-b2a1-b18ab4c20714@lunn.ch>
+ <CAO-L_45iCb+TFMSqZJex-mZKfopBXxR=KH5aV4Wfx5eF5_N_8Q@mail.gmail.com>
+ <5f449e47-fc39-48c3-a784-77b808c31050@lunn.ch>
+ <CAO-L_46Ltq0Ju_BO+rfvAbe7F=T6m0hZZKu9gzv7=bMV5n6naw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/414] 6.1.75-rc2 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com
-References: <20240123174510.372863442@linuxfoundation.org>
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240123174510.372863442@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAO-L_46Ltq0Ju_BO+rfvAbe7F=T6m0hZZKu9gzv7=bMV5n6naw@mail.gmail.com>
 
-On 1/23/24 09:47, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.75 release.
-> There are 414 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 25 Jan 2024 17:44:16 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.75-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> Does that mean if there's a device there but it doesn't support C45 (no
+> phy_read_c45), it will now return ENODEV?
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Yes, mv88e6xxx_mdio_read_c45() will return -ENODEV if
+chip->info->ops->phy_read_c45 is NULL. That will cause the scan of
+that address to immediately skip to the next address. This is old
+behaviour for C22:
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+commit 02a6efcab675fe32815d824837784c3f42a7d892
+Author: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Date:   Tue Apr 24 18:09:04 2018 +0200
 
+    net: phy: allow scanning busses with missing phys
+    
+    Some MDIO busses will error out when trying to read a phy address with no
+    phy present at that address. In that case, probing the bus will fail
+    because __mdiobus_register() is scanning the bus for all possible phys
+    addresses.
+    
+    In case MII_PHYSID1 returns -EIO or -ENODEV, consider there is no phy at
+    this address and set the phy ID to 0xffffffff which is then properly
+    handled in get_phy_device().
+
+And there are a few MDIO bus drivers which make use of this, e.g.
+
+static int lan9303_phy_read(struct dsa_switch *ds, int phy, int regnum)
+{
+        struct lan9303 *chip = ds->priv;
+        int phy_base = chip->phy_addr_base;
+
+        if (phy == phy_base)
+                return lan9303_virt_phy_reg_read(chip, regnum);
+        if (phy > phy_base + 2)
+                return -ENODEV;
+
+        return chip->ops->phy_read(chip, phy, regnum);
+
+This Ethernet switch supports only a number of PHY addresses, and
+returns -ENODEV for the rest.
+
+So its a legitimate way to say there is nothing here.
+
+You suggestion of allowing ENOPSUPP for C45 would of fixed the
+problem, but C22 and C45 would support different error codes, which i
+don't like. Its better to be uniform.
+
+	Andrew
 
