@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-15436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409E28385B2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:48:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BABC8383CD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A52DB29138
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF06A1C29291
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA7A2107;
-	Tue, 23 Jan 2024 02:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BF8651B8;
+	Tue, 23 Jan 2024 01:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="joQ/PV6j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ui3mzmCK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9914B1FC4;
-	Tue, 23 Jan 2024 02:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7868863400;
+	Tue, 23 Jan 2024 01:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975773; cv=none; b=o7AwOu4LDvdVvwiWU2dvBbGR8e9MWAtmyi3kcDvBEmbnxvUPjAlFJr7iTLO07PLDX65snXLdKCNqY+C4NYuJb4MfUOfUeJApT8zygBlyR22pviXInxnWLKCcMD3BaKOpXwypidUL56wPNGb+okiAZM6AY4CfrY3/AK2RSJ53Ft4=
+	t=1705975068; cv=none; b=CcayBEzzNcOi6V/o0WURDnApbMyS/OUnJjnVQBPvDbMmMJNhWL8RQr+76s5tRyZZexwTs9PI7aX0XYT+JQNZLMqAr3PIi2Su0F3Gvrir8JAHIX/Kdl7MIktvMCIK4TpuRsuZMkrscC+fvbSatAgp5jSGPrHuj4BCA1PqVj/MA48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975773; c=relaxed/simple;
-	bh=FXqnlaYO4vO2kEOK8emK31Zf2astjsV73igkzwEecEI=;
+	s=arc-20240116; t=1705975068; c=relaxed/simple;
+	bh=fW0xomiM8nSIsWAAS8rkZUZF/D0kXGzDXWGyYMr/YFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=APzIOMNEqrLUuYRgPLDwDKI99g8uGPFRVN73fz66qXs6VLkTA8kOE5Tar/LrZOcTH3lA6ZPOkLEws3hNvGPRZLNLAONsiwi8X3gyX62yF/s3xQ2GSfyJ3PcuHFM/BtNm/3O/jClbG8XyPSVrFwvN1VTkmeUF7A5PwNwG2pGEn/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=joQ/PV6j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A667C433C7;
-	Tue, 23 Jan 2024 02:09:33 +0000 (UTC)
+	 MIME-Version; b=W9ToctY2E+2bdWfBqHhOAXuLOb4MBiapkx+EP5qMh4/GHOTQihLeE1WWq0MxY51KKulnxV/LMAEig96RHZooJ2FdXzGJ+hIXQrSULIuz63JoBJJlldEbAXY6mVGCveaq3CBQCmhs5QQqEwrOyLztt54Z5vTiWLxdjvfBpPlKnr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ui3mzmCK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F7F9C43399;
+	Tue, 23 Jan 2024 01:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975773;
-	bh=FXqnlaYO4vO2kEOK8emK31Zf2astjsV73igkzwEecEI=;
+	s=korg; t=1705975068;
+	bh=fW0xomiM8nSIsWAAS8rkZUZF/D0kXGzDXWGyYMr/YFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=joQ/PV6j8EEDEFgVwc51lLCgQye0NvOJruDmMywVoi2H/G+zr/3bXopr+OwYoJvth
-	 SxVfVfxWb+Qp6OYXOVubGcpmX8RHNmnni3MW8staJysJzCuzBp2SjUc2FYFX7hV6wp
-	 JLTGihXMOLXJyOUdOVTfMIyi4N9TTQXGKuEpYyLU=
+	b=Ui3mzmCK5JOesUQdqWKEMUqQ3xhdbly1HRTHz/s1g2Ax5g4I6MJ6S9axMYdzrJp7g
+	 pNbOhlL4oHB4enowG0BdAs43sfDFfRMxv5SGeCU/MMs+19/eiFEm2SSbbqWbGvqeq+
+	 C+wSbbpWwBVu597PeiAINIzHyXTxKmHi4zHoDcsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 556/583] net: dsa: vsc73xx: Add null pointer check to vsc73xx_gpio_probe
+Subject: [PATCH 5.15 351/374] netfilter: nft_limit: do not ignore unsupported flags
 Date: Mon, 22 Jan 2024 16:00:07 -0800
-Message-ID: <20240122235829.162926137@linuxfoundation.org>
+Message-ID: <20240122235757.149536131@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 776dac5a662774f07a876b650ba578d0a62d20db ]
+[ Upstream commit 91a139cee1202a4599a380810d93c69b5bac6197 ]
 
-devm_kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+Bail out if userspace provides unsupported flags, otherwise future
+extensions to the limit expression will be silently ignored by the
+kernel.
 
-Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240111072018.75971-1-chentao@kylinos.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c7862a5f0de5 ("netfilter: nft_limit: allow to invert matching criteria")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/nft_limit.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index 4f09e7438f3b..c99fb1bd4c25 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -1118,6 +1118,8 @@ static int vsc73xx_gpio_probe(struct vsc73xx *vsc)
+diff --git a/net/netfilter/nft_limit.c b/net/netfilter/nft_limit.c
+index ac0979febdac..a355fbabe99f 100644
+--- a/net/netfilter/nft_limit.c
++++ b/net/netfilter/nft_limit.c
+@@ -58,6 +58,7 @@ static inline bool nft_limit_eval(struct nft_limit_priv *priv, u64 cost)
+ static int nft_limit_init(struct nft_limit_priv *priv,
+ 			  const struct nlattr * const tb[], bool pkts)
+ {
++	bool invert = false;
+ 	u64 unit, tokens;
  
- 	vsc->gc.label = devm_kasprintf(vsc->dev, GFP_KERNEL, "VSC%04x",
- 				       vsc->chipid);
-+	if (!vsc->gc.label)
-+		return -ENOMEM;
- 	vsc->gc.ngpio = 4;
- 	vsc->gc.owner = THIS_MODULE;
- 	vsc->gc.parent = vsc->dev;
+ 	if (tb[NFTA_LIMIT_RATE] == NULL ||
+@@ -90,19 +91,23 @@ static int nft_limit_init(struct nft_limit_priv *priv,
+ 				 priv->rate);
+ 	}
+ 
++	if (tb[NFTA_LIMIT_FLAGS]) {
++		u32 flags = ntohl(nla_get_be32(tb[NFTA_LIMIT_FLAGS]));
++
++		if (flags & ~NFT_LIMIT_F_INV)
++			return -EOPNOTSUPP;
++
++		if (flags & NFT_LIMIT_F_INV)
++			invert = true;
++	}
++
+ 	priv->limit = kmalloc(sizeof(*priv->limit), GFP_KERNEL_ACCOUNT);
+ 	if (!priv->limit)
+ 		return -ENOMEM;
+ 
+ 	priv->limit->tokens = tokens;
+ 	priv->tokens_max = priv->limit->tokens;
+-
+-	if (tb[NFTA_LIMIT_FLAGS]) {
+-		u32 flags = ntohl(nla_get_be32(tb[NFTA_LIMIT_FLAGS]));
+-
+-		if (flags & NFT_LIMIT_F_INV)
+-			priv->invert = true;
+-	}
++	priv->invert = invert;
+ 	priv->limit->last = ktime_get_ns();
+ 	spin_lock_init(&priv->limit->lock);
+ 
 -- 
 2.43.0
 
