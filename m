@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-15090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4328383D5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A433683854D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DDB81F290E9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7F721C245BC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6BB657B4;
-	Tue, 23 Jan 2024 01:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A0B4F618;
+	Tue, 23 Jan 2024 02:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omhVdTyt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGWG/2Zd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB72964CF0;
-	Tue, 23 Jan 2024 01:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A881FBF;
+	Tue, 23 Jan 2024 02:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975075; cv=none; b=SzP/Xn6sTTm7w8Ts/CF6gMRe7yQIDos7/3reS51nEpPXIWm7yVBggD8mkrwOE7JxCk8Q7j5Fpf7tXnLhkJduP6zTymgNe5SZ5z8MAcFHn5AdAG3cqyeU2KQFhE5S+DScgBuCnhdoiZWvqLC61Wa/Sw3TSjm4GTKVOIavU9HS9e4=
+	t=1705975793; cv=none; b=D/1kRd60WVm5um/u91hQ9QQ3wRrgo9i+oFUGxlqOznEaeWCfPvGCz73LjWN3kJMonIj/EJzMfMFSpENu4F9a4Lx3GKuWf0cgutzhxR0+ZTPwAfSyKUx55pry2KJCcSbawBzqFL1DQau8ThWr+fS2TkcvG0AHPRDIlOJNyYvIJPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975075; c=relaxed/simple;
-	bh=uARX7/DlCit3J6jgAKo/zISns3caSqT7BXyFpVqDUHA=;
+	s=arc-20240116; t=1705975793; c=relaxed/simple;
+	bh=BbuqVBOnd4hQFWrYYt0wA0DUhur9MGGAyxAuEovz1RA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ObvDn4Qym6n9UMKt+1GwqWTyZi0jcxlo6MGXgn+DvPFSnnQ2biU5n1U4jdPJ2QeAS1iqYJCo24L3HGFpS/VSyFLU/nZA+xgm9gtqry5aqre/M4C33nJl0B/jFkFDEKqcd1fS2TESlb6C9e0dYJHo08ulen3HsL9HNuLM9Vn2vhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omhVdTyt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70211C433C7;
-	Tue, 23 Jan 2024 01:57:55 +0000 (UTC)
+	 MIME-Version; b=FOe6O8lpoDICi5WD5eV2Ao8GJloUquUMftppa9/mCmGLmK7u3VP5WVUgFqs3hl1Lvxy2rSV2Z2XkXmzYPe/aqOB9Iu0ZH5FbQeVxD+JVbLtzOeY51PIw+tnwgRnWW1Cv/6rafJpGH7NQczN1LiJUGdyeALwHJyyq8UvQFWaBgC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGWG/2Zd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D8FCC433F1;
+	Tue, 23 Jan 2024 02:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975075;
-	bh=uARX7/DlCit3J6jgAKo/zISns3caSqT7BXyFpVqDUHA=;
+	s=korg; t=1705975793;
+	bh=BbuqVBOnd4hQFWrYYt0wA0DUhur9MGGAyxAuEovz1RA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=omhVdTytyDbGWpx0cIGnlHDWJHM2q+6rUQc53QeTuzAbo40lSF/T6yVTrnBVkP/UO
-	 3mQwdRuUiG/3DT1wC8FgD6ZJLpBqRLAGz7Me2dyqsLNAOVZXkH7lprpyvqgYgHuWV/
-	 6ZK03JtB7abPs7rMNnzEwG3/4hAULhfTMpMljZOo=
+	b=IGWG/2ZdVWhDujbTHaBsQdzTXD4rXCczXYalikng26PmsihjkO3tx86FbVY9lxe3j
+	 jBJKJp2gQDgTEjiKSJLQNLgOup3TjpoPuZ9LOVAJN8ZNBQN/WmrDj5ll84VbLvl1Ut
+	 6ve0D3Mq2Ex6++5swkoxrL8vcUcG6PAiyJZd5iFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Dafna Hirschfeld <dhirschfeld@habana.ai>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 346/374] netfilter: nft_last: move stateful fields out of expression data
+Subject: [PATCH 6.6 551/583] drm/amdkfd: fixes for HMM mem allocation
 Date: Mon, 22 Jan 2024 16:00:02 -0800
-Message-ID: <20240122235756.957356741@linuxfoundation.org>
+Message-ID: <20240122235829.006873671@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,147 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Dafna Hirschfeld <dhirschfeld@habana.ai>
 
-[ Upstream commit 33a24de37e814572491bcb35f42c0de74ad67586 ]
+[ Upstream commit 02eed83abc1395a1207591aafad9bcfc5cb1abcb ]
 
-In preparation for the rule blob representation.
+Fix err return value and reset pgmap->type after checking it.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 91a139cee120 ("netfilter: nft_limit: do not ignore unsupported flags")
+Fixes: c83dee9b6394 ("drm/amdkfd: add SPM support for SVM")
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Dafna Hirschfeld <dhirschfeld@habana.ai>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_last.c | 69 +++++++++++++++++++++++++++++-----------
- 1 file changed, 51 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nft_last.c b/net/netfilter/nft_last.c
-index 304e33cbed9b..5ee33d0ccd4e 100644
---- a/net/netfilter/nft_last.c
-+++ b/net/netfilter/nft_last.c
-@@ -8,9 +8,13 @@
- #include <net/netfilter/nf_tables_core.h>
- #include <net/netfilter/nf_tables.h>
- 
-+struct nft_last {
-+	unsigned long	jiffies;
-+	unsigned int	set;
-+};
-+
- struct nft_last_priv {
--	unsigned long	last_jiffies;
--	unsigned int	last_set;
-+	struct nft_last	*last;
- };
- 
- static const struct nla_policy nft_last_policy[NFTA_LAST_MAX + 1] = {
-@@ -22,47 +26,55 @@ static int nft_last_init(const struct nft_ctx *ctx, const struct nft_expr *expr,
- 			 const struct nlattr * const tb[])
- {
- 	struct nft_last_priv *priv = nft_expr_priv(expr);
-+	struct nft_last *last;
- 	u64 last_jiffies;
--	u32 last_set = 0;
- 	int err;
- 
--	if (tb[NFTA_LAST_SET]) {
--		last_set = ntohl(nla_get_be32(tb[NFTA_LAST_SET]));
--		if (last_set == 1)
--			priv->last_set = 1;
--	}
-+	last = kzalloc(sizeof(*last), GFP_KERNEL);
-+	if (!last)
-+		return -ENOMEM;
-+
-+	if (tb[NFTA_LAST_SET])
-+		last->set = ntohl(nla_get_be32(tb[NFTA_LAST_SET]));
- 
--	if (last_set && tb[NFTA_LAST_MSECS]) {
-+	if (last->set && tb[NFTA_LAST_MSECS]) {
- 		err = nf_msecs_to_jiffies64(tb[NFTA_LAST_MSECS], &last_jiffies);
- 		if (err < 0)
--			return err;
-+			goto err;
- 
--		priv->last_jiffies = jiffies - (unsigned long)last_jiffies;
-+		last->jiffies = jiffies - (unsigned long)last_jiffies;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+index 7d82c7da223a..659313648b20 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+@@ -1021,7 +1021,7 @@ int kgd2kfd_init_zone_device(struct amdgpu_device *adev)
+ 	} else {
+ 		res = devm_request_free_mem_region(adev->dev, &iomem_resource, size);
+ 		if (IS_ERR(res))
+-			return -ENOMEM;
++			return PTR_ERR(res);
+ 		pgmap->range.start = res->start;
+ 		pgmap->range.end = res->end;
+ 		pgmap->type = MEMORY_DEVICE_PRIVATE;
+@@ -1037,10 +1037,10 @@ int kgd2kfd_init_zone_device(struct amdgpu_device *adev)
+ 	r = devm_memremap_pages(adev->dev, pgmap);
+ 	if (IS_ERR(r)) {
+ 		pr_err("failed to register HMM device memory\n");
+-		/* Disable SVM support capability */
+-		pgmap->type = 0;
+ 		if (pgmap->type == MEMORY_DEVICE_PRIVATE)
+ 			devm_release_mem_region(adev->dev, res->start, resource_size(res));
++		/* Disable SVM support capability */
++		pgmap->type = 0;
+ 		return PTR_ERR(r);
  	}
-+	priv->last = last;
- 
- 	return 0;
-+err:
-+	kfree(last);
-+
-+	return err;
- }
- 
- static void nft_last_eval(const struct nft_expr *expr,
- 			  struct nft_regs *regs, const struct nft_pktinfo *pkt)
- {
- 	struct nft_last_priv *priv = nft_expr_priv(expr);
-+	struct nft_last *last = priv->last;
- 
--	if (READ_ONCE(priv->last_jiffies) != jiffies)
--		WRITE_ONCE(priv->last_jiffies, jiffies);
--	if (READ_ONCE(priv->last_set) == 0)
--		WRITE_ONCE(priv->last_set, 1);
-+	if (READ_ONCE(last->jiffies) != jiffies)
-+		WRITE_ONCE(last->jiffies, jiffies);
-+	if (READ_ONCE(last->set) == 0)
-+		WRITE_ONCE(last->set, 1);
- }
- 
- static int nft_last_dump(struct sk_buff *skb, const struct nft_expr *expr)
- {
- 	struct nft_last_priv *priv = nft_expr_priv(expr);
--	unsigned long last_jiffies = READ_ONCE(priv->last_jiffies);
--	u32 last_set = READ_ONCE(priv->last_set);
-+	struct nft_last *last = priv->last;
-+	unsigned long last_jiffies = READ_ONCE(last->jiffies);
-+	u32 last_set = READ_ONCE(last->set);
- 	__be64 msecs;
- 
- 	if (time_before(jiffies, last_jiffies)) {
--		WRITE_ONCE(priv->last_set, 0);
-+		WRITE_ONCE(last->set, 0);
- 		last_set = 0;
- 	}
- 
-@@ -81,11 +93,32 @@ static int nft_last_dump(struct sk_buff *skb, const struct nft_expr *expr)
- 	return -1;
- }
- 
-+static void nft_last_destroy(const struct nft_ctx *ctx,
-+			     const struct nft_expr *expr)
-+{
-+	struct nft_last_priv *priv = nft_expr_priv(expr);
-+
-+	kfree(priv->last);
-+}
-+
-+static int nft_last_clone(struct nft_expr *dst, const struct nft_expr *src)
-+{
-+	struct nft_last_priv *priv_dst = nft_expr_priv(dst);
-+
-+	priv_dst->last = kzalloc(sizeof(*priv_dst->last), GFP_ATOMIC);
-+	if (priv_dst->last)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
- static const struct nft_expr_ops nft_last_ops = {
- 	.type		= &nft_last_type,
- 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_last_priv)),
- 	.eval		= nft_last_eval,
- 	.init		= nft_last_init,
-+	.destroy	= nft_last_destroy,
-+	.clone		= nft_last_clone,
- 	.dump		= nft_last_dump,
- };
  
 -- 
 2.43.0
