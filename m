@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-15136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A29A083840D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3935C838539
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C76521C2A10A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E59F1289397
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0BD6774D;
-	Tue, 23 Jan 2024 02:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A212620F1;
+	Tue, 23 Jan 2024 02:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtJ4Y2Qq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtH8CPp/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D006772E;
-	Tue, 23 Jan 2024 02:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BC5110A;
+	Tue, 23 Jan 2024 02:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975291; cv=none; b=HoklB6etFoskpHN9jH0xS2U3q4oyo7qsEQ+trZ+qHK0lQExX2ORWJ/fVOQiHSOmWpvVT34cp1ZDSuhK3so7vAzt6c201N4MSoOdJiQkt8QdDlAUUzl9w0Pkmt+Xx783jlQ+JQeOBru46wz6zvFwROzRbdoOhhRSheSSoThLHSbU=
+	t=1705975771; cv=none; b=CICZ6EOhDsjZ8Eb5VPYWSGBpBBKhKVSWWlI1K0rOKrntCyGXVVFqtYb5DBwY0rYQItPhW2WPtdM6/BT2VaXmSYv0Dph6+uuUtJqc/XztQU7QU/F2Vh3cljb4ShPD643Z0S+btnGAc0yAhl3wrnR0GL/SjjSkc9gDrpr0uKN1gzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975291; c=relaxed/simple;
-	bh=7ubf1BClcqPedgqjXyVGquKUgQg1IDxJwk+3+dxPLgQ=;
+	s=arc-20240116; t=1705975771; c=relaxed/simple;
+	bh=pCNbMlqqR64vqcs2CcazsAmh3FqKUuTlQQm4jyWkxUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cZ8NAxHxYJ3UaIA6Gc1167cW3JXH0aJhp5VO9GBpN8pvQuVuVLNBRolrJwT5bUXsZsgrajPlqujssEXJbPJ1Dg7dSgSkRFZH44wZtoDJT/2OSgxWMpt+2mev1o4ahYVFidt6FyGOOhBoUcZRyNPzivTiiQ4lSFxsrTQn9uPFjc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtJ4Y2Qq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB84C433C7;
-	Tue, 23 Jan 2024 02:01:29 +0000 (UTC)
+	 MIME-Version; b=VefXWw7p9nbkTaoQYChN3u2WzNyx6Y4FeK1U+RfnrwTf+2hbnIFOE0TiWJqjaQ3fj5Hvz4Zsgbr9ehO3jDR5ImVFg/fNzvyBGkNtukzVLEZEBXR+zXrsLkjT71mbSgph0Q2kDBuLyqdwRGz0YJnFMJOylp9t3jfNrNVVtqqQ6+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtH8CPp/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA13C433F1;
+	Tue, 23 Jan 2024 02:09:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975290;
-	bh=7ubf1BClcqPedgqjXyVGquKUgQg1IDxJwk+3+dxPLgQ=;
+	s=korg; t=1705975771;
+	bh=pCNbMlqqR64vqcs2CcazsAmh3FqKUuTlQQm4jyWkxUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wtJ4Y2QqdrSx1MuYp5Cfi2tML7bEZv3VlDYd6k5cFzFa60eU4BS35uPwq4jsLUx+H
-	 QGtffU1ceWyv0ayAYVuv7vn6J7DJ0E8xo4VYg9ddYEdx7i5PpgeEmoZSWcSvpaj02h
-	 WLMdMQsWqBD8G1QlnT13Xaymz7PnK5d+j0zmJ6oY=
+	b=mtH8CPp/VsEcrw7Q2HoCru/qBsIB4AkTrzyuNwo8DeEEZ1ncxOttU6jYtBtVqcZb7
+	 7oJ/EJUE30sObCfV8uo1RS4/rgYW5lMVOXMeSzre7ub1m78K4LKEmOLph8Q/ZZ4eGs
+	 mk5GYAJbnYAj7WrlaU6Cjtxa3Yk+OfYIjKeFWS78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Qiang Ma <maqianga@uniontech.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 349/374] netfilter: nft_limit: move stateful fields out of expression data
+Subject: [PATCH 6.6 554/583] net: stmmac: ethtool: Fixed calltrace caused by unbalanced disable_irq_wake calls
 Date: Mon, 22 Jan 2024 16:00:05 -0800
-Message-ID: <20240122235757.068305108@linuxfoundation.org>
+Message-ID: <20240122235829.105950892@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,193 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Qiang Ma <maqianga@uniontech.com>
 
-[ Upstream commit 3b9e2ea6c11bff72ac1d607f6b954e7666b47409 ]
+[ Upstream commit a23aa04042187cbde16f470b49d4ad60d32e9206 ]
 
-In preparation for the rule blob representation.
+We found the following dmesg calltrace when testing the GMAC NIC notebook:
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 91a139cee120 ("netfilter: nft_limit: do not ignore unsupported flags")
+[9.448656] ------------[ cut here ]------------
+[9.448658] Unbalanced IRQ 43 wake disable
+[9.448673] WARNING: CPU: 3 PID: 1083 at kernel/irq/manage.c:688 irq_set_irq_wake+0xe0/0x128
+[9.448717] CPU: 3 PID: 1083 Comm: ethtool Tainted: G           O      4.19 #1
+[9.448773]         ...
+[9.448774] Call Trace:
+[9.448781] [<9000000000209b5c>] show_stack+0x34/0x140
+[9.448788] [<9000000000d52700>] dump_stack+0x98/0xd0
+[9.448794] [<9000000000228610>] __warn+0xa8/0x120
+[9.448797] [<9000000000d2fb60>] report_bug+0x98/0x130
+[9.448800] [<900000000020a418>] do_bp+0x248/0x2f0
+[9.448805] [<90000000002035f4>] handle_bp_int+0x4c/0x78
+[9.448808] [<900000000029ea40>] irq_set_irq_wake+0xe0/0x128
+[9.448813] [<9000000000a96a7c>] stmmac_set_wol+0x134/0x150
+[9.448819] [<9000000000be6ed0>] dev_ethtool+0x1368/0x2440
+[9.448824] [<9000000000c08350>] dev_ioctl+0x1f8/0x3e0
+[9.448827] [<9000000000bb2a34>] sock_ioctl+0x2a4/0x450
+[9.448832] [<900000000046f044>] do_vfs_ioctl+0xa4/0x738
+[9.448834] [<900000000046f778>] ksys_ioctl+0xa0/0xe8
+[9.448837] [<900000000046f7d8>] sys_ioctl+0x18/0x28
+[9.448840] [<9000000000211ab4>] syscall_common+0x20/0x34
+[9.448842] ---[ end trace 40c18d9aec863c3e ]---
+
+Multiple disable_irq_wake() calls will keep decreasing the IRQ
+wake_depth, When wake_depth is 0, calling disable_irq_wake() again,
+will report the above calltrace.
+
+Due to the need to appear in pairs, we cannot call disable_irq_wake()
+without calling enable_irq_wake(). Fix this by making sure there are
+no unbalanced disable_irq_wake() calls.
+
+Fixes: 3172d3afa998 ("stmmac: support wake up irq from external sources (v3)")
+Signed-off-by: Qiang Ma <maqianga@uniontech.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240112021249.24598-1-maqianga@uniontech.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_limit.c | 94 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 82 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h         |  1 +
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 10 ++++++++--
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c    |  1 +
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_limit.c b/net/netfilter/nft_limit.c
-index d6e0226b7603..f04be5be73a0 100644
---- a/net/netfilter/nft_limit.c
-+++ b/net/netfilter/nft_limit.c
-@@ -14,10 +14,14 @@
- #include <linux/netfilter/nf_tables.h>
- #include <net/netfilter/nf_tables.h>
- 
--struct nft_limit_priv {
-+struct nft_limit {
- 	spinlock_t	lock;
- 	u64		last;
- 	u64		tokens;
-+};
-+
-+struct nft_limit_priv {
-+	struct nft_limit *limit;
- 	u64		tokens_max;
- 	u64		rate;
- 	u64		nsecs;
-@@ -30,21 +34,21 @@ static inline bool nft_limit_eval(struct nft_limit_priv *priv, u64 cost)
- 	u64 now, tokens;
- 	s64 delta;
- 
--	spin_lock_bh(&priv->lock);
-+	spin_lock_bh(&priv->limit->lock);
- 	now = ktime_get_ns();
--	tokens = priv->tokens + now - priv->last;
-+	tokens = priv->limit->tokens + now - priv->limit->last;
- 	if (tokens > priv->tokens_max)
- 		tokens = priv->tokens_max;
- 
--	priv->last = now;
-+	priv->limit->last = now;
- 	delta = tokens - cost;
- 	if (delta >= 0) {
--		priv->tokens = delta;
--		spin_unlock_bh(&priv->lock);
-+		priv->limit->tokens = delta;
-+		spin_unlock_bh(&priv->limit->lock);
- 		return priv->invert;
- 	}
--	priv->tokens = tokens;
--	spin_unlock_bh(&priv->lock);
-+	priv->limit->tokens = tokens;
-+	spin_unlock_bh(&priv->limit->lock);
- 	return !priv->invert;
- }
- 
-@@ -86,8 +90,12 @@ static int nft_limit_init(struct nft_limit_priv *priv,
- 				 priv->rate);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+index cd7a9768de5f..b8c93b881a65 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+@@ -255,6 +255,7 @@ struct stmmac_priv {
+ 	u32 msg_enable;
+ 	int wolopts;
+ 	int wol_irq;
++	bool wol_irq_disabled;
+ 	int clk_csr;
+ 	struct timer_list eee_ctrl_timer;
+ 	int lpi_irq;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+index 419efe43951e..69c8c2528524 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+@@ -822,10 +822,16 @@ static int stmmac_set_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
+ 	if (wol->wolopts) {
+ 		pr_info("stmmac: wakeup enable\n");
+ 		device_set_wakeup_enable(priv->device, 1);
+-		enable_irq_wake(priv->wol_irq);
++		/* Avoid unbalanced enable_irq_wake calls */
++		if (priv->wol_irq_disabled)
++			enable_irq_wake(priv->wol_irq);
++		priv->wol_irq_disabled = false;
+ 	} else {
+ 		device_set_wakeup_enable(priv->device, 0);
+-		disable_irq_wake(priv->wol_irq);
++		/* Avoid unbalanced disable_irq_wake calls */
++		if (!priv->wol_irq_disabled)
++			disable_irq_wake(priv->wol_irq);
++		priv->wol_irq_disabled = true;
  	}
  
--	priv->tokens = tokens;
--	priv->tokens_max = priv->tokens;
-+	priv->limit = kmalloc(sizeof(*priv->limit), GFP_KERNEL);
-+	if (!priv->limit)
-+		return -ENOMEM;
-+
-+	priv->limit->tokens = tokens;
-+	priv->tokens_max = priv->limit->tokens;
- 
- 	if (tb[NFTA_LIMIT_FLAGS]) {
- 		u32 flags = ntohl(nla_get_be32(tb[NFTA_LIMIT_FLAGS]));
-@@ -95,8 +103,8 @@ static int nft_limit_init(struct nft_limit_priv *priv,
- 		if (flags & NFT_LIMIT_F_INV)
- 			priv->invert = true;
- 	}
--	priv->last = ktime_get_ns();
--	spin_lock_init(&priv->lock);
-+	priv->limit->last = ktime_get_ns();
-+	spin_lock_init(&priv->limit->lock);
- 
- 	return 0;
- }
-@@ -121,6 +129,32 @@ static int nft_limit_dump(struct sk_buff *skb, const struct nft_limit_priv *priv
- 	return -1;
- }
- 
-+static void nft_limit_destroy(const struct nft_ctx *ctx,
-+			      const struct nft_limit_priv *priv)
-+{
-+	kfree(priv->limit);
-+}
-+
-+static int nft_limit_clone(struct nft_limit_priv *priv_dst,
-+			   const struct nft_limit_priv *priv_src)
-+{
-+	priv_dst->tokens_max = priv_src->tokens_max;
-+	priv_dst->rate = priv_src->rate;
-+	priv_dst->nsecs = priv_src->nsecs;
-+	priv_dst->burst = priv_src->burst;
-+	priv_dst->invert = priv_src->invert;
-+
-+	priv_dst->limit = kmalloc(sizeof(*priv_dst->limit), GFP_ATOMIC);
-+	if (priv_dst->limit)
-+		return -ENOMEM;
-+
-+	spin_lock_init(&priv_dst->limit->lock);
-+	priv_dst->limit->tokens = priv_src->tokens_max;
-+	priv_dst->limit->last = ktime_get_ns();
-+
-+	return 0;
-+}
-+
- struct nft_limit_priv_pkts {
- 	struct nft_limit_priv	limit;
- 	u64			cost;
-@@ -166,12 +200,30 @@ static int nft_limit_pkts_dump(struct sk_buff *skb, const struct nft_expr *expr)
- 	return nft_limit_dump(skb, &priv->limit, NFT_LIMIT_PKTS);
- }
- 
-+static void nft_limit_pkts_destroy(const struct nft_ctx *ctx,
-+				   const struct nft_expr *expr)
-+{
-+	const struct nft_limit_priv_pkts *priv = nft_expr_priv(expr);
-+
-+	nft_limit_destroy(ctx, &priv->limit);
-+}
-+
-+static int nft_limit_pkts_clone(struct nft_expr *dst, const struct nft_expr *src)
-+{
-+	struct nft_limit_priv_pkts *priv_dst = nft_expr_priv(dst);
-+	struct nft_limit_priv_pkts *priv_src = nft_expr_priv(src);
-+
-+	return nft_limit_clone(&priv_dst->limit, &priv_src->limit);
-+}
-+
- static struct nft_expr_type nft_limit_type;
- static const struct nft_expr_ops nft_limit_pkts_ops = {
- 	.type		= &nft_limit_type,
- 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_limit_priv_pkts)),
- 	.eval		= nft_limit_pkts_eval,
- 	.init		= nft_limit_pkts_init,
-+	.destroy	= nft_limit_pkts_destroy,
-+	.clone		= nft_limit_pkts_clone,
- 	.dump		= nft_limit_pkts_dump,
- };
- 
-@@ -203,12 +255,30 @@ static int nft_limit_bytes_dump(struct sk_buff *skb,
- 	return nft_limit_dump(skb, priv, NFT_LIMIT_PKT_BYTES);
- }
- 
-+static void nft_limit_bytes_destroy(const struct nft_ctx *ctx,
-+				    const struct nft_expr *expr)
-+{
-+	const struct nft_limit_priv *priv = nft_expr_priv(expr);
-+
-+	nft_limit_destroy(ctx, priv);
-+}
-+
-+static int nft_limit_bytes_clone(struct nft_expr *dst, const struct nft_expr *src)
-+{
-+	struct nft_limit_priv *priv_dst = nft_expr_priv(dst);
-+	struct nft_limit_priv *priv_src = nft_expr_priv(src);
-+
-+	return nft_limit_clone(priv_dst, priv_src);
-+}
-+
- static const struct nft_expr_ops nft_limit_bytes_ops = {
- 	.type		= &nft_limit_type,
- 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_limit_priv)),
- 	.eval		= nft_limit_bytes_eval,
- 	.init		= nft_limit_bytes_init,
- 	.dump		= nft_limit_bytes_dump,
-+	.clone		= nft_limit_bytes_clone,
-+	.destroy	= nft_limit_bytes_destroy,
- };
- 
- static const struct nft_expr_ops *
+ 	mutex_lock(&priv->lock);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 69b9c71f0ede..1bfcf673b3ce 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3549,6 +3549,7 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
+ 	/* Request the Wake IRQ in case of another line
+ 	 * is used for WoL
+ 	 */
++	priv->wol_irq_disabled = true;
+ 	if (priv->wol_irq > 0 && priv->wol_irq != dev->irq) {
+ 		int_name = priv->int_name_wol;
+ 		sprintf(int_name, "%s:%s", dev->name, "wol");
 -- 
 2.43.0
 
