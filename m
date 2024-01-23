@@ -1,119 +1,129 @@
-Return-Path: <stable+bounces-15491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF39A838A1D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 10:19:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB98838ADC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 10:50:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D9DEB22000
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 09:19:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C882928A7B4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 09:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B24958124;
-	Tue, 23 Jan 2024 09:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298325D8F2;
+	Tue, 23 Jan 2024 09:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AvVb5kLp"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SgqeWKKk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469B556B78
-	for <stable@vger.kernel.org>; Tue, 23 Jan 2024 09:19:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A2A5D75F
+	for <stable@vger.kernel.org>; Tue, 23 Jan 2024 09:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706001548; cv=none; b=X/3bYNTkWfwqoZ8cJf37FH1GqIlfX7GtnWHOExCr29GYgiR8bG+Zq8dIPF/srgInl7RyuS59R1n2+ZPxpmuwZ1bK5WjUhjpkUnHt4l204tx2x4fz/cLZbX06GDdkSbMIQLL8+pItpfmVTWF+RIms7L58wxbS+QRDG8AfRhsKxbg=
+	t=1706003138; cv=none; b=aFfVu32cfgXjlleefqBFIG3FghJxVeiE+Z9sg2GhSc/S3mHAhWGI4X4QmQaijxnML4p6whSxBgTG2ReWLf5xum/9KgOTh+f0v3qQ3Kks+dKL1yK56Dy31blft8FkEXmWrhgzy057RK2UsJ92kRKEXeeI6deK/TNZrNRKgqh8A6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706001548; c=relaxed/simple;
-	bh=7VuZmFxUpB1lVSDCAJTO+tJjNkrL3UwBXwDgvhvIjBI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G8I8HSVfQkK3s23mN5TaMLTB+GJZrqHcSOSCco5S2yfzaf00fBIZCQiVAGq+Lc2qwNI8E5Fn1R1gCk5+9dTYvDwuYHNFLNM9jUBbLjIMgxrNd3z0dKm9CnAuOcmV+l4YIT0+dcbW4LtwrL429tzmOlJMvzzgrhLqkOTVaSpO97s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AvVb5kLp; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a2e0be86878so938918066b.1
-        for <stable@vger.kernel.org>; Tue, 23 Jan 2024 01:19:06 -0800 (PST)
+	s=arc-20240116; t=1706003138; c=relaxed/simple;
+	bh=aLi4ni515fDPLmheTfXWKONnXtTpxfLwvtIiaSEI/pI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GXPLO/utQHji1I2CL8SCgUEs0Adpm0e0sW9ZLo2R0HqN5ZbtDRr+uruF/wpeSzpEiAlg3sH/1cEl+KoG3Y9nibvR+2CsTAEu/xj9dUtqytTFuCx3byeBTaSXNsbvuedKIe3ooB+yPUQk6WDF25Yn2pw9kfOa2TFUNQ1pWBQTIJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SgqeWKKk; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-42a49d42f06so5410791cf.2
+        for <stable@vger.kernel.org>; Tue, 23 Jan 2024 01:45:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706001545; x=1706606345; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WBk1RWkyZJiPgH1O/EL2UlH0Vp2cg0BsBTQsF+HbtdY=;
-        b=AvVb5kLpa7bQpUu8u3+EZWYenD5vl0HJmedi2gfxDt5hYLL1mMFtJHO+4IDVAlrNfx
-         Wcf4BKal5v9Dm1YT3YN4kso37uLomn/ojBJuR2gm2EeMdo1sn3I2uZ7lQ9XHEWJwXkex
-         8MiLyFH0Y8z/dlwUxnnlB+PWfkj8BvaZgWsLmTRknvUbGu4fISElxIZceZJa8d4NpGL0
-         AWrVKIJSTof/kbSFi8XnPr2wAYSTc5wQIqI5khhwOLgLCVUIKjH5IrNZytwjDNhpNrUO
-         8ZW+SytOgbE6lyUYw0XYUnSqKUsdWpVfm7Ef9TP6H/bLfvDbsDk6IPPhmcuvO3qnaB59
-         xAPg==
+        d=linaro.org; s=google; t=1706003136; x=1706607936; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=GPuIu+Od8YPZ7JAGfosVr9r0tWmFr9cTu0oqbB+e0Zo=;
+        b=SgqeWKKkVfxFi6U7w1Pb3K8TdafaRdah6HPMhYpQCSjsPbxITaoq/4gOfakq4uHny1
+         iyaLBJIoOITozXmV3Nf8bZ+uVxL2n2qzAPyhagNapf5fXxmWWg74khT9OZ3jKdzVKj5M
+         Vw20FKcGeQi3Soibai1EkTr//02S+07D7D0xp9zq/809AI/yyg+Z3Ty/AP/sV+a2Ibam
+         RoiqsJMcCApxz6LVBRkyeMGYfLJ8or+rRMa9fDWXCvv6v40HOHQ2aWpRL0ICazeaV6i1
+         vUsLTYN3FdfpbhpJxyhF5Mkpe04uKOcGnLVKUz0fvZJY+MWoKXAEeHrpt7NWTU4hPflv
+         jrZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706001545; x=1706606345;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1706003136; x=1706607936;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WBk1RWkyZJiPgH1O/EL2UlH0Vp2cg0BsBTQsF+HbtdY=;
-        b=Wcz7/pKAO3NyCpeXxWbqQUjYx5fc/RsmHZTZo3r1wpz+kNOJqfswgKqW7fLEu7iI5Z
-         pZXIAt/vXAU+5L7xlPOBV85NL2+PVnDh39rKmM0AStgNVAaZ4J4gGMX+SHI2EvaPRo6g
-         8fIQnRRodmLtMpXNtlEqcPbdU/3lKRUv8DfMuGE1aFZIUGRX4+LAGFo+1x252FlOU1tL
-         hzrsXo9Ev9/U/gcGlg41dpfExlGPCkW+9kMaag1nQXDcPmkANvRn48e9Wpvb0+iVI21E
-         XdUh8PR82xMmvJ1qGdv6GB73RmVEmOSySWuo1J0NGjEuISmko2fMHYfN9Pglb5YZTaaH
-         yzRA==
-X-Gm-Message-State: AOJu0YxRWC99aXmXYlRnzX6vsLkt87gz9FmFEmJthF6QFL3e6mx7pm0p
-	GTDUJ3sNyoBSwys/1VqVxwStPx92TXqYjsn7iX7b5CfXHAdbue76
-X-Google-Smtp-Source: AGHT+IHRUTpVvFWRf1iwvev0Rm6Uh+KZ4ise7148syZG/xVFOrpQRNim4YJA769VELvuqY15kf+c3w==
-X-Received: by 2002:a17:906:8925:b0:a2a:c113:2677 with SMTP id fr37-20020a170906892500b00a2ac1132677mr4955188ejc.61.1706001545141;
-        Tue, 23 Jan 2024 01:19:05 -0800 (PST)
-Received: from ?IPV6:2a02:908:1980:b9c0::6a53? ([2a02:908:1980:b9c0::6a53])
-        by smtp.gmail.com with ESMTPSA id tl9-20020a170907c30900b00a30461c31efsm2068398ejc.177.2024.01.23.01.19.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jan 2024 01:19:04 -0800 (PST)
-Message-ID: <98e5bf78-a85f-44c1-8277-20d90d6093b7@gmail.com>
-Date: Tue, 23 Jan 2024 10:19:03 +0100
+        bh=GPuIu+Od8YPZ7JAGfosVr9r0tWmFr9cTu0oqbB+e0Zo=;
+        b=XWMveGs+KlIP1nlCff9VqsaVld3eSZYEj4RGf+p5SuHLPBQ5y7Dp7KjKjIR5pX0xOp
+         H/IT8U6ADclT1Zle9qrHb/FVxcSXbM0MBYDGkcigi2vZdh6NeHwQQLYZy4TzYMEOFjOl
+         BQOVm8pW8bjKdkhYGOCZQAHPBclea//rj5q/Z2hLAyWcBVls1YpQS8NgiPGxqN3hdvpH
+         4QUA/0/3uyJgC3/TLaxu4C6/aKyEWYbNl69iJbzBe9fQ0YnbPhLtENFUGGvB4wfRtC4t
+         L/uH0PwwlCbRqqtlEpc9l/aIZKYS0nDLmyGF2ZudSQ74oD3MaDVMA3S7r1FUSc5GbIAd
+         4xgQ==
+X-Gm-Message-State: AOJu0Yytjl0lIoZW9YnaQw+pLalQyglx2XSZuyxKp+FgSnjsWH8bbXUX
+	+zBPmdPlj5PD2CimujcJ7loi3BGQeeskef3In5V3YvubmlsDt/eO7sOQBHB/eA==
+X-Google-Smtp-Source: AGHT+IGwmRddd4hbzIPzChpuRO0Dfx5I4nzCNEfptJ98zrnanML4MnrVA1G0oVNdUJTPC+nD4BLe2g==
+X-Received: by 2002:ac8:4e93:0:b0:42a:3a03:7ea0 with SMTP id 19-20020ac84e93000000b0042a3a037ea0mr450084qtp.111.1706003136386;
+        Tue, 23 Jan 2024 01:45:36 -0800 (PST)
+Received: from thinkpad ([120.56.197.174])
+        by smtp.gmail.com with ESMTPSA id fg6-20020a05622a580600b00429be14d3bbsm3323313qtb.13.2024.01.23.01.45.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jan 2024 01:45:36 -0800 (PST)
+Date: Tue, 23 Jan 2024 15:15:28 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Amit Pundir <amit.pundir@linaro.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] clk: qcom: gcc-sdm845: Add soft dependency on rpmhpd
+Message-ID: <20240123094528.GA19029@thinkpad>
+References: <20240123062814.2555649-1-amit.pundir@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Add a quirk for Yamaha YIT-W12TX transmitter
-Content-Language: en-US
-To: Takashi Iwai <tiwai@suse.de>
-Cc: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- alsa-devel@alsa-project.org, stable@vger.kernel.org,
- Julian Sikorski <belegdol+github@gmail.com>
-References: <20240123084935.2745-1-belegdol+github@gmail.com>
- <87msswmn3g.wl-tiwai@suse.de>
-From: Julian Sikorski <belegdol@gmail.com>
-In-Reply-To: <87msswmn3g.wl-tiwai@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240123062814.2555649-1-amit.pundir@linaro.org>
 
+On Tue, Jan 23, 2024 at 11:58:14AM +0530, Amit Pundir wrote:
+> With the addition of RPMh power domain to the GCC node in
+> device tree, we noticed a significant delay in getting the
+> UFS driver probed on AOSP which futher led to mount failures
+> because Android do not support rootwait. So adding a soft
+> dependency on RPMh power domain which informs modprobe to
+> load rpmhpd module before gcc-sdm845.
+> 
+> Cc: <stable@vger.kernel.org> # v5.4+
+> Fixes: 4b6ea15c0a11 ("arm64: dts: qcom: sdm845: Add missing RPMh power domain to GCC")
+> Suggested-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 
-Am 23.01.24 um 10:10 schrieb Takashi Iwai:
-> On Tue, 23 Jan 2024 09:49:35 +0100,
-> Julian Sikorski wrote:
->>
->> The device fails to initialize otherwise, giving the following error:
->> [ 3676.671641] usb 2-1.1: 1:1: cannot get freq at ep 0x1
->>
->> Signed-off-by: Julian Sikorski <belegdol+github@gmail.com>
-> 
-> Thanks, I applied now.
-> 
-> But at the next time, try to check the following:
-> 
-> - Use a proper subject prefix; each subsystem has an own one, and this
->    case would be "ALSA: usb-audio: Add a quirk..."
-> 
-> - Use the same mail address for both author and sign-off
->    
-> - Put Cc-to-stable in the patch description instead of actually
->    sending to it now
-> 
-> 
-> Takashi
-Thank you and apologies for the mistakes. I will try to do better next time.
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-Best regards,
-Julian
+- Mani
+
+> ---
+>  drivers/clk/qcom/gcc-sdm845.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/clk/qcom/gcc-sdm845.c b/drivers/clk/qcom/gcc-sdm845.c
+> index 725cd52d2398..ea4c3bf4fb9b 100644
+> --- a/drivers/clk/qcom/gcc-sdm845.c
+> +++ b/drivers/clk/qcom/gcc-sdm845.c
+> @@ -4037,3 +4037,4 @@ module_exit(gcc_sdm845_exit);
+>  MODULE_DESCRIPTION("QTI GCC SDM845 Driver");
+>  MODULE_LICENSE("GPL v2");
+>  MODULE_ALIAS("platform:gcc-sdm845");
+> +MODULE_SOFTDEP("pre: rpmhpd");
+> -- 
+> 2.25.1
+> 
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
