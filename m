@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-15138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7E7983842C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4328383D5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DF3AB2180D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DDB81F290E9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C206773C;
-	Tue, 23 Jan 2024 02:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6BB657B4;
+	Tue, 23 Jan 2024 01:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRVQeKyk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omhVdTyt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CA167734;
-	Tue, 23 Jan 2024 02:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB72964CF0;
+	Tue, 23 Jan 2024 01:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975292; cv=none; b=rg0/lQtFHobDGCpCHLe8aYmCLdPzVRjVYJytY90LicT/VqwHrEaj3JaUn/DS1pE4cVYNwBUyQBPwip4TusxfZsKBnxPZqcGzL6fb/HI1yNTU2YxOVQMr7CR/aGMIvWg9iEnIETJjUTrnf6e+5xVBs1etX1yTXH9F4uHEs/O4770=
+	t=1705975075; cv=none; b=SzP/Xn6sTTm7w8Ts/CF6gMRe7yQIDos7/3reS51nEpPXIWm7yVBggD8mkrwOE7JxCk8Q7j5Fpf7tXnLhkJduP6zTymgNe5SZ5z8MAcFHn5AdAG3cqyeU2KQFhE5S+DScgBuCnhdoiZWvqLC61Wa/Sw3TSjm4GTKVOIavU9HS9e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975292; c=relaxed/simple;
-	bh=MI13I/r4tcj83ynYUMe+B14zxG0+IfQWaD8e/Rk/r9Y=;
+	s=arc-20240116; t=1705975075; c=relaxed/simple;
+	bh=uARX7/DlCit3J6jgAKo/zISns3caSqT7BXyFpVqDUHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ggtLvGhk6xHP5msM0rS65GcUqOQbzGG+PHxB8MzZNB6qgARjWXzL9K6+MhuaUjAD7ubHk3gVwaCY9/81qFXyaCjH2cIy0SLpsVcJoWOwyRAF5PygpaNsuOCARTY290Vl5hVz+Zv9hjB/tlq0Yer2alUR6p1YWiOSVPnMRIfoUb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRVQeKyk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A5FC433C7;
-	Tue, 23 Jan 2024 02:01:32 +0000 (UTC)
+	 MIME-Version; b=ObvDn4Qym6n9UMKt+1GwqWTyZi0jcxlo6MGXgn+DvPFSnnQ2biU5n1U4jdPJ2QeAS1iqYJCo24L3HGFpS/VSyFLU/nZA+xgm9gtqry5aqre/M4C33nJl0B/jFkFDEKqcd1fS2TESlb6C9e0dYJHo08ulen3HsL9HNuLM9Vn2vhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omhVdTyt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70211C433C7;
+	Tue, 23 Jan 2024 01:57:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975292;
-	bh=MI13I/r4tcj83ynYUMe+B14zxG0+IfQWaD8e/Rk/r9Y=;
+	s=korg; t=1705975075;
+	bh=uARX7/DlCit3J6jgAKo/zISns3caSqT7BXyFpVqDUHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BRVQeKyk3cO8zcoZhHbkX6ER4mR4Z/I75E/qWhMqInkaV83NWWmeWmynbmwLFx/4H
-	 5ZE4t8qPUtObEY6ccWuexU1WsfiH05i6cTPhNePUgqS3ACIoIigo7ai1fp154agGYH
-	 yJLuJJ67NST4fXleN+FWHBABLXjEu/o1DPmzjv2w=
+	b=omhVdTytyDbGWpx0cIGnlHDWJHM2q+6rUQc53QeTuzAbo40lSF/T6yVTrnBVkP/UO
+	 3mQwdRuUiG/3DT1wC8FgD6ZJLpBqRLAGz7Me2dyqsLNAOVZXkH7lprpyvqgYgHuWV/
+	 6ZK03JtB7abPs7rMNnzEwG3/4hAULhfTMpMljZOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 345/374] netfilter: nft_connlimit: move stateful fields out of expression data
-Date: Mon, 22 Jan 2024 16:00:01 -0800
-Message-ID: <20240122235756.923226102@linuxfoundation.org>
+Subject: [PATCH 5.15 346/374] netfilter: nft_last: move stateful fields out of expression data
+Date: Mon, 22 Jan 2024 16:00:02 -0800
+Message-ID: <20240122235756.957356741@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
 References: <20240122235744.598274724@linuxfoundation.org>
@@ -67,7 +67,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 37f319f37d9005693dff085bb72852eeebc803ef ]
+[ Upstream commit 33a24de37e814572491bcb35f42c0de74ad67586 ]
 
 In preparation for the rule blob representation.
 
@@ -75,92 +75,134 @@ Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Stable-dep-of: 91a139cee120 ("netfilter: nft_limit: do not ignore unsupported flags")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_connlimit.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ net/netfilter/nft_last.c | 69 +++++++++++++++++++++++++++++-----------
+ 1 file changed, 51 insertions(+), 18 deletions(-)
 
-diff --git a/net/netfilter/nft_connlimit.c b/net/netfilter/nft_connlimit.c
-index 7d0761fad37e..58dcafe8bf79 100644
---- a/net/netfilter/nft_connlimit.c
-+++ b/net/netfilter/nft_connlimit.c
-@@ -14,7 +14,7 @@
- #include <net/netfilter/nf_conntrack_zones.h>
+diff --git a/net/netfilter/nft_last.c b/net/netfilter/nft_last.c
+index 304e33cbed9b..5ee33d0ccd4e 100644
+--- a/net/netfilter/nft_last.c
++++ b/net/netfilter/nft_last.c
+@@ -8,9 +8,13 @@
+ #include <net/netfilter/nf_tables_core.h>
+ #include <net/netfilter/nf_tables.h>
  
- struct nft_connlimit {
--	struct nf_conncount_list	list;
-+	struct nf_conncount_list	*list;
- 	u32				limit;
- 	bool				invert;
++struct nft_last {
++	unsigned long	jiffies;
++	unsigned int	set;
++};
++
+ struct nft_last_priv {
+-	unsigned long	last_jiffies;
+-	unsigned int	last_set;
++	struct nft_last	*last;
  };
-@@ -43,12 +43,12 @@ static inline void nft_connlimit_do_eval(struct nft_connlimit *priv,
- 		return;
- 	}
  
--	if (nf_conncount_add(nft_net(pkt), &priv->list, tuple_ptr, zone)) {
-+	if (nf_conncount_add(nft_net(pkt), priv->list, tuple_ptr, zone)) {
- 		regs->verdict.code = NF_DROP;
- 		return;
- 	}
+ static const struct nla_policy nft_last_policy[NFTA_LAST_MAX + 1] = {
+@@ -22,47 +26,55 @@ static int nft_last_init(const struct nft_ctx *ctx, const struct nft_expr *expr,
+ 			 const struct nlattr * const tb[])
+ {
+ 	struct nft_last_priv *priv = nft_expr_priv(expr);
++	struct nft_last *last;
+ 	u64 last_jiffies;
+-	u32 last_set = 0;
+ 	int err;
  
--	count = priv->list.count;
-+	count = priv->list->count;
- 
- 	if ((count > priv->limit) ^ priv->invert) {
- 		regs->verdict.code = NFT_BREAK;
-@@ -76,7 +76,11 @@ static int nft_connlimit_do_init(const struct nft_ctx *ctx,
- 			invert = true;
- 	}
- 
--	nf_conncount_list_init(&priv->list);
-+	priv->list = kmalloc(sizeof(*priv->list), GFP_KERNEL);
-+	if (!priv->list)
+-	if (tb[NFTA_LAST_SET]) {
+-		last_set = ntohl(nla_get_be32(tb[NFTA_LAST_SET]));
+-		if (last_set == 1)
+-			priv->last_set = 1;
+-	}
++	last = kzalloc(sizeof(*last), GFP_KERNEL);
++	if (!last)
 +		return -ENOMEM;
 +
-+	nf_conncount_list_init(priv->list);
- 	priv->limit	= limit;
- 	priv->invert	= invert;
++	if (tb[NFTA_LAST_SET])
++		last->set = ntohl(nla_get_be32(tb[NFTA_LAST_SET]));
  
-@@ -87,7 +91,8 @@ static void nft_connlimit_do_destroy(const struct nft_ctx *ctx,
- 				     struct nft_connlimit *priv)
- {
- 	nf_ct_netns_put(ctx->net, ctx->family);
--	nf_conncount_cache_free(&priv->list);
-+	nf_conncount_cache_free(priv->list);
-+	kfree(priv->list);
+-	if (last_set && tb[NFTA_LAST_MSECS]) {
++	if (last->set && tb[NFTA_LAST_MSECS]) {
+ 		err = nf_msecs_to_jiffies64(tb[NFTA_LAST_MSECS], &last_jiffies);
+ 		if (err < 0)
+-			return err;
++			goto err;
+ 
+-		priv->last_jiffies = jiffies - (unsigned long)last_jiffies;
++		last->jiffies = jiffies - (unsigned long)last_jiffies;
+ 	}
++	priv->last = last;
+ 
+ 	return 0;
++err:
++	kfree(last);
++
++	return err;
  }
  
- static int nft_connlimit_do_dump(struct sk_buff *skb,
-@@ -200,7 +205,11 @@ static int nft_connlimit_clone(struct nft_expr *dst, const struct nft_expr *src)
- 	struct nft_connlimit *priv_dst = nft_expr_priv(dst);
- 	struct nft_connlimit *priv_src = nft_expr_priv(src);
+ static void nft_last_eval(const struct nft_expr *expr,
+ 			  struct nft_regs *regs, const struct nft_pktinfo *pkt)
+ {
+ 	struct nft_last_priv *priv = nft_expr_priv(expr);
++	struct nft_last *last = priv->last;
  
--	nf_conncount_list_init(&priv_dst->list);
-+	priv_dst->list = kmalloc(sizeof(*priv_dst->list), GFP_ATOMIC);
-+	if (priv_dst->list)
+-	if (READ_ONCE(priv->last_jiffies) != jiffies)
+-		WRITE_ONCE(priv->last_jiffies, jiffies);
+-	if (READ_ONCE(priv->last_set) == 0)
+-		WRITE_ONCE(priv->last_set, 1);
++	if (READ_ONCE(last->jiffies) != jiffies)
++		WRITE_ONCE(last->jiffies, jiffies);
++	if (READ_ONCE(last->set) == 0)
++		WRITE_ONCE(last->set, 1);
+ }
+ 
+ static int nft_last_dump(struct sk_buff *skb, const struct nft_expr *expr)
+ {
+ 	struct nft_last_priv *priv = nft_expr_priv(expr);
+-	unsigned long last_jiffies = READ_ONCE(priv->last_jiffies);
+-	u32 last_set = READ_ONCE(priv->last_set);
++	struct nft_last *last = priv->last;
++	unsigned long last_jiffies = READ_ONCE(last->jiffies);
++	u32 last_set = READ_ONCE(last->set);
+ 	__be64 msecs;
+ 
+ 	if (time_before(jiffies, last_jiffies)) {
+-		WRITE_ONCE(priv->last_set, 0);
++		WRITE_ONCE(last->set, 0);
+ 		last_set = 0;
+ 	}
+ 
+@@ -81,11 +93,32 @@ static int nft_last_dump(struct sk_buff *skb, const struct nft_expr *expr)
+ 	return -1;
+ }
+ 
++static void nft_last_destroy(const struct nft_ctx *ctx,
++			     const struct nft_expr *expr)
++{
++	struct nft_last_priv *priv = nft_expr_priv(expr);
++
++	kfree(priv->last);
++}
++
++static int nft_last_clone(struct nft_expr *dst, const struct nft_expr *src)
++{
++	struct nft_last_priv *priv_dst = nft_expr_priv(dst);
++
++	priv_dst->last = kzalloc(sizeof(*priv_dst->last), GFP_ATOMIC);
++	if (priv_dst->last)
 +		return -ENOMEM;
 +
-+	nf_conncount_list_init(priv_dst->list);
- 	priv_dst->limit	 = priv_src->limit;
- 	priv_dst->invert = priv_src->invert;
++	return 0;
++}
++
+ static const struct nft_expr_ops nft_last_ops = {
+ 	.type		= &nft_last_type,
+ 	.size		= NFT_EXPR_SIZE(sizeof(struct nft_last_priv)),
+ 	.eval		= nft_last_eval,
+ 	.init		= nft_last_init,
++	.destroy	= nft_last_destroy,
++	.clone		= nft_last_clone,
+ 	.dump		= nft_last_dump,
+ };
  
-@@ -212,7 +221,8 @@ static void nft_connlimit_destroy_clone(const struct nft_ctx *ctx,
- {
- 	struct nft_connlimit *priv = nft_expr_priv(expr);
- 
--	nf_conncount_cache_free(&priv->list);
-+	nf_conncount_cache_free(priv->list);
-+	kfree(priv->list);
- }
- 
- static bool nft_connlimit_gc(struct net *net, const struct nft_expr *expr)
-@@ -221,7 +231,7 @@ static bool nft_connlimit_gc(struct net *net, const struct nft_expr *expr)
- 	bool ret;
- 
- 	local_bh_disable();
--	ret = nf_conncount_gc_list(net, &priv->list);
-+	ret = nf_conncount_gc_list(net, priv->list);
- 	local_bh_enable();
- 
- 	return ret;
 -- 
 2.43.0
 
