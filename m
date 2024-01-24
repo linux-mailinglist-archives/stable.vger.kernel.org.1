@@ -1,162 +1,96 @@
-Return-Path: <stable+bounces-15622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF4883A4EE
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 10:10:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 698AA83A4FE
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 10:16:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41F7C1C21C49
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 09:10:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CFB71C22432
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 09:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E151517BB5;
-	Wed, 24 Jan 2024 09:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B24317C6B;
+	Wed, 24 Jan 2024 09:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uedZXKC2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dF3ueRT8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2013717BBA
-	for <stable@vger.kernel.org>; Wed, 24 Jan 2024 09:10:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3EA17C62;
+	Wed, 24 Jan 2024 09:16:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706087439; cv=none; b=TlSlo0GUaRWrbAQkLCIU+fU2Mefj8La0oOCe2qV7TnIDqB12vR2Zi2HTvMmdGcieGxx3Eu+po48qgd9ASrAInm/CbfbcXDxpYmuxgkfK8SpipvRjdL36z+qTfQrGLhbLzwkWWLsN60w8QY5zj++KABAwic3Jx8HIue/030toJSk=
+	t=1706087763; cv=none; b=aVxLQ58Qr8TyXpwzEBpP6Z4DHDsg0NYp11+RWKggxiSFBi2W5Z3RKGc28tEHevW19r27WJJoPhI+y1R7bGilnXikFIKzZFT4hf32tDoCTG2NbQGB+Loc+RV0xK92/7Y/khtol7VSRRPjnpYRdc00Kh2P2Y3wsj9QgaV4t+SBSQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706087439; c=relaxed/simple;
-	bh=VbIlhMmrk27yNKtV56v+KJ/TtRK0LOiHjDYn+JraBwI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=DryksBd2EA9uGuXP3HwOkcv0Onne7Hqd0i5v3hfBLMBu79/9KmjdfJN0sCxSMX9nIPvYuFC61AgxttmzOqU6FQNtMgijZF+JinVWH84gKx59Bzar06dmy5Gbn6q7NkjlZdm5idAcPDfVPWfYcT7EzjUXH4hor3OjD3exjwAvI8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--sebastianene.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uedZXKC2; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--sebastianene.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-40d62d3ae0cso51295975e9.2
-        for <stable@vger.kernel.org>; Wed, 24 Jan 2024 01:10:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706087436; x=1706692236; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=azYCHPhWGygUAZtVjzOnMMNYpv2pTJPs25+3mFpcg14=;
-        b=uedZXKC2+RzmTKjt+Jbqhi1yd/+qzSqxlrk+L9NnuuyiGSGW8iM3rjwskmnOUlrXDE
-         57ccLc1nj4jeDq2zCSqS5h3diAWLu1nyFfj+3Aq5rP7Jq3DrsY+i5slNUgwZKr3XZ29S
-         9b5P0EtcCnNoA80RciwHAL9Kb7+eD1cvGiIq6TO9srUkVIaboubXc9a5gsSZT+OahsP5
-         uL0fl7HaZG0uD1JWPug+/DFtfjyjhihnFQSimV0NvdJsAwRWTK3S5dlacnqlYga9r9Gu
-         92d0uJOlmW9AOw1qiMeG7ZVKNG4VhHgL+kTcOygipqhMnMCTKjc+zTcueVNtu6Wx+PFT
-         QyxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706087436; x=1706692236;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=azYCHPhWGygUAZtVjzOnMMNYpv2pTJPs25+3mFpcg14=;
-        b=XwED7B1HniIP4ZOu5NdAqz9yR2o3Y9XSsBNzBwD0KanTrYFtyhTGrfvotPsN8uYWhV
-         hXMAExOmZqSfBD2GdVXGeH0jsmHu0WNX/qF/I8x7ehaAOjzBFNInZY4cx1PrPfhvvViO
-         k7xa1u6r4p3b2gw6xXlwNbDHfpNYHIih5S2acN9F1hcgSeK/RmoPTzbaHuSPHha4GNS9
-         NwpzPWLpA38k81347drCfmk3/9RBoX+njZdGeXAAwdCNjFRMu/ICWHRWHKww5+LIrq/N
-         9OSBFSbK1scFz0WQ05xYLjCXih2JAMxJVSz7h5vUN8hxYh0Ih6N6Mq9gCX9xkE+Rm1sz
-         yVhA==
-X-Gm-Message-State: AOJu0YyBFlPPUeFjReHeU9l5eBFSpkAIbD06l8C2VqNcVxQYYPykzLLq
-	Jb+7ZHvMpxldSJcLRybP7P5LYe8ZMCEkE8S2KPCC9sOfmvPAeD/7MpijnZVFP1TC/5qmbR+nLx3
-	bpqOhg2Cwk2KkZeCizrnIhY3DvA==
-X-Google-Smtp-Source: AGHT+IHQu8PSyX8X6hBs0OxdOvH6yTQqd8GMOA0f4B5GP1tHJaIbkkEvv2xekuxmDaroKhS0ZGfjPA1hyZX71dbNPJg=
-X-Received: from sebkvm.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:cd5])
- (user=sebastianene job=sendgmr) by 2002:a05:600c:518e:b0:40e:c602:e37d with
- SMTP id fa14-20020a05600c518e00b0040ec602e37dmr8947wmb.0.1706087436115; Wed,
- 24 Jan 2024 01:10:36 -0800 (PST)
-Date: Wed, 24 Jan 2024 09:10:28 +0000
+	s=arc-20240116; t=1706087763; c=relaxed/simple;
+	bh=u1YoV9dyStDKFJT8OsyND/CVnqRL02V+87XbdWXiaXs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ud3ylW13hwYdktyNqIl9X4kZq9zJ2RMRIms/45A40sJzrHHdMflBwN1vZvb5iTherTCmbxnpVTJ2wmDgm0pXzxBr0WXBBjkz52Nqa9t/546drol8ora/2cGp9qGMw0NaiEVTzRaIddqAn9rREmr5EvgxdtllDNdCZH+hYNYOrpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dF3ueRT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B2BC433C7;
+	Wed, 24 Jan 2024 09:15:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706087763;
+	bh=u1YoV9dyStDKFJT8OsyND/CVnqRL02V+87XbdWXiaXs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dF3ueRT8kvAPOXcVLrXdR1DYyiF8NKjD2y87iKoQUH8a0DpKWv3IAVL9D21WDk3Lx
+	 /FHG0MakOEtFq7RmxSLysQkDD02jN//w7T9E5mDjgqsoRtO6URCdbMTPKM75yRIuJR
+	 fqouBzqAstojlXu49s8Oz1huBEU4eHzs39nIO+XgB5BnwJdC8xTuq+Tl+glMj8q3/z
+	 cTTL4jgSx8ADeaUGbpR4kvi4dNGwkpPRZkhJkqFS2Du7lLi1RVH9rj0uTcH2NQZHUM
+	 fsz7kVtut0Wb3oCDFaKp8nBXhUu6j6Rds8ujGOw68plXbYHvBL8wpPxLKIqatpRQYr
+	 dBQ+nL69i9wlQ==
+Date: Wed, 24 Jan 2024 09:15:57 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 000/414] 6.1.75-rc2 review
+Message-ID: <20240124-gawk-precinct-70addd2c5286@spud>
+References: <20240123174510.372863442@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
-Message-ID: <20240124091027.1477174-2-sebastianene@google.com>
-Subject: [PATCH v2] KVM: arm64: Fix circular locking dependency
-From: Sebastian Ene <sebastianene@google.com>
-To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	James Morse <james.morse@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kernel-team@android.com, 
-	Sebastian Ene <sebastianene@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="J6riezYmzZEHjQTm"
+Content-Disposition: inline
+In-Reply-To: <20240123174510.372863442@linuxfoundation.org>
 
-The rule inside kvm enforces that the vcpu->mutex is taken *inside*
-kvm->lock. The rule is violated by the pkvm_create_hyp_vm() which acquires
-the kvm->lock while already holding the vcpu->mutex lock from
-kvm_vcpu_ioctl(). Avoid the circular locking dependency altogether by
-protecting the hyp vm handle with the config_lock, much like we already
-do for other forms of VM-scoped data.
 
-Signed-off-by: Sebastian Ene <sebastianene@google.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
----
- arch/arm64/kvm/pkvm.c | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+--J6riezYmzZEHjQTm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/arch/arm64/kvm/pkvm.c b/arch/arm64/kvm/pkvm.c
-index 8350fb8fee0b..b7be96a53597 100644
---- a/arch/arm64/kvm/pkvm.c
-+++ b/arch/arm64/kvm/pkvm.c
-@@ -101,6 +101,17 @@ void __init kvm_hyp_reserve(void)
- 		 hyp_mem_base);
- }
- 
-+static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
-+{
-+	if (host_kvm->arch.pkvm.handle) {
-+		WARN_ON(kvm_call_hyp_nvhe(__pkvm_teardown_vm,
-+					  host_kvm->arch.pkvm.handle));
-+	}
-+
-+	host_kvm->arch.pkvm.handle = 0;
-+	free_hyp_memcache(&host_kvm->arch.pkvm.teardown_mc);
-+}
-+
- /*
-  * Allocates and donates memory for hypervisor VM structs at EL2.
-  *
-@@ -181,7 +192,7 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
- 	return 0;
- 
- destroy_vm:
--	pkvm_destroy_hyp_vm(host_kvm);
-+	__pkvm_destroy_hyp_vm(host_kvm);
- 	return ret;
- free_vm:
- 	free_pages_exact(hyp_vm, hyp_vm_sz);
-@@ -194,23 +205,19 @@ int pkvm_create_hyp_vm(struct kvm *host_kvm)
- {
- 	int ret = 0;
- 
--	mutex_lock(&host_kvm->lock);
-+	mutex_lock(&host_kvm->arch.config_lock);
- 	if (!host_kvm->arch.pkvm.handle)
- 		ret = __pkvm_create_hyp_vm(host_kvm);
--	mutex_unlock(&host_kvm->lock);
-+	mutex_unlock(&host_kvm->arch.config_lock);
- 
- 	return ret;
- }
- 
- void pkvm_destroy_hyp_vm(struct kvm *host_kvm)
- {
--	if (host_kvm->arch.pkvm.handle) {
--		WARN_ON(kvm_call_hyp_nvhe(__pkvm_teardown_vm,
--					  host_kvm->arch.pkvm.handle));
--	}
--
--	host_kvm->arch.pkvm.handle = 0;
--	free_hyp_memcache(&host_kvm->arch.pkvm.teardown_mc);
-+	mutex_lock(&host_kvm->arch.config_lock);
-+	__pkvm_destroy_hyp_vm(host_kvm);
-+	mutex_unlock(&host_kvm->arch.config_lock);
- }
- 
- int pkvm_init_host_vm(struct kvm *host_kvm)
--- 
-2.43.0.429.g432eaa2c6b-goog
+On Tue, Jan 23, 2024 at 09:47:46AM -0800, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.75 release.
+> There are 414 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
+
+Cheers,
+Conor.
+
+--J6riezYmzZEHjQTm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZbDVTQAKCRB4tDGHoIJi
+0kT0AQCTo0CwghJnmWOVqxcVeqRV1QaioXaPqxVawMNxbpbVigD/VT3aNC8Iybaz
+T+tB3EiSbCDU3fisuhDQcXw0BPk/jgM=
+=G5o3
+-----END PGP SIGNATURE-----
+
+--J6riezYmzZEHjQTm--
 
