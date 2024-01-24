@@ -1,132 +1,162 @@
-Return-Path: <stable+bounces-15621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF3883A4E0
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 10:07:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF4883A4EE
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 10:10:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4AB31C21558
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 09:07:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41F7C1C21C49
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 09:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4154517983;
-	Wed, 24 Jan 2024 09:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E151517BB5;
+	Wed, 24 Jan 2024 09:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TUJx2hii"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uedZXKC2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC8117BA5
-	for <stable@vger.kernel.org>; Wed, 24 Jan 2024 09:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2013717BBA
+	for <stable@vger.kernel.org>; Wed, 24 Jan 2024 09:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706087259; cv=none; b=CZzg1r/MI2/5vzQRqodr5yXVpJ5LR5yqaICUXyuLAYoiwD09PjpeCNv1Le7GExX99C9VDxEiqcez+51YnEj3oiq+mpG8Agt7WkrXVX4PNcjVq8BQH2lZJZLFhErjSsKMvbYpesFZhpo3cK+hfXGZcD7j1bIa3UQ/wAQ3c3KtoIA=
+	t=1706087439; cv=none; b=TlSlo0GUaRWrbAQkLCIU+fU2Mefj8La0oOCe2qV7TnIDqB12vR2Zi2HTvMmdGcieGxx3Eu+po48qgd9ASrAInm/CbfbcXDxpYmuxgkfK8SpipvRjdL36z+qTfQrGLhbLzwkWWLsN60w8QY5zj++KABAwic3Jx8HIue/030toJSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706087259; c=relaxed/simple;
-	bh=IXM6p4NQ5xNMIp+I08MpFl/C4xzL887zpVFg7lffNJQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UWAEIycbG7m4aRFI2O4OI+ZZe7kfiXR2cITQHWnoB8013vs6zZGd9rQHU9MbT5Z2AEYU7aHO0p8ZY/jCEARWqN9Cst+ySJcDoOJSg0mIDhGDvSqbUvUAUFWozo1t9U0MfQ1cZDbBsMtBR8HWrY65jjfqV1UBUMa7KXtEFlHonJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TUJx2hii; arc=none smtp.client-ip=209.85.128.44
+	s=arc-20240116; t=1706087439; c=relaxed/simple;
+	bh=VbIlhMmrk27yNKtV56v+KJ/TtRK0LOiHjDYn+JraBwI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=DryksBd2EA9uGuXP3HwOkcv0Onne7Hqd0i5v3hfBLMBu79/9KmjdfJN0sCxSMX9nIPvYuFC61AgxttmzOqU6FQNtMgijZF+JinVWH84gKx59Bzar06dmy5Gbn6q7NkjlZdm5idAcPDfVPWfYcT7EzjUXH4hor3OjD3exjwAvI8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--sebastianene.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uedZXKC2; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-40e865bccb4so37385e9.0
-        for <stable@vger.kernel.org>; Wed, 24 Jan 2024 01:07:37 -0800 (PST)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--sebastianene.bounces.google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-40d62d3ae0cso51295975e9.2
+        for <stable@vger.kernel.org>; Wed, 24 Jan 2024 01:10:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706087256; x=1706692056; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SI39RK/rWNckwv2r4B917cux2i/pKiQn7x4kFloCx1A=;
-        b=TUJx2hiiFXxEQO9IQO4ITipdfTgUi18peJAvMnVsL8dIUc62kd3gjl7G2/axNg8bNj
-         hbvQknLjtRLLBcscEGmAeRMBuNttn7tAK1jlZrYtTPtOdZP1Mxa6lputKsJ8A756gvmz
-         GQtW+efuCYYLZbKLnU8pSQtDahsa4HOsY8nl3Lv4uJH88Aahjb69eyMF+ZfXpVlOsPUH
-         yEP4EHMTbfVgISteoPGj8rhkK7TlZCy9pAYaYbRP6hTrxXiOhbyNpUppDNJHxo7gdK85
-         do662d5S31U+q/9doKBYhIgicgVzb5cA7QMZ9s9ihmLeG1V1sdtUqLKM5Aas1cxzrFZG
-         2VAg==
+        d=google.com; s=20230601; t=1706087436; x=1706692236; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=azYCHPhWGygUAZtVjzOnMMNYpv2pTJPs25+3mFpcg14=;
+        b=uedZXKC2+RzmTKjt+Jbqhi1yd/+qzSqxlrk+L9NnuuyiGSGW8iM3rjwskmnOUlrXDE
+         57ccLc1nj4jeDq2zCSqS5h3diAWLu1nyFfj+3Aq5rP7Jq3DrsY+i5slNUgwZKr3XZ29S
+         9b5P0EtcCnNoA80RciwHAL9Kb7+eD1cvGiIq6TO9srUkVIaboubXc9a5gsSZT+OahsP5
+         uL0fl7HaZG0uD1JWPug+/DFtfjyjhihnFQSimV0NvdJsAwRWTK3S5dlacnqlYga9r9Gu
+         92d0uJOlmW9AOw1qiMeG7ZVKNG4VhHgL+kTcOygipqhMnMCTKjc+zTcueVNtu6Wx+PFT
+         QyxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706087256; x=1706692056;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SI39RK/rWNckwv2r4B917cux2i/pKiQn7x4kFloCx1A=;
-        b=qgZ6Eg0RMIDank4ws5dB+ILtjSZEQgEkWBB5gF9FIH7vh/j4gcrGwX6qnPSjddA4ic
-         M2qSgpeyPOIHx7k9EfNRVlibW/VjABg6JFxCJlGFnRMxJZiItIgekIwQZEY6THfCnC+I
-         nTLYtJQNIH5DMbiJUHFOmDc/goHbDUyOa7uxdxUCP/Deo+/pZAfaESLxTrX0j+de05nQ
-         3nw2P9p3JVJOlNJbEUk47f+RmW0d1iRCy8vV52owIbuUhHpkOSrVm2ZTi8+QH3qbn/r2
-         uA8KqttInFKgNjKUrEHewbAgzww9aNfmjWdSF2jvxScAUCZysQtaSJxZKoPE62Tyt71T
-         HJVQ==
-X-Gm-Message-State: AOJu0YyK4c3r4Je1AWjBoAuZPhve/E02KNFHIzQueyyEI5+mdngl9lX9
-	wjtn9pTsKLhZQzSHuLVDfW3jh4fiv8jm3yB1/W8dGrJ8aSfS1vVSmULKdChNGQ==
-X-Google-Smtp-Source: AGHT+IG0lrnvSdMVJPjDEKWKykbbZOKABVazci9lTsykpHwLQImNw7JnWtDPfFCpWv5+CfrTrixLkQ==
-X-Received: by 2002:a05:600c:5107:b0:40e:b963:6076 with SMTP id o7-20020a05600c510700b0040eb9636076mr41367wms.5.1706087255568;
-        Wed, 24 Jan 2024 01:07:35 -0800 (PST)
-Received: from google.com (185.83.140.34.bc.googleusercontent.com. [34.140.83.185])
-        by smtp.gmail.com with ESMTPSA id s16-20020a5d5110000000b0033763a9ea2dsm9142555wrt.63.2024.01.24.01.07.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jan 2024 01:07:35 -0800 (PST)
-Date: Wed, 24 Jan 2024 09:07:33 +0000
-From: Sebastian Ene <sebastianene@google.com>
-To: Oliver Upton <oliver.upton@linux.dev>
-Cc: Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kernel-team@android.com, stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: Fix circular locking dependency
-Message-ID: <ZbDTVX1y2bRtJf-G@google.com>
-References: <20240123164818.1306122-2-sebastianene@google.com>
- <Za_43qOnVsCPauEr@linux.dev>
+        d=1e100.net; s=20230601; t=1706087436; x=1706692236;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=azYCHPhWGygUAZtVjzOnMMNYpv2pTJPs25+3mFpcg14=;
+        b=XwED7B1HniIP4ZOu5NdAqz9yR2o3Y9XSsBNzBwD0KanTrYFtyhTGrfvotPsN8uYWhV
+         hXMAExOmZqSfBD2GdVXGeH0jsmHu0WNX/qF/I8x7ehaAOjzBFNInZY4cx1PrPfhvvViO
+         k7xa1u6r4p3b2gw6xXlwNbDHfpNYHIih5S2acN9F1hcgSeK/RmoPTzbaHuSPHha4GNS9
+         NwpzPWLpA38k81347drCfmk3/9RBoX+njZdGeXAAwdCNjFRMu/ICWHRWHKww5+LIrq/N
+         9OSBFSbK1scFz0WQ05xYLjCXih2JAMxJVSz7h5vUN8hxYh0Ih6N6Mq9gCX9xkE+Rm1sz
+         yVhA==
+X-Gm-Message-State: AOJu0YyBFlPPUeFjReHeU9l5eBFSpkAIbD06l8C2VqNcVxQYYPykzLLq
+	Jb+7ZHvMpxldSJcLRybP7P5LYe8ZMCEkE8S2KPCC9sOfmvPAeD/7MpijnZVFP1TC/5qmbR+nLx3
+	bpqOhg2Cwk2KkZeCizrnIhY3DvA==
+X-Google-Smtp-Source: AGHT+IHQu8PSyX8X6hBs0OxdOvH6yTQqd8GMOA0f4B5GP1tHJaIbkkEvv2xekuxmDaroKhS0ZGfjPA1hyZX71dbNPJg=
+X-Received: from sebkvm.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:cd5])
+ (user=sebastianene job=sendgmr) by 2002:a05:600c:518e:b0:40e:c602:e37d with
+ SMTP id fa14-20020a05600c518e00b0040ec602e37dmr8947wmb.0.1706087436115; Wed,
+ 24 Jan 2024 01:10:36 -0800 (PST)
+Date: Wed, 24 Jan 2024 09:10:28 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Za_43qOnVsCPauEr@linux.dev>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
+Message-ID: <20240124091027.1477174-2-sebastianene@google.com>
+Subject: [PATCH v2] KVM: arm64: Fix circular locking dependency
+From: Sebastian Ene <sebastianene@google.com>
+To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	James Morse <james.morse@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kernel-team@android.com, 
+	Sebastian Ene <sebastianene@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jan 23, 2024 at 05:35:26PM +0000, Oliver Upton wrote:
-> On Tue, Jan 23, 2024 at 04:48:19PM +0000, Sebastian Ene wrote:
-> > The rule inside kvm enforces that the vcpu->mutex is taken *inside*
-> > kvm->lock. The rule is violated by the pkvm_create_hyp_vm which acquires
+The rule inside kvm enforces that the vcpu->mutex is taken *inside*
+kvm->lock. The rule is violated by the pkvm_create_hyp_vm() which acquires
+the kvm->lock while already holding the vcpu->mutex lock from
+kvm_vcpu_ioctl(). Avoid the circular locking dependency altogether by
+protecting the hyp vm handle with the config_lock, much like we already
+do for other forms of VM-scoped data.
 
-Hi Oliver,
+Signed-off-by: Sebastian Ene <sebastianene@google.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+---
+ arch/arm64/kvm/pkvm.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
->                                          ^~~~~~~~~~~~~~~~~~
-> 
-> nit: always suffix function names with '()'
-> 
-> > the kvm->lock while already holding the vcpu->mutex lock from
-> > kvm_vcpu_ioctl. Follow the rule by taking the config lock while getting the
-> > VM handle and make sure that this is cleaned on VM destroy under the
-> > same lock.
-> 
-> It is always better to describe a lock in terms of what data it
-> protects, the critical section(s) are rather obvious here.
-> 
->   Avoid the circular locking dependency altogether by protecting the hyp
->   vm handle with the config_lock, much like we already do for other
->   forms of VM-scoped data.
-> 
-> > Signed-off-by: Sebastian Ene <sebastianene@google.com>
-> > Cc: stable@vger.kernel.org
-> 
-> nitpicks aside, this looks fine.
-> 
-> Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-> 
+diff --git a/arch/arm64/kvm/pkvm.c b/arch/arm64/kvm/pkvm.c
+index 8350fb8fee0b..b7be96a53597 100644
+--- a/arch/arm64/kvm/pkvm.c
++++ b/arch/arm64/kvm/pkvm.c
+@@ -101,6 +101,17 @@ void __init kvm_hyp_reserve(void)
+ 		 hyp_mem_base);
+ }
+ 
++static void __pkvm_destroy_hyp_vm(struct kvm *host_kvm)
++{
++	if (host_kvm->arch.pkvm.handle) {
++		WARN_ON(kvm_call_hyp_nvhe(__pkvm_teardown_vm,
++					  host_kvm->arch.pkvm.handle));
++	}
++
++	host_kvm->arch.pkvm.handle = 0;
++	free_hyp_memcache(&host_kvm->arch.pkvm.teardown_mc);
++}
++
+ /*
+  * Allocates and donates memory for hypervisor VM structs at EL2.
+  *
+@@ -181,7 +192,7 @@ static int __pkvm_create_hyp_vm(struct kvm *host_kvm)
+ 	return 0;
+ 
+ destroy_vm:
+-	pkvm_destroy_hyp_vm(host_kvm);
++	__pkvm_destroy_hyp_vm(host_kvm);
+ 	return ret;
+ free_vm:
+ 	free_pages_exact(hyp_vm, hyp_vm_sz);
+@@ -194,23 +205,19 @@ int pkvm_create_hyp_vm(struct kvm *host_kvm)
+ {
+ 	int ret = 0;
+ 
+-	mutex_lock(&host_kvm->lock);
++	mutex_lock(&host_kvm->arch.config_lock);
+ 	if (!host_kvm->arch.pkvm.handle)
+ 		ret = __pkvm_create_hyp_vm(host_kvm);
+-	mutex_unlock(&host_kvm->lock);
++	mutex_unlock(&host_kvm->arch.config_lock);
+ 
+ 	return ret;
+ }
+ 
+ void pkvm_destroy_hyp_vm(struct kvm *host_kvm)
+ {
+-	if (host_kvm->arch.pkvm.handle) {
+-		WARN_ON(kvm_call_hyp_nvhe(__pkvm_teardown_vm,
+-					  host_kvm->arch.pkvm.handle));
+-	}
+-
+-	host_kvm->arch.pkvm.handle = 0;
+-	free_hyp_memcache(&host_kvm->arch.pkvm.teardown_mc);
++	mutex_lock(&host_kvm->arch.config_lock);
++	__pkvm_destroy_hyp_vm(host_kvm);
++	mutex_unlock(&host_kvm->arch.config_lock);
+ }
+ 
+ int pkvm_init_host_vm(struct kvm *host_kvm)
+-- 
+2.43.0.429.g432eaa2c6b-goog
 
-Thanks for the suggestions, I updated the comit message and I will push
-a V2 of the patch with the above and the Reviewed-by tag.
-
-Thanks,
-Seb
-
-> -- 
-> Thanks,
-> Oliver
 
