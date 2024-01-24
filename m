@@ -1,95 +1,261 @@
-Return-Path: <stable+bounces-15652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8A783AA94
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 14:04:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF9283AADC
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 14:24:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F14171C278AC
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 13:04:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1625F28D38D
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 13:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC06077642;
-	Wed, 24 Jan 2024 13:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8321177F0E;
+	Wed, 24 Jan 2024 13:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L4f9jGSb"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mKI2mq6y"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009D877649
-	for <stable@vger.kernel.org>; Wed, 24 Jan 2024 13:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1540F182DB
+	for <stable@vger.kernel.org>; Wed, 24 Jan 2024 13:23:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706101444; cv=none; b=PmnAUHt5MKLsGxnvC6KwVH3kd8wXwdk9aDCgz2cko023JAoA3Fv6RC4xiUgICbA0TgwZGmL1HI2Q0pnUfq7hKgrXUQ5H/Epr3DOA93HNPhLnbBPowi2hrvFSOlXUW1mVXkAo/zV5z81B2aDkwQAkFyzpKbFxW78ShPF/xA1iHBk=
+	t=1706102641; cv=none; b=uWq6LhUOPZ9Df1eoeLtTWRzyxmgHXQ/Hg8f1KccfPONJ5nIWi/8H8ThD8c9p6qS1o6WZhDhB8/aku2pt7aMRh5wyiK80RcHHXyeYztLnErCHecgjSlGuFx6aGYdrakX18/2laWpRxXzAFLrAMRD0egyN1jobkZax2F+KFFePzVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706101444; c=relaxed/simple;
-	bh=VyGwH/KUq3kjku0BaQpnemZn9qYFyPLUdaFVVhGkB70=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=YaH+6xieBgIw5POz3NxgQ3zEQ5h4f5W70pJ3i6q81+Kasf2yd0X7vxYfAFwRdhXoXvu2IEqr6/x4deFqllEjlQ4xBtRr9wFgMEPGAMZ4kn9/5wm5nXrLHVMTRN8u9fw/tSL+ubMeaNmKEdksZ5VyQB33V+ksasGH8wu43+cbQvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L4f9jGSb; arc=none smtp.client-ip=192.55.52.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706101443; x=1737637443;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=VyGwH/KUq3kjku0BaQpnemZn9qYFyPLUdaFVVhGkB70=;
-  b=L4f9jGSbW04qj87K7+Konnc4QhzryaqBz7x/3ZsP78HotCJP6M0d4F8o
-   0dQJDZHcOzxvLcsIKhIj8VtT1SwJRI4NLiX1DNApLQkrudB4zARH+MpFE
-   UgJHXo6dgT5P//s0hPsgsXSJC7s07qPSHtlGUH7tX+eUi0n+IOoL0M0KR
-   CDhCssRwV/7bDsYC4e6ASBtS6Kkyt7a3YyZPgbeqPP7xyIjkJ85sAZx1Q
-   fEMvCwjLUb/J8CcxTdrQkzDMsKSaa3GN1g/W8nFuBd+E+lgsCOQ2wDRlA
-   JM+J6sDojXnE4dlIS/qlXDWZo8IvXlULwN+KFPwx69ArxJMnkw/wMOaEt
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10962"; a="401496584"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="401496584"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2024 05:04:02 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2019278"
-Received: from lkp-server01.sh.intel.com (HELO 961aaaa5b03c) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 24 Jan 2024 05:04:01 -0800
-Received: from kbuild by 961aaaa5b03c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rScv9-00086j-0c;
-	Wed, 24 Jan 2024 13:03:59 +0000
-Date: Wed, 24 Jan 2024 21:03:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mahmoud Adam <mngyadam@amazon.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 2/2] fs: move S_ISGID stripping into the vfs_*() helpers
-Message-ID: <ZbEKpvaVHrsXzISK@6c5a10f2f1e6>
+	s=arc-20240116; t=1706102641; c=relaxed/simple;
+	bh=iWZac+ZaEacF+KvqnPyM6HfqTzttijNbXBaymdeQFPQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nat2peEiYN+TLT0s9s+FV7U9OZyjG70P9XHJFZNPnkfmeWArGm0DgM+yjwT8RcRJvgFqWJz2XbtqmDz3vGYqCfcQ7GXe3faKBYW5pT85Z+knZSdCkr8ga3ZV6u4S2aBmr/KM0CcWqEMDN/rL05l2j5Kim2hJ7vs1/x4O8x1Pu4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mKI2mq6y; arc=none smtp.client-ip=209.85.221.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-4bd302ce55eso268488e0c.2
+        for <stable@vger.kernel.org>; Wed, 24 Jan 2024 05:23:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706102638; x=1706707438; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=02kXXgSqM3f0wcrI/acHfP6E2HHPpWGNtsvRtk7S0yo=;
+        b=mKI2mq6ykMRuz96Tq9ilzvXDBu34Ea7YG8doPKu5+U2eiVA2CD6XhBdFtHolVXBg4y
+         wg4ZoUWg0pHFMpaq9rLHlphEiIGc4HGbq1CShHc4Tu+UTEX/DdRFt4GT4B1JUEJKIyIC
+         XdVkjHLrZgArUzuyZymv10/yj9Q8RM4N3SCWJ09H7/6iQkm5nRHB8un/j6azeB2cd/FC
+         JYq+jvTRgo5WTrqbxjsq8yJ7bUrrs5D4gUxstmknKkb6YRLzy7wqStVdM9n159Xm+Ees
+         ZkSRi7u9bXwG2Rx7zb79ewK/DbK03QP4n3OubrgXVWWcXr6jKsuuJ24o735Dq7FrAMn3
+         7rww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706102638; x=1706707438;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=02kXXgSqM3f0wcrI/acHfP6E2HHPpWGNtsvRtk7S0yo=;
+        b=aRqlIs8XyuUnLFd2VV1MQwtFR/4/iDMV1uNfWZqxFs9WMRujplwcrc2h3LTssXho1o
+         ETcczbjFyr2w1YWKTxX+hXnOi8Hou1Q9Ldb6AkzNeP4iHwCCd2Gk1OFh42Z9RJQDExwS
+         tXdk18NcJNezxDEaDiWm4lQHnc6R/9RI0K8O9QR0wy/f4L0uNg/hyhxVd1WDa+l30NkG
+         Ps7VXmMiSpQJCX3o2bXPNo9DfLRsHPYhkol043HhMngKGyEoNMYgFemwoZs8unHaTYJp
+         h7YJhanoDjO8s63/nzMccDLiYancRb+9CxjVvSpN3Kvd4shia+pz7S3oWf1pUnOHsZjU
+         GC9Q==
+X-Gm-Message-State: AOJu0YzOEvp2V7hRbrZyhpTUEKXR/mh2TdlainVL6qQRqk/8nQwK7yw7
+	zuEO/UGbBGKRSkG/OBP0T09aJr59MS/nlxxvCytA8YgYzi1hYzTLeI4M5HQuWjD3FvTYKlcqppT
+	dJdvw6dQ17qHcXmlUQyn/B2DTyfM3AE6GdEUnAg==
+X-Google-Smtp-Source: AGHT+IFH+XBA9wdCSOw1u5qUmb6O+RjCCUttprLGBuYUvW/Qx2Oj2rYBLNR6xNbkGma97W1xgWndI38Q6iyL8lz/wh0=
+X-Received: by 2002:a05:6122:a0f:b0:4b7:8e5a:ed86 with SMTP id
+ 15-20020a0561220a0f00b004b78e5aed86mr2395856vkn.29.1706102637932; Wed, 24 Jan
+ 2024 05:23:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240124130025.2292-3-mngyadam@amazon.com>
+References: <20240123174533.427864181@linuxfoundation.org>
+In-Reply-To: <20240123174533.427864181@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 24 Jan 2024 18:53:46 +0530
+Message-ID: <CA+G9fYsg4b+QF_X-GaJt1wENoEMxokx4RFoOGbjJ3-PHE6c_cQ@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/580] 6.6.14-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue, 23 Jan 2024 at 23:17, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.14 release.
+> There are 580 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 25 Jan 2024 17:44:18 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.14-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Thanks for your patch.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 2/2] fs: move S_ISGID stripping into the vfs_*() helpers
-Link: https://lore.kernel.org/stable/20240124130025.2292-3-mngyadam%40amazon.com
+## Build
+* kernel: 6.6.14-rc2
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.6.y
+* git commit: 86b2b02ae53b684a71d629c5ae2511c2e0d0f675
+* git describe: v6.6.13-581-g86b2b02ae53b
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.1=
+3-581-g86b2b02ae53b
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+## Test Regressions (compared to v6.6.13)
 
+## Metric Regressions (compared to v6.6.13)
 
+## Test Fixes (compared to v6.6.13)
 
+## Metric Fixes (compared to v6.6.13)
+
+## Test result summary
+total: 153830, pass: 132159, fail: 2244, skip: 19241, xfail: 186
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 145 total, 144 passed, 1 failed
+* arm64: 52 total, 49 passed, 3 failed
+* i386: 41 total, 40 passed, 1 failed
+* mips: 26 total, 26 passed, 0 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 36 passed, 0 failed
+* riscv: 25 total, 24 passed, 1 failed
+* s390: 13 total, 13 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 44 passed, 2 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
