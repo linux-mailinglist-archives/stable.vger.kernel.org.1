@@ -1,94 +1,147 @@
-Return-Path: <stable+bounces-15608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8AA83A0D7
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 06:02:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3EC583A19F
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 06:56:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B44861F221CA
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 05:02:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D98011C22E5A
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 05:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55B6C2D3;
-	Wed, 24 Jan 2024 05:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E82E57A;
+	Wed, 24 Jan 2024 05:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="oPWAa+Sg"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Rq0W828s"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152EF53A2
-	for <stable@vger.kernel.org>; Wed, 24 Jan 2024 05:02:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D42816428;
+	Wed, 24 Jan 2024 05:56:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706072524; cv=none; b=kt80gsyMiV6/MbdnoHhKJthpSbRymCw3PQKuYqPt++LsFRRutYAvT0cbWTAGk7t+ts5ZWXUt24pq2Rdp8SLEWwcZ9LVlyD/16OjSHgYhMzAwiNXGjCmsvgktgbTFP/KGyvPr/Wa8NkrG/QsVTlzlYYnF1QJGK3ToXn9DAW2/BWo=
+	t=1706075792; cv=none; b=PyVWvwEc5eQKfzjZOJus4lH66dXjq722uO1XXB8coQ6MqussoKFVMD3x2gDjyVJMK34IsEbOtDNHT+l6vfjwG2uFjlt5es4HHBjgqRDnrMLfmxf2jmmrmZeqaTar+xWO88h82fUsORU63j8TtHfCFwQoeAABy6p2P7Q55mb/JcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706072524; c=relaxed/simple;
-	bh=P8Myk5NoiglvmRQr4TYEDuB/iWUXak4rWOVWrcE8weo=;
+	s=arc-20240116; t=1706075792; c=relaxed/simple;
+	bh=U7AxjWtl76YYVN9AAQAMePamqK7lCwTpHiJ55ysuw5Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KDdmD16xt+QJXIdEEzblv/VPsWv6/Cr2BRnt98u7Mvr9gBcRCfFiqC34wW43AC4htoWuQCHa77f76mdPM8zlhmljVHjWNHxBJh1MF5JFtR1wsCpTcmEhwD+bNZQpSyUTyX9EFYs5wqPLfZkcI+VhROgycpyNR87t7yn2KzDcY9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=oPWAa+Sg; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=dM8PzBTTni6ZPdoQBjm+7nvGl/T2wkEHPjdqyFS7UPE=; b=oPWAa+SgI0mcod0jIinUiLcood
-	FX5ybPXLogPG5x59YeWE7oN+FfIYKl3FLsNfoxsYpygnLpROXotxDwbV4oueKcFqDRjv+TI/hO1Ri
-	5x4qCaJ6ALn2Fp9svqfH0ReMoSmhtq7JrCs/8RFNTXn9USvcbKbYeHAmTY1ZAuoTzjMOJ3Il9tXgh
-	9/JkfxucQWFQ3AmJtX5EDwJ5Psn711juDLb4flB+12Qzw1yW5XhmY9BK1951aQsBhW7upRLkYuF9Q
-	msGuZP7VyTPajyxFySUroeCFliwgS7yOOKtXs5wbNpci8IZ9TiSEkTyEb8IUy4Ujen5WIRr2UfxCV
-	JTm/i7tg==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rSVOh-00000005Rck-0S07;
-	Wed, 24 Jan 2024 05:01:59 +0000
-Date: Wed, 24 Jan 2024 05:01:59 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Zhihao Cheng <chengzhihao1@huawei.com>
-Cc: Richard Weinberger <richard@nod.at>, linux-mtd@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 01/15] ubifs: Set page uptodate in the correct place
-Message-ID: <ZbCZx10_Yj-TlSdM@casper.infradead.org>
-References: <20240120230824.2619716-1-willy@infradead.org>
- <20240120230824.2619716-2-willy@infradead.org>
- <5ad7b6ed-664b-7426-c557-1495711a6100@huawei.com>
- <Za5-UJU0tqT9CYQj@casper.infradead.org>
- <f96965c0-8464-c12c-7e5c-95ba74d10b7d@huawei.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CgerRX6AJLeQ0NW7henO4Ql3TdCpLD6Kb2k6Bd1l7hMbgKSQWZ6guDhQSzzGaebk0asKqyzQ7kyVEqZa6BNduQzV0MvL/XUVqjJeznuAFzo0NZ+BEtyb2LSegMpyvLxrJdtgaRgEJTctp6gcZggO4ndSGyT7sxcIjqdowwj/FXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Rq0W828s; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40O5fNUB006082;
+	Wed, 24 Jan 2024 05:56:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=tmGJ2Whbetk9jP/5DWFCYsWaq8KXKVaywMbIOCxezE0=;
+ b=Rq0W828sSVJPRtwhxNgKxvyXVXU3iG4YkjTr5GABDCSgBWXHkrdsqEPUPsiIfkDsZMTE
+ O8zje0SDdaCf/XBTtOA56bT2Xg5+yl19GzPhJx2OkEW79YSyBZEAClAD856ZGxW7edR6
+ NJHrk5PJ8WQ2rWfoBpv7EL8J42l7uMt7K/Iz6LPsNpDyvQXlg7plcWScXkGYd49fViO2
+ MYoNrGXgKrdTFQbaH3umC8+UJyqeXXiCaGohW82O6RgRXoE81h9ov6+1TcMuRICq2PQV
+ b1/t4gU+536XSqueSm+HtYgWSxQnRMcz5H6G7C2RTRMvH9IPDisvL95dMfOdt/emBP/7 rw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vttepb2mc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jan 2024 05:56:22 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40O4qv2K023794;
+	Wed, 24 Jan 2024 05:56:22 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vttepb2m6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jan 2024 05:56:22 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40O4QBBa022429;
+	Wed, 24 Jan 2024 05:56:21 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vrt0m3ugy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jan 2024 05:56:21 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40O5uJ8t23921156
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 24 Jan 2024 05:56:19 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3ADAA20043;
+	Wed, 24 Jan 2024 05:56:19 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4805420040;
+	Wed, 24 Jan 2024 05:56:17 +0000 (GMT)
+Received: from li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com (unknown [9.109.253.82])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 24 Jan 2024 05:56:17 +0000 (GMT)
+Date: Wed, 24 Jan 2024 11:26:14 +0530
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+To: Pavel Machek <pavel@denx.de>
+Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Ritesh Harjani <ritesh.list@gmail.com>,
+        "Theodore Ts'o" <tytso@mit.edu>, adilger.kernel@dilger.ca,
+        linux-ext4@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.1 08/14] ext4: enable dioread_nolock as default
+ for bs < ps case
+Message-ID: <ZbCmfu90bKwA2Xvq@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com>
+References: <20240116010642.218876-1-sashal@kernel.org>
+ <20240116010642.218876-8-sashal@kernel.org>
+ <ZabrcCOi/hIsKk5I@duo.ucw.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f96965c0-8464-c12c-7e5c-95ba74d10b7d@huawei.com>
+In-Reply-To: <ZabrcCOi/hIsKk5I@duo.ucw.cz>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: -c33VtLZ1QNIZt1TzvKhfdFqaML-_uX6
+X-Proofpoint-GUID: zSxOjyDFyk1hjVt9Vp2rG_mXURwFjid8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-24_02,2024-01-23_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=1 impostorscore=0 bulkscore=0
+ malwarescore=0 priorityscore=1501 adultscore=0 spamscore=1 clxscore=1031
+ phishscore=0 suspectscore=0 mlxscore=1 mlxlogscore=190 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2401240041
 
-On Tue, Jan 23, 2024 at 10:36:14AM +0800, Zhihao Cheng wrote:
-> 在 2024/1/22 22:40, Matthew Wilcox 写道:
-> > On Mon, Jan 22, 2024 at 03:22:45PM +0800, Zhihao Cheng wrote:
-> > > 在 2024/1/21 7:08, Matthew Wilcox (Oracle) 写道:
-> > > > Page cache reads are lockless, so setting the freshly allocated page
-> > > > uptodate before we've overwritten it with the data it's supposed to have
-> > > > in it will allow a simultaneous reader to see old data.  Move the call
-> > > > to SetPageUptodate into ubifs_write_end(), which is after we copied the
-> > > > new data into the page.
-> > > 
-> > > This solution looks good to me, and I think 'SetPageUptodate' should be
-> > > removed from write_begin_slow(slow path) too.
+On Tue, Jan 16, 2024 at 09:47:44PM +0100, Pavel Machek wrote:
+> Hi!
 > > 
-> > I didn't bother because we have just read into the page so it is
-> > uptodate.  A racing read will see the data from before the write, but
-> > that's an acceptable ordering of events.
-> > .
+> > [ Upstream commit e89fdcc425b6feea4dfb33877e9256757905d763 ]
 > > 
+> > dioread_nolock was originally disabled as a default option for bs < ps
+> > scenarios due to a data corruption issue. Since then, we've had some
+> > fixes in this area which address such issues. Enable dioread_nolock by
+> > default and remove the experimental warning message for bs < ps path.
+> > 
+> > dioread for bs < ps has been tested on a 64k pagesize machine using:
+> > 
+> > kvm-xfstest -C 3 -g auto
+> > 
+> > with the following configs:
+> > 
+> > 64k adv bigalloc_4k bigalloc_64k data_journal encrypt
+> > dioread_nolock dioread_nolock_4k ext3 ext3conv nojournal
+> > 
+> > And no new regressions were seen compared to baseline kernel.
 > 
-> I can't find where the page is read and set uptodate. I think the
-> uninitialized data can be found in following path:
+> But no fixes, either, so not suitable for stable.
+> 
+> BR,
+> 								Pavel
 
-You're right; thanks.  I'd misread the code.  I'll send a new version in
-a few hours.
+Hi Pavel, Sasha,
+
+I agree, this can be dropped from stable since it is not a bug fix.
+
+- ojaswin
+> 
+> -- 
+> DENX Software Engineering GmbH,        Managing Director: Erika Unter
+> HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+
 
