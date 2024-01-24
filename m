@@ -1,111 +1,119 @@
-Return-Path: <stable+bounces-15718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4B483AC88
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 15:56:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D62A83ACB6
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 16:04:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C380929D23F
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 14:56:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D280B30511
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 14:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6157A70B;
-	Wed, 24 Jan 2024 14:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8256D80059;
+	Wed, 24 Jan 2024 14:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="X6wbqruh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pcrc1w12"
 X-Original-To: stable@vger.kernel.org
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB84323C9;
-	Wed, 24 Jan 2024 14:51:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB7D133408;
+	Wed, 24 Jan 2024 14:31:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706107889; cv=none; b=e2LBfMknXpok0VWdvJCwahO5nr56ZhePnwBFVf/TD+0Q3FjgXoSf+WQORxg4tZd3quHklYd7up7dd4oF1oOGlIUu4wDUjqmTlh3ryrVpgg4thcUwenNWr3HtVnUkO2dnx6lqSMK/ncWfab/1Tc/7OyRBEqXSeboezcg/UXLhQQc=
+	t=1706106670; cv=none; b=YbY9rjJd5kBkEYjM1Q15BNkUYfCVeQVyppaoqycv+oHiTr8M/k7pch/1c9ECAKaV8wZJvK+r6ju5Qhm3YNq94hQbbacwAR9FO7eJztKt8Czxf2GugzuD9ZZOUFFphsVD+JMY/sJ+lYMOecyvbofqKA22KbP43EdAe6f+AYwRhR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706107889; c=relaxed/simple;
-	bh=24wJJWVUh2cZb1nXQXw4kmreJhJJdyXf+GeakqvGMdY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EEEPdYI1vRDAkO/KUnsfGs6J8mx02qniAdGXqrfpJH0K+CdzPjovQd520B/VS4tgdvQVC32zfbPSN/ZJzW4ShiJCbW8PdnWsc51CW1o4HwalDCHCWar3MMtis1X4a6mYspj111+RW3hXzntxTQHm2igQabwZMGv9wmNUgQLTIwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=X6wbqruh; arc=none smtp.client-ip=188.40.30.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-	s=default2211; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:
-	Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References;
-	bh=s48UK9/txojh0jP006gnClU0QGtWU0AZknMA7NCP1qs=; b=X6wbqruhAC9y80cXiNvdROZnFE
-	slorrNyyr70EfUee+kPi1OzkuDOHpdN1b+iXK95JJ7d04D7rqY5sGiZS/Hzq9Uk0yyk/ofm9SHaV7
-	Zybr9hEvECyWPnkrui/U2iGj4W4B+0xtuzYI/cfufrKSOLZ7MLjicm6lgTSeIRq9+BC4NIaSGjfe/
-	65m9cGr+KUz2Tk/eVAhtH8ZMal8vWAfmupnLtX+CHewTTCuz7GGLwOjTrRGLKK7Px3H5WEcn04cjX
-	MQMqSuarP3Fs9fOZc984VQbsTPH1Roq2kk44sRaM5Phl9iIePsVrEYWUXJHRx1fpb7KJ1H0Qlcx7c
-	0lrqTswQ==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <esben@geanix.com>)
-	id 1rSeJF-000NYX-2A; Wed, 24 Jan 2024 15:32:57 +0100
-Received: from [87.49.43.79] (helo=localhost)
-	by sslproxy01.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <esben@geanix.com>)
-	id 1rSeJE-0006ur-80; Wed, 24 Jan 2024 15:32:56 +0100
-From: Esben Haabendal <esben@geanix.com>
-To: netdev@vger.kernel.org,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Christian Marangi <ansuelsmth@gmail.com>
-Cc: stable@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/3] net: stmmac: do not clear TBS enable bit on link up/down
-Date: Wed, 24 Jan 2024 15:32:55 +0100
-Message-ID: <b365dc6f756a3fad4dfaa2675c98f4078aba8a55.1706105494.git.esben@geanix.com>
+	s=arc-20240116; t=1706106670; c=relaxed/simple;
+	bh=dl/3vhP3zejMllHvmLYvYOw5m5EEgJw9wE42GLwzKw4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jkNBGGs4mRw9/Qj5P7o9ddTUujT6cXxbpifFhCSarqIA94sNJpnF0vtuN36OVCpVXcPQUUK+Yq7thqwarxvQGfRgEBYU7a0R9454DUUXjJ3DvZ+uR0OHVFd3YqaAuYXOz3mb8UqhjzIqclX5v/eFbX7zYFgb1VELc+dCa6fbYxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pcrc1w12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4228C433F1;
+	Wed, 24 Jan 2024 14:31:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706106670;
+	bh=dl/3vhP3zejMllHvmLYvYOw5m5EEgJw9wE42GLwzKw4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Pcrc1w12VGGRATcUuFM25+8+sFhnzIbxipOPNRW/FM1MUGk7Cx5aq7M4MrBznftu7
+	 wajUwILAtUMpTEIlQg7dWuq/gsQWKZukl2ES8DrwbY1IFZulX/V0vmz9NYAGGS+lnC
+	 fXqDW7VILJcyTjTwAM/YyZDF8Ar3puAnnkeTrkkpapNAOyYBge5jJmpcKZS397Y/Gu
+	 x2SQTyibIv5jNTJXAUD1dQjiUF8N6afN1iJhCDCdkKJTn9PamWz7AjzAQ7D7y9b2sF
+	 0L7im5SYhYxMHlhkk+bgL8Js0oSxszwkzs+9ZonGMTL3jWuIDRm6P1U9IovooX18kQ
+	 re/BQpVGacKbw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Richard Weinberger <richard@nod.at>,
+	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
+	linux-um@lists.infradead.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.10 4/7] um: net: Fix return type of uml_net_start_xmit()
+Date: Wed, 24 Jan 2024 09:30:45 -0500
+Message-ID: <20240124143057.1284274-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240124143057.1284274-1-sashal@kernel.org>
+References: <20240124143057.1284274-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.10.208
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: esben@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27164/Wed Jan 24 10:45:32 2024)
 
-With the dma conf being reallocated on each call to stmmac_open(), any
-information in there is lost, unless we specifically handle it.
+From: Nathan Chancellor <nathan@kernel.org>
 
-The STMMAC_TBS_EN bit is set when adding an etf qdisc, and the etf qdisc
-therefore would stop working when link was set down and then back up.
+[ Upstream commit 7d748f60a4b82b50bf25fad1bd42d33f049f76aa ]
 
-Fixes: ba39b344e924 ("net: ethernet: stmicro: stmmac: generate stmmac dma conf before open")
-Cc: stable@vger.kernel.org
-Signed-off-by: Esben Haabendal <esben@geanix.com>
+With clang's kernel control flow integrity (kCFI, CONFIG_CFI_CLANG),
+indirect call targets are validated against the expected function
+pointer prototype to make sure the call target is valid to help mitigate
+ROP attacks. If they are not identical, there is a failure at run time,
+which manifests as either a kernel panic or thread getting killed. A
+warning in clang aims to catch these at compile time, which reveals:
+
+  arch/um/drivers/net_kern.c:353:21: warning: incompatible function pointer types initializing 'netdev_tx_t (*)(struct sk_buff *, struct net_device *)' (aka 'enum netdev_tx (*)(struct sk_buff *, struct net_device *)') with an expression of type 'int (struct sk_buff *, struct net_device *)' [-Wincompatible-function-pointer-types-strict]
+    353 |         .ndo_start_xmit         = uml_net_start_xmit,
+        |                                   ^~~~~~~~~~~~~~~~~~
+  1 warning generated.
+
+->ndo_start_xmit() in 'struct net_device_ops' expects a return type of
+'netdev_tx_t', not 'int'. Adjust the return type of uml_net_start_xmit()
+to match the prototype's to resolve the warning. While UML does not
+currently implement support for kCFI, it could in the future, which
+means this warning becomes a fatal CFI failure at run time.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310031340.v1vPh207-lkp@intel.com/
+Acked-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/um/drivers/net_kern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index a0e46369ae15..691bf3ef5e30 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3932,6 +3932,9 @@ static int __stmmac_open(struct net_device *dev,
- 	priv->rx_copybreak = STMMAC_RX_COPYBREAK;
+diff --git a/arch/um/drivers/net_kern.c b/arch/um/drivers/net_kern.c
+index 1802cf4ef5a5..ee55333255d0 100644
+--- a/arch/um/drivers/net_kern.c
++++ b/arch/um/drivers/net_kern.c
+@@ -204,7 +204,7 @@ static int uml_net_close(struct net_device *dev)
+ 	return 0;
+ }
  
- 	buf_sz = dma_conf->dma_buf_sz;
-+	for (int i = 0; i < MTL_MAX_TX_QUEUES; i++)
-+		if (priv->dma_conf.tx_queue[i].tbs & STMMAC_TBS_EN)
-+			dma_conf->tx_queue[i].tbs = priv->dma_conf.tx_queue[i].tbs;
- 	memcpy(&priv->dma_conf, dma_conf, sizeof(*dma_conf));
- 
- 	stmmac_reset_queues_param(priv);
+-static int uml_net_start_xmit(struct sk_buff *skb, struct net_device *dev)
++static netdev_tx_t uml_net_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct uml_net_private *lp = netdev_priv(dev);
+ 	unsigned long flags;
 -- 
 2.43.0
 
