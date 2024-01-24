@@ -1,119 +1,128 @@
-Return-Path: <stable+bounces-15730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E09283B10D
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 19:24:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A900E83B0DD
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 19:20:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D385B34D3E
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 17:53:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 163B2B35E15
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 17:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A22612BE87;
-	Wed, 24 Jan 2024 17:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D793512AADD;
+	Wed, 24 Jan 2024 17:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VejsDasd"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GpzadNX7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94917E764;
-	Wed, 24 Jan 2024 17:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D217281ABA
+	for <stable@vger.kernel.org>; Wed, 24 Jan 2024 17:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706118652; cv=none; b=UcqNy75aO48UFYw6QtKoblE8DdT59WPXe3FEZd6ONdoUbVs1IIMeb2Ww9Am/UJi4TdVFqKMxu7ghKeBVomgmWPyA6HIiJ409VEZ+pSLEzVlUSZ6YXY9r9T1IfaWWVedzXf7g5hdsSdvtfMwKb22dUcCXv5BIatzgYRQokG2eQLg=
+	t=1706118791; cv=none; b=etlRCPYQh0S+TrLZGijcwbAgMDfKTaF2HMJqQZkc9KoUGS17RtrGfXv0xvvAZEvrbpvbK/e7Qd2VRPSvdYWvAnyKVEZTcEft3Hb/qphtai09mnK3c68NA7/hHRsHTA+XqeNTXquOMumuUfz+nUlzPCwkpYyVAKjXyuAT1tyJlKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706118652; c=relaxed/simple;
-	bh=zmpMtbPNi11VZtlC6OMkLjiOFt4LIwYNYu/Xb3aM49c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B/GZj6HjfYROjIZ3c39Q0GiSkqN2aIrkgVV/9W7ny7crYMkrDQyE5P+iM3k/TQMQT9GeJL7/i4UAcpZDeBEINTex9B0GiinLyxbU29BVtJ1kqLewTg0oCcT7oeQVpWp7GeCs2xReSTzAhGx4DPIsXAyI+cLqfdaAC+p/g2/X8IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VejsDasd; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-783137d8049so479997385a.2;
-        Wed, 24 Jan 2024 09:50:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706118649; x=1706723449; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mV/Ca+SH/xfxgnTjXdWX10lc/dyq1IqSKNfOcSnfkFc=;
-        b=VejsDasdff59RUJATFdEDIyfjqTkzCG94r3lTz9Ps2TnR2rf1XkWRwo1GlNiTRfd6C
-         XnwJFqcHWVwCBGIT8Cq3qDwfIw1NewsjsJrzq62k5xeuwJ05Yijuf1UqOdwAtCjqBSXz
-         vj7GBgUjpygCjWpbhvcNdZyEfV7OOxIvu96s3bptN2zqDa+QbhrDGjww07P5AavquuMp
-         939wdD8ki6PDPrEzS/W7/qV7Y9bNe4LXsFF4APknDNSjvHuCm50V/4KPiQfzh8jSa7eg
-         M/k3eDND/SkQzLd3NHqdTyuDKYeQ7q+Ut8ZTJ4sd/pUtsnJbiPZ2nRwVyZJsU8IhtXst
-         oh1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706118649; x=1706723449;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mV/Ca+SH/xfxgnTjXdWX10lc/dyq1IqSKNfOcSnfkFc=;
-        b=JSa0JmcQ3dMlPjI7fxeQPKlkf51o8YIDRD4IE6DWBmWYG28qoKzOeCO8S92ZsgcdPi
-         jJOPwf6qp5UIn+E2ygyHaC6/HO9z7OHYSzrHqn13Uya0snGisIQWHkEmyI2PL60MNA7x
-         sfdff6smwNE22ptkgq6HPIEjCMW18o2JWMGctkWfqjnymgwXMCEL5ZsB/GXHtpGqODiM
-         y3/G5cDk2azZNK8yctP/hAn7okNRWfIUrwladQLB8vC8w0LnBPAUZEmgZdiWGGNYR4y+
-         A+IVl3reBMc02Ec0NxL7ztKpBwcv+XSNMkbQG9C5/abH4q/vwrcbZJYVufjv7scOpK93
-         29DQ==
-X-Gm-Message-State: AOJu0YwriS4SR5cZXkpT3uErOBw11wsnWqepuqBD3kbE1ZlTp6JhTmC0
-	vrxzRLPW3J+P/ppNv12xGLheA0wG2AMeMdCwQNPWoIDuHsuw5Ps5
-X-Google-Smtp-Source: AGHT+IHbcuCuw0k1Q4GLr7cIkKxGbFEY+cx8KBkgDCxdC9f5fRfvBRz8LAbmIQf/xPV8AMaZMIJ2gQ==
-X-Received: by 2002:ad4:5dec:0:b0:686:acd2:9b60 with SMTP id jn12-20020ad45dec000000b00686acd29b60mr1685402qvb.46.1706118649605;
-        Wed, 24 Jan 2024 09:50:49 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id d15-20020a056214184f00b006819a4354basm4705402qvy.37.2024.01.24.09.50.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Jan 2024 09:50:48 -0800 (PST)
-Message-ID: <95210b70-38e6-4d7c-acb9-d2681261f8c7@gmail.com>
-Date: Wed, 24 Jan 2024 09:50:46 -0800
+	s=arc-20240116; t=1706118791; c=relaxed/simple;
+	bh=PbRocE61KW0yDkiOR60kDrwRlsBBjr5ay8hv50KUPTE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aQ4rxUQrOkt67szo89IKE1/QxIwGX/AkhQSYp48VZB5XkAfRtcBbwmuEpG5+8zcKQzAwR9hoOawIc47KjWT2XD4eHzrJw2BNkWJve22SRt7Pv+dIfBzdtG9vboh5JQs0sb2YcephYX/p9I0fUV2BT9kOoDLGH5gayJcdXMVQ6RM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GpzadNX7; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=4BLcXtunv8K55EIbLY6Cz+Ba9KEcTs01x6W2txMgvd4=; b=GpzadNX7vKAg0W1zJQWMGP7nCA
+	hAnJIOYgyBkTKcMI2XJly6GLL1gfJal3ppuBSXC2I7G3rXSvMwhZdSysVwJkg8b7XeGLtvJIhO51R
+	bBD4ZFNAwtKm6d4N5PdxWgFxE2et9YXSw0a8leQbv8KBQ/KmTnFRZvfrhkKmkX5zsnONCs5sGsskR
+	9lEb1/MZRDfTZ77H0QdkNIlaOJ7dHF4rPrMWfyg1anktS/AxY7xYAkgNQi0szLNBCvNB14vJicKou
+	vvS0PPM/+9thoNkE+N5R+w0tfm6TPL0lmi2dMod1Fbp9fFszvXVjcAtpWKF0bPDBffMu2eZOu8j2q
+	yTYeDm0g==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rShQu-00000007LVL-3I7V;
+	Wed, 24 Jan 2024 17:53:04 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Richard Weinberger <richard@nod.at>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	linux-mtd@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2 01/15] ubifs: Set page uptodate in the correct place
+Date: Wed, 24 Jan 2024 17:52:44 +0000
+Message-ID: <20240124175302.1750912-2-willy@infradead.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240124175302.1750912-1-willy@infradead.org>
+References: <20240124175302.1750912-1-willy@infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.7 000/638] 6.7.2-rc2 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com
-References: <20240123174544.648088948@linuxfoundation.org>
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240123174544.648088948@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/23/24 09:47, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.7.2 release.
-> There are 638 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 25 Jan 2024 17:44:25 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.2-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Page cache reads are lockless, so setting the freshly allocated page
+uptodate before we've overwritten it with the data it's supposed to have
+in it will allow a simultaneous reader to see old data.  Move the call
+to SetPageUptodate into ubifs_write_end(), which is after we copied the
+new data into the page.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Fixes: 1e51764a3c2a ("UBIFS: add new flash file system")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ fs/ubifs/file.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+diff --git a/fs/ubifs/file.c b/fs/ubifs/file.c
+index 5029eb3390a5..d0694b83dd02 100644
+--- a/fs/ubifs/file.c
++++ b/fs/ubifs/file.c
+@@ -261,9 +261,6 @@ static int write_begin_slow(struct address_space *mapping,
+ 				return err;
+ 			}
+ 		}
+-
+-		SetPageUptodate(page);
+-		ClearPageError(page);
+ 	}
+ 
+ 	if (PagePrivate(page))
+@@ -463,9 +460,6 @@ static int ubifs_write_begin(struct file *file, struct address_space *mapping,
+ 				return err;
+ 			}
+ 		}
+-
+-		SetPageUptodate(page);
+-		ClearPageError(page);
+ 	}
+ 
+ 	err = allocate_budget(c, page, ui, appending);
+@@ -475,10 +469,8 @@ static int ubifs_write_begin(struct file *file, struct address_space *mapping,
+ 		 * If we skipped reading the page because we were going to
+ 		 * write all of it, then it is not up to date.
+ 		 */
+-		if (skipped_read) {
++		if (skipped_read)
+ 			ClearPageChecked(page);
+-			ClearPageUptodate(page);
+-		}
+ 		/*
+ 		 * Budgeting failed which means it would have to force
+ 		 * write-back but didn't, because we set the @fast flag in the
+@@ -569,6 +561,9 @@ static int ubifs_write_end(struct file *file, struct address_space *mapping,
+ 		goto out;
+ 	}
+ 
++	if (len == PAGE_SIZE)
++		SetPageUptodate(page);
++
+ 	if (!PagePrivate(page)) {
+ 		attach_page_private(page, (void *)1);
+ 		atomic_long_inc(&c->dirty_pg_cnt);
 -- 
-Florian
+2.43.0
 
 
