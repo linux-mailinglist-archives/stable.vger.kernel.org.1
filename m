@@ -1,128 +1,146 @@
-Return-Path: <stable+bounces-15732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E29A383B13C
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 19:35:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9DC83B21F
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 20:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 916472862CE
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 18:35:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50DA81F22345
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 19:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4055F131E38;
-	Wed, 24 Jan 2024 18:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4A8131E34;
+	Wed, 24 Jan 2024 19:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LXHwFYwF";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MKXd64+n"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CvwkQ2mf"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F157131728;
-	Wed, 24 Jan 2024 18:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34D06A004;
+	Wed, 24 Jan 2024 19:17:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706121325; cv=none; b=qdi5qhwjSilHAjkX2+amJ0OuU9dH6z6NcPi29mmnZhUFZKSpj4IVFNOku0y11uPIGkKj/E6KeLQkwdT9DG1++09ZUVys+cHs/nSSeWyYVt7trNd0WB0Sg/k74PUPEAqhlNhNKoo0gx7sQt73z+nTWf4MYDAx42P8qCwwlK06wpY=
+	t=1706123834; cv=none; b=aYmzp7wt6GN7NJ9P4fYyR9RZfQLMr6CxgxKwSk98pB9/l83rg3yetCXpqmz1gK80o9qjugJosSd6M43/SWDsdfsBaT9d+bLmmKUfDLXEcMEx1AU6PcUuIUa/FScnJno0wf+LDMYofTYfVwsSmFTEx+4jH0BYT54GViJSQq201cM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706121325; c=relaxed/simple;
-	bh=t/SDAdtQsUVJ2+bCF1Iita5JWi+Ctt7SsR2X2lNgxGI=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=bIkpBNa4meyzLj6J8liEb079qaBPyr1B526QoWA/1nNsMnwa7iQdWh6F6PptF1bK7PKD3PHN97bcpYX1oqOgtCJuo3iNGdVwMeBM6fRqeQuOjk5VC6GCk1gXAfQr2fs/dzbLrGQNqTMMo8Lcl6boUNSC8uGcg8zc4Rl4oNRnf8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LXHwFYwF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MKXd64+n; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 24 Jan 2024 18:35:20 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706121321;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mOprUGS9zKn8QM34ojdM+ZY2ATHviEv2z/2ZMLoiCis=;
-	b=LXHwFYwFZkLeCSnN2NGheb5HJhmox8wd4ZH0HqIcClL8cXprfWOOY57wadqUGTZfoZ+TBK
-	zZTsKYW8ZlmrEMKw+A3p1B4zCVx9NpedO3V6+lQCPfn6VLrU7pdwhsvds2OelD+Ue/L2Wb
-	DbDsTIJdgMnl1x6IYKZqLQT4k2fVodKiS2UI0kjcLEW+DuNdswdk+HV4ko1KVIaRaXq4jM
-	BaacsGY5qV3vRTMxUvzLcUcRyONyAZHF3qeVqSiSBdvMJEffOHd2frGevWK7Y0UphJTtmB
-	B92bzC64PKi+I8Bdbc53b/a8F/HaalJ6eNp8gRoHfOeBW0a7jG2MhLY5LphqDw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706121321;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mOprUGS9zKn8QM34ojdM+ZY2ATHviEv2z/2ZMLoiCis=;
-	b=MKXd64+nsUK2wnu4UlSRgWWsbneQ1gJH/TuzupfcYXTrRFxEBZYt2OaXgBvXTCBMvYL000
-	c0EyzNaoOekNOtDA==
-From: "tip-bot2 for Dawei Li" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Initialize resend_node hlist for all
- interrupt descriptors
-Cc: Dawei Li <dawei.li@shingroup.cn>, Thomas Gleixner <tglx@linutronix.de>,
- Marc Zyngier <maz@kernel.org>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240122085716.2999875-5-dawei.li@shingroup.cn>
-References: <20240122085716.2999875-5-dawei.li@shingroup.cn>
+	s=arc-20240116; t=1706123834; c=relaxed/simple;
+	bh=bg7wUFqsk+k5WbHc1jDP2DkdrtUqr4EBfv8qvjFurWw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:Mime-Version; b=NPzCGX94di4uJZiT3l8ysZucD5fqRAwmUFV2G8dLi2i6XyKYU4+ipPjxPNOHE3cyA3VqD3la8pr42d8JxstimcxFR/oyZuCGuA5vAfoi3N3XPtAJND154lQz0ZgVDqjukhqoJCriF97S5QmZWc05Q7hpx2ZJp5m2YvqdUKMiik0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CvwkQ2mf; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40OIiCmt014502;
+	Wed, 24 Jan 2024 19:17:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=COQryiS/sEg0OSdfRKOL8KXB0EJx3OXUhJRJvyUgqOw=;
+ b=CvwkQ2mfd/T9gu3gPPT3Rt1HONZu4WYqWpgy4Dzdnkx7X3q/zKQ6OwUQvQY+/1cdFFN2
+ ns0f6FjhuH5hHW5hbXNUOcOAyp4xHFqH2Xu+DFaR4XPHfP1EP3WQo2/NNnpdEtu1+zbM
+ 07uR8KJzxe5zgmeNUMQs7tuD1niDcNOYMS8WyoCR1RlUNhqTfEkCY+Hja/zsAGqJWxdE
+ TGvNz8KAmtC3RclW7SNABhplfFesTLunhztUiL8W+nUqCMjAqI/SKbGJYkyvRWURzQYJ
+ 07VrGWP4Q4lHjD5uHXOrIAaeIBsLzLRSk568IO+V3sb6qUU/oWZPu1IYDcc9yS0ihVkE yQ== 
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vu7uchkw9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jan 2024 19:17:06 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40OHMN19022438;
+	Wed, 24 Jan 2024 19:17:05 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vrt0m7p43-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 24 Jan 2024 19:17:05 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40OJH4BK4850556
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 24 Jan 2024 19:17:04 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4C5425805F;
+	Wed, 24 Jan 2024 19:17:04 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 589245805A;
+	Wed, 24 Jan 2024 19:17:03 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.watson.ibm.com (unknown [9.31.99.90])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 24 Jan 2024 19:17:03 +0000 (GMT)
+Message-ID: <53ff60d7a3691a8a2d3e15cdf9d5dd8bdec6a8e0.camel@linux.ibm.com>
+Subject: Re: [PATCH 6.7 026/641] KEYS: encrypted: Add check for strsep
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Chen Ni <nichen@iscas.ac.cn>,
+        Sasha Levin
+	 <sashal@kernel.org>
+Date: Wed, 24 Jan 2024 14:17:02 -0500
+In-Reply-To: <20240122235818.914706597@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
+	 <20240122235818.914706597@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <170612132097.398.7552255144385279476.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: dNylzflsCX3HJNx3y7jvajCAXYKMqecm
+X-Proofpoint-ORIG-GUID: dNylzflsCX3HJNx3y7jvajCAXYKMqecm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-24_08,2024-01-24_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 mlxscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 impostorscore=0 lowpriorityscore=0
+ clxscore=1011 priorityscore=1501 phishscore=0 spamscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2401240139
 
-The following commit has been merged into the irq/core branch of tip:
+Hi Greg,
 
-Commit-ID:     b184c8c2889ceef0a137c7d0567ef9fe3d92276e
-Gitweb:        https://git.kernel.org/tip/b184c8c2889ceef0a137c7d0567ef9fe3d92276e
-Author:        Dawei Li <dawei.li@shingroup.cn>
-AuthorDate:    Mon, 22 Jan 2024 16:57:15 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 24 Jan 2024 14:15:41 +01:00
+On Mon, 2024-01-22 at 15:48 -0800, Greg Kroah-Hartman wrote:
+> 6.7-stable review patch.  If anyone has any objections, please let me know.
 
-genirq: Initialize resend_node hlist for all interrupt descriptors
+The upstream patch needs to be reverted.  Please don't backport it.
 
-For a CONFIG_SPARSE_IRQ=n kernel, early_irq_init() is supposed to
-initialize all interrupt descriptors.
+Thanks,
 
-It does except for irq_desc::resend_node, which ia only initialized for the
-first descriptor.
+Mimi
 
-Use the indexed decriptor and not the base pointer to address that.
+> 
+> ------------------
+> 
+> From: Chen Ni <nichen@iscas.ac.cn>
+> 
+> [ Upstream commit b4af096b5df5dd131ab796c79cedc7069d8f4882 ]
+> 
+> Add check for strsep() in order to transfer the error.
+> 
+> Fixes: cd3bc044af48 ("KEYS: encrypted: Instantiate key with user-provided decrypted data")
+> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+> Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  security/keys/encrypted-keys/encrypted.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
+> index 8af2136069d2..76f55dd13cb8 100644
+> --- a/security/keys/encrypted-keys/encrypted.c
+> +++ b/security/keys/encrypted-keys/encrypted.c
+> @@ -237,6 +237,10 @@ static int datablob_parse(char *datablob, const char **format,
+>  			break;
+>  		}
+>  		*decrypted_data = strsep(&datablob, " \t");
+> +		if (!*decrypted_data) {
+> +			pr_info("encrypted_key: decrypted_data is missing\n");
+> +			break;
+> +		}
+>  		ret = 0;
+>  		break;
+>  	case Opt_load:
 
-Fixes: bc06a9e08742 ("genirq: Use hlist for managing resend handlers")
-Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240122085716.2999875-5-dawei.li@shingroup.cn
-
-
----
- kernel/irq/irqdesc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index 27ca1c8..371eb17 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -600,7 +600,7 @@ int __init early_irq_init(void)
- 		mutex_init(&desc[i].request_mutex);
- 		init_waitqueue_head(&desc[i].wait_for_threads);
- 		desc_set_defaults(i, &desc[i], node, NULL, NULL);
--		irq_resend_init(desc);
-+		irq_resend_init(&desc[i]);
- 	}
- 	return arch_early_irq_init();
- }
 
