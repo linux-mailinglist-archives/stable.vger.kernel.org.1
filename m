@@ -1,262 +1,118 @@
-Return-Path: <stable+bounces-15723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3403183AE60
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 17:32:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 218A983AE99
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 17:45:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 626231C229C8
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 16:32:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB9461F2564D
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 16:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CA3C13E;
-	Wed, 24 Jan 2024 16:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A597E565;
+	Wed, 24 Jan 2024 16:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="CNkDA6Lv"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NrOCAIH2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52005.amazon.com (smtp-fw-52005.amazon.com [52.119.213.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D243477620;
-	Wed, 24 Jan 2024 16:32:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7707CF23
+	for <stable@vger.kernel.org>; Wed, 24 Jan 2024 16:45:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706113927; cv=none; b=PCkCQ5IcJm5lOxuJjrMWa8i3bSYmgMGxkwSEgjXKLNh8FmtAC5k3L0fPVkpH8ji+rKiSk2Nhemt1PBFKVWqbh7r4TlVTpVFptAZuJFewXgNdyB+vbDEw9/trgh1M/2QIX/LXjK1ljp547SPA8ynKQl7ERoZ/b/YTIwToEextRWA=
+	t=1706114712; cv=none; b=bS7cUsepRcguVieoRejisY7E33oMZEuEMYY2v2meUXQhuknTXvSFT/Kcw+b0NYiFQLUoCWztEDTp4L8Us6S5rFHSxAmKASc+Ulcp8uiSHlghcxCrGyzEGzDOUDqH4OEho87b0qZOsh1V4AqsSbSLiJ6s8KNwkpFgNnBInLAKT+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706113927; c=relaxed/simple;
-	bh=Uy5X5ueXyxWHqCF4CbUbbUkxQtCsB/lkqnQBEKxtlZ4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eRj7cDOmwj2A9IV/X1SzCHhr8C6vJQOeYIGGDDW3pV8jS8d8nwemUD+M7Mc7Ac3BmF1nfZClE5ewXqhJxKnY/cJGuhqEkNACFvmYtPDu9OqsiS95oMQ8It6rNJPxFQUZ73Wl71QcErg8vE7RU2iKRgdQd1Aay+A26oY/yQhL97I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=CNkDA6Lv; arc=none smtp.client-ip=52.119.213.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+	s=arc-20240116; t=1706114712; c=relaxed/simple;
+	bh=3rZvPqvCnI5w/SpkzoxzJYPXRXQwQmMIpGF4DlHAUZ8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tyM+XNjIS2pZv84pYAHlH935Q3Qq79utaWULkUzpx3L0PGXbcRdnFs8mr9y6uveNqngOm7ETK6FJPqRCtZPcxKIAmKYomAlR19H8vrOe4GqFoY3472FjuuvjTUi9LGMulxjkNi48CavRJSAFmegxjjDM5lf9mk2oL9ArbUh4kXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NrOCAIH2; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3394b892691so732000f8f.1
+        for <stable@vger.kernel.org>; Wed, 24 Jan 2024 08:45:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1706113925; x=1737649925;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=7vT1PswudYg3wT0G4RuvjsUk701LiPWja9I6tIWZQRY=;
-  b=CNkDA6LvxIBfTlyEwqlfSXPNmBGHBovLb1WLNGLwie/sQSLlJvouxmNn
-   OeI63NIwC2F8p10Heas1BZwPr1dxHQXwCkaWiZlihBQLho8sdmiO+93zI
-   9ISo0xMyeLsewiCAvaCrsexNqeEgZjP6gflG3CF0piGE+1aQC1TEFpXAu
-   A=;
-X-IronPort-AV: E=Sophos;i="6.05,216,1701129600"; 
-   d="scan'208";a="629728689"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-3554bfcf.us-east-1.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-52005.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2024 16:32:02 +0000
-Received: from smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev (iad7-ws-svc-p70-lb3-vlan2.iad.amazon.com [10.32.235.34])
-	by email-inbound-relay-iad-1e-m6i4x-3554bfcf.us-east-1.amazon.com (Postfix) with ESMTPS id 641D7806A9;
-	Wed, 24 Jan 2024 16:32:00 +0000 (UTC)
-Received: from EX19MTAUEA001.ant.amazon.com [10.0.44.209:41371]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.88.120:2525] with esmtp (Farcaster)
- id 439588db-d258-4371-8e65-95409cade95b; Wed, 24 Jan 2024 16:31:59 +0000 (UTC)
-X-Farcaster-Flow-ID: 439588db-d258-4371-8e65-95409cade95b
-Received: from EX19D008UEA003.ant.amazon.com (10.252.134.116) by
- EX19MTAUEA001.ant.amazon.com (10.252.134.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Wed, 24 Jan 2024 16:31:49 +0000
-Received: from EX19MTAUWC001.ant.amazon.com (10.250.64.145) by
- EX19D008UEA003.ant.amazon.com (10.252.134.116) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Wed, 24 Jan 2024 16:31:48 +0000
-Received: from dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (10.15.57.183)
- by mail-relay.amazon.com (10.250.64.145) with Microsoft SMTP Server id
- 15.2.1118.40 via Frontend Transport; Wed, 24 Jan 2024 16:31:48 +0000
-Received: by dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (Postfix, from userid 5466572)
-	id 37CB1ADF; Wed, 24 Jan 2024 16:31:48 +0000 (UTC)
-From: Maximilian Heyne <mheyne@amazon.de>
-To: 
-CC: Julien Grall <jgrall@amazon.com>, Maximilian Heyne <mheyne@amazon.de>,
-	<stable@vger.kernel.org>, Andrew Panyakin <apanyaki@amazon.com>, "Juergen
- Gross" <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Rahul Singh
-	<rahul.singh@arm.com>, David Woodhouse <dwmw@amazon.co.uk>, Viresh Kumar
-	<viresh.kumar@linaro.org>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-	Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
-	<xen-devel@lists.xenproject.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] xen/events: close evtchn after mapping cleanup
-Date: Wed, 24 Jan 2024 16:31:28 +0000
-Message-ID: <20240124163130.31324-1-mheyne@amazon.de>
-X-Mailer: git-send-email 2.40.1
+        d=linaro.org; s=google; t=1706114708; x=1706719508; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pvoYaI2BKa7cNMRECEuAWo8+54tJ7nx26haCoL0CnlU=;
+        b=NrOCAIH2mhyBjQXpAQ83pGqdzD2oPjwFte9Qj12ptfLf+MWKX62dDdBovU8xwGGnEY
+         7WQnEYCrqhablATOsvh+Qio2UHQHLcSaYLtCTzBhhVCECL8tHuisT1zSLVR0//D2hrQC
+         Jugoh2GQQ7vr+tDeg/kNnbdSnvMsyzAusfjxrgB0q53MxM8+XNsCU4ctHiBuvKwPk1Fv
+         ruepGZXAw+TVumufpwUvjnTp+DruZLlDkbj7AYLqMfUUhgCYHUufsKDDtBwkYv10Spr+
+         4G2ARxkz8IMGzu5nYFIFkoVdvGmyrhjBDUnooJX5EIMlVhWAk1Ld4vFA7g45MWjxXBss
+         CtYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706114708; x=1706719508;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pvoYaI2BKa7cNMRECEuAWo8+54tJ7nx26haCoL0CnlU=;
+        b=UMyqRX6YwOHhisNCZQ5BnBtsfnjHIog4INHctycRxM0t7kSnAlDvc5CDhr+3YTs4LU
+         3hhqmWPFk/92fytYA16leLPazRmrn7rvPIBEQVS1OXuSbenYq/Z3c9iVVuEgeeYQ+BfG
+         N+kvald0qJAk12KR7XtfKgB3AJ1iAjQUwRzew4WYQPQbm2kWmikeF7iwN37B2yH8h2U5
+         H22bRugcpcjic3nMQxScb6Is+u9oTe84RFGaXeqsVTF4YVZ5hW6IOE9zGy12x6Vrkexf
+         C70JBnM7Yj+hQR6Oj6Ua0sxwRVa+TiYZOUglmamLCISjcf4Eq4dV2amgURlbpkxzDucw
+         mfhg==
+X-Gm-Message-State: AOJu0YwyMxFwpW+qVeRpGtMnZr20CaeWE7h5NgkTRmRSTe7MI3g19w3S
+	3pI9X+JrjnPS/ZvHiDlLEkwdunJscJhZ/HjSebGiZjd7141OfsA3eIGzrdlsOj4=
+X-Google-Smtp-Source: AGHT+IGcYUmkCTRpG/I8E3chXDc/GJE+/1YMGUO7gtkFGBajwWIAW9NHntpMktgjfMEXg8YdZCuTNw==
+X-Received: by 2002:a5d:4a87:0:b0:337:d8a5:32d6 with SMTP id o7-20020a5d4a87000000b00337d8a532d6mr629718wrq.9.1706114708361;
+        Wed, 24 Jan 2024 08:45:08 -0800 (PST)
+Received: from krzk-bin.. ([178.197.215.66])
+        by smtp.gmail.com with ESMTPSA id v9-20020a5d5909000000b0033936c34713sm8137883wrd.78.2024.01.24.08.45.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jan 2024 08:45:07 -0800 (PST)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Andy Gross <agross@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/4] arm64: dts: qcom: sm8550-qrd: correct WCD9385 TX port mapping
+Date: Wed, 24 Jan 2024 17:45:02 +0100
+Message-Id: <20240124164505.293202-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Precedence: Bulk
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-shutdown_pirq and startup_pirq are not taking the
-irq_mapping_update_lock because they can't due to lock inversion. Both
-are called with the irq_desc->lock being taking. The lock order,
-however, is first irq_mapping_update_lock and then irq_desc->lock.
+WCD9385 audio codec TX port mapping was copied form HDK8450, but in fact
+it is offset by one.  Correct it to fix recording via analogue
+microphones.
 
-This opens multiple races:
-- shutdown_pirq can be interrupted by a function that allocates an event
-  channel:
-
-  CPU0                        CPU1
-  shutdown_pirq {
-    xen_evtchn_close(e)
-                              __startup_pirq {
-                                EVTCHNOP_bind_pirq
-                                  -> returns just freed evtchn e
-                                set_evtchn_to_irq(e, irq)
-                              }
-    xen_irq_info_cleanup() {
-      set_evtchn_to_irq(e, -1)
-    }
-  }
-
-  Assume here event channel e refers here to the same event channel
-  number.
-  After this race the evtchn_to_irq mapping for e is invalid (-1).
-
-- __startup_pirq races with __unbind_from_irq in a similar way. Because
-  __startup_pirq doesn't take irq_mapping_update_lock it can grab the
-  evtchn that __unbind_from_irq is currently freeing and cleaning up. In
-  this case even though the event channel is allocated, its mapping can
-  be unset in evtchn_to_irq.
-
-The fix is to first cleanup the mappings and then close the event
-channel. In this way, when an event channel gets allocated it's
-potential previous evtchn_to_irq mappings are guaranteed to be unset already.
-This is also the reverse order of the allocation where first the event
-channel is allocated and then the mappings are setup.
-
-On a 5.10 kernel prior to commit 3fcdaf3d7634 ("xen/events: modify internal
-[un]bind interfaces"), we hit a BUG like the following during probing of NVMe
-devices. The issue is that during nvme_setup_io_queues, pci_free_irq
-is called for every device which results in a call to shutdown_pirq.
-With many nvme devices it's therefore likely to hit this race during
-boot because there will be multiple calls to shutdown_pirq and
-startup_pirq are running potentially in parallel.
-
-  ------------[ cut here ]------------
-  blkfront: xvda: barrier or flush: disabled; persistent grants: enabled; indirect descriptors: enabled; bounce buffer: enabled
-  kernel BUG at drivers/xen/events/events_base.c:499!
-  invalid opcode: 0000 [#1] SMP PTI
-  CPU: 44 PID: 375 Comm: kworker/u257:23 Not tainted 5.10.201-191.748.amzn2.x86_64 #1
-  Hardware name: Xen HVM domU, BIOS 4.11.amazon 08/24/2006
-  Workqueue: nvme-reset-wq nvme_reset_work
-  RIP: 0010:bind_evtchn_to_cpu+0xdf/0xf0
-  Code: 5d 41 5e c3 cc cc cc cc 44 89 f7 e8 2b 55 ad ff 49 89 c5 48 85 c0 0f 84 64 ff ff ff 4c 8b 68 30 41 83 fe ff 0f 85 60 ff ff ff <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 0f 1f 44 00 00
-  RSP: 0000:ffffc9000d533b08 EFLAGS: 00010046
-  RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000006
-  RDX: 0000000000000028 RSI: 00000000ffffffff RDI: 00000000ffffffff
-  RBP: ffff888107419680 R08: 0000000000000000 R09: ffffffff82d72b00
-  R10: 0000000000000000 R11: 0000000000000000 R12: 00000000000001ed
-  R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000002
-  FS:  0000000000000000(0000) GS:ffff88bc8b500000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000000000000 CR3: 0000000002610001 CR4: 00000000001706e0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   ? show_trace_log_lvl+0x1c1/0x2d9
-   ? show_trace_log_lvl+0x1c1/0x2d9
-   ? set_affinity_irq+0xdc/0x1c0
-   ? __die_body.cold+0x8/0xd
-   ? die+0x2b/0x50
-   ? do_trap+0x90/0x110
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? do_error_trap+0x65/0x80
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? exc_invalid_op+0x4e/0x70
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? asm_exc_invalid_op+0x12/0x20
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? bind_evtchn_to_cpu+0xc5/0xf0
-   set_affinity_irq+0xdc/0x1c0
-   irq_do_set_affinity+0x1d7/0x1f0
-   irq_setup_affinity+0xd6/0x1a0
-   irq_startup+0x8a/0xf0
-   __setup_irq+0x639/0x6d0
-   ? nvme_suspend+0x150/0x150
-   request_threaded_irq+0x10c/0x180
-   ? nvme_suspend+0x150/0x150
-   pci_request_irq+0xa8/0xf0
-   ? __blk_mq_free_request+0x74/0xa0
-   queue_request_irq+0x6f/0x80
-   nvme_create_queue+0x1af/0x200
-   nvme_create_io_queues+0xbd/0xf0
-   nvme_setup_io_queues+0x246/0x320
-   ? nvme_irq_check+0x30/0x30
-   nvme_reset_work+0x1c8/0x400
-   process_one_work+0x1b0/0x350
-   worker_thread+0x49/0x310
-   ? process_one_work+0x350/0x350
-   kthread+0x11b/0x140
-   ? __kthread_bind_mask+0x60/0x60
-   ret_from_fork+0x22/0x30
-  Modules linked in:
-  ---[ end trace a11715de1eee1873 ]---
-
-Fixes: d46a78b05c0e ("xen: implement pirq type event channels")
-Cc: stable@vger.kernel.org
-Co-debugged-by: Andrew Panyakin <apanyaki@amazon.com>
-Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Cc: <stable@vger.kernel.org>
+Fixes: 83fae950c992 ("arm64: dts: qcom: sm8550-qrd: add WCD9385 audio-codec")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/xen/events/events_base.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550-qrd.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index b8cfea7812d6..3b9f080109d7 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -923,8 +923,8 @@ static void shutdown_pirq(struct irq_data *data)
- 		return;
+diff --git a/arch/arm64/boot/dts/qcom/sm8550-qrd.dts b/arch/arm64/boot/dts/qcom/sm8550-qrd.dts
+index 6c8e206080d2..76e9ca954093 100644
+--- a/arch/arm64/boot/dts/qcom/sm8550-qrd.dts
++++ b/arch/arm64/boot/dts/qcom/sm8550-qrd.dts
+@@ -842,7 +842,7 @@ &swr2 {
+ 	wcd_tx: codec@0,3 {
+ 		compatible = "sdw20217010d00";
+ 		reg = <0 3>;
+-		qcom,tx-port-mapping = <1 1 2 3>;
++		qcom,tx-port-mapping = <2 2 3 4>;
+ 	};
+ };
  
- 	do_mask(info, EVT_MASK_REASON_EXPLICIT);
--	xen_evtchn_close(evtchn);
- 	xen_irq_info_cleanup(info);
-+	xen_evtchn_close(evtchn);
- }
- 
- static void enable_pirq(struct irq_data *data)
-@@ -956,6 +956,7 @@ EXPORT_SYMBOL_GPL(xen_irq_from_gsi);
- static void __unbind_from_irq(struct irq_info *info, unsigned int irq)
- {
- 	evtchn_port_t evtchn;
-+	bool close_evtchn = false;
- 
- 	if (!info) {
- 		xen_irq_free_desc(irq);
-@@ -975,7 +976,7 @@ static void __unbind_from_irq(struct irq_info *info, unsigned int irq)
- 		struct xenbus_device *dev;
- 
- 		if (!info->is_static)
--			xen_evtchn_close(evtchn);
-+			close_evtchn = true;
- 
- 		switch (info->type) {
- 		case IRQT_VIRQ:
-@@ -995,6 +996,9 @@ static void __unbind_from_irq(struct irq_info *info, unsigned int irq)
- 		}
- 
- 		xen_irq_info_cleanup(info);
-+
-+		if (close_evtchn)
-+			xen_evtchn_close(evtchn);
- 	}
- 
- 	xen_free_irq(info);
 -- 
-2.40.1
-
-
-
-
-Amazon Development Center Germany GmbH
-Krausenstr. 38
-10117 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
-Sitz: Berlin
-Ust-ID: DE 289 237 879
-
-
+2.34.1
 
 
