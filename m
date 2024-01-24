@@ -1,174 +1,251 @@
-Return-Path: <stable+bounces-15639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CC083A75E
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 11:59:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6FA783A7B1
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 12:25:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38B8A1C21F68
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 10:59:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17F091C20E92
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 11:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8EF1A702;
-	Wed, 24 Jan 2024 10:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCBCA1AAD1;
+	Wed, 24 Jan 2024 11:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2DcGhpOH";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="07fimyZK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gI46ybv6"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B88517C77;
-	Wed, 24 Jan 2024 10:59:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3221AAD3
+	for <stable@vger.kernel.org>; Wed, 24 Jan 2024 11:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706093971; cv=none; b=j/r0rSziJgmuYQ4uI6d9GclZyTS7tbPdkk4+XG4JUYYkDE+a79S83T6yYVgMEVyt78d6OtpaFg892CnvWZka0rle9WZDiGJ15DbqHEHGa/MxqsLsHSvaeiD2T2c3H+TaTKR5SwYf/r6tV/ilJiT6A/1BlicD0wpg3X5yi64Z2DE=
+	t=1706095522; cv=none; b=CYyQgbWNZzuTLjsn5/rO2C7g041rkQS54/n0RlKSAb08c/gzw9ifaFre7NoP9b91QiY/VAZhO3vqna8Hhh7PHJZgRvVzhp4qR++2FUbmEOgGTXVvJ5u40Lfdfz256jeVVX6HosIvsXTw65W+SO6BEdTx0ft7aFSr3Oq9Ida6WbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706093971; c=relaxed/simple;
-	bh=iANTKlkk8kboCZHGDwmiDI19Ll50/82WGLR5pyIiZLU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=PzNBcgFiUDYTEF63IGZZPJELF7U7HDYb3aoGSGdb/wO8jx3Y7RMWRL9TGuvqDBx8KyO5oA+0pkyWAWhRuWooHkdyQ5H7AoLVTEF1EiFEpknOpt3SmP+2OzcWYzviFx8wGxn+rzgw4pNgiqy8Cw347TKOamTLW0rcgNTuL22nY7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2DcGhpOH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=07fimyZK; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 24 Jan 2024 10:59:26 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706093967;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZLlO4ku6OA4dToBd4MX789ltiTlW+kyLL+eTVIinh/4=;
-	b=2DcGhpOHrocxse4ocDc5FRQDYUwHhJDE7JJkcfXkMl5MknAdxyZI9l59SQO18vzlcOehtw
-	rnHRB+nwWGXtFyj6EIF1VlSbxPQvd6X6kN6NiXstIUsM9wSSzl2Ehp7RxoYyIgU//X86IB
-	o0XD1Hf1MDvaUVZ498ijo3HV14Z6/Fp6wiPLwOQEAZDbgahrPuMWr/iYZNbq93AoCWxjaR
-	ZCmgOgwHcVQpn2ZqaMSa7Im+5NdADAQf+Srwd9c7t8+EZZq8ekLXgFJePzzigKSQbmzAgV
-	ZdhbOtENijlb4kfuJGghW4aXN2aV0hIULLEw+9nNOSR8tuTxVP4GubiEbpKe+w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706093967;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZLlO4ku6OA4dToBd4MX789ltiTlW+kyLL+eTVIinh/4=;
-	b=07fimyZKO16BomOcKz+4JJy+2W8+uPbbz7826wkbXnnkk004L+KWkHeX7siuPn2AprmzfB
-	KAELLrY5xTw7exAg==
-From: "tip-bot2 for Richard Palethorpe" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/entry/ia32: Ensure s32 is sign extended to s64
-Cc: Arnd Bergmann <arnd@arndb.de>, Richard Palethorpe <rpalethorpe@suse.com>,
- Nikolay Borisov <nik.borisov@suse.com>, Thomas Gleixner <tglx@linutronix.de>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240110130122.3836513-1-nik.borisov@suse.com>
-References: <20240110130122.3836513-1-nik.borisov@suse.com>
+	s=arc-20240116; t=1706095522; c=relaxed/simple;
+	bh=Q/fSTePB+3gjdfutjWEwnj0KX3hxqkjjqVpjDkIE8t4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kEdzKZvdUNxebQmVa8LacXllUEVM3uR3SeZ6jOfZW0LFBYDksaXYx6/zCtoat64wYzk05YgwwcNk0Z93IZ6Oy1QYMulFEo5wzr4wMI4xx0kMcD+PuMu77Ef/CdRBxfxUOqUIl4Sj7m16YNyU2kyUQTj8gcpQhHo0J8ETBMO8gKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gI46ybv6; arc=none smtp.client-ip=209.85.222.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-7d2e022ae0cso1198544241.0
+        for <stable@vger.kernel.org>; Wed, 24 Jan 2024 03:25:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706095520; x=1706700320; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GYsYwsp+NkgyZ5+EVTa7o9fxzZfD4HTv/4C7j2PIB9o=;
+        b=gI46ybv60eEzdMliNbGVf1kElpf95/2F0pEyzQEd0U71sNwAYRLol82XLubAZfkSfv
+         J6t7kxN6xPTgFv1DyJ7FoqO/bEp43C3QmEz5qXHQ/vgKbgvBBnYLIHpK9E3CwyLFRnE6
+         14j/NZKOVAnveOsBMDCKqi7L6hcZapDR/hzisqfJDJzju2S7sJ4aR2BOwEIpFCdzCNmV
+         jtUaWimFnQ82QkmGNfowEfHsRakc5egAamPdYidoD76k60o88JBlkyXYR7AYRvKXyr0C
+         FD2tkZ+WzG2jQSKPFznj2IyzGH4KITBGj/PSLISJ/au2EKCZD2ya2vpO4+Q/LJbGa4qJ
+         fIbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706095520; x=1706700320;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GYsYwsp+NkgyZ5+EVTa7o9fxzZfD4HTv/4C7j2PIB9o=;
+        b=PwzItCmSjt/ldJ+Ja4EaC2GuY429pcfj+0gpVv1sSkGijZdHy/GbUABN9asgYS8dYx
+         LchPaXSvYFFMcJSFKKPpeu8bUhWFHHN2xt0HvvJsRjROg+hcbg2wQLbG5rOg4C4JoQKf
+         JUJnrnLhhMtbAwLbUHndZ989BR5R4AbGTb5vskC3Z288oO9COQBh6mEFKtPpGRzz1rXf
+         dmHEJRWe0f5gIyO2Lr+TkRAUYljn0vG4kOvFrjRcoAnOPBo4LjLKMecRT8PFo6dI6lhh
+         dI0bYCoR/upG7LRHSjAsGRxjXEEUaBa1KGduKMdkATAytAJTj6hSGzRkNgMQe7azUjUc
+         6wNw==
+X-Gm-Message-State: AOJu0YyNBrCC7p5J77RvuJwhkR30Ynq1brcx/zrX/4TpqgScdgrKkL2u
+	+1dIyyPTWBpZhHyhrLWH/zvgXszwY9Kbco9sZweUZBm4D87HA14LfqrMDyWUffKrskOSgqyRtUk
+	FhVYW5AV9si2Y3+DUjQg2huDIC0GWuOqBRo6y9A==
+X-Google-Smtp-Source: AGHT+IH+zPW1kXjwOmU6aKTrwoCCH2LCyOpmcVd4eYPgVGnBRq7xPsRdJYiffRebfw9EjAW6iZZo3MVPFbf5Bg7cw4I=
+X-Received: by 2002:a1f:7c88:0:b0:4bd:4184:43c7 with SMTP id
+ x130-20020a1f7c88000000b004bd418443c7mr858398vkc.29.1706095519744; Wed, 24
+ Jan 2024 03:25:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170609396629.398.14744181776916062395.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 24 Jan 2024 16:55:08 +0530
+Message-ID: <CA+G9fYsHg1GwoT0v+cTVymvxRUFAVexpTrVomRG2eHhiS2BLqA@mail.gmail.com>
+Subject: Re: [PATCH 5.10 000/286] 5.10.209-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Tue, 23 Jan 2024 at 06:16, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.10.209 release.
+> There are 286 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 24 Jan 2024 23:56:49 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.10.209-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.10.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Commit-ID:     56062d60f117dccfb5281869e0ab61e090baf864
-Gitweb:        https://git.kernel.org/tip/56062d60f117dccfb5281869e0ab61e090baf864
-Author:        Richard Palethorpe <rpalethorpe@suse.com>
-AuthorDate:    Wed, 10 Jan 2024 15:01:22 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 24 Jan 2024 11:49:19 +01:00
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-x86/entry/ia32: Ensure s32 is sign extended to s64
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Presently ia32 registers stored in ptregs are unconditionally cast to
-unsigned int by the ia32 stub. They are then cast to long when passed to
-__se_sys*, but will not be sign extended.
+## Build
+* kernel: 5.10.209-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.10.y
+* git commit: 3c264a5f70c74960386987716dab9e042db1689b
+* git describe: v5.10.208-287-g3c264a5f70c7
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10=
+.208-287-g3c264a5f70c7
 
-This takes the sign of the syscall argument into account in the ia32
-stub. It still casts to unsigned int to avoid implementation specific
-behavior. However then casts to int or unsigned int as necessary. So that
-the following cast to long sign extends the value.
+## Test Regressions (compared to v5.10.208)
 
-This fixes the io_pgetevents02 LTP test when compiled with -m32. Presently
-the systemcall io_pgetevents_time64() unexpectedly accepts -1 for the
-maximum number of events.
+## Metric Regressions (compared to v5.10.208)
 
-It doesn't appear other systemcalls with signed arguments are effected
-because they all have compat variants defined and wired up.
+## Test Fixes (compared to v5.10.208)
 
-Fixes: ebeb8c82ffaf ("syscalls/x86: Use 'struct pt_regs' based syscall calling for IA32_EMULATION and x32")
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Richard Palethorpe <rpalethorpe@suse.com>
-Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240110130122.3836513-1-nik.borisov@suse.com
-Link: https://lore.kernel.org/ltp/20210921130127.24131-1-rpalethorpe@suse.com/
----
- arch/x86/include/asm/syscall_wrapper.h | 25 +++++++++++++++++++++----
- include/linux/syscalls.h               |  1 +-
- 2 files changed, 22 insertions(+), 4 deletions(-)
+## Metric Fixes (compared to v5.10.208)
 
-diff --git a/arch/x86/include/asm/syscall_wrapper.h b/arch/x86/include/asm/syscall_wrapper.h
-index 21f9407..7e88705 100644
---- a/arch/x86/include/asm/syscall_wrapper.h
-+++ b/arch/x86/include/asm/syscall_wrapper.h
-@@ -58,12 +58,29 @@ extern long __ia32_sys_ni_syscall(const struct pt_regs *regs);
- 		,,regs->di,,regs->si,,regs->dx				\
- 		,,regs->r10,,regs->r8,,regs->r9)			\
- 
-+
-+/* SYSCALL_PT_ARGS is Adapted from s390x */
-+#define SYSCALL_PT_ARG6(m, t1, t2, t3, t4, t5, t6)			\
-+	SYSCALL_PT_ARG5(m, t1, t2, t3, t4, t5), m(t6, (regs->bp))
-+#define SYSCALL_PT_ARG5(m, t1, t2, t3, t4, t5)				\
-+	SYSCALL_PT_ARG4(m, t1, t2, t3, t4),  m(t5, (regs->di))
-+#define SYSCALL_PT_ARG4(m, t1, t2, t3, t4)				\
-+	SYSCALL_PT_ARG3(m, t1, t2, t3),  m(t4, (regs->si))
-+#define SYSCALL_PT_ARG3(m, t1, t2, t3)					\
-+	SYSCALL_PT_ARG2(m, t1, t2), m(t3, (regs->dx))
-+#define SYSCALL_PT_ARG2(m, t1, t2)					\
-+	SYSCALL_PT_ARG1(m, t1), m(t2, (regs->cx))
-+#define SYSCALL_PT_ARG1(m, t1) m(t1, (regs->bx))
-+#define SYSCALL_PT_ARGS(x, ...) SYSCALL_PT_ARG##x(__VA_ARGS__)
-+
-+#define __SC_COMPAT_CAST(t, a)						\
-+	(__typeof(__builtin_choose_expr(__TYPE_IS_L(t), 0, 0U)))	\
-+	(unsigned int)a
-+
- /* Mapping of registers to parameters for syscalls on i386 */
- #define SC_IA32_REGS_TO_ARGS(x, ...)					\
--	__MAP(x,__SC_ARGS						\
--	      ,,(unsigned int)regs->bx,,(unsigned int)regs->cx		\
--	      ,,(unsigned int)regs->dx,,(unsigned int)regs->si		\
--	      ,,(unsigned int)regs->di,,(unsigned int)regs->bp)
-+	SYSCALL_PT_ARGS(x, __SC_COMPAT_CAST,				\
-+			__MAP(x, __SC_TYPE, __VA_ARGS__))		\
- 
- #define __SYS_STUB0(abi, name)						\
- 	long __##abi##_##name(const struct pt_regs *regs);		\
-diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
-index cdba4d0..77eb9b0 100644
---- a/include/linux/syscalls.h
-+++ b/include/linux/syscalls.h
-@@ -128,6 +128,7 @@ struct mnt_id_req;
- #define __TYPE_IS_LL(t) (__TYPE_AS(t, 0LL) || __TYPE_AS(t, 0ULL))
- #define __SC_LONG(t, a) __typeof(__builtin_choose_expr(__TYPE_IS_LL(t), 0LL, 0L)) a
- #define __SC_CAST(t, a)	(__force t) a
-+#define __SC_TYPE(t, a)	t
- #define __SC_ARGS(t, a)	a
- #define __SC_TEST(t, a) (void)BUILD_BUG_ON_ZERO(!__TYPE_IS_LL(t) && sizeof(t) > sizeof(long))
- 
+## Test result summary
+total: 97987, pass: 74379, fail: 4011, skip: 19507, xfail: 90
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 117 total, 117 passed, 0 failed
+* arm64: 44 total, 44 passed, 0 failed
+* i386: 35 total, 35 passed, 0 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 25 total, 25 passed, 0 failed
+* riscv: 11 total, 11 passed, 0 failed
+* s390: 12 total, 12 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 38 total, 38 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
