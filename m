@@ -1,128 +1,128 @@
-Return-Path: <stable+bounces-15731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A900E83B0DD
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 19:20:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E29A383B13C
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 19:35:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 163B2B35E15
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 17:55:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 916472862CE
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 18:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D793512AADD;
-	Wed, 24 Jan 2024 17:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4055F131E38;
+	Wed, 24 Jan 2024 18:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GpzadNX7"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LXHwFYwF";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MKXd64+n"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D217281ABA
-	for <stable@vger.kernel.org>; Wed, 24 Jan 2024 17:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F157131728;
+	Wed, 24 Jan 2024 18:35:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706118791; cv=none; b=etlRCPYQh0S+TrLZGijcwbAgMDfKTaF2HMJqQZkc9KoUGS17RtrGfXv0xvvAZEvrbpvbK/e7Qd2VRPSvdYWvAnyKVEZTcEft3Hb/qphtai09mnK3c68NA7/hHRsHTA+XqeNTXquOMumuUfz+nUlzPCwkpYyVAKjXyuAT1tyJlKI=
+	t=1706121325; cv=none; b=qdi5qhwjSilHAjkX2+amJ0OuU9dH6z6NcPi29mmnZhUFZKSpj4IVFNOku0y11uPIGkKj/E6KeLQkwdT9DG1++09ZUVys+cHs/nSSeWyYVt7trNd0WB0Sg/k74PUPEAqhlNhNKoo0gx7sQt73z+nTWf4MYDAx42P8qCwwlK06wpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706118791; c=relaxed/simple;
-	bh=PbRocE61KW0yDkiOR60kDrwRlsBBjr5ay8hv50KUPTE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQ4rxUQrOkt67szo89IKE1/QxIwGX/AkhQSYp48VZB5XkAfRtcBbwmuEpG5+8zcKQzAwR9hoOawIc47KjWT2XD4eHzrJw2BNkWJve22SRt7Pv+dIfBzdtG9vboh5JQs0sb2YcephYX/p9I0fUV2BT9kOoDLGH5gayJcdXMVQ6RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GpzadNX7; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=4BLcXtunv8K55EIbLY6Cz+Ba9KEcTs01x6W2txMgvd4=; b=GpzadNX7vKAg0W1zJQWMGP7nCA
-	hAnJIOYgyBkTKcMI2XJly6GLL1gfJal3ppuBSXC2I7G3rXSvMwhZdSysVwJkg8b7XeGLtvJIhO51R
-	bBD4ZFNAwtKm6d4N5PdxWgFxE2et9YXSw0a8leQbv8KBQ/KmTnFRZvfrhkKmkX5zsnONCs5sGsskR
-	9lEb1/MZRDfTZ77H0QdkNIlaOJ7dHF4rPrMWfyg1anktS/AxY7xYAkgNQi0szLNBCvNB14vJicKou
-	vvS0PPM/+9thoNkE+N5R+w0tfm6TPL0lmi2dMod1Fbp9fFszvXVjcAtpWKF0bPDBffMu2eZOu8j2q
-	yTYeDm0g==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rShQu-00000007LVL-3I7V;
-	Wed, 24 Jan 2024 17:53:04 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Richard Weinberger <richard@nod.at>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	linux-mtd@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2 01/15] ubifs: Set page uptodate in the correct place
-Date: Wed, 24 Jan 2024 17:52:44 +0000
-Message-ID: <20240124175302.1750912-2-willy@infradead.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240124175302.1750912-1-willy@infradead.org>
-References: <20240124175302.1750912-1-willy@infradead.org>
+	s=arc-20240116; t=1706121325; c=relaxed/simple;
+	bh=t/SDAdtQsUVJ2+bCF1Iita5JWi+Ctt7SsR2X2lNgxGI=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=bIkpBNa4meyzLj6J8liEb079qaBPyr1B526QoWA/1nNsMnwa7iQdWh6F6PptF1bK7PKD3PHN97bcpYX1oqOgtCJuo3iNGdVwMeBM6fRqeQuOjk5VC6GCk1gXAfQr2fs/dzbLrGQNqTMMo8Lcl6boUNSC8uGcg8zc4Rl4oNRnf8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LXHwFYwF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MKXd64+n; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 24 Jan 2024 18:35:20 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1706121321;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mOprUGS9zKn8QM34ojdM+ZY2ATHviEv2z/2ZMLoiCis=;
+	b=LXHwFYwFZkLeCSnN2NGheb5HJhmox8wd4ZH0HqIcClL8cXprfWOOY57wadqUGTZfoZ+TBK
+	zZTsKYW8ZlmrEMKw+A3p1B4zCVx9NpedO3V6+lQCPfn6VLrU7pdwhsvds2OelD+Ue/L2Wb
+	DbDsTIJdgMnl1x6IYKZqLQT4k2fVodKiS2UI0kjcLEW+DuNdswdk+HV4ko1KVIaRaXq4jM
+	BaacsGY5qV3vRTMxUvzLcUcRyONyAZHF3qeVqSiSBdvMJEffOHd2frGevWK7Y0UphJTtmB
+	B92bzC64PKi+I8Bdbc53b/a8F/HaalJ6eNp8gRoHfOeBW0a7jG2MhLY5LphqDw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1706121321;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mOprUGS9zKn8QM34ojdM+ZY2ATHviEv2z/2ZMLoiCis=;
+	b=MKXd64+nsUK2wnu4UlSRgWWsbneQ1gJH/TuzupfcYXTrRFxEBZYt2OaXgBvXTCBMvYL000
+	c0EyzNaoOekNOtDA==
+From: "tip-bot2 for Dawei Li" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/core] genirq: Initialize resend_node hlist for all
+ interrupt descriptors
+Cc: Dawei Li <dawei.li@shingroup.cn>, Thomas Gleixner <tglx@linutronix.de>,
+ Marc Zyngier <maz@kernel.org>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240122085716.2999875-5-dawei.li@shingroup.cn>
+References: <20240122085716.2999875-5-dawei.li@shingroup.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <170612132097.398.7552255144385279476.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Page cache reads are lockless, so setting the freshly allocated page
-uptodate before we've overwritten it with the data it's supposed to have
-in it will allow a simultaneous reader to see old data.  Move the call
-to SetPageUptodate into ubifs_write_end(), which is after we copied the
-new data into the page.
+The following commit has been merged into the irq/core branch of tip:
 
-Fixes: 1e51764a3c2a ("UBIFS: add new flash file system")
+Commit-ID:     b184c8c2889ceef0a137c7d0567ef9fe3d92276e
+Gitweb:        https://git.kernel.org/tip/b184c8c2889ceef0a137c7d0567ef9fe3d92276e
+Author:        Dawei Li <dawei.li@shingroup.cn>
+AuthorDate:    Mon, 22 Jan 2024 16:57:15 +08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 24 Jan 2024 14:15:41 +01:00
+
+genirq: Initialize resend_node hlist for all interrupt descriptors
+
+For a CONFIG_SPARSE_IRQ=n kernel, early_irq_init() is supposed to
+initialize all interrupt descriptors.
+
+It does except for irq_desc::resend_node, which ia only initialized for the
+first descriptor.
+
+Use the indexed decriptor and not the base pointer to address that.
+
+Fixes: bc06a9e08742 ("genirq: Use hlist for managing resend handlers")
+Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://lore.kernel.org/r/20240122085716.2999875-5-dawei.li@shingroup.cn
+
+
 ---
- fs/ubifs/file.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ kernel/irq/irqdesc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ubifs/file.c b/fs/ubifs/file.c
-index 5029eb3390a5..d0694b83dd02 100644
---- a/fs/ubifs/file.c
-+++ b/fs/ubifs/file.c
-@@ -261,9 +261,6 @@ static int write_begin_slow(struct address_space *mapping,
- 				return err;
- 			}
- 		}
--
--		SetPageUptodate(page);
--		ClearPageError(page);
+diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
+index 27ca1c8..371eb17 100644
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -600,7 +600,7 @@ int __init early_irq_init(void)
+ 		mutex_init(&desc[i].request_mutex);
+ 		init_waitqueue_head(&desc[i].wait_for_threads);
+ 		desc_set_defaults(i, &desc[i], node, NULL, NULL);
+-		irq_resend_init(desc);
++		irq_resend_init(&desc[i]);
  	}
- 
- 	if (PagePrivate(page))
-@@ -463,9 +460,6 @@ static int ubifs_write_begin(struct file *file, struct address_space *mapping,
- 				return err;
- 			}
- 		}
--
--		SetPageUptodate(page);
--		ClearPageError(page);
- 	}
- 
- 	err = allocate_budget(c, page, ui, appending);
-@@ -475,10 +469,8 @@ static int ubifs_write_begin(struct file *file, struct address_space *mapping,
- 		 * If we skipped reading the page because we were going to
- 		 * write all of it, then it is not up to date.
- 		 */
--		if (skipped_read) {
-+		if (skipped_read)
- 			ClearPageChecked(page);
--			ClearPageUptodate(page);
--		}
- 		/*
- 		 * Budgeting failed which means it would have to force
- 		 * write-back but didn't, because we set the @fast flag in the
-@@ -569,6 +561,9 @@ static int ubifs_write_end(struct file *file, struct address_space *mapping,
- 		goto out;
- 	}
- 
-+	if (len == PAGE_SIZE)
-+		SetPageUptodate(page);
-+
- 	if (!PagePrivate(page)) {
- 		attach_page_private(page, (void *)1);
- 		atomic_long_inc(&c->dirty_pg_cnt);
--- 
-2.43.0
-
+ 	return arch_early_irq_init();
+ }
 
