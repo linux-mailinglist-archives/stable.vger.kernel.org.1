@@ -1,101 +1,241 @@
-Return-Path: <stable+bounces-15615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2AA83A2C8
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 08:21:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D62C83A2FB
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 08:36:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A458D28C8BE
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 07:21:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D81C28308B
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 07:36:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B7A156E4;
-	Wed, 24 Jan 2024 07:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D971D168AF;
+	Wed, 24 Jan 2024 07:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kyvmtfj/"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D80915AF9;
-	Wed, 24 Jan 2024 07:21:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA66171A4
+	for <stable@vger.kernel.org>; Wed, 24 Jan 2024 07:36:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706080864; cv=none; b=MhfOBF6zgOWH5Wwa7eb1+1bmTXUg/bBCw5s5p1+IVMWLtpORMSEkPM+DIwTbTYLRkZvbW6rEGHMJYSU3Y5VcxJdiaRZ/gcfB+Y4gB9JVx7HN/azryjY+oNfrbQaDulXqaxmn+UmpwSTZUOu2hjsyOrpXDQ+ZHXqwyVPdKy9NDL8=
+	t=1706081786; cv=none; b=t86KE1NWviBYFf2+Bgw0BlKKwIJ4oTlup9ysVAa+1pODXrESGbjaKp94MEw6vSqe1zbGqaVpms8gjwK4Ekxr0+1UQT0YQQHatdQW4rApNZs/ZUWWB9npuxTK0ijg/TtD6+pIgi6tpYh67NZ/mAkBCI+l32Dx/ijGZ0xCBslDVSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706080864; c=relaxed/simple;
-	bh=hqnn0O33ZGOANOF1UbdS2Zr5XzrRPb8ICqrmdQ7Xicg=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=doBoAZPAjQtW7gfJeu3QYAG9ru9cJsEUJNM/d/nIaiAw5gSBTxjX0zdeB62mHQYcdD2zw6SeEgapQqQUFCNuMtjn+/9OztujFZd2haqiwPsZmECjJxAFDt663mrHKw/cGAIWe0veKxLAdC81HXNLbQkMuyodmoH5YOeqURMuQUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TKb1H47m3z29khk;
-	Wed, 24 Jan 2024 15:19:15 +0800 (CST)
-Received: from kwepemm600013.china.huawei.com (unknown [7.193.23.68])
-	by mail.maildlp.com (Postfix) with ESMTPS id B6EB61A0172;
-	Wed, 24 Jan 2024 15:20:59 +0800 (CST)
-Received: from [10.174.178.46] (10.174.178.46) by
- kwepemm600013.china.huawei.com (7.193.23.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Wed, 24 Jan 2024 15:20:59 +0800
-Subject: Re: [PATCH] ubi: Check for too small LEB size in VTBL code
-To: Richard Weinberger <richard@nod.at>, <linux-mtd@lists.infradead.org>
-CC: <linux-kernel@vger.kernel.org>, Chenyuan Yang <cy54@illinois.edu>,
-	<stable@vger.kernel.org>
-References: <20240124063702.5642-1-richard@nod.at>
-From: Zhihao Cheng <chengzhihao1@huawei.com>
-Message-ID: <7875bf6f-faf4-5612-1d82-0f16a58f8455@huawei.com>
-Date: Wed, 24 Jan 2024 15:20:47 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+	s=arc-20240116; t=1706081786; c=relaxed/simple;
+	bh=e0BbWjmXTF4mDW+eBPrjFjLN6oi3tqAJ0DmGgPhLp9c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NsJzuCaBm4MpINP4utYheWgc8T45jEXY1Qq0+nYKuUStxPCDI5HB49lPpjwx0OPYn4RGW4sAtI5zK56rt1TBuJQmeclI2wprgYvfLqvwPrUH01D7YcKBHhNu8mB+MNXllUPjeDBBUmnN85GYtFbnWgw0DOrLBDNaaBYIwGEnlcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kyvmtfj/; arc=none smtp.client-ip=209.85.217.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-46af87380c7so398527137.3
+        for <stable@vger.kernel.org>; Tue, 23 Jan 2024 23:36:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706081783; x=1706686583; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+tnlKPFQfe226jCabO0DUQvdKB30ImwOaBg4mp/H49k=;
+        b=kyvmtfj/J8qkhpXo5Ou+slRP9v1bpOykweNins6pbdeB0+93IBfyozXGBNrXQWuxMY
+         4oWl+DeRhSwe8gCTUzM1D1PrnKFCqOMwZuuUhLuhuKJyHBBrIfLi0GxJ7qhUqldAlWT/
+         Za7/bYrrhRPfASJSJCR9QXWcRSAh4bfxy3AphlLfkLBpAuXHoMK2C3hwJbNrtEAf2dwY
+         Sb7P2hL6czodr0aPDpfSIGpzMtr1MnJl4IwIvzVTWQJAxiyx/7ln2G5CNmyrMSsxQPf4
+         tZRR43BqCjw1aFxj2MP6+qHPOs6VFBQjL972OgaBvU/16WZwoN/zkmwpNpgWnAsCMZYj
+         GXdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706081783; x=1706686583;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+tnlKPFQfe226jCabO0DUQvdKB30ImwOaBg4mp/H49k=;
+        b=uQnLukGPwvenoaoj5qfDXVvlEeWaUKu/K5aYJfhmbVg/yG8JTqSOwGu49++7n35Ybo
+         xizzQVz4FeExsbORyoPTFMSFv6SMChp1s8H6Hj/kDjm5h4YH1zFACvG6vp3ipsZXUI2J
+         TnPS1V72ROSYEcH2BWX4amJ1Zs27wJwAB9F69EYnnsq2AoecBKsI82j1FFMNlFYb+gaR
+         3pHmz/4fSU9wk8bJ+MukmxetQj5JP7pFlIW4PY8khar9tGwBNjleQ4I8K+YoG4q0cTI7
+         zW8Bv40quHyr4gFE5+RMfc0b20PPeRffnJ1D/8fh9/+/W42FYJSKmbXA/XLycqC3AqLA
+         wzuQ==
+X-Gm-Message-State: AOJu0YzejGlIyCOEHvtwPlQKLVr+mtPZ/SfnvFQUXZvejhjpozubpEDG
+	nfv+Q2lqlcOEkmpc415+SaxLTHX62Znu+DOsHP7LaMAtyF2QrQQbDMZqGJjipuRQU6Bnba6wsNR
+	X85Nui1MwC8xYHG91JEQfwaYIWKM3EUX6CpJaSA==
+X-Google-Smtp-Source: AGHT+IGFlsBJwlAN5HEFORTByTKreth26xjwcga15o9ftsYVovMY0UJ34jdMY7lM6EopfZGcrjAIX0tjKN+xMDljZEU=
+X-Received: by 2002:a05:6102:3753:b0:469:bcbe:b10a with SMTP id
+ u19-20020a056102375300b00469bcbeb10amr3503077vst.2.1706081783017; Tue, 23 Jan
+ 2024 23:36:23 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240124063702.5642-1-richard@nod.at>
-Content-Type: text/plain; charset="gbk"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemm600013.china.huawei.com (7.193.23.68)
+References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 24 Jan 2024 13:06:11 +0530
+Message-ID: <CA+G9fYvhkpjBgZ8XaSVJ+c_cdOU3=PYxDK0u-1Q1BaKDsVQfFg@mail.gmail.com>
+Subject: Re: [PATCH 4.19 000/148] 4.19.306-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-ÔÚ 2024/1/24 14:37, Richard Weinberger Ð´µÀ:
-> If the LEB size is smaller than a volume table record we cannot
-> have volumes.
-> In this case abort attaching.
-> 
-> Cc: Chenyuan Yang <cy54@illinois.edu>
-> Cc: stable@vger.kernel.org
-> Fixes: 801c135ce73d ("UBI: Unsorted Block Images")
-> Reported-by: Chenyuan Yang <cy54@illinois.edu>
-> Closes: https://lore.kernel.org/linux-mtd/1433EB7A-FC89-47D6-8F47-23BE41B263B3@illinois.edu/
-> Signed-off-by: Richard Weinberger <richard@nod.at>
-> ---
->   drivers/mtd/ubi/vtbl.c | 6 ++++++
->   1 file changed, 6 insertions(+)
+On Tue, 23 Jan 2024 at 05:32, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 4.19.306 release.
+> There are 148 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 24 Jan 2024 23:56:49 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-=
+4.19.306-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-4.19.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
 
-> 
-> diff --git a/drivers/mtd/ubi/vtbl.c b/drivers/mtd/ubi/vtbl.c
-> index f700f0e4f2ec..6e5489e233dd 100644
-> --- a/drivers/mtd/ubi/vtbl.c
-> +++ b/drivers/mtd/ubi/vtbl.c
-> @@ -791,6 +791,12 @@ int ubi_read_volume_table(struct ubi_device *ubi, struct ubi_attach_info *ai)
->   	 * The number of supported volumes is limited by the eraseblock size
->   	 * and by the UBI_MAX_VOLUMES constant.
->   	 */
-> +
-> +	if (ubi->leb_size < UBI_VTBL_RECORD_SIZE) {
-> +		ubi_err(ubi, "LEB size too small for a volume record");
-> +		return -EINVAL;
-> +	}
-> +
->   	ubi->vtbl_slots = ubi->leb_size / UBI_VTBL_RECORD_SIZE;
->   	if (ubi->vtbl_slots > UBI_MAX_VOLUMES)
->   		ubi->vtbl_slots = UBI_MAX_VOLUMES;
-> 
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 4.19.306-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-4.19.y
+* git commit: 7d9c60a8fe13297cfc26524269c271688d817a98
+* git describe: v4.19.305-149-g7d9c60a8fe13
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4.19=
+.305-149-g7d9c60a8fe13
+
+## Test Regressions (compared to v4.19.305)
+
+## Metric Regressions (compared to v4.19.305)
+
+## Test Fixes (compared to v4.19.305)
+
+## Metric Fixes (compared to v4.19.305)
+
+## Test result summary
+total: 55285, pass: 46655, fail: 1600, skip: 6997, xfail: 33
+
+## Build Summary
+* arc: 10 total, 10 passed, 0 failed
+* arm: 114 total, 107 passed, 7 failed
+* arm64: 40 total, 34 passed, 6 failed
+* i386: 23 total, 20 passed, 3 failed
+* mips: 23 total, 22 passed, 1 failed
+* parisc: 4 total, 0 passed, 4 failed
+* powerpc: 27 total, 26 passed, 1 failed
+* s390: 8 total, 8 passed, 0 failed
+* sh: 12 total, 12 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 34 total, 28 passed, 6 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-user
+* kselftest-vm
+* kselftest-zram
+* kunit
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-crypto
+* ltp-cve
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
