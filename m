@@ -1,147 +1,127 @@
-Return-Path: <stable+bounces-15609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3EC583A19F
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 06:56:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34D6183A1CE
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 07:09:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D98011C22E5A
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 05:56:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8A75B21FC8
+	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 06:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E82E57A;
-	Wed, 24 Jan 2024 05:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3482F50D;
+	Wed, 24 Jan 2024 06:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Rq0W828s"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nZcjS5T7"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D42816428;
-	Wed, 24 Jan 2024 05:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E05F513;
+	Wed, 24 Jan 2024 06:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706075792; cv=none; b=PyVWvwEc5eQKfzjZOJus4lH66dXjq722uO1XXB8coQ6MqussoKFVMD3x2gDjyVJMK34IsEbOtDNHT+l6vfjwG2uFjlt5es4HHBjgqRDnrMLfmxf2jmmrmZeqaTar+xWO88h82fUsORU63j8TtHfCFwQoeAABy6p2P7Q55mb/JcI=
+	t=1706076580; cv=none; b=koC6wuEUBGeymEmRT2su1B+YGIBDYg1dTqlaYLi9Y+LH2JDYbUgb26Irr5vQEKyOeWMtEnP4xejMW5Rmn/GU0/4IoIpfvnbbhjlKmsdvixfrufmnE/wj7L5JmGuffbQoHtiYJiuC/GvX4LvQEOgSIKmN4bDM3/9S+nRuxvxhH8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706075792; c=relaxed/simple;
-	bh=U7AxjWtl76YYVN9AAQAMePamqK7lCwTpHiJ55ysuw5Q=;
+	s=arc-20240116; t=1706076580; c=relaxed/simple;
+	bh=QPrzbMUSRppMUppd+9EXmi5fQQ+Uif6tDCZQPvztAlA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CgerRX6AJLeQ0NW7henO4Ql3TdCpLD6Kb2k6Bd1l7hMbgKSQWZ6guDhQSzzGaebk0asKqyzQ7kyVEqZa6BNduQzV0MvL/XUVqjJeznuAFzo0NZ+BEtyb2LSegMpyvLxrJdtgaRgEJTctp6gcZggO4ndSGyT7sxcIjqdowwj/FXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Rq0W828s; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40O5fNUB006082;
-	Wed, 24 Jan 2024 05:56:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=tmGJ2Whbetk9jP/5DWFCYsWaq8KXKVaywMbIOCxezE0=;
- b=Rq0W828sSVJPRtwhxNgKxvyXVXU3iG4YkjTr5GABDCSgBWXHkrdsqEPUPsiIfkDsZMTE
- O8zje0SDdaCf/XBTtOA56bT2Xg5+yl19GzPhJx2OkEW79YSyBZEAClAD856ZGxW7edR6
- NJHrk5PJ8WQ2rWfoBpv7EL8J42l7uMt7K/Iz6LPsNpDyvQXlg7plcWScXkGYd49fViO2
- MYoNrGXgKrdTFQbaH3umC8+UJyqeXXiCaGohW82O6RgRXoE81h9ov6+1TcMuRICq2PQV
- b1/t4gU+536XSqueSm+HtYgWSxQnRMcz5H6G7C2RTRMvH9IPDisvL95dMfOdt/emBP/7 rw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vttepb2mc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Jan 2024 05:56:22 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40O4qv2K023794;
-	Wed, 24 Jan 2024 05:56:22 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vttepb2m6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Jan 2024 05:56:22 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40O4QBBa022429;
-	Wed, 24 Jan 2024 05:56:21 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vrt0m3ugy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 24 Jan 2024 05:56:21 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40O5uJ8t23921156
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 24 Jan 2024 05:56:19 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3ADAA20043;
-	Wed, 24 Jan 2024 05:56:19 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4805420040;
-	Wed, 24 Jan 2024 05:56:17 +0000 (GMT)
-Received: from li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com (unknown [9.109.253.82])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 24 Jan 2024 05:56:17 +0000 (GMT)
-Date: Wed, 24 Jan 2024 11:26:14 +0530
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-To: Pavel Machek <pavel@denx.de>
-Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Ritesh Harjani <ritesh.list@gmail.com>,
-        "Theodore Ts'o" <tytso@mit.edu>, adilger.kernel@dilger.ca,
-        linux-ext4@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.1 08/14] ext4: enable dioread_nolock as default
- for bs < ps case
-Message-ID: <ZbCmfu90bKwA2Xvq@li-bb2b2a4c-3307-11b2-a85c-8fa5c3a69313.ibm.com>
-References: <20240116010642.218876-1-sashal@kernel.org>
- <20240116010642.218876-8-sashal@kernel.org>
- <ZabrcCOi/hIsKk5I@duo.ucw.cz>
+	 Content-Type:Content-Disposition:In-Reply-To; b=exHv4z3jmIb8wJXtzwQ1K1yCxBD8XH58JBLUsRY+7ZkDRoZOWNEfgOuQrF5yypyshFv2N09UqLB890GZJLCRMZUiwADXNVaWz1lurF4+vdmLLB9TSWK3c+Hm5gcWOI1yWWyA7pTq2xSWy0p8huJwZ4hklkaArS3zfPe6QmF5goo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nZcjS5T7; arc=none smtp.client-ip=209.85.167.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3bd6581bc62so3575130b6e.2;
+        Tue, 23 Jan 2024 22:09:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706076578; x=1706681378; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ddFkrLYV49OOGsw3xBz4LEthLKO7WQPAAsxP1oQV98g=;
+        b=nZcjS5T75F2pIZtv14TAiAxgt8LsTkijIie7SxDMSIKRG5Q35ygMjhPskxIMHyC1V2
+         G/yBbE+IecHnlqBeWdrX1APRk2b01hS00HZsSCkXMBBt7wzTwTTxB11X1+xsxiYJN21d
+         oyeX9NPXy2U24BSvMbVLsWr0zLz4f1MnJy7SlQgCB1iqeVbqW7L11c+jsMhaCCEmQnST
+         VHEZosCriNBmYBeBb3PPS5aL1MbMJeBhgKPKshiKNfiQWqCOtNV9kpHI6+JeUugnve7k
+         IEnw0PoPZfOFqIbvmaNW4paLide7CK8F/qZ468N9zbHwcCWuuYBKW1N8hwfI1Xv5AcXX
+         TD/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706076578; x=1706681378;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ddFkrLYV49OOGsw3xBz4LEthLKO7WQPAAsxP1oQV98g=;
+        b=L+tmRD6Bc7YE2hUWHc3prhk9OXs3fyq1iMicDAJCDykR/8L3hSyqaG5nfBhLpufv7l
+         qu2bj4cIrG/1QIPgQeVlUyLi/I/q5EIVRVlwkDaz/D/kepzqH2o2bruKsEnogSaSqe7B
+         oVTBjLzUN+nl7XXYQzMkJyV4FUOTb2vUoYJeIZtS0ban5S1z/pRrRhYRNEo9C43zNLYI
+         YMQwjzY1UT4NQiMrQZ2r73GuwGSDUuHmYBIy8Wr2JHfy2iuhRfVHS49YWkw55jHWg++D
+         TUh9hheI885aebknXK+5z09Shz+a9VaAA0gv9AHuRZEgBu8d/KIXYPVg10/XVarR9xLo
+         PAJQ==
+X-Gm-Message-State: AOJu0YycLjE4Z8kT0eCqpkZ4EP0elvE+xBBMcesndAxOVgmJZkddzst+
+	7M7+308onxAAEU0wc9S91YSaVnMEUS2gahd13vVWqWV9ad7ZPhvv9uR7sLwaQh0=
+X-Google-Smtp-Source: AGHT+IHy206D+dXsznYMPRNs3sVxNuAF0r+/fh3ddUozvjmI9oIvn4prCQMnoeeRqTd/3iokULUUEw==
+X-Received: by 2002:a05:6808:1894:b0:3bd:cfd3:8607 with SMTP id bi20-20020a056808189400b003bdcfd38607mr660611oib.65.1706076578162;
+        Tue, 23 Jan 2024 22:09:38 -0800 (PST)
+Received: from archie.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id fk19-20020a056a003a9300b006db87354a8fsm12657551pfb.119.2024.01.23.22.09.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jan 2024 22:09:37 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id 041B0184EA861; Wed, 24 Jan 2024 13:09:33 +0700 (WIB)
+Date: Wed, 24 Jan 2024 13:09:33 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.6 000/580] 6.6.14-rc2 review
+Message-ID: <ZbCpneBZPtJO2AQo@archie.me>
+References: <20240123174533.427864181@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="EQAs6C5Lptua5lKA"
 Content-Disposition: inline
-In-Reply-To: <ZabrcCOi/hIsKk5I@duo.ucw.cz>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: -c33VtLZ1QNIZt1TzvKhfdFqaML-_uX6
-X-Proofpoint-GUID: zSxOjyDFyk1hjVt9Vp2rG_mXURwFjid8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-24_02,2024-01-23_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=1 impostorscore=0 bulkscore=0
- malwarescore=0 priorityscore=1501 adultscore=0 spamscore=1 clxscore=1031
- phishscore=0 suspectscore=0 mlxscore=1 mlxlogscore=190 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401240041
-
-On Tue, Jan 16, 2024 at 09:47:44PM +0100, Pavel Machek wrote:
-> Hi!
-> > 
-> > [ Upstream commit e89fdcc425b6feea4dfb33877e9256757905d763 ]
-> > 
-> > dioread_nolock was originally disabled as a default option for bs < ps
-> > scenarios due to a data corruption issue. Since then, we've had some
-> > fixes in this area which address such issues. Enable dioread_nolock by
-> > default and remove the experimental warning message for bs < ps path.
-> > 
-> > dioread for bs < ps has been tested on a 64k pagesize machine using:
-> > 
-> > kvm-xfstest -C 3 -g auto
-> > 
-> > with the following configs:
-> > 
-> > 64k adv bigalloc_4k bigalloc_64k data_journal encrypt
-> > dioread_nolock dioread_nolock_4k ext3 ext3conv nojournal
-> > 
-> > And no new regressions were seen compared to baseline kernel.
-> 
-> But no fixes, either, so not suitable for stable.
-> 
-> BR,
-> 								Pavel
-
-Hi Pavel, Sasha,
-
-I agree, this can be dropped from stable since it is not a bug fix.
-
-- ojaswin
-> 
-> -- 
-> DENX Software Engineering GmbH,        Managing Director: Erika Unter
-> HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+In-Reply-To: <20240123174533.427864181@linuxfoundation.org>
 
 
+--EQAs6C5Lptua5lKA
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Jan 23, 2024 at 09:47:11AM -0800, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.14 release.
+> There are 580 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+
+Successfully compiled and installed the kernel on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--EQAs6C5Lptua5lKA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZbCpkgAKCRD2uYlJVVFO
+o0KXAQCuyDhAAfWtcAEGKQ630SuIueR0MiuVhQRAwEnF4RU9jQD/Xw7Slc7k3hi/
+juirP4bpu6pgj3VimPnzm9+dNuSCpQU=
+=d8b6
+-----END PGP SIGNATURE-----
+
+--EQAs6C5Lptua5lKA--
 
