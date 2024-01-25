@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-15748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4417483B5F7
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 01:16:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 970CF83B5F8
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 01:16:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1F1D1F226E1
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 00:16:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 287AB1F22F77
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 00:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4517C197;
-	Thu, 25 Jan 2024 00:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E65C399;
+	Thu, 25 Jan 2024 00:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GkNPc9rc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UM+VrxNV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31314385
-	for <stable@vger.kernel.org>; Thu, 25 Jan 2024 00:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601527F
+	for <stable@vger.kernel.org>; Thu, 25 Jan 2024 00:16:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706141793; cv=none; b=jVBp6+GnvZy/7RMPutMt96Gnb8uRHAw8XT2d2TIrEEqxiepSnTl59Nz2yHxriSRCLhC5OKaQUGnj8R4/Obur7tKltM2Gqw2GgCXqWAWXBwcBodXiOJKvyhHWhq7Ynj88UYw0R1bL7iLwKwrdOmoxbP5WEKu8WK3pcHdKcUdOlDQ=
+	t=1706141794; cv=none; b=YATWm3MrFsIBLm09vIWQRE6Ef+LUDZNXQ0KHler33UHF6AB0NKW7C8tubdrFsU4zpyz4uQO3+TGGHSPSH4ijvUFD/gePWcesfZpgKykzsDKAxf63Xk/obXuFv8X08lgFL/x4zIg9PacbVfwNI4CwI1D2B/RM6yMNX3HRHyRQXzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706141793; c=relaxed/simple;
-	bh=eXdEB/+EeDBWtSL7ExZqB7H260yn3hMBMFzmYUUT0oo=;
+	s=arc-20240116; t=1706141794; c=relaxed/simple;
+	bh=hUpGAyhK9Tw9eyc6H6/7eoIvkl9nvmoGV3vU1DgdYq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dr2L4Cs5NGbT7BhrXH4i0MdiiBmfzdNPP3LJrHT5RDN32cyLj5sx+NLy6c4Zh/7hA77nt7+GvatZj4fsnVD7AB4g2Ec/DyazDu8jkl3VHgCQccbaj/bGAJ9dlDjIdD0bhpF0t24Gcsfkc921p+pMcOgxZxTuCMOCyylMad9/63s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GkNPc9rc; arc=none smtp.client-ip=209.85.167.51
+	 MIME-Version; b=Z1Sg5Tz6xWkBu5oi1GvElwphApCYubwviMV33moX5Xz99IgFK4NQTN2f6rnZPtN4jiTkcHup8uJE7fnLUF0aJiSLLub8lXWhqgS6LzEHL4DE09He5tekc7LLG88t5mNp4cvqWgs8bEcuVJpAIyx7wuNiTzHu1hrdMSBLPU04Lks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UM+VrxNV; arc=none smtp.client-ip=209.85.208.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-50ea9daac4cso6701719e87.3
-        for <stable@vger.kernel.org>; Wed, 24 Jan 2024 16:16:30 -0800 (PST)
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2cf2fdd518bso7838331fa.1
+        for <stable@vger.kernel.org>; Wed, 24 Jan 2024 16:16:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706141789; x=1706746589; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1706141790; x=1706746590; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Qvg1RHKTSczA0Pc9F51yU6Uk7kRw2KvckXXPs4c9ms0=;
-        b=GkNPc9rcymt7zUIguEx49kz4wk5/PNQ/lmJDssK8lXzHC/UP0+aI3WP6wztRpIPq0n
-         xlQJU87sEPjkT77BtU+QTgcroiEzCOGx/e6ejFiRh55UAusCV363JOnhJOoc3vMCfBnv
-         TZsZx4962nGD4UMfKyaap9SM5iM5SXAkT14kQceKrKoGBP2pmCi/ibLY82Bw9qSUIL7H
-         Hqd4sa5Kg8ZHfqT5VsTwq51kYhT32n5N+iZLiRM6FcaAhP/cQWV5xcLhwwKmMRwV0xXI
-         2Y2LrDzUHeRwSmaYUaIZeLiLaPoEDD26YW1zNCtNtjPzf6OMfEOWrnSJ37Z9U6rYZ/9s
-         98Mw==
+        bh=OfIHik2+Sc6iDAJpwNgJHZvON/HnqHKn80ogHpolnLc=;
+        b=UM+VrxNVatDrAVoIheK9HWcn2+ja9UrhxnR+XuoX0d/SMqUtiwk8VlMAWOQkPDYYUB
+         pLl+tlSdROfOdXBYW5obdEcnVzDPLxP4kHrm97QJyjrRFzNl312NJgZjZRlNzD1WeW8i
+         /1OBZIcZ5tpvXkorKZby+aCTBz8gkp4raS0ndV8Ujen6ZQonU13RKZkTcD4/nnGDv6lT
+         4MiYE4E/Fk1/AVmC/Ruiz39pQiNUS37xupAQGfngaHch4avlhOb6Eiqujm3g9TegYOlD
+         UwyOvhsyWKFs9wApnYJgu1o5tnWAeiXQFL4dIAZReinK1laqGER4SRBXHbhU7JnDFIub
+         92TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706141789; x=1706746589;
+        d=1e100.net; s=20230601; t=1706141790; x=1706746590;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Qvg1RHKTSczA0Pc9F51yU6Uk7kRw2KvckXXPs4c9ms0=;
-        b=JSBeHx5PvT7leQjFMv71C9UnzukUCtY0KjhQcLemTUovVdeR2LE30/Xm1xyD4KR5IZ
-         JKzq/mEQ3P4kK8Ws5sbQyj/Y5KCDPNJjA4YPi0zeYtJCNOSsozjWd6bBwcHd7Yqt6Nmu
-         tQcha6oeUppSVq2pkTygwODriQb3F9UOdH8m7YrAL1G/t5aTVw3RdQJtDEKjcnpbppDX
-         sNY2b4CBwVXq55yhte8PaJtSWUqa+jhcvi0XobnZ1lO4Z2W/7TpaN4KMdlVPjN5IeWR5
-         NMWw5YEcfA2C28KJ7TVZh/vj7BaquYGZ/LIW9eotZKzzkZr66JvnfhAoNonLSx/Xvmy5
-         aFsQ==
-X-Gm-Message-State: AOJu0Yxi3NDGoTFiAJQXqMm0rgpV0GPkq4t/qUZP+jZq9mdap4oRbhnH
-	7bsIM22ib8bWGcdYSxADNKbvqJYv43pDWw5ZW8p8FGrVlVyTAjCoPtjQDXIf
-X-Google-Smtp-Source: AGHT+IExMmi5B3uZKeoui8Gy9PxWnGRBShupB3R1TesPWLmmmzoc4zwKkj4ZvtKO/12qShfev7vHTA==
-X-Received: by 2002:a05:6512:e96:b0:50e:712b:393f with SMTP id bi22-20020a0565120e9600b0050e712b393fmr32322lfb.80.1706141788727;
-        Wed, 24 Jan 2024 16:16:28 -0800 (PST)
+        bh=OfIHik2+Sc6iDAJpwNgJHZvON/HnqHKn80ogHpolnLc=;
+        b=HZtPhB+T+eIihpGA4HzG4PXPtgvtbM9o1fFWv/Kc2P8nZ3duLsPjufkkvJInib7R/W
+         nbNt4GFQdVFXYp5W3eMvX09OGmI1sejKTbMpOV4YKLJnCiygNMV+iMYZtvlyVmXfqZZb
+         +2Am1OLf00yNXgw+JPDZtaEPJvejTVLb6IJSA5GvGoxxz+2lrBNNpd1h7w1iWXmNqRuL
+         eGNRHrFa9v9hyVG3bEGLolOmdKygQnb7W+pwYV08W1rdyJ7nxF8foGpcl9LoL1qt2VcD
+         VAQ9KHQc5pKBhUcd6mlUHcx7jBovJiyO9dQcBehsmF0/TxPixPDkbNXBfZEcEJez+AN5
+         QQTg==
+X-Gm-Message-State: AOJu0YwDCEn9zOhdKix5Cq9KocyeHS5WHgwQ6Pt5YSoKZl2eMs0VRgTi
+	WEzLx1Sp//QZY2nGVKB2QUfQiN9jonVRAeK4TNnDkBkoRu6sYlSUU0nidtF/
+X-Google-Smtp-Source: AGHT+IFpyzYv1gEuzO/fEmyc5tia7eXHlMIQaE2VxMnip++tPYlfgxRfBWzyt2XfelW65v+pH4qJkg==
+X-Received: by 2002:a05:6512:2303:b0:510:194e:4df4 with SMTP id o3-20020a056512230300b00510194e4df4mr26877lfu.175.1706141789955;
+        Wed, 24 Jan 2024 16:16:29 -0800 (PST)
 Received: from localhost.localdomain (host-176-36-0-241.b024.la.net.ua. [176.36.0.241])
-        by smtp.gmail.com with ESMTPSA id s11-20020a17090699cb00b00a316896b4aesm217363ejn.80.2024.01.24.16.16.27
+        by smtp.gmail.com with ESMTPSA id s11-20020a17090699cb00b00a316896b4aesm217363ejn.80.2024.01.24.16.16.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jan 2024 16:16:28 -0800 (PST)
+        Wed, 24 Jan 2024 16:16:29 -0800 (PST)
 From: Eduard Zingerman <eddyz87@gmail.com>
 To: stable@vger.kernel.org,
 	ast@kernel.org
@@ -77,9 +77,9 @@ Cc: andrii@kernel.org,
 	gregkh@linuxfoundation.org,
 	mat.gienieczko@tum.de,
 	Eduard Zingerman <eddyz87@gmail.com>
-Subject: [PATCH 6.6.y 08/17] selftests/bpf: track tcp payload offset as scalar in xdp_synproxy
-Date: Thu, 25 Jan 2024 02:15:45 +0200
-Message-ID: <20240125001554.25287-9-eddyz87@gmail.com>
+Subject: [PATCH 6.6.y 09/17] selftests/bpf: track string payload offset as scalar in strobemeta
+Date: Thu, 25 Jan 2024 02:15:46 +0200
+Message-ID: <20240125001554.25287-10-eddyz87@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240125001554.25287-1-eddyz87@gmail.com>
 References: <20240125001554.25287-1-eddyz87@gmail.com>
@@ -91,179 +91,252 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit 977bc146d4eb ]
+[ Upstream commit 87eb0152bcc1 ]
 
-This change prepares syncookie_{tc,xdp} for update in callbakcs
-verification logic. To allow bpf_loop() verification converge when
-multiple callback itreations are considered:
-- track offset inside TCP payload explicitly, not as a part of the
-  pointer;
-- make sure that offset does not exceed MAX_PACKET_OFF enforced by
-  verifier;
+This change prepares strobemeta for update in callbacks verification
+logic. To allow bpf_loop() verification converge when multiple
+callback iterations are considered:
+- track offset inside strobemeta_payload->payload directly as scalar
+  value;
+- at each iteration make sure that remaining
+  strobemeta_payload->payload capacity is sufficient for execution of
+  read_{map,str}_var functions;
 - make sure that offset is tracked as unbound scalar between
   iterations, otherwise verifier won't be able infer that bpf_loop
   callback reaches identical states.
 
 Acked-by: Andrii Nakryiko <andrii@kernel.org>
 Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20231121020701.26440-2-eddyz87@gmail.com
+Link: https://lore.kernel.org/r/20231121020701.26440-3-eddyz87@gmail.com
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 ---
- .../selftests/bpf/progs/xdp_synproxy_kern.c   | 84 ++++++++++++-------
- 1 file changed, 52 insertions(+), 32 deletions(-)
+ .../testing/selftests/bpf/progs/strobemeta.h  | 78 ++++++++++++-------
+ 1 file changed, 48 insertions(+), 30 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c b/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
-index 07d786329105..614b8ae2c144 100644
---- a/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
-+++ b/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
-@@ -53,6 +53,8 @@
- #define DEFAULT_TTL 64
- #define MAX_ALLOWED_PORTS 8
+diff --git a/tools/testing/selftests/bpf/progs/strobemeta.h b/tools/testing/selftests/bpf/progs/strobemeta.h
+index e02cfd380746..40df2cc26eaf 100644
+--- a/tools/testing/selftests/bpf/progs/strobemeta.h
++++ b/tools/testing/selftests/bpf/progs/strobemeta.h
+@@ -24,9 +24,11 @@ struct task_struct {};
+ #define STACK_TABLE_EPOCH_SHIFT 20
+ #define STROBE_MAX_STR_LEN 1
+ #define STROBE_MAX_CFGS 32
++#define READ_MAP_VAR_PAYLOAD_CAP					\
++	((1 + STROBE_MAX_MAP_ENTRIES * 2) * STROBE_MAX_STR_LEN)
+ #define STROBE_MAX_PAYLOAD						\
+ 	(STROBE_MAX_STRS * STROBE_MAX_STR_LEN +				\
+-	STROBE_MAX_MAPS * (1 + STROBE_MAX_MAP_ENTRIES * 2) * STROBE_MAX_STR_LEN)
++	 STROBE_MAX_MAPS * READ_MAP_VAR_PAYLOAD_CAP)
  
-+#define MAX_PACKET_OFF 0xffff
-+
- #define swap(a, b) \
- 	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
+ struct strobe_value_header {
+ 	/*
+@@ -355,7 +357,7 @@ static __always_inline uint64_t read_str_var(struct strobemeta_cfg *cfg,
+ 					     size_t idx, void *tls_base,
+ 					     struct strobe_value_generic *value,
+ 					     struct strobemeta_payload *data,
+-					     void *payload)
++					     size_t off)
+ {
+ 	void *location;
+ 	uint64_t len;
+@@ -366,7 +368,7 @@ static __always_inline uint64_t read_str_var(struct strobemeta_cfg *cfg,
+ 		return 0;
  
-@@ -183,63 +185,76 @@ static __always_inline __u32 tcp_time_stamp_raw(void)
+ 	bpf_probe_read_user(value, sizeof(struct strobe_value_generic), location);
+-	len = bpf_probe_read_user_str(payload, STROBE_MAX_STR_LEN, value->ptr);
++	len = bpf_probe_read_user_str(&data->payload[off], STROBE_MAX_STR_LEN, value->ptr);
+ 	/*
+ 	 * if bpf_probe_read_user_str returns error (<0), due to casting to
+ 	 * unsinged int, it will become big number, so next check is
+@@ -378,14 +380,14 @@ static __always_inline uint64_t read_str_var(struct strobemeta_cfg *cfg,
+ 		return 0;
+ 
+ 	data->str_lens[idx] = len;
+-	return len;
++	return off + len;
  }
  
- struct tcpopt_context {
--	__u8 *ptr;
--	__u8 *end;
-+	void *data;
- 	void *data_end;
- 	__be32 *tsecr;
- 	__u8 wscale;
- 	bool option_timestamp;
- 	bool option_sack;
-+	__u32 off;
- };
- 
--static int tscookie_tcpopt_parse(struct tcpopt_context *ctx)
-+static __always_inline u8 *next(struct tcpopt_context *ctx, __u32 sz)
+-static __always_inline void *read_map_var(struct strobemeta_cfg *cfg,
+-					  size_t idx, void *tls_base,
+-					  struct strobe_value_generic *value,
+-					  struct strobemeta_payload *data,
+-					  void *payload)
++static __always_inline uint64_t read_map_var(struct strobemeta_cfg *cfg,
++					     size_t idx, void *tls_base,
++					     struct strobe_value_generic *value,
++					     struct strobemeta_payload *data,
++					     size_t off)
  {
--	__u8 opcode, opsize;
-+	__u64 off = ctx->off;
-+	__u8 *data;
+ 	struct strobe_map_descr* descr = &data->map_descrs[idx];
+ 	struct strobe_map_raw map;
+@@ -397,11 +399,11 @@ static __always_inline void *read_map_var(struct strobemeta_cfg *cfg,
  
--	if (ctx->ptr >= ctx->end)
--		return 1;
--	if (ctx->ptr >= ctx->data_end)
--		return 1;
-+	/* Verifier forbids access to packet when offset exceeds MAX_PACKET_OFF */
-+	if (off > MAX_PACKET_OFF - sz)
-+		return NULL;
+ 	location = calc_location(&cfg->map_locs[idx], tls_base);
+ 	if (!location)
+-		return payload;
++		return off;
  
--	opcode = ctx->ptr[0];
-+	data = ctx->data + off;
-+	barrier_var(data);
-+	if (data + sz >= ctx->data_end)
-+		return NULL;
+ 	bpf_probe_read_user(value, sizeof(struct strobe_value_generic), location);
+ 	if (bpf_probe_read_user(&map, sizeof(struct strobe_map_raw), value->ptr))
+-		return payload;
++		return off;
  
--	if (opcode == TCPOPT_EOL)
--		return 1;
--	if (opcode == TCPOPT_NOP) {
--		++ctx->ptr;
--		return 0;
--	}
-+	ctx->off += sz;
-+	return data;
-+}
- 
--	if (ctx->ptr + 1 >= ctx->end)
--		return 1;
--	if (ctx->ptr + 1 >= ctx->data_end)
-+static int tscookie_tcpopt_parse(struct tcpopt_context *ctx)
-+{
-+	__u8 *opcode, *opsize, *wscale, *tsecr;
-+	__u32 off = ctx->off;
-+
-+	opcode = next(ctx, 1);
-+	if (!opcode)
- 		return 1;
--	opsize = ctx->ptr[1];
--	if (opsize < 2)
-+
-+	if (*opcode == TCPOPT_EOL)
- 		return 1;
-+	if (*opcode == TCPOPT_NOP)
-+		return 0;
- 
--	if (ctx->ptr + opsize > ctx->end)
-+	opsize = next(ctx, 1);
-+	if (!opsize || *opsize < 2)
- 		return 1;
- 
--	switch (opcode) {
-+	switch (*opcode) {
- 	case TCPOPT_WINDOW:
--		if (opsize == TCPOLEN_WINDOW && ctx->ptr + TCPOLEN_WINDOW <= ctx->data_end)
--			ctx->wscale = ctx->ptr[2] < TCP_MAX_WSCALE ? ctx->ptr[2] : TCP_MAX_WSCALE;
-+		wscale = next(ctx, 1);
-+		if (!wscale)
-+			return 1;
-+		if (*opsize == TCPOLEN_WINDOW)
-+			ctx->wscale = *wscale < TCP_MAX_WSCALE ? *wscale : TCP_MAX_WSCALE;
- 		break;
- 	case TCPOPT_TIMESTAMP:
--		if (opsize == TCPOLEN_TIMESTAMP && ctx->ptr + TCPOLEN_TIMESTAMP <= ctx->data_end) {
-+		tsecr = next(ctx, 4);
-+		if (!tsecr)
-+			return 1;
-+		if (*opsize == TCPOLEN_TIMESTAMP) {
- 			ctx->option_timestamp = true;
- 			/* Client's tsval becomes our tsecr. */
--			*ctx->tsecr = get_unaligned((__be32 *)(ctx->ptr + 2));
-+			*ctx->tsecr = get_unaligned((__be32 *)tsecr);
- 		}
- 		break;
- 	case TCPOPT_SACK_PERM:
--		if (opsize == TCPOLEN_SACK_PERM)
-+		if (*opsize == TCPOLEN_SACK_PERM)
- 			ctx->option_sack = true;
- 		break;
+ 	descr->id = map.id;
+ 	descr->cnt = map.cnt;
+@@ -410,10 +412,10 @@ static __always_inline void *read_map_var(struct strobemeta_cfg *cfg,
+ 		data->req_meta_valid = 1;
  	}
  
--	ctx->ptr += opsize;
-+	ctx->off = off + *opsize;
+-	len = bpf_probe_read_user_str(payload, STROBE_MAX_STR_LEN, map.tag);
++	len = bpf_probe_read_user_str(&data->payload[off], STROBE_MAX_STR_LEN, map.tag);
+ 	if (len <= STROBE_MAX_STR_LEN) {
+ 		descr->tag_len = len;
+-		payload += len;
++		off += len;
+ 	}
  
- 	return 0;
+ #ifdef NO_UNROLL
+@@ -426,22 +428,22 @@ static __always_inline void *read_map_var(struct strobemeta_cfg *cfg,
+ 			break;
+ 
+ 		descr->key_lens[i] = 0;
+-		len = bpf_probe_read_user_str(payload, STROBE_MAX_STR_LEN,
++		len = bpf_probe_read_user_str(&data->payload[off], STROBE_MAX_STR_LEN,
+ 					      map.entries[i].key);
+ 		if (len <= STROBE_MAX_STR_LEN) {
+ 			descr->key_lens[i] = len;
+-			payload += len;
++			off += len;
+ 		}
+ 		descr->val_lens[i] = 0;
+-		len = bpf_probe_read_user_str(payload, STROBE_MAX_STR_LEN,
++		len = bpf_probe_read_user_str(&data->payload[off], STROBE_MAX_STR_LEN,
+ 					      map.entries[i].val);
+ 		if (len <= STROBE_MAX_STR_LEN) {
+ 			descr->val_lens[i] = len;
+-			payload += len;
++			off += len;
+ 		}
+ 	}
+ 
+-	return payload;
++	return off;
  }
-@@ -256,16 +271,21 @@ static int tscookie_tcpopt_parse_batch(__u32 index, void *context)
  
- static __always_inline bool tscookie_init(struct tcphdr *tcp_header,
- 					  __u16 tcp_len, __be32 *tsval,
--					  __be32 *tsecr, void *data_end)
-+					  __be32 *tsecr, void *data, void *data_end)
+ #ifdef USE_BPF_LOOP
+@@ -455,14 +457,20 @@ struct read_var_ctx {
+ 	struct strobemeta_payload *data;
+ 	void *tls_base;
+ 	struct strobemeta_cfg *cfg;
+-	void *payload;
++	size_t payload_off;
+ 	/* value gets mutated */
+ 	struct strobe_value_generic *value;
+ 	enum read_type type;
+ };
+ 
+-static int read_var_callback(__u32 index, struct read_var_ctx *ctx)
++static int read_var_callback(__u64 index, struct read_var_ctx *ctx)
  {
- 	struct tcpopt_context loop_ctx = {
--		.ptr = (__u8 *)(tcp_header + 1),
--		.end = (__u8 *)tcp_header + tcp_len,
-+		.data = data,
- 		.data_end = data_end,
- 		.tsecr = tsecr,
- 		.wscale = TS_OPT_WSCALE_MASK,
- 		.option_timestamp = false,
- 		.option_sack = false,
-+		/* Note: currently verifier would track .off as unbound scalar.
-+		 *       In case if verifier would at some point get smarter and
-+		 *       compute bounded value for this var, beware that it might
-+		 *       hinder bpf_loop() convergence validation.
-+		 */
-+		.off = (__u8 *)(tcp_header + 1) - (__u8 *)data,
++	/* lose precision info for ctx->payload_off, verifier won't track
++	 * double xor, barrier_var() is needed to force clang keep both xors.
++	 */
++	ctx->payload_off ^= index;
++	barrier_var(ctx->payload_off);
++	ctx->payload_off ^= index;
+ 	switch (ctx->type) {
+ 	case READ_INT_VAR:
+ 		if (index >= STROBE_MAX_INTS)
+@@ -472,14 +480,18 @@ static int read_var_callback(__u32 index, struct read_var_ctx *ctx)
+ 	case READ_MAP_VAR:
+ 		if (index >= STROBE_MAX_MAPS)
+ 			return 1;
+-		ctx->payload = read_map_var(ctx->cfg, index, ctx->tls_base,
+-					    ctx->value, ctx->data, ctx->payload);
++		if (ctx->payload_off > sizeof(ctx->data->payload) - READ_MAP_VAR_PAYLOAD_CAP)
++			return 1;
++		ctx->payload_off = read_map_var(ctx->cfg, index, ctx->tls_base,
++						ctx->value, ctx->data, ctx->payload_off);
+ 		break;
+ 	case READ_STR_VAR:
+ 		if (index >= STROBE_MAX_STRS)
+ 			return 1;
+-		ctx->payload += read_str_var(ctx->cfg, index, ctx->tls_base,
+-					     ctx->value, ctx->data, ctx->payload);
++		if (ctx->payload_off > sizeof(ctx->data->payload) - STROBE_MAX_STR_LEN)
++			return 1;
++		ctx->payload_off = read_str_var(ctx->cfg, index, ctx->tls_base,
++						ctx->value, ctx->data, ctx->payload_off);
+ 		break;
+ 	}
+ 	return 0;
+@@ -501,7 +513,8 @@ static void *read_strobe_meta(struct task_struct *task,
+ 	pid_t pid = bpf_get_current_pid_tgid() >> 32;
+ 	struct strobe_value_generic value = {0};
+ 	struct strobemeta_cfg *cfg;
+-	void *tls_base, *payload;
++	size_t payload_off;
++	void *tls_base;
+ 
+ 	cfg = bpf_map_lookup_elem(&strobemeta_cfgs, &pid);
+ 	if (!cfg)
+@@ -509,7 +522,7 @@ static void *read_strobe_meta(struct task_struct *task,
+ 
+ 	data->int_vals_set_mask = 0;
+ 	data->req_meta_valid = 0;
+-	payload = data->payload;
++	payload_off = 0;
+ 	/*
+ 	 * we don't have struct task_struct definition, it should be:
+ 	 * tls_base = (void *)task->thread.fsbase;
+@@ -522,7 +535,7 @@ static void *read_strobe_meta(struct task_struct *task,
+ 		.tls_base = tls_base,
+ 		.value = &value,
+ 		.data = data,
+-		.payload = payload,
++		.payload_off = 0,
  	};
- 	u32 cookie;
+ 	int err;
  
-@@ -635,7 +655,7 @@ static __always_inline int syncookie_handle_syn(struct header_pointers *hdr,
- 	cookie = (__u32)value;
+@@ -540,6 +553,11 @@ static void *read_strobe_meta(struct task_struct *task,
+ 	err = bpf_loop(STROBE_MAX_MAPS, read_var_callback, &ctx, 0);
+ 	if (err != STROBE_MAX_MAPS)
+ 		return NULL;
++
++	payload_off = ctx.payload_off;
++	/* this should not really happen, here only to satisfy verifer */
++	if (payload_off > sizeof(data->payload))
++		payload_off = sizeof(data->payload);
+ #else
+ #ifdef NO_UNROLL
+ #pragma clang loop unroll(disable)
+@@ -555,7 +573,7 @@ static void *read_strobe_meta(struct task_struct *task,
+ #pragma unroll
+ #endif /* NO_UNROLL */
+ 	for (int i = 0; i < STROBE_MAX_STRS; ++i) {
+-		payload += read_str_var(cfg, i, tls_base, &value, data, payload);
++		payload_off = read_str_var(cfg, i, tls_base, &value, data, payload_off);
+ 	}
+ #ifdef NO_UNROLL
+ #pragma clang loop unroll(disable)
+@@ -563,7 +581,7 @@ static void *read_strobe_meta(struct task_struct *task,
+ #pragma unroll
+ #endif /* NO_UNROLL */
+ 	for (int i = 0; i < STROBE_MAX_MAPS; ++i) {
+-		payload = read_map_var(cfg, i, tls_base, &value, data, payload);
++		payload_off = read_map_var(cfg, i, tls_base, &value, data, payload_off);
+ 	}
+ #endif /* USE_BPF_LOOP */
  
- 	if (tscookie_init((void *)hdr->tcp, hdr->tcp_len,
--			  &tsopt_buf[0], &tsopt_buf[1], data_end))
-+			  &tsopt_buf[0], &tsopt_buf[1], data, data_end))
- 		tsopt = tsopt_buf;
+@@ -571,7 +589,7 @@ static void *read_strobe_meta(struct task_struct *task,
+ 	 * return pointer right after end of payload, so it's possible to
+ 	 * calculate exact amount of useful data that needs to be sent
+ 	 */
+-	return payload;
++	return &data->payload[payload_off];
+ }
  
- 	/* Check that there is enough space for a SYNACK. It also covers
+ SEC("raw_tracepoint/kfree_skb")
 -- 
 2.43.0
 
