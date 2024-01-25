@@ -1,135 +1,116 @@
-Return-Path: <stable+bounces-15832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C382E83CB2D
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 19:34:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E94283CB4B
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 19:40:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4756BB2579B
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 18:34:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C86361F2882B
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 18:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69455135A55;
-	Thu, 25 Jan 2024 18:31:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4wtXRhi"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA02130E25;
+	Thu, 25 Jan 2024 18:40:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E34413399E;
-	Thu, 25 Jan 2024 18:31:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87951350CE;
+	Thu, 25 Jan 2024 18:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706207470; cv=none; b=c6rcsRGiysT06u3B5vfAPAB0vetgxUznZ0YdgRa8m+qHFR3pBgOTKGRqdwoOroTAd9nQHzOGYnLVSI/TNOvOGRmenBkRZs9gXELYD4xyNVL6UlqqQWT9qFCVnD59gj8ZRq9MpJhC9B01ARFKtzEE/t26RiOtAUwk0mxxiDhAhf8=
+	t=1706208032; cv=none; b=C5DldOBQoBSdN4/H8Gi5JNga3vxUn79g7TXOULBDzhZah6JUDjkQCZrkRB3btuYWI1rLgF0bRtYW4PKa6+esPpqnhgk9bH0idqlPc69LF7WGgDL4JQsnLJ/hjiI48KIT7dVnSUxhc3RC6rDOTpIQ1SpMi8MVm65pSeIsedex2wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706207470; c=relaxed/simple;
-	bh=LTM9Rq0ah24lwvVn1y8YRCHc6j5ROIsgGb706zCSPEw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=QK91g528v5d+AXFY78YA3hDlkK0LNcTjXrSxCoH2thZf/M86CwAzMsdd1F6896a2xY+YCkvjD3I5APkkkkeMFvOd27VQK4gSkBrzbryZkUf5seE7PTLJ4pDzOzFeSZcOLECPd0lVgNJjzyatQvm/QHfZxxnmCZvK9aqfHnNOjFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4wtXRhi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC4DC433F1;
-	Thu, 25 Jan 2024 18:31:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706207469;
-	bh=LTM9Rq0ah24lwvVn1y8YRCHc6j5ROIsgGb706zCSPEw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=S4wtXRhiDkmqHfxDMkUhXRmGNOlc2t6Dxgow2TFcrq/mWLHuIVpkF9dTF3+NdSXEw
-	 jZmifn0eFFKIR8Hf3ZuJ1j0R6xhj4QvHqIz9eeW9NbXopCjBKQQJ0CZF2PDzpL1Jjl
-	 zHbWVTgyhu11TS7DO4fXyVOMnXjWjP7l3x6q0o5Xqug0ySRSOwCA95u2546yaYGRFw
-	 8c0o6Y8RJu0qV+KNPupq3A4FZK8BPZy50azhxOYhmYcBFK/zC7qj6gfujx6g4V140i
-	 n6tmfWv63Jx/zDFXdWVrAHs8lCM8GhxbySSBkxwbNzQ0FbR7fC3hxlKeYpfyZjTjGm
-	 LMjxQ2FYEQPAg==
-Date: Thu, 25 Jan 2024 12:31:07 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Randy Dunlap <rdunlap@infradead.org>, NeilBrown <neilb@suse.de>,
-	John Sanpe <sanpeqf@gmail.com>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Uladzislau Koshchanka <koshchanka@gmail.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	David Gow <davidgow@google.com>, Kees Cook <keescook@chromium.org>,
-	Rae Moar <rmoar@google.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	"wuqiang.matt" <wuqiang.matt@bytedance.com>,
-	Yury Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ben Dooks <ben.dooks@codethink.co.uk>, dakr@redhat.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arch@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v5 RESEND 2/5] lib: move pci_iomap.c to drivers/pci/
-Message-ID: <20240125183107.GA393314@bhelgaas>
+	s=arc-20240116; t=1706208032; c=relaxed/simple;
+	bh=TMBpSWKLpMjMxzPR+dvTvMo8w9FIUm4RDCY7BDGWaho=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HyeTZHuN5x2amuM8WZq785n2Zjp+CmAHqTV1MULZNd764iirhp/zp7VJ5VnuFyGzl9Gi0R5Em97PYWVGHO20ckyLC1pLmzbqO8T7AMCUD1hi2M3fCqpHUp+x8PHzTOJiivzYRS/t59y/fVljuxCCXP7aIVKBiGxzsIn50xvaods=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skole.hr
+Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
+	by mx.skole.hr (mx.skole.hr) with ESMTP id 3772082A1E;
+	Thu, 25 Jan 2024 19:40:26 +0100 (CET)
+From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Date: Thu, 25 Jan 2024 19:39:32 +0100
+Subject: [PATCH RESEND v2] arm: marvell: Fix maxium->maxim typo in
+ brownstone dts
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <3abf071d12de5b69e146665dfb57386e3b0ddfe0.camel@redhat.com>
+Message-Id: <20240125-brownstone-typo-fix-v2-1-45bc48a0c81c@skole.hr>
+To: Lubomir Rintel <lkundrak@v3.sk>, Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Haojian Zhuang <haojian.zhuang@gmail.com>, 
+ Samuel Ortiz <sameo@linux.intel.com>, Qing Xu <qingx@marvell.com>
+Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1310;
+ i=duje.mihanovic@skole.hr; h=from:subject:message-id;
+ bh=TMBpSWKLpMjMxzPR+dvTvMo8w9FIUm4RDCY7BDGWaho=;
+ b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBlsqryADFPoaisPm55ib5yqSTOpCPdo3KP/Bp1a
+ cWHoXnSZPWJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZbKq8gAKCRCaEZ6wQi2W
+ 4XbSD/9zCdTtb1DryZeTTWB9tBEpXMftM9QSS9SFq+MDQfAuluPCT9hKXxEx/b88JAS1foNMF6v
+ yXsXr+jcovJnXS0udSjdasQ9YKii2bZO2kTp2/DV3xGMgVDoPKq9l1df5f+WIAuarNcoomSCO/S
+ bNo3ukBqnJrjpyi0GSHm6eSxvH/68Y8PzmdhHhqbItCMhXgiwNat8ehaQxibmXlnvmZd1PRb/Ag
+ VhU05L2uUMfZZS3W+hSQL72BstAXRL9/iNCEDYvqpAq5icwTScbFIbl12soeOiSaN1WdXMmFc3k
+ Uk//JcwnLthKhi/Ii1MudzFnvFrlGsglX+HdowKhWNRcvt2b53PNTu5omsAc0pagXMtTBvvXvt5
+ jTbkH6GzAyA9f8uqz8ubpYnSVlFk++gkfdooV9RnSYHD3EdW3VRIU3gq0F0tBmbkZ1qq0X4Aytv
+ T0KP44u7aa3gOEjtIkGH9TNIP0SIDxnZndXKMecq5fN+tCCEV+9O23aViDEvAiCsiNWBbSkYRKz
+ eWy+YLYTLKnS4kc07a5MfisYB+huJxDfm+Rqg30ZLFjxKVB79H327rr+i/m/MiwSUGJDILdDKd8
+ D4Jih2BWZuuOgdGkebn6eWGglh1/5C5fWKOTbatqNK6Xvwe7k5dHsNSsTZ/FD5YrrDiTbkakrLC
+ WX9zUc6HYlqmH7Q==
+X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
+ fpr=53DF9D4D9C3FE110FB362D789A119EB0422D96E1
 
-On Thu, Jan 25, 2024 at 03:54:51PM +0100, Philipp Stanner wrote:
-> On Tue, 2024-01-23 at 14:20 -0600, Bjorn Helgaas wrote:
-> > On Thu, Jan 11, 2024 at 09:55:37AM +0100, Philipp Stanner wrote:
-> > > This file is guarded by an #ifdef CONFIG_PCI. It, consequently,
-> > > does not
-> > > belong to lib/ because it is not generic infrastructure.
-> > > 
-> > > Move the file to drivers/pci/ and implement the necessary changes
-> > > to
-> > > Makefiles and Kconfigs.
-> > > ...
-> > 
-> > > --- a/drivers/pci/Kconfig
-> > > +++ b/drivers/pci/Kconfig
-> > > @@ -13,6 +13,11 @@ config FORCE_PCI
-> > >         select HAVE_PCI
-> > >         select PCI
-> > >  
-> > > +# select this to provide a generic PCI iomap,
-> > > +# without PCI itself having to be defined
-> > > +config GENERIC_PCI_IOMAP
-> > > +       bool
-> > 
-> > > --- a/lib/pci_iomap.c
-> > > +++ b/drivers/pci/iomap.c
-> > > @@ -9,7 +9,6 @@
-> > >  
-> > >  #include <linux/export.h>
-> > >  
-> > > -#ifdef CONFIG_PCI
-> > 
-> > IIUC, in the case where CONFIG_GENERIC_PCI_IOMAP=y but CONFIG_PCI was
-> > not set, pci_iomap.c was compiled but produced no code because the
-> > entire file was wrapped with this #ifdef.
-> > 
-> > But after this patch, it looks like pci_iomap_range(),
-> > pci_iomap_wc_range(), etc., *will* be compiled?
-> > 
-> > Is that what you intend, or did I miss something?
-> 
-> They *will* be compiled when BOTH, CONFIG_PCI and
-> CONFIG_GENERIC_PCI_IOMAP have been set.
+Fix an obvious spelling error in the PMIC compatible in the MMP2
+Brownstone DTS file.
 
-I was asking about CONFIG_GENERIC_PCI_IOMAP=y but CONFIG_PCI unset.
+Without this, the PMIC would never probe.
 
-But the Makefile contains this:
+Fixes: 58f1193e6210 ("mfd: max8925: Add dts")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
+---
+Changes in v2:
+- Address maintainer comments:
+  - Add Fixes: and Cc: tags
+- Change "for" to "in" in subject
+- Emphasize PMIC's inability to probe without patch
+- Link to v1: https://lore.kernel.org/r/20230804-brownstone-typo-fix-v1-1-4832d84c0509@skole.hr
+---
+ arch/arm/boot/dts/marvell/mmp2-brownstone.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  ifdef CONFIG_PCI
-  obj-$(CONFIG_GENERIC_PCI_IOMAP) += iomap.o
-  endif
+diff --git a/arch/arm/boot/dts/marvell/mmp2-brownstone.dts b/arch/arm/boot/dts/marvell/mmp2-brownstone.dts
+index 04f1ae1382e7..bc64348b8218 100644
+--- a/arch/arm/boot/dts/marvell/mmp2-brownstone.dts
++++ b/arch/arm/boot/dts/marvell/mmp2-brownstone.dts
+@@ -28,7 +28,7 @@ &uart3 {
+ &twsi1 {
+ 	status = "okay";
+ 	pmic: max8925@3c {
+-		compatible = "maxium,max8925";
++		compatible = "maxim,max8925";
+ 		reg = <0x3c>;
+ 		interrupts = <1>;
+ 		interrupt-parent = <&intcmux4>;
 
-So iomap.c will not be compiled when CONFIG_PCI is unset, which is
-what I missed.
+---
+base-commit: 2ccdd1b13c591d306f0401d98dedc4bdcd02b421
+change-id: 20230804-brownstone-typo-fix-f5b16c47d865
 
-Bjorn
+Best regards,
+-- 
+Duje Mihanović <duje.mihanovic@skole.hr>
+
+
 
