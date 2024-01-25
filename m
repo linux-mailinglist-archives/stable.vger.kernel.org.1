@@ -1,130 +1,163 @@
-Return-Path: <stable+bounces-15779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B3F583BCE9
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 10:10:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B06EF83BCFC
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 10:14:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DE071C23C14
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:10:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6A68B22D53
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68B912B9F;
-	Thu, 25 Jan 2024 09:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11CFA17BA7;
+	Thu, 25 Jan 2024 09:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PQ7/zBMe"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nqzOSsDP"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70984175BE
-	for <stable@vger.kernel.org>; Thu, 25 Jan 2024 09:08:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304041CA80
+	for <stable@vger.kernel.org>; Thu, 25 Jan 2024 09:14:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706173710; cv=none; b=k5BtO2l1XTEXhXR27THEA9P0ebIXiWclrbmndwv6KerbEDkfnTd0B5xq0lY1mTbl0R3ISfzGO4f/rnNkcvFhQiquGw5MRwhkwhY071DmhYbvMCKHFO/YoQquMkxQjnJALp4XJIrVtqGsE+VqeyA+R41ZsE8ohsRkAUMuw7TIxc8=
+	t=1706174084; cv=none; b=hHxOXrjHCVVEW01fDXHItvpujaTLZpvc/gMfM8cT0pkt3ROSBxUXFwavHR8cjTnRkvcRu1DrQCpyDeK+xbkW493Y7O2t7DRjg8Sv32PN7d2lAF+xtMKDOYIjuyZdno74LUiMv8HVpgWrbB8FCKAzKByLZ+l+UxZ2b1ftvQBVe4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706173710; c=relaxed/simple;
-	bh=VMOlO9QISWna9c+ZVb8HSdWYWBu8mo95r8aoLsS44KQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vny527dO8xbkJYZR0xE3G2O+8T4s9ouFMKiInEuOUp77YKWj/aAkze8C3bigZQTptllpo5Cywd4OSAVJzOgdPhUsHtjairAGFoT4lS4ehVy/pn+dlgczAL+XG/4sB8ECIyrIIC8ZWgSlP5W/h66XMTUv/aheVLq4GRKPDmJ8XxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PQ7/zBMe; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 016271C0013;
-	Thu, 25 Jan 2024 09:08:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1706173702;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rm60V/hSeVZarANf9QjFrk14Rowm9GTafsOy25Yi66g=;
-	b=PQ7/zBMewnz8DScYEO7nHAFvNC8bSqUu9MXflVeWIaqtA0J+YarVb6AesRLzDHoZQDFGHT
-	Fs8EgKlM6CU/lC3yJ9kmsWUgrVrIDS20EMMlhOyZ6AKRHNFphku4WA1EJaWBuBI/WNtjux
-	jBa5LmDkqkUJlZeNFYAbjDB9Xo2vuC2xfTxWq6mtNYMQQZNTYDWcRpX+OdJoor8ZKU2dBu
-	lbsoSJt8xXjr/whnAnS+Z6gZnZSgPZP4ZrjlxscYfW7SgKppdIZGvgIEaXKznojUy/ZpkB
-	GdROEjuho1lwd4Hgi3GC0VJKEixsZm/dTBZgMV4kpStLp2Xggu6RBez5Vqo6vw==
-Date: Thu, 25 Jan 2024 10:08:20 +0100
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Jaime Liao <jaimeliao.tw@gmail.com>
-Cc: jaimeliao@mxic.com.tw, stable@vger.kernel.org,
- linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v3] mtd: spinand: macronix: Fix MX35LFxGE4AD page size
-Message-ID: <20240125100820.174eb458@xps-13>
-In-Reply-To: <20240125024816.222554-1-jaimeliao.tw@gmail.com>
-References: <20240125024816.222554-1-jaimeliao.tw@gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1706174084; c=relaxed/simple;
+	bh=ZqGd/q02HgZ3F8i7nIFithtom+WOvh15gPypATO5C6M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JMpm8/SBsImdNxlp1W8e5MPy3TZZNyTUW0+sncxAEfMOhCH1wuagJBMdQCyWJ7jW+l/fTMSdFJ/YmbiZBdvOP60B6nX58OWPu/TVFyZEVmzgOQBwlN9K7vQ1vKmiMwpYZW2vhOGCTGimKHCz+TzEMf/nhaXMqMbIfzP/9bDKLpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nqzOSsDP; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-40e5afc18f5so69611955e9.3
+        for <stable@vger.kernel.org>; Thu, 25 Jan 2024 01:14:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706174081; x=1706778881; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kZEgwDeZcdcQ9F5FwGF+RQgVSnuUBOjCvzpRxH0w9rg=;
+        b=nqzOSsDPqFN3dJb8oCZH5NOWSRno05LApY9yB5s+qGNW38/CzV8P6cRxcb1MbZBqj2
+         +A36QFN1WgZHeBpvIi/YGpimmd3ElZwadye7HkPiVmCOs58As2Cs6CX/mO7ei/40BKEu
+         o4DyDU6X1qL60VXDAqE7ThgtFdGlEit0V0qO+s5uLjBN5bvE2mR754MOpdh8L6SVCcOt
+         1A47qreiSBOOcBG6rZOTns//A/OWhYTvPwGzAzl9gn1OZDzGr7aoQSELoPfONvZZOuH0
+         qU8BKhWsbu16+VQ4dTo0FazZNucXNs2JeE+qfzqIqyXhbbFIZyoyGGzTs28ZXNaRZQuY
+         TYww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706174081; x=1706778881;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kZEgwDeZcdcQ9F5FwGF+RQgVSnuUBOjCvzpRxH0w9rg=;
+        b=QanDczH+G/lfX+P+4dOxaiSKuXv+DRft6o8w0ygmLpltrKDIKamdRPSv2uFix6+i15
+         jRZBW48OYJ75iOyF7cjv41mGsRF3IdDTw5kq/r1f8vyNc2mwnIL9va+oYkLHlskGWSoy
+         qI9YV0EetgVQ8ZGDeytYNTzOA0PQnU5vqPJhbNIKXss1W7C6xxz4yqvI293gt2sm95Tw
+         /i+Us63nMPku8halrupFTmoMMO2AOI0US4Z8C3P9g0V2buK03rSaXmIDVC35vgZxMCWY
+         XwhAd+ja3uWPovK0FVseiMYRkAoO5Cz/lLcawnI3BEd9UGIBJHO1rrI+gpywmn09aQd/
+         LqvQ==
+X-Gm-Message-State: AOJu0YwxdtmqkgJLn9/yW0CFNnhdgAId3Q1oD77Zer9bE4baFjMsTzSw
+	Lqv9FuRAdczATj8wSqLnI4/yNT9ONAw1LgevBZpnekMO2Lob1Rz21MnqUc7YMT0=
+X-Google-Smtp-Source: AGHT+IFUFuRc560+KrdGAbEUhlwARsWXfKsQyE6tLmqEfcBZbcv5alYYuXxBiK6J9meatbeQWjjwBQ==
+X-Received: by 2002:a05:600c:34ce:b0:40e:4f46:d0f7 with SMTP id d14-20020a05600c34ce00b0040e4f46d0f7mr305210wmq.139.1706174081441;
+        Thu, 25 Jan 2024 01:14:41 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.215.66])
+        by smtp.gmail.com with ESMTPSA id m5-20020a05600c4f4500b0040ec8330c8asm1876279wmq.39.2024.01.25.01.14.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Jan 2024 01:14:41 -0800 (PST)
+Message-ID: <0039e8e3-bfb7-43af-ab04-53aeaa02f4b0@linaro.org>
+Date: Thu, 25 Jan 2024 10:14:39 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] gpiolib: add gpio_device_get_label() stub for
+ !GPIOLIB
+Content-Language: en-US
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Peter Rosin <peda@axentia.se>,
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>
+References: <20240125081601.118051-1-krzysztof.kozlowski@linaro.org>
+ <20240125081601.118051-3-krzysztof.kozlowski@linaro.org>
+ <CAMRc=MfYg5MgndDZtrAaScmtjXm4-AX6y1np7V3p4ngBKZG-pw@mail.gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <CAMRc=MfYg5MgndDZtrAaScmtjXm4-AX6y1np7V3p4ngBKZG-pw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Transfer-Encoding: 8bit
 
-Hi Jaime,
+On 25/01/2024 10:04, Bartosz Golaszewski wrote:
+> On Thu, Jan 25, 2024 at 9:16 AM Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org> wrote:
+>>
+>> Add empty stub of gpio_device_get_label() when GPIOLIB is not enabled.
+>>
+>> Cc: <stable@vger.kernel.org>
+>> Fixes: d1f7728259ef ("gpiolib: provide gpio_device_get_label()")
+>> Suggested-by: kernel test robot <lkp@intel.com>
+>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>
+>> ---
+>>
+>> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+>>
+>> Reset framework will need it:
+>> https://lore.kernel.org/oe-kbuild-all/202401250958.YksQmnWj-lkp@intel.com/
+> 
+> And I suppose you'll want an immutable branch for that?
 
-+ linux-mtd which was missing to your contribution.
+I guess that's the question to Philipp, but other way could be an Ack.
 
-jaimeliao.tw@gmail.com wrote on Thu, 25 Jan 2024 10:48:16 +0800:
+Best regards,
+Krzysztof
 
-> From: JaimeLiao <jaimeliao@mxic.com.tw>
->=20
-> Support for MX35LF{2,4}GE4AD chips was added in mainline through
-> upstream commit 5ece78de88739b4c68263e9f2582380c1fd8314f.
->=20
-> The patch was later adapted to 5.4.y and backported through
-> stable commit 85258ae3070848d9d0f6fbee385be2db80e8cf26.
->=20
-> Fix the backport mentioned right above as it is wrong: the bigger chip
-> features 4kiB pages and not 2kiB pages.
->=20
-> Fixes: 85258ae30708 ("mtd: spinand: macronix: Add support for MX35LFxGE4A=
-D")
-> Cc: stable@vger.kernel.org # v5.4.y
-> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-> Signed-off-by: JaimeLiao <jaimeliao@mxic.com.tw>
-
-Looks legitimate.
-
-Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
-
-> ---
-> Hello,
->=20
-> This is my third attempt to fix a stable kernel. This patch is not a
-> backport from Linus' tree per-se, but a fix of a backport. The original
-> mainline commit is fine but the backported one is not, we need to fix
-> the backported commit in the 5.4.y stable kernel, and this is what I am
-> attempting to do. Let me know if further explanations are needed.
->=20
-> Regards,
-> Jaime
-> ---
->  drivers/mtd/nand/spi/macronix.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/mtd/nand/spi/macronix.c b/drivers/mtd/nand/spi/macro=
-nix.c
-> index bbb1d68bce4a..f18c6cfe8ff5 100644
-> --- a/drivers/mtd/nand/spi/macronix.c
-> +++ b/drivers/mtd/nand/spi/macronix.c
-> @@ -125,7 +125,7 @@ static const struct spinand_info macronix_spinand_tab=
-le[] =3D {
->  		     SPINAND_HAS_QE_BIT,
->  		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout, NULL)),
->  	SPINAND_INFO("MX35LF4GE4AD", 0x37,
-> -		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
-> +		     NAND_MEMORG(1, 4096, 128, 64, 2048, 40, 1, 1, 1),
->  		     NAND_ECCREQ(8, 512),
->  		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
->  					      &write_cache_variants,
-
-
-Thanks,
-Miqu=C3=A8l
 
