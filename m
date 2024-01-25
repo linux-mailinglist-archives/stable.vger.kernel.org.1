@@ -1,113 +1,77 @@
-Return-Path: <stable+bounces-15782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C5D983BDC5
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 10:47:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E23B483BD78
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 10:36:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99B7CB2D308
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:36:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A774291E04
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5261CA92;
-	Thu, 25 Jan 2024 09:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89F71C6B5;
+	Thu, 25 Jan 2024 09:35:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from hi1smtp01.de.adit-jv.com (smtp1.de.adit-jv.com [93.241.18.167])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8055E1C2A1
-	for <stable@vger.kernel.org>; Thu, 25 Jan 2024 09:34:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DD81CD02;
+	Thu, 25 Jan 2024 09:35:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.241.18.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706175254; cv=none; b=nBX5TcXBRDZNRvUNr5QuaoxsQMjJwNUJFxPft5AggMLJlTqmI7byvDEhED91SMEc4JfaZ0TfyBSFCGu6rSqLH02HLxU4phHEOP/CF9AZfkLDZtdynHHvdPkG4wgxa9c9VlmXuzLx1Lm4MSDbP+FjhITRQcO2zNANYv5eaIZLMMI=
+	t=1706175315; cv=none; b=G1hkcX6ljDWLSm4Yy53ZbHL5a1HfX4UyChPeVuADxSN6/NyWmUj1EMbuA78FLz3H7ZKZC5/1C36hNsY0qFLOW6cuEZ1aPA7TG9+lYeDP5NmyuJRRSCK28TR00APoIVHHYweBXAAMjqcdBuZDhBkScQjPpaU3lTUBm+4UwQQDYDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706175254; c=relaxed/simple;
-	bh=+HM7ZIgfkzs+RxyDpfsP/OxJC75F+qDscpolVrnkeY4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UnM5J+jW+oCKAx2B+T9D2FQAhYnM1xMfYN+4Ubt5T2cNLScEqbmbkt/7v4SuZU/nJ0cYgt4I3TZSduv3BxOychPuCru9DOSRn7ZCvcA4yg/R9FoDc9gBDki9/hH2ptS2G+MgWIHdepkrzXPWURXxsyBTr+NqyeDB1KpWsBP6sN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1rSw7X-0001la-Qq; Thu, 25 Jan 2024 10:34:03 +0100
-Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1rSw7W-002Fia-PR; Thu, 25 Jan 2024 10:34:02 +0100
-Received: from pza by lupine with local (Exim 4.96)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1rSw7W-0003Ri-2M;
-	Thu, 25 Jan 2024 10:34:02 +0100
-Message-ID: <2baf1f8c0b3d116da55d75621929ad186b33afd7.camel@pengutronix.de>
-Subject: Re: [PATCH 3/3] gpiolib: add gpio_device_get_label() stub for
- !GPIOLIB
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: Bartosz Golaszewski <brgl@bgdev.pl>, Krzysztof Kozlowski
-	 <krzysztof.kozlowski@linaro.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Peter Rosin <peda@axentia.se>,
-  linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org,  kernel test robot <lkp@intel.com>
-Date: Thu, 25 Jan 2024 10:34:02 +0100
-In-Reply-To: <CAMRc=MdXRm5UGu3abXXwtGhw5TG7NC0O5w6_X_RoZRH_C6YgdA@mail.gmail.com>
-References: <20240125081601.118051-1-krzysztof.kozlowski@linaro.org>
-	 <20240125081601.118051-3-krzysztof.kozlowski@linaro.org>
-	 <CAMRc=MfYg5MgndDZtrAaScmtjXm4-AX6y1np7V3p4ngBKZG-pw@mail.gmail.com>
-	 <0039e8e3-bfb7-43af-ab04-53aeaa02f4b0@linaro.org>
-	 <CAMRc=MdXRm5UGu3abXXwtGhw5TG7NC0O5w6_X_RoZRH_C6YgdA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2 
+	s=arc-20240116; t=1706175315; c=relaxed/simple;
+	bh=AQSN9Q1PAAbubUBGX8oG4cbN7iB2kdSOPlTunpFpCxk=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aKzNjnvOhAq+2ToXNGiLnBqQvEaIWzNqh0+VX7+fqHKDe+OWKu4hQJnRhDv3fdmj2j2tkH/UIWkVghE3xwdW9Ba3layRyyNYFo6k6MtGiIIziiE+6HwiJ+gnxpK9G9y3xYNZeSDR3CaSFoIXlsSyPukqRMtrpSYCdJW/bDlj8pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=de.adit-jv.com; spf=pass smtp.mailfrom=de.adit-jv.com; arc=none smtp.client-ip=93.241.18.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=de.adit-jv.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.adit-jv.com
+Received: from hi2exch02.adit-jv.com (hi2exch02.adit-jv.com [10.72.92.28])
+	by hi1smtp01.de.adit-jv.com (Postfix) with ESMTP id 0701552038C;
+	Thu, 25 Jan 2024 10:35:09 +0100 (CET)
+Received: from lxhi-087 (10.72.93.211) by hi2exch02.adit-jv.com (10.72.92.28)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 25 Jan
+ 2024 10:35:08 +0100
+Date: Thu, 25 Jan 2024 10:35:04 +0100
+From: Eugeniu Rosca <erosca@de.adit-jv.com>
+To: Qu Wenruo <wqu@suse.com>
+CC: <linux-btrfs@vger.kernel.org>, <erosca@de.adit-jv.com>, Filipe Manana
+	<fdmanana@suse.com>, Rob Landley <rob@landley.net>, <stable@vger.kernel.org>,
+	David Sterba <dsterba@suse.com>, Maksim Paimushkin
+	<Maksim.Paimushkin@se.bosch.com>, Eugeniu Rosca <eugeniu.rosca@de.bosch.com>,
+	Eugeniu Rosca <roscaeugeniu@gmail.com>
+Subject: Re: [PATCH 5.15] btrfs: fix infinite directory reads
+Message-ID: <20240125093504.GA2625557@lxhi-087>
+References: <88ce65d61253e3474635c589a7de9e668108462e.1706153625.git.wqu@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <88ce65d61253e3474635c589a7de9e668108462e.1706153625.git.wqu@suse.com>
+X-ClientProxiedBy: hi2exch02.adit-jv.com (10.72.92.28) To
+ hi2exch02.adit-jv.com (10.72.92.28)
 
-On Do, 2024-01-25 at 10:28 +0100, Bartosz Golaszewski wrote:
-> On Thu, Jan 25, 2024 at 10:14=E2=80=AFAM Krzysztof Kozlowski
-> <krzysztof.kozlowski@linaro.org> wrote:
-> >=20
-> > On 25/01/2024 10:04, Bartosz Golaszewski wrote:
-> > > On Thu, Jan 25, 2024 at 9:16=E2=80=AFAM Krzysztof Kozlowski
-> > > <krzysztof.kozlowski@linaro.org> wrote:
-> > > >=20
-> > > > Add empty stub of gpio_device_get_label() when GPIOLIB is not enabl=
-ed.
-> > > >=20
-> > > > Cc: <stable@vger.kernel.org>
-> > > > Fixes: d1f7728259ef ("gpiolib: provide gpio_device_get_label()")
-> > > > Suggested-by: kernel test robot <lkp@intel.com>
-> > > > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > > >=20
-> > > > ---
-> > > >=20
-> > > > Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> > > >=20
-> > > > Reset framework will need it:
-> > > > https://lore.kernel.org/oe-kbuild-all/202401250958.YksQmnWj-lkp@int=
-el.com/
-> > >=20
-> > > And I suppose you'll want an immutable branch for that?
-> >=20
-> > I guess that's the question to Philipp, but other way could be an Ack.
-> >=20
->=20
-> I prefer it to go through my tree in case of conflicts as I have a big
-> refactor coming up. I'll give it a day or two on the list and set up a
-> tag for Philipp.
+Hello Qu,
 
-Works for me, thank you.
+On Thu, Jan 25, 2024 at 02:17:08PM +1030, Qu Wenruo wrote:
+> From: Filipe Manana <fdmanana@suse.com>
 
-regards
-Philipp
+Many thanks for the backport!
+Conflict resolution looks surprisingly clean!
+Please, give some time for verification.
+
+> [ Upstream commit b4c639f699349880b7918b861e1bd360442ec450 ]
+
+PS: Not sure the "Upstream commit" is the right one.
+Should it be 9b378f6ad48cfa195ed868db9123c09ee7ec5ea2 ?
+
+BR, Eugeniu
 
