@@ -1,131 +1,115 @@
-Return-Path: <stable+bounces-15803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B8683C19C
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 13:05:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F1283C29A
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 13:34:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 115EDB24C19
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 12:05:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81FE0291F52
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 12:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F0736B0E;
-	Thu, 25 Jan 2024 12:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E468A1BC50;
+	Thu, 25 Jan 2024 12:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Avi8iMJ5"
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="sGzqxBb7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E534439A;
-	Thu, 25 Jan 2024 12:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03FE481A8;
+	Thu, 25 Jan 2024 12:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706184303; cv=none; b=PDqM4uWoiDYZgz/tY5/3fRLNYFocvsu+5ESWK32rBG8ERkJqsZOjAabFjGfLZxQGelXQ4PstVtechG2oZO108xQvvrfHN9f3FnYv+ytY9dX5ohFDchzuebtcTfLnxJSRdK9SRsGIPs15I00d7ut7UFtv4XgG2B0qr/Wg/wapQLw=
+	t=1706186081; cv=none; b=n7VGdUBZD47o3R5qibxZ+8F71JFyVhkJb7jn7q8ult73MlHyMEWJLZaCuTd1fvtHYBPrX3kaYDduWAsn68qRmHsO8Zgul4Hjkeeb21GYQNUZbXuVApzah5a2S44LcNQixwmNu6MOfYkL62lVtcMSzZJhy+2NFXo+MOOl92iy4kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706184303; c=relaxed/simple;
-	bh=LC6oBHi1gCQWZEP6+MUf/eaL02r3GflX2lWuFjrYHWY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y6T5yFYzMAcP6L5q7nYkuCYQFHuePywZ5S4pc6y83VamXNd9VVk90Cl7QxfljvUOaW9SmEC0PPbsEFFhJm3waIa6QOpjdo4q6tOmpDFcKsuV/RMSUWcp7IlA/ETXE2PeY48XIwvDOO0FIwGJXODYcbDkgO/EkK6pKauMI96Jspc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Avi8iMJ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15274C433A6;
-	Thu, 25 Jan 2024 12:05:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706184303;
-	bh=LC6oBHi1gCQWZEP6+MUf/eaL02r3GflX2lWuFjrYHWY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Avi8iMJ57iM3qQ6ICUAUeuEyx9rLqOoqyFRz3DdM1ruhHMXo02FIfsRfWqt/BeO5Q
-	 i+5G4qSJatjQ9WcuHFfTJLuvn85SYgY1jiSU++8tm3MVSP8RKXGGXjOaco7GOQbUxj
-	 9xxgwuuueWlmN3mzBAsAYBCoYDguwZgwIKgyLfc/ZP9+m51XRb+/EfOij/2OLGbshR
-	 Cap/Kb9TMQd9gdFJiPij8X6qMkqlB50FxSfpC1yoqdtMq//gosfowK/Ziuym1yo5dK
-	 /H2AHItoNIMlXbcNRTYXkN82idBNzH6AMPWsw4O3XknpLxAhU73uhM/qreIdUjuBAZ
-	 bw9fklA90ddyg==
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-55a5e7fa471so6042598a12.1;
-        Thu, 25 Jan 2024 04:05:03 -0800 (PST)
-X-Gm-Message-State: AOJu0YztMEyqqFjPF3G2llj62Ds21FuTBsJYF3RftoaQeRt5o+fmk2KA
-	cx+wqBuJsN0u2ppifIi6pWz5FTCeSoF/sMgr/47LbUIJSraYqIJHLMi3miJfTQAccCBzlQ6S5Zt
-	yTEkFVIpsYfjFKN24u+YhDFq1+Fg=
-X-Google-Smtp-Source: AGHT+IGZ0MEjsoJTIiA+e0vUod784xPlxW8+1QOmOs0/gN3N78dMifuQN68FyzjkZ+wbjBLOhQnUWOD7NFwl+/J7tF8=
-X-Received: by 2002:a17:906:1156:b0:a30:9eba:4da7 with SMTP id
- i22-20020a170906115600b00a309eba4da7mr526244eja.23.1706184301432; Thu, 25 Jan
- 2024 04:05:01 -0800 (PST)
+	s=arc-20240116; t=1706186081; c=relaxed/simple;
+	bh=iqbcOpTlEh5SlO47biheNN9vN+dMs8WVH0huJV/6Kbw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BnbWn70+8LBPTDmmHirkh3P7BFk5/gKJvjx11Pmr85QP4At+nixW8xzrV5bV2WEo/ZxhNDyF0oDBf8Ac2itzbB2uYffqSyAuxMeI0U+SNYpDpb+PnccZd4O1NwLspnxGR3GGK8Ty7Ueyz/Xr9191TIK+0Mfhh0bM1XAG7Ztui44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=sGzqxBb7; arc=none smtp.client-ip=188.40.30.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+	s=default2211; h=Content-Transfer-Encoding:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=O99d2OhA5yD9439wbiGDNw8gbQ6j47VNjuChaGpSepE=; b=sGzqxBb73IUlg1OF5UY4xH9Z5F
+	AysdrkIa0xJpoLD8gMXgkc/z5ha1KwdVV70NGn5p3Dh+kUkcO77WgN+qRvnRcxFoMfOXPTHxuSBQH
+	uVZVmh4+4NRKVv4XnENVG4mX0vp7nORlguxiznDauOvXjdY8I5wpV9o5+zwSaA5DBWAqdvHQdX/6E
+	DzlIA7SjLnFbKzdxDh4LfscplRPCKXcbCl6sHBWda0fjBDge9cS4Po29celBW83U+Vy5Dth535GqM
+	c60paXmj8wDQd5j4JcPSLw6by9EabOYS24CdkV3ildwunOpoQvv1rL4gKLgBNoXiSQu3e7SMPI8Je
+	miA9LTbw==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <esben@geanix.com>)
+	id 1rSywH-0007Q2-4N; Thu, 25 Jan 2024 13:34:37 +0100
+Received: from [185.17.218.86] (helo=localhost)
+	by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <esben@geanix.com>)
+	id 1rSywG-00028s-9l; Thu, 25 Jan 2024 13:34:36 +0100
+From: Esben Haabendal <esben@geanix.com>
+To: netdev@vger.kernel.org,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Christian Marangi <ansuelsmth@gmail.com>
+Cc: stable@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] net: stmmac: do not clear TBS enable bit on link up/down
+Date: Thu, 25 Jan 2024 13:34:33 +0100
+Message-ID: <a1d6f5ca9aad795dfc8e0bbb9bb06d8bb7b46649.1706184304.git.esben@geanix.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1706184304.git.esben@geanix.com>
+References: <cover.1706184304.git.esben@geanix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <c9ceb0e15d92d0634600603b38965d9b6d986b6d.1691923900.git.fdmanana@suse.com>
- <20240124225522.GA2614102@lxhi-087>
-In-Reply-To: <20240124225522.GA2614102@lxhi-087>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Thu, 25 Jan 2024 12:04:24 +0000
-X-Gmail-Original-Message-ID: <CAL3q7H43=iZxwcXw543TieNz_XadbNgC+_9+tUy6NnsA63TaYQ@mail.gmail.com>
-Message-ID: <CAL3q7H43=iZxwcXw543TieNz_XadbNgC+_9+tUy6NnsA63TaYQ@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: fix infinite directory reads
-To: Eugeniu Rosca <erosca@de.adit-jv.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-btrfs@vger.kernel.org, 
-	stable@vger.kernel.org, Maksim Paimushkin <Maksim.Paimushkin@se.bosch.com>, 
-	Matthias Thomae <Matthias.Thomae@de.bosch.com>, Sebastian Unger <Sebastian.Unger@bosch.com>, 
-	Dirk Behme <Dirk.Behme@de.bosch.com>, Eugeniu Rosca <Eugeniu.Rosca@bosch.com>, 
-	Eugeniu Rosca <roscaeugeniu@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Sender: esben@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27165/Thu Jan 25 10:51:15 2024)
 
-On Wed, Jan 24, 2024 at 10:55=E2=80=AFPM Eugeniu Rosca <erosca@de.adit-jv.c=
-om> wrote:
->
-> Hello Greg,
-> Hello Filipe,
->
-> On Sun, Aug 13, 2023 at 12:34:08PM +0100, fdmanana@kernel.org wrote:
-> > From: Filipe Manana <fdmanana@suse.com>
-> >
-> > The readdir implementation currently processes always up to the last in=
-dex
-> > it finds. This however can result in an infinite loop if the directory =
-has
-> > a large number of entries such that they won't all fit in the given buf=
-fer
-> > passed to the readdir callback, that is, dir_emit() returns a non-zero
-> > value. Because in that case readdir() will be called again and if in th=
-e
-> > meanwhile new directory entries were added and we still can't put all t=
-he
-> > remaining entries in the buffer, we keep repeating this over and over.
-> >
-> > The following C program and test script reproduce the problem:
->
-> This crucial fix successfully landed into vanilla v6.5 [1] and stable
-> v6.4.12 [2], but unfortunately not into the older stable trees.
->
-> Consequently, the fix is missing on the popular Ubuntu versions like
-> 20.04 (KNL v5.15.x) and 22.04.3 (KNL v6.2.x). For that reason, people
-> still experience infinite loops when building Linux on those systems.
->
-> To overcome the issue, people fall back to workarounds [3-4].
->
-> The patch seems to apply cleanly to v6.2, but not to v5.15
-> (v5.15 backport attempt failed miserably).
->
-> Is there a chance for:
->  - Stable maintainers to accept the clean backport to v6.2?
->  - BTRFS experts to suggest a conflict resolution for v5.15?
+With the dma conf being reallocated on each call to stmmac_open(), any
+information in there is lost, unless we specifically handle it.
 
-As mentioned in another thread, here's the backport for 5.15 stable
-along with other needed patches:
+The STMMAC_TBS_EN bit is set when adding an etf qdisc, and the etf qdisc
+therefore would stop working when link was set down and then back up.
 
-https://lore.kernel.org/linux-btrfs/cover.1706183427.git.fdmanana@suse.com/
+Fixes: ba39b344e924 ("net: ethernet: stmicro: stmmac: generate stmmac dma conf before open")
+Cc: stable@vger.kernel.org
+Signed-off-by: Esben Haabendal <esben@geanix.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
->
-> [1] https:// git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/c=
-ommit/?id=3D9b378f6ad48cfa
-> [2] https:// git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/com=
-mit/?id=3D5441532ffc9c8c
-> [3] https:// android-review.googlesource.com/c/kernel/build/+/2708835
-> [4] https:// android-review.googlesource.com/c/kernel/build/+/2715296
->
-> Best Regards
-> Eugeniu
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b334eb16da23..25519952f754 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3932,6 +3932,9 @@ static int __stmmac_open(struct net_device *dev,
+ 	priv->rx_copybreak = STMMAC_RX_COPYBREAK;
+ 
+ 	buf_sz = dma_conf->dma_buf_sz;
++	for (int i = 0; i < MTL_MAX_TX_QUEUES; i++)
++		if (priv->dma_conf.tx_queue[i].tbs & STMMAC_TBS_EN)
++			dma_conf->tx_queue[i].tbs = priv->dma_conf.tx_queue[i].tbs;
+ 	memcpy(&priv->dma_conf, dma_conf, sizeof(*dma_conf));
+ 
+ 	stmmac_reset_queues_param(priv);
+-- 
+2.43.0
+
 
