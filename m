@@ -1,116 +1,95 @@
-Return-Path: <stable+bounces-15833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E94283CB4B
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 19:40:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F3A283CCB7
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 20:41:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C86361F2882B
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 18:40:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BE6EB25275
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 19:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA02130E25;
-	Thu, 25 Jan 2024 18:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10280137C37;
+	Thu, 25 Jan 2024 19:40:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jCVPbcj+"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.skole.hr (mx1.hosting.skole.hr [161.53.165.185])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87951350CE;
-	Thu, 25 Jan 2024 18:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.165.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B53C1136643;
+	Thu, 25 Jan 2024 19:40:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706208032; cv=none; b=C5DldOBQoBSdN4/H8Gi5JNga3vxUn79g7TXOULBDzhZah6JUDjkQCZrkRB3btuYWI1rLgF0bRtYW4PKa6+esPpqnhgk9bH0idqlPc69LF7WGgDL4JQsnLJ/hjiI48KIT7dVnSUxhc3RC6rDOTpIQ1SpMi8MVm65pSeIsedex2wc=
+	t=1706211650; cv=none; b=UCId7roQJGtyjdnz2l1Y54QFVu3YeDmMNixCiGyIloGZDcGbzryi5vsR8x2BD+26JdFiXBDWTCWXP3P+PBuTnFwMsuXqx9hKtcf71ilzhCLJUbgbSriQsvUcl5NpIP99eatnZx50nhpa9J2hyWE3chE5wM3MxX+yY1Ftdy33SIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706208032; c=relaxed/simple;
-	bh=TMBpSWKLpMjMxzPR+dvTvMo8w9FIUm4RDCY7BDGWaho=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HyeTZHuN5x2amuM8WZq785n2Zjp+CmAHqTV1MULZNd764iirhp/zp7VJ5VnuFyGzl9Gi0R5Em97PYWVGHO20ckyLC1pLmzbqO8T7AMCUD1hi2M3fCqpHUp+x8PHzTOJiivzYRS/t59y/fVljuxCCXP7aIVKBiGxzsIn50xvaods=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr; spf=pass smtp.mailfrom=skole.hr; arc=none smtp.client-ip=161.53.165.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=skole.hr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=skole.hr
-Received: from mx1.hosting.skole.hr (localhost.localdomain [127.0.0.1])
-	by mx.skole.hr (mx.skole.hr) with ESMTP id 3772082A1E;
-	Thu, 25 Jan 2024 19:40:26 +0100 (CET)
-From: =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Date: Thu, 25 Jan 2024 19:39:32 +0100
-Subject: [PATCH RESEND v2] arm: marvell: Fix maxium->maxim typo in
- brownstone dts
+	s=arc-20240116; t=1706211650; c=relaxed/simple;
+	bh=lH13S7WP6c/wzquKhAvxVZUMUVymqFChewATNqH4gz8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uUo4a/JO/Ob0i0XyKD2diZaiPW1LyO/QIrNx0DgEg9Ufgr73XeNzY9q8jABH9FllsPmiaR3aSbponyQ1glbcmvM3cXDPD+Rzt0auOJuibjZlrnbe99myQOQlsN2IGhv28gy0zjKUADSsby7gmT7zycS7xvfvAIywQH7Y7NJtvzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jCVPbcj+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5153AC43399;
+	Thu, 25 Jan 2024 19:40:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706211650;
+	bh=lH13S7WP6c/wzquKhAvxVZUMUVymqFChewATNqH4gz8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=jCVPbcj+HlohDL7X0DyOvB81CTt1D7dhiQriNdWzh/tdCRJI61ChWuO3PSKo3GJlg
+	 FhZC5yYxMEOrG26mhV33Gom4xNcaTGacTSeluoEl/4vPxRnWSc1qqpUKaqa+oaNWl7
+	 PsF+12qiIjf1h6BVpHyNQ/fTg7Fxk04Gl1JDMhm1JL4t4TCXkPMoEaJA2eY6J70/fh
+	 KDGDg1mvaoBscQYISeom+8j49vxMqaoauJEI8E2S30YbV5z5CKCAI+C1d2q168rkrF
+	 nVNBEQgXaq0zUQcedZQ9iTJnNyWphQd4Etm9jSskVLiN0UzPpQ+sMpHebaKH2ETGpA
+	 WRIgc6maMue3A==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5100ed2b33dso60862e87.0;
+        Thu, 25 Jan 2024 11:40:50 -0800 (PST)
+X-Gm-Message-State: AOJu0Yx10Kawh2hN6LE5K9QxTpCtZnLCSOhXs3i7x7acEuKXRBl+d9CE
+	cbvYjnH0sH0F04IlSGmgp69ICWBDafFPEBKVGqYRk/tX5E7zuQwdzhqxxE2TeejV/dAw+UmjnSJ
+	vzQsLWcgk1ec0rQxmPIBTeBop2lk=
+X-Google-Smtp-Source: AGHT+IEmmy/oYCCQ8m4FZydhGAb8Iou3wY9Znis0Q3YCYCbAA1JDBRcMVIKpfj5rcmRqgLwdKZrN+nUnqPHFsZD40oU=
+X-Received: by 2002:a05:6512:6d:b0:50e:ac2a:6b6d with SMTP id
+ i13-20020a056512006d00b0050eac2a6b6dmr171299lfo.119.1706211648451; Thu, 25
+ Jan 2024 11:40:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240125-brownstone-typo-fix-v2-1-45bc48a0c81c@skole.hr>
-To: Lubomir Rintel <lkundrak@v3.sk>, Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Haojian Zhuang <haojian.zhuang@gmail.com>, 
- Samuel Ortiz <sameo@linux.intel.com>, Qing Xu <qingx@marvell.com>
-Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- =?utf-8?q?Duje_Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1310;
- i=duje.mihanovic@skole.hr; h=from:subject:message-id;
- bh=TMBpSWKLpMjMxzPR+dvTvMo8w9FIUm4RDCY7BDGWaho=;
- b=owEBbQKS/ZANAwAIAZoRnrBCLZbhAcsmYgBlsqryADFPoaisPm55ib5yqSTOpCPdo3KP/Bp1a
- cWHoXnSZPWJAjMEAAEIAB0WIQRT351NnD/hEPs2LXiaEZ6wQi2W4QUCZbKq8gAKCRCaEZ6wQi2W
- 4XbSD/9zCdTtb1DryZeTTWB9tBEpXMftM9QSS9SFq+MDQfAuluPCT9hKXxEx/b88JAS1foNMF6v
- yXsXr+jcovJnXS0udSjdasQ9YKii2bZO2kTp2/DV3xGMgVDoPKq9l1df5f+WIAuarNcoomSCO/S
- bNo3ukBqnJrjpyi0GSHm6eSxvH/68Y8PzmdhHhqbItCMhXgiwNat8ehaQxibmXlnvmZd1PRb/Ag
- VhU05L2uUMfZZS3W+hSQL72BstAXRL9/iNCEDYvqpAq5icwTScbFIbl12soeOiSaN1WdXMmFc3k
- Uk//JcwnLthKhi/Ii1MudzFnvFrlGsglX+HdowKhWNRcvt2b53PNTu5omsAc0pagXMtTBvvXvt5
- jTbkH6GzAyA9f8uqz8ubpYnSVlFk++gkfdooV9RnSYHD3EdW3VRIU3gq0F0tBmbkZ1qq0X4Aytv
- T0KP44u7aa3gOEjtIkGH9TNIP0SIDxnZndXKMecq5fN+tCCEV+9O23aViDEvAiCsiNWBbSkYRKz
- eWy+YLYTLKnS4kc07a5MfisYB+huJxDfm+Rqg30ZLFjxKVB79H327rr+i/m/MiwSUGJDILdDKd8
- D4Jih2BWZuuOgdGkebn6eWGglh1/5C5fWKOTbatqNK6Xvwe7k5dHsNSsTZ/FD5YrrDiTbkakrLC
- WX9zUc6HYlqmH7Q==
-X-Developer-Key: i=duje.mihanovic@skole.hr; a=openpgp;
- fpr=53DF9D4D9C3FE110FB362D789A119EB0422D96E1
+References: <CAPhsuW7KMLHHrcyZhKS_m_fwWSKM66VFXaLj9fmY+ab5Mu3pvA@mail.gmail.com>
+ <20240123235803.8298-1-dan@danm.net> <CAPhsuW49L8B9K8QFg68v=zG9ywMehUTD18DaG4PexEt-3mzQqQ@mail.gmail.com>
+ <2ef7d741-3df8-402a-967f-53ec77c73e2c@oracle.com>
+In-Reply-To: <2ef7d741-3df8-402a-967f-53ec77c73e2c@oracle.com>
+From: Song Liu <song@kernel.org>
+Date: Thu, 25 Jan 2024 11:40:36 -0800
+X-Gmail-Original-Message-ID: <CAPhsuW6nVUCYNtW-2a7q+T5zhyw=NhgcfP7jMeV9e_FJ5TfvXg@mail.gmail.com>
+Message-ID: <CAPhsuW6nVUCYNtW-2a7q+T5zhyw=NhgcfP7jMeV9e_FJ5TfvXg@mail.gmail.com>
+Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system;
+ successfully bisected
+To: junxiao.bi@oracle.com
+Cc: Dan Moulding <dan@danm.net>, gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-raid@vger.kernel.org, regressions@lists.linux.dev, 
+	stable@vger.kernel.org, yukuai1@huaweicloud.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fix an obvious spelling error in the PMIC compatible in the MMP2
-Brownstone DTS file.
+On Thu, Jan 25, 2024 at 8:44=E2=80=AFAM <junxiao.bi@oracle.com> wrote:
+>
+> Hi Dan,
+>
+> Thanks for the report.
+>
+> Can you define the hung? No hung task or other error from dmesg, any
+> process in D status and what is the call trace if there is? From the
+> perf result, looks like the raid thread is doing some real job, it may
+> be issuing io since ops_run_io() took around 20% cpu, please share
+> "iostat -xz 1" while the workload is running, i am wondering is this
+> some performance issue with the workload?
 
-Without this, the PMIC would never probe.
+I am hoping to get a repro on my side. From the information shared
+by Dan, the md thread is busy looping on some stripes. The issue
+probably only triggers with raid5 journal.
 
-Fixes: 58f1193e6210 ("mfd: max8925: Add dts")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Duje Mihanović <duje.mihanovic@skole.hr>
----
-Changes in v2:
-- Address maintainer comments:
-  - Add Fixes: and Cc: tags
-- Change "for" to "in" in subject
-- Emphasize PMIC's inability to probe without patch
-- Link to v1: https://lore.kernel.org/r/20230804-brownstone-typo-fix-v1-1-4832d84c0509@skole.hr
----
- arch/arm/boot/dts/marvell/mmp2-brownstone.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/boot/dts/marvell/mmp2-brownstone.dts b/arch/arm/boot/dts/marvell/mmp2-brownstone.dts
-index 04f1ae1382e7..bc64348b8218 100644
---- a/arch/arm/boot/dts/marvell/mmp2-brownstone.dts
-+++ b/arch/arm/boot/dts/marvell/mmp2-brownstone.dts
-@@ -28,7 +28,7 @@ &uart3 {
- &twsi1 {
- 	status = "okay";
- 	pmic: max8925@3c {
--		compatible = "maxium,max8925";
-+		compatible = "maxim,max8925";
- 		reg = <0x3c>;
- 		interrupts = <1>;
- 		interrupt-parent = <&intcmux4>;
-
----
-base-commit: 2ccdd1b13c591d306f0401d98dedc4bdcd02b421
-change-id: 20230804-brownstone-typo-fix-f5b16c47d865
-
-Best regards,
--- 
-Duje Mihanović <duje.mihanovic@skole.hr>
-
-
+Thanks,
+Song
 
