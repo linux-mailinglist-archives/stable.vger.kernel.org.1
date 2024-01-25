@@ -1,123 +1,134 @@
-Return-Path: <stable+bounces-15770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 759BC83BBBC
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:21:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 100DC83BBDE
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:25:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 774381C226A4
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 08:21:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE09D28C1A0
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 08:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC4C17588;
-	Thu, 25 Jan 2024 08:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4DE17BD4;
+	Thu, 25 Jan 2024 08:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eE/UbpJ1"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="JzxGzMM9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4576D17BAE;
-	Thu, 25 Jan 2024 08:21:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828CD17BCB
+	for <stable@vger.kernel.org>; Thu, 25 Jan 2024 08:24:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706170899; cv=none; b=mffqB18+lnfPaFSfcCn/FJFmAKXxWIedAb/b0SZ15sYYtnOOqUASenqqWt7aSHO/5efVkh751to6iqycpPscJWYOXrNRg7rs4/kfn5lW/9C94r9QaWxw5mVGC7g1KQvYLNTNCqbP/Uhsd9P8aOqVAtmhECIAmGWr2/tmHVRoJsY=
+	t=1706171075; cv=none; b=lMKNykjsQNHqsUvaPJrZdQr/0tzMAW8Y/L7RAiF9WLbMLWAY14awMrWcEHI+/xkwR57kOyua3ez/yD+gOMwk+YUGCalDZFamv+84GysVjVmU4Y+9wZRtxXGhoCcQVbvdYDzkkOtxqPKGqxYf4Bvcde8btpjn/zvUvtGL6bZgheg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706170899; c=relaxed/simple;
-	bh=z8VFyqlLFgh7+Kz4caXML4Z3L3TZRNowmZF25l4/itg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sdUV0HumMmYw1Y0DLnaGaIacg59RXgpoZDe6mp3quoqNL8PV/d0mFRAr3z0xtodlcfQQ18w/CLx4iSKvdg7U5Nq1yZouJCL+xs5cX9cxXm3cuXDEjvjqRX+icm9MwDBOJH3ruT6fkbab4fkizG/CnTyFqTBPnC3zqyXyClGvZkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eE/UbpJ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87ADEC433C7;
-	Thu, 25 Jan 2024 08:21:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706170898;
-	bh=z8VFyqlLFgh7+Kz4caXML4Z3L3TZRNowmZF25l4/itg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=eE/UbpJ1F7+XYE/v3kny8BDaDe7X+4nVU5BNASzys59AGVWduqh1N6JXo+DwSnnmS
-	 yAzMK50ERi9ZcEN7SEnbgzuEkS6Z4y0U5Fh08ekpirVqDpqXUptGGW21/A85oDWSaO
-	 EklB7B8m5OcQTT5ViThg0DCp52Y+5vBi8dr89spa7ygazSi3mtt4mNZYOuWN6VHoim
-	 9rrfE2AbUqLIktkLGDC8UShfGsoC+XV84lFEEKRfoFrkZH+oUKG5LHx5G2Ikv9+z50
-	 VZJIiKB1NLocX8aS9x4tPEJzl7xuJU+9KlWHya7ubNhUwOlet/X0rs9OopqW6fcxaL
-	 Z4luGCuML961w==
-From: Song Liu <song@kernel.org>
-To: linux-raid@vger.kernel.org
-Cc: yukuai1@huaweicloud.com,
-	Song Liu <song@kernel.org>,
-	Dan Moulding <dan@danm.net>,
-	stable@vger.kernel.org,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Yu Kuai <yukuai3@huawei.com>
-Subject: [PATCH] Revert "Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d""
-Date: Thu, 25 Jan 2024 00:21:31 -0800
-Message-Id: <20240125082131.788600-1-song@kernel.org>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1706171075; c=relaxed/simple;
+	bh=gbrB9NLIlYC5NTig3kJYB7G3uvykx2Hby2/m3ZKMIl0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GFTm2ACz3XwKTGM9bGJ9wZL4NTph4hE3EIM5lWK5RLN55UbrCzv9v5to9w4+0abLkUGHLkj8TnA7I5xWmBqfsjMdUuKYB/QKHExxzwolYcaTrJ32Or3LU2p3NZbHz4WQ/SkVZrHRTIiCdqZq8eL4/qIpHcQlKlFhTW3FtyFdJzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=JzxGzMM9; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1706171071;
+	bh=gbrB9NLIlYC5NTig3kJYB7G3uvykx2Hby2/m3ZKMIl0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=JzxGzMM9+n63kEOSgtEZk9qEnHHJE6pBOEO4viPJpTfscJCimVlcbqtRrFh7EFqcs
+	 PETbJoY+BRIum/geSL9u/VmtIFWttEvkem3bcoi2wxXYfR+/WbzST9/M4D2a0XBJ9j
+	 YZrMqA41TdKpw1PdFc0pjzW30d/AkiZmJUH/e1qCTTwBkCmUfNXkvA8mMa09QxTJbZ
+	 zS37vweEa870FXLF5USYGAmaB2r0tmvBFwLjRxA/2WKpmDGQewzCUHn6XZmqt+Ovao
+	 zGdz8ezNh1ZUWnB4MxkkcrITERWwr3JCL/XOhDoou1alu5ZnRkCeugXukWpW8r1jqH
+	 0F5nSHwrcGbMg==
+Received: from beast.luon.net (cola.collaboradmins.com [IPv6:2a01:4f8:1c1c:5717::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sjoerd)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id CC37A37820BC;
+	Thu, 25 Jan 2024 08:24:31 +0000 (UTC)
+Received: by beast.luon.net (Postfix, from userid 1000)
+	id 819BDAAFD424; Thu, 25 Jan 2024 09:24:31 +0100 (CET)
+Message-ID: <d0e3c99793d981c5ee90aa7457e480d83fe9e8de.camel@collabora.com>
+Subject: Re: [PATCH 6.6 132/150] bus: moxtet: Mark the irq as shared
+From: Sjoerd Simons <sjoerd@collabora.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Marek =?ISO-8859-1?Q?Beh=FAn?=
+ <kabel@kernel.org>,  Gregory CLEMENT <gregory.clement@bootlin.com>
+Date: Thu, 25 Jan 2024 09:24:31 +0100
+In-Reply-To: <20240118104326.164425257@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
+	 <20240118104326.164425257@linuxfoundation.org>
+Organization: Collabora Ltd.
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3-1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-This reverts commit bed9e27baf52a09b7ba2a3714f1e24e17ced386d.
+Hey,
 
-The original set [1][2] was expected to undo a suboptimal fix in [2], and
-replace it with a better fix [1]. However, as reported by Dan Moulding [2]
-causes an issue with raid5 with journal device.
+On Thu, 2024-01-18 at 11:49 +0100, Greg Kroah-Hartman wrote:
+> 6.6-stable review patch.=C2=A0 If anyone has any objections, please let m=
+e
+> know.
 
-Revert [2] for now to close the issue. We will follow up on another issue
-reported by Juxiao Bi, as [2] is expected to fix it. We believe this is a
-good trade-off, because the latter issue happens less freqently.
+Thanks for picking this up! To complete this fix the following is also
+needed:
 
-In the meanwhile, we will NOT revert [1], as it contains the right logic.
+fca8a117c1c9 ("arm64: dts: armada-3720-turris-mox: set irq type for
+RTC")
 
-Reported-by: Dan Moulding <dan@danm.net>
-Closes: https://lore.kernel.org/linux-raid/20240123005700.9302-1-dan@danm.net/
-Fixes: bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
-Cc: stable@vger.kernel.org # v5.19+
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
+Not sure if i missed something causing this one to not be picked up,
+while the others in the series were.
 
-[1] commit d6e035aad6c0 ("md: bypass block throttle for superblock update")
-[2] commit bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
----
- drivers/md/raid5.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index 8497880135ee..2b2f03705990 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -36,6 +36,7 @@
-  */
- 
- #include <linux/blkdev.h>
-+#include <linux/delay.h>
- #include <linux/kthread.h>
- #include <linux/raid/pq.h>
- #include <linux/async_tx.h>
-@@ -6773,7 +6774,18 @@ static void raid5d(struct md_thread *thread)
- 			spin_unlock_irq(&conf->device_lock);
- 			md_check_recovery(mddev);
- 			spin_lock_irq(&conf->device_lock);
-+
-+			/*
-+			 * Waiting on MD_SB_CHANGE_PENDING below may deadlock
-+			 * seeing md_check_recovery() is needed to clear
-+			 * the flag when using mdmon.
-+			 */
-+			continue;
- 		}
-+
-+		wait_event_lock_irq(mddev->sb_wait,
-+			!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags),
-+			conf->device_lock);
- 	}
- 	pr_debug("%d stripes handled\n", handled);
- 
--- 
-2.34.1
+>=20
+> ------------------
+>=20
+> From: Sjoerd Simons <sjoerd@collabora.com>
+>=20
+> commit e7830f5a83e96d8cb8efc0412902a03008f8fbe3 upstream.
+>=20
+> The Turris Mox shares the moxtet IRQ with various devices on the
+> board,
+> so mark the IRQ as shared in the driver as well.
+>=20
+> Without this loading the module will fail with:
+> =C2=A0 genirq: Flags mismatch irq 40. 00002002 (moxtet) vs. 00002080
+> (mcp7940x)
+>=20
+> Signed-off-by: Sjoerd Simons <sjoerd@collabora.com>
+> Cc:=C2=A0 <stable@vger.kernel.org> # v6.2+
+> Reviewed-by: Marek Beh=C3=BAn <kabel@kernel.org>
+> Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+> =C2=A0drivers/bus/moxtet.c |=C2=A0=C2=A0=C2=A0 2 +-
+> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> --- a/drivers/bus/moxtet.c
+> +++ b/drivers/bus/moxtet.c
+> @@ -755,7 +755,7 @@ static int moxtet_irq_setup(struct moxte
+> =C2=A0	moxtet->irq.masked =3D ~0;
+> =C2=A0
+> =C2=A0	ret =3D request_threaded_irq(moxtet->dev_irq, NULL,
+> moxtet_irq_thread_fn,
+> -				=C2=A0=C2=A0 IRQF_ONESHOT, "moxtet", moxtet);
+> +				=C2=A0=C2=A0 IRQF_SHARED | IRQF_ONESHOT,
+> "moxtet", moxtet);
+> =C2=A0	if (ret < 0)
+> =C2=A0		goto err_free;
+> =C2=A0
+>=20
+>=20
 
+--=20
+Sjoerd Simons
+Collabora Ltd.
 
