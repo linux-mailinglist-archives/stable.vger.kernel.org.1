@@ -1,135 +1,130 @@
-Return-Path: <stable+bounces-15778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC37D83BCD9
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 10:09:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B3F583BCE9
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 10:10:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A52A3291E49
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:09:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DE071C23C14
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D976F200A8;
-	Thu, 25 Jan 2024 09:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68B912B9F;
+	Thu, 25 Jan 2024 09:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="X58mvdCB"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PQ7/zBMe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C81D1F614
-	for <stable@vger.kernel.org>; Thu, 25 Jan 2024 09:05:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70984175BE
+	for <stable@vger.kernel.org>; Thu, 25 Jan 2024 09:08:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706173504; cv=none; b=Pv49qsVJ6hbVMncZQzP9skT+EU5b+2x/U2HxOTSsSt0xNCbu/KqfbS62NMSXyi3NmCHU8Qbs2qJn47AGf6kZnKN0MeQt2f8oRKkTulis6AimH+deARiROyou7tYcDuhUl9fjWVeStWrthNGfOhrxY5ZPYkFLM752slsJcDhERWU=
+	t=1706173710; cv=none; b=k5BtO2l1XTEXhXR27THEA9P0ebIXiWclrbmndwv6KerbEDkfnTd0B5xq0lY1mTbl0R3ISfzGO4f/rnNkcvFhQiquGw5MRwhkwhY071DmhYbvMCKHFO/YoQquMkxQjnJALp4XJIrVtqGsE+VqeyA+R41ZsE8ohsRkAUMuw7TIxc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706173504; c=relaxed/simple;
-	bh=lipnMpwPco9x7KCIoob4tS30Jg6ddwgaMbgOVw0YoI8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kK3dO3lgaRXKXJyWbvWaxDmpsSc2zaoAlVSSzOkcMawMXFe/2+lw4KWUtdQPeHlpzdrBasjqMuUQqVdXC7ShGb1AgF9J2qMmSZpKmhmQc+uBjBFs0+R2Iz6g1DyDE/SPW47gdR9pq0EqFA0pCmVoOXIJBRykl1LV8lRJmR/Bkdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=X58mvdCB; arc=none smtp.client-ip=209.85.222.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-7d2dfa80009so2322029241.0
-        for <stable@vger.kernel.org>; Thu, 25 Jan 2024 01:05:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1706173502; x=1706778302; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4yl5XDxNSx+scno4sOmOPamPnwehic8cqjKIJbS0TL4=;
-        b=X58mvdCBymraHkwlYwZdQgnCmM5TcvsWU0IzAKvOzAbQ3OhtaN86Aulmefn9szzPTD
-         bTm3OcgAThKYs2HZPOD8Yyc95gRTA1RnV1KHDcxV1rwSaAEtSHy6thgM+xukd900Hlzb
-         QSWG0WXKqM9hUd9l1OpeAqsA+F/JbXpDQ3ksnriZm96kN0ZHuChkMkXIxdHLv4AwEiHZ
-         OgkjEHL9wEo0B9WE1N+sgaPlZ6eTADiO3N8c9i3FjPFsU4jprdAPSCOLE3lzGTWD0oen
-         +APs74LPXe9uwheyzn/StMJ2eUcpSJxUZ2qxRctdNoh6f/7o+6aAjYRgK90VUKT9TAxs
-         t2ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706173502; x=1706778302;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4yl5XDxNSx+scno4sOmOPamPnwehic8cqjKIJbS0TL4=;
-        b=ZiIye/cS2ImVR6vdtvGANXG1shwnjvVPzUxTyutN9uuvGLA9DouRjOKpfTg/Nc4DGy
-         +xTegN5YmEgzUHaD5qjd1XYjf1t/YY0upp8as8dXOi1h4pMKpBxZ6jdAj7+iYAFqegjL
-         ET21Z8iqA/J0Hs7eoIb9xwGHpHiceukbWSlytaGeeOjhv4K9qZ+NjwtjEfsgAf9MkXtc
-         QWHXMPLtgWdpzDzRr14/5cVua1JmHsJsCCpXkuivpVepYlpnqBO7GQRA+xF4clewDYH/
-         pDZ/rpIgbcgAocvWj56tfy9cFpT3J+TPWSmuxGIvJHKnK4oHM7PjRp12mUnc9GPRE+hg
-         QQ4w==
-X-Gm-Message-State: AOJu0YzH8YacMK90zY0j3+LddqaclofZOSjbWcMFgcwZZ6GybMbzOlUi
-	T6Mkibte+6pEDlkogKPaJlBATOUAwT/YdLnwLyQWRXyniTq0QAcyNI+I8S6t7EZIDfyJ1IGvRNP
-	oJkQvP6Cm05baz1s/53llsQdlEqW2u8nfOftklg==
-X-Google-Smtp-Source: AGHT+IHZWV4UhDIIHdron+8ZF5KochAC0026rXhEu1We5qqfpAof5+JF6/mZFAZjawdecPIHq2gOns25o02YMaXlq/w=
-X-Received: by 2002:a05:6122:71f:b0:4b7:a77c:d133 with SMTP id
- 31-20020a056122071f00b004b7a77cd133mr385418vki.11.1706173502163; Thu, 25 Jan
- 2024 01:05:02 -0800 (PST)
+	s=arc-20240116; t=1706173710; c=relaxed/simple;
+	bh=VMOlO9QISWna9c+ZVb8HSdWYWBu8mo95r8aoLsS44KQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Vny527dO8xbkJYZR0xE3G2O+8T4s9ouFMKiInEuOUp77YKWj/aAkze8C3bigZQTptllpo5Cywd4OSAVJzOgdPhUsHtjairAGFoT4lS4ehVy/pn+dlgczAL+XG/4sB8ECIyrIIC8ZWgSlP5W/h66XMTUv/aheVLq4GRKPDmJ8XxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PQ7/zBMe; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 016271C0013;
+	Thu, 25 Jan 2024 09:08:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1706173702;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rm60V/hSeVZarANf9QjFrk14Rowm9GTafsOy25Yi66g=;
+	b=PQ7/zBMewnz8DScYEO7nHAFvNC8bSqUu9MXflVeWIaqtA0J+YarVb6AesRLzDHoZQDFGHT
+	Fs8EgKlM6CU/lC3yJ9kmsWUgrVrIDS20EMMlhOyZ6AKRHNFphku4WA1EJaWBuBI/WNtjux
+	jBa5LmDkqkUJlZeNFYAbjDB9Xo2vuC2xfTxWq6mtNYMQQZNTYDWcRpX+OdJoor8ZKU2dBu
+	lbsoSJt8xXjr/whnAnS+Z6gZnZSgPZP4ZrjlxscYfW7SgKppdIZGvgIEaXKznojUy/ZpkB
+	GdROEjuho1lwd4Hgi3GC0VJKEixsZm/dTBZgMV4kpStLp2Xggu6RBez5Vqo6vw==
+Date: Thu, 25 Jan 2024 10:08:20 +0100
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Jaime Liao <jaimeliao.tw@gmail.com>
+Cc: jaimeliao@mxic.com.tw, stable@vger.kernel.org,
+ linux-mtd@lists.infradead.org
+Subject: Re: [PATCH v3] mtd: spinand: macronix: Fix MX35LFxGE4AD page size
+Message-ID: <20240125100820.174eb458@xps-13>
+In-Reply-To: <20240125024816.222554-1-jaimeliao.tw@gmail.com>
+References: <20240125024816.222554-1-jaimeliao.tw@gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240125081601.118051-1-krzysztof.kozlowski@linaro.org> <20240125081601.118051-3-krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20240125081601.118051-3-krzysztof.kozlowski@linaro.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Thu, 25 Jan 2024 10:04:51 +0100
-Message-ID: <CAMRc=MfYg5MgndDZtrAaScmtjXm4-AX6y1np7V3p4ngBKZG-pw@mail.gmail.com>
-Subject: Re: [PATCH 3/3] gpiolib: add gpio_device_get_label() stub for !GPIOLIB
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Peter Rosin <peda@axentia.se>, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, kernel test robot <lkp@intel.com>, 
-	Philipp Zabel <p.zabel@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-On Thu, Jan 25, 2024 at 9:16=E2=80=AFAM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> Add empty stub of gpio_device_get_label() when GPIOLIB is not enabled.
->
-> Cc: <stable@vger.kernel.org>
-> Fixes: d1f7728259ef ("gpiolib: provide gpio_device_get_label()")
-> Suggested-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->
+Hi Jaime,
+
++ linux-mtd which was missing to your contribution.
+
+jaimeliao.tw@gmail.com wrote on Thu, 25 Jan 2024 10:48:16 +0800:
+
+> From: JaimeLiao <jaimeliao@mxic.com.tw>
+>=20
+> Support for MX35LF{2,4}GE4AD chips was added in mainline through
+> upstream commit 5ece78de88739b4c68263e9f2582380c1fd8314f.
+>=20
+> The patch was later adapted to 5.4.y and backported through
+> stable commit 85258ae3070848d9d0f6fbee385be2db80e8cf26.
+>=20
+> Fix the backport mentioned right above as it is wrong: the bigger chip
+> features 4kiB pages and not 2kiB pages.
+>=20
+> Fixes: 85258ae30708 ("mtd: spinand: macronix: Add support for MX35LFxGE4A=
+D")
+> Cc: stable@vger.kernel.org # v5.4.y
+> Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+> Signed-off-by: JaimeLiao <jaimeliao@mxic.com.tw>
+
+Looks legitimate.
+
+Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
+
 > ---
->
-> Cc: Philipp Zabel <p.zabel@pengutronix.de>
->
-> Reset framework will need it:
-> https://lore.kernel.org/oe-kbuild-all/202401250958.YksQmnWj-lkp@intel.com=
-/
-
-And I suppose you'll want an immutable branch for that?
-
-Bart
-
+> Hello,
+>=20
+> This is my third attempt to fix a stable kernel. This patch is not a
+> backport from Linus' tree per-se, but a fix of a backport. The original
+> mainline commit is fine but the backported one is not, we need to fix
+> the backported commit in the 5.4.y stable kernel, and this is what I am
+> attempting to do. Let me know if further explanations are needed.
+>=20
+> Regards,
+> Jaime
 > ---
->  include/linux/gpio/driver.h | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
-> index c1df7698edb0..7f75c9a51874 100644
-> --- a/include/linux/gpio/driver.h
-> +++ b/include/linux/gpio/driver.h
-> @@ -831,6 +831,12 @@ static inline int gpio_device_get_base(struct gpio_d=
-evice *gdev)
->         return -ENODEV;
->  }
->
-> +static inline const char *gpio_device_get_label(struct gpio_device *gdev=
-)
-> +{
-> +       WARN_ON(1);
-> +       return NULL;
-> +}
-> +
->  static inline int gpiochip_lock_as_irq(struct gpio_chip *gc,
->                                        unsigned int offset)
->  {
-> --
-> 2.34.1
->
+>  drivers/mtd/nand/spi/macronix.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/mtd/nand/spi/macronix.c b/drivers/mtd/nand/spi/macro=
+nix.c
+> index bbb1d68bce4a..f18c6cfe8ff5 100644
+> --- a/drivers/mtd/nand/spi/macronix.c
+> +++ b/drivers/mtd/nand/spi/macronix.c
+> @@ -125,7 +125,7 @@ static const struct spinand_info macronix_spinand_tab=
+le[] =3D {
+>  		     SPINAND_HAS_QE_BIT,
+>  		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout, NULL)),
+>  	SPINAND_INFO("MX35LF4GE4AD", 0x37,
+> -		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
+> +		     NAND_MEMORG(1, 4096, 128, 64, 2048, 40, 1, 1, 1),
+>  		     NAND_ECCREQ(8, 512),
+>  		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
+>  					      &write_cache_variants,
+
+
+Thanks,
+Miqu=C3=A8l
 
