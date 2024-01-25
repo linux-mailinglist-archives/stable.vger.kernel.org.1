@@ -1,72 +1,62 @@
-Return-Path: <stable+bounces-15815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9800383C685
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 16:26:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C66283C739
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 16:49:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8CE21C234C3
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 15:26:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21B101F21431
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 15:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2444273181;
-	Thu, 25 Jan 2024 15:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE0874E22;
+	Thu, 25 Jan 2024 15:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jxuWOugE"
+	dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b="eO5qkWu4"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mr85p00im-zteg06011501.me.com (mr85p00im-zteg06011501.me.com [17.58.23.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FD26EB7B;
-	Thu, 25 Jan 2024 15:26:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466E17318D
+	for <stable@vger.kernel.org>; Thu, 25 Jan 2024 15:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706196377; cv=none; b=rVMFY6H8/oHL3HdCa7hOgqVEgiPJp7SItWokgu/HR82mipab3Qq59cj7qhtIt+SEHYMgS4o43wksDtqkAnCLhU5gJ45Q6VcfcAtW/AdnXEM8F09tyw3WcEWGES40wrVOvtRm2TWmu/GFA4W/yk/JS5ZoXq59NQSdH8Tpcn6kjOw=
+	t=1706197710; cv=none; b=T2maCbQqJc+lLEBLPZgz6YG5QhIByitVk0+pF2++mO6Ltnf80C9Sht7ZZQuzT5Xhfsm462GHL+HaETa7WuI6v0Q9GdoHyG7CdSr6HhSdh2w3p7QBvBHZT5hHLkjcUWBXFWOX2Pr39/Lyuwi9yHSV/CQMD8yuOfGr5KWMk1LL3bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706196377; c=relaxed/simple;
-	bh=tJN0S6rY1/CKU1dDI8IfHzyyHIeGZm28jyMc1dSzveM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZxIpghVA+esk/Wq0ChoUWYi4HKjgeH9vjEDvrRdCCIFEPoIkMHQQ+SwqMVl8oVbDbx+JitD0BSzPY/QQldpBe0TW/Wm/gyzb6q2RuwhOP/nVmrM0qnuSM0GM1XJjr4422cYs4mjR5SL+b1Iy60KIbRXavpAUObgEuHfWb+pLPAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jxuWOugE; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706196376; x=1737732376;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=tJN0S6rY1/CKU1dDI8IfHzyyHIeGZm28jyMc1dSzveM=;
-  b=jxuWOugEr3u57w4WFJBifkE3iQnzJbIBfvm64/vI8GL53gdNny+V2Rgy
-   KDGTWKIzBaoqQFEquakSCyEUzdFzsc8E996CQBSnMhdEChuaSC++FAf+y
-   RP8Q3wgSZATuLAVkzETZ+SbjjYrZb3RgHQaB5l4wplf0Lay/MfBFs9JD1
-   fijkCwCZQN3ryoUj5Hrk6xYA+/1Q9gXlDUkwrkuWIwVCNE8aO7pIIRcw9
-   HW3bmzkK7DW4OCGn93+xUnrSsMI7TWPGDv1FA9BvL1cpsH/plZfq85Zyn
-   O6Y4KPeGd+bsbsQYh8LNOh3FzLyXg2o4itCPUa2cuyLc2Y1hQiuEuoXaS
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="23651369"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="23651369"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jan 2024 07:26:16 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="857099933"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="857099933"
-Received: from mattu-haswell.fi.intel.com ([10.237.72.199])
-  by fmsmga004.fm.intel.com with ESMTP; 25 Jan 2024 07:26:14 -0800
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-To: <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org,
-	Michal Pecio <michal.pecio@gmail.com>,
+	s=arc-20240116; t=1706197710; c=relaxed/simple;
+	bh=C2CpzF4Rr3D4xIjluLeGkxm2svn9TQgh+WVBs9+YGmM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Sa//wcXdUkSReajD3MdZC1ySGrmJB2ayxlxv8zsJmNrxZ81C5mDEXrA9yc1eXC6HDMnkzhjWHmPZDIM+y54YnbYB8oEIm9roFBnlsrWrHAQ+NQU+/bv6rhYMBRTgcqhvjLDGjvw7EMymlg6m5VBEgNJqsbhnWutS4O9g6R4uaKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net; spf=pass smtp.mailfrom=danm.net; dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b=eO5qkWu4; arc=none smtp.client-ip=17.58.23.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danm.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=danm.net; s=sig1;
+	t=1706197707; bh=C2CpzF4Rr3D4xIjluLeGkxm2svn9TQgh+WVBs9+YGmM=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=eO5qkWu4mUX6T8hih8yDP99CxeDvs5v4hE/pqEhzHah7SqV1lyM1WeBChphicfktP
+	 xZxs4xXRIE6/0cu2uU8MWsGOYvlGYOBOsWF5DuM7h48+I8Ed2+734wMa+nJ5FU8oIv
+	 CIjJ4ewOhuKnjZ7ZL/SgsQuf2YJey4DKhd+oanpYl6aNeyp3Rwf7zsgmu6fj6D+VnH
+	 fdbiEBw8ruMtIals+5PiyKd8RFMe0PiUK00tPR3ro4WUBBxULVefw0vFvpRSXT06sX
+	 GXiBtrhfgQkKsaWLO4VJTHhoMo3aSS4gSeGIGUAhR0xH/Hd7/ZAeYDz1N47VUQ5N7C
+	 iKBONovgc9gIQ==
+Received: from hitch.danm.net (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-zteg06011501.me.com (Postfix) with ESMTPSA id 66BA94807F5;
+	Thu, 25 Jan 2024 15:48:26 +0000 (UTC)
+From: Dan Moulding <dan@danm.net>
+To: song@kernel.org
+Cc: dan@danm.net,
+	junxiao.bi@oracle.com,
+	linux-raid@vger.kernel.org,
 	stable@vger.kernel.org,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 4/4] xhci: handle isoc Babble and Buffer Overrun events properly
-Date: Thu, 25 Jan 2024 17:27:37 +0200
-Message-Id: <20240125152737.2983959-5-mathias.nyman@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240125152737.2983959-1-mathias.nyman@linux.intel.com>
-References: <20240125152737.2983959-1-mathias.nyman@linux.intel.com>
+	yukuai1@huaweicloud.com,
+	yukuai3@huawei.com
+Subject: [PATCH] Revert "Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d""
+Date: Thu, 25 Jan 2024 08:48:24 -0700
+Message-ID: <20240125154824.18847-1-dan@danm.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240125082131.788600-1-song@kernel.org>
+References: <20240125082131.788600-1-song@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,52 +64,18 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: I16QoiFrwA8tuBy2MdenLAPiYovMEKBH
+X-Proofpoint-ORIG-GUID: I16QoiFrwA8tuBy2MdenLAPiYovMEKBH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-25_09,2024-01-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0
+ clxscore=1030 suspectscore=0 mlxscore=0 spamscore=0 mlxlogscore=395
+ phishscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2401250111
 
-From: Michal Pecio <michal.pecio@gmail.com>
+Thank you Song. Let me know if there is any more information I can
+provide to help diagnose or reproduce this.
 
-xHCI 4.9 explicitly forbids assuming that the xHC has released its
-ownership of a multi-TRB TD when it reports an error on one of the
-early TRBs. Yet the driver makes such assumption and releases the TD,
-allowing the remaining TRBs to be freed or overwritten by new TDs.
-
-The xHC should also report completion of the final TRB due to its IOC
-flag being set by us, regardless of prior errors. This event cannot
-be recognized if the TD has already been freed earlier, resulting in
-"Transfer event TRB DMA ptr not part of current TD" error message.
-
-Fix this by reusing the logic for processing isoc Transaction Errors.
-This also handles hosts which fail to report the final completion.
-
-Fix transfer length reporting on Babble errors. They may be caused by
-device malfunction, no guarantee that the buffer has been filled.
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
----
- drivers/usb/host/xhci-ring.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 41be7d31a36e..f0d8a607ff21 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2394,9 +2394,13 @@ static int process_isoc_td(struct xhci_hcd *xhci, struct xhci_virt_ep *ep,
- 	case COMP_BANDWIDTH_OVERRUN_ERROR:
- 		frame->status = -ECOMM;
- 		break;
--	case COMP_ISOCH_BUFFER_OVERRUN:
- 	case COMP_BABBLE_DETECTED_ERROR:
-+		sum_trbs_for_length = true;
-+		fallthrough;
-+	case COMP_ISOCH_BUFFER_OVERRUN:
- 		frame->status = -EOVERFLOW;
-+		if (ep_trb != td->last_trb)
-+			td->error_mid_td = true;
- 		break;
- 	case COMP_INCOMPATIBLE_DEVICE_ERROR:
- 	case COMP_STALL_ERROR:
--- 
-2.25.1
-
+-- Dan
 
