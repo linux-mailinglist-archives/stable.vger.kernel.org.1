@@ -1,130 +1,223 @@
-Return-Path: <stable+bounces-15768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA7A983BB94
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:16:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA18183BBA2
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:17:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C5BAB288BD
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 08:16:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62B772881B3
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 08:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D1718EAF;
-	Thu, 25 Jan 2024 08:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2148179B5;
+	Thu, 25 Jan 2024 08:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VFzjg4ew"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3K8roo9V";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZFxAVwdQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3434F1758F
-	for <stable@vger.kernel.org>; Thu, 25 Jan 2024 08:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74AA17727;
+	Thu, 25 Jan 2024 08:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706170570; cv=none; b=d5AU7pGqSyK1Cx75wZ0KbBpDGjF6u7OHy7S2h79ZnIpkIrtOE5XnXI93hN37lICFKrYLp7oXrSotF3xRHVjN+7EprdrY1+dhgMF5qBhwUaoq6dQi36fGo3elJvBxaFifxoQl2vzS9mYkd7bosZhtF7+EBSGafm4KwysffkB71z8=
+	t=1706170636; cv=none; b=bRb2yrrDszxQwR6IBCPi7ZwySgvRTXcz7UHp2b5wYVzkoLCX2PlhFoqAPCV9tf0u7PvIiobJ9rrHsHZQ23/I8jP1v5NLZjt0DiS0+ziOw2Zp4WTO+aFts+rVFy5bXflZsE2QPuT0C4fGQSc4sYL9HA8VHm3y/1PsELe5mu9A2+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706170570; c=relaxed/simple;
-	bh=jaCgGOlshk2nOQ0HEUZD7VFYGGtzHGKiLMGwEMepQWk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oPdSlokJ1rkF6zksmm1G5/QtTzRrN0MhCMC8/uDEO32Vm3Ie0T9kINX2tYla3jiAr8xFz/u2DW97PUfHHxSWg3mP6wUvMCzvdVQuidFiQIBJJMQTMPFlHXQGGCFjO4KnGcW4UaOXGh6e7lcFVKE8qCI2mfsx7d/OTl/jMGIWIGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VFzjg4ew; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-55a6833c21eso4917624a12.2
-        for <stable@vger.kernel.org>; Thu, 25 Jan 2024 00:16:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706170567; x=1706775367; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yokV3KsZTLtR361FMJ3GYZw7aKtxmjchO95DV9+f45k=;
-        b=VFzjg4ewYsvCIbtOR68R7mS8Bs5iXNZniys8SPrtfw5rKF9nEZw5bKlWICe1dl+Iww
-         Cbm0mgVudul0cRA8VkNUf1unJj61sXYe4cRmhqfAzpAETPyZcHENWiNE+8hielh576bD
-         3l4ZRVe511R0hmC/BoiiBI+jVIM+YCirsI9vAz6ccAGbfvprftZY8yJBS2Kgakq7gZH2
-         80DbrwK8JsYtkm9K3HOIXuNOParrClx/rKuz7gyHoxj8mTuUIoCinsH3bBIwMda9Pix/
-         /PXdAcusxwlly+rveUr0QjclAFArGb69qJC7kuvUVF59cmX1IkqtOf0VQ/arxFd7ssGm
-         eKzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706170567; x=1706775367;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yokV3KsZTLtR361FMJ3GYZw7aKtxmjchO95DV9+f45k=;
-        b=P56z3tYaMoHIEkmKMWd5a8GvhhwVf+tFlKsHYRnSpGNHTpMpCB/OfY+NljR0SUl5dM
-         JfP3WwOZ7kQR8+7hFn6ZYSBcp2TtvjXlb0cqlA8fyDUIMS2UY59048ehXWz4PLoygfbQ
-         Br3NI4TCHowgIqnI2rWZw2IgNFEFLN4cFmUHkrIiUxBL+qkCRTgUhejuTX7JZ/NwQKQd
-         Vf+JFpfabzDuBB47Q1X8/6f10eup9akCsRfyH4AwyER5zroOs0lf9n8LmcfqQOUeuUjV
-         MrvSi+Lz9zOcO6PeFiZjmLUjoQpsWbxUT6yhXz/529A2Ixn+ZiU/FGY1T5w+K+aeCLEJ
-         cWVQ==
-X-Gm-Message-State: AOJu0YxQdMF9jYXGBcjjS+df8qMrnOPq0Aa86flNyesaJbAJfrm2bFRD
-	NYY6iMHhIxJxpx44vECtWn9yvwpRKunr+MllGmyKw63LFquaKs0EJ6gVGR1FVmA=
-X-Google-Smtp-Source: AGHT+IEG26rh2+JjBMSIa5yNNaPofjUDUvnStFMwaZzRZP98kED/r9+kUzFCNZFiLYA1/W/RRAF91Q==
-X-Received: by 2002:a05:6402:1d55:b0:55c:661b:7fd3 with SMTP id dz21-20020a0564021d5500b0055c661b7fd3mr379652edb.70.1706170567639;
-        Thu, 25 Jan 2024 00:16:07 -0800 (PST)
-Received: from krzk-bin.. ([178.197.215.66])
-        by smtp.gmail.com with ESMTPSA id f21-20020a056402195500b0055c63205052sm3410210edz.37.2024.01.25.00.16.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jan 2024 00:16:07 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Peter Rosin <peda@axentia.se>,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	stable@vger.kernel.org,
-	kernel test robot <lkp@intel.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>
-Subject: [PATCH 3/3] gpiolib: add gpio_device_get_label() stub for !GPIOLIB
-Date: Thu, 25 Jan 2024 09:16:01 +0100
-Message-Id: <20240125081601.118051-3-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240125081601.118051-1-krzysztof.kozlowski@linaro.org>
-References: <20240125081601.118051-1-krzysztof.kozlowski@linaro.org>
+	s=arc-20240116; t=1706170636; c=relaxed/simple;
+	bh=V40nGmNyn/o+KifX8TIh7H+eBEDTtw080ETaLnTfvlw=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=Kh95Yk3kx5a/K2SgxITSsSVDN/yaUa9NkbCIIaA8/DOjW4G/SdwsHYGYMBElgNiQvMtghdbz5RacZZhiNNC9xu2+S6RB74KkH8o/D7PhOKM2dprFRir8B7VVF3u7y7cnO8+iKCppWk2kDS2ftJg9/Wf3WYmw1e6R908rs2G1Zgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3K8roo9V; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZFxAVwdQ; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 25 Jan 2024 08:17:11 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1706170632;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lER7lrtQRjwXWHDXcRnYjUURbFjjl0xhPeP2jwJSCh0=;
+	b=3K8roo9VnCsxY9bM39p5ipaVPiNN/T+OcU2IohiF4fwXmNoLh4txb2NNyQyF3FedUlN1UW
+	aXYrY2aiwJdPD7y/ESE+t2UNUJPGdQS+i6MnUdOIvFo7eAX9qyg97rzO8V61E3JOkm5DTN
+	lq3oLEGQRpJ9iz7rpJ06Sv/zSmQgY3kqumV5JoBCecTxS5rdxU7L7CkMbOP9HWrXs0tcli
+	GMJXoG3pJIlDcdFMx4BGuMJSwa6iN2+RjGYUkvcuwFI1X04kVV3TcDJuyMBi+gJx1EIwJA
+	PH8eeqdd5DPNXlV7gN1+LJifPgAuIt5g6HoPz/FFJ/+tqe8uaH7zxD1mtWHQew==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1706170632;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lER7lrtQRjwXWHDXcRnYjUURbFjjl0xhPeP2jwJSCh0=;
+	b=ZFxAVwdQ4y5d3WPqsD+czAFmGV0hSkhhN13id3D5/v+bOU7ZrX8ouS/Qv/uYSuucsjkRqE
+	WCGuuAYWf5PwWwDA==
+From: "tip-bot2 for Jiri Wiesner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] clocksource: Skip watchdog check for large
+ watchdog intervals
+Cc: Feng Tang <feng.tang@intel.com>, Jiri Wiesner <jwiesner@suse.de>,
+ Thomas Gleixner <tglx@linutronix.de>, "Paul E. McKenney" <paulmck@kernel.org>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20240122172350.GA740@incl>
+References: <20240122172350.GA740@incl>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <170617063191.398.1061031038655031575.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Add empty stub of gpio_device_get_label() when GPIOLIB is not enabled.
+The following commit has been merged into the timers/urgent branch of tip:
 
-Cc: <stable@vger.kernel.org>
-Fixes: d1f7728259ef ("gpiolib: provide gpio_device_get_label()")
-Suggested-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Commit-ID:     644649553508b9bacf0fc7a5bdc4f9e0165576a5
+Gitweb:        https://git.kernel.org/tip/644649553508b9bacf0fc7a5bdc4f9e0165576a5
+Author:        Jiri Wiesner <jwiesner@suse.de>
+AuthorDate:    Mon, 22 Jan 2024 18:23:50 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 25 Jan 2024 09:13:16 +01:00
 
+clocksource: Skip watchdog check for large watchdog intervals
+
+There have been reports of the watchdog marking clocksources unstable on
+machines with 8 NUMA nodes:
+
+  clocksource: timekeeping watchdog on CPU373:
+  Marking clocksource 'tsc' as unstable because the skew is too large:
+  clocksource:   'hpet' wd_nsec: 14523447520
+  clocksource:   'tsc'  cs_nsec: 14524115132
+
+The measured clocksource skew - the absolute difference between cs_nsec
+and wd_nsec - was 668 microseconds:
+
+  cs_nsec - wd_nsec = 14524115132 - 14523447520 = 667612
+
+The kernel used 200 microseconds for the uncertainty_margin of both the
+clocksource and watchdog, resulting in a threshold of 400 microseconds (the
+md variable). Both the cs_nsec and the wd_nsec value indicate that the
+readout interval was circa 14.5 seconds.  The observed behaviour is that
+watchdog checks failed for large readout intervals on 8 NUMA node
+machines. This indicates that the size of the skew was directly proportinal
+to the length of the readout interval on those machines. The measured
+clocksource skew, 668 microseconds, was evaluated against a threshold (the
+md variable) that is suited for readout intervals of roughly
+WATCHDOG_INTERVAL, i.e. HZ >> 1, which is 0.5 second.
+
+The intention of 2e27e793e280 ("clocksource: Reduce clocksource-skew
+threshold") was to tighten the threshold for evaluating skew and set the
+lower bound for the uncertainty_margin of clocksources to twice
+WATCHDOG_MAX_SKEW. Later in c37e85c135ce ("clocksource: Loosen clocksource
+watchdog constraints"), the WATCHDOG_MAX_SKEW constant was increased to
+125 microseconds to fit the limit of NTP, which is able to use a
+clocksource that suffers from up to 500 microseconds of skew per second.
+Both the TSC and the HPET use default uncertainty_margin. When the
+readout interval gets stretched the default uncertainty_margin is no
+longer a suitable lower bound for evaluating skew - it imposes a limit
+that is far stricter than the skew with which NTP can deal.
+
+The root causes of the skew being directly proportinal to the length of
+the readout interval are:
+
+  * the inaccuracy of the shift/mult pairs of clocksources and the watchdog
+  * the conversion to nanoseconds is imprecise for large readout intervals
+
+Prevent this by skipping the current watchdog check if the readout
+interval exceeds 2 * WATCHDOG_INTERVAL. Considering the maximum readout
+interval of 2 * WATCHDOG_INTERVAL, the current default uncertainty margin
+(of the TSC and HPET) corresponds to a limit on clocksource skew of 250
+ppm (microseconds of skew per second).  To keep the limit imposed by NTP
+(500 microseconds of skew per second) for all possible readout intervals,
+the margins would have to be scaled so that the threshold value is
+proportional to the length of the actual readout interval.
+
+As for why the readout interval may get stretched: Since the watchdog is
+executed in softirq context the expiration of the watchdog timer can get
+severely delayed on account of a ksoftirqd thread not getting to run in a
+timely manner. Surely, a system with such belated softirq execution is not
+working well and the scheduling issue should be looked into but the
+clocksource watchdog should be able to deal with it accordingly.
+
+Fixes: 2e27e793e280 ("clocksource: Reduce clocksource-skew threshold")
+Suggested-by: Feng Tang <feng.tang@intel.com>
+Signed-off-by: Jiri Wiesner <jwiesner@suse.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Feng Tang <feng.tang@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240122172350.GA740@incl
 ---
+ kernel/time/clocksource.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-
-Reset framework will need it:
-https://lore.kernel.org/oe-kbuild-all/202401250958.YksQmnWj-lkp@intel.com/
----
- include/linux/gpio/driver.h | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
-index c1df7698edb0..7f75c9a51874 100644
---- a/include/linux/gpio/driver.h
-+++ b/include/linux/gpio/driver.h
-@@ -831,6 +831,12 @@ static inline int gpio_device_get_base(struct gpio_device *gdev)
- 	return -ENODEV;
- }
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index c108ed8..3052b1f 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -99,6 +99,7 @@ static u64 suspend_start;
+  * Interval: 0.5sec.
+  */
+ #define WATCHDOG_INTERVAL (HZ >> 1)
++#define WATCHDOG_INTERVAL_MAX_NS ((2 * WATCHDOG_INTERVAL) * (NSEC_PER_SEC / HZ))
  
-+static inline const char *gpio_device_get_label(struct gpio_device *gdev)
-+{
-+	WARN_ON(1);
-+	return NULL;
-+}
-+
- static inline int gpiochip_lock_as_irq(struct gpio_chip *gc,
- 				       unsigned int offset)
+ /*
+  * Threshold: 0.0312s, when doubled: 0.0625s.
+@@ -134,6 +135,7 @@ static DECLARE_WORK(watchdog_work, clocksource_watchdog_work);
+ static DEFINE_SPINLOCK(watchdog_lock);
+ static int watchdog_running;
+ static atomic_t watchdog_reset_pending;
++static int64_t watchdog_max_interval;
+ 
+ static inline void clocksource_watchdog_lock(unsigned long *flags)
  {
--- 
-2.34.1
-
+@@ -399,8 +401,8 @@ static inline void clocksource_reset_watchdog(void)
+ static void clocksource_watchdog(struct timer_list *unused)
+ {
+ 	u64 csnow, wdnow, cslast, wdlast, delta;
++	int64_t wd_nsec, cs_nsec, interval;
+ 	int next_cpu, reset_pending;
+-	int64_t wd_nsec, cs_nsec;
+ 	struct clocksource *cs;
+ 	enum wd_read_status read_ret;
+ 	unsigned long extra_wait = 0;
+@@ -470,6 +472,27 @@ static void clocksource_watchdog(struct timer_list *unused)
+ 		if (atomic_read(&watchdog_reset_pending))
+ 			continue;
+ 
++		/*
++		 * The processing of timer softirqs can get delayed (usually
++		 * on account of ksoftirqd not getting to run in a timely
++		 * manner), which causes the watchdog interval to stretch.
++		 * Skew detection may fail for longer watchdog intervals
++		 * on account of fixed margins being used.
++		 * Some clocksources, e.g. acpi_pm, cannot tolerate
++		 * watchdog intervals longer than a few seconds.
++		 */
++		interval = max(cs_nsec, wd_nsec);
++		if (unlikely(interval > WATCHDOG_INTERVAL_MAX_NS)) {
++			if (system_state > SYSTEM_SCHEDULING &&
++			    interval > 2 * watchdog_max_interval) {
++				watchdog_max_interval = interval;
++				pr_warn("Long readout interval, skipping watchdog check: cs_nsec: %lld wd_nsec: %lld\n",
++					cs_nsec, wd_nsec);
++			}
++			watchdog_timer.expires = jiffies;
++			continue;
++		}
++
+ 		/* Check the deviation from the watchdog clocksource. */
+ 		md = cs->uncertainty_margin + watchdog->uncertainty_margin;
+ 		if (abs(cs_nsec - wd_nsec) > md) {
 
