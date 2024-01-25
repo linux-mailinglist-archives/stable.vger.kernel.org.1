@@ -1,223 +1,123 @@
-Return-Path: <stable+bounces-15769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA18183BBA2
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:17:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 759BC83BBBC
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:21:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62B772881B3
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 08:17:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 774381C226A4
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 08:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2148179B5;
-	Thu, 25 Jan 2024 08:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC4C17588;
+	Thu, 25 Jan 2024 08:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3K8roo9V";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZFxAVwdQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eE/UbpJ1"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74AA17727;
-	Thu, 25 Jan 2024 08:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4576D17BAE;
+	Thu, 25 Jan 2024 08:21:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706170636; cv=none; b=bRb2yrrDszxQwR6IBCPi7ZwySgvRTXcz7UHp2b5wYVzkoLCX2PlhFoqAPCV9tf0u7PvIiobJ9rrHsHZQ23/I8jP1v5NLZjt0DiS0+ziOw2Zp4WTO+aFts+rVFy5bXflZsE2QPuT0C4fGQSc4sYL9HA8VHm3y/1PsELe5mu9A2+A=
+	t=1706170899; cv=none; b=mffqB18+lnfPaFSfcCn/FJFmAKXxWIedAb/b0SZ15sYYtnOOqUASenqqWt7aSHO/5efVkh751to6iqycpPscJWYOXrNRg7rs4/kfn5lW/9C94r9QaWxw5mVGC7g1KQvYLNTNCqbP/Uhsd9P8aOqVAtmhECIAmGWr2/tmHVRoJsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706170636; c=relaxed/simple;
-	bh=V40nGmNyn/o+KifX8TIh7H+eBEDTtw080ETaLnTfvlw=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Kh95Yk3kx5a/K2SgxITSsSVDN/yaUa9NkbCIIaA8/DOjW4G/SdwsHYGYMBElgNiQvMtghdbz5RacZZhiNNC9xu2+S6RB74KkH8o/D7PhOKM2dprFRir8B7VVF3u7y7cnO8+iKCppWk2kDS2ftJg9/Wf3WYmw1e6R908rs2G1Zgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3K8roo9V; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZFxAVwdQ; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 25 Jan 2024 08:17:11 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706170632;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lER7lrtQRjwXWHDXcRnYjUURbFjjl0xhPeP2jwJSCh0=;
-	b=3K8roo9VnCsxY9bM39p5ipaVPiNN/T+OcU2IohiF4fwXmNoLh4txb2NNyQyF3FedUlN1UW
-	aXYrY2aiwJdPD7y/ESE+t2UNUJPGdQS+i6MnUdOIvFo7eAX9qyg97rzO8V61E3JOkm5DTN
-	lq3oLEGQRpJ9iz7rpJ06Sv/zSmQgY3kqumV5JoBCecTxS5rdxU7L7CkMbOP9HWrXs0tcli
-	GMJXoG3pJIlDcdFMx4BGuMJSwa6iN2+RjGYUkvcuwFI1X04kVV3TcDJuyMBi+gJx1EIwJA
-	PH8eeqdd5DPNXlV7gN1+LJifPgAuIt5g6HoPz/FFJ/+tqe8uaH7zxD1mtWHQew==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706170632;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lER7lrtQRjwXWHDXcRnYjUURbFjjl0xhPeP2jwJSCh0=;
-	b=ZFxAVwdQ4y5d3WPqsD+czAFmGV0hSkhhN13id3D5/v+bOU7ZrX8ouS/Qv/uYSuucsjkRqE
-	WCGuuAYWf5PwWwDA==
-From: "tip-bot2 for Jiri Wiesner" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] clocksource: Skip watchdog check for large
- watchdog intervals
-Cc: Feng Tang <feng.tang@intel.com>, Jiri Wiesner <jwiesner@suse.de>,
- Thomas Gleixner <tglx@linutronix.de>, "Paul E. McKenney" <paulmck@kernel.org>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240122172350.GA740@incl>
-References: <20240122172350.GA740@incl>
+	s=arc-20240116; t=1706170899; c=relaxed/simple;
+	bh=z8VFyqlLFgh7+Kz4caXML4Z3L3TZRNowmZF25l4/itg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sdUV0HumMmYw1Y0DLnaGaIacg59RXgpoZDe6mp3quoqNL8PV/d0mFRAr3z0xtodlcfQQ18w/CLx4iSKvdg7U5Nq1yZouJCL+xs5cX9cxXm3cuXDEjvjqRX+icm9MwDBOJH3ruT6fkbab4fkizG/CnTyFqTBPnC3zqyXyClGvZkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eE/UbpJ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87ADEC433C7;
+	Thu, 25 Jan 2024 08:21:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706170898;
+	bh=z8VFyqlLFgh7+Kz4caXML4Z3L3TZRNowmZF25l4/itg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eE/UbpJ1F7+XYE/v3kny8BDaDe7X+4nVU5BNASzys59AGVWduqh1N6JXo+DwSnnmS
+	 yAzMK50ERi9ZcEN7SEnbgzuEkS6Z4y0U5Fh08ekpirVqDpqXUptGGW21/A85oDWSaO
+	 EklB7B8m5OcQTT5ViThg0DCp52Y+5vBi8dr89spa7ygazSi3mtt4mNZYOuWN6VHoim
+	 9rrfE2AbUqLIktkLGDC8UShfGsoC+XV84lFEEKRfoFrkZH+oUKG5LHx5G2Ikv9+z50
+	 VZJIiKB1NLocX8aS9x4tPEJzl7xuJU+9KlWHya7ubNhUwOlet/X0rs9OopqW6fcxaL
+	 Z4luGCuML961w==
+From: Song Liu <song@kernel.org>
+To: linux-raid@vger.kernel.org
+Cc: yukuai1@huaweicloud.com,
+	Song Liu <song@kernel.org>,
+	Dan Moulding <dan@danm.net>,
+	stable@vger.kernel.org,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Yu Kuai <yukuai3@huawei.com>
+Subject: [PATCH] Revert "Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d""
+Date: Thu, 25 Jan 2024 00:21:31 -0800
+Message-Id: <20240125082131.788600-1-song@kernel.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170617063191.398.1061031038655031575.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the timers/urgent branch of tip:
+This reverts commit bed9e27baf52a09b7ba2a3714f1e24e17ced386d.
 
-Commit-ID:     644649553508b9bacf0fc7a5bdc4f9e0165576a5
-Gitweb:        https://git.kernel.org/tip/644649553508b9bacf0fc7a5bdc4f9e0165576a5
-Author:        Jiri Wiesner <jwiesner@suse.de>
-AuthorDate:    Mon, 22 Jan 2024 18:23:50 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 25 Jan 2024 09:13:16 +01:00
+The original set [1][2] was expected to undo a suboptimal fix in [2], and
+replace it with a better fix [1]. However, as reported by Dan Moulding [2]
+causes an issue with raid5 with journal device.
 
-clocksource: Skip watchdog check for large watchdog intervals
+Revert [2] for now to close the issue. We will follow up on another issue
+reported by Juxiao Bi, as [2] is expected to fix it. We believe this is a
+good trade-off, because the latter issue happens less freqently.
 
-There have been reports of the watchdog marking clocksources unstable on
-machines with 8 NUMA nodes:
+In the meanwhile, we will NOT revert [1], as it contains the right logic.
 
-  clocksource: timekeeping watchdog on CPU373:
-  Marking clocksource 'tsc' as unstable because the skew is too large:
-  clocksource:   'hpet' wd_nsec: 14523447520
-  clocksource:   'tsc'  cs_nsec: 14524115132
+Reported-by: Dan Moulding <dan@danm.net>
+Closes: https://lore.kernel.org/linux-raid/20240123005700.9302-1-dan@danm.net/
+Fixes: bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
+Cc: stable@vger.kernel.org # v5.19+
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
 
-The measured clocksource skew - the absolute difference between cs_nsec
-and wd_nsec - was 668 microseconds:
-
-  cs_nsec - wd_nsec = 14524115132 - 14523447520 = 667612
-
-The kernel used 200 microseconds for the uncertainty_margin of both the
-clocksource and watchdog, resulting in a threshold of 400 microseconds (the
-md variable). Both the cs_nsec and the wd_nsec value indicate that the
-readout interval was circa 14.5 seconds.  The observed behaviour is that
-watchdog checks failed for large readout intervals on 8 NUMA node
-machines. This indicates that the size of the skew was directly proportinal
-to the length of the readout interval on those machines. The measured
-clocksource skew, 668 microseconds, was evaluated against a threshold (the
-md variable) that is suited for readout intervals of roughly
-WATCHDOG_INTERVAL, i.e. HZ >> 1, which is 0.5 second.
-
-The intention of 2e27e793e280 ("clocksource: Reduce clocksource-skew
-threshold") was to tighten the threshold for evaluating skew and set the
-lower bound for the uncertainty_margin of clocksources to twice
-WATCHDOG_MAX_SKEW. Later in c37e85c135ce ("clocksource: Loosen clocksource
-watchdog constraints"), the WATCHDOG_MAX_SKEW constant was increased to
-125 microseconds to fit the limit of NTP, which is able to use a
-clocksource that suffers from up to 500 microseconds of skew per second.
-Both the TSC and the HPET use default uncertainty_margin. When the
-readout interval gets stretched the default uncertainty_margin is no
-longer a suitable lower bound for evaluating skew - it imposes a limit
-that is far stricter than the skew with which NTP can deal.
-
-The root causes of the skew being directly proportinal to the length of
-the readout interval are:
-
-  * the inaccuracy of the shift/mult pairs of clocksources and the watchdog
-  * the conversion to nanoseconds is imprecise for large readout intervals
-
-Prevent this by skipping the current watchdog check if the readout
-interval exceeds 2 * WATCHDOG_INTERVAL. Considering the maximum readout
-interval of 2 * WATCHDOG_INTERVAL, the current default uncertainty margin
-(of the TSC and HPET) corresponds to a limit on clocksource skew of 250
-ppm (microseconds of skew per second).  To keep the limit imposed by NTP
-(500 microseconds of skew per second) for all possible readout intervals,
-the margins would have to be scaled so that the threshold value is
-proportional to the length of the actual readout interval.
-
-As for why the readout interval may get stretched: Since the watchdog is
-executed in softirq context the expiration of the watchdog timer can get
-severely delayed on account of a ksoftirqd thread not getting to run in a
-timely manner. Surely, a system with such belated softirq execution is not
-working well and the scheduling issue should be looked into but the
-clocksource watchdog should be able to deal with it accordingly.
-
-Fixes: 2e27e793e280 ("clocksource: Reduce clocksource-skew threshold")
-Suggested-by: Feng Tang <feng.tang@intel.com>
-Signed-off-by: Jiri Wiesner <jwiesner@suse.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Reviewed-by: Feng Tang <feng.tang@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240122172350.GA740@incl
+[1] commit d6e035aad6c0 ("md: bypass block throttle for superblock update")
+[2] commit bed9e27baf52 ("Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"")
 ---
- kernel/time/clocksource.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ drivers/md/raid5.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index c108ed8..3052b1f 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -99,6 +99,7 @@ static u64 suspend_start;
-  * Interval: 0.5sec.
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index 8497880135ee..2b2f03705990 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -36,6 +36,7 @@
   */
- #define WATCHDOG_INTERVAL (HZ >> 1)
-+#define WATCHDOG_INTERVAL_MAX_NS ((2 * WATCHDOG_INTERVAL) * (NSEC_PER_SEC / HZ))
  
- /*
-  * Threshold: 0.0312s, when doubled: 0.0625s.
-@@ -134,6 +135,7 @@ static DECLARE_WORK(watchdog_work, clocksource_watchdog_work);
- static DEFINE_SPINLOCK(watchdog_lock);
- static int watchdog_running;
- static atomic_t watchdog_reset_pending;
-+static int64_t watchdog_max_interval;
- 
- static inline void clocksource_watchdog_lock(unsigned long *flags)
- {
-@@ -399,8 +401,8 @@ static inline void clocksource_reset_watchdog(void)
- static void clocksource_watchdog(struct timer_list *unused)
- {
- 	u64 csnow, wdnow, cslast, wdlast, delta;
-+	int64_t wd_nsec, cs_nsec, interval;
- 	int next_cpu, reset_pending;
--	int64_t wd_nsec, cs_nsec;
- 	struct clocksource *cs;
- 	enum wd_read_status read_ret;
- 	unsigned long extra_wait = 0;
-@@ -470,6 +472,27 @@ static void clocksource_watchdog(struct timer_list *unused)
- 		if (atomic_read(&watchdog_reset_pending))
- 			continue;
- 
-+		/*
-+		 * The processing of timer softirqs can get delayed (usually
-+		 * on account of ksoftirqd not getting to run in a timely
-+		 * manner), which causes the watchdog interval to stretch.
-+		 * Skew detection may fail for longer watchdog intervals
-+		 * on account of fixed margins being used.
-+		 * Some clocksources, e.g. acpi_pm, cannot tolerate
-+		 * watchdog intervals longer than a few seconds.
-+		 */
-+		interval = max(cs_nsec, wd_nsec);
-+		if (unlikely(interval > WATCHDOG_INTERVAL_MAX_NS)) {
-+			if (system_state > SYSTEM_SCHEDULING &&
-+			    interval > 2 * watchdog_max_interval) {
-+				watchdog_max_interval = interval;
-+				pr_warn("Long readout interval, skipping watchdog check: cs_nsec: %lld wd_nsec: %lld\n",
-+					cs_nsec, wd_nsec);
-+			}
-+			watchdog_timer.expires = jiffies;
-+			continue;
-+		}
+ #include <linux/blkdev.h>
++#include <linux/delay.h>
+ #include <linux/kthread.h>
+ #include <linux/raid/pq.h>
+ #include <linux/async_tx.h>
+@@ -6773,7 +6774,18 @@ static void raid5d(struct md_thread *thread)
+ 			spin_unlock_irq(&conf->device_lock);
+ 			md_check_recovery(mddev);
+ 			spin_lock_irq(&conf->device_lock);
 +
- 		/* Check the deviation from the watchdog clocksource. */
- 		md = cs->uncertainty_margin + watchdog->uncertainty_margin;
- 		if (abs(cs_nsec - wd_nsec) > md) {
++			/*
++			 * Waiting on MD_SB_CHANGE_PENDING below may deadlock
++			 * seeing md_check_recovery() is needed to clear
++			 * the flag when using mdmon.
++			 */
++			continue;
+ 		}
++
++		wait_event_lock_irq(mddev->sb_wait,
++			!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags),
++			conf->device_lock);
+ 	}
+ 	pr_debug("%d stripes handled\n", handled);
+ 
+-- 
+2.34.1
+
 
