@@ -1,108 +1,120 @@
-Return-Path: <stable+bounces-15774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E47F83BC55
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:52:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A8683BC52
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:51:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B10A51C25C38
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 08:51:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83DCF28AC23
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 08:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF511B951;
-	Thu, 25 Jan 2024 08:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2BC1B959;
+	Thu, 25 Jan 2024 08:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="TzrJfaTZ"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e9byiWQk"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDC61B943;
-	Thu, 25 Jan 2024 08:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70571805A
+	for <stable@vger.kernel.org>; Thu, 25 Jan 2024 08:51:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706172714; cv=none; b=OIYrkwtuTJmsZ3eCoisU3vxhBRwdAObLjH3H/rX+7fj3bx5lHkCCO/69R+nKMd60NM0X8WldVMqYtTm7mhrjM0z3o1vvvrrMfQbB5hANb3A0+/IOkcfGQ7k2sIvMwGlBJvCZUAL9AidqJKSz2bu98jAIZ5i1vCynrqEj3qv5H58=
+	t=1706172692; cv=none; b=NaYtn5qHS1LtwEdqqacRwMMwKqWZ439BXxWiRS8o+YgvLiA7SAfUpyVnkUWTeT9EACWBELc1KarXbXYT9KOV/mwP1VMWR7Sx3wgFfvkOpX2Nr8KWqOXXRJY9KCxBp1oFxCx5l29h5gUL44rAhEyF2dlPxTfOZyApU9IkhYkCYwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706172714; c=relaxed/simple;
-	bh=7PCQSSn9qQi0UDs0EZ6lPNb92aGeRUr/+gsVqO3dGHg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MWSQ3isRpHFRjOpjSvS09Z+WNHyNZc4S/V+k80l1e8khw4OdThMLse21Q0fZHej3A9eHz1DDfVIzWE96UWzX/30mqJ4e2jfIQedhF7WxCb3Em0XIAxl+jk3RT+RUW8d/vUnRSS2AVuJ25aWpFVu6oRZlgJxrUHQWWwLfZh8v/wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=TzrJfaTZ; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=JD9SLA41zLmXEitLPQ1L3S0RBoSKdOW+bAptf63pn0c=; t=1706172711; x=1707382311; 
-	b=TzrJfaTZwI/NwJopZCcMTtn3xcTbWpafCr23X/v2Ng07G5ypcnZAUF9dRE7bofi4c9GQY+Y00cC
-	68JrFqG4pbmWelzfU1PewJEKw+hPDHYgfKxMxNc2cex+P43FiI1uc3Ewy3O44lZpIIcKji0RR6ZWf
-	Ag07DpQz+rffRCttKL2nSOwJ5542cwhUadCWskqJn1PbkrMkLsSsu4P0iggxkvH7jnTAyWhku9j+u
-	aootUI1GVOkjP/JPCg6tapYL+5+GwtkXjAd1cBnzHMduJEyO0YLK2+4Dzwjx1PJ7DdalVc/Gsz1yV
-	Z/9QnQfwJjGFvBzcKC6su14JSdoPVTIPC3Bg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rSvSY-0000000HKuJ-0xOq;
-	Thu, 25 Jan 2024 09:51:42 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Jouni Malinen <j@w1.fi>,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: cfg80211: fix wiphy delayed work queueing
-Date: Thu, 25 Jan 2024 09:51:09 +0100
-Message-ID: <20240125095108.2feb0eaaa446.I4617f3210ed0e7f252290d5970dac6a876aa595b@changeid>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1706172692; c=relaxed/simple;
+	bh=Y+lLAx83cNHZs5vINYxx2KNx2W2cYGODV6Ig6vdN0D8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MRW0OwmFGhHiMR1DJvTr7DHBGMC3F4PbrRt3Kf56vFxvOMAM7CfTlwt1LE9lfhmMRF23+Tk456Y3osw8ba7B66EQgnMEb6FGprXRPMInfO4Zr9+LW1QGDLjhVvJNYc5+5nVYIkLP8E1JUWAHwLwlf+5GbPRdB+J/LbtLRruyZdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e9byiWQk; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--yosryahmed.bounces.google.com
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc27ca34844so7222217276.0
+        for <stable@vger.kernel.org>; Thu, 25 Jan 2024 00:51:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706172690; x=1706777490; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RohIgLrjWVqbBH18OwPUPby673o+oBFFq7JGaEpXbpE=;
+        b=e9byiWQkS9FUVW9mHOgG4TUba3aHGxnQ8En6rnbzEmr79BL5BGV6Tue852JHoeCMrp
+         mEnPoIfGPs9K2Zqf0IRRLi7sA+wf1y6/ImdZ2EqKmviBCJnwMKh5vKPFlsv0oIxjxpdK
+         nMEHytZi7pH3AmCP1mgfw3XcDBI4Sru1GFEsKvYQNq3Td8uxRYnD3uYOpdzJxwn/T4Z2
+         iL/P0DCOeZ2qwy+GSMFS6BwtB8RnHq3lo9//R4vLHRdKpvtzxUbsr3TQLx1hVc5PaW3m
+         nxLyvsgJzjl71AWPf0Do2gNcd7Zy6BbE2WhiwilIJAp19wvApH7dKoBVPzMS86dXQnYx
+         CWiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706172690; x=1706777490;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RohIgLrjWVqbBH18OwPUPby673o+oBFFq7JGaEpXbpE=;
+        b=cVVtyu7/Gy0/BrFLai5mokkg9QXfYgW6Kh2ziDH8+S/5ME0xb7AD+lGLv+UmZNzEAg
+         rolpzRJZ/91fqbQjtPlu7ItQv24p1CZeMPw64OaUte/F0A6lDYlxkO3rXvYj7Gho4ND5
+         FTKTdcgUBv6ZDYBlA6xo0tYh4FpsYHZSXUwKukJFs3fmjIXuQhBrwd04AgrM7ci25WiY
+         xNFYamao6zmQe+fU7vJC53QqyeacG7SnGJGm0+5exMBUaukWkpk5HYF+539cLK76Q1Or
+         yPs1ro2PB8GUHvrJCKJfM62vhJoF+kFxh0yG5Ji9j0ZVRA/b2o+PojDQ5IytyWgdAx36
+         Z5KA==
+X-Gm-Message-State: AOJu0YzHA2cbkv4DhM6QHGfKDz/BJj/TcA7/pnAspKeSsxGG6PVt1ca4
+	qY7/uQmgaaSWUgreDSKbAYqE89A3bsOH1xNK+kExxrv2lVpa60A6G9uZVWZAEM43dhNn83lyVVB
+	H4apvRu7uvAuy2ksrGw==
+X-Google-Smtp-Source: AGHT+IG1/Hsqz9ICsfnUgUMjxMtXfDta6xfbiPArXWACl8gSYY8PEXXbSOk7GppsayLhkPPaDAta+w1h4X+ApK3c
+X-Received: from yosry.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:29b4])
+ (user=yosryahmed job=sendgmr) by 2002:a05:6902:1b8c:b0:dc2:57c9:b462 with
+ SMTP id ei12-20020a0569021b8c00b00dc257c9b462mr67730ybb.9.1706172690108; Thu,
+ 25 Jan 2024 00:51:30 -0800 (PST)
+Date: Thu, 25 Jan 2024 08:51:27 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
+Message-ID: <20240125085127.1327013-1-yosryahmed@google.com>
+Subject: [PATCH] mm: zswap: fix missing folio cleanup in writeback race path
+From: Yosry Ahmed <yosryahmed@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <zhouchengming@bytedance.com>, 
+	Domenico Cerasuolo <cerasuolodomenico@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Yosry Ahmed <yosryahmed@google.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Johannes Berg <johannes.berg@intel.com>
+In zswap_writeback_entry(), after we get a folio from
+__read_swap_cache_async(), we grab the tree lock again to check that the
+swap entry was not invalidated and recycled. If it was, we delete the
+folio we just added to the swap cache and exit.
 
-When a wiphy work is queued with timer, and then again
-without a delay, it's started immediately but *also*
-started again after the timer expires. This can lead,
-for example, to warnings in mac80211's offchannel code
-as reported by Jouni. Running the same work twice isn't
-expected, of course. Fix this by deleting the timer at
-this point, when queuing immediately due to delay=0.
+However, __read_swap_cache_async() returns the folio locked when it is
+newly allocated, which is always true for this path, and the folio is
+ref'd. Make sure to unlock and put the folio before returning.
 
-Reported-by: Jouni Malinen <j@w1.fi>
+This was discovered by code inspection, probably because this path
+handles a race condition that should not happen often, and the bug would
+not crash the system, it will only strand the folio indefinitely.
+
+Fixes: 04fc7816089c ("mm: fix zswap writeback race condition")
 Cc: stable@vger.kernel.org
-Fixes: a3ee4dc84c4e ("wifi: cfg80211: add a work abstraction with special semantics")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
 ---
- net/wireless/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/zswap.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 409d74c57ca0..3fb1b637352a 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -5,7 +5,7 @@
-  * Copyright 2006-2010		Johannes Berg <johannes@sipsolutions.net>
-  * Copyright 2013-2014  Intel Mobile Communications GmbH
-  * Copyright 2015-2017	Intel Deutschland GmbH
-- * Copyright (C) 2018-2023 Intel Corporation
-+ * Copyright (C) 2018-2024 Intel Corporation
-  */
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-@@ -1661,6 +1661,7 @@ void wiphy_delayed_work_queue(struct wiphy *wiphy,
- 			      unsigned long delay)
- {
- 	if (!delay) {
-+		del_timer(&dwork->timer);
- 		wiphy_work_queue(wiphy, &dwork->work);
- 		return;
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 8f4a7efc2bdae..00e90b9b5417d 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1448,6 +1448,8 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+ 	if (zswap_rb_search(&tree->rbroot, swp_offset(entry->swpentry)) != entry) {
+ 		spin_unlock(&tree->lock);
+ 		delete_from_swap_cache(folio);
++		folio_unlock(folio);
++		folio_put(folio);
+ 		return -ENOMEM;
  	}
+ 	spin_unlock(&tree->lock);
 -- 
-2.43.0
+2.43.0.429.g432eaa2c6b-goog
 
 
