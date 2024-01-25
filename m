@@ -1,113 +1,111 @@
-Return-Path: <stable+bounces-15787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B0E83BE06
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 10:54:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2908C83BE22
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 10:59:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D84461F24BEE
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:54:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C76CF2833E8
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4824B1C6AF;
-	Thu, 25 Jan 2024 09:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549BB1C6AE;
+	Thu, 25 Jan 2024 09:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="KRrMtcPM"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ayPiKa1V"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614611BF33;
-	Thu, 25 Jan 2024 09:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68B51C69E
+	for <stable@vger.kernel.org>; Thu, 25 Jan 2024 09:59:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706176415; cv=none; b=IlCjbgNvwEDNyFejH/2rBq6fkF1oZQbNBBPVxcukUgfQj/+lHTBjrrkEH60GX3V+IwRcI2qoxSa/93BzRArX+4qusdB6wCr+jW09clHAxMLXl1WNliD3RRwg0iZPc+C6sIBc6E0iPFa8Y1sok7y3s2CWTI0R93NtIZvc/Aju6Nw=
+	t=1706176743; cv=none; b=NKTC/2rIVvz/XKBiy716Ym4v6NQRFBeh4xjB+FTrOuZF8ekOxIGZC/HYuftlGmlb8A+qNGXSspbrDqmVsk74WnErwJqr69+Q6OGAlLMgk+xF2IaAfwhTsNH/j7qym8QdNOdseTtjtA9QlT/FLGDL+V9aEZ2SRnjkWzgZjDZtOdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706176415; c=relaxed/simple;
-	bh=MOQWUs4LfrqyBim3cdZJiOlBAObGGDGpzuE1pIY1Gwg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JtRk/8T67nRMUOc6HOO8g/F3m/4Nwzkh4xZkpQ/2xOFE01rivhKw5NjxVNjR62wI+fYc1BDYb25IBNE+uKxY2qoUHfxwxQ3zL6t6LKg1khMQdpY2Pc67CFc5XrOK+UB2BHEkKJKL2P5mS09XnM7FaikUVZQUWoZNwiZwMYpIQcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=KRrMtcPM; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from localhost.ispras.ru (unknown [10.10.165.6])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 755C04076731;
-	Thu, 25 Jan 2024 09:53:23 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 755C04076731
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1706176403;
-	bh=KQrR+5BkSPmu/kRG4OwqNQfdmbL9yFyULUlnEV6F95k=;
-	h=From:To:Cc:Subject:Date:From;
-	b=KRrMtcPMC+9jDKT+AIn/r5Lj8MaJLvhTzsrcsyy3xGxnr7uDd+F9aRmE1BdU0jfE2
-	 AAfNyzDjwRfyNf9T6Kx+iqsaazo712CpMtE8/9mEp8tKVgNpjuZU0HBhneWS7q+l0E
-	 o2bP+OZ8QbLRtOmmzA9sT/4Go1hKPCX2hzTOvaRw=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jeremy Cline <jeremy@jcline.org>,
-	Simon Horman <horms@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Ilan Elias <ilane@ti.com>,
-	"John W. Linville" <linville@tuxdriver.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org,
-	syzbot+6b7c68d9c21e4ee4251b@syzkaller.appspotmail.com
-Subject: [PATCH net] nfc: nci: free rx_data_reassembly skb on NCI device cleanup
-Date: Thu, 25 Jan 2024 12:53:09 +0300
-Message-ID: <20240125095310.15738-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1706176743; c=relaxed/simple;
+	bh=WKpvg0X+iL12WtuMds4/SdTYP/Rq0wCzwew5aiXY4jM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X8UdVPHdESkgHQL8aDhZInivaz3BFrUBfXM8gLSlNYab4ZWDHU2Gnr+5+Xs1T5WOOJ0SVvkIu4AB/f/vixYy+RqFyDhv3LBgoG6QlNeIJh1dTc5lFr8boKCIF9trEPfCAhxm0SgQjBLx5k3Ln2/B34sdgASX3iTA3wZINoVF1Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ayPiKa1V; arc=none smtp.client-ip=209.85.219.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6818a9fe380so38546796d6.2
+        for <stable@vger.kernel.org>; Thu, 25 Jan 2024 01:59:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706176740; x=1706781540; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=79PYbjK8bosV8v03uRxryBv/M1N0jqOVv+qRTvu/Lno=;
+        b=ayPiKa1V9dKP6lRTLAZxRV4ljG22qpiUX3TjTSajZFcvf/0skpB5IAxbxFvBt0oWoA
+         gW7bEcl682Xm4FXztOLFtpJGo1HfbBx52YT0cvYFJPyzZaZfZaIjkaJ/DGudMPeuF0ee
+         BNrqR+xng1TlqL+cfAS81OvSs1KsaMJtvFKXYJUHRHoh5fkn7epeL1G/PH3sFtqfcC+s
+         7Q9w9H89EMxLGlbml27qX21Dfc00yHu+j5/JLQthrui8itozHSCxpmJQaRj+4wLgtIWH
+         hmVQL+1GAr/E+zq/RLIje03Qnw+VvivPB5T3KAMDtjqTEOOFNeyO15QZy/EAjAgX4tbL
+         UsHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706176740; x=1706781540;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=79PYbjK8bosV8v03uRxryBv/M1N0jqOVv+qRTvu/Lno=;
+        b=f/en8FR4XPDpk1svgaRtCxao4lsZylH0BLCfY+KM9TO2MxOxee7rOoFZ+5/krlnaIn
+         TyFJA7++arHKpuWaYDcTX1u/GCgLggZydlYZcnEgInTupbwFC6DimrYF94Rd9YK+3qpp
+         tgl1AXxhF7XEzZZXhGxThE1LqS9NpbkaJVmGSB7vK0CCsAZPMNzcpjY920PEATjdZf4B
+         nOJFB9GEw9nrManUANj7WsRdxMk4jVCrcHoPhiq9neFazGFDWVWsUx4BGCCCUHRVUKfR
+         InM/hc4MQRx+kFgyksAno86sy18R+9n9AgisVvrXL9/Q213h35tIqaObbu0qlFrJoiUY
+         Gqmg==
+X-Gm-Message-State: AOJu0YzMHyLOtKAbu1sxkx6p3hy1f6O/Hq8N3M00E3+GEmaNPgkKSU9L
+	9zldMdaHujpFCn9aHd26OPij6b8Ok5DF5UowL8WOTgz7A+fjuIzL4WPPGnKJRJk=
+X-Google-Smtp-Source: AGHT+IFX+WJUjKVyMoF7VIqz7lwHkgo+xeYgCH/keHCQa06QjpPB++UCo/heJp7KdhTg47KNUQpu+A==
+X-Received: by 2002:a05:6214:d65:b0:683:6621:c006 with SMTP id 5-20020a0562140d6500b006836621c006mr828558qvs.81.1706176740540;
+        Thu, 25 Jan 2024 01:59:00 -0800 (PST)
+Received: from [172.30.205.155] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
+        by smtp.gmail.com with ESMTPSA id qm17-20020a056214569100b006879b82e6f0sm375625qvb.38.2024.01.25.01.58.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Jan 2024 01:59:00 -0800 (PST)
+Message-ID: <91c047da-aff7-4e31-9fd8-ef4c3ffef27f@linaro.org>
+Date: Thu, 25 Jan 2024 10:58:55 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-rx_data_reassembly skb is stored during NCI data exchange for processing
-fragmented packets. It is dropped only when the last fragment is processed
-or when an NTF packet with NCI_OP_RF_DEACTIVATE_NTF opcode is received.
-However, the NCI device may be deallocated before that which leads to skb
-leak.
-
-As by design the rx_data_reassembly skb is bound to the NCI device and
-nothing prevents the device to be freed before the skb is processed in
-some way and cleaned, free it on the NCI device cleanup.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] arm64: dts: qcom: sm8550-qrd: correct WCD9385 TX port
+ mapping
+Content-Language: en-US
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-arm-msm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+6b7c68d9c21e4ee4251b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/000000000000f43987060043da7b@google.com/
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- net/nfc/nci/core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+References: <20240124164505.293202-1-krzysztof.kozlowski@linaro.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20240124164505.293202-1-krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 97348cedb16b..cdad47b140fa 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -1208,6 +1208,10 @@ void nci_free_device(struct nci_dev *ndev)
- {
- 	nfc_free_device(ndev->nfc_dev);
- 	nci_hci_deallocate(ndev);
-+
-+	/* drop partial rx data packet if present */
-+	if (ndev->rx_data_reassembly)
-+		kfree_skb(ndev->rx_data_reassembly);
- 	kfree(ndev);
- }
- EXPORT_SYMBOL(nci_free_device);
--- 
-2.43.0
 
+
+On 1/24/24 17:45, Krzysztof Kozlowski wrote:
+> WCD9385 audio codec TX port mapping was copied form HDK8450, but in fact
+> it is offset by one.  Correct it to fix recording via analogue
+> microphones.
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: 83fae950c992 ("arm64: dts: qcom: sm8550-qrd: add WCD9385 audio-codec")
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+
+That matches what I believe to be the corresponding part in the DT!
+
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+
+Konrad
 
