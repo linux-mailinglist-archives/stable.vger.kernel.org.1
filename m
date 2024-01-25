@@ -1,139 +1,186 @@
-Return-Path: <stable+bounces-15776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 813A083BC6E
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:58:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B10083BCB2
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 10:05:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF0FDB26634
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 08:58:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C04DA1F2CC47
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBB01B95F;
-	Thu, 25 Jan 2024 08:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1FE1BC23;
+	Thu, 25 Jan 2024 08:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jKrMpwSS";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="73zPb6ER"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mE8glqlZ"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6721B1BC26;
-	Thu, 25 Jan 2024 08:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A5845C1B
+	for <stable@vger.kernel.org>; Thu, 25 Jan 2024 08:59:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706173092; cv=none; b=Gi0Imwp+jaipQfApLLkg83B3B4wFnw6XB+yv5BHktziTGb5e4NvgbTzSkf8E7n10koxS8pwJNUlLnlHOEq4ha8+9LW40xRa/Pm7rzGQ1b1H1F4WuaWn0Dj+469KShVHSJLL/0Wu4jTD+2zzZdAtkBeM+UAQBYSLzgoYV9zT+wQM=
+	t=1706173164; cv=none; b=cUCL1pJnGneT1uuKqQcIldIENWVQpGG3ql4cRNoBg7SgAQhz5qFjiuCaHBcJApY9Ne7BM7goEZE1qNh8fDeqHTrTcn5F/OIfyciOd45R8gZ50bg0V+EOs25AjAfzrryaHEMKTD7tIANT8r96DjzkpAzONrG8mSXI6TwvlwmmC/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706173092; c=relaxed/simple;
-	bh=9W0rHMo1PmIbSLpl2yzt5yWUJKRIEZKegqCU/kJoaDM=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=DcpTx6qaSV8DJ4zC95KfJCr0to2b9iUASsY8+ZGyYNz1jVgQvPElB98NnrWez4Taqgs6m8p80krKHDNSAmZKU2BOVlvSg/MM6tHYwB4Ty3a6cq9/8nwttU9aaTJ2gtMTx7su9t0CbSEN6b8RhJOkvOH/L5eezsn/F1UQN4xdEYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jKrMpwSS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=73zPb6ER; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 25 Jan 2024 08:58:08 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706173089;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WObzDTHXTDPa3dmfW8P5dQHGpAZC4IP5d5HH0veMj0U=;
-	b=jKrMpwSS0vJ+enxX/UUdSXvZofeoh25ExNB30G4Gh0m29UyfX6Q5gghqGaSjrkomtLd5qp
-	DCyKtaFJmwGKBeyQD5KD4rBbwok5ARPbVaJb3jG1JHUVkT2DOl/yN5+UsKfo6h+aErEReb
-	hySSvzXGi8Ul0I3yQ689TEx6vRSpXoY2IGe58FZcRbbKDI06w/jdtfPJEEuvajj9HoG7bP
-	hMnT50J1iA9ltXVQmwpM3ecd6z7pX97USGZO4OByOm9kUOs/8veBNK3WT06tFvuCTxWwcO
-	KuEdIp1KMmc2hAVymLBwywK2uO0iNfo3h8gqV59Ij5jBosyvtcnM5kld1HlBFQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706173089;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WObzDTHXTDPa3dmfW8P5dQHGpAZC4IP5d5HH0veMj0U=;
-	b=73zPb6ERvA0LkZs/xmqJ61qIAudzbirFxV2ZgrnG4t39t2TZhOnApLSX4krcFxOkNGcWZr
-	FUx7VlfUDuSnpJDg==
-From: "tip-bot2 for Tim Chen" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] tick/sched: Preserve number of idle sleeps
- across CPU hotplug events
-Cc: Tim Chen <tim.c.chen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240122233534.3094238-1-tim.c.chen@linux.intel.com>
-References: <20240122233534.3094238-1-tim.c.chen@linux.intel.com>
+	s=arc-20240116; t=1706173164; c=relaxed/simple;
+	bh=tlx2ckEz/OH8ARX5IfGa/yGe/4FJ1kSmrm3PuJXNAFk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KHIC0yAx0FWtcg+ZmRKlav29LBQFD9rqWy5skMMsPAn6dL+OEBXs0RkwiWXRR1gPeb5dANCxneklpkfmz2XNOB/cif04gwdfcMPiodHUnzrqcG4zKvVV/A2GGaa7QUKxVRMOQ4FE8yT/RqPQQlxwev2Y0dqlC/Jl1wv6ANWAw0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mE8glqlZ; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a31713c8bdbso40783866b.2
+        for <stable@vger.kernel.org>; Thu, 25 Jan 2024 00:59:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706173160; x=1706777960; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5p74A015/6G4sVWav+jkCsMA3W4osbHKdYXmaTePMgI=;
+        b=mE8glqlZF15PXnpqJpCKDRvzS4Z0xFbF5XKwObCqNXtx3Or86HiyFDOFAv8661VmDN
+         eYu0bjipW9PYB/rb8iEYF2L8/b400FpZQoTw7p4qvMak8u31VxzRQeoITdwcT4WTLK3P
+         8mdc1JvHKdeRqI2QC3tcApO0lTEJerwDkRfTP/R0cM+VJucHVcpTanwqYrZSTuIPOlVr
+         dVoohFBE20QZbaE4hemi0wtkiaLX8I+Tv8GbHfnDLxKBl9C9aQGKtrGwOTQlHO/0LqFq
+         Tt4b1BHHDGtuMH5Q5tdH4zmnsNj1RzgzSF9Aaf67AWKep6Ygy4Qxho7xJk4obTPzwD2t
+         IwJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706173160; x=1706777960;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5p74A015/6G4sVWav+jkCsMA3W4osbHKdYXmaTePMgI=;
+        b=B4GsAlDJnOPkGocOD2GaSCaAn6TiFcxSDv9FEPsOsKKSWh+2HGM+/K8Xo2Rc6M0hf6
+         qxngZI4vPvlL3BK8vBZACU8IQUHJlbike8Jku3+gPYoNbOivZH7vjO2JlJqdmplh53ot
+         1LHESnlEVM5tTUBmUlyFYBDxyszfwEI4YfR+JVjH8JR2cxQA3vECcja2N48u+/JemIrR
+         zm0SOXjJ1S9gSJCvv4Bf5cWzvQXySrMLkOkM7KCapgO1tg/uzpCvkcAjlwGPDTvPY9/L
+         qlJz1jpFk8uRvOqq+btpyuRyloonwakWfF9EftmDcqRQjiKmZ0EuYjSWK5g8NbHAz+ez
+         CUDg==
+X-Gm-Message-State: AOJu0YxB0leYPcIqRsM+U6tePNhaF1mykaG3wNJWoOnMUt4G/AgJm684
+	bZikV8MEGq3K9CiIpTbiiD9DJPaJpmXRpDrwP1MAW33mOwR5Dzaz020FSY4P3Ec=
+X-Google-Smtp-Source: AGHT+IGqKUDCk+I6oMdp9KhcBiJXA3dZrcl4Po5aSnDqvlSXnfafDFROcN2I8d5qV12NRki7/mtQnQ==
+X-Received: by 2002:a17:906:890a:b0:a26:edeb:7635 with SMTP id fr10-20020a170906890a00b00a26edeb7635mr250672ejc.91.1706173160396;
+        Thu, 25 Jan 2024 00:59:20 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.215.66])
+        by smtp.gmail.com with ESMTPSA id gv21-20020a170906f11500b00a28a66028bcsm794592ejb.91.2024.01.25.00.59.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Jan 2024 00:59:19 -0800 (PST)
+Message-ID: <a3d24e7d-404e-4c02-99a2-8838ee7028c9@linaro.org>
+Date: Thu, 25 Jan 2024 09:59:19 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170617308836.398.11235504689824871790.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] gpiolib: add gpiod_to_gpio_device() stub for !GPIOLIB
+Content-Language: en-US
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Peter Rosin <peda@axentia.se>,
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Philipp Zabel <p.zabel@pengutronix.de>
+References: <20240125081601.118051-1-krzysztof.kozlowski@linaro.org>
+ <CAMRc=MesG1nYSxx0osmQEEXCvs-6B4s4=TFYW5wD8pOXpV+OcQ@mail.gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <CAMRc=MesG1nYSxx0osmQEEXCvs-6B4s4=TFYW5wD8pOXpV+OcQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the timers/urgent branch of tip:
+On 25/01/2024 09:36, Bartosz Golaszewski wrote:
+> On Thu, Jan 25, 2024 at 9:16 AM Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org> wrote:
+>>
+>> Add empty stub of gpiod_to_gpio_device() when GPIOLIB is not enabled.
+>>
+>> Cc: <stable@vger.kernel.org>
+>> Fixes: 370232d096e3 ("gpiolib: provide gpiod_to_gpio_device()")
+>> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>>
+>> ---
+>>
+>> Cc: Philipp Zabel <p.zabel@pengutronix.de>
+>> ---
+>>  include/linux/gpio/driver.h | 6 ++++++
+>>  1 file changed, 6 insertions(+)
+>>
+>> diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
+>> index 9a5c6c76e653..012797e7106d 100644
+>> --- a/include/linux/gpio/driver.h
+>> +++ b/include/linux/gpio/driver.h
+>> @@ -819,6 +819,12 @@ static inline struct gpio_chip *gpiod_to_chip(const struct gpio_desc *desc)
+>>         return ERR_PTR(-ENODEV);
+>>  }
+>>
+>> +static inline struct gpio_device *gpiod_to_gpio_device(struct gpio_desc *desc)
+>> +{
+>> +       WARN_ON(1);
+>> +       return ERR_PTR(-ENODEV);
+>> +}
+>> +
+>>  static inline int gpiochip_lock_as_irq(struct gpio_chip *gc,
+>>                                        unsigned int offset)
+>>  {
+>> --
+>> 2.34.1
+>>
+> 
+> Why is this needed? Users of gpio/driver.h should select GPIOLIB.
 
-Commit-ID:     9a574ea9069be30b835a3da772c039993c43369b
-Gitweb:        https://git.kernel.org/tip/9a574ea9069be30b835a3da772c039993c43369b
-Author:        Tim Chen <tim.c.chen@linux.intel.com>
-AuthorDate:    Mon, 22 Jan 2024 15:35:34 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 25 Jan 2024 09:52:40 +01:00
+The third patch shows you the user which will not select GPIOLIB. Why?
+Because there is no hard dependency between one core framework (RESET)
+on other core framework (GPIOLIB).
 
-tick/sched: Preserve number of idle sleeps across CPU hotplug events
+The first two patches are added for the same purpose, even though there
+is no need currently.
 
-Commit 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs
-CPU hotplug") preserved total idle sleep time and iowait sleeptime across
-CPU hotplug events.
 
-Similar reasoning applies to the number of idle calls and idle sleeps to
-get the proper average of sleep time per idle invocation.
+Best regards,
+Krzysztof
 
-Preserve those fields too.
-
-Fixes: 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs CPU hotplug")
-Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240122233534.3094238-1-tim.c.chen@linux.intel.com
----
- kernel/time/tick-sched.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index d250167..01fb50c 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -1577,6 +1577,7 @@ void tick_cancel_sched_timer(int cpu)
- {
- 	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
- 	ktime_t idle_sleeptime, iowait_sleeptime;
-+	unsigned long idle_calls, idle_sleeps;
- 
- # ifdef CONFIG_HIGH_RES_TIMERS
- 	if (ts->sched_timer.base)
-@@ -1585,9 +1586,13 @@ void tick_cancel_sched_timer(int cpu)
- 
- 	idle_sleeptime = ts->idle_sleeptime;
- 	iowait_sleeptime = ts->iowait_sleeptime;
-+	idle_calls = ts->idle_calls;
-+	idle_sleeps = ts->idle_sleeps;
- 	memset(ts, 0, sizeof(*ts));
- 	ts->idle_sleeptime = idle_sleeptime;
- 	ts->iowait_sleeptime = iowait_sleeptime;
-+	ts->idle_calls = idle_calls;
-+	ts->idle_sleeps = idle_sleeps;
- }
- #endif
- 
 
