@@ -1,86 +1,115 @@
-Return-Path: <stable+bounces-15794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B0483C0A2
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 12:18:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 408CB83C104
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 12:38:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D489C1F227EE
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 11:18:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6AF51F25FF4
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 11:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E35B2C699;
-	Thu, 25 Jan 2024 11:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C31848790;
+	Thu, 25 Jan 2024 11:34:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A0D41742;
-	Thu, 25 Jan 2024 11:17:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from hi1smtp01.de.adit-jv.com (smtp1.de.adit-jv.com [93.241.18.167])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBE951017;
+	Thu, 25 Jan 2024 11:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.241.18.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706181467; cv=none; b=UBKqLbbwndGAubcjzYO1CxsPO+5jKjqkam9lV+qoY6/u+DZBOeelE2r+3iipJRdZGpMY84o6IPSpERG4rN1BMtCUAotmqhxW7gq70VnT6vNUKSwu/eUaDYcAJZEUmk0xQ3aHOnCBm9lEQyg4XJswnUhW+YqqvdDR9XidzogdHxE=
+	t=1706182444; cv=none; b=ZMVPd09dyY1i1nwgCGptz5gZRKDUUf+ZIwqAZStSiSDriAWmAKoleukHK+mqTJyyHFqmmQNmCpUn6QecjQwq0jjg8u/uJ59bWeU3YAmeg5ihgMqifwtaCfATYbszgWYNm/P4UhmrN/yG6fll3ykAtLH7/O+OmXF9bnA4LNrXrpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706181467; c=relaxed/simple;
-	bh=igm/h/zmoLbXL5iWQEwPa7zebeNK6VDp4ngPTNMXweg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bk6kbY7G+rV58AV0wE1z3LlhT3TRcVK0oW+gt6LIg0PHwej0AS6Kwlzn45IDjU3mzZ06blqS8LSK4eIjyW/PNDLYhbyzDk7EGxFrpFP0EctwX3HKyXifaTAJX7QMKYMqkMAKac7Zs4eXAj0o/Rjaz4lQvZHZbjATWoEN4ewMDXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6DC181477;
-	Thu, 25 Jan 2024 03:18:29 -0800 (PST)
-Received: from bogus (unknown [10.57.78.12])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3D7673F73F;
-	Thu, 25 Jan 2024 03:17:41 -0800 (PST)
-Date: Thu, 25 Jan 2024 11:17:38 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Cc: x86@kernel.org, Andreas Herrmann <aherrmann@suse.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chen Yu <yu.c.chen@intel.com>, Len Brown <len.brown@intel.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Radu Rendec <rrendec@redhat.com>,
-	Pierre Gondois <Pierre.Gondois@arm.com>, Pu Wen <puwen@hygon.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Will Deacon <will@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
-	Huang Ying <ying.huang@intel.com>,
-	"Ravi V. Shankar" <ravi.v.shankar@intel.com>,
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 0/4] x86/cacheinfo: Set the number of leaves per CPU
-Message-ID: <20240125111738.4otb55z2pj7ddtpk@bogus>
-References: <20231212222519.12834-1-ricardo.neri-calderon@linux.intel.com>
- <20240125025652.GA15039@ranerica-svr.sc.intel.com>
+	s=arc-20240116; t=1706182444; c=relaxed/simple;
+	bh=9Osbi+VQBj6QAYWxlXkNyCZikozOnWLhTODvYvHK42g=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C8c1FHaEaC2xyaqMvB0cYqkKrUEBBH36QikNeBAfXFtg4opnSDspkmIv+kB4t4QvvxnbNOWIllZZp/gOuaWyYJ3mj1ikhRBF1wCQ96qRUKmMktwZpDH+rLV4j9Nb20fp50DdhQvgMwoqJR5GxnaBRpKo9IzLRTirkU4oie11czU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=de.adit-jv.com; spf=pass smtp.mailfrom=de.adit-jv.com; arc=none smtp.client-ip=93.241.18.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=de.adit-jv.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.adit-jv.com
+Received: from hi2exch02.adit-jv.com (hi2exch02.adit-jv.com [10.72.92.28])
+	by hi1smtp01.de.adit-jv.com (Postfix) with ESMTP id 912E15200F2;
+	Thu, 25 Jan 2024 12:33:58 +0100 (CET)
+Received: from lxhi-087 (10.72.93.211) by hi2exch02.adit-jv.com (10.72.92.28)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 25 Jan
+ 2024 12:33:58 +0100
+Date: Thu, 25 Jan 2024 12:33:54 +0100
+From: Eugeniu Rosca <erosca@de.adit-jv.com>
+To: Filipe Manana <fdmanana@kernel.org>, Qu Wenruo <wqu@suse.com>
+CC: <linux-btrfs@vger.kernel.org>, Filipe Manana <fdmanana@suse.com>, Rob
+ Landley <rob@landley.net>, <stable@vger.kernel.org>, David Sterba
+	<dsterba@suse.com>, <Maksim.Paimushkin@se.bosch.com>,
+	<Eugeniu.Rosca@bosch.com>, <erosca@de.adit-jv.com>, Eugeniu Rosca
+	<roscaeugeniu@gmail.com>
+Subject: Re: [PATCH v2] btrfs: fix infinite directory reads
+Message-ID: <20240125113354.GA2629056@lxhi-087>
+References: <1ae6e30a71112e07c727f9e93ff32032051bbce7.1706176168.git.wqu@suse.com>
+ <CAL3q7H77i3kv7C352k2R6nr-m-cgh_cdCCeTkXna+v1yjpMuoA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <20240125025652.GA15039@ranerica-svr.sc.intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL3q7H77i3kv7C352k2R6nr-m-cgh_cdCCeTkXna+v1yjpMuoA@mail.gmail.com>
+X-ClientProxiedBy: hi2exch02.adit-jv.com (10.72.92.28) To
+ hi2exch02.adit-jv.com (10.72.92.28)
 
-On Wed, Jan 24, 2024 at 06:56:52PM -0800, Ricardo Neri wrote:
-> On Tue, Dec 12, 2023 at 02:25:15PM -0800, Ricardo Neri wrote:
-> > Hi,
-> > 
-> > The interface /sys/devices/system/cpu/cpuX/cache is broken (not populated)
-> > if CPUs have different numbers of subleaves in CPUID 4. This is the case
-> > of Intel Meteor Lake.
-> 
-> Hello. Wondering if there is any feedback on this patchset. The interface
-> /sys/devices/system/cpu/cpuX/cache is still broken on Meteor Lake with
-> v6.8-rc1.
-> 
-> I verified that this patchset applies cleanly on v6.8-rc1.
-> 
+Hi Filipe and Qu,
 
-Sorry I though I had acked it but now I see 1/4 is new in v4. I have
-responded on the original patch.
+On Thu, Jan 25, 2024 at 10:02:01AM +0000, Filipe Manana wrote:
+> On Thu, Jan 25, 2024 at 9:51 AM Qu Wenruo <wqu@suse.com> wrote:
+> >
+> > From: Filipe Manana <fdmanana@suse.com>
+> >
+> > [ Upstream commit 9b378f6ad48cfa195ed868db9123c09ee7ec5ea2 ]
+> >
+> > The readdir implementation currently processes always up to the last index
+> > it finds. This however can result in an infinite loop if the directory has
 
---
-Regards,
-Sudeep
+[..]
+
+> Thanks for the backport, and running the corresponding test case from
+> fstests to verify it's working.
+> 
+> However when backporting a commit, one should also check if there are
+> fixes for that commit, as they
+> often introduce regressions or have some other bug - 
+
++1. Good to see this best practice applied here.
+
+> and that's the
+> case here. We also need to backport
+> the following 3 commits:
+> 
+> https:// git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=357950361cbc6d54fb68ed878265c647384684ae
+> https:// git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e60aa5da14d01fed8411202dbe4adf6c44bd2a57
+> https:// git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8e7f82deb0c0386a03b62e30082574347f8b57d5
+
+Good catch. I get the same list thanks to the reference of the culprit:
+
+$ git log --oneline --grep 9b378f6ad linux/master
+8e7f82deb0c038 btrfs: fix race between reading a directory and adding entries to it
+e60aa5da14d01f btrfs: refresh dir last index during a rewinddir(3) call
+357950361cbc6d btrfs: set last dir index to the current last index when opening dir
+
+> One regression, the one regarding rewinddir(3), even has a test case
+> in fstests too (generic/471) and would have been caught
+> when running the "dir" group tests in fstests:
+> 
+> https:// git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git/commit/?h=for-next&id=68b958f5dc4ab13cfd86f7fb82621f9f022b7626
+> 
+> I'll work on making backports of those 3 other patches on top of your
+> backport, and then send all of them in a series,
+> including your patch, to make it easier to follow and apply all at once.
+
+Thanks for your support. Looking forward.
+
+BR, Eugeniu
 
