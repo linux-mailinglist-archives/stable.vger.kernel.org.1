@@ -1,458 +1,170 @@
-Return-Path: <stable+bounces-15763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C2F183B876
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 04:47:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 665B783B8CE
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 05:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E81DBB21CB3
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 03:47:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D7FD287C8B
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 04:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F556FCA;
-	Thu, 25 Jan 2024 03:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FABF2582;
+	Thu, 25 Jan 2024 04:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="KZSpdUbd";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="KZSpdUbd"
+	dkim=pass (1024-bit key) header.d=kunbus.com header.i=@kunbus.com header.b="RjWhhgzl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2067.outbound.protection.outlook.com [40.107.22.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318B96FC3;
-	Thu, 25 Jan 2024 03:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706154439; cv=none; b=jyDhDurOnvw1nAtSagHjtV5fdQIyRJ7L8dY/PeIv8cAvm7HoZVyBTmrgD72zTejf6D3OpAANWzJ62FkzyS8EUAB4IK0ysdQp7v7wjhiMQnLKx61eRvEVlPmhqmZEPlmXnoob8XGXstdkgnt0T9JSnkLFjh6A+yFUunfpgR/7JfE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706154439; c=relaxed/simple;
-	bh=ItfcFV4lAjodsLSvWy5md0uBbYfE4D4+Al2/A2nqN4A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kEDk0o23pUpnlR/jkO7UKM19pSWCgOQPLz8JwhO3mmkiD3nQ5yvRVfNPm1UVYOyO5+IlkKS3XizhrE6pZO2gEDtstEK5SNQV4+lmdpXmwXYT1cGPhqE4nkVv73r/PNIlQUzD6uhFgVHERqyKzm3kNYdU7ZJlCZXqYJOLj3bPD78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=KZSpdUbd; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=KZSpdUbd; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 135A722186;
-	Thu, 25 Jan 2024 03:47:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1706154434; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=ZYk4foKn3G8gH44lEqEI0zxVrgwJtGTA+PXfCJMbgp4=;
-	b=KZSpdUbdhc3XaH5yJCMaskyTZ1Ps7rwTOrcCydqCaTX4qOXtpk+cFj5CAgZRZQy1CZGyOT
-	CmTr8Sv99gkTHEOuCDh7ogHbvEeMlOt1h86PIPYpMvn663igEhki29MneX4KThU7hsSFh2
-	XVWBT/90gLWF9WoU4D2xEgP1gqjc8fQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1706154434; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=ZYk4foKn3G8gH44lEqEI0zxVrgwJtGTA+PXfCJMbgp4=;
-	b=KZSpdUbdhc3XaH5yJCMaskyTZ1Ps7rwTOrcCydqCaTX4qOXtpk+cFj5CAgZRZQy1CZGyOT
-	CmTr8Sv99gkTHEOuCDh7ogHbvEeMlOt1h86PIPYpMvn663igEhki29MneX4KThU7hsSFh2
-	XVWBT/90gLWF9WoU4D2xEgP1gqjc8fQ=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A74F213786;
-	Thu, 25 Jan 2024 03:47:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GUGAGb/ZsWUJWwAAD6G6ig
-	(envelope-from <wqu@suse.com>); Thu, 25 Jan 2024 03:47:11 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org,
-	erosca@de.adit-jv.com
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Rob Landley <rob@landley.net>,
-	stable@vger.kernel.org,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15] btrfs: fix infinite directory reads
-Date: Thu, 25 Jan 2024 14:17:08 +1030
-Message-ID: <88ce65d61253e3474635c589a7de9e668108462e.1706153625.git.wqu@suse.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F9C79E1
+	for <stable@vger.kernel.org>; Thu, 25 Jan 2024 04:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706158685; cv=fail; b=s2rfhfKij2qNDNHHYWh8mV9xO8wL+hc5MJFbiUXuUt0G9lGVINeXwL+gB2kNyMJUtvy64m/pjcDXdavJajBfw8GvAAGaToLp7YgdVwOnDqjVuXs0dGEk0JRnsMJVuos7UBXtBMouXmPRErlpDY/tRahSbL/sSz22io39S1oQfWo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706158685; c=relaxed/simple;
+	bh=yw0sVGsI9R5V79lGzq46wap3NaBVNaADV99yvWdE45o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=salvK1dbzZBVdIqQUfFrJtORaPZDVBO/4tT8JRZEceRJY83cCmgffDNgo8xZYPpu+2BWaXi7xQbRyPQ/uAMCTKLqSg4H/Uwax7aQTIN/cMODWyZbjvLT7QUUqSiYCDBNbhM+mZaBnu5/BtDydMynMh0G3jIpmChQZmsp3qG5uW4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kunbus.com; spf=pass smtp.mailfrom=kunbus.com; dkim=pass (1024-bit key) header.d=kunbus.com header.i=@kunbus.com header.b=RjWhhgzl; arc=fail smtp.client-ip=40.107.22.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kunbus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kunbus.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ltFTuMFMbR586WS83LIoOHZ9XyTso3Vm8nCfkCE+5tbJIiNOt31aR48kVnivILEfxXVE0xMg9HSZdFBTGKZ7rCpr6II+jJ+9pMq65CweFK89bXMojdh260Xqx7z+eSnPfhpFZ6IPsT3pQmlo9cc095yp7mboHWTrwzETaYpynR+54p5kSSu355fvY+VtRNhP+qwOFx/vl8FjIUhrXBuwFSM2uFC9SYa7zEHjWvPxsxH6sehhQYC67y6K381bp/BZywplaOUc/E3FkqPnx8xT/Vmh9YW4rxcnZKc3NNm/osrDd12JhqYDI+mGjEceHDNjphtd0CVYVymOmOhUFPpPLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yw0sVGsI9R5V79lGzq46wap3NaBVNaADV99yvWdE45o=;
+ b=IHlU2FfxLXxZpCGZLE3+6dv6sDTdUl0MSDtrVCJZAZq7to+BZSaV1pA6rLQk13r/XcAMyGkUXttiNWzpCLRHCF9zIyZz9LS27B6hIX9EL9Jkjus2DzmardD5S4sI/r2hJL4dJQfsDtMtXeyX/iAgT8nBJSpltcixS6NxQBhw/sGERzwOhKNEPqejw6VhBfG3Lm6kfubzNlABTL07YW8oLISB12IF5vJFYhUvcE47lkSbR24jYLowc4ywQo2mTXMasMnxLZRmL+TXpezE6M8HGluxM9872m7cVO5vyrE2zKBHLcdFyZS84LbEgXJPlrhYmcVPFtMoC45gWBh7hwb5GA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=kunbus.com; dmarc=pass action=none header.from=kunbus.com;
+ dkim=pass header.d=kunbus.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kunbus.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yw0sVGsI9R5V79lGzq46wap3NaBVNaADV99yvWdE45o=;
+ b=RjWhhgzlOkQi/lXs2PSKI3GuzTpsPzzRs6t8Lc0DUYNySfXwBs3wBMgMg3CqbmuWTmT8MhBS83uzoQ6Ven8fGr+xePBuepV6jxT0T9FcAaizlF657FWBzTnWdLr0KO6Kfx5lkckp0hIX5yMWfFtTgrwi9UFvSZ2zfyjEXptsEh0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=kunbus.com;
+Received: from VI1P193MB0413.EURP193.PROD.OUTLOOK.COM (2603:10a6:803:4e::14)
+ by PAXP193MB1374.EURP193.PROD.OUTLOOK.COM (2603:10a6:102:13e::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.26; Thu, 25 Jan
+ 2024 04:58:00 +0000
+Received: from VI1P193MB0413.EURP193.PROD.OUTLOOK.COM
+ ([fe80::67b0:68bf:2582:19cb]) by VI1P193MB0413.EURP193.PROD.OUTLOOK.COM
+ ([fe80::67b0:68bf:2582:19cb%7]) with mapi id 15.20.7228.022; Thu, 25 Jan 2024
+ 04:57:59 +0000
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+To: stable@vger.kernel.org
+Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 6.6.y] serial: core: set missing supported flag for RX during TX GPIO
+Date: Thu, 25 Jan 2024 05:57:07 +0100
+Message-ID: <20240125045708.536-1-l.sanfilippo@kunbus.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024012243-scorch-bundle-08dd@gregkh>
+References: <2024012243-scorch-bundle-08dd@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-ClientProxiedBy: FR4P281CA0027.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c9::8) To VI1P193MB0413.EURP193.PROD.OUTLOOK.COM
+ (2603:10a6:803:4e::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=KZSpdUbd
-X-Spamd-Result: default: False [-0.81 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	 RCVD_DKIM_ARC_DNSWL_HI(-1.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 R_MISSING_CHARSET(2.50)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 RCPT_COUNT_FIVE(0.00)[6];
-	 DWL_DNSWL_LOW(-1.00)[suse.com:dkim];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	 DKIM_TRACE(0.00)[suse.com:+];
-	 MX_GOOD(-0.01)[];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_IN_DNSWL_HI(-0.50)[2a07:de40:b281:104:10:150:64:97:from];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Score: -0.81
-X-Rspamd-Queue-Id: 135A722186
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Bar: /
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI1P193MB0413:EE_|PAXP193MB1374:EE_
+X-MS-Office365-Filtering-Correlation-Id: a592beea-cd88-481b-a3fd-08dc1d6233d2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	kR1xni04Cb1Kf+xMR3PtGvB/o2UINQbw5pntW9SYFwss+AbbTMWMYl2DPk4f8FgPQNxtvqby6RsJW/uDkG3vBHUCRI2SdxfUsGL6lw5G2M7+iHoQ6Ah4QIw0J6CrVwKz1GLgmu3Z1hRnsBOj4ZX6+MW7VuFnJEeVthQ/CmVaTZ6/Trwsem+qmlVMF7qB20piFvHBql+bp0VkvaACbL0lnHTKfoAUa9HCmdhyfQ7PmPAixAsmVS5YJ8u5JFKItVu1shSqIS+Jj3u62jeMDWkuREmJGznkaM2taD79CA5BP/0Ivhdp7/VsCBYWxsfkhAVOR/0OTTr+2lYN2Ns0/RcqHU+v/ui5KlQDKyG9OXByM6TMY/StcPIq2cxQmSEqsITJ72TNGqTIUH9s2e1KJ0zeP8nuxCKQ0Wv6aqQYEwPZ5i62fS8CZFWurLD5m1yt8s/fzyn9umvY7lj1D7J86tzPiRw4PEzUTM1AQrsj3LckVEVjSYDBncDL5XLR/YbcDgIm5sYuXqubFTyLYtSJqt9qmKmvg0If6Y5c3Wana7Q2OIs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1P193MB0413.EURP193.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(346002)(396003)(136003)(39830400003)(376002)(366004)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(41300700001)(1076003)(2616005)(966005)(6916009)(54906003)(316002)(36756003)(52116002)(6512007)(6506007)(6666004)(478600001)(6486002)(38100700002)(66476007)(5660300002)(66556008)(2906002)(66946007)(86362001)(4326008)(8676002)(8936002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NEpGaWs4VXdtVUt4YkZ5b3poYUc1S0hUWU03ZXJCYXlObzlFVXo0WnRPL3VT?=
+ =?utf-8?B?clhOck0veFhkV1NhNDg1NGphUEEwTlo0MkExMzJTbGFYMXRxSlVwVzlKMHI3?=
+ =?utf-8?B?UzRnUWtvYTJtTWdKM093dWJtUTdwWVBmSzBLUG12NTVTNTBQUlhXeFc5YTRx?=
+ =?utf-8?B?TXdQSTR1NHlzUHBiY0g3anluTmtYbG5UN2dlVkdNOWpNMEhIZ1BTcmlLTmJw?=
+ =?utf-8?B?R21jL3hJb1V2b0FRSk5ieDd6ckQ3QkM2QmVKcXVIM2ExLzBmZzVtaittVk9k?=
+ =?utf-8?B?WGtpekFJa2VnaXdyY1lTY0I0dkxFTDRJTkdROEpNK1JZeE85bUdkajFIZG9i?=
+ =?utf-8?B?bmpxZ24vTTFXV3J0N2xCNUNBNVM4SzFrWnBvWmp0NUVzSFl5OG5rb25ZejdH?=
+ =?utf-8?B?clU0MmNTRStJaTJaQmg2UGtibnVsSHQxRXNMS2I5bkRFbm1lTnJkY2ViRjlo?=
+ =?utf-8?B?TmxYUWJieG5hTWp1MTRtVTdYVkhXWGhVNDdDVUJsWTFzSHhraFNJZnYwMi92?=
+ =?utf-8?B?aFBwNkVyN2NHMTh3bmdhOUx4Z3R3c3dyVUk3eXlES0NHR2dFaUhPVUJ0Y1py?=
+ =?utf-8?B?MDNqam9hbEVWS2FwV3NyK0RzNGd1OC9iUHpSTWZLT3FWYXRpa3Zzbk1IWFdn?=
+ =?utf-8?B?V2IrVWllcmVOYUpqL2MwNmRuR0FWK1FVWndGMWZuVTVvOFNlZTRuUE5rb1Vy?=
+ =?utf-8?B?TTZKdTIvME9mVXVkVGVteEYrZVgrdUtKb09SRnRwdWRZSUtHc2RpQXAvSHFv?=
+ =?utf-8?B?emUvYjNjYWJjR29mSUJSVlFJYmkzaE1GQmdyeFN6bitWTzE2MTI2TFBuWVJ1?=
+ =?utf-8?B?VWVxK0pxYkJaMURiNmpWQjRMOWllT3owV1ZoMW5wMXE2UU9WazlkbzhSUjln?=
+ =?utf-8?B?anBnYnZUYlgwNHBaNmpWVG8xdlhiSXM2dG5xbW5adzdmZ0Q1dnptTC9tYmhC?=
+ =?utf-8?B?ZWlsNU5FU0Uvb0Y0RzhEdWRDeXprNElwckxoRHVZV3hSYWNiWmovMG9FcWlh?=
+ =?utf-8?B?YzJLV0pTWjdtelZEVjRhUmpndlNLdnVrUFBBWUxDdTlQZkUxeGxPN2d1WTU5?=
+ =?utf-8?B?a1JrUHJBaytScmRTZm1rWlk0SWNuOHZYbEwzL0VhR0JRMStFSFBPek5kd2xq?=
+ =?utf-8?B?TnN3a1o4RE91ekc0WDNPay9QalpRWEFqbHN3Z3hDMStQcHFJTU9IVGN6dGlL?=
+ =?utf-8?B?Z0dBUmp5emVYdjZsL0lmS3lQZW8zdG5VSW5vOHplOXJIckxOclE2M0d4UTVi?=
+ =?utf-8?B?WUhIRnBkVXl2ei9Wc2pSUk9NY044cmJ3R0lxTVQycUxSUUJWb3psb3U3czZ0?=
+ =?utf-8?B?KzZETFBLRUNQMlcvYjJBMVVJT2RQSllGQlJoR0dhcmk1MmlCeStNTnNuNUxF?=
+ =?utf-8?B?VUhRd0FVblRzUU12UERsWmQyeWs0N3VLMzJLZitvM1JxV0JRbWsrTWpFT3NL?=
+ =?utf-8?B?K2t3STdsTlZOcTRXTjAreVArN3o2NUtpeHVRWDJSTmhDTWRZbE5iYXFDZEVP?=
+ =?utf-8?B?T29Za25kN21FMURBNUpaUFdPc093S2pyQXc3MkhaN20rUEI3bXM5SjdLQlN2?=
+ =?utf-8?B?Vzg0ajRObHh0MmZrdmQwbHFOdkszTUQ2cW53WDZYRFZFL25pSG92RHd1Z2RY?=
+ =?utf-8?B?dXR1ZzY4d2dKRjJ1MGIvQ1dXclRvNHdVS2V4bVlSZkI5ckNsN2g5aE11VjJ1?=
+ =?utf-8?B?S3h2VWxQamFWOFFpNG5wZ1NabHIxcWZIenJhbDh4Zm9aZDFtQTkzZTVBMmFx?=
+ =?utf-8?B?cEdDMVBUS0RncytZVndkREZKd05oVDdNOGhucjV6TDkxUG52VGdjZy95WDlU?=
+ =?utf-8?B?dWNIdmhEYWxtampKL05yWEJydW5UWit4YXFIeWxJWXBoYUFzL0pCSGxYaUYx?=
+ =?utf-8?B?ellMNStFNU5ZSjUrRktZS2lXdU1IWkdKYTNDbkRLamNxOTNSQzVUTHhucEhV?=
+ =?utf-8?B?VENnalFsS2g4T2dLVUF5TzQ4cXBvY1Uvdkx5VkNwVXVmc1NRTzJydCtvbHJJ?=
+ =?utf-8?B?clN0dDcwYTlJbm8wYkNRRWdBQlBYY3k1Q0FQYkVOUk5uTkU0UTNpb1IwY2VS?=
+ =?utf-8?B?MWpDSlBYd3lvTmxGb05QakVDZXZoQ0c0UWFtamVwRDlYRDBEaVc1U2NqWUhV?=
+ =?utf-8?B?QmR6Nkt2UDNDMXJsRjRBUVRJZW9BWDVDK3o1dkpWbzZObWhXMkJrQkYrbE0y?=
+ =?utf-8?B?TWdNNDQxQ3JwcXZxRDBYM0NTMEgwWlB3YXAwKzZxZ2x4cTFwcHZGQzM0UUZx?=
+ =?utf-8?B?c2NhQWNOSVF4RkZyeTBjTnlPSkNnPT0=?=
+X-OriginatorOrg: kunbus.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a592beea-cd88-481b-a3fd-08dc1d6233d2
+X-MS-Exchange-CrossTenant-AuthSource: VI1P193MB0413.EURP193.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jan 2024 04:57:59.4944
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: aaa4d814-e659-4b0a-9698-1c671f11520b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zM5BaR7H3TaThRRH2VpX8twdN41y2IqPKaJbO8HX54vUyF3pzhoAYzMzjiwniaT2TLS6rnrlJ1t5fTUduL9RtQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXP193MB1374
 
-From: Filipe Manana <fdmanana@suse.com>
-
-[ Upstream commit b4c639f699349880b7918b861e1bd360442ec450 ]
-
-The readdir implementation currently processes always up to the last index
-it finds. This however can result in an infinite loop if the directory has
-a large number of entries such that they won't all fit in the given buffer
-passed to the readdir callback, that is, dir_emit() returns a non-zero
-value. Because in that case readdir() will be called again and if in the
-meanwhile new directory entries were added and we still can't put all the
-remaining entries in the buffer, we keep repeating this over and over.
-
-The following C program and test script reproduce the problem:
-
-  $ cat /mnt/readdir_prog.c
-  #include <sys/types.h>
-  #include <dirent.h>
-  #include <stdio.h>
-
-  int main(int argc, char *argv[])
-  {
-    DIR *dir = opendir(".");
-    struct dirent *dd;
-
-    while ((dd = readdir(dir))) {
-      printf("%s\n", dd->d_name);
-      rename(dd->d_name, "TEMPFILE");
-      rename("TEMPFILE", dd->d_name);
-    }
-    closedir(dir);
-  }
-
-  $ gcc -o /mnt/readdir_prog /mnt/readdir_prog.c
-
-  $ cat test.sh
-  #!/bin/bash
-
-  DEV=/dev/sdi
-  MNT=/mnt/sdi
-
-  mkfs.btrfs -f $DEV &> /dev/null
-  #mkfs.xfs -f $DEV &> /dev/null
-  #mkfs.ext4 -F $DEV &> /dev/null
-
-  mount $DEV $MNT
-
-  mkdir $MNT/testdir
-  for ((i = 1; i <= 2000; i++)); do
-      echo -n > $MNT/testdir/file_$i
-  done
-
-  cd $MNT/testdir
-  /mnt/readdir_prog
-
-  cd /mnt
-
-  umount $MNT
-
-This behaviour is surprising to applications and it's unlike ext4, xfs,
-tmpfs, vfat and other filesystems, which always finish. In this case where
-new entries were added due to renames, some file names may be reported
-more than once, but this varies according to each filesystem - for example
-ext4 never reported the same file more than once while xfs reports the
-first 13 file names twice.
-
-So change our readdir implementation to track the last index number when
-opendir() is called and then make readdir() never process beyond that
-index number. This gives the same behaviour as ext4.
-
-Reported-by: Rob Landley <rob@landley.net>
-Link: https://lore.kernel.org/linux-btrfs/2c8c55ec-04c6-e0dc-9c5c-8c7924778c35@landley.net/
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217681
-CC: stable@vger.kernel.org # 5.15
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ Resolve a conflict due to member changes in 96d89923fa94 ]
-Signed-off-by: Qu Wenruo <wqu@suse.com>
----
- fs/btrfs/ctree.h         |   1 +
- fs/btrfs/delayed-inode.c |   5 +-
- fs/btrfs/delayed-inode.h |   1 +
- fs/btrfs/inode.c         | 131 +++++++++++++++++++++++----------------
- 4 files changed, 84 insertions(+), 54 deletions(-)
----
-Initially I tried to backport all the needed dependency to v5.15, but it
-turns out to be a disaster, at least 3 large rework series are needed,
-and the deeper I dig, more dependency series came up.
-
-So this version is a manual backport, the conflicts are caused by two
-missing dependency:
-
-- 96d89923fa94 ("btrfs: store index number instead of key in struct btrfs_delayed_item")
-  This changes btrfs_delayed_item::key to index, which saves some space.
-  Thankfully the new @index member is just the same as @key.offset.
-
-- 3c32c7212f16 ("btrfs: use cached state when looking for delalloc ranges with lseek")
-  This belongs to the series "[PATCH 0/9] btrfs: more optimizations for
-  lseek and fiemap", thankfully the conflicting member is only utilized
-  by the optimizations, we can go without that member.
-
-And if I dig deeper with every conflict, at least the following series
-are needed to be backported:
-
-- [PATCH 0/9] btrfs: more optimizations for lseek and fiemap
-- [PATCH v2 00/15] btrfs: some updates to delayed items and inode logging
-- [PATCH v2 00/16] btrfs: inode creation cleanups and fixes
-
-At this stage, a full backport with all those needed dependency looks
-impractical.
-Thus a manual backport is created, so far the fstests result looks fine
-and generic/736 (the reproducer inspired by the bug report) passes.
-
-diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
-index 1467bf439cb4..7905f178efa3 100644
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -1361,6 +1361,7 @@ struct btrfs_drop_extents_args {
- 
- struct btrfs_file_private {
- 	void *filldir_buf;
-+	u64 last_index;
- };
- 
- 
-diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
-index fd951aeaeac5..5a98c5da1225 100644
---- a/fs/btrfs/delayed-inode.c
-+++ b/fs/btrfs/delayed-inode.c
-@@ -1513,6 +1513,7 @@ int btrfs_inode_delayed_dir_index_count(struct btrfs_inode *inode)
- }
- 
- bool btrfs_readdir_get_delayed_items(struct inode *inode,
-+				     u64 last_index,
- 				     struct list_head *ins_list,
- 				     struct list_head *del_list)
- {
-@@ -1532,14 +1533,14 @@ bool btrfs_readdir_get_delayed_items(struct inode *inode,
- 
- 	mutex_lock(&delayed_node->mutex);
- 	item = __btrfs_first_delayed_insertion_item(delayed_node);
--	while (item) {
-+	while (item && item->key.offset <= last_index) {
- 		refcount_inc(&item->refs);
- 		list_add_tail(&item->readdir_list, ins_list);
- 		item = __btrfs_next_delayed_item(item);
- 	}
- 
- 	item = __btrfs_first_delayed_deletion_item(delayed_node);
--	while (item) {
-+	while (item && item->key.offset <= last_index) {
- 		refcount_inc(&item->refs);
- 		list_add_tail(&item->readdir_list, del_list);
- 		item = __btrfs_next_delayed_item(item);
-diff --git a/fs/btrfs/delayed-inode.h b/fs/btrfs/delayed-inode.h
-index b2412160c5bc..a9cfce856d2e 100644
---- a/fs/btrfs/delayed-inode.h
-+++ b/fs/btrfs/delayed-inode.h
-@@ -123,6 +123,7 @@ void btrfs_destroy_delayed_inodes(struct btrfs_fs_info *fs_info);
- 
- /* Used for readdir() */
- bool btrfs_readdir_get_delayed_items(struct inode *inode,
-+				     u64 last_index,
- 				     struct list_head *ins_list,
- 				     struct list_head *del_list);
- void btrfs_readdir_put_delayed_items(struct inode *inode,
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 95af29634e55..1df374ce829b 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -6121,6 +6121,74 @@ static struct dentry *btrfs_lookup(struct inode *dir, struct dentry *dentry,
- 	return d_splice_alias(inode, dentry);
- }
- 
-+/*
-+ * Find the highest existing sequence number in a directory and then set the
-+ * in-memory index_cnt variable to the first free sequence number.
-+ */
-+static int btrfs_set_inode_index_count(struct btrfs_inode *inode)
-+{
-+	struct btrfs_root *root = inode->root;
-+	struct btrfs_key key, found_key;
-+	struct btrfs_path *path;
-+	struct extent_buffer *leaf;
-+	int ret;
-+
-+	key.objectid = btrfs_ino(inode);
-+	key.type = BTRFS_DIR_INDEX_KEY;
-+	key.offset = (u64)-1;
-+
-+	path = btrfs_alloc_path();
-+	if (!path)
-+		return -ENOMEM;
-+
-+	ret = btrfs_search_slot(NULL, root, &key, path, 0, 0);
-+	if (ret < 0)
-+		goto out;
-+	/* FIXME: we should be able to handle this */
-+	if (ret == 0)
-+		goto out;
-+	ret = 0;
-+
-+	if (path->slots[0] == 0) {
-+		inode->index_cnt = BTRFS_DIR_START_INDEX;
-+		goto out;
-+	}
-+
-+	path->slots[0]--;
-+
-+	leaf = path->nodes[0];
-+	btrfs_item_key_to_cpu(leaf, &found_key, path->slots[0]);
-+
-+	if (found_key.objectid != btrfs_ino(inode) ||
-+	    found_key.type != BTRFS_DIR_INDEX_KEY) {
-+		inode->index_cnt = BTRFS_DIR_START_INDEX;
-+		goto out;
-+	}
-+
-+	inode->index_cnt = found_key.offset + 1;
-+out:
-+	btrfs_free_path(path);
-+	return ret;
-+}
-+
-+static int btrfs_get_dir_last_index(struct btrfs_inode *dir, u64 *index)
-+{
-+	if (dir->index_cnt == (u64)-1) {
-+		int ret;
-+
-+		ret = btrfs_inode_delayed_dir_index_count(dir);
-+		if (ret) {
-+			ret = btrfs_set_inode_index_count(dir);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
-+	*index = dir->index_cnt;
-+
-+	return 0;
-+}
-+
- /*
-  * All this infrastructure exists because dir_emit can fault, and we are holding
-  * the tree lock when doing readdir.  For now just allocate a buffer and copy
-@@ -6133,10 +6201,17 @@ static struct dentry *btrfs_lookup(struct inode *dir, struct dentry *dentry,
- static int btrfs_opendir(struct inode *inode, struct file *file)
- {
- 	struct btrfs_file_private *private;
-+	u64 last_index;
-+	int ret;
-+
-+	ret = btrfs_get_dir_last_index(BTRFS_I(inode), &last_index);
-+	if (ret)
-+		return ret;
- 
- 	private = kzalloc(sizeof(struct btrfs_file_private), GFP_KERNEL);
- 	if (!private)
- 		return -ENOMEM;
-+	private->last_index = last_index;
- 	private->filldir_buf = kzalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!private->filldir_buf) {
- 		kfree(private);
-@@ -6205,7 +6280,8 @@ static int btrfs_real_readdir(struct file *file, struct dir_context *ctx)
- 
- 	INIT_LIST_HEAD(&ins_list);
- 	INIT_LIST_HEAD(&del_list);
--	put = btrfs_readdir_get_delayed_items(inode, &ins_list, &del_list);
-+	put = btrfs_readdir_get_delayed_items(inode, private->last_index,
-+					      &ins_list, &del_list);
- 
- again:
- 	key.type = BTRFS_DIR_INDEX_KEY;
-@@ -6238,6 +6314,8 @@ static int btrfs_real_readdir(struct file *file, struct dir_context *ctx)
- 			break;
- 		if (found_key.offset < ctx->pos)
- 			goto next;
-+		if (found_key.offset > private->last_index)
-+			break;
- 		if (btrfs_should_delete_dir_index(&del_list, found_key.offset))
- 			goto next;
- 		di = btrfs_item_ptr(leaf, slot, struct btrfs_dir_item);
-@@ -6371,57 +6449,6 @@ static int btrfs_update_time(struct inode *inode, struct timespec64 *now,
- 	return dirty ? btrfs_dirty_inode(inode) : 0;
- }
- 
--/*
-- * find the highest existing sequence number in a directory
-- * and then set the in-memory index_cnt variable to reflect
-- * free sequence numbers
-- */
--static int btrfs_set_inode_index_count(struct btrfs_inode *inode)
--{
--	struct btrfs_root *root = inode->root;
--	struct btrfs_key key, found_key;
--	struct btrfs_path *path;
--	struct extent_buffer *leaf;
--	int ret;
--
--	key.objectid = btrfs_ino(inode);
--	key.type = BTRFS_DIR_INDEX_KEY;
--	key.offset = (u64)-1;
--
--	path = btrfs_alloc_path();
--	if (!path)
--		return -ENOMEM;
--
--	ret = btrfs_search_slot(NULL, root, &key, path, 0, 0);
--	if (ret < 0)
--		goto out;
--	/* FIXME: we should be able to handle this */
--	if (ret == 0)
--		goto out;
--	ret = 0;
--
--	if (path->slots[0] == 0) {
--		inode->index_cnt = BTRFS_DIR_START_INDEX;
--		goto out;
--	}
--
--	path->slots[0]--;
--
--	leaf = path->nodes[0];
--	btrfs_item_key_to_cpu(leaf, &found_key, path->slots[0]);
--
--	if (found_key.objectid != btrfs_ino(inode) ||
--	    found_key.type != BTRFS_DIR_INDEX_KEY) {
--		inode->index_cnt = BTRFS_DIR_START_INDEX;
--		goto out;
--	}
--
--	inode->index_cnt = found_key.offset + 1;
--out:
--	btrfs_free_path(path);
--	return ret;
--}
--
- /*
-  * helper to find a free sequence number in a given directory.  This current
-  * code is very simple, later versions will do smarter things in the btree
--- 
-2.43.0
-
+SWYgdGhlIFJTNDg1IGZlYXR1cmUgUlgtZHVyaW5nLVRYIGlzIHN1cHBvcnRlZCBieSBtZWFucyBv
+ZiBhIEdQSU8gc2V0IHRoZQphY2NvcmRpbmcgc3VwcG9ydGVkIGZsYWcuIE90aGVyd2lzZSBzZXR0
+aW5nIHRoaXMgZmVhdHVyZSBmcm9tIHVzZXJzcGFjZSBtYXkKbm90IGJlIHBvc3NpYmxlLCBzaW5j
+ZSBpbiB1YXJ0X3Nhbml0aXplX3NlcmlhbF9yczQ4NSgpIHRoZSBwYXNzZWQgUlM0ODUKY29uZmln
+dXJhdGlvbiBpcyBtYXRjaGVkIGFnYWluc3QgdGhlIHN1cHBvcnRlZCBmZWF0dXJlcyBhbmQgdW5z
+dXBwb3J0ZWQKc2V0dGluZ3MgYXJlIHRoZXJlYnkgcmVtb3ZlZCBhbmQgdGh1cyB0YWtlIG5vIGVm
+ZmVjdC4KCkNjOiAgPHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmc+CkZpeGVzOiAxNjNmMDgwZWI3MTcg
+KCJzZXJpYWw6IGNvcmU6IEFkZCBvcHRpb24gdG8gb3V0cHV0IFJTNDg1IFJYX0RVUklOR19UWCBz
+dGF0ZSB2aWEgR1BJTyIpClJldmlld2VkLWJ5OiBJbHBvIErDpHJ2aW5lbiA8aWxwby5qYXJ2aW5l
+bkBsaW51eC5pbnRlbC5jb20+ClNpZ25lZC1vZmYtYnk6IExpbm8gU2FuZmlsaXBwbyA8bC5zYW5m
+aWxpcHBvQGt1bmJ1cy5jb20+Ckxpbms6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3IvMjAyNDAx
+MDMwNjE4MTguNTY0LTMtbC5zYW5maWxpcHBvQGt1bmJ1cy5jb20KU2lnbmVkLW9mZi1ieTogR3Jl
+ZyBLcm9haC1IYXJ0bWFuIDxncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZz4KKGNoZXJyeSBwaWNr
+ZWQgZnJvbSBjb21taXQgMWEzM2UzM2NhMGU4MGQ0ODU0NTg0MTBmMTQ5MjY1Y2RjMDE3OGNmYSkK
+U2lnbmVkLW9mZi1ieTogTGlubyBTYW5maWxpcHBvIDxsLnNhbmZpbGlwcG9Aa3VuYnVzLmNvbT4K
+LS0tCiBkcml2ZXJzL3R0eS9zZXJpYWwvc2VyaWFsX2NvcmUuYyB8IDIgKysKIDEgZmlsZSBjaGFu
+Z2VkLCAyIGluc2VydGlvbnMoKykKCmRpZmYgLS1naXQgYS9kcml2ZXJzL3R0eS9zZXJpYWwvc2Vy
+aWFsX2NvcmUuYyBiL2RyaXZlcnMvdHR5L3NlcmlhbC9zZXJpYWxfY29yZS5jCmluZGV4IGY5MTJm
+OGJmMWU2My4uNGE3ODNkNGYyOGYzIDEwMDY0NAotLS0gYS9kcml2ZXJzL3R0eS9zZXJpYWwvc2Vy
+aWFsX2NvcmUuYworKysgYi9kcml2ZXJzL3R0eS9zZXJpYWwvc2VyaWFsX2NvcmUuYwpAQCAtMzYy
+NSw2ICszNjI1LDggQEAgaW50IHVhcnRfZ2V0X3JzNDg1X21vZGUoc3RydWN0IHVhcnRfcG9ydCAq
+cG9ydCkKIAkJcG9ydC0+cnM0ODVfcnhfZHVyaW5nX3R4X2dwaW8gPSBOVUxMOwogCQlyZXR1cm4g
+ZGV2X2Vycl9wcm9iZShkZXYsIHJldCwgIkNhbm5vdCBnZXQgcnM0ODUtcngtZHVyaW5nLXR4LWdw
+aW9zXG4iKTsKIAl9CisJaWYgKHBvcnQtPnJzNDg1X3J4X2R1cmluZ190eF9ncGlvKQorCQlwb3J0
+LT5yczQ4NV9zdXBwb3J0ZWQuZmxhZ3MgfD0gU0VSX1JTNDg1X1JYX0RVUklOR19UWDsKIAogCXJl
+dHVybiAwOwogfQotLSAKMi40My4wCgo=
 
