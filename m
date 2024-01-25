@@ -1,511 +1,226 @@
-Return-Path: <stable+bounces-15837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A4683D059
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 00:06:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37EB783D06C
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 00:13:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B93E1C22067
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 23:06:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CCE41C22A9F
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 23:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E026E11CB9;
-	Thu, 25 Jan 2024 23:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C498E12E40;
+	Thu, 25 Jan 2024 23:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b="HMqTQ0sH"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="nh8jQYzW"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4AB125BD;
-	Thu, 25 Jan 2024 23:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706224003; cv=none; b=afXnG/SZxhbrcSULa3roREk626iXnIucRcC5Y011m62OfOxrvq1VWWIjO8kNTdyfuSr98itxXtrCfiT2LGjPcqXU/Jn706uxRVXSc1JOw2wOYhTYsDTF+OLJVA3roh2BOvz+GluG+L7YsaouKrgqhy2r9dsGOqY29ObgOAD14sw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706224003; c=relaxed/simple;
-	bh=riRnX9JhFPBJnJ//4NYqMHYnf3osPQwHaQwtysR1g1I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zrl7phVyWWfvBqYQUmyBXLo1KeKD3sNiELpwGOMCco3oBIwkiJmxpnw7Kr8IsT2oxu5YAsWRfTqq/w8eqQAcKXpdI+aRf4/EyxD90yzHiBFoO6gxHsMlc6W8N99M0gV1D/NtMePH8GEP5JeL5DzYDGqU5MWdAFQ/Hc3nW7DYcEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b=HMqTQ0sH; arc=none smtp.client-ip=212.227.17.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.com;
-	s=s31663417; t=1706223992; x=1706828792; i=quwenruo.btrfs@gmx.com;
-	bh=riRnX9JhFPBJnJ//4NYqMHYnf3osPQwHaQwtysR1g1I=;
-	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
-	 In-Reply-To;
-	b=HMqTQ0sHeKkzcI2RA4aMGshPf/9wfVP6AAc5pZd2RNkGaQD5pioAsJqqIfEgej0v
-	 RNxvueMwkIO+vKlhEuTIZT2zsg8W7wGNguIuWhicTA1bH6rlvjkiWqdQt3Fcq8X0k
-	 QlCgSzNbOaUf3qsirup6sxBDOoicLyk1G7NNC2cdTfkAlVgK4ETr6RWYq1xgG5NeF
-	 0BIf8wEJe5a52iNMEcVTqK9OAJOeBTRJnr2JaMkdChm0MpQIb83MZ7KY7HJaRExQm
-	 QVMDkPIbYbF/xJT67EIr9KpgioEJI8j50bVdYf7ss2bI9/Y9Fs0x53w8EKmIihqOY
-	 hfIJzK+H4a+T37bzBA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [172.16.0.117] ([61.245.157.120]) by mail.gmx.net (mrgmx104
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1N4QsY-1r33h30INC-011PLx; Fri, 26
- Jan 2024 00:06:31 +0100
-Message-ID: <d52c41e0-1f82-4936-bfd4-e6e989560edf@gmx.com>
-Date: Fri, 26 Jan 2024 09:36:26 +1030
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E0C134A0;
+	Thu, 25 Jan 2024 23:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706224390; cv=fail; b=g9hLw//PrRoxsfydO1HUByGFwJ+M4OBtXdJLDlh+2mLu3QfDMVgzgNYivkrj1bAwAsgj8BtgceIB2XIQ/KCtUnskbmcncej3C7kZ8lfOx/A4My3v8cNaPHubUipQ+XOp1P2n1oJV45k0cL8aVyAsdIbxGM9OCeMM1pOWgpJZXT4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706224390; c=relaxed/simple;
+	bh=14oQQZjNTuAprrLOR22SBskFUX8qmC9qd4aMmZ1l0Sg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NWZSJoj2KHZqjK/RkkJs41SeSratdWwhDk+svWz/Pi525cGrgxc9NKxFAzfsvkYpNjKMdFs9NkV8u0dl/0JpjF/rLBa8r1gP69Vsze6x4DAqA+jPtkaTvTi3gLna11csregvDf6vUXSSHsmYY7gSTWY2dPLy9cA1OavoddLnfoc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=nh8jQYzW; arc=fail smtp.client-ip=40.107.236.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Vvc1rfCYIwbITA7ATS8clYcEVA3sBHBZeNL5Lahu4DZ3qGBWOrYiQf4Ax0uT04mSmRX36WCjkJPzXTp18wE+FNTmbDC3GG3ioxqpmzcUWEZJauw3XN3OK55aoySLF6OS50xUWFAfVu7uqFIN2BAg3zVA8QFDZcg2vrlRHJFT49DYV/6ZSu9ACqKrR7kgxNy4UUAsa0x9skH0rHzebuyRcjjpX7OHLft/F7cwqtuU8dZjETMUK44tfl2PjQcg4kABVA8a9Qwik4R2rSqN9BlCqXTqcAKtNVjgZmZKUpMjkCARA3cZJVdStAmBaVyZqr9Yjhq8x9Kl5im5IIk2G/QJCw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DCEHDOq6POsNUZC3VqjTU0cTBQps6CLxWYet95t9zns=;
+ b=OhFeJnY9BQOqT4oXIi1lNR11Dj++/2o2hrPnI3ld/cdZqN9O0wtNTxanlcdnti+2D2zSu1UbHv+1djuEGD5x55S6hMjSrVwAotNiLONwaehQTSfAZKAGsCyeXAq7VCEwZN1qksudyiQ+KMTXOePY6jwEKiSvUlcObz53rrWh7M1RmOowzmujm8oiKuTaQKp46WGn2neh8IeoeYrNLz7lcc68jXg7prtAqU2/G4SapUBcccbRzERYJy/2YVVFdIat0bqcvxrAcwp0+tPZYXwMicDymHXsidLlRfdaIsgucro0n8+bqAJ3aaACSDd58mUVHt77mokzJb2jtXw5meKqsg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=gondor.apana.org.au smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DCEHDOq6POsNUZC3VqjTU0cTBQps6CLxWYet95t9zns=;
+ b=nh8jQYzWcyIcguWHn/iafoe/bNjxA+TUa85/Q3f5+4UnePcAxczkfzkJ9iNcgpLSQ2zzb6rhotJ8MfRVeGDic1rsjMdI8C3O5vwopGEJf5vVeMszBy3Ln483KODwkcs9kIE+90NMvBl0dqWYTVV0jKlQgrRswOPqhKLp1DruMQ8=
+Received: from SJ0PR03CA0121.namprd03.prod.outlook.com (2603:10b6:a03:33c::6)
+ by DS7PR12MB6214.namprd12.prod.outlook.com (2603:10b6:8:96::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.37; Thu, 25 Jan
+ 2024 23:13:03 +0000
+Received: from CO1PEPF000044F4.namprd05.prod.outlook.com
+ (2603:10b6:a03:33c:cafe::5c) by SJ0PR03CA0121.outlook.office365.com
+ (2603:10b6:a03:33c::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.22 via Frontend
+ Transport; Thu, 25 Jan 2024 23:13:02 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000044F4.mail.protection.outlook.com (10.167.241.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7228.16 via Frontend Transport; Thu, 25 Jan 2024 23:13:02 +0000
+Received: from fritz.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Thu, 25 Jan
+ 2024 17:13:00 -0600
+From: Kim Phillips <kim.phillips@amd.com>
+To: Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky
+	<thomas.lendacky@amd.com>, John Allen <john.allen@amd.com>, Herbert Xu
+	<herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>
+CC: <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Kim
+ Phillips" <kim.phillips@amd.com>, <stable@vger.kernel.org>, Mario Limonciello
+	<mario.limonciello@amd.com>
+Subject: [PATCH] crypto: ccp - Fix null pointer dereference in __sev_platform_shutdown_locked
+Date: Thu, 25 Jan 2024 17:12:53 -0600
+Message-ID: <20240125231253.3122579-1-kim.phillips@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] btrfs: fix infinite directory reads
-Content-Language: en-US
-To: Filipe Manana <fdmanana@kernel.org>, Qu Wenruo <wqu@suse.com>
-Cc: linux-btrfs@vger.kernel.org, erosca@de.adit-jv.com,
- Filipe Manana <fdmanana@suse.com>, Rob Landley <rob@landley.net>,
- stable@vger.kernel.org, David Sterba <dsterba@suse.com>
-References: <1ae6e30a71112e07c727f9e93ff32032051bbce7.1706176168.git.wqu@suse.com>
- <CAL3q7H77i3kv7C352k2R6nr-m-cgh_cdCCeTkXna+v1yjpMuoA@mail.gmail.com>
-From: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
- BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCY00iVQUJDToH
- pgAKCRDCPZHzoSX+qNKACACkjDLzCvcFuDlgqCiS4ajHAo6twGra3uGgY2klo3S4JespWifr
- BLPPak74oOShqNZ8yWzB1Bkz1u93Ifx3c3H0r2vLWrImoP5eQdymVqMWmDAq+sV1Koyt8gXQ
- XPD2jQCrfR9nUuV1F3Z4Lgo+6I5LjuXBVEayFdz/VYK63+YLEAlSowCF72Lkz06TmaI0XMyj
- jgRNGM2MRgfxbprCcsgUypaDfmhY2nrhIzPUICURfp9t/65+/PLlV4nYs+DtSwPyNjkPX72+
- LdyIdY+BqS8cZbPG5spCyJIlZonADojLDYQq4QnufARU51zyVjzTXMg5gAttDZwTH+8LbNI4
- mm2YzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
- CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
- /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
- GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
- q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
- ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCY00ibgUJDToHvwAK
- CRDCPZHzoSX+qK6vB/9yyZlsS+ijtsvwYDjGA2WhVhN07Xa5SBBvGCAycyGGzSMkOJcOtUUf
- tD+ADyrLbLuVSfRN1ke738UojphwkSFj4t9scG5A+U8GgOZtrlYOsY2+cG3R5vjoXUgXMP37
- INfWh0KbJodf0G48xouesn08cbfUdlphSMXujCA8y5TcNyRuNv2q5Nizl8sKhUZzh4BascoK
- DChBuznBsucCTAGrwPgG4/ul6HnWE8DipMKvkV9ob1xJS2W4WJRPp6QdVrBWJ9cCdtpR6GbL
- iQi22uZXoSPv/0oUrGU+U5X4IvdnvT+8viPzszL5wXswJZfqfy8tmHM85yjObVdIG6AlnrrD
-In-Reply-To: <CAL3q7H77i3kv7C352k2R6nr-m-cgh_cdCCeTkXna+v1yjpMuoA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Xar7NUNckt0zS12hjJhq+Dgf+6sHKTagbxq2i1yWYeLNDZqTnwl
- DRMkpkWh0UIT9t9LvFDCDLp+L00O+JYGpT1dj9bxF5p63u8yofPhUfU8EsYMsnoEYThoVAD
- e2+7t0TH4y46pRFEBHDu4h8moy9njfgqIbVGq6aAznkW5NqyjS+gTumM/QZ/5a0PxyRBKIQ
- JtaAlOhgsLjAZCmdlnwMw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:KCKE/8ys1sA=;ap9I1rW+THQXCgzhejNoT4hjLjP
- RFx12ydToxEkvOaNzpnugd4/4fHwUYt4ERCobTcANpSlFmxyxWVWuB9wSG7v+bQEQm/0T5WYM
- 9IuDWJvQBerKrBKcp8mdrpazn7cs4A/9bj2aeM2rJiTs9Vpi1eyHsDFQpQ0gXpxAbNLp5Gnrt
- qnZZ9l5VRnqFN7tPintTXKNKc/47MEF0Oy+voQQn36aiD6hneF8s9zSbM1v+DktC9KeX1n6Ww
- i2fK5fmvjJUunjyKA5UAIw31qD3zk1ZzE3bvSbXQ27zLiu6a6XAhdIXohnxAune9nxVcHQgrL
- NEtOd26jwS/Yc8qBKKLojGue7XNpMwHABDCs+/H3xbBLIzWnIbLxXGe6Ia1VNp8KkkTzRHAz3
- 0cDLoKtECS67y0T3kJoFf6GHIIzKNINJweVJgw7Q61FV3JqadgPw7fuuAVz5XsdOBNwbVcddg
- piyguZF+rU7hU+giDEWkL10cOmOlsGKo2+iFRWmSgc7FR0+wf/XipmNK/uysB0zTltImEX90e
- s5GzLjmYOCk6wSX5BwxDYrXXz2BvIwyNcTFcZ03ev3hXqUxC5IHFnA0MuqEkoXOYLsLe69CDi
- IavSZMOhRqxb4HNGp7q1KXrJg2r0WKHYRONBgrJF41eiafXsHPC4SqMuvaKC2i1lp+EhxoaDE
- KbkAeqhSd+6tRb2Om0eMWBIK4nDmG9QGHrINofZp+1m8XFjTC8EVrT8tJooGlxb6YBOU5Os5i
- BBbZxIDPhvQOvahC9ittR36i6/cqwWa6tFTRvEd0YWjOgZDQ5KGcyPWTj9iD6v2VfRoLcFJDh
- i/2BbSRvF03MsMTB/MqsJiv/MBC39Ps/4xIZgAk5UoxMs6EkEQv09dbNv6v/SrqPvyFPAP4ad
- 32n/7aN8KWccEtLieJaQKKeRSUZYf1KLv7fzISVOHQNAnYCbQteNmRS1nXFozZZ3udJV4oTy6
- JqhRVuoCd0zZO/nEFBKSzVfmbKw=
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F4:EE_|DS7PR12MB6214:EE_
+X-MS-Office365-Filtering-Correlation-Id: 705eaad4-7507-49ef-dfb8-08dc1dfb2dca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	uVUJz5Zso0lJzHApdDzFdzwlb8UuJGmGGbOEuLmp0DE2r5iqTTU9rw7s20NneiYR9RkI6RNAFy1wxrxp5ma/DTGH5S1KH3XcS/ocuSgebkIuJyvNg8HoH/We0wz3YTBLAAXyxYah7Uy86YCPF5gidx+W+huftGmSnUwJ4w/fCHIxTFdbnjT6LKdfxc5grlLfFqr7Owtn7VDE0wW5LoU3gkFcgnKWPaNvmyGJ2ob/0qx0EtJHBGhPnqf8ZN+7UZt9vkv3X+TmD9BwXwys5WhQInCpjtd9lRWEe3MVAW7lMlj9XIjNqR29xtexXXP0voN0DCAib7iJHZz0gZUsee1pQUHlj8td853kLdU1TVfuk7oV09kyz6ykayH6qVyad4nQyTj8iMmfFFQ2Ec0GV4ZkGmsOA8o8I3zZKEhII6QsbI/2+b/+kauRikfJ0d0UFSKpiJMboSXSBSLvEjtR529Euc+m5vk+h5y7b69GhxKXA5XId75OlJmSm/+mYiDplQ5Y9cWIQvxOaDFMClfSNoiGCrbVS6ejS1ANAHqEzz7Rt+6TI5EBLP/wTitlqyePM0KJdRN+EsIbKN6IhPlc+DcZZlsYfE4or01uq6h6KfMVz6AUhVA7n5thEPICDCLJfjvBtW11C8kdml5VbflRFwDSjmwH3I2nZfmVwgGM8Firfw/Wgb1R2pUnKvqm+kuKSBdK74OjkwkJWbIwwegK7gOr4KDthMWUN8oYpyNAh81BtcXKoMiGPjF/6FGi5JL7dYFbKYG6ghUeM6AbhBg1xeyaMg==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(396003)(136003)(376002)(39860400002)(230922051799003)(64100799003)(451199024)(186009)(82310400011)(1800799012)(40470700004)(36840700001)(46966006)(1076003)(6666004)(70586007)(41300700001)(86362001)(54906003)(2616005)(8936002)(47076005)(7696005)(26005)(70206006)(356005)(316002)(110136005)(36756003)(4326008)(5660300002)(8676002)(44832011)(16526019)(82740400003)(81166007)(36860700001)(2906002)(83380400001)(336012)(426003)(478600001)(45080400002)(40460700003)(40480700001)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jan 2024 23:13:02.0628
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 705eaad4-7507-49ef-dfb8-08dc1dfb2dca
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000044F4.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6214
 
+The SEV platform device can be shutdown with a null psp_master,
+e.g., using DEBUG_TEST_DRIVER_REMOVE.  Found using KASAN:
 
+[  137.148210] ccp 0000:23:00.1: enabling device (0000 -> 0002)
+[  137.162647] ccp 0000:23:00.1: no command queues available
+[  137.170598] ccp 0000:23:00.1: sev enabled
+[  137.174645] ccp 0000:23:00.1: psp enabled
+[  137.178890] general protection fault, probably for non-canonical address 0xdffffc000000001e: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC KASAN NOPTI
+[  137.182693] KASAN: null-ptr-deref in range [0x00000000000000f0-0x00000000000000f7]
+[  137.182693] CPU: 93 PID: 1 Comm: swapper/0 Not tainted 6.8.0-rc1+ #311
+[  137.182693] RIP: 0010:__sev_platform_shutdown_locked+0x51/0x180
+[  137.182693] Code: 08 80 3c 08 00 0f 85 0e 01 00 00 48 8b 1d 67 b6 01 08 48 b8 00 00 00 00 00 fc ff df 48 8d bb f0 00 00 00 48 89 f9 48 c1 e9 03 <80> 3c 01 00 0f 85 fe 00 00 00 48 8b 9b f0 00 00 00 48 85 db 74 2c
+[  137.182693] RSP: 0018:ffffc900000cf9b0 EFLAGS: 00010216
+[  137.182693] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 000000000000001e
+[  137.182693] RDX: 0000000000000000 RSI: 0000000000000008 RDI: 00000000000000f0
+[  137.182693] RBP: ffffc900000cf9c8 R08: 0000000000000000 R09: fffffbfff58f5a66
+[  137.182693] R10: ffffc900000cf9c8 R11: ffffffffac7ad32f R12: ffff8881e5052c28
+[  137.182693] R13: ffff8881e5052c28 R14: ffff8881758e43e8 R15: ffffffffac64abf8
+[  137.182693] FS:  0000000000000000(0000) GS:ffff889de7000000(0000) knlGS:0000000000000000
+[  137.182693] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  137.182693] CR2: 0000000000000000 CR3: 0000001cf7c7e000 CR4: 0000000000350ef0
+[  137.182693] Call Trace:
+[  137.182693]  <TASK>
+[  137.182693]  ? show_regs+0x6c/0x80
+[  137.182693]  ? __die_body+0x24/0x70
+[  137.182693]  ? die_addr+0x4b/0x80
+[  137.182693]  ? exc_general_protection+0x126/0x230
+[  137.182693]  ? asm_exc_general_protection+0x2b/0x30
+[  137.182693]  ? __sev_platform_shutdown_locked+0x51/0x180
+[  137.182693]  sev_firmware_shutdown.isra.0+0x1e/0x80
+[  137.182693]  sev_dev_destroy+0x49/0x100
+[  137.182693]  psp_dev_destroy+0x47/0xb0
+[  137.182693]  sp_destroy+0xbb/0x240
+[  137.182693]  sp_pci_remove+0x45/0x60
+[  137.182693]  pci_device_remove+0xaa/0x1d0
+[  137.182693]  device_remove+0xc7/0x170
+[  137.182693]  really_probe+0x374/0xbe0
+[  137.182693]  ? srso_return_thunk+0x5/0x5f
+[  137.182693]  __driver_probe_device+0x199/0x460
+[  137.182693]  driver_probe_device+0x4e/0xd0
+[  137.182693]  __driver_attach+0x191/0x3d0
+[  137.182693]  ? __pfx___driver_attach+0x10/0x10
+[  137.182693]  bus_for_each_dev+0x100/0x190
+[  137.182693]  ? __pfx_bus_for_each_dev+0x10/0x10
+[  137.182693]  ? __kasan_check_read+0x15/0x20
+[  137.182693]  ? srso_return_thunk+0x5/0x5f
+[  137.182693]  ? _raw_spin_unlock+0x27/0x50
+[  137.182693]  driver_attach+0x41/0x60
+[  137.182693]  bus_add_driver+0x2a8/0x580
+[  137.182693]  driver_register+0x141/0x480
+[  137.182693]  __pci_register_driver+0x1d6/0x2a0
+[  137.182693]  ? srso_return_thunk+0x5/0x5f
+[  137.182693]  ? esrt_sysfs_init+0x1cd/0x5d0
+[  137.182693]  ? __pfx_sp_mod_init+0x10/0x10
+[  137.182693]  sp_pci_init+0x22/0x30
+[  137.182693]  sp_mod_init+0x14/0x30
+[  137.182693]  ? __pfx_sp_mod_init+0x10/0x10
+[  137.182693]  do_one_initcall+0xd1/0x470
+[  137.182693]  ? __pfx_do_one_initcall+0x10/0x10
+[  137.182693]  ? parameq+0x80/0xf0
+[  137.182693]  ? srso_return_thunk+0x5/0x5f
+[  137.182693]  ? __kmalloc+0x3b0/0x4e0
+[  137.182693]  ? kernel_init_freeable+0x92d/0x1050
+[  137.182693]  ? kasan_populate_vmalloc_pte+0x171/0x190
+[  137.182693]  ? srso_return_thunk+0x5/0x5f
+[  137.182693]  kernel_init_freeable+0xa64/0x1050
+[  137.182693]  ? __pfx_kernel_init+0x10/0x10
+[  137.182693]  kernel_init+0x24/0x160
+[  137.182693]  ? __switch_to_asm+0x3e/0x70
+[  137.182693]  ret_from_fork+0x40/0x80
+[  137.182693]  ? __pfx_kernel_init+0x10/0x10
+[  137.182693]  ret_from_fork_asm+0x1b/0x30
+[  137.182693]  </TASK>
+[  137.182693] Modules linked in:
+[  137.538483] ---[ end trace 0000000000000000 ]---
 
-On 2024/1/25 20:32, Filipe Manana wrote:
-> On Thu, Jan 25, 2024 at 9:51=E2=80=AFAM Qu Wenruo <wqu@suse.com> wrote:
->>
->> From: Filipe Manana <fdmanana@suse.com>
->>
->> [ Upstream commit 9b378f6ad48cfa195ed868db9123c09ee7ec5ea2 ]
->>
->> The readdir implementation currently processes always up to the last in=
-dex
->> it finds. This however can result in an infinite loop if the directory =
-has
->> a large number of entries such that they won't all fit in the given buf=
-fer
->> passed to the readdir callback, that is, dir_emit() returns a non-zero
->> value. Because in that case readdir() will be called again and if in th=
-e
->> meanwhile new directory entries were added and we still can't put all t=
-he
->> remaining entries in the buffer, we keep repeating this over and over.
->>
->> The following C program and test script reproduce the problem:
->>
->>    $ cat /mnt/readdir_prog.c
->>    #include <sys/types.h>
->>    #include <dirent.h>
->>    #include <stdio.h>
->>
->>    int main(int argc, char *argv[])
->>    {
->>      DIR *dir =3D opendir(".");
->>      struct dirent *dd;
->>
->>      while ((dd =3D readdir(dir))) {
->>        printf("%s\n", dd->d_name);
->>        rename(dd->d_name, "TEMPFILE");
->>        rename("TEMPFILE", dd->d_name);
->>      }
->>      closedir(dir);
->>    }
->>
->>    $ gcc -o /mnt/readdir_prog /mnt/readdir_prog.c
->>
->>    $ cat test.sh
->>    #!/bin/bash
->>
->>    DEV=3D/dev/sdi
->>    MNT=3D/mnt/sdi
->>
->>    mkfs.btrfs -f $DEV &> /dev/null
->>    #mkfs.xfs -f $DEV &> /dev/null
->>    #mkfs.ext4 -F $DEV &> /dev/null
->>
->>    mount $DEV $MNT
->>
->>    mkdir $MNT/testdir
->>    for ((i =3D 1; i <=3D 2000; i++)); do
->>        echo -n > $MNT/testdir/file_$i
->>    done
->>
->>    cd $MNT/testdir
->>    /mnt/readdir_prog
->>
->>    cd /mnt
->>
->>    umount $MNT
->>
->> This behaviour is surprising to applications and it's unlike ext4, xfs,
->> tmpfs, vfat and other filesystems, which always finish. In this case wh=
-ere
->> new entries were added due to renames, some file names may be reported
->> more than once, but this varies according to each filesystem - for exam=
-ple
->> ext4 never reported the same file more than once while xfs reports the
->> first 13 file names twice.
->>
->> So change our readdir implementation to track the last index number whe=
-n
->> opendir() is called and then make readdir() never process beyond that
->> index number. This gives the same behaviour as ext4.
->>
->> Reported-by: Rob Landley <rob@landley.net>
->> Link: https://lore.kernel.org/linux-btrfs/2c8c55ec-04c6-e0dc-9c5c-8c792=
-4778c35@landley.net/
->> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D217681
->> CC: stable@vger.kernel.org # 5.15
->> Signed-off-by: Filipe Manana <fdmanana@suse.com>
->> Signed-off-by: David Sterba <dsterba@suse.com>
->> [ Resolve a conflict due to member changes in 96d89923fa94 ]
->> Signed-off-by: Qu Wenruo <wqu@suse.com>
->> ---
->
-> Thanks for the backport, and running the corresponding test case from
-> fstests to verify it's working.
->
-> However when backporting a commit, one should also check if there are
-> fixes for that commit, as they
-> often introduce regressions or have some other bug - and that's the
-> case here. We also need to backport
-> the following 3 commits:
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commi=
-t/?id=3D357950361cbc6d54fb68ed878265c647384684ae
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commi=
-t/?id=3De60aa5da14d01fed8411202dbe4adf6c44bd2a57
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commi=
-t/?id=3D8e7f82deb0c0386a03b62e30082574347f8b57d5
->
-> One regression, the one regarding rewinddir(3), even has a test case
-> in fstests too (generic/471) and would have been caught
-> when running the "dir" group tests in fstests:
+Fixes: 1b05ece0c9315 ("crypto: ccp - During shutdown, check SEV data pointer before using")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+---
+ drivers/crypto/ccp/sev-dev.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-My bad, I get used to be informed by our internal building system about
-missing fixes.
+diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+index fcaccd0b5a65..53b217a62104 100644
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -534,10 +534,16 @@ EXPORT_SYMBOL_GPL(sev_platform_init);
+ 
+ static int __sev_platform_shutdown_locked(int *error)
+ {
+-	struct sev_device *sev = psp_master->sev_data;
++	struct psp_device *psp = psp_master;
++	struct sev_device *sev;
+ 	int ret;
+ 
+-	if (!sev || sev->state == SEV_STATE_UNINIT)
++	if (!psp || !psp->sev_data)
++		return 0;
++
++	sev = psp->sev_data;
++
++	if (sev->state == SEV_STATE_UNINIT)
+ 		return 0;
+ 
+ 	ret = __sev_do_cmd_locked(SEV_CMD_SHUTDOWN, NULL, error);
+-- 
+2.34.1
 
-And obviously there is no such automatic systems checking missing fixes
-here...
->
-> https://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git/commit/?h=3Dfor-n=
-ext&id=3D68b958f5dc4ab13cfd86f7fb82621f9f022b7626
->
-> I'll work on making backports of those 3 other patches on top of your
-> backport, and then send all of them in a series,
-> including your patch, to make it easier to follow and apply all at once.
-
-Thanks a lot, that's much appreciated.
-
-Thanks,
-Qu
->
-> Thanks.
->
->
->>   fs/btrfs/ctree.h         |   1 +
->>   fs/btrfs/delayed-inode.c |   5 +-
->>   fs/btrfs/delayed-inode.h |   1 +
->>   fs/btrfs/inode.c         | 131 +++++++++++++++++++++++---------------=
--
->>   4 files changed, 84 insertions(+), 54 deletions(-)
->> ---
->> Changelog:
->> v2:
->> - Fix the upstream commit hash
->>
->> diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
->> index 1467bf439cb4..7905f178efa3 100644
->> --- a/fs/btrfs/ctree.h
->> +++ b/fs/btrfs/ctree.h
->> @@ -1361,6 +1361,7 @@ struct btrfs_drop_extents_args {
->>
->>   struct btrfs_file_private {
->>          void *filldir_buf;
->> +       u64 last_index;
->>   };
->>
->>
->> diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
->> index fd951aeaeac5..5a98c5da1225 100644
->> --- a/fs/btrfs/delayed-inode.c
->> +++ b/fs/btrfs/delayed-inode.c
->> @@ -1513,6 +1513,7 @@ int btrfs_inode_delayed_dir_index_count(struct bt=
-rfs_inode *inode)
->>   }
->>
->>   bool btrfs_readdir_get_delayed_items(struct inode *inode,
->> +                                    u64 last_index,
->>                                       struct list_head *ins_list,
->>                                       struct list_head *del_list)
->>   {
->> @@ -1532,14 +1533,14 @@ bool btrfs_readdir_get_delayed_items(struct ino=
-de *inode,
->>
->>          mutex_lock(&delayed_node->mutex);
->>          item =3D __btrfs_first_delayed_insertion_item(delayed_node);
->> -       while (item) {
->> +       while (item && item->key.offset <=3D last_index) {
->>                  refcount_inc(&item->refs);
->>                  list_add_tail(&item->readdir_list, ins_list);
->>                  item =3D __btrfs_next_delayed_item(item);
->>          }
->>
->>          item =3D __btrfs_first_delayed_deletion_item(delayed_node);
->> -       while (item) {
->> +       while (item && item->key.offset <=3D last_index) {
->>                  refcount_inc(&item->refs);
->>                  list_add_tail(&item->readdir_list, del_list);
->>                  item =3D __btrfs_next_delayed_item(item);
->> diff --git a/fs/btrfs/delayed-inode.h b/fs/btrfs/delayed-inode.h
->> index b2412160c5bc..a9cfce856d2e 100644
->> --- a/fs/btrfs/delayed-inode.h
->> +++ b/fs/btrfs/delayed-inode.h
->> @@ -123,6 +123,7 @@ void btrfs_destroy_delayed_inodes(struct btrfs_fs_i=
-nfo *fs_info);
->>
->>   /* Used for readdir() */
->>   bool btrfs_readdir_get_delayed_items(struct inode *inode,
->> +                                    u64 last_index,
->>                                       struct list_head *ins_list,
->>                                       struct list_head *del_list);
->>   void btrfs_readdir_put_delayed_items(struct inode *inode,
->> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
->> index 95af29634e55..1df374ce829b 100644
->> --- a/fs/btrfs/inode.c
->> +++ b/fs/btrfs/inode.c
->> @@ -6121,6 +6121,74 @@ static struct dentry *btrfs_lookup(struct inode =
-*dir, struct dentry *dentry,
->>          return d_splice_alias(inode, dentry);
->>   }
->>
->> +/*
->> + * Find the highest existing sequence number in a directory and then s=
-et the
->> + * in-memory index_cnt variable to the first free sequence number.
->> + */
->> +static int btrfs_set_inode_index_count(struct btrfs_inode *inode)
->> +{
->> +       struct btrfs_root *root =3D inode->root;
->> +       struct btrfs_key key, found_key;
->> +       struct btrfs_path *path;
->> +       struct extent_buffer *leaf;
->> +       int ret;
->> +
->> +       key.objectid =3D btrfs_ino(inode);
->> +       key.type =3D BTRFS_DIR_INDEX_KEY;
->> +       key.offset =3D (u64)-1;
->> +
->> +       path =3D btrfs_alloc_path();
->> +       if (!path)
->> +               return -ENOMEM;
->> +
->> +       ret =3D btrfs_search_slot(NULL, root, &key, path, 0, 0);
->> +       if (ret < 0)
->> +               goto out;
->> +       /* FIXME: we should be able to handle this */
->> +       if (ret =3D=3D 0)
->> +               goto out;
->> +       ret =3D 0;
->> +
->> +       if (path->slots[0] =3D=3D 0) {
->> +               inode->index_cnt =3D BTRFS_DIR_START_INDEX;
->> +               goto out;
->> +       }
->> +
->> +       path->slots[0]--;
->> +
->> +       leaf =3D path->nodes[0];
->> +       btrfs_item_key_to_cpu(leaf, &found_key, path->slots[0]);
->> +
->> +       if (found_key.objectid !=3D btrfs_ino(inode) ||
->> +           found_key.type !=3D BTRFS_DIR_INDEX_KEY) {
->> +               inode->index_cnt =3D BTRFS_DIR_START_INDEX;
->> +               goto out;
->> +       }
->> +
->> +       inode->index_cnt =3D found_key.offset + 1;
->> +out:
->> +       btrfs_free_path(path);
->> +       return ret;
->> +}
->> +
->> +static int btrfs_get_dir_last_index(struct btrfs_inode *dir, u64 *inde=
-x)
->> +{
->> +       if (dir->index_cnt =3D=3D (u64)-1) {
->> +               int ret;
->> +
->> +               ret =3D btrfs_inode_delayed_dir_index_count(dir);
->> +               if (ret) {
->> +                       ret =3D btrfs_set_inode_index_count(dir);
->> +                       if (ret)
->> +                               return ret;
->> +               }
->> +       }
->> +
->> +       *index =3D dir->index_cnt;
->> +
->> +       return 0;
->> +}
->> +
->>   /*
->>    * All this infrastructure exists because dir_emit can fault, and we =
-are holding
->>    * the tree lock when doing readdir.  For now just allocate a buffer =
-and copy
->> @@ -6133,10 +6201,17 @@ static struct dentry *btrfs_lookup(struct inode=
- *dir, struct dentry *dentry,
->>   static int btrfs_opendir(struct inode *inode, struct file *file)
->>   {
->>          struct btrfs_file_private *private;
->> +       u64 last_index;
->> +       int ret;
->> +
->> +       ret =3D btrfs_get_dir_last_index(BTRFS_I(inode), &last_index);
->> +       if (ret)
->> +               return ret;
->>
->>          private =3D kzalloc(sizeof(struct btrfs_file_private), GFP_KER=
-NEL);
->>          if (!private)
->>                  return -ENOMEM;
->> +       private->last_index =3D last_index;
->>          private->filldir_buf =3D kzalloc(PAGE_SIZE, GFP_KERNEL);
->>          if (!private->filldir_buf) {
->>                  kfree(private);
->> @@ -6205,7 +6280,8 @@ static int btrfs_real_readdir(struct file *file, =
-struct dir_context *ctx)
->>
->>          INIT_LIST_HEAD(&ins_list);
->>          INIT_LIST_HEAD(&del_list);
->> -       put =3D btrfs_readdir_get_delayed_items(inode, &ins_list, &del_=
-list);
->> +       put =3D btrfs_readdir_get_delayed_items(inode, private->last_in=
-dex,
->> +                                             &ins_list, &del_list);
->>
->>   again:
->>          key.type =3D BTRFS_DIR_INDEX_KEY;
->> @@ -6238,6 +6314,8 @@ static int btrfs_real_readdir(struct file *file, =
-struct dir_context *ctx)
->>                          break;
->>                  if (found_key.offset < ctx->pos)
->>                          goto next;
->> +               if (found_key.offset > private->last_index)
->> +                       break;
->>                  if (btrfs_should_delete_dir_index(&del_list, found_key=
-.offset))
->>                          goto next;
->>                  di =3D btrfs_item_ptr(leaf, slot, struct btrfs_dir_ite=
-m);
->> @@ -6371,57 +6449,6 @@ static int btrfs_update_time(struct inode *inode=
-, struct timespec64 *now,
->>          return dirty ? btrfs_dirty_inode(inode) : 0;
->>   }
->>
->> -/*
->> - * find the highest existing sequence number in a directory
->> - * and then set the in-memory index_cnt variable to reflect
->> - * free sequence numbers
->> - */
->> -static int btrfs_set_inode_index_count(struct btrfs_inode *inode)
->> -{
->> -       struct btrfs_root *root =3D inode->root;
->> -       struct btrfs_key key, found_key;
->> -       struct btrfs_path *path;
->> -       struct extent_buffer *leaf;
->> -       int ret;
->> -
->> -       key.objectid =3D btrfs_ino(inode);
->> -       key.type =3D BTRFS_DIR_INDEX_KEY;
->> -       key.offset =3D (u64)-1;
->> -
->> -       path =3D btrfs_alloc_path();
->> -       if (!path)
->> -               return -ENOMEM;
->> -
->> -       ret =3D btrfs_search_slot(NULL, root, &key, path, 0, 0);
->> -       if (ret < 0)
->> -               goto out;
->> -       /* FIXME: we should be able to handle this */
->> -       if (ret =3D=3D 0)
->> -               goto out;
->> -       ret =3D 0;
->> -
->> -       if (path->slots[0] =3D=3D 0) {
->> -               inode->index_cnt =3D BTRFS_DIR_START_INDEX;
->> -               goto out;
->> -       }
->> -
->> -       path->slots[0]--;
->> -
->> -       leaf =3D path->nodes[0];
->> -       btrfs_item_key_to_cpu(leaf, &found_key, path->slots[0]);
->> -
->> -       if (found_key.objectid !=3D btrfs_ino(inode) ||
->> -           found_key.type !=3D BTRFS_DIR_INDEX_KEY) {
->> -               inode->index_cnt =3D BTRFS_DIR_START_INDEX;
->> -               goto out;
->> -       }
->> -
->> -       inode->index_cnt =3D found_key.offset + 1;
->> -out:
->> -       btrfs_free_path(path);
->> -       return ret;
->> -}
->> -
->>   /*
->>    * helper to find a free sequence number in a given directory.  This =
-current
->>    * code is very simple, later versions will do smarter things in the =
-btree
->> --
->> 2.43.0
->>
->>
->
 
