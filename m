@@ -1,133 +1,135 @@
-Return-Path: <stable+bounces-15831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4E483CB1C
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 19:32:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C382E83CB2D
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 19:34:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69C171F21750
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 18:32:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4756BB2579B
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 18:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C98C13AA21;
-	Thu, 25 Jan 2024 18:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69455135A55;
+	Thu, 25 Jan 2024 18:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EmS1DXts"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4wtXRhi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f51.google.com (mail-io1-f51.google.com [209.85.166.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722121D68A;
-	Thu, 25 Jan 2024 18:30:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E34413399E;
+	Thu, 25 Jan 2024 18:31:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706207410; cv=none; b=K35v4Mvj0MmwjxJX9XF/trQx9k3W+2NfZuOZQMuZ/7iKiKjPuwAR/ekddDTXWa7aeJ4FmfWkmaDP1Z/0keYOH9DzZeiAjZz0e11mqpeTFGEnuKBeobII5vurpH8zg2E0pgHjp0tJniotnetf316ZRf+LhKRky19WM2v550xvigM=
+	t=1706207470; cv=none; b=c6rcsRGiysT06u3B5vfAPAB0vetgxUznZ0YdgRa8m+qHFR3pBgOTKGRqdwoOroTAd9nQHzOGYnLVSI/TNOvOGRmenBkRZs9gXELYD4xyNVL6UlqqQWT9qFCVnD59gj8ZRq9MpJhC9B01ARFKtzEE/t26RiOtAUwk0mxxiDhAhf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706207410; c=relaxed/simple;
-	bh=H9bCp64dzxsbnmZAsWi/mj9r/BE9YyzHQy06wvQ/5d0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Rmz4yjhAZnRRYOWf0PQi+6tSxZx/Vcaij7h2I+2oVgvi4wLTH0ISx5w1GOkqNLxFaimaG8NxdOr0lhXmjemHWk06iXYYon7VJCYiK9CW2zZwZ/LGFbxp5NIX6S9+1XDuRn/pdHvlEDCxANTI+4nG4rQoMkUjJLFxudbuAwsIyIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EmS1DXts; arc=none smtp.client-ip=209.85.166.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f51.google.com with SMTP id ca18e2360f4ac-7bed9f0ea20so298632339f.2;
-        Thu, 25 Jan 2024 10:30:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706207407; x=1706812207; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZDjqEa67xyb4l1N2TN+AplDaR+Q7JyAPtlhYu3ePq5w=;
-        b=EmS1DXtsNl46EUX+1kDFifN+p0tjgiUKGN5Ll22nfUW9BjrZD3Xs6R1T8LUdxh0W1w
-         YWnPujLjn1Oy+xSqjOmoqkT1icC1fFkxDlRoKGCYvRprAoRSM+1nHA7vbttbxqDYUKv4
-         VcsPHWX9TY9G3EEFpz6R8CkZtNPOqCuArSw/wpApvbaQnHvGvKwN1hMlaZgEuVJQGgIi
-         8IyPqsxBdBavjZcOmnve4CDQMsheYOkcZhRJ3LqCnQU2yk7+RL4vykBi4LIbbqiFIVze
-         F5sUpr1WQSQAFd95qFW69c6SbuBcJ9rgaH2mK820KqC8/TBYRlix+BiEejBYrHEzl8eM
-         5uiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706207407; x=1706812207;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZDjqEa67xyb4l1N2TN+AplDaR+Q7JyAPtlhYu3ePq5w=;
-        b=u9bAmBhIDzu0t9d6xIwalkKkxnhCxyXYy29GnE05VSF7s4nXGkOTbsSq9Si83vaTJA
-         j/c0YEXmkkBGBwMUkWHQlyZ1NfIR/m1xX2ArRkGdJqhb04X5JypQPzcrs/n8u9NqUu9v
-         deVuLsKWsJUWRwpGT7M+YVmLzS8e1uiLz1a7ZyJzHHn+lYq+wX+E9i3+ZK/n8gBcI9wT
-         hnUu6Nkk/xf3UDHClnVq1nhY2oh3+0C9rSXkSa3FfLpJT+f6CcL6LSXUc4B8d6h0kq3u
-         0Tm8u+lakNoZS+EUv+RAEE0JGq56Et3gpKxDn2kkWvSGNmITdXspZMsnxIMlZm+Ji7+A
-         Eegg==
-X-Gm-Message-State: AOJu0YzwMGQVj+zVclML5IXOYoBo/RG5pZ7IHmd8+iwRWcFZ4YHsfzeY
-	ZVnrGjsnWFbHT1X0DELi/v/G77vPOQZNiNOouc9NatBp4HaSogxcSv5hS85E1dCUOFpCsjtHVxh
-	09SF01IaJmmFdm38kTDeK/moYo08=
-X-Google-Smtp-Source: AGHT+IEwqeFlizQUS4uC69QekJVT/vm3JE+6/ph22uTAcYW+xjF+tKz2hPnOgQjzybDwL1+5W6uhPpA0dCvaSCexRHQ=
-X-Received: by 2002:a05:6602:114:b0:7bf:246b:1416 with SMTP id
- s20-20020a056602011400b007bf246b1416mr177822iot.28.1706207407526; Thu, 25 Jan
- 2024 10:30:07 -0800 (PST)
+	s=arc-20240116; t=1706207470; c=relaxed/simple;
+	bh=LTM9Rq0ah24lwvVn1y8YRCHc6j5ROIsgGb706zCSPEw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=QK91g528v5d+AXFY78YA3hDlkK0LNcTjXrSxCoH2thZf/M86CwAzMsdd1F6896a2xY+YCkvjD3I5APkkkkeMFvOd27VQK4gSkBrzbryZkUf5seE7PTLJ4pDzOzFeSZcOLECPd0lVgNJjzyatQvm/QHfZxxnmCZvK9aqfHnNOjFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4wtXRhi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC4DC433F1;
+	Thu, 25 Jan 2024 18:31:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706207469;
+	bh=LTM9Rq0ah24lwvVn1y8YRCHc6j5ROIsgGb706zCSPEw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=S4wtXRhiDkmqHfxDMkUhXRmGNOlc2t6Dxgow2TFcrq/mWLHuIVpkF9dTF3+NdSXEw
+	 jZmifn0eFFKIR8Hf3ZuJ1j0R6xhj4QvHqIz9eeW9NbXopCjBKQQJ0CZF2PDzpL1Jjl
+	 zHbWVTgyhu11TS7DO4fXyVOMnXjWjP7l3x6q0o5Xqug0ySRSOwCA95u2546yaYGRFw
+	 8c0o6Y8RJu0qV+KNPupq3A4FZK8BPZy50azhxOYhmYcBFK/zC7qj6gfujx6g4V140i
+	 n6tmfWv63Jx/zDFXdWVrAHs8lCM8GhxbySSBkxwbNzQ0FbR7fC3hxlKeYpfyZjTjGm
+	 LMjxQ2FYEQPAg==
+Date: Thu, 25 Jan 2024 12:31:07 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Randy Dunlap <rdunlap@infradead.org>, NeilBrown <neilb@suse.de>,
+	John Sanpe <sanpeqf@gmail.com>,
+	Kent Overstreet <kent.overstreet@gmail.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Uladzislau Koshchanka <koshchanka@gmail.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	David Gow <davidgow@google.com>, Kees Cook <keescook@chromium.org>,
+	Rae Moar <rmoar@google.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	"wuqiang.matt" <wuqiang.matt@bytedance.com>,
+	Yury Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ben Dooks <ben.dooks@codethink.co.uk>, dakr@redhat.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arch@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v5 RESEND 2/5] lib: move pci_iomap.c to drivers/pci/
+Message-ID: <20240125183107.GA393314@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240125085127.1327013-1-yosryahmed@google.com>
-In-Reply-To: <20240125085127.1327013-1-yosryahmed@google.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Thu, 25 Jan 2024 10:29:56 -0800
-Message-ID: <CAKEwX=Nb8DkYc=XRQdqGHasQaEWDxGn9T27TqkUDWQxa6D1P3Q@mail.gmail.com>
-Subject: Re: [PATCH] mm: zswap: fix missing folio cleanup in writeback race path
-To: Yosry Ahmed <yosryahmed@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Chengming Zhou <zhouchengming@bytedance.com>, 
-	Domenico Cerasuolo <cerasuolodomenico@gmail.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3abf071d12de5b69e146665dfb57386e3b0ddfe0.camel@redhat.com>
 
-On Thu, Jan 25, 2024 at 12:51=E2=80=AFAM Yosry Ahmed <yosryahmed@google.com=
-> wrote:
->
-> In zswap_writeback_entry(), after we get a folio from
-> __read_swap_cache_async(), we grab the tree lock again to check that the
-> swap entry was not invalidated and recycled. If it was, we delete the
-> folio we just added to the swap cache and exit.
->
-> However, __read_swap_cache_async() returns the folio locked when it is
-> newly allocated, which is always true for this path, and the folio is
-> ref'd. Make sure to unlock and put the folio before returning.
->
-> This was discovered by code inspection, probably because this path
-> handles a race condition that should not happen often, and the bug would
-> not crash the system, it will only strand the folio indefinitely.
->
-> Fixes: 04fc7816089c ("mm: fix zswap writeback race condition")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-> ---
->  mm/zswap.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 8f4a7efc2bdae..00e90b9b5417d 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1448,6 +1448,8 @@ static int zswap_writeback_entry(struct zswap_entry=
- *entry,
->         if (zswap_rb_search(&tree->rbroot, swp_offset(entry->swpentry)) !=
-=3D entry) {
->                 spin_unlock(&tree->lock);
->                 delete_from_swap_cache(folio);
-> +               folio_unlock(folio);
-> +               folio_put(folio);
->                 return -ENOMEM;
->         }
->         spin_unlock(&tree->lock);
-> --
-> 2.43.0.429.g432eaa2c6b-goog
->
+On Thu, Jan 25, 2024 at 03:54:51PM +0100, Philipp Stanner wrote:
+> On Tue, 2024-01-23 at 14:20 -0600, Bjorn Helgaas wrote:
+> > On Thu, Jan 11, 2024 at 09:55:37AM +0100, Philipp Stanner wrote:
+> > > This file is guarded by an #ifdef CONFIG_PCI. It, consequently,
+> > > does not
+> > > belong to lib/ because it is not generic infrastructure.
+> > > 
+> > > Move the file to drivers/pci/ and implement the necessary changes
+> > > to
+> > > Makefiles and Kconfigs.
+> > > ...
+> > 
+> > > --- a/drivers/pci/Kconfig
+> > > +++ b/drivers/pci/Kconfig
+> > > @@ -13,6 +13,11 @@ config FORCE_PCI
+> > >         select HAVE_PCI
+> > >         select PCI
+> > >  
+> > > +# select this to provide a generic PCI iomap,
+> > > +# without PCI itself having to be defined
+> > > +config GENERIC_PCI_IOMAP
+> > > +       bool
+> > 
+> > > --- a/lib/pci_iomap.c
+> > > +++ b/drivers/pci/iomap.c
+> > > @@ -9,7 +9,6 @@
+> > >  
+> > >  #include <linux/export.h>
+> > >  
+> > > -#ifdef CONFIG_PCI
+> > 
+> > IIUC, in the case where CONFIG_GENERIC_PCI_IOMAP=y but CONFIG_PCI was
+> > not set, pci_iomap.c was compiled but produced no code because the
+> > entire file was wrapped with this #ifdef.
+> > 
+> > But after this patch, it looks like pci_iomap_range(),
+> > pci_iomap_wc_range(), etc., *will* be compiled?
+> > 
+> > Is that what you intend, or did I miss something?
+> 
+> They *will* be compiled when BOTH, CONFIG_PCI and
+> CONFIG_GENERIC_PCI_IOMAP have been set.
 
-Oof. Yeah this is probably rare IRL (that looks like a very specific
-race condition), and the symptoms are rather subtle (no kernel crash).
-LGTM.
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+I was asking about CONFIG_GENERIC_PCI_IOMAP=y but CONFIG_PCI unset.
+
+But the Makefile contains this:
+
+  ifdef CONFIG_PCI
+  obj-$(CONFIG_GENERIC_PCI_IOMAP) += iomap.o
+  endif
+
+So iomap.c will not be compiled when CONFIG_PCI is unset, which is
+what I missed.
+
+Bjorn
 
