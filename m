@@ -1,83 +1,115 @@
-Return-Path: <stable+bounces-15825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9792083C9F4
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 18:27:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE06283CA0E
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 18:32:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA8211C241D5
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 17:27:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71B8329473E
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 17:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC6F12A17E;
-	Thu, 25 Jan 2024 17:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B0A130E55;
+	Thu, 25 Jan 2024 17:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+W/aBLg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CWxf9fgh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435E26EB56;
-	Thu, 25 Jan 2024 17:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E1B79C7;
+	Thu, 25 Jan 2024 17:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706203665; cv=none; b=fxo4JSQeRP+nRFGjjiGG+xUoA1ux61nz1/hXM9Yylj+BJZTWoaWOygTDfIguTr/EmbTNHQDFlND8FV+qcoErOXoxCEum4tfM2RqqeLCsMzcHBWoLebSe3SMt+CCb3Y9ykEakce8v3IvyKopArYTMTZNLyFfK493nIf0yuMrIj6I=
+	t=1706203937; cv=none; b=lWxgtmt3EBsiif94lSsNifvJpf+WvJ+b4irwE+DmkOKojFZGm8uqymKtT25yhnKBZ8XOUdiHqU61jc6jcYpgm96axqrS7bUuRFiPi6PAKPQDctfU6ity69zkioety+gsBEhalAlSdoBMGHKfFdwG4of/6vvjdu07TR+Djtap8SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706203665; c=relaxed/simple;
-	bh=frJXwYuw4yolEPivsRKSZ4um4j0KD+rekbxMet8UWOI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NP4YJ8KX1wPtSdlTuJ1hrVHx42maTIN4hWDM+qi7meUMtx88JXQj9AohEtTFamP8ZiK9sivngH4VRLX9cdqER8hDGkS0hK53nxDhdOyqDmrB+g3bSJIqmhurvbBpsYQXKqQ2UJ7+VfxMQW4U1g4DJS8YSEvW84TUT/QvRDfaeJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+W/aBLg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B0ADC433F1;
-	Thu, 25 Jan 2024 17:27:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706203664;
-	bh=frJXwYuw4yolEPivsRKSZ4um4j0KD+rekbxMet8UWOI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k+W/aBLgvBDEMxtNdB1XG8JH0HFTql8uCVEbbZwozlPB7eiT0eznRtQHdW/VJYgTy
-	 iBmAaN4+T1xJhaeUA2/MopPjCC40Fk76pAiAiz8DV5jRMh7iQ4/Kow9iijWs50KMoa
-	 QDOhhiybgzDrYrFdHBvbqPPdJrIgyFpC5unsu9u0=
-Date: Thu, 25 Jan 2024 09:27:43 -0800
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Sjoerd Simons <sjoerd@collabora.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>
-Subject: Re: [PATCH 6.6 132/150] bus: moxtet: Mark the irq as shared
-Message-ID: <2024012525-hastily-stipulate-11c9@gregkh>
-References: <20240118104320.029537060@linuxfoundation.org>
- <20240118104326.164425257@linuxfoundation.org>
- <d0e3c99793d981c5ee90aa7457e480d83fe9e8de.camel@collabora.com>
+	s=arc-20240116; t=1706203937; c=relaxed/simple;
+	bh=3PvCiAQrtJD/zuf2t8VwlvCpBAFoHiP16hfmstASs9E=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XiTxViLzi1W6dj1wwDMYuoMNwHIEJ1eBXjnk4QTxXWbyrrq+RI/QT6ROZHR5DdQjduDeRM1BR5Y5JNoNnP+NCqX977dSZudheMtXcj87UAVg4GfdpYwUSlC3Bz0+ALUPTq0XnCEkDepaaPGCt/tF1ICe7okwOO9/IkLcLBCff3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CWxf9fgh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D85C433F1;
+	Thu, 25 Jan 2024 17:32:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706203937;
+	bh=3PvCiAQrtJD/zuf2t8VwlvCpBAFoHiP16hfmstASs9E=;
+	h=From:Subject:Date:To:Cc:From;
+	b=CWxf9fgh7SWQbUv+w60Q5mT7c9OYxjTpVll1i2bNNiKg/wlwZujGzhs6cb7vgRveQ
+	 JIbAMjVa0NuS6kCH5gSwTCOSdZJbgSsvyE1jlYQgtc3122EOKqhYbNyq/HUJEAQcCe
+	 AE67+vBF68+wDM0d/uqKkmi7ddKkTU/iGyYZ/iRxhGwICCehWPNvirHw2VprPJJKCp
+	 qt3DoTAajdBm5iVbw6m1bKg0sKzk1cKsHNVCok1/vJFBTxdFBYZG9gcl6D8rgWa5mT
+	 LMMs1euY2mE26V3uO1k002IEp4fjCyZe3l9YU6JaJXjEz9JSshp/uSnlDr86s44SSW
+	 DDLQQNqSgC02A==
+From: Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 0/2] RISC-V: Fix CONFIG_AS_HAS_OPTION_ARCH with tip of tree
+ LLVM
+Date: Thu, 25 Jan 2024 10:32:10 -0700
+Message-Id: <20240125-fix-riscv-option-arch-llvm-18-v1-0-390ac9cc3cd0@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d0e3c99793d981c5ee90aa7457e480d83fe9e8de.camel@collabora.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABqbsmUC/x2MSwqFMAwAryJZv0Bbxd9VxEWtUQP+SKUI4t0Nb
+ zkwMw9EEqYIbfaAUOLIx65gfxmExe8zIY/K4IwrjHUFTnyjcAwJj/NSGb2EBdc1bWhrzMNA1WA
+ a72wJ+jiFNPj/u/59P/u0YW9vAAAA
+To: paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+ masahiroy@kernel.org
+Cc: nicolas@fjasle.eu, andy.chiu@sifive.com, conor.dooley@microchip.com, 
+ linux-riscv@lists.infradead.org, linux-kbuild@vger.kernel.org, 
+ llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org, 
+ Eric Biggers <ebiggers@kernel.org>, Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.13-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1526; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=3PvCiAQrtJD/zuf2t8VwlvCpBAFoHiP16hfmstASs9E=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDKmbZsszSfLFTrfQc+X5/21XXcmGTcwG/6/tad9ZEOjzz
+ 2TXzOU1HaUsDGJcDLJiiizVj1WPGxrOOct449QkmDmsTCBDGLg4BWAi8ucZGdY+zVm9yNNafwG3
+ gMmPxYyCm7Y09Pt2flr47PSRXtbDvosY/gd7PHZ1uLt4qpwAw501soe+ZT6qnpr06I+v7vSlXL5
+ SQYwA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-On Thu, Jan 25, 2024 at 09:24:31AM +0100, Sjoerd Simons wrote:
-> Hey,
-> 
-> On Thu, 2024-01-18 at 11:49 +0100, Greg Kroah-Hartman wrote:
-> > 6.6-stable review patch.  If anyone has any objections, please let me
-> > know.
-> 
-> Thanks for picking this up! To complete this fix the following is also
-> needed:
-> 
-> fca8a117c1c9 ("arm64: dts: armada-3720-turris-mox: set irq type for
-> RTC")
-> 
-> Not sure if i missed something causing this one to not be picked up,
-> while the others in the series were.
+Hi all,
 
-It's still in my queue, I just hadn't gotten to it yet, sorry about
-that.  I'll queue it up now.
+Eric reported that builds of LLVM with [1] (close to tip of tree) have
+CONFIG_AS_HAS_OPTION_ARCH=n because the test for expected failure on
+invalid input has started succeeding.
 
-greg k-h
+This Kconfig test was added because '.option arch' only causes an
+assembler warning when it is unsupported, rather than a hard error,
+which is what users of as-instr expect when something is unsupported.
+
+This can be resolved by turning assembler warnings into errors with
+'-Wa,--fatal-warnings' like we do with the compiler with '-Werror',
+which is what the first patch does. The second patch removes the invalid
+test, as the valid test is good enough with fatal warnings.
+
+I have diffed several configurations for the different architectures
+that use as-instr and I have found no issues.
+
+I think this could go in through either the kbuild or RISC-V tree with
+sufficient acks but I will let them fight over who takes it :)
+
+[1]: https://github.com/llvm/llvm-project/commit/3ac9fe69f70a2b3541266daedbaaa7dc9c007a2a
+
+---
+Nathan Chancellor (2):
+      kbuild: Add -Wa,--fatal-warnings to as-instr invocation
+      RISC-V: Drop invalid test from CONFIG_AS_HAS_OPTION_ARCH
+
+ arch/riscv/Kconfig        | 1 -
+ scripts/Kconfig.include   | 2 +-
+ scripts/Makefile.compiler | 2 +-
+ 3 files changed, 2 insertions(+), 3 deletions(-)
+---
+base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
+change-id: 20240124-fix-riscv-option-arch-llvm-18-3cbe7b09a216
+
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
+
 
