@@ -1,131 +1,139 @@
-Return-Path: <stable+bounces-15775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45E1B83BC5E
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:54:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 813A083BC6E
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 09:58:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F10951F2AB9D
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 08:54:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF0FDB26634
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 08:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D951B964;
-	Thu, 25 Jan 2024 08:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBB01B95F;
+	Thu, 25 Jan 2024 08:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Xg3fzsET"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jKrMpwSS";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="73zPb6ER"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B183539E
-	for <stable@vger.kernel.org>; Thu, 25 Jan 2024 08:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6721B1BC26;
+	Thu, 25 Jan 2024 08:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706172882; cv=none; b=TaPLybOTU0OlT61BPXlwLHpg23Hf4mZ81nh8IpI0qdWQBWsCNeUd35PQtul8Mpk3h1GeJTS5WGGqcjOPRKv88kVEi1V0Tk23SDIM/3ttI9FZM8deYsXzN2VwSVKCKxRNEq8pdOUez5Sonz7sUNvH2T9+MWT3JtAma582Tk6bcX0=
+	t=1706173092; cv=none; b=Gi0Imwp+jaipQfApLLkg83B3B4wFnw6XB+yv5BHktziTGb5e4NvgbTzSkf8E7n10koxS8pwJNUlLnlHOEq4ha8+9LW40xRa/Pm7rzGQ1b1H1F4WuaWn0Dj+469KShVHSJLL/0Wu4jTD+2zzZdAtkBeM+UAQBYSLzgoYV9zT+wQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706172882; c=relaxed/simple;
-	bh=IGBiPs1WuJSFqvW9MzDUHcqs1Dhqm/XYrWTO9agZg+Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XLgIC0/x7zPkgowEHeL9qmGyqWwVBQ+Svn/kXxLruMLgbVNgIPhayrZVXESbLS1WUYAFPaHGyU4pjLVxGArdxKy7gerJ0zHP/ViWMHPAUhVwoHrSDOA01fysuAnKdO+ekUhpKYnx6Xvzf4woxlbJXQtRFmcj+h+RXoR03OWzQ/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Xg3fzsET; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1d70b0e521eso47083255ad.1
-        for <stable@vger.kernel.org>; Thu, 25 Jan 2024 00:54:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1706172879; x=1706777679; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xnkZERa8Q5xoGtJvJZat5iyOg0P3QANDIW4NDNOE4l0=;
-        b=Xg3fzsETyfzvGfHgHaA/ojohGMRS4lZkqYInln01Q/k2TF5l97uy8sne0GTQgELCL1
-         mnyegRW4N6dot/hJlHRU7Iko2CXZflm9xlz/118PpqRs1PIn2oRaAWo5WMeyil1UXgrQ
-         n39gkDURwM+EQk7G6A8gn6Icab7m6K9fvph1mmszTms3ilKkRq1d2YKFKPmO+f9aThMO
-         i9v0Mjcyc4ok2OUOxOCMB1dMJwZWogwQ9w/w+oy2niD9+oawxuMAiGlXa5mpCTn4p+TU
-         mv3wZuHP7OTmTtDv/3Y+9EXrwgqYGrobka008UgCBEg/yVMc4DXqiAPqBy9Xqme0jtFa
-         dQHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706172879; x=1706777679;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xnkZERa8Q5xoGtJvJZat5iyOg0P3QANDIW4NDNOE4l0=;
-        b=p0Xlanir1NXDKjj8W41f5PbpYZrCiVHmwU3pF/QEOe1ab2KB/Pr+FMv4WCjWu9QO90
-         00LemD9v2tLwwztprfdLWdK8uMyUUVabWGvZ7j97RDZyob8Vp+HOI6D+Ym84Am4+KBBo
-         0a7813oIy+6r9LB6PypqUpOSQ5JJJY5x2dhFulJJKIqUi5fa6qYMOIpWLgmrQnX5d4ec
-         HJ6bwfXPAYnTZ/mcjdP/1Yv8ewpdarrT1/MSFU9VGZqPWQmqZQrd9xDoYrpjFWIcVUGs
-         mCgllt7RUfhM4LwSbiYlZXuVhlOAeH3jYZa8uWFGzjCki5FieJ8ZYwvTT6HQXmd3SxtI
-         WcHw==
-X-Gm-Message-State: AOJu0YzuTgRe8mbC1r9GsAQzkteE6IAeK8hWZpKvGXNomfeIzvKYQsLB
-	to9FvRfpY7+BYYF5Mt6WN9LkVcuMGrJHD5EOBo4OUX/T/coQVj1B8d1Tq2yDk9Q=
-X-Google-Smtp-Source: AGHT+IHn4Y+4c7MEgANSirnXzcKFSWT7Z0qo6rSzruiuCcQx6zt1x0dPL/M9TCo9yaJ2tGgQaivEAg==
-X-Received: by 2002:a17:902:ed44:b0:1d7:199:cfb7 with SMTP id y4-20020a170902ed4400b001d70199cfb7mr715381plb.138.1706172879543;
-        Thu, 25 Jan 2024 00:54:39 -0800 (PST)
-Received: from [10.4.195.141] ([139.177.225.254])
-        by smtp.gmail.com with ESMTPSA id y2-20020a1709027c8200b001d7726c4a40sm3615519pll.277.2024.01.25.00.54.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Jan 2024 00:54:39 -0800 (PST)
-Message-ID: <6f81161c-0280-48b6-a7af-038c676a02b3@bytedance.com>
-Date: Thu, 25 Jan 2024 16:54:33 +0800
+	s=arc-20240116; t=1706173092; c=relaxed/simple;
+	bh=9W0rHMo1PmIbSLpl2yzt5yWUJKRIEZKegqCU/kJoaDM=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=DcpTx6qaSV8DJ4zC95KfJCr0to2b9iUASsY8+ZGyYNz1jVgQvPElB98NnrWez4Taqgs6m8p80krKHDNSAmZKU2BOVlvSg/MM6tHYwB4Ty3a6cq9/8nwttU9aaTJ2gtMTx7su9t0CbSEN6b8RhJOkvOH/L5eezsn/F1UQN4xdEYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jKrMpwSS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=73zPb6ER; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 25 Jan 2024 08:58:08 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1706173089;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WObzDTHXTDPa3dmfW8P5dQHGpAZC4IP5d5HH0veMj0U=;
+	b=jKrMpwSS0vJ+enxX/UUdSXvZofeoh25ExNB30G4Gh0m29UyfX6Q5gghqGaSjrkomtLd5qp
+	DCyKtaFJmwGKBeyQD5KD4rBbwok5ARPbVaJb3jG1JHUVkT2DOl/yN5+UsKfo6h+aErEReb
+	hySSvzXGi8Ul0I3yQ689TEx6vRSpXoY2IGe58FZcRbbKDI06w/jdtfPJEEuvajj9HoG7bP
+	hMnT50J1iA9ltXVQmwpM3ecd6z7pX97USGZO4OByOm9kUOs/8veBNK3WT06tFvuCTxWwcO
+	KuEdIp1KMmc2hAVymLBwywK2uO0iNfo3h8gqV59Ij5jBosyvtcnM5kld1HlBFQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1706173089;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WObzDTHXTDPa3dmfW8P5dQHGpAZC4IP5d5HH0veMj0U=;
+	b=73zPb6ERvA0LkZs/xmqJ61qIAudzbirFxV2ZgrnG4t39t2TZhOnApLSX4krcFxOkNGcWZr
+	FUx7VlfUDuSnpJDg==
+From: "tip-bot2 for Tim Chen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] tick/sched: Preserve number of idle sleeps
+ across CPU hotplug events
+Cc: Tim Chen <tim.c.chen@linux.intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240122233534.3094238-1-tim.c.chen@linux.intel.com>
+References: <20240122233534.3094238-1-tim.c.chen@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: zswap: fix missing folio cleanup in writeback race
- path
-Content-Language: en-US
-To: Yosry Ahmed <yosryahmed@google.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>,
- Domenico Cerasuolo <cerasuolodomenico@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240125085127.1327013-1-yosryahmed@google.com>
-From: Chengming Zhou <zhouchengming@bytedance.com>
-In-Reply-To: <20240125085127.1327013-1-yosryahmed@google.com>
-Content-Type: text/plain; charset=UTF-8
+Message-ID: <170617308836.398.11235504689824871790.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-On 2024/1/25 16:51, Yosry Ahmed wrote:
-> In zswap_writeback_entry(), after we get a folio from
-> __read_swap_cache_async(), we grab the tree lock again to check that the
-> swap entry was not invalidated and recycled. If it was, we delete the
-> folio we just added to the swap cache and exit.
-> 
-> However, __read_swap_cache_async() returns the folio locked when it is
-> newly allocated, which is always true for this path, and the folio is
-> ref'd. Make sure to unlock and put the folio before returning.
-> 
-> This was discovered by code inspection, probably because this path
-> handles a race condition that should not happen often, and the bug would
-> not crash the system, it will only strand the folio indefinitely.
-> 
-> Fixes: 04fc7816089c ("mm: fix zswap writeback race condition")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+The following commit has been merged into the timers/urgent branch of tip:
 
-LGTM, thanks!
+Commit-ID:     9a574ea9069be30b835a3da772c039993c43369b
+Gitweb:        https://git.kernel.org/tip/9a574ea9069be30b835a3da772c039993c43369b
+Author:        Tim Chen <tim.c.chen@linux.intel.com>
+AuthorDate:    Mon, 22 Jan 2024 15:35:34 -08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 25 Jan 2024 09:52:40 +01:00
 
-Reviewed-by: Chengming Zhou <zhouchengming@bytedance.com>
+tick/sched: Preserve number of idle sleeps across CPU hotplug events
 
-> ---
->  mm/zswap.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 8f4a7efc2bdae..00e90b9b5417d 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1448,6 +1448,8 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
->  	if (zswap_rb_search(&tree->rbroot, swp_offset(entry->swpentry)) != entry) {
->  		spin_unlock(&tree->lock);
->  		delete_from_swap_cache(folio);
-> +		folio_unlock(folio);
-> +		folio_put(folio);
->  		return -ENOMEM;
->  	}
->  	spin_unlock(&tree->lock);
+Commit 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs
+CPU hotplug") preserved total idle sleep time and iowait sleeptime across
+CPU hotplug events.
+
+Similar reasoning applies to the number of idle calls and idle sleeps to
+get the proper average of sleep time per idle invocation.
+
+Preserve those fields too.
+
+Fixes: 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs CPU hotplug")
+Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240122233534.3094238-1-tim.c.chen@linux.intel.com
+---
+ kernel/time/tick-sched.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index d250167..01fb50c 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -1577,6 +1577,7 @@ void tick_cancel_sched_timer(int cpu)
+ {
+ 	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
+ 	ktime_t idle_sleeptime, iowait_sleeptime;
++	unsigned long idle_calls, idle_sleeps;
+ 
+ # ifdef CONFIG_HIGH_RES_TIMERS
+ 	if (ts->sched_timer.base)
+@@ -1585,9 +1586,13 @@ void tick_cancel_sched_timer(int cpu)
+ 
+ 	idle_sleeptime = ts->idle_sleeptime;
+ 	iowait_sleeptime = ts->iowait_sleeptime;
++	idle_calls = ts->idle_calls;
++	idle_sleeps = ts->idle_sleeps;
+ 	memset(ts, 0, sizeof(*ts));
+ 	ts->idle_sleeptime = idle_sleeptime;
+ 	ts->iowait_sleeptime = iowait_sleeptime;
++	ts->idle_calls = idle_calls;
++	ts->idle_sleeps = idle_sleeps;
+ }
+ #endif
+ 
 
