@@ -1,102 +1,148 @@
-Return-Path: <stable+bounces-15738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 805B683B55B
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 00:01:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D27E083B5C8
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 01:02:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C74B281C5B
-	for <lists+stable@lfdr.de>; Wed, 24 Jan 2024 23:01:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF5A51C23856
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 00:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD1D136641;
-	Wed, 24 Jan 2024 23:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5287E1;
+	Thu, 25 Jan 2024 00:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sAVJ1yGg"
 X-Original-To: stable@vger.kernel.org
-Received: from hi1smtp01.de.adit-jv.com (smtp1.de.adit-jv.com [93.241.18.167])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FE47CF1B;
-	Wed, 24 Jan 2024 23:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.241.18.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9058A193;
+	Thu, 25 Jan 2024 00:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706137281; cv=none; b=ktLjjpuyhHWbPZxSSf4I0EdEgKWH93RfC1bR0IJtv3AT3rF3mH3ES5Sc7UJrMacqdusdMK5PFA6jk5g/UngELqaKNkgnLTAK/RL0vl5SyPvO4TNS6Q1OOpg7TVLJrS5aLA0YeAGVcpX7EuBmO94tbi+JIOj+6uGtXd5PEzG0NEs=
+	t=1706140921; cv=none; b=Xl/eXftoASzGoQlgzfE3bcpQjJGYQIVJY6MlEVNsyr6BFQfLWkt420HaMZ0532oHETvkkubDUtZAUx+QpJ10KGFAXV6Wf58gb3o7gEjRtZVs1uclTkhlww7Kkv0mkkimYy9zgqD8N2QQnXAxZZKe0bBElwtVBMSS/DWxBXmG5Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706137281; c=relaxed/simple;
-	bh=eKY+oHIVvHDg+PVbaeCYicVv75uCECCrmtNaERMLBjs=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oZ+sVTj0q43aKQ5rC2diPmTYEkOA7drzoFSQ0/1NWX3uJ7GWmu7QPw6Pk5OsH9iudWcO+MjiuQ1ApPda6JDM0SRz6/Sd4lygx+WB46+S9MwNMWfFcmPuAyzEAGZ8K0Cq+XUM555tCGWMZ+tGSp2Q2VecTG6CUakCb6A2dN/xw88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=de.adit-jv.com; spf=pass smtp.mailfrom=de.adit-jv.com; arc=none smtp.client-ip=93.241.18.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=de.adit-jv.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.adit-jv.com
-Received: from hi2exch02.adit-jv.com (hi2exch02.adit-jv.com [10.72.92.28])
-	by hi1smtp01.de.adit-jv.com (Postfix) with ESMTP id A4689520203;
-	Wed, 24 Jan 2024 23:55:28 +0100 (CET)
-Received: from lxhi-087 (10.72.93.211) by hi2exch02.adit-jv.com (10.72.92.28)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 24 Jan
- 2024 23:55:28 +0100
-Date: Wed, 24 Jan 2024 23:55:22 +0100
-From: Eugeniu Rosca <erosca@de.adit-jv.com>
-To: <fdmanana@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: <linux-btrfs@vger.kernel.org>, <stable@vger.kernel.org>, Maksim Paimushkin
-	<Maksim.Paimushkin@se.bosch.com>, Matthias Thomae
-	<Matthias.Thomae@de.bosch.com>, Sebastian Unger <Sebastian.Unger@bosch.com>,
-	Dirk Behme <Dirk.Behme@de.bosch.com>, Eugeniu Rosca
-	<Eugeniu.Rosca@bosch.com>, Eugeniu Rosca <erosca@de.adit-jv.com>, Eugeniu
- Rosca <roscaeugeniu@gmail.com>
-Subject: Re: [PATCH] btrfs: fix infinite directory reads
-Message-ID: <20240124225522.GA2614102@lxhi-087>
-References: <c9ceb0e15d92d0634600603b38965d9b6d986b6d.1691923900.git.fdmanana@suse.com>
+	s=arc-20240116; t=1706140921; c=relaxed/simple;
+	bh=5mwY570DfNBBwhuUW2/t3DHz1by/BgnhUlLMFufm0+c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=j0H/C/8X+ykLj5PAarohcLkP3bxvfB7cuEBPLtziX6+6vUK30UadOvkY80rMq0XpY1IewfdCP3bFns9nwCXyKi/Qo69P8Wp0CA+SzySz3W5b3KLA57WrxsYEl00stzxWIRPsnKQhljW1/k4zjVsucH47mtAU4kJUW0qTwY3jR6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sAVJ1yGg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2099DC433C7;
+	Thu, 25 Jan 2024 00:02:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706140921;
+	bh=5mwY570DfNBBwhuUW2/t3DHz1by/BgnhUlLMFufm0+c=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=sAVJ1yGg1Hx8GOa4pX8oNHh6i6qqNofcmWg+KNI8kogmUaYu4sZ5Cq0vmU7AT5kwX
+	 qvjsp6BsOTdGa/BD2OA9yDJDobUhrxyo7KPGlPua6VqafmCPm4Gdsh6zHQXklK3dSB
+	 Zbde20MmT33LnKromEZbhe4z9A2erIY4n8JC/Ujj4CbMcDZ8+wMNtvp5MFagoK3VsY
+	 WWx+dOnt6jCi0JZWB08CQxZsTXYQt6gs2gr7BEgEsOz6Q9tFMpu8LEaj1UrjDGFgQC
+	 HpqtU60KJCk5o9nIzIDwd6BiFxgQ0HXVCIPLF5Zr42wiZ4VDxpGYh4lLTZBacf5ydg
+	 KF77tNBO4h78A==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2cf2adac1ccso12333281fa.3;
+        Wed, 24 Jan 2024 16:02:01 -0800 (PST)
+X-Gm-Message-State: AOJu0YzQP9l9bY2In9qhaGHsSyvsAE52z33W3g4H4pLK1RXLaf1fgdTh
+	Kw40F2wKaWPag6fAyazdyp1CYPieJdzV6Z8tUMCjMlrt/Nt+QA87y4zrzIhb4RtHJfgQXdR/PVc
+	5bNNPlROvby9mbvKdDxGcVONh12w=
+X-Google-Smtp-Source: AGHT+IFCXb46Pzw2PPc2gtLorR23QXWS78uxb9N4YsNdsOk4803nUo90BTz/XVPNryE+v48kycxwftjhso1Cfm5+d58=
+X-Received: by 2002:a2e:9b49:0:b0:2cc:c794:57c7 with SMTP id
+ o9-20020a2e9b49000000b002ccc79457c7mr66379ljj.43.1706140919297; Wed, 24 Jan
+ 2024 16:01:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <c9ceb0e15d92d0634600603b38965d9b6d986b6d.1691923900.git.fdmanana@suse.com>
-X-ClientProxiedBy: hi2exch02.adit-jv.com (10.72.92.28) To
- hi2exch02.adit-jv.com (10.72.92.28)
+References: <CAPhsuW7KMLHHrcyZhKS_m_fwWSKM66VFXaLj9fmY+ab5Mu3pvA@mail.gmail.com>
+ <20240123235803.8298-1-dan@danm.net>
+In-Reply-To: <20240123235803.8298-1-dan@danm.net>
+From: Song Liu <song@kernel.org>
+Date: Wed, 24 Jan 2024 16:01:47 -0800
+X-Gmail-Original-Message-ID: <CAPhsuW49L8B9K8QFg68v=zG9ywMehUTD18DaG4PexEt-3mzQqQ@mail.gmail.com>
+Message-ID: <CAPhsuW49L8B9K8QFg68v=zG9ywMehUTD18DaG4PexEt-3mzQqQ@mail.gmail.com>
+Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system;
+ successfully bisected
+To: Dan Moulding <dan@danm.net>, junxiao.bi@oracle.com
+Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-raid@vger.kernel.org, regressions@lists.linux.dev, 
+	stable@vger.kernel.org, yukuai1@huaweicloud.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Greg,
-Hello Filipe,
+Thanks for the information!
 
-On Sun, Aug 13, 2023 at 12:34:08PM +0100, fdmanana@kernel.org wrote:
-> From: Filipe Manana <fdmanana@suse.com>
-> 
-> The readdir implementation currently processes always up to the last index
-> it finds. This however can result in an infinite loop if the directory has
-> a large number of entries such that they won't all fit in the given buffer
-> passed to the readdir callback, that is, dir_emit() returns a non-zero
-> value. Because in that case readdir() will be called again and if in the
-> meanwhile new directory entries were added and we still can't put all the
-> remaining entries in the buffer, we keep repeating this over and over.
-> 
-> The following C program and test script reproduce the problem:
 
-This crucial fix successfully landed into vanilla v6.5 [1] and stable
-v6.4.12 [2], but unfortunately not into the older stable trees.
+On Tue, Jan 23, 2024 at 3:58=E2=80=AFPM Dan Moulding <dan@danm.net> wrote:
+>
+> > This appears the md thread hit some infinite loop, so I would like to
+> > know what it is doing. We can probably get the information with the
+> > perf tool, something like:
+> >
+> > perf record -a
+> > perf report
+>
+> Here you go!
+>
+> # Total Lost Samples: 0
+> #
+> # Samples: 78K of event 'cycles'
+> # Event count (approx.): 83127675745
+> #
+> # Overhead  Command          Shared Object                   Symbol
+> # ........  ...............  ..............................  ............=
+.......................................
+> #
+>     49.31%  md0_raid5        [kernel.kallsyms]               [k] handle_s=
+tripe
+>     18.63%  md0_raid5        [kernel.kallsyms]               [k] ops_run_=
+io
+>      6.07%  md0_raid5        [kernel.kallsyms]               [k] handle_a=
+ctive_stripes.isra.0
+>      5.50%  md0_raid5        [kernel.kallsyms]               [k] do_relea=
+se_stripe
+>      3.09%  md0_raid5        [kernel.kallsyms]               [k] _raw_spi=
+n_lock_irqsave
+>      2.48%  md0_raid5        [kernel.kallsyms]               [k] r5l_writ=
+e_stripe
+>      1.89%  md0_raid5        [kernel.kallsyms]               [k] md_wakeu=
+p_thread
+>      1.45%  ksmd             [kernel.kallsyms]               [k] ksm_scan=
+_thread
+>      1.37%  md0_raid5        [kernel.kallsyms]               [k] stripe_i=
+s_lowprio
+>      0.87%  ksmd             [kernel.kallsyms]               [k] memcmp
+>      0.68%  ksmd             [kernel.kallsyms]               [k] xxh64
+>      0.56%  md0_raid5        [kernel.kallsyms]               [k] __wake_u=
+p_common
+>      0.52%  md0_raid5        [kernel.kallsyms]               [k] __wake_u=
+p
+>      0.46%  ksmd             [kernel.kallsyms]               [k] mtree_lo=
+ad
+>      0.44%  ksmd             [kernel.kallsyms]               [k] try_grab=
+_page
+>      0.40%  ksmd             [kernel.kallsyms]               [k] follow_p=
+4d_mask.constprop.0
+>      0.39%  md0_raid5        [kernel.kallsyms]               [k] r5l_log_=
+disk_error
+>      0.37%  md0_raid5        [kernel.kallsyms]               [k] _raw_spi=
+n_lock_irq
+>      0.33%  md0_raid5        [kernel.kallsyms]               [k] release_=
+stripe_list
+>      0.31%  md0_raid5        [kernel.kallsyms]               [k] release_=
+inactive_stripe_list
 
-Consequently, the fix is missing on the popular Ubuntu versions like
-20.04 (KNL v5.15.x) and 22.04.3 (KNL v6.2.x). For that reason, people
-still experience infinite loops when building Linux on those systems.
+It appears the thread is indeed doing something. I haven't got luck to
+reproduce this on my hosts. Could you please try whether the following
+change fixes the issue (without reverting 0de40f76d567)? I will try to
+reproduce the issue on my side.
 
-To overcome the issue, people fall back to workarounds [3-4].
+Junxiao,
 
-The patch seems to apply cleanly to v6.2, but not to v5.15
-(v5.15 backport attempt failed miserably).
+Please also help look into this.
 
-Is there a chance for:
- - Stable maintainers to accept the clean backport to v6.2?
- - BTRFS experts to suggest a conflict resolution for v5.15?
-
-[1] https:// git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9b378f6ad48cfa
-[2] https:// git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=5441532ffc9c8c
-[3] https:// android-review.googlesource.com/c/kernel/build/+/2708835
-[4] https:// android-review.googlesource.com/c/kernel/build/+/2715296
-
-Best Regards
-Eugeniu
+Thanks,
+Song
 
