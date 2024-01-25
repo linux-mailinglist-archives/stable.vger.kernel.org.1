@@ -1,51 +1,64 @@
-Return-Path: <stable+bounces-15808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5088D83C358
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 14:10:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD39883C450
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 15:07:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07D8B28EFA4
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 13:10:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76F6A28B452
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 14:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425FB4F8B0;
-	Thu, 25 Jan 2024 13:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB28633E2;
+	Thu, 25 Jan 2024 14:07:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="UfJQK2+v"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B344F61E;
-	Thu, 25 Jan 2024 13:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F35962818;
+	Thu, 25 Jan 2024 14:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706188218; cv=none; b=TvvYqUfJdwME54kjjmMPDCutjlBK73bqpKDcuwA6NMgz+h236r586o/r4QPp+L0jND4zfwdCYLcsjyZlx9P3daUrSp22DWHwak2ndXJ2weO4/BQVUk8kQyVx5KBDl+ReNfdqiE7FDBMpIiC6J9SeleLxj9+sAaAFASz32csan+4=
+	t=1706191629; cv=none; b=sizlazH2HmyriL2NAdfyAgpyPopZKnb6rCbABA8yhMknHLOpwXu6rBHIrdTCCufd/Lgjc+bI433OMlWzhVAyV01PrM48bgqCwyNEHlIaJil5qayyTMc857hnxP+IeFghm4RqLv+wMPQEMIxhIdmW024J7gTkT8sBJViC5pDZ0NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706188218; c=relaxed/simple;
-	bh=LQFpv4X1hT+QUG0VEtK7cRc54lvNGdJoRVXIOPkgluo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bb6nHZwfngV3LqmR00dt9fewtLqZ/MwMhjfGlCL1nRZdkx/dbpnpwFksDDjRfefruPUhOlI8txGt3p3dys+R4+OWQG85ZAMMs9KFv/NSkB41XVwQTyfgeDvxAm1aZXBVhnCZJAcnOEqCfcd4ucctQ2Qlfx7yRTXOvZvKVB8ENLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from r.smirnovsmtp.omp.ru (10.189.215.22) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Thu, 25 Jan
- 2024 16:10:05 +0300
-From: Roman Smirnov <r.smirnov@omp.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Roman Smirnov <r.smirnov@omp.ru>, "Matthew Wilcox (Oracle)"
-	<willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Alexey
- Khoroshilov <khoroshilov@ispras.ru>, Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Karina Yankevich <k.yankevich@omp.ru>, <lvc-project@linuxtesting.org>,
-	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>
-Subject: [PATCH 5.10/5.15 v2 1/1 RFC] mm/truncate: Replace page_mapped() call in invalidate_inode_page()
-Date: Thu, 25 Jan 2024 13:09:47 +0000
-Message-ID: <20240125130947.600632-2-r.smirnov@omp.ru>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240125130947.600632-1-r.smirnov@omp.ru>
+	s=arc-20240116; t=1706191629; c=relaxed/simple;
+	bh=IcOwiCYIKlbjRViqEZg0G3ysWLmWBTRKQjL9VUBzpek=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WJh6okQ/ZVllQhGmJ/ddtZkPqbozYB3BTvE+yDXKmlGjTIrTw8RxtdH8QKocGYlUUfabtJWgANYNRDwy8To09IWeyzb7qIJjPrM6qz6irpfcaq6NgqsgweKEAcsgtZ0Igo3C7zWfGO8/00CIGg5+1mmgMp2E4NsIc8IJTg9EgtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=UfJQK2+v; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=XXP3YFJkDTAm2zsOnv3DQrubzByWfNV5K63UqeZtxcI=; b=UfJQK2+vPgy8YoGDyfQldf36jb
+	69jJrRB/0sNkNhT1B58DiM/8Bl2RysOAJ+BO6ns/YE8GS5Vd+FMcUPe8GPiwt6vZxUqmMib2Dzc9u
+	EuQnVQHGu2k6IUzH6aCEU18TR0l5fWFtGXJw1GZtAdzoMErMseyPH7WT7i2vjIuUIgeIImfsQNES2
+	NFpvDy5JeZJNcM+1N4L8H6o+w23uXhDea7Z4ues8MRH8ibqKq6aBkjCddPHc59spj8/b9bNH+OJtR
+	dk04RjSjwFhNEPpE1exj+3AbInvJCiCbL0grUgqheIr18GnKaP09vqKxO4UMzmyjygKWREedqDNAv
+	Tfzuhogw==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rT0Ne-0000000A91C-1kHD;
+	Thu, 25 Jan 2024 14:06:58 +0000
+Date: Thu, 25 Jan 2024 14:06:58 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Roman Smirnov <r.smirnov@omp.ru>
+Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Karina Yankevich <k.yankevich@omp.ru>, lvc-project@linuxtesting.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-ext4@vger.kernel.org,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>
+Subject: Re: [PATCH 5.10/5.15 v2 0/1 RFC] mm/truncate: fix WARNING in
+ ext4_set_page_dirty()
+Message-ID: <ZbJrAvCIufx1K2PU@casper.infradead.org>
 References: <20240125130947.600632-1-r.smirnov@omp.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -53,76 +66,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: msexch02.omp.ru (10.188.4.13) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.0, Database issued on: 01/25/2024 12:50:25
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 182932 [Jan 25 2024]
-X-KSE-AntiSpam-Info: Version: 6.1.0.3
-X-KSE-AntiSpam-Info: Envelope from: r.smirnov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 7 0.3.7 6d6bf5bd8eea7373134f756a2fd73e9456bb7d1a
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info:
-	127.0.0.199:7.1.2;omp.ru:7.1.1;r.smirnovsmtp.omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 01/25/2024 12:53:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 1/25/2024 10:40:00 AM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240125130947.600632-1-r.smirnov@omp.ru>
 
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+On Thu, Jan 25, 2024 at 01:09:46PM +0000, Roman Smirnov wrote:
+> Syzkaller reports warning in ext4_set_page_dirty() in 5.10 and 5.15
+> stable releases. It happens because invalidate_inode_page() frees pages
+> that are needed for the system. To fix this we need to add additional
+> checks to the function. page_mapped() checks if a page exists in the 
+> page tables, but this is not enough. The page can be used in other places:
+> https://elixir.bootlin.com/linux/v6.8-rc1/source/include/linux/page_ref.h#L71
+> 
+> Kernel outputs an error line related to direct I/O:
+> https://syzkaller.appspot.com/text?tag=CrashLog&x=14ab52dac80000
 
-commit e41c81d0d30e1a6ebf408feaf561f80cac4457dc upstream.
+OK, this is making a lot more sense.
 
-folio_mapped() is expensive because it has to check each page's mapcount
-field.  A cheaper check is whether there are any extra references to
-the page, other than the one we own, one from the page private data and
-the ones held by the page cache.
+The invalidate_inode_page() path (after the page_mapped check) calls
+try_to_release_page() which strips the buffers from the page.
+__remove_mapping() tries to freeze the page and presuambly fails.
 
-The call to remove_mapping() will fail in any case if it cannot freeze
-the refcount, but failing here avoids cycling the i_pages spinlock.
+ext4 is checking there are still buffer heads attached to the page.
+I'm not sure why it's doing that; it's legitimate to strip the
+bufferheads from a page and then reattach them later (if they're
+attached to a dirty page, they are created dirty).
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-[Roman: replaced folio_ref_count() call with page_ref_count(),
-folio_nr_pages() call with compound_nr(), and
-folio_has_private() call with page_has_private()]
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
----
- mm/truncate.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+So the only question in my mind is whether ext4 is right to have this
+assert in the first place.  It seems wrong to me, but perhaps someone
+from ext4 can explain why it's correct.
 
-diff --git a/mm/truncate.c b/mm/truncate.c
-index 8914ca4ce4b1..989bc7785d55 100644
---- a/mm/truncate.c
-+++ b/mm/truncate.c
-@@ -256,7 +256,9 @@ int invalidate_inode_page(struct page *page)
- 		return 0;
- 	if (PageDirty(page) || PageWriteback(page))
- 		return 0;
--	if (page_mapped(page))
-+	/* The refcount will be elevated if the page is used by the system */
-+	if (page_ref_count(page) >
-+			compound_nr(page) + page_has_private(page) + 1)
- 		return 0;
- 	return invalidate_complete_page(mapping, page);
- }
--- 
-2.34.1
-
+> The problem can be fixed in 5.10 and 5.15 stable releases by the 
+> following patch.
+> 
+> The patch replaces page_mapped() call with check that finds additional
+> references to the page excluding page cache and filesystem private data.
+> If additional references exist, the page cannot be freed.
+> 
+> This version does not include the first patch from the first version.
+> The problem can be fixed without it. 
+> 
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> 
+> Link: https://syzkaller.appspot.com/bug?extid=02f21431b65c214aa1d6
+> 
+> Matthew Wilcox (Oracle) (1):
+>   mm/truncate: Replace page_mapped() call in invalidate_inode_page()
+> 
+>  mm/truncate.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> -- 
+> 2.34.1
+> 
 
