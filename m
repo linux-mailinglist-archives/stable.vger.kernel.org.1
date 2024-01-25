@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-15793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D463E83C09E
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 12:17:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B0483C0A2
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 12:18:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 130DD1C219B3
-	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 11:17:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D489C1F227EE
+	for <lists+stable@lfdr.de>; Thu, 25 Jan 2024 11:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F22A2C6A0;
-	Thu, 25 Jan 2024 11:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E35B2C699;
+	Thu, 25 Jan 2024 11:17:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DECD28DC4;
-	Thu, 25 Jan 2024 11:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A0D41742;
+	Thu, 25 Jan 2024 11:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706181354; cv=none; b=tzATanpQmsuccSM/S+JRGSaVC+9/T4DHUSrwiGHalmrG5OBARKV2HdiwlvwZeSs8LPUKQ+OZWZgt5Jtq4OhYVSy8VXz9DPvgWz/DOjhSxVwSkX6pnqcjH/GQUDVc4oqBmxFEwGjcptxrACEbhrlaJ+YLKXh0X4eiT9foCA01ENU=
+	t=1706181467; cv=none; b=UBKqLbbwndGAubcjzYO1CxsPO+5jKjqkam9lV+qoY6/u+DZBOeelE2r+3iipJRdZGpMY84o6IPSpERG4rN1BMtCUAotmqhxW7gq70VnT6vNUKSwu/eUaDYcAJZEUmk0xQ3aHOnCBm9lEQyg4XJswnUhW+YqqvdDR9XidzogdHxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706181354; c=relaxed/simple;
-	bh=LoZQkUCiJrTcqIGsEcCsADbEl/lrWM+ebsBNPEVB6YE=;
+	s=arc-20240116; t=1706181467; c=relaxed/simple;
+	bh=igm/h/zmoLbXL5iWQEwPa7zebeNK6VDp4ngPTNMXweg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZHHM13aHvkuZEDvfxCwHoHzWj++QPQSWF4Q2T2WjeCNLV2wn1T/jqyCt1wD/0RaykUxXcg9uyzhBs5osJvgPgmKFmp6zMOcW6ROKNzsngYJUyNqmBrbWu/c5afLnCrecGHq7DURgI4VtpfHcvqyZn51c/wVb8ROAQljRX/zsuV8=
+	 Content-Type:Content-Disposition:In-Reply-To; b=bk6kbY7G+rV58AV0wE1z3LlhT3TRcVK0oW+gt6LIg0PHwej0AS6Kwlzn45IDjU3mzZ06blqS8LSK4eIjyW/PNDLYhbyzDk7EGxFrpFP0EctwX3HKyXifaTAJX7QMKYMqkMAKac7Zs4eXAj0o/Rjaz4lQvZHZbjATWoEN4ewMDXo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CF1841FB;
-	Thu, 25 Jan 2024 03:16:35 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6DC181477;
+	Thu, 25 Jan 2024 03:18:29 -0800 (PST)
 Received: from bogus (unknown [10.57.78.12])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8A5E73F73F;
-	Thu, 25 Jan 2024 03:15:47 -0800 (PST)
-Date: Thu, 25 Jan 2024 11:15:44 +0000
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3D7673F73F;
+	Thu, 25 Jan 2024 03:17:41 -0800 (PST)
+Date: Thu, 25 Jan 2024 11:17:38 +0000
 From: Sudeep Holla <sudeep.holla@arm.com>
 To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 Cc: x86@kernel.org, Andreas Herrmann <aherrmann@suse.com>,
@@ -47,12 +47,11 @@ Cc: x86@kernel.org, Andreas Herrmann <aherrmann@suse.com>,
 	Will Deacon <will@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
 	Huang Ying <ying.huang@intel.com>,
 	"Ravi V. Shankar" <ravi.v.shankar@intel.com>,
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 1/4] cacheinfo: Check for null last-level cache info
-Message-ID: <20240125111544.xhiomitgeazxm7cw@bogus>
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 0/4] x86/cacheinfo: Set the number of leaves per CPU
+Message-ID: <20240125111738.4otb55z2pj7ddtpk@bogus>
 References: <20231212222519.12834-1-ricardo.neri-calderon@linux.intel.com>
- <20231212222519.12834-2-ricardo.neri-calderon@linux.intel.com>
+ <20240125025652.GA15039@ranerica-svr.sc.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,51 +60,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231212222519.12834-2-ricardo.neri-calderon@linux.intel.com>
+In-Reply-To: <20240125025652.GA15039@ranerica-svr.sc.intel.com>
 
-On Tue, Dec 12, 2023 at 02:25:16PM -0800, Ricardo Neri wrote:
-> Before determining the validity of the last-level cache info, ensure that
-> it has been allocated. Simply checking for non-zero cache_leaves() is not
-> sufficient, as some architectures (e.g., Intel processors) have non-zero
-> cache_leaves() before allocation.
+On Wed, Jan 24, 2024 at 06:56:52PM -0800, Ricardo Neri wrote:
+> On Tue, Dec 12, 2023 at 02:25:15PM -0800, Ricardo Neri wrote:
+> > Hi,
+> > 
+> > The interface /sys/devices/system/cpu/cpuX/cache is broken (not populated)
+> > if CPUs have different numbers of subleaves in CPUID 4. This is the case
+> > of Intel Meteor Lake.
 > 
-> Dereferencing NULL cacheinfo can occur in update_per_cpu_data_slice_size().
-> This function iterates over all online CPUs. However, a CPU may have come
-> online recently, but its cacheinfo may not have been allocated yet.
+> Hello. Wondering if there is any feedback on this patchset. The interface
+> /sys/devices/system/cpu/cpuX/cache is still broken on Meteor Lake with
+> v6.8-rc1.
 > 
-> Cc: Andreas Herrmann <aherrmann@suse.com>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Chen Yu <yu.c.chen@intel.com>
-> Cc: Huang Ying <ying.huang@intel.com>
-> Cc: Len Brown <len.brown@intel.com>
-> Cc: Radu Rendec <rrendec@redhat.com>
-> Cc: Pierre Gondois <Pierre.Gondois@arm.com>
-> Cc: Pu Wen <puwen@hygon.cn>
-> Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> I verified that this patchset applies cleanly on v6.8-rc1.
+> 
 
-If you respin, you can address the below minor nit. I am fine as is as
-well.
+Sorry I though I had acked it but now I see 1/4 is new in v4. I have
+responded on the original patch.
 
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-
-[...]
-
-> diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
-> index f1e79263fe61..967c5cf3fb1d 100644
-> --- a/drivers/base/cacheinfo.c
-> +++ b/drivers/base/cacheinfo.c
-> @@ -61,6 +61,9 @@ bool last_level_cache_is_valid(unsigned int cpu)
->  	if (!cache_leaves(cpu))
->  		return false;
->  
-> +	if (!per_cpu_cacheinfo(cpu))
-> +		return false;
-> +
-
-[nit] You can even combine this with above if condition.
-
--- 
+--
 Regards,
 Sudeep
 
