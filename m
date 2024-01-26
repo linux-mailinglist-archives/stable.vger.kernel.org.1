@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-15869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680D583D56C
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 10:06:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A34D083D56D
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 10:06:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2659D288A39
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 09:06:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F763288655
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 09:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E25629E7;
-	Fri, 26 Jan 2024 07:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD080629F5;
+	Fri, 26 Jan 2024 07:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wUPel4H8"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="D+8A55Kd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65846FA8;
-	Fri, 26 Jan 2024 07:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B58ED310;
+	Fri, 26 Jan 2024 07:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706255737; cv=none; b=HGGLon5bzx5oKy4HBC7CmqyDw/G3OTSakbA1WCpPPDyBQRjyEVQaB6puqqxqeqP4Ect2/QegOo7HpMY8/1iLIdHQiGupW0y6mquC7W9U+o80OLOVRIKgamk9AYkgjX1JPkdLG/fB6U17lUsD15Mymi2uoSWIAvVol03qsZ+r6K4=
+	t=1706255748; cv=none; b=lVfTf0cJzB001DZ1YCuE/sEZcXuuvtNk0IDI8M2x9riNH3jF8wQhLENzHPX+fkUebeUP3O0QSEKVx7bKvx1eDG7bUmKTB2C3kWKzyzerVzbcBHdHNI4xdnhMTUyCe6FxnSRxcD1HO6GGdVQCS6K6g5kZIfMilJFAJ0w55306Y04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706255737; c=relaxed/simple;
-	bh=NyGHhL/rwDqeHhyfZWGT//uKcVcjOZ7lNmrf87RREn0=;
-	h=Date:To:From:Subject:Message-Id; b=owB+HtUZUn0N1LXxDSY6q9lf/kH+v0x6zAam32WSA35CNPSMpXlvtK3Z314rXuqxlpaRf/DzVmSetxS2hKv8ZEY/nqGsdnypq+AI08L7vWq43ZGPjVsFmQ2KDt2px6NmjgFH5Y0VRkvlGVL2UbLCn6WISmkzx7MAox0DO2wDORw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wUPel4H8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02B4C433F1;
-	Fri, 26 Jan 2024 07:55:36 +0000 (UTC)
+	s=arc-20240116; t=1706255748; c=relaxed/simple;
+	bh=48zko/Uq/xju7EdHq660h8kS2uU3R7BvrXHmtqurNBQ=;
+	h=Date:To:From:Subject:Message-Id; b=U5B0GykHUKd8bWI+2hd64x2KldaKM/4flTwS4NrHWBt2IhqMYqhtAOSvz1EkVXCdwU+3AnoIwVfAO011873ms9c9TV+ITxcJLCxyeCwjkaJifLkBqEyzxFPyfRKtlDLDTzCMgxQhaRvr+A2NkukYor0vNvWmAiam/2nqCITGBgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=D+8A55Kd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B410C433C7;
+	Fri, 26 Jan 2024 07:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1706255737;
-	bh=NyGHhL/rwDqeHhyfZWGT//uKcVcjOZ7lNmrf87RREn0=;
+	s=korg; t=1706255747;
+	bh=48zko/Uq/xju7EdHq660h8kS2uU3R7BvrXHmtqurNBQ=;
 	h=Date:To:From:Subject:From;
-	b=wUPel4H8sGC4IvZf2FmCYk4mheVCEFWdexg8p5cxP/OC0hB2qOkrtLy6h9aHYbQhi
-	 XSgF12bkEx5ugad9FHKAhUSNRYwM8YRLqTF9fHRvLcYZ/HLLOPtuJabXDVe+60yc6q
-	 gNrDcnlH+ZlJwaN4Y1jURp9pBZ0cOUEyX+z6eigQ=
-Date: Thu, 25 Jan 2024 23:55:34 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,MPatlasov@parallels.com,zokeefe@google.com,akpm@linux-foundation.org
+	b=D+8A55KdvT2oXxsQh+F9jLbv0JJH3saV3alIGAto7L5CjSYU7sz6gmuAW0A235c6D
+	 UxV1R5TZErzdIzwnrUXPycKS1ZQiMCmll63A/8tXUNeExY1mPZ3FR0KHLikC0Cudbt
+	 +RDPk5GKjgYBK1392mXXWkLwAh4xDw7AnxOkSQcs=
+Date: Thu, 25 Jan 2024 23:55:44 -0800
+To: mm-commits@vger.kernel.org,will@kernel.org,stable@vger.kernel.org,samitolvanen@google.com,samuel.holland@sifive.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-writeback-fix-possible-divide-by-zero-in-wb_dirty_limits-again.patch removed from -mm tree
-Message-Id: <20240126075536.D02B4C433F1@smtp.kernel.org>
+Subject: [merged mm-stable] scs-add-config_mmu-dependency-for-vfree_atomic.patch removed from -mm tree
+Message-Id: <20240126075547.7B410C433C7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,58 +50,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again
+     Subject: scs: add CONFIG_MMU dependency for vfree_atomic()
 has been removed from the -mm tree.  Its filename was
-     mm-writeback-fix-possible-divide-by-zero-in-wb_dirty_limits-again.patch
+     scs-add-config_mmu-dependency-for-vfree_atomic.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: "Zach O'Keefe" <zokeefe@google.com>
-Subject: mm/writeback: fix possible divide-by-zero in wb_dirty_limits(), again
-Date: Thu, 18 Jan 2024 10:19:53 -0800
+From: Samuel Holland <samuel.holland@sifive.com>
+Subject: scs: add CONFIG_MMU dependency for vfree_atomic()
+Date: Mon, 22 Jan 2024 09:52:01 -0800
 
-(struct dirty_throttle_control *)->thresh is an unsigned long, but is
-passed as the u32 divisor argument to div_u64().  On architectures where
-unsigned long is 64 bytes, the argument will be implicitly truncated.
+The shadow call stack implementation fails to build without CONFIG_MMU:
 
-Use div64_u64() instead of div_u64() so that the value used in the "is
-this a safe division" check is the same as the divisor.
+  ld.lld: error: undefined symbol: vfree_atomic
+  >>> referenced by scs.c
+  >>>               kernel/scs.o:(scs_free) in archive vmlinux.a
 
-Also, remove redundant cast of the numerator to u64, as that should happen
-implicitly.
-
-This would be difficult to exploit in memcg domain, given the ratio-based
-arithmetic domain_drity_limits() uses, but is much easier in global
-writeback domain with a BDI_CAP_STRICTLIMIT-backing device, using e.g. 
-vm.dirty_bytes=(1<<32)*PAGE_SIZE so that dtc->thresh == (1<<32)
-
-Link: https://lkml.kernel.org/r/20240118181954.1415197-1-zokeefe@google.com
-Fixes: f6789593d5ce ("mm/page-writeback.c: fix divide by zero in bdi_dirty_limits()")
-Signed-off-by: Zach O'Keefe <zokeefe@google.com>
-Cc: Maxim Patlasov <MPatlasov@parallels.com>
+Link: https://lkml.kernel.org/r/20240122175204.2371009-1-samuel.holland@sifive.com
+Fixes: a2abe7cbd8fe ("scs: switch to vmapped shadow stacks")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Cc: Will Deacon <will@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/page-writeback.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/page-writeback.c~mm-writeback-fix-possible-divide-by-zero-in-wb_dirty_limits-again
-+++ a/mm/page-writeback.c
-@@ -1638,7 +1638,7 @@ static inline void wb_dirty_limits(struc
- 	 */
- 	dtc->wb_thresh = __wb_calc_thresh(dtc);
- 	dtc->wb_bg_thresh = dtc->thresh ?
--		div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
-+		div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
- 
- 	/*
- 	 * In order to avoid the stacked BDI deadlock we need
+--- a/arch/Kconfig~scs-add-config_mmu-dependency-for-vfree_atomic
++++ a/arch/Kconfig
+@@ -673,6 +673,7 @@ config SHADOW_CALL_STACK
+ 	bool "Shadow Call Stack"
+ 	depends on ARCH_SUPPORTS_SHADOW_CALL_STACK
+ 	depends on DYNAMIC_FTRACE_WITH_ARGS || DYNAMIC_FTRACE_WITH_REGS || !FUNCTION_GRAPH_TRACER
++	depends on MMU
+ 	help
+ 	  This option enables the compiler's Shadow Call Stack, which
+ 	  uses a shadow stack to protect function return addresses from
 _
 
-Patches currently in -mm which might be from zokeefe@google.com are
+Patches currently in -mm which might be from samuel.holland@sifive.com are
 
 
 
