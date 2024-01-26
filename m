@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F3883E729
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:42:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F6B83E728
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:42:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7B8DB26A5B
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A03812863B9
 	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68E35D759;
-	Fri, 26 Jan 2024 23:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C500F5C5E5;
+	Fri, 26 Jan 2024 23:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hdr16ITK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbwIQ0Wo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854735C8E5
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8455458218
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706312405; cv=none; b=mryrFAiGBfWslWA6E16V5Y0mvoJt+UqQ4MVvWmUjKo7iUC+enb3/8/aFVUdRxBkdrrWzgKnOMzyTyCBXxynqhINPQn0qIAtGuLryByeXHmd1X2NyBpIUpVZ91q7uD2rU+GROhLZPc1Ik34SrViQESwnHhaOlfxM9l/9xx7chP6c=
+	t=1706312409; cv=none; b=Es3NmJTYn3M/Ex1OxGj9rNNoogWl2Y4u2XSvlTaqI21uc8NDKiAkfrDExpVUyVHT7WcVi+qrPfdgizkIhdzOVAE0OgoWDZWgrci1Tw6v+IdWO51Fcq2/FweJVUyLPBAt4kKZUEjDzhcd5mTLYMFmOUUS24xoYcMs5A9N6gBHc3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706312405; c=relaxed/simple;
-	bh=jGqwx1MiotaK3/LIEls2AaSDBp1UEacu26ITg81T+ew=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=s9aF+EkfOVjDTTNDsSITVBWKDz9XfZiD1qP0qXw8Et9GmDVfB1etxdvL2G8xAk0B4zJhPZSBUjeRU1Ihy7X04L+3+md8z9ZTksqNjOpMM9bLN/ZCa2NEQfUlwmDFE7yM9e/XUVYdD6AgSZ+6y3P7oFztWHirHOLGgtWSJ1HH8r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hdr16ITK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A357C433C7;
-	Fri, 26 Jan 2024 23:40:05 +0000 (UTC)
+	s=arc-20240116; t=1706312409; c=relaxed/simple;
+	bh=qKVU9Q4a38yEmM3ZhHq5MkZsjqu131PQF52Dw5hzWQQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=peFgJJHSmy92G/6j/2jel5yrejns7c29ovV20HqMUa1fB8BUh5TE+s/ESXPiYqL6QNAhzSQGA+l1pGH3grMTQ4XjKRjuvay/21Sggk93wdCaELojoBNpS/7v2gJtupbj4g36C6nOJpJ1SB5J3MFAwz8vq/13kG4lAJliGzyy8Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbwIQ0Wo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C679C433F1;
+	Fri, 26 Jan 2024 23:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706312405;
-	bh=jGqwx1MiotaK3/LIEls2AaSDBp1UEacu26ITg81T+ew=;
+	s=korg; t=1706312409;
+	bh=qKVU9Q4a38yEmM3ZhHq5MkZsjqu131PQF52Dw5hzWQQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hdr16ITKSSsnhCFYAyysrDJuw5BRJ+QajPaZXe/0dlZmI1cnPZbFztoz+PVeBfYuL
-	 GHpYtXGCTufgAEcjEIGPhwrospM7g7B8T8YuJSZwJMG0IUN3+QwFQFhaOHoEIHoWDc
-	 oOVAG1pF16wofuCvR5XcLTIjWFdTEcoM62LsbUtI=
-Subject: FAILED: patch "[PATCH] mm/sparsemem: fix race in accessing memory_section->usage" failed to apply to 5.10-stable tree
+	b=NbwIQ0Wocj/XqbkK9ciNpN1AqV1w8yWbJKEnUqM3Uvj6lRQj0/XSLK9yblQ+aQhsT
+	 gPnWlvR28HFbT0Nq0gsi7hZjztMiN+VERwOxiT0TiG5i1XBu2rWgSGiKbFLu/XGeBU
+	 pD3am/oCK1L0szGbWREGdU1sA72QKyk7ezCoFBnk=
+Subject: FAILED: patch "[PATCH] mm/sparsemem: fix race in accessing memory_section->usage" failed to apply to 5.4-stable tree
 To: quic_charante@quicinc.com,akpm@linux-foundation.org,aneesh.kumar@linux.ibm.com,dan.j.williams@intel.com,david@redhat.com,mgorman@techsingularity.net,osalvador@suse.de,stable@vger.kernel.org,vbabka@suse.cz
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 26 Jan 2024 15:40:04 -0800
-Message-ID: <2024012604-protegee-reassign-85ae@gregkh>
+Date: Fri, 26 Jan 2024 15:40:08 -0800
+Message-ID: <2024012608-bonanza-edition-993c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,31 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5ec8e8ea8b7783fab150cf86404fc38cb4db8800
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012604-protegee-reassign-85ae@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012608-bonanza-edition-993c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 5ec8e8ea8b77 ("mm/sparsemem: fix race in accessing memory_section->usage")
 f1dc0db296bd ("mm: use __pfn_to_section() instead of open coding it")
+0a9f9f623166 ("mm/sparse.c: only use subsection map in VMEMMAP case")
+37bc15020a96 ("mm/sparse.c: introduce a new function clear_subsection_map()")
+5d87255cadde ("mm/sparse.c: introduce new function fill_subsection_map()")
+b943f045a9af ("mm/sparse: fix kernel crash with pfn_section_valid check")
+d41e2f3bd546 ("mm/hotplug: fix hot remove failure in SPARSEMEM|!VMEMMAP case")
+1f503443e7df ("mm/sparse.c: reset section's mem_map when fully deactivated")
+8068df3b6037 ("mm/memory_hotplug: don't free usage map when removing a re-added early section")
 
 thanks,
 
