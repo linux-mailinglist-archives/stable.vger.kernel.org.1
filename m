@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2207583E66D
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:17:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F00FD83E6FD
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:31:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCE0D28AB53
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:17:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FEF8B23C87
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B023159144;
-	Fri, 26 Jan 2024 23:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5801756B75;
+	Fri, 26 Jan 2024 23:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6jzU5nc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Av6SHHPl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713E059142
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5348D58221
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706310875; cv=none; b=L/lXRb/jM+RwL1IRcmNpPQT+IsiTxB2gOB6cYWmzO5rl5XDmuNX6uJVZw5kPIajMzyeaXL1lwVVXRhZnYDY5o6Dkl9/fttpzLJ6cqzWffLshl4ZAl/inDjg9pp4qxU/Zjj6aZPrleQWZSO9h/IuhmACBTB3SHXAFWL0kRZOL2Pc=
+	t=1706311888; cv=none; b=AbFf+ybMWwLmRr+/lSyppRUEK46b0EdoDfFVM7SYG2TbR/quvTcrfMjogd8wURhuKyrydjwmvHKVDxeah9qvq15c7PogIxT3UzFaysyb3gafxf9y6K76cinE8/R3pwwNE2srbxHRoc6lvHxQn+BXglTn5ivWNgVY1pjgzAoFfMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706310875; c=relaxed/simple;
-	bh=nTFAvHrOFHjls0US+R66Guv6BxptMv+b4PZY8uzn2m0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EyDBA1YtjQE8KFC1m5fpcD1BztcjksuoEOSRwxFdyrM7JEhs7Hdz4DKGl6rdk4e8DKMuXtnG19Yh0gTUpugxwsLHu8pn4Ebd/ZlN+1K+NfYRXe8X3giQ+wJz8Wuoy/iyYX/rBOip/kSfAprHYmOA0bQvMIzOT/rE3uxSPAjkojI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6jzU5nc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2E3C433C7;
-	Fri, 26 Jan 2024 23:14:34 +0000 (UTC)
+	s=arc-20240116; t=1706311888; c=relaxed/simple;
+	bh=Za41/0iOYYtVW9yV3dP9IHmJPm3/fxzj4Nk8vOD24E4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VOOIvJXpRoiplE+ZyIaxQZd62xUNuOIOE42Zg1YujbNU+eyt81nf4vw/QShw+0ud5gFoMoGbU6Q1RJolAiDsw+QbNdh0g+ugxJlCgGQ5GOqPDGH/1aMJHZQlp3b1em9netVOHnqNf1hGG1SETWh3AiQY/duEj8T76++NJNE9PP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Av6SHHPl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5785DC433C7;
+	Fri, 26 Jan 2024 23:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706310875;
-	bh=nTFAvHrOFHjls0US+R66Guv6BxptMv+b4PZY8uzn2m0=;
+	s=korg; t=1706311887;
+	bh=Za41/0iOYYtVW9yV3dP9IHmJPm3/fxzj4Nk8vOD24E4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=v6jzU5ncwePOYXVaUNZLRuIswC4XqqsyasV7L/Rjss4sLKPCZzja0KyJU5a5RAbOW
-	 az/ehknbcnA3WdPoY8yFZ5eSehexq1wLjL3Y/4jJKi6X9XW6+RPEiggE7A7gBG6SUC
-	 2as+4zXelAXr04w8kOqrwPXFpgr30sZdPjSlSlZY=
-Subject: FAILED: patch "[PATCH] arm64: entry: fix ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD" failed to apply to 6.1-stable tree
-To: mark.rutland@arm.com,catalin.marinas@arm.com,james.morse@arm.com,robh@kernel.org,will@kernel.org
+	b=Av6SHHPlyU+cfvHiVNy+oikosa7yXsJ2lzhw+h9MLiml6ZLBVAA9bqZO8eeuWiFOn
+	 0Af5mDIRp+XYBJudxY6S83jg7trpiRePcI4DQp/kWR62eeX8i4Kj7eTTpJ9SHjpMeh
+	 FANiLy6CEdoyIs/qTsi70mjicJ3j7UOgztTQ3wEM=
+Subject: FAILED: patch "[PATCH] media: i2c: imx290: Properly encode registers as" failed to apply to 6.6-stable tree
+To: alexander.stein@ew.tq-group.com,hdegoede@redhat.com,hverkuil-cisco@xs4all.nl,laurent.pinchart@ideasonboard.com,sakari.ailus@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 26 Jan 2024 15:14:34 -0800
-Message-ID: <2024012633-expenses-vastly-81bc@gregkh>
+Date: Fri, 26 Jan 2024 15:31:26 -0800
+Message-ID: <2024012626-lyrically-lifting-ba4e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,27 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 832dd634bd1b4e3bbe9f10b9c9ba5db6f6f2b97f
+git cherry-pick -x 60fc87a69523c294eb23a1316af922f6665a6f8c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012633-expenses-vastly-81bc@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012626-lyrically-lifting-ba4e@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-832dd634bd1b ("arm64: entry: fix ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD")
-546b7cde9b1d ("arm64: Rename ARM64_WORKAROUND_2966298")
-471470bc7052 ("arm64: errata: Add Cortex-A520 speculative unprivileged load workaround")
-cce8365fc47b ("arm64: errata: Group all Cortex-A510 errata together")
-e8069f5a8e3b ("Merge tag 'for-linus' of git://git.kernel.org/pub/scm/virt/kvm/kvm")
+60fc87a69523 ("media: i2c: imx290: Properly encode registers as little-endian")
 
 thanks,
 
@@ -81,133 +77,97 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 832dd634bd1b4e3bbe9f10b9c9ba5db6f6f2b97f Mon Sep 17 00:00:00 2001
-From: Mark Rutland <mark.rutland@arm.com>
-Date: Tue, 16 Jan 2024 11:02:20 +0000
-Subject: [PATCH] arm64: entry: fix ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
+From 60fc87a69523c294eb23a1316af922f6665a6f8c Mon Sep 17 00:00:00 2001
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+Date: Thu, 2 Nov 2023 10:50:48 +0100
+Subject: [PATCH] media: i2c: imx290: Properly encode registers as
+ little-endian
 
-Currently the ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD workaround isn't
-quite right, as it is supposed to be applied after the last explicit
-memory access, but is immediately followed by an LDR.
+The conversion to CCI also converted the multi-byte register access to
+big-endian. Correct the register definition by using the correct
+little-endian ones.
 
-The ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD workaround is used to
-handle Cortex-A520 erratum 2966298 and Cortex-A510 erratum 3117295,
-which are described in:
-
-* https://developer.arm.com/documentation/SDEN2444153/0600/?lang=en
-* https://developer.arm.com/documentation/SDEN1873361/1600/?lang=en
-
-In both cases the workaround is described as:
-
-| If pagetable isolation is disabled, the context switch logic in the
-| kernel can be updated to execute the following sequence on affected
-| cores before exiting to EL0, and after all explicit memory accesses:
-|
-| 1. A non-shareable TLBI to any context and/or address, including
-|    unused contexts or addresses, such as a `TLBI VALE1 Xzr`.
-|
-| 2. A DSB NSH to guarantee completion of the TLBI.
-
-The important part being that the TLBI+DSB must be placed "after all
-explicit memory accesses".
-
-Unfortunately, as-implemented, the TLBI+DSB is immediately followed by
-an LDR, as we have:
-
-| alternative_if ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
-| 	tlbi	vale1, xzr
-| 	dsb	nsh
-| alternative_else_nop_endif
-| alternative_if_not ARM64_UNMAP_KERNEL_AT_EL0
-| 	ldr	lr, [sp, #S_LR]
-| 	add	sp, sp, #PT_REGS_SIZE		// restore sp
-| 	eret
-| alternative_else_nop_endif
-|
-| [ ... KPTI exception return path ... ]
-
-This patch fixes this by reworking the logic to place the TLBI+DSB
-immediately before the ERET, after all explicit memory accesses.
-
-The ERET is currently in a separate alternative block, and alternatives
-cannot be nested. To account for this, the alternative block for
-ARM64_UNMAP_KERNEL_AT_EL0 is replaced with a single alternative branch
-to skip the KPTI logic, with the new shape of the logic being:
-
-| alternative_insn "b .L_skip_tramp_exit_\@", nop, ARM64_UNMAP_KERNEL_AT_EL0
-| 	[ ... KPTI exception return path ... ]
-| .L_skip_tramp_exit_\@:
-|
-| 	ldr	lr, [sp, #S_LR]
-| 	add	sp, sp, #PT_REGS_SIZE		// restore sp
-|
-| alternative_if ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
-| 	tlbi	vale1, xzr
-| 	dsb	nsh
-| alternative_else_nop_endif
-| 	eret
-
-The new structure means that the workaround is only applied when KPTI is
-not in use; this is fine as noted in the documented implications of the
-erratum:
-
-| Pagetable isolation between EL0 and higher level ELs prevents the
-| issue from occurring.
-
-... and as per the workaround description quoted above, the workaround
-is only necessary "If pagetable isolation is disabled".
-
-Fixes: 471470bc7052 ("arm64: errata: Add Cortex-A520 speculative unprivileged load workaround")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Will Deacon <will@kernel.org>
+Fixes: af73323b9770 ("media: imx290: Convert to new CCI register access helpers")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240116110221.420467-2-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+[Sakari Ailus: Fixed the Fixes: tag.]
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-diff --git a/arch/arm64/kernel/entry.S b/arch/arm64/kernel/entry.S
-index 544ab46649f3..7fcbee0f6c0e 100644
---- a/arch/arm64/kernel/entry.S
-+++ b/arch/arm64/kernel/entry.S
-@@ -428,16 +428,9 @@ alternative_else_nop_endif
- 	ldp	x28, x29, [sp, #16 * 14]
+diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
+index 52ba6188911b..9967f3477433 100644
+--- a/drivers/media/i2c/imx290.c
++++ b/drivers/media/i2c/imx290.c
+@@ -41,18 +41,18 @@
+ #define IMX290_WINMODE_720P				(1 << 4)
+ #define IMX290_WINMODE_CROP				(4 << 4)
+ #define IMX290_FR_FDG_SEL				CCI_REG8(0x3009)
+-#define IMX290_BLKLEVEL					CCI_REG16(0x300a)
++#define IMX290_BLKLEVEL					CCI_REG16_LE(0x300a)
+ #define IMX290_GAIN					CCI_REG8(0x3014)
+-#define IMX290_VMAX					CCI_REG24(0x3018)
++#define IMX290_VMAX					CCI_REG24_LE(0x3018)
+ #define IMX290_VMAX_MAX					0x3ffff
+-#define IMX290_HMAX					CCI_REG16(0x301c)
++#define IMX290_HMAX					CCI_REG16_LE(0x301c)
+ #define IMX290_HMAX_MAX					0xffff
+-#define IMX290_SHS1					CCI_REG24(0x3020)
++#define IMX290_SHS1					CCI_REG24_LE(0x3020)
+ #define IMX290_WINWV_OB					CCI_REG8(0x303a)
+-#define IMX290_WINPV					CCI_REG16(0x303c)
+-#define IMX290_WINWV					CCI_REG16(0x303e)
+-#define IMX290_WINPH					CCI_REG16(0x3040)
+-#define IMX290_WINWH					CCI_REG16(0x3042)
++#define IMX290_WINPV					CCI_REG16_LE(0x303c)
++#define IMX290_WINWV					CCI_REG16_LE(0x303e)
++#define IMX290_WINPH					CCI_REG16_LE(0x3040)
++#define IMX290_WINWH					CCI_REG16_LE(0x3042)
+ #define IMX290_OUT_CTRL					CCI_REG8(0x3046)
+ #define IMX290_ODBIT_10BIT				(0 << 0)
+ #define IMX290_ODBIT_12BIT				(1 << 0)
+@@ -78,28 +78,28 @@
+ #define IMX290_ADBIT2					CCI_REG8(0x317c)
+ #define IMX290_ADBIT2_10BIT				0x12
+ #define IMX290_ADBIT2_12BIT				0x00
+-#define IMX290_CHIP_ID					CCI_REG16(0x319a)
++#define IMX290_CHIP_ID					CCI_REG16_LE(0x319a)
+ #define IMX290_ADBIT3					CCI_REG8(0x31ec)
+ #define IMX290_ADBIT3_10BIT				0x37
+ #define IMX290_ADBIT3_12BIT				0x0e
+ #define IMX290_REPETITION				CCI_REG8(0x3405)
+ #define IMX290_PHY_LANE_NUM				CCI_REG8(0x3407)
+ #define IMX290_OPB_SIZE_V				CCI_REG8(0x3414)
+-#define IMX290_Y_OUT_SIZE				CCI_REG16(0x3418)
+-#define IMX290_CSI_DT_FMT				CCI_REG16(0x3441)
++#define IMX290_Y_OUT_SIZE				CCI_REG16_LE(0x3418)
++#define IMX290_CSI_DT_FMT				CCI_REG16_LE(0x3441)
+ #define IMX290_CSI_DT_FMT_RAW10				0x0a0a
+ #define IMX290_CSI_DT_FMT_RAW12				0x0c0c
+ #define IMX290_CSI_LANE_MODE				CCI_REG8(0x3443)
+-#define IMX290_EXTCK_FREQ				CCI_REG16(0x3444)
+-#define IMX290_TCLKPOST					CCI_REG16(0x3446)
+-#define IMX290_THSZERO					CCI_REG16(0x3448)
+-#define IMX290_THSPREPARE				CCI_REG16(0x344a)
+-#define IMX290_TCLKTRAIL				CCI_REG16(0x344c)
+-#define IMX290_THSTRAIL					CCI_REG16(0x344e)
+-#define IMX290_TCLKZERO					CCI_REG16(0x3450)
+-#define IMX290_TCLKPREPARE				CCI_REG16(0x3452)
+-#define IMX290_TLPX					CCI_REG16(0x3454)
+-#define IMX290_X_OUT_SIZE				CCI_REG16(0x3472)
++#define IMX290_EXTCK_FREQ				CCI_REG16_LE(0x3444)
++#define IMX290_TCLKPOST					CCI_REG16_LE(0x3446)
++#define IMX290_THSZERO					CCI_REG16_LE(0x3448)
++#define IMX290_THSPREPARE				CCI_REG16_LE(0x344a)
++#define IMX290_TCLKTRAIL				CCI_REG16_LE(0x344c)
++#define IMX290_THSTRAIL					CCI_REG16_LE(0x344e)
++#define IMX290_TCLKZERO					CCI_REG16_LE(0x3450)
++#define IMX290_TCLKPREPARE				CCI_REG16_LE(0x3452)
++#define IMX290_TLPX					CCI_REG16_LE(0x3454)
++#define IMX290_X_OUT_SIZE				CCI_REG16_LE(0x3472)
+ #define IMX290_INCKSEL7					CCI_REG8(0x3480)
  
- 	.if	\el == 0
--alternative_if ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
--	tlbi	vale1, xzr
--	dsb	nsh
--alternative_else_nop_endif
--alternative_if_not ARM64_UNMAP_KERNEL_AT_EL0
--	ldr	lr, [sp, #S_LR]
--	add	sp, sp, #PT_REGS_SIZE		// restore sp
--	eret
--alternative_else_nop_endif
- #ifdef CONFIG_UNMAP_KERNEL_AT_EL0
-+	alternative_insn "b .L_skip_tramp_exit_\@", nop, ARM64_UNMAP_KERNEL_AT_EL0
-+
- 	msr	far_el1, x29
- 
- 	ldr_this_cpu	x30, this_cpu_vector, x29
-@@ -446,7 +439,18 @@ alternative_else_nop_endif
- 	ldr		lr, [sp, #S_LR]		// restore x30
- 	add		sp, sp, #PT_REGS_SIZE	// restore sp
- 	br		x29
-+
-+.L_skip_tramp_exit_\@:
- #endif
-+	ldr	lr, [sp, #S_LR]
-+	add	sp, sp, #PT_REGS_SIZE		// restore sp
-+
-+	/* This must be after the last explicit memory access */
-+alternative_if ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
-+	tlbi	vale1, xzr
-+	dsb	nsh
-+alternative_else_nop_endif
-+	eret
- 	.else
- 	ldr	lr, [sp, #S_LR]
- 	add	sp, sp, #PT_REGS_SIZE		// restore sp
+ #define IMX290_PGCTRL_REGEN				BIT(0)
 
 
