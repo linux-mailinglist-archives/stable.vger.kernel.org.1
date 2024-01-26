@@ -1,99 +1,93 @@
-Return-Path: <stable+bounces-15854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBCBA83D1F9
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 02:20:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B001083D207
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 02:25:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 716331F280C5
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 01:20:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2D771C23434
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 01:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44A1EDE;
-	Fri, 26 Jan 2024 01:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575EF64C;
+	Fri, 26 Jan 2024 01:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qzQU70hZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bxHKiUCZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711CE10EB;
-	Fri, 26 Jan 2024 01:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18770387
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 01:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706232026; cv=none; b=pYUDXxtVGxUI7+VrD79sxNXPSvr+IX4NVm1uTyAeBOd5YivHk2quL+NfBxdoFWffpsNGFjfe28hnrcbQslmE8Fu5Y2HB3g4xPdwooSoNg0Zq4LeiYjRgUeGKLCmoCT7FgeIIA5MsvGZyL7xdLp/VkGk5hthK3cb2V5u9Tb+GSHo=
+	t=1706232339; cv=none; b=JjGa59kHtisaNDxbXJwFg+p7p4RyqxgUB9xze6fC5F64zEci38yvlwdlBUDuDG8AlsyNb01iAQB5G9doz7J8EKooBdh4HQ4Z7y8cpfwlVs6fIeeOG/F0MsoUok2ac3F5HT58AJNTCJ7Ga8nXE/eeL2gabEOCC6PWkHIXyiNuGcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706232026; c=relaxed/simple;
-	bh=4iLoBqaccVX5n9tGRz8vuNGgChim58LtYaOmr57xmnU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IDDC++Oee22F9JQIfCkHJA8YXmkxrnWkT95ARl/L7ELTkDS7Z2GkQfBRWBjXBCQZ9y5oaB8Bg7YMRiEpxnqFy0fnB7tJkhLIQKWXYDxv2pWUnRMBMUg+VScYGcNtl7dCP5p/hWWxOFNkfFoneXpOBiDmcqoGsbbr4wC2CDPU444=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qzQU70hZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 13EC1C43390;
-	Fri, 26 Jan 2024 01:20:26 +0000 (UTC)
+	s=arc-20240116; t=1706232339; c=relaxed/simple;
+	bh=TFoAQsFJNDG4zjawbmhRmZZ6FKGRxULtj3mVnE4u6ss=;
+	h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IKroUIFyPZAW2NJaqidts8Y+kHiIah0bIwlTzSr7dIlzdfnrufRDAc5XkDzfavL/NNjRMtTbUhhT6dZ0EauAZg8g4WPiZL01CZBwV2Dev/qmYQKSbDh5a8EiwV+O3y4QwyFa9a0SkYSzAjsDcp8fmgc61vhb1CB+durhq1zIdg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bxHKiUCZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8038BC43390
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 01:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706232026;
-	bh=4iLoBqaccVX5n9tGRz8vuNGgChim58LtYaOmr57xmnU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=qzQU70hZl26D4Cz0F+P9dFyzDZ+2okyr+3N4FAU8o+Yvi5GFp5zzeArfJjlVID/xh
-	 xiC0F+aVBSY+wpmb23rcbA0+CcpkOUG2GD+ITHUQVpEYevWoPTRkGyWp6yApwsuqww
-	 z3qUwJsZh4tN6AZPd7IogdpKLRlvm7O404GbJExexVQUvrjV08nEZQ23Yc7JWJ4AL8
-	 jpGsDANRIuohf7Fu7wZwtQhHOBrInS4J09cDh3r2f62T7FYUYKBYn8bDrkRyoi3Q/5
-	 bY+vDnjCStmSUdkXwarqxeTqkf0ibVIQZIy3ozEWlgwY9pbSuaPKfmue5/L53UqM1L
-	 tiBcX7m6UDr/Q==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id F0836D8C966;
-	Fri, 26 Jan 2024 01:20:25 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1706232338;
+	bh=TFoAQsFJNDG4zjawbmhRmZZ6FKGRxULtj3mVnE4u6ss=;
+	h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+	b=bxHKiUCZyrC15gzMR14BZa7BrwdzJzqxP/oJCHaejMqTm/hAug89BwW0bDA7fISog
+	 NXHVjP8zXZzlwxt0njLht2NzO179Uymz+yBARHU8ZclTavs1oeLPhXvfl+cI0Rfile
+	 nsXkv9b2FdpnDhAkkIYxyT4uaphJy9oD31DxI9z3Cdyi+lgUq7lrr0Uqhyj05Eo3wV
+	 QQlEUn7S2nWB3Mg57abuoPVy4ntRYJASgdDti8Sb+jGF3su3elKRxDROF9gLb1ZX+9
+	 nPB496K3KdCr52LZo12fEY/4S+w70cB+S4MsKq8xEbuenE/Zt+DLwJmw48Issqx20Y
+	 0EMtpXTuJm0kw==
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-21533959f03so42560fac.0
+        for <stable@vger.kernel.org>; Thu, 25 Jan 2024 17:25:38 -0800 (PST)
+X-Gm-Message-State: AOJu0YyEDrv0oHzeXv+vnD8yb2SnN64rJJhJfxIybjYyj5LmCPJkg45g
+	8bMtPa/9geUcPBT+YvzPPXWyE4XsGFE39RV1aTduIw8uWQEAZi4ijQ/94ZbWTyEsgFSyuc20UPE
+	Q7onoJ8HJjsgvGnjae1TBWoZO6tA=
+X-Google-Smtp-Source: AGHT+IH3qxnpD3Nq5DHRK1RKU4+djPbg5wo3FwwiWQKFlo7LIF5q1Gw5/NUMluw6qt+DM2oUVOA8AwXNsutLLm7vxp4=
+X-Received: by 2002:a05:6870:d38c:b0:214:876a:a517 with SMTP id
+ k12-20020a056870d38c00b00214876aa517mr580047oag.35.1706232337811; Thu, 25 Jan
+ 2024 17:25:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 0/2] nfp: flower: a few small conntrack offload fixes
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <170623202598.2360.13683555867705748519.git-patchwork-notify@kernel.org>
-Date: Fri, 26 Jan 2024 01:20:25 +0000
-References: <20240124151909.31603-1-louis.peens@corigine.com>
-In-Reply-To: <20240124151909.31603-1-louis.peens@corigine.com>
-To: Louis Peens <louis.peens@corigine.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- hui.zhou@corigine.com, netdev@vger.kernel.org, stable@vger.kernel.org,
- oss-drivers@corigine.com
+Received: by 2002:ac9:5984:0:b0:514:c0b3:431 with HTTP; Thu, 25 Jan 2024
+ 17:25:36 -0800 (PST)
+In-Reply-To: <CAKYAXd80WYNKJ2DEBEzbiECCFJupd81ZPBREz7KaOT4cc0fdjg@mail.gmail.com>
+References: <20240121143038.10589-1-linkinjeon@kernel.org> <2024012246-rematch-magnify-ec8b@gregkh>
+ <CAKYAXd80WYNKJ2DEBEzbiECCFJupd81ZPBREz7KaOT4cc0fdjg@mail.gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Fri, 26 Jan 2024 10:25:36 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd9UdKnR3Ty8VppdU7J+WPERqKKqsLvJuft5LMh95sqYpA@mail.gmail.com>
+Message-ID: <CAKYAXd9UdKnR3Ty8VppdU7J+WPERqKKqsLvJuft5LMh95sqYpA@mail.gmail.com>
+Subject: Re: [PATCH 5.15.y 00/11] ksmbd: backport patches from 6.8-rc1
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: sashal@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+2024-01-23 8:28 GMT+09:00, Namjae Jeon <linkinjeon@kernel.org>:
+> 2024-01-23 0:03 GMT+09:00, Greg KH <gregkh@linuxfoundation.org>:
+>> On Sun, Jan 21, 2024 at 11:30:27PM +0900, Namjae Jeon wrote:
+>>> This patchset is backport patches from 6.8-rc1.
+>>
+>> Nice, but we obviously can not take patches only to 5.15.y as that would
+>> be a regression when people upgrade to a newer kernel.  Can you also
+>> provide the needed backports for 6.1.y and 6.6.y and 6.7.y?
+> Sure, I will do that.
+> Thanks!
+I have sent ksmbd backport patches for 5.15, 6.1, 6.6, 6.7 kernel.
+Could you please check them ?
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 24 Jan 2024 17:19:07 +0200 you wrote:
-> This small series addresses two bugs in the nfp conntrack offloading
-> code.
-> 
-> The first patch is a check to prevent offloading for a case which is
-> currently not supported by the nfp.
-> 
-> The second patch fixes up parsing of layer4 mangling code so it can be
-> correctly offloaded. Since the masks are an inverse mask and we are
-> shifting it so it can be packed together with the destination we
-> effectively need to 'clear' the lower bits of the mask by setting it to
-> 0xFFFF.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,v2,1/2] nfp: flower: add hardware offload check for post ct entry
-    https://git.kernel.org/netdev/net/c/cefa98e806fd
-  - [net,v2,2/2] nfp: flower: fix hardware offload for the transfer layer port
-    https://git.kernel.org/netdev/net/c/3a007b8009b5
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks!
+>>
+>> thanks,
+>>
+>> greg k-h
+>>
+>
 
