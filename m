@@ -1,113 +1,146 @@
-Return-Path: <stable+bounces-15927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E6D183E34B
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 21:23:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C89AE83E36D
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 21:34:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65C091C2434F
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 20:23:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 683781F26D36
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 20:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3A722F04;
-	Fri, 26 Jan 2024 20:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC709241E5;
+	Fri, 26 Jan 2024 20:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZgG77UWO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBHALqoS"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA1F22EF4
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 20:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C23250EC;
+	Fri, 26 Jan 2024 20:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706300575; cv=none; b=iBsgQlx+hXuC1q9ghDKyr+iBAeXl9KniXqXr0mSejPTcEsoambbb2UObScDeBjOmReQ4AZkjndKS1unL5B/aulhHlTN4akPZhVSdUaVP/2udK/1nkNBAjFjHCMDDrQfvAT/bxzIVW8p+Ps2cZBHKlXCuuLGl0fgotmfK24NnOpE=
+	t=1706301279; cv=none; b=MvOXiSj+eMCmzZifKWA4wr7bJIdxVbD3ENu1UOo8bEme/XwJfF1vbtrI7YVIwVsB6+tmTSYpwvShkhM2aqLJt+YGQBRx79Y8vmbAKF1c30tHGZo6W8fpU9+lbu5YFFV5yuD8rdZm/fTWNW/mf3Opvgx1PFVeM2VpoQCSpCvxNVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706300575; c=relaxed/simple;
-	bh=H5dgHNGQ74ibX+fp4AsheVRsQW1VcXv/Agcjzw2ZFcE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qE37UnkrpCB/dJ4hsKlHSqWc6i5TIHM9ej7oodwuFFfohtrO1Tc72mQiwGhno0ecHBXw5a807kt/14jRJXSJNof2+VlGqW8/EFPBh8ZdseUpoNIZlNrDhgB1APxP8Rnyo+D4z9AXymboCCkn1yqMsrg2Ml9JimRLrGRPf0120l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZgG77UWO; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706300571; x=1737836571;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=H5dgHNGQ74ibX+fp4AsheVRsQW1VcXv/Agcjzw2ZFcE=;
-  b=ZgG77UWOy241C4htV+2f0Cj+SeS0QtNNfichWls/8DMXuyRfUeer30Es
-   GvvxGGCkto73X0K3A2c5R9fuD4uWGMwNdS2hXVSPQB3wHcMzWKCScP6JO
-   lNjGuz9VYfD/ALjw7Mi2aDisShw+SXVlVZzaEodN6e1eddSi4gBRRXCMG
-   IoQf1gFyQhINr7/eHh+wYdd0R9udb7f09FdH1YPbh4iM/hV/SJiDRdQww
-   5rEil1Cqboe7gC0w2ks0qirAEny4SomH7KpoY9FvBkwQJ5Hed2ShHWQkY
-   ngPEDBcfA/Z/P8iGx0fwf1bkc16NafhcKqJMKKBhizfYiuIUCUCeZAZwF
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="2436762"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="2436762"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2024 12:22:51 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10964"; a="960310343"
-X-IronPort-AV: E=Sophos;i="6.05,216,1701158400"; 
-   d="scan'208";a="960310343"
-Received: from ssaleem-mobl1.amr.corp.intel.com ([10.246.113.182])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2024 12:22:48 -0800
-From: Shiraz Saleem <shiraz.saleem@intel.com>
-To: stable@vger.kernel.org
-Cc: Mike Marciniszyn <mike.marciniszyn@intel.com>,
-	Shiraz Saleem <shiraz.saleem@intel.com>
-Subject: [PATCH 6.1.x] RDMA/irdma: Fix support for 64k pages
-Date: Fri, 26 Jan 2024 14:22:34 -0600
-Message-Id: <20240126202234.357-2-shiraz.saleem@intel.com>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20240126202234.357-1-shiraz.saleem@intel.com>
-References: <20240126202234.357-1-shiraz.saleem@intel.com>
+	s=arc-20240116; t=1706301279; c=relaxed/simple;
+	bh=fKXandC+5QOPgaaNNK48snxQs+rXCoRJZv+oHcWZwXc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rtzmubQwGuDpppc/WY4xlsJzvpp1BxH3nQXicd8ENIdkUbtbqTfzE+EzDFJhaJU73NiAx3w0xLXZXfB4KltIGWXF6xcdA7u6DBVs8XrPuhGLs3k3scEAzbyIM4dsgCEy5KoNqBEq5k7+iSWmws5qTLBEsORqcf149On+6gPol5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cBHALqoS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0674C433C7;
+	Fri, 26 Jan 2024 20:34:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706301278;
+	bh=fKXandC+5QOPgaaNNK48snxQs+rXCoRJZv+oHcWZwXc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cBHALqoSmF/TAHePeBhX/syG9ctKGwupCxyx8jKndDgbJpbm7EWnsgjvjT7Vrx2DY
+	 2Hj3E2tlWwXS00a+C4+TdFMfIVO3SnoY9yZpS67owsD6d6mZHp1suJb4GVWVRg2R8b
+	 k6XY4XmoYuyiaSlucogkXWHktINh5FIwfXn4i52Po2ZoWMM0rk9H3uDXofwGsPZ8Dg
+	 xij+uHtg0x5OISKjzS24Cl/kW4q1ygl0Ja9uPMFNu0bqZOuRFaNIGARh/Xkz6rFNuz
+	 mQBjnQzkiOfUqwhjDs15QLxiAMAsYCMJbj1LL5UYNyEn/LD6B+42yYsmzGK8KcWYqP
+	 cGu2VWgCtdVyQ==
+Date: Fri, 26 Jan 2024 13:34:36 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, llvm@lists.linux.dev, keescook@chromium.org
+Subject: Re: [PATCH 5.10 000/286] 5.10.209-rc1 review
+Message-ID: <20240126203436.GA913905@dev-arch.thelio-3990X>
+References: <20240122235732.009174833@linuxfoundation.org>
+ <6b563537-b62f-428e-96d1-2a228da99077@roeck-us.net>
+ <2024012636-clubbed-radial-1997@gregkh>
+ <2f342268-8517-4c06-8785-96a588d20c63@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2f342268-8517-4c06-8785-96a588d20c63@roeck-us.net>
 
-From: Mike Marciniszyn <mike.marciniszyn@intel.com>
+On Fri, Jan 26, 2024 at 10:17:23AM -0800, Guenter Roeck wrote:
+> On 1/26/24 09:51, Greg Kroah-Hartman wrote:
+> > On Fri, Jan 26, 2024 at 08:46:42AM -0800, Guenter Roeck wrote:
+> > > On 1/22/24 15:55, Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 5.10.209 release.
+> > > > There are 286 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > > > 
+> > > > Responses should be made by Wed, 24 Jan 2024 23:56:49 +0000.
+> > > > Anything received after that time might be too late.
+> > > > 
+> > > [ ... ]
+> > > 
+> > > > zhenwei pi <pizhenwei@bytedance.com>
+> > > >       virtio-crypto: implement RSA algorithm
+> > > > 
+> > > 
+> > > Curious: Why was this (and its subsequent fixes) backported to v5.10.y ?
+> > > It is quite beyond a bug fix. Also, unless I am really missing something,
+> > > the series (or at least this patch) was not applied to v5.15.y, so we now
+> > > have functionality in v5.10.y which is not in v5.15.y.
+> > 
+> > See the commit text, it was a dependency of a later fix and documented
+> > as such.
+> > 
+> > Having it in 5.10 and not 5.15 is a bit odd, I agree, so patches are
+> > gladly accepted :)
+> > 
+> 
+> We reverted the entire series from the merge because it results in a build
+> failure for us.
+> 
+> In file included from /home/groeck/src/linux-chromeos/drivers/crypto/virtio/virtio_crypto_akcipher_algs.c:10:
+> In file included from /home/groeck/src/linux-chromeos/include/linux/mpi.h:21:
+> In file included from /home/groeck/src/linux-chromeos/include/linux/scatterlist.h:5:
+> In file included from /home/groeck/src/linux-chromeos/include/linux/string.h:293:
+> /home/groeck/src/linux-chromeos/include/linux/fortify-string.h:512:4: error: call to __read_overflow2_field declared with 'warning' attribute: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
+>                         __read_overflow2_field(q_size_field, size);
 
-[ Upstream commit 03769f72d66edab82484449ed594cb6b00ae0223 ]
+For what it's worth, this is likely self inflicted for chromeos-5.10,
+which carries a revert of commit eaafc590053b ("fortify: Explicitly
+disable Clang support") as commit c19861d34c003 ("CHROMIUM: Revert
+"fortify: Explicitly disable Clang support""). I don't see the series
+that added proper support for clang to fortify in 5.18 that ended with
+commit 281d0c962752 ("fortify: Add Clang support") in that ChromeOS
+branch, so this seems somewhat expected.
 
-Virtual QP and CQ require a 4K HW page size but the driver passes
-PAGE_SIZE to ib_umem_find_best_pgsz() instead.
+> I also see that upstream (starting with 6.1) when trying to build it with clang,
+> so I guess it is one of those bug-for-bug compatibility things. I really have
+> no idea what causes it, or why we don't see the problem when building
+> chromeos-6.1 or chromeos-6.6, but (so far) only with chromeos-5.10 after
+> merging 5.10.209 into it. Making things worse, the problem isn't _always_
+> seen. Sometimes I can compile the file in 6.1.y without error, sometimes not.
+> I have no idea what triggers the problem.
 
-Fix this by using the appropriate 4k value in the bitmap passed to
-ib_umem_find_best_pgsz().
+Have a .config that reproduces it on upstream? I have not personally
+seen this warning in my build matrix nor has our continuous-integration
+matrix (I don't see it in the warning output at the bottom but that
+could have missed something for some reason) in 6.1:
 
-Patch reworked to handle the different pre-split context.
+https://github.com/ClangBuiltLinux/continuous-integration2/actions/runs/7662499796
+https://github.com/ClangBuiltLinux/continuous-integration2/actions/runs/7662534888
 
-Fixes: 693a5386eff0 ("RDMA/irdma: Split mr alloc and free into new functions")
-Link: https://lore.kernel.org/r/20231129202143.1434-4-shiraz.saleem@intel.com
-Signed-off-by: Mike Marciniszyn <mike.marciniszyn@intel.com>
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
----
- drivers/infiniband/hw/irdma/verbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reverting this series from 5.10 seems reasonable given your other
+comments but if there is still something to sort out upstream, I
+definitely want to.
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index fa1ccd6a9400..745712e1d7de 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -2763,7 +2763,7 @@ static struct ib_mr *irdma_reg_user_mr(struct ib_pd *pd, u64 start, u64 len,
- 	iwmr->ibmr.pd = pd;
- 	iwmr->ibmr.device = pd->device;
- 	iwmr->ibmr.iova = virt;
--	iwmr->page_size = PAGE_SIZE;
-+	iwmr->page_size = SZ_4K;;
- 
- 	if (req.reg_type == IRDMA_MEMREG_TYPE_MEM) {
- 		iwmr->page_size = ib_umem_find_best_pgsz(region,
--- 
-1.8.3.1
+> Of course, on top of all that, the error message is completely useless.
 
+Indeed, outstanding papercut unfortunately:
+https://github.com/ClangBuiltLinux/linux/issues/1571
+
+Cheers,
+Nathan
 
