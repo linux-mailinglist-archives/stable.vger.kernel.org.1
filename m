@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A0E83E726
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:42:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC7183E727
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:42:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB3671F2947F
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:42:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB8331F29761
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052D559154;
-	Fri, 26 Jan 2024 23:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C435A115;
+	Fri, 26 Jan 2024 23:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1HvQ+3Bk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6FHtF8c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D425914A
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796275914A
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706312381; cv=none; b=IFeJUzd8YonF33pO2GHGKXPLCFcu0aQGxy2UVjBou8mGKfpO/ooZ9UFcZ0lJaJf231jOvap6ZM86lThrX1wHmxbU3u9yAWiK+uOSD1XvxuUi7DMtwKqnWtY0c+r+pvW88LzfPHI798X5/iOZwrnSpLMB/37HNt1S7aGGHCre2tg=
+	t=1706312401; cv=none; b=bhSye60KSER7DiQFydBMw006j67ouJaUL8Bta1FDnlsvR3ojywVizex+zAIxVapwLPYnyBcFFTHp86gUYafyDpPrXJJiAr9r9l642chaZCjNGaU6aCbo+zNunvFpIqfA7yCeJaT5YQWTDZOkzBBDu6USODR0/m6u7lnWL0NvDhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706312381; c=relaxed/simple;
-	bh=IDFGw7htGUM7kckBnCYDhjelJYazq3wo8MrnqLjWhEg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=grVzuDBK34L1SoUCh0tsdfRo1oW2W/5Jzq/58MLbu9QZB3IAX+ecfdSgk4N3HLYJ3JnVqattfqLn/SqTfi+26hcPxfLAME2LSAdWCgaX8Z0jLPEgaYRdbMwgZY00Dw7kUjpTa8+VN0G1yg7ba/XCW/Fjdy9CkdmfaNehfTJS6jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1HvQ+3Bk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E04DC433F1;
-	Fri, 26 Jan 2024 23:39:41 +0000 (UTC)
+	s=arc-20240116; t=1706312401; c=relaxed/simple;
+	bh=WOXc3aC4RgycEXfKZxxLLYQlQUMTrlMWCWQSWgm0E8I=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Z51fX0HPxhVOYLsBOj6qyj84yFuETLfGLUqASkz4/Lti6+IGsdYDI/0BiaqQDSeJPxKl9Oa+bnYW3a8NulOP7tsyvpBlVlDBnL+HwAqohfEXblbFuQhZO2/LL7yjZArvKc4X529EkxleTvIy7WkGEHbyl3TLe1lNKtFyyzYRDFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6FHtF8c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA4AC433C7;
+	Fri, 26 Jan 2024 23:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706312381;
-	bh=IDFGw7htGUM7kckBnCYDhjelJYazq3wo8MrnqLjWhEg=;
+	s=korg; t=1706312401;
+	bh=WOXc3aC4RgycEXfKZxxLLYQlQUMTrlMWCWQSWgm0E8I=;
 	h=Subject:To:Cc:From:Date:From;
-	b=1HvQ+3Bkm1y95m99TNgU/lh5mYS11QpSTKp9HuVRGJPwayuWXQ/SwOGFL3F37ijn9
-	 stuxuloobHC3K7oImOglidPNxTr7fPdmFO2a12ACc5kg9B92FFCCy1o7VHTjDes9n7
-	 h11i9DoZFFqSWTLEdWaap5P1zw9csz+Zp5GKl974=
-Subject: FAILED: patch "[PATCH] mm: migrate: fix getting incorrect page mapping during page" failed to apply to 6.6-stable tree
-To: baolin.wang@linux.alibaba.com,akpm@linux-foundation.org,david@redhat.com,stable@vger.kernel.org,willy@infradead.org,xuyu@linux.alibaba.com,ying.huang@intel.com,ziy@nvidia.com
+	b=Z6FHtF8cz2B3UBGjK67L8EexVTuCutnNTPYtw8TRI5xZiaP3yJ+KPpDGtxTquidp9
+	 LBOdTYcA1xSu9p+IMrXafKAB0m/hDHZTMbWUjEiy9CT704J05V4P5V5joRqUA1bDHW
+	 6YJnH+br3/9H7ziHq9UjnZxsSnXrnG6+JEKaVOeE=
+Subject: FAILED: patch "[PATCH] mm/sparsemem: fix race in accessing memory_section->usage" failed to apply to 5.15-stable tree
+To: quic_charante@quicinc.com,akpm@linux-foundation.org,aneesh.kumar@linux.ibm.com,dan.j.williams@intel.com,david@redhat.com,mgorman@techsingularity.net,osalvador@suse.de,stable@vger.kernel.org,vbabka@suse.cz
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 26 Jan 2024 15:39:40 -0800
-Message-ID: <2024012640-racing-flannels-8384@gregkh>
+Date: Fri, 26 Jan 2024 15:40:00 -0800
+Message-ID: <2024012600-swaddling-filled-c787@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x d1adb25df7111de83b64655a80b5a135adbded61
+git cherry-pick -x 5ec8e8ea8b7783fab150cf86404fc38cb4db8800
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012640-racing-flannels-8384@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012600-swaddling-filled-c787@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-d1adb25df711 ("mm: migrate: fix getting incorrect page mapping during page migration")
-eebb3dabbb5c ("mm: migrate: record the mlocked page status to remove unnecessary lru drain")
+5ec8e8ea8b77 ("mm/sparsemem: fix race in accessing memory_section->usage")
+f1dc0db296bd ("mm: use __pfn_to_section() instead of open coding it")
 
 thanks,
 
@@ -78,129 +78,206 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d1adb25df7111de83b64655a80b5a135adbded61 Mon Sep 17 00:00:00 2001
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-Date: Fri, 15 Dec 2023 20:07:52 +0800
-Subject: [PATCH] mm: migrate: fix getting incorrect page mapping during page
- migration
+From 5ec8e8ea8b7783fab150cf86404fc38cb4db8800 Mon Sep 17 00:00:00 2001
+From: Charan Teja Kalla <quic_charante@quicinc.com>
+Date: Fri, 13 Oct 2023 18:34:27 +0530
+Subject: [PATCH] mm/sparsemem: fix race in accessing memory_section->usage
 
-When running stress-ng testing, we found below kernel crash after a few hours:
+The below race is observed on a PFN which falls into the device memory
+region with the system memory configuration where PFN's are such that
+[ZONE_NORMAL ZONE_DEVICE ZONE_NORMAL].  Since normal zone start and end
+pfn contains the device memory PFN's as well, the compaction triggered
+will try on the device memory PFN's too though they end up in NOP(because
+pfn_to_online_page() returns NULL for ZONE_DEVICE memory sections).  When
+from other core, the section mappings are being removed for the
+ZONE_DEVICE region, that the PFN in question belongs to, on which
+compaction is currently being operated is resulting into the kernel crash
+with CONFIG_SPASEMEM_VMEMAP enabled.  The crash logs can be seen at [1].
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-pc : dentry_name+0xd8/0x224
-lr : pointer+0x22c/0x370
-sp : ffff800025f134c0
-......
-Call trace:
-  dentry_name+0xd8/0x224
-  pointer+0x22c/0x370
-  vsnprintf+0x1ec/0x730
-  vscnprintf+0x2c/0x60
-  vprintk_store+0x70/0x234
-  vprintk_emit+0xe0/0x24c
-  vprintk_default+0x3c/0x44
-  vprintk_func+0x84/0x2d0
-  printk+0x64/0x88
-  __dump_page+0x52c/0x530
-  dump_page+0x14/0x20
-  set_migratetype_isolate+0x110/0x224
-  start_isolate_page_range+0xc4/0x20c
-  offline_pages+0x124/0x474
-  memory_block_offline+0x44/0xf4
-  memory_subsys_offline+0x3c/0x70
-  device_offline+0xf0/0x120
-  ......
+compact_zone()			memunmap_pages
+-------------			---------------
+__pageblock_pfn_to_page
+   ......
+ (a)pfn_valid():
+     valid_section()//return true
+			      (b)__remove_pages()->
+				  sparse_remove_section()->
+				    section_deactivate():
+				    [Free the array ms->usage and set
+				     ms->usage = NULL]
+     pfn_section_valid()
+     [Access ms->usage which
+     is NULL]
 
-After analyzing the vmcore, I found this issue is caused by page migration.
-The scenario is that, one thread is doing page migration, and we will use the
-target page's ->mapping field to save 'anon_vma' pointer between page unmap and
-page move, and now the target page is locked and refcount is 1.
+NOTE: From the above it can be said that the race is reduced to between
+the pfn_valid()/pfn_section_valid() and the section deactivate with
+SPASEMEM_VMEMAP enabled.
 
-Currently, there is another stress-ng thread performing memory hotplug,
-attempting to offline the target page that is being migrated. It discovers that
-the refcount of this target page is 1, preventing the offline operation, thus
-proceeding to dump the page. However, page_mapping() of the target page may
-return an incorrect file mapping to crash the system in dump_mapping(), since
-the target page->mapping only saves 'anon_vma' pointer without setting
-PAGE_MAPPING_ANON flag.
+The commit b943f045a9af("mm/sparse: fix kernel crash with
+pfn_section_valid check") tried to address the same problem by clearing
+the SECTION_HAS_MEM_MAP with the expectation of valid_section() returns
+false thus ms->usage is not accessed.
 
-There are seveval ways to fix this issue:
-(1) Setting the PAGE_MAPPING_ANON flag for target page's ->mapping when saving
-'anon_vma', but this can confuse PageAnon() for PFN walkers, since the target
-page has not built mappings yet.
-(2) Getting the page lock to call page_mapping() in __dump_page() to avoid crashing
-the system, however, there are still some PFN walkers that call page_mapping()
-without holding the page lock, such as compaction.
-(3) Using target page->private field to save the 'anon_vma' pointer and 2 bits
-page state, just as page->mapping records an anonymous page, which can remove
-the page_mapping() impact for PFN walkers and also seems a simple way.
+Fix this issue by the below steps:
 
-So I choose option 3 to fix this issue, and this can also fix other potential
-issues for PFN walkers, such as compaction.
+a) Clear SECTION_HAS_MEM_MAP before freeing the ->usage.
 
-Link: https://lkml.kernel.org/r/e60b17a88afc38cb32f84c3e30837ec70b343d2b.1702641709.git.baolin.wang@linux.alibaba.com
-Fixes: 64c8902ed441 ("migrate_pages: split unmap_and_move() to _unmap() and _move()")
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
-Cc: Matthew Wilcox <willy@infradead.org>
+b) RCU protected read side critical section will either return NULL
+   when SECTION_HAS_MEM_MAP is cleared or can successfully access ->usage.
+
+c) Free the ->usage with kfree_rcu() and set ms->usage = NULL.  No
+   attempt will be made to access ->usage after this as the
+   SECTION_HAS_MEM_MAP is cleared thus valid_section() return false.
+
+Thanks to David/Pavan for their inputs on this patch.
+
+[1] https://lore.kernel.org/linux-mm/994410bb-89aa-d987-1f50-f514903c55aa@quicinc.com/
+
+On Snapdragon SoC, with the mentioned memory configuration of PFN's as
+[ZONE_NORMAL ZONE_DEVICE ZONE_NORMAL], we are able to see bunch of
+issues daily while testing on a device farm.
+
+For this particular issue below is the log.  Though the below log is
+not directly pointing to the pfn_section_valid(){ ms->usage;}, when we
+loaded this dump on T32 lauterbach tool, it is pointing.
+
+[  540.578056] Unable to handle kernel NULL pointer dereference at
+virtual address 0000000000000000
+[  540.578068] Mem abort info:
+[  540.578070]   ESR = 0x0000000096000005
+[  540.578073]   EC = 0x25: DABT (current EL), IL = 32 bits
+[  540.578077]   SET = 0, FnV = 0
+[  540.578080]   EA = 0, S1PTW = 0
+[  540.578082]   FSC = 0x05: level 1 translation fault
+[  540.578085] Data abort info:
+[  540.578086]   ISV = 0, ISS = 0x00000005
+[  540.578088]   CM = 0, WnR = 0
+[  540.579431] pstate: 82400005 (Nzcv daif +PAN -UAO +TCO -DIT -SSBSBTYPE=--)
+[  540.579436] pc : __pageblock_pfn_to_page+0x6c/0x14c
+[  540.579454] lr : compact_zone+0x994/0x1058
+[  540.579460] sp : ffffffc03579b510
+[  540.579463] x29: ffffffc03579b510 x28: 0000000000235800 x27:000000000000000c
+[  540.579470] x26: 0000000000235c00 x25: 0000000000000068 x24:ffffffc03579b640
+[  540.579477] x23: 0000000000000001 x22: ffffffc03579b660 x21:0000000000000000
+[  540.579483] x20: 0000000000235bff x19: ffffffdebf7e3940 x18:ffffffdebf66d140
+[  540.579489] x17: 00000000739ba063 x16: 00000000739ba063 x15:00000000009f4bff
+[  540.579495] x14: 0000008000000000 x13: 0000000000000000 x12:0000000000000001
+[  540.579501] x11: 0000000000000000 x10: 0000000000000000 x9 :ffffff897d2cd440
+[  540.579507] x8 : 0000000000000000 x7 : 0000000000000000 x6 :ffffffc03579b5b4
+[  540.579512] x5 : 0000000000027f25 x4 : ffffffc03579b5b8 x3 :0000000000000001
+[  540.579518] x2 : ffffffdebf7e3940 x1 : 0000000000235c00 x0 :0000000000235800
+[  540.579524] Call trace:
+[  540.579527]  __pageblock_pfn_to_page+0x6c/0x14c
+[  540.579533]  compact_zone+0x994/0x1058
+[  540.579536]  try_to_compact_pages+0x128/0x378
+[  540.579540]  __alloc_pages_direct_compact+0x80/0x2b0
+[  540.579544]  __alloc_pages_slowpath+0x5c0/0xe10
+[  540.579547]  __alloc_pages+0x250/0x2d0
+[  540.579550]  __iommu_dma_alloc_noncontiguous+0x13c/0x3fc
+[  540.579561]  iommu_dma_alloc+0xa0/0x320
+[  540.579565]  dma_alloc_attrs+0xd4/0x108
+
+[quic_charante@quicinc.com: use kfree_rcu() in place of synchronize_rcu(), per David]
+  Link: https://lkml.kernel.org/r/1698403778-20938-1-git-send-email-quic_charante@quicinc.com
+Link: https://lkml.kernel.org/r/1697202267-23600-1-git-send-email-quic_charante@quicinc.com
+Fixes: f46edbd1b151 ("mm/sparsemem: add helpers track active portions of a section at boot")
+Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
 Cc: David Hildenbrand <david@redhat.com>
-Cc: Xu Yu <xuyu@linux.alibaba.com>
-Cc: Zi Yan <ziy@nvidia.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 397f2a6e34cb..bad3039d165e 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1025,38 +1025,31 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
- }
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index ec73582e7d27..2efd3be484fd 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1799,6 +1799,7 @@ static inline unsigned long section_nr_to_pfn(unsigned long sec)
+ #define SUBSECTION_ALIGN_DOWN(pfn) ((pfn) & PAGE_SUBSECTION_MASK)
  
- /*
-- * To record some information during migration, we use some unused
-- * fields (mapping and private) of struct folio of the newly allocated
-- * destination folio.  This is safe because nobody is using them
-- * except us.
-+ * To record some information during migration, we use unused private
-+ * field of struct folio of the newly allocated destination folio.
-+ * This is safe because nobody is using it except us.
-  */
--union migration_ptr {
--	struct anon_vma *anon_vma;
--	struct address_space *mapping;
--};
--
- enum {
- 	PAGE_WAS_MAPPED = BIT(0),
- 	PAGE_WAS_MLOCKED = BIT(1),
-+	PAGE_OLD_STATES = PAGE_WAS_MAPPED | PAGE_WAS_MLOCKED,
- };
- 
- static void __migrate_folio_record(struct folio *dst,
--				   unsigned long old_page_state,
-+				   int old_page_state,
- 				   struct anon_vma *anon_vma)
+ struct mem_section_usage {
++	struct rcu_head rcu;
+ #ifdef CONFIG_SPARSEMEM_VMEMMAP
+ 	DECLARE_BITMAP(subsection_map, SUBSECTIONS_PER_SECTION);
+ #endif
+@@ -1992,7 +1993,7 @@ static inline int pfn_section_valid(struct mem_section *ms, unsigned long pfn)
  {
--	union migration_ptr ptr = { .anon_vma = anon_vma };
--	dst->mapping = ptr.mapping;
--	dst->private = (void *)old_page_state;
-+	dst->private = (void *)anon_vma + old_page_state;
- }
+ 	int idx = subsection_map_index(pfn);
  
- static void __migrate_folio_extract(struct folio *dst,
- 				   int *old_page_state,
- 				   struct anon_vma **anon_vmap)
+-	return test_bit(idx, ms->usage->subsection_map);
++	return test_bit(idx, READ_ONCE(ms->usage)->subsection_map);
+ }
+ #else
+ static inline int pfn_section_valid(struct mem_section *ms, unsigned long pfn)
+@@ -2016,6 +2017,7 @@ static inline int pfn_section_valid(struct mem_section *ms, unsigned long pfn)
+ static inline int pfn_valid(unsigned long pfn)
  {
--	union migration_ptr ptr = { .mapping = dst->mapping };
--	*anon_vmap = ptr.anon_vma;
--	*old_page_state = (unsigned long)dst->private;
--	dst->mapping = NULL;
-+	unsigned long private = (unsigned long)dst->private;
+ 	struct mem_section *ms;
++	int ret;
+ 
+ 	/*
+ 	 * Ensure the upper PAGE_SHIFT bits are clear in the
+@@ -2029,13 +2031,19 @@ static inline int pfn_valid(unsigned long pfn)
+ 	if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
+ 		return 0;
+ 	ms = __pfn_to_section(pfn);
+-	if (!valid_section(ms))
++	rcu_read_lock();
++	if (!valid_section(ms)) {
++		rcu_read_unlock();
+ 		return 0;
++	}
+ 	/*
+ 	 * Traditionally early sections always returned pfn_valid() for
+ 	 * the entire section-sized span.
+ 	 */
+-	return early_section(ms) || pfn_section_valid(ms, pfn);
++	ret = early_section(ms) || pfn_section_valid(ms, pfn);
++	rcu_read_unlock();
 +
-+	*anon_vmap = (struct anon_vma *)(private & ~PAGE_OLD_STATES);
-+	*old_page_state = private & PAGE_OLD_STATES;
- 	dst->private = NULL;
++	return ret;
  }
+ #endif
  
+diff --git a/mm/sparse.c b/mm/sparse.c
+index 77d91e565045..338cf946dee8 100644
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -791,6 +791,13 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
+ 	if (empty) {
+ 		unsigned long section_nr = pfn_to_section_nr(pfn);
+ 
++		/*
++		 * Mark the section invalid so that valid_section()
++		 * return false. This prevents code from dereferencing
++		 * ms->usage array.
++		 */
++		ms->section_mem_map &= ~SECTION_HAS_MEM_MAP;
++
+ 		/*
+ 		 * When removing an early section, the usage map is kept (as the
+ 		 * usage maps of other sections fall into the same page). It
+@@ -799,16 +806,10 @@ static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
+ 		 * was allocated during boot.
+ 		 */
+ 		if (!PageReserved(virt_to_page(ms->usage))) {
+-			kfree(ms->usage);
+-			ms->usage = NULL;
++			kfree_rcu(ms->usage, rcu);
++			WRITE_ONCE(ms->usage, NULL);
+ 		}
+ 		memmap = sparse_decode_mem_map(ms->section_mem_map, section_nr);
+-		/*
+-		 * Mark the section invalid so that valid_section()
+-		 * return false. This prevents code from dereferencing
+-		 * ms->usage array.
+-		 */
+-		ms->section_mem_map &= ~SECTION_HAS_MEM_MAP;
+ 	}
+ 
+ 	/*
 
 
