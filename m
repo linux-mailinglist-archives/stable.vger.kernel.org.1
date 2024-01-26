@@ -1,188 +1,340 @@
-Return-Path: <stable+bounces-15888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625BE83DB0D
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 14:38:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DDD83DB63
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 14:59:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A0DF281220
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 13:38:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C37FD1F22A55
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 13:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB6C1B81D;
-	Fri, 26 Jan 2024 13:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AEB81B968;
+	Fri, 26 Jan 2024 13:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="r0Waz5Pv"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DyJ4wgMD"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2071.outbound.protection.outlook.com [40.107.244.71])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9F11B81A;
-	Fri, 26 Jan 2024 13:38:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.71
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706276307; cv=fail; b=juclDkACCIKFQ0xAisZw5ApjmtxsW50DI4JHyfGJjCcSbQIayW64w5o64HhjH5H/h8ZfUmJRoa9RGAmDdxUk9uFoxaVSmi22MuOXGtTueash30L2SHZrzTdU1RdGB8ZD5FBO/AmIkBIt+PzX2MVkkNd0glb+/GLG0uK9bv7h1Aw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706276307; c=relaxed/simple;
-	bh=nK+ir5gcrsS7nvQqXtNwH9wfAa6YaKZMwxSbs6J7VVc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=eEWcaOTLS0D7gijalc3YPzQt20rzEG9FA4UgXzvv4+0ikKbpDbpd6dn3+NBvATK+V9IupAhQ+dGZmaDvYGp5Ocne5yWdeJuy3jDsZt29209rvgxak8APXvsITvGij1a8GoS0KbGGCOhLDwVu5D4U1Rlkj5WCxfDrOlLdUBgTs1M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=r0Waz5Pv; arc=fail smtp.client-ip=40.107.244.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=A3zYjlZZHWsBx/vN2uNYlU5enUTVJkeBi6j6R6pAxKEVpXkOLLQCroYwwM8fZKJQEYr2y3QBAraYRn5q/XsIjbGy6s3ZxberRYdNcm/Why8jeXb2VuXMWXZ3zCR/IAsbE4GJnnSW1Iun2ayXWSuAaTTl8oW0FxpQHfkOLqXnTuVYo2CliSAIbGBSFLb9yvdBEPC4tELZwTLCLg3uIFCA4NEFIlu77mLImXH7EB7BKhjmITzgv+uUAWIGsO7y8VX2EpMqabWYeZfzpzVTqVyYO7F8ICouDuUoCJYu+pzcUiGZvwKYUO0gdi1H/085ZUDh1CC/eOr18s3Qrw1xrhJ3cw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h+GUTtaKucFCq6vqq9rA+mKlwenh9lc75e2oNsZLSY4=;
- b=TH5Q00EYDiLg6P3TZEn0YklhiX7+h8YoZUqYZIj9Z1IRXuiqYf0n47xh6OCKFt7l5GN2VvJ8JpVoRRU8TT3JBSG57pbWjAufxggMGgTpDlwFaBrbKpzKQgotmxAz6bhwmAO7Pvsg+a5G1Eab0GWd18cmiSyuEMVc7wqiiFfQ9V2lma1rL3o86CehJ5hAaI9Uj4yvnRbFtAyz1HPxSFbMsOOf/m2DzhxwnjXZATGzNsNtKP7YGHboUHRKO7IbweE9Bbf9uALUb9vk/38V30vP3ZoVjk6OWAglP2S/tuC4AYp87fU2QGJ10SDFRm3J+9Dak37DWaRbGZ9WOYbt3mfWAA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h+GUTtaKucFCq6vqq9rA+mKlwenh9lc75e2oNsZLSY4=;
- b=r0Waz5PvdANJYyDzy5TDig3v+irOABT7ScZmJzIrXNIChTMTNwuifE8vUl2NxnMPmT5vBJuwRVCZRo7xZzG33mLtbCCMt0JWLhaTQiGD+5hs8XpogC4BYKtZANpZbD2losUZek+ZisupLKyaXJykUXYoaXm+b3UGZItB6xQTVWQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by SA1PR12MB8162.namprd12.prod.outlook.com (2603:10b6:806:33a::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.27; Fri, 26 Jan
- 2024 13:38:22 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::e1fb:4123:48b1:653]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::e1fb:4123:48b1:653%4]) with mapi id 15.20.7228.026; Fri, 26 Jan 2024
- 13:38:22 +0000
-Message-ID: <f5fe17fc-2d5a-4f78-9315-9fd05f58142e@amd.com>
-Date: Fri, 26 Jan 2024 14:38:16 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] drm/ttm: Make sure the mapped tt pages are decrypted
- when needed
-Content-Language: en-US
-To: Zack Rusin <zack.rusin@broadcom.com>, dri-devel@lists.freedesktop.org
-Cc: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Huang Rui <ray.huang@amd.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <2b5648aa-f83d-d8f7-b0fd-39c859f32f33@linux.intel.com>
- <20240105135105.1921947-1-zack.rusin@broadcom.com>
- <CABQX2QMg4L3oQe4pU4saBgopXw7CKyGrQa_LKE0xtSwyEKacnw@mail.gmail.com>
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <CABQX2QMg4L3oQe4pU4saBgopXw7CKyGrQa_LKE0xtSwyEKacnw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0137.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b8::17) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E82B1B7ED
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 13:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706277568; cv=none; b=CBs9b6b5tnFvWYP/tG0Jz9/4ntiRI1DNiiwvTGl8YumM9VYuzcKX6iZaF6LSjEkuAJOsi5JXrxVGEg1o2NPHIpZE0CUpGyFp9mZ+mlahu4wDWHW/kVqWKLt0/L8eWDbh3PP226hnDyB6y7Wb47wN2fiRRSVeP6mlE8Kfhk3bU5Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706277568; c=relaxed/simple;
+	bh=fJejqZYOfXgwK8F3Hxl8RSz24iyChMNUrblvezh1xxo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=aIu5Ap1aCTUdmAyGjw2fqPAj8Z9lwf41r650YBo8f9ttOpJFhe9V78kC9QriNz5LKXV1xGOC2QzLKQNUfTF+gXp3AG3E+tnqf0L955xB7sb2KwbrIFDbxKZdEkT8yv/Cz+D7A4VISow+3s6ZaJ09mF9kIN0YmrqnW6YRpQkC8h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DyJ4wgMD; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706277565;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0rNh/dyL0TEUa+CbzPgZ/Hn2/8Lct1V89YIfXFANJkQ=;
+	b=DyJ4wgMDgj3pK3STXaeK77PaNMqiYelOwJpCzxHGonrg+hXEFGpaylUCGOJyER1z3m7q96
+	L1NYIrSHMB882QLTQLIeTHtgYJOF253Md0x6YYX6uVFtdE4V4Bv2erryBM4xRnCqDw4a0K
+	qys3Jq3h6YbbyRPUIvC2vw59kSsjd9s=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-690-jSntVCLtNkGE-3irAmi6-g-1; Fri, 26 Jan 2024 08:59:24 -0500
+X-MC-Unique: jSntVCLtNkGE-3irAmi6-g-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a3160e7dfcbso5239266b.1
+        for <stable@vger.kernel.org>; Fri, 26 Jan 2024 05:59:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706277563; x=1706882363;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0rNh/dyL0TEUa+CbzPgZ/Hn2/8Lct1V89YIfXFANJkQ=;
+        b=tXi0SDbU70BTUw+d4thllAlUW/OMAwpUDbHQX5g8csQ/a0isdjumRAKr91Q1WDbpuZ
+         0Qk4+JOCJp3Z016wKt8e+pb5U3QaaxIweZeSuhti4cBZZMI4pXrn4KvJ8feHjjkPMXBt
+         fQueoCB0laEu6x1cgyKyNVUn7AQ8WpViFHONAinq0WpEHby8/XBqLMQGjIujbFmrrx31
+         1wooqwWkc/P8eRcrQic6VMCgFvvfSsclSYDk++1H1bU8jcHo2gG3AHoTN8PH5++kZZ1S
+         4iO37YpdT4mVh7vvSanuazlfs68qOpvRp+MZvCYrS6DU2WCzjhGDTQKRKPCO8AfjKXwe
+         4KSw==
+X-Gm-Message-State: AOJu0Yw3oxVVKhwd0gOTABgW2HGca0lgQFgVX+bHi8a99pZUmW3w6av6
+	c2btc952p4EMtOtGMfMQtnMM00XI7NXrfZuiHIgj+2O4U2B6fI7L/lHvJTdPFg2/BUCOVkzsCIz
+	UxIofA6qKrtleSD35bXSTjVRG98g0Fq+UuTgrU7mvncWzMgNzHvdRwQ==
+X-Received: by 2002:a17:906:4948:b0:a31:410a:18e4 with SMTP id f8-20020a170906494800b00a31410a18e4mr1687808ejt.4.1706277563112;
+        Fri, 26 Jan 2024 05:59:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF0BRR4OBp1G9wImLm/ETkLCDi3wAIz3dL10kd4WAqDMvqh3I6OUmDukvt2Qv+RCnofw4jcOg==
+X-Received: by 2002:a17:906:4948:b0:a31:410a:18e4 with SMTP id f8-20020a170906494800b00a31410a18e4mr1687795ejt.4.1706277562739;
+        Fri, 26 Jan 2024 05:59:22 -0800 (PST)
+Received: from pstanner-thinkpadt14sgen1.remote.csb ([2001:9e8:32d0:ca00:227b:d2ff:fe26:2a7a])
+        by smtp.gmail.com with ESMTPSA id n24-20020a170906841800b00a32abfbcd6asm661415ejx.31.2024.01.26.05.59.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jan 2024 05:59:22 -0800 (PST)
+Message-ID: <70b8db3ec0f8730fdd23dae21edc1a93d274b048.camel@redhat.com>
+Subject: Re: [PATCH v5 RESEND 5/5] lib, pci: unify generic pci_iounmap()
+From: Philipp Stanner <pstanner@redhat.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Johannes Berg <johannes@sipsolutions.net>, Randy Dunlap
+ <rdunlap@infradead.org>, NeilBrown <neilb@suse.de>,  John Sanpe
+ <sanpeqf@gmail.com>, Kent Overstreet <kent.overstreet@gmail.com>, Niklas
+ Schnelle <schnelle@linux.ibm.com>, Dave Jiang <dave.jiang@intel.com>,
+ Uladzislau Koshchanka <koshchanka@gmail.com>, "Masami Hiramatsu (Google)"
+ <mhiramat@kernel.org>, David Gow <davidgow@google.com>, Kees Cook
+ <keescook@chromium.org>, Rae Moar <rmoar@google.com>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, "wuqiang.matt" <wuqiang.matt@bytedance.com>, Yury
+ Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>, Thomas
+ Gleixner <tglx@linutronix.de>, Marco Elver <elver@google.com>, Andrew
+ Morton <akpm@linux-foundation.org>, Ben Dooks <ben.dooks@codethink.co.uk>,
+ dakr@redhat.com, linux-kernel@vger.kernel.org,  linux-pci@vger.kernel.org,
+ linux-arch@vger.kernel.org, stable@vger.kernel.org,  Arnd Bergmann
+ <arnd@kernel.org>
+Date: Fri, 26 Jan 2024 14:59:20 +0100
+In-Reply-To: <20240123210553.GA326783@bhelgaas>
+References: <20240123210553.GA326783@bhelgaas>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SA1PR12MB8162:EE_
-X-MS-Office365-Filtering-Correlation-Id: eb365a75-4acd-421b-87fa-08dc1e74108d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	6CLbZwRuCd6hEYb7Dx6EoykDm8jRnbjrjJ//JlNQWLDmFlh1EyxYWLYhgD2Htioxe2iBFk5B87TYsRlP1rj69ro0B45vcPBymjMLB+pUJu0NXun6AgndktlSPJBsgkvNlB6SgaKOnfutC+SXNozz4qkofgaY5L8M8O7mnWO0JgSKSqJCZ19ByMFt5KvFKGJ0cWf/cCE2lyMWU0fvGk5dm/XdWIDZRYEGF1iznhXN6exBft99QPmgcqj2kSlJJuZwpj+0B5+LOTxOrRW0+ATe+vCKFULtStthxY3HIhD+NrS53Ic08A40dYLvbNC4Z5DO0z96fyi/uH8ie77vml/oRstlNWGELgwbANCJzBxOu9dwwr5gT9IqbSJjqW20zKxTBswI0VzpuMgUKJivZtVGVXP+R0hS/9fIYUsRyAT/glxdVrQgYWTumido7XoqM+xqzHY5cXhwqOriO+I/G2LIM8lpq4/y+Nc+/WUETZaI4NMg/1a4yjWUtqG7Xz5wA7snzqgO1WJ+RN1twsS5Xd77KdatNvJCWGxnrkgMAVJspkhczn9OIH6Z+D9o82oJG/JUY1lJtKzUTgrtb0EnIOO6zT+ton3qG8ruzhlmAlZrSbUteBgBglSl/rOnD71ZvxoX28zBz7ywke7xkzAKK3RCNA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(366004)(346002)(39860400002)(376002)(396003)(230922051799003)(186009)(451199024)(64100799003)(1800799012)(36756003)(38100700002)(31686004)(83380400001)(6506007)(2616005)(26005)(53546011)(6666004)(41300700001)(6512007)(2906002)(478600001)(5660300002)(31696002)(316002)(66556008)(66476007)(54906003)(66946007)(66899024)(86362001)(6486002)(8936002)(8676002)(4326008)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QTN0R01yd2w5VzZ4SXFMekNrU0JRcUt5V25LV3VjOFRlaUpBckNPK1JYWHdU?=
- =?utf-8?B?N2pOQWtIZlpKWFVlTWMzY0pGMjZGZG9kcktGRlJhazBYL0xmVjgrTUNubGhT?=
- =?utf-8?B?V0xIQSthUFNacFY2NkdFYklTVHVMMmc1VVRXNUpiZ2QrOVg2T005MzRKeEVI?=
- =?utf-8?B?bUpGcDIwaVcvaXhySVpSQ1dEbkRKWTI5OThXaERVVkFsaEY0bTRGajgxVHZT?=
- =?utf-8?B?bTk2VVFOQ2lYaDh4RTZ1cjJvZVNvam1zWDBheGlMbUE5d3phVTlHbzdmd3RW?=
- =?utf-8?B?dWlpZ01xYlBtR3I3bWsxZ1l0M2hlT1UwcS9KalFqOWE4Uk5MNUZmZno2VDQy?=
- =?utf-8?B?Ykp0YWtoVit5TjdwVE1KcXhxNjZXNVlLUm1HbTYzcHBmblJRYVVYRXVoNmNQ?=
- =?utf-8?B?a0JvUm95VDBENVcyVW04RmRaMzhZams0RzI0akthVms5dU02N0lVWXMxU1Jm?=
- =?utf-8?B?WEdpQkZRTHJMMDdmL0JmZUpyd21yamYwR1NFUWJFY0xkNnk1SU1LdFRlWHpG?=
- =?utf-8?B?eFl3cGRRRlpMVU9IRER2WnJGTWZkM0ZGZjJpUWlJcWh3SkxYTTZXUlNiZjdN?=
- =?utf-8?B?dkcwazRJNXVyNVJUaGZTSVhRRUFNVjJRM2FkdW4yYzczOElCcEx0UCt0eHlF?=
- =?utf-8?B?MkFEVWVFQy9yZzRmRFFiTVdBQ3JPVnNVSEZScklOZEtGc3pVUk4zbXZyb3dm?=
- =?utf-8?B?Vis1VlpBVDZ3RlJTWXQyajdZVWVMUURncG1VbXdMc1VyaXBCc0VwOUh3YmVV?=
- =?utf-8?B?MG5TaVZ5K1FCOXpteU5RektoSklueE40OXdtdTNLTGF6VHRvMTdTUTNDTWRK?=
- =?utf-8?B?VVQ5U2NNazJnS2QrWlVjYXhHRUh2R2NMODM0N0FMOFRGUFAyZDZPZ0tVRjMx?=
- =?utf-8?B?Y1JxNDZPTjNTaXpLODZaMEVyUnpoemlnamFSVVJna0V5WHoxY2RoUC9oSGh4?=
- =?utf-8?B?VUhYN3ZnbktxaTNvdy9zdy8xaWkzaUJaVzI2eGZDZk1zMGNNb2w5cCs4NXkx?=
- =?utf-8?B?L2JXY20yMjFDUVhNQVJqVUVDWHZYektNdHZZenI1ZElPTkYrU1Z0TlY0S1VX?=
- =?utf-8?B?aWE0QlFVbW1GUkZ0SWhrY3R2Sk1XYWhubnM2Rkc0b2U4TVhnN2xrUFUvbjA1?=
- =?utf-8?B?Y3c5OUl4YW1HZ2xOclVjSGprcVlIL2p1aWJKRDFTTUhBTHg4SWpLcWx0YUM3?=
- =?utf-8?B?WW1nTk9qQnRnL05DVmQ2am1OYktHdDZSYlJQYjl4MjFkeE40TjcrNHZabjFV?=
- =?utf-8?B?WUtxNGJWcERnZ1FwVmQ3R25QbHZIZXBlZWl6WkRZR1V2SEdqaVB2cUttRDFF?=
- =?utf-8?B?MS9aMFp5R2liWEo2OHc1Ylkvc3duMWs0WG1rUG9Ld0dZM0MyaXl6bGwzWlQr?=
- =?utf-8?B?Z0J0QllMN2VnVFZudDBTanh2YTNUMDBpakNHSGxaZjRCamZEVW9mcUk0ekJU?=
- =?utf-8?B?TkVkZUUyNmxlSm5JRUtvTkRvT0lYMHdwN2Rsak8yVDZkcHdUZDNpQlJneWND?=
- =?utf-8?B?cUZLUkhhcXRlSHJsZHU3M0lodll5b1BrZmdiQjNWVGxiYndHV0kzVGQ4bVNi?=
- =?utf-8?B?Um1pQTVlRHlCN0xwN0w3MkhJUThoU25VOVR3ektneTFtR1RHVit5dmU3NXdF?=
- =?utf-8?B?ZmQxdXd3Z0FwUXhTY1pkZnVLQWVOQzUrVjRRZ3MrVm04TmpzV040ekwwVzlD?=
- =?utf-8?B?cWZielRtZ0hUbWQ3UUhBcmo1Lys5bDhUWllxQURwRng4cXJVTm5qSW41dGh3?=
- =?utf-8?B?OCtZVjFZY2tOcEFCYnVXUng5WG9ka3F4eGNHaFVFVTFwK04zSFNqdzViSlJZ?=
- =?utf-8?B?T1F6UEJXWXlHKzBRc1FuSDZ4dXhIdFN5dDRORWd0RnlNclA5OStnYVpCN1g3?=
- =?utf-8?B?bHlxZmJreXZiNHNKZndqS0tuMkJhcDg4YWsrdzNHWjBFUXFwSlBnMlZ3SnM1?=
- =?utf-8?B?VVc1b2t3dXZ4WGZhdGxiYnIyUStaUkk4ZTRiaXptRW84eHFoazFGZC9UdWV1?=
- =?utf-8?B?QU1ud0k0M29XSVYyeUNYcTNMdTE0NThUdlg4ZTAxblJLUjNGcmJNd2Z4dmV1?=
- =?utf-8?B?TGlvRzNwSzRFbU9vWHljeXFWcFBPZTFHaTZ1R1VTa3czZmFucFZFN1Q4dkp1?=
- =?utf-8?Q?1mjIxuCPg/nrra6eNjV+Bds6o?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb365a75-4acd-421b-87fa-08dc1e74108d
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jan 2024 13:38:22.3924
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: //A68E9ohceVO8wyDRFzmzTI9zhCXdJfWMEPaAn4w5AjLDhUJAD51/LDfiKHIHSJ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8162
 
-Am 26.01.24 um 06:10 schrieb Zack Rusin:
-> On Fri, Jan 5, 2024 at 8:51 AM Zack Rusin <zack.rusin@broadcom.com> wrote:
->> Some drivers require the mapped tt pages to be decrypted. In an ideal
->> world this would have been handled by the dma layer, but the TTM page
->> fault handling would have to be rewritten to able to do that.
->>
->> A side-effect of the TTM page fault handling is using a dma allocation
->> per order (via ttm_pool_alloc_page) which makes it impossible to just
->> trivially use dma_mmap_attrs. As a result ttm has to be very careful
->> about trying to make its pgprot for the mapped tt pages match what
->> the dma layer thinks it is. At the ttm layer it's possible to
->> deduce the requirement to have tt pages decrypted by checking
->> whether coherent dma allocations have been requested and the system
->> is running with confidential computing technologies.
->>
->> This approach isn't ideal but keeping TTM matching DMAs expectations
->> for the page properties is in general fragile, unfortunately proper
->> fix would require a rewrite of TTM's page fault handling.
->>
->> Fixes vmwgfx with SEV enabled.
->>
->> v2: Explicitly include cc_platform.h
->> v3: Use CC_ATTR_GUEST_MEM_ENCRYPT instead of CC_ATTR_MEM_ENCRYPT to
->> limit the scope to guests and log when memory decryption is enabled.
-> Hi, Christian.
->
-> Gentle ping on that one. This is probably the cleanest we can get this
-> code. Can we land this or is there anything else you'd like to see?
+On Tue, 2024-01-23 at 15:05 -0600, Bjorn Helgaas wrote:
+> On Thu, Jan 11, 2024 at 09:55:40AM +0100, Philipp Stanner wrote:
+> > The implementation of pci_iounmap() is currently scattered over two
+> > files, drivers/pci/iomap.c and lib/iomap.c. Additionally,
+> > architectures can define their own version.
+> >=20
+> > To have only one version, it's necessary to create a helper
+> > function,
+> > iomem_is_ioport(), that tells pci_iounmap() whether the passed
+> > address
+> > points to an ioport or normal memory.
+> >=20
+> > iomem_is_ioport() can be provided through two different ways:
+> > =C2=A0 1. The architecture itself provides it. As of today, the version
+> > =C2=A0=C2=A0=C2=A0=C2=A0 coming from lib/iomap.c de facto is the x86-sp=
+ecific version
+> > and
+> > =C2=A0=C2=A0=C2=A0=C2=A0 comes into play when CONFIG_GENERIC_IOMAP is s=
+elected. This
+> > rather
+> > =C2=A0=C2=A0=C2=A0=C2=A0 confusing naming is an artifact left by the re=
+moval of IA64.
+> > =C2=A0 2. As a default version in include/asm-generic/io.h for those
+> > =C2=A0=C2=A0=C2=A0=C2=A0 architectures that don't use CONFIG_GENERIC_IO=
+MAP, but also
+> > don't
+> > =C2=A0=C2=A0=C2=A0=C2=A0 provide their own version of iomem_is_ioport()=
+.
+> >=20
+> > Once all architectures that support ports provide
+> > iomem_is_ioport(), the
+> > arch-specific definitions for pci_iounmap() can be removed and the
+> > archs
+> > can use the generic implementation, instead.
+> >=20
+> > Create a unified version of pci_iounmap() in drivers/pci/iomap.c.
+> > Provide the function iomem_is_ioport() in include/asm-generic/io.h
+> > (generic) and lib/iomap.c ("pseudo-generic" for x86).
+> >=20
+> > Remove the CONFIG_GENERIC_IOMAP guard around
+> > ARCH_WANTS_GENERIC_PCI_IOUNMAP so that configs that set
+> > CONFIG_GENERIC_PCI_IOMAP without CONFIG_GENERIC_IOMAP still get the
+> > function.
+> >=20
+> > Add TODOs for follow-up work on the "generic is not generic but
+> > x86-specific"-Problem.
+> > ...
+>=20
+> > +++ b/drivers/pci/iomap.c
+> > @@ -135,44 +135,30 @@ void __iomem *pci_iomap_wc(struct pci_dev
+> > *dev, int bar, unsigned long maxlen)
+> > =C2=A0EXPORT_SYMBOL_GPL(pci_iomap_wc);
+> > =C2=A0
+> > =C2=A0/*
+> > - * pci_iounmap() somewhat illogically comes from lib/iomap.c for
+> > the
+> > - * CONFIG_GENERIC_IOMAP case, because that's the code that knows
+> > about
+> > - * the different IOMAP ranges.
+> > + * This check is still necessary due to legacy reasons.
+> > =C2=A0 *
+> > - * But if the architecture does not use the generic iomap code,
+> > and if
+> > - * it has _not_ defined it's own private pci_iounmap function, we
+> > define
+> > - * it here.
+> > - *
+> > - * NOTE! This default implementation assumes that if the
+> > architecture
+> > - * support ioport mapping (HAS_IOPORT_MAP), the ioport mapping
+> > will
+> > - * be fixed to the range [ PCI_IOBASE, PCI_IOBASE+IO_SPACE_LIMIT
+> > [,
+> > - * and does not need unmapping with 'ioport_unmap()'.
+> > - *
+> > - * If you have different rules for your architecture, you need to
+> > - * implement your own pci_iounmap() that knows the rules for where
+> > - * and how IO vs MEM get mapped.
+> > - *
+> > - * This code is odd, and the ARCH_HAS/ARCH_WANTS #define logic
+> > comes
+> > - * from legacy <asm-generic/io.h> header file behavior. In
+> > particular,
+> > - * it would seem to make sense to do the iounmap(p) for the non-
+> > IO-space
+> > - * case here regardless, but that's not what the old header file
+> > code
+> > - * did. Probably incorrectly, but this is meant to be bug-for-bug
+> > - * compatible.
+>=20
+> Moving this comment update to the patch that adds the ioport_unmap()
+> call would make that patch more consistent and simplify this patch.
 
-Sorry for the delay.
+The bugfix from patch #1 you mean.
+I can take care of that when splitting that patch as you suggested
 
-I'm not too familiar with the technical background, so I can't 100% 
-judge if this is correct or not.
 
-But if it works for you I think we should give it a try, feel free to 
-add my Acked-by and push upstream through whatever branch you like.
+>=20
+> > + * TODO: Have all architectures that provide their own
+> > pci_iounmap() provide
+> > + * iomem_is_ioport() instead. Remove this #if afterwards.
+> > =C2=A0 */
+> > =C2=A0#if defined(ARCH_WANTS_GENERIC_PCI_IOUNMAP)
+> > =C2=A0
+> > -void pci_iounmap(struct pci_dev *dev, void __iomem *p)
+> > +/**
+> > + * pci_iounmap - Unmapp a mapping
+> > + * @dev: PCI device the mapping belongs to
+> > + * @addr: start address of the mapping
+> > + *
+> > + * Unmapp a PIO or MMIO mapping.
+>=20
+> s/Unmapp/Unmap/ (twice)
 
-Regards,
-Christian.
+OK
 
->
-> z
+>=20
+> > + */
+> > +void pci_iounmap(struct pci_dev *dev, void __iomem *addr)
+>=20
+> Maybe move the "p" to "addr" rename to the patch that fixes the
+> pci_iounmap() #ifdef problem, since that's a trivial change that
+> already has to do with handling both PIO and MMIO?=C2=A0 Then this patch
+> would be a little more focused.
+
+OK
+
+>=20
+> The kernel-doc addition could possibly also move there since it isn't
+> related to the unification.
+
+You mean the one from my devres-patch-series? Or documentation
+specifically about pci_iounmap()?
+
+>=20
+> > =C2=A0{
+> > -#ifdef ARCH_HAS_GENERIC_IOPORT_MAP
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0uintptr_t start =3D (uintptr=
+_t) PCI_IOBASE;
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0uintptr_t addr =3D (uintptr_=
+t) p;
+> > -
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (addr >=3D start && addr =
+< start + IO_SPACE_LIMIT) {
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0ioport_unmap(p);
+> > +#ifdef CONFIG_HAS_IOPORT_MAP
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (iomem_is_ioport(addr)) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0ioport_unmap(addr);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0return;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > =C2=A0#endif
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0iounmap(p);
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0iounmap(addr);
+> > =C2=A0}
+>=20
+> > + * If CONFIG_GENERIC_IOMAP is selected and the architecture does
+> > NOT provide its
+> > + * own version, ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT makes sure that
+> > the generic
+> > + * version from asm-generic/io.h is NOT used and instead the
+> > second "generic"
+> > + * version from this file here is used.
+> > + *
+> > + * There are currently two generic versions because of a difficult
+> > cleanup
+> > + * process. Namely, the version in lib/iomap.c once was really
+> > generic when IA64
+> > + * still existed. Today, it's only really used by x86.
+> > + *
+> > + * TODO: Move this function to x86-specific code.
+>=20
+> Some of these TODOs look fairly simple.=C2=A0 Are they actually hard, or
+> could they just be done now?
+
+If they were simple from my humble POV I would have implemented them.
+The information about the x86-specficity is from Arnd Bergmann, the
+header-maintainer.
+
+I myself am not that sure how much work it would be to move the entire
+lib/iomap.c file to x86. At least some (possibley "dead") hooks to it
+still exist, for example here:
+arch/powerpc/platforms/Kconfig  # L.189
+
+>=20
+> It seems like implementing iomem_is_ioport() for the other arches
+> would be straightforward and if done first, could make this patch
+> look
+> tidier.
+
+That would be the cleanest solution. But the cleaner you want to be,
+the more time you have to spend ;)
+I can take another look and see if I could do that with reasonable
+effort.
+Otherwise I'd go for:
+
+> Or if the TODOs can't be done now, maybe the iomem_is_ioport()
+> addition could be done as a separate patch to make the unification
+> more obvious.
+
+sic
+
+Thx,
+P.
+
+>=20
+> > + */
+> > +#if defined(ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT)
+> > +bool iomem_is_ioport(void __iomem *addr)
+> > =C2=A0{
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0IO_COND(addr, /* nothing */,=
+ iounmap(addr));
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned long port =3D (unsi=
+gned long __force)addr;
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (port > PIO_OFFSET && por=
+t < PIO_RESERVED)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0return true;
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return false;
+> > =C2=A0}
+> > -EXPORT_SYMBOL(pci_iounmap);
+> > -#endif /* CONFIG_PCI */
+> > +#endif /* ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT */
+> > --=20
+> > 2.43.0
+> >=20
+>=20
 
 
