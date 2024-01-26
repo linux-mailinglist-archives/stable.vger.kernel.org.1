@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-15865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 553BD83D561
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 10:06:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795C183D562
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 10:06:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E83731F25F4E
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 09:06:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB4D51C20A03
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 09:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B79E612CC;
-	Fri, 26 Jan 2024 07:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E45B612EC;
+	Fri, 26 Jan 2024 07:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="I0BX1JL9"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FJ3ddfck"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB74B125DB;
-	Fri, 26 Jan 2024 07:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A5860EEF;
+	Fri, 26 Jan 2024 07:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706255693; cv=none; b=ZAYi8gVUaFTpvJQYRO+YPOXSyzAkQJnYxZw/9l/SuNwLmWEyEvvjKgyyBRvKPK9Knl+URUwCPDdTVkBei+NF703f6g4DkSwyTfYg5s7bFvtA7ktfaWmUYkJihAvQj2x5SplTRRZpwr4pKcRnZWz0HhluR4D/wISWz861gMHhMqw=
+	t=1706255703; cv=none; b=SZebnuOW8PsujikD13GkpaW5082DAMmOZk8J9zmqNDBZ9iA8TUY+5u0gY8W5TznfPW8XKKRMTf+ZqNw5lyvhLK+rNUNHQ8l1DM74Tpk3Boe859bSWqpL6QINjLwSK8hTYKRLm1FJEG+AJDtXtUq/qtDjxjfaN0eSxI6KL2XCR5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706255693; c=relaxed/simple;
-	bh=MJSGM7A/KIuGUOsWYbsWQtkX5KkTHNXkKabPAiRps0A=;
-	h=Date:To:From:Subject:Message-Id; b=Lqbt0F2DrXhjlMPPfM4/TksqccUwBNzLBXKXrPoaG8rLH3RZAiEBsQAnqEmZH4fTjbQDfH6i3I8rgM+8t1w4iJvKAjaTjgpZfB8730eZ5DRyqHyrWhXg2athkBohzIfu/RGi+bR7cxFpKkU2VFdz268nduK6T5eY4FwP4rEbkmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=I0BX1JL9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406AFC433C7;
-	Fri, 26 Jan 2024 07:54:52 +0000 (UTC)
+	s=arc-20240116; t=1706255703; c=relaxed/simple;
+	bh=kiNLb7GzhcbT2o4rr2pUw0itc7bycYniyvbhiLUZfjA=;
+	h=Date:To:From:Subject:Message-Id; b=I6SGZNBH1VNa745s+0wAOyxh6vyszSEW2GvfxaFAwprZOD+U0ATjMUiSOdftnpwTzyX8Rojntt0SfpX0mS2SRbyhq9DWsrmilPWHoHqyUv6U5wvTJP8ekBIN3PCbT7k5UaIwg48WiMhytUK5ruA5BgvMwm5gvb5gF1+nnOzaVOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FJ3ddfck; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12961C433F1;
+	Fri, 26 Jan 2024 07:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1706255692;
-	bh=MJSGM7A/KIuGUOsWYbsWQtkX5KkTHNXkKabPAiRps0A=;
+	s=korg; t=1706255703;
+	bh=kiNLb7GzhcbT2o4rr2pUw0itc7bycYniyvbhiLUZfjA=;
 	h=Date:To:From:Subject:From;
-	b=I0BX1JL9/lloGVI0+P9EKSZ4ZMYuN5Dqz2ZXpS/KPJPwo9Gg+vu1R1QmCuCFAIS1B
-	 PgkkVhXbrKKiXADCNkicEZXbxAAvuo0M12qqUs/jBgphdzDUDoHADUGGpb25U3WUfx
-	 zGq44b3yf/enNiTgxhoqjbYzLZ1ZlqPZZm68dsyI=
-Date: Thu, 25 Jan 2024 23:54:49 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,usama.anjum@collabora.com,stable@vger.kernel.org,naoya.horiguchi@nec.com,muchun.song@linux.dev,linmiaohe@huawei.com,jthoughton@google.com,jiaqiyan@google.com,sidhartha.kumar@oracle.com,akpm@linux-foundation.org
+	b=FJ3ddfck9AomSWOtVLpKFc5Ifcqc9YVyE6PjPmF+ATmw/Q97R8avunSnsDGqfSG05
+	 Agz8OIVRS1t9NolwYenrGbNLoS0e68OBfFEZffe0XcK8xt8m5YOBjTAdoTHt/pvl8y
+	 20Rzw+oh/gzKs3IKr+l8UkLhC4Yj0q7AZU6H8t+Y=
+Date: Thu, 25 Jan 2024 23:55:00 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,guoxuenan@huawei.com,jack@suse.cz,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling.patch removed from -mm tree
-Message-Id: <20240126075452.406AFC433C7@smtp.kernel.org>
+Subject: [merged mm-stable] readahead-avoid-multiple-marked-readahead-pages.patch removed from -mm tree
+Message-Id: <20240126075503.12961C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,79 +50,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: fs/hugetlbfs/inode.c: mm/memory-failure.c: fix hugetlbfs hwpoison handling
+     Subject: readahead: avoid multiple marked readahead pages
 has been removed from the -mm tree.  Its filename was
-     fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling.patch
+     readahead-avoid-multiple-marked-readahead-pages.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Subject: fs/hugetlbfs/inode.c: mm/memory-failure.c: fix hugetlbfs hwpoison handling
-Date: Fri, 12 Jan 2024 10:08:40 -0800
+From: Jan Kara <jack@suse.cz>
+Subject: readahead: avoid multiple marked readahead pages
+Date: Thu, 4 Jan 2024 09:58:39 +0100
 
-has_extra_refcount() makes the assumption that the page cache adds a ref
-count of 1 and subtracts this in the extra_pins case.  Commit a08c7193e4f1
-(mm/filemap: remove hugetlb special casing in filemap.c) modifies
-__filemap_add_folio() by calling folio_ref_add(folio, nr); for all cases
-(including hugtetlb) where nr is the number of pages in the folio.  We
-should adjust the number of references coming from the page cache by
-subtracing the number of pages rather than 1.
+ra_alloc_folio() marks a page that should trigger next round of async
+readahead.  However it rounds up computed index to the order of page being
+allocated.  This can however lead to multiple consecutive pages being
+marked with readahead flag.  Consider situation with index == 1, mark ==
+1, order == 0.  We insert order 0 page at index 1 and mark it.  Then we
+bump order to 1, index to 2, mark (still == 1) is rounded up to 2 so page
+at index 2 is marked as well.  Then we bump order to 2, index is
+incremented to 4, mark gets rounded to 4 so page at index 4 is marked as
+well.  The fact that multiple pages get marked within a single readahead
+window confuses the readahead logic and results in readahead window being
+trimmed back to 1.  This situation is triggered in particular when maximum
+readahead window size is not a power of two (in the observed case it was
+768 KB) and as a result sequential read throughput suffers.
 
-In hugetlbfs_read_iter(), folio_test_has_hwpoisoned() is testing the wrong
-flag as, in the hugetlb case, memory-failure code calls
-folio_test_set_hwpoison() to indicate poison.  folio_test_hwpoison() is
-the correct function to test for that flag.
+Fix the problem by rounding 'mark' down instead of up.  Because the index
+is naturally aligned to 'order', we are guaranteed 'rounded mark' == index
+iff 'mark' is within the page we are allocating at 'index' and thus
+exactly one page is marked with readahead flag as required by the
+readahead code and sequential read performance is restored.
 
-After these fixes, the hugetlb hwpoison read selftest passes all cases.
+This effectively reverts part of commit b9ff43dd2743 ("mm/readahead: Fix
+readahead with large folios").  The commit changed the rounding with the
+rationale:
 
-Link: https://lkml.kernel.org/r/20240112180840.367006-1-sidhartha.kumar@oracle.com
-Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
-Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Closes: https://lore.kernel.org/linux-mm/20230713001833.3778937-1-jiaqiyan@google.com/T/#m8e1469119e5b831bbd05d495f96b842e4a1c5519
-Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Cc: James Houghton <jthoughton@google.com>
-Cc: Jiaqi Yan <jiaqiyan@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>
-Cc: <stable@vger.kernel.org>	[6.7+]
+"...  we were setting the readahead flag on the folio which contains the
+last byte read from the block.  This is wrong because we will trigger
+readahead at the end of the read without waiting to see if a subsequent
+read is going to use the pages we just read."
+
+Although this is true, the fact is this was always the case with read
+sizes not aligned to folio boundaries and large folios in the page cache
+just make the situation more obvious (and frequent).  Also for sequential
+read workloads it is better to trigger the readahead earlier rather than
+later.  It is true that the difference in the rounding and thus earlier
+triggering of the readahead can result in reading more for semi-random
+workloads.  However workloads really suffering from this seem to be rare. 
+In particular I have verified that the workload described in commit
+b9ff43dd2743 ("mm/readahead: Fix readahead with large folios") of reading
+random 100k blocks from a file like:
+
+[reader]
+bs=100k
+rw=randread
+numjobs=1
+size=64g
+runtime=60s
+
+is not impacted by the rounding change and achieves ~70MB/s in both cases.
+
+[jack@suse.cz: fix one more place where mark rounding was done as well]
+  Link: https://lkml.kernel.org/r/20240123153254.5206-1-jack@suse.cz
+Link: https://lkml.kernel.org/r/20240104085839.21029-1-jack@suse.cz
+Fixes: b9ff43dd2743 ("mm/readahead: Fix readahead with large folios")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Guo Xuenan <guoxuenan@huawei.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/hugetlbfs/inode.c |    2 +-
- mm/memory-failure.c  |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ mm/readahead.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/hugetlbfs/inode.c~fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling
-+++ a/fs/hugetlbfs/inode.c
-@@ -340,7 +340,7 @@ static ssize_t hugetlbfs_read_iter(struc
- 		} else {
- 			folio_unlock(folio);
+--- a/mm/readahead.c~readahead-avoid-multiple-marked-readahead-pages
++++ a/mm/readahead.c
+@@ -469,7 +469,7 @@ static inline int ra_alloc_folio(struct
  
--			if (!folio_test_has_hwpoisoned(folio))
-+			if (!folio_test_hwpoison(folio))
- 				want = nr;
- 			else {
- 				/*
---- a/mm/memory-failure.c~fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling
-+++ a/mm/memory-failure.c
-@@ -982,7 +982,7 @@ static bool has_extra_refcount(struct pa
- 	int count = page_count(p) - 1;
- 
- 	if (extra_pins)
--		count -= 1;
-+		count -= folio_nr_pages(page_folio(p));
- 
- 	if (count > 0) {
- 		pr_err("%#lx: %s still referenced by %d users\n",
+ 	if (!folio)
+ 		return -ENOMEM;
+-	mark = round_up(mark, 1UL << order);
++	mark = round_down(mark, 1UL << order);
+ 	if (index == mark)
+ 		folio_set_readahead(folio);
+ 	err = filemap_add_folio(ractl->mapping, folio, index, gfp);
+@@ -575,7 +575,7 @@ static void ondemand_readahead(struct re
+ 	 * It's the expected callback index, assume sequential access.
+ 	 * Ramp up sizes, and push forward the readahead window.
+ 	 */
+-	expected = round_up(ra->start + ra->size - ra->async_size,
++	expected = round_down(ra->start + ra->size - ra->async_size,
+ 			1UL << order);
+ 	if (index == expected || index == (ra->start + ra->size)) {
+ 		ra->start += ra->size;
 _
 
-Patches currently in -mm which might be from sidhartha.kumar@oracle.com are
+Patches currently in -mm which might be from jack@suse.cz are
 
-maple_tree-fix-comment-describing-mas_node_count_gfp.patch
 
 
