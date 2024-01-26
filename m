@@ -1,65 +1,79 @@
-Return-Path: <stable+bounces-15922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF54883E2A0
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 20:33:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A8183E311
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 21:08:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59F071F21ADA
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 19:33:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1835287542
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 20:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B939249FF;
-	Fri, 26 Jan 2024 19:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDEE922616;
+	Fri, 26 Jan 2024 20:08:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="OMpsoMLn"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5123D23758;
-	Fri, 26 Jan 2024 19:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C8A225DA
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 20:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706297537; cv=none; b=HCeiLQz7ERpD0sIOnPBu0ZWibCdFAn9UyfdjJmqwitHNk2cacpZ4yH/3DIO7GsImdlH2yseCKCYkBC5cLBcqbS2at/pXLcvnOPhxW0S5fWn/TBlj4Nfx/YGXf6nCVjwft3/06KbgHgWF4dzEdd4kEHfXyF8Y2RsSMah/Na8r47M=
+	t=1706299699; cv=none; b=KpFNKAsTeu+AfgjJLyvHgZNbUaLkvbU4RB+Nv7TGCth2wz+VxVrmtVGYgSEH4VZZMShR/Ob3MgjOhQoJyeG7Q/8FKcdyJ1b0DcNfj7RgMMwwHW+3HDKChlcpAKr4Zw4ZwMu+L7kNruZMuN/5Kadrz2r8eHMHQQP9MqkYQ2SphXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706297537; c=relaxed/simple;
-	bh=mLtfa9rwa4Wd1aOztK+WeQOfWlOnVbtGjfUfZIKPPZ8=;
+	s=arc-20240116; t=1706299699; c=relaxed/simple;
+	bh=OK1s9zI11suzpS7gWQsadmQvqCVXInfyZCMHnlk1Ho0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MHPJFMNK0ueA9m5GWjTZKErkrDZ48+5l/wnj2Wln8+VQ++/nhbjY4euMVGTx0lrALAvNSVD4dTe3hNU5we5nZbuCsa7HyZYSVClZb4QcQ3jwbjTRR3hs4zxYnSwiuTo7ZJRr0qaVQYNTkVoO2Sig5/2JYTygjhESyAxCgHQ4/Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: by air.basealt.ru (Postfix, from userid 490)
-	id 157FB2F20236; Fri, 26 Jan 2024 19:32:12 +0000 (UTC)
-X-Spam-Level: 
-Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
-	by air.basealt.ru (Postfix) with ESMTPSA id 3EFD22F2023B;
-	Fri, 26 Jan 2024 19:32:06 +0000 (UTC)
-From: kovalev@altlinux.org
-To: stable@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Cc: keescook@chromium.org,
-	sfrench@samba.org,
-	corbet@lwn.net,
-	natechancellor@gmail.com,
-	ndesaulniers@google.com,
-	kovalev@altlinux.org,
-	Paulo Alcantara <pc@cjr.nz>,
-	Ronnie Sahlberg <lsahlber@redhat.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 2/2] smb3: Replace smb2pdu 1-element arrays with flex-arrays
-Date: Fri, 26 Jan 2024 22:31:43 +0300
-Message-Id: <20240126193143.245122-3-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
-In-Reply-To: <20240126193143.245122-1-kovalev@altlinux.org>
-References: <20240126193143.245122-1-kovalev@altlinux.org>
+	 MIME-Version; b=W6g5d8m8RDGzWnM0U8rC4e8t+398Fq+8myBU9Tge2vdTuP72OdNaxNL5n5Mq/eKNzAeGN5/BY1oZvaoxnXQqsI395NCDsbuXvQCRJ2Ec6Os8Xyu+MqKM3vbSugEFhoi2Xnf3rT5/I2FLcndnETddp1PPoyKE9XKjjcQuRD33s+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=OMpsoMLn; arc=none smtp.client-ip=209.85.161.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5988e55ede0so422165eaf.2
+        for <stable@vger.kernel.org>; Fri, 26 Jan 2024 12:08:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1706299697; x=1706904497; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UNaPGeyKlKQ94ax58bojymvRs406SDq+X0qIIGYQv8Y=;
+        b=OMpsoMLnkNxx7kr6oTcEfTgV/MNIDIzjfS/s52xRedIZE6WjwbU41NpVuifG68jQj5
+         71pfjAblga5DbV3khgxVHJBEQQQPJFGWgkKzuwkxAHZgzULIUVHzWxsw5LHtbTqLQIVx
+         BlfN5RbYoQyBA6A9j5yXSFqDViY9UNTMto8oU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706299697; x=1706904497;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UNaPGeyKlKQ94ax58bojymvRs406SDq+X0qIIGYQv8Y=;
+        b=H7IkuAJzCuihuly4KzCmD1kF7fNCPRPnyZ9geIIx7s0nsJtn6hXCAA4aLOxeQhOcnT
+         CrrptYcDJhKPaykhPjFEE1b78kZk4SjvZv5vDjfwfnMGj58lHbWsIsxVvNP7ESSHYA7W
+         tUwbcIvb0v5/AqmxxEmwyXvhduklgtN1UZ4V5iFie8c84RWoHYe9Hf4rSnIXEPSgQt5/
+         bXxci8Z2AyoxofIQRQGVtUbkBWwrO9va3MXmFjiCq8RP0ZdFVbtMNrQYBAjQSz06vSD0
+         vanolgW/Q9lAsdlLxhImzu/mEvYEdd4bAwWvgVh3ZuAEA9QLCAzDXXdljXCY6nc3bKGV
+         FAgg==
+X-Gm-Message-State: AOJu0YzqKRV5/aA9/EqPhzu2QNSGUZfzJvqDhb8g6X4HotF3BPN7ZeUi
+	suSg5QiyQBhgpugENFXbYtgL3Sn56jgHvfB9ycodDCtbeI7Bz8v6ygJ7iqS4oA==
+X-Google-Smtp-Source: AGHT+IH39b86p7OqPsmMTO5ocOSpZNAU7+xTWrB4e1H9kvKTfsrMeuXyzi31u0AJH0P4OBY3fkLt2Q==
+X-Received: by 2002:a4a:bd8c:0:b0:59a:161e:ed64 with SMTP id k12-20020a4abd8c000000b0059a161eed64mr191671oop.8.1706299696997;
+        Fri, 26 Jan 2024 12:08:16 -0800 (PST)
+Received: from vertex.localdomain (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
+        by smtp.gmail.com with ESMTPSA id k7-20020a4abd87000000b00599f5c2c052sm358161oop.8.2024.01.26.12.08.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jan 2024 12:08:16 -0800 (PST)
+From: Zack Rusin <zack.rusin@broadcom.com>
+To: dri-devel@lists.freedesktop.org
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 5/5] drm/vmwgfx: Fix the lifetime of the bo cursor memory
+Date: Fri, 26 Jan 2024 15:08:04 -0500
+Message-Id: <20240126200804.732454-6-zack.rusin@broadcom.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20240126200804.732454-1-zack.rusin@broadcom.com>
+References: <20240126200804.732454-1-zack.rusin@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,375 +82,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Kees Cook <keescook@chromium.org>
+The cleanup can be dispatched while the atomic update is still active,
+which means that the memory acquired in the atomic update needs to
+not be invalidated by the cleanup. The buffer objects in vmw_plane_state
+instead of using the builtin map_and_cache were trying to handle
+the lifetime of the mapped memory themselves, leading to crashes.
 
-commit eb3e28c1e89b4984308777231887e41aa8a0151f upstream.
+Use the map_and_cache instead of trying to manage the lifetime of the
+buffer objects held by the vmw_plane_state.
 
-The kernel is globally removing the ambiguous 0-length and 1-element
-arrays in favor of flexible arrays, so that we can gain both compile-time
-and run-time array bounds checking[1].
+Fixes kernel oops'es in IGT's kms_cursor_legacy forked-bo.
 
-Replace the trailing 1-element array with a flexible array in the
-following structures:
-
-        struct smb2_err_rsp
-        struct smb2_tree_connect_req
-        struct smb2_negotiate_rsp
-        struct smb2_sess_setup_req
-        struct smb2_sess_setup_rsp
-        struct smb2_read_req
-        struct smb2_read_rsp
-        struct smb2_write_req
-        struct smb2_write_rsp
-        struct smb2_query_directory_req
-        struct smb2_query_directory_rsp
-        struct smb2_set_info_req
-        struct smb2_change_notify_rsp
-        struct smb2_create_rsp
-        struct smb2_query_info_req
-        struct smb2_query_info_rsp
-
-Replace the trailing 1-element array with a flexible array, but leave
-the existing structure padding:
-
-        struct smb2_file_all_info
-        struct smb2_lock_req
-
-Adjust all related size calculations to match the changes to sizeof().
-
-No machine code output or .data section differences are produced after
-these changes.
-
-[1] For lots of details, see both:
-    https://docs.kernel.org/process/deprecated.html#zero-length-and-one-element-arrays
-    https://people.kernel.org/kees/bounded-flexible-arrays-in-c
-
-Cc: Steve French <sfrench@samba.org>
-Cc: Paulo Alcantara <pc@cjr.nz>
-Cc: Ronnie Sahlberg <lsahlber@redhat.com>
-Cc: Shyam Prasad N <sprasad@microsoft.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Reviewed-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: bb6780aa5a1d ("drm/vmwgfx: Diff cursors when using cmds")
+Cc: <stable@vger.kernel.org> # v6.2+
 ---
- fs/cifs/smb2misc.c |  2 +-
- fs/cifs/smb2ops.c  | 14 +++++++-------
- fs/cifs/smb2pdu.c  | 13 ++++++-------
- fs/cifs/smb2pdu.h  | 42 ++++++++++++++++++++++++------------------
- 4 files changed, 38 insertions(+), 33 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-diff --git a/fs/cifs/smb2misc.c b/fs/cifs/smb2misc.c
-index b98bba887f84b0..660e00eb42060a 100644
---- a/fs/cifs/smb2misc.c
-+++ b/fs/cifs/smb2misc.c
-@@ -117,7 +117,7 @@ static __u32 get_neg_ctxt_len(struct smb2_sync_hdr *hdr, __u32 len,
- 	} else if (nc_offset + 1 == non_ctxlen) {
- 		cifs_dbg(FYI, "no SPNEGO security blob in negprot rsp\n");
- 		size_of_pad_before_neg_ctxts = 0;
--	} else if (non_ctxlen == SMB311_NEGPROT_BASE_SIZE)
-+	} else if (non_ctxlen == SMB311_NEGPROT_BASE_SIZE + 1)
- 		/* has padding, but no SPNEGO blob */
- 		size_of_pad_before_neg_ctxts = nc_offset - non_ctxlen + 1;
- 	else
-diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
-index 26edaeb4245d8c..84850a55c8b7e7 100644
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -5561,7 +5561,7 @@ struct smb_version_values smb20_values = {
- 	.header_size = sizeof(struct smb2_sync_hdr),
- 	.header_preamble_size = 0,
- 	.max_header_size = MAX_SMB2_HDR_SIZE,
--	.read_rsp_size = sizeof(struct smb2_read_rsp) - 1,
-+	.read_rsp_size = sizeof(struct smb2_read_rsp),
- 	.lock_cmd = SMB2_LOCK,
- 	.cap_unix = 0,
- 	.cap_nt_find = SMB2_NT_FIND,
-@@ -5583,7 +5583,7 @@ struct smb_version_values smb21_values = {
- 	.header_size = sizeof(struct smb2_sync_hdr),
- 	.header_preamble_size = 0,
- 	.max_header_size = MAX_SMB2_HDR_SIZE,
--	.read_rsp_size = sizeof(struct smb2_read_rsp) - 1,
-+	.read_rsp_size = sizeof(struct smb2_read_rsp),
- 	.lock_cmd = SMB2_LOCK,
- 	.cap_unix = 0,
- 	.cap_nt_find = SMB2_NT_FIND,
-@@ -5604,7 +5604,7 @@ struct smb_version_values smb3any_values = {
- 	.header_size = sizeof(struct smb2_sync_hdr),
- 	.header_preamble_size = 0,
- 	.max_header_size = MAX_SMB2_HDR_SIZE,
--	.read_rsp_size = sizeof(struct smb2_read_rsp) - 1,
-+	.read_rsp_size = sizeof(struct smb2_read_rsp),
- 	.lock_cmd = SMB2_LOCK,
- 	.cap_unix = 0,
- 	.cap_nt_find = SMB2_NT_FIND,
-@@ -5625,7 +5625,7 @@ struct smb_version_values smbdefault_values = {
- 	.header_size = sizeof(struct smb2_sync_hdr),
- 	.header_preamble_size = 0,
- 	.max_header_size = MAX_SMB2_HDR_SIZE,
--	.read_rsp_size = sizeof(struct smb2_read_rsp) - 1,
-+	.read_rsp_size = sizeof(struct smb2_read_rsp),
- 	.lock_cmd = SMB2_LOCK,
- 	.cap_unix = 0,
- 	.cap_nt_find = SMB2_NT_FIND,
-@@ -5646,7 +5646,7 @@ struct smb_version_values smb30_values = {
- 	.header_size = sizeof(struct smb2_sync_hdr),
- 	.header_preamble_size = 0,
- 	.max_header_size = MAX_SMB2_HDR_SIZE,
--	.read_rsp_size = sizeof(struct smb2_read_rsp) - 1,
-+	.read_rsp_size = sizeof(struct smb2_read_rsp),
- 	.lock_cmd = SMB2_LOCK,
- 	.cap_unix = 0,
- 	.cap_nt_find = SMB2_NT_FIND,
-@@ -5667,7 +5667,7 @@ struct smb_version_values smb302_values = {
- 	.header_size = sizeof(struct smb2_sync_hdr),
- 	.header_preamble_size = 0,
- 	.max_header_size = MAX_SMB2_HDR_SIZE,
--	.read_rsp_size = sizeof(struct smb2_read_rsp) - 1,
-+	.read_rsp_size = sizeof(struct smb2_read_rsp),
- 	.lock_cmd = SMB2_LOCK,
- 	.cap_unix = 0,
- 	.cap_nt_find = SMB2_NT_FIND,
-@@ -5688,7 +5688,7 @@ struct smb_version_values smb311_values = {
- 	.header_size = sizeof(struct smb2_sync_hdr),
- 	.header_preamble_size = 0,
- 	.max_header_size = MAX_SMB2_HDR_SIZE,
--	.read_rsp_size = sizeof(struct smb2_read_rsp) - 1,
-+	.read_rsp_size = sizeof(struct smb2_read_rsp),
- 	.lock_cmd = SMB2_LOCK,
- 	.cap_unix = 0,
- 	.cap_nt_find = SMB2_NT_FIND,
-diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
-index 76679dc4e63288..4aec01841f0f26 100644
---- a/fs/cifs/smb2pdu.c
-+++ b/fs/cifs/smb2pdu.c
-@@ -1261,7 +1261,7 @@ SMB2_sess_sendreceive(struct SMB2_sess_data *sess_data)
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index e2bfaf4522a6..cd4925346ed4 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -185,13 +185,12 @@ static u32 vmw_du_cursor_mob_size(u32 w, u32 h)
+  */
+ static u32 *vmw_du_cursor_plane_acquire_image(struct vmw_plane_state *vps)
+ {
+-	bool is_iomem;
+ 	if (vps->surf) {
+ 		if (vps->surf_mapped)
+ 			return vmw_bo_map_and_cache(vps->surf->res.guest_memory_bo);
+ 		return vps->surf->snooper.image;
+ 	} else if (vps->bo)
+-		return ttm_kmap_obj_virtual(&vps->bo->map, &is_iomem);
++		return vmw_bo_map_and_cache(vps->bo);
+ 	return NULL;
+ }
  
- 	/* Testing shows that buffer offset must be at location of Buffer[0] */
- 	req->SecurityBufferOffset =
--		cpu_to_le16(sizeof(struct smb2_sess_setup_req) - 1 /* pad */);
-+		cpu_to_le16(sizeof(struct smb2_sess_setup_req));
- 	req->SecurityBufferLength = cpu_to_le16(sess_data->iov[1].iov_len);
+@@ -653,22 +652,12 @@ vmw_du_cursor_plane_cleanup_fb(struct drm_plane *plane,
+ {
+ 	struct vmw_cursor_plane *vcp = vmw_plane_to_vcp(plane);
+ 	struct vmw_plane_state *vps = vmw_plane_state_to_vps(old_state);
+-	bool is_iomem;
  
- 	memset(&rqst, 0, sizeof(struct smb_rqst));
-@@ -1760,8 +1760,7 @@ SMB2_tcon(const unsigned int xid, struct cifs_ses *ses, const char *tree,
- 	iov[0].iov_len = total_len - 1;
+ 	if (vps->surf_mapped) {
+ 		vmw_bo_unmap(vps->surf->res.guest_memory_bo);
+ 		vps->surf_mapped = false;
+ 	}
  
- 	/* Testing shows that buffer offset must be at location of Buffer[0] */
--	req->PathOffset = cpu_to_le16(sizeof(struct smb2_tree_connect_req)
--			- 1 /* pad */);
-+	req->PathOffset = cpu_to_le16(sizeof(struct smb2_tree_connect_req));
- 	req->PathLength = cpu_to_le16(unc_path_len - 2);
- 	iov[1].iov_base = unc_path;
- 	iov[1].iov_len = unc_path_len;
-@@ -4676,7 +4675,7 @@ int SMB2_query_directory_init(const unsigned int xid,
- 	memcpy(bufptr, &asteriks, len);
+-	if (vps->bo && ttm_kmap_obj_virtual(&vps->bo->map, &is_iomem)) {
+-		const int ret = ttm_bo_reserve(&vps->bo->tbo, true, false, NULL);
+-
+-		if (likely(ret == 0)) {
+-			ttm_bo_kunmap(&vps->bo->map);
+-			ttm_bo_unreserve(&vps->bo->tbo);
+-		}
+-	}
+-
+ 	vmw_du_cursor_plane_unmap_cm(vps);
+ 	vmw_du_put_cursor_mob(vcp, vps);
  
- 	req->FileNameOffset =
--		cpu_to_le16(sizeof(struct smb2_query_directory_req) - 1);
-+		cpu_to_le16(sizeof(struct smb2_query_directory_req));
- 	req->FileNameLength = cpu_to_le16(len);
- 	/*
- 	 * BB could be 30 bytes or so longer if we used SMB2 specific
-@@ -4873,7 +4872,7 @@ SMB2_set_info_init(struct cifs_tcon *tcon, struct TCP_Server_Info *server,
- 	req->AdditionalInformation = cpu_to_le32(additional_info);
- 
- 	req->BufferOffset =
--			cpu_to_le16(sizeof(struct smb2_set_info_req) - 1);
-+			cpu_to_le16(sizeof(struct smb2_set_info_req));
- 	req->BufferLength = cpu_to_le32(*size);
- 
- 	memcpy(req->Buffer, *data, *size);
-@@ -5105,9 +5104,9 @@ build_qfs_info_req(struct kvec *iov, struct cifs_tcon *tcon,
- 	req->VolatileFileId = volatile_fid;
- 	/* 1 for pad */
- 	req->InputBufferOffset =
--			cpu_to_le16(sizeof(struct smb2_query_info_req) - 1);
-+			cpu_to_le16(sizeof(struct smb2_query_info_req));
- 	req->OutputBufferLength = cpu_to_le32(
--		outbuf_len + sizeof(struct smb2_query_info_rsp) - 1);
-+		outbuf_len + sizeof(struct smb2_query_info_rsp));
- 
- 	iov->iov_base = (char *)req;
- 	iov->iov_len = total_len;
-diff --git a/fs/cifs/smb2pdu.h b/fs/cifs/smb2pdu.h
-index 89a732b31390ea..eaa873175318a0 100644
---- a/fs/cifs/smb2pdu.h
-+++ b/fs/cifs/smb2pdu.h
-@@ -220,7 +220,7 @@ struct smb2_err_rsp {
- 	__le16 StructureSize;
- 	__le16 Reserved; /* MBZ */
- 	__le32 ByteCount;  /* even if zero, at least one byte follows */
--	__u8   ErrorData[1];  /* variable length */
-+	__u8   ErrorData[];  /* variable length */
- } __packed;
- 
- #define SYMLINK_ERROR_TAG 0x4c4d5953
-@@ -464,7 +464,7 @@ struct smb2_negotiate_rsp {
- 	__le16 SecurityBufferOffset;
- 	__le16 SecurityBufferLength;
- 	__le32 NegotiateContextOffset;	/* Pre:SMB3.1.1 was reserved/ignored */
--	__u8   Buffer[1];	/* variable length GSS security buffer */
-+	__u8   Buffer[];	/* variable length GSS security buffer */
- } __packed;
- 
- /* Flags */
-@@ -481,7 +481,7 @@ struct smb2_sess_setup_req {
- 	__le16 SecurityBufferOffset;
- 	__le16 SecurityBufferLength;
- 	__u64 PreviousSessionId;
--	__u8   Buffer[1];	/* variable length GSS security buffer */
-+	__u8   Buffer[];	/* variable length GSS security buffer */
- } __packed;
- 
- /* Currently defined SessionFlags */
-@@ -494,7 +494,7 @@ struct smb2_sess_setup_rsp {
- 	__le16 SessionFlags;
- 	__le16 SecurityBufferOffset;
- 	__le16 SecurityBufferLength;
--	__u8   Buffer[1];	/* variable length GSS security buffer */
-+	__u8   Buffer[];	/* variable length GSS security buffer */
- } __packed;
- 
- struct smb2_logoff_req {
-@@ -520,7 +520,7 @@ struct smb2_tree_connect_req {
- 	__le16 Flags; /* Reserved MBZ for dialects prior to SMB3.1.1 */
- 	__le16 PathOffset;
- 	__le16 PathLength;
--	__u8   Buffer[1];	/* variable length */
-+	__u8   Buffer[];	/* variable length */
- } __packed;
- 
- /* See MS-SMB2 section 2.2.9.2 */
-@@ -828,7 +828,7 @@ struct smb2_create_rsp {
- 	__u64  VolatileFileId; /* opaque endianness */
- 	__le32 CreateContextsOffset;
- 	__le32 CreateContextsLength;
--	__u8   Buffer[1];
-+	__u8   Buffer[];
- } __packed;
- 
- struct create_context {
-@@ -1289,7 +1289,7 @@ struct smb2_read_plain_req {
- 	__le32 RemainingBytes;
- 	__le16 ReadChannelInfoOffset;
- 	__le16 ReadChannelInfoLength;
--	__u8   Buffer[1];
-+	__u8   Buffer[];
- } __packed;
- 
- /* Read flags */
-@@ -1304,7 +1304,7 @@ struct smb2_read_rsp {
- 	__le32 DataLength;
- 	__le32 DataRemaining;
- 	__u32  Flags;
--	__u8   Buffer[1];
-+	__u8   Buffer[];
- } __packed;
- 
- /* For write request Flags field below the following flags are defined: */
-@@ -1324,7 +1324,7 @@ struct smb2_write_req {
- 	__le16 WriteChannelInfoOffset;
- 	__le16 WriteChannelInfoLength;
- 	__le32 Flags;
--	__u8   Buffer[1];
-+	__u8   Buffer[];
- } __packed;
- 
- struct smb2_write_rsp {
-@@ -1335,7 +1335,7 @@ struct smb2_write_rsp {
- 	__le32 DataLength;
- 	__le32 DataRemaining;
- 	__u32  Reserved2;
--	__u8   Buffer[1];
-+	__u8   Buffer[];
- } __packed;
- 
- /* notify flags */
-@@ -1371,7 +1371,7 @@ struct smb2_change_notify_rsp {
- 	__le16	StructureSize;  /* Must be 9 */
- 	__le16	OutputBufferOffset;
- 	__le32	OutputBufferLength;
--	__u8	Buffer[1]; /* array of file notify structs */
-+	__u8	Buffer[]; /* array of file notify structs */
- } __packed;
- 
- #define SMB2_LOCKFLAG_SHARED_LOCK	0x0001
-@@ -1394,7 +1394,10 @@ struct smb2_lock_req {
- 	__u64  PersistentFileId; /* opaque endianness */
- 	__u64  VolatileFileId; /* opaque endianness */
- 	/* Followed by at least one */
--	struct smb2_lock_element locks[1];
-+	union {
-+		struct smb2_lock_element lock;
-+		DECLARE_FLEX_ARRAY(struct smb2_lock_element, locks);
-+	};
- } __packed;
- 
- struct smb2_lock_rsp {
-@@ -1434,7 +1437,7 @@ struct smb2_query_directory_req {
- 	__le16 FileNameOffset;
- 	__le16 FileNameLength;
- 	__le32 OutputBufferLength;
--	__u8   Buffer[1];
-+	__u8   Buffer[];
- } __packed;
- 
- struct smb2_query_directory_rsp {
-@@ -1442,7 +1445,7 @@ struct smb2_query_directory_rsp {
- 	__le16 StructureSize; /* Must be 9 */
- 	__le16 OutputBufferOffset;
- 	__le32 OutputBufferLength;
--	__u8   Buffer[1];
-+	__u8   Buffer[];
- } __packed;
- 
- /* Possible InfoType values */
-@@ -1483,7 +1486,7 @@ struct smb2_query_info_req {
- 	__le32 Flags;
- 	__u64  PersistentFileId; /* opaque endianness */
- 	__u64  VolatileFileId; /* opaque endianness */
--	__u8   Buffer[1];
-+	__u8   Buffer[];
- } __packed;
- 
- struct smb2_query_info_rsp {
-@@ -1491,7 +1494,7 @@ struct smb2_query_info_rsp {
- 	__le16 StructureSize; /* Must be 9 */
- 	__le16 OutputBufferOffset;
- 	__le32 OutputBufferLength;
--	__u8   Buffer[1];
-+	__u8   Buffer[];
- } __packed;
- 
- /*
-@@ -1514,7 +1517,7 @@ struct smb2_set_info_req {
- 	__le32 AdditionalInformation;
- 	__u64  PersistentFileId; /* opaque endianness */
- 	__u64  VolatileFileId; /* opaque endianness */
--	__u8   Buffer[1];
-+	__u8   Buffer[];
- } __packed;
- 
- struct smb2_set_info_rsp {
-@@ -1716,7 +1719,10 @@ struct smb2_file_all_info { /* data block encoding of response to level 18 */
- 	__le32 Mode;
- 	__le32 AlignmentRequirement;
- 	__le32 FileNameLength;
--	char   FileName[1];
-+	union {
-+		char __pad;     /* Legacy structure padding */
-+		DECLARE_FLEX_ARRAY(char, FileName);
-+	};
- } __packed; /* level 18 Query */
- 
- struct smb2_file_eof_info { /* encoding of request for level 10 */
 -- 
-2.33.8
+2.40.1
 
 
