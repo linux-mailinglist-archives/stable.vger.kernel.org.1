@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-15948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 909C783E4FB
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:15:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B1483E501
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:16:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFD9FB26A39
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 22:15:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E348EB24C89
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 22:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19DF224A02;
-	Fri, 26 Jan 2024 22:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF49249E6;
+	Fri, 26 Jan 2024 22:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftCmOM4Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HSdpPZlT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7B223758
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 22:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F7625637
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 22:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706307301; cv=none; b=POA2/g8OR3j/wvXXPfhsZt97GwuO48Kvfkyxrj2ZAIFP9uFv0V1j+5mWowWLpkbGoae/Sb04PorNBc/X1bDRA8pJZXtSXY3mpsRWtARhNZrWObTeNB2k8KDRyzQJnSTmVyj7wy0ZIs25Ksiwggea60zNI3cONZ3WvevEcBf5msY=
+	t=1706307375; cv=none; b=An1B6qOe8WO9ZnUQg8PTRzyn+mkKTr3AR6RuSfVQtFz8WzRZSlodi8nd04cw917JMHDMVDBHzSPCpZ4th0Dvj3Fs6HmLRUKQZxtjs+VCFnK1FZGzctkKOmEn+2NTq2F9NAllxiElBi6cyvjh+Fyqk41eSSA7IJj9MmglN5E6g8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706307301; c=relaxed/simple;
-	bh=50yrglA+byJ/FCwsAzSvWytEUYOPwTGOz3EVFWE38lA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IvdnIVqyKYYBa3BTB0baOpUyucpEqEX2IowyPzK5rGmCS6b39QlXXJYlCCb/SAz+yFikHzews0+/903cdk7tU8Zi8hOYzAR8mxBuIOqe2UbXr8e4schXxQWAY9dtBEeAU+lK7CpZ/GVP+eLJttnIKSBQnqpuO2JZwP1dwIeBs/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftCmOM4Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311FFC43394;
-	Fri, 26 Jan 2024 22:15:01 +0000 (UTC)
+	s=arc-20240116; t=1706307375; c=relaxed/simple;
+	bh=LD0An/veDf7q84kDGgzj4DT1DRsq1/2Lb/0W0q3QqQ8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=d5F0QF3R4nyLjzj4CzObJ3J/CGM9E15gpwhWoOqotphynnSVAm5BbF0wAMhz6z85MMfcPctRERKtd75cbmfVqC8NhjymKDdPflP6ONqU1zPkDm+ElA+bTg1g0qNvlUeSZn2zt/o7CilrMKGGBLVaKBxLSaGCjqMjZsQvxcvNuQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HSdpPZlT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23F7AC43390;
+	Fri, 26 Jan 2024 22:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706307301;
-	bh=50yrglA+byJ/FCwsAzSvWytEUYOPwTGOz3EVFWE38lA=;
+	s=korg; t=1706307375;
+	bh=LD0An/veDf7q84kDGgzj4DT1DRsq1/2Lb/0W0q3QqQ8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ftCmOM4YBVD6RdA4jIqj8MitRk/PY3X7ZhvqlE3HV/aBbKkAFFuR6agEUKn5IgziA
-	 YFj+FkgOp5z8i9UeJnsQ0bgDu3WcKWEDlE+/7T9T8dZ5MXFcmNjdmXwPDFTVLtzh3K
-	 V6vH16DhgWDhS24rd/Ef0h+G5VQ9sXsxBtjHgbsE=
-Subject: FAILED: patch "[PATCH] nbd: always initialize struct msghdr completely" failed to apply to 6.1-stable tree
-To: edumazet@google.com,axboe@kernel.dk,horms@kernel.org,josef@toxicpanda.com,syzkaller@googlegroups.com
+	b=HSdpPZlTNP9dxr/RhUChkdxJM3N7E1gq7dVugkQLmRvhgmq4S8eNtpNlxeJ0UmpWe
+	 pMEI2Fj05DwQ1tr4NVC4FYzbHoHF207JSGXJ2gWCXvXDdbiOZHNsl2HAhxknCMsf5c
+	 g9EaYQ5qtHNGRiw3OZSBTGoUtJCoMHBRc6rnkW8I=
+Subject: FAILED: patch "[PATCH] bus: mhi: host: Add spinlock to protect WP access when" failed to apply to 5.10-stable tree
+To: bbhatt@codeaurora.org,manivannan.sadhasivam@linaro.org,quic_jhugo@quicinc.com,quic_qianyu@quicinc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 26 Jan 2024 14:14:55 -0800
-Message-ID: <2024012655-dwelled-unlinked-8b2c@gregkh>
+Date: Fri, 26 Jan 2024 14:16:14 -0800
+Message-ID: <2024012614-satiable-cheese-4655@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,28 +53,28 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 78fbb92af27d0982634116c7a31065f24d092826
+git cherry-pick -x b89b6a863dd53bc70d8e52d50f9cfaef8ef5e9c9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012655-dwelled-unlinked-8b2c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012614-satiable-cheese-4655@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-78fbb92af27d ("nbd: always initialize struct msghdr completely")
-98123866fcf3 ("Treewide: Stop corrupting socket's task_frag")
-c3d88dfd1583 ("fs: dlm: cleanup listen sock handling")
-4f567acb0b86 ("fs: dlm: remove socket shutdown handling")
-1037c2a94ab5 ("fs: dlm: use listen sock as dlm running indicator")
-08ae0547e75e ("fs: dlm: fix sock release if listen fails")
+b89b6a863dd5 ("bus: mhi: host: Add spinlock to protect WP access when queueing TREs")
+a0f5a630668c ("bus: mhi: Move host MHI code to "host" directory")
+4547a749be99 ("bus: mhi: core: Fix MHI runtime_pm behavior")
+68731852f6e5 ("bus: mhi: core: Return EAGAIN if MHI ring is full")
+a8f75cb348fd ("mhi: core: Factorize mhi queuing")
+855a70c12021 ("bus: mhi: Add MHI PCI support for WWAN modems")
 
 thanks,
 
@@ -82,76 +82,95 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 78fbb92af27d0982634116c7a31065f24d092826 Mon Sep 17 00:00:00 2001
-From: Eric Dumazet <edumazet@google.com>
-Date: Fri, 12 Jan 2024 13:26:57 +0000
-Subject: [PATCH] nbd: always initialize struct msghdr completely
+From b89b6a863dd53bc70d8e52d50f9cfaef8ef5e9c9 Mon Sep 17 00:00:00 2001
+From: Bhaumik Bhatt <bbhatt@codeaurora.org>
+Date: Mon, 11 Dec 2023 14:42:51 +0800
+Subject: [PATCH] bus: mhi: host: Add spinlock to protect WP access when
+ queueing TREs
 
-syzbot complains that msg->msg_get_inq value can be uninitialized [1]
+Protect WP accesses such that multiple threads queueing buffers for
+incoming data do not race.
 
-struct msghdr got many new fields recently, we should always make
-sure their values is zero by default.
+Meanwhile, if CONFIG_TRACE_IRQFLAGS is enabled, irq will be enabled once
+__local_bh_enable_ip is called as part of write_unlock_bh. Hence, let's
+take irqsave lock after TRE is generated to avoid running write_unlock_bh
+when irqsave lock is held.
 
-[1]
- BUG: KMSAN: uninit-value in tcp_recvmsg+0x686/0xac0 net/ipv4/tcp.c:2571
-  tcp_recvmsg+0x686/0xac0 net/ipv4/tcp.c:2571
-  inet_recvmsg+0x131/0x580 net/ipv4/af_inet.c:879
-  sock_recvmsg_nosec net/socket.c:1044 [inline]
-  sock_recvmsg+0x12b/0x1e0 net/socket.c:1066
-  __sock_xmit+0x236/0x5c0 drivers/block/nbd.c:538
-  nbd_read_reply drivers/block/nbd.c:732 [inline]
-  recv_work+0x262/0x3100 drivers/block/nbd.c:863
-  process_one_work kernel/workqueue.c:2627 [inline]
-  process_scheduled_works+0x104e/0x1e70 kernel/workqueue.c:2700
-  worker_thread+0xf45/0x1490 kernel/workqueue.c:2781
-  kthread+0x3ed/0x540 kernel/kthread.c:388
-  ret_from_fork+0x66/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
-
-Local variable msg created at:
-  __sock_xmit+0x4c/0x5c0 drivers/block/nbd.c:513
-  nbd_read_reply drivers/block/nbd.c:732 [inline]
-  recv_work+0x262/0x3100 drivers/block/nbd.c:863
-
-CPU: 1 PID: 7465 Comm: kworker/u5:1 Not tainted 6.7.0-rc7-syzkaller-00041-gf016f7547aee #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-Workqueue: nbd5-recv recv_work
-
-Fixes: f94fd25cb0aa ("tcp: pass back data left in socket after receive")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
 Cc: stable@vger.kernel.org
-Cc: Josef Bacik <josef@toxicpanda.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org
-Cc: nbd@other.debian.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240112132657.647112-1-edumazet@google.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 189ff97cca53 ("bus: mhi: core: Add support for data transfer")
+Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
+Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Tested-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/1702276972-41296-2-git-send-email-quic_qianyu@quicinc.com
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 4e72ec4e25ac..33a8f37bb6a1 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -508,7 +508,7 @@ static int __sock_xmit(struct nbd_device *nbd, struct socket *sock, int send,
- 		       struct iov_iter *iter, int msg_flags, int *sent)
- {
- 	int result;
--	struct msghdr msg;
-+	struct msghdr msg = {} ;
- 	unsigned int noreclaim_flag;
+diff --git a/drivers/bus/mhi/host/main.c b/drivers/bus/mhi/host/main.c
+index d80975f4bba8..ad7807e4b523 100644
+--- a/drivers/bus/mhi/host/main.c
++++ b/drivers/bus/mhi/host/main.c
+@@ -1124,17 +1124,15 @@ static int mhi_queue(struct mhi_device *mhi_dev, struct mhi_buf_info *buf_info,
+ 	if (unlikely(MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state)))
+ 		return -EIO;
  
- 	if (unlikely(!sock)) {
-@@ -524,10 +524,6 @@ static int __sock_xmit(struct nbd_device *nbd, struct socket *sock, int send,
- 	do {
- 		sock->sk->sk_allocation = GFP_NOIO | __GFP_MEMALLOC;
- 		sock->sk->sk_use_task_frag = false;
--		msg.msg_name = NULL;
--		msg.msg_namelen = 0;
--		msg.msg_control = NULL;
--		msg.msg_controllen = 0;
- 		msg.msg_flags = msg_flags | MSG_NOSIGNAL;
+-	read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
+-
+ 	ret = mhi_is_ring_full(mhi_cntrl, tre_ring);
+-	if (unlikely(ret)) {
+-		ret = -EAGAIN;
+-		goto exit_unlock;
+-	}
++	if (unlikely(ret))
++		return -EAGAIN;
  
- 		if (send)
+ 	ret = mhi_gen_tre(mhi_cntrl, mhi_chan, buf_info, mflags);
+ 	if (unlikely(ret))
+-		goto exit_unlock;
++		return ret;
++
++	read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
+ 
+ 	/* Packet is queued, take a usage ref to exit M3 if necessary
+ 	 * for host->device buffer, balanced put is done on buffer completion
+@@ -1154,7 +1152,6 @@ static int mhi_queue(struct mhi_device *mhi_dev, struct mhi_buf_info *buf_info,
+ 	if (dir == DMA_FROM_DEVICE)
+ 		mhi_cntrl->runtime_put(mhi_cntrl);
+ 
+-exit_unlock:
+ 	read_unlock_irqrestore(&mhi_cntrl->pm_lock, flags);
+ 
+ 	return ret;
+@@ -1206,6 +1203,9 @@ int mhi_gen_tre(struct mhi_controller *mhi_cntrl, struct mhi_chan *mhi_chan,
+ 	int eot, eob, chain, bei;
+ 	int ret;
+ 
++	/* Protect accesses for reading and incrementing WP */
++	write_lock_bh(&mhi_chan->lock);
++
+ 	buf_ring = &mhi_chan->buf_ring;
+ 	tre_ring = &mhi_chan->tre_ring;
+ 
+@@ -1223,8 +1223,10 @@ int mhi_gen_tre(struct mhi_controller *mhi_cntrl, struct mhi_chan *mhi_chan,
+ 
+ 	if (!info->pre_mapped) {
+ 		ret = mhi_cntrl->map_single(mhi_cntrl, buf_info);
+-		if (ret)
++		if (ret) {
++			write_unlock_bh(&mhi_chan->lock);
+ 			return ret;
++		}
+ 	}
+ 
+ 	eob = !!(flags & MHI_EOB);
+@@ -1241,6 +1243,8 @@ int mhi_gen_tre(struct mhi_controller *mhi_cntrl, struct mhi_chan *mhi_chan,
+ 	mhi_add_ring_element(mhi_cntrl, tre_ring);
+ 	mhi_add_ring_element(mhi_cntrl, buf_ring);
+ 
++	write_unlock_bh(&mhi_chan->lock);
++
+ 	return 0;
+ }
+ 
 
 
