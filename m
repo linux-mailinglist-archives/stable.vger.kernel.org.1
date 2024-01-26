@@ -1,117 +1,266 @@
-Return-Path: <stable+bounces-15885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB6383D968
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 12:34:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B4683D934
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 12:20:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B38A3B2DCD8
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 11:15:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47E8C1F27BDF
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 11:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DC214280;
-	Fri, 26 Jan 2024 11:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B8F1428D;
+	Fri, 26 Jan 2024 11:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DaxRzeNr"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I3KoTJ6J"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101C814273
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 11:14:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39DAB14016
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 11:20:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706267700; cv=none; b=iFWANr1U2zVedBEiP9CUT6HMZsCOBbaJzTWs7RqbJ2vFn0SkSugYB7zmAtp8zo8sWdEACHGRZHSiIpN7rVh28qNfNjov3qjcMjeRNj3V3avAFMsp4u4mk6UtkTHe3rMA2GXAQ+Fa4772jH3tYKgIHx8qVzk/I26g2W4YhGawGcg=
+	t=1706268040; cv=none; b=WpReOT5ehJZeAh7+gL4cT+VhgeoJD8s11v8oRadjSBbWeek6LEUAqq0xDdAdNpNRPO6sCNOCPtBadDFzyVG2sOaaID6cCL9b1Y4bOEmCWEOkqV/z+vn5vpehSwq969EtWQkxIMOtUfxAzJtmdjHqd5BNQGzOPkT9aY2ARxPdZvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706267700; c=relaxed/simple;
-	bh=h1EU6NmqUFj2EvkMVNy0hjRZlnhlBhK46W5pi0y1Pp4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JfDk5w/ty3o6IMGD20S0eZsf3XoowatcE07HCs0fVsODeBWccuhGOCqC7erOVDvyU9lqEz6kw6IcOncjaNDdHJ2i2dCPa49n7ZJsBAv7Xb4Ot6VuQV0wHBhTgdU8QVdPXi6CIR4htdedl4bBHKNkwd4JMekHarn5xJp5MGzKc1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DaxRzeNr; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-55ad2a47b7aso165272a12.3
-        for <stable@vger.kernel.org>; Fri, 26 Jan 2024 03:14:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706267697; x=1706872497; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i1ZZmYqo3r/SFCPLD0R0hGRGIRyXYIsP1uGinEyaK58=;
-        b=DaxRzeNrWeUY7YNsMi0c95lWDjvUTMbrprpH8UZpOdRNcdeZ6Lq4LbFKUDUaQYewLc
-         eTQlSYA7/Q3mFtG1epfjIhro58SqVC/DiUOHm+NFCQoRFkzTyY7wraE9BSuENmuFIDTu
-         yMGv5ekAnqaUT6g44hs8VozNHguSCN1ImFrhslM1a5l4sIVeoLvLRtvZ7WI17a9jeBDI
-         bbXbvXv3fuCsrvZKPRr0BFX2G9VBhrSRHsFYwrx20XfKeL/op03vlPGF2rLJGTpGhGPW
-         tc5fl0Py8AZz1RLWAhg91t6pBVD2TXbs++DMNDscw0ofZ+OdQIznJjkdRFYytJs4gh5R
-         8bTQ==
+	s=arc-20240116; t=1706268040; c=relaxed/simple;
+	bh=rUDCyjkqCSegFTrxzDZFLtSC0X1851BiYh6zk6ILQUo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r+WZVC7qTMudB3sXXIvY4DWkyAOzueOHNOOCqjI+/FOuHV8lT7KMTaXrYbBxdBdf+8w4/ZqE5JHOJf/EhYno5aZVQjLVBExZCYR3tPHQ5OAbR16X4mOShOzY3HNk6iFZjbR/ANIuJfQ/g0TjfP+i/neWy6bFFjTzLE0RbpB37Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I3KoTJ6J; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706268038;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=adKrKcsVsy8nxrIIG/cxmKvYrilkzcpLV+j2FAcibZc=;
+	b=I3KoTJ6J0l9oaJKG7d1aAeTwTuSqI3blcDg4KYFISmbHsscv2C0Vz7DtRTDH5sWK/GQMgx
+	xVBYmK4eqr8EjM47Pgoy1mQmCNBIJzjSNWBamYXryEAVUe3HXNuJgXShBdRspEZPHMwKhg
+	T6MsYCW1Xu6n+2DKz09EXTI7+0dLfs0=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-347-Qgc0FQ_WN3aTN-NgS1DQ_Q-1; Fri, 26 Jan 2024 06:20:36 -0500
+X-MC-Unique: Qgc0FQ_WN3aTN-NgS1DQ_Q-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a35118e98caso7721966b.0
+        for <stable@vger.kernel.org>; Fri, 26 Jan 2024 03:20:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706267697; x=1706872497;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1706268035; x=1706872835;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=i1ZZmYqo3r/SFCPLD0R0hGRGIRyXYIsP1uGinEyaK58=;
-        b=sdgzT9YvHtlxmO0d+jbLFTMvBM5Wce53TuHV0fZZ/FXgoo/uHlpxZ+rR0rjDM9UMNV
-         CQLrBvcuIOHPcK+QAUswdzVGA53S+SCIEoQware/VHCwtCIAiU0X3LuOdyTF1Ae/GyU4
-         UGkHG/y2IUsVH3hsBdtByJ0+PbErlb6ARdz8Lmi1s1uMMG4EuXwXY2EU/gAKFrIkbMp1
-         u0GP1NzKbCePzL/zzZD9uc5MBco4uSlErVbbexYfs3TlWGrhrYyUcEAX3jmwv8otuSdY
-         2JJkMrearoYQe/0rsixSBxUIBmABjoA7DnG2yBvLLT209SCCEQgBtwxlXWv7Y9GzeoSL
-         hjuw==
-X-Gm-Message-State: AOJu0YxVG2o/CyM8cltUcmE6Tzwr3bNW6TG6l9bM0UO09p1cOgh2Tjjw
-	h5cJO4ISVU79iKoUwLCzoeP1plfqSNXn7qJrvOMrenhOfYOFef5pq5ufcffdPq8=
-X-Google-Smtp-Source: AGHT+IEfV55Jc3OHGjYJDygk2acvMz0sszcIACRuw4I6C7+yV3g9xfsU70RpckrTODZ4cxkUWVu3+g==
-X-Received: by 2002:a05:6402:c9a:b0:55a:44cd:9c59 with SMTP id cm26-20020a0564020c9a00b0055a44cd9c59mr461447edb.30.1706267697145;
-        Fri, 26 Jan 2024 03:14:57 -0800 (PST)
-Received: from krzk-bin.. ([178.197.215.66])
-        by smtp.gmail.com with ESMTPSA id v2-20020aa7cd42000000b0055d1f27f47dsm488523edw.28.2024.01.26.03.14.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jan 2024 03:14:56 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Lubomir Rintel <lkundrak@v3.sk>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Qing Xu <qingx@marvell.com>,
-	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH RESEND v2] arm: marvell: Fix maxium->maxim typo in brownstone dts
-Date: Fri, 26 Jan 2024 12:14:54 +0100
-Message-Id: <170626764360.50413.9381526885560837347.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240125-brownstone-typo-fix-v2-1-45bc48a0c81c@skole.hr>
-References: <20240125-brownstone-typo-fix-v2-1-45bc48a0c81c@skole.hr>
+        bh=adKrKcsVsy8nxrIIG/cxmKvYrilkzcpLV+j2FAcibZc=;
+        b=YgBZf2gxdX2+YWLRS7EcK+/Gxf6NcXsIKIduLqGGErUghXhB6Jd3ogM0s8GK2C8t5g
+         d3qiH9OI4UnbSUYwK3/akR1WyVa8PhGiZ+WfoOR1d7CIlDRWRglprEqVIfVW02IhOW0b
+         j2ymonFaRDjSnAEIjjKRRPmUN40oOcTO583NdvYLgj0ZzLFwqB5gfqhXC0Jik4zBsLA1
+         TGudpL9o/DA/NQrEcDB7edzf1Ca0JxQsOknD4tnAMv7WzELvVpmeXfVgjHD0vB4T2y7l
+         RwHghL3AzWnVUEHKj/dPaiQXDs8uNI+W3uNQMuxGsXQeORpQLgbAta3WaGP5GUZtWXZE
+         Tp6Q==
+X-Gm-Message-State: AOJu0Yw39MtwoXt3yApDoZDU0tr5C6Cq6qmazligQLCWV+BUlUHkVcmS
+	ancpn70Eei/ttvi+kw0ctNW7DOXAmJFwLVXT4miacPVKoFc74R4+CpWmF+cKX7Nkf84frDyWmC8
+	/IGsY4HgkjI06EpToTQ1ZVO2B/UhhoTmHR+MwGCEZ2567qP/taKw9wJkQL+Rc5DvQbYohLXJ3Qv
+	srZ2cF05De2YNQUgK1L7P3Lsrsq/bS
+X-Received: by 2002:a17:906:1b57:b0:a33:2ea8:6c45 with SMTP id p23-20020a1709061b5700b00a332ea86c45mr1153419ejg.19.1706268035437;
+        Fri, 26 Jan 2024 03:20:35 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHFXUuQde2ZQSJlUg0Q4EcQL0ZwIpzUDUFkwVkwVyFgYDxpfpgyPr4TsY9axdE6ilwDji2IFnSyFKy2lexowRo=
+X-Received: by 2002:a17:906:1b57:b0:a33:2ea8:6c45 with SMTP id
+ p23-20020a1709061b5700b00a332ea86c45mr1153407ejg.19.1706268035096; Fri, 26
+ Jan 2024 03:20:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20240124-b4-hid-bpf-fixes-v2-0-052520b1e5e6@kernel.org> <20240124-b4-hid-bpf-fixes-v2-2-052520b1e5e6@kernel.org>
+In-Reply-To: <20240124-b4-hid-bpf-fixes-v2-2-052520b1e5e6@kernel.org>
+From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Date: Fri, 26 Jan 2024 12:20:23 +0100
+Message-ID: <CAO-hwJ+xOF=GH115_KcWKjXLqeKU-BzXmNY0bvOzhZQb0WkEDg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] HID: bpf: actually free hdev memory after
+ attaching a HID-BPF program
+To: Benjamin Tissoires <bentiss@kernel.org>
+Cc: Jiri Kosina <jikos@kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii.nakryiko@gmail.com>, 
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	bpf@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Jan 24, 2024 at 12:27=E2=80=AFPM Benjamin Tissoires <bentiss@kernel=
+.org> wrote:
+>
+> Turns out that I got my reference counts wrong and each successful
+> bus_find_device() actually calls get_device(), and we need to manually
+> call put_device().
+>
+> Ensure each bus_find_device() gets a matching put_device() when releasing
+> the bpf programs and fix all the error paths.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: f5c27da4e3c8 ("HID: initial BPF implementation")
+> Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+>
+> ---
+>
+> new in v2
+> ---
+>  drivers/hid/bpf/hid_bpf_dispatch.c  | 29 +++++++++++++++++++++++------
+>  drivers/hid/bpf/hid_bpf_jmp_table.c | 19 ++++++++++++++++---
+>  2 files changed, 39 insertions(+), 9 deletions(-)
+>
+> diff --git a/drivers/hid/bpf/hid_bpf_dispatch.c b/drivers/hid/bpf/hid_bpf=
+_dispatch.c
+> index 5111d1fef0d3..7903c8638e81 100644
+> --- a/drivers/hid/bpf/hid_bpf_dispatch.c
+> +++ b/drivers/hid/bpf/hid_bpf_dispatch.c
+> @@ -292,7 +292,7 @@ hid_bpf_attach_prog(unsigned int hid_id, int prog_fd,=
+ __u32 flags)
+>         struct hid_device *hdev;
+>         struct bpf_prog *prog;
+>         struct device *dev;
+> -       int fd;
+> +       int err, fd;
+>
+>         if (!hid_bpf_ops)
+>                 return -EINVAL;
+> @@ -311,14 +311,24 @@ hid_bpf_attach_prog(unsigned int hid_id, int prog_f=
+d, __u32 flags)
+>          * on errors or when it'll be detached
+>          */
+>         prog =3D bpf_prog_get(prog_fd);
+> -       if (IS_ERR(prog))
+> -               return PTR_ERR(prog);
+> +       if (IS_ERR(prog)) {
+> +               err =3D PTR_ERR(prog);
+> +               goto out_dev_put;
+> +       }
+>
+>         fd =3D do_hid_bpf_attach_prog(hdev, prog_fd, prog, flags);
+> -       if (fd < 0)
+> -               bpf_prog_put(prog);
+> +       if (fd < 0) {
+> +               err =3D fd;
+> +               goto out_prog_put;
+> +       }
+>
+>         return fd;
+> +
+> + out_prog_put:
+> +       bpf_prog_put(prog);
+> + out_dev_put:
+> +       put_device(dev);
+> +       return err;
+>  }
+>
+>  /**
+> @@ -345,8 +355,10 @@ hid_bpf_allocate_context(unsigned int hid_id)
+>         hdev =3D to_hid_device(dev);
+>
+>         ctx_kern =3D kzalloc(sizeof(*ctx_kern), GFP_KERNEL);
+> -       if (!ctx_kern)
+> +       if (!ctx_kern) {
+> +               put_device(dev);
+>                 return NULL;
+> +       }
+>
+>         ctx_kern->ctx.hid =3D hdev;
+>
+> @@ -363,10 +375,15 @@ noinline void
+>  hid_bpf_release_context(struct hid_bpf_ctx *ctx)
+>  {
+>         struct hid_bpf_ctx_kern *ctx_kern;
+> +       struct hid_device *hid;
+>
+>         ctx_kern =3D container_of(ctx, struct hid_bpf_ctx_kern, ctx);
+> +       hid =3D (struct hid_device *)ctx_kern->ctx.hid; /* ignore const *=
+/
+>
+>         kfree(ctx_kern);
+> +
+> +       /* get_device() is called by bus_find_device() */
+> +       put_device(&hid->dev);
+>  }
+>
+>  /**
+> diff --git a/drivers/hid/bpf/hid_bpf_jmp_table.c b/drivers/hid/bpf/hid_bp=
+f_jmp_table.c
+> index 12f7cebddd73..85a24bc0ea25 100644
+> --- a/drivers/hid/bpf/hid_bpf_jmp_table.c
+> +++ b/drivers/hid/bpf/hid_bpf_jmp_table.c
+> @@ -196,6 +196,7 @@ static void __hid_bpf_do_release_prog(int map_fd, uns=
+igned int idx)
+>  static void hid_bpf_release_progs(struct work_struct *work)
+>  {
+>         int i, j, n, map_fd =3D -1;
+> +       bool hdev_destroyed;
+>
+>         if (!jmp_table.map)
+>                 return;
+> @@ -220,6 +221,12 @@ static void hid_bpf_release_progs(struct work_struct=
+ *work)
+>                 if (entry->hdev) {
+>                         hdev =3D entry->hdev;
+>                         type =3D entry->type;
+> +                       /*
+> +                        * hdev is still valid, even if we are called aft=
+er hid_destroy_device():
+> +                        * when hid_bpf_attach() gets called, it takes a =
+ref on the dev through
+> +                        * bus_find_device()
+> +                        */
+> +                       hdev_destroyed =3D hdev->bpf.destroyed;
+>
+>                         hid_bpf_populate_hdev(hdev, type);
+>
+> @@ -232,12 +239,18 @@ static void hid_bpf_release_progs(struct work_struc=
+t *work)
+>                                 if (test_bit(next->idx, jmp_table.enabled=
+))
+>                                         continue;
+>
+> -                               if (next->hdev =3D=3D hdev && next->type =
+=3D=3D type)
+> +                               if (next->hdev =3D=3D hdev && next->type =
+=3D=3D type) {
+> +                                       /*
+> +                                        * clear the hdev reference and d=
+ecrement the device ref
+> +                                        * that was taken during bus_find=
+_device() while calling
+> +                                        * hid_bpf_attach()
+> +                                        */
+>                                         next->hdev =3D NULL;
+> +                                       put_device(&hdev->dev);
 
-On Thu, 25 Jan 2024 19:39:32 +0100, Duje Mihanović wrote:
-> Fix an obvious spelling error in the PMIC compatible in the MMP2
-> Brownstone DTS file.
-> 
-> Without this, the PMIC would never probe.
-> 
-> 
+sigh... I can't make a correct patch these days... Missing a '}' here
+to match the open bracket added above :(
 
-Corrected commit msg, took Andrew tag (thanks!).
+I had some debug information put there to check if the device was
+actually freed, and the closing bracket got lost while cleaning this
+up.
 
-Applied, thanks!
+Cheers,
+Benjamin
 
-[1/1] arm: marvell: Fix maxium->maxim typo in brownstone dts
-      https://git.kernel.org/krzk/linux-dt/c/b589f7aaf96330236a6d6a4057880550b066b581
+>                         }
+>
+> -                       /* if type was rdesc fixup, reconnect device */
+> -                       if (type =3D=3D HID_BPF_PROG_TYPE_RDESC_FIXUP)
+> +                       /* if type was rdesc fixup and the device is not =
+gone, reconnect device */
+> +                       if (type =3D=3D HID_BPF_PROG_TYPE_RDESC_FIXUP && =
+!hdev_destroyed)
+>                                 hid_bpf_reconnect(hdev);
+>                 }
+>         }
+>
+> --
+> 2.43.0
+>
 
-Best regards,
--- 
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
