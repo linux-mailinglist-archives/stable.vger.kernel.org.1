@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D3383E722
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:42:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 593C183E723
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:42:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2014E1C27F18
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:42:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 107B01F29756
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A502B5C8FC;
-	Fri, 26 Jan 2024 23:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF045BAC0;
+	Fri, 26 Jan 2024 23:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtw9s0Us"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZIGTnW5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D4F5BADE
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504825C8E5
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706312329; cv=none; b=YwEMhY/a5M9jaYA/OJhiCEMX9Qm79fdBXY+7rpwBr1TSsyNHemUAVJ7xz61J3fQoyczHFmhQgftwuYZSF8Ww28vcNrJDf664yDKhzRjj1sDCoNKFwVncZJPwdRC3r5MVeSswhsiare4SQiRM1hmRJv+7A7qqprI1DwBXFS5FL2U=
+	t=1706312331; cv=none; b=eg+ReL1Wdti8xjdYK33a/SfVh1MrLTura2p2K792MnnoUzgb6DvKMwjdYEG7X8P1M/N2tDfRVnI00nYAShLwm08ilZ1f1Fwg1wR0exrWCyFqw885TrF3Ix/1ZQpzHgEfcPnwcFwfPd+kwQY6cHUUxosDp7fN3XJQf9DxGA0nUls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706312329; c=relaxed/simple;
-	bh=fWIuBjd689YtEK7EuPyg/kHwapS63vz8PwgrjAqW6nY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qOe1QxYU9TxkKGbIYKtJdMBWmXrfSy5Vwuaf8ZrAd8WrApiempANNpcpUXrWAfJGwulUkjPF+Qtvb0ee/qIVeqDy6YVi2/aYi54GmFO4h4PwQTq6MBYGr/NKCY35pNYa/7BlgVqPnMwEwngCePkm7wDeax/ErjuQBcWzDtBwN+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtw9s0Us; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB27C43390;
-	Fri, 26 Jan 2024 23:38:49 +0000 (UTC)
+	s=arc-20240116; t=1706312331; c=relaxed/simple;
+	bh=CSROQSR/p+mavNAABvg2Bfi88P/L70zC2TRcjvolrJg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jIUc9vGtcBFDVlGRYmsCb8PzRCEso8nHmmmpHsISqzeCsH/jXLsQhgymwCTWGmUXYKJTq0m9M0+N7hqv+ipgLyvzTglE8bQOw4BmQinD/e68Hj6eLi3JkSw3Fz4o9vo44Stkk3B+JzZkfgJKzi7wp2r2NRMw2YpsQxIsL2wmVXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZIGTnW5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3E0C433C7;
+	Fri, 26 Jan 2024 23:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706312329;
-	bh=fWIuBjd689YtEK7EuPyg/kHwapS63vz8PwgrjAqW6nY=;
+	s=korg; t=1706312331;
+	bh=CSROQSR/p+mavNAABvg2Bfi88P/L70zC2TRcjvolrJg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=qtw9s0UsPmA0rMTg+hhN6m9ooWAq+AiOPwaCeQ8kSPUHPtL5CrVTR9HNzyiurDp+S
-	 4OsHgNZAUw2+v+RJ3/R/9gfnjK7hzpQXPJ0WLbqGmplA46jusO6DOKYD2He2RKnDRT
-	 KUKe00geFsPiP7uxkZJrVnP4HZhC3w2icoRkcFvk=
-Subject: FAILED: patch "[PATCH] thermal: gov_power_allocator: avoid inability to reset a cdev" failed to apply to 6.1-stable tree
+	b=OZIGTnW5k/9Sb+MfD3jOlQ55jtt2wbksoPdlJzfK3H276o5IKZnaAl9LM6MXU8NLj
+	 PjG10Ic99QqK7a7ggSq0PRdlZ29T94eyK13rb3gpeE6/vDzXN7rzZTgmTeqnrF8czv
+	 8t1HSnv0Ii3+4SxdQd4lCaVQ/yBfdcovfo0Shk4Q=
+Subject: FAILED: patch "[PATCH] thermal: gov_power_allocator: avoid inability to reset a cdev" failed to apply to 5.15-stable tree
 To: di.shen@unisoc.com,lukasz.luba@arm.com,rafael.j.wysocki@intel.com,stable@vger.kernel.org,wvw@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 26 Jan 2024 15:38:48 -0800
-Message-ID: <2024012648-impending-gala-16f2@gregkh>
+Date: Fri, 26 Jan 2024 15:38:50 -0800
+Message-ID: <2024012650-unfrozen-jukebox-4be8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x e95fa7404716f6e25021e66067271a4ad8eb1486
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012648-impending-gala-16f2@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012650-unfrozen-jukebox-4be8@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -85,6 +85,10 @@ e6ec64f85237 ("thermal/drivers/qcom: Fix set_trip_temp() deadlock")
 1c439dec359c ("thermal/core: Introduce locked version of thermal_zone_device_update")
 a365105c685c ("thermal: sysfs: Reuse cdev->max_state")
 c408b3d1d9bb ("thermal: Validate new state in cur_state_store()")
+597f500fde76 ("thermal/core: Add a check before calling set_trip_temp()")
+a930da9bf583 ("thermal/core: Move the mutex inside the thermal_zone_device_update() function")
+670a5e356cb6 ("thermal/core: Move the thermal zone lock out of the governors")
+63561fe36b09 ("thermal/governors: Group the thermal zone lock inside the throttle function")
 
 thanks,
 
