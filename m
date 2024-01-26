@@ -1,72 +1,88 @@
-Return-Path: <stable+bounces-15862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D3183D41A
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 07:02:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D37483D421
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 07:07:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C1AF289C6A
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 06:02:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EC5C1C20FCB
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 06:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C1BC2E3;
-	Fri, 26 Jan 2024 06:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD19FC2FD;
+	Fri, 26 Jan 2024 06:07:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FwdAebmF"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B478FC128;
-	Fri, 26 Jan 2024 06:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5199510A1E;
+	Fri, 26 Jan 2024 06:07:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706248969; cv=none; b=g3CmNa8KBLqFQFZ/NBxxyUaKgmQd+aFwo2VN5ycOcFQJADM5MPFU6L/jnz3abxStR9OF3OHN405B6Wh8OfGMSIwIfwPu/QL0EttSveUeHfS4SiPvWvtOI5FcOp+MO0IpCCS2LZXgyfHfsf4k9IfqPtRhk8S/A+gokK4THCNVS+c=
+	t=1706249223; cv=none; b=DrxwIUgAlXuFzmUFW/w3Dvp9mNm0LSymNIK1VBtUFB0y77zBU8JcckyKNVz+tQVwb9A0CQYSkCWz+WFih7hVgeuX//z740pYS9h0L++IHYsEDkefLEPTMDW1vNTvLk6yMj/a/7acprzCIUubmCkcLy/zJVHCFahUlrdf/8nrhyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706248969; c=relaxed/simple;
-	bh=IL9oMDaClY0uotAhvsBw9ZIFBnxI1w+GXSWMxgTnCS4=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=BUUAkkzkcC4I8ISzLMc8Ixia3JSXfCWD+9IgEhlYAT9wlLzqkflDvqEpZ9azHWCOhDfvwRl/GSnxN2pVijKe+ictepyUhzVWqsedI/IEL4HdSX4gXSi/aavRfYZX83buCyMz962uDnbAvuJwmgDndQGm3zqbfed44qY3AmxZYkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rTFIZ-0007tI-Uv; Fri, 26 Jan 2024 07:02:44 +0100
-Message-ID: <3bfb5c07-664e-49cd-a470-635a36bcf806@leemhuis.info>
-Date: Fri, 26 Jan 2024 07:02:43 +0100
+	s=arc-20240116; t=1706249223; c=relaxed/simple;
+	bh=Rwtxc+Dc2BLkxO+V8Dz2wt33cbpIubHKLZXOqbvU/G4=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=KsEjc3uETELVxJt2+8894DtFh+YcPVIbrewy9FGf2w0t9OnuQ6xoZsYT2vH4RRjA61m9XTn9DS+cMb/Iq4L8+UWbqFWPXdM8week9MqwK5WCQXdxNswAtZK4zMZsACqIkIVlgu3tdhkpNkXk61FrHzbVWQf6K3MHCUkg0EL1Ky8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FwdAebmF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A746C433C7;
+	Fri, 26 Jan 2024 06:07:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706249222;
+	bh=Rwtxc+Dc2BLkxO+V8Dz2wt33cbpIubHKLZXOqbvU/G4=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=FwdAebmFCuoCOLvnN7eL2WlUDnG2IU6NfUz7aMmzc+VL344iBSdgO9OgeTsY/ah8g
+	 JKWGAhbT68sEAvyl+0h6gTDsi7w4JElnP1xsiWgbMSG2paHLLl4WqOZW56bWFFwFtI
+	 z1656XLAhkje7rzyktPoIPbyvuwA4rOEQVDjjniOjcLMJwsZtt7FGxzbYCxOSfN9zP
+	 dI4vwU7hkW5BT43UR9a3WTp3v2ZNj0BvtqnfAq9hzj4SWsfq3HtHWtvPH3cH+FTg41
+	 8kchidonLm/1bsP/aCpiaVlZaqar3MNIIGSQpasLUuOPJK9ykQX8w1+lnAVU5g7JOr
+	 iO9Y8EPH3ZBEg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,  Greg KH
+ <gregkh@linuxfoundation.org>,  Sasha Levin <sashal@kernel.org>,  Linux
+ kernel regressions list <regressions@lists.linux.dev>,  LKML
+ <linux-kernel@vger.kernel.org>,  netdev <netdev@vger.kernel.org>,
+  Benjamin Berg <benjamin.berg@intel.com>,
+    linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
+Subject: Re: Consider picking up "tpm: Enable hwrng only for Pluton on AMD
+ CPUs" rather sooner than later
+References: <3bfb5c07-664e-49cd-a470-635a36bcf806@leemhuis.info>
+Date: Fri, 26 Jan 2024 08:06:58 +0200
+In-Reply-To: <3bfb5c07-664e-49cd-a470-635a36bcf806@leemhuis.info> (Thorsten
+	Leemhuis's message of "Fri, 26 Jan 2024 07:02:43 +0100")
+Message-ID: <87mssszkzh.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Subject: Consider picking up "tpm: Enable hwrng only for Pluton on AMD CPUs"
- rather sooner than later
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- LKML <linux-kernel@vger.kernel.org>, netdev <netdev@vger.kernel.org>,
- Kalle Valo <kvalo@kernel.org>, Benjamin Berg <benjamin.berg@intel.com>
-Content-Language: en-US, de-DE
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1706248966;a7456984;
-X-HE-SMSGID: 1rTFIZ-0007tI-Uv
+Content-Type: text/plain
 
-Hi stable team, JFYI, yesterdays mainline commit 556857aa1d0855 ("wifi:
-ath11k: rely on mac80211 debugfs handling for vif") from Benjamin
-contains no stable tag, but a Fixes: tag for a 6.7 commit. So it guess
-you will pick it up anyway. Might be worth picking up rather sooner than
-later, as it fixes a regression that according to Kalle causes ath11k to
-crash during suspend:
-https://lore.kernel.org/all/874jfjiolh.fsf@kernel.org/
-https://bugzilla.kernel.org/show_bug.cgi?id=218364
++ linux-wireless, ath11k
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+Thorsten Leemhuis <regressions@leemhuis.info> writes:
+
+> Hi stable team, JFYI, yesterdays mainline commit 556857aa1d0855 ("wifi:
+> ath11k: rely on mac80211 debugfs handling for vif") from Benjamin
+> contains no stable tag, but a Fixes: tag for a 6.7 commit. So it guess
+> you will pick it up anyway. Might be worth picking up rather sooner than
+> later, as it fixes a regression that according to Kalle causes ath11k to
+> crash during suspend:
+> https://lore.kernel.org/all/874jfjiolh.fsf@kernel.org/
+> https://bugzilla.kernel.org/show_bug.cgi?id=218364
+
+Thanks. The subject doesn't match the body but I guess that's just a
+copypaste error :)
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
