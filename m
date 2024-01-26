@@ -1,94 +1,75 @@
-Return-Path: <stable+bounces-15991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1426783E63E
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:08:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C82AE83E641
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:09:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F48E1F22A53
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:08:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FD712869D9
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8AA56779;
-	Fri, 26 Jan 2024 23:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DFFE55E57;
+	Fri, 26 Jan 2024 23:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTijyKAc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7EnOmX0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F94655E66
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3077556B75
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706310489; cv=none; b=Za6r+AFjseIquMAS9eSWFjam4Ss53RH4rpVlYdKDZWH6ssG72c4JnYFIEimwn1NjY9R0x8EITmfHajCP6BPieXk+0mGi8VXFPs+VkqMCGHAYd4Mev7Xx5f5ASkGYQb05Gvde9912VNK8ady0j3KA/iUMxl1XqQThDUrBeBUP0MY=
+	t=1706310583; cv=none; b=QHBNLSXuXkGaZFkLir3TSV6PI+js+2KVWz/E/28HhMOMKfU3IvANtvDjR71irPCgLO/3USE/wF8nVdeYPUP+1/RW+MPKtAT2OPbVCbkM/2YeFxSnhlhbJbSnp2VuHTKbyCpr7wGlmCI8ZKZGpkHPewVIDUC+JBX6kiUPIPIL/Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706310489; c=relaxed/simple;
-	bh=EhSf8hv9HJKqHuu0CazskUxfvfDKde+bPepHPN4ITDs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hQ2FP22azloSbelsvosQ6wPZCli3oU0J055muIqi8xmw0EoV87b24qm6WogrIfJD1REpVtwZ1svi6lt4vOsn/XyiPEFPaxn31UFbz4Tcdgx09GsIWlTNldVVBMcatgAWnjzpTV9FCTRymuzq8drEukzWavvIK4y+Yp1ppD/TMUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTijyKAc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 159BCC433C7;
-	Fri, 26 Jan 2024 23:08:09 +0000 (UTC)
+	s=arc-20240116; t=1706310583; c=relaxed/simple;
+	bh=ElAKXbXVTTgYgXArL9p2KpccjT/UetPMPyeBONCkhGg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=c4SRG7horBs2PqfPxPgbIyWXQU8vDbgs/qvb6N07ABhMMIVbiKNK9igwPthx1IO9Vnhw3EUwAbEKQ0aPp3k6hAT3aHj6m9XxsxyXoHtwSx3H5YeJUe8K18xi+e4xttnidgb3Rd+2q7MXkdYkxb6pnxDJeWXR8er5kc5C86m1x4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7EnOmX0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2BC9C433C7;
+	Fri, 26 Jan 2024 23:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706310489;
-	bh=EhSf8hv9HJKqHuu0CazskUxfvfDKde+bPepHPN4ITDs=;
+	s=korg; t=1706310583;
+	bh=ElAKXbXVTTgYgXArL9p2KpccjT/UetPMPyeBONCkhGg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rTijyKAcHg+ElcwdtkeIDjZdx9VjM79+VJwn7RAnXGYhcJ122QaZT4mvru59uYhEd
-	 TX6kiB637So4BWQJBdBs7hZkRWkpuwzrEAnYagaO4xhZOVJSxSWqR5U8Zq4JTlktWG
-	 2GSHSeO0S35KA6bL+lEYIBJC1/Ikqho2o5N9Hu5A=
-Subject: FAILED: patch "[PATCH] dlm: use kernel_connect() and kernel_bind()" failed to apply to 4.19-stable tree
-To: jrife@google.com,teigland@redhat.com
+	b=R7EnOmX0UiASVe11d5sAWwLLdzO24oM3twcxh14bSQKrZFl7ew5pE+4iLnKguwwUX
+	 KJFa6C7K1sHmTtQxSvZuVFFtPpp0NwAy3hvYZ25MxX33QRjzKd1Rqlc59g2d4gx5G+
+	 iPIHWF0QcB53PPcrhSQ4a9Ixkgqb51+FFgVoR4Ac=
+Subject: FAILED: patch "[PATCH] dma-buf: add dma_fence_timestamp helper" failed to apply to 6.7-stable tree
+To: christian.koenig@amd.com,Yunxiang.Li@amd.com,alexander.deucher@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 26 Jan 2024 15:08:08 -0800
-Message-ID: <2024012608-anatomy-postage-9ce9@gregkh>
+Date: Fri, 26 Jan 2024 15:09:42 -0800
+Message-ID: <2024012642-clump-cofounder-8820@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x e9cdebbe23f1aa9a1caea169862f479ab3fa2773
+git cherry-pick -x 0da611a8702101814257a7c03f6caf0574c83b98
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012608-anatomy-postage-9ce9@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012642-clump-cofounder-8820@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
-e9cdebbe23f1 ("dlm: use kernel_connect() and kernel_bind()")
-dbb751ffab0b ("fs: dlm: parallelize lowcomms socket handling")
-c852a6d70698 ("fs: dlm: use saved sk_error_report()")
-e9dd5fd849f1 ("fs: dlm: use sock2con without checking null")
-6f0b0b5d7ae7 ("fs: dlm: remove dlm_node_addrs lookup list")
-c51c9cd8addc ("fs: dlm: don't put dlm_local_addrs on heap")
-c3d88dfd1583 ("fs: dlm: cleanup listen sock handling")
-4f567acb0b86 ("fs: dlm: remove socket shutdown handling")
-1037c2a94ab5 ("fs: dlm: use listen sock as dlm running indicator")
-194a3fb488f2 ("fs: dlm: relax sending to allow receiving")
-f0f4bb431bd5 ("fs: dlm: retry accept() until -EAGAIN or error returns")
-08ae0547e75e ("fs: dlm: fix sock release if listen fails")
-dfc020f334f8 ("fs: dlm: fix grammar in lowcomms output")
-3af2326ca0a1 ("fs: dlm: memory cache for writequeue_entry")
-6c547f264077 ("fs: dlm: memory cache for midcomms hotpath")
-be3b0400edbf ("fs: dlm: remove wq_alloc mutex")
-92c446053814 ("fs: dlm: replace use of socket sk_callback_lock with sock_lock")
-4c3d90570bcc ("fs: dlm: don't call kernel_getpeername() in error_report()")
-b87b1883efe3 ("fs: dlm: remove double list_first_entry call")
-9af5b8f0ead7 ("fs: dlm: add debugfs rawmsg send functionality")
+0da611a87021 ("dma-buf: add dma_fence_timestamp helper")
 
 thanks,
 
@@ -96,73 +77,124 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e9cdebbe23f1aa9a1caea169862f479ab3fa2773 Mon Sep 17 00:00:00 2001
-From: Jordan Rife <jrife@google.com>
-Date: Mon, 6 Nov 2023 15:24:38 -0600
-Subject: [PATCH] dlm: use kernel_connect() and kernel_bind()
+From 0da611a8702101814257a7c03f6caf0574c83b98 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Date: Fri, 8 Sep 2023 10:27:23 +0200
+Subject: [PATCH] dma-buf: add dma_fence_timestamp helper
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Recent changes to kernel_connect() and kernel_bind() ensure that
-callers are insulated from changes to the address parameter made by BPF
-SOCK_ADDR hooks. This patch wraps direct calls to ops->connect() and
-ops->bind() with kernel_connect() and kernel_bind() to protect callers
-in such cases.
+When a fence signals there is a very small race window where the timestamp
+isn't updated yet. sync_file solves this by busy waiting for the
+timestamp to appear, but on other ocassions didn't handled this
+correctly.
 
-Link: https://lore.kernel.org/netdev/9944248dba1bce861375fcce9de663934d933ba9.camel@redhat.com/
-Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
-Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jordan Rife <jrife@google.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Provide a dma_fence_timestamp() helper function for this and use it in
+all appropriate cases.
 
-diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index 67f8dd8a05ef..6296c62c10fa 100644
---- a/fs/dlm/lowcomms.c
-+++ b/fs/dlm/lowcomms.c
-@@ -1817,8 +1817,8 @@ static int dlm_tcp_bind(struct socket *sock)
- 	memcpy(&src_addr, &dlm_local_addr[0], sizeof(src_addr));
- 	make_sockaddr(&src_addr, 0, &addr_len);
+Another alternative would be to grab the spinlock when that happens.
+
+v2 by teddy: add a wait parameter to wait for the timestamp to show up, in case
+   the accurate timestamp is needed and/or the timestamp is not based on
+   ktime (e.g. hw timestamp)
+v3 chk: drop the parameter again for unified handling
+
+Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: 1774baa64f93 ("drm/scheduler: Change scheduled fence track v2")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+CC: stable@vger.kernel.org
+Link: https://patchwork.freedesktop.org/patch/msgid/20230929104725.2358-1-christian.koenig@amd.com
+
+diff --git a/drivers/dma-buf/dma-fence-unwrap.c b/drivers/dma-buf/dma-fence-unwrap.c
+index c625bb2b5d56..628af51c81af 100644
+--- a/drivers/dma-buf/dma-fence-unwrap.c
++++ b/drivers/dma-buf/dma-fence-unwrap.c
+@@ -76,16 +76,11 @@ struct dma_fence *__dma_fence_unwrap_merge(unsigned int num_fences,
+ 		dma_fence_unwrap_for_each(tmp, &iter[i], fences[i]) {
+ 			if (!dma_fence_is_signaled(tmp)) {
+ 				++count;
+-			} else if (test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT,
+-					    &tmp->flags)) {
+-				if (ktime_after(tmp->timestamp, timestamp))
+-					timestamp = tmp->timestamp;
+ 			} else {
+-				/*
+-				 * Use the current time if the fence is
+-				 * currently signaling.
+-				 */
+-				timestamp = ktime_get();
++				ktime_t t = dma_fence_timestamp(tmp);
++
++				if (ktime_after(t, timestamp))
++					timestamp = t;
+ 			}
+ 		}
+ 	}
+diff --git a/drivers/dma-buf/sync_file.c b/drivers/dma-buf/sync_file.c
+index af57799c86ce..2e9a316c596a 100644
+--- a/drivers/dma-buf/sync_file.c
++++ b/drivers/dma-buf/sync_file.c
+@@ -268,13 +268,10 @@ static int sync_fill_fence_info(struct dma_fence *fence,
+ 		sizeof(info->driver_name));
  
--	result = sock->ops->bind(sock, (struct sockaddr *)&src_addr,
--				 addr_len);
-+	result = kernel_bind(sock, (struct sockaddr *)&src_addr,
-+			     addr_len);
- 	if (result < 0) {
- 		/* This *may* not indicate a critical error */
- 		log_print("could not bind for connect: %d", result);
-@@ -1830,7 +1830,7 @@ static int dlm_tcp_bind(struct socket *sock)
- static int dlm_tcp_connect(struct connection *con, struct socket *sock,
- 			   struct sockaddr *addr, int addr_len)
- {
--	return sock->ops->connect(sock, addr, addr_len, O_NONBLOCK);
-+	return kernel_connect(sock, addr, addr_len, O_NONBLOCK);
+ 	info->status = dma_fence_get_status(fence);
+-	while (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags) &&
+-	       !test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT, &fence->flags))
+-		cpu_relax();
+ 	info->timestamp_ns =
+-		test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT, &fence->flags) ?
+-		ktime_to_ns(fence->timestamp) :
+-		ktime_set(0, 0);
++		dma_fence_is_signaled(fence) ?
++			ktime_to_ns(dma_fence_timestamp(fence)) :
++			ktime_set(0, 0);
+ 
+ 	return info->status;
+ }
+diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
+index fd755e953487..99797a8c836a 100644
+--- a/drivers/gpu/drm/scheduler/sched_main.c
++++ b/drivers/gpu/drm/scheduler/sched_main.c
+@@ -935,7 +935,7 @@ drm_sched_get_cleanup_job(struct drm_gpu_scheduler *sched)
+ 
+ 		if (next) {
+ 			next->s_fence->scheduled.timestamp =
+-				job->s_fence->finished.timestamp;
++				dma_fence_timestamp(&job->s_fence->finished);
+ 			/* start TO timer for next job */
+ 			drm_sched_start_timeout(sched);
+ 		}
+diff --git a/include/linux/dma-fence.h b/include/linux/dma-fence.h
+index 0d678e9a7b24..ebe78bd3d121 100644
+--- a/include/linux/dma-fence.h
++++ b/include/linux/dma-fence.h
+@@ -568,6 +568,25 @@ static inline void dma_fence_set_error(struct dma_fence *fence,
+ 	fence->error = error;
  }
  
- static int dlm_tcp_listen_validate(void)
-@@ -1862,8 +1862,8 @@ static int dlm_tcp_listen_bind(struct socket *sock)
- 
- 	/* Bind to our port */
- 	make_sockaddr(&dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
--	return sock->ops->bind(sock, (struct sockaddr *)&dlm_local_addr[0],
--			       addr_len);
-+	return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
-+			   addr_len);
- }
- 
- static const struct dlm_proto_ops dlm_tcp_ops = {
-@@ -1888,12 +1888,12 @@ static int dlm_sctp_connect(struct connection *con, struct socket *sock,
- 	int ret;
- 
- 	/*
--	 * Make sock->ops->connect() function return in specified time,
-+	 * Make kernel_connect() function return in specified time,
- 	 * since O_NONBLOCK argument in connect() function does not work here,
- 	 * then, we should restore the default value of this attribute.
- 	 */
- 	sock_set_sndtimeo(sock->sk, 5);
--	ret = sock->ops->connect(sock, addr, addr_len, 0);
-+	ret = kernel_connect(sock, addr, addr_len, 0);
- 	sock_set_sndtimeo(sock->sk, 0);
- 	return ret;
- }
++/**
++ * dma_fence_timestamp - helper to get the completion timestamp of a fence
++ * @fence: fence to get the timestamp from.
++ *
++ * After a fence is signaled the timestamp is updated with the signaling time,
++ * but setting the timestamp can race with tasks waiting for the signaling. This
++ * helper busy waits for the correct timestamp to appear.
++ */
++static inline ktime_t dma_fence_timestamp(struct dma_fence *fence)
++{
++	if (WARN_ON(!test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags)))
++		return ktime_get();
++
++	while (!test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT, &fence->flags))
++		cpu_relax();
++
++	return fence->timestamp;
++}
++
+ signed long dma_fence_wait_timeout(struct dma_fence *,
+ 				   bool intr, signed long timeout);
+ signed long dma_fence_wait_any_timeout(struct dma_fence **fences,
 
 
