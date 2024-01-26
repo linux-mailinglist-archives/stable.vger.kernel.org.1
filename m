@@ -1,97 +1,80 @@
-Return-Path: <stable+bounces-15894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DCE083DDEA
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 16:46:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47FDA83DE24
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 16:58:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 190E02884E7
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 15:46:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0556B282CD2
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 15:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696FB1D529;
-	Fri, 26 Jan 2024 15:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E8B1D541;
+	Fri, 26 Jan 2024 15:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b="gQKChUco"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qovOo/t1"
 X-Original-To: stable@vger.kernel.org
-Received: from mr85p00im-zteg06023901.me.com (mr85p00im-zteg06023901.me.com [17.58.23.192])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F5B1D526
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 15:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.192
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9EE1D53F
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 15:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706283975; cv=none; b=jiFe5OqCWfJbDyMQWTXzGTbjsU2wJ1Xksq8/6qGNJ/jC+CjnradqOfPvr3Dg9Af+NjZ5hkh0TRtP70zzJwD4uG4DwWWZYs/lZN9lBqXahPA0EXgD685K9rBKrvWk/0mWGQpUSDMicMZSDoc+Dklq4eB1bOhU3IarlP6miDT39BI=
+	t=1706284713; cv=none; b=NDiqpJg1NLWUhSL49mhZgyRJj6rdasIDBN7uAjgHXlud0gy3kHrgtzYikqBT/+PF/33JPoELwR7L6ZPzP+dq52dUc7MMF4WDPnH+jlIwQafGFNfuewSuShC8oE8r3m+jxH+jLUrqJ7OYv/l1jImRqD6TYUpjGHZbD0NI9+cgrEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706283975; c=relaxed/simple;
-	bh=5kf8tTxC0yiNRmCBDthAhZJGzsbO6k25ITijcAGsWTQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VeRgT+3xMSt/1UBSGyMa2LWVMEjfLl4WreCBvOyvVU283wMaQ8SjpbgvscoW73Qa5NwcQXBU25KdE05byFXZOTTu3xtgrwEJJlsLufXHqx+rqiAy8rIvrK5nxZ4/OPQBYWoPfncUdmD4bYvXHZSA6aNjbQIy/a4DfYkQgTYuUo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net; spf=pass smtp.mailfrom=danm.net; dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b=gQKChUco; arc=none smtp.client-ip=17.58.23.192
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danm.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=danm.net; s=sig1;
-	t=1706283973; bh=5kf8tTxC0yiNRmCBDthAhZJGzsbO6k25ITijcAGsWTQ=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=gQKChUcoceWZ6jSCQJ6LYTZoNogu4NpF+edGmgqNXwmRet04DWyv7pP7hZfkn1oFJ
-	 /djtOWXNiLpmrY688KopFycF2sOJfyS10cPwFY7VErniHtURhSgcN0QcnCRZHuKlM+
-	 PFaGapg0LYwEji8+Ug67L+tEKuytxr4tJ9JICGAoZexM+82PuOTdq9pDRVMH4o9rwu
-	 snXjAGpH0ZHTpeFWmjsTPn/UEIgR18AZOuP3hSMsa0DSbaBxHav3B54Q47wfVp+u88
-	 G0qCzX95Qw+mah3SkhIr9MS2Ftn6Ik7T1WUEM8luslxjwSWxQ6xXiH1fsAKFNz6Uk5
-	 ng1r103eHQBkA==
-Received: from hitch.danm.net (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-zteg06023901.me.com (Postfix) with ESMTPSA id ACF286E02D3;
-	Fri, 26 Jan 2024 15:46:11 +0000 (UTC)
-From: Dan Moulding <dan@danm.net>
-To: carlos@fisica.ufpr.br
-Cc: dan@danm.net,
-	gregkh@linuxfoundation.org,
-	junxiao.bi@oracle.com,
-	linux-kernel@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	regressions@lists.linux.dev,
-	song@kernel.org,
-	stable@vger.kernel.org,
-	yukuai1@huaweicloud.com
-Subject: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system; successfully bisected
-Date: Fri, 26 Jan 2024 08:46:10 -0700
-Message-ID: <20240126154610.24755-1-dan@danm.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <ZbMnZnvyIyoWeIro@fisica.ufpr.br>
-References: <ZbMnZnvyIyoWeIro@fisica.ufpr.br>
+	s=arc-20240116; t=1706284713; c=relaxed/simple;
+	bh=fRViHO/P/3ma+yqLDXGOfP+Pfez7pc1qSZUWGf1xBxo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RZoxaAHSjZHsUTldSOL8x1E1evtPDzDO+IV7zCHjmnI5w3UoCPOl/eywiPCU6MOYTs10HnzNf5IqK7SgHcCEQ/VomUoRiesYs5u9PAg5+np5gfiIx7RcBpnDNwMOfKqpw/F68JORjPqL6bj8d0gBn83FDHi6f2lOg8xSaV1H2o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qovOo/t1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3600C433C7;
+	Fri, 26 Jan 2024 15:58:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1706284712;
+	bh=fRViHO/P/3ma+yqLDXGOfP+Pfez7pc1qSZUWGf1xBxo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qovOo/t1iYui5rKLyqRvQqluQVm+NZbcAgZ9iedcFUOLwYFQJO2PL3m6G976jD//1
+	 8NpmN8TWorP74ObseBdZbfnpfhSacslxlpZiL7I5+964Sz2EppDo7QGrY8cc6D8JJK
+	 AW90NtKt3j/BtknNWrpKVA6qYXhvYKjz48AmMs/g=
+Date: Fri, 26 Jan 2024 07:58:31 -0800
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Jonathan Gray <jsg@jsg.id.au>, stable@vger.kernel.org
+Subject: Re: duplicate 'drm/amd: Enable PCIe PME from D3' in stable branches
+Message-ID: <2024012631-impulse-vegan-adc5@gregkh>
+References: <ZbOAj1fC5nfJEgoR@largo.jsg.id.au>
+ <af1f3522-6cf6-4a1e-b873-3ee4f9dd19d2@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: BcY4iSij5chVyVi4r0gaADDEYhZiD5Sd
-X-Proofpoint-ORIG-GUID: BcY4iSij5chVyVi4r0gaADDEYhZiD5Sd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-25_14,2024-01-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=393 spamscore=0
- malwarescore=0 mlxscore=0 clxscore=1030 adultscore=0 suspectscore=0
- bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2401260116
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <af1f3522-6cf6-4a1e-b873-3ee4f9dd19d2@amd.com>
 
-> It's known that ext4 has these symptoms with parity raid.
+On Fri, Jan 26, 2024 at 09:43:24AM -0600, Mario Limonciello wrote:
+> On 1/26/2024 03:51, Jonathan Gray wrote:
+> > The latest releases of 6.1.y, 6.6.y and 6.7.y introduce a duplicate
+> > commit of 'drm/amd: Enable PCIe PME from D3'.
+> 
+> Good catch.  I think this happened because the same commit ended up in 6.7
+> final as well as 6.8-rc1 with different hashes.  This tends to happen when
+> we have fixes right at the end of the cycle.
 
-Interesting. I'm not aware of that problem. One of the systems that
-hit this hang has been running with ext4 on an MD RAID-5 array with
-every kernel since at least 5.1 and never had an issue until this
-regression.
+For some drm drivers, it happens all the time and drives me constantly
+crazy.  So much so that I dread dealing with the drm stable patches for
+-rc1 releases :(
 
-> To make sure it's a raid problem you should try another filesystem or
-> remount it with stripe=0.
+> In this case it's fortunately harmless, but yes I think one of them should
+> be dropped from stable trees.
 
-That's a good suggestion, so I switched it to use XFS. It can still
-reproduce the hang. Sounds like this is probably a different problem
-than the known ext4 one.
+Can someone send me a revert please?
 
-Thanks,
+thanks,
 
--- Dan
+greg k-h
 
