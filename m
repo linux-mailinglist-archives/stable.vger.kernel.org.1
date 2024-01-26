@@ -1,195 +1,206 @@
-Return-Path: <stable+bounces-15891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6EAA83DBBA
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 15:25:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4F783DD5A
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 16:22:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 352B9B25CBB
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 14:25:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47A57B2239B
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 15:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD74F1CD09;
-	Fri, 26 Jan 2024 14:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BD61D522;
+	Fri, 26 Jan 2024 15:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="HqyE4prg";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pGkLV9Sp"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gsAWaJsj"
 X-Original-To: stable@vger.kernel.org
-Received: from wnew4-smtp.messagingengine.com (wnew4-smtp.messagingengine.com [64.147.123.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294A81C695;
-	Fri, 26 Jan 2024 14:24:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9C21CF99
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 15:22:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706279055; cv=none; b=UVSLvv3x6jNEpQITdv/Y9GBoQX7c9FVE/TOjqb+iPY+41MF+AT0h8SlYMee9ltQHqACnwVoq1Q4TgCG56HevFVG3Qg1fZ7uqjErdKu5+tyyYnRALvRc3Wb1wj1V2aXgHu2Ka1V2mVqrQkgIWZJrDzgwGAvrmCkPA/kmqmNv3Dl4=
+	t=1706282536; cv=none; b=UPjWjxIRI0EDQb5+cfG59sozPmgTnbT/++h5VAhv/8PWeg2mz6cdtgsbjRrG4KQmK84pssHXrEmHhSltfv+WQvDcgtX6J+ZRjKPlCyBJCeJghVILaOlDHVwJOebtpsW+3CykP8tqDdLmhwArRbndcKDutA8UTBLbEhZ2/C2jP0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706279055; c=relaxed/simple;
-	bh=hKIfs47ddSkIptRXRENQTpOASHv1OOHXf/8ceRFn0/k=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=TjjzkOhzEGawZ2GqHCits+UttT3I0o6R3iCDr0Hl686f6iUZyOEmRnCUJhMHHr2G0WqutrqaFJi2+IIPMk84nGvXv41XYneKuPiRcHrYTBVseUsFwHni9olUjx6euZZHrmloURm7FYgP8T5B4eLUfSoPkugkXwWFKk93H36A3Yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=HqyE4prg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pGkLV9Sp; arc=none smtp.client-ip=64.147.123.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailnew.west.internal (Postfix) with ESMTP id 96C8F2B004D0;
-	Fri, 26 Jan 2024 09:24:09 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Fri, 26 Jan 2024 09:24:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1706279049;
-	 x=1706286249; bh=TF+Ka+GXK+ztTGKn5RdSG0DNk91ZmYKf5EL+gc74hng=; b=
-	HqyE4prgfd8Ba0Bmvq/8hIZN547wH19SUJZbqUpbMCd9JpXwBct8mBDqhraHb6+T
-	mbEoF+BMPvsLE5Z6tS5/47kjcZTno7n4oyeu5Nvyg2oRBQNuOMTMFsI70KjowdOa
-	WWkkaRlFFmgtM9fD8rzxvdoU53s1ecmYxb2NeqwEltV2IzbJUxJqbOCK0c5HTCfJ
-	OuoQDl5Z6Nte2EOdaf12WHv9aBi5cBdWmr4UuK9N6YyNUqzWsLCAmBnpytyaR8gd
-	CfJUI/PNAEQu2q0rdgXsnulMtUvqDMeMRA36m21aK+OsMhzO352cjVje325yedg3
-	oVbHxxlz+MLgoISc0YNFkQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1706279049; x=
-	1706286249; bh=TF+Ka+GXK+ztTGKn5RdSG0DNk91ZmYKf5EL+gc74hng=; b=p
-	GkLV9SpgJfadZtrnSQJaU54TnuTjuQAOSG7J4wwGwen4oY9YDdsI2Q4vTsi7bkkI
-	qukYU5RWgE3Jl+MbDh5Kgt6V9dS0chTDsV8ow0UreRfs9EJLa5zRpXU/DNf+l8Jt
-	YwaH4yJy/cDQ+NTxm+LNLwqKT/CClboWq+iYWnzPRthNjvmMeSL+uks6YTKckt5A
-	eOyXg7QcQliOomfqnDF7BVa6NB9QfNto5Yvxg02IhQ6tgn3N8icCXsnRGnBV15dH
-	FnYE4/Iwef6aw+Vk0cgGiZ1JeW8EYwiANDxPywQN/tlrwJPo4sTKIDqZXa4rEHFA
-	e3SiE4Vmf2TmUwZs3MTkA==
-X-ME-Sender: <xms:iMCzZQNYer9f7VdPOXoyPKfCj2jFtSHFwUmb2nP_5Yohb-DdxY4JHA>
-    <xme:iMCzZW9H5HZ_r4Jx6Ozw0c9htRvipTfjcFPBGtvrVcc6c_lhcCFO6BgUhbNPqrvUg
-    1qqYnu0RGIY-GDYGS0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdeljedgiedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedt
-    gfejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:iMCzZXR8FMsOmcKyqhh09tq2UAow3bwCtteuyDRN_V4F3-ngFw2Zjg>
-    <xmx:iMCzZYuhXHdz5KCGUV9bj3HgMcnsXTn-IPyg-j8fV4a7h_6SEtmPOA>
-    <xmx:iMCzZYdu-71nQpJwF7TblWOq2VuZmgeBISgs0-h7I18TvXQEcVLtfQ>
-    <xmx:icCzZbyhv8qGURYbFFSDIlfrgqETSP8vTsrazydnRbntID8tzlG8773dWCk>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 60C02B6008D; Fri, 26 Jan 2024 09:24:08 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-119-ga8b98d1bd8-fm-20240108.001-ga8b98d1b
+	s=arc-20240116; t=1706282536; c=relaxed/simple;
+	bh=t2n7KNUGUzU77BEBqmOYRjm+oIuzJQkeDhTNCAq4zx8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lLbotF3k4O6gRYvVuH2AXJWaqI5q6UtEX5kfuTr1f/2FgoSNnMRLZQBS9KxiNnufkqR6PqFyx4+Ols1ngJHpBkl9Dm7VNSl9RJPTcAHXSpO7Dk7RDmrWfMF4Epr4dK8r2PYEtukYuU1gKpw4e9ump7a4ZFaBljKQSIbUqlF6v/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gsAWaJsj; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706282534;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=IkTbDdKErsrbqQMEDhGqK5ts3+kvxqXuzsHApeWI9Ig=;
+	b=gsAWaJsjzWlM1DaVF1d4S06Z+hhPEanmUUSfnG8DgUoehA7gyGX0gLAssT8IUYjdTxGAww
+	y0Kiy9ODMzt+SdApcWcENC6V7rIAEMDmCbpIVFBkkF3OgJwzM25vfrermeDPYxpoquFSvt
+	beZ2+EpP2Zr5+kmHM9mxjotsVGbx3cc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-GWKs3CcOOo2QEATqxHWtQg-1; Fri,
+ 26 Jan 2024 10:22:08 -0500
+X-MC-Unique: GWKs3CcOOo2QEATqxHWtQg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7D0743C025D9;
+	Fri, 26 Jan 2024 15:22:07 +0000 (UTC)
+Received: from metal.redhat.com (unknown [10.45.224.66])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 6571EC15E61;
+	Fri, 26 Jan 2024 15:22:04 +0000 (UTC)
+From: Daniel Vacek <neelx@redhat.com>
+To: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Brendan Cunningham <bcunningham@cornelisnetworks.com>,
+	Patrick Kelsey <pat.kelsey@cornelisnetworks.com>
+Cc: Daniel Vacek <neelx@redhat.com>,
+	stable@vger.kernel.org,
+	Mats Kronberg <kronberg@nsc.liu.se>,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] IB/hfi1: Fix sdma.h tx->num_descs off-by-one error (take two)
+Date: Fri, 26 Jan 2024 16:21:23 +0100
+Message-ID: <20240126152125.869509-1-neelx@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <c11243e0-fcaf-4eda-92d3-c06a8f8cdb2d@app.fastmail.com>
-In-Reply-To: <70b8db3ec0f8730fdd23dae21edc1a93d274b048.camel@redhat.com>
-References: <20240123210553.GA326783@bhelgaas>
- <70b8db3ec0f8730fdd23dae21edc1a93d274b048.camel@redhat.com>
-Date: Fri, 26 Jan 2024 15:23:47 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Philipp Stanner" <pstanner@redhat.com>,
- "Bjorn Helgaas" <helgaas@kernel.org>
-Cc: "Bjorn Helgaas" <bhelgaas@google.com>,
- "Johannes Berg" <johannes@sipsolutions.net>,
- "Randy Dunlap" <rdunlap@infradead.org>, "Neil Brown" <neilb@suse.de>,
- "John Sanpe" <sanpeqf@gmail.com>,
- "Kent Overstreet" <kent.overstreet@gmail.com>,
- "Niklas Schnelle" <schnelle@linux.ibm.com>,
- "Dave Jiang" <dave.jiang@intel.com>,
- "Uladzislau Koshchanka" <koshchanka@gmail.com>,
- "Masami Hiramatsu" <mhiramat@kernel.org>,
- "David Gow" <davidgow@google.com>, "Kees Cook" <keescook@chromium.org>,
- "Rae Moar" <rmoar@google.com>,
- "Geert Uytterhoeven" <geert@linux-m68k.org>,
- "wuqiang.matt" <wuqiang.matt@bytedance.com>,
- "Yury Norov" <yury.norov@gmail.com>, "Jason Baron" <jbaron@akamai.com>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Marco Elver" <elver@google.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Ben Dooks" <ben.dooks@codethink.co.uk>,
- "Danilo Krummrich" <dakr@redhat.com>, linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org, Linux-Arch <linux-arch@vger.kernel.org>,
- stable@vger.kernel.org, "Arnd Bergmann" <arnd@kernel.org>
-Subject: Re: [PATCH v5 RESEND 5/5] lib, pci: unify generic pci_iounmap()
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 
-On Fri, Jan 26, 2024, at 14:59, Philipp Stanner wrote:
-> On Tue, 2024-01-23 at 15:05 -0600, Bjorn Helgaas wrote:
->> On Thu, Jan 11, 2024 at 09:55:40AM +0100, Philipp Stanner wrote:
->>=20
->> The kernel-doc addition could possibly also move there since it isn't
->> related to the unification.
->
-> You mean the one from my devres-patch-series? Or documentation
-> specifically about pci_iounmap()?
->
->>=20
->> > =C2=A0{
->> > -#ifdef ARCH_HAS_GENERIC_IOPORT_MAP
->> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0uintptr_t start =3D (uin=
-tptr_t) PCI_IOBASE;
->> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0uintptr_t addr =3D (uint=
-ptr_t) p;
->> > -
->> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (addr >=3D start && a=
-ddr < start + IO_SPACE_LIMIT) {
->> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0ioport_unmap(p);
->> > +#ifdef CONFIG_HAS_IOPORT_MAP
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (iomem_is_ioport(addr=
-)) {
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0ioport_unmap(addr);
->> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0return;
->> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
->> > =C2=A0#endif
->> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0iounmap(p);
->> > +
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0iounmap(addr);
->> > =C2=A0}
->>=20
->> > + * If CONFIG_GENERIC_IOMAP is selected and the architecture does
->> > NOT provide its
->> > + * own version, ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT makes sure that
->> > the generic
->> > + * version from asm-generic/io.h is NOT used and instead the
->> > second "generic"
->> > + * version from this file here is used.
->> > + *
->> > + * There are currently two generic versions because of a difficult
->> > cleanup
->> > + * process. Namely, the version in lib/iomap.c once was really
->> > generic when IA64
->> > + * still existed. Today, it's only really used by x86.
->> > + *
->> > + * TODO: Move this function to x86-specific code.
->>=20
->> Some of these TODOs look fairly simple.=C2=A0 Are they actually hard,=
- or
->> could they just be done now?
->
-> If they were simple from my humble POV I would have implemented them.
-> The information about the x86-specficity is from Arnd Bergmann, the
-> header-maintainer.
->
-> I myself am not that sure how much work it would be to move the entire
-> lib/iomap.c file to x86. At least some (possibley "dead") hooks to it
-> still exist, for example here:
-> arch/powerpc/platforms/Kconfig  # L.189
+Unfortunately the commit `fd8958efe877` introduced another error
+causing the `descs` array to overflow. This reults in further crashes
+easily reproducible by `sendmsg` system call.
 
-This one definitely takes some work to untangle, it's selected
-by two powerpc platforms, but one doesn't actually need it any
-more, and the other one uses it only for non-PCI devices.
+[ 1080.836473] general protection fault, probably for non-canonical address 0x400300015528b00a: 0000 [#1] PREEMPT SMP PTI
+[ 1080.869326] RIP: 0010:hfi1_ipoib_build_ib_tx_headers.constprop.0+0xe1/0x2b0 [hfi1]
+--
+[ 1080.974535] Call Trace:
+[ 1080.976990]  <TASK>
+[ 1081.021929]  hfi1_ipoib_send_dma_common+0x7a/0x2e0 [hfi1]
+[ 1081.027364]  hfi1_ipoib_send_dma_list+0x62/0x270 [hfi1]
+[ 1081.032633]  hfi1_ipoib_send+0x112/0x300 [hfi1]
+[ 1081.042001]  ipoib_start_xmit+0x2a9/0x2d0 [ib_ipoib]
+[ 1081.046978]  dev_hard_start_xmit+0xc4/0x210
+--
+[ 1081.148347]  __sys_sendmsg+0x59/0xa0
 
-I think the other architectures are easier to change and do
-fix real bugs, but it's probably best done one at a time.
+crash> ipoib_txreq 0xffff9cfeba229f00
+struct ipoib_txreq {
+  txreq = {
+    list = {
+      next = 0xffff9cfeba229f00,
+      prev = 0xffff9cfeba229f00
+    },
+    descp = 0xffff9cfeba229f40,
+    coalesce_buf = 0x0,
+    wait = 0xffff9cfea4e69a48,
+    complete = 0xffffffffc0fe0760 <hfi1_ipoib_sdma_complete>,
+    packet_len = 0x46d,
+    tlen = 0x0,
+    num_desc = 0x0,
+    desc_limit = 0x6,
+    next_descq_idx = 0x45c,
+    coalesce_idx = 0x0,
+    flags = 0x0,
+    descs = {{
+        qw = {0x8024000120dffb00, 0x4}  # SDMA_DESC0_FIRST_DESC_FLAG (bit 63)
+      }, {
+        qw = {  0x3800014231b108, 0x4}
+      }, {
+        qw = { 0x310000e4ee0fcf0, 0x8}
+      }, {
+        qw = {  0x3000012e9f8000, 0x8}
+      }, {
+        qw = {  0x59000dfb9d0000, 0x8}
+      }, {
+        qw = {  0x78000e02e40000, 0x8}
+      }}
+  },
+  sdma_hdr =  0x400300015528b000,  <<< invalid pointer in the tx request structure
+  sdma_status = 0x0,                   SDMA_DESC0_LAST_DESC_FLAG (bit 62)
+  complete = 0x0,
+  priv = 0x0,
+  txq = 0xffff9cfea4e69880,
+  skb = 0xffff9d099809f400
+}
 
-     Arnd
+With this patch the crashes are no longer reproducible and the machine is stable.
+
+Note, the header file changes are just an unrelated clean-up while I was looking
+around trying to find the bug.
+
+Fixes: fd8958efe877 ("IB/hfi1: Fix sdma.h tx->num_descs off-by-one errors")
+Cc: stable@vger.kernel.org
+Reported-by: Mats Kronberg <kronberg@nsc.liu.se>
+Tested-by: Mats Kronberg <kronberg@nsc.liu.se>
+Signed-off-by: Daniel Vacek <neelx@redhat.com>
+---
+ drivers/infiniband/hw/hfi1/sdma.c |  2 +-
+ drivers/infiniband/hw/hfi1/sdma.h | 17 +++++++----------
+ 2 files changed, 8 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/infiniband/hw/hfi1/sdma.c b/drivers/infiniband/hw/hfi1/sdma.c
+index 6e5ac2023328a..b67d23b1f2862 100644
+--- a/drivers/infiniband/hw/hfi1/sdma.c
++++ b/drivers/infiniband/hw/hfi1/sdma.c
+@@ -3158,7 +3158,7 @@ int _pad_sdma_tx_descs(struct hfi1_devdata *dd, struct sdma_txreq *tx)
+ {
+ 	int rval = 0;
+ 
+-	if ((unlikely(tx->num_desc + 1 == tx->desc_limit))) {
++	if ((unlikely(tx->num_desc == tx->desc_limit))) {
+ 		rval = _extend_sdma_tx_descs(dd, tx);
+ 		if (rval) {
+ 			__sdma_txclean(dd, tx);
+diff --git a/drivers/infiniband/hw/hfi1/sdma.h b/drivers/infiniband/hw/hfi1/sdma.h
+index d77246b48434f..362815a8da267 100644
+--- a/drivers/infiniband/hw/hfi1/sdma.h
++++ b/drivers/infiniband/hw/hfi1/sdma.h
+@@ -639,13 +639,13 @@ static inline void sdma_txclean(struct hfi1_devdata *dd, struct sdma_txreq *tx)
+ static inline void _sdma_close_tx(struct hfi1_devdata *dd,
+ 				  struct sdma_txreq *tx)
+ {
+-	u16 last_desc = tx->num_desc - 1;
++	struct sdma_desc *desc = &tx->descp[tx->num_desc - 1];
+ 
+-	tx->descp[last_desc].qw[0] |= SDMA_DESC0_LAST_DESC_FLAG;
+-	tx->descp[last_desc].qw[1] |= dd->default_desc1;
++	desc->qw[0] |= SDMA_DESC0_LAST_DESC_FLAG;
++	desc->qw[1] |= dd->default_desc1;
+ 	if (tx->flags & SDMA_TXREQ_F_URGENT)
+-		tx->descp[last_desc].qw[1] |= (SDMA_DESC1_HEAD_TO_HOST_FLAG |
+-					       SDMA_DESC1_INT_REQ_FLAG);
++		desc->qw[1] |= (SDMA_DESC1_HEAD_TO_HOST_FLAG |
++				SDMA_DESC1_INT_REQ_FLAG);
+ }
+ 
+ static inline int _sdma_txadd_daddr(
+@@ -670,13 +670,10 @@ static inline int _sdma_txadd_daddr(
+ 	tx->tlen -= len;
+ 	/* special cases for last */
+ 	if (!tx->tlen) {
+-		if (tx->packet_len & (sizeof(u32) - 1)) {
++		if (tx->packet_len & (sizeof(u32) - 1))
+ 			rval = _pad_sdma_tx_descs(dd, tx);
+-			if (rval)
+-				return rval;
+-		} else {
++		else
+ 			_sdma_close_tx(dd, tx);
+-		}
+ 	}
+ 	return rval;
+ }
+-- 
+2.43.0
+
 
