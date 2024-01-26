@@ -1,94 +1,119 @@
-Return-Path: <stable+bounces-15904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A652683DF85
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 18:10:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0239A83E059
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 18:36:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02781B22A27
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 17:10:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABB591F2554D
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 17:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09631EA7F;
-	Fri, 26 Jan 2024 17:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F199720310;
+	Fri, 26 Jan 2024 17:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c73abWvK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eSfQhLxS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E8C200A6;
-	Fri, 26 Jan 2024 17:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3DDAD53;
+	Fri, 26 Jan 2024 17:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706289033; cv=none; b=LJOwKs+yVHR4qx+Y8AHEVOhlEpT4I2wcpZEoyZhNtF82yXglGkImRvwSzNJYWarAQSlYMVKrbgiwva5wzsf+iikrGTW1RKCGymo+ds4gVFLECYX1gKzrZzvc71sFBqlrgWyGyiFFTOgfftAwWZHS76xwlRMOw/R1oo53VYabbhM=
+	t=1706290601; cv=none; b=HLPETf7AcZYZ68/9Tsuk2qu6ifzU76IBZDhtdaIbjEzY+jrjgDY2W3LzZgAMxSLWBXnOfw5B/VQSW89iTZZ10hd8qqZfJRqRRCxNXdjT+ZAFsWO2nxMxvVA+l0Q3ydVtLsqkIqCcPONtwRPIWaKmFegnAItHN+CzZrlBP+W2LpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706289033; c=relaxed/simple;
-	bh=DEHxLqizhVae7GfdD+IYf2Qhwx8aaBFy0kmp5GGvB3M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h4Bastt7cVJrUyFIif2UWuoTsugGg8zqIpYg20AboMoDJiuyeme4Zw4GF6MqTTxDbyuGIuQ6tiTErpr3Y+RX8HbDmBMdOivzUF4pe7f9XsvnZGXlhAjYMLYENyBOAYeXztYnnNhj96rURy11mpPk77vqbRlNH2rT4TsrmxvfWsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c73abWvK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69CB1C433C7;
-	Fri, 26 Jan 2024 17:10:33 +0000 (UTC)
+	s=arc-20240116; t=1706290601; c=relaxed/simple;
+	bh=4iVM9+Je1Wsvrrm8yBmVzSmaL5OSsQ/orDrecbPYen8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JzmTQCkJs5eFvp3lUlJbhiaW2is8Hpj5ujmwmJDTsCWIvMY76Tv3M69qdxkBzwizwCuTf6p4umSw2aj/4vtto2s9kDHhZfyfZLO008CRhfbcu8KOfMhjVcDl1Me00GbAa2JjG9vZuAmsg+I5oxCbv5+d0f55sond4V77s7tO/6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eSfQhLxS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C985EC43394;
+	Fri, 26 Jan 2024 17:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706289033;
-	bh=DEHxLqizhVae7GfdD+IYf2Qhwx8aaBFy0kmp5GGvB3M=;
-	h=From:To:Cc:Subject:Date:From;
-	b=c73abWvKtRcIGlcqIFirNK8ljnzEEB6kiz37s998Hb9Vw0N9xH+v3zXLmRk3Tqyac
-	 W3W+4bLnAhkJiG+rCT00MOouACTON12NsDin4kcvSlu8Cm2mvvtB7q1roMj1etB0SZ
-	 urBAu1y1mKHVP+ex3XjuPvy4n5R2kzQgWMnNv4DSgqUnICBvu4EANwrwhfAvksmFyE
-	 +bQpw7L0KZNXSyRPEV/62g8MFLt30tdHDWjZDfz+ABIUHx1EFZX3iUNbbEMbk8+7zo
-	 4hreBHGf+RMtIKbWcAsf17NBb9lVBjEPQz0xi+29jD1aBMMkk/o2A6uarh2CKlsJqu
-	 qi5pR8SDswMAg==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1rTPj4-000000000YW-0YGh;
-	Fri, 26 Jan 2024 18:10:46 +0100
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Cc: linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org,
-	Douglas Anderson <dianders@chromium.org>
-Subject: [PATCH] HID: i2c-hid-of: fix NULL-deref on failed power up
-Date: Fri, 26 Jan 2024 18:09:01 +0100
-Message-ID: <20240126170901.893-1-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=k20201202; t=1706290601;
+	bh=4iVM9+Je1Wsvrrm8yBmVzSmaL5OSsQ/orDrecbPYen8=;
+	h=From:Date:Subject:To:Cc:From;
+	b=eSfQhLxSwoBb3Kl5xmdZLqSuNuEh4sZLAQEbkIFuELSIvawi+eWE4VifIzKJCA1xN
+	 ud1K2sDHZNEU+9NvzpLehMGrBwNA4FU/V6dfTCEcGsUFYvYx28DdLpnYMZWeJhtiHt
+	 X+5wCY7lKxz5xbS0snMo2gaEI5jMmOH45EU6PgHKEsH9TXVOYxHjajQ70IUsmNEEYc
+	 pZpno9hTFis1oZzYWC1I57fwnnTLaU1tGIlGe7G2trNV+pdTwa7eZgHkKgPwTE+CvH
+	 bgA9Kf+bcqp1jm0MgmdiwKDSnypDEaJh3yKnN6nvrKvwJajC3jW70LmygRvcReN0VI
+	 iSb3Ln+zquTMA==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Fri, 26 Jan 2024 10:36:31 -0700
+Subject: [PATCH 4.19] powerpc: Use always instead of always-y in for
+ crtsavres.o
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240126-4-19-fix-lib-powerpc-backport-v1-1-f0de224db66b@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAJ7ts2UC/x3M0QqDMAxA0V+RPC9iuiLTXxl7iDWdYWJLKttA/
+ PeVPR643AOKmEqBsTnA5K1F01ZBlwbCwttTUOdqcJ3zHbkePdKAUb+46oQ5fcRywInDKyfbsY+
+ eb+7KcySG+sgmtf3/7+BbGuBxnj+ZDa74dQAAAA==
+To: gregkh@linuxfoundation.org, sashal@kernel.org
+Cc: stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-kbuild@vger.kernel.org, llvm@lists.linux.dev, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.13-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1904; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=4iVM9+Je1Wsvrrm8yBmVzSmaL5OSsQ/orDrecbPYen8=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDKmb3664uenfguxwHdbUCL8t+sYm6TnH3/BZ2O1hYW21S
+ LaVEj7RUcrCIMbFICumyFL9WPW4oeGcs4w3Tk2CmcPKBDKEgYtTACbyXYjhnz43z6GLhtYb33a+
+ UVdp3nvb1mS73BMVQzv1rYUH5Jb+s2VkmCcRtPnbAR/3Y2wbl33v/vtp6Sc5ndnrDd86Vqz0nRX
+ swg8A
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-A while back the I2C HID implementation was split in an ACPI and OF
-part, but the new OF driver never initialises the client pointer which
-is dereferenced on power-up failures.
+This commit is for linux-4.19.y only, it has no direct upstream
+equivalent.
 
-Fixes: b33752c30023 ("HID: i2c-hid: Reorganize so ACPI and OF are separate modules")
-Cc: stable@vger.kernel.org      # 5.12
-Cc: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Prior to commit 5f2fb52fac15 ("kbuild: rename hostprogs-y/always to
+hostprogs/always-y"), always-y did not exist, making the backport of
+mainline commit 1b1e38002648 ("powerpc: add crtsavres.o to always-y
+instead of extra-y") to linux-4.19.y as commit b7b85ec5ec15 ("powerpc:
+add crtsavres.o to always-y instead of extra-y") incorrect, breaking the
+build with linkers that need crtsavres.o:
+
+  ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such file or directory
+
+Backporting the aforementioned kbuild commit is not suitable for stable
+due to its size and number of conflicts, so transform the always-y usage
+to an equivalent form using always, which resolves the build issues.
+
+Fixes: b7b85ec5ec15 ("powerpc: add crtsavres.o to always-y instead of extra-y")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-of.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/lib/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/i2c-hid/i2c-hid-of.c b/drivers/hid/i2c-hid/i2c-hid-of.c
-index c4e1fa0273c8..8be4d576da77 100644
---- a/drivers/hid/i2c-hid/i2c-hid-of.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-of.c
-@@ -87,6 +87,7 @@ static int i2c_hid_of_probe(struct i2c_client *client)
- 	if (!ihid_of)
- 		return -ENOMEM;
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index 6f1e57182876..f0aa6fc8c6b2 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -21,8 +21,8 @@ obj-$(CONFIG_PPC32)	+= div64.o copy_32.o crtsavres.o strlen_32.o
+ # 64-bit linker creates .sfpr on demand for final link (vmlinux),
+ # so it is only needed for modules, and only for older linkers which
+ # do not support --save-restore-funcs
+-ifeq ($(call ld-ifversion, -lt, 225000000, y),y)
+-always-$(CONFIG_PPC64)	+= crtsavres.o
++ifeq ($(call ld-ifversion, -lt, 225000000, y)$(CONFIG_PPC64),yy)
++always	+= crtsavres.o
+ endif
  
-+	ihid_of->client = client;
- 	ihid_of->ops.power_up = i2c_hid_of_power_up;
- 	ihid_of->ops.power_down = i2c_hid_of_power_down;
- 
+ obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
+
+---
+base-commit: b060cfd3f707ad3c8ae8322e1b149ba7e2cf33e0
+change-id: 20240126-4-19-fix-lib-powerpc-backport-6f4a823adf1a
+
+Best regards,
 -- 
-2.43.0
+Nathan Chancellor <nathan@kernel.org>
 
 
