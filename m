@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-15993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A663383E642
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:09:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C50283E644
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2211A1F24931
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:09:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C5BEB21E6A
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0A956473;
-	Fri, 26 Jan 2024 23:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D69956779;
+	Fri, 26 Jan 2024 23:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4l6DvFA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lroSzq6z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8A655E6E
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1ADC55E6E
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706310584; cv=none; b=FpR+UcrivDPtvHDVDoyTLTbVmftoljPDbA+RkrUVBWEd7vNCFHEDyNdImvTmpPd8f/d+m/j80z0mZhH9+zJxm3LYL+wow8x9weoEt3kOPTpPXlxUHFenLr4FKQ0B7S+P9Y378Bo1Qs2ukDKoPmTrAYLo3zxHie1FfKuVJI+qN7c=
+	t=1706310586; cv=none; b=Js6KWa/WD+t108trULp2ZzszC3asNEii3oE04lDbItfINARPcHYBLPJL8l+7+Y7iff1juaxgURawtKi8GrNSJg1A4TXVIEY8vCkrG5X/5mdRUy24A24tyffxyyAL/Qk6+KaA7JK5BRb1aY+IbJ/a6qsLRG01MaR82f6lRaAZYnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706310584; c=relaxed/simple;
-	bh=S45/Sf5OzNH0bmI8hUZMHYZEVmN9m7wor1kkoxemKmQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qJLULUzrmbl02dX+TOaHdnDGIcSRTAIkpiffA18JqBtXAjrDxY0eNIWiLeRXSXBD9fHzLRde94wSSWEJWOSZOYJJW9z7qFlBWipf08ZfMOVe3f/9Lo61cBkHIV2o9sc0cnvY+L1OlPo5Kximcwk7j2hz0wekFcy7KP501pdb9tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4l6DvFA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43137C433F1;
-	Fri, 26 Jan 2024 23:09:44 +0000 (UTC)
+	s=arc-20240116; t=1706310586; c=relaxed/simple;
+	bh=e/XE+iQCiGI6IW5kGylWV4NX3FRnDbn+U6vuKzTpds4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kdBl9ATJnLwfKtx5P8MoKbFZwozp94o10n8hKCUEkBaNM1GzG3MuU4Lc+SrVXkD5fpVwXT4hIavGE4T/JZkzDVLXKs/+YOHl54pKBLrsFACLKD2vRMZRZaxtBErhY4c7Bxj5mg99Gb/79wj9+oz3yjP2SXaHTVLy+NnBobd4SdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lroSzq6z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BAFC433F1;
+	Fri, 26 Jan 2024 23:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706310584;
-	bh=S45/Sf5OzNH0bmI8hUZMHYZEVmN9m7wor1kkoxemKmQ=;
+	s=korg; t=1706310585;
+	bh=e/XE+iQCiGI6IW5kGylWV4NX3FRnDbn+U6vuKzTpds4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=v4l6DvFAXCn/V1vFN0HmIc/C6wsMLQx7OTrrkzJj/Q2vX4EtNwW3svTOP5i+ZYntu
-	 P1eR/MHSX/NerE/bwL/5JFRxJUfQ6rmbrKCogvftM1YahKEqx/Bc9a1YKTTGgw3btU
-	 BVQ512cENYhdx4cvz7Uy3FFtfSSWaKCSbUBucz3E=
-Subject: FAILED: patch "[PATCH] dma-buf: add dma_fence_timestamp helper" failed to apply to 6.6-stable tree
+	b=lroSzq6zNOB2wqSK5f+cmA7zkutnsfW33K4FeV1poeIPpc4ubypcyYfafLiv/+hbb
+	 PIvnX8XJsge3/zaf4F7QnntQ7i+mfhdIEKUTPptjLCyO37SIQ7ykFPkY34fCDynVC/
+	 BZ5KNL5Rzp1QAL3XHy3mtSShYFcpsltbYkhnbrbc=
+Subject: FAILED: patch "[PATCH] dma-buf: add dma_fence_timestamp helper" failed to apply to 6.1-stable tree
 To: christian.koenig@amd.com,Yunxiang.Li@amd.com,alexander.deucher@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 26 Jan 2024 15:09:43 -0800
-Message-ID: <2024012643-undecided-bride-578b@gregkh>
+Date: Fri, 26 Jan 2024 15:09:44 -0800
+Message-ID: <2024012644-unsolved-juicy-0a87@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,24 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0da611a8702101814257a7c03f6caf0574c83b98
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012643-undecided-bride-578b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012644-unsolved-juicy-0a87@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 0da611a87021 ("dma-buf: add dma_fence_timestamp helper")
+f781f661e8c9 ("dma-buf: keep the signaling time of merged fences v3")
 
 thanks,
 
