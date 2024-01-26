@@ -1,140 +1,127 @@
-Return-Path: <stable+bounces-15912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE68083E1DA
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 19:45:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DDF283E1E6
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 19:48:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B3F1286FB4
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 18:45:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CA5F1F2957D
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 18:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6911822314;
-	Fri, 26 Jan 2024 18:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6C420320;
+	Fri, 26 Jan 2024 18:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H50aZHU8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYItJv40"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DE6210E6
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 18:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1E820321;
+	Fri, 26 Jan 2024 18:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706294567; cv=none; b=AuZIXIHUTMcCPZqNs5LvdLAmFXkMZNgeaGHlYUKKFbbwsQwPm2EDLXRTNWB7t9VBRoisD+sCzx949fbe3z9D/t1O9vklNI8Lvga+F02m6CEDP4m3yAWByyfM/hweCrN80E/FgesOBKAlrpNCSCn/BYNWKxJi4fu6RcNULY657qY=
+	t=1706294905; cv=none; b=ZB2hd/TjMu0he9C56uM+VtDms9qi/qfs+BZV6wTnw1e7//4sYYww6xGm3/g5gN3IRkDlXu3TfSRNx4RrJ0FqbVZDC4TUjqAKfOhMVQCQkGZtEDTznH0ivgYrUrHCpA9mXpThm2QWBcKkd7dBO7iI6oUpa4I2F6SqN9B8krffJfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706294567; c=relaxed/simple;
-	bh=tndbYW1o07P9euhl5LaLRhCJkrvd7S4MGwfSeNSBl8I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VAB88giRZ0s/VEgKZVaXYLIdUUd3CGUeyrSJYzm3zUVhlwZUYLzSeVLIrxBJEeOkkflcVB0VRDR9Z9l//F/cYyOyMiVNULqI7LBb5I/UJmxeoHAF65OcoIotvFSQoHzPr+2jUhQti3k3xpIzN5lqKkA/IwVfv2rlkMdtxc2EXMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H50aZHU8; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706294561;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zzJ3L1O92NF7We+W/4dmvV12p9eM32JiTpI49AhcxhI=;
-	b=H50aZHU8TYkvl5ujtSysRNTEcyxfxc4zM68qr0nnvhUkl97eZUt/8j2a7MttVhJ0ToQk2D
-	l5qJBoX0DKDWXN21V9fLnwrYY0aS9K2DoqSkolYAsKJXJldAUHqJ4CE+jcENg7AodL7L7e
-	ULFaOXnChIhLCXQFmRzpVNmbWb+D5Lw=
-Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
- [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-347-JHKBmz54MOyZY6yBC_Emew-1; Fri, 26 Jan 2024 13:42:40 -0500
-X-MC-Unique: JHKBmz54MOyZY6yBC_Emew-1
-Received: by mail-ua1-f70.google.com with SMTP id a1e0cc1a2514c-7d249e66ed5so315164241.2
-        for <stable@vger.kernel.org>; Fri, 26 Jan 2024 10:42:39 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706294559; x=1706899359;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zzJ3L1O92NF7We+W/4dmvV12p9eM32JiTpI49AhcxhI=;
-        b=r3a8haG7XoeR+s0aENJhP1tPATqOsgxav+IDYH5W7/2nlMsNOpSuufuqbasRIMfFb/
-         yCf+u5Cfb7k+DesKuvQ6UxFACBdJemp8EYahCVYV4KVK9vYIrgLaxyAXJtU3CuHKyAZI
-         RqEjqfXOFgKwoKibE/74ApuO2zo7SDbdh1OVdk2QAikdsD/wbnSHYLn3bS1Hh6QEODm/
-         0T3a36cqJeH+bM/5SzPDqiEAqeax2ix3/OttMoGXBVK75uvUY+9e98wEtYSeV9rSBA7F
-         z98CeAlHyP+1DJKoYVYXUAGuED2D+2QPSKS40tSJby6u66s8jI4Z6YkYWjXRBQPcwmzm
-         Z/mQ==
-X-Gm-Message-State: AOJu0YzlKrzFyqjcaPsmDWSPhFYff2hYePbz0rneFadf1IwNyDXg2/Uu
-	6UVqSsQ060U3cI2dgiWaSN9GDSTNI2BmK382F7N8lXtOqr5megKd0jm1FBiYeJDNyOkT9Yu24jv
-	NdXEFknddqd0URhMeB0ErJokpi9yd/TTKOv+Le5G65IXXhWs+kpgvNEkSFMN5R9td8bQR2DXF8o
-	aF+oQs6LNmxs3cvpLODT/02pv/6iJY
-X-Received: by 2002:a05:6102:34ec:b0:46a:f85e:46ec with SMTP id bi12-20020a05610234ec00b0046af85e46ecmr278966vsb.13.1706294559313;
-        Fri, 26 Jan 2024 10:42:39 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE+t9Kuvuwyn4xRna1bQuJZ1JZtFzYCec090a7bJEl6paIINB1pOVLnZpfbsHSgdIHwOoYstCDRrJhhMyO1bkQ=
-X-Received: by 2002:a05:6102:34ec:b0:46a:f85e:46ec with SMTP id
- bi12-20020a05610234ec00b0046af85e46ecmr278956vsb.13.1706294559084; Fri, 26
- Jan 2024 10:42:39 -0800 (PST)
+	s=arc-20240116; t=1706294905; c=relaxed/simple;
+	bh=BnryrUApwZ0nI32BdUhHkFXOuwB01+MG4M5KXNOSAgY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ns7kWpHe9gkiuJa5oczYm42iLAyc1q/3+3HHl22+e793iHZAjPMIkwM9p2u39AmYGTHd2fp2Srqt9KNMB617Eq1ybNraoV7uSgGODG3hox/5L8vRoznVAKlX0qm8zjv7rXq6yz3lap9HXSIiNkwrMvn99lPF10vqPgKrn8p4IT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYItJv40; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2071C43390;
+	Fri, 26 Jan 2024 18:48:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1706294905;
+	bh=BnryrUApwZ0nI32BdUhHkFXOuwB01+MG4M5KXNOSAgY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YYItJv40S++SCggpNYzSwWtrsVjncULPKgKTanfkHkHX3jl4t5RgFldXfzHqyc8Q6
+	 UghPect/Av0dDoAIyggJPC7I5q4wnqAWH4bEiS8IPmeF7N6DiA8fomhzJW6Iq5U7km
+	 UG3xBjdpUjh9YzBJggB9LP6fZFSoXg9lp9Z8leGA=
+Date: Fri, 26 Jan 2024 10:48:24 -0800
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 5.10 000/286] 5.10.209-rc1 review
+Message-ID: <2024012646-glove-cabana-6e64@gregkh>
+References: <20240122235732.009174833@linuxfoundation.org>
+ <6b563537-b62f-428e-96d1-2a228da99077@roeck-us.net>
+ <2024012636-clubbed-radial-1997@gregkh>
+ <2f342268-8517-4c06-8785-96a588d20c63@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240126095514.2681649-1-oficerovas@altlinux.org>
- <20240126095514.2681649-2-oficerovas@altlinux.org> <f8efd03ca56c4a52b524beb937a25b57@AcuMS.aculab.com>
-In-Reply-To: <f8efd03ca56c4a52b524beb937a25b57@AcuMS.aculab.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 26 Jan 2024 19:42:27 +0100
-Message-ID: <CABgObfYZQ3oOa8JaARpnZhb-1ruiQG1tnSLvHVXNtTZkuos-vg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm: vmalloc: introduce array allocation functions
-To: David Laight <David.Laight@aculab.com>
-Cc: "oficerovas@altlinux.org" <oficerovas@altlinux.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"kovalev@altlinux.org" <kovalev@altlinux.org>, "nickel@altlinux.org" <nickel@altlinux.org>, 
-	"dutyrok@altlinux.org" <dutyrok@altlinux.org>, Michal Hocko <mhocko@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2f342268-8517-4c06-8785-96a588d20c63@roeck-us.net>
 
-On Fri, Jan 26, 2024 at 3:00=E2=80=AFPM David Laight <David.Laight@aculab.c=
-om> wrote:
->
-> From: oficerovas@altlinux.org
-> > Sent: 26 January 2024 09:55
-> >
-> > commit a8749a35c399 ("mm: vmalloc: introduce array allocation functions=
-")
-> >
-> > Linux has dozens of occurrences of vmalloc(array_size()) and
-> > vzalloc(array_size()).  Allow to simplify the code by providing
-> > vmalloc_array and vcalloc, as well as the underscored variants that let
-> > the caller specify the GFP flags.
-> >
-> > Acked-by: Michal Hocko <mhocko@suse.com>
-> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > Signed-off-by: Alexander Ofitserov <oficerovas@altlinux.org>
-> > ---
-> >  include/linux/vmalloc.h |  5 +++++
-> >  mm/util.c               | 50 +++++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 55 insertions(+)
-> >
-> > diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
-> > index 76dad53a410ac..0fd47f2f39eb0 100644
-> > --- a/include/linux/vmalloc.h
-> > +++ b/include/linux/vmalloc.h
-> > @@ -112,6 +112,11 @@ extern void *__vmalloc_node_range(unsigned long si=
-ze, unsigned long align,
-> >  void *__vmalloc_node(unsigned long size, unsigned long align, gfp_t gf=
-p_mask,
-> >               int node, const void *caller);
-> >
-> > +extern void *__vmalloc_array(size_t n, size_t size, gfp_t flags);
-> > +extern void *vmalloc_array(size_t n, size_t size);
-> > +extern void *__vcalloc(size_t n, size_t size, gfp_t flags);
-> > +extern void *vcalloc(size_t n, size_t size);
->
-> Symbols starting __ should really be ones that are part of the implementa=
-tion
-> and not publicly visible.
+On Fri, Jan 26, 2024 at 10:17:23AM -0800, Guenter Roeck wrote:
+> On 1/26/24 09:51, Greg Kroah-Hartman wrote:
+> > On Fri, Jan 26, 2024 at 08:46:42AM -0800, Guenter Roeck wrote:
+> > > On 1/22/24 15:55, Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 5.10.209 release.
+> > > > There are 286 patches in this series, all will be posted as a response
+> > > > to this one.  If anyone has any issues with these being applied, please
+> > > > let me know.
+> > > > 
+> > > > Responses should be made by Wed, 24 Jan 2024 23:56:49 +0000.
+> > > > Anything received after that time might be too late.
+> > > > 
+> > > [ ... ]
+> > > 
+> > > > zhenwei pi <pizhenwei@bytedance.com>
+> > > >       virtio-crypto: implement RSA algorithm
+> > > > 
+> > > 
+> > > Curious: Why was this (and its subsequent fixes) backported to v5.10.y ?
+> > > It is quite beyond a bug fix. Also, unless I am really missing something,
+> > > the series (or at least this patch) was not applied to v5.15.y, so we now
+> > > have functionality in v5.10.y which is not in v5.15.y.
+> > 
+> > See the commit text, it was a dependency of a later fix and documented
+> > as such.
+> > 
+> > Having it in 5.10 and not 5.15 is a bit odd, I agree, so patches are
+> > gladly accepted :)
+> > 
+> 
+> We reverted the entire series from the merge because it results in a build
+> failure for us.
+> 
+> In file included from /home/groeck/src/linux-chromeos/drivers/crypto/virtio/virtio_crypto_akcipher_algs.c:10:
+> In file included from /home/groeck/src/linux-chromeos/include/linux/mpi.h:21:
+> In file included from /home/groeck/src/linux-chromeos/include/linux/scatterlist.h:5:
+> In file included from /home/groeck/src/linux-chromeos/include/linux/string.h:293:
+> /home/groeck/src/linux-chromeos/include/linux/fortify-string.h:512:4: error: call to __read_overflow2_field declared with 'warning' attribute: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
+>                         __read_overflow2_field(q_size_field, size);
+> 
+> I also see that upstream (starting with 6.1) when trying to build it with clang,
+> so I guess it is one of those bug-for-bug compatibility things. I really have
+> no idea what causes it, or why we don't see the problem when building
+> chromeos-6.1 or chromeos-6.6, but (so far) only with chromeos-5.10 after
+> merging 5.10.209 into it. Making things worse, the problem isn't _always_
+> seen. Sometimes I can compile the file in 6.1.y without error, sometimes not.
+> I have no idea what triggers the problem. Of course, on top of all that,
+> the error message is completely useless.
+> 
+> Either case, we don't use that code in chromeos-5.10, so reverting the
+> entire series from the merge was the easiest way to proceed. But we really
+> don't have an incentive to apply the series to v5.15.y because we don't
+> need/use it there, and we might end up having to revert it from there
+> as well if it is applied.
 
-This is a patch that already exists in master.
+If this is causing build issues, I'll drop this, I was worried about it
+during review but no one had any reports then, but now it looks like it
+should be reworked.  I'll go revert them, thanks.
 
-Paolo
-
+greg k-h
 
