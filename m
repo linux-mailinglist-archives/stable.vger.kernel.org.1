@@ -1,88 +1,88 @@
-Return-Path: <stable+bounces-15918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97D783E235
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 20:09:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BDC583E250
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 20:14:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D71C11C21EAD
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 19:09:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EA461C232D0
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 19:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AA72231C;
-	Fri, 26 Jan 2024 19:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8436E224C2;
+	Fri, 26 Jan 2024 19:13:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sYiauapo"
 X-Original-To: stable@vger.kernel.org
-Received: from hi1smtp01.de.adit-jv.com (smtp1.de.adit-jv.com [93.241.18.167])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB9B224C7;
-	Fri, 26 Jan 2024 19:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.241.18.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CFEA1DFE4;
+	Fri, 26 Jan 2024 19:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706296170; cv=none; b=qitKqZ2A5+CId+FVksVeSP8kqPKkp6M+kQsnuNhnsyfwatF4gKYz9vl14Bf++6uTahpyHsxyoGkwx4PZw2nqwmHdG16v++2K988JAkyk7HYk0r6yTDFmW+enErxufIpMvvoeUVnBfGlcvf4IBhJV6HeEjirJpLldLcO8hAFIIXI=
+	t=1706296434; cv=none; b=nVZ3FbYI23g5Opfy9s1rGQHAj9/zWXkh3Xk4uUqwjiZ8N+QWkxOiTZuFRGUcDZA6VP9GFAUDVBpPvkJseVG2ndbgJxelLMdIn5aE1IpRDNtT2T5oGGqSKspCm52g4KXwLGTxEMVeAuuZU8ZfWuIyMDV9uaJOzusDkadvMf34Asg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706296170; c=relaxed/simple;
-	bh=JgDi5qGtpWQPVw6NhvojZ4mYsZouYXZ6IanLD2Lq1Xc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bCnHSfpA/wxUrVhlJSwgWbrWXZ1LiY3Ac8r1hJrFilYWEDtdrvId0fUBQAp+MPCMZF5nl5URbQACiTmPPGYLTvuNGWRevitCzyiOHmL09UcwnEdmH7qhQrVFb0d5vJ5jL33JF2kN825Gj+NlxakQiChSy8XQu0+sy9L8H3oVIuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=de.adit-jv.com; spf=pass smtp.mailfrom=de.adit-jv.com; arc=none smtp.client-ip=93.241.18.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=de.adit-jv.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.adit-jv.com
-Received: from hi2exch02.adit-jv.com (hi2exch02.adit-jv.com [10.72.92.28])
-	by hi1smtp01.de.adit-jv.com (Postfix) with ESMTP id C5E9852040C;
-	Fri, 26 Jan 2024 20:09:26 +0100 (CET)
-Received: from lxhi-087 (10.72.93.211) by hi2exch02.adit-jv.com (10.72.92.28)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 26 Jan
- 2024 20:09:26 +0100
-Date: Fri, 26 Jan 2024 20:09:26 +0100
-From: Eugeniu Rosca <erosca@de.adit-jv.com>
-To: <fdmanana@kernel.org>
-CC: <linux-btrfs@vger.kernel.org>, <erosca@de.adit-jv.com>,
-	<Maksim.Paimushkin@se.bosch.com>, <Matthias.Thomae@de.bosch.com>,
-	<Sebastian.Unger@bosch.com>, <Dirk.Behme@de.bosch.com>,
-	<Eugeniu.Rosca@bosch.com>, <wqu@suse.com>, <dsterba@suse.com>,
-	<stable@vger.kernel.org>, Filipe Manana <fdmanana@suse.com>, ken
-	<ken@bllue.org>, <syzbot+d13490c82ad5353c779d@syzkaller.appspotmail.com>,
-	Eugeniu Rosca <roscaeugeniu@gmail.com>
-Subject: Re: [PATCH 4/4 for 5.15 stable] btrfs: fix race between reading a
- directory and adding entries to it
-Message-ID: <20240126190926.GE2668448@lxhi-087>
-References: <cover.1706183427.git.fdmanana@suse.com>
- <1fd8f27289a8608c77f66c065d6fda87a7d89628.1706183427.git.fdmanana@suse.com>
+	s=arc-20240116; t=1706296434; c=relaxed/simple;
+	bh=auOG/6WTlLMP42/ZwkTSWVSQm5vUsuTst6mpxgMIz24=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=EKDgnBPMp6G26km/+vDSWHMMMBhmsyadmpPq3MimdycPsKLXaoAYl2BlN2eKXIU/Wmn5Qk3N5/cFaPmKnkS/kLgPdzh3p/QvsDADLYBSCW1yg0d/ZSZcUDDGBNowtRqCFGVQxuNwmcq3ruOJ6e65oujvsosm2GLqpfmHZGf96ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sYiauapo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8E8C433C7;
+	Fri, 26 Jan 2024 19:13:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706296433;
+	bh=auOG/6WTlLMP42/ZwkTSWVSQm5vUsuTst6mpxgMIz24=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sYiauapoWVGAe94yJ/y2zleJiqh8/VxTWLJf5qUxzbo9u9LvKVNSPluSJsGP29+Jm
+	 SA46IgmcZFXsE61puOybnv4X4yuQBlWO20K0Mg9Qg/Ev+PgcYYZtHbtdgZyZoxNhTQ
+	 EBNiTeHVIxvRO/R6BDMJPfePZTH22J+vxelMYbUwGkdBOnWwmX8M5IRIhNAkIpKVDV
+	 NCtjtrsc9GrmnMRvBtOd6ssprkTqcFFAL1QxWzbX8mrvFwjZJuWnquT2dHxbLNPoky
+	 O15F0Sc53QxcmnPbyoml86VtdL01Z4I2kW3YOmzqS8nDZrduteA75g6QmzZCgkgpkV
+	 CM1nUizZMqyTg==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>,
+	"pc@manguebit.com" <pc@manguebit.com>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"leonardo@schenkel.net" <leonardo@schenkel.net>,
+	"linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>,
+	"m.weissbach@info-gate.de" <m.weissbach@info-gate.de>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	"sairon@sairon.cz" <sairon@sairon.cz>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with "Resource temporarily unavailable"
+Date: Fri, 26 Jan 2024 11:13:51 -0800
+Message-Id: <20240126191351.56183-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <53F11617-D406-47C6-8CA7-5BE26EB042BE@amazon.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <1fd8f27289a8608c77f66c065d6fda87a7d89628.1706183427.git.fdmanana@suse.com>
-X-ClientProxiedBy: hi2exch02.adit-jv.com (10.72.92.28) To
- hi2exch02.adit-jv.com (10.72.92.28)
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 25, 2024 at 11:59:38AM +0000, fdmanana@kernel.org wrote:
-> From: Filipe Manana <fdmanana@suse.com>
-> 
-> commit 8e7f82deb0c0386a03b62e30082574347f8b57d5 upstream.
-> 
-> When opening a directory (opendir(3)) or rewinding it (rewinddir(3)), we
-> are not holding the directory's inode locked, and this can result in later
-> attempting to add two entries to the directory with the same index number,
-> resulting in a transaction abort, with -EEXIST (-17), when inserting the
-> second delayed dir index. This results in a trace like the following:
+On Mon, 15 Jan 2024 14:22:39 +0000 "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com> wrote:
 
-[..]
+> It looks like both 5.15.146 and 5.10.206 are impacted by this regression as
+> they both have the bad commit 33eae65c6f (smb: client: fix OOB in
+> SMB2_query_info_init()).
 
-> Fixes: 9b378f6ad48c ("btrfs: fix infinite directory reads")
-> CC: stable@vger.kernel.org # 6.5+
-> Signed-off-by: Filipe Manana <fdmanana@suse.com>
-> Reviewed-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: David Sterba <dsterba@suse.com>
+Let me try to tell this to the regression tracking bot, following the doc[1].
+This is my first time using #regzbot, so please feel free to correct me if I'm
+doing something wrong.
 
-Based on https://lore.kernel.org/stable/20240126185534.GA2668448@lxhi-087:
+#regzbot introduced: 33eae65c6f
 
-Reviewed-by: Eugeniu Rosca <eugeniu.rosca@bosch.com>
+[1] https://docs.kernel.org/admin-guide/reporting-regressions.html#how-do-i-report-a-regression
+
+
+Thanks,
+SJ
+
+[...]
 
