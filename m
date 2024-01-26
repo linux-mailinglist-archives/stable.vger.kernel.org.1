@@ -1,196 +1,140 @@
-Return-Path: <stable+bounces-15911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA7383E127
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 19:17:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE68083E1DA
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 19:45:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 621B41C227E1
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 18:17:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B3F1286FB4
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 18:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A5520B29;
-	Fri, 26 Jan 2024 18:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6911822314;
+	Fri, 26 Jan 2024 18:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bptpQq0f"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H50aZHU8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B04F20B14;
-	Fri, 26 Jan 2024 18:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DE6210E6
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 18:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706293048; cv=none; b=QVX2Uybo/BdCKra3Rml9mkeQnvG7oAPPv0zLl6bhW4ILVH8sHzWtIckFbwMbgzEfMOANs7qiK/hoFCVByVyvvA91h4cXcIqqQptl5cZqcpFGnO11pNFtVzY3kW9KzLbL9DOaSoJq4BSQfg6CkOBdb9FQngL1Iv8KbORIOMDuvjg=
+	t=1706294567; cv=none; b=AuZIXIHUTMcCPZqNs5LvdLAmFXkMZNgeaGHlYUKKFbbwsQwPm2EDLXRTNWB7t9VBRoisD+sCzx949fbe3z9D/t1O9vklNI8Lvga+F02m6CEDP4m3yAWByyfM/hweCrN80E/FgesOBKAlrpNCSCn/BYNWKxJi4fu6RcNULY657qY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706293048; c=relaxed/simple;
-	bh=IXlVlaNvnXBA1lTe6eAGqGsFQ/bX/5i/NUFH22pPDvo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GMAbwx0pNvI7nJvFUQHtjGDq+aaWWQWdemTUI8gh2satwaTOsvLqxpuLNcFiL4xY+Kcu+BCODVwbAepDo4/zMwn33785HgAfkCeJbJIDAelN5bCkM6+y5I//3Mx+LioQwSOMb7RJ5Mr17t0ppl/7SqCFJFuPfSEn/692OanAg0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bptpQq0f; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1d72f71f222so4548205ad.1;
-        Fri, 26 Jan 2024 10:17:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706293046; x=1706897846; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=WRe2lsh8zPJ7sQq3UNpQIdPCe7bYnRimPWRA+NTbgRQ=;
-        b=bptpQq0fPor91YlFWXfwqu9llUTTB2uJ7okP93OiVja2svFCEZYqIWz9unHpwONc75
-         5nyJmIa+Wc0cCMpyxi9tm4TEGEB5YuwgzwEayE9VhSUSiGaUq39DjMy+Nu5s49K3gn5O
-         fvlTMiVM7C3I6Glp4YemdaTxxQysmL7t9eklx6fFvJp0c7ePTXIdVGzcZOQ0pxPrxZqD
-         0amr/d61//KEm451/K0r11agkJq9PITEqr6z7vOCBNkQBjAYvnw/lTq8TsmnFY46aqR5
-         zfprFMW8dnWASpDwtajYBTYqZfRBv/ZI40LrK4SYMqUgDwI+xwyFvF6mDfgH4EPLU29Z
-         OXyQ==
+	s=arc-20240116; t=1706294567; c=relaxed/simple;
+	bh=tndbYW1o07P9euhl5LaLRhCJkrvd7S4MGwfSeNSBl8I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VAB88giRZ0s/VEgKZVaXYLIdUUd3CGUeyrSJYzm3zUVhlwZUYLzSeVLIrxBJEeOkkflcVB0VRDR9Z9l//F/cYyOyMiVNULqI7LBb5I/UJmxeoHAF65OcoIotvFSQoHzPr+2jUhQti3k3xpIzN5lqKkA/IwVfv2rlkMdtxc2EXMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H50aZHU8; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706294561;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zzJ3L1O92NF7We+W/4dmvV12p9eM32JiTpI49AhcxhI=;
+	b=H50aZHU8TYkvl5ujtSysRNTEcyxfxc4zM68qr0nnvhUkl97eZUt/8j2a7MttVhJ0ToQk2D
+	l5qJBoX0DKDWXN21V9fLnwrYY0aS9K2DoqSkolYAsKJXJldAUHqJ4CE+jcENg7AodL7L7e
+	ULFaOXnChIhLCXQFmRzpVNmbWb+D5Lw=
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
+ [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-347-JHKBmz54MOyZY6yBC_Emew-1; Fri, 26 Jan 2024 13:42:40 -0500
+X-MC-Unique: JHKBmz54MOyZY6yBC_Emew-1
+Received: by mail-ua1-f70.google.com with SMTP id a1e0cc1a2514c-7d249e66ed5so315164241.2
+        for <stable@vger.kernel.org>; Fri, 26 Jan 2024 10:42:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706293046; x=1706897846;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WRe2lsh8zPJ7sQq3UNpQIdPCe7bYnRimPWRA+NTbgRQ=;
-        b=jIBk5+MPU8yoBiT4XM0zcQLYU0RQa0DIiru0ofhMT8hWZmKQD8nMzUMnY/x5Hv9YdZ
-         kBytSAajigQcRqxc3keAvMD2sH0K8jxP9HUYLp7FYz6n9il+1FOfCYtVG4G9cRhCZE37
-         JPC7ZqPT8u+YR4872+Wp1UEodJPYyiQX4J1eQPcIZ7wR0THgQhr6NBEiquMas5tTY08Z
-         pxH5SWDMlKjGcJQ/g7HEsALVsQaUrKCgDswTk/F76LdwmIclQ9A/ZggmDTCeNmUBP45g
-         t4albbQ3FkOsove2p7jmTI+BWtyD4S0xhCYAzD3PBfnnW9IsaLVus56bB0ld5CClgqGv
-         nKvQ==
-X-Gm-Message-State: AOJu0YzBd2fgHz1V0JT9N3R0nsOM8BE+qiYxChUpH7LpxNSePdc+LUXJ
-	V24bBLGhy+CHCZ0gK02n2CI5eeGVW6tJa+PELbsVHFdcGUMnuMF3
-X-Google-Smtp-Source: AGHT+IGsgBtGuXdUkdSdR5m02KeN5BuhBNZbFHWIb+sl9phksFawh0/jTPbXfOxc2GYwirCzg2cxGA==
-X-Received: by 2002:a17:902:b787:b0:1d4:ea27:6f5b with SMTP id e7-20020a170902b78700b001d4ea276f5bmr154654pls.109.1706293046362;
-        Fri, 26 Jan 2024 10:17:26 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id mo14-20020a1709030a8e00b001d70c0f2f04sm1220746plb.217.2024.01.26.10.17.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 26 Jan 2024 10:17:25 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <2f342268-8517-4c06-8785-96a588d20c63@roeck-us.net>
-Date: Fri, 26 Jan 2024 10:17:23 -0800
+        d=1e100.net; s=20230601; t=1706294559; x=1706899359;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zzJ3L1O92NF7We+W/4dmvV12p9eM32JiTpI49AhcxhI=;
+        b=r3a8haG7XoeR+s0aENJhP1tPATqOsgxav+IDYH5W7/2nlMsNOpSuufuqbasRIMfFb/
+         yCf+u5Cfb7k+DesKuvQ6UxFACBdJemp8EYahCVYV4KVK9vYIrgLaxyAXJtU3CuHKyAZI
+         RqEjqfXOFgKwoKibE/74ApuO2zo7SDbdh1OVdk2QAikdsD/wbnSHYLn3bS1Hh6QEODm/
+         0T3a36cqJeH+bM/5SzPDqiEAqeax2ix3/OttMoGXBVK75uvUY+9e98wEtYSeV9rSBA7F
+         z98CeAlHyP+1DJKoYVYXUAGuED2D+2QPSKS40tSJby6u66s8jI4Z6YkYWjXRBQPcwmzm
+         Z/mQ==
+X-Gm-Message-State: AOJu0YzlKrzFyqjcaPsmDWSPhFYff2hYePbz0rneFadf1IwNyDXg2/Uu
+	6UVqSsQ060U3cI2dgiWaSN9GDSTNI2BmK382F7N8lXtOqr5megKd0jm1FBiYeJDNyOkT9Yu24jv
+	NdXEFknddqd0URhMeB0ErJokpi9yd/TTKOv+Le5G65IXXhWs+kpgvNEkSFMN5R9td8bQR2DXF8o
+	aF+oQs6LNmxs3cvpLODT/02pv/6iJY
+X-Received: by 2002:a05:6102:34ec:b0:46a:f85e:46ec with SMTP id bi12-20020a05610234ec00b0046af85e46ecmr278966vsb.13.1706294559313;
+        Fri, 26 Jan 2024 10:42:39 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE+t9Kuvuwyn4xRna1bQuJZ1JZtFzYCec090a7bJEl6paIINB1pOVLnZpfbsHSgdIHwOoYstCDRrJhhMyO1bkQ=
+X-Received: by 2002:a05:6102:34ec:b0:46a:f85e:46ec with SMTP id
+ bi12-20020a05610234ec00b0046af85e46ecmr278956vsb.13.1706294559084; Fri, 26
+ Jan 2024 10:42:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 000/286] 5.10.209-rc1 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
- akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20240122235732.009174833@linuxfoundation.org>
- <6b563537-b62f-428e-96d1-2a228da99077@roeck-us.net>
- <2024012636-clubbed-radial-1997@gregkh>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <2024012636-clubbed-radial-1997@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240126095514.2681649-1-oficerovas@altlinux.org>
+ <20240126095514.2681649-2-oficerovas@altlinux.org> <f8efd03ca56c4a52b524beb937a25b57@AcuMS.aculab.com>
+In-Reply-To: <f8efd03ca56c4a52b524beb937a25b57@AcuMS.aculab.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 26 Jan 2024 19:42:27 +0100
+Message-ID: <CABgObfYZQ3oOa8JaARpnZhb-1ruiQG1tnSLvHVXNtTZkuos-vg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm: vmalloc: introduce array allocation functions
+To: David Laight <David.Laight@aculab.com>
+Cc: "oficerovas@altlinux.org" <oficerovas@altlinux.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+	"kovalev@altlinux.org" <kovalev@altlinux.org>, "nickel@altlinux.org" <nickel@altlinux.org>, 
+	"dutyrok@altlinux.org" <dutyrok@altlinux.org>, Michal Hocko <mhocko@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 1/26/24 09:51, Greg Kroah-Hartman wrote:
-> On Fri, Jan 26, 2024 at 08:46:42AM -0800, Guenter Roeck wrote:
->> On 1/22/24 15:55, Greg Kroah-Hartman wrote:
->>> This is the start of the stable review cycle for the 5.10.209 release.
->>> There are 286 patches in this series, all will be posted as a response
->>> to this one.  If anyone has any issues with these being applied, please
->>> let me know.
->>>
->>> Responses should be made by Wed, 24 Jan 2024 23:56:49 +0000.
->>> Anything received after that time might be too late.
->>>
->> [ ... ]
->>
->>> zhenwei pi <pizhenwei@bytedance.com>
->>>       virtio-crypto: implement RSA algorithm
->>>
->>
->> Curious: Why was this (and its subsequent fixes) backported to v5.10.y ?
->> It is quite beyond a bug fix. Also, unless I am really missing something,
->> the series (or at least this patch) was not applied to v5.15.y, so we now
->> have functionality in v5.10.y which is not in v5.15.y.
-> 
-> See the commit text, it was a dependency of a later fix and documented
-> as such.
-> 
-> Having it in 5.10 and not 5.15 is a bit odd, I agree, so patches are
-> gladly accepted :)
-> 
+On Fri, Jan 26, 2024 at 3:00=E2=80=AFPM David Laight <David.Laight@aculab.c=
+om> wrote:
+>
+> From: oficerovas@altlinux.org
+> > Sent: 26 January 2024 09:55
+> >
+> > commit a8749a35c399 ("mm: vmalloc: introduce array allocation functions=
+")
+> >
+> > Linux has dozens of occurrences of vmalloc(array_size()) and
+> > vzalloc(array_size()).  Allow to simplify the code by providing
+> > vmalloc_array and vcalloc, as well as the underscored variants that let
+> > the caller specify the GFP flags.
+> >
+> > Acked-by: Michal Hocko <mhocko@suse.com>
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > Signed-off-by: Alexander Ofitserov <oficerovas@altlinux.org>
+> > ---
+> >  include/linux/vmalloc.h |  5 +++++
+> >  mm/util.c               | 50 +++++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 55 insertions(+)
+> >
+> > diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+> > index 76dad53a410ac..0fd47f2f39eb0 100644
+> > --- a/include/linux/vmalloc.h
+> > +++ b/include/linux/vmalloc.h
+> > @@ -112,6 +112,11 @@ extern void *__vmalloc_node_range(unsigned long si=
+ze, unsigned long align,
+> >  void *__vmalloc_node(unsigned long size, unsigned long align, gfp_t gf=
+p_mask,
+> >               int node, const void *caller);
+> >
+> > +extern void *__vmalloc_array(size_t n, size_t size, gfp_t flags);
+> > +extern void *vmalloc_array(size_t n, size_t size);
+> > +extern void *__vcalloc(size_t n, size_t size, gfp_t flags);
+> > +extern void *vcalloc(size_t n, size_t size);
+>
+> Symbols starting __ should really be ones that are part of the implementa=
+tion
+> and not publicly visible.
 
-We reverted the entire series from the merge because it results in a build
-failure for us.
+This is a patch that already exists in master.
 
-In file included from /home/groeck/src/linux-chromeos/drivers/crypto/virtio/virtio_crypto_akcipher_algs.c:10:
-In file included from /home/groeck/src/linux-chromeos/include/linux/mpi.h:21:
-In file included from /home/groeck/src/linux-chromeos/include/linux/scatterlist.h:5:
-In file included from /home/groeck/src/linux-chromeos/include/linux/string.h:293:
-/home/groeck/src/linux-chromeos/include/linux/fortify-string.h:512:4: error: call to __read_overflow2_field declared with 'warning' attribute: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
-                         __read_overflow2_field(q_size_field, size);
-
-I also see that upstream (starting with 6.1) when trying to build it with clang,
-so I guess it is one of those bug-for-bug compatibility things. I really have
-no idea what causes it, or why we don't see the problem when building
-chromeos-6.1 or chromeos-6.6, but (so far) only with chromeos-5.10 after
-merging 5.10.209 into it. Making things worse, the problem isn't _always_
-seen. Sometimes I can compile the file in 6.1.y without error, sometimes not.
-I have no idea what triggers the problem. Of course, on top of all that,
-the error message is completely useless.
-
-Either case, we don't use that code in chromeos-5.10, so reverting the
-entire series from the merge was the easiest way to proceed. But we really
-don't have an incentive to apply the series to v5.15.y because we don't
-need/use it there, and we might end up having to revert it from there
-as well if it is applied.
-
-Guenter
+Paolo
 
 
