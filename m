@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-15984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6228583E632
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:07:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7858483E633
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:07:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EEE11F22A41
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:07:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E13A2869C5
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2923C56466;
-	Fri, 26 Jan 2024 23:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B499B55E66;
+	Fri, 26 Jan 2024 23:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHCjw0P1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMSjzp3N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE2F1C294
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7388A1C294
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706310419; cv=none; b=Sho4z1ImS7gagorf0eFSpQAkDD1OlE+LKQVoxg0xP83KiTv5lW/rexZmgkQioZ3GiGtOBpDSUb/UOt2LYJqI8ikJ+00oKLk0dPTNg7UNpFvPvLVQ1WdjURdEJJd+KTEpOPZ/ei3dn/2dNW4WyvvRQABEUAuQyZH/2xc/vjwlGvs=
+	t=1706310458; cv=none; b=o3ZVcdNFEGz2VDKV+/uzj1zUEmCWhdeNlCcEV5yuZBLJ3wECGU8dBqjc8DRjViX24jSfym68Aa6fD7sdO08RCfd+YTzG/mj25yZWFabB+jzHozI0ga8RUs3Zn31HDHhdX7CtMbxXzZQdeExz4G6h5aRtcPF9NnxmqiiQ63i6xdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706310419; c=relaxed/simple;
-	bh=ky+QlPa/I2GfTOf18QSA1TWjKQXUFjzjmHv01C9+Slc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dCagXLtlDiD3fgplSU8qt4OhsgVjmLINPdegc6xiJKIr3eV7ezQdydJOSIHhXLMnmNRRPIknME4qCvGPTTcG01mhvt45lMpQPhq7F7nb1fnjKPkAYU9mScqqAhObfnlzbak/lTWy+jq6e8JdTgehTNOm5ztlMM1qLDu1jIGbt/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHCjw0P1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF70C433A6;
-	Fri, 26 Jan 2024 23:06:58 +0000 (UTC)
+	s=arc-20240116; t=1706310458; c=relaxed/simple;
+	bh=gClDWV3J41I9d7V977cf98zYq743BqJfDCsgHudOXPc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AKdCMVXSO7Ns+UAoYOCSmNUotoaTfk3jTNz7uS8IMRLsTNyp1W53I0JwkCXfb49rRL2LtTGUNf3Pb2TBvHtbaxapOAykdkdwrTHOR1k1ibLXfmXpqshuN2Qmxv/lBY7uI0PVzKsCkR7YNvcPcSbsvejTx7+0Dn3m2HbDwWt2bRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMSjzp3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE783C433F1;
+	Fri, 26 Jan 2024 23:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706310418;
-	bh=ky+QlPa/I2GfTOf18QSA1TWjKQXUFjzjmHv01C9+Slc=;
+	s=korg; t=1706310458;
+	bh=gClDWV3J41I9d7V977cf98zYq743BqJfDCsgHudOXPc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=CHCjw0P1Bm/qPaSkesKxHO7/IN7kaBFmxdTtJoaANQr07gFuQEkdSMo92o/eAAvTM
-	 8QNjsPE3e2EyC1LBuKqXVqGa08z8Bvl5blHE53xmz6iXbS8ZgaK6dpVlyXDWVTp972
-	 N6JGz0tGJazsIg7InO1R+EC/fudZBp/Yk43EoloE=
-Subject: FAILED: patch "[PATCH] arm64: dts: qcom: sm6375: fix USB wakeup interrupt types" failed to apply to 6.6-stable tree
-To: johan+linaro@kernel.org,andersson@kernel.org,konrad.dybcio@linaro.org
+	b=OMSjzp3NxGcOytm2SKFokNfo6YEZ1boQfDyGePcfEIj7Kmir+qUqIg3VTVcwraxPB
+	 QxGcTs8kpHbBTnHUkdtdOJRnleI3/3bTKgEdzE6qUO6ooqul79iRwBh1jiD2rnu4og
+	 sdbM5I4k1CkWKYN050QD9zq2TUQchKcy9tbSEhVs=
+Subject: FAILED: patch "[PATCH] lsm: new security_file_ioctl_compat() hook" failed to apply to 5.4-stable tree
+To: alpic@google.com,paul@paul-moore.com,stephen.smalley.work@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 26 Jan 2024 15:06:57 -0800
-Message-ID: <2024012657-magician-flatworm-8577@gregkh>
+Date: Fri, 26 Jan 2024 15:07:37 -0800
+Message-ID: <2024012636-appear-afford-1d24@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 41952be6661b20f56c2c5b06c431880dd975b747
+git cherry-pick -x f1bb47a31dff6d4b34fb14e99850860ee74bb003
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012657-magician-flatworm-8577@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012636-appear-afford-1d24@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-41952be6661b ("arm64: dts: qcom: sm6375: fix USB wakeup interrupt types")
+f1bb47a31dff ("lsm: new security_file_ioctl_compat() hook")
+98e828a0650f ("security: Refactor declaration of LSM hooks")
+33c84e89abe4 ("Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi")
 
 thanks,
 
@@ -77,36 +79,192 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 41952be6661b20f56c2c5b06c431880dd975b747 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan+linaro@kernel.org>
-Date: Mon, 20 Nov 2023 17:43:29 +0100
-Subject: [PATCH] arm64: dts: qcom: sm6375: fix USB wakeup interrupt types
+From f1bb47a31dff6d4b34fb14e99850860ee74bb003 Mon Sep 17 00:00:00 2001
+From: Alfred Piccioni <alpic@google.com>
+Date: Tue, 19 Dec 2023 10:09:09 +0100
+Subject: [PATCH] lsm: new security_file_ioctl_compat() hook
 
-The DP/DM wakeup interrupts are edge triggered and which edge to trigger
-on depends on use-case and whether a Low speed or Full/High speed device
-is connected.
+Some ioctl commands do not require ioctl permission, but are routed to
+other permissions such as FILE_GETATTR or FILE_SETATTR. This routing is
+done by comparing the ioctl cmd to a set of 64-bit flags (FS_IOC_*).
 
-Fixes: 59d34ca97f91 ("arm64: dts: qcom: Add initial device tree for SM6375")
-Cc: stable@vger.kernel.org      # 6.2
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231120164331.8116-10-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+However, if a 32-bit process is running on a 64-bit kernel, it emits
+32-bit flags (FS_IOC32_*) for certain ioctl operations. These flags are
+being checked erroneously, which leads to these ioctl operations being
+routed to the ioctl permission, rather than the correct file
+permissions.
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6375.dtsi b/arch/arm64/boot/dts/qcom/sm6375.dtsi
-index 2fba0e7ea4e6..331bd98dbfde 100644
---- a/arch/arm64/boot/dts/qcom/sm6375.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6375.dtsi
-@@ -1405,8 +1405,8 @@ usb_1: usb@4ef8800 {
+This was also noted in a RED-PEN finding from a while back -
+"/* RED-PEN how should LSM module know it's handling 32bit? */".
+
+This patch introduces a new hook, security_file_ioctl_compat(), that is
+called from the compat ioctl syscall. All current LSMs have been changed
+to support this hook.
+
+Reviewing the three places where we are currently using
+security_file_ioctl(), it appears that only SELinux needs a dedicated
+compat change; TOMOYO and SMACK appear to be functional without any
+change.
+
+Cc: stable@vger.kernel.org
+Fixes: 0b24dcb7f2f7 ("Revert "selinux: simplify ioctl checking"")
+Signed-off-by: Alfred Piccioni <alpic@google.com>
+Reviewed-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+[PM: subject tweak, line length fixes, and alignment corrections]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+
+diff --git a/fs/ioctl.c b/fs/ioctl.c
+index f5fd99d6b0d4..76cf22ac97d7 100644
+--- a/fs/ioctl.c
++++ b/fs/ioctl.c
+@@ -920,8 +920,7 @@ COMPAT_SYSCALL_DEFINE3(ioctl, unsigned int, fd, unsigned int, cmd,
+ 	if (!f.file)
+ 		return -EBADF;
  
- 			interrupts = <GIC_SPI 302 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 93 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
-+				     <GIC_SPI 93 IRQ_TYPE_EDGE_BOTH>,
-+				     <GIC_SPI 94 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq",
- 					  "ss_phy_irq",
- 					  "dm_hs_phy_irq",
+-	/* RED-PEN how should LSM module know it's handling 32bit? */
+-	error = security_file_ioctl(f.file, cmd, arg);
++	error = security_file_ioctl_compat(f.file, cmd, arg);
+ 	if (error)
+ 		goto out;
+ 
+diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+index c925a0d26edf..185924c56378 100644
+--- a/include/linux/lsm_hook_defs.h
++++ b/include/linux/lsm_hook_defs.h
+@@ -171,6 +171,8 @@ LSM_HOOK(int, 0, file_alloc_security, struct file *file)
+ LSM_HOOK(void, LSM_RET_VOID, file_free_security, struct file *file)
+ LSM_HOOK(int, 0, file_ioctl, struct file *file, unsigned int cmd,
+ 	 unsigned long arg)
++LSM_HOOK(int, 0, file_ioctl_compat, struct file *file, unsigned int cmd,
++	 unsigned long arg)
+ LSM_HOOK(int, 0, mmap_addr, unsigned long addr)
+ LSM_HOOK(int, 0, mmap_file, struct file *file, unsigned long reqprot,
+ 	 unsigned long prot, unsigned long flags)
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 750130a7b9dd..d0eb20f90b26 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -394,6 +394,8 @@ int security_file_permission(struct file *file, int mask);
+ int security_file_alloc(struct file *file);
+ void security_file_free(struct file *file);
+ int security_file_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
++int security_file_ioctl_compat(struct file *file, unsigned int cmd,
++			       unsigned long arg);
+ int security_mmap_file(struct file *file, unsigned long prot,
+ 			unsigned long flags);
+ int security_mmap_addr(unsigned long addr);
+@@ -1002,6 +1004,13 @@ static inline int security_file_ioctl(struct file *file, unsigned int cmd,
+ 	return 0;
+ }
+ 
++static inline int security_file_ioctl_compat(struct file *file,
++					     unsigned int cmd,
++					     unsigned long arg)
++{
++	return 0;
++}
++
+ static inline int security_mmap_file(struct file *file, unsigned long prot,
+ 				     unsigned long flags)
+ {
+diff --git a/security/security.c b/security/security.c
+index d7b15ea67c3f..69148dfc90cd 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -2732,6 +2732,24 @@ int security_file_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ }
+ EXPORT_SYMBOL_GPL(security_file_ioctl);
+ 
++/**
++ * security_file_ioctl_compat() - Check if an ioctl is allowed in compat mode
++ * @file: associated file
++ * @cmd: ioctl cmd
++ * @arg: ioctl arguments
++ *
++ * Compat version of security_file_ioctl() that correctly handles 32-bit
++ * processes running on 64-bit kernels.
++ *
++ * Return: Returns 0 if permission is granted.
++ */
++int security_file_ioctl_compat(struct file *file, unsigned int cmd,
++			       unsigned long arg)
++{
++	return call_int_hook(file_ioctl_compat, 0, file, cmd, arg);
++}
++EXPORT_SYMBOL_GPL(security_file_ioctl_compat);
++
+ static inline unsigned long mmap_prot(struct file *file, unsigned long prot)
+ {
+ 	/*
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index b340425ccfae..179540441115 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -3732,6 +3732,33 @@ static int selinux_file_ioctl(struct file *file, unsigned int cmd,
+ 	return error;
+ }
+ 
++static int selinux_file_ioctl_compat(struct file *file, unsigned int cmd,
++			      unsigned long arg)
++{
++	/*
++	 * If we are in a 64-bit kernel running 32-bit userspace, we need to
++	 * make sure we don't compare 32-bit flags to 64-bit flags.
++	 */
++	switch (cmd) {
++	case FS_IOC32_GETFLAGS:
++		cmd = FS_IOC_GETFLAGS;
++		break;
++	case FS_IOC32_SETFLAGS:
++		cmd = FS_IOC_SETFLAGS;
++		break;
++	case FS_IOC32_GETVERSION:
++		cmd = FS_IOC_GETVERSION;
++		break;
++	case FS_IOC32_SETVERSION:
++		cmd = FS_IOC_SETVERSION;
++		break;
++	default:
++		break;
++	}
++
++	return selinux_file_ioctl(file, cmd, arg);
++}
++
+ static int default_noexec __ro_after_init;
+ 
+ static int file_map_prot_check(struct file *file, unsigned long prot, int shared)
+@@ -7122,6 +7149,7 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(file_permission, selinux_file_permission),
+ 	LSM_HOOK_INIT(file_alloc_security, selinux_file_alloc_security),
+ 	LSM_HOOK_INIT(file_ioctl, selinux_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, selinux_file_ioctl_compat),
+ 	LSM_HOOK_INIT(mmap_file, selinux_mmap_file),
+ 	LSM_HOOK_INIT(mmap_addr, selinux_mmap_addr),
+ 	LSM_HOOK_INIT(file_mprotect, selinux_file_mprotect),
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 53336d7daa93..c126f6a16de4 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -5051,6 +5051,7 @@ static struct security_hook_list smack_hooks[] __ro_after_init = {
+ 
+ 	LSM_HOOK_INIT(file_alloc_security, smack_file_alloc_security),
+ 	LSM_HOOK_INIT(file_ioctl, smack_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, smack_file_ioctl),
+ 	LSM_HOOK_INIT(file_lock, smack_file_lock),
+ 	LSM_HOOK_INIT(file_fcntl, smack_file_fcntl),
+ 	LSM_HOOK_INIT(mmap_file, smack_mmap_file),
+diff --git a/security/tomoyo/tomoyo.c b/security/tomoyo/tomoyo.c
+index e10491f155a5..3c3af149bf1c 100644
+--- a/security/tomoyo/tomoyo.c
++++ b/security/tomoyo/tomoyo.c
+@@ -574,6 +574,7 @@ static struct security_hook_list tomoyo_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(path_rename, tomoyo_path_rename),
+ 	LSM_HOOK_INIT(inode_getattr, tomoyo_inode_getattr),
+ 	LSM_HOOK_INIT(file_ioctl, tomoyo_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, tomoyo_file_ioctl),
+ 	LSM_HOOK_INIT(path_chmod, tomoyo_path_chmod),
+ 	LSM_HOOK_INIT(path_chown, tomoyo_path_chown),
+ 	LSM_HOOK_INIT(path_chroot, tomoyo_path_chroot),
 
 
