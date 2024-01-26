@@ -1,125 +1,127 @@
-Return-Path: <stable+bounces-15930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BDA883E39C
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 22:06:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF52783E451
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 22:53:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21B7B1F251AC
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 21:06:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A0C7285D19
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 21:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DD524215;
-	Fri, 26 Jan 2024 21:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC4324B30;
+	Fri, 26 Jan 2024 21:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="S/zVRU6E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBBEz4pD"
 X-Original-To: stable@vger.kernel.org
-Received: from xry111.site (xry111.site [89.208.246.23])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D7B22EF9;
-	Fri, 26 Jan 2024 21:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EFF25564;
+	Fri, 26 Jan 2024 21:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706303180; cv=none; b=HqCGFdCf0CrGzfTLYyyhr22IQlqwGsENUXLZtei6Ig6xQ2SeYQABZ2V1DDzeGCJpfRw50jRiin5fKwcAcrS0reECcZOMMtB40k4siF0MBnh5OLAGqcBfb1aBIFM3VMikgqC+FwbJGVgzu8z4oTF21LwTW4vBD6Y+OLN419MxNEQ=
+	t=1706305989; cv=none; b=g4dVSGjuol/oIgHIA5VGg0h1cY8di51y8BncfL6ERaCTii8TTHOSN/4H/NtCSVGXz+rrAh/9ndBqt/E4Ef0snnKqNFaN/5h0ua3wAkWLLzTUCG4Sz72H7TmmmQmHV/RSNVuOz0kN5+zrov+VKgqt+zAIvN4JLsFrwFt4Cwv+fEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706303180; c=relaxed/simple;
-	bh=AV1ZofWLKqVz1PfTeAIMra2ot1/I4iebX4fFRvtm+Uw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D4FWsLTam7eiOQO5mnfUKqZedITOmy8838uvg7YCWyGUk9Z3ELDTAt6s16n0kLPn3kry6ROHB0yrblwkZYHm5Aj3SddwoZyCOL4iAn4vM6IHHwYM6nDKEK6oWeTr8EGHtua64h4w6F9v5soepWCROFyXJsgEztvBag0fcAhF8tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=S/zVRU6E; arc=none smtp.client-ip=89.208.246.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
-	s=default; t=1706303177;
-	bh=AV1ZofWLKqVz1PfTeAIMra2ot1/I4iebX4fFRvtm+Uw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=S/zVRU6E9Q+G3QqJe79cHk0eD7ZSmd0XFyrUlcwTqi3+4Nn4KctzPxOJXVu2Ngdtk
-	 sxmANB7LCY3lE8puILgATdGJ9t2ZlQM2o5uV8JpPqAg2XUvm/DlFjYYQhYtsoLgvsO
-	 P1Hcspk9qHqUxtAXVx6itlHof7JHxaCKKlB85aJo=
-Received: from stargazer.. (unknown [IPv6:240e:358:1181:9d00:dc73:854d:832e:3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-384) server-digest SHA384)
-	(Client did not present a certificate)
-	(Authenticated sender: xry111@xry111.site)
-	by xry111.site (Postfix) with ESMTPSA id 35E7F66A29;
-	Fri, 26 Jan 2024 16:06:10 -0500 (EST)
-From: Xi Ruoyao <xry111@xry111.site>
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	linux-mips@vger.kernel.org
-Cc: Ralf Baechle <ralf@linux-mips.org>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	YunQiang Su <wzssyqa@gmail.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	linux-kernel@vger.kernel.org,
-	Xi Ruoyao <xry111@xry111.site>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mips: Call lose_fpu(0) before initializing fcr31 in mips_set_personality_nan
-Date: Sat, 27 Jan 2024 05:05:57 +0800
-Message-ID: <20240126210557.12442-1-xry111@xry111.site>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1706305989; c=relaxed/simple;
+	bh=9k327QQG2HDaydtLeLEutpv3jMVdPncjoLezfwkNtxE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mUv7fhGYhTygPZDK99wio6p1mbcaNbLou+iE2o2ZTaUVyejSqwKygQBFIGszxpEbT2B5WpBV1RQVYkAHjtlqmUxtLSZZOBtgc2ULmqggI7jWXR0tg9+4lBp3QCDdt+OE2PqmXpB40Kx+0TkFwz2Y952vdlMm92NrO4KFk2Rvml0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBBEz4pD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69CE5C433F1;
+	Fri, 26 Jan 2024 21:53:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1706305988;
+	bh=9k327QQG2HDaydtLeLEutpv3jMVdPncjoLezfwkNtxE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KBBEz4pDjK8Em+U7V0cPVZIaOjSvnn8488GxJ5KRT+UaF52KrXLR6EXKXK5s5AFYc
+	 kl6XvCtFwtVFe1gJmInfVUB0vPRt1/nyb0R153woM3uhSxW6aYoaBtzrw0jk8IObyV
+	 B1/MpptV3aJuv0I34a6gNLXXGf1fH+gZtnQK6F3w=
+Date: Fri, 26 Jan 2024 13:53:07 -0800
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Nathan Chancellor <nathan@kernel.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, llvm@lists.linux.dev, keescook@chromium.org
+Subject: Re: [PATCH 5.10 000/286] 5.10.209-rc1 review
+Message-ID: <2024012655-poet-pruning-76d6@gregkh>
+References: <20240122235732.009174833@linuxfoundation.org>
+ <6b563537-b62f-428e-96d1-2a228da99077@roeck-us.net>
+ <2024012636-clubbed-radial-1997@gregkh>
+ <2f342268-8517-4c06-8785-96a588d20c63@roeck-us.net>
+ <20240126203436.GA913905@dev-arch.thelio-3990X>
+ <0a194a79-e3a3-45e7-be98-83abd3e1cb7e@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0a194a79-e3a3-45e7-be98-83abd3e1cb7e@roeck-us.net>
 
-If we still own the FPU after initializing fcr31, when we are preempted
-the dirty value in the FPU will be read out and stored into fcr31,
-clobbering our setting.  This can cause an improper floating-point
-environment after execve().  For example:
+On Fri, Jan 26, 2024 at 01:01:15PM -0800, Guenter Roeck wrote:
+> On 1/26/24 12:34, Nathan Chancellor wrote:
+> > On Fri, Jan 26, 2024 at 10:17:23AM -0800, Guenter Roeck wrote:
+> > > On 1/26/24 09:51, Greg Kroah-Hartman wrote:
+> > > > On Fri, Jan 26, 2024 at 08:46:42AM -0800, Guenter Roeck wrote:
+> > > > > On 1/22/24 15:55, Greg Kroah-Hartman wrote:
+> > > > > > This is the start of the stable review cycle for the 5.10.209 release.
+> > > > > > There are 286 patches in this series, all will be posted as a response
+> > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > let me know.
+> > > > > > 
+> > > > > > Responses should be made by Wed, 24 Jan 2024 23:56:49 +0000.
+> > > > > > Anything received after that time might be too late.
+> > > > > > 
+> > > > > [ ... ]
+> > > > > 
+> > > > > > zhenwei pi <pizhenwei@bytedance.com>
+> > > > > >        virtio-crypto: implement RSA algorithm
+> > > > > > 
+> > > > > 
+> > > > > Curious: Why was this (and its subsequent fixes) backported to v5.10.y ?
+> > > > > It is quite beyond a bug fix. Also, unless I am really missing something,
+> > > > > the series (or at least this patch) was not applied to v5.15.y, so we now
+> > > > > have functionality in v5.10.y which is not in v5.15.y.
+> > > > 
+> > > > See the commit text, it was a dependency of a later fix and documented
+> > > > as such.
+> > > > 
+> > > > Having it in 5.10 and not 5.15 is a bit odd, I agree, so patches are
+> > > > gladly accepted :)
+> > > > 
+> > > 
+> > > We reverted the entire series from the merge because it results in a build
+> > > failure for us.
+> > > 
+> > > In file included from /home/groeck/src/linux-chromeos/drivers/crypto/virtio/virtio_crypto_akcipher_algs.c:10:
+> > > In file included from /home/groeck/src/linux-chromeos/include/linux/mpi.h:21:
+> > > In file included from /home/groeck/src/linux-chromeos/include/linux/scatterlist.h:5:
+> > > In file included from /home/groeck/src/linux-chromeos/include/linux/string.h:293:
+> > > /home/groeck/src/linux-chromeos/include/linux/fortify-string.h:512:4: error: call to __read_overflow2_field declared with 'warning' attribute: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
+> > >                          __read_overflow2_field(q_size_field, size);
+> > 
+> > For what it's worth, this is likely self inflicted for chromeos-5.10,
+> > which carries a revert of commit eaafc590053b ("fortify: Explicitly
+> > disable Clang support") as commit c19861d34c003 ("CHROMIUM: Revert
+> > "fortify: Explicitly disable Clang support""). I don't see the series
+> > that added proper support for clang to fortify in 5.18 that ended with
+> > commit 281d0c962752 ("fortify: Add Clang support") in that ChromeOS
+> > branch, so this seems somewhat expected.
+> > 
+> 
+> That explains that ;-). I don't mind if the patches stay in v5.10.y,
+> we have them reverted anyway.
 
-    zsh% cat measure.c
-    #include <fenv.h>
-    int main() { return fetestexcept(FE_INEXACT); }
-    zsh% cc measure.c -o measure -lm
-    zsh% echo $((1.0/3)) # raising FE_INEXACT
-    0.33333333333333331
-    zsh% while ./measure; do ; done
-    (stopped in seconds)
+Ok, I'll leave them as-is for now, thanks.
 
-Call lose_fpu(0) before setting fcr31 to prevent this.
-
-Closes: https://lore.kernel.org/linux-mips/7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site/
-Fixes: 9b26616c8d9d ("MIPS: Respect the ISA level in FCSR handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
----
-
-v1 -> v2: Fix stable list address in Cc line.
-
- arch/mips/kernel/elf.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/arch/mips/kernel/elf.c b/arch/mips/kernel/elf.c
-index 5582a4ca1e9e..7aa2c2360ff6 100644
---- a/arch/mips/kernel/elf.c
-+++ b/arch/mips/kernel/elf.c
-@@ -11,6 +11,7 @@
- 
- #include <asm/cpu-features.h>
- #include <asm/cpu-info.h>
-+#include <asm/fpu.h>
- 
- #ifdef CONFIG_MIPS_FP_SUPPORT
- 
-@@ -309,6 +310,11 @@ void mips_set_personality_nan(struct arch_elf_state *state)
- 	struct cpuinfo_mips *c = &boot_cpu_data;
- 	struct task_struct *t = current;
- 
-+	/* Do this early so t->thread.fpu.fcr31 won't be clobbered in case
-+	 * we are preempted before the lose_fpu(0) in start_thread.
-+	 */
-+	lose_fpu(0);
-+
- 	t->thread.fpu.fcr31 = c->fpu_csr31;
- 	switch (state->nan_2008) {
- 	case 0:
--- 
-2.43.0
-
+greg k-h
 
