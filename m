@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-15997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED7A83E64C
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:12:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEDB883E64E
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 00:12:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01372B23AD8
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:12:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 667E9B24113
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC2457309;
-	Fri, 26 Jan 2024 23:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4891F56779;
+	Fri, 26 Jan 2024 23:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJOKZePs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1yKshGLZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C595677D
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0968B5677D
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 23:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706310716; cv=none; b=KdSFHuRz6XWKR276kSnvU7LZBa//DiG2Mry2umcnlVqlizZmKN79Z+lMW5F3274Jk/qBdJMMk1yvflqueLW896zAEsTVhwKG+uW5L4pmK8Uf49TWMoiH8f/JN9j8zG1PK/FwjSR0YtVCmjJ//4rBEOIcAFD6+hYtlrz53NNInB0=
+	t=1706310718; cv=none; b=P9XqVs+zzLR74JNzPBTqVbd5mjHpCt7+vy8+pCkakCAnox4JLy3kbVsCxEBYt4GZo/E2NCtxQCQM4VEWeDiVsWcTwedtNV2qBk/hrlujTNjbpWEecv4VF2vk6yHAVxiQBOl+4Hji7GEehZiqaiJ2qmGr/IbJNqx5EK5cFDHcRuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706310716; c=relaxed/simple;
-	bh=OlwEu5xsoK+sICO+lsy7aGta2Ku/Yxaitgzn//SNS5E=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RQXIHm8IhIgUsGfPThaQGo/iMcIKPEH+gj3FmqALEH8xm35lzyeBcv9k8sz/E1G/E/7SHQUgDqopTHJd81xVfXbEFPTazXktCWXVkTtPXVviKMM9nstnVd+LL93cQ4R+0KNysiah+aaYv0g83/wRQfuMF5U88RzT+2sVCk/xB68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJOKZePs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3867CC433C7;
-	Fri, 26 Jan 2024 23:11:56 +0000 (UTC)
+	s=arc-20240116; t=1706310718; c=relaxed/simple;
+	bh=KL9wRhlnbgxXWAa1ugYXT+6j8nDN+wclJibSQU0L1iA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AmZpqxfqu1nsDzHjEXXh5nbnBVuN1KkpBixhyr56sc5BsRoIQ/j+8YIA19M6YB61kNWS1/5FpnfUQI3Z7S4SkWmP2le6+BdzSheBJSqzs6JOLzBy1H5oVRvVHgfm0CVt7OiToDiMxtyj4vSj2TCIAZk4YZu5fWb1uUzAVph+fCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1yKshGLZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCFE7C433F1;
+	Fri, 26 Jan 2024 23:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706310716;
-	bh=OlwEu5xsoK+sICO+lsy7aGta2Ku/Yxaitgzn//SNS5E=;
+	s=korg; t=1706310717;
+	bh=KL9wRhlnbgxXWAa1ugYXT+6j8nDN+wclJibSQU0L1iA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=uJOKZePs0GsGJ/V39KN5lMnCFeZFIgwCGazzix5ffx9dqB11RdwHmuhBIExqp5DMm
-	 5mM5AbXKulp2c0YtD2gJOcI7JMnPdPSMZcnzzxzsRbjN4CRpr4nREIV8ToMTUtd9gN
-	 V88FF2elOdBROTOyBEgFQLsS8QZs8cyO9BGaBD8c=
-Subject: FAILED: patch "[PATCH] media: mtk-jpeg: Fix use after free bug due to error path" failed to apply to 5.10-stable tree
+	b=1yKshGLZLsHowifaNyhGsaWUjCM4aPM7tRqyJPdnKXSTvQwvpzftQeAeO9iEh/0RE
+	 WBz4kY7u98e6EOrV6TyVXpyE3v/nF8MSBjNELiNIncrD9Oo6ro7V6G5fOVuZlPTeBJ
+	 DAFs8CyM7JGPadCUrBZ9wHndMlZIlSBNk0q4VHVo=
+Subject: FAILED: patch "[PATCH] media: mtk-jpeg: Fix use after free bug due to error path" failed to apply to 5.4-stable tree
 To: zyytlz.wz@163.com,dmitry.osipenko@collabora.com,hverkuil-cisco@xs4all.nl,mchehab@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 26 Jan 2024 15:11:55 -0800
-Message-ID: <2024012655-hasty-voyage-a475@gregkh>
+Date: Fri, 26 Jan 2024 15:11:56 -0800
+Message-ID: <2024012656-unaligned-conductor-4ef5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 206c857dd17d4d026de85866f1b5f0969f2a109e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012655-hasty-voyage-a475@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012656-unaligned-conductor-4ef5@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 206c857dd17d ("media: mtk-jpeg: Fix use after free bug due to error path handling in mtk_jpeg_dec_device_run")
+2023a9981111 ("media: platform: rename mediatek/mtk-jpeg/ to mediatek/jpeg/")
+63fe3d27b226 ("media: platform/*/Kconfig: make manufacturer menus more uniform")
+f2ab6d3e8c48 ("media: platform: Create vendor/{Makefile,Kconfig} files")
+8148baabd1c4 ("media: platform: re-structure TI drivers")
+012e3ca3cb4d ("media: platform: rename omap/ to ti/omap/")
+ceafdaac46ea ("media: platform: rename omap3isp/ to ti/omap3isp/")
+d24a170bde65 ("media: platform: rename davinci/ to ti/davinci/")
+407965e2348e ("media: platform: rename am437x/ to ti/am437x/")
+e7b8153e2a4f ("media: platform: place stm32/ and sti/ under st/ dir")
+43ecec16c4fa ("media: platform: rename s5p-mfc/ to samsung/s5p-mfc/")
+f4104b7851a8 ("media: platform: rename s5p-jpeg/ to samsung/s5p-jpeg/")
+a7f3b2d32dab ("media: platform: rename s5p-g2d/ to samsung/s5p-g2d/")
+c1024049033f ("media: platform: rename s3c-camif/ to samsung/s3c-camif/")
+3bae07d4b44c ("media: platform: rename exynos-gsc/ to samsung/exynos-gsc/")
+238c84f71120 ("media: platform: rename exynos4-is/ to samsung/exynos4-is/")
+9b18ef7c9ff4 ("media: platform: rename tegra/vde/ to nvidia/tegra-vde/")
+574476a7d05d ("media: platform: rename mtk-vpu/ to mediatek/mtk-vpu/")
+728dc4075acc ("media: platform: rename mtk-vcodec/ to mediatek/mtk-vcodec/")
+1cb72963fa1e ("media: platform: rename mtk-mdp/ to mediatek/mtk-mdp/")
 
 thanks,
 
