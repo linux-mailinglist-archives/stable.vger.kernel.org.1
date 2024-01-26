@@ -1,107 +1,115 @@
-Return-Path: <stable+bounces-15909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC75783E0EA
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 18:53:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D6283E107
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 19:05:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CA8C1F25973
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 17:53:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF0932815CF
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 18:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDD02032E;
-	Fri, 26 Jan 2024 17:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B4D1F604;
+	Fri, 26 Jan 2024 18:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2E8Sr4x"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fOv0vyMB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91245AD53;
-	Fri, 26 Jan 2024 17:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8C6125D8
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 18:05:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706291598; cv=none; b=D7G+qjsx31KWLppPmq/RAJUJuo8SnnMYH9JzBJ/Uoq9s87CwJX7h8NoCcuDou3Ql6qMKqlhqjTC6H+6np0jmqU4hWcaxx0wm/YB1FMGXdD3O0dfq5v74T/dyogNVmrvrPzsgO6JmOLPdHXS2rZuqpm8qZLJRxG9cOp2e9LHHtQI=
+	t=1706292309; cv=none; b=jZD2ouZ45jfdSywK4qYgWaQ6/3Yhi7AoEWSjTlYUwcv+yVvHITgHY2Ldj8MU9QaC99WFkghFy5Ppwmq6i4MMaHuOU0UrINnHw2Lf8NSCYwkNilUxxD6vfXctFxliRKRVjh0q69oAugnpY7cHLYxiRtWQmz/MXzGFDZigsQRZ0So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706291598; c=relaxed/simple;
-	bh=rybFb7jJvZjmLIxFKOxsfVGRM5tubzkm9Lxt0UHSsCc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=Y3nec40/C9X4cPmrijlqf4mjZGC1m6A6m7SD1rga9tSOivANBqHaCv4clJvv8NWsVv90CW/0CMRu7BCt/FarHpFBStbSffcIl6OV6WV9hzintdAQNaHrpIj7XNLj6btFcto9ELW5JWK9OG/D4LHt82onEYSAWhUr+Ch3OQ6fnA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2E8Sr4x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43B0C433C7;
-	Fri, 26 Jan 2024 17:53:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706291598;
-	bh=rybFb7jJvZjmLIxFKOxsfVGRM5tubzkm9Lxt0UHSsCc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=c2E8Sr4xjNFOBy84ft5jRhhz4dDGDQza7qOywfJt/CVZWvGrNHdlsoxwTSotIfGYa
-	 MBMLVJODPloE59IKXN4681b65dzSzOUO8jGUYlqsiXDH6d5sA7O2Kp0VVcXJ5tccwO
-	 SvL8Puk/huFvEHG3LppdrBCDC1z5hOqS9MsiHTWZL+kDT6z0ZE5Qok9tvD3rs1bGr9
-	 xTIBg9BEbg7WpSCPwj2RdAmOHjFXR0feZaEqWLFoH9a5759baRNax9/vuELFJeX6Wy
-	 6fk1oH19sRkhsMmKL90V0PlYzOvAf2Xcfxl+Y3m4E02yXtVZSYpH8PAA1Ou6WpePaP
-	 96m5foIunw7cQ==
-Date: Fri, 26 Jan 2024 18:53:17 +0100 (CET)
-From: Jiri Kosina <jikos@kernel.org>
-To: Doug Anderson <dianders@chromium.org>
-cc: Johan Hovold <johan+linaro@kernel.org>, 
-    Benjamin Tissoires <benjamin.tissoires@redhat.com>, 
-    linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH] HID: i2c-hid-of: fix NULL-deref on failed power up
-In-Reply-To: <CAD=FV=UzGcneoL1d-DDXVugAeq2+YLCKrq8-5B7TfVAAKgF=SQ@mail.gmail.com>
-Message-ID: <nycvar.YFH.7.76.2401261852360.29548@cbobk.fhfr.pm>
-References: <20240126170901.893-1-johan+linaro@kernel.org> <CAD=FV=UzGcneoL1d-DDXVugAeq2+YLCKrq8-5B7TfVAAKgF=SQ@mail.gmail.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+	s=arc-20240116; t=1706292309; c=relaxed/simple;
+	bh=YJMc5fnlCkuUEmLXP6Tl3tYWjT8ss3qsBaZtHkaa+bw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CR75blhQAg+EqspisQCfU5sKdv5LL1hoPILIWDgC09+LArnGWAEQu/rYHyo42bpRaureEc2GiSwbUnQoIButd2j6Lxm92fYQv+sfnTYrM2sFzi/BD9YMJQy/jEzchZZQ4J2YrUcvUSRSAzRM91xNZ6I7T16t7v4bdniEgFsMSV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fOv0vyMB; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706292306;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YJMc5fnlCkuUEmLXP6Tl3tYWjT8ss3qsBaZtHkaa+bw=;
+	b=fOv0vyMB8JvZPQPFvDEowWsWkiUhrsP6p20HKUtmZ2csHEHKGqdCjnIhH4xWx8LXomvNHT
+	h639BnwYp6dT4tPo3VVBtvcfmt6eUELr01PYfEmHMJgIs91GP03fzxqFfQns44244BNFRS
+	tTuA0nNRXW2vvgJoc6QJKwez8tHVhM4=
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
+ [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-226-GzhyYRzfMmiM3X-NkWG1uA-1; Fri, 26 Jan 2024 13:05:04 -0500
+X-MC-Unique: GzhyYRzfMmiM3X-NkWG1uA-1
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-6dde8cf78c4so684742a34.1
+        for <stable@vger.kernel.org>; Fri, 26 Jan 2024 10:05:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706292303; x=1706897103;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YJMc5fnlCkuUEmLXP6Tl3tYWjT8ss3qsBaZtHkaa+bw=;
+        b=wFTCtckiaXzKAoDZ4ZiKz7fVhRPAO73iQ3snIhT1Ia+jKIHAfMJ+sMyc4dX45TUYfh
+         roeF5YYGc3N0iU73xNXPq12RAPzcwsyB4NIKbmcjDNmujkSRuBueSd9fVigqNKroBIE0
+         mbhvVEEXgNSUkBRIGwQJ+o1hE7DOO39WQgHycjv/7memAsWWax/ZsRVITDlXOWxLE4Mv
+         IaRupC+VFQ86kjSBEd5WPVzzRNFgYDsK18mknWADVQ4V8DuXXtbz+IQnl4iJmijLN94w
+         NsO9ryAd8m790Ld2Hvpb3QKbG+CD8SZ5hb/pZcFuQ9TzDermgWATBY6q/thKVP+T33n+
+         X88Q==
+X-Gm-Message-State: AOJu0YwdeY0UzBCFMIB5bGMGUU8IFnJfxqYE0cHiDPnVtxFBaNsArOqL
+	YVA+gcEuWkeatZIiD+AjOzTD8Tg9xonnIf+8CwQoQte3Ed7tTHz0aCtedlSX6cNi3pEMHHJjf4V
+	JwnH7Jrs48wX+fQ6ef7OPjDbeIcCtKiENHQXM9nDSKPEQHzOLWEeC8qBRYpOsCZBDxCErNwP6iJ
+	ofWDIo28rtHqr6+vbBcLT5I5ZCDfJaVCiWaJGF
+X-Received: by 2002:a05:6830:440b:b0:6dd:d3e3:2b9e with SMTP id q11-20020a056830440b00b006ddd3e32b9emr131148otv.70.1706292303440;
+        Fri, 26 Jan 2024 10:05:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGtXjuAwv2C6q/JdTxg0yD2YWrs0bInyXGelzWt8FlU7z0MeM3RgLbKTqYJMTjbLaP2zHDUWScPVEoHZ+p3jUw=
+X-Received: by 2002:a05:6830:440b:b0:6dd:d3e3:2b9e with SMTP id
+ q11-20020a056830440b00b006ddd3e32b9emr131130otv.70.1706292303229; Fri, 26 Jan
+ 2024 10:05:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20240126095514.2681649-1-oficerovas@altlinux.org>
+In-Reply-To: <20240126095514.2681649-1-oficerovas@altlinux.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 26 Jan 2024 19:04:51 +0100
+Message-ID: <CABgObfaoremaWjiOCFJey4EPMLt3MKbny+QuU8Gut18MxwVhCg@mail.gmail.com>
+Subject: Re: [PATCH 0/2] kvm: fix kmalloc bug in kvm_arch_prepare_memory_region
+ on 5.10 stable kernel
+To: oficerovas@altlinux.org
+Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Michael Ellerman <mpe@ellerman.id.au>, kovalev@altlinux.org, 
+	nickel@altlinux.org, dutyrok@altlinux.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 26 Jan 2024, Doug Anderson wrote:
+On Fri, Jan 26, 2024 at 11:01=E2=80=AFAM <oficerovas@altlinux.org> wrote:
+>
+> From: Alexander Ofitserov <oficerovas@altlinux.org>
+>
+> Syzkaller hit 'WARNING: kmalloc bug in kvm_arch_prepare_memory_region' bu=
+g.
+>
+> This bug is not a vulnerability and is reproduced only when running with =
+root privileges
+> for stable 5.10 kernel.
+>
+> Bug fixed by backported commits in next two patches.
+> [PATCH 1/2] mm: vmalloc: introduce array allocation functions
+> [PATCH 2/2] KVM: use __vcalloc for very large allocations
 
-> > A while back the I2C HID implementation was split in an ACPI and OF
-> > part, but the new OF driver never initialises the client pointer which
-> > is dereferenced on power-up failures.
-> >
-> > Fixes: b33752c30023 ("HID: i2c-hid: Reorganize so ACPI and OF are separate modules")
-> > Cc: stable@vger.kernel.org      # 5.12
-> > Cc: Douglas Anderson <dianders@chromium.org>
-> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> > ---
-> >  drivers/hid/i2c-hid/i2c-hid-of.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/drivers/hid/i2c-hid/i2c-hid-of.c b/drivers/hid/i2c-hid/i2c-hid-of.c
-> > index c4e1fa0273c8..8be4d576da77 100644
-> > --- a/drivers/hid/i2c-hid/i2c-hid-of.c
-> > +++ b/drivers/hid/i2c-hid/i2c-hid-of.c
-> > @@ -87,6 +87,7 @@ static int i2c_hid_of_probe(struct i2c_client *client)
-> >         if (!ihid_of)
-> >                 return -ENOMEM;
-> >
-> > +       ihid_of->client = client;
-> 
-> Good catch and thanks for the fix. FWIW, I'd be OK w/
-> 
-> Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Paolo Bonzini <pbonzini@redhat.com>
 
-I've now queued this as a fix for 6.8 ....
-
-> That being said, I'd be even happier if you simply removed the "client" 
-> from the structure and removed the error printout. 
-> regulator_bulk_enable() already prints error messages when a failure 
-> happens and thus the error printout is redundant and wastes space.
-
-... and this can be done for 6.9.
-
-Thanks,
-
--- 
-Jiri Kosina
-SUSE Labs
+>
+> --
+> 2.42.1
+>
 
 
