@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-15938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C3F83E4CE
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:11:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4984983E4CF
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:11:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D08E91F21510
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A783E286A18
 	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 22:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D6E24A02;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E381A250E8;
 	Fri, 26 Jan 2024 22:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="etzH2zQg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKytL/J7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB282869B
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 22:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A328F24B5B
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 22:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706306974; cv=none; b=oyW+m3sLT7aFp2L38OZ6l9G7+OBX4FftsgerWOTpCUE4W0zPPk8hSZJ8foQ3WU3ZVJ/fUPRgvCuhw3yT61NWJQmChCQxG9PrnpFrx8KTPV5CqEHhVfA0EQywX7E69CRY4iqGoCSMuVfQZ7rx+485WNcOoxaAnJgRnW6vZo6SUUc=
+	t=1706306975; cv=none; b=gfnl+TLJtJTX7Afe1c12vSjWuPBK7Wn51WWjpSwGkacmk0Jew36CFLR+XU6VTGWh/VoeCVUrJZROU5dO33jISTN+j8tDa7OND6F6KpZuU30Loyc/wC+ucoqqGPfluYVvkE52zK/y92BI/tRlz2iwrY3ojtmGi4e92Ht+DYxVUWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706306974; c=relaxed/simple;
-	bh=HdFmcQdN2bDFzDhEb8qV5dpRDbFBh0FWTFaHO6X0bak=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mgmWW7+4xUe0I+HvIELvcaJhJQ1VuH0ILrejekV1ki0qmhkILB87dsbIuHB0I17veQh56Y/9gaqb9kALrAGcJ6LXY9HzDnfFEjYOKEHL4KC+sIe7xuADwWphIb5y5IJxsqJoMkTBDFqiD5Y4k6F4ZwqCkIOSf3NjUbu56UUj004=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=etzH2zQg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35871C433C7;
-	Fri, 26 Jan 2024 22:09:34 +0000 (UTC)
+	s=arc-20240116; t=1706306975; c=relaxed/simple;
+	bh=isky8ePgYg8YtwL81nsN2ImiKKjGVwuXD7iQdbmdOzQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=so3YXiUOrp4wTO6roK/uFA0yA5ATrNkj/Hm4AojwuLlnqIPJhVriJ1NG49khFCJAgQCxIy1tlw3G9arr/Vn8HDZ4P4xUcxbL/DWwmzHBchQhb4KXOvfZ5lHUOWVrz2VfNk83gnKW6W3nfwbSv9XG38+7WYCx/vTrfSQIW0VKpcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKytL/J7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68720C41674;
+	Fri, 26 Jan 2024 22:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706306974;
-	bh=HdFmcQdN2bDFzDhEb8qV5dpRDbFBh0FWTFaHO6X0bak=;
+	s=korg; t=1706306975;
+	bh=isky8ePgYg8YtwL81nsN2ImiKKjGVwuXD7iQdbmdOzQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=etzH2zQgAyZLTzgZhHxQUT9cg8+P6XYbW4jMjgd/5cpSa2SQVz5ZiWw1NSrlE+CQX
-	 R9DT+HiLCNhoGaVf7eAeHyr/xZs25svDBoO0pD2FMVzyj1qRPZf4Zepj+zSFAOlMS+
-	 VmJZfTKLDlz0PQmgl/FrctUKIRnnRe/WzYOCI1vY=
-Subject: FAILED: patch "[PATCH] PM / devfreq: Fix buffer overflow in trans_stat_show" failed to apply to 5.15-stable tree
+	b=EKytL/J7Z2bhnB7Kwurv+Oz5KfzEW7t8+pWNfQiEdHszX0+dOM0iIrk0j9hSmE88L
+	 TJXSnHCWvptPP2uSTfb+4Q4QOqR+kKi49opgIrG1lmZMmEUqpiJ6kEKpQP+hVCEPAq
+	 nF+XCLKRMVpCKZKukuddVHQsLh0i59J72POaF1cc=
+Subject: FAILED: patch "[PATCH] PM / devfreq: Fix buffer overflow in trans_stat_show" failed to apply to 5.10-stable tree
 To: ansuelsmth@gmail.com,cw00.choi@samsung.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 26 Jan 2024 14:09:33 -0800
-Message-ID: <2024012633-cornhusk-gusto-e970@gregkh>
+Date: Fri, 26 Jan 2024 14:09:34 -0800
+Message-ID: <2024012634-unbounded-bullfight-568f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,29 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 08e23d05fa6dc4fc13da0ccf09defdd4bbc92ff4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012633-cornhusk-gusto-e970@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012634-unbounded-bullfight-568f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 08e23d05fa6d ("PM / devfreq: Fix buffer overflow in trans_stat_show")
 b5d281f6c16d ("PM / devfreq: Rework freq_table to be local to devfreq struct")
 05723e71234b ("PM / devfreq: passive: Reduce duplicate code when passive_devfreq case")
+8c37d01e1a86 ("PM / devfreq: passive: Fix get_target_freq when not using required-opp")
+86ad9a24f21e ("PM / devfreq: Add required OPPs support to passive governor")
+5f1a9066fcb2 ("PM / devfreq: Add governor attribute flag for specifc sysfs nodes")
+0dd25a0d12a1 ("PM / devfreq: Add governor feature flag")
 
 thanks,
 
