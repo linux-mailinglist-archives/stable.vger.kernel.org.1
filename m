@@ -1,119 +1,76 @@
-Return-Path: <stable+bounces-15859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F352D83D271
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 03:17:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9140283D2FA
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 04:40:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96C3EB28219
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 02:17:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41A221F25669
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 03:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88CA8831;
-	Fri, 26 Jan 2024 02:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3126DAD2C;
+	Fri, 26 Jan 2024 03:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="oaUA7E+6"
+	dkim=pass (2048-bit key) header.d=fisica.ufpr.br header.i=@fisica.ufpr.br header.b="XJgU9qQR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from hoggar.fisica.ufpr.br (hoggar.fisica.ufpr.br [200.238.171.242])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E6E7493;
-	Fri, 26 Jan 2024 02:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A6CAD27;
+	Fri, 26 Jan 2024 03:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=200.238.171.242
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706235439; cv=none; b=CncaFpkovrH7nft3Z9qL6sDFfAz7njhf78y+L1NYXLteKVkpn6nHdP8SeUHmqdlxkePMoRaKjAcyQBSkhXO1UYU4J4ZUJfISOVS9qsnf1K+0/azH2DyHTuKZwQf6ZWpTkN9V9mtQyRHpcvMTsN7UHOGzj5pOX7xjeohaCWzpa1o=
+	t=1706240424; cv=none; b=kd5FjaraJbu0KHH1yqdCp0H204IpPLbLk1IY0Ej7wzdWdD421Lv7oXgA9H2jTsmHbASNrCa90TpyEM8U2N6kJ1RQi2h70XHFnChLJNk7Gl33GDqUkhSKPyJ+u0IpTkM7lKrCCb+eBFn9Hury2Fj9fIys7UQ2DHWVReq7w+sOhtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706235439; c=relaxed/simple;
-	bh=IrFhKodeQ6Ier895H9YVV85oaneDTnftgB3SBiS8TA4=;
-	h=Date:To:From:Subject:Message-Id; b=UWO2tZtilh88UVOkkHk8VZP3Ve/UQC1dUe4WhE7tYmCw0smDSkcKisvUedP6tv9v05y/M4qmoQlDBT2zLwObzZhuApKX0RZxY6Sg2gawOFKyGd24VKZEr8//hBSVVZlsINf8GGVy8S0nhMzqH4I/Vm9JJ8hE68I2rKeFRJwMFuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=oaUA7E+6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AE3C43390;
-	Fri, 26 Jan 2024 02:17:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1706235439;
-	bh=IrFhKodeQ6Ier895H9YVV85oaneDTnftgB3SBiS8TA4=;
-	h=Date:To:From:Subject:From;
-	b=oaUA7E+6EvRgVu+Wv1f78Vujm3qb04fauELgucGPq/gd24SqZgwLaYFhGUvVI27I0
-	 haDDwedDEjkX/Wh3xgp0XjU9h6BdGx7tUSE0KgBT64vlagVDbL5JBAi0IUTxdpRCZ3
-	 1QHHgX07wimCP1ptXHg4pevMBiL2lpsxIstdAAJo=
-Date: Thu, 25 Jan 2024 18:17:16 -0800
-To: mm-commits@vger.kernel.org,yuzhao@google.com,yangyifei03@kuaishou.com,stable@vger.kernel.org,shakeelb@google.com,roman.gushchin@linux.dev,muchun.song@linux.dev,mhocko@kernel.org,hannes@cmpxchg.org,tjmercier@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim.patch removed from -mm tree
-Message-Id: <20240126021718.F0AE3C43390@smtp.kernel.org>
+	s=arc-20240116; t=1706240424; c=relaxed/simple;
+	bh=dHyfVG6TbOGkccm1sKx4Jajh2CRdhy3ae2G7u64QOdc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YMK9bHqiQmMUcI0AevU8ZI4bBsY2gWXJiiWs47ExQG9qUOuB6DSS9hZRLoYlL9p8Oeqg06S0Xk4KoAElpoNxQuyPavRkrJIUI4zElQnogRX8l7SNpE8sV6iNJH4+GocuF1cHRSz7XU0+8AdXYOTvDJZqJ7MtdkbC/0zEzJwoUZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fisica.ufpr.br; spf=pass smtp.mailfrom=fisica.ufpr.br; dkim=pass (2048-bit key) header.d=fisica.ufpr.br header.i=@fisica.ufpr.br header.b=XJgU9qQR; arc=none smtp.client-ip=200.238.171.242
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fisica.ufpr.br
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fisica.ufpr.br
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=fisica.ufpr.br;
+	s=201705; t=1706239847;
+	bh=dHyfVG6TbOGkccm1sKx4Jajh2CRdhy3ae2G7u64QOdc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XJgU9qQRu5n9FGjXoZbOtNDHtRGNNEHCc+/qwq0OSLgAkAKQu2JYYIsKoS4lSVEEo
+	 Vps9bkmtz03MtGWCD2zkuB2ey9/IWVNnzhpR+k1XIx70mVD8U8CCuzr9bOpnrHzrS8
+	 QSqSArVhXcYA76ezYcFbWnt1doigKynIUwPXUBGibrwS9zXT8yB8plvObbNXgYJDag
+	 G31e7JUJYUwimSXPfheTrzUzndoOUGkY5KbgbxQV1anKCmLEt+1Jr+GonU7Yf815pP
+	 e5yirFTOlAuPW7nMc23uDpx3SIrl0klUxXbYs8uYTYFZBD47XMQElvrM8LMQgoTgUj
+	 1ThVsEcd4knjQ==
+Received: by hoggar.fisica.ufpr.br (Postfix, from userid 577)
+	id 0778F9A0B4A40; Fri, 26 Jan 2024 00:30:46 -0300 (-03)
+Date: Fri, 26 Jan 2024 00:30:46 -0300
+From: Carlos Carvalho <carlos@fisica.ufpr.br>
+To: Dan Moulding <dan@danm.net>
+Cc: junxiao.bi@oracle.com, gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org,
+	regressions@lists.linux.dev, song@kernel.org,
+	stable@vger.kernel.org, yukuai1@huaweicloud.com
+Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system;
+ successfully bisected
+Message-ID: <ZbMnZnvyIyoWeIro@fisica.ufpr.br>
+References: <2ef7d741-3df8-402a-967f-53ec77c73e2c@oracle.com>
+ <20240125203130.28187-1-dan@danm.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240125203130.28187-1-dan@danm.net>
 
+Dan Moulding (dan@danm.net) wrote on Thu, Jan 25, 2024 at 05:31:30PM -03:
+> I then created an ext4 file system on the "data" volume, mounted it, and used
+> "dd" to copy 1MiB blocks from /dev/urandom to a file on the "data" file
+> system, and just let it run. Eventually "dd" hangs and top shows that
+> md0_raid5 is using 100% CPU.
 
-The quilt patch titled
-     Subject: Revert "mm:vmscan: fix inaccurate reclaim during proactive reclaim"
-has been removed from the -mm tree.  Its filename was
-     revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim.patch
-
-This patch was dropped because an updated version will be merged
-
-------------------------------------------------------
-From: "T.J. Mercier" <tjmercier@google.com>
-Subject: Revert "mm:vmscan: fix inaccurate reclaim during proactive reclaim"
-Date: Sun, 21 Jan 2024 21:44:12 +0000
-
-This reverts commit 0388536ac29104a478c79b3869541524caec28eb.
-
-Proactive reclaim on the root cgroup is 10x slower after this patch when
-MGLRU is enabled, and completion times for proactive reclaim on much
-smaller non-root cgroups take ~30% longer (with or without MGLRU).  With
-root reclaim before the patch, I observe average reclaim rates of ~70k
-pages/sec before try_to_free_mem_cgroup_pages starts to fail and the
-nr_retries counter starts to decrement, eventually ending the proactive
-reclaim attempt.  After the patch the reclaim rate is consistently ~6.6k
-pages/sec due to the reduced nr_pages value causing scan aborts as soon as
-SWAP_CLUSTER_MAX pages are reclaimed.  The proactive reclaim doesn't
-complete after several minutes because try_to_free_mem_cgroup_pages is
-still capable of reclaiming pages in tiny SWAP_CLUSTER_MAX page chunks and
-nr_retries is never decremented.
-
-The docs for memory.reclaim say, "the kernel can over or under reclaim
-from the target cgroup" which this patch was trying to fix.  Revert it
-until a less costly solution is found.
-
-Link: https://lkml.kernel.org/r/20240121214413.833776-1-tjmercier@google.com
-Fixes: 0388536ac291 ("mm:vmscan: fix inaccurate reclaim during proactive reclaim")
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Cc: Efly Young <yangyifei03@kuaishou.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeelb@google.com>
-Cc: T.J. Mercier <tjmercier@google.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/memcontrol.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
---- a/mm/memcontrol.c~revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim
-+++ a/mm/memcontrol.c
-@@ -6977,8 +6977,8 @@ static ssize_t memory_reclaim(struct ker
- 			lru_add_drain_all();
- 
- 		reclaimed = try_to_free_mem_cgroup_pages(memcg,
--					min(nr_to_reclaim - nr_reclaimed, SWAP_CLUSTER_MAX),
--					GFP_KERNEL, reclaim_options);
-+						nr_to_reclaim - nr_reclaimed,
-+						GFP_KERNEL, reclaim_options);
- 
- 		if (!reclaimed && !nr_retries--)
- 			return -EAGAIN;
-_
-
-Patches currently in -mm which might be from tjmercier@google.com are
-
-
+It's known that ext4 has these symptoms with parity raid. To make sure it's a
+raid problem you should try another filesystem or remount it with stripe=0.
 
