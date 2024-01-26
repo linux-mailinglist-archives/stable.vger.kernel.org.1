@@ -1,56 +1,77 @@
-Return-Path: <stable+bounces-15876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE2A83D63B
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 10:27:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27DE483D721
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 11:00:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9846C2839F0
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 09:27:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5973F1C2AA10
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 10:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF6121103;
-	Fri, 26 Jan 2024 08:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C11DC6518C;
+	Fri, 26 Jan 2024 09:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="Bw6d/FAj"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD401947E;
-	Fri, 26 Jan 2024 08:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A944B14263;
+	Fri, 26 Jan 2024 09:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706259293; cv=none; b=SLdFeYoppOHTYqdEXO1/XcXg+hChSPJiLnHHxdrdXMBntImseQseDBjXcLna+bM40FK1vzD8pOjBtefi1eu2y1fjlTKpDdnyd15EBBMmXTxFpttmRrI6sn6P8w8UqBkoHgksyjRw5RI4yrx4cstQnpU8t3jEHF6ufwteAZdSaho=
+	t=1706260250; cv=none; b=mX1KSkJIDIYLIGtNqZY0zBA2qvo3oDybkpjAQvrSsQmYv9bu64eXSRos08w0OcVS+CY9SgHjLpEE9Z65F6so51wGqF5FYn0EdRRBDOVhrzP5kysJBa7vdrXJnpX6gQIFsUyEI6ab6ofPK/ojvros4nBJ7yEAqQXl+YjAUSDjufA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706259293; c=relaxed/simple;
-	bh=TYOB8k5ylm5/BON07VvvhEpqCRaH6lb7Vlx10EFQvf8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d2IBcsN0KkD2bLwkhYXiRIx/0UIsV191qaIKpqTYMdqJ95ljkZDLZ3lyKhXStdnMeSPfcnoL0f+sM9MTxcZyP+5PJseom1vofBFOsN9VTKWNSDX+DKorNR9p/ff11VpjLbJt+60osnsPd47EpuhOJ9k3fs/nuz7fcIa34k6EBWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4TLs192QmjzXgnM;
-	Fri, 26 Jan 2024 16:53:33 +0800 (CST)
-Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
-	by mail.maildlp.com (Postfix) with ESMTPS id 84D5218001C;
-	Fri, 26 Jan 2024 16:54:48 +0800 (CST)
-Received: from huawei.com (10.175.127.227) by dggpeml500021.china.huawei.com
- (7.185.36.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Fri, 26 Jan
- 2024 16:54:47 +0800
-From: Baokun Li <libaokun1@huawei.com>
-To: <linux-ext4@vger.kernel.org>
-CC: <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <jack@suse.cz>,
-	<ritesh.list@gmail.com>, <linux-kernel@vger.kernel.org>,
-	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <chengzhihao1@huawei.com>,
-	<yukuai3@huawei.com>, <libaokun1@huawei.com>, <stable@vger.kernel.org>
-Subject: [PATCH 5/7] ext4: fix slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists()
-Date: Fri, 26 Jan 2024 16:57:14 +0800
-Message-ID: <20240126085716.1363019-6-libaokun1@huawei.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20240126085716.1363019-1-libaokun1@huawei.com>
-References: <20240126085716.1363019-1-libaokun1@huawei.com>
+	s=arc-20240116; t=1706260250; c=relaxed/simple;
+	bh=iqbcOpTlEh5SlO47biheNN9vN+dMs8WVH0huJV/6Kbw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jYHuXRoQ7SstXoXWCsF/IemAZixw33vqEONA8n1IY9MEWAwe26uay17PpXmLl5XfdfNYukVTtRD4zBjFS88rzafzJPkaw06sTMYZfWRHv34VatlqW2M/lBoff3hrPsVfoDLRhiz49Msqk3Td4yc83Y4rE27D5H5TUq/XHneLAuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=Bw6d/FAj; arc=none smtp.client-ip=188.40.30.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+	s=default2211; h=Content-Transfer-Encoding:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=O99d2OhA5yD9439wbiGDNw8gbQ6j47VNjuChaGpSepE=; b=Bw6d/FAjzh7JS+ZSE9l79uyRPs
+	ug04KQ4kugdFE5zsfhVBsrVF2KMCrN6Wcf5FMm0YeEfICSLMtXV/BtvW8kTaYW6Pj+P2UuTo9fOuJ
+	0awaRMrNFxYiit77EkNuu67cqTdgC4cDdnzQ9R8aMnSlXwZiUTvOjdpaOr6TzbyJw3cbxE3l1ih7V
+	ft407vgmgel6hwcDzRGDgXQBT32XxiaxXKF0tsTU9gxg+6x043M2Qr01DwNi75xISHtWmWW68e+JK
+	r0fy6wb7SsazDKW2TZ6Bx8xC+zzO+yizMv+ZiSTcwTyQouj9l1Y4shrHnZtTDWsiQLYztk46/IexG
+	YxXL017w==;
+Received: from sslproxy04.your-server.de ([78.46.152.42])
+	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <esben@geanix.com>)
+	id 1rTIEX-000GfG-V8; Fri, 26 Jan 2024 10:10:45 +0100
+Received: from [87.49.42.9] (helo=localhost)
+	by sslproxy04.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <esben@geanix.com>)
+	id 1rTIEX-0004SN-3Z; Fri, 26 Jan 2024 10:10:45 +0100
+From: Esben Haabendal <esben@geanix.com>
+To: netdev@vger.kernel.org,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Christian Marangi <ansuelsmth@gmail.com>
+Cc: stable@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/2] net: stmmac: do not clear TBS enable bit on link up/down
+Date: Fri, 26 Jan 2024 10:10:41 +0100
+Message-ID: <a1d6f5ca9aad795dfc8e0bbb9bb06d8bb7b46649.1706256158.git.esben@geanix.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1706256158.git.esben@geanix.com>
+References: <cover.1706256158.git.esben@geanix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,126 +79,37 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpeml500021.china.huawei.com (7.185.36.21)
+X-Authenticated-Sender: esben@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27165/Thu Jan 25 10:51:15 2024)
 
-We can trigger a slab-out-of-bounds with the following commands:
+With the dma conf being reallocated on each call to stmmac_open(), any
+information in there is lost, unless we specifically handle it.
 
-    mkfs.ext4 -F /dev/$disk 10G
-    mount /dev/$disk /tmp/test
-    echo 2147483647 > /sys/fs/ext4/$disk/mb_group_prealloc
-    echo test > /tmp/test/file && sync
+The STMMAC_TBS_EN bit is set when adding an etf qdisc, and the etf qdisc
+therefore would stop working when link was set down and then back up.
 
-==================================================================
-BUG: KASAN: slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
-Read of size 8 at addr ffff888121b9d0f0 by task kworker/u2:0/11
-CPU: 0 PID: 11 Comm: kworker/u2:0 Tainted: GL 6.7.0-next-20240118 #521
-Call Trace:
- dump_stack_lvl+0x2c/0x50
- kasan_report+0xb6/0xf0
- ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
- ext4_mb_regular_allocator+0x19e9/0x2370 [ext4]
- ext4_mb_new_blocks+0x88a/0x1370 [ext4]
- ext4_ext_map_blocks+0x14f7/0x2390 [ext4]
- ext4_map_blocks+0x569/0xea0 [ext4]
- ext4_do_writepages+0x10f6/0x1bc0 [ext4]
-[...]
-==================================================================
-
-The flow of issue triggering is as follows:
-
-// Set s_mb_group_prealloc to 2147483647 via sysfs
-ext4_mb_new_blocks
-  ext4_mb_normalize_request
-    ext4_mb_normalize_group_request
-      ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc
-  ext4_mb_regular_allocator
-    ext4_mb_choose_next_group
-      ext4_mb_choose_next_group_best_avail
-        mb_avg_fragment_size_order
-          order = fls(len) - 2 = 29
-        ext4_mb_find_good_group_avg_frag_lists
-          frag_list = &sbi->s_mb_avg_fragment_size[order]
-          if (list_empty(frag_list)) // Trigger SOOB!
-
-At 4k block size, the length of the s_mb_avg_fragment_size list is 14, but
-an oversized s_mb_group_prealloc is set, causing slab-out-of-bounds to be
-triggered by an attempt to access an element at index 29.
-
-Therefore it is not allowed to set s_mb_group_prealloc to a value greater
-than s_clusters_per_group via sysfs, and to avoid returning an order from
-mb_avg_fragment_size_order() that is greater than MB_NUM_ORDERS(sb).
-
-Fixes: 7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
-CC: stable@vger.kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Fixes: ba39b344e924 ("net: ethernet: stmicro: stmmac: generate stmmac dma conf before open")
+Cc: stable@vger.kernel.org
+Signed-off-by: Esben Haabendal <esben@geanix.com>
 ---
- fs/ext4/mballoc.c | 2 ++
- fs/ext4/sysfs.c   | 9 ++++++++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index f44f668e407f..1ea6491b6b00 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -832,6 +832,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
- 		return 0;
- 	if (order == MB_NUM_ORDERS(sb))
- 		order--;
-+	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
-+		order = MB_NUM_ORDERS(sb) - 1;
- 	return order;
- }
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index b334eb16da23..25519952f754 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3932,6 +3932,9 @@ static int __stmmac_open(struct net_device *dev,
+ 	priv->rx_copybreak = STMMAC_RX_COPYBREAK;
  
-diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
-index 6f9f96e00f2f..60ca7b2797b2 100644
---- a/fs/ext4/sysfs.c
-+++ b/fs/ext4/sysfs.c
-@@ -29,6 +29,7 @@ typedef enum {
- 	attr_trigger_test_error,
- 	attr_first_error_time,
- 	attr_last_error_time,
-+	attr_group_prealloc,
- 	attr_feature,
- 	attr_pointer_pi,
- 	attr_pointer_ui,
-@@ -211,13 +212,14 @@ EXT4_ATTR_FUNC(sra_exceeded_retry_limit, 0444);
+ 	buf_sz = dma_conf->dma_buf_sz;
++	for (int i = 0; i < MTL_MAX_TX_QUEUES; i++)
++		if (priv->dma_conf.tx_queue[i].tbs & STMMAC_TBS_EN)
++			dma_conf->tx_queue[i].tbs = priv->dma_conf.tx_queue[i].tbs;
+ 	memcpy(&priv->dma_conf, dma_conf, sizeof(*dma_conf));
  
- EXT4_ATTR_OFFSET(inode_readahead_blks, 0644, inode_readahead,
- 		 ext4_sb_info, s_inode_readahead_blks);
-+EXT4_ATTR_OFFSET(mb_group_prealloc, 0644, group_prealloc,
-+		 ext4_sb_info, s_mb_group_prealloc);
- EXT4_RW_ATTR_SBI_UI(inode_goal, s_inode_goal);
- EXT4_RW_ATTR_SBI_UI(mb_stats, s_mb_stats);
- EXT4_RW_ATTR_SBI_UI(mb_max_to_scan, s_mb_max_to_scan);
- EXT4_RW_ATTR_SBI_UI(mb_min_to_scan, s_mb_min_to_scan);
- EXT4_RW_ATTR_SBI_UI(mb_order2_req, s_mb_order2_reqs);
- EXT4_RW_ATTR_SBI_UI(mb_stream_req, s_mb_stream_request);
--EXT4_RW_ATTR_SBI_PI(mb_group_prealloc, s_mb_group_prealloc);
- EXT4_RW_ATTR_SBI_UI(mb_max_linear_groups, s_mb_max_linear_groups);
- EXT4_RW_ATTR_SBI_UI(extent_max_zeroout_kb, s_extent_max_zeroout_kb);
- EXT4_ATTR(trigger_fs_error, 0200, trigger_test_error);
-@@ -380,6 +382,7 @@ static ssize_t ext4_generic_attr_show(struct ext4_attr *a,
- 
- 	switch (a->attr_id) {
- 	case attr_inode_readahead:
-+	case attr_group_prealloc:
- 	case attr_pointer_pi:
- 	case attr_pointer_ui:
- 		if (a->attr_ptr == ptr_ext4_super_block_offset)
-@@ -453,6 +456,10 @@ static ssize_t ext4_generic_attr_store(struct ext4_attr *a,
- 		return ret;
- 
- 	switch (a->attr_id) {
-+	case attr_group_prealloc:
-+		if (t > sbi->s_clusters_per_group)
-+			return -EINVAL;
-+		fallthrough;
- 	case attr_pointer_pi:
- 		if ((int)t < 0)
- 			return -EINVAL;
+ 	stmmac_reset_queues_param(priv);
 -- 
-2.31.1
+2.43.0
 
 
