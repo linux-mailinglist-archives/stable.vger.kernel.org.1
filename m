@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-15956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F0B483E568
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:28:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D5883E569
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:28:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 175A2282B50
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 22:28:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D4F41F21BB3
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 22:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EADF250F9;
-	Fri, 26 Jan 2024 22:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03AE25545;
+	Fri, 26 Jan 2024 22:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMtPsTGv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TsEIDDq6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D328524B22
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 22:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609FE24B22
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 22:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706308110; cv=none; b=lL86Lc1gV/x3rdlxf5lKp7vduw4wzyz5cCLVMyeCbjVVw9nNEc/odQ4GgCENtjM5Nh1fHYKm4MRVOXzXbX/3abOidq4dv5sL85gcPLudfn6gvQaPo51rgFDgA3VsbwdhYm7awJdd47/b/Pfss/GEuaDrJ5kh/uWf57C+ka8W8Ro=
+	t=1706308112; cv=none; b=JdkVGOrM5DfxIjZbXcHSiSjdWsBLGzIb8mN6LmXig5kQ86i8jE5eMzenchLBosIuBLG8LwaBoo8RSd/qyESFH3byHURaGwhr+y2TWgD3rnSnG9KTCnTNWek1VMf3LoRSSLX8rhUKbQRC2UkXjkKVyPBhX51Pk8qrDW+9hpmkJZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706308110; c=relaxed/simple;
-	bh=ik8KTheJQtjUGEL6pHEHuJhDA7sRSutI7C5pADvlkq8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=opOGQFQW2Lo0izmPP1nHDt1kJiuhOQwgj/Pcl00cDMyK0SLxoI0bd/+BJEsSanVHJ8FLk+NvF/cPoz1eHYW69WcpekaZShp6emOTbtK+YzaWWpOecJ4COBWrRhMzhu8JEvlmEezJpw1L0fr+wsQUCa2RS66TkKycEdE+FSs6wjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMtPsTGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FB4C433F1;
-	Fri, 26 Jan 2024 22:28:30 +0000 (UTC)
+	s=arc-20240116; t=1706308112; c=relaxed/simple;
+	bh=xZBhOP2HvWnZVqbm5yzMy/4fWVDFSZ+WZ+uDRwrAzQg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HIp3n2QymC9Z0y/dIg4//X4KhbdMbzh6NSHKuZXU9opyFYjhTsLqAv2tqbM/9wBmIkZoGmeaYG1MwHUFfqY4NTQ3XptfM2au9TBOTD77k2Cw03OaMvLuqVzkO7THw6PepSyFLNVSUoxxizVnQ/EbhTqM3D3+nX+dd0KOii90SzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TsEIDDq6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3290C433F1;
+	Fri, 26 Jan 2024 22:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706308110;
-	bh=ik8KTheJQtjUGEL6pHEHuJhDA7sRSutI7C5pADvlkq8=;
+	s=korg; t=1706308111;
+	bh=xZBhOP2HvWnZVqbm5yzMy/4fWVDFSZ+WZ+uDRwrAzQg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RMtPsTGvIJHCj28LIjmSECrtQPfPthPFlU/BIgHhXE1qETCCKci/I50qZY9YJl8MR
-	 qdy+CRL1zF/kI+eOQlPdGWoL6V+oDfvwxkqzt5jCgliT8Stebvfa9Jgb4xtBt0hpF7
-	 A7beVZBrU9w4d5YTc6PZ2QNiN4sWp0LKuHr9GpnQ=
-Subject: FAILED: patch "[PATCH] bus: mhi: host: Add alignment check for event ring read" failed to apply to 5.10-stable tree
+	b=TsEIDDq6QWIbj1eUdzvfmxytnb5BjKI9+xIq7gaONp8Ny/YoARDl3cJMsot6/hcQQ
+	 IGUVvFlkJXGpSPqsKZy1b2K83Yqm+Djd/SJiSaMa8DQq2zOjNWI3gV934GhGzM5lh5
+	 t1uARM6s+Vjd2lW/ShqJwxRpYn/UWokHiVp7OmqM=
+Subject: FAILED: patch "[PATCH] bus: mhi: host: Add alignment check for event ring read" failed to apply to 5.15-stable tree
 To: quic_krichai@quicinc.com,manivannan.sadhasivam@linaro.org,quic_jhugo@quicinc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 26 Jan 2024 14:28:29 -0800
-Message-ID: <2024012629-motto-fidgeting-3df6@gregkh>
+Date: Fri, 26 Jan 2024 14:28:30 -0800
+Message-ID: <2024012630-reference-stumbling-1d52@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,26 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x eff9704f5332a13b08fbdbe0f84059c9e7051d5f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012629-motto-fidgeting-3df6@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012630-reference-stumbling-1d52@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 eff9704f5332 ("bus: mhi: host: Add alignment check for event ring read pointer")
-a0f5a630668c ("bus: mhi: Move host MHI code to "host" directory")
-ec32332df764 ("bus: mhi: core: Sanity check values from remote device before use")
-855a70c12021 ("bus: mhi: Add MHI PCI support for WWAN modems")
 
 thanks,
 
