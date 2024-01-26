@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-15932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7C1183E4C7
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:11:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DDA483E4C6
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:11:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F2F7B21D23
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6358F1C21935
 	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 22:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6BE24B33;
-	Fri, 26 Jan 2024 22:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8818A46447;
+	Fri, 26 Jan 2024 22:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="de0Y0ogS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWq6uXyi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D13541C99
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 22:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF8441C9F
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 22:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706306868; cv=none; b=PqZG49b8QjvXl3BR80SEeX2ONphyctfSVw7Hfx7kU9DMp8lE4WeOij0K0TCK3hyYxRhdFyZs4jnbyT6QcKLU29kBRvg3e8HUUrEbNrOkxuaOvo0AwBWOZwWPjKaegob9kLRu3DvEKgbUkMcK0xLrJzg+kDlPbNdUlprpZxFk5ZQ=
+	t=1706306870; cv=none; b=igx+mApmri49MhzdBn9GA7SBENv1IyuCEOzJqF3wbfUwuEgcIqYXy5mRorM9ZNadEF4y2UZVtu1qmEhP9lti7lwV8B6UtMhq8P7TIYeqPIclP2SDauBCV3HZkQdH8LhXoNr5UxI/RJgMKYQk8yEIU+RRDVfsMasH+670c2MTzi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706306868; c=relaxed/simple;
-	bh=WJGMm0dPsSfLmpVkBoAter58EOPU7lA4AXIkXTgrz7o=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pnbZE5mc9xdT5k9XTRbAJsw3TV8JnqthhYXwjwodY5WC/idzNLmr21fHIFlc6N13YPnmHh/dgrjzQvG+RCPjpDiDE1iZbe0kpwG3Fz+pBpbYwW/GbfrpsL++DnHNgzE2B16efKE5FS5FlvYaBlYzqcH+LJQ13RW+dBKqrzgJf/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=de0Y0ogS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B7EC433C7;
-	Fri, 26 Jan 2024 22:07:48 +0000 (UTC)
+	s=arc-20240116; t=1706306870; c=relaxed/simple;
+	bh=AdfHt6VI/E6QNwaLtpWIoEs40fOCh4h9TpMuq0tZImk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=c6+6ehvYDh/CSKDHOBDZGhGEiu/XqeJQGLjACiWLCvawMJLBXOkO/FRnPQmlayCkPE0hAJi7u1LCbrsWM9vfNRCSL/aeGAw+Z88HvhBN/Ust4+AnsYfRlx4QzrKeTBNp1N43oHN72jf92YWwTtYVbo3+6862ENSmo9UNYHG3/Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWq6uXyi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9AF0C43399;
+	Fri, 26 Jan 2024 22:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706306868;
-	bh=WJGMm0dPsSfLmpVkBoAter58EOPU7lA4AXIkXTgrz7o=;
+	s=korg; t=1706306869;
+	bh=AdfHt6VI/E6QNwaLtpWIoEs40fOCh4h9TpMuq0tZImk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=de0Y0ogSKBEZJkbTxn+vQURfddeDilcVfvHJro0gpotGlz17zkIS3G87Oq224eVt+
-	 m87LO18x71AF1fW4cNx1vfzYjYmo7AtK6CscMiMUkWQzlZjim9UKgN3saC6n7AvPr0
-	 Pxv05A/xwPuvEz2UA1sEeYcHrTFAwB+BICQvCGPw=
-Subject: FAILED: patch "[PATCH] erofs: fix lz4 inplace decompression" failed to apply to 6.1-stable tree
+	b=sWq6uXyitRHI+7wWuPy462P0xQvxZ3i4mhZbV403qkyIoiIpQEiaJD+r6PXXhadwI
+	 dGnjXt84dOR+F1uHWfPa6kmK5YpPOLZh05hmSldcx/jJKNCmB7IPn7/ZIGZoe7CocT
+	 +SdBhpBulin9A0RRbm1vR2DQMPO3svV0ff5RfI2Y=
+Subject: FAILED: patch "[PATCH] erofs: fix lz4 inplace decompression" failed to apply to 5.15-stable tree
 To: xiang@kernel.org,hsiangkao@linux.alibaba.com,qkrwngud825@gmail.com,stable@vger.kernel.org,zhaoyifan@sjtu.edu.cn
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 26 Jan 2024 14:07:47 -0800
-Message-ID: <2024012647-disband-negotiate-1447@gregkh>
+Date: Fri, 26 Jan 2024 14:07:48 -0800
+Message-ID: <2024012648-backwater-colt-7290@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,36 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3c12466b6b7bf1e56f9b32c366a3d83d87afb4de
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012647-disband-negotiate-1447@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012648-backwater-colt-7290@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 3c12466b6b7b ("erofs: fix lz4 inplace decompression")
 123ec246ebe3 ("erofs: get rid of the remaining kmap_atomic()")
+ab749badf9f4 ("erofs: support unaligned data decompression")
+10e5f6e482e1 ("erofs: introduce z_erofs_fixup_insize")
+d67aee76d418 ("erofs: tidy up z_erofs_lz4_decompress")
+7e508f2ca8bb ("erofs: rename lz4_0pading to zero_padding")
+eaa9172ad988 ("erofs: get rid of ->lru usage")
+622ceaddb764 ("erofs: lzma compression support")
+966edfb0a3dc ("erofs: rename some generic methods in decompressor")
+386292919c25 ("erofs: introduce readmore decompression strategy")
+8f89926290c4 ("erofs: get compression algorithms directly on mapping")
+dfeab2e95a75 ("erofs: add multiple device support")
+e62424651f43 ("erofs: decouple basic mount options from fs_context")
+5b6e7e120e71 ("erofs: remove the fast path of per-CPU buffer decompression")
 
 thanks,
 
