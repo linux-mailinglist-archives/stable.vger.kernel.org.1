@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-15874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8450983D572
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 10:06:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BBED83D573
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 10:07:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5EBA1C25D21
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 09:06:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DEAA1C223A5
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 09:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0896662A1F;
-	Fri, 26 Jan 2024 07:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493ED6310F;
+	Fri, 26 Jan 2024 07:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="tO5jypqY"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="qahRMILD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC14D310;
-	Fri, 26 Jan 2024 07:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0838DD310;
+	Fri, 26 Jan 2024 07:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706255762; cv=none; b=QPktsrTcgGzi4B/VbLt2/OllIw+OotZ2RjdcwU/63dkpoVMU08gbDzQ7SshAF7pdrmTGKjsu4X52U/77XAu3aDadQovmtmJsqTe9choeSKydMT0CmzCW4enkN7AnMrHkQmEFzsrde/duYzoI5+crMIstItLNFAEOznzQ8ZOvqGE=
+	t=1706255770; cv=none; b=i43yZSClurNxn77bbhL0Zxgg/GC1VlvWm3p9U0xqFCHXhkO3ZSE+R+xbwm0Mv14g/F8XXOIH0yE9H37iEKo4xpZMGMVsku0cA1DiKKwuREvui0HyH3VRgjV+H4Zuwk4gf62nSXZQS3aMxh0xkWRux//6qY/xTGRvN4Tn3//5JnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706255762; c=relaxed/simple;
-	bh=3Te0uYkQhoD8wPt8fBPAVzbgCbkYHURjya5IUT8r9v4=;
-	h=Date:To:From:Subject:Message-Id; b=AGN3L3AHQ7I4CigH1Dg1iTHH8YeBG0ZfENU39KToGAGw5q5Uyjt/tHC2Z29vIwNXQyeng5ZUyq0/unh3sSOEvJzeImLAgoJLHfyttzMfdUB3K6QdBGvrw2XY8WBtbFyL/MPUS4Qy4PhevUNrdoXTggKHEJNFRPBShbRE6gslr8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=tO5jypqY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14665C433C7;
-	Fri, 26 Jan 2024 07:56:01 +0000 (UTC)
+	s=arc-20240116; t=1706255770; c=relaxed/simple;
+	bh=Zi1EolKFBaHdpx2dVBRYo8aPqoYuSt20CmHkzeYrKU4=;
+	h=Date:To:From:Subject:Message-Id; b=B8cNa2UVeQyY5mWRrElooBdTHbf0RY+txIS3T6lqcmdRW6MVLwKMr13MAOguMJaiR7k1cL7a6ZF9beceM0IOD4HOW61g/5zjcFiCWts/68qGgopKigXS/Yfj1yfvkP3hiX1OlvmXpT91EAqVW8OGASM/eAdjJX/L/3Yzq6+X7us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=qahRMILD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092D8C433C7;
+	Fri, 26 Jan 2024 07:56:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1706255762;
-	bh=3Te0uYkQhoD8wPt8fBPAVzbgCbkYHURjya5IUT8r9v4=;
+	s=korg; t=1706255769;
+	bh=Zi1EolKFBaHdpx2dVBRYo8aPqoYuSt20CmHkzeYrKU4=;
 	h=Date:To:From:Subject:From;
-	b=tO5jypqYDvq/N9ZBgz4fgXZWymeOnWfWIGGmqORvzVhC389TUzdqcvN4FRVLZMJPW
-	 E3s+ZdfhtJsw0017IYBiu6oOm0zDJuGy/qSrUM9U9mSxqcQEizOxQ1KKi45XrDyaTy
-	 KrOQ+tHvOfWgtEsNO7hfuDPOu7S4HqV5ZNT2BsJI=
-Date: Thu, 25 Jan 2024 23:55:59 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,riel@surriel.com,muchun.song@linux.dev,lstoakes@gmail.com,leitao@debian.org,akpm@linux-foundation.org
+	b=qahRMILDDC0QwF5fS53oy9awc15RSwHfjr63AvIEILpup6T0V3cdqnAWy4AEKP0xn
+	 ScnXYVm83pu37Y98eIQEG5c5LV/aqIDy1WZ91nLj6XxO7oEw+NcIT/Z080oJ0/WBSI
+	 WB/eUMG/Ovi4RQ8ovJvJAlkBQqs0CFbBa9cb1x3o=
+Date: Thu, 25 Jan 2024 23:56:06 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,shy828301@gmail.com,riel@surriel.com,ryan.roberts@arm.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-hugetlb-restore-the-reservation-if-needed.patch removed from -mm tree
-Message-Id: <20240126075602.14665C433C7@smtp.kernel.org>
+Subject: [merged mm-stable] mm-thp_get_unmapped_area-must-honour-topdown-preference.patch removed from -mm tree
+Message-Id: <20240126075609.092D8C433C7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,84 +50,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/hugetlb: restore the reservation if needed
+     Subject: mm: thp_get_unmapped_area must honour topdown preference
 has been removed from the -mm tree.  Its filename was
-     mm-hugetlb-restore-the-reservation-if-needed.patch
+     mm-thp_get_unmapped_area-must-honour-topdown-preference.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Breno Leitao <leitao@debian.org>
-Subject: mm/hugetlb: restore the reservation if needed
-Date: Wed, 17 Jan 2024 09:10:57 -0800
+From: Ryan Roberts <ryan.roberts@arm.com>
+Subject: mm: thp_get_unmapped_area must honour topdown preference
+Date: Tue, 23 Jan 2024 17:14:20 +0000
 
-Currently there is a bug that a huge page could be stolen, and when the
-original owner tries to fault in it, it causes a page fault.
+The addition of commit efa7df3e3bb5 ("mm: align larger anonymous mappings
+on THP boundaries") caused the "virtual_address_range" mm selftest to
+start failing on arm64.  Let's fix that regression.
 
-You can achieve that by:
-  1) Creating a single page
-	echo 1 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+There were 2 visible problems when running the test; 1) it takes much
+longer to execute, and 2) the test fails.  Both are related:
 
-  2) mmap() the page above with MAP_HUGETLB into (void *ptr1).
-	* This will mark the page as reserved
-  3) touch the page, which causes a page fault and allocates the page
-	* This will move the page out of the free list.
-	* It will also unreserved the page, since there is no more free
-	  page
-  4) madvise(MADV_DONTNEED) the page
-	* This will free the page, but not mark it as reserved.
-  5) Allocate a secondary page with mmap(MAP_HUGETLB) into (void *ptr2).
-	* it should fail, but, since there is no more available page.
-	* But, since the page above is not reserved, this mmap() succeed.
-  6) Faulting at ptr1 will cause a SIGBUS
-	* it will try to allocate a huge page, but there is none
-	  available
+The (first part of the) test allocates as many 1GB anonymous blocks as it
+can in the low 256TB of address space, passing NULL as the addr hint to
+mmap.  Before the faulty patch, all allocations were abutted and contained
+in a single, merged VMA.  However, after this patch, each allocation is in
+its own VMA, and there is a 2M gap between each VMA.  This causes the 2
+problems in the test: 1) mmap becomes MUCH slower because there are so
+many VMAs to check to find a new 1G gap.  2) mmap fails once it hits the
+VMA limit (/proc/sys/vm/max_map_count).  Hitting this limit then causes a
+subsequent calloc() to fail, which causes the test to fail.
 
-A full reproducer is in selftest. See
-https://lore.kernel.org/all/20240105155419.1939484-1-leitao@debian.org/
+The problem is that arm64 (unlike x86) selects
+ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT.  But __thp_get_unmapped_area()
+allocates len+2M then always aligns to the bottom of the discovered gap. 
+That causes the 2M hole.
 
-Fix this by restoring the reserved page if necessary.  If the page being
-unmapped has HPAGE_RESV_OWNER set, and needs a reservation, set the
-restore_reserve flag, which will move the page from free to reserved.
+Fix this by detecting cases where we can still achive the alignment goal
+when moved to the top of the allocated area, if configured to prefer
+top-down allocation.
 
-Link: https://lkml.kernel.org/r/20240117171058.2192286-1-leitao@debian.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Suggested-by: Rik van Riel <riel@surriel.com>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
+While we are at it, fix thp_get_unmapped_area's use of pgoff, which should
+always be zero for anonymous mappings.  Prior to the faulty change, while
+it was possible for user space to pass in pgoff!=0, the old
+mm->get_unmapped_area() handler would not use it.  thp_get_unmapped_area()
+does use it, so let's explicitly zero it before calling the handler.  This
+should also be the correct behavior for arches that define their own
+get_unmapped_area() handler.
+
+Link: https://lkml.kernel.org/r/20240123171420.3970220-1-ryan.roberts@arm.com
+Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries")
+Closes: https://lore.kernel.org/linux-mm/1e8f5ac7-54ce-433a-ae53-81522b2320e1@arm.com/
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Yang Shi <shy828301@gmail.com>
 Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
 Cc: Rik van Riel <riel@surriel.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/hugetlb.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ mm/huge_memory.c |   10 ++++++++--
+ mm/mmap.c        |    6 ++++--
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
---- a/mm/hugetlb.c~mm-hugetlb-restore-the-reservation-if-needed
-+++ a/mm/hugetlb.c
-@@ -5677,6 +5677,16 @@ void __unmap_hugepage_range(struct mmu_g
- 		hugetlb_count_sub(pages_per_huge_page(h), mm);
- 		hugetlb_remove_rmap(page_folio(page));
+--- a/mm/huge_memory.c~mm-thp_get_unmapped_area-must-honour-topdown-preference
++++ a/mm/huge_memory.c
+@@ -810,7 +810,7 @@ static unsigned long __thp_get_unmapped_
+ {
+ 	loff_t off_end = off + len;
+ 	loff_t off_align = round_up(off, size);
+-	unsigned long len_pad, ret;
++	unsigned long len_pad, ret, off_sub;
  
-+		if (is_vma_resv_set(vma, HPAGE_RESV_OWNER) &&
-+		    vma_needs_reservation(h, vma, start)) {
-+			/*
-+			 * Restore the reservation if needed, otherwise the
-+			 * backing page could be stolen by someone.
-+			 */
-+			folio_set_hugetlb_restore_reserve(page_folio(page));
-+			vma_add_reservation(h, vma, address);
-+		}
+ 	if (IS_ENABLED(CONFIG_32BIT) || in_compat_syscall())
+ 		return 0;
+@@ -839,7 +839,13 @@ static unsigned long __thp_get_unmapped_
+ 	if (ret == addr)
+ 		return addr;
+ 
+-	ret += (off - ret) & (size - 1);
++	off_sub = (off - ret) & (size - 1);
 +
- 		spin_unlock(ptl);
- 		tlb_remove_page_size(tlb, page, huge_page_size(h));
++	if (current->mm->get_unmapped_area == arch_get_unmapped_area_topdown &&
++	    !off_sub)
++		return ret + size;
++
++	ret += off_sub;
+ 	return ret;
+ }
+ 
+--- a/mm/mmap.c~mm-thp_get_unmapped_area-must-honour-topdown-preference
++++ a/mm/mmap.c
+@@ -1825,15 +1825,17 @@ get_unmapped_area(struct file *file, uns
  		/*
+ 		 * mmap_region() will call shmem_zero_setup() to create a file,
+ 		 * so use shmem's get_unmapped_area in case it can be huge.
+-		 * do_mmap() will clear pgoff, so match alignment.
+ 		 */
+-		pgoff = 0;
+ 		get_area = shmem_get_unmapped_area;
+ 	} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
+ 		/* Ensures that larger anonymous mappings are THP aligned. */
+ 		get_area = thp_get_unmapped_area;
+ 	}
+ 
++	/* Always treat pgoff as zero for anonymous memory. */
++	if (!file)
++		pgoff = 0;
++
+ 	addr = get_area(file, addr, len, pgoff, flags);
+ 	if (IS_ERR_VALUE(addr))
+ 		return addr;
 _
 
-Patches currently in -mm which might be from leitao@debian.org are
+Patches currently in -mm which might be from ryan.roberts@arm.com are
 
-selftests-mm-new-test-that-steals-pages.patch
+mm-userfaultfd-uffdio_move-implementation-should-use-ptep_get.patch
+tools-mm-add-thpmaps-script-to-dump-thp-usage-info.patch
+arm64-mm-make-set_ptes-robust-when-oas-cross-48-bit-boundary.patch
 
 
