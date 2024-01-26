@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-15944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469CF83E4E3
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:13:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E0183E4E9
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:14:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA85E1F21C66
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 22:13:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F3DB1F22538
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 22:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10AD725547;
-	Fri, 26 Jan 2024 22:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A0124215;
+	Fri, 26 Jan 2024 22:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJFVQS6q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/4i3Ul7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E14250F0
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 22:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A436F23750
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 22:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706307120; cv=none; b=Pkuo0VJksu2d1te+WcLOProEI+X5vUX/ca1HFImqU9Pfn6u2GrVWqeGoHf4W7x6r/JwXk7TSzq7nP5e5wu1ssfFGNBvlXHehux6UoXkfxDgtKNC1dFvvvIyCx8g3RttfksPwVqj/mgjloghq/sHMIWDz6ZCMGi+tXQvRsoWwavo=
+	t=1706307218; cv=none; b=UmT3Cqm4uDhb5bIfV0dwIwcxxu1BAPhDXDiQXPg+tXeuB2vlffNILL30c7ZcgxGsFio575znB5X7kc9xC8wQE1nNnndQ34WnJxvFGJw2poLw/NfdbwOh3EMZprDEfLk/3rCwKs8OxjAALqYNvOGTPApJTvPVL+X+vK3KVMvq6nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706307120; c=relaxed/simple;
-	bh=CHVoHsYBotXYliq1iN9EmEpkHAMgKwqEpi7jOzmUqW4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BGCDG33LxusESy1Mp5SgOhE3hQAny1xlbSyC7i7rcvaifUzqerdo0tmPS1Ils592pmsqVXHxCH6YPT30VYWRtBgQLok8OqR6s19tQuo1Nmq/8w8Hd2rnKP1g8nIAPE5FvD54ZqTEWEIWMTBIjzwWVuR07YIvtTay3egMb1VSdpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJFVQS6q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB16C43390;
-	Fri, 26 Jan 2024 22:12:00 +0000 (UTC)
+	s=arc-20240116; t=1706307218; c=relaxed/simple;
+	bh=/IPzE+dAz47rX3TmYDrjy6pXZ6TQgLzFENYP7EefdDc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uVB0XBMVMk+TuO3YEZca/TCCqKwpqaa6gnZlEM7lPxnfvqGRC8fpzoJNKavdpCj1fk5PTV+LWH6ecjyGF8w5PS5fyvcNQO1l+uMendwwFnxIPzFk/yQqcQroxYMU7ckdBLenSHElJqXQTjJmGePv6VoTQj4WekX1kzKL2MquCJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/4i3Ul7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0708FC43399;
+	Fri, 26 Jan 2024 22:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706307120;
-	bh=CHVoHsYBotXYliq1iN9EmEpkHAMgKwqEpi7jOzmUqW4=;
+	s=korg; t=1706307218;
+	bh=/IPzE+dAz47rX3TmYDrjy6pXZ6TQgLzFENYP7EefdDc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=kJFVQS6q6ZiAmN6F4MMw8bFVCa/As2g9PzCkipYkbILVC+65w32pBR7a23/4/9veA
-	 aumldsU+je5aWE4JJw6dkQPO8mKkLNHp++X6En40C/hgKI0kMhdfCS0lna+lwfN+fy
-	 lKCz7PVGkjauFIF3PRs2oRkD74pXiGUnduswWueo=
-Subject: FAILED: patch "[PATCH] media: ov13b10: Enable runtime PM before registering async" failed to apply to 6.1-stable tree
-To: bingbu.cao@intel.com,hverkuil-cisco@xs4all.nl,sakari.ailus@linux.intel.com
+	b=J/4i3Ul71GDYARg+NP7RSZX7OC/OTXQjFxpf4Qnc4zwSYLBEBd8839ECwtRhYlPnS
+	 TPsVTPuMBI0l6a3pBSu5pJGDB4Y1cv2rSxNTudeI8S5KchfahQa3j7MllrUwz388AS
+	 uiOavS+Q14t8lB5FxHGBvuQ0vsPdcy8L/p48ncMY=
+Subject: FAILED: patch "[PATCH] s390/vfio-ap: reset queues filtered from the guest's AP" failed to apply to 6.1-stable tree
+To: akrowiak@linux.ibm.com,agordeev@linux.ibm.com,pasic@linux.ibm.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 26 Jan 2024 14:11:59 -0800
-Message-ID: <2024012659-opacity-greedy-0493@gregkh>
+Date: Fri, 26 Jan 2024 14:13:37 -0800
+Message-ID: <2024012637-gotten-threaten-c4cb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,15 +62,31 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7b0454cfd8edb3509619407c3b9f78a6d0dee1a5
+git cherry-pick -x f848cba767e59f8d5c54984b1d45451aae040d50
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012659-opacity-greedy-0493@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012637-gotten-threaten-c4cb@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-7b0454cfd8ed ("media: ov13b10: Enable runtime PM before registering async sub-device")
-1af2f618acc1 ("media: ov13b10: Support device probe in non-zero ACPI D state")
+f848cba767e5 ("s390/vfio-ap: reset queues filtered from the guest's AP config")
+774d10196e64 ("s390/vfio-ap: let on_scan_complete() callback filter matrix and update guest's APCB")
+850fb7fa8c68 ("s390/vfio-ap: always filter entire AP matrix")
+9261f0438835 ("s390/vfio-ap: use work struct to verify queue reset")
+62aab082e999 ("s390/vfio-ap: store entire AP queue status word with the queue object")
+dd174833e44e ("s390/vfio-ap: remove upper limit on wait for queue reset to complete")
+c51f8c6bb5c8 ("s390/vfio-ap: allow deconfigured queue to be passed through to a guest")
+411b0109daa5 ("s390/vfio-ap: wait for response code 05 to clear on queue reset")
+7aa7b2a80cb7 ("s390/vfio-ap: clean up irq resources if possible")
+680b7ddd7e2a ("s390/vfio-ap: no need to check the 'E' and 'I' bits in APQSW after TAPQ")
+4bdf3c3956d8 ("s390/ap: provide F bit parameter for ap_rapq() and ap_zapq()")
+7cb7636a1ac1 ("s390/vfio_ap: increase max wait time for reset verification")
+51d4d9877087 ("s390/vfio_ap: fix handling of error response codes")
+5a42b348adf9 ("s390/vfio_ap: verify ZAPQ completion after return of response code zero")
+3ba41768105c ("s390/vfio_ap: use TAPQ to verify reset in progress completes")
+0daf9878a799 ("s390/vfio_ap: check TAPQ response code when waiting for queue reset")
+62414d901c3a ("s390/vfio-ap: verify reset complete in separate function")
+08866d34c709 ("s390/vfio-ap: fix an error handling path in vfio_ap_mdev_probe_queue()")
 
 thanks,
 
@@ -78,70 +94,453 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7b0454cfd8edb3509619407c3b9f78a6d0dee1a5 Mon Sep 17 00:00:00 2001
-From: Bingbu Cao <bingbu.cao@intel.com>
-Date: Wed, 22 Nov 2023 17:46:08 +0800
-Subject: [PATCH] media: ov13b10: Enable runtime PM before registering async
- sub-device
+From f848cba767e59f8d5c54984b1d45451aae040d50 Mon Sep 17 00:00:00 2001
+From: Tony Krowiak <akrowiak@linux.ibm.com>
+Date: Mon, 15 Jan 2024 13:54:34 -0500
+Subject: [PATCH] s390/vfio-ap: reset queues filtered from the guest's AP
+ config
 
-As the sensor device maybe accessible right after its async sub-device is
-registered, such as ipu-bridge will try to power up sensor by sensor's
-client device's runtime PM from the async notifier callback, if runtime PM
-is not enabled, it will fail.
+When filtering the adapters from the configuration profile for a guest to
+create or update a guest's AP configuration, if the APID of an adapter and
+the APQI of a domain identify a queue device that is not bound to the
+vfio_ap device driver, the APID of the adapter will be filtered because an
+individual APQN can not be filtered due to the fact the APQNs are assigned
+to an AP configuration as a matrix of APIDs and APQIs. Consequently, a
+guest will not have access to all of the queues associated with the
+filtered adapter. If the queues are subsequently made available again to
+the guest, they should re-appear in a reset state; so, let's make sure all
+queues associated with an adapter unplugged from the guest are reset.
 
-So runtime PM should be ready before its async sub-device is registered
-and accessible by others.
+In order to identify the set of queues that need to be reset, let's allow a
+vfio_ap_queue object to be simultaneously stored in both a hashtable and a
+list: A hashtable used to store all of the queues assigned
+to a matrix mdev; and/or, a list used to store a subset of the queues that
+need to be reset. For example, when an adapter is hot unplugged from a
+guest, all guest queues associated with that adapter must be reset. Since
+that may be a subset of those assigned to the matrix mdev, they can be
+stored in a list that can be passed to the vfio_ap_mdev_reset_queues
+function.
 
-Fixes: 7ee850546822 ("media: Add sensor driver support for the ov13b10 camera.")
+Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
+Acked-by: Halil Pasic <pasic@linux.ibm.com>
+Fixes: 48cae940c31d ("s390/vfio-ap: refresh guest's APCB by filtering AP resources assigned to mdev")
 Cc: stable@vger.kernel.org
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Link: https://lore.kernel.org/r/20240115185441.31526-5-akrowiak@linux.ibm.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 
-diff --git a/drivers/media/i2c/ov13b10.c b/drivers/media/i2c/ov13b10.c
-index c06411d5ee2b..73c844aa5697 100644
---- a/drivers/media/i2c/ov13b10.c
-+++ b/drivers/media/i2c/ov13b10.c
-@@ -1554,24 +1554,27 @@ static int ov13b10_probe(struct i2c_client *client)
- 		goto error_handler_free;
- 	}
+diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+index e45d0bf7b126..44cd29aace8e 100644
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -32,7 +32,8 @@
  
--	ret = v4l2_async_register_subdev_sensor(&ov13b->sd);
--	if (ret < 0)
--		goto error_media_entity;
+ #define AP_RESET_INTERVAL		20	/* Reset sleep interval (20ms)		*/
+ 
+-static int vfio_ap_mdev_reset_queues(struct ap_queue_table *qtable);
++static int vfio_ap_mdev_reset_queues(struct ap_matrix_mdev *matrix_mdev);
++static int vfio_ap_mdev_reset_qlist(struct list_head *qlist);
+ static struct vfio_ap_queue *vfio_ap_find_queue(int apqn);
+ static const struct vfio_device_ops vfio_ap_matrix_dev_ops;
+ static void vfio_ap_mdev_reset_queue(struct vfio_ap_queue *q);
+@@ -665,16 +666,23 @@ static bool vfio_ap_mdev_filter_cdoms(struct ap_matrix_mdev *matrix_mdev)
+  *				device driver.
+  *
+  * @matrix_mdev: the matrix mdev whose matrix is to be filtered.
++ * @apm_filtered: a 256-bit bitmap for storing the APIDs filtered from the
++ *		  guest's AP configuration that are still in the host's AP
++ *		  configuration.
+  *
+  * Note: If an APQN referencing a queue device that is not bound to the vfio_ap
+  *	 driver, its APID will be filtered from the guest's APCB. The matrix
+  *	 structure precludes filtering an individual APQN, so its APID will be
+- *	 filtered.
++ *	 filtered. Consequently, all queues associated with the adapter that
++ *	 are in the host's AP configuration must be reset. If queues are
++ *	 subsequently made available again to the guest, they should re-appear
++ *	 in a reset state
+  *
+  * Return: a boolean value indicating whether the KVM guest's APCB was changed
+  *	   by the filtering or not.
+  */
+-static bool vfio_ap_mdev_filter_matrix(struct ap_matrix_mdev *matrix_mdev)
++static bool vfio_ap_mdev_filter_matrix(struct ap_matrix_mdev *matrix_mdev,
++				       unsigned long *apm_filtered)
+ {
+ 	unsigned long apid, apqi, apqn;
+ 	DECLARE_BITMAP(prev_shadow_apm, AP_DEVICES);
+@@ -684,6 +692,7 @@ static bool vfio_ap_mdev_filter_matrix(struct ap_matrix_mdev *matrix_mdev)
+ 	bitmap_copy(prev_shadow_apm, matrix_mdev->shadow_apcb.apm, AP_DEVICES);
+ 	bitmap_copy(prev_shadow_aqm, matrix_mdev->shadow_apcb.aqm, AP_DOMAINS);
+ 	vfio_ap_matrix_init(&matrix_dev->info, &matrix_mdev->shadow_apcb);
++	bitmap_clear(apm_filtered, 0, AP_DEVICES);
  
  	/*
- 	 * Device is already turned on by i2c-core with ACPI domain PM.
- 	 * Enable runtime PM and turn off the device.
- 	 */
--
- 	/* Set the device's state to active if it's in D0 state. */
- 	if (full_power)
- 		pm_runtime_set_active(&client->dev);
- 	pm_runtime_enable(&client->dev);
- 	pm_runtime_idle(&client->dev);
- 
-+	ret = v4l2_async_register_subdev_sensor(&ov13b->sd);
-+	if (ret < 0)
-+		goto error_media_entity_runtime_pm;
+ 	 * Copy the adapters, domains and control domains to the shadow_apcb
+@@ -709,8 +718,16 @@ static bool vfio_ap_mdev_filter_matrix(struct ap_matrix_mdev *matrix_mdev)
+ 			apqn = AP_MKQID(apid, apqi);
+ 			q = vfio_ap_mdev_get_queue(matrix_mdev, apqn);
+ 			if (!q || q->reset_status.response_code) {
+-				clear_bit_inv(apid,
+-					      matrix_mdev->shadow_apcb.apm);
++				clear_bit_inv(apid, matrix_mdev->shadow_apcb.apm);
 +
- 	return 0;
++				/*
++				 * If the adapter was previously plugged into
++				 * the guest, let's let the caller know that
++				 * the APID was filtered.
++				 */
++				if (test_bit_inv(apid, prev_shadow_apm))
++					set_bit_inv(apid, apm_filtered);
++
+ 				break;
+ 			}
+ 		}
+@@ -812,7 +829,7 @@ static void vfio_ap_mdev_remove(struct mdev_device *mdev)
  
--error_media_entity:
-+error_media_entity_runtime_pm:
-+	pm_runtime_disable(&client->dev);
-+	if (full_power)
-+		pm_runtime_set_suspended(&client->dev);
- 	media_entity_cleanup(&ov13b->sd.entity);
- 
- error_handler_free:
-@@ -1594,6 +1597,7 @@ static void ov13b10_remove(struct i2c_client *client)
- 	ov13b10_free_controls(ov13b);
- 
- 	pm_runtime_disable(&client->dev);
-+	pm_runtime_set_suspended(&client->dev);
+ 	mutex_lock(&matrix_dev->guests_lock);
+ 	mutex_lock(&matrix_dev->mdevs_lock);
+-	vfio_ap_mdev_reset_queues(&matrix_mdev->qtable);
++	vfio_ap_mdev_reset_queues(matrix_mdev);
+ 	vfio_ap_mdev_unlink_fr_queues(matrix_mdev);
+ 	list_del(&matrix_mdev->node);
+ 	mutex_unlock(&matrix_dev->mdevs_lock);
+@@ -922,6 +939,47 @@ static void vfio_ap_mdev_link_adapter(struct ap_matrix_mdev *matrix_mdev,
+ 				       AP_MKQID(apid, apqi));
  }
  
- static DEFINE_RUNTIME_DEV_PM_OPS(ov13b10_pm_ops, ov13b10_suspend,
++static int reset_queues_for_apids(struct ap_matrix_mdev *matrix_mdev,
++				  unsigned long *apm_reset)
++{
++	struct vfio_ap_queue *q, *tmpq;
++	struct list_head qlist;
++	unsigned long apid, apqi;
++	int apqn, ret = 0;
++
++	if (bitmap_empty(apm_reset, AP_DEVICES))
++		return 0;
++
++	INIT_LIST_HEAD(&qlist);
++
++	for_each_set_bit_inv(apid, apm_reset, AP_DEVICES) {
++		for_each_set_bit_inv(apqi, matrix_mdev->shadow_apcb.aqm,
++				     AP_DOMAINS) {
++			/*
++			 * If the domain is not in the host's AP configuration,
++			 * then resetting it will fail with response code 01
++			 * (APQN not valid).
++			 */
++			if (!test_bit_inv(apqi,
++					  (unsigned long *)matrix_dev->info.aqm))
++				continue;
++
++			apqn = AP_MKQID(apid, apqi);
++			q = vfio_ap_mdev_get_queue(matrix_mdev, apqn);
++
++			if (q)
++				list_add_tail(&q->reset_qnode, &qlist);
++		}
++	}
++
++	ret = vfio_ap_mdev_reset_qlist(&qlist);
++
++	list_for_each_entry_safe(q, tmpq, &qlist, reset_qnode)
++		list_del(&q->reset_qnode);
++
++	return ret;
++}
++
+ /**
+  * assign_adapter_store - parses the APID from @buf and sets the
+  * corresponding bit in the mediated matrix device's APM
+@@ -962,6 +1020,7 @@ static ssize_t assign_adapter_store(struct device *dev,
+ {
+ 	int ret;
+ 	unsigned long apid;
++	DECLARE_BITMAP(apm_filtered, AP_DEVICES);
+ 	struct ap_matrix_mdev *matrix_mdev = dev_get_drvdata(dev);
+ 
+ 	mutex_lock(&ap_perms_mutex);
+@@ -991,8 +1050,10 @@ static ssize_t assign_adapter_store(struct device *dev,
+ 
+ 	vfio_ap_mdev_link_adapter(matrix_mdev, apid);
+ 
+-	if (vfio_ap_mdev_filter_matrix(matrix_mdev))
++	if (vfio_ap_mdev_filter_matrix(matrix_mdev, apm_filtered)) {
+ 		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
++		reset_queues_for_apids(matrix_mdev, apm_filtered);
++	}
+ 
+ 	ret = count;
+ done:
+@@ -1023,11 +1084,12 @@ static struct vfio_ap_queue
+  *				 adapter was assigned.
+  * @matrix_mdev: the matrix mediated device to which the adapter was assigned.
+  * @apid: the APID of the unassigned adapter.
+- * @qtable: table for storing queues associated with unassigned adapter.
++ * @qlist: list for storing queues associated with unassigned adapter that
++ *	   need to be reset.
+  */
+ static void vfio_ap_mdev_unlink_adapter(struct ap_matrix_mdev *matrix_mdev,
+ 					unsigned long apid,
+-					struct ap_queue_table *qtable)
++					struct list_head *qlist)
+ {
+ 	unsigned long apqi;
+ 	struct vfio_ap_queue *q;
+@@ -1035,11 +1097,10 @@ static void vfio_ap_mdev_unlink_adapter(struct ap_matrix_mdev *matrix_mdev,
+ 	for_each_set_bit_inv(apqi, matrix_mdev->matrix.aqm, AP_DOMAINS) {
+ 		q = vfio_ap_unlink_apqn_fr_mdev(matrix_mdev, apid, apqi);
+ 
+-		if (q && qtable) {
++		if (q && qlist) {
+ 			if (test_bit_inv(apid, matrix_mdev->shadow_apcb.apm) &&
+ 			    test_bit_inv(apqi, matrix_mdev->shadow_apcb.aqm))
+-				hash_add(qtable->queues, &q->mdev_qnode,
+-					 q->apqn);
++				list_add_tail(&q->reset_qnode, qlist);
+ 		}
+ 	}
+ }
+@@ -1047,26 +1108,23 @@ static void vfio_ap_mdev_unlink_adapter(struct ap_matrix_mdev *matrix_mdev,
+ static void vfio_ap_mdev_hot_unplug_adapter(struct ap_matrix_mdev *matrix_mdev,
+ 					    unsigned long apid)
+ {
+-	int loop_cursor;
+-	struct vfio_ap_queue *q;
+-	struct ap_queue_table *qtable = kzalloc(sizeof(*qtable), GFP_KERNEL);
++	struct vfio_ap_queue *q, *tmpq;
++	struct list_head qlist;
+ 
+-	hash_init(qtable->queues);
+-	vfio_ap_mdev_unlink_adapter(matrix_mdev, apid, qtable);
++	INIT_LIST_HEAD(&qlist);
++	vfio_ap_mdev_unlink_adapter(matrix_mdev, apid, &qlist);
+ 
+ 	if (test_bit_inv(apid, matrix_mdev->shadow_apcb.apm)) {
+ 		clear_bit_inv(apid, matrix_mdev->shadow_apcb.apm);
+ 		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
+ 	}
+ 
+-	vfio_ap_mdev_reset_queues(qtable);
++	vfio_ap_mdev_reset_qlist(&qlist);
+ 
+-	hash_for_each(qtable->queues, loop_cursor, q, mdev_qnode) {
++	list_for_each_entry_safe(q, tmpq, &qlist, reset_qnode) {
+ 		vfio_ap_unlink_mdev_fr_queue(q);
+-		hash_del(&q->mdev_qnode);
++		list_del(&q->reset_qnode);
+ 	}
+-
+-	kfree(qtable);
+ }
+ 
+ /**
+@@ -1167,6 +1225,7 @@ static ssize_t assign_domain_store(struct device *dev,
+ {
+ 	int ret;
+ 	unsigned long apqi;
++	DECLARE_BITMAP(apm_filtered, AP_DEVICES);
+ 	struct ap_matrix_mdev *matrix_mdev = dev_get_drvdata(dev);
+ 
+ 	mutex_lock(&ap_perms_mutex);
+@@ -1196,8 +1255,10 @@ static ssize_t assign_domain_store(struct device *dev,
+ 
+ 	vfio_ap_mdev_link_domain(matrix_mdev, apqi);
+ 
+-	if (vfio_ap_mdev_filter_matrix(matrix_mdev))
++	if (vfio_ap_mdev_filter_matrix(matrix_mdev, apm_filtered)) {
+ 		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
++		reset_queues_for_apids(matrix_mdev, apm_filtered);
++	}
+ 
+ 	ret = count;
+ done:
+@@ -1210,7 +1271,7 @@ static DEVICE_ATTR_WO(assign_domain);
+ 
+ static void vfio_ap_mdev_unlink_domain(struct ap_matrix_mdev *matrix_mdev,
+ 				       unsigned long apqi,
+-				       struct ap_queue_table *qtable)
++				       struct list_head *qlist)
+ {
+ 	unsigned long apid;
+ 	struct vfio_ap_queue *q;
+@@ -1218,11 +1279,10 @@ static void vfio_ap_mdev_unlink_domain(struct ap_matrix_mdev *matrix_mdev,
+ 	for_each_set_bit_inv(apid, matrix_mdev->matrix.apm, AP_DEVICES) {
+ 		q = vfio_ap_unlink_apqn_fr_mdev(matrix_mdev, apid, apqi);
+ 
+-		if (q && qtable) {
++		if (q && qlist) {
+ 			if (test_bit_inv(apid, matrix_mdev->shadow_apcb.apm) &&
+ 			    test_bit_inv(apqi, matrix_mdev->shadow_apcb.aqm))
+-				hash_add(qtable->queues, &q->mdev_qnode,
+-					 q->apqn);
++				list_add_tail(&q->reset_qnode, qlist);
+ 		}
+ 	}
+ }
+@@ -1230,26 +1290,23 @@ static void vfio_ap_mdev_unlink_domain(struct ap_matrix_mdev *matrix_mdev,
+ static void vfio_ap_mdev_hot_unplug_domain(struct ap_matrix_mdev *matrix_mdev,
+ 					   unsigned long apqi)
+ {
+-	int loop_cursor;
+-	struct vfio_ap_queue *q;
+-	struct ap_queue_table *qtable = kzalloc(sizeof(*qtable), GFP_KERNEL);
++	struct vfio_ap_queue *q, *tmpq;
++	struct list_head qlist;
+ 
+-	hash_init(qtable->queues);
+-	vfio_ap_mdev_unlink_domain(matrix_mdev, apqi, qtable);
++	INIT_LIST_HEAD(&qlist);
++	vfio_ap_mdev_unlink_domain(matrix_mdev, apqi, &qlist);
+ 
+ 	if (test_bit_inv(apqi, matrix_mdev->shadow_apcb.aqm)) {
+ 		clear_bit_inv(apqi, matrix_mdev->shadow_apcb.aqm);
+ 		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
+ 	}
+ 
+-	vfio_ap_mdev_reset_queues(qtable);
++	vfio_ap_mdev_reset_qlist(&qlist);
+ 
+-	hash_for_each(qtable->queues, loop_cursor, q, mdev_qnode) {
++	list_for_each_entry_safe(q, tmpq, &qlist, reset_qnode) {
+ 		vfio_ap_unlink_mdev_fr_queue(q);
+-		hash_del(&q->mdev_qnode);
++		list_del(&q->reset_qnode);
+ 	}
+-
+-	kfree(qtable);
+ }
+ 
+ /**
+@@ -1604,7 +1661,7 @@ static void vfio_ap_mdev_unset_kvm(struct ap_matrix_mdev *matrix_mdev)
+ 		get_update_locks_for_kvm(kvm);
+ 
+ 		kvm_arch_crypto_clear_masks(kvm);
+-		vfio_ap_mdev_reset_queues(&matrix_mdev->qtable);
++		vfio_ap_mdev_reset_queues(matrix_mdev);
+ 		kvm_put_kvm(kvm);
+ 		matrix_mdev->kvm = NULL;
+ 
+@@ -1740,15 +1797,33 @@ static void vfio_ap_mdev_reset_queue(struct vfio_ap_queue *q)
+ 	}
+ }
+ 
+-static int vfio_ap_mdev_reset_queues(struct ap_queue_table *qtable)
++static int vfio_ap_mdev_reset_queues(struct ap_matrix_mdev *matrix_mdev)
+ {
+ 	int ret = 0, loop_cursor;
+ 	struct vfio_ap_queue *q;
+ 
+-	hash_for_each(qtable->queues, loop_cursor, q, mdev_qnode)
++	hash_for_each(matrix_mdev->qtable.queues, loop_cursor, q, mdev_qnode)
+ 		vfio_ap_mdev_reset_queue(q);
+ 
+-	hash_for_each(qtable->queues, loop_cursor, q, mdev_qnode) {
++	hash_for_each(matrix_mdev->qtable.queues, loop_cursor, q, mdev_qnode) {
++		flush_work(&q->reset_work);
++
++		if (q->reset_status.response_code)
++			ret = -EIO;
++	}
++
++	return ret;
++}
++
++static int vfio_ap_mdev_reset_qlist(struct list_head *qlist)
++{
++	int ret = 0;
++	struct vfio_ap_queue *q;
++
++	list_for_each_entry(q, qlist, reset_qnode)
++		vfio_ap_mdev_reset_queue(q);
++
++	list_for_each_entry(q, qlist, reset_qnode) {
+ 		flush_work(&q->reset_work);
+ 
+ 		if (q->reset_status.response_code)
+@@ -1934,7 +2009,7 @@ static ssize_t vfio_ap_mdev_ioctl(struct vfio_device *vdev,
+ 		ret = vfio_ap_mdev_get_device_info(arg);
+ 		break;
+ 	case VFIO_DEVICE_RESET:
+-		ret = vfio_ap_mdev_reset_queues(&matrix_mdev->qtable);
++		ret = vfio_ap_mdev_reset_queues(matrix_mdev);
+ 		break;
+ 	case VFIO_DEVICE_GET_IRQ_INFO:
+ 			ret = vfio_ap_get_irq_info(arg);
+@@ -2080,6 +2155,7 @@ int vfio_ap_mdev_probe_queue(struct ap_device *apdev)
+ {
+ 	int ret;
+ 	struct vfio_ap_queue *q;
++	DECLARE_BITMAP(apm_filtered, AP_DEVICES);
+ 	struct ap_matrix_mdev *matrix_mdev;
+ 
+ 	ret = sysfs_create_group(&apdev->device.kobj, &vfio_queue_attr_group);
+@@ -2112,15 +2188,17 @@ int vfio_ap_mdev_probe_queue(struct ap_device *apdev)
+ 		    !bitmap_empty(matrix_mdev->aqm_add, AP_DOMAINS))
+ 			goto done;
+ 
+-		if (vfio_ap_mdev_filter_matrix(matrix_mdev))
++		if (vfio_ap_mdev_filter_matrix(matrix_mdev, apm_filtered)) {
+ 			vfio_ap_mdev_update_guest_apcb(matrix_mdev);
++			reset_queues_for_apids(matrix_mdev, apm_filtered);
++		}
+ 	}
+ 
+ done:
+ 	dev_set_drvdata(&apdev->device, q);
+ 	release_update_locks_for_mdev(matrix_mdev);
+ 
+-	return 0;
++	return ret;
+ 
+ err_remove_group:
+ 	sysfs_remove_group(&apdev->device.kobj, &vfio_queue_attr_group);
+@@ -2464,6 +2542,7 @@ void vfio_ap_on_cfg_changed(struct ap_config_info *cur_cfg_info,
+ 
+ static void vfio_ap_mdev_hot_plug_cfg(struct ap_matrix_mdev *matrix_mdev)
+ {
++	DECLARE_BITMAP(apm_filtered, AP_DEVICES);
+ 	bool filter_domains, filter_adapters, filter_cdoms, do_hotplug = false;
+ 
+ 	mutex_lock(&matrix_mdev->kvm->lock);
+@@ -2477,7 +2556,7 @@ static void vfio_ap_mdev_hot_plug_cfg(struct ap_matrix_mdev *matrix_mdev)
+ 					 matrix_mdev->adm_add, AP_DOMAINS);
+ 
+ 	if (filter_adapters || filter_domains)
+-		do_hotplug = vfio_ap_mdev_filter_matrix(matrix_mdev);
++		do_hotplug = vfio_ap_mdev_filter_matrix(matrix_mdev, apm_filtered);
+ 
+ 	if (filter_cdoms)
+ 		do_hotplug |= vfio_ap_mdev_filter_cdoms(matrix_mdev);
+@@ -2485,6 +2564,8 @@ static void vfio_ap_mdev_hot_plug_cfg(struct ap_matrix_mdev *matrix_mdev)
+ 	if (do_hotplug)
+ 		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
+ 
++	reset_queues_for_apids(matrix_mdev, apm_filtered);
++
+ 	mutex_unlock(&matrix_dev->mdevs_lock);
+ 	mutex_unlock(&matrix_mdev->kvm->lock);
+ }
+diff --git a/drivers/s390/crypto/vfio_ap_private.h b/drivers/s390/crypto/vfio_ap_private.h
+index 88aff8b81f2f..98d37aa27044 100644
+--- a/drivers/s390/crypto/vfio_ap_private.h
++++ b/drivers/s390/crypto/vfio_ap_private.h
+@@ -133,6 +133,8 @@ struct ap_matrix_mdev {
+  * @apqn: the APQN of the AP queue device
+  * @saved_isc: the guest ISC registered with the GIB interface
+  * @mdev_qnode: allows the vfio_ap_queue struct to be added to a hashtable
++ * @reset_qnode: allows the vfio_ap_queue struct to be added to a list of queues
++ *		 that need to be reset
+  * @reset_status: the status from the last reset of the queue
+  * @reset_work: work to wait for queue reset to complete
+  */
+@@ -143,6 +145,7 @@ struct vfio_ap_queue {
+ #define VFIO_AP_ISC_INVALID 0xff
+ 	unsigned char saved_isc;
+ 	struct hlist_node mdev_qnode;
++	struct list_head reset_qnode;
+ 	struct ap_queue_status reset_status;
+ 	struct work_struct reset_work;
+ };
 
 
