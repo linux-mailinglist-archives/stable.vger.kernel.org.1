@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-15933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DDA483E4C6
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:11:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 541B183E4C9
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 23:11:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6358F1C21935
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 22:11:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C097CB259F9
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 22:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8818A46447;
-	Fri, 26 Jan 2024 22:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74EF6524A4;
+	Fri, 26 Jan 2024 22:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWq6uXyi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCB/qy+K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF8441C9F
-	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 22:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328864F88E
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 22:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706306870; cv=none; b=igx+mApmri49MhzdBn9GA7SBENv1IyuCEOzJqF3wbfUwuEgcIqYXy5mRorM9ZNadEF4y2UZVtu1qmEhP9lti7lwV8B6UtMhq8P7TIYeqPIclP2SDauBCV3HZkQdH8LhXoNr5UxI/RJgMKYQk8yEIU+RRDVfsMasH+670c2MTzi0=
+	t=1706306872; cv=none; b=JzupfMte7I8jGmUb0uqohCP+rI4CFC6uTq8U348Rorll0UwBb7JmVhz2us+sfMLgjr9SgTgeMogA4oF0D7uXs0B3kbiyCPmPoBH+UnBYv5kLlzNrBlKcZd9K8g8O5uwHxHHXs/08KSRFOqKNXX4mLNNGhTkF5KfD3cxZ43YCnvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706306870; c=relaxed/simple;
-	bh=AdfHt6VI/E6QNwaLtpWIoEs40fOCh4h9TpMuq0tZImk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=c6+6ehvYDh/CSKDHOBDZGhGEiu/XqeJQGLjACiWLCvawMJLBXOkO/FRnPQmlayCkPE0hAJi7u1LCbrsWM9vfNRCSL/aeGAw+Z88HvhBN/Ust4+AnsYfRlx4QzrKeTBNp1N43oHN72jf92YWwTtYVbo3+6862ENSmo9UNYHG3/Ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWq6uXyi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9AF0C43399;
-	Fri, 26 Jan 2024 22:07:49 +0000 (UTC)
+	s=arc-20240116; t=1706306872; c=relaxed/simple;
+	bh=En1weIPuyDr0J9NzBpRxQjppYRr2sYoMn7sttjIvFk0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=L95uoYqaEOaO1MZP+qRKABcVTLJzRlx9x1WeuZ16pjgAGVPMy4GS4LRUAKNLQMqrQtYhdi2zrGx0O1N14CltU3BBZ+UV75ua/hVvbGIY4UxG/zfzNsLxLEi0SSP6zzlrDmt9na2GIH8mmw/ixKAlcg8y0CN9cu5tjOpwQaDLA5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCB/qy+K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B81C433C7;
+	Fri, 26 Jan 2024 22:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706306869;
-	bh=AdfHt6VI/E6QNwaLtpWIoEs40fOCh4h9TpMuq0tZImk=;
+	s=korg; t=1706306871;
+	bh=En1weIPuyDr0J9NzBpRxQjppYRr2sYoMn7sttjIvFk0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=sWq6uXyitRHI+7wWuPy462P0xQvxZ3i4mhZbV403qkyIoiIpQEiaJD+r6PXXhadwI
-	 dGnjXt84dOR+F1uHWfPa6kmK5YpPOLZh05hmSldcx/jJKNCmB7IPn7/ZIGZoe7CocT
-	 +SdBhpBulin9A0RRbm1vR2DQMPO3svV0ff5RfI2Y=
-Subject: FAILED: patch "[PATCH] erofs: fix lz4 inplace decompression" failed to apply to 5.15-stable tree
+	b=lCB/qy+KXObXSuybyyJmnoIdXALZ5v3LILZjBZ8uevCqX9c3kPS4ir6XeCxuWJJLZ
+	 OBpmtsLSQQSNPWQAwp7zQmvy67QP8D6tPyu0HzeQ30/VtOi5Dxxx4w1I7o+KUVWf0Q
+	 njRRHX9YvzLIn+wO6tDKqabvQrgxXNsGFFyaCL9M=
+Subject: FAILED: patch "[PATCH] erofs: fix lz4 inplace decompression" failed to apply to 5.10-stable tree
 To: xiang@kernel.org,hsiangkao@linux.alibaba.com,qkrwngud825@gmail.com,stable@vger.kernel.org,zhaoyifan@sjtu.edu.cn
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 26 Jan 2024 14:07:48 -0800
-Message-ID: <2024012648-backwater-colt-7290@gregkh>
+Date: Fri, 26 Jan 2024 14:07:50 -0800
+Message-ID: <2024012650-altitude-gush-572f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3c12466b6b7bf1e56f9b32c366a3d83d87afb4de
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012648-backwater-colt-7290@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012650-altitude-gush-572f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -83,6 +83,7 @@ eaa9172ad988 ("erofs: get rid of ->lru usage")
 dfeab2e95a75 ("erofs: add multiple device support")
 e62424651f43 ("erofs: decouple basic mount options from fs_context")
 5b6e7e120e71 ("erofs: remove the fast path of per-CPU buffer decompression")
+2e5fd489a4e5 ("Merge tag 'libnvdimm-for-5.15' of git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm")
 
 thanks,
 
