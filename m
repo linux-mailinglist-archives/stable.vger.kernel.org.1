@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-15858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1639A83D26F
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 03:17:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F352D83D271
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 03:17:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFFFC28A136
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 02:17:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96C3EB28219
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 02:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AD27493;
-	Fri, 26 Jan 2024 02:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88CA8831;
+	Fri, 26 Jan 2024 02:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="XfTuVih+"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="oaUA7E+6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B9128F4;
-	Fri, 26 Jan 2024 02:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E6E7493;
+	Fri, 26 Jan 2024 02:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706235428; cv=none; b=rhIRWvASkj/ffOXtSEroImrVtFA5nkHGYd8cmn96OU+oFtPkeh228kXfLYPErT4Nrgl1U3FyFec22gWHac7M3ahYLn/KvHP/Gg0EgOfvyEI6H5K0W8vqvFLnedSdajZOdBOXmqsZCCx4OeLr2DgVeN/R2zi1dNhV8AgDy73mtHc=
+	t=1706235439; cv=none; b=CncaFpkovrH7nft3Z9qL6sDFfAz7njhf78y+L1NYXLteKVkpn6nHdP8SeUHmqdlxkePMoRaKjAcyQBSkhXO1UYU4J4ZUJfISOVS9qsnf1K+0/azH2DyHTuKZwQf6ZWpTkN9V9mtQyRHpcvMTsN7UHOGzj5pOX7xjeohaCWzpa1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706235428; c=relaxed/simple;
-	bh=WCiaq5ggzZae2rzF9V0kKaumYl7Z66VY/QaCiJotZpk=;
-	h=Date:To:From:Subject:Message-Id; b=VwtoJQYSiDtSPLjmHE4JELbqJi2ms/n7Mfi2drD9AaruPI3NBXQikhQlDshFy8QpSLpP4xtu8wMhhf/T2+lwB3szvnUMXEm25I2JfaqsbQPRnlRI43M/2numOvC8A4FWXWUiLlctVlFsbRwmvo3vnGYvM4tpuOumBAI9Ju42Fzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=XfTuVih+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5ABC43390;
-	Fri, 26 Jan 2024 02:17:07 +0000 (UTC)
+	s=arc-20240116; t=1706235439; c=relaxed/simple;
+	bh=IrFhKodeQ6Ier895H9YVV85oaneDTnftgB3SBiS8TA4=;
+	h=Date:To:From:Subject:Message-Id; b=UWO2tZtilh88UVOkkHk8VZP3Ve/UQC1dUe4WhE7tYmCw0smDSkcKisvUedP6tv9v05y/M4qmoQlDBT2zLwObzZhuApKX0RZxY6Sg2gawOFKyGd24VKZEr8//hBSVVZlsINf8GGVy8S0nhMzqH4I/Vm9JJ8hE68I2rKeFRJwMFuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=oaUA7E+6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AE3C43390;
+	Fri, 26 Jan 2024 02:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1706235428;
-	bh=WCiaq5ggzZae2rzF9V0kKaumYl7Z66VY/QaCiJotZpk=;
+	s=korg; t=1706235439;
+	bh=IrFhKodeQ6Ier895H9YVV85oaneDTnftgB3SBiS8TA4=;
 	h=Date:To:From:Subject:From;
-	b=XfTuVih+s9jOoBiSeNJ8zUgcjPqPF27xo4q7X25lSbdy+L7I6vWxaRAg63cBfj2uP
-	 bzLJBQ8LLg4rkc6feFiDoWGS/igY4rtx2dwjCH4vrVOrdduGUkyx4VEX2MrOpXsrWA
-	 7fKgPb9AI2drLvNSaVi+NNNJLYyiYg2HSFgA70JY=
-Date: Thu, 25 Jan 2024 18:17:05 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
+	b=oaUA7E+6EvRgVu+Wv1f78Vujm3qb04fauELgucGPq/gd24SqZgwLaYFhGUvVI27I0
+	 haDDwedDEjkX/Wh3xgp0XjU9h6BdGx7tUSE0KgBT64vlagVDbL5JBAi0IUTxdpRCZ3
+	 1QHHgX07wimCP1ptXHg4pevMBiL2lpsxIstdAAJo=
+Date: Thu, 25 Jan 2024 18:17:16 -0800
+To: mm-commits@vger.kernel.org,yuzhao@google.com,yangyifei03@kuaishou.com,stable@vger.kernel.org,shakeelb@google.com,roman.gushchin@linux.dev,muchun.song@linux.dev,mhocko@kernel.org,hannes@cmpxchg.org,tjmercier@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + nilfs2-fix-data-corruption-in-dsync-block-recovery-for-small-block-sizes.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240126021707.DC5ABC43390@smtp.kernel.org>
+Subject: [to-be-updated] revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim.patch removed from -mm tree
+Message-Id: <20240126021718.F0AE3C43390@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,105 +49,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
-The patch titled
-     Subject: nilfs2: fix data corruption in dsync block recovery for small block sizes
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     nilfs2-fix-data-corruption-in-dsync-block-recovery-for-small-block-sizes.patch
+The quilt patch titled
+     Subject: Revert "mm:vmscan: fix inaccurate reclaim during proactive reclaim"
+has been removed from the -mm tree.  Its filename was
+     revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-fix-data-corruption-in-dsync-block-recovery-for-small-block-sizes.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+This patch was dropped because an updated version will be merged
 
 ------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: fix data corruption in dsync block recovery for small block sizes
-Date: Wed, 24 Jan 2024 21:19:36 +0900
+From: "T.J. Mercier" <tjmercier@google.com>
+Subject: Revert "mm:vmscan: fix inaccurate reclaim during proactive reclaim"
+Date: Sun, 21 Jan 2024 21:44:12 +0000
 
-The helper function nilfs_recovery_copy_block() of
-nilfs_recovery_dsync_blocks(), which recovers data from logs created by
-data sync writes during a mount after an unclean shutdown, incorrectly
-calculates the on-page offset when copying repair data to the file's page
-cache.  In environments where the block size is smaller than the page
-size, this flaw can cause data corruption and leak uninitialized memory
-bytes during the recovery process.
+This reverts commit 0388536ac29104a478c79b3869541524caec28eb.
 
-Fix these issues by correcting this byte offset calculation on the page.
+Proactive reclaim on the root cgroup is 10x slower after this patch when
+MGLRU is enabled, and completion times for proactive reclaim on much
+smaller non-root cgroups take ~30% longer (with or without MGLRU).  With
+root reclaim before the patch, I observe average reclaim rates of ~70k
+pages/sec before try_to_free_mem_cgroup_pages starts to fail and the
+nr_retries counter starts to decrement, eventually ending the proactive
+reclaim attempt.  After the patch the reclaim rate is consistently ~6.6k
+pages/sec due to the reduced nr_pages value causing scan aborts as soon as
+SWAP_CLUSTER_MAX pages are reclaimed.  The proactive reclaim doesn't
+complete after several minutes because try_to_free_mem_cgroup_pages is
+still capable of reclaiming pages in tiny SWAP_CLUSTER_MAX page chunks and
+nr_retries is never decremented.
 
-Link: https://lkml.kernel.org/r/20240124121936.10575-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+The docs for memory.reclaim say, "the kernel can over or under reclaim
+from the target cgroup" which this patch was trying to fix.  Revert it
+until a less costly solution is found.
+
+Link: https://lkml.kernel.org/r/20240121214413.833776-1-tjmercier@google.com
+Fixes: 0388536ac291 ("mm:vmscan: fix inaccurate reclaim during proactive reclaim")
+Signed-off-by: T.J. Mercier <tjmercier@google.com>
+Cc: Efly Young <yangyifei03@kuaishou.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shakeel Butt <shakeelb@google.com>
+Cc: T.J. Mercier <tjmercier@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/nilfs2/recovery.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ mm/memcontrol.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/nilfs2/recovery.c~nilfs2-fix-data-corruption-in-dsync-block-recovery-for-small-block-sizes
-+++ a/fs/nilfs2/recovery.c
-@@ -472,9 +472,10 @@ static int nilfs_prepare_segment_for_rec
+--- a/mm/memcontrol.c~revert-mm-vmscan-fix-inaccurate-reclaim-during-proactive-reclaim
++++ a/mm/memcontrol.c
+@@ -6977,8 +6977,8 @@ static ssize_t memory_reclaim(struct ker
+ 			lru_add_drain_all();
  
- static int nilfs_recovery_copy_block(struct the_nilfs *nilfs,
- 				     struct nilfs_recovery_block *rb,
--				     struct page *page)
-+				     loff_t pos, struct page *page)
- {
- 	struct buffer_head *bh_org;
-+	size_t from = pos & ~PAGE_MASK;
- 	void *kaddr;
+ 		reclaimed = try_to_free_mem_cgroup_pages(memcg,
+-					min(nr_to_reclaim - nr_reclaimed, SWAP_CLUSTER_MAX),
+-					GFP_KERNEL, reclaim_options);
++						nr_to_reclaim - nr_reclaimed,
++						GFP_KERNEL, reclaim_options);
  
- 	bh_org = __bread(nilfs->ns_bdev, rb->blocknr, nilfs->ns_blocksize);
-@@ -482,7 +483,7 @@ static int nilfs_recovery_copy_block(str
- 		return -EIO;
- 
- 	kaddr = kmap_atomic(page);
--	memcpy(kaddr + bh_offset(bh_org), bh_org->b_data, bh_org->b_size);
-+	memcpy(kaddr + from, bh_org->b_data, bh_org->b_size);
- 	kunmap_atomic(kaddr);
- 	brelse(bh_org);
- 	return 0;
-@@ -521,7 +522,7 @@ static int nilfs_recover_dsync_blocks(st
- 			goto failed_inode;
- 		}
- 
--		err = nilfs_recovery_copy_block(nilfs, rb, page);
-+		err = nilfs_recovery_copy_block(nilfs, rb, pos, page);
- 		if (unlikely(err))
- 			goto failed_page;
- 
+ 		if (!reclaimed && !nr_retries--)
+ 			return -EAGAIN;
 _
 
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
+Patches currently in -mm which might be from tjmercier@google.com are
 
-nilfs2-fix-data-corruption-in-dsync-block-recovery-for-small-block-sizes.patch
-nilfs2-convert-recovery-logic-to-use-kmap_local.patch
-nilfs2-convert-segment-buffer-to-use-kmap_local.patch
-nilfs2-convert-nilfs_copy_buffer-to-use-kmap_local.patch
-nilfs2-convert-metadata-file-common-code-to-use-kmap_local.patch
-nilfs2-convert-sufile-to-use-kmap_local.patch
-nilfs2-convert-persistent-object-allocator-to-use-kmap_local.patch
-nilfs2-convert-dat-to-use-kmap_local.patch
-nilfs2-move-nilfs_bmap_write-call-out-of-nilfs_write_inode_common.patch
-nilfs2-do-not-acquire-rwsem-in-nilfs_bmap_write.patch
-nilfs2-convert-ifile-to-use-kmap_local.patch
-nilfs2-localize-highmem-mapping-for-checkpoint-creation-within-cpfile.patch
-nilfs2-localize-highmem-mapping-for-checkpoint-finalization-within-cpfile.patch
-nilfs2-localize-highmem-mapping-for-checkpoint-reading-within-cpfile.patch
-nilfs2-remove-nilfs_cpfile_getput_checkpoint.patch
-nilfs2-convert-cpfile-to-use-kmap_local.patch
 
 
