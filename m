@@ -1,84 +1,128 @@
-Return-Path: <stable+bounces-15864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A54B383D435
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 07:23:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 553BD83D561
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 10:06:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D395028A546
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 06:23:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E83731F25F4E
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 09:06:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9F714015;
-	Fri, 26 Jan 2024 06:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B79E612CC;
+	Fri, 26 Jan 2024 07:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="I0BX1JL9"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71844BA2D;
-	Fri, 26 Jan 2024 06:09:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB74B125DB;
+	Fri, 26 Jan 2024 07:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706249366; cv=none; b=GsUAiFsIZA8Zsc+huI+ub7iMecrACTUxS5OVgO/rtzBrzd3TdiYv/fRbzioNrIPuysurlSy1Ek9/wAIlFXidaG6spUxjx2klSqiPHvFw5iwDeZy26YoRGqUVsRDeHe8QowXBGkcjl5JvhD9eqMHQu71IqXaPg+lhXuiAB/sckss=
+	t=1706255693; cv=none; b=ZAYi8gVUaFTpvJQYRO+YPOXSyzAkQJnYxZw/9l/SuNwLmWEyEvvjKgyyBRvKPK9Knl+URUwCPDdTVkBei+NF703f6g4DkSwyTfYg5s7bFvtA7ktfaWmUYkJihAvQj2x5SplTRRZpwr4pKcRnZWz0HhluR4D/wISWz861gMHhMqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706249366; c=relaxed/simple;
-	bh=/d1wqQ1bV1Dlsc9JT0cEN9QSVyzjArI7JRAqWb6sDUA=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=XyqtrwUD6KwhLQsWtFRcm9P9YRuDddqhnt28sCBIb9wcw5G+AeanIrrx6XpvRQBm2SjNTc7u81YYiYqUKNP+x0cK+hmFShrAL3JY+88Et00AK7PfCbFswnmNGrTrDNHwPEVWStk33Ea9UFLkthOtz6yxeMhElBwUTvbQP/T9A5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rTFOz-0000QD-B0; Fri, 26 Jan 2024 07:09:21 +0100
-Message-ID: <f15eb882-99c4-4248-acd1-39bfa6dfcfe9@leemhuis.info>
-Date: Fri, 26 Jan 2024 07:09:20 +0100
+	s=arc-20240116; t=1706255693; c=relaxed/simple;
+	bh=MJSGM7A/KIuGUOsWYbsWQtkX5KkTHNXkKabPAiRps0A=;
+	h=Date:To:From:Subject:Message-Id; b=Lqbt0F2DrXhjlMPPfM4/TksqccUwBNzLBXKXrPoaG8rLH3RZAiEBsQAnqEmZH4fTjbQDfH6i3I8rgM+8t1w4iJvKAjaTjgpZfB8730eZ5DRyqHyrWhXg2athkBohzIfu/RGi+bR7cxFpKkU2VFdz268nduK6T5eY4FwP4rEbkmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=I0BX1JL9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406AFC433C7;
+	Fri, 26 Jan 2024 07:54:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1706255692;
+	bh=MJSGM7A/KIuGUOsWYbsWQtkX5KkTHNXkKabPAiRps0A=;
+	h=Date:To:From:Subject:From;
+	b=I0BX1JL9/lloGVI0+P9EKSZ4ZMYuN5Dqz2ZXpS/KPJPwo9Gg+vu1R1QmCuCFAIS1B
+	 PgkkVhXbrKKiXADCNkicEZXbxAAvuo0M12qqUs/jBgphdzDUDoHADUGGpb25U3WUfx
+	 zGq44b3yf/enNiTgxhoqjbYzLZ1ZlqPZZm68dsyI=
+Date: Thu, 25 Jan 2024 23:54:49 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,usama.anjum@collabora.com,stable@vger.kernel.org,naoya.horiguchi@nec.com,muchun.song@linux.dev,linmiaohe@huawei.com,jthoughton@google.com,jiaqiyan@google.com,sidhartha.kumar@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling.patch removed from -mm tree
+Message-Id: <20240126075452.406AFC433C7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Consider picking up "wifi: ath11k: rely on mac80211 debugfs
- handling for vif" rather sooner than later
-Content-Language: en-US, de-DE
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- LKML <linux-kernel@vger.kernel.org>, netdev <netdev@vger.kernel.org>,
- Kalle Valo <kvalo@kernel.org>, Benjamin Berg <benjamin.berg@intel.com>
-References: <3bfb5c07-664e-49cd-a470-635a36bcf806@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <3bfb5c07-664e-49cd-a470-635a36bcf806@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1706249364;d49e159d;
-X-HE-SMSGID: 1rTFOz-0000QD-B0
 
-Reply-to-self with fixed subject. Was likely a stupid idea to take a
-earlier message and adjusting it early in the morning, as then these
-things happen. Sorry for the confusion. Ciao, Thorsten
 
-On 26.01.24 07:02, Thorsten Leemhuis wrote:
-> Hi stable team, JFYI, yesterdays mainline commit 556857aa1d0855 ("wifi:
-> ath11k: rely on mac80211 debugfs handling for vif") from Benjamin
-> contains no stable tag, but a Fixes: tag for a 6.7 commit. So it guess
-> you will pick it up anyway. Might be worth picking up rather sooner than
-> later, as it fixes a regression that according to Kalle causes ath11k to
-> crash during suspend:
-> https://lore.kernel.org/all/874jfjiolh.fsf@kernel.org/
-> https://bugzilla.kernel.org/show_bug.cgi?id=218364
-> 
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> That page also explains what to do if mails like this annoy you.
-> 
-> 
+The quilt patch titled
+     Subject: fs/hugetlbfs/inode.c: mm/memory-failure.c: fix hugetlbfs hwpoison handling
+has been removed from the -mm tree.  Its filename was
+     fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling.patch
+
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Subject: fs/hugetlbfs/inode.c: mm/memory-failure.c: fix hugetlbfs hwpoison handling
+Date: Fri, 12 Jan 2024 10:08:40 -0800
+
+has_extra_refcount() makes the assumption that the page cache adds a ref
+count of 1 and subtracts this in the extra_pins case.  Commit a08c7193e4f1
+(mm/filemap: remove hugetlb special casing in filemap.c) modifies
+__filemap_add_folio() by calling folio_ref_add(folio, nr); for all cases
+(including hugtetlb) where nr is the number of pages in the folio.  We
+should adjust the number of references coming from the page cache by
+subtracing the number of pages rather than 1.
+
+In hugetlbfs_read_iter(), folio_test_has_hwpoisoned() is testing the wrong
+flag as, in the hugetlb case, memory-failure code calls
+folio_test_set_hwpoison() to indicate poison.  folio_test_hwpoison() is
+the correct function to test for that flag.
+
+After these fixes, the hugetlb hwpoison read selftest passes all cases.
+
+Link: https://lkml.kernel.org/r/20240112180840.367006-1-sidhartha.kumar@oracle.com
+Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
+Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Closes: https://lore.kernel.org/linux-mm/20230713001833.3778937-1-jiaqiyan@google.com/T/#m8e1469119e5b831bbd05d495f96b842e4a1c5519
+Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Cc: James Houghton <jthoughton@google.com>
+Cc: Jiaqi Yan <jiaqiyan@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Cc: <stable@vger.kernel.org>	[6.7+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/hugetlbfs/inode.c |    2 +-
+ mm/memory-failure.c  |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+--- a/fs/hugetlbfs/inode.c~fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling
++++ a/fs/hugetlbfs/inode.c
+@@ -340,7 +340,7 @@ static ssize_t hugetlbfs_read_iter(struc
+ 		} else {
+ 			folio_unlock(folio);
+ 
+-			if (!folio_test_has_hwpoisoned(folio))
++			if (!folio_test_hwpoison(folio))
+ 				want = nr;
+ 			else {
+ 				/*
+--- a/mm/memory-failure.c~fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling
++++ a/mm/memory-failure.c
+@@ -982,7 +982,7 @@ static bool has_extra_refcount(struct pa
+ 	int count = page_count(p) - 1;
+ 
+ 	if (extra_pins)
+-		count -= 1;
++		count -= folio_nr_pages(page_folio(p));
+ 
+ 	if (count > 0) {
+ 		pr_err("%#lx: %s still referenced by %d users\n",
+_
+
+Patches currently in -mm which might be from sidhartha.kumar@oracle.com are
+
+maple_tree-fix-comment-describing-mas_node_count_gfp.patch
+
 
