@@ -1,115 +1,131 @@
-Return-Path: <stable+bounces-15878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27DE483D721
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 11:00:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DCEE83D7E2
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 11:23:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5973F1C2AA10
-	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 10:00:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D60D4283E02
+	for <lists+stable@lfdr.de>; Fri, 26 Jan 2024 10:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C11DC6518C;
-	Fri, 26 Jan 2024 09:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="Bw6d/FAj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C63134DB;
+	Fri, 26 Jan 2024 09:58:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+Received: from lechuck.jsg.id.au (jsg.id.au [193.114.144.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A944B14263;
-	Fri, 26 Jan 2024 09:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D805F2904
+	for <stable@vger.kernel.org>; Fri, 26 Jan 2024 09:57:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.114.144.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706260250; cv=none; b=mX1KSkJIDIYLIGtNqZY0zBA2qvo3oDybkpjAQvrSsQmYv9bu64eXSRos08w0OcVS+CY9SgHjLpEE9Z65F6so51wGqF5FYn0EdRRBDOVhrzP5kysJBa7vdrXJnpX6gQIFsUyEI6ab6ofPK/ojvros4nBJ7yEAqQXl+YjAUSDjufA=
+	t=1706263080; cv=none; b=dDw6EE2S/uCwEz1cGRfsJ32WUR1YC0QkfC3lADjCLVWb/OUclBdiS1bUw6tNTQu+XZnvWzzmpHCewf7swgrcxmVFQ4eHlP4fqZR+ZOyGfPjYSSrh4RBBjz9W1npfM5HuE+opt+/deTn4ViL7NdNiTlgUl51yMRC5R2Au8p7jIj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706260250; c=relaxed/simple;
-	bh=iqbcOpTlEh5SlO47biheNN9vN+dMs8WVH0huJV/6Kbw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYHuXRoQ7SstXoXWCsF/IemAZixw33vqEONA8n1IY9MEWAwe26uay17PpXmLl5XfdfNYukVTtRD4zBjFS88rzafzJPkaw06sTMYZfWRHv34VatlqW2M/lBoff3hrPsVfoDLRhiz49Msqk3Td4yc83Y4rE27D5H5TUq/XHneLAuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=Bw6d/FAj; arc=none smtp.client-ip=188.40.30.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-	s=default2211; h=Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=O99d2OhA5yD9439wbiGDNw8gbQ6j47VNjuChaGpSepE=; b=Bw6d/FAjzh7JS+ZSE9l79uyRPs
-	ug04KQ4kugdFE5zsfhVBsrVF2KMCrN6Wcf5FMm0YeEfICSLMtXV/BtvW8kTaYW6Pj+P2UuTo9fOuJ
-	0awaRMrNFxYiit77EkNuu67cqTdgC4cDdnzQ9R8aMnSlXwZiUTvOjdpaOr6TzbyJw3cbxE3l1ih7V
-	ft407vgmgel6hwcDzRGDgXQBT32XxiaxXKF0tsTU9gxg+6x043M2Qr01DwNi75xISHtWmWW68e+JK
-	r0fy6wb7SsazDKW2TZ6Bx8xC+zzO+yizMv+ZiSTcwTyQouj9l1Y4shrHnZtTDWsiQLYztk46/IexG
-	YxXL017w==;
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <esben@geanix.com>)
-	id 1rTIEX-000GfG-V8; Fri, 26 Jan 2024 10:10:45 +0100
-Received: from [87.49.42.9] (helo=localhost)
-	by sslproxy04.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <esben@geanix.com>)
-	id 1rTIEX-0004SN-3Z; Fri, 26 Jan 2024 10:10:45 +0100
-From: Esben Haabendal <esben@geanix.com>
-To: netdev@vger.kernel.org,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Christian Marangi <ansuelsmth@gmail.com>
-Cc: stable@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/2] net: stmmac: do not clear TBS enable bit on link up/down
-Date: Fri, 26 Jan 2024 10:10:41 +0100
-Message-ID: <a1d6f5ca9aad795dfc8e0bbb9bb06d8bb7b46649.1706256158.git.esben@geanix.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1706256158.git.esben@geanix.com>
-References: <cover.1706256158.git.esben@geanix.com>
+	s=arc-20240116; t=1706263080; c=relaxed/simple;
+	bh=DoWSj132qlLZibj8ratLUexxCCXJzaMLbG6Km1cF77k=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=dkVNoduBGpGTWbizR0nvE1VZUgF7FCyrVBrqJasj/1by7Ev98KnHGfIJrkbUP0l73fB5Lm02o8NXiCkN0SlxNGzyr2a5uk6MTEdwf+z8O5Z4p/3yMF3+LoJv96Y1VYzWeZN4PUrjhALrVQG53cyWKGLJhiKf/6SObMLMexBLc8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jsg.id.au; spf=pass smtp.mailfrom=jsg.id.au; arc=none smtp.client-ip=193.114.144.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jsg.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jsg.id.au
+Received: from largo.jsg.id.au (largo.jsg.id.au [192.168.1.43])
+	by lechuck.jsg.id.au (OpenSMTPD) with ESMTPS id 96f08978 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Fri, 26 Jan 2024 20:51:12 +1100 (AEDT)
+Received: from localhost (largo.jsg.id.au [local])
+	by largo.jsg.id.au (OpenSMTPD) with ESMTPA id ffb24e39;
+	Fri, 26 Jan 2024 20:51:11 +1100 (AEDT)
+Date: Fri, 26 Jan 2024 20:51:11 +1100
+From: Jonathan Gray <jsg@jsg.id.au>
+To: gregkh@linuxfoundation.org
+Cc: mario.limonciello@amd.com, stable@vger.kernel.org
+Subject: duplicate 'drm/amd: Enable PCIe PME from D3' in stable branches
+Message-ID: <ZbOAj1fC5nfJEgoR@largo.jsg.id.au>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: esben@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27165/Thu Jan 25 10:51:15 2024)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-With the dma conf being reallocated on each call to stmmac_open(), any
-information in there is lost, unless we specifically handle it.
+The latest releases of 6.1.y, 6.6.y and 6.7.y introduce a duplicate
+commit of 'drm/amd: Enable PCIe PME from D3'.
 
-The STMMAC_TBS_EN bit is set when adding an etf qdisc, and the etf qdisc
-therefore would stop working when link was set down and then back up.
+For example on the 6.6.y branch:
 
-Fixes: ba39b344e924 ("net: ethernet: stmicro: stmmac: generate stmmac dma conf before open")
-Cc: stable@vger.kernel.org
-Signed-off-by: Esben Haabendal <esben@geanix.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+commit 847e6947afd3c46623172d2eabcfc2481ee8668e
+Author:     Mario Limonciello <mario.limonciello@amd.com>
+AuthorDate: Fri Nov 24 09:56:32 2023 -0600
+Commit:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CommitDate: Thu Jan 25 15:35:45 2024 -0800
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index b334eb16da23..25519952f754 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3932,6 +3932,9 @@ static int __stmmac_open(struct net_device *dev,
- 	priv->rx_copybreak = STMMAC_RX_COPYBREAK;
+    drm/amd: Enable PCIe PME from D3
+    
+    commit bd1f6a31e7762ebc99b97f3eda5e5ea3708fa792 upstream.
+    
+    When dGPU is put into BOCO it may be in D3cold but still able send
+    PME on display hotplug event. For this to work it must be enabled
+    as wake source from D3.
+    
+    When runpm is enabled use pci_wake_from_d3() to mark wakeup as
+    enabled by default.
+    
+    Cc: stable@vger.kernel.org # 6.1+
+    Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+    Acked-by: Alex Deucher <alexander.deucher@amd.com>
+    Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 2c35036e4ba2..635b58553583 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2197,6 +2197,8 @@ static int amdgpu_pci_probe(struct pci_dev *pdev,
  
- 	buf_sz = dma_conf->dma_buf_sz;
-+	for (int i = 0; i < MTL_MAX_TX_QUEUES; i++)
-+		if (priv->dma_conf.tx_queue[i].tbs & STMMAC_TBS_EN)
-+			dma_conf->tx_queue[i].tbs = priv->dma_conf.tx_queue[i].tbs;
- 	memcpy(&priv->dma_conf, dma_conf, sizeof(*dma_conf));
+ 		pci_wake_from_d3(pdev, TRUE);
  
- 	stmmac_reset_queues_param(priv);
--- 
-2.43.0
++		pci_wake_from_d3(pdev, TRUE);
++
+ 		/*
+ 		 * For runpm implemented via BACO, PMFW will handle the
+ 		 * timing for BACO in and out:
 
+commit 49227bea27ebcd260f0c94a3055b14bbd8605c5e
+Author:     Mario Limonciello <mario.limonciello@amd.com>
+AuthorDate: Fri Nov 24 09:56:32 2023 -0600
+Commit:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CommitDate: Fri Dec 8 08:52:17 2023 +0100
+
+    drm/amd: Enable PCIe PME from D3
+    
+    commit 6967741d26c87300a51b5e50d4acd104bc1a9759 upstream.
+    
+    When dGPU is put into BOCO it may be in D3cold but still able send
+    PME on display hotplug event. For this to work it must be enabled
+    as wake source from D3.
+    
+    When runpm is enabled use pci_wake_from_d3() to mark wakeup as
+    enabled by default.
+    
+    Cc: stable@vger.kernel.org # 6.1+
+    Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+    Acked-by: Alex Deucher <alexander.deucher@amd.com>
+    Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 81edf66dbea8..2c35036e4ba2 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2195,6 +2195,8 @@ static int amdgpu_pci_probe(struct pci_dev *pdev,
+ 		pm_runtime_mark_last_busy(ddev->dev);
+ 		pm_runtime_put_autosuspend(ddev->dev);
+ 
++		pci_wake_from_d3(pdev, TRUE);
++
+ 		/*
+ 		 * For runpm implemented via BACO, PMFW will handle the
+ 		 * timing for BACO in and out:
 
