@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7881B83F192
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:11:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53AE183F194
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:11:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DD841F22979
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:11:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A633284744
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868D3200BD;
-	Sat, 27 Jan 2024 23:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DB3200A4;
+	Sat, 27 Jan 2024 23:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FNPnORRC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQgiBpQk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476FC1F95B
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F081F946
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706397055; cv=none; b=mJlVtGPCL4EGyXhYd+yT1JLVPcf09Yqv4ZXFYMigA9YprTEz0x00OaIe+v3HWCHyiNbHxFOshNLIGTj9Tx/EjcWq/YFejv1AlCVmGZ8SBIUUTAcUSDnxRhjA9+Ps38Y5TlyVnYh8QQhe/FmzstR/PGl+WGErmdd2KVybKbSuOxM=
+	t=1706397066; cv=none; b=Dc0v5E3h9CdfsZxoTQAjt4PR/2xW0VhoUa4CVhuyUx1wVqq/ufFyRa/G1k9tKJ/eDv/4eVmVcHZIJwWpM12l/2npQPBcG0C9uCG+g0cSfgTweUsO7wU6m4IJS32bEZ2PAKKZKfquA0vlAx+l0fyHb/BaoCOaHd+BVEO2nHY9l9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706397055; c=relaxed/simple;
-	bh=JpsCQweJAgRFPwdxXgCrVjfVGQkCCq4eYQ3ZfzYaF5g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TtWSQCoWOwJ+z62mtRXl1LJaLPrH94Fc4RtFWsj3C09o2y2k4uPwNGkVozM8mVjRG4Vp3lAPDTegUP4l40rdDn/zZYtKiW1oTkPV/f6h3X0K5WdOIsz3AHc9ohI22pm9KUJN2UQFTvrfyid4d26pq9w2Tx2Uul1m8+Lnu/HlAdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FNPnORRC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E957C43390;
-	Sat, 27 Jan 2024 23:10:55 +0000 (UTC)
+	s=arc-20240116; t=1706397066; c=relaxed/simple;
+	bh=tTtClbgPTlCSfmSn9u5BbCuMm3kPeExKUlZjGAwU72Y=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HzOx7dwQFUBXRNT9oJQtJPiGq83zIDHTcRUuA2uT96QRfDk+fP+GKTMkiwcC/Yrzd3W6V2NhpQ/MakaHyNi8rShVO9TulqBY+2KLpFLsiLK9SmW1W1zGLX3xPmtL8ihjacNbynJ2onzkNMuGthgjTUcS9mlb68tC7P/OCyp9HME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQgiBpQk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F278DC433F1;
+	Sat, 27 Jan 2024 23:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706397055;
-	bh=JpsCQweJAgRFPwdxXgCrVjfVGQkCCq4eYQ3ZfzYaF5g=;
+	s=korg; t=1706397066;
+	bh=tTtClbgPTlCSfmSn9u5BbCuMm3kPeExKUlZjGAwU72Y=;
 	h=Subject:To:Cc:From:Date:From;
-	b=FNPnORRCH5aJWHzt91jy+KLxfNPIFm9ZcGlYOjbsbpeUQ+f+xBsShlC+lLMGddEDY
-	 Yob1HIy/aDgP9EqBr2uNtvCu/5bEQ6RKcN+hrz9Q2LFYibkI5qxzSIBwmBgocr6Acf
-	 kWYl6061MVMURYfZbVvShrx9l37iJMBsYGEcCl1w=
-Subject: FAILED: patch "[PATCH] drm/amd/display: force toggle rate wa for first link training" failed to apply to 6.1-stable tree
-To: zhongwei.zhang@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,michael.strauss@amd.com
+	b=SQgiBpQkONs51tDPNTB+c6+9A0bc1ognL288iWxEu4PzkBMOYlFLs96RKyjWThlMU
+	 foJrfKsOwShfhyateEt+24S98DkrOFAINyRwFWdM3KU9/iUkoLsAm7ZLs/w6Z/oDAx
+	 sFPj6QQI2+3YIFU8Zzqq272asPS9Z2nVGklKahaE=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix black screen on video playback with" failed to apply to 6.7-stable tree
+To: sungkim@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,nicholas.kazlauskas@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 15:10:54 -0800
-Message-ID: <2024012754-uneaten-backwater-0004@gregkh>
+Date: Sat, 27 Jan 2024 15:11:05 -0800
+Message-ID: <2024012705-entitle-domelike-67c5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5a9a2cc8ae1889c4002850b00fd4fd9691dfac4e
+git cherry-pick -x 2d1c884a535fcca74814553132d41c15dc9831ef
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012754-uneaten-backwater-0004@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012705-entitle-domelike-67c5@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
-5a9a2cc8ae18 ("drm/amd/display: force toggle rate wa for first link training for a retimer")
-7727e7b60f82 ("drm/amd/display: Improve robustness of FIXED_VS link training at DP1 rates")
-80c6d6804f31 ("drm/amd/display: disable SubVP + DRR to prevent underflow")
-54618888d1ea ("drm/amd/display: break down dc_link.c")
-71d7e8904d54 ("drm/amd/display: Add HDMI manufacturer OUI and device id read")
-65a4cfb45e0e ("drm/amdgpu/display: remove duplicate include header in files")
-e322843e5e33 ("drm/amd/display: fix linux dp link lost handled only one time")
-0c2bfcc338eb ("drm/amd/display: Add Function declaration in dc_link")
-6ca7415f11af ("drm/amd/display: merge dc_link_dp into dc_link")
-de3fb390175b ("drm/amd/display: move dp cts functions from dc_link_dp to link_dp_cts")
-c5a31f178e35 ("drm/amd/display: move dp irq handler functions from dc_link_dp to link_dp_irq_handler")
-0078c924e733 ("drm/amd/display: move eDP panel control logic to link_edp_panel_control")
-bc33f5e5f05b ("drm/amd/display: create accessories, hwss and protocols sub folders in link")
-2daeb74b7d66 ("drm/amdgpu/display/mst: update mst_mgr relevant variable when long HPD")
-028c4ccfb812 ("drm/amd/display: force connector state when bpc changes during compliance")
-603a521ec279 ("drm/amd/display: remove duplicate included header files")
-bd3149014dff ("drm/amd/display: Decrease messaging about DP alt mode state to debug")
-d5a43956b73b ("drm/amd/display: move dp capability related logic to link_dp_capability")
-94dfeaa46925 ("drm/amd/display: move dp phy related logic to link_dp_phy")
-630168a97314 ("drm/amd/display: move dp link training logic to link_dp_training")
+2d1c884a535f ("drm/amd/display: Fix black screen on video playback with embedded panel")
 
 thanks,
 
@@ -96,56 +77,78 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5a9a2cc8ae1889c4002850b00fd4fd9691dfac4e Mon Sep 17 00:00:00 2001
-From: Zhongwei <zhongwei.zhang@amd.com>
-Date: Wed, 8 Nov 2023 16:34:36 +0800
-Subject: [PATCH] drm/amd/display: force toggle rate wa for first link training
- for a retimer
+From 2d1c884a535fcca74814553132d41c15dc9831ef Mon Sep 17 00:00:00 2001
+From: Sung Joon Kim <sungkim@amd.com>
+Date: Fri, 10 Nov 2023 11:33:45 -0500
+Subject: [PATCH] drm/amd/display: Fix black screen on video playback with
+ embedded panel
 
-[WHY]
-Handover from DMUB to driver does not perform link rate toggle.
-It might cause link training failure for boot up.
+[why]
+We have dynamic power control in driver but
+should be ignored when power is forced on.
 
-[HOW]
-Force toggle rate wa for first link train.
-link->vendor_specific_lttpr_link_rate_wa should be zero then.
+[how]
+Bypass any power control when it's forced on.
 
-Cc: stable@vger.kernel.org # 6.1+
-Reviewed-by: Michael Strauss <michael.strauss@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Zhongwei <zhongwei.zhang@amd.com>
+Signed-off-by: Sung Joon Kim <sungkim@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c
-index fd8f6f198146..68096d12f52f 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c
-@@ -115,7 +115,7 @@ static enum link_training_result perform_fixed_vs_pe_nontransparent_training_seq
- 		lt_settings->cr_pattern_time = 16000;
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+index 19f8d83698be..63a0b885b6f0 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+@@ -1132,7 +1132,6 @@ void dcn35_clk_mgr_construct(
+ 			ctx->dc->debug.disable_dpp_power_gate = false;
+ 			ctx->dc->debug.disable_hubp_power_gate = false;
+ 			ctx->dc->debug.disable_dsc_power_gate = false;
+-			ctx->dc->debug.disable_hpo_power_gate = false;
+ 		} else {
+ 			/*let's reset the config control flag*/
+ 			ctx->dc->config.disable_ips = DMUB_IPS_DISABLE_ALL; /*pmfw not support it, disable it all*/
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_pg_cntl.c b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_pg_cntl.c
+index 0f60c40e1fc5..53bd0ae4bab5 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_pg_cntl.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_pg_cntl.c
+@@ -261,6 +261,7 @@ void pg_cntl35_hpo_pg_control(struct pg_cntl *pg_cntl, bool power_on)
+ 	uint32_t power_gate = power_on ? 0 : 1;
+ 	uint32_t pwr_status = power_on ? 0 : 2;
+ 	uint32_t org_ip_request_cntl;
++	uint32_t power_forceon;
+ 	bool block_enabled;
  
- 	/* Fixed VS/PE specific: Toggle link rate */
--	apply_toggle_rate_wa = (link->vendor_specific_lttpr_link_rate_wa == target_rate);
-+	apply_toggle_rate_wa = ((link->vendor_specific_lttpr_link_rate_wa == target_rate) || (link->vendor_specific_lttpr_link_rate_wa == 0));
- 	target_rate = get_dpcd_link_rate(&lt_settings->link_settings);
- 	toggle_rate = (target_rate == 0x6) ? 0xA : 0x6;
+ 	if (pg_cntl->ctx->dc->debug.ignore_pg ||
+@@ -277,6 +278,10 @@ void pg_cntl35_hpo_pg_control(struct pg_cntl *pg_cntl, bool power_on)
+ 			return;
+ 	}
  
-@@ -271,7 +271,7 @@ enum link_training_result dp_perform_fixed_vs_pe_training_sequence_legacy(
- 	/* Vendor specific: Toggle link rate */
- 	toggle_rate = (rate == 0x6) ? 0xA : 0x6;
++	REG_GET(DOMAIN25_PG_CONFIG, DOMAIN_POWER_FORCEON, &power_forceon);
++	if (power_forceon)
++		return;
++
+ 	REG_GET(DC_IP_REQUEST_CNTL, IP_REQUEST_EN, &org_ip_request_cntl);
+ 	if (org_ip_request_cntl == 0)
+ 		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 1);
+@@ -304,6 +309,7 @@ void pg_cntl35_io_clk_pg_control(struct pg_cntl *pg_cntl, bool power_on)
+ 	uint32_t power_gate = power_on ? 0 : 1;
+ 	uint32_t pwr_status = power_on ? 0 : 2;
+ 	uint32_t org_ip_request_cntl;
++	uint32_t power_forceon;
+ 	bool block_enabled;
  
--	if (link->vendor_specific_lttpr_link_rate_wa == rate) {
-+	if (link->vendor_specific_lttpr_link_rate_wa == rate || link->vendor_specific_lttpr_link_rate_wa == 0) {
- 		core_link_write_dpcd(
- 				link,
- 				DP_LINK_BW_SET,
-@@ -617,7 +617,7 @@ enum link_training_result dp_perform_fixed_vs_pe_training_sequence(
- 	/* Vendor specific: Toggle link rate */
- 	toggle_rate = (rate == 0x6) ? 0xA : 0x6;
+ 	if (pg_cntl->ctx->dc->debug.ignore_pg ||
+@@ -319,6 +325,10 @@ void pg_cntl35_io_clk_pg_control(struct pg_cntl *pg_cntl, bool power_on)
+ 			return;
+ 	}
  
--	if (link->vendor_specific_lttpr_link_rate_wa == rate) {
-+	if (link->vendor_specific_lttpr_link_rate_wa == rate || link->vendor_specific_lttpr_link_rate_wa == 0) {
- 		core_link_write_dpcd(
- 				link,
- 				DP_LINK_BW_SET,
++	REG_GET(DOMAIN22_PG_CONFIG, DOMAIN_POWER_FORCEON, &power_forceon);
++	if (power_forceon)
++		return;
++
+ 	REG_GET(DC_IP_REQUEST_CNTL, IP_REQUEST_EN, &org_ip_request_cntl);
+ 	if (org_ip_request_cntl == 0)
+ 		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 1);
 
 
