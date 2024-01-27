@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FACA83F056
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:58:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B5E83F05C
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:00:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E117B283D3F
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 21:58:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17E3B1C20CFE
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C10851B807;
-	Sat, 27 Jan 2024 21:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D4E1B279;
+	Sat, 27 Jan 2024 22:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tH2jl45"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pmm49yDU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808AC33D5
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 21:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3791B7FA
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706392688; cv=none; b=QCw2Ic66TXNUu+YxB31a+lEAq2JO0D5HZzHtgHWYDWNaTQcGFlOttsfKVW3h+Oz+DON2EKxXW83JcOMXYCYke7+KPsN/SBXfjQzsNMGKexTnsJ5T0MLyt46rYKEioMn1Ey9cETKJg/pYQHMd1yw+shNP0fkFkApCD9/CQH1j95U=
+	t=1706392803; cv=none; b=sNcePmyIK5oc6jFYtgmJsyYWdKwVrQochP5cfPceGM7ZxLhE0TxnVaSiytK/IjT0TTPceMwIYNjCvaOmQOn407WKriftnJKawX5SGuLs7bYVCWHdy/7CxfgkzPo3owP6PBaryhUe72Lps/P7WF6H7AbBh21HUYbxsDoVB0e8gKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706392688; c=relaxed/simple;
-	bh=T4NzZWt7+MCqOWunbTvGGOLFtIs2GXTG2e2hkqnOO1I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GcY13qGVlh/GftmFozn/hZ5oPN/44pxTiRqL5dDmXeu6vKIqSj1/EjLaC2FHoDNh+g8c6FfkoEeMV6znHdua3yREsMaFpUmN1fDDxx63ZJygSizHrz5CF1D42hq7GE1KDXzQpAFiUH6k9pIhf634CKTJtTuFb/wzA2Tji3/TOY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tH2jl45; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417E7C433F1;
-	Sat, 27 Jan 2024 21:58:08 +0000 (UTC)
+	s=arc-20240116; t=1706392803; c=relaxed/simple;
+	bh=Mv3QTQ9WJlPkcQyhqIObTD/IaBoZRxrLF9SaRr2K+54=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cRAPI8RBwk4dnWpCzwkxGgeq8qT/SJ/Pr5LDO8kjlN1w5RQlPpQIdWKH9uim1OwgTEU5uB39JyRA+/XsFyMtJlInSmwvC1GKlbAtGCV0G2Xtw/soL4sSAcfhHypCVxgRGv6YaCoEVfpNq0QxPSnSgPChKjJQEzmtnQ5ASLGILqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pmm49yDU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F6EEC433C7;
+	Sat, 27 Jan 2024 22:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706392688;
-	bh=T4NzZWt7+MCqOWunbTvGGOLFtIs2GXTG2e2hkqnOO1I=;
+	s=korg; t=1706392802;
+	bh=Mv3QTQ9WJlPkcQyhqIObTD/IaBoZRxrLF9SaRr2K+54=;
 	h=Subject:To:Cc:From:Date:From;
-	b=1tH2jl45Ju/TfrgQWGvuDQmJ1b6H9GTOlObezs/xn/b/YERZysA60dLiAa+G9oISw
-	 F6sBv0z25NkM/itPduSQ7nBQjxf7bshTLltnj5M5MVEvjoAfnut8MQYBd1WByCndRl
-	 xzwJq++SZ+nksjexp6B0kfJOYwdvBBSo9hAviSno=
-Subject: FAILED: patch "[PATCH] btrfs: zoned: optimize hint byte for zoned allocator" failed to apply to 5.15-stable tree
-To: naohiro.aota@wdc.com,dsterba@suse.com,johannes.thumshirn@wdc.com
+	b=Pmm49yDUlxbtZXVxBDABUP6fF540tpvCt9wsgu6WG4uhfTeK1KWlWh18568xzdVLG
+	 z1lqNjpD9MtG8sT6MDPyMX6B1AxC9SGU+MM4NgV+6a+pQZmjuue6yYXDR13ESZrFCr
+	 I7+uF0/mp+arKrdhE/Xv/4Xw0czwz7flf8yo46H4=
+Subject: FAILED: patch "[PATCH] nfsd: fix RELEASE_LOCKOWNER" failed to apply to 5.15-stable tree
+To: neilb@suse.de,chuck.lever@oracle.com,jlayton@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 13:58:07 -0800
-Message-ID: <2024012707-pushover-sherry-f45f@gregkh>
+Date: Sat, 27 Jan 2024 14:00:01 -0800
+Message-ID: <2024012701-catfight-regular-bc98@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,24 +62,17 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 02444f2ac26eae6385a65fcd66915084d15dffba
+git cherry-pick -x edcf9725150e42beeca42d085149f4c88fa97afd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012707-pushover-sherry-f45f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012701-catfight-regular-bc98@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-02444f2ac26e ("btrfs: zoned: optimize hint byte for zoned allocator")
-b271fee9a41c ("btrfs: zoned: factor out prepare_allocation_zoned()")
-c2707a255623 ("btrfs: zoned: add a dedicated data relocation block group")
-be1a1d7a5d24 ("btrfs: zoned: finish fully written block group")
-a85f05e59bc1 ("btrfs: zoned: avoid chunk allocation if active block group has enough space")
-a12b0dc0aa4d ("btrfs: move ffe_ctl one level up")
-2e654e4bb9ac ("btrfs: zoned: activate block group on allocation")
-afba2bc036b0 ("btrfs: zoned: implement active zone tracking")
-dafc340dbd10 ("btrfs: zoned: introduce physical_map to btrfs_block_group")
-98173255bddd ("btrfs: zoned: calculate free space from zone capacity")
-8eae532be753 ("btrfs: zoned: load zone capacity information from devices")
+edcf9725150e ("nfsd: fix RELEASE_LOCKOWNER")
+043862b09cc0 ("NFSD: Add documenting comment for nfsd4_release_lockowner()")
+bd8fdb6e545f ("NFSD: Modernize nfsd4_release_lockowner()")
+ce3c4ad7f4ce ("NFSD: Fix possible sleep during nfsd4_release_lockowner()")
 
 thanks,
 
@@ -87,57 +80,143 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 02444f2ac26eae6385a65fcd66915084d15dffba Mon Sep 17 00:00:00 2001
-From: Naohiro Aota <naohiro.aota@wdc.com>
-Date: Tue, 19 Dec 2023 01:02:29 +0900
-Subject: [PATCH] btrfs: zoned: optimize hint byte for zoned allocator
+From edcf9725150e42beeca42d085149f4c88fa97afd Mon Sep 17 00:00:00 2001
+From: NeilBrown <neilb@suse.de>
+Date: Mon, 22 Jan 2024 14:58:16 +1100
+Subject: [PATCH] nfsd: fix RELEASE_LOCKOWNER
 
-Writing sequentially to a huge file on btrfs on a SMR HDD revealed a
-decline of the performance (220 MiB/s to 30 MiB/s after 500 minutes).
+The test on so_count in nfsd4_release_lockowner() is nonsense and
+harmful.  Revert to using check_for_locks(), changing that to not sleep.
 
-The performance goes down because of increased latency of the extent
-allocation, which is induced by a traversing of a lot of full block groups.
+First: harmful.
+As is documented in the kdoc comment for nfsd4_release_lockowner(), the
+test on so_count can transiently return a false positive resulting in a
+return of NFS4ERR_LOCKS_HELD when in fact no locks are held.  This is
+clearly a protocol violation and with the Linux NFS client it can cause
+incorrect behaviour.
 
-So, this patch optimizes the ffe_ctl->hint_byte by choosing a block group
-with sufficient size from the active block group list, which does not
-contain full block groups.
+If RELEASE_LOCKOWNER is sent while some other thread is still
+processing a LOCK request which failed because, at the time that request
+was received, the given owner held a conflicting lock, then the nfsd
+thread processing that LOCK request can hold a reference (conflock) to
+the lock owner that causes nfsd4_release_lockowner() to return an
+incorrect error.
 
-After applying the patch, the performance is maintained well.
+The Linux NFS client ignores that NFS4ERR_LOCKS_HELD error because it
+never sends NFS4_RELEASE_LOCKOWNER without first releasing any locks, so
+it knows that the error is impossible.  It assumes the lock owner was in
+fact released so it feels free to use the same lock owner identifier in
+some later locking request.
 
-Fixes: 2eda57089ea3 ("btrfs: zoned: implement sequential extent allocation")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+When it does reuse a lock owner identifier for which a previous RELEASE
+failed, it will naturally use a lock_seqid of zero.  However the server,
+which didn't release the lock owner, will expect a larger lock_seqid and
+so will respond with NFS4ERR_BAD_SEQID.
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index d260b970bec7..6d680031211a 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -4311,6 +4311,24 @@ static int prepare_allocation_zoned(struct btrfs_fs_info *fs_info,
- 		if (fs_info->data_reloc_bg)
- 			ffe_ctl->hint_byte = fs_info->data_reloc_bg;
- 		spin_unlock(&fs_info->relocation_bg_lock);
-+	} else if (ffe_ctl->flags & BTRFS_BLOCK_GROUP_DATA) {
-+		struct btrfs_block_group *block_group;
-+
-+		spin_lock(&fs_info->zone_active_bgs_lock);
-+		list_for_each_entry(block_group, &fs_info->zone_active_bgs, active_bg_list) {
-+			/*
-+			 * No lock is OK here because avail is monotinically
-+			 * decreasing, and this is just a hint.
-+			 */
-+			u64 avail = block_group->zone_capacity - block_group->alloc_offset;
-+
-+			if (block_group_bits(block_group, ffe_ctl->flags) &&
-+			    avail >= ffe_ctl->num_bytes) {
-+				ffe_ctl->hint_byte = block_group->start;
-+				break;
-+			}
-+		}
-+		spin_unlock(&fs_info->zone_active_bgs_lock);
+So clearly it is harmful to allow a false positive, which testing
+so_count allows.
+
+The test is nonsense because ... well... it doesn't mean anything.
+
+so_count is the sum of three different counts.
+1/ the set of states listed on so_stateids
+2/ the set of active vfs locks owned by any of those states
+3/ various transient counts such as for conflicting locks.
+
+When it is tested against '2' it is clear that one of these is the
+transient reference obtained by find_lockowner_str_locked().  It is not
+clear what the other one is expected to be.
+
+In practice, the count is often 2 because there is precisely one state
+on so_stateids.  If there were more, this would fail.
+
+In my testing I see two circumstances when RELEASE_LOCKOWNER is called.
+In one case, CLOSE is called before RELEASE_LOCKOWNER.  That results in
+all the lock states being removed, and so the lockowner being discarded
+(it is removed when there are no more references which usually happens
+when the lock state is discarded).  When nfsd4_release_lockowner() finds
+that the lock owner doesn't exist, it returns success.
+
+The other case shows an so_count of '2' and precisely one state listed
+in so_stateid.  It appears that the Linux client uses a separate lock
+owner for each file resulting in one lock state per lock owner, so this
+test on '2' is safe.  For another client it might not be safe.
+
+So this patch changes check_for_locks() to use the (newish)
+find_any_file_locked() so that it doesn't take a reference on the
+nfs4_file and so never calls nfsd_file_put(), and so never sleeps.  With
+this check is it safe to restore the use of check_for_locks() rather
+than testing so_count against the mysterious '2'.
+
+Fixes: ce3c4ad7f4ce ("NFSD: Fix possible sleep during nfsd4_release_lockowner()")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Cc: stable@vger.kernel.org # v6.2+
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 2fa54cfd4882..6dc6340e2852 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -7911,14 +7911,16 @@ check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner)
+ {
+ 	struct file_lock *fl;
+ 	int status = false;
+-	struct nfsd_file *nf = find_any_file(fp);
++	struct nfsd_file *nf;
+ 	struct inode *inode;
+ 	struct file_lock_context *flctx;
+ 
++	spin_lock(&fp->fi_lock);
++	nf = find_any_file_locked(fp);
+ 	if (!nf) {
+ 		/* Any valid lock stateid should have some sort of access */
+ 		WARN_ON_ONCE(1);
+-		return status;
++		goto out;
  	}
  
- 	return 0;
+ 	inode = file_inode(nf->nf_file);
+@@ -7934,7 +7936,8 @@ check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner)
+ 		}
+ 		spin_unlock(&flctx->flc_lock);
+ 	}
+-	nfsd_file_put(nf);
++out:
++	spin_unlock(&fp->fi_lock);
+ 	return status;
+ }
+ 
+@@ -7944,10 +7947,8 @@ check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner)
+  * @cstate: NFSv4 COMPOUND state
+  * @u: RELEASE_LOCKOWNER arguments
+  *
+- * The lockowner's so_count is bumped when a lock record is added
+- * or when copying a conflicting lock. The latter case is brief,
+- * but can lead to fleeting false positives when looking for
+- * locks-in-use.
++ * Check if theree are any locks still held and if not - free the lockowner
++ * and any lock state that is owned.
+  *
+  * Return values:
+  *   %nfs_ok: lockowner released or not found
+@@ -7983,10 +7984,13 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
+ 		spin_unlock(&clp->cl_lock);
+ 		return nfs_ok;
+ 	}
+-	if (atomic_read(&lo->lo_owner.so_count) != 2) {
+-		spin_unlock(&clp->cl_lock);
+-		nfs4_put_stateowner(&lo->lo_owner);
+-		return nfserr_locks_held;
++
++	list_for_each_entry(stp, &lo->lo_owner.so_stateids, st_perstateowner) {
++		if (check_for_locks(stp->st_stid.sc_file, lo)) {
++			spin_unlock(&clp->cl_lock);
++			nfs4_put_stateowner(&lo->lo_owner);
++			return nfserr_locks_held;
++		}
+ 	}
+ 	unhash_lockowner_locked(lo);
+ 	while (!list_empty(&lo->lo_owner.so_stateids)) {
 
 
