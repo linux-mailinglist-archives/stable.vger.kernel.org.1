@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADFC983F1C0
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:19:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4E983F1C1
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:19:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69734284396
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:19:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D76B71F22D3B
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E00200AD;
-	Sat, 27 Jan 2024 23:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A77200BD;
+	Sat, 27 Jan 2024 23:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wep06Vph"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rr/uwM8a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF6F1B271
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6893E1F946
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706397555; cv=none; b=ndfnEJ7h8ZXYIC7428qLqAX0tBot5jm52fsAVJkZEzb3dAfVSh5FtnA2J0QtISiufMQfWp/f9eUGYorcbekPO/1rny6RUEU6CH8I/w8jvlV9zz9JF0WslshRzI27mVy+1p70WCCwaKHHdHZzUelk4qgtbA2ka+jTICHOuYSFX7Y=
+	t=1706397557; cv=none; b=cZkbgE50oXEKZjbbt2t9WHytcY5WgxRhbgLn2NiXKW3O+vI/BCL0YVOIyzx4HJDgrFCvT7kD67Iev6ZneLV1zJ0Y5W/sW8qHlNBmRlglHe6Z0I1cmnXWzB0BxbC8L4bOvGgR5rF5RT3QhVQelVgKGrOkY+pSeuzngOpcMgeLIm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706397555; c=relaxed/simple;
-	bh=O4TfyAMqkxutq9SITIpHqc28Jhj7+pQ+/hambxsBvNY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bPEezc3QHFnxIOGM2IGsJ/eoZAF6rZ3uxSdj9uYKwW8ceNc83JUPr1urXWCNLqmOl8SiS+BvHLgxtvXmjB5aHvsJbJhs6c0pFnrSLEZuNtRMl+HffCuaxi3EK7wIynrl+prLJT4x01gdvrRdlW1rphRxPwtiS5c0EVAnPIF0caU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wep06Vph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB42C433F1;
-	Sat, 27 Jan 2024 23:19:14 +0000 (UTC)
+	s=arc-20240116; t=1706397557; c=relaxed/simple;
+	bh=ED+Y0rNMN+naXOaIa/sE3MuLrTOpqyQX9GaeHOv7h/A=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CXEqiEAgUxhu5aAj0GwQzW4YYg9X4yBMwg5/grAPXGOtM8iCcMbg/bGW1erqx/WM4G8qxk8j3diTnx5CjDtMDyR8s/E4u8kZIt0HhHGDtnJoim4Sc79bzZioDOB/YnrSqnRh601GR1ldOKSwoG6iSNuiH+kuvf6l4g+06Zb4l1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rr/uwM8a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E329EC433F1;
+	Sat, 27 Jan 2024 23:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706397554;
-	bh=O4TfyAMqkxutq9SITIpHqc28Jhj7+pQ+/hambxsBvNY=;
+	s=korg; t=1706397557;
+	bh=ED+Y0rNMN+naXOaIa/sE3MuLrTOpqyQX9GaeHOv7h/A=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Wep06Vphn2y+VxOpCp6wIuhL8rI9jvdxKuW27Oa3TTMRZ7Ysw7zbbiJHSaT+ZtczW
-	 qtZ700ihl7cVTOF8SX5z7vDrb+cse/3DJJV19OjwjMdyO4F5AyGHA15rV5wzZSMb0L
-	 M4v7qv7+OMgMUdRuhHPVNDKyKhqP5kONQlJ2kRzc=
-Subject: FAILED: patch "[PATCH] drm/amdgpu/gfx11: set UNORD_DISPATCH in compute MQDs" failed to apply to 6.7-stable tree
+	b=rr/uwM8aRkaJLc6kPStEPuQ272L3LYpI78ngmgGS/MzZFcRJtphgGXGTXypeYKFLg
+	 uflNJkdfgJXEGaCpBDjiBIjG5cMhBWejV7D0YnTU4eWbjB8ya7GUpU509dveF1DRNI
+	 KHMQkdvDYumW+yrIjzRhRG6cPaqlvjVGkvKLCYl4=
+Subject: FAILED: patch "[PATCH] drm/amdgpu/gfx11: set UNORD_DISPATCH in compute MQDs" failed to apply to 6.6-stable tree
 To: alexander.deucher@amd.com,Feifei.Xu@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 15:19:13 -0800
-Message-ID: <2024012713-spoken-renter-2f39@gregkh>
+Date: Sat, 27 Jan 2024 15:19:16 -0800
+Message-ID: <2024012716-tranquil-debtless-e305@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.7-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3380fcad2c906872110d31ddf7aa1fdea57f9df6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012713-spoken-renter-2f39@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012716-tranquil-debtless-e305@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 3380fcad2c90 ("drm/amdgpu/gfx11: set UNORD_DISPATCH in compute MQDs")
 91963397c49a ("drm/amdgpu: Enable tunneling on high-priority compute queues")
+6cb8e3ee3a08 ("drm/amdgpu: update ib start and size alignment")
+7a41ed8b59ba ("drm/amdgpu: add new INFO ioctl query for the last GPU page fault")
+2e8ef6a56129 ("drm/amdgpu: add cached GPU fault structure to vm struct")
 
 thanks,
 
