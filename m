@@ -1,76 +1,76 @@
-Return-Path: <stable+bounces-16117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0726983F07D
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:07:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E9983F0AE
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:30:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7307AB242EF
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:07:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DFB51F2583E
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:30:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D790A1B954;
-	Sat, 27 Jan 2024 22:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2614814A97;
+	Sat, 27 Jan 2024 22:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlYphKg7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEXrw4l2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968A11B80E
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB57D1F5F7
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706393259; cv=none; b=XWbAXGBvAVAiQsvto+ii4MI/kjNksDLyL113AtN2IvIG8F05eLZyBWjEIdl2jUwQ1tWiN5dZuhEqnBLJPFFEOYHdm1kPXOnEE7wkTRswZRbw5FkYBKZSemAsu6nzgfezwXeg7/Uqz0x8bcW0yP1vo/C4xveqh4MM7oV8JTUi0tI=
+	t=1706394631; cv=none; b=XTTAXsAPdLUjM5KXapO5dTtHVgjOxInpUvSWHt5M/mud7adQ1DxPXTdRmjGhZ0V273d6zjfFtG+0yaYNEmcm8Krs7eBr9ANp3YKxOUDwzlYqiwDPlYRp4WNVzsJ/L8Owh1TF0qWPV+7Gc8msGdfLIXebjbqu5nCxZksy9RY+HCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706393259; c=relaxed/simple;
-	bh=N0VCXoG2g+hwgdtfkyX6gxpweM7XvDiPJYjboewX9mM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QxySbipW9W5jpsVavBlFSth3zlEzvP0QOaepE1k28JLWtQOYMZZuxg+gyfoeaInP3En2DCsz50V679V7zvtlK9pzkGe5wjEvosMW0TDrU9g0fYyqu78BQ/yPE2ZOM8kVyrta8T3LcHwEW64YAt75XZuAfOeYzXhC0Wm7o2OzAmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlYphKg7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB61AC433C7;
-	Sat, 27 Jan 2024 22:07:38 +0000 (UTC)
+	s=arc-20240116; t=1706394631; c=relaxed/simple;
+	bh=LUPxPVDNa8jF1chmqGQKtc3ksiXyy7WTSoaLztGYlVA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NcB+Mh43qE+o9zXcFlt/QKdAdULftYG4xj9ho8WN4Ij2SKs59BDwxG/ExeLkBGQ8cCTmwL564Vfey4XLyEcxYWFWliM0yvGdE2gwlF4CyO+Euj2qfeEgB2WpGUVqGudSTgxY5P/yqWG9aOcbi1M2EDgjN+kU8o1HzBymNYaK14k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEXrw4l2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98370C433C7;
+	Sat, 27 Jan 2024 22:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706393259;
-	bh=N0VCXoG2g+hwgdtfkyX6gxpweM7XvDiPJYjboewX9mM=;
+	s=korg; t=1706394631;
+	bh=LUPxPVDNa8jF1chmqGQKtc3ksiXyy7WTSoaLztGYlVA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rlYphKg7p2f5tmOGnmrLfASdnLnFcAyfYJdgLZ0C94WxEiQrMq6wsZlfgdndrXezP
-	 oO4Y31caIZi35cQuaKbVMvtFliVsKr0jjr5ozFvMf5wQfjVlNQdKK1slZ4O1rd3DBT
-	 L6OsdDpnbPcgxJoMTuefDbL13sbYSrsTyXLAdPqo=
-Subject: FAILED: patch "[PATCH] cpufreq: intel_pstate: Refine computation of P-state for" failed to apply to 5.15-stable tree
-To: rafael.j.wysocki@intel.com,srinivas.pandruvada@linux.intel.com,stable@vger.kernel.org
+	b=lEXrw4l2z27jXPqF0fqOrXDHXHQkBuWVKtZ7AR/Vb/DfAyHMoXj/sbhO4pZozAZys
+	 WvFTLcetfPZZDEK3THkr/DkN11idJ4h1Nt/cHYSPTL1/iUmxdeZ59CqBbSF5nqQIY8
+	 RxQMYjDTy+Z85ijTc+kZhPKPaA+uRYJPc4ogcbAE=
+Subject: FAILED: patch "[PATCH] drm/i915/psr: Only allow PSR in LPSP mode on HSW non-ULT" failed to apply to 6.6-stable tree
+To: ville.syrjala@linux.intel.com,joonas.lahtinen@linux.intel.com,jouni.hogander@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 14:07:37 -0800
-Message-ID: <2024012737-lavish-haziness-80cc@gregkh>
+Date: Sat, 27 Jan 2024 14:30:30 -0800
+Message-ID: <2024012730-encroach-lid-4960@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 192cdb1c907fd8df2d764c5bb17496e415e59391
+git cherry-pick -x f9f031dd21a7ce13a13862fa5281d32e1029c70f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012737-lavish-haziness-80cc@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012730-encroach-lid-4960@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-192cdb1c907f ("cpufreq: intel_pstate: Refine computation of P-state for given frequency")
-458b03f81afb ("cpufreq: intel_pstate: Drop redundant intel_pstate_get_hwp_cap() call")
+f9f031dd21a7 ("drm/i915/psr: Only allow PSR in LPSP mode on HSW non-ULT")
+a2cd15c24116 ("drm/i915/lnl: Remove watchdog timers for PSR")
 
 thanks,
 
@@ -78,138 +78,67 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 192cdb1c907fd8df2d764c5bb17496e415e59391 Mon Sep 17 00:00:00 2001
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Date: Mon, 22 Jan 2024 15:18:11 +0100
-Subject: [PATCH] cpufreq: intel_pstate: Refine computation of P-state for
- given frequency
+From f9f031dd21a7ce13a13862fa5281d32e1029c70f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
+Date: Thu, 18 Jan 2024 23:21:31 +0200
+Subject: [PATCH] drm/i915/psr: Only allow PSR in LPSP mode on HSW non-ULT
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On systems using HWP, if a given frequency is equal to the maximum turbo
-frequency or the maximum non-turbo frequency, the HWP performance level
-corresponding to it is already known and can be used directly without
-any computation.
+On HSW non-ULT (or at least on Dell Latitude E6540) external displays
+start to flicker when we enable PSR on the eDP. We observe a much higher
+SR and PC6 residency than should be possible with an external display,
+and indeen much higher than what we observe with eDP disabled and
+only the external display enabled. Looks like the hardware is somehow
+ignoring the fact that the external display is active during PSR.
 
-Accordingly, adjust the code to use the known HWP performance levels in
-the cases mentioned above.
+I wasn't able to redproduce this on my HSW ULT machine, or BDW.
+So either there's something specific about this particular laptop
+(eg. some unknown firmware thing) or the issue is limited to just
+non-ULT HSW systems. All known registers that could affect this
+look perfectly reasonable on the affected machine.
 
-This also helps to avoid limiting CPU capacity artificially in some
-cases when the BIOS produces the HWP_CAP numbers using a different
-E-core-to-P-core performance scaling factor than expected by the kernel.
+As a workaround let's unmask the LPSP event to prevent PSR entry
+except while in LPSP mode (only pipe A + eDP active). This
+will prevent PSR entry entirely when multiple pipes are active.
+The one slight downside is that we now also prevent PSR entry
+when driving eDP with pipe B or C, but I think that's a reasonable
+tradeoff to avoid having to implement a more complex workaround.
 
-Fixes: f5c8cf2a4992 ("cpufreq: intel_pstate: hybrid: Use known scaling factor for P-cores")
-Cc: 6.1+ <stable@vger.kernel.org> # 6.1+
-Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 783d8b80871f ("drm/i915/psr: Re-enable PSR1 on hsw/bdw")
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10092
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240118212131.31868-1-ville.syrjala@linux.intel.com
+Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
+(cherry picked from commit 94501c3ca6400e463ff6cc0c9cf4a2feb6a9205d)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index 2ca70b0b5fdc..ca94e60e705a 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -529,6 +529,30 @@ static int intel_pstate_cppc_get_scaling(int cpu)
- }
- #endif /* CONFIG_ACPI_CPPC_LIB */
- 
-+static int intel_pstate_freq_to_hwp_rel(struct cpudata *cpu, int freq,
-+					unsigned int relation)
-+{
-+	if (freq == cpu->pstate.turbo_freq)
-+		return cpu->pstate.turbo_pstate;
-+
-+	if (freq == cpu->pstate.max_freq)
-+		return cpu->pstate.max_pstate;
-+
-+	switch (relation) {
-+	case CPUFREQ_RELATION_H:
-+		return freq / cpu->pstate.scaling;
-+	case CPUFREQ_RELATION_C:
-+		return DIV_ROUND_CLOSEST(freq, cpu->pstate.scaling);
-+	}
-+
-+	return DIV_ROUND_UP(freq, cpu->pstate.scaling);
-+}
-+
-+static int intel_pstate_freq_to_hwp(struct cpudata *cpu, int freq)
-+{
-+	return intel_pstate_freq_to_hwp_rel(cpu, freq, CPUFREQ_RELATION_L);
-+}
-+
- /**
-  * intel_pstate_hybrid_hwp_adjust - Calibrate HWP performance levels.
-  * @cpu: Target CPU.
-@@ -546,6 +570,7 @@ static void intel_pstate_hybrid_hwp_adjust(struct cpudata *cpu)
- 	int perf_ctl_scaling = cpu->pstate.perf_ctl_scaling;
- 	int perf_ctl_turbo = pstate_funcs.get_turbo(cpu->cpu);
- 	int scaling = cpu->pstate.scaling;
-+	int freq;
- 
- 	pr_debug("CPU%d: perf_ctl_max_phys = %d\n", cpu->cpu, perf_ctl_max_phys);
- 	pr_debug("CPU%d: perf_ctl_turbo = %d\n", cpu->cpu, perf_ctl_turbo);
-@@ -559,16 +584,16 @@ static void intel_pstate_hybrid_hwp_adjust(struct cpudata *cpu)
- 	cpu->pstate.max_freq = rounddown(cpu->pstate.max_pstate * scaling,
- 					 perf_ctl_scaling);
- 
--	cpu->pstate.max_pstate_physical =
--			DIV_ROUND_UP(perf_ctl_max_phys * perf_ctl_scaling,
--				     scaling);
-+	freq = perf_ctl_max_phys * perf_ctl_scaling;
-+	cpu->pstate.max_pstate_physical = intel_pstate_freq_to_hwp(cpu, freq);
- 
--	cpu->pstate.min_freq = cpu->pstate.min_pstate * perf_ctl_scaling;
-+	freq = cpu->pstate.min_pstate * perf_ctl_scaling;
-+	cpu->pstate.min_freq = freq;
- 	/*
- 	 * Cast the min P-state value retrieved via pstate_funcs.get_min() to
- 	 * the effective range of HWP performance levels.
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index 8f702c3fc62d..57bbf3e3af92 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -1525,8 +1525,18 @@ static void intel_psr_enable_source(struct intel_dp *intel_dp,
+ 	 * can rely on frontbuffer tracking.
  	 */
--	cpu->pstate.min_pstate = DIV_ROUND_UP(cpu->pstate.min_freq, scaling);
-+	cpu->pstate.min_pstate = intel_pstate_freq_to_hwp(cpu, freq);
- }
+ 	mask = EDP_PSR_DEBUG_MASK_MEMUP |
+-	       EDP_PSR_DEBUG_MASK_HPD |
+-	       EDP_PSR_DEBUG_MASK_LPSP;
++	       EDP_PSR_DEBUG_MASK_HPD;
++
++	/*
++	 * For some unknown reason on HSW non-ULT (or at least on
++	 * Dell Latitude E6540) external displays start to flicker
++	 * when PSR is enabled on the eDP. SR/PC6 residency is much
++	 * higher than should be possible with an external display.
++	 * As a workaround leave LPSP unmasked to prevent PSR entry
++	 * when external displays are active.
++	 */
++	if (DISPLAY_VER(dev_priv) >= 8 || IS_HASWELL_ULT(dev_priv))
++		mask |= EDP_PSR_DEBUG_MASK_LPSP;
  
- static inline void update_turbo_state(void)
-@@ -2528,13 +2553,12 @@ static void intel_pstate_update_perf_limits(struct cpudata *cpu,
- 	 * abstract values to represent performance rather than pure ratios.
- 	 */
- 	if (hwp_active && cpu->pstate.scaling != perf_ctl_scaling) {
--		int scaling = cpu->pstate.scaling;
- 		int freq;
- 
- 		freq = max_policy_perf * perf_ctl_scaling;
--		max_policy_perf = DIV_ROUND_UP(freq, scaling);
-+		max_policy_perf = intel_pstate_freq_to_hwp(cpu, freq);
- 		freq = min_policy_perf * perf_ctl_scaling;
--		min_policy_perf = DIV_ROUND_UP(freq, scaling);
-+		min_policy_perf = intel_pstate_freq_to_hwp(cpu, freq);
- 	}
- 
- 	pr_debug("cpu:%d min_policy_perf:%d max_policy_perf:%d\n",
-@@ -2908,18 +2932,7 @@ static int intel_cpufreq_target(struct cpufreq_policy *policy,
- 
- 	cpufreq_freq_transition_begin(policy, &freqs);
- 
--	switch (relation) {
--	case CPUFREQ_RELATION_L:
--		target_pstate = DIV_ROUND_UP(freqs.new, cpu->pstate.scaling);
--		break;
--	case CPUFREQ_RELATION_H:
--		target_pstate = freqs.new / cpu->pstate.scaling;
--		break;
--	default:
--		target_pstate = DIV_ROUND_CLOSEST(freqs.new, cpu->pstate.scaling);
--		break;
--	}
--
-+	target_pstate = intel_pstate_freq_to_hwp_rel(cpu, freqs.new, relation);
- 	target_pstate = intel_cpufreq_update_pstate(policy, target_pstate, false);
- 
- 	freqs.new = target_pstate * cpu->pstate.scaling;
-@@ -2937,7 +2950,7 @@ static unsigned int intel_cpufreq_fast_switch(struct cpufreq_policy *policy,
- 
- 	update_turbo_state();
- 
--	target_pstate = DIV_ROUND_UP(target_freq, cpu->pstate.scaling);
-+	target_pstate = intel_pstate_freq_to_hwp(cpu, target_freq);
- 
- 	target_pstate = intel_cpufreq_update_pstate(policy, target_pstate, true);
- 
+ 	if (DISPLAY_VER(dev_priv) < 20)
+ 		mask |= EDP_PSR_DEBUG_MASK_MAX_SLEEP;
 
 
