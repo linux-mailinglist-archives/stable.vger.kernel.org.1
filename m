@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD27E83F196
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:11:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC45083F195
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:11:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F2B5B210A8
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A683D284FC3
 	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F8D200AD;
-	Sat, 27 Jan 2024 23:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B74B200BC;
+	Sat, 27 Jan 2024 23:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JUTwPYdp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UaG+CUv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2795F1F946
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B7B1F946
 	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706397067; cv=none; b=AFuPfaXmEKhYdPZarQtvyOrlcUL0dfJoi5xEqUzdsKld7k5O+SiP2TXyE4d+QE97IilrZFpeIhovufmh+4BT5rh7qMyW3ZBhhNiefvaYEXIEMDMZy1uq9BXZnHAWp6OrsdAaLAUyoLDu6QkRPCUHPzVCQz1Fe02oKgvvUXPsoVY=
+	t=1706397068; cv=none; b=eL/h77i6EETHq1uOLCIW2HHcRTXOIyZs2v1k12USsd+i67DRWaFpIksZIph8BcXfR0DK+Qq4zku1VEO+98ZA8zmzwvD3Te+iG1D807ofYSwT+bl0d36VhU7GD+fhhJezuKDlYqnGOXxWOfU6SykPxqh+xxmY6peA+KzIUnDNaFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706397067; c=relaxed/simple;
-	bh=do9KP9jS/58bgWTWOTNhzvn0Gm6DP16BTQbDx1P8DzE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=P87uH7ta9sowMsSZd2uAr3ZsbmUJ1EcjHuk63m5D13YJrxeGrrjSFVDLcNC0t4zmavyWFdTxNhJD9nKyNRtXh9FeUesPOigbq7mOPCAOU9jtcuRF9wlKdKJ2V1q/Ojb14VCHdPTfUFNn6TcUXvtgyQIzBgZNaI6MNQLPGZNJb5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JUTwPYdp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAC4C43390;
-	Sat, 27 Jan 2024 23:11:06 +0000 (UTC)
+	s=arc-20240116; t=1706397068; c=relaxed/simple;
+	bh=aAH17vqcMQqfc2ZBgMW1PixDX/KyD058c07+NuYhhO8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=q3Dawc/D9y6ddidY8mi2Zs0ES1LLfv+qJ2gcM8gGRwlOGvKIpZ1bR26S4d1BpEM03EQeseqROoFVdx2uYAahIwcdpNNlvJGru37a8J0oKITWIP3Sg6ft/q0XNz/7aG8jZ1HXl/BVHOOKfVO4t9uRcBZRAaBN1QcIw12pbZRLY3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UaG+CUv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F55C433C7;
+	Sat, 27 Jan 2024 23:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
 	s=korg; t=1706397067;
-	bh=do9KP9jS/58bgWTWOTNhzvn0Gm6DP16BTQbDx1P8DzE=;
+	bh=aAH17vqcMQqfc2ZBgMW1PixDX/KyD058c07+NuYhhO8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=JUTwPYdpDG+sjaVrcIvZFVCfs3SKDXrZgQ+2MQn8fLtQiSKoVqLnZF+x1TJisBst2
-	 H0PR8xdbQ72y7NCV3roAF+Z9kO7phSps0JaOhjKRe9g86K7uwHrs0jjIpS0+nUGVyB
-	 FROmLDcuqFE/hl8q9e/VpAmqZpVLgMyZT9MfR0og=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix black screen on video playback with" failed to apply to 6.6-stable tree
+	b=0UaG+CUvQGUgA6EJpBDgwVhmBpp7vPRSvdp8RoOlERDKuBk+ZwCi8XJMsUYan/KbT
+	 4G8fd9K8iNCDrycilhYYR4YU9ZSzkjPHECMawRSJZKry3eMbHUL60AluuHQTFMaR+n
+	 +qpSeCuodeEWrMDgvAWG9cyuUuGZPEQfLAq89A7k=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix black screen on video playback with" failed to apply to 6.1-stable tree
 To: sungkim@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,nicholas.kazlauskas@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 15:11:06 -0800
-Message-ID: <2024012705-impatient-landscape-fc7b@gregkh>
+Date: Sat, 27 Jan 2024 15:11:07 -0800
+Message-ID: <2024012706-overlabor-upstart-9be5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2d1c884a535fcca74814553132d41c15dc9831ef
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012705-impatient-landscape-fc7b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012706-overlabor-upstart-9be5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -86,6 +86,9 @@ fb8c3ef80584 ("drm/amd/display: Update dc.h for DCN35 support")
 5e77c339a291 ("drm/amd/display: Skip dmub memory flush when not needed")
 0b9dc439f404 ("drm/amd/display: Write flip addr to scratch reg for subvp")
 96182df99dad ("drm/amd/display: Enable runtime register offset init for DCN32 DMUB")
+53f328807946 ("drm/amd/display: implement pipe type definition and adding accessors")
+73d450926432 ("drm/amd/display: fix incorrect stream_res allocation for older ASIC")
+198f0e895349 ("drm/amd/display: rename acquire_idle_pipe_for_layer to acquire_free_pipe_as_sec_dpp_pipe")
 
 thanks,
 
