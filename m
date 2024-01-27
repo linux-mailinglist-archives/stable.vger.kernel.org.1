@@ -1,116 +1,93 @@
-Return-Path: <stable+bounces-16085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A2783EF5E
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 19:07:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C64783EF63
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 19:15:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0386283C32
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 18:07:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B57101F2266D
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 18:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363462D043;
-	Sat, 27 Jan 2024 18:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD1532D046;
+	Sat, 27 Jan 2024 18:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d57GkvdT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WhLcDbWE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CA829429;
-	Sat, 27 Jan 2024 18:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3352E62C;
+	Sat, 27 Jan 2024 18:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706378869; cv=none; b=nA2ECl+oX2dN91BcZahTSjrS0gqICujIghKy/k0RFoHPzVu8+a890tH56deq8SlHvM1/t/12IP+7mDIH7usDWSkkJxuufqGx3PZWkmEqfq9j4vUmAP9PBQL41Oczztqd4EUPmj9GbaHQDEi4CmOgqOFFS+bRfVJzP5DR+dCHaC8=
+	t=1706379350; cv=none; b=UNJmOD7tvnELXFLPAUff1UmEzCI3ftXJLgGQR3oE9fUMJGmimHpZo7Znt6phV0wexf9D2gYT33V1QW4JgmFsY52/37+fdVddTAmMaZVz52B2fRyy5iPWVg+28DrBtnG1otY/rOHvSWjBPTwkvVFMJb9DPIVicUeV4fdOcfa+NDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706378869; c=relaxed/simple;
-	bh=qtNyFxcBkmUTCmrI3w7d91OiAWcSyJmp5wFzXkJnfgU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=mzpxmDGDGil08d1aQ7bxVFMj86qKczBWn5ZM13Tymv/sS9qnRlNdL2gB6I/Zyn3xmznQCqU+0cQfq05W674OBcvxpfz8MCGLpKxNR3yw+ZxqmSTjw/d2Jx6CbusTVZB94eB2b1gY4Cn++nE+YLUWJaOP+uHa56/XIlHVf/fSUl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d57GkvdT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74D9C433F1;
-	Sat, 27 Jan 2024 18:07:47 +0000 (UTC)
+	s=arc-20240116; t=1706379350; c=relaxed/simple;
+	bh=LrU/7SWvwrJVPlG5BOtqJ2kEhJ5lTIQrMwyoQlSYZ4o=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=a4kRJo1fvLWfTPfFpZ2ZjSbsHIAEmdDyhHbvE9saIu0RTd4Ttm7YJypqA5wpoWr/VHSM2U7p66iE+xBvHjsizwlF1M9dfN0JWGe+I9guq55avnZs8hCe5wSNJ2xSSP6zi631SPE5BT9I5nPwiebYesy/w2JRZyAPdhEfkbxlW/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WhLcDbWE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05777C433F1;
+	Sat, 27 Jan 2024 18:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706378868;
-	bh=qtNyFxcBkmUTCmrI3w7d91OiAWcSyJmp5wFzXkJnfgU=;
-	h=From:Date:Subject:To:Cc:From;
-	b=d57GkvdTT9GzIuvTC7jRsYQ+SvmHJ52/jRZXK/P+rCS43j+eyxu4wVgwp4dgAfxL4
-	 yQmoj/kWH6qed1J5imgzEhN86fwDZhMdEXyRgfHMza9QaH3G7LYzouri7I9v1W2IAr
-	 N2vuE335kezdqO/WNlTsV0QlLf0DMDnLkdjo5p+2EoMBL6Fs7ZxcLRzOOAOM6PKOa9
-	 QlFXE6HQRiopY5Hxn/mnghXRunvudA4dDMgO228A90S9f8S7vmlbiJbW/R/JQyNKHB
-	 W27MLiv508K5dmU5F3Q296hYqMhH5Kmw3UEcvgxCii6W3XILZLnoFYvTkXm+pwlIcc
-	 s/AJQ26MNlG9Q==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Sat, 27 Jan 2024 11:07:43 -0700
-Subject: [PATCH] powerpc: xor_vmx: Add '-mhard-float' to CFLAGS
+	s=k20201202; t=1706379349;
+	bh=LrU/7SWvwrJVPlG5BOtqJ2kEhJ5lTIQrMwyoQlSYZ4o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WhLcDbWEOY6egcnBMwbRdFmKc7L6/o2vstZhB7pL10Jhn1rjLJmGfpFEH4OqauWdi
+	 TjRudwi77U3voqI4IOEvKed7sSjcKBUkRECElxEkuq8IWhdwLWRoT01cL0dVO1Gmwf
+	 8wT9yMvYLrMvnhqvXOKLqudXStBhDyyR/Y22iQKzeMke8usAsQwZhXjm1w1GMiXUkN
+	 zY1dThNcaudM0Dx8f1bSOCgYVEsRbYFB5CtIyFzRs0CzwwaQJjO8iQbSKyUHstATSa
+	 4EfrQzGnuumskY6soF+m24AM7tq5Z5MMmqzjAOV1OQmiQUZb4kxS5d8BSSRPBPdeYJ
+	 68It/MKEtp4uA==
+From: fdmanana@kernel.org
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Filipe Manana <fdmanana@suse.com>
+Subject: [PATCH v2 0/4 for stable 6.1] btrfs: some directory fixes for stable 6.1
+Date: Sat, 27 Jan 2024 18:15:38 +0000
+Message-Id: <cover.1706379057.git.fdmanana@suse.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1706377319.git.fdmanana@suse.com>
+References: <cover.1706377319.git.fdmanana@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240127-ppc-xor_vmx-drop-msoft-float-v1-1-f24140e81376@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAG5GtWUC/x3MUQqDMAwA0KtIvhfQTlS8ioxR23QG1JRUpCDe3
- bLP9/MuSKRMCcbqAqWTE8te0LwqcIvdf4Tsi8HUpq0b02OMDrPo99wyepWIW5JwYFjFHmh9N8z
- tuw9D56AUUSlw/vfT574fW3QHpW4AAAA=
-To: mpe@ellerman.id.au
-Cc: npiggin@gmail.com, christophe.leroy@csgroup.eu, aneesh.kumar@kernel.org, 
- naveen.n.rao@linux.ibm.com, morbo@google.com, justinstitt@google.com, 
- linuxppc-dev@lists.ozlabs.org, patches@lists.linux.dev, 
- llvm@lists.linux.dev, stable@vger.kernel.org, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.13-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1691; i=nathan@kernel.org;
- h=from:subject:message-id; bh=qtNyFxcBkmUTCmrI3w7d91OiAWcSyJmp5wFzXkJnfgU=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDKlb3YqnZ6/+dz2C5YNv4empdqc5Cq5OfGkX+pf7Wc2mB
- NXvbCumdJSyMIhxMciKKbJUP1Y9bmg45yzjjVOTYOawMoEMYeDiFICJvGxi+O/i6GD82yvIZuIf
- 1Xu/dq6Y/2SD/bO/f//+s8t7kLfsk3ECI8PKA4zulfevxsQ3h909xy8fuCHzMUPihb7EvVcfb7w
- bNJcHAA==
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Transfer-Encoding: 8bit
 
-arch/powerpc/lib/xor_vmx.o is built with '-msoft-float' (from the main
-powerpc Makefile) and '-maltivec' (from its CFLAGS), which causes an
-error when building with clang after a recent change in main:
+From: Filipe Manana <fdmanana@suse.com>
 
-  error: option '-msoft-float' cannot be specified with '-maltivec'
-  make[6]: *** [scripts/Makefile.build:243: arch/powerpc/lib/xor_vmx.o] Error 1
+Here follows the backport of some directory related fixes for the stable
+6.1 tree. I tested these on top of 6.1.75.
 
-Explicitly add '-mhard-float' before '-maltivec' in xor_vmx.o's CFLAGS
-to override the previous inclusion of '-msoft-float' (as the last option
-wins), which matches how other areas of the kernel use '-maltivec', such
-as AMDGPU.
+These were recently requested by a user for 5.15 stable:
 
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1986
-Link: https://github.com/llvm/llvm-project/commit/4792f912b232141ecba4cbae538873be3c28556c
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- arch/powerpc/lib/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+   https://lore.kernel.org/linux-btrfs/20240124225522.GA2614102@lxhi-087/
 
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index 6eac63e79a89..0ab65eeb93ee 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -76,7 +76,7 @@ obj-$(CONFIG_PPC_LIB_RHEAP) += rheap.o
- obj-$(CONFIG_FTR_FIXUP_SELFTEST) += feature-fixups-test.o
- 
- obj-$(CONFIG_ALTIVEC)	+= xor_vmx.o xor_vmx_glue.o
--CFLAGS_xor_vmx.o += -maltivec $(call cc-option,-mabi=altivec)
-+CFLAGS_xor_vmx.o += -mhard-float -maltivec $(call cc-option,-mabi=altivec)
- # Enable <altivec.h>
- CFLAGS_xor_vmx.o += -isystem $(shell $(CC) -print-file-name=include)
- 
+This request is to backport the same patches to 6.1, while the request
+for 5.15 stabe is at:
 
----
-base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
-change-id: 20240127-ppc-xor_vmx-drop-msoft-float-ad68b437f86c
+   https://lore.kernel.org/linux-btrfs/cover.1706183427.git.fdmanana@suse.com/
 
-Best regards,
+V2: Added missing stashes changes to fix compilation for patch 1/4.
+
+Filipe Manana (4):
+  btrfs: fix infinite directory reads
+  btrfs: set last dir index to the current last index when opening dir
+  btrfs: refresh dir last index during a rewinddir(3) call
+  btrfs: fix race between reading a directory and adding entries to it
+
+ fs/btrfs/ctree.h         |   1 +
+ fs/btrfs/delayed-inode.c |   5 +-
+ fs/btrfs/delayed-inode.h |   1 +
+ fs/btrfs/inode.c         | 150 +++++++++++++++++++++++++--------------
+ 4 files changed, 102 insertions(+), 55 deletions(-)
+
 -- 
-Nathan Chancellor <nathan@kernel.org>
+2.40.1
 
 
