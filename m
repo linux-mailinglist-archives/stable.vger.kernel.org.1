@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564E383F0FA
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:40:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC7B83F0FB
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:40:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88D761C219AD
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:40:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4CFE1F216DA
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6A41E52B;
-	Sat, 27 Jan 2024 22:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60731DFFB;
+	Sat, 27 Jan 2024 22:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1UF2TMeY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T70OymRe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EADC1D6B8
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854A61D6B8
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706395239; cv=none; b=c+CfXSiY/35p6QHR20vAlEM88PoqruO4YPnxbJbDgS15bikADSzy2Rmsz1KHM6H6VGAtdCuDL8/BhY7weptZCg3fBLiBwpqtFdWYJkf5Z4zibXIDU+Re8u51OXy4wcWWsYWQNx3bqB0kU7yzwUrdHpI3iif684WL+egA4cNeMVg=
+	t=1706395240; cv=none; b=WwAllx6FoCsaN75jaAH28hJJPv3/ib0kzY2FHSm1Qeyfeu2+drosAOSloA/0wcbRo3YkpLQNybLiIlgQmHg5b3zwZhY6esuaFK+keSHss+mLqJs0yLjEKxQ+Y2n9amUYgoIuhtmpldbQhWKPkwInGtJLYHHWHXdj1HLxlOedg7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706395239; c=relaxed/simple;
-	bh=th4/ZJGt3A3M+cbzP6W27BtYQbQPXB1OPQOTZp/ge6w=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=X8OtyR2H7MdBwYLme0iXokSw72zhS0z6N66XDxKMOpaCFII0km3bmBjzzWMS3iZOmdyYM9mvFQAx4d42cQYTgNbLDZF7B0tVbLenTyz0RThq44ThRLbppwALrQyx1ZF6N8u8rRpk1qqCIcko87LjCBmBhdghaaTNu/AjjW6rbHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1UF2TMeY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5992C43394;
-	Sat, 27 Jan 2024 22:40:38 +0000 (UTC)
+	s=arc-20240116; t=1706395240; c=relaxed/simple;
+	bh=FcMqYtkzEgqBJHQfVSKCU8X1zWbLUCk/pd6tn/oSQqo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Y1Femk9P4ZPjM+vEh2FMYwb2Yv7LelPkk6mo2l+ofBnO6TiowzYIMau9MhpFeCFK9lbJORNuFo3bdFR/Q0s209EwWc2YBsMj8c5WSmgRtAaZ+Y/H9up+9u4wGH4WTDZVaxXGoe8/E8U1S/pjHElBDAoGUzv01mQ8pBdxYNqxMpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T70OymRe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA45EC433F1;
+	Sat, 27 Jan 2024 22:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706395239;
-	bh=th4/ZJGt3A3M+cbzP6W27BtYQbQPXB1OPQOTZp/ge6w=;
+	s=korg; t=1706395240;
+	bh=FcMqYtkzEgqBJHQfVSKCU8X1zWbLUCk/pd6tn/oSQqo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=1UF2TMeYQCPQN4l+UuEKuqmMkwUX3q3I8fb2S7oytFJyggGMt30qX3QvP1iZRGUFO
-	 XLurW4VZjSi35HRiXyOOt53+WKq5g24kvsP4e1qci5NxCCiiCEw+6aaZNrCWIfbLMA
-	 QWuTGPCd6I8Y8EHOA4u/4kdNEzp5RbNzwDVxWlcg=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Remove min_dst_y_next_start check for Z8" failed to apply to 6.6-stable tree
+	b=T70OymReJBe7aWowi1xxyudreWZpViI+7k88W3LNqOl46ZzK5XOsW2PMx7fLaMxz5
+	 8Jd/nNACL8SBLMqyNBGNKoDKS0X0vu7PbmhFFz8/n1rDXQeehCT/iprpo0uoKRRC8J
+	 D8zHamEoB9aC7mNSpirPSgGL/2HE49zWaNC+GcZ0=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Remove min_dst_y_next_start check for Z8" failed to apply to 6.1-stable tree
 To: nicholas.kazlauskas@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,syed.hassan@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 14:40:37 -0800
-Message-ID: <2024012737-geranium-sepia-5c50@gregkh>
+Date: Sat, 27 Jan 2024 14:40:39 -0800
+Message-ID: <2024012738-wieldable-playhouse-613e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,32 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x fcd94ef1b3e78f7dc76309c9611915018d2d62a3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012737-geranium-sepia-5c50@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012738-wieldable-playhouse-613e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 fcd94ef1b3e7 ("drm/amd/display: Remove min_dst_y_next_start check for Z8")
+469a62938a45 ("drm/amd/display: update extended blank for dcn314 onwards")
+e3416e872f84 ("drm/amd/display: Add FAMS validation before trying to use it")
+0db13eae41fc ("drm/amd/display: Add minimum Z8 residency debug option")
+73dd4ca4b5a0 ("drm/amd/display: Fix Z8 support configurations")
+db4107e92a81 ("drm/amd/display: fix dc/core/dc.c kernel-doc")
+00812bfc7bcb ("drm/amd/display: Add debug option to skip PSR CRTC disable")
+80676936805e ("drm/amd/display: Add Z8 allow states to z-state support list")
+e366f36958f6 ("drm/amd/display: Rework comments on dc file")
+bd829d570773 ("drm/amd/display: Refactor eDP PSR codes")
 
 thanks,
 
