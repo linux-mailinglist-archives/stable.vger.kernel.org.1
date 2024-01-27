@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BF5D83F100
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:41:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2AA383F0FF
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:41:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACB6BB2523B
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 782DC281DA8
 	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21411DDD6;
-	Sat, 27 Jan 2024 22:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416DB1DFFB;
+	Sat, 27 Jan 2024 22:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPf4zZVD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="baXfpqOY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3BDB1B954
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0308C1B954
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706395266; cv=none; b=BXOXYbrT1a1ipK1C3OurZGFWICsnhqXqyH6wOXtEzBguU9EMlONQi6i0/V7As6ZUl+K9wQhsbqosjwkga3zMcGBV/RiHulxxbxTHBzHawCWm5ZctBtt7KRFMw3/dqkAdAEfMiGRfXGP4Pu8LcoTtszRswP9Pg/T0PnLwDB8vqKs=
+	t=1706395268; cv=none; b=uIRAvnIlKmOjF/1w3v2KVYdelyqgov2I+Y4IR+CzL1sf+OXY2rpMvSn7V3aRb1C9Mbe/HD0NjdKx4SG8WMi/2Jyr41DNfDhVLXnKp74PdVYs4+tiZNpwbpr7G6YGMoo9WEZgxdoBmXio9OqVCu4n2ifCgAI6rQ+a8Ctfx3OamD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706395266; c=relaxed/simple;
-	bh=rm9LqEmSQOO/2+xLFt2U/uZHRBDKlI8XKyyZVgRLR3s=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=l9J5E9bYhaA8i1XwPduj2+woWWT5H8LjT7azhXy9E2RV2wf8xgjxn9g0ZmfeoHhvfhgpp+THyR376au/80QkSgsWfhsDCUdZxJHiPng/duDoMoY/xIO6//1WfYdZhaB0DL4OghsdDTMZZ3XKhLg4I48HycAT/ZkfNHKCrSQg0OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPf4zZVD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19188C433C7;
-	Sat, 27 Jan 2024 22:41:06 +0000 (UTC)
+	s=arc-20240116; t=1706395268; c=relaxed/simple;
+	bh=anFAmNHDbDZL0dbPioCIShK12EYB9KDq1oKaZ2cl06s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FwDQ3pXtbB3m445NXOLwxCDP5fn/zsHn8+XaRXC2XNhFT8ULIg4jPBe/8eOaFiCVFE3KdFXsUh6uPa/USotmZozYI50kOj4Vv4+75VO1l3dacR/sM7EImySdCIjhAE/sH/EmgaPXsEMCoNzbWgGEwxX79gdXPPT0RT6K0CQIE6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=baXfpqOY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F220C43394;
+	Sat, 27 Jan 2024 22:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706395266;
-	bh=rm9LqEmSQOO/2+xLFt2U/uZHRBDKlI8XKyyZVgRLR3s=;
+	s=korg; t=1706395267;
+	bh=anFAmNHDbDZL0dbPioCIShK12EYB9KDq1oKaZ2cl06s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=BPf4zZVDUADKN8aQhplbXsDu0ttU3/ar6XrWGgd2vnIxBuaYxdRQ8eHC8e2ODpJ/V
-	 DAgjaz+Ls5pHz0i8WdIr+Xip0GFtmGT/Vywhu7JRbfnpStQbf0eHk+82IQfwRIIhXV
-	 Png/GpUJJZ9ApAgEVCAy4ynh9QsUcVKJVYqzY8jw=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Simplify brightness initialization" failed to apply to 6.7-stable tree
+	b=baXfpqOYSe+oGizeNSawF9ihynodher0AXOvEc0asphVcGXEjd+GBzXbJ2xhIlZOE
+	 NzPw/sPECGRyh9YivggPkTKHhxm+XIT1Zts43FHBXENbnHrbTaK8MaG8OIAGqI5e9Q
+	 Xx08fme/QMrxRjsuXG8o6nzYzMb9Pb/Gl4SRnBDQ=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Simplify brightness initialization" failed to apply to 6.6-stable tree
 To: camille.cho@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,krunoslav.kovac@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 14:41:05 -0800
-Message-ID: <2024012705-ranked-plot-6300@gregkh>
+Date: Sat, 27 Jan 2024 14:41:06 -0800
+Message-ID: <2024012706-omit-caddie-1561@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.7-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 43b8ac4b34ec239bccf4a692c1227ef51a95a4d2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012705-ranked-plot-6300@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012706-omit-caddie-1561@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 43b8ac4b34ec ("drm/amd/display: Simplify brightness initialization")
+5edb7cdff85a ("drm/amd/display: Reduce default backlight min from 5 nits to 1 nits")
+6ec876472ff7 ("drm/amd/display: refactor ILR to make it work")
 
 thanks,
 
