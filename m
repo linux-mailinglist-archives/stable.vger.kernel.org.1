@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A5D83F1A4
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:13:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 783D583F1A6
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:13:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9355CB23DFB
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:12:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 036CDB23EB9
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A71200AD;
-	Sat, 27 Jan 2024 23:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B628200BD;
+	Sat, 27 Jan 2024 23:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sC0ywup6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WufW21lb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DE01B80B
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D99B1B80B
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706397171; cv=none; b=S5xdS8JtJQvsWV1RIwdZgeI1WYNoAeBRaVj8bswf6N77sdz/h8KgNXJPw1V9RbLXm0iZQXiZexFX14E4vGVUb+D5TOwbKANGljaRVSUAkjxHG+Be0XTswYn1REjFf51paf8hhjzSyHftNNti8bTMr2YsULR7LiVBeMIEdrutIp0=
+	t=1706397172; cv=none; b=m05RKtZsVnEHZOdoS/eKi1YhQ4yMhcs2X93l91vjGdPT9UsXFcItm7TTJyx4XKXuXxN4JsLkrnaHDJLXKKF8nP8zwO6LyKj0/7JWGInp7rjpp4RdvSDlTp2iBk4ahZchlP+XopY930WU3DvvEIlJgApkKbIpibvrnr+lOJL4/YE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706397171; c=relaxed/simple;
-	bh=LNFISiRQm7To56GVLKujWuGof56BKcNLHehOmdIoCWU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HLlHBc03FbdpDU88jIWDGPvMB8cykgrW6HzuI6kJi4l4ZOCV+dNgRF1/T9QfwZ37iMQ5jK8fPitXbV7XvZ8Nf5nokDBeaDAAO/KqgdNdwIapFSE2EWnoE+/i/J9du3jttpO34xAWEvE6wV7/Ij7f8cuy9egaLKIK7LxhV+Vyu5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sC0ywup6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E6EC43390;
-	Sat, 27 Jan 2024 23:12:51 +0000 (UTC)
+	s=arc-20240116; t=1706397172; c=relaxed/simple;
+	bh=c9PNSjbUTA3mu9qbWxXWyxZWzxzkNnA/h/baUPgzxEY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=B6dfavq+uMxfTuHrylgnhJcJ8/OERl9l4TiBx9N4q0RcA7Clyswnx4am1FQ2MISB4se3HWQkS+2a749hlTjS31QTHg9POZhp6nZEAVC2Bxsi29DDLAIjTyqxB8atF1GG/uXVmbP8Mym3knyMXQeAGIXnAlQcaYTnyAT1yeWyzlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WufW21lb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27545C43399;
+	Sat, 27 Jan 2024 23:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706397171;
-	bh=LNFISiRQm7To56GVLKujWuGof56BKcNLHehOmdIoCWU=;
+	s=korg; t=1706397172;
+	bh=c9PNSjbUTA3mu9qbWxXWyxZWzxzkNnA/h/baUPgzxEY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=sC0ywup6OzsLl+5/mgLeFegDZX92mXgPvgiaegB7Y0xoMpCw0XscPVV+TclajL3Uw
-	 iDbMMynzSi+GCAZdgk52wZ1DgVcUiGDZJbpCoha67ehpeGaLBu2TQ2KNnwr/uYnKY2
-	 Kc71B8DWd+PEuzJfG8Obem1Ff6l2PBZw7Mon3C20=
-Subject: FAILED: patch "[PATCH] drm/panel-edp: drm/panel-edp: Fix AUO B116XAK01 name and" failed to apply to 6.6-stable tree
+	b=WufW21lbBGkdPJlkEtS6c7Z0irzwEXtt/wRxLcfExTli24+P4pH/SnjY9iyRhKWel
+	 nsem334DbDNQ5HdWQ5X4hDyasFIU3R8zaJ371VWAc4aDQlGjG+dpNihETmcYlbw/1n
+	 tX14lHHiDr+Sl7wZ5m6bJ647kPh/+9+ypu4CVXTM=
+Subject: FAILED: patch "[PATCH] drm/panel-edp: drm/panel-edp: Fix AUO B116XAK01 name and" failed to apply to 6.1-stable tree
 To: hsinyi@chromium.org,dianders@chromium.org,mripard@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 15:12:50 -0800
-Message-ID: <2024012750-extent-anew-979b@gregkh>
+Date: Sat, 27 Jan 2024 15:12:51 -0800
+Message-ID: <2024012751-duly-parchment-0e06@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x fc6e7679296530106ee0954e8ddef1aa58b2e0b5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012750-extent-anew-979b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012751-duly-parchment-0e06@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 fc6e76792965 ("drm/panel-edp: drm/panel-edp: Fix AUO B116XAK01 name and timing")
 3db2420422a5 ("drm/panel-edp: Add AUO B116XTN02, BOE NT116WHM-N21,836X2, NV116WHM-N49 V8.0")
+a80c882183e3 ("drm/panel-edp: Add AUO NE135FBM-N41 v8.1 panel entry")
+981f8866754d ("drm/panel-edp: Add B133UAN01.0 edp panel entry")
 
 thanks,
 
