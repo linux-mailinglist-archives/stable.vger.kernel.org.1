@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53F9C83F17F
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:09:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60E8983F180
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:09:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72D551C20E01
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:09:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7A5B1F21779
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C638200BC;
-	Sat, 27 Jan 2024 23:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C7A1F95B;
+	Sat, 27 Jan 2024 23:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zrb3LWAA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+kiI6iN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89A61B809
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE1D1F946
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706396958; cv=none; b=gK4c25i1QLXtt5jHKUxkftGrThNxuHDNhZ1mTDKWkjPUUCOgkZJhTKAGzeiRbD1+tWWkaT83qJNx9tZIrSwYVvfLLaf058c25Hsw59P9k/XjkMmFqBgTNS9gmofwP6qTyJRDQ24Ne/bcO3mm/zmEamj1jfERPXTh/mN5AKmODsE=
+	t=1706396980; cv=none; b=EAi/D9gwhP+AB796b1ZJ2qkn9SYbIesKBVx5y9zLy+uWZWE7y51u1t2+S09Cq0aAWwRzCUuXsDxFurC+BLe/TZ0cftn8GhgkJgZu3x45zYjCOzGLUwMk2ltgo1AFj7d5FOWRDAOocEpQ4pm50PyveRjGiHEb2/jhL2ebse+1SJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706396958; c=relaxed/simple;
-	bh=TDaoT8uzGHnLjrWr9eVzOyJUVrIwObvf9lL9pMYQQ0I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EtCc+xI+2XcYbL24YpaIOpFTPmctquWD0ObWzV6hx0GMNR83RMRgCJ29drxdqns6pAICl+0NffHCXDXZFd2vm/2wZyOCUQHuP+0B821shyTI59G6PMkbEaY+jW430s05Y2WE2Ex9YdkK1++5dEVUGLmkusahE0XqbtGQdUE7uYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zrb3LWAA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56838C43399;
-	Sat, 27 Jan 2024 23:09:17 +0000 (UTC)
+	s=arc-20240116; t=1706396980; c=relaxed/simple;
+	bh=5x6QBtZxoQRIlvI1C6RW78LmaniGM6RzEobLETZQR0k=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CGUMvB6VuZjPOBYXlYTCGY7IHP+aEUGhyL/EAUh2n5u8NEf8RfeqitAlnoKlnovECAi+he6blM/FaVlcccci+gvujj567THJ6ShU49HomiANvnBKe5o4QPuS32WMkI1FYTuuoKt0dDCOQ3YgSwR46V4bkKV8DtnpPHqSWHXClQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+kiI6iN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86EAFC43390;
+	Sat, 27 Jan 2024 23:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706396957;
-	bh=TDaoT8uzGHnLjrWr9eVzOyJUVrIwObvf9lL9pMYQQ0I=;
+	s=korg; t=1706396980;
+	bh=5x6QBtZxoQRIlvI1C6RW78LmaniGM6RzEobLETZQR0k=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Zrb3LWAAo9jYqWTCuR7U9Wy+b4EB0c6C/QarXkCXqRKbmluHyODYCtBgA75v3MOQa
-	 YqA5aw7a4GphdUrHCWgstueVaFmcpUc2ScVBDUw24xJAnS8zYT+nBpwMd8Rv5F66HS
-	 GoNmOQmNM/LlD+mt0EjFaxxGiB37pLx74XbCK8lI=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Wake DMCUB before sending a command" failed to apply to 6.1-stable tree
+	b=J+kiI6iNZirrlgn8lqucBhwvLYRRhvnDA1xGAY6RmMRF2MImCv4uF74DJr8kI9t2e
+	 CMPfvcU3F65ouKeyACp4uYniz2pB1cRZXHrgQixFMSTTk1Lv8ZnjabmkRvWWnrITrk
+	 DTrWK5X6nG+WMw5r7Xs1zRvRxXZMPd1IASXzCe4M=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Refactor DMCUB enter/exit idle interface" failed to apply to 6.7-stable tree
 To: nicholas.kazlauskas@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,hansen.dsouza@amd.com,mario.limonciello@amd.com,wayne.lin@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 15:09:16 -0800
-Message-ID: <2024012716-false-stipulate-55d1@gregkh>
+Date: Sat, 27 Jan 2024 15:09:39 -0800
+Message-ID: <2024012739-laziness-vacate-a43d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8892780834ae294bc3697c7d0e056d7743900b39
+git cherry-pick -x 8e57c06bf4b0f51a4d6958e15e1a99c9520d00fa
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012716-false-stipulate-55d1@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012739-laziness-vacate-a43d@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
-8892780834ae ("drm/amd/display: Wake DMCUB before sending a command")
 8e57c06bf4b0 ("drm/amd/display: Refactor DMCUB enter/exit idle interface")
 0f657938e434 ("drm/amd/display: do not send commands to DMUB if DMUB is inactive from S3")
-1ffa8602e39b ("drm/amd/display: Guard against invalid RPTR/WPTR being set")
-b63eae94d28c ("drm/amd/display: clean up some inconsistent indenting")
-10406abe036b ("drm/amd/display: make dc_set_power_state() return type `void` again")
-1ca965719b5b ("drm/amd/display: Change dc_set_power_state() to bool instead of int")
-7441ef0b3ebe ("drm/amd: Propagate failures in dc_set_power_state()")
-1288d7020809 ("drm/amd/display: Improve x86 and dmub ips handshake")
-c0f8b83188c7 ("drm/amd/display: disable IPS")
-93a66cef607c ("drm/amd/display: Add IPS control flag")
-dc01c4b79bfe ("drm/amd/display: Update driver and IPS interop")
-06b1661e45b4 ("drm/amd/display: Add DCN35 DM Support")
-0fa45b6aeae4 ("drm/amd/display: Add DCN35 Resource")
-ec129fa356be ("drm/amd/display: Add DCN35 init")
-65138eb72e1f ("drm/amd/display: Add DCN35 DMUB")
-8774029f76b9 ("drm/amd/display: Add DCN35 CLK_MGR")
-6f8b7565cca4 ("drm/amd/display: Add DCN35 HWSEQ")
-920f879c8360 ("drm/amd/display: Add DCN35 PG_CNTL")
-fb8c3ef80584 ("drm/amd/display: Update dc.h for DCN35 support")
 
 thanks,
 
@@ -96,26 +78,41 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8892780834ae294bc3697c7d0e056d7743900b39 Mon Sep 17 00:00:00 2001
+From 8e57c06bf4b0f51a4d6958e15e1a99c9520d00fa Mon Sep 17 00:00:00 2001
 From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Date: Mon, 4 Dec 2023 16:35:04 -0500
-Subject: [PATCH] drm/amd/display: Wake DMCUB before sending a command
+Date: Mon, 4 Dec 2023 14:10:05 -0500
+Subject: [PATCH] drm/amd/display: Refactor DMCUB enter/exit idle interface
 
 [Why]
 We can hang in place trying to send commands when the DMCUB isn't
 powered on.
 
 [How]
-For functions that execute within a DC context or DC lock we can
-wrap the direct calls to dm_execute_dmub_cmd/list with code that
-exits idle power optimizations and reallows once we're done with
-the command submission on success.
+We need to exit out of the idle state prior to sending a command,
+but the process that performs the exit also invokes a command itself.
 
-For DM direct submissions the DM will need to manage the enter/exit
-sequencing manually.
+Fixing this issue involves the following:
 
-We cannot invoke a DMCUB command directly within the DM execution
-helper or we can deadlock.
+1. Using a software state to track whether or not we need to start
+   the process to exit idle or notify idle.
+
+It's possible for the hardware to have exited an idle state without
+driver knowledge, but entering one is always restricted to a driver
+allow - which makes the SW state vs HW state mismatch issue purely one
+of optimization, which should seldomly be hit, if at all.
+
+2. Refactor any instances of exit/notify idle to use a single wrapper
+   that maintains this SW state.
+
+This works simialr to dc_allow_idle_optimizations, but works at the
+DMCUB level and makes sure the state is marked prior to any notify/exit
+idle so we don't enter an infinite loop.
+
+3. Make sure we exit out of idle prior to sending any commands or
+   waiting for DMCUB idle.
+
+This patch takes care of 1/2. A future patch will take care of wrapping
+DMCUB command submission with calls to this new interface.
 
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
@@ -127,765 +124,149 @@ Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
 diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 97776ba1c70a..dfab1627890a 100644
+index 54861136dafd..97776ba1c70a 100644
 --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
 +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -10910,7 +10910,7 @@ static bool dm_edid_parser_send_cea(struct amdgpu_display_manager *dm,
- 	input->cea_total_length = total_length;
- 	memcpy(input->payload, data, length);
+@@ -2856,7 +2856,7 @@ static int dm_resume(void *handle)
+ 	bool need_hotplug = false;
  
--	res = dm_execute_dmub_cmd(dm->dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY);
-+	res = dc_wake_and_execute_dmub_cmd(dm->dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY);
- 	if (!res) {
- 		DRM_ERROR("EDID CEA parser failed\n");
- 		return false;
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/command_table2.c b/drivers/gpu/drm/amd/display/dc/bios/command_table2.c
-index ab0adabf9dd4..293a919d605d 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/command_table2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/command_table2.c
-@@ -123,7 +123,7 @@ static void encoder_control_dmcub(
- 		sizeof(cmd.digx_encoder_control.header);
- 	cmd.digx_encoder_control.encoder_control.dig.stream_param = *dig;
- 
--	dm_execute_dmub_cmd(dmcub->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dmcub->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- static enum bp_result encoder_control_digx_v1_5(
-@@ -259,7 +259,7 @@ static void transmitter_control_dmcub(
- 		sizeof(cmd.dig1_transmitter_control.header);
- 	cmd.dig1_transmitter_control.transmitter_control.dig = *dig;
- 
--	dm_execute_dmub_cmd(dmcub->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dmcub->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- static enum bp_result transmitter_control_v1_6(
-@@ -321,7 +321,7 @@ static void transmitter_control_dmcub_v1_7(
- 		sizeof(cmd.dig1_transmitter_control.header);
- 	cmd.dig1_transmitter_control.transmitter_control.dig_v1_7 = *dig;
- 
--	dm_execute_dmub_cmd(dmcub->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dmcub->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- static enum bp_result transmitter_control_v1_7(
-@@ -429,7 +429,7 @@ static void set_pixel_clock_dmcub(
- 		sizeof(cmd.set_pixel_clock.header);
- 	cmd.set_pixel_clock.pixel_clock.clk = *clk;
- 
--	dm_execute_dmub_cmd(dmcub->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dmcub->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- static enum bp_result set_pixel_clock_v7(
-@@ -796,7 +796,7 @@ static void enable_disp_power_gating_dmcub(
- 		sizeof(cmd.enable_disp_power_gating.header);
- 	cmd.enable_disp_power_gating.power_gating.pwr = *pwr;
- 
--	dm_execute_dmub_cmd(dmcub->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dmcub->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- static enum bp_result enable_disp_power_gating_v2_1(
-@@ -1006,7 +1006,7 @@ static void enable_lvtma_control_dmcub(
- 			pwrseq_instance;
- 	cmd.lvtma_control.data.bypass_panel_control_wait =
- 			bypass_panel_control_wait;
--	dm_execute_dmub_cmd(dmcub->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dmcub->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- static enum bp_result enable_lvtma_control(
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn31/dcn31_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn31/dcn31_clk_mgr.c
-index 3db4ef564b99..ce1386e22576 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn31/dcn31_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn31/dcn31_clk_mgr.c
-@@ -253,7 +253,7 @@ void dcn31_update_clocks(struct clk_mgr *clk_mgr_base,
- 	cmd.notify_clocks.clocks.dispclk_khz = clk_mgr_base->clks.dispclk_khz;
- 	cmd.notify_clocks.clocks.dppclk_khz = clk_mgr_base->clks.dppclk_khz;
- 
--	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- static int get_vco_frequency_from_reg(struct clk_mgr_internal *clk_mgr)
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
-index 7326b7565846..757528256326 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
-@@ -284,7 +284,7 @@ void dcn314_update_clocks(struct clk_mgr *clk_mgr_base,
- 	cmd.notify_clocks.clocks.dispclk_khz = clk_mgr_base->clks.dispclk_khz;
- 	cmd.notify_clocks.clocks.dppclk_khz = clk_mgr_base->clks.dppclk_khz;
- 
--	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- static int get_vco_frequency_from_reg(struct clk_mgr_internal *clk_mgr)
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
-index 8776055bbeaa..644da4637320 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
-@@ -232,7 +232,7 @@ static void dcn315_update_clocks(struct clk_mgr *clk_mgr_base,
- 	cmd.notify_clocks.clocks.dispclk_khz = clk_mgr_base->clks.dispclk_khz;
- 	cmd.notify_clocks.clocks.dppclk_khz = clk_mgr_base->clks.dppclk_khz;
- 
--	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- static void dcn315_dump_clk_registers(struct clk_state_registers_and_bypass *regs_and_bypass,
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
-index 09151cc56ce4..12f3e8aa46d8 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
-@@ -239,7 +239,7 @@ static void dcn316_update_clocks(struct clk_mgr *clk_mgr_base,
- 	cmd.notify_clocks.clocks.dispclk_khz = clk_mgr_base->clks.dispclk_khz;
- 	cmd.notify_clocks.clocks.dppclk_khz = clk_mgr_base->clks.dppclk_khz;
- 
--	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- static void dcn316_dump_clk_registers(struct clk_state_registers_and_bypass *regs_and_bypass,
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index 789091f3bdc8..9c660d1facc7 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -343,7 +343,7 @@ void dcn35_update_clocks(struct clk_mgr *clk_mgr_base,
- 	cmd.notify_clocks.clocks.dispclk_khz = clk_mgr_base->clks.dispclk_khz;
- 	cmd.notify_clocks.clocks.dppclk_khz = clk_mgr_base->clks.dppclk_khz;
- 
--	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- static int get_vco_frequency_from_reg(struct clk_mgr_internal *clk_mgr)
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 445f87fa0eac..f2fc7df68b58 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -522,7 +522,7 @@ dc_stream_forward_dmub_crc_window(struct dc_dmub_srv *dmub_srv,
- 		cmd.secure_display.roi_info.y_end = rect->y + rect->height;
+ 	if (dm->dc->caps.ips_support) {
+-		dc_dmub_srv_exit_low_power_state(dm->dc);
++		dc_dmub_srv_apply_idle_power_optimizations(dm->dc, false);
  	}
  
--	dm_execute_dmub_cmd(dmub_srv->ctx, &cmd, DM_DMUB_WAIT_TYPE_NO_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dmub_srv->ctx, &cmd, DM_DMUB_WAIT_TYPE_NO_WAIT);
- }
- 
- static inline void
-@@ -3381,7 +3381,7 @@ void dc_dmub_update_dirty_rect(struct dc *dc,
- 
- 			update_dirty_rect->panel_inst = panel_inst;
- 			update_dirty_rect->pipe_idx = j;
--			dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_NO_WAIT);
-+			dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_NO_WAIT);
+ 	if (amdgpu_in_reset(adev)) {
+@@ -9001,7 +9001,7 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
+ 			if (new_con_state->crtc &&
+ 				new_con_state->crtc->state->active &&
+ 				drm_atomic_crtc_needs_modeset(new_con_state->crtc->state)) {
+-				dc_dmub_srv_exit_low_power_state(dm->dc);
++				dc_dmub_srv_apply_idle_power_optimizations(dm->dc, false);
+ 				break;
+ 			}
  		}
- 	}
- }
-@@ -5207,7 +5207,7 @@ bool dc_process_dmub_aux_transfer_async(struct dc *dc,
- 			);
- 	}
- 
--	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
- 	return true;
- }
-@@ -5261,7 +5261,7 @@ bool dc_process_dmub_set_config_async(struct dc *dc,
- 	cmd.set_config_access.set_config_control.cmd_pkt.msg_type = payload->msg_type;
- 	cmd.set_config_access.set_config_control.cmd_pkt.msg_data = payload->msg_data;
- 
--	if (!dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY)) {
-+	if (!dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY)) {
- 		/* command is not processed by dmub */
- 		notify->sc_status = SET_CONFIG_UNKNOWN_ERROR;
- 		return is_cmd_complete;
-@@ -5304,7 +5304,7 @@ enum dc_status dc_process_dmub_set_mst_slots(const struct dc *dc,
- 	cmd.set_mst_alloc_slots.mst_slots_control.instance = dc->links[link_index]->ddc_hw_inst;
- 	cmd.set_mst_alloc_slots.mst_slots_control.mst_alloc_slots = mst_alloc_slots;
- 
--	if (!dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY))
-+	if (!dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY))
- 		/* command is not processed by dmub */
- 		return DC_ERROR_UNEXPECTED;
- 
-@@ -5342,7 +5342,7 @@ void dc_process_dmub_dpia_hpd_int_enable(const struct dc *dc,
- 	cmd.dpia_hpd_int_enable.header.type = DMUB_CMD__DPIA_HPD_INT_ENABLE;
- 	cmd.dpia_hpd_int_enable.enable = hpd_int_enable;
- 
--	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
- 	DC_LOG_DEBUG("%s: hpd_int_enable(%d)\n", __func__, hpd_int_enable);
- }
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
-index fe07160932d6..fc18b9dc946f 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
-@@ -724,7 +724,7 @@ void hwss_send_dmcub_cmd(union block_sequence_params *params)
- 	union dmub_rb_cmd *cmd = params->send_dmcub_cmd_params.cmd;
- 	enum dm_dmub_wait_type wait_type = params->send_dmcub_cmd_params.wait_type;
- 
--	dm_execute_dmub_cmd(ctx, cmd, wait_type);
-+	dc_wake_and_execute_dmub_cmd(ctx, cmd, wait_type);
- }
- 
- void hwss_program_manual_trigger(union block_sequence_params *params)
 diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-index ccfe2b6046fd..fea13bcd4dc7 100644
+index eb6f5640f19a..ccfe2b6046fd 100644
 --- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
 +++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-@@ -360,7 +360,7 @@ void dc_dmub_srv_drr_update_cmd(struct dc *dc, uint32_t tg_inst, uint32_t vtotal
- 	cmd.drr_update.header.payload_bytes = sizeof(cmd.drr_update) - sizeof(cmd.drr_update.header);
+@@ -1162,6 +1162,9 @@ bool dc_dmub_srv_is_hw_pwr_up(struct dc_dmub_srv *dc_dmub_srv, bool wait)
+ 	struct dc_context *dc_ctx = dc_dmub_srv->ctx;
+ 	enum dmub_status status;
  
- 	// Send the command to the DMCUB.
--	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
++	if (!dc_dmub_srv || !dc_dmub_srv->dmub)
++		return true;
++
+ 	if (dc_dmub_srv->ctx->dc->debug.dmcub_emulation)
+ 		return true;
  
- void dc_dmub_srv_set_drr_manual_trigger_cmd(struct dc *dc, uint32_t tg_inst)
-@@ -374,7 +374,7 @@ void dc_dmub_srv_set_drr_manual_trigger_cmd(struct dc *dc, uint32_t tg_inst)
- 	cmd.drr_update.header.payload_bytes = sizeof(cmd.drr_update) - sizeof(cmd.drr_update.header);
- 
- 	// Send the command to the DMCUB.
--	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- static uint8_t dc_dmub_srv_get_pipes_for_stream(struct dc *dc, struct dc_stream_state *stream)
-@@ -467,7 +467,7 @@ bool dc_dmub_srv_p_state_delegate(struct dc *dc, bool should_manage_pstate, stru
- 		sizeof(cmd.fw_assisted_mclk_switch) - sizeof(cmd.fw_assisted_mclk_switch.header);
- 
- 	// Send the command to the DMCUB.
--	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
+@@ -1183,7 +1186,7 @@ bool dc_dmub_srv_is_hw_pwr_up(struct dc_dmub_srv *dc_dmub_srv, bool wait)
  	return true;
  }
-@@ -488,7 +488,7 @@ void dc_dmub_srv_query_caps_cmd(struct dc_dmub_srv *dc_dmub_srv)
- 	cmd.query_feature_caps.header.payload_bytes = sizeof(struct dmub_cmd_query_feature_caps_data);
  
- 	/* If command was processed, copy feature caps to dmub srv */
--	if (dm_execute_dmub_cmd(dc_dmub_srv->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY) &&
-+	if (dc_wake_and_execute_dmub_cmd(dc_dmub_srv->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY) &&
- 	    cmd.query_feature_caps.header.ret_status == 0) {
- 		memcpy(&dc_dmub_srv->dmub->feature_caps,
- 		       &cmd.query_feature_caps.query_feature_caps_data,
-@@ -513,7 +513,7 @@ void dc_dmub_srv_get_visual_confirm_color_cmd(struct dc *dc, struct pipe_ctx *pi
- 	cmd.visual_confirm_color.visual_confirm_color_data.visual_confirm_color.panel_inst = panel_inst;
+-void dc_dmub_srv_notify_idle(const struct dc *dc, bool allow_idle)
++static void dc_dmub_srv_notify_idle(const struct dc *dc, bool allow_idle)
+ {
+ 	union dmub_rb_cmd cmd = {0};
  
- 	// If command was processed, copy feature caps to dmub srv
--	if (dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY) &&
-+	if (dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY) &&
- 		cmd.visual_confirm_color.header.ret_status == 0) {
- 		memcpy(&dc->ctx->dmub_srv->dmub->visual_confirm_color,
- 			&cmd.visual_confirm_color.visual_confirm_color_data,
-@@ -875,7 +875,7 @@ void dc_dmub_setup_subvp_dmub_command(struct dc *dc,
- 		cmd.fw_assisted_mclk_switch_v2.config_data.watermark_a_cache = wm_val_refclk < 0xFFFF ? wm_val_refclk : 0xFFFF;
- 	}
- 
--	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- bool dc_dmub_srv_get_diagnostic_data(struct dc_dmub_srv *dc_dmub_srv, struct dmub_diagnostic_data *diag_data)
-@@ -1112,7 +1112,7 @@ void dc_send_update_cursor_info_to_dmu(
- 				pipe_idx, pCtx->plane_res.hubp, pCtx->plane_res.dpp);
- 
- 		/* Combine 2nd cmds update_curosr_info to DMU */
--		dm_execute_dmub_cmd_list(pCtx->stream->ctx, 2, cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+		dc_wake_and_execute_dmub_cmd_list(pCtx->stream->ctx, 2, cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 	}
- }
- 
-@@ -1207,6 +1207,7 @@ static void dc_dmub_srv_notify_idle(const struct dc *dc, bool allow_idle)
- 			dc->hwss.set_idle_state(dc, true);
- 	}
- 
-+	/* NOTE: This does not use the "wake" interface since this is part of the wake path. */
+@@ -1207,7 +1210,7 @@ void dc_dmub_srv_notify_idle(const struct dc *dc, bool allow_idle)
  	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
  }
  
-@@ -1329,3 +1330,41 @@ void dc_dmub_srv_apply_idle_power_optimizations(const struct dc *dc, bool allow_
+-void dc_dmub_srv_exit_low_power_state(const struct dc *dc)
++static void dc_dmub_srv_exit_low_power_state(const struct dc *dc)
+ {
+ 	const uint32_t max_num_polls = 10000;
+ 	uint32_t allow_state = 0;
+@@ -1220,6 +1223,9 @@ void dc_dmub_srv_exit_low_power_state(const struct dc *dc)
+ 	if (!dc->idle_optimizations_allowed)
+ 		return;
+ 
++	if (!dc->ctx->dmub_srv || !dc->ctx->dmub_srv->dmub)
++		return;
++
+ 	if (dc->hwss.get_idle_state &&
+ 		dc->hwss.set_idle_state &&
+ 		dc->clk_mgr->funcs->exit_low_power_state) {
+@@ -1296,3 +1302,30 @@ void dc_dmub_srv_set_power_state(struct dc_dmub_srv *dc_dmub_srv, enum dc_acpi_c
  	else
- 		dc_dmub_srv_notify_idle(dc, allow_idle);
+ 		dmub_srv_set_power_state(dmub, DMUB_POWER_STATE_D3);
  }
 +
-+bool dc_wake_and_execute_dmub_cmd(const struct dc_context *ctx, union dmub_rb_cmd *cmd,
-+				  enum dm_dmub_wait_type wait_type)
++void dc_dmub_srv_apply_idle_power_optimizations(const struct dc *dc, bool allow_idle)
 +{
-+	return dc_wake_and_execute_dmub_cmd_list(ctx, 1, cmd, wait_type);
-+}
-+
-+bool dc_wake_and_execute_dmub_cmd_list(const struct dc_context *ctx, unsigned int count,
-+				       union dmub_rb_cmd *cmd, enum dm_dmub_wait_type wait_type)
-+{
-+	struct dc_dmub_srv *dc_dmub_srv = ctx->dmub_srv;
-+	bool result = false, reallow_idle = false;
++	struct dc_dmub_srv *dc_dmub_srv = dc->ctx->dmub_srv;
 +
 +	if (!dc_dmub_srv || !dc_dmub_srv->dmub)
-+		return false;
++		return;
 +
-+	if (count == 0)
-+		return true;
-+
-+	if (dc_dmub_srv->idle_allowed) {
-+		dc_dmub_srv_apply_idle_power_optimizations(ctx->dc, false);
-+		reallow_idle = true;
-+	}
++	if (dc_dmub_srv->idle_allowed == allow_idle)
++		return;
 +
 +	/*
-+	 * These may have different implementations in DM, so ensure
-+	 * that we guide it to the expected helper.
++	 * Entering a low power state requires a driver notification.
++	 * Powering up the hardware requires notifying PMFW and DMCUB.
++	 * Clearing the driver idle allow requires a DMCUB command.
++	 * DMCUB commands requires the DMCUB to be powered up and restored.
++	 *
++	 * Exit out early to prevent an infinite loop of DMCUB commands
++	 * triggering exit low power - use software state to track this.
 +	 */
-+	if (count > 1)
-+		result = dm_execute_dmub_cmd_list(ctx, count, cmd, wait_type);
++	dc_dmub_srv->idle_allowed = allow_idle;
++
++	if (!allow_idle)
++		dc_dmub_srv_exit_low_power_state(dc);
 +	else
-+		result = dm_execute_dmub_cmd(ctx, cmd, wait_type);
-+
-+	if (result && reallow_idle)
-+		dc_dmub_srv_apply_idle_power_optimizations(ctx->dc, true);
-+
-+	return result;
++		dc_dmub_srv_notify_idle(dc, allow_idle);
 +}
 diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h
-index b63cba6235fc..784ca3e44414 100644
+index c25ce7546f71..b63cba6235fc 100644
 --- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h
 +++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h
-@@ -106,4 +106,44 @@ bool dc_dmub_srv_is_hw_pwr_up(struct dc_dmub_srv *dc_dmub_srv, bool wait);
- void dc_dmub_srv_apply_idle_power_optimizations(const struct dc *dc, bool allow_idle);
+@@ -50,6 +50,8 @@ struct dc_dmub_srv {
+ 
+ 	struct dc_context *ctx;
+ 	void *dm;
++
++	bool idle_allowed;
+ };
+ 
+ void dc_dmub_srv_wait_idle(struct dc_dmub_srv *dc_dmub_srv);
+@@ -100,8 +102,8 @@ void dc_dmub_srv_enable_dpia_trace(const struct dc *dc);
+ void dc_dmub_srv_subvp_save_surf_addr(const struct dc_dmub_srv *dc_dmub_srv, const struct dc_plane_address *addr, uint8_t subvp_index);
+ 
+ bool dc_dmub_srv_is_hw_pwr_up(struct dc_dmub_srv *dc_dmub_srv, bool wait);
+-void dc_dmub_srv_notify_idle(const struct dc *dc, bool allow_idle);
+-void dc_dmub_srv_exit_low_power_state(const struct dc *dc);
++
++void dc_dmub_srv_apply_idle_power_optimizations(const struct dc *dc, bool allow_idle);
  
  void dc_dmub_srv_set_power_state(struct dc_dmub_srv *dc_dmub_srv, enum dc_acpi_cm_power_state powerState);
-+
-+/**
-+ * dc_wake_and_execute_dmub_cmd() - Wrapper for DMUB command execution.
-+ *
-+ * Refer to dc_wake_and_execute_dmub_cmd_list() for usage and limitations,
-+ * This function is a convenience wrapper for a single command execution.
-+ *
-+ * @ctx: DC context
-+ * @cmd: The command to send/receive
-+ * @wait_type: The wait behavior for the execution
-+ *
-+ * Return: true on command submission success, false otherwise
-+ */
-+bool dc_wake_and_execute_dmub_cmd(const struct dc_context *ctx, union dmub_rb_cmd *cmd,
-+				  enum dm_dmub_wait_type wait_type);
-+
-+/**
-+ * dc_wake_and_execute_dmub_cmd_list() - Wrapper for DMUB command list execution.
-+ *
-+ * If the DMCUB hardware was asleep then it wakes the DMUB before
-+ * executing the command and attempts to re-enter if the command
-+ * submission was successful.
-+ *
-+ * This should be the preferred command submission interface provided
-+ * the DC lock is acquired.
-+ *
-+ * Entry/exit out of idle power optimizations would need to be
-+ * manually performed otherwise through dc_allow_idle_optimizations().
-+ *
-+ * @ctx: DC context
-+ * @count: Number of commands to send/receive
-+ * @cmd: Array of commands to send
-+ * @wait_type: The wait behavior for the execution
-+ *
-+ * Return: true on command submission success, false otherwise
-+ */
-+bool dc_wake_and_execute_dmub_cmd_list(const struct dc_context *ctx, unsigned int count,
-+				       union dmub_rb_cmd *cmd, enum dm_dmub_wait_type wait_type);
-+
-+
  #endif /* _DMUB_DC_SRV_H_ */
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_helper.c b/drivers/gpu/drm/amd/display/dc/dc_helper.c
-index cb6eaddab720..8f9a67825615 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dc_helper.c
-@@ -50,7 +50,7 @@ static inline void submit_dmub_read_modify_write(
- 	cmd_buf->header.payload_bytes =
- 			sizeof(struct dmub_cmd_read_modify_write_sequence) * offload->reg_seq_count;
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+index 9262d3336182..f48001317fab 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+@@ -687,11 +687,7 @@ bool dcn35_apply_idle_power_optimizations(struct dc *dc, bool enable)
+ 	}
  
--	dm_execute_dmub_cmd(ctx, &offload->cmd_data, DM_DMUB_WAIT_TYPE_NO_WAIT);
-+	dc_wake_and_execute_dmub_cmd(ctx, &offload->cmd_data, DM_DMUB_WAIT_TYPE_NO_WAIT);
- 
- 	memset(cmd_buf, 0, sizeof(*cmd_buf));
- 
-@@ -67,7 +67,7 @@ static inline void submit_dmub_burst_write(
- 	cmd_buf->header.payload_bytes =
- 			sizeof(uint32_t) * offload->reg_seq_count;
- 
--	dm_execute_dmub_cmd(ctx, &offload->cmd_data, DM_DMUB_WAIT_TYPE_NO_WAIT);
-+	dc_wake_and_execute_dmub_cmd(ctx, &offload->cmd_data, DM_DMUB_WAIT_TYPE_NO_WAIT);
- 
- 	memset(cmd_buf, 0, sizeof(*cmd_buf));
- 
-@@ -80,7 +80,7 @@ static inline void submit_dmub_reg_wait(
- {
- 	struct dmub_rb_cmd_reg_wait *cmd_buf = &offload->cmd_data.reg_wait;
- 
--	dm_execute_dmub_cmd(ctx, &offload->cmd_data, DM_DMUB_WAIT_TYPE_NO_WAIT);
-+	dc_wake_and_execute_dmub_cmd(ctx, &offload->cmd_data, DM_DMUB_WAIT_TYPE_NO_WAIT);
- 
- 	memset(cmd_buf, 0, sizeof(*cmd_buf));
- 	offload->reg_seq_count = 0;
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_abm_lcd.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_abm_lcd.c
-index 42c802afc468..4cff36351f40 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dmub_abm_lcd.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_abm_lcd.c
-@@ -76,7 +76,7 @@ static void dmub_abm_enable_fractional_pwm(struct dc_context *dc)
- 	cmd.abm_set_pwm_frac.abm_set_pwm_frac_data.panel_mask = panel_mask;
- 	cmd.abm_set_pwm_frac.header.payload_bytes = sizeof(struct dmub_cmd_abm_set_pwm_frac_data);
- 
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- void dmub_abm_init(struct abm *abm, uint32_t backlight)
-@@ -155,7 +155,7 @@ bool dmub_abm_set_level(struct abm *abm, uint32_t level, uint8_t panel_mask)
- 	cmd.abm_set_level.abm_set_level_data.panel_mask = panel_mask;
- 	cmd.abm_set_level.header.payload_bytes = sizeof(struct dmub_cmd_abm_set_level_data);
- 
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
+ 	// TODO: review other cases when idle optimization is allowed
+-
+-	if (!enable)
+-		dc_dmub_srv_exit_low_power_state(dc);
+-	else
+-		dc_dmub_srv_notify_idle(dc, enable);
++	dc_dmub_srv_apply_idle_power_optimizations(dc, enable);
  
  	return true;
  }
-@@ -186,7 +186,7 @@ void dmub_abm_init_config(struct abm *abm,
+@@ -701,7 +697,7 @@ void dcn35_z10_restore(const struct dc *dc)
+ 	if (dc->debug.disable_z10)
+ 		return;
  
- 	cmd.abm_init_config.header.payload_bytes = sizeof(struct dmub_cmd_abm_init_config_data);
+-	dc_dmub_srv_exit_low_power_state(dc);
++	dc_dmub_srv_apply_idle_power_optimizations(dc, false);
  
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
+ 	dcn31_z10_restore(dc);
  }
- 
-@@ -203,7 +203,7 @@ bool dmub_abm_set_pause(struct abm *abm, bool pause, unsigned int panel_inst, un
- 	cmd.abm_pause.abm_pause_data.panel_mask = panel_mask;
- 	cmd.abm_set_level.header.payload_bytes = sizeof(struct dmub_cmd_abm_pause_data);
- 
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
- 	return true;
- }
-@@ -246,7 +246,7 @@ bool dmub_abm_save_restore(
- 
- 	cmd.abm_save_restore.header.payload_bytes = sizeof(struct dmub_rb_cmd_abm_save_restore);
- 
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
- 	// Copy iramtable data into local structure
- 	memcpy((void *)pData, dc->dmub_srv->dmub->scratch_mem_fb.cpu_addr, bytes);
-@@ -274,7 +274,7 @@ bool dmub_abm_set_pipe(struct abm *abm,
- 	cmd.abm_set_pipe.abm_set_pipe_data.ramping_boundary = ramping_boundary;
- 	cmd.abm_set_pipe.header.payload_bytes = sizeof(struct dmub_cmd_abm_set_pipe_data);
- 
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
- 	return true;
- }
-@@ -296,7 +296,7 @@ bool dmub_abm_set_backlight_level(struct abm *abm,
- 	cmd.abm_set_backlight.abm_set_backlight_data.panel_mask = (0x01 << panel_inst);
- 	cmd.abm_set_backlight.header.payload_bytes = sizeof(struct dmub_cmd_abm_set_backlight_data);
- 
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
- 	return true;
- }
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-index 2aa0e01a6891..ba1fec3016d5 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_hw_lock_mgr.c
-@@ -47,7 +47,7 @@ void dmub_hw_lock_mgr_cmd(struct dc_dmub_srv *dmub_srv,
- 	if (!lock)
- 		cmd.lock_hw.lock_hw_data.should_release = 1;
- 
--	dm_execute_dmub_cmd(dmub_srv->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dmub_srv->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- void dmub_hw_lock_mgr_inbox0_cmd(struct dc_dmub_srv *dmub_srv,
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_outbox.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_outbox.c
-index d8009b2dc56a..98a778996e1a 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dmub_outbox.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_outbox.c
-@@ -48,5 +48,5 @@ void dmub_enable_outbox_notification(struct dc_dmub_srv *dmub_srv)
- 		sizeof(cmd.outbox1_enable.header);
- 	cmd.outbox1_enable.enable = true;
- 
--	dm_execute_dmub_cmd(dmub_srv->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dmub_srv->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
-index 9d4170a356a2..3d7cef17f881 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
-@@ -171,7 +171,7 @@ static bool dmub_psr_set_version(struct dmub_psr *dmub, struct dc_stream_state *
- 	cmd.psr_set_version.psr_set_version_data.panel_inst = panel_inst;
- 	cmd.psr_set_version.header.payload_bytes = sizeof(struct dmub_cmd_psr_set_version_data);
- 
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
- 	return true;
- }
-@@ -199,7 +199,7 @@ static void dmub_psr_enable(struct dmub_psr *dmub, bool enable, bool wait, uint8
- 
- 	cmd.psr_enable.header.payload_bytes = 0; // Send header only
- 
--	dm_execute_dmub_cmd(dc->dmub_srv->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->dmub_srv->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
- 	/* Below loops 1000 x 500us = 500 ms.
- 	 *  Exit PSR may need to wait 1-2 frames to power up. Timeout after at
-@@ -248,7 +248,7 @@ static void dmub_psr_set_level(struct dmub_psr *dmub, uint16_t psr_level, uint8_
- 	cmd.psr_set_level.psr_set_level_data.psr_level = psr_level;
- 	cmd.psr_set_level.psr_set_level_data.cmd_version = DMUB_CMD_PSR_CONTROL_VERSION_1;
- 	cmd.psr_set_level.psr_set_level_data.panel_inst = panel_inst;
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- /*
-@@ -267,7 +267,7 @@ static void dmub_psr_set_sink_vtotal_in_psr_active(struct dmub_psr *dmub,
- 	cmd.psr_set_vtotal.psr_set_vtotal_data.psr_vtotal_idle = psr_vtotal_idle;
- 	cmd.psr_set_vtotal.psr_set_vtotal_data.psr_vtotal_su = psr_vtotal_su;
- 
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- /*
-@@ -286,7 +286,7 @@ static void dmub_psr_set_power_opt(struct dmub_psr *dmub, unsigned int power_opt
- 	cmd.psr_set_power_opt.psr_set_power_opt_data.power_opt = power_opt;
- 	cmd.psr_set_power_opt.psr_set_power_opt_data.panel_inst = panel_inst;
- 
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- /*
-@@ -423,7 +423,7 @@ static bool dmub_psr_copy_settings(struct dmub_psr *dmub,
- 		copy_settings_data->relock_delay_frame_cnt = 2;
- 	copy_settings_data->dsc_slice_height = psr_context->dsc_slice_height;
- 
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
- 	return true;
- }
-@@ -444,7 +444,7 @@ static void dmub_psr_force_static(struct dmub_psr *dmub, uint8_t panel_inst)
- 	cmd.psr_force_static.header.sub_type = DMUB_CMD__PSR_FORCE_STATIC;
- 	cmd.psr_enable.header.payload_bytes = 0;
- 
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- /*
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_hubp.c b/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_hubp.c
-index 68cad55c72ab..e13d69a22c1c 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_hubp.c
-@@ -691,7 +691,7 @@ static void dmcub_PLAT_54186_wa(struct hubp *hubp,
- 	cmd.PLAT_54186_wa.flip.flip_params.vmid = flip_regs->vmid;
- 
- 	PERF_TRACE();  // TODO: remove after performance is stable.
--	dm_execute_dmub_cmd(hubp->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(hubp->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 	PERF_TRACE();  // TODO: remove after performance is stable.
- }
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_dio_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_dio_link_encoder.c
-index 4596f3bac1b4..26be5fee7411 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_dio_link_encoder.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_dio_link_encoder.c
-@@ -125,7 +125,7 @@ static bool query_dp_alt_from_dmub(struct link_encoder *enc,
- 	cmd->query_dp_alt.header.payload_bytes = sizeof(cmd->query_dp_alt.data);
- 	cmd->query_dp_alt.data.phy_id = phy_id_from_transmitter(enc10->base.transmitter);
- 
--	if (!dm_execute_dmub_cmd(enc->ctx, cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY))
-+	if (!dc_wake_and_execute_dmub_cmd(enc->ctx, cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY))
- 		return false;
- 
- 	return true;
-@@ -436,7 +436,7 @@ static bool link_dpia_control(struct dc_context *dc_ctx,
- 
- 	cmd.dig1_dpia_control.dpia_control = *dpia_control;
- 
--	dm_execute_dmub_cmd(dc_ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc_ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
- 	return true;
- }
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_panel_cntl.c b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_panel_cntl.c
-index d849b1eaa4a5..03248422d6ff 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_panel_cntl.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_panel_cntl.c
-@@ -52,7 +52,7 @@ static bool dcn31_query_backlight_info(struct panel_cntl *panel_cntl, union dmub
- 	cmd->panel_cntl.header.payload_bytes = sizeof(cmd->panel_cntl.data);
- 	cmd->panel_cntl.data.pwrseq_inst = dcn31_panel_cntl->base.pwrseq_inst;
- 
--	return dm_execute_dmub_cmd(dc_dmub_srv->ctx, cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY);
-+	return dc_wake_and_execute_dmub_cmd(dc_dmub_srv->ctx, cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY);
- }
- 
- static uint32_t dcn31_get_16_bit_backlight_from_pwm(struct panel_cntl *panel_cntl)
-@@ -85,7 +85,7 @@ static uint32_t dcn31_panel_cntl_hw_init(struct panel_cntl *panel_cntl)
- 		panel_cntl->stored_backlight_registers.LVTMA_PWRSEQ_REF_DIV_BL_PWM_REF_DIV;
- 	cmd.panel_cntl.data.bl_pwm_ref_div2 =
- 		panel_cntl->stored_backlight_registers.PANEL_PWRSEQ_REF_DIV2;
--	if (!dm_execute_dmub_cmd(dc_dmub_srv->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY))
-+	if (!dc_wake_and_execute_dmub_cmd(dc_dmub_srv->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY))
- 		return 0;
- 
- 	panel_cntl->stored_backlight_registers.BL_PWM_CNTL = cmd.panel_cntl.data.bl_pwm_cntl;
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c
-index 08783ad097d2..8e88dcaf88f5 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c
-@@ -154,7 +154,7 @@ static bool dmub_abm_set_pipe(struct abm *abm, uint32_t otg_inst,
- 	cmd.abm_set_pipe.abm_set_pipe_data.ramping_boundary = ramping_boundary;
- 	cmd.abm_set_pipe.header.payload_bytes = sizeof(struct dmub_cmd_abm_set_pipe_data);
- 
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
- 	return true;
- }
-@@ -173,7 +173,7 @@ static void dmub_abm_set_backlight(struct dc_context *dc, uint32_t backlight_pwm
- 	cmd.abm_set_backlight.abm_set_backlight_data.panel_mask = (0x01 << panel_inst);
- 	cmd.abm_set_backlight.header.payload_bytes = sizeof(struct dmub_cmd_abm_set_backlight_data);
- 
--	dm_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- void dcn21_set_abm_immediate_disable(struct pipe_ctx *pipe_ctx)
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-index fd8a8c10a201..d337578d7e73 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-@@ -754,7 +754,7 @@ bool dcn30_apply_idle_power_optimizations(struct dc *dc, bool enable)
- 				cmd.mall.header.sub_type = DMUB_CMD__MALL_ACTION_NO_DF_REQ;
- 				cmd.mall.header.payload_bytes = sizeof(cmd.mall) - sizeof(cmd.mall.header);
- 
--				dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_NO_WAIT);
-+				dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_NO_WAIT);
- 
- 				return true;
- 			}
-@@ -876,7 +876,7 @@ bool dcn30_apply_idle_power_optimizations(struct dc *dc, bool enable)
- 					cmd.mall.cursor_height = cursor_attr.height;
- 					cmd.mall.cursor_pitch = cursor_attr.pitch;
- 
--					dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+					dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
- 					/* Use copied cursor, and it's okay to not switch back */
- 					cursor_attr.address.quad_part = cmd.mall.cursor_copy_dst.quad_part;
-@@ -892,7 +892,7 @@ bool dcn30_apply_idle_power_optimizations(struct dc *dc, bool enable)
- 				cmd.mall.tmr_scale = tmr_scale;
- 				cmd.mall.debug_bits = dc->debug.mall_error_as_fatal;
- 
--				dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_NO_WAIT);
-+				dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_NO_WAIT);
- 
- 				return true;
- 			}
-@@ -909,7 +909,7 @@ bool dcn30_apply_idle_power_optimizations(struct dc *dc, bool enable)
- 	cmd.mall.header.payload_bytes =
- 		sizeof(cmd.mall) - sizeof(cmd.mall.header);
- 
--	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
- 	return true;
- }
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c
-index 5d62805f3bdf..994250b6f2ef 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c
-@@ -416,7 +416,7 @@ void dcn31_z10_save_init(struct dc *dc)
- 	cmd.dcn_restore.header.type = DMUB_CMD__IDLE_OPT;
- 	cmd.dcn_restore.header.sub_type = DMUB_CMD__IDLE_OPT_DCN_SAVE_INIT;
- 
--	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- void dcn31_z10_restore(const struct dc *dc)
-@@ -434,7 +434,7 @@ void dcn31_z10_restore(const struct dc *dc)
- 	cmd.dcn_restore.header.type = DMUB_CMD__IDLE_OPT;
- 	cmd.dcn_restore.header.sub_type = DMUB_CMD__IDLE_OPT_DCN_RESTORE;
- 
--	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- }
- 
- void dcn31_hubp_pg_control(struct dce_hwseq *hws, unsigned int hubp_inst, bool power_on)
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-index 0f0972ad441a..cb9d8389329f 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-@@ -277,7 +277,7 @@ bool dcn32_apply_idle_power_optimizations(struct dc *dc, bool enable)
- 				cmd.cab.header.sub_type = DMUB_CMD__CAB_NO_DCN_REQ;
- 				cmd.cab.header.payload_bytes = sizeof(cmd.cab) - sizeof(cmd.cab.header);
- 
--				dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_NO_WAIT);
-+				dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_NO_WAIT);
- 
- 				return true;
- 			}
-@@ -311,7 +311,7 @@ bool dcn32_apply_idle_power_optimizations(struct dc *dc, bool enable)
- 				cmd.cab.header.payload_bytes = sizeof(cmd.cab) - sizeof(cmd.cab.header);
- 				cmd.cab.cab_alloc_ways = (uint8_t)ways;
- 
--				dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_NO_WAIT);
-+				dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_NO_WAIT);
- 
- 				return true;
- 			}
-@@ -327,7 +327,7 @@ bool dcn32_apply_idle_power_optimizations(struct dc *dc, bool enable)
- 	cmd.cab.header.payload_bytes =
- 			sizeof(cmd.cab) - sizeof(cmd.cab.header);
- 
--	dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
-+	dc_wake_and_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT);
- 
- 	return true;
- }
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-index 3c5334cdb3fb..289f5d133342 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
-@@ -1398,7 +1398,7 @@ static bool get_usbc_cable_id(struct dc_link *link, union dp_cable_id *cable_id)
- 	cmd.cable_id.header.payload_bytes = sizeof(cmd.cable_id.data);
- 	cmd.cable_id.data.input.phy_inst = resource_transmitter_to_phy_idx(
- 			link->dc, link->link_enc->transmitter);
--	if (dm_execute_dmub_cmd(link->dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY) &&
-+	if (dc_wake_and_execute_dmub_cmd(link->dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY) &&
- 			cmd.cable_id.header.ret_status == 1) {
- 		cable_id->raw = cmd.cable_id.data.output_raw;
- 		DC_LOG_DC("usbc_cable_id = %d.\n", cable_id->raw);
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia.c
-index 0bb749133909..982eda3c46f5 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia.c
-@@ -90,7 +90,8 @@ bool dpia_query_hpd_status(struct dc_link *link)
- 	cmd.query_hpd.data.ch_type = AUX_CHANNEL_DPIA;
- 
- 	/* Return HPD status reported by DMUB if query successfully executed. */
--	if (dm_execute_dmub_cmd(dmub_srv->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY) && cmd.query_hpd.data.status == AUX_RET_SUCCESS)
-+	if (dc_wake_and_execute_dmub_cmd(dmub_srv->ctx, &cmd, DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY) &&
-+	    cmd.query_hpd.data.status == AUX_RET_SUCCESS)
- 		is_hpd_high = cmd.query_hpd.data.result;
- 
- 	DC_LOG_DEBUG("%s: link(%d) dpia(%d) cmd_status(%d) result(%d)\n",
 
 
