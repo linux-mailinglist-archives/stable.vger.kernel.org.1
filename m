@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535E183F1AE
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:15:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 111B883F1AF
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:16:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA43EB21D43
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:15:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DBEC1F22575
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 791A8200BD;
-	Sat, 27 Jan 2024 23:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C52200A4;
+	Sat, 27 Jan 2024 23:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IqmaBciP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dqv8DM23"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACAC1B7E5
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5381F1B80B
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706397344; cv=none; b=hd/6P8GmPRrdjxSIkyt+jWO6yyVpyDmuT4Ben+R1sdIdl5tDAZ422OFK9nMPtP9d0YUTmjKzW0v0wRYbF/Jgd3Xw0p3PhV1HQiUcfaIiPBZHdohLHs9TCBGYrRLi7UcwOaAXdBHmhILX3PfWzsftral+vuItz0C0KmyBzAJG95I=
+	t=1706397354; cv=none; b=EWlD6A3OK/TcpZq64ZEi5lcf5dup0gPDhVcUOn01TDnqPyRWtNpeTtllZP+MxyeLrXwhDZtKysmCBVG0BxzpJ4bmhIKXtmjpJNikS1FlXXxFyxK9tz+c3YGedpZ4wfdlggK7VSY01/AkgRGe4T3h6QlYNniRi5bwAnGOn4FTPEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706397344; c=relaxed/simple;
-	bh=K7L7CD0IJ+gya762bSjg+oSMsu0YV7RQfE8CGWqjCb0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=A5HpeoALCeC3pGZ2zx+d1+RDGuKkSs5lixk0AZQQXw0JFfHX9dCU5izPkRDXQ+cOjWEtk0T6ic7LQC7GotaA4hBiboXmuDAL4KUfIaC1nPX2ROipH72wnUg4ypiADotatb/nvTHktEdyaMYdzZRyaQkn9/pOCg9MluYg8pWE914=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IqmaBciP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F243EC433F1;
-	Sat, 27 Jan 2024 23:15:43 +0000 (UTC)
+	s=arc-20240116; t=1706397354; c=relaxed/simple;
+	bh=Rg8UNrmvELK4eCqPYErWCCCvvzJXWXBhLDDXqr/kiP8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=P1mZxxdr0KujVOcWstlF0WKfL0qjctEbnuVIkj75iNFbFtmOTiJr4qika5LIzWBDbzOAFKn7OmUkH8szZ1/AJf+NHaMhnRUBMVDR4Wdoi662CJev6bCd8p/9DBxQ+D89ipTNfqaT8UVwX+ZETM+v1x49htkP8R8XeLWPHPM29qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dqv8DM23; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110F6C433C7;
+	Sat, 27 Jan 2024 23:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706397344;
-	bh=K7L7CD0IJ+gya762bSjg+oSMsu0YV7RQfE8CGWqjCb0=;
+	s=korg; t=1706397354;
+	bh=Rg8UNrmvELK4eCqPYErWCCCvvzJXWXBhLDDXqr/kiP8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=IqmaBciPFrMfsxLyOHm+IAS26jfBjTweibQ8ed5QYz50BAoR9NVOTq/+BCzJKlfVz
-	 vrSS6qFX2jSJfatK1Kvpzj3cU8lPRS8SZVkMJnDuH5An/eyr2r1GqZhW1m6Yg5NVRb
-	 FbrmZhlVIbnSbrQTEizDqsqFOd4kgUKJN6iC1axQ=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Clear OPTC mem select on disable" failed to apply to 6.1-stable tree
-To: ilya.bakoulin@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,charlene.liu@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com
+	b=Dqv8DM23F+rYbb04TpVF1WqPphDvWSd6KRG5daNZVS55x2pjuIzNX/aBWZG5xz2FF
+	 0WJi6DuCAb0TqmEZ+cyF8+GWuZhJq+8vxDWsHY/e4UMZKjdGOAXU0Rbl/hr3hSXP/s
+	 49nwecXYpxvSM5rKMPIkpSvSZ+h7NiRDD0Q3g8yM=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Add logging resource checks" failed to apply to 6.7-stable tree
+To: charlene.liu@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,sungjoon.kim@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 15:15:43 -0800
-Message-ID: <2024012743-upheld-scratch-4c23@gregkh>
+Date: Sat, 27 Jan 2024 15:15:53 -0800
+Message-ID: <2024012753-negligee-lisp-6cf2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3ba2a0bfd8cf94eb225e1c60dff16e5c35bde1da
+git cherry-pick -x 8a51cc097dd590a86e8eec5398934ef389ff9a7b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012743-upheld-scratch-4c23@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012753-negligee-lisp-6cf2@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
-3ba2a0bfd8cf ("drm/amd/display: Clear OPTC mem select on disable")
-7bdbfb4e36e3 ("drm/amd/display: Disconnect phantom pipe OPP from OPTC being disabled")
-e7b2b108cdea ("drm/amd/display: Fix hang/underflow when transitioning to ODM4:1")
-3d0fe4945465 ("drm/amd/display: Refactor OPTC into component folder")
-6c22fb07e0c2 ("drm/amd/display: Refactor DSC into component folder")
-8b8eed05a1c6 ("drm/amd/display: Refactor resource into component directory")
-e53524cdcc02 ("drm/amd/display: Refactor HWSS into component folder")
-6e2c4941ce0c ("drm/amd/display: Move dml code under CONFIG_DRM_AMD_DC_FP guard")
-45e7649fd191 ("drm/amd/display: Add DCN35 CORE")
-1cb87e048975 ("drm/amd/display: Add DCN35 blocks to Makefile")
-0fa45b6aeae4 ("drm/amd/display: Add DCN35 Resource")
-ec129fa356be ("drm/amd/display: Add DCN35 init")
-6f8b7565cca4 ("drm/amd/display: Add DCN35 HWSEQ")
-327959a489d5 ("drm/amd/display: Add DCN35 DSC")
-b9c96af677cb ("drm/amd/display: Add DCN35 OPTC")
-b188069f788d ("drm/amd/display: add DCN301 specific logic for OTG programming")
-0baae6246307 ("drm/amd/display: Refactor fast update to use new HWSS build sequence")
-5b466b28fa94 ("drm/amd/display: Reorganize DCN30 Makefile")
-d205a800a66e ("drm/amd/display: Add visual confirm color support for MCLK switch")
-6ba5a269cdc9 ("drm/amd/display: Update vactive margin and max vblank for fpo + vactive")
+8a51cc097dd5 ("drm/amd/display: Add logging resource checks")
+09a4ec5da92c ("drm/amd/display: Refactor dc_state interface")
+abd26a3252cb ("drm/amd/display: Add dml2 copy functions")
 
 thanks,
 
@@ -96,55 +79,75 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3ba2a0bfd8cf94eb225e1c60dff16e5c35bde1da Mon Sep 17 00:00:00 2001
-From: Ilya Bakoulin <ilya.bakoulin@amd.com>
-Date: Wed, 3 Jan 2024 09:42:04 -0500
-Subject: [PATCH] drm/amd/display: Clear OPTC mem select on disable
+From 8a51cc097dd590a86e8eec5398934ef389ff9a7b Mon Sep 17 00:00:00 2001
+From: Charlene Liu <charlene.liu@amd.com>
+Date: Thu, 28 Dec 2023 13:19:33 -0500
+Subject: [PATCH] drm/amd/display: Add logging resource checks
 
 [Why]
-Not clearing the memory select bits prior to OPTC disable can cause DSC
-corruption issues when attempting to reuse a memory instance for another
-OPTC that enables ODM.
-
-[How]
-Clear the memory select bits prior to disabling an OPTC.
+When mapping resources, resources could be unavailable.
 
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Reviewed-by: Sung joon Kim <sungjoon.kim@amd.com>
 Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Ilya Bakoulin <ilya.bakoulin@amd.com>
+Signed-off-by: Charlene Liu <charlene.liu@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/optc/dcn32/dcn32_optc.c b/drivers/gpu/drm/amd/display/dc/optc/dcn32/dcn32_optc.c
-index 1788eb29474b..823493543325 100644
---- a/drivers/gpu/drm/amd/display/dc/optc/dcn32/dcn32_optc.c
-+++ b/drivers/gpu/drm/amd/display/dc/optc/dcn32/dcn32_optc.c
-@@ -173,6 +173,9 @@ static bool optc32_disable_crtc(struct timing_generator *optc)
- 			OPTC_SEG3_SRC_SEL, 0xf,
- 			OPTC_NUM_OF_INPUT_SEGMENT, 0);
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 69e726630241..aa7c02ba948e 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -3522,7 +3522,7 @@ static void commit_planes_for_stream(struct dc *dc,
+ 	top_pipe_to_program = resource_get_otg_master_for_stream(
+ 				&context->res_ctx,
+ 				stream);
+-
++	ASSERT(top_pipe_to_program != NULL);
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+ 		struct pipe_ctx *old_pipe = &dc->current_state->res_ctx.pipe_ctx[i];
  
-+	REG_UPDATE(OPTC_MEMORY_CONFIG,
-+			OPTC_MEM_SEL, 0);
-+
- 	/* disable otg request until end of the first line
- 	 * in the vertical blank region
- 	 */
-diff --git a/drivers/gpu/drm/amd/display/dc/optc/dcn35/dcn35_optc.c b/drivers/gpu/drm/amd/display/dc/optc/dcn35/dcn35_optc.c
-index 3d6c1b2c2b4d..5b1547508850 100644
---- a/drivers/gpu/drm/amd/display/dc/optc/dcn35/dcn35_optc.c
-+++ b/drivers/gpu/drm/amd/display/dc/optc/dcn35/dcn35_optc.c
-@@ -145,6 +145,9 @@ static bool optc35_disable_crtc(struct timing_generator *optc)
- 			OPTC_SEG3_SRC_SEL, 0xf,
- 			OPTC_NUM_OF_INPUT_SEGMENT, 0);
+@@ -4345,6 +4345,8 @@ static bool should_commit_minimal_transition_for_windowed_mpo_odm(struct dc *dc,
  
-+	REG_UPDATE(OPTC_MEMORY_CONFIG,
-+			OPTC_MEM_SEL, 0);
-+
- 	/* disable otg request until end of the first line
- 	 * in the vertical blank region
- 	 */
+ 	cur_pipe = resource_get_otg_master_for_stream(&dc->current_state->res_ctx, stream);
+ 	new_pipe = resource_get_otg_master_for_stream(&context->res_ctx, stream);
++	if (!cur_pipe || !new_pipe)
++		return false;
+ 	cur_is_odm_in_use = resource_get_odm_slice_count(cur_pipe) > 1;
+ 	new_is_odm_in_use = resource_get_odm_slice_count(new_pipe) > 1;
+ 	if (cur_is_odm_in_use == new_is_odm_in_use)
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index f2abc1096ffb..9fbdb09697fd 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -2194,6 +2194,10 @@ void resource_log_pipe_topology_update(struct dc *dc, struct dc_state *state)
+ 	for (stream_idx = 0; stream_idx < state->stream_count; stream_idx++) {
+ 		otg_master = resource_get_otg_master_for_stream(
+ 				&state->res_ctx, state->streams[stream_idx]);
++		if (!otg_master	|| otg_master->stream_res.tg == NULL) {
++			DC_LOG_DC("topology update: otg_master NULL stream_idx %d!\n", stream_idx);
++			return;
++		}
+ 		slice_count = resource_get_opp_heads_for_otg_master(otg_master,
+ 				&state->res_ctx, opp_heads);
+ 		for (slice_idx = 0; slice_idx < slice_count; slice_idx++) {
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_state.c b/drivers/gpu/drm/amd/display/dc/core/dc_state.c
+index 56feee0ff01b..88c6436b28b6 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_state.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_state.c
+@@ -434,8 +434,9 @@ bool dc_state_add_plane(
+ 
+ 	otg_master_pipe = resource_get_otg_master_for_stream(
+ 			&state->res_ctx, stream);
+-	added = resource_append_dpp_pipes_for_plane_composition(state,
+-			dc->current_state, pool, otg_master_pipe, plane_state);
++	if (otg_master_pipe)
++		added = resource_append_dpp_pipes_for_plane_composition(state,
++				dc->current_state, pool, otg_master_pipe, plane_state);
+ 
+ 	if (added) {
+ 		stream_status->plane_states[stream_status->plane_count] =
 
 
