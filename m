@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D271E83F076
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:05:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D06C383F077
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:06:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D0D7B23684
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:05:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 853311F22FC3
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517191B807;
-	Sat, 27 Jan 2024 22:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69EC1B807;
+	Sat, 27 Jan 2024 22:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRiwc3vR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRX4Wtao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137D21B7FA
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FCC1B7E1
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706393121; cv=none; b=TtT2JjB1VRSkR5NTvXrB7iIsYs7ezjw8kb/q77Qj4ktoVZvaZ5KEtobieB6wLGv8hTl+AjjZwYvatzRrPk8DgPlliy9XEoKWr7WhpiQM7KMNR8A9DDsscy1PlGweKjJlDdn1bMNB8gtGcue0uMQ4Ul+a1/9ZezDP+HQXSdYDPgo=
+	t=1706393197; cv=none; b=ENEZV8dtS7D0htOCempY4LiJIFOBZnHh+434zwOoBdDtuTx4RkAOHlJW06DEfYSPVGdsJTYG1/Dosh17bBhzXfLOtk1MJdI5qAztc6W3g0TG1EBVQFHqCfyJ2WUKaMI9fBpyctsGPGIlvbRb15Ddy+K5bYIBboMWX4nygUJKp88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706393121; c=relaxed/simple;
-	bh=lDqYV5ukP+eU11sp8+5fmAtBBfLD0iCLemGhKhxF/Tk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ba2uM9eWYYutNxMmZtgSOuxHJlUl9xrC/2QyG4r3gX8d6tSJ9jG3CtR+xcBxAaSr9ZKWqPnt5+jJQB8Dm/uwHyBEntuh9Dtxrm4ONiLDT+gBX8+LNSWzzOBFgc1Qy/5dUXWjijh60yVm5HvtoN9bthLUFxQc4FAQYxbrh5YMNzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRiwc3vR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8721C433C7;
-	Sat, 27 Jan 2024 22:05:20 +0000 (UTC)
+	s=arc-20240116; t=1706393197; c=relaxed/simple;
+	bh=1TZBow6R4TrSY3EfSyZZUXHbGXmyvineE6dVXuT5AnQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VU+HdoALoZE6AQxSuB6PvBp/Cpcjc1rI55k84lhlLZgSdfazAtn128lNGYzej6N98DkzzMFdhE/zjTeGWKg44Kx2Oy0athZJMR5QhpaI8Ojf+ZS4JwrqFL+00OOAxvlpB3apvcZ3eXLyM4WV1PPEN+iQR94m3Y0IczQXsHRoHo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRX4Wtao; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4428EC433F1;
+	Sat, 27 Jan 2024 22:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706393120;
-	bh=lDqYV5ukP+eU11sp8+5fmAtBBfLD0iCLemGhKhxF/Tk=;
+	s=korg; t=1706393197;
+	bh=1TZBow6R4TrSY3EfSyZZUXHbGXmyvineE6dVXuT5AnQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=BRiwc3vR1ishKEd681ocg6/Mm2UKewfsK5lSwiZYMMm+4UQ51fQ+YcZtgtqmjkM8E
-	 AlpbSLQaF7TOYWjiybPs8J4i3e5oqGxUrXspj2cpOyS52TkNbzPmwzVOp2UzfK8Llq
-	 vA5F55lMM9r3NXLhU7p755Q4NQNl08CMvpkz9zY0=
-Subject: FAILED: patch "[PATCH] firmware: arm_scmi: Check mailbox/SMT channel for consistency" failed to apply to 5.10-stable tree
-To: cristian.marussi@arm.com,sudeep.holla@arm.com,xinglong.yang@cixtech.com
+	b=hRX4WtaoVpvzzeVpTNH/UjVucOaoIOeV61tYNM1dMV02CWGvgFMaZw8DziujvYnT4
+	 GbJvoXfGLaZtp/5Leffx6VC5SvbjNzO7xb1FrLfdLs/lefacbAZ0INmyf6sOBxN97o
+	 oQ+mn7bAz+dessqpTttLaXJn5rxeyvBFhlxzv8EU=
+Subject: FAILED: patch "[PATCH] xfs: read only mounts with fsopen mount API are busted" failed to apply to 5.10-stable tree
+To: dchinner@redhat.com,chandanbabu@kernel.org,hch@lst.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 14:05:19 -0800
-Message-ID: <2024012719-remarry-magical-0c2e@gregkh>
+Date: Sat, 27 Jan 2024 14:06:36 -0800
+Message-ID: <2024012736-provable-risotto-2228@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,33 +62,14 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 437a310b22244d4e0b78665c3042e5d1c0f45306
+git cherry-pick -x d8d222e09dab84a17bb65dda4b94d01c565f5327
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012719-remarry-magical-0c2e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012736-provable-risotto-2228@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-437a310b2224 ("firmware: arm_scmi: Check mailbox/SMT channel for consistency")
-13fba878ccdd ("firmware: arm_scmi: Add priv parameter to scmi_rx_callback")
-e9b21c96181c ("firmware: arm_scmi: Make .clear_channel optional")
-ed7c04c1fea3 ("firmware: arm_scmi: Handle concurrent and out-of-order messages")
-9ca5a1838e59 ("firmware: arm_scmi: Introduce monotonically increasing tokens")
-3669032514be ("firmware: arm_scmi: Remove scmi_dump_header_dbg() helper")
-e30d91d4ffda ("firmware: arm_scmi: Move reinit_completion from scmi_xfer_get to do_xfer")
-0cb7af474e0d ("firmware: arm_scmi: Reset Rx buffer to max size during async commands")
-d4f9dddd21f3 ("firmware: arm_scmi: Add dynamic scmi devices creation")
-f5800e0bf6f9 ("firmware: arm_scmi: Add protocol modularization support")
-a02d7c93c1f3 ("firmware: arm_scmi: Make notify_priv really private")
-9162afa2ae99 ("firmware: arm_scmi: Cleanup unused core transfer helper wrappers")
-51fe1b154e2f ("firmware: arm_scmi: Cleanup legacy protocol init code")
-fe4894d968f4 ("firmware: arm_scmi: Port voltage protocol to new protocols interface")
-b46d852718c1 ("firmware: arm_scmi: Port systempower protocol to new protocols interface")
-9694a7f62359 ("firmware: arm_scmi: Port sensor protocol to new protocols interface")
-7e0293442238 ("firmware: arm_scmi: Port reset protocol to new protocols interface")
-887281c7519d ("firmware: arm_scmi: Port clock protocol to new protocols interface")
-9bc8069c8567 ("firmware: arm_scmi: Port power protocol to new protocols interface")
-1fec5e6b5233 ("firmware: arm_scmi: Port perf protocol to new protocols interface")
+
 
 thanks,
 
@@ -96,97 +77,126 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 437a310b22244d4e0b78665c3042e5d1c0f45306 Mon Sep 17 00:00:00 2001
-From: Cristian Marussi <cristian.marussi@arm.com>
-Date: Wed, 20 Dec 2023 17:21:12 +0000
-Subject: [PATCH] firmware: arm_scmi: Check mailbox/SMT channel for consistency
+From d8d222e09dab84a17bb65dda4b94d01c565f5327 Mon Sep 17 00:00:00 2001
+From: Dave Chinner <dchinner@redhat.com>
+Date: Tue, 16 Jan 2024 15:33:07 +1100
+Subject: [PATCH] xfs: read only mounts with fsopen mount API are busted
 
-On reception of a completion interrupt the shared memory area is accessed
-to retrieve the message header at first and then, if the message sequence
-number identifies a transaction which is still pending, the related
-payload is fetched too.
+Recently xfs/513 started failing on my test machines testing "-o
+ro,norecovery" mount options. This was being emitted in dmesg:
 
-When an SCMI command times out the channel ownership remains with the
-platform until eventually a late reply is received and, as a consequence,
-any further transmission attempt remains pending, waiting for the channel
-to be relinquished by the platform.
+[ 9906.932724] XFS (pmem0): no-recovery mounts must be read-only.
 
-Once that late reply is received the channel ownership is given back
-to the agent and any pending request is then allowed to proceed and
-overwrite the SMT area of the just delivered late reply; then the wait
-for the reply to the new request starts.
+Turns out, readonly mounts with the fsopen()/fsconfig() mount API
+have been busted since day zero. It's only taken 5 years for debian
+unstable to start using this "new" mount API, and shortly after this
+I noticed xfs/513 had started to fail as per above.
 
-It has been observed that the spurious IRQ related to the late reply can
-be wrongly associated with the freshly enqueued request: when that happens
-the SCMI stack in-flight lookup procedure is fooled by the fact that the
-message header now present in the SMT area is related to the new pending
-transaction, even though the real reply has still to arrive.
+The syscall trace is:
 
-This race-condition on the A2P channel can be detected by looking at the
-channel status bits: a genuine reply from the platform will have set the
-channel free bit before triggering the completion IRQ.
+fsopen("xfs", FSOPEN_CLOEXEC)           = 3
+mount_setattr(-1, NULL, 0, NULL, 0)     = -1 EINVAL (Invalid argument)
+.....
+fsconfig(3, FSCONFIG_SET_STRING, "source", "/dev/pmem0", 0) = 0
+fsconfig(3, FSCONFIG_SET_FLAG, "ro", NULL, 0) = 0
+fsconfig(3, FSCONFIG_SET_FLAG, "norecovery", NULL, 0) = 0
+fsconfig(3, FSCONFIG_CMD_CREATE, NULL, NULL, 0) = -1 EINVAL (Invalid argument)
+close(3)                                = 0
 
-Add a consistency check to validate such condition in the A2P ISR.
+Showing that the actual mount instantiation (FSCONFIG_CMD_CREATE) is
+what threw out the error.
 
-Reported-by: Xinglong Yang <xinglong.yang@cixtech.com>
-Closes: https://lore.kernel.org/all/PUZPR06MB54981E6FA00D82BFDBB864FBF08DA@PUZPR06MB5498.apcprd06.prod.outlook.com/
-Fixes: 5c8a47a5a91d ("firmware: arm_scmi: Make scmi core independent of the transport type")
-Cc: stable@vger.kernel.org # 5.15+
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Tested-by: Xinglong Yang <xinglong.yang@cixtech.com>
-Link: https://lore.kernel.org/r/20231220172112.763539-1-cristian.marussi@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+During mount instantiation, we call xfs_fs_validate_params() which
+does:
 
-diff --git a/drivers/firmware/arm_scmi/common.h b/drivers/firmware/arm_scmi/common.h
-index c46dc5215af7..00b165d1f502 100644
---- a/drivers/firmware/arm_scmi/common.h
-+++ b/drivers/firmware/arm_scmi/common.h
-@@ -314,6 +314,7 @@ void shmem_fetch_notification(struct scmi_shared_mem __iomem *shmem,
- void shmem_clear_channel(struct scmi_shared_mem __iomem *shmem);
- bool shmem_poll_done(struct scmi_shared_mem __iomem *shmem,
- 		     struct scmi_xfer *xfer);
-+bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem);
+        /* No recovery flag requires a read-only mount */
+        if (xfs_has_norecovery(mp) && !xfs_is_readonly(mp)) {
+                xfs_warn(mp, "no-recovery mounts must be read-only.");
+                return -EINVAL;
+        }
+
+and xfs_is_readonly() checks internal mount flags for read only
+state. This state is set in xfs_init_fs_context() from the
+context superblock flag state:
+
+        /*
+         * Copy binary VFS mount flags we are interested in.
+         */
+        if (fc->sb_flags & SB_RDONLY)
+                set_bit(XFS_OPSTATE_READONLY, &mp->m_opstate);
+
+With the old mount API, all of the VFS specific superblock flags
+had already been parsed and set before xfs_init_fs_context() is
+called, so this all works fine.
+
+However, in the brave new fsopen/fsconfig world,
+xfs_init_fs_context() is called from fsopen() context, before any
+VFS superblock have been set or parsed. Hence if we use fsopen(),
+the internal XFS readonly state is *never set*. Hence anything that
+depends on xfs_is_readonly() actually returning true for read only
+mounts is broken if fsopen() has been used to mount the filesystem.
+
+Fix this by moving this internal state initialisation to
+xfs_fs_fill_super() before we attempt to validate the parameters
+that have been set prior to the FSCONFIG_CMD_CREATE call being made.
+
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Fixes: 73e5fff98b64 ("xfs: switch to use the new mount-api")
+cc: stable@vger.kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+
+diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
+index aff20ddd4a9f..5a2512d20bd0 100644
+--- a/fs/xfs/xfs_super.c
++++ b/fs/xfs/xfs_super.c
+@@ -1496,6 +1496,18 @@ xfs_fs_fill_super(
  
- /* declarations for message passing transports */
- struct scmi_msg_payld;
-diff --git a/drivers/firmware/arm_scmi/mailbox.c b/drivers/firmware/arm_scmi/mailbox.c
-index 19246ed1f01f..b8d470417e8f 100644
---- a/drivers/firmware/arm_scmi/mailbox.c
-+++ b/drivers/firmware/arm_scmi/mailbox.c
-@@ -45,6 +45,20 @@ static void rx_callback(struct mbox_client *cl, void *m)
- {
- 	struct scmi_mailbox *smbox = client_to_scmi_mailbox(cl);
+ 	mp->m_super = sb;
  
 +	/*
-+	 * An A2P IRQ is NOT valid when received while the platform still has
-+	 * the ownership of the channel, because the platform at first releases
-+	 * the SMT channel and then sends the completion interrupt.
-+	 *
-+	 * This addresses a possible race condition in which a spurious IRQ from
-+	 * a previous timed-out reply which arrived late could be wrongly
-+	 * associated with the next pending transaction.
++	 * Copy VFS mount flags from the context now that all parameter parsing
++	 * is guaranteed to have been completed by either the old mount API or
++	 * the newer fsopen/fsconfig API.
 +	 */
-+	if (cl->knows_txdone && !shmem_channel_free(smbox->shmem)) {
-+		dev_warn(smbox->cinfo->dev, "Ignoring spurious A2P IRQ !\n");
-+		return;
-+	}
++	if (fc->sb_flags & SB_RDONLY)
++		set_bit(XFS_OPSTATE_READONLY, &mp->m_opstate);
++	if (fc->sb_flags & SB_DIRSYNC)
++		mp->m_features |= XFS_FEAT_DIRSYNC;
++	if (fc->sb_flags & SB_SYNCHRONOUS)
++		mp->m_features |= XFS_FEAT_WSYNC;
 +
- 	scmi_rx_callback(smbox->cinfo, shmem_read_header(smbox->shmem), NULL);
- }
+ 	error = xfs_fs_validate_params(mp);
+ 	if (error)
+ 		return error;
+@@ -1965,6 +1977,11 @@ static const struct fs_context_operations xfs_context_ops = {
+ 	.free        = xfs_fs_free,
+ };
  
-diff --git a/drivers/firmware/arm_scmi/shmem.c b/drivers/firmware/arm_scmi/shmem.c
-index 87b4f4d35f06..517d52fb3bcb 100644
---- a/drivers/firmware/arm_scmi/shmem.c
-+++ b/drivers/firmware/arm_scmi/shmem.c
-@@ -122,3 +122,9 @@ bool shmem_poll_done(struct scmi_shared_mem __iomem *shmem,
- 		(SCMI_SHMEM_CHAN_STAT_CHANNEL_ERROR |
- 		 SCMI_SHMEM_CHAN_STAT_CHANNEL_FREE);
- }
-+
-+bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem)
-+{
-+	return (ioread32(&shmem->channel_status) &
-+			SCMI_SHMEM_CHAN_STAT_CHANNEL_FREE);
-+}
++/*
++ * WARNING: do not initialise any parameters in this function that depend on
++ * mount option parsing having already been performed as this can be called from
++ * fsopen() before any parameters have been set.
++ */
+ static int xfs_init_fs_context(
+ 	struct fs_context	*fc)
+ {
+@@ -1996,16 +2013,6 @@ static int xfs_init_fs_context(
+ 	mp->m_logbsize = -1;
+ 	mp->m_allocsize_log = 16; /* 64k */
+ 
+-	/*
+-	 * Copy binary VFS mount flags we are interested in.
+-	 */
+-	if (fc->sb_flags & SB_RDONLY)
+-		set_bit(XFS_OPSTATE_READONLY, &mp->m_opstate);
+-	if (fc->sb_flags & SB_DIRSYNC)
+-		mp->m_features |= XFS_FEAT_DIRSYNC;
+-	if (fc->sb_flags & SB_SYNCHRONOUS)
+-		mp->m_features |= XFS_FEAT_WSYNC;
+-
+ 	fc->s_fs_info = mp;
+ 	fc->ops = &xfs_context_ops;
+ 
 
 
