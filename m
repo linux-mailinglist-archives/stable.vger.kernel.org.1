@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B1D83F0FD
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:40:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF5D83F100
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:41:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6B5B1C2329D
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:40:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACB6BB2523B
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97AE71E86A;
-	Sat, 27 Jan 2024 22:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21411DDD6;
+	Sat, 27 Jan 2024 22:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYbtZrQO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPf4zZVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EB61E52B
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3BDB1B954
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706395253; cv=none; b=AVTXjToxr7Hc8brnMSPzBeOxcSlPXM8ELyEEaRMy4/a8f/3Q3TKnWUe4HA8KnP05/SqYDb5ApixYqGJsQn176pjVgPFANdxhLrbEJ5VjjE7aWQjmcG3tr2Ga35UVq1RskY098j+dLlCbLq3iuNpMuYUlBDDWd1vgkgZBg0Do04I=
+	t=1706395266; cv=none; b=BXOXYbrT1a1ipK1C3OurZGFWICsnhqXqyH6wOXtEzBguU9EMlONQi6i0/V7As6ZUl+K9wQhsbqosjwkga3zMcGBV/RiHulxxbxTHBzHawCWm5ZctBtt7KRFMw3/dqkAdAEfMiGRfXGP4Pu8LcoTtszRswP9Pg/T0PnLwDB8vqKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706395253; c=relaxed/simple;
-	bh=WXqz9pN8Om+Lj6rwjWQjjDMP2j+7JTvdD3A9QKrTwsg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Syra406RE1acq5ruD4Xpal86qB70pQMf8Phrsmur2tA/gvFzcffUvg30e9ZqtyI/8pcEm+jt/U8GJBO8N11DLgKmgU+d6GZNN/AmUCLiF1riNeYkGEGvk56hcjJuBGvziYpP3M1mTUn5dPxxFMhs4ZuQUCyxbYFj5pT5j6qQACk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYbtZrQO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA3BC433C7;
-	Sat, 27 Jan 2024 22:40:52 +0000 (UTC)
+	s=arc-20240116; t=1706395266; c=relaxed/simple;
+	bh=rm9LqEmSQOO/2+xLFt2U/uZHRBDKlI8XKyyZVgRLR3s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=l9J5E9bYhaA8i1XwPduj2+woWWT5H8LjT7azhXy9E2RV2wf8xgjxn9g0ZmfeoHhvfhgpp+THyR376au/80QkSgsWfhsDCUdZxJHiPng/duDoMoY/xIO6//1WfYdZhaB0DL4OghsdDTMZZ3XKhLg4I48HycAT/ZkfNHKCrSQg0OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPf4zZVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19188C433C7;
+	Sat, 27 Jan 2024 22:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706395252;
-	bh=WXqz9pN8Om+Lj6rwjWQjjDMP2j+7JTvdD3A9QKrTwsg=;
+	s=korg; t=1706395266;
+	bh=rm9LqEmSQOO/2+xLFt2U/uZHRBDKlI8XKyyZVgRLR3s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=TYbtZrQOPsRsx2spjoa+uzUaJ/qnGMcqnK4NXfWtMsY2tc/XG6polaTtik9VihPQD
-	 A/m1nqWF2ZcCUgDOA0AyPbSPYQbbiYmX9vlUrLEqeAT+szd+NIe09uIS+kRmw+dAtS
-	 EPqqsdkxXahn3RTZySXQ//xYeW1DlSJBiq3VImoI=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Update min Z8 residency time to 2100 for" failed to apply to 6.1-stable tree
-To: nicholas.kazlauskas@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,syed.hassan@amd.com
+	b=BPf4zZVDUADKN8aQhplbXsDu0ttU3/ar6XrWGgd2vnIxBuaYxdRQ8eHC8e2ODpJ/V
+	 DAgjaz+Ls5pHz0i8WdIr+Xip0GFtmGT/Vywhu7JRbfnpStQbf0eHk+82IQfwRIIhXV
+	 Png/GpUJJZ9ApAgEVCAy4ynh9QsUcVKJVYqzY8jw=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Simplify brightness initialization" failed to apply to 6.7-stable tree
+To: camille.cho@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,krunoslav.kovac@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 14:40:52 -0800
-Message-ID: <2024012751-payment-luckless-5da3@gregkh>
+Date: Sat, 27 Jan 2024 14:41:05 -0800
+Message-ID: <2024012705-ranked-plot-6300@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x d642b0100bf8c95e88e8396b7191b35807dabb4c
+git cherry-pick -x 43b8ac4b34ec239bccf4a692c1227ef51a95a4d2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012751-payment-luckless-5da3@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012705-ranked-plot-6300@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
-d642b0100bf8 ("drm/amd/display: Update min Z8 residency time to 2100 for DCN314")
-8b8eed05a1c6 ("drm/amd/display: Refactor resource into component directory")
-e53524cdcc02 ("drm/amd/display: Refactor HWSS into component folder")
-6e2c4941ce0c ("drm/amd/display: Move dml code under CONFIG_DRM_AMD_DC_FP guard")
-45e7649fd191 ("drm/amd/display: Add DCN35 CORE")
-1cb87e048975 ("drm/amd/display: Add DCN35 blocks to Makefile")
-0fa45b6aeae4 ("drm/amd/display: Add DCN35 Resource")
-ec129fa356be ("drm/amd/display: Add DCN35 init")
-6f8b7565cca4 ("drm/amd/display: Add DCN35 HWSEQ")
-927e784c180c ("drm/amd/display: Add symclk enable/disable during stream enable/disable")
-927e784c180c ("drm/amd/display: Add symclk enable/disable during stream enable/disable")
-927e784c180c ("drm/amd/display: Add symclk enable/disable during stream enable/disable")
-927e784c180c ("drm/amd/display: Add symclk enable/disable during stream enable/disable")
-927e784c180c ("drm/amd/display: Add symclk enable/disable during stream enable/disable")
-927e784c180c ("drm/amd/display: Add symclk enable/disable during stream enable/disable")
-927e784c180c ("drm/amd/display: Add symclk enable/disable during stream enable/disable")
-927e784c180c ("drm/amd/display: Add symclk enable/disable during stream enable/disable")
-927e784c180c ("drm/amd/display: Add symclk enable/disable during stream enable/disable")
-927e784c180c ("drm/amd/display: Add symclk enable/disable during stream enable/disable")
-927e784c180c ("drm/amd/display: Add symclk enable/disable during stream enable/disable")
+43b8ac4b34ec ("drm/amd/display: Simplify brightness initialization")
 
 thanks,
 
@@ -96,37 +77,134 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d642b0100bf8c95e88e8396b7191b35807dabb4c Mon Sep 17 00:00:00 2001
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Date: Wed, 8 Nov 2023 10:59:00 -0500
-Subject: [PATCH] drm/amd/display: Update min Z8 residency time to 2100 for
- DCN314
+From 43b8ac4b34ec239bccf4a692c1227ef51a95a4d2 Mon Sep 17 00:00:00 2001
+From: Camille Cho <camille.cho@amd.com>
+Date: Fri, 3 Nov 2023 12:08:42 +0800
+Subject: [PATCH] drm/amd/display: Simplify brightness initialization
 
 [Why]
-Some panels with residency period of 2054 exhibit flickering with
-Z8 at the end of the frame.
+Remove the brightness cache in DC. It uses a single value to represent
+the brightness for both SDR and HDR mode. This leads to flash in HDR
+on/off. It also unconditionally programs brightness as in HDR mode. This
+may introduce garbage on SDR mode in miniLED panel.
 
 [How]
-As a workaround, increase the limit to block these panels.
+Simplify the initialization flow by removing the DC cache and taking
+what panel has as default. Expand the mechanism for PWM to DPCD Aux to
+restore cached brightness value generally.
 
 Cc: stable@vger.kernel.org # 6.1+
-Reviewed-by: Syed Hassan <syed.hassan@amd.com>
+Reviewed-by: Krunoslav Kovac <krunoslav.kovac@amd.com>
 Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Camille Cho <camille.cho@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
-index 677361d74a4e..c97391edb5ff 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
-@@ -871,7 +871,7 @@ static const struct dc_plane_cap plane_cap = {
- static const struct dc_debug_options debug_defaults_drv = {
- 	.disable_z10 = false,
- 	.enable_z9_disable_interface = true,
--	.minimum_z8_residency_time = 2000,
-+	.minimum_z8_residency_time = 2100,
- 	.psr_skip_crtc_disable = true,
- 	.replay_skip_crtc_disabled = true,
- 	.disable_dmcu = true,
+diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
+index 349629858205..18b8d7f3f738 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -1610,7 +1610,6 @@ struct dc_link {
+ 	enum edp_revision edp_revision;
+ 	union dpcd_sink_ext_caps dpcd_sink_ext_caps;
+ 
+-	struct backlight_settings backlight_settings;
+ 	struct psr_settings psr_settings;
+ 
+ 	struct replay_settings replay_settings;
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
+index 4a60d2c47686..a2f6c994a2a9 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
+@@ -991,10 +991,6 @@ struct link_mst_stream_allocation_table {
+ 	struct link_mst_stream_allocation stream_allocations[MAX_CONTROLLER_NUM];
+ };
+ 
+-struct backlight_settings {
+-	uint32_t backlight_millinits;
+-};
+-
+ /* PSR feature flags */
+ struct psr_settings {
+ 	bool psr_feature_enabled;		// PSR is supported by sink
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_detection.c b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+index f2fe523f914f..24153b0df503 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+@@ -879,7 +879,7 @@ static bool detect_link_and_local_sink(struct dc_link *link,
+ 			(link->dpcd_sink_ext_caps.bits.oled == 1)) {
+ 			dpcd_set_source_specific_data(link);
+ 			msleep(post_oui_delay);
+-			set_cached_brightness_aux(link);
++			set_default_brightness_aux(link);
+ 		}
+ 
+ 		return true;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+index 34a4a8c0e18c..f8e01ca09d96 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+@@ -2142,8 +2142,7 @@ static enum dc_status enable_link_dp(struct dc_state *state,
+ 	if (link->dpcd_sink_ext_caps.bits.oled == 1 ||
+ 		link->dpcd_sink_ext_caps.bits.sdr_aux_backlight_control == 1 ||
+ 		link->dpcd_sink_ext_caps.bits.hdr_aux_backlight_control == 1) {
+-		set_cached_brightness_aux(link);
+-
++		set_default_brightness_aux(link);
+ 		if (link->dpcd_sink_ext_caps.bits.oled == 1)
+ 			msleep(bl_oled_enable_delay);
+ 		edp_backlight_enable_aux(link, true);
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
+index fdeb8dff5485..ac0fa88b52a0 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
+@@ -170,7 +170,6 @@ bool edp_set_backlight_level_nits(struct dc_link *link,
+ 	*(uint32_t *)&dpcd_backlight_set.backlight_level_millinits = backlight_millinits;
+ 	*(uint16_t *)&dpcd_backlight_set.backlight_transition_time_ms = (uint16_t)transition_time_in_ms;
+ 
+-	link->backlight_settings.backlight_millinits = backlight_millinits;
+ 
+ 	if (!link->dpcd_caps.panel_luminance_control) {
+ 		if (core_link_write_dpcd(link, DP_SOURCE_BACKLIGHT_LEVEL,
+@@ -288,9 +287,9 @@ bool set_default_brightness_aux(struct dc_link *link)
+ 	if (link && link->dpcd_sink_ext_caps.bits.oled == 1) {
+ 		if (!read_default_bl_aux(link, &default_backlight))
+ 			default_backlight = 150000;
+-		// if < 1 nits or > 5000, it might be wrong readback
+-		if (default_backlight < 1000 || default_backlight > 5000000)
+-			default_backlight = 150000; //
++		// if > 5000, it might be wrong readback
++		if (default_backlight > 5000000)
++			default_backlight = 150000;
+ 
+ 		return edp_set_backlight_level_nits(link, true,
+ 				default_backlight, 0);
+@@ -298,15 +297,6 @@ bool set_default_brightness_aux(struct dc_link *link)
+ 	return false;
+ }
+ 
+-bool set_cached_brightness_aux(struct dc_link *link)
+-{
+-	if (link->backlight_settings.backlight_millinits)
+-		return edp_set_backlight_level_nits(link, true,
+-						    link->backlight_settings.backlight_millinits, 0);
+-	else
+-		return set_default_brightness_aux(link);
+-	return false;
+-}
+ bool edp_is_ilr_optimization_enabled(struct dc_link *link)
+ {
+ 	if (link->dpcd_caps.edp_supported_link_rates_count == 0 || !link->panel_config.ilr.optimize_edp_link_rate)
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h
+index 39526bd40178..b7493ff4fcee 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h
+@@ -30,7 +30,6 @@
+ enum dp_panel_mode dp_get_panel_mode(struct dc_link *link);
+ void dp_set_panel_mode(struct dc_link *link, enum dp_panel_mode panel_mode);
+ bool set_default_brightness_aux(struct dc_link *link);
+-bool set_cached_brightness_aux(struct dc_link *link);
+ void edp_panel_backlight_power_on(struct dc_link *link, bool wait_for_hpd);
+ int edp_get_backlight_level(const struct dc_link *link);
+ bool edp_get_backlight_level_nits(struct dc_link *link,
 
 
