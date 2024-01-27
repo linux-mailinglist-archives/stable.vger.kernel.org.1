@@ -1,87 +1,119 @@
-Return-Path: <stable+bounces-16069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F88483EBED
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 09:03:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A82E83EC0B
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 09:31:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D4F7284B34
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 08:03:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB6E2B21D44
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 08:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE111DA26;
-	Sat, 27 Jan 2024 08:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F95711CA9;
+	Sat, 27 Jan 2024 08:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="18TQg4Vn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="K28Qz48W"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F571D6B6;
-	Sat, 27 Jan 2024 08:03:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFE51DDEE;
+	Sat, 27 Jan 2024 08:31:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706342583; cv=none; b=TiBTWCvfPuVBfqo+qSTH3/ZXV9A5YbKMnx5k4K4pg8xBO7c4yUziG4pCWFjcXldFcswBBbhIFlS/wJU+QErsDqjkGCN24pdEtacof52jWCDE6XkAt80pesv1gast8QqxFRVu4+SVBl6oeu0vma14iM9qPD4VCmToS1jPvy8V5E0=
+	t=1706344280; cv=none; b=a9H1XxjhjP7BKV1tXz++1J63XLe7xHDZa8YxnZTDDtZux6fqbTk+7isDVivjlbqSYzwL0jReSRH62MleEWI+yNAZQcjrw4K/wmHDN7N1kAPujOO4NaR4hvA8PLcg0xG/bKsApTrEAnS0OaPL+CM//wpqxkTc3tMK1g6Sm6agzw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706342583; c=relaxed/simple;
-	bh=jCdjWKQK7HL95zpeESitIw6yDltgmHC4OEMcv4BXJ3Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DQO7FUGtflXuO2mBF95HKuG816wFJ8snpOunGl45YYLRAaLAQm90V2QSDK1l2rrT+bDGxFKG2q5w9wB17SiXOXbXMRSll7jnGGmfTj5Or38xqIdmRo4eZpztJCVTIlqBTjI4ZJm+XCPus/eZ1Cmb6fAql1gQnzepD9tJT6gElHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: by air.basealt.ru (Postfix, from userid 490)
-	id 32F5A2F20227; Sat, 27 Jan 2024 08:02:58 +0000 (UTC)
-X-Spam-Level: 
-Received: from [192.168.0.102] (unknown [178.76.204.78])
-	by air.basealt.ru (Postfix) with ESMTPSA id 9D48B2F2021D;
-	Sat, 27 Jan 2024 08:02:54 +0000 (UTC)
-Message-ID: <57fda449-0d18-485a-0858-39f48722fe27@basealt.ru>
-Date: Sat, 27 Jan 2024 11:02:53 +0300
+	s=arc-20240116; t=1706344280; c=relaxed/simple;
+	bh=3y97SIJ5xBgVxKMWNJIJ4rLGMAWGOZ3UhyjMU+C2pOU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Zwc7v2ch8b4voG5mEAw1pUYckhGXXhMfIn5QvV86itIoaLigTw9/TdQHZ4TWgi6JZH/HFtylbM3dJok3YppQFNJ5zBU3TgaPloPBgKhVkn55EiDG6/LsAJXg5T3vS7as87mhUhfX14r2nZSsusPm0ZSyKLw1sKg2wAo7GKt/nNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=18TQg4Vn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=K28Qz48W; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Sat, 27 Jan 2024 09:31:14 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1706344276;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3I7OJx5NKf289xrERaDLT1wF8RTcX1Wk/OCiBAc6Gtk=;
+	b=18TQg4VnhdAfpujoCis6XXFumAyQY/XA4yICkWbb8vFFLH1DAB1sUTpd8YxIZiAbHbedvo
+	e21QAAwnfmPI6/9+CAm/Xn9JCufaTiu0L0Ob10PBY4smQ6xRQMUIY9YQhbbpZsXsHLG2mD
+	ca1lTz46zkXyMOKoTEhpyR1YGxqPy9Czcp3e9eFiXHvevjuuA11qI62KsROng/er8ga+VP
+	y5H/7VcGB4LMPq4oEEl8Ji0lE0ysdaJecx0NXX4yiOXXMpxm+kUJv51CJ7q8fEAafZpM1Z
+	VMsSktzNAQA4BD4tEtoscvEnEDiIqUadyL/Y1z6d0xQ7C0pGKWKX8yD+0/y2Lw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1706344276;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3I7OJx5NKf289xrERaDLT1wF8RTcX1Wk/OCiBAc6Gtk=;
+	b=K28Qz48WNcKWSyoQpS/7SybGS3TJtuhaR0/z7bCQ1I/ZdbIBYQJeoXyRKLl4neQzlsKB+H
+	GmpthLsy0/QJZ5Dw==
+From: Nam Cao <namcao@linutronix.de>
+To: Samuel Holland <samuel.holland@sifive.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Samuel
+ Holland <samuel@sholland.org>, Marc Zyngier <maz@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Guo Ren
+ <guoren@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] irqchip/sifive-plic: enable interrupt if needed before
+ EOI
+Message-ID: <20240127093114.15fdfa5c@namcao>
+In-Reply-To: <071142d9-3644-4c62-a99d-40b55bf64406@sifive.com>
+References: <20240126223836.202321-1-namcao@linutronix.de>
+	<071142d9-3644-4c62-a99d-40b55bf64406@sifive.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 0/2] smb: client: fix "df: Resource temporarily
- unavailable" on 5.10 stable kernel
-Content-Language: en-US
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
- Greg KH <greg@kroah.com>
-Cc: stable@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-cifs@vger.kernel.org,
- samba-technical@lists.samba.org, keescook@chromium.org, sfrench@samba.org,
- corbet@lwn.net, natechancellor@gmail.com, ndesaulniers@google.com,
- "pc@manguebit.com" <pc@manguebit.com>,
- "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>,
- Shyam Prasad N <nspmangalore@gmail.com>,
- Vegard Nossum <vegard.nossum@oracle.com>,
- Darren Kenny <darren.kenny@oracle.com>
-References: <20240126193143.245122-1-kovalev@altlinux.org>
- <2024012613-woozy-exhume-7b9d@gregkh>
- <472d92aa-1b49-43c9-a91f-80dfc8f25ad3@oracle.com>
-From: kovalev@altlinux.org
-In-Reply-To: <472d92aa-1b49-43c9-a91f-80dfc8f25ad3@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Hi,
+On Fri, 26 Jan 2024 18:31:19 -0600 Samuel Holland <samuel.holland@sifive.com> wrote:
+> On 2024-01-26 4:38 PM, Nam Cao wrote:
+> > RISC-V PLIC cannot EOI disabled interrupts, as explained in the
+> > description of Interrupt Completion in the PLIC spec:
+> > 
+> > "The PLIC signals it has completed executing an interrupt handler by
+> > writing the interrupt ID it received from the claim to the claim/complete
+> > register. The PLIC does not check whether the completion ID is the same
+> > as the last claim ID for that target. If the completion ID does not match
+> > an interrupt source that *is currently enabled* for the target, the
+> > completion is silently ignored."
+> > 
+> > Commit 69ea463021be ("irqchip/sifive-plic: Fixup EOI failed when masked")
+> > ensured that by enabling the interrupt if needed before EOI.
+> > 
+> > Commit a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask
+> > operations") removed the interrupt enabling code from the previous
+> > commit, because it assumes that interrupt should be enabled at the point
+> > of EOI. However, this is incorrect: there is a small window after a hart
+> > claiming an interrupt and before irq_desc->lock getting acquired,
+> > interrupt can be disabled during this window. Thus, EOI can be invoked
+> > while the interrupt is disabled, effectively nullify this EOI.
+> > 
+> > Make sure that interrupt is really enabled before EOI.  
+> 
+> Could you please try the patch I previously sent for this issue[1]?
 
-27.01.2024 09:42, Harshit Mogalapalli wrote:
-> We can reproduce this on 5.15.148(latest 5.15.y) and Mohamed reported 
-> this on 6.1.y, so we need backports there as well.
+Unfortunately my system still gets frozen with the patch applied :(
 
-in the 6.1.72 kernel, this problem was fixed by the commit [1] "smb3: 
-Replace smb2pdu 1-element arrays with flex-arrays", which was proposed 
-in this series of patches.
+I think because the patch doesn't prevent plic_irq_shutdown() from getting
+called after the hart claiming the interrupt and before irq_desc is locked
+up.
 
+> It should fix the bug without complicating the IRQ hot path.
 
-[1] https://lore.kernel.org/all/2024010937-eggplant-bauble-d556@gregkh/T/
+I can add an unlikely() to help that a bit, because from my experience, it
+is quite rare that EOI happens with interrupt disabled.
 
--- 
-Regards,
-Vasiliy Kovalev
-
+Best regards,
+Nam
 
