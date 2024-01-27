@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E93A683F197
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:11:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D1D83F198
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:11:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B1D41F22DB5
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FD8A283278
 	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C231F946;
-	Sat, 27 Jan 2024 23:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D30200AD;
+	Sat, 27 Jan 2024 23:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRKbOlo1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmwqOlCw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA9C200A0
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD6F200A0
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706397077; cv=none; b=mzvh89b9NYmMht0HVkNHEhJ+bc/cnrgZgL32PhkGhF5Ced3lppKdOuTvZ14svF1Y1wLMWGlqUMGSHyYQmX08JPdyLz0ODeU00o0DLMRyZMfE2xxYh+5Snuj8oOzIEni92I4Or/LRaWQVw2XHWsFL0ASTSWiUB1KETGBBOe8PZEk=
+	t=1706397079; cv=none; b=sjDstLZPBIHUg4k4+8f2R7fiaZEhroudSFWfWqoizbCtjYHpaPVW7Vqs7lRUpMkl7aTlRAWShKRYOoceekSAyLuSvXRF8tYbJ0jmmrqTB6krGNGaEDtGt2CxIFSfKpw97S5+aednPC642C57/UKzgD3PG11HU0JqwG2BBGaLYj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706397077; c=relaxed/simple;
-	bh=mAe7IpjVWzIhrdqFh33asfWlZHhgjtDo1s/Ur7pz/9M=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MFTn3YVl7GBBTU5JAYJsonn9loNCwivPr3ZZWGl48SBBcRsjhBMAZqAasUhCnXi/HS9JO78J0miQPGazeUTVHIAb6eyiTDTpyLG+EoiEJFCBHrQy0esqyaX24kq/dkzUrPJaXjYGw4NYlfu25EhwXoAEM3Rkq+9HJKFwTdy28yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRKbOlo1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48ED2C433C7;
-	Sat, 27 Jan 2024 23:11:17 +0000 (UTC)
+	s=arc-20240116; t=1706397079; c=relaxed/simple;
+	bh=S6M53rW3dNcgfgFfu7DBj9Sfed7UpEohH3iogopuwcY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kLbsQ/lDQVTFQTBSn/3hbsAEfJt8lVZKSDAwRuex73AUs3IumNqouEMfQRVwwmtZKLk6yKko9v4wK/lDwPE4Vq8Y5YV1+/hyuDBO9vFGdrE5ho02Dt5UeMzRu5knxJLHNCKs2LYuauu8EDQ49At74olxVjj3kRUMfg9KgQP449Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmwqOlCw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5326AC433F1;
+	Sat, 27 Jan 2024 23:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706397077;
-	bh=mAe7IpjVWzIhrdqFh33asfWlZHhgjtDo1s/Ur7pz/9M=;
+	s=korg; t=1706397078;
+	bh=S6M53rW3dNcgfgFfu7DBj9Sfed7UpEohH3iogopuwcY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=mRKbOlo12JAWAKVApPHqtO9EUWi/D+XnMONwDOr7uU6DmVgT8MsLy6OhyfKM3/3t9
-	 U/Me5p1gMBWXzNPvWV2OtdBtI25Nrp/sLPEBbmhfhfuPse0V5t8VsZ1HbSWaiSo+ru
-	 uhBE0VL7v4QMqPPK/PAn7J8OZ6A/jsBxTF4eIs2o=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix some HostVM parameters in DML" failed to apply to 6.7-stable tree
+	b=cmwqOlCwQXv+EQ+Y9EkcpGPyS0sT8buW3IsUudXYR3DyL1ymz7SJA2t+dXIpyM3c3
+	 wmPIk08qlAoHI3Hm3t4tJosIQS1Z96glhirM5oSMyP7nbVFOsWztl7UHpXk2EX6/Nh
+	 wyAtK4mxW64/I0ag4rpypwI5QGxaXX/CyeG0n1fA=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix some HostVM parameters in DML" failed to apply to 6.6-stable tree
 To: syed.hassan@amd.com,Roman.Li@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,hamza.mahfooz@amd.com,nicholas.kazlauskas@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 15:11:16 -0800
-Message-ID: <2024012716-spree-nintendo-dcad@gregkh>
+Date: Sat, 27 Jan 2024 15:11:17 -0800
+Message-ID: <2024012717-verify-unworn-b2de@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,33 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.7-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 33a6e409165cd23d1dc580031cb749550ca18517
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012716-spree-nintendo-dcad@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012717-verify-unworn-b2de@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 33a6e409165c ("drm/amd/display: Fix some HostVM parameters in DML")
 251027968a72 ("drm/amd/display: Feed SR and Z8 watermarks into DML2 for DCN35")
+7966f319c66d ("drm/amd/display: Introduce DML2")
+6e2c4941ce0c ("drm/amd/display: Move dml code under CONFIG_DRM_AMD_DC_FP guard")
+c51d87202d1f ("drm/amd/display: do not attempt ODM power optimization if minimal transition doesn't exist")
+88ca2f8a962e ("drm/amd/display: clean up one inconsistent indenting")
+1cb87e048975 ("drm/amd/display: Add DCN35 blocks to Makefile")
+69cc1864c99a ("drm/amd/display: Add DCN35 DML")
+39d39a019657 ("drm/amd/display: switch to new ODM policy for windowed MPO ODM support")
+0b9dc439f404 ("drm/amd/display: Write flip addr to scratch reg for subvp")
+96182df99dad ("drm/amd/display: Enable runtime register offset init for DCN32 DMUB")
 
 thanks,
 
