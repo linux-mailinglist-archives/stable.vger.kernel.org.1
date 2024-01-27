@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4E983F1C1
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:19:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 794C383F1C2
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:19:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D76B71F22D3B
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:19:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CB1BB208A1
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A77200BD;
-	Sat, 27 Jan 2024 23:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A502031A;
+	Sat, 27 Jan 2024 23:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rr/uwM8a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVg1fZ06"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6893E1F946
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3681F946
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706397557; cv=none; b=cZkbgE50oXEKZjbbt2t9WHytcY5WgxRhbgLn2NiXKW3O+vI/BCL0YVOIyzx4HJDgrFCvT7kD67Iev6ZneLV1zJ0Y5W/sW8qHlNBmRlglHe6Z0I1cmnXWzB0BxbC8L4bOvGgR5rF5RT3QhVQelVgKGrOkY+pSeuzngOpcMgeLIm8=
+	t=1706397558; cv=none; b=Kr33NilnM5BqVJWIVknlM161I4o1YJGEhXc8VnVniooaB3lTh4oVI8K8OmtkPXtJb38h9VxbyASNVpt772bzYTp4JUFO41vBcbv3B6MN+O2I3j05q42Kuc2XljnmX5q6QnEbiVVf5KEP4Vpv0jXodc2+YqmskJ9xYYQt0O1se7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706397557; c=relaxed/simple;
-	bh=ED+Y0rNMN+naXOaIa/sE3MuLrTOpqyQX9GaeHOv7h/A=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CXEqiEAgUxhu5aAj0GwQzW4YYg9X4yBMwg5/grAPXGOtM8iCcMbg/bGW1erqx/WM4G8qxk8j3diTnx5CjDtMDyR8s/E4u8kZIt0HhHGDtnJoim4Sc79bzZioDOB/YnrSqnRh601GR1ldOKSwoG6iSNuiH+kuvf6l4g+06Zb4l1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rr/uwM8a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E329EC433F1;
-	Sat, 27 Jan 2024 23:19:16 +0000 (UTC)
+	s=arc-20240116; t=1706397558; c=relaxed/simple;
+	bh=NeRPsG1VuFmLAYTBXSjfGTl6zWmuIYX8y8978PRMvJY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=W8TAWZ9NM7sIrnrGMarM2IUTigX23Gnjor44F6yy/dEJTNjg+KRb12r4E/fCBOSR2lRfH8WKsWwu5F8ZuKX2eeL+6Xyp6/9RM8IIFRVu+f/hg823/cmWiLkfDMTsasAEGROAGmlsWOb7rkdZCLYQ5Uy0D214ot5tkLIIM8/Kc2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVg1fZ06; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EE0C43390;
+	Sat, 27 Jan 2024 23:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
 	s=korg; t=1706397557;
-	bh=ED+Y0rNMN+naXOaIa/sE3MuLrTOpqyQX9GaeHOv7h/A=;
+	bh=NeRPsG1VuFmLAYTBXSjfGTl6zWmuIYX8y8978PRMvJY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rr/uwM8aRkaJLc6kPStEPuQ272L3LYpI78ngmgGS/MzZFcRJtphgGXGTXypeYKFLg
-	 uflNJkdfgJXEGaCpBDjiBIjG5cMhBWejV7D0YnTU4eWbjB8ya7GUpU509dveF1DRNI
-	 KHMQkdvDYumW+yrIjzRhRG6cPaqlvjVGkvKLCYl4=
-Subject: FAILED: patch "[PATCH] drm/amdgpu/gfx11: set UNORD_DISPATCH in compute MQDs" failed to apply to 6.6-stable tree
+	b=IVg1fZ06glHRTuUrwH55Ji6w6hesUpiAtP4HjuxVDdLGl8oPd33n1MR11dRe8b5Rm
+	 Qoa0IaKsS9+t7ruvC4DraQ9WzG+UWA8GUzAlNavaqlkehx3qr2rNIgaWNk76YdaFd4
+	 z/osTfhfwCVAVwuJZYIgOWKneucr/9AjcDJL9FA8=
+Subject: FAILED: patch "[PATCH] drm/amdgpu/gfx11: set UNORD_DISPATCH in compute MQDs" failed to apply to 6.1-stable tree
 To: alexander.deucher@amd.com,Feifei.Xu@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 15:19:16 -0800
-Message-ID: <2024012716-tranquil-debtless-e305@gregkh>
+Date: Sat, 27 Jan 2024 15:19:17 -0800
+Message-ID: <2024012716-defendant-backache-713f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3380fcad2c906872110d31ddf7aa1fdea57f9df6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012716-tranquil-debtless-e305@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012716-defendant-backache-713f@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,21 @@ Possible dependencies:
 6cb8e3ee3a08 ("drm/amdgpu: update ib start and size alignment")
 7a41ed8b59ba ("drm/amdgpu: add new INFO ioctl query for the last GPU page fault")
 2e8ef6a56129 ("drm/amdgpu: add cached GPU fault structure to vm struct")
+934deb64fdf2 ("drm/amdgpu: Add memory partition id to amdgpu_vm")
+be3800f57c3b ("drm/amdgpu: find partition ID when open device")
+2c1c7ba457d4 ("drm/amdgpu: support partition drm devices")
+4bdca2057933 ("drm/amdgpu: Add utility functions for xcp")
+75d1692393cb ("drm/amdgpu: Add initial version of XCP routines")
+ea2d2f8ececd ("drm/amdgpu: detect current GPU memory partition mode")
+3d2ea552b229 ("drm/amdgpu: implement smuio v13_0_3 callbacks")
+8078f1c610fd ("drm/amdgpu: Change num_xcd to xcc_mask")
+36be0181eab5 ("drm/amdgpu: program GRBM_MCM_ADDR for non-AID0 GRBM")
+5de6bd6a13f1 ("drm/amdgpu: set mmhub bitmask for multiple AIDs")
+ed42f2cc3b56 ("drm/amdgpu: correct the vmhub reference for each XCD in gfxhub init")
+74c5b85da754 ("drm/amdkfd: Add spatial partitioning support in KFD")
+8dc1db3172ae ("drm/amdkfd: Introduce kfd_node struct (v5)")
+e6a02e2cc7fe ("drm/amdgpu: Add some XCC programming")
+bfb44eacb0e2 ("drm/amdkfd: Set F8_MODE for gc_v9_4_3")
 
 thanks,
 
