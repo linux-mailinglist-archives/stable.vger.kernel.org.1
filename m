@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D64DC83F0F0
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:38:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F7683F0F1
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:38:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70263B26F90
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:38:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6777AB26FC0
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81D71D6AA;
-	Sat, 27 Jan 2024 22:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59E61DDD6;
+	Sat, 27 Jan 2024 22:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OywysNkS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRV2h4ZN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6047B18E07
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A2C18E07
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706395126; cv=none; b=hxVCTlXSQPBX5Ds5wux0OL+WlSlneCbRuZlS+qCMTJZyt1kAu3QmHDMIymq50Xa3DRIQKMbv2hp3mD99vN1bNBDWlAfd6NQo2Z1HzgZELX8Xsqpj+nc6WthPsXzhdWeMS5kjUQabzsRrD+0VwgQC6p77ZY3EoqddfCMhD907CCo=
+	t=1706395127; cv=none; b=OPFEfWkv5oBtnuJRmgtVGhIwCPEJ5ng9vpBC6tG1vyUerkeoGGHJig+rRDWAB2SPglmpsVxXIG+dz8D/YIMc9EKWGv6aOJAK1PjnxkQaBzZfJ/n49ASenIwunBBleOahdYaIIgJjJbMRME8pxWsedX64LjMJrEx7o95esVddLlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706395126; c=relaxed/simple;
-	bh=IbcgrU0d9gWVzFhWuSouOMC9+jEAoJBoICQxiEP6cbo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Hqzp9PhBbTRDV1lg7V114EjR9zZQz4eU1OsQtls+M7iSHh3H15y/i26mwEUrkhaVrQ6Cvi7zF9fQKkwQgDwwbA9SUtscgpUbnQrX+RPeK3uK2r2Hi1q2uscV8m1clPChIlfxwTTKy9BF3ohJ4NS0eFm3fEpb0R1u3lFgjHpLb1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OywysNkS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20B3C433F1;
-	Sat, 27 Jan 2024 22:38:45 +0000 (UTC)
+	s=arc-20240116; t=1706395127; c=relaxed/simple;
+	bh=cIS7MvNp+TKllpTj6pqOXNRIAaVL3m/nY0yhOLYXtaQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=okvS9+AeBjvo5jwYyyuH56SH67GQqs3/FvRyTxNe3k6UhoD2Er2Od9hLmY3+W7Wlr5XvgAafxETsJVTtRTbT4bE4eUEv42GSkqMz50zuWDZyTE/Ukbn9izrLPx5OR1GzsHGY+ER4YkPj6y3XQzuf9At7hHmhHzXI9V9ayTY8XfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRV2h4ZN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07FFC433F1;
+	Sat, 27 Jan 2024 22:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706395125;
-	bh=IbcgrU0d9gWVzFhWuSouOMC9+jEAoJBoICQxiEP6cbo=;
+	s=korg; t=1706395127;
+	bh=cIS7MvNp+TKllpTj6pqOXNRIAaVL3m/nY0yhOLYXtaQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=OywysNkSf7VqNtAc/4yQJ2cB2qFSTTG6s1X6+LvmD29hIY9ad/y//jTfyd1H2W8jz
-	 lJr70IzRpRp4naSPPfXyVhKHuF0Xzr6iUkz8g7N4n5zvnRF1YpoyPX2fdpVoqBBQ8s
-	 tCUckZzY+3NR3QIsi1ObgKDrGkXwjJVJmGRjTmUM=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: Restrict extended wait to PSP v13.0.6" failed to apply to 6.7-stable tree
+	b=iRV2h4ZN4jiIS81GWK5/3rPx3GFSqCMEtZV1wFDfM98/t+CaJbKSda+Em94ZtI1ZU
+	 t969KWhLZ6IbeQKVTE2USFnh7o6NR1TYE5lJobcPDeIrlUdJbHSsj2XqaQbdpCyU3o
+	 WeOcsVNnsrpa8MAdCOhhvCz0/Yo3vfjLT10ASgv8=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: Restrict extended wait to PSP v13.0.6" failed to apply to 6.6-stable tree
 To: lijo.lazar@amd.com,alexander.deucher@amd.com,asad.kamal@amd.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 14:38:44 -0800
-Message-ID: <2024012744-graceless-creamer-0fa6@gregkh>
+Date: Sat, 27 Jan 2024 14:38:46 -0800
+Message-ID: <2024012745-stingy-busboy-80dc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.7-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4657b3e45683223b5d982ec13a6e2cd367004bb6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012744-graceless-creamer-0fa6@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012745-stingy-busboy-80dc@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 4657b3e45683 ("drm/amdgpu: Restrict extended wait to PSP v13.0.6")
+d8c1925ba8cd ("drm/amdgpu: update retry times for psp BL wait")
+fc5988907156 ("drm/amdgpu: update retry times for psp vmbx wait")
 
 thanks,
 
