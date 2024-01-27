@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE4183F055
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:58:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FACA83F056
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE6BE283D0B
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 21:58:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E117B283D3F
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 21:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A281B7FA;
-	Sat, 27 Jan 2024 21:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C10851B807;
+	Sat, 27 Jan 2024 21:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZ/sGpco"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tH2jl45"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728E533D5
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 21:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808AC33D5
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 21:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706392687; cv=none; b=GAmKPjQSwaLfV5KYf8HhMSqC5R3/B/JdRrl+haC7pFOGOPpW58YFJmrb273wFD++yt2N+AY53xZF/MJMx+28N9QkZAEskY/Q5O4QqJgXBZ8NWntbjrBazpP+3b23UXnBlh1EToq8Nstv/OLVOV58hnzPsE9iApXMdXfBC0g6tWk=
+	t=1706392688; cv=none; b=QCw2Ic66TXNUu+YxB31a+lEAq2JO0D5HZzHtgHWYDWNaTQcGFlOttsfKVW3h+Oz+DON2EKxXW83JcOMXYCYke7+KPsN/SBXfjQzsNMGKexTnsJ5T0MLyt46rYKEioMn1Ey9cETKJg/pYQHMd1yw+shNP0fkFkApCD9/CQH1j95U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706392687; c=relaxed/simple;
-	bh=VKaCrqYlA4WXOWyZ2s4AxAKqf+TS9Tjkc63dwoA15Qs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ITtIhtLqHn1UMFPosBpKR315VuB6ptRMDioCfOwSu/0X2vgrAVJb2ihoyxQ3pDwbh2m7WZOz3MDtunM3406orO0iYD23XPesO4vKUWHCs2sln3MujYzNuWg6RU/kj2TEfCXJKNUzcLS3h54IRDpOasKESYfoiEOsX4MkyZn1tZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZ/sGpco; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD935C433C7;
-	Sat, 27 Jan 2024 21:58:06 +0000 (UTC)
+	s=arc-20240116; t=1706392688; c=relaxed/simple;
+	bh=T4NzZWt7+MCqOWunbTvGGOLFtIs2GXTG2e2hkqnOO1I=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GcY13qGVlh/GftmFozn/hZ5oPN/44pxTiRqL5dDmXeu6vKIqSj1/EjLaC2FHoDNh+g8c6FfkoEeMV6znHdua3yREsMaFpUmN1fDDxx63ZJygSizHrz5CF1D42hq7GE1KDXzQpAFiUH6k9pIhf634CKTJtTuFb/wzA2Tji3/TOY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tH2jl45; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417E7C433F1;
+	Sat, 27 Jan 2024 21:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706392687;
-	bh=VKaCrqYlA4WXOWyZ2s4AxAKqf+TS9Tjkc63dwoA15Qs=;
+	s=korg; t=1706392688;
+	bh=T4NzZWt7+MCqOWunbTvGGOLFtIs2GXTG2e2hkqnOO1I=;
 	h=Subject:To:Cc:From:Date:From;
-	b=uZ/sGpcoWgsvQRALYnOuRMpHiI7e58Xl85WqGZ5J12tQ5Cr2Iw0i62IIcycgJlBRD
-	 Bv8geNjGQ+gMRJaLlgdvd4lu0sRB+eabg2ClSTg1zQ3BsKNXh4HcSFNhu9IvJqyxs5
-	 bvVYR20e7fxleOu0GXE8etuVsEbFCG5zMmyZlMYE=
-Subject: FAILED: patch "[PATCH] btrfs: zoned: optimize hint byte for zoned allocator" failed to apply to 6.1-stable tree
+	b=1tH2jl45Ju/TfrgQWGvuDQmJ1b6H9GTOlObezs/xn/b/YERZysA60dLiAa+G9oISw
+	 F6sBv0z25NkM/itPduSQ7nBQjxf7bshTLltnj5M5MVEvjoAfnut8MQYBd1WByCndRl
+	 xzwJq++SZ+nksjexp6B0kfJOYwdvBBSo9hAviSno=
+Subject: FAILED: patch "[PATCH] btrfs: zoned: optimize hint byte for zoned allocator" failed to apply to 5.15-stable tree
 To: naohiro.aota@wdc.com,dsterba@suse.com,johannes.thumshirn@wdc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 13:58:05 -0800
-Message-ID: <2024012705-replace-mumble-78cc@gregkh>
+Date: Sat, 27 Jan 2024 13:58:07 -0800
+Message-ID: <2024012707-pushover-sherry-f45f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,33 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 02444f2ac26eae6385a65fcd66915084d15dffba
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012705-replace-mumble-78cc@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012707-pushover-sherry-f45f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 02444f2ac26e ("btrfs: zoned: optimize hint byte for zoned allocator")
 b271fee9a41c ("btrfs: zoned: factor out prepare_allocation_zoned()")
+c2707a255623 ("btrfs: zoned: add a dedicated data relocation block group")
+be1a1d7a5d24 ("btrfs: zoned: finish fully written block group")
+a85f05e59bc1 ("btrfs: zoned: avoid chunk allocation if active block group has enough space")
+a12b0dc0aa4d ("btrfs: move ffe_ctl one level up")
+2e654e4bb9ac ("btrfs: zoned: activate block group on allocation")
+afba2bc036b0 ("btrfs: zoned: implement active zone tracking")
+dafc340dbd10 ("btrfs: zoned: introduce physical_map to btrfs_block_group")
+98173255bddd ("btrfs: zoned: calculate free space from zone capacity")
+8eae532be753 ("btrfs: zoned: load zone capacity information from devices")
 
 thanks,
 
