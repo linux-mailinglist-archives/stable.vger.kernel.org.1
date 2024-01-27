@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4A6683F075
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:04:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D271E83F076
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:05:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A6ED1C23887
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:04:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D0D7B23684
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8081B809;
-	Sat, 27 Jan 2024 22:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517191B807;
+	Sat, 27 Jan 2024 22:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j80RccwA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRiwc3vR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500741B7FA
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137D21B7FA
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706393078; cv=none; b=Syb588NCA+WVKSwCXDAwSVlYvP9jaCoXfUSmvc2e9rt1G0eoEHQoFRSvL0nqVj3uqbk6ing6RfFu0EBx2KUqraGol3+0PKtggaxdqFjrThw1nci6c2nl143xVjXvXOCY2dT7zdqcD4C7elYzFTAEttFLM2gOUUMGOb53mu3aoNk=
+	t=1706393121; cv=none; b=TtT2JjB1VRSkR5NTvXrB7iIsYs7ezjw8kb/q77Qj4ktoVZvaZ5KEtobieB6wLGv8hTl+AjjZwYvatzRrPk8DgPlliy9XEoKWr7WhpiQM7KMNR8A9DDsscy1PlGweKjJlDdn1bMNB8gtGcue0uMQ4Ul+a1/9ZezDP+HQXSdYDPgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706393078; c=relaxed/simple;
-	bh=7v2+YH7+fvYL8UEiQi/3zHOMJou66nVbC85pSeHuE8A=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=obY/qMerCijN134H/d1WdQ8DwfJFRUQ1MnvIvR1Z3SalG0JrKIEpztk+cxnJTES4yWCarcslLBarZlB7UPpx1RCrks/WbpHRiwAmEHuFogoXS+/WsieAXfYs0X2tzaZ7Q+v8/GjJilDSauUq90Oxn1xvdFvxIS09/C04rirD7OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j80RccwA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1E9C433C7;
-	Sat, 27 Jan 2024 22:04:37 +0000 (UTC)
+	s=arc-20240116; t=1706393121; c=relaxed/simple;
+	bh=lDqYV5ukP+eU11sp8+5fmAtBBfLD0iCLemGhKhxF/Tk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ba2uM9eWYYutNxMmZtgSOuxHJlUl9xrC/2QyG4r3gX8d6tSJ9jG3CtR+xcBxAaSr9ZKWqPnt5+jJQB8Dm/uwHyBEntuh9Dtxrm4ONiLDT+gBX8+LNSWzzOBFgc1Qy/5dUXWjijh60yVm5HvtoN9bthLUFxQc4FAQYxbrh5YMNzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRiwc3vR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8721C433C7;
+	Sat, 27 Jan 2024 22:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706393077;
-	bh=7v2+YH7+fvYL8UEiQi/3zHOMJou66nVbC85pSeHuE8A=;
+	s=korg; t=1706393120;
+	bh=lDqYV5ukP+eU11sp8+5fmAtBBfLD0iCLemGhKhxF/Tk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=j80RccwAT7IPfoGpDPnid9odBXr9Jdp+gsb0fHopzez9yygyHeh8xyOhcnYm/sHjE
-	 64GrTUe1tB/0lyExG4ysk4NkKMlhDI4OtxIrYUc+wThX2kWx4SxLazZGfCc2Kvgk11
-	 CJbZmeaS3JvTHPRADL43cd/ykRUsxHWqYGMuYMQA=
-Subject: FAILED: patch "[PATCH] ksmbd: fix global oob in ksmbd_nl_policy" failed to apply to 5.15-stable tree
-To: linma@zju.edu.cn,linkinjeon@kernel.org,stfrench@microsoft.com
+	b=BRiwc3vR1ishKEd681ocg6/Mm2UKewfsK5lSwiZYMMm+4UQ51fQ+YcZtgtqmjkM8E
+	 AlpbSLQaF7TOYWjiybPs8J4i3e5oqGxUrXspj2cpOyS52TkNbzPmwzVOp2UzfK8Llq
+	 vA5F55lMM9r3NXLhU7p755Q4NQNl08CMvpkz9zY0=
+Subject: FAILED: patch "[PATCH] firmware: arm_scmi: Check mailbox/SMT channel for consistency" failed to apply to 5.10-stable tree
+To: cristian.marussi@arm.com,sudeep.holla@arm.com,xinglong.yang@cixtech.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 14:04:36 -0800
-Message-ID: <2024012736-impatient-slighted-d314@gregkh>
+Date: Sat, 27 Jan 2024 14:05:19 -0800
+Message-ID: <2024012719-remarry-magical-0c2e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x ebeae8adf89d9a82359f6659b1663d09beec2faa
+git cherry-pick -x 437a310b22244d4e0b78665c3042e5d1c0f45306
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012736-impatient-slighted-d314@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012719-remarry-magical-0c2e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-
+437a310b2224 ("firmware: arm_scmi: Check mailbox/SMT channel for consistency")
+13fba878ccdd ("firmware: arm_scmi: Add priv parameter to scmi_rx_callback")
+e9b21c96181c ("firmware: arm_scmi: Make .clear_channel optional")
+ed7c04c1fea3 ("firmware: arm_scmi: Handle concurrent and out-of-order messages")
+9ca5a1838e59 ("firmware: arm_scmi: Introduce monotonically increasing tokens")
+3669032514be ("firmware: arm_scmi: Remove scmi_dump_header_dbg() helper")
+e30d91d4ffda ("firmware: arm_scmi: Move reinit_completion from scmi_xfer_get to do_xfer")
+0cb7af474e0d ("firmware: arm_scmi: Reset Rx buffer to max size during async commands")
+d4f9dddd21f3 ("firmware: arm_scmi: Add dynamic scmi devices creation")
+f5800e0bf6f9 ("firmware: arm_scmi: Add protocol modularization support")
+a02d7c93c1f3 ("firmware: arm_scmi: Make notify_priv really private")
+9162afa2ae99 ("firmware: arm_scmi: Cleanup unused core transfer helper wrappers")
+51fe1b154e2f ("firmware: arm_scmi: Cleanup legacy protocol init code")
+fe4894d968f4 ("firmware: arm_scmi: Port voltage protocol to new protocols interface")
+b46d852718c1 ("firmware: arm_scmi: Port systempower protocol to new protocols interface")
+9694a7f62359 ("firmware: arm_scmi: Port sensor protocol to new protocols interface")
+7e0293442238 ("firmware: arm_scmi: Port reset protocol to new protocols interface")
+887281c7519d ("firmware: arm_scmi: Port clock protocol to new protocols interface")
+9bc8069c8567 ("firmware: arm_scmi: Port power protocol to new protocols interface")
+1fec5e6b5233 ("firmware: arm_scmi: Port perf protocol to new protocols interface")
 
 thanks,
 
@@ -77,126 +96,97 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ebeae8adf89d9a82359f6659b1663d09beec2faa Mon Sep 17 00:00:00 2001
-From: Lin Ma <linma@zju.edu.cn>
-Date: Sun, 21 Jan 2024 15:35:06 +0800
-Subject: [PATCH] ksmbd: fix global oob in ksmbd_nl_policy
+From 437a310b22244d4e0b78665c3042e5d1c0f45306 Mon Sep 17 00:00:00 2001
+From: Cristian Marussi <cristian.marussi@arm.com>
+Date: Wed, 20 Dec 2023 17:21:12 +0000
+Subject: [PATCH] firmware: arm_scmi: Check mailbox/SMT channel for consistency
 
-Similar to a reported issue (check the commit b33fb5b801c6 ("net:
-qualcomm: rmnet: fix global oob in rmnet_policy"), my local fuzzer finds
-another global out-of-bounds read for policy ksmbd_nl_policy. See bug
-trace below:
+On reception of a completion interrupt the shared memory area is accessed
+to retrieve the message header at first and then, if the message sequence
+number identifies a transaction which is still pending, the related
+payload is fetched too.
 
-==================================================================
-BUG: KASAN: global-out-of-bounds in validate_nla lib/nlattr.c:386 [inline]
-BUG: KASAN: global-out-of-bounds in __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
-Read of size 1 at addr ffffffff8f24b100 by task syz-executor.1/62810
+When an SCMI command times out the channel ownership remains with the
+platform until eventually a late reply is received and, as a consequence,
+any further transmission attempt remains pending, waiting for the channel
+to be relinquished by the platform.
 
-CPU: 0 PID: 62810 Comm: syz-executor.1 Tainted: G                 N 6.1.0 #3
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x8b/0xb3 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:284 [inline]
- print_report+0x172/0x475 mm/kasan/report.c:395
- kasan_report+0xbb/0x1c0 mm/kasan/report.c:495
- validate_nla lib/nlattr.c:386 [inline]
- __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
- __nla_parse+0x3e/0x50 lib/nlattr.c:697
- __nlmsg_parse include/net/netlink.h:748 [inline]
- genl_family_rcv_msg_attrs_parse.constprop.0+0x1b0/0x290 net/netlink/genetlink.c:565
- genl_family_rcv_msg_doit+0xda/0x330 net/netlink/genetlink.c:734
- genl_family_rcv_msg net/netlink/genetlink.c:833 [inline]
- genl_rcv_msg+0x441/0x780 net/netlink/genetlink.c:850
- netlink_rcv_skb+0x14f/0x410 net/netlink/af_netlink.c:2540
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:861
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x54e/0x800 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x930/0xe50 net/netlink/af_netlink.c:1921
- sock_sendmsg_nosec net/socket.c:714 [inline]
- sock_sendmsg+0x154/0x190 net/socket.c:734
- ____sys_sendmsg+0x6df/0x840 net/socket.c:2482
- ___sys_sendmsg+0x110/0x1b0 net/socket.c:2536
- __sys_sendmsg+0xf3/0x1c0 net/socket.c:2565
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7fdd66a8f359
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fdd65e00168 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007fdd66bbcf80 RCX: 00007fdd66a8f359
-RDX: 0000000000000000 RSI: 0000000020000500 RDI: 0000000000000003
-RBP: 00007fdd66ada493 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ffc84b81aff R14: 00007fdd65e00300 R15: 0000000000022000
- </TASK>
+Once that late reply is received the channel ownership is given back
+to the agent and any pending request is then allowed to proceed and
+overwrite the SMT area of the just delivered late reply; then the wait
+for the reply to the new request starts.
 
-The buggy address belongs to the variable:
- ksmbd_nl_policy+0x100/0xa80
+It has been observed that the spurious IRQ related to the late reply can
+be wrongly associated with the freshly enqueued request: when that happens
+the SCMI stack in-flight lookup procedure is fooled by the fact that the
+message header now present in the SMT area is related to the new pending
+transaction, even though the real reply has still to arrive.
 
-The buggy address belongs to the physical page:
-page:0000000034f47940 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1ccc4b
-flags: 0x200000000001000(reserved|node=0|zone=2)
-raw: 0200000000001000 ffffea00073312c8 ffffea00073312c8 0000000000000000
-raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
+This race-condition on the A2P channel can be detected by looking at the
+channel status bits: a genuine reply from the platform will have set the
+channel free bit before triggering the completion IRQ.
 
-Memory state around the buggy address:
- ffffffff8f24b000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffffffff8f24b080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffffffff8f24b100: f9 f9 f9 f9 00 00 f9 f9 f9 f9 f9 f9 00 00 07 f9
-                   ^
- ffffffff8f24b180: f9 f9 f9 f9 00 05 f9 f9 f9 f9 f9 f9 00 00 00 05
- ffffffff8f24b200: f9 f9 f9 f9 00 00 03 f9 f9 f9 f9 f9 00 00 04 f9
-==================================================================
+Add a consistency check to validate such condition in the A2P ISR.
 
-To fix it, add a placeholder named __KSMBD_EVENT_MAX and let
-KSMBD_EVENT_MAX to be its original value - 1 according to what other
-netlink families do. Also change two sites that refer the
-KSMBD_EVENT_MAX to correct value.
+Reported-by: Xinglong Yang <xinglong.yang@cixtech.com>
+Closes: https://lore.kernel.org/all/PUZPR06MB54981E6FA00D82BFDBB864FBF08DA@PUZPR06MB5498.apcprd06.prod.outlook.com/
+Fixes: 5c8a47a5a91d ("firmware: arm_scmi: Make scmi core independent of the transport type")
+Cc: stable@vger.kernel.org # 5.15+
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Tested-by: Xinglong Yang <xinglong.yang@cixtech.com>
+Link: https://lore.kernel.org/r/20231220172112.763539-1-cristian.marussi@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 
-Cc: stable@vger.kernel.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-
-diff --git a/fs/smb/server/ksmbd_netlink.h b/fs/smb/server/ksmbd_netlink.h
-index b7521e41402e..0ebf91ffa236 100644
---- a/fs/smb/server/ksmbd_netlink.h
-+++ b/fs/smb/server/ksmbd_netlink.h
-@@ -304,7 +304,8 @@ enum ksmbd_event {
- 	KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST,
- 	KSMBD_EVENT_SPNEGO_AUTHEN_RESPONSE	= 15,
+diff --git a/drivers/firmware/arm_scmi/common.h b/drivers/firmware/arm_scmi/common.h
+index c46dc5215af7..00b165d1f502 100644
+--- a/drivers/firmware/arm_scmi/common.h
++++ b/drivers/firmware/arm_scmi/common.h
+@@ -314,6 +314,7 @@ void shmem_fetch_notification(struct scmi_shared_mem __iomem *shmem,
+ void shmem_clear_channel(struct scmi_shared_mem __iomem *shmem);
+ bool shmem_poll_done(struct scmi_shared_mem __iomem *shmem,
+ 		     struct scmi_xfer *xfer);
++bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem);
  
--	KSMBD_EVENT_MAX
-+	__KSMBD_EVENT_MAX,
-+	KSMBD_EVENT_MAX = __KSMBD_EVENT_MAX - 1
- };
+ /* declarations for message passing transports */
+ struct scmi_msg_payld;
+diff --git a/drivers/firmware/arm_scmi/mailbox.c b/drivers/firmware/arm_scmi/mailbox.c
+index 19246ed1f01f..b8d470417e8f 100644
+--- a/drivers/firmware/arm_scmi/mailbox.c
++++ b/drivers/firmware/arm_scmi/mailbox.c
+@@ -45,6 +45,20 @@ static void rx_callback(struct mbox_client *cl, void *m)
+ {
+ 	struct scmi_mailbox *smbox = client_to_scmi_mailbox(cl);
  
- /*
-diff --git a/fs/smb/server/transport_ipc.c b/fs/smb/server/transport_ipc.c
-index b49d47bdafc9..f29bb03f0dc4 100644
---- a/fs/smb/server/transport_ipc.c
-+++ b/fs/smb/server/transport_ipc.c
-@@ -74,7 +74,7 @@ static int handle_unsupported_event(struct sk_buff *skb, struct genl_info *info)
- static int handle_generic_event(struct sk_buff *skb, struct genl_info *info);
- static int ksmbd_ipc_heartbeat_request(void);
++	/*
++	 * An A2P IRQ is NOT valid when received while the platform still has
++	 * the ownership of the channel, because the platform at first releases
++	 * the SMT channel and then sends the completion interrupt.
++	 *
++	 * This addresses a possible race condition in which a spurious IRQ from
++	 * a previous timed-out reply which arrived late could be wrongly
++	 * associated with the next pending transaction.
++	 */
++	if (cl->knows_txdone && !shmem_channel_free(smbox->shmem)) {
++		dev_warn(smbox->cinfo->dev, "Ignoring spurious A2P IRQ !\n");
++		return;
++	}
++
+ 	scmi_rx_callback(smbox->cinfo, shmem_read_header(smbox->shmem), NULL);
+ }
  
--static const struct nla_policy ksmbd_nl_policy[KSMBD_EVENT_MAX] = {
-+static const struct nla_policy ksmbd_nl_policy[KSMBD_EVENT_MAX + 1] = {
- 	[KSMBD_EVENT_UNSPEC] = {
- 		.len = 0,
- 	},
-@@ -403,7 +403,7 @@ static int handle_generic_event(struct sk_buff *skb, struct genl_info *info)
- 		return -EPERM;
- #endif
- 
--	if (type >= KSMBD_EVENT_MAX) {
-+	if (type > KSMBD_EVENT_MAX) {
- 		WARN_ON(1);
- 		return -EINVAL;
- 	}
+diff --git a/drivers/firmware/arm_scmi/shmem.c b/drivers/firmware/arm_scmi/shmem.c
+index 87b4f4d35f06..517d52fb3bcb 100644
+--- a/drivers/firmware/arm_scmi/shmem.c
++++ b/drivers/firmware/arm_scmi/shmem.c
+@@ -122,3 +122,9 @@ bool shmem_poll_done(struct scmi_shared_mem __iomem *shmem,
+ 		(SCMI_SHMEM_CHAN_STAT_CHANNEL_ERROR |
+ 		 SCMI_SHMEM_CHAN_STAT_CHANNEL_FREE);
+ }
++
++bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem)
++{
++	return (ioread32(&shmem->channel_status) &
++			SCMI_SHMEM_CHAN_STAT_CHANNEL_FREE);
++}
 
 
