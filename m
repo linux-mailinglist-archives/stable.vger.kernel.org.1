@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-16113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6672683F073
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:04:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4A6683F075
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:04:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E54FB1F24477
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:04:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A6ED1C23887
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A913C1D533;
-	Sat, 27 Jan 2024 22:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8081B809;
+	Sat, 27 Jan 2024 22:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lp5EjJjX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j80RccwA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5021CFB7
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500741B7FA
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706393045; cv=none; b=fXlFoi7BrDu3opl0LwmdVjw5hlh7EsdJb/i6FktRDrUaqGsm9FbLdNln2taq/HCHsPgjy7BlBPRxTApd1wsezirQObRDmInrxvgW8zZ99BZqICPeG8V5y1SkADDyI0raRBz78Y9o7P+VMQCJCwIWS0z1tk/Ht+YqZrb6ywEk3N8=
+	t=1706393078; cv=none; b=Syb588NCA+WVKSwCXDAwSVlYvP9jaCoXfUSmvc2e9rt1G0eoEHQoFRSvL0nqVj3uqbk6ing6RfFu0EBx2KUqraGol3+0PKtggaxdqFjrThw1nci6c2nl143xVjXvXOCY2dT7zdqcD4C7elYzFTAEttFLM2gOUUMGOb53mu3aoNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706393045; c=relaxed/simple;
-	bh=4LQ6tSaGXd1ubOk0pKkf/dPrmFgaSjOxP75h/xgKcUI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VwWWfyrPQp2z4apJcgNSlWGv2XzA/c5nxh6rYuxQ63E3ocPS2HfyK2ibNavmvcEnN/BOPr8PwHtmHJDY03Q6O3Z1TbKvDUg5JF0ZnTW5EKLj5hcRdalkpf++dVRl1OKtZ/y8xudXDsF0bzr9huG1lDcMYpebZ6GUGcDdh+aATI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lp5EjJjX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5838C433F1;
-	Sat, 27 Jan 2024 22:04:04 +0000 (UTC)
+	s=arc-20240116; t=1706393078; c=relaxed/simple;
+	bh=7v2+YH7+fvYL8UEiQi/3zHOMJou66nVbC85pSeHuE8A=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=obY/qMerCijN134H/d1WdQ8DwfJFRUQ1MnvIvR1Z3SalG0JrKIEpztk+cxnJTES4yWCarcslLBarZlB7UPpx1RCrks/WbpHRiwAmEHuFogoXS+/WsieAXfYs0X2tzaZ7Q+v8/GjJilDSauUq90Oxn1xvdFvxIS09/C04rirD7OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j80RccwA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1E9C433C7;
+	Sat, 27 Jan 2024 22:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706393044;
-	bh=4LQ6tSaGXd1ubOk0pKkf/dPrmFgaSjOxP75h/xgKcUI=;
+	s=korg; t=1706393077;
+	bh=7v2+YH7+fvYL8UEiQi/3zHOMJou66nVbC85pSeHuE8A=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Lp5EjJjXvEEZ0eeSH33+3/zKI28+QFCrL+YB3bEhfizGlXCzFQ5lZZg1tO31inNkO
-	 0Lj7qgSOELqsde3iqJZ3pQCNfWXqMdAJTrH+oqkyGxnkW5HdonOCK5Ck12bvpa+0mn
-	 VYiP/onsyq2/RnxfLdVsHSvFmxqaNYf/33fOrTt8=
-Subject: FAILED: patch "[PATCH] platform/x86: intel-uncore-freq: Fix types in sysfs callbacks" failed to apply to 6.1-stable tree
-To: nathan@kernel.org,hdegoede@redhat.com,samitolvanen@google.com,srinivas.pandruvada@linux.intel.com
+	b=j80RccwAT7IPfoGpDPnid9odBXr9Jdp+gsb0fHopzez9yygyHeh8xyOhcnYm/sHjE
+	 64GrTUe1tB/0lyExG4ysk4NkKMlhDI4OtxIrYUc+wThX2kWx4SxLazZGfCc2Kvgk11
+	 CJbZmeaS3JvTHPRADL43cd/ykRUsxHWqYGMuYMQA=
+Subject: FAILED: patch "[PATCH] ksmbd: fix global oob in ksmbd_nl_policy" failed to apply to 5.15-stable tree
+To: linma@zju.edu.cn,linkinjeon@kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 14:04:03 -0800
-Message-ID: <2024012703-mosaic-geriatric-232b@gregkh>
+Date: Sat, 27 Jan 2024 14:04:36 -0800
+Message-ID: <2024012736-impatient-slighted-d314@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 416de0246f35f43d871a57939671fe814f4455ee
+git cherry-pick -x ebeae8adf89d9a82359f6659b1663d09beec2faa
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012703-mosaic-geriatric-232b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012736-impatient-slighted-d314@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,266 +77,126 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 416de0246f35f43d871a57939671fe814f4455ee Mon Sep 17 00:00:00 2001
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Thu, 4 Jan 2024 15:59:03 -0700
-Subject: [PATCH] platform/x86: intel-uncore-freq: Fix types in sysfs callbacks
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From ebeae8adf89d9a82359f6659b1663d09beec2faa Mon Sep 17 00:00:00 2001
+From: Lin Ma <linma@zju.edu.cn>
+Date: Sun, 21 Jan 2024 15:35:06 +0800
+Subject: [PATCH] ksmbd: fix global oob in ksmbd_nl_policy
 
-When booting a kernel with CONFIG_CFI_CLANG, there is a CFI failure when
-accessing any of the values under
-/sys/devices/system/cpu/intel_uncore_frequency/package_00_die_00:
+Similar to a reported issue (check the commit b33fb5b801c6 ("net:
+qualcomm: rmnet: fix global oob in rmnet_policy"), my local fuzzer finds
+another global out-of-bounds read for policy ksmbd_nl_policy. See bug
+trace below:
 
-  $ cat /sys/devices/system/cpu/intel_uncore_frequency/package_00_die_00/max_freq_khz
-  fish: Job 1, 'cat /sys/devices/system/cpu/int…' terminated by signal SIGSEGV (Address boundary error)
+==================================================================
+BUG: KASAN: global-out-of-bounds in validate_nla lib/nlattr.c:386 [inline]
+BUG: KASAN: global-out-of-bounds in __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
+Read of size 1 at addr ffffffff8f24b100 by task syz-executor.1/62810
 
-  $ sudo dmesg &| grep 'CFI failure'
-  [  170.953925] CFI failure at kobj_attr_show+0x19/0x30 (target: show_max_freq_khz+0x0/0xc0 [intel_uncore_frequency_common]; expected type: 0xd34078c5
+CPU: 0 PID: 62810 Comm: syz-executor.1 Tainted: G                 N 6.1.0 #3
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x8b/0xb3 lib/dump_stack.c:106
+ print_address_description mm/kasan/report.c:284 [inline]
+ print_report+0x172/0x475 mm/kasan/report.c:395
+ kasan_report+0xbb/0x1c0 mm/kasan/report.c:495
+ validate_nla lib/nlattr.c:386 [inline]
+ __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
+ __nla_parse+0x3e/0x50 lib/nlattr.c:697
+ __nlmsg_parse include/net/netlink.h:748 [inline]
+ genl_family_rcv_msg_attrs_parse.constprop.0+0x1b0/0x290 net/netlink/genetlink.c:565
+ genl_family_rcv_msg_doit+0xda/0x330 net/netlink/genetlink.c:734
+ genl_family_rcv_msg net/netlink/genetlink.c:833 [inline]
+ genl_rcv_msg+0x441/0x780 net/netlink/genetlink.c:850
+ netlink_rcv_skb+0x14f/0x410 net/netlink/af_netlink.c:2540
+ genl_rcv+0x24/0x40 net/netlink/genetlink.c:861
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x54e/0x800 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x930/0xe50 net/netlink/af_netlink.c:1921
+ sock_sendmsg_nosec net/socket.c:714 [inline]
+ sock_sendmsg+0x154/0x190 net/socket.c:734
+ ____sys_sendmsg+0x6df/0x840 net/socket.c:2482
+ ___sys_sendmsg+0x110/0x1b0 net/socket.c:2536
+ __sys_sendmsg+0xf3/0x1c0 net/socket.c:2565
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fdd66a8f359
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fdd65e00168 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007fdd66bbcf80 RCX: 00007fdd66a8f359
+RDX: 0000000000000000 RSI: 0000000020000500 RDI: 0000000000000003
+RBP: 00007fdd66ada493 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffc84b81aff R14: 00007fdd65e00300 R15: 0000000000022000
+ </TASK>
 
-The sysfs callback functions such as show_domain_id() are written as if
-they are going to be called by dev_attr_show() but as the above message
-shows, they are instead called by kobj_attr_show(). kCFI checks that the
-destination of an indirect jump has the exact same type as the prototype
-of the function pointer it is called through and fails when they do not.
+The buggy address belongs to the variable:
+ ksmbd_nl_policy+0x100/0xa80
 
-These callbacks are called through kobj_attr_show() because
-uncore_root_kobj was initialized with kobject_create_and_add(), which
-means uncore_root_kobj has a ->sysfs_ops of kobj_sysfs_ops from
-kobject_create(), which uses kobj_attr_show() as its ->show() value.
+The buggy address belongs to the physical page:
+page:0000000034f47940 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1ccc4b
+flags: 0x200000000001000(reserved|node=0|zone=2)
+raw: 0200000000001000 ffffea00073312c8 ffffea00073312c8 0000000000000000
+raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
 
-The only reason there has not been a more noticeable problem until this
-point is that 'struct kobj_attribute' and 'struct device_attribute' have
-the same layout, so getting the callback from container_of() works the
-same with either value.
+Memory state around the buggy address:
+ ffffffff8f24b000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffffffff8f24b080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffffffff8f24b100: f9 f9 f9 f9 00 00 f9 f9 f9 f9 f9 f9 00 00 07 f9
+                   ^
+ ffffffff8f24b180: f9 f9 f9 f9 00 05 f9 f9 f9 f9 f9 f9 00 00 00 05
+ ffffffff8f24b200: f9 f9 f9 f9 00 00 03 f9 f9 f9 f9 f9 00 00 04 f9
+==================================================================
 
-Change all the callbacks and their uses to be compatible with
-kobj_attr_show() and kobj_attr_store(), which resolves the kCFI failure
-and allows the sysfs files to work properly.
+To fix it, add a placeholder named __KSMBD_EVENT_MAX and let
+KSMBD_EVENT_MAX to be its original value - 1 according to what other
+netlink families do. Also change two sites that refer the
+KSMBD_EVENT_MAX to correct value.
 
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1974
-Fixes: ae7b2ce57851 ("platform/x86/intel/uncore-freq: Use sysfs API to create attributes")
 Cc: stable@vger.kernel.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://lore.kernel.org/r/20240104-intel-uncore-freq-kcfi-fix-v1-1-bf1e8939af40@kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
-index 33ab207493e3..33bb58dc3f78 100644
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
-@@ -23,23 +23,23 @@ static int (*uncore_read)(struct uncore_data *data, unsigned int *min, unsigned
- static int (*uncore_write)(struct uncore_data *data, unsigned int input, unsigned int min_max);
- static int (*uncore_read_freq)(struct uncore_data *data, unsigned int *freq);
+diff --git a/fs/smb/server/ksmbd_netlink.h b/fs/smb/server/ksmbd_netlink.h
+index b7521e41402e..0ebf91ffa236 100644
+--- a/fs/smb/server/ksmbd_netlink.h
++++ b/fs/smb/server/ksmbd_netlink.h
+@@ -304,7 +304,8 @@ enum ksmbd_event {
+ 	KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST,
+ 	KSMBD_EVENT_SPNEGO_AUTHEN_RESPONSE	= 15,
  
--static ssize_t show_domain_id(struct device *dev, struct device_attribute *attr, char *buf)
-+static ssize_t show_domain_id(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
- {
--	struct uncore_data *data = container_of(attr, struct uncore_data, domain_id_dev_attr);
-+	struct uncore_data *data = container_of(attr, struct uncore_data, domain_id_kobj_attr);
- 
- 	return sprintf(buf, "%u\n", data->domain_id);
- }
- 
--static ssize_t show_fabric_cluster_id(struct device *dev, struct device_attribute *attr, char *buf)
-+static ssize_t show_fabric_cluster_id(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
- {
--	struct uncore_data *data = container_of(attr, struct uncore_data, fabric_cluster_id_dev_attr);
-+	struct uncore_data *data = container_of(attr, struct uncore_data, fabric_cluster_id_kobj_attr);
- 
- 	return sprintf(buf, "%u\n", data->cluster_id);
- }
- 
--static ssize_t show_package_id(struct device *dev, struct device_attribute *attr, char *buf)
-+static ssize_t show_package_id(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
- {
--	struct uncore_data *data = container_of(attr, struct uncore_data, package_id_dev_attr);
-+	struct uncore_data *data = container_of(attr, struct uncore_data, package_id_kobj_attr);
- 
- 	return sprintf(buf, "%u\n", data->package_id);
- }
-@@ -97,30 +97,30 @@ static ssize_t show_perf_status_freq_khz(struct uncore_data *data, char *buf)
- }
- 
- #define store_uncore_min_max(name, min_max)				\
--	static ssize_t store_##name(struct device *dev,		\
--				     struct device_attribute *attr,	\
-+	static ssize_t store_##name(struct kobject *kobj,		\
-+				     struct kobj_attribute *attr,	\
- 				     const char *buf, size_t count)	\
- 	{								\
--		struct uncore_data *data = container_of(attr, struct uncore_data, name##_dev_attr);\
-+		struct uncore_data *data = container_of(attr, struct uncore_data, name##_kobj_attr);\
- 									\
- 		return store_min_max_freq_khz(data, buf, count,	\
- 					      min_max);		\
- 	}
- 
- #define show_uncore_min_max(name, min_max)				\
--	static ssize_t show_##name(struct device *dev,		\
--				    struct device_attribute *attr, char *buf)\
-+	static ssize_t show_##name(struct kobject *kobj,		\
-+				    struct kobj_attribute *attr, char *buf)\
- 	{                                                               \
--		struct uncore_data *data = container_of(attr, struct uncore_data, name##_dev_attr);\
-+		struct uncore_data *data = container_of(attr, struct uncore_data, name##_kobj_attr);\
- 									\
- 		return show_min_max_freq_khz(data, buf, min_max);	\
- 	}
- 
- #define show_uncore_perf_status(name)					\
--	static ssize_t show_##name(struct device *dev,		\
--				   struct device_attribute *attr, char *buf)\
-+	static ssize_t show_##name(struct kobject *kobj,		\
-+				   struct kobj_attribute *attr, char *buf)\
- 	{                                                               \
--		struct uncore_data *data = container_of(attr, struct uncore_data, name##_dev_attr);\
-+		struct uncore_data *data = container_of(attr, struct uncore_data, name##_kobj_attr);\
- 									\
- 		return show_perf_status_freq_khz(data, buf); \
- 	}
-@@ -134,11 +134,11 @@ show_uncore_min_max(max_freq_khz, 1);
- show_uncore_perf_status(current_freq_khz);
- 
- #define show_uncore_data(member_name)					\
--	static ssize_t show_##member_name(struct device *dev,	\
--					   struct device_attribute *attr, char *buf)\
-+	static ssize_t show_##member_name(struct kobject *kobj,	\
-+					   struct kobj_attribute *attr, char *buf)\
- 	{                                                               \
- 		struct uncore_data *data = container_of(attr, struct uncore_data,\
--							  member_name##_dev_attr);\
-+							  member_name##_kobj_attr);\
- 									\
- 		return sysfs_emit(buf, "%u\n",				\
- 				 data->member_name);			\
-@@ -149,29 +149,29 @@ show_uncore_data(initial_max_freq_khz);
- 
- #define init_attribute_rw(_name)					\
- 	do {								\
--		sysfs_attr_init(&data->_name##_dev_attr.attr);	\
--		data->_name##_dev_attr.show = show_##_name;		\
--		data->_name##_dev_attr.store = store_##_name;		\
--		data->_name##_dev_attr.attr.name = #_name;		\
--		data->_name##_dev_attr.attr.mode = 0644;		\
-+		sysfs_attr_init(&data->_name##_kobj_attr.attr);	\
-+		data->_name##_kobj_attr.show = show_##_name;		\
-+		data->_name##_kobj_attr.store = store_##_name;		\
-+		data->_name##_kobj_attr.attr.name = #_name;		\
-+		data->_name##_kobj_attr.attr.mode = 0644;		\
- 	} while (0)
- 
- #define init_attribute_ro(_name)					\
- 	do {								\
--		sysfs_attr_init(&data->_name##_dev_attr.attr);	\
--		data->_name##_dev_attr.show = show_##_name;		\
--		data->_name##_dev_attr.store = NULL;			\
--		data->_name##_dev_attr.attr.name = #_name;		\
--		data->_name##_dev_attr.attr.mode = 0444;		\
-+		sysfs_attr_init(&data->_name##_kobj_attr.attr);	\
-+		data->_name##_kobj_attr.show = show_##_name;		\
-+		data->_name##_kobj_attr.store = NULL;			\
-+		data->_name##_kobj_attr.attr.name = #_name;		\
-+		data->_name##_kobj_attr.attr.mode = 0444;		\
- 	} while (0)
- 
- #define init_attribute_root_ro(_name)					\
- 	do {								\
--		sysfs_attr_init(&data->_name##_dev_attr.attr);	\
--		data->_name##_dev_attr.show = show_##_name;		\
--		data->_name##_dev_attr.store = NULL;			\
--		data->_name##_dev_attr.attr.name = #_name;		\
--		data->_name##_dev_attr.attr.mode = 0400;		\
-+		sysfs_attr_init(&data->_name##_kobj_attr.attr);	\
-+		data->_name##_kobj_attr.show = show_##_name;		\
-+		data->_name##_kobj_attr.store = NULL;			\
-+		data->_name##_kobj_attr.attr.name = #_name;		\
-+		data->_name##_kobj_attr.attr.mode = 0400;		\
- 	} while (0)
- 
- static int create_attr_group(struct uncore_data *data, char *name)
-@@ -186,21 +186,21 @@ static int create_attr_group(struct uncore_data *data, char *name)
- 
- 	if (data->domain_id != UNCORE_DOMAIN_ID_INVALID) {
- 		init_attribute_root_ro(domain_id);
--		data->uncore_attrs[index++] = &data->domain_id_dev_attr.attr;
-+		data->uncore_attrs[index++] = &data->domain_id_kobj_attr.attr;
- 		init_attribute_root_ro(fabric_cluster_id);
--		data->uncore_attrs[index++] = &data->fabric_cluster_id_dev_attr.attr;
-+		data->uncore_attrs[index++] = &data->fabric_cluster_id_kobj_attr.attr;
- 		init_attribute_root_ro(package_id);
--		data->uncore_attrs[index++] = &data->package_id_dev_attr.attr;
-+		data->uncore_attrs[index++] = &data->package_id_kobj_attr.attr;
- 	}
- 
--	data->uncore_attrs[index++] = &data->max_freq_khz_dev_attr.attr;
--	data->uncore_attrs[index++] = &data->min_freq_khz_dev_attr.attr;
--	data->uncore_attrs[index++] = &data->initial_min_freq_khz_dev_attr.attr;
--	data->uncore_attrs[index++] = &data->initial_max_freq_khz_dev_attr.attr;
-+	data->uncore_attrs[index++] = &data->max_freq_khz_kobj_attr.attr;
-+	data->uncore_attrs[index++] = &data->min_freq_khz_kobj_attr.attr;
-+	data->uncore_attrs[index++] = &data->initial_min_freq_khz_kobj_attr.attr;
-+	data->uncore_attrs[index++] = &data->initial_max_freq_khz_kobj_attr.attr;
- 
- 	ret = uncore_read_freq(data, &freq);
- 	if (!ret)
--		data->uncore_attrs[index++] = &data->current_freq_khz_dev_attr.attr;
-+		data->uncore_attrs[index++] = &data->current_freq_khz_kobj_attr.attr;
- 
- 	data->uncore_attrs[index] = NULL;
- 
-diff --git a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.h b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.h
-index 7afb69977c7e..0e5bf507e555 100644
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.h
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.h
-@@ -26,14 +26,14 @@
-  * @instance_id:	Unique instance id to append to directory name
-  * @name:		Sysfs entry name for this instance
-  * @uncore_attr_group:	Attribute group storage
-- * @max_freq_khz_dev_attr: Storage for device attribute max_freq_khz
-- * @mix_freq_khz_dev_attr: Storage for device attribute min_freq_khz
-- * @initial_max_freq_khz_dev_attr: Storage for device attribute initial_max_freq_khz
-- * @initial_min_freq_khz_dev_attr: Storage for device attribute initial_min_freq_khz
-- * @current_freq_khz_dev_attr: Storage for device attribute current_freq_khz
-- * @domain_id_dev_attr: Storage for device attribute domain_id
-- * @fabric_cluster_id_dev_attr: Storage for device attribute fabric_cluster_id
-- * @package_id_dev_attr: Storage for device attribute package_id
-+ * @max_freq_khz_kobj_attr: Storage for kobject attribute max_freq_khz
-+ * @mix_freq_khz_kobj_attr: Storage for kobject attribute min_freq_khz
-+ * @initial_max_freq_khz_kobj_attr: Storage for kobject attribute initial_max_freq_khz
-+ * @initial_min_freq_khz_kobj_attr: Storage for kobject attribute initial_min_freq_khz
-+ * @current_freq_khz_kobj_attr: Storage for kobject attribute current_freq_khz
-+ * @domain_id_kobj_attr: Storage for kobject attribute domain_id
-+ * @fabric_cluster_id_kobj_attr: Storage for kobject attribute fabric_cluster_id
-+ * @package_id_kobj_attr: Storage for kobject attribute package_id
-  * @uncore_attrs:	Attribute storage for group creation
-  *
-  * This structure is used to encapsulate all data related to uncore sysfs
-@@ -53,14 +53,14 @@ struct uncore_data {
- 	char name[32];
- 
- 	struct attribute_group uncore_attr_group;
--	struct device_attribute max_freq_khz_dev_attr;
--	struct device_attribute min_freq_khz_dev_attr;
--	struct device_attribute initial_max_freq_khz_dev_attr;
--	struct device_attribute initial_min_freq_khz_dev_attr;
--	struct device_attribute current_freq_khz_dev_attr;
--	struct device_attribute domain_id_dev_attr;
--	struct device_attribute fabric_cluster_id_dev_attr;
--	struct device_attribute package_id_dev_attr;
-+	struct kobj_attribute max_freq_khz_kobj_attr;
-+	struct kobj_attribute min_freq_khz_kobj_attr;
-+	struct kobj_attribute initial_max_freq_khz_kobj_attr;
-+	struct kobj_attribute initial_min_freq_khz_kobj_attr;
-+	struct kobj_attribute current_freq_khz_kobj_attr;
-+	struct kobj_attribute domain_id_kobj_attr;
-+	struct kobj_attribute fabric_cluster_id_kobj_attr;
-+	struct kobj_attribute package_id_kobj_attr;
- 	struct attribute *uncore_attrs[9];
+-	KSMBD_EVENT_MAX
++	__KSMBD_EVENT_MAX,
++	KSMBD_EVENT_MAX = __KSMBD_EVENT_MAX - 1
  };
  
+ /*
+diff --git a/fs/smb/server/transport_ipc.c b/fs/smb/server/transport_ipc.c
+index b49d47bdafc9..f29bb03f0dc4 100644
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -74,7 +74,7 @@ static int handle_unsupported_event(struct sk_buff *skb, struct genl_info *info)
+ static int handle_generic_event(struct sk_buff *skb, struct genl_info *info);
+ static int ksmbd_ipc_heartbeat_request(void);
+ 
+-static const struct nla_policy ksmbd_nl_policy[KSMBD_EVENT_MAX] = {
++static const struct nla_policy ksmbd_nl_policy[KSMBD_EVENT_MAX + 1] = {
+ 	[KSMBD_EVENT_UNSPEC] = {
+ 		.len = 0,
+ 	},
+@@ -403,7 +403,7 @@ static int handle_generic_event(struct sk_buff *skb, struct genl_info *info)
+ 		return -EPERM;
+ #endif
+ 
+-	if (type >= KSMBD_EVENT_MAX) {
++	if (type > KSMBD_EVENT_MAX) {
+ 		WARN_ON(1);
+ 		return -EINVAL;
+ 	}
 
 
