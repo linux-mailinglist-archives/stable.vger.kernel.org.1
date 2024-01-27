@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B2983F18F
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:10:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16FC383F190
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:10:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DAD01F21CB2
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3CC9283022
 	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7FF200AC;
-	Sat, 27 Jan 2024 23:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63218200BD;
+	Sat, 27 Jan 2024 23:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEiSjKx2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQ+pRkta"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4FA1F946
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239231F946
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706397043; cv=none; b=kdzG/w7c4VO1aWKf99jX51p0YwF7Fkig8mSqIWpYF85mPNLDv1IViRNwL/9umQYPoqyJFllyxcWfmwLPCCSLX3S933OkvbcbCmWzf5qYIZI5oSupuTs4OLweonT/7MOT531Q0yinEVcgjkhbtzRfE1R/cAGucrnyAh9INv3vfYQ=
+	t=1706397044; cv=none; b=uHTcHXBz2oUrIQyFhTADo8iKzQvNKVgkLgQ5EMrZVFg93xLI4B2zYaRbyvZ+PhviencKoQ/bVwpR3V8dTVgei1YeTbTl/0Civ41vsmuDClliPvoElQbNlYx64WIkGaNG13WG7pf+tGfSxdSep4QUUQy2ClCjJt0S4EXXkIbRH8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706397043; c=relaxed/simple;
-	bh=1zhotm9M+hF1mkKLtL8bFlZT5PyJNg8ZYY7826AmQlU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HILs1xTgjIozYZUXz+FB+XC2WEMP6UOGi+biw88wvR3w6y/6WitcVp/eC7jG5GbvTegAw+Yna2GwQ6JtxYHTa2IannplcbM9T/cr0LNxIbG4aJnu+n14+qqSzUcE4rto8X0zebXd16KnUvc2D1R137KnbrsCL78t6jVNBVTjkJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEiSjKx2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025A2C433F1;
-	Sat, 27 Jan 2024 23:10:42 +0000 (UTC)
+	s=arc-20240116; t=1706397044; c=relaxed/simple;
+	bh=pLDP1AeojWHMocqFegnC0AsSmFyJjBNeX+xRGgmwQ9Q=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cWqNThlM8jKZweQy89W/oCWSFB2RFGlr+2gw769RGUaQCs0hrnzwqYuRbiGO/XhTVycc/h6svSw2UzZzeuDkLCYZuiH8EeoFAjBjiSCFdq7EA6+Wp8kr1A2G4pEhDcT3nV+TywATTmNSvbbXkwlxUYGk1Br9v/Ijv1EHxJ3t9Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQ+pRkta; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDAFAC43399;
+	Sat, 27 Jan 2024 23:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706397043;
-	bh=1zhotm9M+hF1mkKLtL8bFlZT5PyJNg8ZYY7826AmQlU=;
+	s=korg; t=1706397044;
+	bh=pLDP1AeojWHMocqFegnC0AsSmFyJjBNeX+xRGgmwQ9Q=;
 	h=Subject:To:Cc:From:Date:From;
-	b=bEiSjKx2Ge4bW5MRJJOiBGuyaje/3uAA3vIM2ITv6YGVbhHz4gFUdAQexRYYs1DEg
-	 nvBeUevmh+LjNURyn4LhME1uf1krGmY7GX3hRxj2Q5GfqdLN/Ss3ZKWylw/z2rLT5C
-	 g2UOtaHcOUiEAs+4W27+Z5GYbU1cbqNWSAdFsErw=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix conversions between bytes and KB" failed to apply to 6.6-stable tree
+	b=sQ+pRktaJxQPy4YCZv+i0WirQNRjppaGTDUWH1p2m32hOA7t6jeAbXHqWMF1KYgho
+	 wOQmRfil6Z7i8mJQkUdo6xFX4hpMcYr4RvWq7P1a2dmVHhblJ0uq9EaxNgArk6fphb
+	 jH9eR47YW+ETR8YjXAgDt6evac0ChfAFOdsNynBs=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix conversions between bytes and KB" failed to apply to 6.1-stable tree
 To: syed.hassan@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,nicholas.kazlauskas@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 15:10:42 -0800
-Message-ID: <2024012742-everyone-tying-75ee@gregkh>
+Date: Sat, 27 Jan 2024 15:10:43 -0800
+Message-ID: <2024012743-crown-occultist-f35d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 22136ff27c4e01fae81f6588033363a46c72ed8c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012742-everyone-tying-75ee@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012743-crown-occultist-f35d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -78,6 +78,17 @@ c51d87202d1f ("drm/amd/display: do not attempt ODM power optimization if minimal
 39d39a019657 ("drm/amd/display: switch to new ODM policy for windowed MPO ODM support")
 0b9dc439f404 ("drm/amd/display: Write flip addr to scratch reg for subvp")
 96182df99dad ("drm/amd/display: Enable runtime register offset init for DCN32 DMUB")
+ca030d83f53b ("drm/amd/display: always acquire MPO pipe for every blending tree")
+71ba6b577a35 ("drm/amd/display: Add interface to enable DPIA trace")
+75bd42fd2e8e ("drm/amd/display: Prevent invalid pipe connections")
+da915efaa213 ("drm/amd/display: ABM pause toggle")
+c35b6ea8f2ec ("drm/amd/display: Set minimum requirement for using PSR-SU on Rembrandt")
+bbe4418f22b9 ("drm/amd/display: Include CSC updates in new fast update path")
+33e82119cfb2 ("drm/amd/display: Only use ODM2:1 policy for high pixel rate displays")
+0baae6246307 ("drm/amd/display: Refactor fast update to use new HWSS build sequence")
+24e461e84f1c ("drm/amd/display: add ODM case when looking for first split pipe")
+3a10a44a3e00 ("drm/amd/display: clean up some inconsistent indenting")
+268182606f26 ("drm/amd/display: Update correct DCN314 register header")
 
 thanks,
 
