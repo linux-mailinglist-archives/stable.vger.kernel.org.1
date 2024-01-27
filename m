@@ -1,162 +1,145 @@
-Return-Path: <stable+bounces-16142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B48483F0F7
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:39:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE2A83F0F9
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:40:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D49E1280FA5
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:39:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 712E01C21D08
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97991DDD6;
-	Sat, 27 Jan 2024 22:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513AC1B7E5;
+	Sat, 27 Jan 2024 22:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IEnq8nG6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYz7e0Df"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDE515AF9;
-	Sat, 27 Jan 2024 22:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A6F1E86A
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706395169; cv=none; b=FH9vfSoe2rPApoyBjlIgNaKRuXKHhejzf3ZcgSjM5xf1juAfpkhjU1dR4v4tiHYwHI0e35rUEVTBGNhAbRtm3MsEklZRPbMnmAAz0FnbVl1YYUbwkxEty7CCp8vS2BGUNyjEYVIpi1nfUEFY8oG3mXQsiFHfyyKD9qOD/kuIHjU=
+	t=1706395238; cv=none; b=KIVg1sLnavCWwhcIMm0jc+/Py/rMQ/y5JmiC9FrEJmDlDFKy+fDeqbFpnTIFixA7rLa/hhlyBW8EyqEFGkKn1E5qIWtbv27YnAmvysWGYX3tDL2GELNJOUggUfGDc1xb0TVHU5u7qcwv6Se5LFcS5Y1OGvAyj1hnu4LtT/OyJJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706395169; c=relaxed/simple;
-	bh=KILTeulNNllPlgSx8Rimk1bazTt4jJRe8N47roW2STk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=tNIiW3em4CF3mqStbA6ZNDEm3UAwBQRwrfz8HMzcjQrok+8VnSBtt268vyIFVbytWFw2h2MeMceMGfLsXchiMS/Q5OcKRr93026LTAzaZz3Kq+lRxWYTBBIDbucZDgFGFhXEETN8DWukE7tJetId3OYjeqcSDdoxMoPo+Obk6ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IEnq8nG6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66009C433F1;
-	Sat, 27 Jan 2024 22:39:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706395168;
-	bh=KILTeulNNllPlgSx8Rimk1bazTt4jJRe8N47roW2STk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=IEnq8nG6w8KAzYK9CYm5TyiDZpEF4UOBcq38OH/kDHd6DgpysPY4scZ00FAkKcup3
-	 HX09PCGMGQB84qgsiBJHIlrsYnASDHcdc4GXWzW77g2SvcboqNypn71najuV6HsVwd
-	 UcafB9IfC9RD6H76trkDG7SdxAcmhTjyx7YF7RJ6aeix88X3x999ojFH4NrCom+z67
-	 Q8rXaGTpKBVcq5NKC1Y08novzvGaiOT1rWnySkkB8ubGJ/5PQOmwZuiNRpO1XlRO+t
-	 lUsrH5LX1A0OGxDBxhH8/UBOY1H7afzXxugYqmy22awjLHYpj8fB2wXVNcFWJ8G+SB
-	 9S81rtqRHx6iw==
-Date: Sat, 27 Jan 2024 16:39:26 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Randy Dunlap <rdunlap@infradead.org>, NeilBrown <neilb@suse.de>,
-	John Sanpe <sanpeqf@gmail.com>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Uladzislau Koshchanka <koshchanka@gmail.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	David Gow <davidgow@google.com>, Kees Cook <keescook@chromium.org>,
-	Rae Moar <rmoar@google.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	"wuqiang.matt" <wuqiang.matt@bytedance.com>,
-	Yury Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ben Dooks <ben.dooks@codethink.co.uk>, dakr@redhat.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arch@vger.kernel.org, stable@vger.kernel.org,
-	Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH v5 RESEND 5/5] lib, pci: unify generic pci_iounmap()
-Message-ID: <20240127223926.GA461814@bhelgaas>
+	s=arc-20240116; t=1706395238; c=relaxed/simple;
+	bh=gRo/5vCzbP/csUZzaB3VWeCldox6rdnp2Sy9C021bPI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=l6c9B+ro9Wv8sqIOGtR5ZtZ/n+SWxDB7BWSyNPu/G6gxVeukbcf25aWTCFIcpABJLwESDcxpzyw4O07VOTSL76DhoOlFq6MF177MrbmVmGKQWlRgwO53uONwuYSA1E6733xbAGQeuuPKiM/BRAyyFgFahajqcFc9QbI5o2HrFKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYz7e0Df; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DDA5C433F1;
+	Sat, 27 Jan 2024 22:40:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1706395237;
+	bh=gRo/5vCzbP/csUZzaB3VWeCldox6rdnp2Sy9C021bPI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=yYz7e0DfHAFPqWsGhyTDMg081N1bug1X9IChdyXuK0104FjkmamM3PXK+B7qeNspG
+	 jQFivt4Xoi8fmTZdyMZbwAniyaoj6noy3GGpIys7LJANAzy+vZajDy4xoUaUjmBK/+
+	 Sy5Lm9viGEd1skx6ZS0kBpk8iY5mBtI44HJRGg5k=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Remove min_dst_y_next_start check for Z8" failed to apply to 6.7-stable tree
+To: nicholas.kazlauskas@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,syed.hassan@amd.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sat, 27 Jan 2024 14:40:36 -0800
+Message-ID: <2024012736-handwash-trade-ffab@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <70b8db3ec0f8730fdd23dae21edc1a93d274b048.camel@redhat.com>
 
-On Fri, Jan 26, 2024 at 02:59:20PM +0100, Philipp Stanner wrote:
-> On Tue, 2024-01-23 at 15:05 -0600, Bjorn Helgaas wrote:
-> > On Thu, Jan 11, 2024 at 09:55:40AM +0100, Philipp Stanner wrote:
-> ...
 
-> > > -void pci_iounmap(struct pci_dev *dev, void __iomem *p)
-> > > +/**
-> > > + * pci_iounmap - Unmapp a mapping
-> > > + * @dev: PCI device the mapping belongs to
-> > > + * @addr: start address of the mapping
-> > > + *
-> > > + * Unmapp a PIO or MMIO mapping.
-> > > + */
-> > > +void pci_iounmap(struct pci_dev *dev, void __iomem *addr)
-> > 
-> > Maybe move the "p" to "addr" rename to the patch that fixes the
-> > pci_iounmap() #ifdef problem, since that's a trivial change that
-> > already has to do with handling both PIO and MMIO?  Then this patch
-> > would be a little more focused.
-> > 
-> > The kernel-doc addition could possibly also move there since it isn't
-> > related to the unification.
-> 
-> You mean the one from my devres-patch-series? Or documentation
-> specifically about pci_iounmap()?
+The patch below does not apply to the 6.7-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-I had in mind the patch that fixes the pci_iounmap() #ifdef problem,
-which (if you split it out from 1/5) would be a relatively trivial
-patch.  Or the kernel-doc addition could be its own separate patch.
-The point is that this unification patch is fairly complicated, so
-anything we can do to move things unrelated to unification elsewhere
-makes this one easier to review.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-> > It seems like implementing iomem_is_ioport() for the other arches
-> > would be straightforward and if done first, could make this patch
-> > look
-> > tidier.
-> 
-> That would be the cleanest solution. But the cleaner you want to be,
-> the more time you have to spend ;)
-> I can take another look and see if I could do that with reasonable
-> effort.
-> Otherwise I'd go for:
-> 
-> > Or if the TODOs can't be done now, maybe the iomem_is_ioport()
-> > addition could be done as a separate patch to make the unification
-> > more obvious.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git checkout FETCH_HEAD
+git cherry-pick -x fcd94ef1b3e78f7dc76309c9611915018d2d62a3
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012736-handwash-trade-ffab@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
-It looks like iomem_is_ioport() is basically the guards in
-pci_iounmap() implementations that, if true, prevent calling
-iounmap(), so it it seems like they should be trivial, e.g.,
+Possible dependencies:
 
-  return !__is_mmio(addr); # alpha
+fcd94ef1b3e7 ("drm/amd/display: Remove min_dst_y_next_start check for Z8")
 
-  return (addr < VMALLOC_START || addr >= VMALLOC_END); # arm
+thanks,
 
-  return isa_vaddr_is_ioport(addr) || pcibios_vaddr_is_ioport(addr); # microblaze
+greg k-h
 
-Unless they're significantly more complicated than that, I don't see
-the point of deferring them.
+------------------ original commit in Linus's tree ------------------
 
-> > > + */
-> > > +#if defined(ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT)
-> > > +bool iomem_is_ioport(void __iomem *addr)
-> > >  {
-> > > -       IO_COND(addr, /* nothing */, iounmap(addr));
-> > > +       unsigned long port = (unsigned long __force)addr;
-> > > +
-> > > +       if (port > PIO_OFFSET && port < PIO_RESERVED)
-> > > +               return true;
-> > > +
-> > > +       return false;
-> > >  }
-> > > -EXPORT_SYMBOL(pci_iounmap);
-> > > -#endif /* CONFIG_PCI */
-> > > +#endif /* ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT */
-> > > -- 
-> > > 2.43.0
-> > > 
-> > 
-> 
+From fcd94ef1b3e78f7dc76309c9611915018d2d62a3 Mon Sep 17 00:00:00 2001
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Date: Wed, 8 Nov 2023 10:55:53 -0500
+Subject: [PATCH] drm/amd/display: Remove min_dst_y_next_start check for Z8
+
+[Why]
+Flickering occurs on DRR supported panels when engaged in DRR due to
+min_dst_y_next becoming larger than the frame size itself.
+
+[How]
+In general, we should be able to enter Z8 when this is engaged but it
+might be a net power loss even if the calculation wasn't bugged.
+
+Don't support enabling Z8 during the DRR region.
+
+Cc: stable@vger.kernel.org # 6.1+
+Reviewed-by: Syed Hassan <syed.hassan@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+index 7fc8b18096ba..ec77b2b41ba3 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+@@ -950,10 +950,8 @@ static enum dcn_zstate_support_state  decide_zstate_support(struct dc *dc, struc
+ {
+ 	int plane_count;
+ 	int i;
+-	unsigned int min_dst_y_next_start_us;
+ 
+ 	plane_count = 0;
+-	min_dst_y_next_start_us = 0;
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+ 		if (context->res_ctx.pipe_ctx[i].plane_state)
+ 			plane_count++;
+@@ -975,26 +973,15 @@ static enum dcn_zstate_support_state  decide_zstate_support(struct dc *dc, struc
+ 	else if (context->stream_count == 1 &&  context->streams[0]->signal == SIGNAL_TYPE_EDP) {
+ 		struct dc_link *link = context->streams[0]->sink->link;
+ 		struct dc_stream_status *stream_status = &context->stream_status[0];
+-		struct dc_stream_state *current_stream = context->streams[0];
+ 		int minmum_z8_residency = dc->debug.minimum_z8_residency_time > 0 ? dc->debug.minimum_z8_residency_time : 1000;
+ 		bool allow_z8 = context->bw_ctx.dml.vba.StutterPeriod > (double)minmum_z8_residency;
+ 		bool is_pwrseq0 = link->link_index == 0;
+-		bool isFreesyncVideo;
+-
+-		isFreesyncVideo = current_stream->adjust.v_total_min == current_stream->adjust.v_total_max;
+-		isFreesyncVideo = isFreesyncVideo && current_stream->timing.v_total < current_stream->adjust.v_total_min;
+-		for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-			if (context->res_ctx.pipe_ctx[i].stream == current_stream && isFreesyncVideo) {
+-				min_dst_y_next_start_us = context->res_ctx.pipe_ctx[i].dlg_regs.min_dst_y_next_start_us;
+-				break;
+-			}
+-		}
+ 
+ 		/* Don't support multi-plane configurations */
+ 		if (stream_status->plane_count > 1)
+ 			return DCN_ZSTATE_SUPPORT_DISALLOW;
+ 
+-		if (is_pwrseq0 && (context->bw_ctx.dml.vba.StutterPeriod > 5000.0 || min_dst_y_next_start_us > 5000))
++		if (is_pwrseq0 && context->bw_ctx.dml.vba.StutterPeriod > 5000.0)
+ 			return DCN_ZSTATE_SUPPORT_ALLOW;
+ 		else if (is_pwrseq0 && link->psr_settings.psr_version == DC_PSR_VERSION_1 && !link->panel_config.psr.disable_psr)
+ 			return allow_z8 ? DCN_ZSTATE_SUPPORT_ALLOW_Z8_Z10_ONLY : DCN_ZSTATE_SUPPORT_ALLOW_Z10_ONLY;
+
 
