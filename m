@@ -1,422 +1,275 @@
-Return-Path: <stable+bounces-16093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB45E83F00C
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 21:57:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F2483F016
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:02:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 508C7284D8E
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 20:57:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15D591F243A5
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 21:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30021758E;
-	Sat, 27 Jan 2024 20:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999761805E;
+	Sat, 27 Jan 2024 21:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="UYDVgngG"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="W8rzIo8f";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="V5X0xNAh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC00175AE
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 20:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F5514A99
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 21:02:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706389020; cv=none; b=gBgD3IUEj28fuV8Yw2R2SKvWiF50hwGzBzSM6X1RR7GqCxwhlvLxjPVj7n49N3qp667c0ukZEC8JYxj+YWan9l6u6mrNUfXO0rJYh3S6+rpbf6Lw5ZuZ6lDphpRXvjYCzqsvxqiB+3243RmNGT1sqCzIplQBokOpSh290x6Ikdg=
+	t=1706389354; cv=none; b=cTDrk9hIsiqRzPrHHsM1q746lhOaE9xi1RPFpytWbxXGtnwV2dpkfHS11vcCdB+JdiDPLRn4nu/19eRcdSmzSGpe6dhJPzqoHua1JFESOUyQY/DedhK7joi42pCo8pYqJk8hDUdyUL2Zmn8Ib6nE4xQztkSeyBcSjprUW+xoXYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706389020; c=relaxed/simple;
-	bh=QodwovIzrSZNlMDNobE5/Btdm7geaG/sYT7N2gbGr6o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qoU2N5JNHl5Fl16pZfs3SxEQC57mMFxTaN+GwtZcWvQF3GBI7Zp4k9r84GCMfvdBf7X8NqcURTrJ7S+0+t87qKNaR6XY/o9ULJgHFol8eOqafzlNMmEiGNGmZ46xwyAV1tCu4twTr1SKJMYH4vmH0ysQjWUC6jkbsunxg+Bbt7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=UYDVgngG; arc=none smtp.client-ip=209.85.208.180
+	s=arc-20240116; t=1706389354; c=relaxed/simple;
+	bh=D2emE8dSIyYn5VmH8bUzU2/D1rxNkKqJMsXL/fJsz9s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=u+0A8HN+pUKcNUQ0DXIjKK1L68jAG25DeZI0n1ZNh0O6Sbdm/h3y8IC0qPzx0oQudL3u0SKtz0Ea+qHaqr4KcTg2yNoA+/gEDZpS02sEuqVEPIkguG5c0bWp3srEfojLRrXkOSzy+7aZ103fnP/5FvQ6fcvBpRcvWAohxi00bio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=W8rzIo8f; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=V5X0xNAh; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2cf591b5db7so4561301fa.2
-        for <stable@vger.kernel.org>; Sat, 27 Jan 2024 12:56:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1706389013; x=1706993813; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:references:cc:to:content-language
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=QodwovIzrSZNlMDNobE5/Btdm7geaG/sYT7N2gbGr6o=;
-        b=UYDVgngGS3DUyoWvvFBAizQDoGMqX9f8BYMUdme9d2CEcozHvjKPMBfpoE4v8WH9DX
-         K56ZYUbvHjM3i8PWDMv0ZHzbJ7N+EANSbWzJLIBgRIJTSM9d/7oSOTG0sNh1pxEIRCjD
-         VE5MndPIgcq8KShEBDeDAxYVCu+PK9SP9igRm8lPeQOoSv1yqXc4p2HLVoDxEdWmJnzV
-         bvwV0oIzBaQ5SU3sV57bSjsQeE1qWOrT4bJfi4wjZ7rlnDNap+pfu51/ScBL3BAFaDcg
-         WG9q6pZusCAglZk3RgGVa8rU8WrWw7wqPlXZLp77B+db+vtevqFwf9WVWCIBK5/rPK8S
-         is1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706389013; x=1706993813;
-        h=in-reply-to:autocrypt:from:references:cc:to:content-language
-         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QodwovIzrSZNlMDNobE5/Btdm7geaG/sYT7N2gbGr6o=;
-        b=O3rrfJSkd9LIOxYn3PqZkThXH2vutnGfAG1SJk3fPat4TiF58692vk5Xja2SSmTbLY
-         0Wb0mrZWgfwRreQTg6/fX82Kq7wvFzaNG2sihKSPJQtOq05VYtykeAFfx+KhpjYjaDRk
-         gGYrkvY9Y5JRqOTbBbvQGpaaHNsK0q1bd3ba4cI51HICj5NQL4X2tAqsJ5u2JsCtHX+m
-         dBmboBqRQ5g2mKIMsYDQW41EgDPjp6rbrDZoUaDAOEgIcOdGayYFg3B1uzL0Z4lSndjO
-         YWQPm4aaRdNREP47xcT1dmfBKCbR79VNZESx1ipbgNIVeqNt8+1wCXIJh7vZuNUtzdFa
-         bnNA==
-X-Gm-Message-State: AOJu0YwZOF/VeaUoOhvnpoNTO5yq8XO0hBS3z3DcsIk8m/36aoMks9fB
-	VTKFXsanE/obdOpSkekc01pnoX7oY5g6pbxF7OhH690nxqS8dC2I7VsLYfWdU5U=
-X-Google-Smtp-Source: AGHT+IHysKVKeYD5mj5tNl9PsmqwpDzQgKc+FYS8ZGQse34boMLwI1DRcwMVwfh/DfkUKJfQEN3GGg==
-X-Received: by 2002:a2e:b016:0:b0:2cd:eb9e:b372 with SMTP id y22-20020a2eb016000000b002cdeb9eb372mr1379107ljk.27.1706389013376;
-        Sat, 27 Jan 2024 12:56:53 -0800 (PST)
-Received: from ?IPV6:2403:580d:bef6::959? (2403-580d-bef6--959.ip6.aussiebb.net. [2403:580d:bef6::959])
-        by smtp.gmail.com with ESMTPSA id fe18-20020a056a002f1200b006dd870b51b8sm3160683pfb.126.2024.01.27.12.56.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 27 Jan 2024 12:56:52 -0800 (PST)
-Message-ID: <084e3da8-7526-4be2-b693-f2ebf60d0713@suse.com>
-Date: Sun, 28 Jan 2024 07:26:47 +1030
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 09F631FC30;
+	Sat, 27 Jan 2024 21:02:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1706389350; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Uo3RvRRbi6dtIAhKnPZR0eE1jxyiv5FK5RgvlFkUmmM=;
+	b=W8rzIo8fVoDYT6w2Yjz8iJTziSfvpdRxiqSUd72Xga7F+XHvWTFVTABw+7OZ6FesuZpAKL
+	QgQQq0QQ3W8L3e6RMoyYErGTR/vSKmUcTuMdUVSuL/26A4Dv/d7shqlqqrrlNoeuKC0VlC
+	XeQfbWILvkvSeUibgqjtO23NNjGLev0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1706389348; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Uo3RvRRbi6dtIAhKnPZR0eE1jxyiv5FK5RgvlFkUmmM=;
+	b=V5X0xNAh+Zi1IQLlKJ+PmmyIn/nBmc2q90gfmKKs+VYILrvmXubluWu0VLLv3b6ShyLebl
+	+ju/StxjBW/1Yzbs9R90PA/FVx9rUGKq2x4HHEtr5EiSRc1gCCXRq71ABQTaooeSYBshBk
+	8moWiwqhHFQTSWQFYJJc20+0mmnGRwU=
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 7EACD1329F;
+	Sat, 27 Jan 2024 21:02:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id xZKaD2JvtWVrUgAAn2gu4w
+	(envelope-from <wqu@suse.com>); Sat, 27 Jan 2024 21:02:26 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: stable@vger.kernel.org
+Cc: Rongrong <i@rong.moe>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6.y] btrfs: scrub: avoid use-after-free when chunk length is not 64K aligned
+Date: Sun, 28 Jan 2024 07:32:08 +1030
+Message-ID: <2d0c7aa20d79dbb7b77683db0ea9a329526c7ef5.1706389328.git.wqu@suse.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024012740-mating-boxing-dd93@gregkh>
+References: <2024012740-mating-boxing-dd93@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] btrfs: scrub: avoid use-after-free when
- chunk length is not" failed to apply to 6.6-stable tree
-Content-Language: en-US
-To: gregkh@linuxfoundation.org, dsterba@suse.com, i@rong.moe,
- johannes.thumshirn@wdc.com
-Cc: stable@vger.kernel.org
-References: <2024012740-mating-boxing-dd93@gregkh>
-From: Qu Wenruo <wqu@suse.com>
-Autocrypt: addr=wqu@suse.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
- FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJjTSJVBQkNOgemAAoJEMI9kfOh
- Jf6oapEH/3r/xcalNXMvyRODoprkDraOPbCnULLPNwwp4wLP0/nKXvAlhvRbDpyx1+Ht/3gW
- p+Klw+S9zBQemxu+6v5nX8zny8l7Q6nAM5InkLaD7U5OLRgJ0O1MNr/UTODIEVx3uzD2X6MR
- ECMigQxu9c3XKSELXVjTJYgRrEo8o2qb7xoInk4mlleji2rRrqBh1rS0pEexImWphJi+Xgp3
- dxRGHsNGEbJ5+9yK9Nc5r67EYG4bwm+06yVT8aQS58ZI22C/UeJpPwcsYrdABcisd7dddj4Q
- RhWiO4Iy5MTGUD7PdfIkQ40iRcQzVEL1BeidP8v8C4LVGmk4vD1wF6xTjQRKfXHOwE0EWdWB
- rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
- Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
- E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
- vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
- g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
- AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJjTSJuBQkNOge/AAoJEMI9kfOhJf6o
- rq8H/3LJmWxL6KO2y/BgOMYDZaFWE3TtdrlIEG8YIDJzIYbNIyQ4lw61RR+0P4APKstsu5VJ
- 9E3WR7vfxSiOmHCRIWPi32xwbkD5TwaA5m2uVg6xjb5wbdHm+OhdSBcw/fsg19aHQpsmh1/Q
- bjzGi56yfTxxt9R2WmFIxe6MIDzLlNw3JG42/ark2LOXywqFRnOHgFqxygoMKEG7OcGy5wJM
- AavA+Abj+6XoedYTwOKkwq+RX2hvXElLZbhYlE+npB1WsFYn1wJ22lHoZsuJCLba5lehI+//
- ShSsZT5Tlfgi92e9P7y+I/OzMvnBezAll+p/Ly2YczznKM5tV0gboCWeusM=
-In-Reply-To: <2024012740-mating-boxing-dd93@gregkh>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------vR8j0Njmcy3FrBgzYcOwOQ5d"
+Content-Transfer-Encoding: 8bit
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=V5X0xNAh
+X-Spamd-Result: default: False [0.19 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
+	 FROM_HAS_DN(0.00)[];
+	 RCPT_COUNT_THREE(0.00)[4];
+	 R_MISSING_CHARSET(2.50)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 RCVD_DKIM_ARC_DNSWL_HI(-1.00)[];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 TO_DN_SOME(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	 DKIM_TRACE(0.00)[suse.com:+];
+	 MX_GOOD(-0.01)[];
+	 MID_CONTAINS_FROM(1.00)[];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[wdc.com:email,suse.com:dkim,suse.com:email,rong.moe:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_IN_DNSWL_HI(-0.50)[2a07:de40:b281:104:10:150:64:98:from];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-3.00)[100.00%]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Score: 0.19
+X-Rspamd-Queue-Id: 09F631FC30
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spamd-Bar: /
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------vR8j0Njmcy3FrBgzYcOwOQ5d
-Content-Type: multipart/mixed; boundary="------------M5fi00URbnCkjPLky9NjXwqK";
- protected-headers="v1"
-From: Qu Wenruo <wqu@suse.com>
-To: gregkh@linuxfoundation.org, dsterba@suse.com, i@rong.moe,
- johannes.thumshirn@wdc.com
-Cc: stable@vger.kernel.org
-Message-ID: <084e3da8-7526-4be2-b693-f2ebf60d0713@suse.com>
-Subject: Re: FAILED: patch "[PATCH] btrfs: scrub: avoid use-after-free when
- chunk length is not" failed to apply to 6.6-stable tree
-References: <2024012740-mating-boxing-dd93@gregkh>
-In-Reply-To: <2024012740-mating-boxing-dd93@gregkh>
+[ Upstream commit f546c4282673497a06ecb6190b50ae7f6c85b02f ]
 
---------------M5fi00URbnCkjPLky9NjXwqK
-Content-Type: multipart/mixed; boundary="------------Epqge6f7rFY2VvIqY6k0WlqI"
+[BUG]
+There is a bug report that, on a ext4-converted btrfs, scrub leads to
+various problems, including:
 
---------------Epqge6f7rFY2VvIqY6k0WlqI
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+- "unable to find chunk map" errors
+  BTRFS info (device vdb): scrub: started on devid 1
+  BTRFS critical (device vdb): unable to find chunk map for logical 2214744064 length 4096
+  BTRFS critical (device vdb): unable to find chunk map for logical 2214744064 length 45056
 
-DQoNCk9uIDIwMjQvMS8yOCAwNzowNiwgZ3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmcgd3Jv
-dGU6DQo+IA0KPiBUaGUgcGF0Y2ggYmVsb3cgZG9lcyBub3QgYXBwbHkgdG8gdGhlIDYuNi1z
-dGFibGUgdHJlZS4NCj4gSWYgc29tZW9uZSB3YW50cyBpdCBhcHBsaWVkIHRoZXJlLCBvciB0
-byBhbnkgb3RoZXIgc3RhYmxlIG9yIGxvbmd0ZXJtDQo+IHRyZWUsIHRoZW4gcGxlYXNlIGVt
-YWlsIHRoZSBiYWNrcG9ydCwgaW5jbHVkaW5nIHRoZSBvcmlnaW5hbCBnaXQgY29tbWl0DQo+
-IGlkIHRvIDxzdGFibGVAdmdlci5rZXJuZWwub3JnPi4NCj4gDQo+IFRvIHJlcHJvZHVjZSB0
-aGUgY29uZmxpY3QgYW5kIHJlc3VibWl0LCB5b3UgbWF5IHVzZSB0aGUgZm9sbG93aW5nIGNv
-bW1hbmRzOg0KPiANCj4gZ2l0IGZldGNoIGh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3Nj
-bS9saW51eC9rZXJuZWwvZ2l0L3N0YWJsZS9saW51eC5naXQvIGxpbnV4LTYuNi55DQo+IGdp
-dCBjaGVja291dCBGRVRDSF9IRUFEDQo+IGdpdCBjaGVycnktcGljayAteCBjDQo+ICMgPHJl
-c29sdmUgY29uZmxpY3RzLCBidWlsZCwgdGVzdCwgZXRjLj4NCj4gZ2l0IGNvbW1pdCAtcw0K
-PiBnaXQgc2VuZC1lbWFpbCAtLXRvICc8c3RhYmxlQHZnZXIua2VybmVsLm9yZz4nIC0taW4t
-cmVwbHktdG8gJzIwMjQwMTI3NDAtbWF0aW5nLWJveGluZy1kZDkzQGdyZWdraCcgLS1zdWJq
-ZWN0LXByZWZpeCAnUEFUQ0ggNi42LnknIEhFQUReLi4NCg0KR3JlYXQgbmV3IGhpbnRzIG9u
-IHRoZSBjb25mbGljdCByZXNvbHZlIHN0ZXBzLCBlc3BlY2lhbGx5IGZvciBndXlzIGxpa2Ug
-DQptZSwgd2hvIGlzIG5vdCBmYW1pbGlhciB3aXRoIHN0YWJsZSBrZXJuZWxzLg0KDQpXb3Vs
-ZCBiYWNrcG9ydCBpdCBzb29uLg0KDQpUaGFua3MsDQpRdQ0KPiANCj4gUG9zc2libGUgZGVw
-ZW5kZW5jaWVzOg0KPiANCj4gZjU0NmM0MjgyNjczICgiYnRyZnM6IHNjcnViOiBhdm9pZCB1
-c2UtYWZ0ZXItZnJlZSB3aGVuIGNodW5rIGxlbmd0aCBpcyBub3QgNjRLIGFsaWduZWQiKQ0K
-PiANCj4gdGhhbmtzLA0KPiANCj4gZ3JlZyBrLWgNCj4gDQo+IC0tLS0tLS0tLS0tLS0tLS0t
-LSBvcmlnaW5hbCBjb21taXQgaW4gTGludXMncyB0cmVlIC0tLS0tLS0tLS0tLS0tLS0tLQ0K
-PiANCj4gIEZyb20gZjU0NmM0MjgyNjczNDk3YTA2ZWNiNjE5MGI1MGFlN2Y2Yzg1YjAyZiBN
-b24gU2VwIDE3IDAwOjAwOjAwIDIwMDENCj4gRnJvbTogUXUgV2VucnVvIDx3cXVAc3VzZS5j
-b20+DQo+IERhdGU6IFdlZCwgMTcgSmFuIDIwMjQgMTE6MDI6MjUgKzEwMzANCj4gU3ViamVj
-dDogW1BBVENIXSBidHJmczogc2NydWI6IGF2b2lkIHVzZS1hZnRlci1mcmVlIHdoZW4gY2h1
-bmsgbGVuZ3RoIGlzIG5vdA0KPiAgIDY0SyBhbGlnbmVkDQo+IA0KPiBbQlVHXQ0KPiBUaGVy
-ZSBpcyBhIGJ1ZyByZXBvcnQgdGhhdCwgb24gYSBleHQ0LWNvbnZlcnRlZCBidHJmcywgc2Ny
-dWIgbGVhZHMgdG8NCj4gdmFyaW91cyBwcm9ibGVtcywgaW5jbHVkaW5nOg0KPiANCj4gLSAi
-dW5hYmxlIHRvIGZpbmQgY2h1bmsgbWFwIiBlcnJvcnMNCj4gICAgQlRSRlMgaW5mbyAoZGV2
-aWNlIHZkYik6IHNjcnViOiBzdGFydGVkIG9uIGRldmlkIDENCj4gICAgQlRSRlMgY3JpdGlj
-YWwgKGRldmljZSB2ZGIpOiB1bmFibGUgdG8gZmluZCBjaHVuayBtYXAgZm9yIGxvZ2ljYWwg
-MjIxNDc0NDA2NCBsZW5ndGggNDA5Ng0KPiAgICBCVFJGUyBjcml0aWNhbCAoZGV2aWNlIHZk
-Yik6IHVuYWJsZSB0byBmaW5kIGNodW5rIG1hcCBmb3IgbG9naWNhbCAyMjE0NzQ0MDY0IGxl
-bmd0aCA0NTA1Ng0KPiANCj4gICAgVGhpcyB3b3VsZCBsZWFkIHRvIHVucmVwYXJpYWJsZSBl
-cnJvcnMuDQo+IA0KPiAtIFVzZS1hZnRlci1mcmVlIEtBU0FOIHJlcG9ydHM6DQo+ICAgID09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PQ0KPiAgICBCVUc6IEtBU0FOOiBzbGFiLXVzZS1hZnRlci1mcmVlIGluIF9f
-YmxrX3JxX21hcF9zZysweDE4Zi8weDdjMA0KPiAgICBSZWFkIG9mIHNpemUgOCBhdCBhZGRy
-IGZmZmY4ODgxMDEzYzkwNDAgYnkgdGFzayBidHJmcy85MDkNCj4gICAgQ1BVOiAwIFBJRDog
-OTA5IENvbW06IGJ0cmZzIE5vdCB0YWludGVkIDYuNy4wLXg2NHYzLWRiZyAjMTEgYzUwNjM2
-ZTk0MTlhODM1NDU1NTU1NTI0NWRmNTM1ZTM4MDU2M2IyYg0KPiAgICBIYXJkd2FyZSBuYW1l
-OiBRRU1VIFN0YW5kYXJkIFBDIChRMzUgKyBJQ0g5LCAyMDA5KSwgQklPUyAyMDIzLjExLTIg
-MTIvMjQvMjAyMw0KPiAgICBDYWxsIFRyYWNlOg0KPiAgICAgPFRBU0s+DQo+ICAgICBkdW1w
-X3N0YWNrX2x2bCsweDQzLzB4NjANCj4gICAgIHByaW50X3JlcG9ydCsweGNmLzB4NjQwDQo+
-ICAgICBrYXNhbl9yZXBvcnQrMHhhNi8weGQwDQo+ICAgICBfX2Jsa19ycV9tYXBfc2crMHgx
-OGYvMHg3YzANCj4gICAgIHZpcnRibGtfcHJlcF9ycS5pc3JhLjArMHgyMTUvMHg2YTAgW3Zp
-cnRpb19ibGsgMTlhNjVlZWVlOWFlNmZjZjAyZWRmYWQzOWJiOWRkZWUwN2RjZGFmZl0NCj4g
-ICAgIHZpcnRpb19xdWV1ZV9ycXMrMHhjNC8weDMxMCBbdmlydGlvX2JsayAxOWE2NWVlZWU5
-YWU2ZmNmMDJlZGZhZDM5YmI5ZGRlZTA3ZGNkYWZmXQ0KPiAgICAgYmxrX21xX2ZsdXNoX3Bs
-dWdfbGlzdC5wYXJ0LjArMHg3ODAvMHg4NjANCj4gICAgIF9fYmxrX2ZsdXNoX3BsdWcrMHgx
-YmEvMHgyMjANCj4gICAgIGJsa19maW5pc2hfcGx1ZysweDNiLzB4NjANCj4gICAgIHN1Ym1p
-dF9pbml0aWFsX2dyb3VwX3JlYWQrMHgxMGEvMHgyOTAgW2J0cmZzIGU1Nzk4N2EzNjBiZWQ4
-MmZlODc1NmRjZDNlMGRlNTQwNmNjZmU5NjVdDQo+ICAgICBmbHVzaF9zY3J1Yl9zdHJpcGVz
-KzB4MzhlLzB4NDMwIFtidHJmcyBlNTc5ODdhMzYwYmVkODJmZTg3NTZkY2QzZTBkZTU0MDZj
-Y2ZlOTY1XQ0KPiAgICAgc2NydWJfc3RyaXBlKzB4ODJhLzB4YWUwIFtidHJmcyBlNTc5ODdh
-MzYwYmVkODJmZTg3NTZkY2QzZTBkZTU0MDZjY2ZlOTY1XQ0KPiAgICAgc2NydWJfY2h1bmsr
-MHgxNzgvMHgyMDAgW2J0cmZzIGU1Nzk4N2EzNjBiZWQ4MmZlODc1NmRjZDNlMGRlNTQwNmNj
-ZmU5NjVdDQo+ICAgICBzY3J1Yl9lbnVtZXJhdGVfY2h1bmtzKzB4NGJjLzB4YTMwIFtidHJm
-cyBlNTc5ODdhMzYwYmVkODJmZTg3NTZkY2QzZTBkZTU0MDZjY2ZlOTY1XQ0KPiAgICAgYnRy
-ZnNfc2NydWJfZGV2KzB4Mzk4LzB4ODEwIFtidHJmcyBlNTc5ODdhMzYwYmVkODJmZTg3NTZk
-Y2QzZTBkZTU0MDZjY2ZlOTY1XQ0KPiAgICAgYnRyZnNfaW9jdGwrMHg0YjkvMHgzMDIwIFti
-dHJmcyBlNTc5ODdhMzYwYmVkODJmZTg3NTZkY2QzZTBkZTU0MDZjY2ZlOTY1XQ0KPiAgICAg
-X194NjRfc3lzX2lvY3RsKzB4YmQvMHgxMDANCj4gICAgIGRvX3N5c2NhbGxfNjQrMHg1ZC8w
-eGUwDQo+ICAgICBlbnRyeV9TWVNDQUxMXzY0X2FmdGVyX2h3ZnJhbWUrMHg2My8weDZiDQo+
-ICAgIFJJUDogMDAzMzoweDdmNDdlNWUwOTUyYg0KPiANCj4gLSBDcmFzaCwgbW9zdGx5IGR1
-ZSB0byBhYm92ZSB1c2UtYWZ0ZXItZnJlZQ0KPiANCj4gW0NBVVNFXQ0KPiBUaGUgY29udmVy
-dGVkIGZzIGhhcyB0aGUgZm9sbG93aW5nIGRhdGEgY2h1bmsgbGF5b3V0Og0KPiANCj4gICAg
-ICBpdGVtIDIga2V5IChGSVJTVF9DSFVOS19UUkVFIENIVU5LX0lURU0gMjIxNDY1ODA0OCkg
-aXRlbW9mZiAxNjAyNSBpdGVtc2l6ZSA4MA0KPiAgICAgICAgICBsZW5ndGggODYwMTYgb3du
-ZXIgMiBzdHJpcGVfbGVuIDY1NTM2IHR5cGUgREFUQXxzaW5nbGUNCj4gDQo+IEZvciBhYm92
-ZSBsb2dpY2FsIGJ5dGVuciAyMjE0NzQ0MDY0LCBpdCdzIGF0IHRoZSBjaHVuayBlbmQNCj4g
-KDIyMTQ2NTgwNDggKyA4NjAxNiA9IDIyMTQ3NDQwNjQpLg0KPiANCj4gVGhpcyBtZWFucyBi
-dHJmc19zdWJtaXRfYmlvKCkgd291bGQgc3BsaXQgdGhlIGJpbywgYW5kIHRyaWdnZXIgZW5k
-aW8NCj4gZnVuY3Rpb24gZm9yIGJvdGggb2YgdGhlIHR3byBoYWx2ZXMuDQo+IA0KPiBIb3dl
-dmVyIHNjcnViX3N1Ym1pdF9pbml0aWFsX3JlYWQoKSB3b3VsZCBvbmx5IGV4cGVjdCB0aGUg
-ZW5kaW8gZnVuY3Rpb24NCj4gdG8gYmUgY2FsbGVkIG9uY2UsIG5vdCBhbnkgbW9yZS4NCj4g
-VGhpcyBtZWFucyB0aGUgZmlyc3QgZW5kaW8gZnVuY3Rpb24gd291bGQgYWxyZWFkeSBmcmVl
-IHRoZSBiYmlvOjpiaW8sDQo+IGxlYXZpbmcgdGhlIGJ2ZWMgZnJlZWQsIHRodXMgdGhlIDJu
-ZCBlbmRpbyBjYWxsIHdvdWxkIGxlYWQgdG8NCj4gdXNlLWFmdGVyLWZyZWUuDQo+IA0KPiBb
-RklYXQ0KPiAtIE1ha2Ugc3VyZSBzY3J1Yl9yZWFkX2VuZGlvKCkgb25seSB1cGRhdGVzIGJp
-dHMgaW4gaXRzIHJhbmdlDQo+ICAgIFNpbmNlIHdlIG1heSByZWFkIGxlc3MgdGhhbiA2NEsg
-YXQgdGhlIGVuZCBvZiB0aGUgY2h1bmssIHdlIHNob3VsZCBub3QNCj4gICAgdG91Y2ggdGhl
-IGJpdHMgYmV5b25kIGNodW5rIGJvdW5kYXJ5Lg0KPiANCj4gLSBNYWtlIHN1cmUgc2NydWJf
-c3VibWl0X2luaXRpYWxfcmVhZCgpIG9ubHkgdG8gcmVhZCB0aGUgY2h1bmsgcmFuZ2UNCj4g
-ICAgVGhpcyBpcyBkb25lIGJ5IGNhbGN1bGF0aW5nIHRoZSByZWFsIG51bWJlciBvZiBzZWN0
-b3JzIHdlIG5lZWQgdG8NCj4gICAgcmVhZCwgYW5kIGFkZCBzZWN0b3ItYnktc2VjdG9yIHRv
-IHRoZSBiaW8uDQo+IA0KPiBUaGFua2Z1bGx5IHRoZSBzY3J1YiByZWFkIHJlcGFpciBwYXRo
-IHdvbid0IG5lZWQgZXh0cmEgZml4ZXM6DQo+IA0KPiAtIHNjcnViX3N0cmlwZV9zdWJtaXRf
-cmVwYWlyX3JlYWQoKQ0KPiAgICBXaXRoIGFib3ZlIGZpeGVzLCB3ZSB3b24ndCB1cGRhdGUg
-ZXJyb3IgYml0IGZvciByYW5nZSBiZXlvbmQgY2h1bmssDQo+ICAgIHRodXMgc2NydWJfc3Ry
-aXBlX3N1Ym1pdF9yZXBhaXJfcmVhZCgpIHNob3VsZCBuZXZlciBzdWJtaXQgYW55IHJlYWQN
-Cj4gICAgYmV5b25kIHRoZSBjaHVuay4NCj4gDQo+IFJlcG9ydGVkLWJ5OiBSb25ncm9uZyA8
-aUByb25nLm1vZT4NCj4gRml4ZXM6IGUwMmVlODliYWE2NiAoImJ0cmZzOiBzY3J1Yjogc3dp
-dGNoIHNjcnViX3NpbXBsZV9taXJyb3IoKSB0byBzY3J1Yl9zdHJpcGUgaW5mcmFzdHJ1Y3R1
-cmUiKQ0KPiBUZXN0ZWQtYnk6IFJvbmdyb25nIDxpQHJvbmcubW9lPg0KPiBSZXZpZXdlZC1i
-eTogSm9oYW5uZXMgVGh1bXNoaXJuIDxqb2hhbm5lcy50aHVtc2hpcm5Ad2RjLmNvbT4NCj4g
-U2lnbmVkLW9mZi1ieTogUXUgV2VucnVvIDx3cXVAc3VzZS5jb20+DQo+IFNpZ25lZC1vZmYt
-Ynk6IERhdmlkIFN0ZXJiYSA8ZHN0ZXJiYUBzdXNlLmNvbT4NCj4gDQo+IGRpZmYgLS1naXQg
-YS9mcy9idHJmcy9zY3J1Yi5jIGIvZnMvYnRyZnMvc2NydWIuYw0KPiBpbmRleCBhMDE4MDdj
-YmQ0ZDQuLjJkODFiMWExOGEwNCAxMDA2NDQNCj4gLS0tIGEvZnMvYnRyZnMvc2NydWIuYw0K
-PiArKysgYi9mcy9idHJmcy9zY3J1Yi5jDQo+IEBAIC0xMDk4LDEyICsxMDk4LDIyIEBAIHN0
-YXRpYyB2b2lkIHNjcnViX3N0cmlwZV9yZWFkX3JlcGFpcl93b3JrZXIoc3RydWN0IHdvcmtf
-c3RydWN0ICp3b3JrKQ0KPiAgIHN0YXRpYyB2b2lkIHNjcnViX3JlYWRfZW5kaW8oc3RydWN0
-IGJ0cmZzX2JpbyAqYmJpbykNCj4gICB7DQo+ICAgCXN0cnVjdCBzY3J1Yl9zdHJpcGUgKnN0
-cmlwZSA9IGJiaW8tPnByaXZhdGU7DQo+ICsJc3RydWN0IGJpb192ZWMgKmJ2ZWM7DQo+ICsJ
-aW50IHNlY3Rvcl9uciA9IGNhbGNfc2VjdG9yX251bWJlcihzdHJpcGUsIGJpb19maXJzdF9i
-dmVjX2FsbCgmYmJpby0+YmlvKSk7DQo+ICsJaW50IG51bV9zZWN0b3JzOw0KPiArCXUzMiBi
-aW9fc2l6ZSA9IDA7DQo+ICsJaW50IGk7DQo+ICsNCj4gKwlBU1NFUlQoc2VjdG9yX25yIDwg
-c3RyaXBlLT5ucl9zZWN0b3JzKTsNCj4gKwliaW9fZm9yX2VhY2hfYnZlY19hbGwoYnZlYywg
-JmJiaW8tPmJpbywgaSkNCj4gKwkJYmlvX3NpemUgKz0gYnZlYy0+YnZfbGVuOw0KPiArCW51
-bV9zZWN0b3JzID0gYmlvX3NpemUgPj4gc3RyaXBlLT5iZy0+ZnNfaW5mby0+c2VjdG9yc2l6
-ZV9iaXRzOw0KPiAgIA0KPiAgIAlpZiAoYmJpby0+YmlvLmJpX3N0YXR1cykgew0KPiAtCQli
-aXRtYXBfc2V0KCZzdHJpcGUtPmlvX2Vycm9yX2JpdG1hcCwgMCwgc3RyaXBlLT5ucl9zZWN0
-b3JzKTsNCj4gLQkJYml0bWFwX3NldCgmc3RyaXBlLT5lcnJvcl9iaXRtYXAsIDAsIHN0cmlw
-ZS0+bnJfc2VjdG9ycyk7DQo+ICsJCWJpdG1hcF9zZXQoJnN0cmlwZS0+aW9fZXJyb3JfYml0
-bWFwLCBzZWN0b3JfbnIsIG51bV9zZWN0b3JzKTsNCj4gKwkJYml0bWFwX3NldCgmc3RyaXBl
-LT5lcnJvcl9iaXRtYXAsIHNlY3Rvcl9uciwgbnVtX3NlY3RvcnMpOw0KPiAgIAl9IGVsc2Ug
-ew0KPiAtCQliaXRtYXBfY2xlYXIoJnN0cmlwZS0+aW9fZXJyb3JfYml0bWFwLCAwLCBzdHJp
-cGUtPm5yX3NlY3RvcnMpOw0KPiArCQliaXRtYXBfY2xlYXIoJnN0cmlwZS0+aW9fZXJyb3Jf
-Yml0bWFwLCBzZWN0b3JfbnIsIG51bV9zZWN0b3JzKTsNCj4gICAJfQ0KPiAgIAliaW9fcHV0
-KCZiYmlvLT5iaW8pOw0KPiAgIAlpZiAoYXRvbWljX2RlY19hbmRfdGVzdCgmc3RyaXBlLT5w
-ZW5kaW5nX2lvKSkgew0KPiBAQCAtMTcwMSw2ICsxNzExLDkgQEAgc3RhdGljIHZvaWQgc2Ny
-dWJfc3VibWl0X2luaXRpYWxfcmVhZChzdHJ1Y3Qgc2NydWJfY3R4ICpzY3R4LA0KPiAgIHsN
-Cj4gICAJc3RydWN0IGJ0cmZzX2ZzX2luZm8gKmZzX2luZm8gPSBzY3R4LT5mc19pbmZvOw0K
-PiAgIAlzdHJ1Y3QgYnRyZnNfYmlvICpiYmlvOw0KPiArCXVuc2lnbmVkIGludCBucl9zZWN0
-b3JzID0gbWluKEJUUkZTX1NUUklQRV9MRU4sIHN0cmlwZS0+YmctPnN0YXJ0ICsNCj4gKwkJ
-CQkgICAgICBzdHJpcGUtPmJnLT5sZW5ndGggLSBzdHJpcGUtPmxvZ2ljYWwpID4+DQo+ICsJ
-CQkJICBmc19pbmZvLT5zZWN0b3JzaXplX2JpdHM7DQo+ICAgCWludCBtaXJyb3IgPSBzdHJp
-cGUtPm1pcnJvcl9udW07DQo+ICAgDQo+ICAgCUFTU0VSVChzdHJpcGUtPmJnKTsNCj4gQEAg
-LTE3MTUsMTQgKzE3MjgsMTYgQEAgc3RhdGljIHZvaWQgc2NydWJfc3VibWl0X2luaXRpYWxf
-cmVhZChzdHJ1Y3Qgc2NydWJfY3R4ICpzY3R4LA0KPiAgIAliYmlvID0gYnRyZnNfYmlvX2Fs
-bG9jKFNDUlVCX1NUUklQRV9QQUdFUywgUkVRX09QX1JFQUQsIGZzX2luZm8sDQo+ICAgCQkJ
-ICAgICAgIHNjcnViX3JlYWRfZW5kaW8sIHN0cmlwZSk7DQo+ICAgDQo+IC0JLyogUmVhZCB0
-aGUgd2hvbGUgc3RyaXBlLiAqLw0KPiAgIAliYmlvLT5iaW8uYmlfaXRlci5iaV9zZWN0b3Ig
-PSBzdHJpcGUtPmxvZ2ljYWwgPj4gU0VDVE9SX1NISUZUOw0KPiAtCWZvciAoaW50IGkgPSAw
-OyBpIDwgQlRSRlNfU1RSSVBFX0xFTiA+PiBQQUdFX1NISUZUOyBpKyspIHsNCj4gKwkvKiBS
-ZWFkIHRoZSB3aG9sZSByYW5nZSBpbnNpZGUgdGhlIGNodW5rIGJvdW5kYXJ5LiAqLw0KPiAr
-CWZvciAodW5zaWduZWQgaW50IGN1ciA9IDA7IGN1ciA8IG5yX3NlY3RvcnM7IGN1cisrKSB7
-DQo+ICsJCXN0cnVjdCBwYWdlICpwYWdlID0gc2NydWJfc3RyaXBlX2dldF9wYWdlKHN0cmlw
-ZSwgY3VyKTsNCj4gKwkJdW5zaWduZWQgaW50IHBnb2ZmID0gc2NydWJfc3RyaXBlX2dldF9w
-YWdlX29mZnNldChzdHJpcGUsIGN1cik7DQo+ICAgCQlpbnQgcmV0Ow0KPiAgIA0KPiAtCQly
-ZXQgPSBiaW9fYWRkX3BhZ2UoJmJiaW8tPmJpbywgc3RyaXBlLT5wYWdlc1tpXSwgUEFHRV9T
-SVpFLCAwKTsNCj4gKwkJcmV0ID0gYmlvX2FkZF9wYWdlKCZiYmlvLT5iaW8sIHBhZ2UsIGZz
-X2luZm8tPnNlY3RvcnNpemUsIHBnb2ZmKTsNCj4gICAJCS8qIFdlIHNob3VsZCBoYXZlIGFs
-bG9jYXRlZCBlbm91Z2ggYmlvIHZlY3RvcnMuICovDQo+IC0JCUFTU0VSVChyZXQgPT0gUEFH
-RV9TSVpFKTsNCj4gKwkJQVNTRVJUKHJldCA9PSBmc19pbmZvLT5zZWN0b3JzaXplKTsNCj4g
-ICAJfQ0KPiAgIAlhdG9taWNfaW5jKCZzdHJpcGUtPnBlbmRpbmdfaW8pOw0KPiAgIA0KPiAN
-Cg==
---------------Epqge6f7rFY2VvIqY6k0WlqI
-Content-Type: application/pgp-keys; name="OpenPGP_0xC23D91F3A125FEA8.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xC23D91F3A125FEA8.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+  This would lead to unrepariable errors.
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+- Use-after-free KASAN reports:
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in __blk_rq_map_sg+0x18f/0x7c0
+  Read of size 8 at addr ffff8881013c9040 by task btrfs/909
+  CPU: 0 PID: 909 Comm: btrfs Not tainted 6.7.0-x64v3-dbg #11 c50636e9419a8354555555245df535e380563b2b
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 2023.11-2 12/24/2023
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x43/0x60
+   print_report+0xcf/0x640
+   kasan_report+0xa6/0xd0
+   __blk_rq_map_sg+0x18f/0x7c0
+   virtblk_prep_rq.isra.0+0x215/0x6a0 [virtio_blk 19a65eeee9ae6fcf02edfad39bb9ddee07dcdaff]
+   virtio_queue_rqs+0xc4/0x310 [virtio_blk 19a65eeee9ae6fcf02edfad39bb9ddee07dcdaff]
+   blk_mq_flush_plug_list.part.0+0x780/0x860
+   __blk_flush_plug+0x1ba/0x220
+   blk_finish_plug+0x3b/0x60
+   submit_initial_group_read+0x10a/0x290 [btrfs e57987a360bed82fe8756dcd3e0de5406ccfe965]
+   flush_scrub_stripes+0x38e/0x430 [btrfs e57987a360bed82fe8756dcd3e0de5406ccfe965]
+   scrub_stripe+0x82a/0xae0 [btrfs e57987a360bed82fe8756dcd3e0de5406ccfe965]
+   scrub_chunk+0x178/0x200 [btrfs e57987a360bed82fe8756dcd3e0de5406ccfe965]
+   scrub_enumerate_chunks+0x4bc/0xa30 [btrfs e57987a360bed82fe8756dcd3e0de5406ccfe965]
+   btrfs_scrub_dev+0x398/0x810 [btrfs e57987a360bed82fe8756dcd3e0de5406ccfe965]
+   btrfs_ioctl+0x4b9/0x3020 [btrfs e57987a360bed82fe8756dcd3e0de5406ccfe965]
+   __x64_sys_ioctl+0xbd/0x100
+   do_syscall_64+0x5d/0xe0
+   entry_SYSCALL_64_after_hwframe+0x63/0x6b
+  RIP: 0033:0x7f47e5e0952b
 
-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
-SBugJZ66ww=3D=3D
-=3D/5yp
------END PGP PUBLIC KEY BLOCK-----
+- Crash, mostly due to above use-after-free
 
---------------Epqge6f7rFY2VvIqY6k0WlqI--
+[CAUSE]
+The converted fs has the following data chunk layout:
 
---------------M5fi00URbnCkjPLky9NjXwqK--
+    item 2 key (FIRST_CHUNK_TREE CHUNK_ITEM 2214658048) itemoff 16025 itemsize 80
+        length 86016 owner 2 stripe_len 65536 type DATA|single
 
---------------vR8j0Njmcy3FrBgzYcOwOQ5d
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+For above logical bytenr 2214744064, it's at the chunk end
+(2214658048 + 86016 = 2214744064).
 
------BEGIN PGP SIGNATURE-----
+This means btrfs_submit_bio() would split the bio, and trigger endio
+function for both of the two halves.
 
-wsB5BAABCAAjFiEELd9y5aWlW6idqkLhwj2R86El/qgFAmW1bg8FAwAAAAAACgkQwj2R86El/qiY
-Jgf/S4Z1jz5xe1C0hG2nW2SkTBQJLo2tgtXyS/ijWO8hC5GQSZpPZnuvIhTwjRp8uTbmQgBnNsHF
-GtJxj+wVs+ZsDUdbaw+2CkZ5ad7Io/wxivviLYhZSSemTgRf4WboicvsQg/ElSGnbP3BWKGLeuYE
-o7Z5bn4FMbPDQ/SrUyDS6WIPdHquTmZ3uo2x+4dIXk1NgU67g+7SxBgf+hPT+INcDgew2Gkghz8K
-AMa2s6hmTkYEXWwSNb/NWGaYH/drI9jOpM/sFpwRrqi+Va2MsqMlkyfxES25AjyEr5tvxD1oOSpk
-FNNF+cvGgo/2oW4rMQcfZJgle92YnJ837SYI5TczvQ==
-=t9MY
------END PGP SIGNATURE-----
+However scrub_submit_initial_read() would only expect the endio function
+to be called once, not any more.
+This means the first endio function would already free the bbio::bio,
+leaving the bvec freed, thus the 2nd endio call would lead to
+use-after-free.
 
---------------vR8j0Njmcy3FrBgzYcOwOQ5d--
+[FIX]
+- Make sure scrub_read_endio() only updates bits in its range
+  Since we may read less than 64K at the end of the chunk, we should not
+  touch the bits beyond chunk boundary.
+
+- Make sure scrub_submit_initial_read() only to read the chunk range
+  This is done by calculating the real number of sectors we need to
+  read, and add sector-by-sector to the bio.
+
+Thankfully the scrub read repair path won't need extra fixes:
+
+- scrub_stripe_submit_repair_read()
+  With above fixes, we won't update error bit for range beyond chunk,
+  thus scrub_stripe_submit_repair_read() should never submit any read
+  beyond the chunk.
+
+Reported-by: Rongrong <i@rong.moe>
+Fixes: e02ee89baa66 ("btrfs: scrub: switch scrub_simple_mirror() to scrub_stripe infrastructure")
+Tested-by: Rongrong <i@rong.moe>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ Use min_t() to fix a compiling error due to difference types ]
+(cherry picked from commit f546c4282673497a06ecb6190b50ae7f6c85b02f)
+---
+ fs/btrfs/scrub.c | 29 ++++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 7 deletions(-)
+
+diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
+index 4445a52a0707..1e3ff87d0447 100644
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -1099,12 +1099,22 @@ static void scrub_stripe_read_repair_worker(struct work_struct *work)
+ static void scrub_read_endio(struct btrfs_bio *bbio)
+ {
+ 	struct scrub_stripe *stripe = bbio->private;
++	struct bio_vec *bvec;
++	int sector_nr = calc_sector_number(stripe, bio_first_bvec_all(&bbio->bio));
++	int num_sectors;
++	u32 bio_size = 0;
++	int i;
++
++	ASSERT(sector_nr < stripe->nr_sectors);
++	bio_for_each_bvec_all(bvec, &bbio->bio, i)
++		bio_size += bvec->bv_len;
++	num_sectors = bio_size >> stripe->bg->fs_info->sectorsize_bits;
+ 
+ 	if (bbio->bio.bi_status) {
+-		bitmap_set(&stripe->io_error_bitmap, 0, stripe->nr_sectors);
+-		bitmap_set(&stripe->error_bitmap, 0, stripe->nr_sectors);
++		bitmap_set(&stripe->io_error_bitmap, sector_nr, num_sectors);
++		bitmap_set(&stripe->error_bitmap, sector_nr, num_sectors);
+ 	} else {
+-		bitmap_clear(&stripe->io_error_bitmap, 0, stripe->nr_sectors);
++		bitmap_clear(&stripe->io_error_bitmap, sector_nr, num_sectors);
+ 	}
+ 	bio_put(&bbio->bio);
+ 	if (atomic_dec_and_test(&stripe->pending_io)) {
+@@ -1640,6 +1650,9 @@ static void scrub_submit_initial_read(struct scrub_ctx *sctx,
+ {
+ 	struct btrfs_fs_info *fs_info = sctx->fs_info;
+ 	struct btrfs_bio *bbio;
++	unsigned int nr_sectors = min_t(u64, BTRFS_STRIPE_LEN, stripe->bg->start +
++				      stripe->bg->length - stripe->logical) >>
++				  fs_info->sectorsize_bits;
+ 	int mirror = stripe->mirror_num;
+ 
+ 	ASSERT(stripe->bg);
+@@ -1649,14 +1662,16 @@ static void scrub_submit_initial_read(struct scrub_ctx *sctx,
+ 	bbio = btrfs_bio_alloc(SCRUB_STRIPE_PAGES, REQ_OP_READ, fs_info,
+ 			       scrub_read_endio, stripe);
+ 
+-	/* Read the whole stripe. */
+ 	bbio->bio.bi_iter.bi_sector = stripe->logical >> SECTOR_SHIFT;
+-	for (int i = 0; i < BTRFS_STRIPE_LEN >> PAGE_SHIFT; i++) {
++	/* Read the whole range inside the chunk boundary. */
++	for (unsigned int cur = 0; cur < nr_sectors; cur++) {
++		struct page *page = scrub_stripe_get_page(stripe, cur);
++		unsigned int pgoff = scrub_stripe_get_page_offset(stripe, cur);
+ 		int ret;
+ 
+-		ret = bio_add_page(&bbio->bio, stripe->pages[i], PAGE_SIZE, 0);
++		ret = bio_add_page(&bbio->bio, page, fs_info->sectorsize, pgoff);
+ 		/* We should have allocated enough bio vectors. */
+-		ASSERT(ret == PAGE_SIZE);
++		ASSERT(ret == fs_info->sectorsize);
+ 	}
+ 	atomic_inc(&stripe->pending_io);
+ 
+-- 
+2.43.0
+
 
