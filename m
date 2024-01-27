@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E8983F180
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:09:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0644883F181
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:09:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7A5B1F21779
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFC2C282EA9
 	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C7A1F95B;
-	Sat, 27 Jan 2024 23:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5A8200AC;
+	Sat, 27 Jan 2024 23:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+kiI6iN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+FJpXtT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE1D1F946
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31943200A4
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706396980; cv=none; b=EAi/D9gwhP+AB796b1ZJ2qkn9SYbIesKBVx5y9zLy+uWZWE7y51u1t2+S09Cq0aAWwRzCUuXsDxFurC+BLe/TZ0cftn8GhgkJgZu3x45zYjCOzGLUwMk2ltgo1AFj7d5FOWRDAOocEpQ4pm50PyveRjGiHEb2/jhL2ebse+1SJ8=
+	t=1706396983; cv=none; b=m5oQVUB3fAO+Jfvh4JwLDrknVs4xyCjRhJnKECQ9hiSIkMApocs9Y3gUMuPALX/UddsHNZgoFsWn9zNBuIhYJs3waTodpago71QNhaRDTDXjKtgvWIQg/CGDnrXi0GdYvylHfowt6wFYl1R0LkarunBaaFvhJlSimcRYPITcTzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706396980; c=relaxed/simple;
-	bh=5x6QBtZxoQRIlvI1C6RW78LmaniGM6RzEobLETZQR0k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CGUMvB6VuZjPOBYXlYTCGY7IHP+aEUGhyL/EAUh2n5u8NEf8RfeqitAlnoKlnovECAi+he6blM/FaVlcccci+gvujj567THJ6ShU49HomiANvnBKe5o4QPuS32WMkI1FYTuuoKt0dDCOQ3YgSwR46V4bkKV8DtnpPHqSWHXClQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+kiI6iN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86EAFC43390;
-	Sat, 27 Jan 2024 23:09:40 +0000 (UTC)
+	s=arc-20240116; t=1706396983; c=relaxed/simple;
+	bh=lTKpCJ+n1Wzl8sG3AASuKXc/j+U1/w+YeyzCMf4SXys=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Sd1sLAii+DO5F5/b6nGuI91db1a7FnlgMKyRtMvkQf4Rfon+V79iAb0RAhivshzryKo9SyYG8WX3cHFdT2nD82gWwEHYnrUit1YU5ljR6zSbssNPffxQsZl8PZN2IYCLKZL4gsRwWvTmCDaQ/LL1UIe9awroA6OXrdFdsbBieIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+FJpXtT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996BFC43390;
+	Sat, 27 Jan 2024 23:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706396980;
-	bh=5x6QBtZxoQRIlvI1C6RW78LmaniGM6RzEobLETZQR0k=;
+	s=korg; t=1706396982;
+	bh=lTKpCJ+n1Wzl8sG3AASuKXc/j+U1/w+YeyzCMf4SXys=;
 	h=Subject:To:Cc:From:Date:From;
-	b=J+kiI6iNZirrlgn8lqucBhwvLYRRhvnDA1xGAY6RmMRF2MImCv4uF74DJr8kI9t2e
-	 CMPfvcU3F65ouKeyACp4uYniz2pB1cRZXHrgQixFMSTTk1Lv8ZnjabmkRvWWnrITrk
-	 DTrWK5X6nG+WMw5r7Xs1zRvRxXZMPd1IASXzCe4M=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Refactor DMCUB enter/exit idle interface" failed to apply to 6.7-stable tree
+	b=W+FJpXtTqhUxu9dqfr/rcA87xUZk7MGWFfjcZzd424hOcMBlcewNqzCSBKaQ0tQQS
+	 XCgVVmyHSJT4iNOFydeW+HEZX+BDAy9W4l2vVIHs+y6Vrf2wHM2JCDDi03hnc/v8dh
+	 w4QW+O5XTVqWTDnkYsJKkXSNtXlje//Mbdks4X88=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Refactor DMCUB enter/exit idle interface" failed to apply to 6.6-stable tree
 To: nicholas.kazlauskas@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,hansen.dsouza@amd.com,mario.limonciello@amd.com,wayne.lin@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 15:09:39 -0800
-Message-ID: <2024012739-laziness-vacate-a43d@gregkh>
+Date: Sat, 27 Jan 2024 15:09:41 -0800
+Message-ID: <2024012741-aeration-lushly-16d2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.7-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8e57c06bf4b0f51a4d6958e15e1a99c9520d00fa
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012739-laziness-vacate-a43d@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012741-aeration-lushly-16d2@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 8e57c06bf4b0 ("drm/amd/display: Refactor DMCUB enter/exit idle interface")
 0f657938e434 ("drm/amd/display: do not send commands to DMUB if DMUB is inactive from S3")
+1ffa8602e39b ("drm/amd/display: Guard against invalid RPTR/WPTR being set")
+b63eae94d28c ("drm/amd/display: clean up some inconsistent indenting")
+10406abe036b ("drm/amd/display: make dc_set_power_state() return type `void` again")
+1ca965719b5b ("drm/amd/display: Change dc_set_power_state() to bool instead of int")
+7441ef0b3ebe ("drm/amd: Propagate failures in dc_set_power_state()")
+1288d7020809 ("drm/amd/display: Improve x86 and dmub ips handshake")
+c0f8b83188c7 ("drm/amd/display: disable IPS")
+93a66cef607c ("drm/amd/display: Add IPS control flag")
+dc01c4b79bfe ("drm/amd/display: Update driver and IPS interop")
+06b1661e45b4 ("drm/amd/display: Add DCN35 DM Support")
+0fa45b6aeae4 ("drm/amd/display: Add DCN35 Resource")
+ec129fa356be ("drm/amd/display: Add DCN35 init")
+65138eb72e1f ("drm/amd/display: Add DCN35 DMUB")
+8774029f76b9 ("drm/amd/display: Add DCN35 CLK_MGR")
+6f8b7565cca4 ("drm/amd/display: Add DCN35 HWSEQ")
+920f879c8360 ("drm/amd/display: Add DCN35 PG_CNTL")
+fb8c3ef80584 ("drm/amd/display: Update dc.h for DCN35 support")
+5e77c339a291 ("drm/amd/display: Skip dmub memory flush when not needed")
 
 thanks,
 
