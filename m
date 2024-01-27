@@ -1,119 +1,110 @@
-Return-Path: <stable+bounces-16070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A82E83EC0B
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 09:31:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 379DF83EC33
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 10:03:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB6E2B21D44
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 08:31:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E02691F227BD
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 09:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F95711CA9;
-	Sat, 27 Jan 2024 08:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CE11E86C;
+	Sat, 27 Jan 2024 09:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="18TQg4Vn";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="K28Qz48W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mVHa/WHN"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFE51DDEE;
-	Sat, 27 Jan 2024 08:31:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4757017FD;
+	Sat, 27 Jan 2024 09:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706344280; cv=none; b=a9H1XxjhjP7BKV1tXz++1J63XLe7xHDZa8YxnZTDDtZux6fqbTk+7isDVivjlbqSYzwL0jReSRH62MleEWI+yNAZQcjrw4K/wmHDN7N1kAPujOO4NaR4hvA8PLcg0xG/bKsApTrEAnS0OaPL+CM//wpqxkTc3tMK1g6Sm6agzw4=
+	t=1706346193; cv=none; b=gzs1FM2Kvayhb7T4fBUfCZcbg/WR2MGjFwGV8T9LKndxiN/VA0HeE5azzRwvUeNqvsF5MSS5XUYM8yWNDFCgy2TDWRzHDZMf8TpNRbXhwQdZLbPPLqqP0oDPrQDiF/Emk9SqP9SJscNdoCfQMz0jg9Yn8of6kHA22tBktNSji4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706344280; c=relaxed/simple;
-	bh=3y97SIJ5xBgVxKMWNJIJ4rLGMAWGOZ3UhyjMU+C2pOU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zwc7v2ch8b4voG5mEAw1pUYckhGXXhMfIn5QvV86itIoaLigTw9/TdQHZ4TWgi6JZH/HFtylbM3dJok3YppQFNJ5zBU3TgaPloPBgKhVkn55EiDG6/LsAJXg5T3vS7as87mhUhfX14r2nZSsusPm0ZSyKLw1sKg2wAo7GKt/nNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=18TQg4Vn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=K28Qz48W; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 27 Jan 2024 09:31:14 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706344276;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3I7OJx5NKf289xrERaDLT1wF8RTcX1Wk/OCiBAc6Gtk=;
-	b=18TQg4VnhdAfpujoCis6XXFumAyQY/XA4yICkWbb8vFFLH1DAB1sUTpd8YxIZiAbHbedvo
-	e21QAAwnfmPI6/9+CAm/Xn9JCufaTiu0L0Ob10PBY4smQ6xRQMUIY9YQhbbpZsXsHLG2mD
-	ca1lTz46zkXyMOKoTEhpyR1YGxqPy9Czcp3e9eFiXHvevjuuA11qI62KsROng/er8ga+VP
-	y5H/7VcGB4LMPq4oEEl8Ji0lE0ysdaJecx0NXX4yiOXXMpxm+kUJv51CJ7q8fEAafZpM1Z
-	VMsSktzNAQA4BD4tEtoscvEnEDiIqUadyL/Y1z6d0xQ7C0pGKWKX8yD+0/y2Lw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706344276;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3I7OJx5NKf289xrERaDLT1wF8RTcX1Wk/OCiBAc6Gtk=;
-	b=K28Qz48WNcKWSyoQpS/7SybGS3TJtuhaR0/z7bCQ1I/ZdbIBYQJeoXyRKLl4neQzlsKB+H
-	GmpthLsy0/QJZ5Dw==
-From: Nam Cao <namcao@linutronix.de>
-To: Samuel Holland <samuel.holland@sifive.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Palmer Dabbelt
- <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Samuel
- Holland <samuel@sholland.org>, Marc Zyngier <maz@kernel.org>,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, Guo Ren
- <guoren@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] irqchip/sifive-plic: enable interrupt if needed before
- EOI
-Message-ID: <20240127093114.15fdfa5c@namcao>
-In-Reply-To: <071142d9-3644-4c62-a99d-40b55bf64406@sifive.com>
-References: <20240126223836.202321-1-namcao@linutronix.de>
-	<071142d9-3644-4c62-a99d-40b55bf64406@sifive.com>
+	s=arc-20240116; t=1706346193; c=relaxed/simple;
+	bh=3CEC9+s/RgV3W453q4JCCo7clahZ+kguMoxyN5D2wY4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UrGfopSfgC+94ZOP82gwnyZxjUay4UG3Vebo/J3BD9p17hjSccKgQYb5dGdCH2Wt9dlnPNKZoZcTWeUKkqpqb+i9UO8BqklcmqxSNaY5qODnHLI89+wUzB4Ke5pXO72M8UukzGuoS7RAq7LNQ71mununreW/Rf95uYyOJLyB2/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mVHa/WHN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BD3C433C7;
+	Sat, 27 Jan 2024 09:03:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706346192;
+	bh=3CEC9+s/RgV3W453q4JCCo7clahZ+kguMoxyN5D2wY4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mVHa/WHNCuTpM+sFtsfuqn5gAIFVBhVSGCWQh0dAYjNRAKKYFiWAck8Phpf1076cx
+	 +FY+5nM+daqdHFi39v9JU6iAKmKKPheUYi/YPOP1NLRGTUJVV1+R25ZYZgOdSeYvly
+	 snfv46B3E69rNby/TgxZNxhcc4w+cC+nCii/gUGB/AReNjw6niP1tU88VU6B2ZUKR/
+	 MI2+XIk4JMWw4Eav7Lct+D+FEEVBMffYhSUmuy7GSiBDcRAfAimiUiWUpUuvMDdzsV
+	 emOLwwqOOa4vcyUbaG2AH5WWp1okWyeSVhqHlSlque+bHV2xLknpNLllSzkUsvwbe3
+	 jixcBqLEcYxfw==
+Date: Sat, 27 Jan 2024 01:03:10 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+	masahiroy@kernel.org, nicolas@fjasle.eu, andy.chiu@sifive.com,
+	conor.dooley@microchip.com, linux-riscv@lists.infradead.org,
+	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev,
+	patches@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH 0/2] RISC-V: Fix CONFIG_AS_HAS_OPTION_ARCH with tip of
+ tree LLVM
+Message-ID: <20240127090310.GF11935@sol.localdomain>
+References: <20240125-fix-riscv-option-arch-llvm-18-v1-0-390ac9cc3cd0@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240125-fix-riscv-option-arch-llvm-18-v1-0-390ac9cc3cd0@kernel.org>
 
-On Fri, 26 Jan 2024 18:31:19 -0600 Samuel Holland <samuel.holland@sifive.com> wrote:
-> On 2024-01-26 4:38 PM, Nam Cao wrote:
-> > RISC-V PLIC cannot EOI disabled interrupts, as explained in the
-> > description of Interrupt Completion in the PLIC spec:
-> > 
-> > "The PLIC signals it has completed executing an interrupt handler by
-> > writing the interrupt ID it received from the claim to the claim/complete
-> > register. The PLIC does not check whether the completion ID is the same
-> > as the last claim ID for that target. If the completion ID does not match
-> > an interrupt source that *is currently enabled* for the target, the
-> > completion is silently ignored."
-> > 
-> > Commit 69ea463021be ("irqchip/sifive-plic: Fixup EOI failed when masked")
-> > ensured that by enabling the interrupt if needed before EOI.
-> > 
-> > Commit a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask
-> > operations") removed the interrupt enabling code from the previous
-> > commit, because it assumes that interrupt should be enabled at the point
-> > of EOI. However, this is incorrect: there is a small window after a hart
-> > claiming an interrupt and before irq_desc->lock getting acquired,
-> > interrupt can be disabled during this window. Thus, EOI can be invoked
-> > while the interrupt is disabled, effectively nullify this EOI.
-> > 
-> > Make sure that interrupt is really enabled before EOI.  
+On Thu, Jan 25, 2024 at 10:32:10AM -0700, Nathan Chancellor wrote:
+> Hi all,
 > 
-> Could you please try the patch I previously sent for this issue[1]?
+> Eric reported that builds of LLVM with [1] (close to tip of tree) have
+> CONFIG_AS_HAS_OPTION_ARCH=n because the test for expected failure on
+> invalid input has started succeeding.
+> 
+> This Kconfig test was added because '.option arch' only causes an
+> assembler warning when it is unsupported, rather than a hard error,
+> which is what users of as-instr expect when something is unsupported.
+> 
+> This can be resolved by turning assembler warnings into errors with
+> '-Wa,--fatal-warnings' like we do with the compiler with '-Werror',
+> which is what the first patch does. The second patch removes the invalid
+> test, as the valid test is good enough with fatal warnings.
+> 
+> I have diffed several configurations for the different architectures
+> that use as-instr and I have found no issues.
+> 
+> I think this could go in through either the kbuild or RISC-V tree with
+> sufficient acks but I will let them fight over who takes it :)
+> 
+> [1]: https://github.com/llvm/llvm-project/commit/3ac9fe69f70a2b3541266daedbaaa7dc9c007a2a
+> 
+> ---
+> Nathan Chancellor (2):
+>       kbuild: Add -Wa,--fatal-warnings to as-instr invocation
+>       RISC-V: Drop invalid test from CONFIG_AS_HAS_OPTION_ARCH
+> 
+>  arch/riscv/Kconfig        | 1 -
+>  scripts/Kconfig.include   | 2 +-
+>  scripts/Makefile.compiler | 2 +-
+>  3 files changed, 2 insertions(+), 3 deletions(-)
 
-Unfortunately my system still gets frozen with the patch applied :(
+Looks good,
 
-I think because the patch doesn't prevent plic_irq_shutdown() from getting
-called after the hart claiming the interrupt and before irq_desc is locked
-up.
+Tested-by: Eric Biggers <ebiggers@google.com>
 
-> It should fix the bug without complicating the IRQ hot path.
+Unfortunately another LLVM commit just broke TOOLCHAIN_HAS_VECTOR_CRYPTO, so
+I've sent out a patch to fix that too...
 
-I can add an unlikely() to help that a bit, because from my experience, it
-is quite rare that EOI happens with interrupt disabled.
+But with all the fixes applied it works again.
 
-Best regards,
-Nam
+- Eric
 
