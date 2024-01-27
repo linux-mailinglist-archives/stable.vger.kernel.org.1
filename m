@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10FB083F05E
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF5B83F05F
 	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:00:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D06B1F21EC0
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8732F283D90
 	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C6C1B7EE;
-	Sat, 27 Jan 2024 22:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1295175AE;
+	Sat, 27 Jan 2024 22:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVe5jCmi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VoIAE+a7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2584717BA3
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833C41B5B2
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706392810; cv=none; b=XmbQiR7ZTyevlEQ5rkO30x0m2IwggO+NQlXCA/yYP3b1DZ45IBTeA6eM7jY+NacAYFJb+M5OnuW4DhlJCOWfpNF5S4s6K1eYDU1VgiX+9ejaESbSMq/Wqv3OuvsPECgWIS+RtVU4ggOZcjap3ToFIqhSVWGxtClfY14uS4xZJfc=
+	t=1706392814; cv=none; b=o8Wzn9w8jihjHQ4hirY3AXoJ3nEumMahDEjAD14V0tbu/CTY5dLWudXFKShLwV9U/bCWGI9+OaXwdomSCiwhyqEu/AimGQgqeoayqfPIiUMRRfWaucS5zwV7gZW2SOqZXMq/Kp2faQ26BqDJ8NQk/zIHq2FUVBUV7CTj3Eo7EOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706392810; c=relaxed/simple;
-	bh=M6P1L6D5fjwD38UTJiTPsEng2oseVC1GPy9rulgr+CQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SVwrVhTFHSAfYK34+86g8ITPZxstkBvPnnzMnSf+GrRVSZPcNUC9n3vN3x6kj/CgXZFO6VvXGhnUfaS5Z9jf06/tHKCbVo0XqW3VK8EAozJRTIk/NR2WQp98v0EyD721ZI/c318qgfUYgqteY0vZ64xhcZJXWtQ88wDXk++sY4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVe5jCmi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89FDC433C7;
-	Sat, 27 Jan 2024 22:00:09 +0000 (UTC)
+	s=arc-20240116; t=1706392814; c=relaxed/simple;
+	bh=kkUBtIyTui10GzbtaKVMAx/m0J7gNwVJhmPyAVR2ZmU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eUHql9c9XSL14JC6f7h0QZExX6jGsH8DOkMTi9/sRO3xM/Jm50J71KuMMaEuiRTfcpJenjVk4Pn31e5xye441i1x72hys30jdhjcfagIuRfRUmAyuJM1drTht34eCLPltHP4sITb1Q94fcuBqJOca6M4jQWxK97UHc6Q6vCc8/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VoIAE+a7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61EEC43390;
+	Sat, 27 Jan 2024 22:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706392809;
-	bh=M6P1L6D5fjwD38UTJiTPsEng2oseVC1GPy9rulgr+CQ=;
+	s=korg; t=1706392814;
+	bh=kkUBtIyTui10GzbtaKVMAx/m0J7gNwVJhmPyAVR2ZmU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RVe5jCmii0UjBrq3s6J6f623n+703oneIfyLhO8/ewhq5xfG7YPDDtix1mZ3K+Rv9
-	 8FVTRKKHHNN+YAZLQY/nldeybRhxHvrdpfvRGI0QKTnumQeuNVKlmEFgK/z0IsdNct
-	 ETpTDNxYKwm0apv7CYrvSl1Zcy5JtVF7LglcjOlo=
-Subject: FAILED: patch "[PATCH] nfsd: fix RELEASE_LOCKOWNER" failed to apply to 5.4-stable tree
+	b=VoIAE+a7q7iSiflCGFka18ZHANIvjkMZe/zuZo7WksowgEZCXx2ZAlrkq9cu96NvX
+	 gnNC0VC2zRFWYHS3DHfZ7IV1d9CDnrTxEsJH0i57mYV52YElDU+BNNSQg3RXr37jAR
+	 zCTsQfzIE88uR/9AvdtSD73ALLqygLqQQBK8fbnY=
+Subject: FAILED: patch "[PATCH] nfsd: fix RELEASE_LOCKOWNER" failed to apply to 4.19-stable tree
 To: neilb@suse.de,chuck.lever@oracle.com,jlayton@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 14:00:08 -0800
-Message-ID: <2024012708-unease-remedy-8d5e@gregkh>
+Date: Sat, 27 Jan 2024 14:00:12 -0800
+Message-ID: <2024012712-spherical-huntsman-cd8b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x edcf9725150e42beeca42d085149f4c88fa97afd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012708-unease-remedy-8d5e@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012712-spherical-huntsman-cd8b@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,22 @@ edcf9725150e ("nfsd: fix RELEASE_LOCKOWNER")
 043862b09cc0 ("NFSD: Add documenting comment for nfsd4_release_lockowner()")
 bd8fdb6e545f ("NFSD: Modernize nfsd4_release_lockowner()")
 ce3c4ad7f4ce ("NFSD: Fix possible sleep during nfsd4_release_lockowner()")
+eb82dd393744 ("nfsd: convert fi_deleg_file and ls_file fields to nfsd_file")
+fd4f83fd7dfb ("nfsd: convert nfs4_file->fi_fds array to use nfsd_files")
+0c4b62b042fe ("nfsd4: show layout stateids")
+16d36e099980 ("nfsd: show lock and deleg stateids")
+78599c42ae3c ("nfsd4: add file to display list of client's opens")
+97ad4031e295 ("nfsd4: add a client info file")
+bf5ed3e3bb84 ("nfsd: make client/ directory names small ints")
+e8a79fb14f6b ("nfsd: add nfsd/clients directory")
+59f8e91b75ec ("nfsd4: use reference count to free client")
+14ed14cc7c06 ("nfsd: rename cl_refcount")
+2c830dd7209b ("nfsd: persist nfsd filesystem across mounts")
+3ba75830ce17 ("nfsd4: drc containerization")
+e333f3bbefe3 ("nfsd: Allow containers to set supported nfs versions")
+029be5d03357 ("nfsd: Add custom rpcbind callbacks for knfsd")
+642ee6b209c2 ("SUNRPC: Allow further customisation of RPC program registration")
+8e5b67731d08 ("SUNRPC: Add a callback to initialise server requests")
 
 thanks,
 
