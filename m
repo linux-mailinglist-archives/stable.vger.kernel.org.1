@@ -1,76 +1,81 @@
-Return-Path: <stable+bounces-16118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E9983F0AE
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:30:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42CB083F0B6
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:32:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DFB51F2583E
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:30:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6668B1C215A0
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:32:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2614814A97;
-	Sat, 27 Jan 2024 22:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D267C14AA2;
+	Sat, 27 Jan 2024 22:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEXrw4l2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpJi1YNh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB57D1F5F7
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D7D1EA66
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706394631; cv=none; b=XTTAXsAPdLUjM5KXapO5dTtHVgjOxInpUvSWHt5M/mud7adQ1DxPXTdRmjGhZ0V273d6zjfFtG+0yaYNEmcm8Krs7eBr9ANp3YKxOUDwzlYqiwDPlYRp4WNVzsJ/L8Owh1TF0qWPV+7Gc8msGdfLIXebjbqu5nCxZksy9RY+HCg=
+	t=1706394726; cv=none; b=QS1FG/hX0Z8Fy3S6fc5zsu1U6f5wPb7OJHPxKpzM3PrLblmUijjWUi1/9DnNpIAV8y0tcLiPN7lA39NoWVPGLPhIsJFpMwV8TeBWjf0rNuVSFzXLyDOV6skNG/2a5+6CNnHluzwLPmWlfx8Ll2xZCVRj+p2RP+qE+YuGc+pPgKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706394631; c=relaxed/simple;
-	bh=LUPxPVDNa8jF1chmqGQKtc3ksiXyy7WTSoaLztGYlVA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NcB+Mh43qE+o9zXcFlt/QKdAdULftYG4xj9ho8WN4Ij2SKs59BDwxG/ExeLkBGQ8cCTmwL564Vfey4XLyEcxYWFWliM0yvGdE2gwlF4CyO+Euj2qfeEgB2WpGUVqGudSTgxY5P/yqWG9aOcbi1M2EDgjN+kU8o1HzBymNYaK14k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEXrw4l2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98370C433C7;
-	Sat, 27 Jan 2024 22:30:31 +0000 (UTC)
+	s=arc-20240116; t=1706394726; c=relaxed/simple;
+	bh=suFMzQZ/cYnHXa7r8FmbctQKdpLBje7yDHjcJn4l/9E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XppD0Mr4ytWRtwdk9KGC9Pdt9n4hBERBRff8LCGnfO0t1M9pS1C86ux7LM2n7+IrawKZdrFpk4rTUulsK3vHzbHoDqvw+JL8ZCbuiuVUnr0oe4V2ReM+LLjy40Sem4UrpzEDlyx9AUKLAeK1Sy8zoWevpeLPwV0WC5Te0UgBeyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpJi1YNh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04452C433C7;
+	Sat, 27 Jan 2024 22:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706394631;
-	bh=LUPxPVDNa8jF1chmqGQKtc3ksiXyy7WTSoaLztGYlVA=;
+	s=korg; t=1706394726;
+	bh=suFMzQZ/cYnHXa7r8FmbctQKdpLBje7yDHjcJn4l/9E=;
 	h=Subject:To:Cc:From:Date:From;
-	b=lEXrw4l2z27jXPqF0fqOrXDHXHQkBuWVKtZ7AR/Vb/DfAyHMoXj/sbhO4pZozAZys
-	 WvFTLcetfPZZDEK3THkr/DkN11idJ4h1Nt/cHYSPTL1/iUmxdeZ59CqBbSF5nqQIY8
-	 RxQMYjDTy+Z85ijTc+kZhPKPaA+uRYJPc4ogcbAE=
-Subject: FAILED: patch "[PATCH] drm/i915/psr: Only allow PSR in LPSP mode on HSW non-ULT" failed to apply to 6.6-stable tree
-To: ville.syrjala@linux.intel.com,joonas.lahtinen@linux.intel.com,jouni.hogander@intel.com
+	b=mpJi1YNhztn7rPJ/qLkEwKn23p5FN1Xva9wC7x+cJxwqkHNNv1xTvLaPV3eFeXgFx
+	 LNb3VYPBJ199eN6FAuRFknTy8Loy3qQHHm0vKDpiyTPHKQbeRv8J5jpm+OfS+8lAFc
+	 wbScsEITVaqyC4d6tu4R0oe3wuzWh/0obQMbUaRo=
+Subject: FAILED: patch "[PATCH] drm: Disable the cursor plane on atomic contexts with" failed to apply to 6.1-stable tree
+To: zackr@vmware.com,airlied@linux.ie,airlied@redhat.com,contact@emersion.fr,daniel@ffwll.ch,gurchetansingh@chromium.org,hdegoede@redhat.com,javierm@redhat.com,kraxel@redhat.com,maarten.lankhorst@linux.intel.com,mripard@kernel.org,olvaffe@gmail.com,pekka.paalanen@collabora.com,stable@vger.kernel.org,tzimmermann@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 14:30:30 -0800
-Message-ID: <2024012730-encroach-lid-4960@gregkh>
+Date: Sat, 27 Jan 2024 14:32:05 -0800
+Message-ID: <2024012705-ocelot-amount-78da@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x f9f031dd21a7ce13a13862fa5281d32e1029c70f
+git cherry-pick -x 4e3b70da64a53784683cfcbac2deda5d6e540407
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012730-encroach-lid-4960@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012705-ocelot-amount-78da@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-f9f031dd21a7 ("drm/i915/psr: Only allow PSR in LPSP mode on HSW non-ULT")
-a2cd15c24116 ("drm/i915/lnl: Remove watchdog timers for PSR")
+4e3b70da64a5 ("drm: Disable the cursor plane on atomic contexts with virtualized drivers")
+7cb8d1ab8cbd ("drm/virtio: Support sync objects")
+e6303f323b1a ("drm: manager to keep track of GPUs VA mappings")
+70d1ace56db6 ("drm/virtio: Conditionally allocate virtio_gpu_fence")
+eba57fb5498f ("drm/virtio: Wait for each dma-fence of in-fence array individually")
+e4812ab8e6b1 ("drm/virtio: Refactor and optimize job submission code path")
+a1eccc574f97 ("Merge drm/drm-next into drm-misc-next")
 
 thanks,
 
@@ -78,67 +83,169 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f9f031dd21a7ce13a13862fa5281d32e1029c70f Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Date: Thu, 18 Jan 2024 23:21:31 +0200
-Subject: [PATCH] drm/i915/psr: Only allow PSR in LPSP mode on HSW non-ULT
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 4e3b70da64a53784683cfcbac2deda5d6e540407 Mon Sep 17 00:00:00 2001
+From: Zack Rusin <zackr@vmware.com>
+Date: Mon, 23 Oct 2023 09:46:05 +0200
+Subject: [PATCH] drm: Disable the cursor plane on atomic contexts with
+ virtualized drivers
 
-On HSW non-ULT (or at least on Dell Latitude E6540) external displays
-start to flicker when we enable PSR on the eDP. We observe a much higher
-SR and PC6 residency than should be possible with an external display,
-and indeen much higher than what we observe with eDP disabled and
-only the external display enabled. Looks like the hardware is somehow
-ignoring the fact that the external display is active during PSR.
+Cursor planes on virtualized drivers have special meaning and require
+that the clients handle them in specific ways, e.g. the cursor plane
+should react to the mouse movement the way a mouse cursor would be
+expected to and the client is required to set hotspot properties on it
+in order for the mouse events to be routed correctly.
 
-I wasn't able to redproduce this on my HSW ULT machine, or BDW.
-So either there's something specific about this particular laptop
-(eg. some unknown firmware thing) or the issue is limited to just
-non-ULT HSW systems. All known registers that could affect this
-look perfectly reasonable on the affected machine.
+This breaks the contract as specified by the "universal planes". Fix it
+by disabling the cursor planes on virtualized drivers while adding
+a foundation on top of which it's possible to special case mouse cursor
+planes for clients that want it.
 
-As a workaround let's unmask the LPSP event to prevent PSR entry
-except while in LPSP mode (only pipe A + eDP active). This
-will prevent PSR entry entirely when multiple pipes are active.
-The one slight downside is that we now also prevent PSR entry
-when driving eDP with pipe B or C, but I think that's a reasonable
-tradeoff to avoid having to implement a more complex workaround.
+Disabling the cursor planes makes some kms compositors which were broken,
+e.g. Weston, fallback to software cursor which works fine or at least
+better than currently while having no effect on others, e.g. gnome-shell
+or kwin, which put virtualized drivers on a deny-list when running in
+atomic context to make them fallback to legacy kms and avoid this issue.
 
-Cc: stable@vger.kernel.org
-Fixes: 783d8b80871f ("drm/i915/psr: Re-enable PSR1 on hsw/bdw")
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10092
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240118212131.31868-1-ville.syrjala@linux.intel.com
-Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
-(cherry picked from commit 94501c3ca6400e463ff6cc0c9cf4a2feb6a9205d)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Zack Rusin <zackr@vmware.com>
+Fixes: 681e7ec73044 ("drm: Allow userspace to ask for universal plane list (v2)")
+Cc: <stable@vger.kernel.org> # v5.4+
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@linux.ie>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Gurchetan Singh <gurchetansingh@chromium.org>
+Cc: Chia-I Wu <olvaffe@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: virtualization@lists.linux-foundation.org
+Cc: spice-devel@lists.freedesktop.org
+Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Acked-by: Simon Ser <contact@emersion.fr>
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231023074613.41327-2-aesteve@redhat.com
 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 8f702c3fc62d..57bbf3e3af92 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -1525,8 +1525,18 @@ static void intel_psr_enable_source(struct intel_dp *intel_dp,
- 	 * can rely on frontbuffer tracking.
- 	 */
- 	mask = EDP_PSR_DEBUG_MASK_MEMUP |
--	       EDP_PSR_DEBUG_MASK_HPD |
--	       EDP_PSR_DEBUG_MASK_LPSP;
-+	       EDP_PSR_DEBUG_MASK_HPD;
-+
-+	/*
-+	 * For some unknown reason on HSW non-ULT (or at least on
-+	 * Dell Latitude E6540) external displays start to flicker
-+	 * when PSR is enabled on the eDP. SR/PC6 residency is much
-+	 * higher than should be possible with an external display.
-+	 * As a workaround leave LPSP unmasked to prevent PSR entry
-+	 * when external displays are active.
-+	 */
-+	if (DISPLAY_VER(dev_priv) >= 8 || IS_HASWELL_ULT(dev_priv))
-+		mask |= EDP_PSR_DEBUG_MASK_LPSP;
+diff --git a/drivers/gpu/drm/drm_plane.c b/drivers/gpu/drm/drm_plane.c
+index 24e7998d1731..c6bbb0c209f4 100644
+--- a/drivers/gpu/drm/drm_plane.c
++++ b/drivers/gpu/drm/drm_plane.c
+@@ -678,6 +678,19 @@ int drm_mode_getplane_res(struct drm_device *dev, void *data,
+ 		    !file_priv->universal_planes)
+ 			continue;
  
- 	if (DISPLAY_VER(dev_priv) < 20)
- 		mask |= EDP_PSR_DEBUG_MASK_MAX_SLEEP;
++		/*
++		 * If we're running on a virtualized driver then,
++		 * unless userspace advertizes support for the
++		 * virtualized cursor plane, disable cursor planes
++		 * because they'll be broken due to missing cursor
++		 * hotspot info.
++		 */
++		if (plane->type == DRM_PLANE_TYPE_CURSOR &&
++		    drm_core_check_feature(dev, DRIVER_CURSOR_HOTSPOT) &&
++		    file_priv->atomic &&
++		    !file_priv->supports_virtualized_cursor_plane)
++			continue;
++
+ 		if (drm_lease_held(file_priv, plane->base.id)) {
+ 			if (count < plane_resp->count_planes &&
+ 			    put_user(plane->base.id, plane_ptr + count))
+diff --git a/drivers/gpu/drm/qxl/qxl_drv.c b/drivers/gpu/drm/qxl/qxl_drv.c
+index 46de4f171970..beee5563031a 100644
+--- a/drivers/gpu/drm/qxl/qxl_drv.c
++++ b/drivers/gpu/drm/qxl/qxl_drv.c
+@@ -285,7 +285,7 @@ static const struct drm_ioctl_desc qxl_ioctls[] = {
+ };
+ 
+ static struct drm_driver qxl_driver = {
+-	.driver_features = DRIVER_GEM | DRIVER_MODESET | DRIVER_ATOMIC,
++	.driver_features = DRIVER_GEM | DRIVER_MODESET | DRIVER_ATOMIC | DRIVER_CURSOR_HOTSPOT,
+ 
+ 	.dumb_create = qxl_mode_dumb_create,
+ 	.dumb_map_offset = drm_gem_ttm_dumb_map_offset,
+diff --git a/drivers/gpu/drm/vboxvideo/vbox_drv.c b/drivers/gpu/drm/vboxvideo/vbox_drv.c
+index 047b95812334..cd9e66a06596 100644
+--- a/drivers/gpu/drm/vboxvideo/vbox_drv.c
++++ b/drivers/gpu/drm/vboxvideo/vbox_drv.c
+@@ -182,7 +182,7 @@ DEFINE_DRM_GEM_FOPS(vbox_fops);
+ 
+ static const struct drm_driver driver = {
+ 	.driver_features =
+-	    DRIVER_MODESET | DRIVER_GEM | DRIVER_ATOMIC,
++	    DRIVER_MODESET | DRIVER_GEM | DRIVER_ATOMIC | DRIVER_CURSOR_HOTSPOT,
+ 
+ 	.fops = &vbox_fops,
+ 	.name = DRIVER_NAME,
+diff --git a/drivers/gpu/drm/virtio/virtgpu_drv.c b/drivers/gpu/drm/virtio/virtgpu_drv.c
+index 4334c7608408..f8e9abe647b9 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_drv.c
++++ b/drivers/gpu/drm/virtio/virtgpu_drv.c
+@@ -177,7 +177,7 @@ static const struct drm_driver driver = {
+ 	 * out via drm_device::driver_features:
+ 	 */
+ 	.driver_features = DRIVER_MODESET | DRIVER_GEM | DRIVER_RENDER | DRIVER_ATOMIC |
+-			   DRIVER_SYNCOBJ | DRIVER_SYNCOBJ_TIMELINE,
++			   DRIVER_SYNCOBJ | DRIVER_SYNCOBJ_TIMELINE | DRIVER_CURSOR_HOTSPOT,
+ 	.open = virtio_gpu_driver_open,
+ 	.postclose = virtio_gpu_driver_postclose,
+ 
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+index 8b24ecf60e3e..d3e308fdfd5b 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+@@ -1611,7 +1611,7 @@ static const struct file_operations vmwgfx_driver_fops = {
+ 
+ static const struct drm_driver driver = {
+ 	.driver_features =
+-	DRIVER_MODESET | DRIVER_RENDER | DRIVER_ATOMIC | DRIVER_GEM,
++	DRIVER_MODESET | DRIVER_RENDER | DRIVER_ATOMIC | DRIVER_GEM | DRIVER_CURSOR_HOTSPOT,
+ 	.ioctls = vmw_ioctls,
+ 	.num_ioctls = ARRAY_SIZE(vmw_ioctls),
+ 	.master_set = vmw_master_set,
+diff --git a/include/drm/drm_drv.h b/include/drm/drm_drv.h
+index e2640dc64e08..ea36aa79dca2 100644
+--- a/include/drm/drm_drv.h
++++ b/include/drm/drm_drv.h
+@@ -110,6 +110,15 @@ enum drm_driver_feature {
+ 	 * Driver supports user defined GPU VA bindings for GEM objects.
+ 	 */
+ 	DRIVER_GEM_GPUVA		= BIT(8),
++	/**
++	 * @DRIVER_CURSOR_HOTSPOT:
++	 *
++	 * Driver supports and requires cursor hotspot information in the
++	 * cursor plane (e.g. cursor plane has to actually track the mouse
++	 * cursor and the clients are required to set hotspot in order for
++	 * the cursor planes to work correctly).
++	 */
++	DRIVER_CURSOR_HOTSPOT           = BIT(9),
+ 
+ 	/* IMPORTANT: Below are all the legacy flags, add new ones above. */
+ 
+diff --git a/include/drm/drm_file.h b/include/drm/drm_file.h
+index e1b5b4282f75..8f35dcea82d3 100644
+--- a/include/drm/drm_file.h
++++ b/include/drm/drm_file.h
+@@ -226,6 +226,18 @@ struct drm_file {
+ 	 */
+ 	bool is_master;
+ 
++	/**
++	 * @supports_virtualized_cursor_plane:
++	 *
++	 * This client is capable of handling the cursor plane with the
++	 * restrictions imposed on it by the virtualized drivers.
++	 *
++	 * This implies that the cursor plane has to behave like a cursor
++	 * i.e. track cursor movement. It also requires setting of the
++	 * hotspot properties by the client on the cursor plane.
++	 */
++	bool supports_virtualized_cursor_plane;
++
+ 	/**
+ 	 * @master:
+ 	 *
 
 
