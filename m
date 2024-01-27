@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F25383F0E8
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:38:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C469E83F0E9
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:38:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B7CD1C2132B
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:37:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6684DB26E49
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8651B271;
-	Sat, 27 Jan 2024 22:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30E31DDD6;
+	Sat, 27 Jan 2024 22:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="keT77Gsr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fu7D+NJJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE291DFFA
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7554C1D6B8
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706395074; cv=none; b=fBsfwTkCtDxFAR5Gckx0Y3b4/P1PTYg3mX/HvxVW0F5fr8NiCYJkSgMkfwRYKxOyYfagYv1oE0xT5TDYR9FyDgadwxU7SNTIb8RzY0bM6ZVRAqkaxc40HbtnPEiPsyfIVfOZwQyuF70HEX8Jzy2aYGICCdgWw6OydryUOGsv+Xg=
+	t=1706395075; cv=none; b=bw4XhBMGe7fNtSvBjNlvlhmkQX6F4TlRSk8fS7RO86oTtMt5lmf6unaIcLy68NU7q3sZsIEEfjG2pW6DvC4l8OtVuAnqwkslIecp6PM/+glb3EVP1sNTh2L0udYowjWoRyYFaZ8Lbc1Svuq8iFK6hdOQX7Uo2SEH9iF2CI3ZOBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706395074; c=relaxed/simple;
-	bh=HPMlK+CCRyY1j2SlYCH+cWXLwTI3ln9ShVrPtICDni8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=e59uRQCYFLHIV0fGCgrrRnN0taWJ8xKZr5chBXDXscEHTX2BSxlTqaZWSXrpnr+iRN2JdQgYBY58WoA1K/+QdNiny/jqnK+cH/wkgMfd4dwVq6moMfQxMC+fLbKB/ls/yWLSGKn7wQoMh0MjL64XFepCxWEHle4svRMz1QKgiOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=keT77Gsr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DAC0C433C7;
-	Sat, 27 Jan 2024 22:37:53 +0000 (UTC)
+	s=arc-20240116; t=1706395075; c=relaxed/simple;
+	bh=45fCedvMBHdooAS89C3L69ebpRWRAqSnQLO6AKbxMws=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sMbPoNCDPElEUOOf1TldFC0V/cVQz9IjrvEvexslxNVkIbySmPicQXBXRJJiwNTGCCmzfYk0ZSAqZYs3P9MKY3/SKOp4juJj3ENpF23TWlbelfso+UrrAkxtAqdMPLOWePMN2Ct82glhK8FO7D63v7k8OZpY8wHCC4IBD8vIQo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fu7D+NJJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C55DAC433F1;
+	Sat, 27 Jan 2024 22:37:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706395073;
-	bh=HPMlK+CCRyY1j2SlYCH+cWXLwTI3ln9ShVrPtICDni8=;
+	s=korg; t=1706395074;
+	bh=45fCedvMBHdooAS89C3L69ebpRWRAqSnQLO6AKbxMws=;
 	h=Subject:To:Cc:From:Date:From;
-	b=keT77GsrTCiCyLxc/W4MfpZydISlOpu2jLRQR2hAzUMpog2B53sxF4PJKf9H9wLd2
-	 hmNu0gxVk1KZdfmQVTsz1QrtlcL3gOPXEFcdxSpKhalk4U4T7RvRiceIh+2T3DR2Mf
-	 FJSpdFlZecWs6mpgtAULBl8bzNt6Wv5/QYlwns20=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: disable MCBP by default" failed to apply to 6.6-stable tree
+	b=fu7D+NJJnuUxCY8qNyjbB8BsL4RZQgQt4KpidKoBjd7m9epllqE1Zw4yrggM6f0To
+	 J+w/NIMN6pHUM1vWFzt9eV/AQNfKO64ChUuBkX9FtjLJIA9ZeMX3ycLpXVeweq+r5A
+	 5puTWnKI7E/7rfF0fm1FkKvWXe24CKSL92eMUqzs=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: disable MCBP by default" failed to apply to 6.7-stable tree
 To: Jiadong.Zhu@amd.com,alexander.deucher@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 14:37:52 -0800
-Message-ID: <2024012752-bouncy-tag-0b1e@gregkh>
+Date: Sat, 27 Jan 2024 14:37:53 -0800
+Message-ID: <2024012753-stable-reappear-4d32@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,38 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
 git cherry-pick -x fd2ef5fa3556549c565f5b7a07776d899a8ed8b7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012752-bouncy-tag-0b1e@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012753-stable-reappear-4d32@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
 fd2ef5fa3556 ("drm/amdgpu: disable MCBP by default")
-4e8303cf2c4d ("drm/amdgpu: Use function for IP version check")
-6b7d211740da ("drm/amdgpu: Fix refclk reporting for SMU v13.0.6")
-1b8e56b99459 ("drm/amdgpu: Restrict bootloader wait to SMUv13.0.6")
-983ac45a06ae ("drm/amdgpu: update SET_HW_RESOURCES definition for UMSCH")
-822f7808291f ("drm/amdgpu/discovery: enable UMSCH 4.0 in IP discovery")
-3488c79beafa ("drm/amdgpu: add initial support for UMSCH")
-2da1b04a2096 ("drm/amdgpu: add UMSCH 4.0 api definition")
-3ee8fb7005ef ("drm/amdgpu: enable VPE for VPE 6.1.0")
-9d4346bdbc64 ("drm/amdgpu: add VPE 6.1.0 support")
-e370f8f38976 ("drm/amdgpu: Add bootloader wait for PSP v13")
-aba2be41470a ("drm/amdgpu: add mmhub 3.3.0 support")
-15e7cbd91de6 ("drm/amdgpu/gfx11: initialize gfx11.5.0")
-f56c1941ebb7 ("drm/amdgpu: use 6.1.0 register offset for HDP CLK_CNTL")
-15c5c5f57514 ("drm/amdgpu: Add bootloader status check")
-3cce0bfcd0f9 ("drm/amd/display: Enable Replay for static screen use cases")
 
 thanks,
 
