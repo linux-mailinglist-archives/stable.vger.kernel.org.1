@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06C383F077
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:06:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0726983F07D
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 853311F22FC3
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:06:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7307AB242EF
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C69EC1B807;
-	Sat, 27 Jan 2024 22:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D790A1B954;
+	Sat, 27 Jan 2024 22:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRX4Wtao"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rlYphKg7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FCC1B7E1
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968A11B80E
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706393197; cv=none; b=ENEZV8dtS7D0htOCempY4LiJIFOBZnHh+434zwOoBdDtuTx4RkAOHlJW06DEfYSPVGdsJTYG1/Dosh17bBhzXfLOtk1MJdI5qAztc6W3g0TG1EBVQFHqCfyJ2WUKaMI9fBpyctsGPGIlvbRb15Ddy+K5bYIBboMWX4nygUJKp88=
+	t=1706393259; cv=none; b=XWbAXGBvAVAiQsvto+ii4MI/kjNksDLyL113AtN2IvIG8F05eLZyBWjEIdl2jUwQ1tWiN5dZuhEqnBLJPFFEOYHdm1kPXOnEE7wkTRswZRbw5FkYBKZSemAsu6nzgfezwXeg7/Uqz0x8bcW0yP1vo/C4xveqh4MM7oV8JTUi0tI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706393197; c=relaxed/simple;
-	bh=1TZBow6R4TrSY3EfSyZZUXHbGXmyvineE6dVXuT5AnQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VU+HdoALoZE6AQxSuB6PvBp/Cpcjc1rI55k84lhlLZgSdfazAtn128lNGYzej6N98DkzzMFdhE/zjTeGWKg44Kx2Oy0athZJMR5QhpaI8Ojf+ZS4JwrqFL+00OOAxvlpB3apvcZ3eXLyM4WV1PPEN+iQR94m3Y0IczQXsHRoHo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRX4Wtao; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4428EC433F1;
-	Sat, 27 Jan 2024 22:06:37 +0000 (UTC)
+	s=arc-20240116; t=1706393259; c=relaxed/simple;
+	bh=N0VCXoG2g+hwgdtfkyX6gxpweM7XvDiPJYjboewX9mM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QxySbipW9W5jpsVavBlFSth3zlEzvP0QOaepE1k28JLWtQOYMZZuxg+gyfoeaInP3En2DCsz50V679V7zvtlK9pzkGe5wjEvosMW0TDrU9g0fYyqu78BQ/yPE2ZOM8kVyrta8T3LcHwEW64YAt75XZuAfOeYzXhC0Wm7o2OzAmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rlYphKg7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB61AC433C7;
+	Sat, 27 Jan 2024 22:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706393197;
-	bh=1TZBow6R4TrSY3EfSyZZUXHbGXmyvineE6dVXuT5AnQ=;
+	s=korg; t=1706393259;
+	bh=N0VCXoG2g+hwgdtfkyX6gxpweM7XvDiPJYjboewX9mM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hRX4WtaoVpvzzeVpTNH/UjVucOaoIOeV61tYNM1dMV02CWGvgFMaZw8DziujvYnT4
-	 GbJvoXfGLaZtp/5Leffx6VC5SvbjNzO7xb1FrLfdLs/lefacbAZ0INmyf6sOBxN97o
-	 oQ+mn7bAz+dessqpTttLaXJn5rxeyvBFhlxzv8EU=
-Subject: FAILED: patch "[PATCH] xfs: read only mounts with fsopen mount API are busted" failed to apply to 5.10-stable tree
-To: dchinner@redhat.com,chandanbabu@kernel.org,hch@lst.de
+	b=rlYphKg7p2f5tmOGnmrLfASdnLnFcAyfYJdgLZ0C94WxEiQrMq6wsZlfgdndrXezP
+	 oO4Y31caIZi35cQuaKbVMvtFliVsKr0jjr5ozFvMf5wQfjVlNQdKK1slZ4O1rd3DBT
+	 L6OsdDpnbPcgxJoMTuefDbL13sbYSrsTyXLAdPqo=
+Subject: FAILED: patch "[PATCH] cpufreq: intel_pstate: Refine computation of P-state for" failed to apply to 5.15-stable tree
+To: rafael.j.wysocki@intel.com,srinivas.pandruvada@linux.intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 14:06:36 -0800
-Message-ID: <2024012736-provable-risotto-2228@gregkh>
+Date: Sat, 27 Jan 2024 14:07:37 -0800
+Message-ID: <2024012737-lavish-haziness-80cc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x d8d222e09dab84a17bb65dda4b94d01c565f5327
+git cherry-pick -x 192cdb1c907fd8df2d764c5bb17496e415e59391
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012736-provable-risotto-2228@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012737-lavish-haziness-80cc@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-
+192cdb1c907f ("cpufreq: intel_pstate: Refine computation of P-state for given frequency")
+458b03f81afb ("cpufreq: intel_pstate: Drop redundant intel_pstate_get_hwp_cap() call")
 
 thanks,
 
@@ -77,126 +78,138 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d8d222e09dab84a17bb65dda4b94d01c565f5327 Mon Sep 17 00:00:00 2001
-From: Dave Chinner <dchinner@redhat.com>
-Date: Tue, 16 Jan 2024 15:33:07 +1100
-Subject: [PATCH] xfs: read only mounts with fsopen mount API are busted
+From 192cdb1c907fd8df2d764c5bb17496e415e59391 Mon Sep 17 00:00:00 2001
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Date: Mon, 22 Jan 2024 15:18:11 +0100
+Subject: [PATCH] cpufreq: intel_pstate: Refine computation of P-state for
+ given frequency
 
-Recently xfs/513 started failing on my test machines testing "-o
-ro,norecovery" mount options. This was being emitted in dmesg:
+On systems using HWP, if a given frequency is equal to the maximum turbo
+frequency or the maximum non-turbo frequency, the HWP performance level
+corresponding to it is already known and can be used directly without
+any computation.
 
-[ 9906.932724] XFS (pmem0): no-recovery mounts must be read-only.
+Accordingly, adjust the code to use the known HWP performance levels in
+the cases mentioned above.
 
-Turns out, readonly mounts with the fsopen()/fsconfig() mount API
-have been busted since day zero. It's only taken 5 years for debian
-unstable to start using this "new" mount API, and shortly after this
-I noticed xfs/513 had started to fail as per above.
+This also helps to avoid limiting CPU capacity artificially in some
+cases when the BIOS produces the HWP_CAP numbers using a different
+E-core-to-P-core performance scaling factor than expected by the kernel.
 
-The syscall trace is:
+Fixes: f5c8cf2a4992 ("cpufreq: intel_pstate: hybrid: Use known scaling factor for P-cores")
+Cc: 6.1+ <stable@vger.kernel.org> # 6.1+
+Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-fsopen("xfs", FSOPEN_CLOEXEC)           = 3
-mount_setattr(-1, NULL, 0, NULL, 0)     = -1 EINVAL (Invalid argument)
-.....
-fsconfig(3, FSCONFIG_SET_STRING, "source", "/dev/pmem0", 0) = 0
-fsconfig(3, FSCONFIG_SET_FLAG, "ro", NULL, 0) = 0
-fsconfig(3, FSCONFIG_SET_FLAG, "norecovery", NULL, 0) = 0
-fsconfig(3, FSCONFIG_CMD_CREATE, NULL, NULL, 0) = -1 EINVAL (Invalid argument)
-close(3)                                = 0
-
-Showing that the actual mount instantiation (FSCONFIG_CMD_CREATE) is
-what threw out the error.
-
-During mount instantiation, we call xfs_fs_validate_params() which
-does:
-
-        /* No recovery flag requires a read-only mount */
-        if (xfs_has_norecovery(mp) && !xfs_is_readonly(mp)) {
-                xfs_warn(mp, "no-recovery mounts must be read-only.");
-                return -EINVAL;
-        }
-
-and xfs_is_readonly() checks internal mount flags for read only
-state. This state is set in xfs_init_fs_context() from the
-context superblock flag state:
-
-        /*
-         * Copy binary VFS mount flags we are interested in.
-         */
-        if (fc->sb_flags & SB_RDONLY)
-                set_bit(XFS_OPSTATE_READONLY, &mp->m_opstate);
-
-With the old mount API, all of the VFS specific superblock flags
-had already been parsed and set before xfs_init_fs_context() is
-called, so this all works fine.
-
-However, in the brave new fsopen/fsconfig world,
-xfs_init_fs_context() is called from fsopen() context, before any
-VFS superblock have been set or parsed. Hence if we use fsopen(),
-the internal XFS readonly state is *never set*. Hence anything that
-depends on xfs_is_readonly() actually returning true for read only
-mounts is broken if fsopen() has been used to mount the filesystem.
-
-Fix this by moving this internal state initialisation to
-xfs_fs_fill_super() before we attempt to validate the parameters
-that have been set prior to the FSCONFIG_CMD_CREATE call being made.
-
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Fixes: 73e5fff98b64 ("xfs: switch to use the new mount-api")
-cc: stable@vger.kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-
-diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
-index aff20ddd4a9f..5a2512d20bd0 100644
---- a/fs/xfs/xfs_super.c
-+++ b/fs/xfs/xfs_super.c
-@@ -1496,6 +1496,18 @@ xfs_fs_fill_super(
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 2ca70b0b5fdc..ca94e60e705a 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -529,6 +529,30 @@ static int intel_pstate_cppc_get_scaling(int cpu)
+ }
+ #endif /* CONFIG_ACPI_CPPC_LIB */
  
- 	mp->m_super = sb;
- 
-+	/*
-+	 * Copy VFS mount flags from the context now that all parameter parsing
-+	 * is guaranteed to have been completed by either the old mount API or
-+	 * the newer fsopen/fsconfig API.
-+	 */
-+	if (fc->sb_flags & SB_RDONLY)
-+		set_bit(XFS_OPSTATE_READONLY, &mp->m_opstate);
-+	if (fc->sb_flags & SB_DIRSYNC)
-+		mp->m_features |= XFS_FEAT_DIRSYNC;
-+	if (fc->sb_flags & SB_SYNCHRONOUS)
-+		mp->m_features |= XFS_FEAT_WSYNC;
++static int intel_pstate_freq_to_hwp_rel(struct cpudata *cpu, int freq,
++					unsigned int relation)
++{
++	if (freq == cpu->pstate.turbo_freq)
++		return cpu->pstate.turbo_pstate;
 +
- 	error = xfs_fs_validate_params(mp);
- 	if (error)
- 		return error;
-@@ -1965,6 +1977,11 @@ static const struct fs_context_operations xfs_context_ops = {
- 	.free        = xfs_fs_free,
- };
++	if (freq == cpu->pstate.max_freq)
++		return cpu->pstate.max_pstate;
++
++	switch (relation) {
++	case CPUFREQ_RELATION_H:
++		return freq / cpu->pstate.scaling;
++	case CPUFREQ_RELATION_C:
++		return DIV_ROUND_CLOSEST(freq, cpu->pstate.scaling);
++	}
++
++	return DIV_ROUND_UP(freq, cpu->pstate.scaling);
++}
++
++static int intel_pstate_freq_to_hwp(struct cpudata *cpu, int freq)
++{
++	return intel_pstate_freq_to_hwp_rel(cpu, freq, CPUFREQ_RELATION_L);
++}
++
+ /**
+  * intel_pstate_hybrid_hwp_adjust - Calibrate HWP performance levels.
+  * @cpu: Target CPU.
+@@ -546,6 +570,7 @@ static void intel_pstate_hybrid_hwp_adjust(struct cpudata *cpu)
+ 	int perf_ctl_scaling = cpu->pstate.perf_ctl_scaling;
+ 	int perf_ctl_turbo = pstate_funcs.get_turbo(cpu->cpu);
+ 	int scaling = cpu->pstate.scaling;
++	int freq;
  
-+/*
-+ * WARNING: do not initialise any parameters in this function that depend on
-+ * mount option parsing having already been performed as this can be called from
-+ * fsopen() before any parameters have been set.
-+ */
- static int xfs_init_fs_context(
- 	struct fs_context	*fc)
- {
-@@ -1996,16 +2013,6 @@ static int xfs_init_fs_context(
- 	mp->m_logbsize = -1;
- 	mp->m_allocsize_log = 16; /* 64k */
+ 	pr_debug("CPU%d: perf_ctl_max_phys = %d\n", cpu->cpu, perf_ctl_max_phys);
+ 	pr_debug("CPU%d: perf_ctl_turbo = %d\n", cpu->cpu, perf_ctl_turbo);
+@@ -559,16 +584,16 @@ static void intel_pstate_hybrid_hwp_adjust(struct cpudata *cpu)
+ 	cpu->pstate.max_freq = rounddown(cpu->pstate.max_pstate * scaling,
+ 					 perf_ctl_scaling);
  
--	/*
--	 * Copy binary VFS mount flags we are interested in.
--	 */
--	if (fc->sb_flags & SB_RDONLY)
--		set_bit(XFS_OPSTATE_READONLY, &mp->m_opstate);
--	if (fc->sb_flags & SB_DIRSYNC)
--		mp->m_features |= XFS_FEAT_DIRSYNC;
--	if (fc->sb_flags & SB_SYNCHRONOUS)
--		mp->m_features |= XFS_FEAT_WSYNC;
+-	cpu->pstate.max_pstate_physical =
+-			DIV_ROUND_UP(perf_ctl_max_phys * perf_ctl_scaling,
+-				     scaling);
++	freq = perf_ctl_max_phys * perf_ctl_scaling;
++	cpu->pstate.max_pstate_physical = intel_pstate_freq_to_hwp(cpu, freq);
+ 
+-	cpu->pstate.min_freq = cpu->pstate.min_pstate * perf_ctl_scaling;
++	freq = cpu->pstate.min_pstate * perf_ctl_scaling;
++	cpu->pstate.min_freq = freq;
+ 	/*
+ 	 * Cast the min P-state value retrieved via pstate_funcs.get_min() to
+ 	 * the effective range of HWP performance levels.
+ 	 */
+-	cpu->pstate.min_pstate = DIV_ROUND_UP(cpu->pstate.min_freq, scaling);
++	cpu->pstate.min_pstate = intel_pstate_freq_to_hwp(cpu, freq);
+ }
+ 
+ static inline void update_turbo_state(void)
+@@ -2528,13 +2553,12 @@ static void intel_pstate_update_perf_limits(struct cpudata *cpu,
+ 	 * abstract values to represent performance rather than pure ratios.
+ 	 */
+ 	if (hwp_active && cpu->pstate.scaling != perf_ctl_scaling) {
+-		int scaling = cpu->pstate.scaling;
+ 		int freq;
+ 
+ 		freq = max_policy_perf * perf_ctl_scaling;
+-		max_policy_perf = DIV_ROUND_UP(freq, scaling);
++		max_policy_perf = intel_pstate_freq_to_hwp(cpu, freq);
+ 		freq = min_policy_perf * perf_ctl_scaling;
+-		min_policy_perf = DIV_ROUND_UP(freq, scaling);
++		min_policy_perf = intel_pstate_freq_to_hwp(cpu, freq);
+ 	}
+ 
+ 	pr_debug("cpu:%d min_policy_perf:%d max_policy_perf:%d\n",
+@@ -2908,18 +2932,7 @@ static int intel_cpufreq_target(struct cpufreq_policy *policy,
+ 
+ 	cpufreq_freq_transition_begin(policy, &freqs);
+ 
+-	switch (relation) {
+-	case CPUFREQ_RELATION_L:
+-		target_pstate = DIV_ROUND_UP(freqs.new, cpu->pstate.scaling);
+-		break;
+-	case CPUFREQ_RELATION_H:
+-		target_pstate = freqs.new / cpu->pstate.scaling;
+-		break;
+-	default:
+-		target_pstate = DIV_ROUND_CLOSEST(freqs.new, cpu->pstate.scaling);
+-		break;
+-	}
 -
- 	fc->s_fs_info = mp;
- 	fc->ops = &xfs_context_ops;
++	target_pstate = intel_pstate_freq_to_hwp_rel(cpu, freqs.new, relation);
+ 	target_pstate = intel_cpufreq_update_pstate(policy, target_pstate, false);
+ 
+ 	freqs.new = target_pstate * cpu->pstate.scaling;
+@@ -2937,7 +2950,7 @@ static unsigned int intel_cpufreq_fast_switch(struct cpufreq_policy *policy,
+ 
+ 	update_turbo_state();
+ 
+-	target_pstate = DIV_ROUND_UP(target_freq, cpu->pstate.scaling);
++	target_pstate = intel_pstate_freq_to_hwp(cpu, target_freq);
+ 
+ 	target_pstate = intel_cpufreq_update_pstate(policy, target_pstate, true);
  
 
 
