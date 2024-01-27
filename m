@@ -1,109 +1,193 @@
-Return-Path: <stable+bounces-16098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FE3583F035
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:27:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EC5783F04D
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:55:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8B601C215A0
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 21:27:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19CF9283AC8
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 21:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01D81A726;
-	Sat, 27 Jan 2024 21:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E941B5B2;
+	Sat, 27 Jan 2024 21:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="aJ/HhjsU";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="B6s/RXb0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5Hpcy7T"
 X-Original-To: stable@vger.kernel.org
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDCD18EA8
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 21:27:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.111.4.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104531B297
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 21:55:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706390842; cv=none; b=gDJldIGlYt+6EVGqpw8+LsM4CYCcVzV34GR2ZoAoIzfLEt0ZDIU7RoXe3buEa7rBpMbJED3bgyjE3MXLfZP7IEiNiLjPz80OJUDSPy1lKA+bFzAzX03JaK43bXkYSWzLl3/smmYpPyGaV8B1/62cPf8CGjWP7HX363D619PR3uE=
+	t=1706392535; cv=none; b=hb2cdnaoS0q/fx6XwAtqIirFWjTtewiKd18mMBMJQ5XJhVLTcOSJ9hmFlfD4fEjVRnFdXo3WKbHuMurUiLhDMs6rs09gNWaQFUXJam9wywNZc/AC7EDw1M1aB4TunMwoc3LiHcQWt+UEC0KanIGL5JMd/NqqaBwEQg0bIOkVPck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706390842; c=relaxed/simple;
-	bh=+ldwBPJIjtvbfxltx2ESJXejroZOhFgC/MyH/TPAfFc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qr84fbvsoJf+Gicfr4vN+0KQ3k3CSlZZH47a4WrmeltalPnI/6Q1xfBVbYR2YrOHD+cY7ySM44218cT7Chu5+Iu6Q35JOYzmGfy6jKckDjMUNHggN22efdR9dw2cDsD4pqQGz1lSXfRnjziiqJpuAmHVaZQLuElAoV4RNmvgjyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=aJ/HhjsU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=B6s/RXb0; arc=none smtp.client-ip=66.111.4.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailout.nyi.internal (Postfix) with ESMTP id AB09C5C0099;
-	Sat, 27 Jan 2024 16:27:19 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Sat, 27 Jan 2024 16:27:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1706390839; x=1706477239; bh=jSrd+HqI02
-	uKp8z2W5pAZ21Ia7uRwjyeJtfcQFCNgR8=; b=aJ/HhjsUHH1cPY3xJNFkt3EvKR
-	gJxt548kYWppjHCF4poryuYLdKeQawJXadvK52Lyp8Tji5taR8RpWXBJB3z3puIU
-	zjCur4vFTKSiotdkr3t2+/V/h9ToJKfS8UpRsiVSnkHjCESBgEuh/9Z6+1B9bHrn
-	uStFyGm0vFs216fVRUpANSnCDKye7uw5X6CrzHkpyjeg4YVVcEEB8ndkGaTzCBmz
-	+61+Zz6Q9SYCf7/2JMKrRLZFZrbe8O1K8mSd2EaoEdT8V1/qaF4Vo0OZcTq/dVPF
-	sgBwfv3lk4rfaDbGirnJpCA7t7r0cLewQvAtJPXBBziLLJF3pAiRnqiz5uuQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1706390839; x=1706477239; bh=jSrd+HqI02uKp8z2W5pAZ21Ia7uR
-	wjyeJtfcQFCNgR8=; b=B6s/RXb0MtRcXvf9UVDtIq6qNwEwuZ+L6ajEVVUkcbHN
-	ooZ/dTASvNs2S5chYq4xipIr4zFuTcqsBtUM39tnBvV/rXC7C0kgZW1LGAr2rJmj
-	FPZJVNwT5d5aA8sTXjW7MwEr9x73Dpbmlo/jFhPhsqw27OW2BuVhrcvpzDNVOMHm
-	TE55E1PsF7yi+2U3AYZLO8OUdm4Vlnu3VcWq6oOchKC0DzptJy/VKnWgob99PV0R
-	f4CmuWxQvtvA2SzrPUXvHzozS36pPu4IBiQ6T+WAoxB0AB5LvLNKzZQGFXK6qqQz
-	XC6NZ1es2hZsH8+DEs+T7ZeYyrnhCbmIXQ+ux2lElQ==
-X-ME-Sender: <xms:N3W1Zei-r4aQOjOhO8RHm9x1D3eU-ZLBKLL-RiYzJDQCMLsnvbnA4w>
-    <xme:N3W1ZfDULrRFd-Vpe_sc2gcVnjrjImpXbnHIUqesWlX2yxkbIvDObF9XKoCb1CS4p
-    -y3HUcDkiS07Q>
-X-ME-Received: <xmr:N3W1ZWGi4C_KROw_QNaMOPlCIa4TFfPJruxoiJiQZECD7nQ4BekjlPzuUIoe>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdelledgudegkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
-    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehge
-    dvvedvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhu
-    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhroh
-    grhhdrtghomh
-X-ME-Proxy: <xmx:N3W1ZXS110j-vjgyY6EW1dfW45i3meLs3a1VZcRv6ofwxwHT12Dxiw>
-    <xmx:N3W1Zbw-Euzl1870lEgctW1A2dZr4uVQaY9iCRTke47D7FPgviv4qQ>
-    <xmx:N3W1ZV46WEZWASrezB8x6RlNEaKn8J1Ccwq_vPOVpmkR7cubSqODyA>
-    <xmx:N3W1ZSnl8BQjUg2HF_0ajVNTMJwTWph6TzaR3CJv3rLIMl5wQ0qw4g>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 27 Jan 2024 16:27:19 -0500 (EST)
-Date: Sat, 27 Jan 2024 13:27:18 -0800
-From: Greg KH <greg@kroah.com>
-To: Qu Wenruo <wqu@suse.com>
-Cc: stable@vger.kernel.org, Rongrong <i@rong.moe>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: Re: [PATCH 6.6.y] btrfs: scrub: avoid use-after-free when chunk
- length is not 64K aligned
-Message-ID: <2024012709-refract-briar-2d47@gregkh>
-References: <2024012740-mating-boxing-dd93@gregkh>
- <2d0c7aa20d79dbb7b77683db0ea9a329526c7ef5.1706389328.git.wqu@suse.com>
+	s=arc-20240116; t=1706392535; c=relaxed/simple;
+	bh=GAppqCHKqlsZfHumxqZFlwRMzeHbB3TBfdysrqUeLiE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BPXOs3u2ywKhOqk/tgxEEHjKM097T21Q5ebpWpw3Sksn6aHZUMqSuLSUZEoFayN9UAnc2/gCIcGIgySDx5effctWRCUpu0VIXLn22zJBSocTzYN8r7n3pyhfXJGTHna9GOU0dhliR5pjw7gh1FKo46FRCO12uy3loQoRVyNqM0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5Hpcy7T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F46FC433F1;
+	Sat, 27 Jan 2024 21:55:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1706392534;
+	bh=GAppqCHKqlsZfHumxqZFlwRMzeHbB3TBfdysrqUeLiE=;
+	h=Subject:To:Cc:From:Date:From;
+	b=O5Hpcy7TiDmSXI0csDBfydCU7Dl5rDW0IMIFmrBN8LCWGSs6TER7hX59rNP3go2Uc
+	 UuURMb+H+Lr6vJV9SO/vK/AUoTAyVGhxd7UUV/uA8ysxe22waacFbWY63NfNwoyLMy
+	 SrQhtTwhOXgnz6A1I4pfKAOLz07TiwtLFd7yiUtg=
+Subject: FAILED: patch "[PATCH] btrfs: avoid copying BTRFS_ROOT_SUBVOL_DEAD flag to snapshot" failed to apply to 5.15-stable tree
+To: osandov@fb.com,anand.jain@oracle.com,dsterba@suse.com,sweettea-kernel@dorminy.me
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sat, 27 Jan 2024 13:55:33 -0800
+Message-ID: <2024012733-expert-landlady-ce9c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2d0c7aa20d79dbb7b77683db0ea9a329526c7ef5.1706389328.git.wqu@suse.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jan 28, 2024 at 07:32:08AM +1030, Qu Wenruo wrote:
-> [ Upstream commit f546c4282673497a06ecb6190b50ae7f6c85b02f ]
-> 
 
-Now queued up, thanks!
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 3324d0547861b16cf436d54abba7052e0c8aa9de
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012733-expert-landlady-ce9c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+3324d0547861 ("btrfs: avoid copying BTRFS_ROOT_SUBVOL_DEAD flag to snapshot of subvolume being deleted")
+60021bd754c6 ("btrfs: prevent subvol with swapfile from being deleted")
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 3324d0547861b16cf436d54abba7052e0c8aa9de Mon Sep 17 00:00:00 2001
+From: Omar Sandoval <osandov@fb.com>
+Date: Thu, 4 Jan 2024 11:48:47 -0800
+Subject: [PATCH] btrfs: avoid copying BTRFS_ROOT_SUBVOL_DEAD flag to snapshot
+ of subvolume being deleted
+
+Sweet Tea spotted a race between subvolume deletion and snapshotting
+that can result in the root item for the snapshot having the
+BTRFS_ROOT_SUBVOL_DEAD flag set. The race is:
+
+Thread 1                                      | Thread 2
+----------------------------------------------|----------
+btrfs_delete_subvolume                        |
+  btrfs_set_root_flags(BTRFS_ROOT_SUBVOL_DEAD)|
+                                              |btrfs_mksubvol
+                                              |  down_read(subvol_sem)
+                                              |  create_snapshot
+                                              |    ...
+                                              |    create_pending_snapshot
+                                              |      copy root item from source
+  down_write(subvol_sem)                      |
+
+This flag is only checked in send and swap activate, which this would
+cause to fail mysteriously.
+
+create_snapshot() now checks the root refs to reject a deleted
+subvolume, so we can fix this by locking subvol_sem earlier so that the
+BTRFS_ROOT_SUBVOL_DEAD flag and the root refs are updated atomically.
+
+CC: stable@vger.kernel.org # 4.14+
+Reported-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Reviewed-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Omar Sandoval <osandov@fb.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index b3e39610cc95..7bcc1c03437a 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4458,6 +4458,8 @@ int btrfs_delete_subvolume(struct btrfs_inode *dir, struct dentry *dentry)
+ 	u64 root_flags;
+ 	int ret;
+ 
++	down_write(&fs_info->subvol_sem);
++
+ 	/*
+ 	 * Don't allow to delete a subvolume with send in progress. This is
+ 	 * inside the inode lock so the error handling that has to drop the bit
+@@ -4469,25 +4471,25 @@ int btrfs_delete_subvolume(struct btrfs_inode *dir, struct dentry *dentry)
+ 		btrfs_warn(fs_info,
+ 			   "attempt to delete subvolume %llu during send",
+ 			   dest->root_key.objectid);
+-		return -EPERM;
++		ret = -EPERM;
++		goto out_up_write;
+ 	}
+ 	if (atomic_read(&dest->nr_swapfiles)) {
+ 		spin_unlock(&dest->root_item_lock);
+ 		btrfs_warn(fs_info,
+ 			   "attempt to delete subvolume %llu with active swapfile",
+ 			   root->root_key.objectid);
+-		return -EPERM;
++		ret = -EPERM;
++		goto out_up_write;
+ 	}
+ 	root_flags = btrfs_root_flags(&dest->root_item);
+ 	btrfs_set_root_flags(&dest->root_item,
+ 			     root_flags | BTRFS_ROOT_SUBVOL_DEAD);
+ 	spin_unlock(&dest->root_item_lock);
+ 
+-	down_write(&fs_info->subvol_sem);
+-
+ 	ret = may_destroy_subvol(dest);
+ 	if (ret)
+-		goto out_up_write;
++		goto out_undead;
+ 
+ 	btrfs_init_block_rsv(&block_rsv, BTRFS_BLOCK_RSV_TEMP);
+ 	/*
+@@ -4497,7 +4499,7 @@ int btrfs_delete_subvolume(struct btrfs_inode *dir, struct dentry *dentry)
+ 	 */
+ 	ret = btrfs_subvolume_reserve_metadata(root, &block_rsv, 5, true);
+ 	if (ret)
+-		goto out_up_write;
++		goto out_undead;
+ 
+ 	trans = btrfs_start_transaction(root, 0);
+ 	if (IS_ERR(trans)) {
+@@ -4563,15 +4565,17 @@ int btrfs_delete_subvolume(struct btrfs_inode *dir, struct dentry *dentry)
+ 	inode->i_flags |= S_DEAD;
+ out_release:
+ 	btrfs_subvolume_release_metadata(root, &block_rsv);
+-out_up_write:
+-	up_write(&fs_info->subvol_sem);
++out_undead:
+ 	if (ret) {
+ 		spin_lock(&dest->root_item_lock);
+ 		root_flags = btrfs_root_flags(&dest->root_item);
+ 		btrfs_set_root_flags(&dest->root_item,
+ 				root_flags & ~BTRFS_ROOT_SUBVOL_DEAD);
+ 		spin_unlock(&dest->root_item_lock);
+-	} else {
++	}
++out_up_write:
++	up_write(&fs_info->subvol_sem);
++	if (!ret) {
+ 		d_invalidate(dentry);
+ 		btrfs_prune_dentries(dest);
+ 		ASSERT(dest->send_in_progress == 0);
+
 
