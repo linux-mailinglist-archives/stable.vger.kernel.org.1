@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2367583F04E
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:55:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65E5283F04F
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 560E01C216CC
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 21:55:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EBA3B21EAE
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 21:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026541B5BB;
-	Sat, 27 Jan 2024 21:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9F01B7FA;
+	Sat, 27 Jan 2024 21:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9H3yzFp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3N5LXW6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46311B297
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 21:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9591B279
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 21:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706392536; cv=none; b=P733UxCMSIU1F2rcSk02TqK2gPUT+9YhknMwtFdbhZh9J0nzsyv/ZFuJnTdIMl43AE9xiFmcT+0R6IL6dMIxrI8b8oakp33TJLLthal44PbIdY7WayxPpqbhHJlYeqydiVM9c3kOc3zVhzgXzS+rHQgeGgpXmqhIfBueX/Hisos=
+	t=1706392538; cv=none; b=XXYh8AK2qffgKH3mKyi5oNdPsu7bJX8M4PyuLIOzRjNyorzoUtectYFYAPFYIyqeiS5Mss4UTJhREpkHFoUKF///BLIJyMwSClPeE6msLd85rW4iCQQr8Ah6fHSFTYqSEa/2r9mT9kwJmyWi4t/w5R3F7N8CwphX8CYLYBTj0e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706392536; c=relaxed/simple;
-	bh=SeBfzVgo84//liQZAcTBmbfz9AkSKtUYwNZKNnAKRZ0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=as7zsOnKFGsBhsCbRWLEOdXlcdRzxQLF9vKDaU6rznST+6XsKsd66EbHwYYwbGnlZpR7Nclb90TP3PHAzvyGXbwGuV2bM0A+jCFHGmhjQpY9FPqa2PWAYINqyo7u2KgBuCWxJQpVJ1ZjyQeP2GtmR0gDpoPV75408oXoTaFBJLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9H3yzFp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA58C43390;
-	Sat, 27 Jan 2024 21:55:36 +0000 (UTC)
+	s=arc-20240116; t=1706392538; c=relaxed/simple;
+	bh=vVgzuATRTuxuz2raIryFlGVHLp4O9O5dS/1Qc+yKE40=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MRmJBwM/Ih1VhgKDhQf3bblUIOeg70F9Z3HzF2ztz85zvQc57ewECNw9/Rup61HZnIc2gHgTi3zKKkUWC+w7PfKcHYkaQQ+En3MgYtfHPaE8aZdzHKe2n51dA6CMUFfWw3GyF1gdcynlzIHk8PoY1TqcdMSsVUKWRpja0KVnl94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3N5LXW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE3CC433F1;
+	Sat, 27 Jan 2024 21:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706392536;
-	bh=SeBfzVgo84//liQZAcTBmbfz9AkSKtUYwNZKNnAKRZ0=;
+	s=korg; t=1706392537;
+	bh=vVgzuATRTuxuz2raIryFlGVHLp4O9O5dS/1Qc+yKE40=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Z9H3yzFpkxJTj6GqpQ0+nbrPUIuJGT1/rWe6f4gphYQWj8+P1Ni/sHCxc0maxhgax
-	 KYZtMo+X06tLlGDPkJ0L4RcSX5oHgV1j9ckGJfsZWtu7whRSUTEZuaRno0csqobb0j
-	 v0HLgaLeGqbQwZ01NHD5cuZruQ494FeTCMaHxUM8=
-Subject: FAILED: patch "[PATCH] btrfs: avoid copying BTRFS_ROOT_SUBVOL_DEAD flag to snapshot" failed to apply to 5.10-stable tree
+	b=Z3N5LXW6uS7twMyKP2zFDBY0+gT9wSNQtl+TS7vhuiMI9sNLVuUC9iF3Ue/4W3jOX
+	 sR0EP/JHKGBPwHSP4e1V1mtlvlAmeSMVdKhqOi9Hh9glwiAf01t44nDw3P5aqHM7+8
+	 gWfSV6Dwk/rkLEEbdR4bwJwp+3cEEuPSXNdjj7N8=
+Subject: FAILED: patch "[PATCH] btrfs: avoid copying BTRFS_ROOT_SUBVOL_DEAD flag to snapshot" failed to apply to 5.4-stable tree
 To: osandov@fb.com,anand.jain@oracle.com,dsterba@suse.com,sweettea-kernel@dorminy.me
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 13:55:35 -0800
-Message-ID: <2024012735-gentile-overture-2afa@gregkh>
+Date: Sat, 27 Jan 2024 13:55:36 -0800
+Message-ID: <2024012736-narrow-thievish-cc02@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3324d0547861b16cf436d54abba7052e0c8aa9de
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012735-gentile-overture-2afa@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012736-narrow-thievish-cc02@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,22 @@ Possible dependencies:
 60021bd754c6 ("btrfs: prevent subvol with swapfile from being deleted")
 dd0734f2a866 ("btrfs: fix race between swap file activation and snapshot creation")
 ee0d904fd9c5 ("btrfs: remove err variable from btrfs_delete_subvolume")
+c3e1f96c37d0 ("btrfs: enumerate the type of exclusive operation in progress")
+e85fde5162bf ("btrfs: qgroup: fix qgroup meta rsv leak for subvolume operations")
+adca4d945c8d ("btrfs: qgroup: remove ASYNC_COMMIT mechanism in favor of reserve retry-after-EDQUOT")
+c11fbb6ed0dd ("btrfs: reduce lock contention when creating snapshot")
+63f018be577f ("btrfs: Remove __ prefix from btrfs_block_rsv_release")
+dcc3eb9638c3 ("btrfs: convert snapshot/nocow exlcusion to drew lock")
+0024652895e3 ("btrfs: rename btrfs_put_fs_root and btrfs_grab_fs_root")
+bd647ce385ec ("btrfs: add a leak check for roots")
+8260edba67a2 ("btrfs: make the init of static elements in fs_info separate")
+ae18c37ad5a1 ("btrfs: move fs_info init work into it's own helper function")
+141386e1a5d6 ("btrfs: free more things in btrfs_free_fs_info")
+bc44d7c4b2b1 ("btrfs: push btrfs_grab_fs_root into btrfs_get_fs_root")
+81f096edf047 ("btrfs: use btrfs_put_fs_root to free roots always")
+0d4b0463011d ("btrfs: export and rename free_fs_info")
+fbb0ce40d606 ("btrfs: hold a ref on the root in btrfs_check_uuid_tree_entry")
+ca2037fba6af ("btrfs: hold a ref on the root in btrfs_recover_log_trees")
 
 thanks,
 
