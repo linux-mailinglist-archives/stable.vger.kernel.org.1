@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC45083F195
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:11:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E93A683F197
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:11:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A683D284FC3
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:11:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B1D41F22DB5
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B74B200BC;
-	Sat, 27 Jan 2024 23:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C231F946;
+	Sat, 27 Jan 2024 23:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UaG+CUv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRKbOlo1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B7B1F946
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA9C200A0
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706397068; cv=none; b=eL/h77i6EETHq1uOLCIW2HHcRTXOIyZs2v1k12USsd+i67DRWaFpIksZIph8BcXfR0DK+Qq4zku1VEO+98ZA8zmzwvD3Te+iG1D807ofYSwT+bl0d36VhU7GD+fhhJezuKDlYqnGOXxWOfU6SykPxqh+xxmY6peA+KzIUnDNaFg=
+	t=1706397077; cv=none; b=mzvh89b9NYmMht0HVkNHEhJ+bc/cnrgZgL32PhkGhF5Ced3lppKdOuTvZ14svF1Y1wLMWGlqUMGSHyYQmX08JPdyLz0ODeU00o0DLMRyZMfE2xxYh+5Snuj8oOzIEni92I4Or/LRaWQVw2XHWsFL0ASTSWiUB1KETGBBOe8PZEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706397068; c=relaxed/simple;
-	bh=aAH17vqcMQqfc2ZBgMW1PixDX/KyD058c07+NuYhhO8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=q3Dawc/D9y6ddidY8mi2Zs0ES1LLfv+qJ2gcM8gGRwlOGvKIpZ1bR26S4d1BpEM03EQeseqROoFVdx2uYAahIwcdpNNlvJGru37a8J0oKITWIP3Sg6ft/q0XNz/7aG8jZ1HXl/BVHOOKfVO4t9uRcBZRAaBN1QcIw12pbZRLY3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UaG+CUv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F55C433C7;
-	Sat, 27 Jan 2024 23:11:07 +0000 (UTC)
+	s=arc-20240116; t=1706397077; c=relaxed/simple;
+	bh=mAe7IpjVWzIhrdqFh33asfWlZHhgjtDo1s/Ur7pz/9M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MFTn3YVl7GBBTU5JAYJsonn9loNCwivPr3ZZWGl48SBBcRsjhBMAZqAasUhCnXi/HS9JO78J0miQPGazeUTVHIAb6eyiTDTpyLG+EoiEJFCBHrQy0esqyaX24kq/dkzUrPJaXjYGw4NYlfu25EhwXoAEM3Rkq+9HJKFwTdy28yA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRKbOlo1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48ED2C433C7;
+	Sat, 27 Jan 2024 23:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706397067;
-	bh=aAH17vqcMQqfc2ZBgMW1PixDX/KyD058c07+NuYhhO8=;
+	s=korg; t=1706397077;
+	bh=mAe7IpjVWzIhrdqFh33asfWlZHhgjtDo1s/Ur7pz/9M=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0UaG+CUvQGUgA6EJpBDgwVhmBpp7vPRSvdp8RoOlERDKuBk+ZwCi8XJMsUYan/KbT
-	 4G8fd9K8iNCDrycilhYYR4YU9ZSzkjPHECMawRSJZKry3eMbHUL60AluuHQTFMaR+n
-	 +qpSeCuodeEWrMDgvAWG9cyuUuGZPEQfLAq89A7k=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix black screen on video playback with" failed to apply to 6.1-stable tree
-To: sungkim@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,nicholas.kazlauskas@amd.com
+	b=mRKbOlo12JAWAKVApPHqtO9EUWi/D+XnMONwDOr7uU6DmVgT8MsLy6OhyfKM3/3t9
+	 U/Me5p1gMBWXzNPvWV2OtdBtI25Nrp/sLPEBbmhfhfuPse0V5t8VsZ1HbSWaiSo+ru
+	 uhBE0VL7v4QMqPPK/PAn7J8OZ6A/jsBxTF4eIs2o=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix some HostVM parameters in DML" failed to apply to 6.7-stable tree
+To: syed.hassan@amd.com,Roman.Li@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,hamza.mahfooz@amd.com,nicholas.kazlauskas@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 15:11:07 -0800
-Message-ID: <2024012706-overlabor-upstart-9be5@gregkh>
+Date: Sat, 27 Jan 2024 15:11:16 -0800
+Message-ID: <2024012716-spree-nintendo-dcad@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2d1c884a535fcca74814553132d41c15dc9831ef
+git cherry-pick -x 33a6e409165cd23d1dc580031cb749550ca18517
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012706-overlabor-upstart-9be5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012716-spree-nintendo-dcad@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
-2d1c884a535f ("drm/amd/display: Fix black screen on video playback with embedded panel")
-c0af8c744e7e ("drm/amd/display: Make driver backwards-compatible with non-IPS PMFW")
-1288d7020809 ("drm/amd/display: Improve x86 and dmub ips handshake")
-c0f8b83188c7 ("drm/amd/display: disable IPS")
-93a66cef607c ("drm/amd/display: Add IPS control flag")
-dc01c4b79bfe ("drm/amd/display: Update driver and IPS interop")
-77ad5f6febdc ("drm/amd/display: Add new logs for AutoDPMTest")
-0fa45b6aeae4 ("drm/amd/display: Add DCN35 Resource")
-ec129fa356be ("drm/amd/display: Add DCN35 init")
-65138eb72e1f ("drm/amd/display: Add DCN35 DMUB")
-8774029f76b9 ("drm/amd/display: Add DCN35 CLK_MGR")
-6f8b7565cca4 ("drm/amd/display: Add DCN35 HWSEQ")
-920f879c8360 ("drm/amd/display: Add DCN35 PG_CNTL")
-fb8c3ef80584 ("drm/amd/display: Update dc.h for DCN35 support")
-5e77c339a291 ("drm/amd/display: Skip dmub memory flush when not needed")
-0b9dc439f404 ("drm/amd/display: Write flip addr to scratch reg for subvp")
-96182df99dad ("drm/amd/display: Enable runtime register offset init for DCN32 DMUB")
-53f328807946 ("drm/amd/display: implement pipe type definition and adding accessors")
-73d450926432 ("drm/amd/display: fix incorrect stream_res allocation for older ASIC")
-198f0e895349 ("drm/amd/display: rename acquire_idle_pipe_for_layer to acquire_free_pipe_as_sec_dpp_pipe")
+33a6e409165c ("drm/amd/display: Fix some HostVM parameters in DML")
+251027968a72 ("drm/amd/display: Feed SR and Z8 watermarks into DML2 for DCN35")
 
 thanks,
 
@@ -96,78 +78,90 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2d1c884a535fcca74814553132d41c15dc9831ef Mon Sep 17 00:00:00 2001
-From: Sung Joon Kim <sungkim@amd.com>
-Date: Fri, 10 Nov 2023 11:33:45 -0500
-Subject: [PATCH] drm/amd/display: Fix black screen on video playback with
- embedded panel
+From 33a6e409165cd23d1dc580031cb749550ca18517 Mon Sep 17 00:00:00 2001
+From: Taimur Hassan <syed.hassan@amd.com>
+Date: Fri, 10 Nov 2023 10:24:20 -0500
+Subject: [PATCH] drm/amd/display: Fix some HostVM parameters in DML
 
-[why]
-We have dynamic power control in driver but
-should be ignored when power is forced on.
+[Why]
+A number of DML parameters related to HostVM were either missing or
+being set incorrectly, which may cause inaccuracies in calculating
+margins and determining BW limitations.
 
-[how]
-Bypass any power control when it's forced on.
+[How]
+Correct these values where needed and populate the missing values.
 
 Cc: stable@vger.kernel.org
 Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Sung Joon Kim <sungkim@amd.com>
+Signed-off-by: Taimur Hassan <syed.hassan@amd.com>
+Signed-off-by: Roman Li <Roman.Li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index 19f8d83698be..63a0b885b6f0 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -1132,7 +1132,6 @@ void dcn35_clk_mgr_construct(
- 			ctx->dc->debug.disable_dpp_power_gate = false;
- 			ctx->dc->debug.disable_hubp_power_gate = false;
- 			ctx->dc->debug.disable_dsc_power_gate = false;
--			ctx->dc->debug.disable_hpo_power_gate = false;
- 		} else {
- 			/*let's reset the config control flag*/
- 			ctx->dc->config.disable_ips = DMUB_IPS_DISABLE_ALL; /*pmfw not support it, disable it all*/
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_pg_cntl.c b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_pg_cntl.c
-index 0f60c40e1fc5..53bd0ae4bab5 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_pg_cntl.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_pg_cntl.c
-@@ -261,6 +261,7 @@ void pg_cntl35_hpo_pg_control(struct pg_cntl *pg_cntl, bool power_on)
- 	uint32_t power_gate = power_on ? 0 : 1;
- 	uint32_t pwr_status = power_on ? 0 : 2;
- 	uint32_t org_ip_request_cntl;
-+	uint32_t power_forceon;
- 	bool block_enabled;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+index 21c17d3296a3..39cf1ae3a3e1 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+@@ -330,6 +330,39 @@ void dcn35_update_bw_bounding_box_fpu(struct dc *dc,
+ 	dml_init_instance(&dc->dml, &dcn3_5_soc, &dcn3_5_ip,
+ 				DML_PROJECT_DCN31);
  
- 	if (pg_cntl->ctx->dc->debug.ignore_pg ||
-@@ -277,6 +278,10 @@ void pg_cntl35_hpo_pg_control(struct pg_cntl *pg_cntl, bool power_on)
- 			return;
++	/*copy to dml2, before dml2_create*/
++	if (clk_table->num_entries > 2) {
++
++		for (i = 0; i < clk_table->num_entries; i++) {
++			dc->dml2_options.bbox_overrides.clks_table.num_states =
++				clk_table->num_entries;
++			dc->dml2_options.bbox_overrides.clks_table.clk_entries[i].dcfclk_mhz =
++				clock_limits[i].dcfclk_mhz;
++			dc->dml2_options.bbox_overrides.clks_table.clk_entries[i].fclk_mhz =
++				clock_limits[i].fabricclk_mhz;
++			dc->dml2_options.bbox_overrides.clks_table.clk_entries[i].dispclk_mhz =
++				clock_limits[i].dispclk_mhz;
++			dc->dml2_options.bbox_overrides.clks_table.clk_entries[i].dppclk_mhz =
++				clock_limits[i].dppclk_mhz;
++			dc->dml2_options.bbox_overrides.clks_table.clk_entries[i].socclk_mhz =
++				clock_limits[i].socclk_mhz;
++			dc->dml2_options.bbox_overrides.clks_table.clk_entries[i].memclk_mhz =
++				clk_table->entries[i].memclk_mhz * clk_table->entries[i].wck_ratio;
++			dc->dml2_options.bbox_overrides.clks_table.num_entries_per_clk.num_dcfclk_levels =
++				clk_table->num_entries;
++			dc->dml2_options.bbox_overrides.clks_table.num_entries_per_clk.num_fclk_levels =
++				clk_table->num_entries;
++			dc->dml2_options.bbox_overrides.clks_table.num_entries_per_clk.num_dispclk_levels =
++				clk_table->num_entries;
++			dc->dml2_options.bbox_overrides.clks_table.num_entries_per_clk.num_dppclk_levels =
++				clk_table->num_entries;
++			dc->dml2_options.bbox_overrides.clks_table.num_entries_per_clk.num_socclk_levels =
++				clk_table->num_entries;
++			dc->dml2_options.bbox_overrides.clks_table.num_entries_per_clk.num_memclk_levels =
++				clk_table->num_entries;
++		}
++	}
++
+ 	/* Update latency values */
+ 	dc->dml2_options.bbox_overrides.dram_clock_change_latency_us = dcn3_5_soc.dram_clock_change_latency_us;
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
+index 48caa34a5ce7..fa8fe5bf7e57 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
+@@ -1057,9 +1057,12 @@ void map_dc_state_into_dml_display_cfg(struct dml2_context *dml2, struct dc_stat
  	}
  
-+	REG_GET(DOMAIN25_PG_CONFIG, DOMAIN_POWER_FORCEON, &power_forceon);
-+	if (power_forceon)
-+		return;
-+
- 	REG_GET(DC_IP_REQUEST_CNTL, IP_REQUEST_EN, &org_ip_request_cntl);
- 	if (org_ip_request_cntl == 0)
- 		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 1);
-@@ -304,6 +309,7 @@ void pg_cntl35_io_clk_pg_control(struct pg_cntl *pg_cntl, bool power_on)
- 	uint32_t power_gate = power_on ? 0 : 1;
- 	uint32_t pwr_status = power_on ? 0 : 2;
- 	uint32_t org_ip_request_cntl;
-+	uint32_t power_forceon;
- 	bool block_enabled;
+ 	//Generally these are set by referencing our latest BB/IP params in dcn32_resource.c file
+-	dml_dispcfg->plane.GPUVMEnable = true;
+-	dml_dispcfg->plane.GPUVMMaxPageTableLevels = 4;
+-	dml_dispcfg->plane.HostVMEnable = false;
++	dml_dispcfg->plane.GPUVMEnable = dml2->v20.dml_core_ctx.ip.gpuvm_enable;
++	dml_dispcfg->plane.GPUVMMaxPageTableLevels = dml2->v20.dml_core_ctx.ip.gpuvm_max_page_table_levels;
++	dml_dispcfg->plane.HostVMEnable = dml2->v20.dml_core_ctx.ip.hostvm_enable;
++	dml_dispcfg->plane.HostVMMaxPageTableLevels = dml2->v20.dml_core_ctx.ip.hostvm_max_page_table_levels;
++	if (dml2->v20.dml_core_ctx.ip.hostvm_enable)
++		dml2->v20.dml_core_ctx.policy.AllowForPStateChangeOrStutterInVBlankFinal = dml_prefetch_support_uclk_fclk_and_stutter;
  
- 	if (pg_cntl->ctx->dc->debug.ignore_pg ||
-@@ -319,6 +325,10 @@ void pg_cntl35_io_clk_pg_control(struct pg_cntl *pg_cntl, bool power_on)
- 			return;
- 	}
+ 	dml2_populate_pipe_to_plane_index_mapping(dml2, context);
  
-+	REG_GET(DOMAIN22_PG_CONFIG, DOMAIN_POWER_FORCEON, &power_forceon);
-+	if (power_forceon)
-+		return;
-+
- 	REG_GET(DC_IP_REQUEST_CNTL, IP_REQUEST_EN, &org_ip_request_cntl);
- 	if (org_ip_request_cntl == 0)
- 		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 1);
 
 
