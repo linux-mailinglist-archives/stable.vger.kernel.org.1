@@ -1,217 +1,192 @@
-Return-Path: <stable+bounces-16063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B69D483E918
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 02:45:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A94C483E98D
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 03:13:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 028C01C20A5C
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 01:45:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC5FB1C224BB
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 02:13:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F75A9471;
-	Sat, 27 Jan 2024 01:44:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="HJkAkvag";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="UhZv2u3L"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B08947E;
+	Sat, 27 Jan 2024 02:07:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DB08F59;
-	Sat, 27 Jan 2024 01:44:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706319898; cv=fail; b=d+s1zVWX1c9rq8RqY5Ihk7MIbsb1weyT+5DbwNEn9KOti3AhyEyK4zC6AD5JiTmX/xPZdtne4q9tvFONJDyPlCLOo/kMYWGAB/AFelIx0jnxSdZmgoLOSfDxbXFN1EEaXzfDgjjGJupX0yjf34rW1JKrYZrwFlvSeIB/yJs8uSE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706319898; c=relaxed/simple;
-	bh=X8wxpn+8/UimbDGVqh7w/Wmz2x7QR8YOsuWdR5H6Ia0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=cbvSNyFSwmldvVTyKMhp0c1lMMdLxdEbDoTP8HRqhNMEdEKDDmhZLiXHz02xEF05mA23z+aksttBkBXCjac7FMVxnClmqNIrbwsYf2/aIkXw4FRTrDifOkfQqztLSTXIpMS9Wx9kqx9xZDi7ecRE2Mj0sNNoJDkgk3od1bKhE2s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=HJkAkvag; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=UhZv2u3L; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40R1KS2k004162;
-	Sat, 27 Jan 2024 01:44:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=R6gWDP0XRK59DHyZuaf3qPApfmHVetD0cDmmsf8wb/4=;
- b=HJkAkvagza8UwHu6DgaxU15aNSjjYXuFzmgP1++XkUhsEyzPnRgrCw7UCJITE/iev/SX
- MZrF1eF39NAWBQURyCcYJTI1ruq0dthHuhaONzew/zT+aDMtKDuqm1aEn0jnZKrMEz3K
- F5p6CSrj0Xb0yOwYv1/fbPYy31uVwbPhN2VLWGmVPq7LSzzyrkv36fOEXfIuwoToiMbr
- QUEoNi//RGIpvamG6QsGiEQb52scZ2S+wTramLDeO4KyXT2/zrolezqCRRhl8iW2NfYa
- LmuvwNSCYs2AhXVpVj669NNWsknOioevzLjXl4QMt/+YZvtjXEgeyReAmzK5mDMD5h5s ig== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vr7cwu9xk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 27 Jan 2024 01:44:53 +0000
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 40R1XCmd031555;
-	Sat, 27 Jan 2024 01:44:52 GMT
-Received: from nam02-sn1-obe.outbound.protection.outlook.com (mail-sn1nam02lp2041.outbound.protection.outlook.com [104.47.57.41])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3vvr93r777-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 27 Jan 2024 01:44:52 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dZskojRomqCJVRp7S0jrM7SGZJ6jcpEdpNuzD4GTwbktn4xz6svfSIETxHIn8gV8+Tjjh7LVC7kBhIvCuDNP4qBBFCA9pJjvK6VAWIXNl1y3P9Ed1I/G3a2XGia03dVqWJDAS6SsT7z713104Do4qY2mdDL3e6nqkF1CIYsPk6dU7YYeu+/yxuqPV4btYQnRi/YWGEJWNZ1gyfocieZrjC4N+jD1jSdRSoo+0Y+6oS99mu27jWGqHxGyq39ih7N4pN8Azszj8/Um277xYkFbCzYNvCKDVfwsjtIq+GqMP3n34kfs7LoocQ+05g1VvULnWeJog96bJEYh/CLdj71PlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=R6gWDP0XRK59DHyZuaf3qPApfmHVetD0cDmmsf8wb/4=;
- b=biZ7xE+xmpDvaUDT+ZOlI2ZaT0hWV58ShNUx/fXF/Hynf6ZebP1Ll0qd/0qEbLrB6kY2rcK8mWW6XsW5zLbWD+ODiw6GBQXCJiiYp7LjH1k4nMz9+zwIAIXXwQFTbWd40v/L4x9nxa42QRyfKrso1uZfTRfPDkFanJRCXwIAnvEJtxm4S35TCcR3hPgGl/S1/kLVygJp/ESLHdh1ALa2/pqjOfOxYH/m4SE0ia3l0M7UdGAkPn2Y+1AQVJjnfedc9gM0y3SuNPrQBBL3RmX9Hw7HXsmIgcnJ/Xh73pZUHFUmauOszQzvVrLjJjuibuiMHHYhA80O6+2kC/CbqMmgZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=R6gWDP0XRK59DHyZuaf3qPApfmHVetD0cDmmsf8wb/4=;
- b=UhZv2u3LlddpdMT8HTE7f+MnRgPMwkN41zcmGU4LBD7ZxGLu9gs0xI2gTP2zJV+TwaPUHfVlP4V68BD/5r29Ckxa6PHhdP2AuypXGRRNtElsxxF1dTGPEXx3+IZMLcbysYP+EPPULN00KVXz+Ap2cFcVUTM/fQZ1Kp+/uDGKq3Y=
-Received: from BYAPR10MB2663.namprd10.prod.outlook.com (2603:10b6:a02:a9::20)
- by SA1PR10MB6342.namprd10.prod.outlook.com (2603:10b6:806:255::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.27; Sat, 27 Jan
- 2024 01:44:49 +0000
-Received: from BYAPR10MB2663.namprd10.prod.outlook.com
- ([fe80::a1c5:b1ad:2955:e7a6]) by BYAPR10MB2663.namprd10.prod.outlook.com
- ([fe80::a1c5:b1ad:2955:e7a6%5]) with mapi id 15.20.7228.027; Sat, 27 Jan 2024
- 01:44:49 +0000
-Message-ID: <53d7ad5f-db9b-31f0-32dc-99031e09f22e@oracle.com>
-Date: Fri, 26 Jan 2024 17:44:44 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: Stable bugfix backport request of "KVM: x86: smm: preserve
- interrupt shadow in SMRAM"?
-Content-Language: en-US
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: mlevitsk@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
-        stable@vger.kernel.org, joe.jin@oracle.com
-References: <20240127002016.95369-1-dongli.zhang@oracle.com>
- <2024012639-parsnip-quill-2352@gregkh>
- <79cace24-b2b6-8744-c175-bfb0a1bfc6eb@oracle.com>
- <2024012614-wreath-wreckage-f291@gregkh>
-From: Dongli Zhang <dongli.zhang@oracle.com>
-In-Reply-To: <2024012614-wreath-wreckage-f291@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BL0PR02CA0079.namprd02.prod.outlook.com
- (2603:10b6:208:51::20) To BYAPR10MB2663.namprd10.prod.outlook.com
- (2603:10b6:a02:a9::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D569B669;
+	Sat, 27 Jan 2024 02:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706321247; cv=none; b=PU277XjbFnEbzbQLw0WG2K2zQ7LYpc0Zvlsw4LNx55gKv4YjVfCyulV9uud2G8tkgMM2Y1ZR1hpxmlrAuPcKhNBOfpe++hJoyeBHaXKi6zDTdFdlAJFmIanxRwQCNR1Tgm1L1NlCsuEIKnslfFE3R+qqpH+qMczXjnszbtOQtJQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706321247; c=relaxed/simple;
+	bh=D1pPlkWVhGtFEIb+/MVR/16Ou0AZcX23YBF7y5BCQJA=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=HCVc+Eg5axEds50dQOh9aUO4lNR6U2sTsuErwfIriroYIOrChByHGY70txx5WXAdtINEkxNt+GNI6QO41rdzkycuK67zYsLvBGbjGkf0hl442sZ/nxg2Hz2LbKBSauDdahGADgCcL+adWrCCYhh3Wq37Vdnc9rjI/wOOU16uCWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4TMHwj4f5Yz18MJg;
+	Sat, 27 Jan 2024 10:06:13 +0800 (CST)
+Received: from canpemm500005.china.huawei.com (unknown [7.192.104.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id C307118001C;
+	Sat, 27 Jan 2024 10:07:19 +0800 (CST)
+Received: from [10.174.176.34] (10.174.176.34) by
+ canpemm500005.china.huawei.com (7.192.104.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Sat, 27 Jan 2024 10:07:19 +0800
+Subject: Re: [PATCH 4/7] ext4: add positive int attr pointer to avoid sysfs
+ variables overflow
+To: Baokun Li <libaokun1@huawei.com>, <linux-ext4@vger.kernel.org>
+CC: <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <jack@suse.cz>,
+	<ritesh.list@gmail.com>, <linux-kernel@vger.kernel.org>,
+	<yangerkun@huawei.com>, <chengzhihao1@huawei.com>, <yukuai3@huawei.com>,
+	<stable@vger.kernel.org>
+References: <20240126085716.1363019-1-libaokun1@huawei.com>
+ <20240126085716.1363019-5-libaokun1@huawei.com>
+From: Zhang Yi <yi.zhang@huawei.com>
+Message-ID: <864b67a3-6a4a-2afb-8275-b8532ea3cb8f@huawei.com>
+Date: Sat, 27 Jan 2024 10:07:18 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR10MB2663:EE_|SA1PR10MB6342:EE_
-X-MS-Office365-Filtering-Correlation-Id: 87865c60-561d-4dbc-20b5-08dc1ed98ca7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	KN+2wkqQnH6UESNqj0hxmsswzVIkugpjWpvMhjl1Na0yKucSPqGomouV6r7pcjKshIY38Gw1vm2I8RrnY7+v8LyRN+CeEZF8THBq+WAum00JKw1h87rEMbvAzuuoRXR2WmXxfFkRo1RiCslyroCgeVhFdmwPOAN9wgLKTN9YS3L4M+n4LzS47OIbIxURLXGuAxfL1sY8BNrOVWxcS19cb87rJoZPnZOxf5SejbYP4goImmqFbbh/p7pVu4DY+6yEnLSWS2hE3htrL1G2hNx1xekMDPO9i6aplLG3GWwKvMyKZlufeTzPQZ707mNheh9LnFQTGBxjKZEj7A6Bx+WxeZKfhg4kc65ebNJHqGBwUxh/SvpwB/QgMVgwlfWt1nUqBGg0tKQnuuARGr+BNSPhQdluzYaqoRdhrX4l9IrCTNdv4sEhFF98vFpDMl2yZcsIVOwd+P+xtO0Hotl4oeEeXRaHUscp5qB7vRS3utg/wj0cWHyTLrzCGCJhZfHp3Ll+pc31AhDq9vU1LMRBCq+VtWnQA76WCS7dlWpyoAoRr6/C68HKVe3V/bYM/oYD0QtdRNYduAVxwSouPcquA66gQH/AZSq4fRhyviGNiaxMOYj8KV6BeqeRb2JFvGE6sxQhJnhje0qR/3GEoEJdQX8qCQ==
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB2663.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(396003)(366004)(136003)(346002)(39860400002)(230922051799003)(64100799003)(186009)(1800799012)(451199024)(41300700001)(4744005)(38100700002)(2906002)(44832011)(5660300002)(36756003)(6486002)(26005)(31696002)(478600001)(6666004)(6512007)(107886003)(6506007)(2616005)(83380400001)(8676002)(4326008)(8936002)(6916009)(66476007)(66946007)(86362001)(53546011)(316002)(66556008)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?V1h1TzQycENLNkNwUENEQXBab2VpemhkejA4TWNCbXpDS3N5RzRHUW5KZ20z?=
- =?utf-8?B?YU9rcDFpcFYvY0NUSzlWbFVLWThLMk9nNENnNkRWSldOY2tkRXdIR1Nkd2k1?=
- =?utf-8?B?RG5ycGZkaU5TV2J6TDRQMXBPeWlqdTB6YjBCMzNBTzVTY1FuQUlQemdqTFhw?=
- =?utf-8?B?RUg0OUE1V1NBcjl3cmtMemdRMTQxaVRBSzYyNGdXcVVaSEpCNGJCL2lFbU9p?=
- =?utf-8?B?YzVUa2RJOUVpcERab09teUJUQ2VhNTQvVkdyNEV0TnZ0QStXVENkaWY1WWpw?=
- =?utf-8?B?VjVzMm5LRkpyYTRyR09ROWhZd21GZ3Z3SWxQS1I1aGhhVjNDMk12TmY4Q3dX?=
- =?utf-8?B?aFlXRzNEY3I3UDNnNW5LMm9uOWhCNy9DbGpLT09xZGlJOEtxVE0vZ2dVSFB2?=
- =?utf-8?B?bUNQNmdKWkQ5ZUpGelR0d2w0UWliYSt5dU8va3h3c2lGVHdSeW1qNmFldlhn?=
- =?utf-8?B?NFIrdW5aS3d5bi8zcDRYMUdlQnR6b0twdEsvRWFsY3U2NXN2cVpnQjc2Q2w2?=
- =?utf-8?B?KzltVEVObjBqdmwxUjkrdmwxaGNDWWtVQk5hemFGQnhpSDBHVm1UWXVjOHA2?=
- =?utf-8?B?b0VOdWVabGpzQzRlNU9lY0RFWkVhRHk1Mmw3WUI0VVR3dUEvSjJyYUJKWVg0?=
- =?utf-8?B?dzN5OXFKUHlhdVg0QWVMdTVDQklyRWxISytWYk9GTFNPUmZsSDAzRytzTzlX?=
- =?utf-8?B?Mk9mU1cvL3lBK2phamJPYU9NUGpLSnhuTDZ3RkIwczNnT1BOWlhkZGZKcU1H?=
- =?utf-8?B?SmQwY0VlSWtlYUlISi9Rdlg5enJlSkhxbVpITmpQNkg0OWtrekFNUEZpMHZR?=
- =?utf-8?B?Qjgrc1NtbUViUFZUWUc0bzNXdHYrWFNxV1d5SGhqQUF5LzJmN1c5SWloamdq?=
- =?utf-8?B?eEpLYUpTTW5mMGgzMjFqWGNpZ0NKOENBaHZuOUlKQzIzV0QrRmU4dmVidHNL?=
- =?utf-8?B?aitBeUIvV1RNWWo5TE1oVTc1SDc2eFFETFgrTTRPdHFWbEQ1MVZ0d2QzRnlM?=
- =?utf-8?B?V0ZJcStjZXZMOVh1Q3VSd1ZId3JzdzZZcjhhdjlCSUt5eFdMNkhZL3gzUVFw?=
- =?utf-8?B?Y01qVWV3a3Y0QWhzM0FhK3gzd0hYQnl4SVFUNElNdFVoYjJJV0NVaE1MenlJ?=
- =?utf-8?B?aW54azd2OHd6NXp4WW9td3pra29FcXIzNjNYYncrcXpHYml1OCtFVS9LQ2Y5?=
- =?utf-8?B?dFdFcUZob2dGNVZpcUJaNEkxMExVWEZRc2FYWXFZenFnV0FIQXpab2pTOXhR?=
- =?utf-8?B?SGFkRU1aSjk4R3VGaURlZTRSbUF5SGU1YjJCcG0rNTM2N0lxaWlaRHhFbUZJ?=
- =?utf-8?B?UEZYeS83TlU1OUtCS0ZmNjZPbzZOSWtMMlZUbWFnZGE0Q2Vuemo0SXNyTDNC?=
- =?utf-8?B?WnJXekIwUEhCQUZaMDJlYzdTeDB5QkJzd1didTc1U1g2Ry82VkpQQmRUeHEz?=
- =?utf-8?B?bVAzZGtKVFJBbnQwbkVUdnFiQ1ZGUEJCKzNLdXN3bGJZR1l2SDdnbTFyRjNz?=
- =?utf-8?B?VmM5cE90dFFtTGxhUTZod0c1ekx1ZmE3YnI1d1NGb0dKR0czUzNPeWVaQkNW?=
- =?utf-8?B?ZUtHaWxSZy9qSFRHNGlTTXJ1V0pqNzZJY0xyNXFWZ0JwTlJFTko5N3ZoVFps?=
- =?utf-8?B?ZVNlVVUraU1mYXI0OUJPZ1k0SEN4NTRMVDJRbS8xRll5elMzU0F2QnpHeXVo?=
- =?utf-8?B?ZHBncFdiWDJLT0g5cU54UFgyOUM1aVI3R0FXei9wSlpQOFhiclREZ0VpMzE1?=
- =?utf-8?B?bGYzcVkvVlJFSnZMTHhqUmNOZDNmSnVITFF4QVAwRGw4QUoxOGhUMDlyRmpR?=
- =?utf-8?B?c0VUaUN5bWZQMDdQMGRiNUdjU2NVdSthYTFzVlU1K01CMXFDdEtvUDRYZGEw?=
- =?utf-8?B?bFliM0xLWlVLTHVtSTd4aUd3UnZjVXVZVER2bmZvSUxJcHYycnBKMFJHdlov?=
- =?utf-8?B?cUNpQkx4WDN6RzU5WWNGUDBkZWphMUJwN01qNGtGdnA5RGJmMGI3SnVTMmVj?=
- =?utf-8?B?K0duZUxuSW5NNGZ6TnFIa0N1aWU3OHUzRnNMNVA5TTYzTjhIdHFuSkhQL3Vo?=
- =?utf-8?B?d0c1R1VpUk41NERzNHFycUZtMlB4QjQxYnJ5bkp2bDIybXI1THArS0J3ZHp4?=
- =?utf-8?B?WmEwNnU5eStZcWpoU0I4REJhTE5aRzB3NjhNWVRzVDdUd0JTNzVuUTA5aFpN?=
- =?utf-8?B?eXc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	tqqiuMtCOyptwtxnIJ5JO0oOb1xyDSZwjtXOaFhVPwoWE9nJVFNROkRO0N0QYUPaJb9R0Uyx1TkscwKtHpAlpVTmxBLdqCN3chsEIeaOGAvD0eLOgFd94HHPX4Hrq6nIn43GJKilAaFqvT/S5plfOtVvbzYr2haIidc8yOfI4Gc/wMe6y6II3RenUIUpwaT+z4slQcMD2CUgw9/TM+r8sm6oPyLRP9HR5l2zMY/tcOPk+NQa1fOfGXDCTW5wYDY1kAXRNMUH4HtIiVVxgo/XP5524jIZc0kXh4MzB1rH6dggSmgh9NKwyOS/kllp5TNfDXjFj6oMVJp6ajh4CHjBv2pDgrqMi3eWt9+PfiYSZQD+sar7reTHv03jzd3A28Q6vC55qiU1T+pXGfv49MVUFTlHvNW4ySi9Q0Z3aPCCcZ/ZoXJiXGyyFK36W/Pr27ZEMA9BZ39CX5Ths4hOC0CfGQbNgcU6mjw5ymtF6oynqOG7ADAOsDM/YaOo71GaBNdoWblPhIVTtmLX0eZhmhfc7B9rflMf8nsEB9b0E4GBzzI1+uVSNmdrIUXodTi+UxMpZ/T0aRCWBAEerIelmuoxKY4QHqkRzbmrld4vXiFBnJc=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87865c60-561d-4dbc-20b5-08dc1ed98ca7
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2663.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jan 2024 01:44:49.7821
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Pe4SndN3whihgvGgh1VRoXJwTBMO79t8cjt0wl9b6OK5SEGb2Ns2/VGIYgRHMWbjbHQb/bw31K8d04Ls3rE1pQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB6342
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-25_14,2024-01-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 malwarescore=0
- mlxscore=0 mlxlogscore=838 spamscore=0 adultscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401270011
-X-Proofpoint-ORIG-GUID: ncl9pA-_i8c3v7eEXUmq9BJXAXSR7PTn
-X-Proofpoint-GUID: ncl9pA-_i8c3v7eEXUmq9BJXAXSR7PTn
+In-Reply-To: <20240126085716.1363019-5-libaokun1@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ canpemm500005.china.huawei.com (7.192.104.229)
 
-Hi Greg,
-
-On 1/26/24 17:38, Greg KH wrote:
-> On Fri, Jan 26, 2024 at 05:33:28PM -0800, Dongli Zhang wrote:
->> Hi Greg,
->>
->> On 1/26/24 17:08, Greg KH wrote:
->>> On Fri, Jan 26, 2024 at 04:20:16PM -0800, Dongli Zhang wrote:
->>>> Hi Maxim and Paolo, 
->>>>
->>>> This is the linux-stable backport request regarding the below patch.
->>>
->>> For what tree(s)?
->>
->> It is linux-5.15.y as in the Subject of the patch.
+On 2024/1/26 16:57, Baokun Li wrote:
+> We can easily trigger a BUG_ON by using the following commands:
 > 
-> Am I blind, but I don't see that in the subject line anywhere :(
+>     mount /dev/$disk /tmp/test
+>     echo 2147483650 > /sys/fs/ext4/$disk/mb_group_prealloc
+>     echo test > /tmp/test/file && sync
 > 
+> ==================================================================
+> kernel BUG at fs/ext4/mballoc.c:2029!
+> invalid opcode: 0000 [#1] PREEMPT SMP PTI
+> CPU: 3 PID: 320 Comm: kworker/u36:1 Not tainted 6.8.0-rc1 #462
+> RIP: 0010:mb_mark_used+0x358/0x370
+> [...]
+> Call Trace:
+>  ext4_mb_use_best_found+0x56/0x140
+>  ext4_mb_complex_scan_group+0x196/0x2f0
+>  ext4_mb_regular_allocator+0xa92/0xf00
+>  ext4_mb_new_blocks+0x302/0xbc0
+>  ext4_ext_map_blocks+0x95a/0xef0
+>  ext4_map_blocks+0x2b1/0x680
+>  ext4_do_writepages+0x733/0xbd0
+> [...]
+> ==================================================================
+> 
+> In ext4_mb_normalize_group_request():
+>     ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc;
+> 
+> Here fe_len is of type int, but s_mb_group_prealloc is of type unsigned
+> int, so setting s_mb_group_prealloc to 2147483650 overflows fe_len to a
+> negative number, which ultimately triggers a BUG_ON() in mb_mark_used().
+> 
+> Therefore, we add attr_pointer_pi (aka positive int attr pointer) with a
+> value range of 0-INT_MAX to avoid the above problem. In addition to the
+> mb_group_prealloc sysfs interface, the following interfaces also have uint
+> to int conversions that result in overflows, and are also fixed.
+> 
+>   err_ratelimit_burst
+>   msg_ratelimit_burst
+>   warning_ratelimit_burst
+>   err_ratelimit_interval_ms
+>   msg_ratelimit_interval_ms
+>   warning_ratelimit_interval_ms
+>   mb_best_avail_max_trim_order
+> 
+> CC: stable@vger.kernel.org
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
 
-I did not send the patch directly but had copied the patch in the text.
+Looks good to me.
 
-That's why it is not in the Subject of this email, but the Subject of the
-patch text.
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
 
-From 90f492c865a4b7ca6187a4fc9eebe451f3d6c17e Mon Sep 17 00:00:00 2001
-From: Maxim Levitsky <mlevitsk@redhat.com>
-Date: Fri, 26 Jan 2024 14:03:59 -0800
-Subject: [PATCH linux-5.15.y 1/1] KVM: x86: smm: preserve interrupt shadow in SMRAM
-
-[ Upstream commit fb28875fd7da184079150295da7ee8d80a70917e ]
-... ...
-
-Thank you very much!
-
-Dongli Zhang
+> ---
+>  fs/ext4/sysfs.c | 25 +++++++++++++++++--------
+>  1 file changed, 17 insertions(+), 8 deletions(-)
+> 
+> diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
+> index a5d657fa05cb..6f9f96e00f2f 100644
+> --- a/fs/ext4/sysfs.c
+> +++ b/fs/ext4/sysfs.c
+> @@ -30,6 +30,7 @@ typedef enum {
+>  	attr_first_error_time,
+>  	attr_last_error_time,
+>  	attr_feature,
+> +	attr_pointer_pi,
+>  	attr_pointer_ui,
+>  	attr_pointer_ul,
+>  	attr_pointer_u64,
+> @@ -178,6 +179,9 @@ static struct ext4_attr ext4_attr_##_name = {			\
+>  #define EXT4_RO_ATTR_ES_STRING(_name,_elname,_size)			\
+>  	EXT4_ATTR_STRING(_name, 0444, _size, ext4_super_block, _elname)
+>  
+> +#define EXT4_RW_ATTR_SBI_PI(_name,_elname)      \
+> +	EXT4_ATTR_OFFSET(_name, 0644, pointer_pi, ext4_sb_info, _elname)
+> +
+>  #define EXT4_RW_ATTR_SBI_UI(_name,_elname)	\
+>  	EXT4_ATTR_OFFSET(_name, 0644, pointer_ui, ext4_sb_info, _elname)
+>  
+> @@ -213,17 +217,17 @@ EXT4_RW_ATTR_SBI_UI(mb_max_to_scan, s_mb_max_to_scan);
+>  EXT4_RW_ATTR_SBI_UI(mb_min_to_scan, s_mb_min_to_scan);
+>  EXT4_RW_ATTR_SBI_UI(mb_order2_req, s_mb_order2_reqs);
+>  EXT4_RW_ATTR_SBI_UI(mb_stream_req, s_mb_stream_request);
+> -EXT4_RW_ATTR_SBI_UI(mb_group_prealloc, s_mb_group_prealloc);
+> +EXT4_RW_ATTR_SBI_PI(mb_group_prealloc, s_mb_group_prealloc);
+>  EXT4_RW_ATTR_SBI_UI(mb_max_linear_groups, s_mb_max_linear_groups);
+>  EXT4_RW_ATTR_SBI_UI(extent_max_zeroout_kb, s_extent_max_zeroout_kb);
+>  EXT4_ATTR(trigger_fs_error, 0200, trigger_test_error);
+> -EXT4_RW_ATTR_SBI_UI(err_ratelimit_interval_ms, s_err_ratelimit_state.interval);
+> -EXT4_RW_ATTR_SBI_UI(err_ratelimit_burst, s_err_ratelimit_state.burst);
+> -EXT4_RW_ATTR_SBI_UI(warning_ratelimit_interval_ms, s_warning_ratelimit_state.interval);
+> -EXT4_RW_ATTR_SBI_UI(warning_ratelimit_burst, s_warning_ratelimit_state.burst);
+> -EXT4_RW_ATTR_SBI_UI(msg_ratelimit_interval_ms, s_msg_ratelimit_state.interval);
+> -EXT4_RW_ATTR_SBI_UI(msg_ratelimit_burst, s_msg_ratelimit_state.burst);
+> -EXT4_RW_ATTR_SBI_UI(mb_best_avail_max_trim_order, s_mb_best_avail_max_trim_order);
+> +EXT4_RW_ATTR_SBI_PI(err_ratelimit_interval_ms, s_err_ratelimit_state.interval);
+> +EXT4_RW_ATTR_SBI_PI(err_ratelimit_burst, s_err_ratelimit_state.burst);
+> +EXT4_RW_ATTR_SBI_PI(warning_ratelimit_interval_ms, s_warning_ratelimit_state.interval);
+> +EXT4_RW_ATTR_SBI_PI(warning_ratelimit_burst, s_warning_ratelimit_state.burst);
+> +EXT4_RW_ATTR_SBI_PI(msg_ratelimit_interval_ms, s_msg_ratelimit_state.interval);
+> +EXT4_RW_ATTR_SBI_PI(msg_ratelimit_burst, s_msg_ratelimit_state.burst);
+> +EXT4_RW_ATTR_SBI_PI(mb_best_avail_max_trim_order, s_mb_best_avail_max_trim_order);
+>  #ifdef CONFIG_EXT4_DEBUG
+>  EXT4_RW_ATTR_SBI_UL(simulate_fail, s_simulate_fail);
+>  #endif
+> @@ -376,6 +380,7 @@ static ssize_t ext4_generic_attr_show(struct ext4_attr *a,
+>  
+>  	switch (a->attr_id) {
+>  	case attr_inode_readahead:
+> +	case attr_pointer_pi:
+>  	case attr_pointer_ui:
+>  		if (a->attr_ptr == ptr_ext4_super_block_offset)
+>  			return sysfs_emit(buf, "%u\n", le32_to_cpup(ptr));
+> @@ -448,6 +453,10 @@ static ssize_t ext4_generic_attr_store(struct ext4_attr *a,
+>  		return ret;
+>  
+>  	switch (a->attr_id) {
+> +	case attr_pointer_pi:
+> +		if ((int)t < 0)
+> +			return -EINVAL;
+> +		fallthrough;
+>  	case attr_pointer_ui:
+>  		if (t != (unsigned int)t)
+>  			return -EINVAL;
+> 
 
