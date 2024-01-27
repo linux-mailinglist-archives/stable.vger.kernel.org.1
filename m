@@ -1,50 +1,56 @@
-Return-Path: <stable+bounces-16058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A1E83E8EF
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 02:22:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A3EE83E8F0
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 02:25:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC650B246CE
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 01:22:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 167DFB23724
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 01:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A84A87498;
-	Sat, 27 Jan 2024 01:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C29D79CD;
+	Sat, 27 Jan 2024 01:25:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vA9176tI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7Q3V4YG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6907D2F4E
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 01:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0146138
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 01:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706318546; cv=none; b=Ana/+TYvaz8/tWBH5ltFjZIfwSKb70vNkUm7ddmk07n/cT2L4Ak+xtgCvLTCqeCcRYTneBIh58HG9rC4DtpxpAhrB1rtnOQ/vkW1EIxNI7cxGHh7X3olE2J8kndEGjH62UOvnj+AAiQGkhbaAU/posdijULrQ5pJBTPUM8+BkiI=
+	t=1706318732; cv=none; b=bmEUjqEPA4mlNJMW+aU3PSPNKFkO2pAUAHehxB/Adknu7vaVOw/rMMvYqXj4jJhClgbkw0Z/wXkAPpqzN56zPL21/9HjtBPRWwGpx2LE9Ak8pMf9M/mMu6M8PWwRLumdclo10XZYkGDKFV4RqaFxhgQwQXYQav9G9nWd5GNUIlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706318546; c=relaxed/simple;
-	bh=4Lj1h8wtxZZsJVFy2AJoHsXHZkGbjoUFk1CEbvA1C4c=;
+	s=arc-20240116; t=1706318732; c=relaxed/simple;
+	bh=P+hOUtOpAmxNKt+YyfroPoaZ7cjc44+WBPb50ba85tM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PqRn+J5+adteFEZizT0X5mEgffvOZp66gyp1osugTedIz8p5HEsuNjngb5cVLYg0eniTaDYTgJujzaosi6avZN3K/FA53iqzdNkp3Hz4TbG1BiNJb9MUBGjMUcZJoKPX3P6XvdI3/Lu8QkPa3qZerHuDBDX5Q5ZDjHTmMvD4iG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vA9176tI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FE6C433F1;
-	Sat, 27 Jan 2024 01:22:25 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ma/nfFonZZv54CpAaUrNd3tmwlFrH1hkx0Xg9MwIWlKJuqryYFvuz+PZ8/DwEVtPgx0CizCquUE7D7jsG42asUjz45aSdOB9tj7Z2yFJOWa3GJXUFjLBG1UesrF/VnCAtzTLsoVQDLL+AZtvVOSKax8ZcHeVkbpB+TVqZajGfpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7Q3V4YG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FABEC433F1;
+	Sat, 27 Jan 2024 01:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706318545;
-	bh=4Lj1h8wtxZZsJVFy2AJoHsXHZkGbjoUFk1CEbvA1C4c=;
+	s=korg; t=1706318731;
+	bh=P+hOUtOpAmxNKt+YyfroPoaZ7cjc44+WBPb50ba85tM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vA9176tIRKjLAWLO97uUkyk/51JGqR0Y5u7VHh/lD+PRBe0s0NBn3qvkrdXJhRbWg
-	 5rJvAJ5Q+P7kjTtQgX4JI0MvB/eYIklR6VITomikdVhKnpCxKTdW/Gp4x+8HpgkcvG
-	 zwFbuMP36fI3IOsGg8Jr1cDd0noaWjQbecFgZgSg=
-Date: Fri, 26 Jan 2024 17:22:24 -0800
+	b=V7Q3V4YGux/ffyt8//qjZwXhIT+mwWwRhxJalMsmYrlAqgYaLlWqLzjjR6840hxnB
+	 XP+3eJ/y257RzqMuG6Hi2b/PUu1Sif11GckSrLZXZ2S/nqHKPU8Aqfm7z568uRaSZN
+	 jMeqcPryekz0bHZv2R1r68nwdsN90+QzqmThww1U=
+Date: Fri, 26 Jan 2024 17:25:30 -0800
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Jonathan Gray <jsg@jsg.id.au>
-Cc: mario.limonciello@amd.com, stable@vger.kernel.org
-Subject: Re: [PATCH 6.7.y] Revert "drm/amd: Enable PCIe PME from D3"
-Message-ID: <2024012616-frying-unbridle-004e@gregkh>
-References: <20240127010359.10723-1-jsg@jsg.id.au>
+To: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org, sashal@kernel.org,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Wade Wang <wade.wang@hp.com>
+Subject: Re: [PATCH] drm/amd/display: pbn_div need be updated for hotplug
+ event
+Message-ID: <2024012623-snuff-veneering-db1b@gregkh>
+References: <20240123204106.3602399-1-alexander.deucher@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,22 +59,32 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240127010359.10723-1-jsg@jsg.id.au>
+In-Reply-To: <20240123204106.3602399-1-alexander.deucher@amd.com>
 
-On Sat, Jan 27, 2024 at 12:03:59PM +1100, Jonathan Gray wrote:
-> This reverts commit 05f7a3475af0faa8bf77f8637c4a40349db4f78f.
+On Tue, Jan 23, 2024 at 03:41:06PM -0500, Alex Deucher wrote:
+> From: Wayne Lin <wayne.lin@amd.com>
 > 
-> duplicated a change made in 6.7
-> 6967741d26c87300a51b5e50d4acd104bc1a9759
+> link_rate sometime will be changed when DP MST connector hotplug, so
+> pbn_div also need be updated; otherwise, it will mismatch with
+> link_rate, causes no output in external monitor.
 > 
-> Cc: stable@vger.kernel.org # 6.7
-> Signed-off-by: Jonathan Gray <jsg@jsg.id.au>
+> This is a backport of
+> commit 9cdef4f72037 ("drm/amd/display: pbn_div need be updated for hotplug event")
+> to 6.1.  This fixes a display light up failure on some docking stations.
+> 
+> Cc: stable@vger.kernel.org
+> Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+> Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+> Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+> Signed-off-by: Wade Wang <wade.wang@hp.com>
+> Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> (cherry picked from commit 9cdef4f720376ef0fb0febce1ed2377c19e531f9)
 > ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
+>  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
-All now queued up, thanks.
+Now queued up, thanks.
 
 greg k-h
 
