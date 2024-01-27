@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42CB083F0B6
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:32:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC50483F0B7
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:32:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6668B1C215A0
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:32:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3CFF2810D6
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 22:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D267C14AA2;
-	Sat, 27 Jan 2024 22:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218861B80B;
+	Sat, 27 Jan 2024 22:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpJi1YNh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+/vyti8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D7D1EA66
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78FD18E07
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 22:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706394726; cv=none; b=QS1FG/hX0Z8Fy3S6fc5zsu1U6f5wPb7OJHPxKpzM3PrLblmUijjWUi1/9DnNpIAV8y0tcLiPN7lA39NoWVPGLPhIsJFpMwV8TeBWjf0rNuVSFzXLyDOV6skNG/2a5+6CNnHluzwLPmWlfx8Ll2xZCVRj+p2RP+qE+YuGc+pPgKM=
+	t=1706394728; cv=none; b=LSOIv/MyfmlCjDmdAgCKENsz8SSBvxmDbOH3S+Ly6ZzJypjyGAeRuinA5F1H1NhCKE6HlzL822wHftJmorAlqgkhYDBeXx4/3E/9oqpzOGF7MxKLUHK4a45XQ4Rh7X9H2c45GQ5kQWeouj1/hdcjuD7kl2eWfFFoQH8T/SaAnyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706394726; c=relaxed/simple;
-	bh=suFMzQZ/cYnHXa7r8FmbctQKdpLBje7yDHjcJn4l/9E=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XppD0Mr4ytWRtwdk9KGC9Pdt9n4hBERBRff8LCGnfO0t1M9pS1C86ux7LM2n7+IrawKZdrFpk4rTUulsK3vHzbHoDqvw+JL8ZCbuiuVUnr0oe4V2ReM+LLjy40Sem4UrpzEDlyx9AUKLAeK1Sy8zoWevpeLPwV0WC5Te0UgBeyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpJi1YNh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04452C433C7;
-	Sat, 27 Jan 2024 22:32:05 +0000 (UTC)
+	s=arc-20240116; t=1706394728; c=relaxed/simple;
+	bh=EMa7PfeOmezKfYV8nin97H6OeXBcs1i77VErAcZ/9Yc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IJw8t8zFbcErA/08EFBvleEvj9q3WCsnRYA/MNwE5+fYrUsjTjFf8t7NGfB3jXTPQT4QZiGrQ9INGf4tGkjfB22PDHXnrzvVwCJh3Es93gOwzakQ7mw1j8UKDKTI8jSKhV/LDEwtGYyVOEPV/CmqirtUpsFLodhUCKijxjGR5jA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+/vyti8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549F9C433F1;
+	Sat, 27 Jan 2024 22:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706394726;
-	bh=suFMzQZ/cYnHXa7r8FmbctQKdpLBje7yDHjcJn4l/9E=;
+	s=korg; t=1706394728;
+	bh=EMa7PfeOmezKfYV8nin97H6OeXBcs1i77VErAcZ/9Yc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=mpJi1YNhztn7rPJ/qLkEwKn23p5FN1Xva9wC7x+cJxwqkHNNv1xTvLaPV3eFeXgFx
-	 LNb3VYPBJ199eN6FAuRFknTy8Loy3qQHHm0vKDpiyTPHKQbeRv8J5jpm+OfS+8lAFc
-	 wbScsEITVaqyC4d6tu4R0oe3wuzWh/0obQMbUaRo=
-Subject: FAILED: patch "[PATCH] drm: Disable the cursor plane on atomic contexts with" failed to apply to 6.1-stable tree
+	b=Z+/vyti895O47dQDHBDjN+Nvaf2o4FUAeVt+mXB3mpEjSCdJzGEiRou0CtykZ+4/+
+	 jShs0SpYz6lP7pHaIJ3lWgOuMP9Dhmu60Kd5BZ8vjU6y4MbSubHLxyXDhtq5un1D+q
+	 ITp6vwq0Ou/A51SGk/qf88FOeqZfOK2vOhoBtbdE=
+Subject: FAILED: patch "[PATCH] drm: Disable the cursor plane on atomic contexts with" failed to apply to 5.15-stable tree
 To: zackr@vmware.com,airlied@linux.ie,airlied@redhat.com,contact@emersion.fr,daniel@ffwll.ch,gurchetansingh@chromium.org,hdegoede@redhat.com,javierm@redhat.com,kraxel@redhat.com,maarten.lankhorst@linux.intel.com,mripard@kernel.org,olvaffe@gmail.com,pekka.paalanen@collabora.com,stable@vger.kernel.org,tzimmermann@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 14:32:05 -0800
-Message-ID: <2024012705-ocelot-amount-78da@gregkh>
+Date: Sat, 27 Jan 2024 14:32:07 -0800
+Message-ID: <2024012707-pursuit-coherence-2707@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4e3b70da64a53784683cfcbac2deda5d6e540407
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012705-ocelot-amount-78da@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012707-pursuit-coherence-2707@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
