@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCD2983F1AA
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:15:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 243A783F1AB
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 00:15:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFEBF1C21483
-	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:15:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4957280CA3
+	for <lists+stable@lfdr.de>; Sat, 27 Jan 2024 23:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA58F200AD;
-	Sat, 27 Jan 2024 23:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6063B200BD;
+	Sat, 27 Jan 2024 23:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwU1TAAS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lg0geWjb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A54A200AA
-	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D64200AA
+	for <stable@vger.kernel.org>; Sat, 27 Jan 2024 23:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706397331; cv=none; b=Adwy2v4SubnhrKu1mvYwfOnv9DKNifXLRHkTHmkuxDMzFM8FTFT30EiOYjFsHyFFwcz2XlbSwaCFzxcxe3nxq2Mr/dEP0uP/l3a57vvChMiwUl/rwvxPOEytIoQOjtMJhhwJL05h2BmtLjVaoarnkr6/S6sc2nNXroV+TkOWXjM=
+	t=1706397332; cv=none; b=OAzGsw/ikQ/Wyp18Wlef5RxmwJjLjXk1ElDMvWUh4Q8Qm3Cw2N0ZeZOFL4iasAyhM7nyCPxkDahGTTsJ3FWcr9m7mUVYA2NCkvwdn2a1iqCWg2RttszSQ9V6/a1DdqEZdwWQcZwjuyrnWz6tMVSwmdq72gueefHBseRvbYwwyRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706397331; c=relaxed/simple;
-	bh=+kG3IEd5kchwhmMpN2QJUeTvZ5K7GX0/zhC9MWfgTBw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Kf1+PaSUTD57Cm97cJxRwcHHpAzXDTXVovBrn+J1YU9vyeNZIg/5gaIOVBXqxuu8ADy0h6rQt3t5zDZiVxlxkJWeEGE7nkE1DMIuN7tfUkujvCkZeZIC23ZsBl34JuWSn0/GnVxNebVnpASGunJ6VR5QG5Wf0GVLw2Ak1mN81Z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwU1TAAS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F60C433F1;
-	Sat, 27 Jan 2024 23:15:30 +0000 (UTC)
+	s=arc-20240116; t=1706397332; c=relaxed/simple;
+	bh=3QyaP8RYUUYUUFAd6/HQmNY1D1a0QPy5DUjVHyP5Dhs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SWWT1mFhSdYANUMUarpPAjHogG81ARiITeEz+3jDooGTprQHad0aaWM/KJgDTjUAn8xCUlfFJNBu/VXQSwTK6er2AFO0MPcxxX6HuyXKer4BUu9BepJ0xvf12f4XNO7oPID28bgMurryrkCMfWSEoUVF97Z+cvTqECaZrDK9GJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lg0geWjb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63B2C43394;
+	Sat, 27 Jan 2024 23:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706397330;
-	bh=+kG3IEd5kchwhmMpN2QJUeTvZ5K7GX0/zhC9MWfgTBw=;
+	s=korg; t=1706397331;
+	bh=3QyaP8RYUUYUUFAd6/HQmNY1D1a0QPy5DUjVHyP5Dhs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=BwU1TAASJso9YRwMURYK8GXveOvxBkRjSiyr0LNMEuqy/YeH5ds3tGrXk6IgUaV6C
-	 yiZcZsJbz2DAuciEFOCwckeAupV3qBDuun5TOqP+j/nIyK7yFHbkjjBC87Fh8uZl4x
-	 1C0UWMQ9iiNNXoTcwaMEohTitvSX3y9ZL5Cwcmuw=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Drop 'acrtc' and add 'new_crtc_state' NULL" failed to apply to 6.6-stable tree
+	b=Lg0geWjb9tTTyscjW4mbBboz2+gJ230Wc7wyFc8d4BhcWqoHyZDn0EOGj7bChLmyX
+	 rjuHc8yTddysc8BuVcAAVQwp2lZ/WrB/yB3qAnVwyhp4V3ELm453u6sbyK4R+cyC4s
+	 XrSVNh1pYdrbsnZUcJUCO9tFlsGmzMkZ43fDVNZg=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Drop 'acrtc' and add 'new_crtc_state' NULL" failed to apply to 6.1-stable tree
 To: srinivasan.shanmugam@amd.com,Rodrigo.Siqueira@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,aurabindo.pillai@amd.com,hamza.mahfooz@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 27 Jan 2024 15:15:30 -0800
-Message-ID: <2024012729-unfunded-dupe-2fa7@gregkh>
+Date: Sat, 27 Jan 2024 15:15:31 -0800
+Message-ID: <2024012731-dislodge-unranked-578d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x b2139c96dc954b58b81bc670fc4ea5f034ed062c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012729-unfunded-dupe-2fa7@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012731-dislodge-unranked-578d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 b2139c96dc95 ("drm/amd/display: Drop 'acrtc' and add 'new_crtc_state' NULL check for writeback requests.")
 c81e13b929df ("drm/amd/display: Hande writeback request from userspace")
+98a80bb3dd9d ("Revert "drm/amd/display: Hande writeback request from userspace"")
+731a20cb89e6 ("Revert "drm/amd/display: Add writeback enable field (wb_enabled)"")
+6d2959df6575 ("Revert "drm/amd/display: Setup for mmhubbub3_warmup_mcif with big buffer"")
+7086af68fab9 ("Revert "drm/amd/display: Disable DWB frame capture to emulate oneshot"")
+77a66faaccc0 ("drm/amd/display: Disable DWB frame capture to emulate oneshot")
+428542d91772 ("drm/amd/display: Setup for mmhubbub3_warmup_mcif with big buffer")
+f6893fcb10c7 ("drm/amd/display: Add writeback enable field (wb_enabled)")
+cd1a4bc22821 ("drm/amd/display: Hande writeback request from userspace")
+fff7b95a5046 ("drm/amd/display: Fix race condition when turning off an output alone")
+c82eddf81276 ("drm/amd/display: Clean up errors & warnings in amdgpu_dm.c")
+6c5e25a0255d ("drm/amd/display: add prefix to amdgpu_dm_crtc.h functions")
+b8272241ff9d ("drm/amd/display: Drop dc_commit_state in favor of dc_commit_streams")
+1e88eb1b2c25 ("drm/amd/display: Drop CONFIG_DRM_AMD_DC_HDCP")
+7ae1dbe6547c ("drm/amd/display: merge dc_link.h into dc.h and dc_types.h")
+455ad25997ba ("drm/amdgpu: Select DRM_DISPLAY_HDCP_HELPER in amdgpu")
+8e5cfe547bf3 ("drm/amd/display: upstream link_dp_dpia_bw.c")
+5ca38a18b5a4 ("drm/amd/display: move public dc link function implementation to dc_link_exports")
+54618888d1ea ("drm/amd/display: break down dc_link.c")
 
 thanks,
 
