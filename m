@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-16313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AADF83F776
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 17:33:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D33BA83F779
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 17:34:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 320C01C20E7F
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 16:33:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CD301C2252A
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 16:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7176DCFC;
-	Sun, 28 Jan 2024 16:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D754C60B;
+	Sun, 28 Jan 2024 16:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="StZIe2FK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KO0XW7jq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2E16DCEF;
-	Sun, 28 Jan 2024 16:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005506DD15;
+	Sun, 28 Jan 2024 16:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706458483; cv=none; b=IZNIxfwbaP+RtsSf81qSHGBEqDL/3L6E8uTNJDdJ4Xnojy8YmMBaNMYgbn2urLHvYp0/SDehfZUOkTMm/84ZEG7v027HCAVHfpVNIISR8IFeg/G9edJoKtTEpbzlhGJD+BrLPlxS3HhrdpSKmmDnjZlu2/1Lqs5clrXq3zK2UXk=
+	t=1706458485; cv=none; b=Bo/A3q+0zqFBvDgk724q4uq3ZWMr4aIjkmmPROBBXqnrH25EJa2KbZBYcNZMzefjaoFTLeT+HtEhbikG4uc/eSXTUVpG2wQXMg6d561gRgS1nnILumR0J2qZHwifeSwvqOs87vKrO67mgT6BZpcL9zd+7mG/iT9j5cBOCW2ZgVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706458483; c=relaxed/simple;
-	bh=hTRedzamfT7vm1GzvHYsLVvCpmoG43xST20/Q2nAqJA=;
+	s=arc-20240116; t=1706458485; c=relaxed/simple;
+	bh=IpK14T6a2JY3qyCdxkZ5SFrzyR3FJ/x2m+Xk2BjcEmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dNNStv2LYP6raRzGx4u0XRoISxlXtnpz3YOQnEAkGogqnfSmLM5+/B+uWeujEwl2GkK1E2EnjRUxsm6OQEBpg9uKp9yWZZ06B6jG2ttXGVlSiNAYvpe+xXpb2CklPGPh/uotV4UO5PRqgt/jH4Ss46xwI6kb1a1LrfrR3uTfeDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=StZIe2FK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DEFC433F1;
-	Sun, 28 Jan 2024 16:14:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IUeytbVpx2/j7B5UPu/AdTTsuw90iDoegSGrDZ64ghx0onCGlwL3HRviUaNpemaov4DYoNs1hgOSqfM3cisXpm0/UxK0YIR0SQCPRWrpHwNn5UziF42ZUfi2eV11YNEpKYg+NGR/pJFpjhKGpmUHPCe5a4i3sp12mpy8c4WYaWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KO0XW7jq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCEBDC433F1;
+	Sun, 28 Jan 2024 16:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706458483;
-	bh=hTRedzamfT7vm1GzvHYsLVvCpmoG43xST20/Q2nAqJA=;
+	s=k20201202; t=1706458484;
+	bh=IpK14T6a2JY3qyCdxkZ5SFrzyR3FJ/x2m+Xk2BjcEmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=StZIe2FKjBqXTL6gYgCPmim4w0duhKxwsKWlR6Q8AEfvBSn8cGGt13613gNJMnVWU
-	 OfvBxzmemZwlswlUvXtDRfDsHts3OYi38hsjCmw1sJo0cuGJs/ttCX2psp0INbLEaT
-	 +0aqSohTecP7YwgEgEUmoiJ7DRvoXW14xelYSyGmMp/chWDKm+4lQh3hRYSCAtvlRA
-	 1EJ3YtSxmPS6Ca1oTQpXiQQTe+PhouXEY3OITxHFALTnQkIVt5DU2XUF5zALB2mqyr
-	 cffDVeWKDDW82xpYKiQvOr12j8N9Hz43RVrpqwOGDOAyG7qNu+aoFyHRk24O+iokTZ
-	 Qf7GNHhNP7LHg==
+	b=KO0XW7jqw93EJKcmcjzQsUpU0CzDoOrGNA/vg8LQUoJ2l/EFHu6r6a4s5poZSGghW
+	 +Zo190krE+0Ft0QsM2hDdBWQ5pwWwFdIhHoNHldneByJxnP8mvEVd8yFIo2x9XqDVl
+	 BS7ZvAsDKVHQihQfFaxju1BcCibT63jRY3xQEpD0HAKXE3/hb/gWD5aErinVsrrzmZ
+	 9T244DQQr/k0NOiB8aApoKamoNa567Xok005M/m6okKfkU24A2ftf6jeK6kvUTeXlk
+	 vIVBUfdbCZ95G8loO0HJS3sFDxUtpGfGrSpiEvJfxyVcgXIXGkMFA4Maw2D+99W0Yg
+	 wQbtK+IvGHONQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yu-Che Cheng <giver@chromium.org>,
-	Fei Shao <fshao@chromium.org>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 10/27] spmi: mediatek: Fix UAF on device remove
-Date: Sun, 28 Jan 2024 11:13:55 -0500
-Message-ID: <20240128161424.203600-10-sashal@kernel.org>
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 11/27] PCI: Fix 64GT/s effective data rate calculation
+Date: Sun, 28 Jan 2024 11:13:56 -0500
+Message-ID: <20240128161424.203600-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240128161424.203600-1-sashal@kernel.org>
 References: <20240128161424.203600-1-sashal@kernel.org>
@@ -66,81 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.75
 Content-Transfer-Encoding: 8bit
 
-From: Yu-Che Cheng <giver@chromium.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit e821d50ab5b956ed0effa49faaf29912fd4106d9 ]
+[ Upstream commit ac4f1897fa5433a1b07a625503a91b6aa9d7e643 ]
 
-The pmif driver data that contains the clocks is allocated along with
-spmi_controller.
-On device remove, spmi_controller will be freed first, and then devres
-, including the clocks, will be cleanup.
-This leads to UAF because putting the clocks will access the clocks in
-the pmif driver data, which is already freed along with spmi_controller.
+Unlike the lower rates, the PCIe 64GT/s Data Rate uses 1b/1b encoding, not
+128b/130b (PCIe r6.1 sec 1.2, Table 1-1).  Correct the PCIE_SPEED2MBS_ENC()
+calculation to reflect that.
 
-This can be reproduced by enabling DEBUG_TEST_DRIVER_REMOVE and
-building the kernel with KASAN.
-
-Fix the UAF issue by using unmanaged clk_bulk_get() and putting the
-clocks before freeing spmi_controller.
-
-Reported-by: Fei Shao <fshao@chromium.org>
-Signed-off-by: Yu-Che Cheng <giver@chromium.org>
-Link: https://lore.kernel.org/r/20230717173934.1.If004a6e055a189c7f2d0724fa814422c26789839@changeid
-Tested-by: Fei Shao <fshao@chromium.org>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20231206231733.4031901-3-sboyd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20240102172701.65501-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spmi/spmi-mtk-pmif.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/pci/pci.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spmi/spmi-mtk-pmif.c b/drivers/spmi/spmi-mtk-pmif.c
-index ad511f2c3324..739ad0cbd3bb 100644
---- a/drivers/spmi/spmi-mtk-pmif.c
-+++ b/drivers/spmi/spmi-mtk-pmif.c
-@@ -465,7 +465,7 @@ static int mtk_spmi_probe(struct platform_device *pdev)
- 	for (i = 0; i < arb->nclks; i++)
- 		arb->clks[i].id = pmif_clock_names[i];
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index ed6d75d138c7..e1d02b7c6029 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -274,7 +274,7 @@ void pci_bus_put(struct pci_bus *bus);
  
--	err = devm_clk_bulk_get(&pdev->dev, arb->nclks, arb->clks);
-+	err = clk_bulk_get(&pdev->dev, arb->nclks, arb->clks);
- 	if (err) {
- 		dev_err(&pdev->dev, "Failed to get clocks: %d\n", err);
- 		goto err_put_ctrl;
-@@ -474,7 +474,7 @@ static int mtk_spmi_probe(struct platform_device *pdev)
- 	err = clk_bulk_prepare_enable(arb->nclks, arb->clks);
- 	if (err) {
- 		dev_err(&pdev->dev, "Failed to enable clocks: %d\n", err);
--		goto err_put_ctrl;
-+		goto err_put_clks;
- 	}
- 
- 	ctrl->cmd = pmif_arb_cmd;
-@@ -498,6 +498,8 @@ static int mtk_spmi_probe(struct platform_device *pdev)
- 
- err_domain_remove:
- 	clk_bulk_disable_unprepare(arb->nclks, arb->clks);
-+err_put_clks:
-+	clk_bulk_put(arb->nclks, arb->clks);
- err_put_ctrl:
- 	spmi_controller_put(ctrl);
- 	return err;
-@@ -509,6 +511,7 @@ static int mtk_spmi_remove(struct platform_device *pdev)
- 	struct pmif *arb = spmi_controller_get_drvdata(ctrl);
- 
- 	clk_bulk_disable_unprepare(arb->nclks, arb->clks);
-+	clk_bulk_put(arb->nclks, arb->clks);
- 	spmi_controller_remove(ctrl);
- 	spmi_controller_put(ctrl);
- 	return 0;
+ /* PCIe speed to Mb/s reduced by encoding overhead */
+ #define PCIE_SPEED2MBS_ENC(speed) \
+-	((speed) == PCIE_SPEED_64_0GT ? 64000*128/130 : \
++	((speed) == PCIE_SPEED_64_0GT ? 64000*1/1 : \
+ 	 (speed) == PCIE_SPEED_32_0GT ? 32000*128/130 : \
+ 	 (speed) == PCIE_SPEED_16_0GT ? 16000*128/130 : \
+ 	 (speed) == PCIE_SPEED_8_0GT  ?  8000*128/130 : \
 -- 
 2.43.0
 
