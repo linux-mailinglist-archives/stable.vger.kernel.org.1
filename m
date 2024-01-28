@@ -1,104 +1,103 @@
-Return-Path: <stable+bounces-16232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C5EC83F5A3
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 14:39:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A26183F5B0
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 15:01:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBA41B21C59
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 13:39:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88E0F1C2244F
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 14:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B9B23746;
-	Sun, 28 Jan 2024 13:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17CB923773;
+	Sun, 28 Jan 2024 14:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cTi6GAIn"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Be6XmJOE"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5255522F1D;
-	Sun, 28 Jan 2024 13:39:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.134.136.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7813D2376A
+	for <stable@vger.kernel.org>; Sun, 28 Jan 2024 14:01:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706449191; cv=none; b=BhRRgK3AxakGPmNgUq2NEyTkuKjyvM+8PLfNNyfrpH9u3EPwSRXfjEHpDruEa9kh6vkw7o+ZULNaSapiy36wg3wCwcn0ftUxBDTP7RG8adLqRBeZEpV+vDVWDiV54XPjbF/nkHHkQgkbg+Fm0jyDyYRNDZG91o1eeWlVzQdStwU=
+	t=1706450479; cv=none; b=Lbbr+fiF8/LSWkfBzlkH1Mo8VSd6kg073LBHjDiKPccmoyz3sBLjuIZmJ+htnzQ1m/Yk5GBumnAhOsKBSGZpFensBBhbCN2Fp782XQDuB7JQ0BjDOQV1JvG9Zbn3tc/6Eicna+cy04APApOH8dY7lvdVO3VtNGvSQ8TYCh9HWjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706449191; c=relaxed/simple;
-	bh=OwKC1I8LVVETT5/KSHq98w4lkf1ccBYhchvpRJBQ1u4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=li69+W32wJQxjM/jDFK6HZw0WRaLTHMeBNjVK4sE/EwaWELGyndXhEkL6y6o2IFR6xwEmcipMOXwd4RhKqFvxZPWa6oG2djtKvdHE1T8r5oY0VTtdFeBJz1tWEw+Tc74ZobmqWzcI3twY92OSw7+TCmIEsYyCd6p0RUd8jf4LCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cTi6GAIn; arc=none smtp.client-ip=134.134.136.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706449189; x=1737985189;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OwKC1I8LVVETT5/KSHq98w4lkf1ccBYhchvpRJBQ1u4=;
-  b=cTi6GAInz89T0Fg9YZ2FlqL32YkuZlU01h6wFik6N8olafhowUvVnqXf
-   uq+Uhcw+WDWBdEAdwdAAJcTvAKxL1mRBUe1QYGZsonxXau3MQAfKIkZqn
-   abCdInNMZXugQI7D05yMvs2hMZR32A0/eHnpf/w1hTbEEiKdNvjDeUtpS
-   lDXMLXiZ+DCmUS+EEiaLE2RL4zdIj7Z+PfvH8iSyd/097GsA61acfBAV+
-   RlM69DyLBGvDuhMPoqicJxi+iRFx7Rn5zStXBFyzdx98Agj9x8O0uGBq0
-   5wowc8Sk1h5+asGO0dmcyeqaa0qLfd507DnzWCAlgMqmLCZ0/5RTKx7Ce
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="467042805"
-X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="467042805"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2024 05:39:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10966"; a="787576589"
-X-IronPort-AV: E=Sophos;i="6.05,220,1701158400"; 
-   d="scan'208";a="787576589"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2024 05:39:47 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rU5Nw-0000000HSvT-3s5J;
-	Sun, 28 Jan 2024 15:39:44 +0200
-Date: Sun, 28 Jan 2024 15:39:44 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: gregkh@linuxfoundation.org
-Cc: stable-commits@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: Patch "driver core: Annotate dev_err_probe() with __must_check"
- has been added to the 4.19-stable tree
-Message-ID: <ZbZZIGcUSOK8pPSQ@smile.fi.intel.com>
-References: <2024012619-spider-attempt-7896@gregkh>
+	s=arc-20240116; t=1706450479; c=relaxed/simple;
+	bh=avMCpwuFUa2i4x7tiD4dco/h0z+G0ypjNSRfns11g5c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ervhF0Um5XLu6k7JGePDmiq+aIs464HtkPfyW/iTWtxJ31pN6VQZi6U3OA082iGIpz1RjQ2R3gT3/iYlZDECTsh4ghNTvkk+dwDFt/QAvK+2gyVF1pT/ymh3g8WJRCuHKadljx3/20x1g8BtU5bq0s9Uyd9j20SW9LlCTbtvblw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Be6XmJOE; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-42a99dc9085so91061cf.0
+        for <stable@vger.kernel.org>; Sun, 28 Jan 2024 06:01:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706450477; x=1707055277; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=avMCpwuFUa2i4x7tiD4dco/h0z+G0ypjNSRfns11g5c=;
+        b=Be6XmJOE95K8C9Hr0UPrko3RJZJYUNa/4ZDDUa8aYeKyh+1QVM5hWE0V5HDmcZ3gXh
+         BCRX1HHdEQ6Bq5b/FnuMA8uWL0eVrVw1POtn6hT8DgHP4to8breZqXfCY7dVjotRLN0w
+         GjWEx6DH0mSE8xH1e9h0MDLxVDQLkzOasfwLGI/ykBn+Wh65WEhHQVq97IC57B83cTZx
+         ZKw2TObQ6VeU+5p4qgC6DvA88bSXyc3RsG7/NdTr7QAdOdOIhdLrGf9iTBl4wEsGdKYX
+         RfNELY5Kr/Tnv26j3/CIUZYknhIx/KAtaaNpFJpeYhcNieIRS9TTUgJfX0+Vt8k1Io9v
+         CsOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706450477; x=1707055277;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=avMCpwuFUa2i4x7tiD4dco/h0z+G0ypjNSRfns11g5c=;
+        b=RdUF4F5+ZazlNq2oNSmU0y4bRgPnU0TbquUd4YEw70WCzfFxe7g2MaJYDdZdL1dmEV
+         GHAm6Ady0OceAoDSBJAf7mLd/9fgcZp1TYsC0f3ZR4K1N1QrR7uppwxT2YpnK0L7iLAW
+         pFciyoTJe9PxnQe29sgcB8g2123mUz59E11kxzIpY+URq5vBsqu0gNEffyjyOeSU4yHL
+         0+04vUS4mZqHB41Fi+ZvXxcGhikDBruYDMbxNOrZ31aSlj7UxmNs1b6FOcgTZamwOq0w
+         bsss77/Gs89DWNO7BNcsq6RSaMgglGK6EwxFqNq7t8+nPTBj+ZGOd5M/fMSCOhOaI7S0
+         eGKQ==
+X-Gm-Message-State: AOJu0YzHnXXLmWv8k8S/7lHKrfMFyiDeEXem+LzI763owg0MzL4z0l5i
+	DlzGunWveasUQC0sOBKtWyqGtYRza46pzsk8NdKsYL/DUmEfEfPG9GslOpaHiqptlWKsdKaeTxr
+	RQ/Zuf101G/iII0YVzyi6nBdCXy1IamIX7Ak5X/ir7RnNGlJ58w==
+X-Google-Smtp-Source: AGHT+IHh1HEBb8ULsyRDgozer+s4BS5WKyZ75DXxeVJYw3c1vuZ16gFOug+pKMBLafShcXmZ+HFEwzDxpPouZEg7gLM=
+X-Received: by 2002:a05:622a:1bab:b0:42a:6b64:da7f with SMTP id
+ bp43-20020a05622a1bab00b0042a6b64da7fmr402749qtb.27.1706450476977; Sun, 28
+ Jan 2024 06:01:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024012619-spider-attempt-7896@gregkh>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240116141801.396398-1-khtsai@google.com> <02bec7b8-7754-4b9d-84ae-51621d6aa7ec@kernel.org>
+ <2024012724-chirpy-google-51bb@gregkh>
+In-Reply-To: <2024012724-chirpy-google-51bb@gregkh>
+From: Kuen-Han Tsai <khtsai@google.com>
+Date: Sun, 28 Jan 2024 22:00:49 +0800
+Message-ID: <CAKzKK0oEO5_-CBKvYSw4DKY4Wp5UPrrt1ehBFRd79idy7FsUuQ@mail.gmail.com>
+Subject: Re: [PATCH] usb: gadget: u_serial: Add null pointer checks after
+ RX/TX submission
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>, quic_prashk@quicinc.com, 
+	stern@rowland.harvard.edu, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Jan 26, 2024 at 05:33:20PM -0800, gregkh@linuxfoundation.org wrote:
-> 
-> This is a note to let you know that I've just added the patch titled
-> 
->     driver core: Annotate dev_err_probe() with __must_check
-> 
-> to the 4.19-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      driver-core-annotate-dev_err_probe-with-__must_check.patch
-> and it can be found in the queue-4.19 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+Hi Greg & Jiri,
 
-But it got reverted, no need to have it in any stable kernels.
+>> Or you switch to tty_port refcounting and need not fiddling with this at all
+>> ;).
+> I agree, Kuen-Han, why not do that instead?
 
--- 
-With Best Regards,
-Andy Shevchenko
+Thanks for the feedback! I agree that switching to tty_port
+refcounting is the right approach.
 
+I'm currently digging into tty_port.c to understand the best way to
+implement this change. Could you confirm if I'm on the right track by
+using tty_kref_get() and tty_kref_put() to address race conditions?
+Additionally, do I need to refactor other functions in u_serial.c that
+interact with the TTY without refcounting?
 
+Regards,
+Kuen-Han
 
