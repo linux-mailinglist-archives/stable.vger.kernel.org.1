@@ -1,85 +1,90 @@
-Return-Path: <stable+bounces-16227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F3B283F2BA
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 02:29:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1B6E83F2E6
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 03:18:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B24A11C20DCD
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 01:29:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DBDE282C3F
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 02:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664C1137E;
-	Sun, 28 Jan 2024 01:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EC9BA3F;
+	Sun, 28 Jan 2024 02:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWQu0ndt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hr7BWLKW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112211113;
-	Sun, 28 Jan 2024 01:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C12D8F7A;
+	Sun, 28 Jan 2024 02:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706405386; cv=none; b=hq3i15swHjp+q+4eWZyHpxu57Vi0tcu32tc620aTW4AIIfNTEXQw2shW0FLD8u7XyM2eEUZxKSmEjrQyvI/8kdhboyGL5YVDkTCSY80sG/WJtgMyHHwRS/TW/qxGJFu8twQVeOlSVR52qFRBPwuEzLsgP1i3MhnFYFLHLDy6qxE=
+	t=1706408254; cv=none; b=QKJRfFLxZR30erhR8hHmf7IsAKgnUVYAAOGsflFvKkrLGer1JoDvdDnXLrNZeflenASqtfPO64jTmVez5KNNoFafNqXwdhxu/KkdAxYy5oAmJS8z2rx/+htxcYMPGo4wKZerxHAYVjuuORXNBiXmsx4RxaJ6mosptE59XYuSgGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706405386; c=relaxed/simple;
-	bh=iPTcSpldKderHfTJOkFotGkZbDgZ0cvvdpUsSLEh7zo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MFIKq/0bPvvShUPORPW3GtK1xMrIK5rM1qAnYVx5hlb/qApSFZ+RhAw4mGuf+OvQF5AdqBf6cZxfNY7p+r3OxazhhfLc16IRcK9pbu56mRURYryf7IlXSz7gAGzn4W7NYhgCij8sVcUllz/k2A1JCkMoc5rEvW5Ec9GnpWp+BU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WWQu0ndt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C809C433C7;
-	Sun, 28 Jan 2024 01:29:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706405385;
-	bh=iPTcSpldKderHfTJOkFotGkZbDgZ0cvvdpUsSLEh7zo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WWQu0ndtlfL0E4lf7y8G3LZpKWF/0SDnXDILj175K62E4y/nqw6+1jL1MR64AmCXx
-	 jMi3LRMdQ4nsgMVEHmFUz2ZL3r9bNPJTXnrgDS9v+xoXW6ZFm8/0W2J5kiQXOd/OQt
-	 4AlBMD8/RN8AS2oE3vkBA3taVfjsWhrK/+hiBy4w=
-Date: Sat, 27 Jan 2024 17:29:43 -0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: Kuen-Han Tsai <khtsai@google.com>, quic_prashk@quicinc.com,
-	stern@rowland.harvard.edu, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] usb: gadget: u_serial: Add null pointer checks after
- RX/TX submission
-Message-ID: <2024012724-chirpy-google-51bb@gregkh>
-References: <20240116141801.396398-1-khtsai@google.com>
- <02bec7b8-7754-4b9d-84ae-51621d6aa7ec@kernel.org>
+	s=arc-20240116; t=1706408254; c=relaxed/simple;
+	bh=ZbJOu5LKswB4T8UzyEXjsEuS56DwkLrDfR3gGtYXBMc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ze77rAi842Ea7BOUWI+5RTKKatmj/2l/6ZjoHGtIySxG3nNTcSLKpmaGy6WReNzcAasNtHPuD6b5e3eiz+54HOGRr1XOtMhOYqk8l+z3XdnDcNGxuB8tJ9gmHO0e+cLM5ef4J7FB2NpRvE/9mCSC0yoNuzI8ffWDhR5r84Z/oho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hr7BWLKW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6001C43394;
+	Sun, 28 Jan 2024 02:17:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706408253;
+	bh=ZbJOu5LKswB4T8UzyEXjsEuS56DwkLrDfR3gGtYXBMc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hr7BWLKWNlCItl9BMmLR1Dk5jGrlk5XcWvGS7NH8kDH31v7j3iYzCm8u2i5qqG7uE
+	 7pslFI8+hMH8pA48O+RSjYaGvH4GQE4ftFvIxvTIR/XxiUqrJ6xMU5EcFSQwdEVtUD
+	 bnJbLjSXXryQ8/u9E0NelwejYUkl80SoNvoKAryZYG1ow+DBowciMenVFbNb/TYWge
+	 SYILJRAfZJc1DtdAygYakzoxGERKJTjtN5ntdHWi4aNemCzI+qiNAXMvlIng5LW4ol
+	 KN2xCQXj2gI59S1bwdcfso5cPVYXOdfy92ejImMEt+OJw5M7dyZbW3VFlPC2vZL+lf
+	 J6gAp0SUrexkA==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Andy Gross <agross@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: qcom: sm8450-hdk: correct AMIC4 and AMIC5 microphones
+Date: Sat, 27 Jan 2024 20:17:20 -0600
+Message-ID: <170640822843.30820.12830781344408633837.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240124121855.162730-1-krzysztof.kozlowski@linaro.org>
+References: <20240124121855.162730-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <02bec7b8-7754-4b9d-84ae-51621d6aa7ec@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 18, 2024 at 10:27:54AM +0100, Jiri Slaby wrote:
-> On 16. 01. 24, 15:16, Kuen-Han Tsai wrote:
-> > Commit ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in
-> > gs_start_io") adds null pointer checks to gs_start_io(), but it doesn't
-> > fully fix the potential null pointer dereference issue. While
-> > gserial_connect() calls gs_start_io() with port_lock held, gs_start_rx()
-> > and gs_start_tx() release the lock during endpoint request submission.
-> > This creates a window where gs_close() could set port->port_tty to NULL,
-> > leading to a dereference when the lock is reacquired.
-> > 
-> > This patch adds a null pointer check for port->port_tty after RX/TX
-> > submission, and removes the initial null pointer check in gs_start_io()
-> > since the caller must hold port_lock and guarantee non-null values for
-> > port_usb and port_tty.
+
+On Wed, 24 Jan 2024 13:18:55 +0100, Krzysztof Kozlowski wrote:
+> Due to lack of documentation the AMIC4 and AMIC5 analogue microphones
+> were never actually working, so the audio routing for them was added
+> hoping it is correct.  It turned out not correct - their routing should
+> point to SWR_INPUT0 (so audio mixer TX SMIC MUX0 = SWR_MIC0) and
+> SWR_INPUT1 (so audio mixer TX SMIC MUX0 = SWR_MIC1), respectively.  With
+> proper mixer settings and fixed LPASS TX macr codec TX SMIC MUXn
+> widgets, this makes all microphones working on HDK8450.
 > 
-> Or you switch to tty_port refcounting and need not fiddling with this at all
-> ;).
+> [...]
 
-I agree, Kuen-Han, why not do that instead?
+Applied, thanks!
 
-thanks,
+[1/1] arm64: dts: qcom: sm8450-hdk: correct AMIC4 and AMIC5 microphones
+      commit: 915253bdd64f2372fa5f6c58d75cb99972c7401d
 
-greg k-h
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
 
