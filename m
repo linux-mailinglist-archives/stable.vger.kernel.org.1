@@ -1,272 +1,299 @@
-Return-Path: <stable+bounces-16230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FFD483F488
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 08:33:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B3683F515
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 12:13:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5756A283F04
-	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 07:33:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 672F61C20E4E
+	for <lists+stable@lfdr.de>; Sun, 28 Jan 2024 11:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267D1D518;
-	Sun, 28 Jan 2024 07:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6201E866;
+	Sun, 28 Jan 2024 11:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RxGhnmCK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R0bOUokI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1CA6C15D;
-	Sun, 28 Jan 2024 07:33:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3871F1EB3F
+	for <stable@vger.kernel.org>; Sun, 28 Jan 2024 11:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706427191; cv=none; b=PrJnSbN8nhA7uzNyoewPHUZGjdEmMo8quAnlSLHLQwohPkij8J08GNhcKI2i+4mMlQZlpfxB915QgyZFOp/sMoyMsmW73tclLhFvlURkC92SJMCe3Yw7G0hhczEs99D+ADWCGn4opIwjemKi7v2wnAAm/TJYtfaOcffUdADIkyk=
+	t=1706440392; cv=none; b=VnZuKDkNmIguZVBteLiywy+Z7HyUDn0TIWifmT5SBvF1i9CWZhra0I43uFL4/bNw7m94k0nqgfqwQd2j0HnlI8tMfE2E+wrmpiAcXcG7/HO/YEc7rUDbC1+DmmrqlTDOsP43WnuS2VGrfQmc7ZGPxgfDxf75lNHxp+ZXNq3xkyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706427191; c=relaxed/simple;
-	bh=gqM1zyHPRfrWy/ECgf/f24dA+w7bujh2ltxwBhlg2sg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gB3t5RWcFnGgEOrgAuiu2r7y66lrRcVvncLx3Xay0oKgvjfoI9leu5HD9QxWVyjHWgIqKCyN2ozlQVyqOoAA9Fdvp6k3L7ylz5R6NCBZZpZ9dqLOEOvLQL4vv6dpEUkqz555weo3bEYmVajzJ0ib0OXdzVMmmx2oOW8mLYEYG2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RxGhnmCK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B02C43394;
-	Sun, 28 Jan 2024 07:33:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706427190;
-	bh=gqM1zyHPRfrWy/ECgf/f24dA+w7bujh2ltxwBhlg2sg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=RxGhnmCKABnKlEXpNfEKEgDq9J/YbciuIVRKVGwZmT99VZ15LmnpCTn1HCcF4fUDu
-	 4g+QnzleEdBSVwD7MY1ylC0PdrEA5a7gwvB72uzLlFW27+kFisUo78hF+y7XDqu9as
-	 p+WseU/n2sXMoTyaeSEdag2OW/+a/7V5BEXn3os9uylNUWWx9W8vYHYZGoZFBVfl2a
-	 hj7/eEAVJa2Sg6hqBkvMiOnNARV2vOejhQPRqqi05piGmf2l5y8iIG71O7tMS6LCHT
-	 zIa4F/A+Y5Q5gPPhVt6e304n4/sL8e+MNgDI4fOJGGEwQhMW1V+Hlv43BiG8xeyztD
-	 bGmGJ5Y0Mit4g==
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-2184133da88so855464fac.0;
-        Sat, 27 Jan 2024 23:33:10 -0800 (PST)
-X-Gm-Message-State: AOJu0YwBpaegGKze4mg5QacaVzr9NtwVlumGg4ge1Ld/4mLN+F6j+KQw
-	t9JQ3OJr+u/6Q2KQ0E73IiIs3dY97v70pscdjsGSmXmJNOjQ/UzSj8+uYEQ1vvXWXheDF+qgFDC
-	FMxzuUezv3Mk/4/IpGyFGtlyAT10=
-X-Google-Smtp-Source: AGHT+IFMLLRyOYRR7wQ55gXsLacE56gy2EReBGVi00F5vkwOHLOWW3tMZV558RHwfmiws3ERQuYPZ0xm5oakfmwQJ+w=
-X-Received: by 2002:a05:6870:71c5:b0:218:7b38:d6f5 with SMTP id
- p5-20020a05687071c500b002187b38d6f5mr292783oag.25.1706427189944; Sat, 27 Jan
- 2024 23:33:09 -0800 (PST)
+	s=arc-20240116; t=1706440392; c=relaxed/simple;
+	bh=YjsxHOt4tWyCdJTuimtgU/jG1rOZovQCMQl3k6T1wpw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A5w1Ico5Bvf4Ly1zUdfzlZBK4/SDPakwxIr69Ln9b8gNnn7KVa8Ut5OGfyO8yYLihxCPjql6vVEcop+DJye9BE6fl/uaoU+2zzJa5zft4/qN2sWp+VOQsnrpfp+VzfQau9Me32+EW8eu2LE6IuD+aw8KUvlHnDTRd6RAD+PU6zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R0bOUokI; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706440389;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CSNy3hGfgBOZXh5HJ7aSuvkcMf5sEzqK7aR6BtJy+rs=;
+	b=R0bOUokI+b/gqhgVRwHEETgOuIb4DUazsCGWFy1s+tIq0N6E0s4nOIobXvp3c2r/Jg/W9E
+	EFQKd0Y5GwY8jkn5jloIARoVW8LtMPou6EzMv139jxp0S4s4/YHJIpLqtCOEg3Ncn3+wyd
+	FV5SuuFPYc/gNCrRErWObiBPdqStEiE=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-503-IN8bF8wgP0-XDDpLkicR9g-1; Sun, 28 Jan 2024 06:13:07 -0500
+X-MC-Unique: IN8bF8wgP0-XDDpLkicR9g-1
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-54554ea191bso823189a12.2
+        for <stable@vger.kernel.org>; Sun, 28 Jan 2024 03:13:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706440386; x=1707045186;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CSNy3hGfgBOZXh5HJ7aSuvkcMf5sEzqK7aR6BtJy+rs=;
+        b=q5qXeM5XgHqVo0Ej4Mv20lD1b/dXV91kpB4mM/W7ro34SRHOSZYm9TcJ6mPX3K8Rpp
+         wj76364lkr1ibA3NAoK8m4XaKxXNiNlhtcoo3TBRanihfbmKHkqKlKkVlyY/hgSrfPwD
+         bnqVURTl88OQWs7O2m4j5erbOvwsoepe0Cq31TddBnQn/pp018J6VqIY7P1IKibBD7rw
+         VFUdbHfJC3waoyDf0w+qw0RX6sfi1+QV6mDDHMNo7JkthI+M9b3xePofaBZ9JFDM6cIn
+         dQGZF5ipOEVZPavLq22fCPd81xx81lty1CptNsUxSW0uNKRcNypURre7JGc+3baDaNuQ
+         1VZw==
+X-Gm-Message-State: AOJu0YzyeLWGqXLuZjg3cALyf7DzAk/QKYDLQqQBvF33PQaZ2jcSdeL5
+	wg/QE3vZ3xDQwUzqKVth9QPlmGCZA/sT/iqU6vvOcDLzn6YyTIsxml+Dfki9HOK7oZAct3uKMfZ
+	OR/8D4dZANRpT9DJYXh2tz5ApgatgbRPUHkHHqo4dQgbsu231g5xlwg==
+X-Received: by 2002:a05:6402:35c4:b0:559:3583:bb6d with SMTP id z4-20020a05640235c400b005593583bb6dmr2513816edc.32.1706440386129;
+        Sun, 28 Jan 2024 03:13:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHO4+zS2ikKQXpXzKl7d9R8QWe1EjS5JACKDAyMhVe/Pnh4ZYWUTbIpgJtOc0lzL8TXZByeUw==
+X-Received: by 2002:a05:6402:35c4:b0:559:3583:bb6d with SMTP id z4-20020a05640235c400b005593583bb6dmr2513797edc.32.1706440385706;
+        Sun, 28 Jan 2024 03:13:05 -0800 (PST)
+Received: from redhat.com ([2a02:14f:17b:70ae:658f:adde:5091:c5dd])
+        by smtp.gmail.com with ESMTPSA id x6-20020a056402414600b0055d36e6f1a7sm2393638eda.82.2024.01.28.03.13.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jan 2024 03:13:04 -0800 (PST)
+Date: Sun, 28 Jan 2024 06:13:00 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	llvm@lists.linux.dev, keescook@chromium.org,
+	arei.gonglei@huawei.com, jasowang@redhat.com,
+	virtualization@lists.linux.dev, linux-crypto@vger.kernel.org,
+	Wei Yongjun <weiyongjun1@huawei.com>
+Subject: Re: [PATCH 5.10 000/286] 5.10.209-rc1 review
+Message-ID: <20240128055533-mutt-send-email-mst@kernel.org>
+References: <20240122235732.009174833@linuxfoundation.org>
+ <6b563537-b62f-428e-96d1-2a228da99077@roeck-us.net>
+ <2024012636-clubbed-radial-1997@gregkh>
+ <2f342268-8517-4c06-8785-96a588d20c63@roeck-us.net>
+ <20240126203436.GA913905@dev-arch.thelio-3990X>
+ <0a194a79-e3a3-45e7-be98-83abd3e1cb7e@roeck-us.net>
+ <20240126223554.GA1320833@dev-arch.thelio-3990X>
+ <bef7737e-4b8e-4a89-b538-cd8e75874fd2@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAK7LNAQCiBtQ3kQznPDKtkD83wpCzodPVDs8eFnfnx5=Y8E5Cw@mail.gmail.com>
- <20240122182253.17973-1-jtornosm@redhat.com>
-In-Reply-To: <20240122182253.17973-1-jtornosm@redhat.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Sun, 28 Jan 2024 16:32:33 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAR2xDjbn+BZqUrgbDxPJUyQBULFB51kTiN8Nc78DXVyEw@mail.gmail.com>
-Message-ID: <CAK7LNAR2xDjbn+BZqUrgbDxPJUyQBULFB51kTiN8Nc78DXVyEw@mail.gmail.com>
-Subject: Re: [PATCH] rpm-pkg: simplify installkernel %post
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: dcavalca@meta.com, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, nathan@kernel.org, ndesaulniers@google.com, 
-	nicolas@fjasle.eu, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bef7737e-4b8e-4a89-b538-cd8e75874fd2@roeck-us.net>
 
-On Tue, Jan 23, 2024 at 3:23=E2=80=AFAM Jose Ignacio Tornos Martinez
-<jtornosm@redhat.com> wrote:
->
-> The new installkernel application that is now included in systemd-udev
-> package allows installation although destination files are already presen=
-t
-> in the boot directory of the kernel package, but is failing with the
-> implemented workaround for the old installkernel application from grubby
-> package.
->
-> For the new installkernel application, as Davide says:
-> <<The %post currently does a shuffling dance before calling installkernel=
-.
-> This isn't actually necessary afaict, and the current implementation
-> ends up triggering downstream issues such as
-> https://github.com/systemd/systemd/issues/29568
-> This commit simplifies the logic to remove the shuffling. For reference,
-> the original logic was added in commit 3c9c7a14b627("rpm-pkg: add %post
-> section to create initramfs and grub hooks").>>
->
-> But we need to keep the old behavior as well, because the old installkern=
-el
-> application from grubby package, does not allow this simplification and
-> we need to be backward compatible to avoid issues with the different
-> packages.
->
-> Mimic Fedora shipping process and store vmlinuz, config amd System.map
-> in the module directory instead of the boot directory. In this way, we wi=
-ll
-> avoid the commented problem for all the cases, because the new destinatio=
-n
-> files are not going to exist in the boot directory of the kernel package.
->
-> Replace installkernel tool with kernel-install tool, because the latter i=
-s
-> more complete.
->
-> Besides, after installkernel tool execution, check to complete if the
-> correct package files vmlinuz, System.map and config files are present
-> in /boot directory, and if necessary, copy manually for install operation=
-.
-> In this way, take into account if  files were not previously copied from
-> /usr/lib/kernel/install.d/* scripts and if the suitable files for the
-> requested package are present (it could be others if the rpm files were
-> replace with a new pacakge with the same release and a different build).
->
-> Tested with Fedora 38, Fedora 39, RHEL 9, Oracle Linux 9.3,
-> openSUSE Tumbleweed and openMandrive ROME, using dnf/zypper and rpm tools=
-.
->
-> cc: stable@vger.kernel.org
-> Co-Developed-by: Davide Cavalca <dcavalca@meta.com>
-> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-> ---
-> V1 -> V2:
-> - Complete to be backward compatible with the previous installkernel
-> application.
-> V2 -> V3:
-> - Follow the suggestions from Masahiro Yamada and change the installation
-> destination to avoid problems instead of checking the package.
-> V3 -> V4:
-> - Make the patch applicable to linux-kbuild/for-next (ia64 support was
-> already removed).
-> V4 -> V5:
-> - Complete for other Linux distributions.
-> V5 -> V6
-> - Simplify and do more compatible checks when copied files wants to be
->   replaced.
-> - Remove %preun because it will be better done with another patch.
-> - Add indentation and quotation
->
->  scripts/package/kernel.spec | 28 ++++++++++++++--------------
->  1 file changed, 14 insertions(+), 14 deletions(-)
->
-> diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
-> index 89298983a169..0bff257ec3d4 100644
-> --- a/scripts/package/kernel.spec
-> +++ b/scripts/package/kernel.spec
-> @@ -55,12 +55,12 @@ patch -p1 < %{SOURCE2}
->  %{make} %{makeflags} KERNELRELEASE=3D%{KERNELRELEASE} KBUILD_BUILD_VERSI=
-ON=3D%{release}
->
->  %install
-> -mkdir -p %{buildroot}/boot
-> -cp $(%{make} %{makeflags} -s image_name) %{buildroot}/boot/vmlinuz-%{KER=
-NELRELEASE}
-> +mkdir -p %{buildroot}/lib/modules/%{KERNELRELEASE}
-> +cp $(%{make} %{makeflags} -s image_name) %{buildroot}/lib/modules/%{KERN=
-ELRELEASE}/vmlinuz
->  %{make} %{makeflags} INSTALL_MOD_PATH=3D%{buildroot} modules_install
->  %{make} %{makeflags} INSTALL_HDR_PATH=3D%{buildroot}/usr headers_install
-> -cp System.map %{buildroot}/boot/System.map-%{KERNELRELEASE}
-> -cp .config %{buildroot}/boot/config-%{KERNELRELEASE}
-> +cp System.map %{buildroot}/lib/modules/%{KERNELRELEASE}
-> +cp .config %{buildroot}/lib/modules/%{KERNELRELEASE}/config
->  ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KER=
-NELRELEASE}/build
->  %if %{with_devel}
->  %{make} %{makeflags} run-command KBUILD_RUN_COMMAND=3D'${srctree}/script=
-s/package/install-extmod-build %{buildroot}/usr/src/kernels/%{KERNELRELEASE=
-}'
-> @@ -70,31 +70,31 @@ ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot=
-}/lib/modules/%{KERNELRELEA
->  rm -rf %{buildroot}
->
->  %post
-> -if [ -x /sbin/installkernel -a -r /boot/vmlinuz-%{KERNELRELEASE} -a -r /=
-boot/System.map-%{KERNELRELEASE} ]; then
-> -cp /boot/vmlinuz-%{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm
-> -cp /boot/System.map-%{KERNELRELEASE} /boot/.System.map-%{KERNELRELEASE}-=
-rpm
-> -rm -f /boot/vmlinuz-%{KERNELRELEASE} /boot/System.map-%{KERNELRELEASE}
-> -/sbin/installkernel %{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm=
- /boot/.System.map-%{KERNELRELEASE}-rpm
-> -rm -f /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELE=
-ASE}-rpm
-> +if [ -x /usr/bin/kernel-install ]; then
-> +       /usr/bin/kernel-install add %{KERNELRELEASE} /lib/modules/%{KERNE=
-LRELEASE}/vmlinuz
->  fi
-> +for file in vmlinuz System.map config; do
-> +       if [ ! -e "/boot/${file}-%{KERNELRELEASE}" ] || ! cmp --silent "/=
-lib/modules/%{KERNELRELEASE}/${file}" "/boot/${file}-%{KERNELRELEASE}"; the=
-n
-> +               cp "/lib/modules/%{KERNELRELEASE}/${file}" "/boot/${file}=
--%{KERNELRELEASE}"
-> +       fi
-> +done
-
-
-
-I am fine with this approach, but
-[ ! -e "/boot/${file}-%{KERNELRELEASE}" ]
-is a redundant check now.
-
-
-When the file does not exist, "cmp --silent" exits
-with 2 instead of 1.
-Anyway, "cmp --silent" fails.
-
-
-You can simplify the conditional to:
-
-if ! cmp --silent "/lib/modules/%{KERNELRELEASE}/${file}"
-"/boot/${file}-%{KERNELRELEASE}"; then
-
-
-
-
->  %preun
->  if [ -x /sbin/new-kernel-pkg ]; then
-> -new-kernel-pkg --remove %{KERNELRELEASE} --rminitrd --initrdfile=3D/boot=
-/initramfs-%{KERNELRELEASE}.img
-> +       new-kernel-pkg --remove %{KERNELRELEASE} --rminitrd --initrdfile=
-=3D/boot/initramfs-%{KERNELRELEASE}.img
-
-This is a noise change.
-Please drop.
-
-
-
->  elif [ -x /usr/bin/kernel-install ]; then
-> -kernel-install remove %{KERNELRELEASE}
-> +       /usr/bin/kernel-install remove %{KERNELRELEASE}
->  fi
->
->  %postun
->  if [ -x /sbin/update-bootloader ]; then
-> -/sbin/update-bootloader --remove %{KERNELRELEASE}
-> +       /sbin/update-bootloader --remove %{KERNELRELEASE}
-
-Ditto.
-
-Please create a separate patch if you change the coding style.
-But, rather, I am thinking of reverting
-6ef41e22a320 and 27c3bffd230ab
-
+On Fri, Jan 26, 2024 at 03:55:02PM -0800, Guenter Roeck wrote:
+> On 1/26/24 14:35, Nathan Chancellor wrote:
+> > (slimming up the CC list, I don't think this is too relevant to the
+> > wider stable community)
+> > 
+> > On Fri, Jan 26, 2024 at 01:01:15PM -0800, Guenter Roeck wrote:
+> > > On 1/26/24 12:34, Nathan Chancellor wrote:
+> > > > On Fri, Jan 26, 2024 at 10:17:23AM -0800, Guenter Roeck wrote:
+> > > > > On 1/26/24 09:51, Greg Kroah-Hartman wrote:
+> > > > > > On Fri, Jan 26, 2024 at 08:46:42AM -0800, Guenter Roeck wrote:
+> > > > > > > On 1/22/24 15:55, Greg Kroah-Hartman wrote:
+> > > > > > > > This is the start of the stable review cycle for the 5.10.209 release.
+> > > > > > > > There are 286 patches in this series, all will be posted as a response
+> > > > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > > > let me know.
+> > > > > > > > 
+> > > > > > > > Responses should be made by Wed, 24 Jan 2024 23:56:49 +0000.
+> > > > > > > > Anything received after that time might be too late.
+> > > > > > > > 
+> > > > > > > [ ... ]
+> > > > > > > 
+> > > > > > > > zhenwei pi <pizhenwei@bytedance.com>
+> > > > > > > >         virtio-crypto: implement RSA algorithm
+> > > > > > > > 
+> > > > > > > 
+> > > > > > > Curious: Why was this (and its subsequent fixes) backported to v5.10.y ?
+> > > > > > > It is quite beyond a bug fix. Also, unless I am really missing something,
+> > > > > > > the series (or at least this patch) was not applied to v5.15.y, so we now
+> > > > > > > have functionality in v5.10.y which is not in v5.15.y.
+> > > > > > 
+> > > > > > See the commit text, it was a dependency of a later fix and documented
+> > > > > > as such.
+> > > > > > 
+> > > > > > Having it in 5.10 and not 5.15 is a bit odd, I agree, so patches are
+> > > > > > gladly accepted :)
+> > > > > > 
+> > > > > 
+> > > > > We reverted the entire series from the merge because it results in a build
+> > > > > failure for us.
+> > > > > 
+> > > > > In file included from /home/groeck/src/linux-chromeos/drivers/crypto/virtio/virtio_crypto_akcipher_algs.c:10:
+> > > > > In file included from /home/groeck/src/linux-chromeos/include/linux/mpi.h:21:
+> > > > > In file included from /home/groeck/src/linux-chromeos/include/linux/scatterlist.h:5:
+> > > > > In file included from /home/groeck/src/linux-chromeos/include/linux/string.h:293:
+> > > > > /home/groeck/src/linux-chromeos/include/linux/fortify-string.h:512:4: error: call to __read_overflow2_field declared with 'warning' attribute: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
+> > > > >                           __read_overflow2_field(q_size_field, size);
+> > > > 
+> > > > For what it's worth, this is likely self inflicted for chromeos-5.10,
+> > > > which carries a revert of commit eaafc590053b ("fortify: Explicitly
+> > > > disable Clang support") as commit c19861d34c003 ("CHROMIUM: Revert
+> > > > "fortify: Explicitly disable Clang support""). I don't see the series
+> > > > that added proper support for clang to fortify in 5.18 that ended with
+> > > > commit 281d0c962752 ("fortify: Add Clang support") in that ChromeOS
+> > > > branch, so this seems somewhat expected.
+> > > > 
+> > > 
+> > > That explains that ;-). I don't mind if the patches stay in v5.10.y,
+> > > we have them reverted anyway.
+> > > 
+> > > The revert was a pure process issue, as you may see when looking into
+> > > commit c19861d34c003, so, yes, I agree that it is self-inflicted damage.
+> > > Still, that doesn't explain why the problem exists in 5.18+.
+> > > 
+> > > > > I also see that upstream (starting with 6.1) when trying to build it with clang,
+> > > > > so I guess it is one of those bug-for-bug compatibility things. I really have
+> > > > > no idea what causes it, or why we don't see the problem when building
+> > > > > chromeos-6.1 or chromeos-6.6, but (so far) only with chromeos-5.10 after
+> > > > > merging 5.10.209 into it. Making things worse, the problem isn't _always_
+> > > > > seen. Sometimes I can compile the file in 6.1.y without error, sometimes not.
+> > > > > I have no idea what triggers the problem.
+> > > > 
+> > > > Have a .config that reproduces it on upstream? I have not personally
+> > > > seen this warning in my build matrix nor has our continuous-integration
+> > > > matrix (I don't see it in the warning output at the bottom but that
+> > > > could have missed something for some reason) in 6.1:
+> > > > 
+> > > 
+> > > The following command sequence reproduces the problem for me with all stable
+> > > branches starting with 5.18.y (plus mainline).
+> > > 
+> > > rm -rf /tmp/crypto-build
+> > > mkdir /tmp/crypto-build
+> > > make -j CC=clang-15 mrproper >/dev/null 2>&1
+> > > make -j O=/tmp/crypto-build CC=clang-15 allmodconfig >/dev/null 2>&1
+> > > make -j O=/tmp/crypto-build W=1 CC=clang-15 drivers/crypto/virtio/virtio_crypto_akcipher_algs.o
+> > > 
+> > > I tried clang versions 14, 15, and 16. This is with my home system running
+> > > Ubuntu 22.04, no ChromeOS or Google specifics/internals involved. For clang-15,
+> > > the version is
+> > > 
+> > > Ubuntu clang version 15.0.7
+> > > Target: x86_64-pc-linux-gnu
+> > > Thread model: posix
+> > > InstalledDir: /usr/bin
+> > 
+> > Okay interesting, this warning is hidden behind W=1, which our CI does
+> > not test with. Looks like it has been that way since the introduction of
+> > these checks in f68f2ff91512 ("fortify: Detect struct member overflows
+> > in memcpy() at compile-time").
+> > 
+> 
+> Interestingly the warning is seen in chromeos-5.10, without this patch,
+> and without W=1. I guess that must have to do with the revert which is
+> finally biting us.
+> 
+> > I think this is a legitimate warning though. It is complaining about the
+> > second memcpy() in virtio_crypto_alg_akcipher_init_session():
+> > 
+> >    memcpy(&ctrl->u, para, sizeof(ctrl->u));
+> > 
+> > where ctrl is:
+> > 
+> >    struct virtio_crypto_op_ctrl_req {
+> >            struct virtio_crypto_ctrl_header header;         /*     0    16 */
+> >            union {
+> >                    struct virtio_crypto_sym_create_session_req sym_create_session; /*    16    56 */
+> >                    struct virtio_crypto_hash_create_session_req hash_create_session; /*    16    56 */
+> >                    struct virtio_crypto_mac_create_session_req mac_create_session; /*    16    56 */
+> >                    struct virtio_crypto_aead_create_session_req aead_create_session; /*    16    56 */
+> >                    struct virtio_crypto_akcipher_create_session_req akcipher_create_session; /*    16    56 */
+> >                    struct virtio_crypto_destroy_session_req destroy_session; /*    16    56 */
+> >                    __u8               padding[56];          /*    16    56 */
+> >            } u;                                             /*    16    56 */
+> >            union {
+> >                    struct virtio_crypto_sym_create_session_req sym_create_session; /*     0    56 */
+> >                    struct virtio_crypto_hash_create_session_req hash_create_session; /*     0    56 */
+> >                    struct virtio_crypto_mac_create_session_req mac_create_session; /*     0    56 */
+> >                    struct virtio_crypto_aead_create_session_req aead_create_session; /*     0    56 */
+> >                    struct virtio_crypto_akcipher_create_session_req akcipher_create_session; /*     0    56 */
+> >                    struct virtio_crypto_destroy_session_req destroy_session; /*     0    56 */
+> >                    __u8                       padding[56];          /*     0    56 */
+> >            };
+> > 
+> > 
+> >            /* size: 72, cachelines: 2, members: 2 */
+> >            /* last cacheline: 8 bytes */
+> >    };
+> > 
+> > (so size and p_size_field should be 56) and the type of the para
+> > parameter in virtio_crypto_alg_akcipher_init_session() is 'void *' but
+> > the para passed by reference to
+> > virtio_crypto_alg_akcipher_init_session() in virtio_crypto_rsa_set_key()
+> > has a type of 'struct virtio_crypto_akcipher_session_para':
+> > 
+> >    struct virtio_crypto_akcipher_session_para {
+> >            __le32                     algo;                 /*     0     4 */
+> >            __le32                     keytype;              /*     4     4 */
+> >            __le32                     keylen;               /*     8     4 */
+> >            union {
+> >                    struct virtio_crypto_rsa_session_para rsa; /*    12     8 */
+> >                    struct virtio_crypto_ecdsa_session_para ecdsa; /*    12     8 */
+> >            } u;                                             /*    12     8 */
+> >            union {
+> >                    struct virtio_crypto_rsa_session_para rsa;       /*     0     8 */
+> >                    struct virtio_crypto_ecdsa_session_para ecdsa;   /*     0     8 */
+> >            };
+> > 
+> > 
+> >            /* size: 20, cachelines: 1, members: 4 */
+> >            /* last cacheline: 20 bytes */
+> >    };
+> > 
+> > (so q_size_field would be 20 if clang were able to do inlining to see
+> > through the 'void *'...?), which would result in the
+> > 
+> >    __compiletime_lessthan(q_size_field, size)
+> > 
+> > check succeeding and triggering the warning because 20 < 56, so it does
+> > seem like there is an overread of the source buffer here? Adding the
+> 
+> Looks like it; I think either the passed 'para' should be of type
+> virtio_crypto_akcipher_create_session_req() or it should only copy
+> sizeof(struct virtio_crypto_akcipher_session_para) bytes.
+> 
+> Anyway, how did you find that ? Is there a magic trick to find the
+> actual code causing the warning ? I am asking because we had seen
+> similar warnings before, and it would help to know how to find the
+> problematic code.
+> 
+> Thanks,
+> Guenter
+> 
+> > maintainers of the driver and subsystem in question.
+> > 
+> > Cheers,
+> > Nathan
 
 
-
->  fi
->
->  %files
->  %defattr (-, root, root)
->  /lib/modules/%{KERNELRELEASE}
->  %exclude /lib/modules/%{KERNELRELEASE}/build
-> -/boot/*
->
->  %files headers
->  %defattr (-, root, root)
-> --
-> 2.43.0
->
+CC patch contributor before I revert the whole thing.
 
 
---=20
-Best Regards
-Masahiro Yamada
+-- 
+MST
+
 
