@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824DE840E51
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F45841055
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 365731F2D162
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 972F21C23B07
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C52FC15B30F;
-	Mon, 29 Jan 2024 17:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3407561D;
+	Mon, 29 Jan 2024 17:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tkg303Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2OGu1TX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841AD15F302;
-	Mon, 29 Jan 2024 17:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5BA75606;
+	Mon, 29 Jan 2024 17:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548262; cv=none; b=rI7dZ7hCn3WjNYFYaNC9CwrvPD88We98dKXL06bSzvYhB0hxHuhwhHifE4lWg9fPtR9BDYZ757foXrSGA6ghWnzBSTYK2xYzOJxncV9y8VbcYecBdSUNblcNitrpeUUeUBAa8jcDeIXCcM/nXGx9+QnZCwvpkdlMv6CwqglxhKc=
+	t=1706548603; cv=none; b=XVbEDTOisbWAL/TYrdyRU1hoQBv5s6FSJyj9rb7xC3QU2/pCkBDIeaoWfNeqEjCS5Rhp+l0BtxKquZSfV7Sa0Q2dEG/JR4Lyej/iYiYTQQWOkm/gd6FBPeT0QN6hr+yAOTteKCeCp0rEHZKPwirUTHwbTi3qnIPNGnjAHQiaP3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548262; c=relaxed/simple;
-	bh=Z+1n+ykKlk5RkUN5f8P9QhCOZBZUJ5luBXGuNkylU68=;
+	s=arc-20240116; t=1706548603; c=relaxed/simple;
+	bh=xPLYc6SIrDGnleZvc0kCRt7VMWPu555VyPn//4/Zm4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XuZwYvBMnTzS8O7Jyz44DXOjZvE11i3HMkaQBB4x9jAc6Pi6I+z4TWxZIg/C6GZOsGT8EExVWKhXobf56cTSrLT9l51x/IdrmNWeki8Rt44zITKMRegMR6CqhRGBttxK/A8KxsJgCHMPSInT4yH66qTc1dauc1MbYVZfOyTd0LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tkg303Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B28CC43390;
-	Mon, 29 Jan 2024 17:11:02 +0000 (UTC)
+	 MIME-Version; b=gnKV4Uvc0IWmhEQTVFCiQmxMVEiSy+m87bLxuBG5idC3neDj2cZhp3TeRpl2Ht3C4nLPqLGxFYZd0MP/a6K935Q6bjfTTNK9Mm0i5mmkRRhbOfZ98lRsfO+Z4aqJSuJZgnkvL+zSBGXBJeS7JyZBW3o3W0l3I9pq1wgQU/33rvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2OGu1TX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25066C433C7;
+	Mon, 29 Jan 2024 17:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548262;
-	bh=Z+1n+ykKlk5RkUN5f8P9QhCOZBZUJ5luBXGuNkylU68=;
+	s=korg; t=1706548603;
+	bh=xPLYc6SIrDGnleZvc0kCRt7VMWPu555VyPn//4/Zm4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2tkg303Y3VdV2SfGMSB/g0rnQlg+OPr2CYlcqEnfaw9AQjg9lQJuDk5u9/Ii2k7eC
-	 g3F8xTRhX7VFxNOrTCUICLUO9URBuwQqvZ3GlOh+T+8SqAQFKtrvwqpLNr9XGn3Rgg
-	 2h/5PQGQEFjfJWgd+Xn44RBwLosart1Y5thizPC4=
+	b=K2OGu1TXk9uzUyARJaikvreoaQmV1jjepDpCHFdq0O7+aPd+D6Fzpd6jimkJdmkDD
+	 QnC27lpo1uFgZMWllMpoJ2jyJFs0+TGGhq2NxQOqPBbMczfJ1AjtMms2SNneoYxlwB
+	 ZzQoyj6KKztr09U4rRirGiCKk2s7fnKkALJjjDxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 280/346] thermal: intel: hfi: Refactor enabling code into helper functions
-Date: Mon, 29 Jan 2024 09:05:11 -0800
-Message-ID: <20240129170024.616390398@linuxfoundation.org>
+	Xinglong Yang <xinglong.yang@cixtech.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 6.6 248/331] firmware: arm_scmi: Check mailbox/SMT channel for consistency
+Date: Mon, 29 Jan 2024 09:05:12 -0800
+Message-ID: <20240129170022.143187528@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit 8a8b6bb93c704776c4b05cb517c3fa8baffb72f5 ]
+commit 437a310b22244d4e0b78665c3042e5d1c0f45306 upstream.
 
-In preparation for the addition of a suspend notifier, wrap the logic to
-enable HFI and program its memory buffer into helper functions. Both the
-CPU hotplug callback and the suspend notifier will use them.
+On reception of a completion interrupt the shared memory area is accessed
+to retrieve the message header at first and then, if the message sequence
+number identifies a transaction which is still pending, the related
+payload is fetched too.
 
-This refactoring does not introduce functional changes.
+When an SCMI command times out the channel ownership remains with the
+platform until eventually a late reply is received and, as a consequence,
+any further transmission attempt remains pending, waiting for the channel
+to be relinquished by the platform.
 
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 97566d09fd02 ("thermal: intel: hfi: Add syscore callbacks for system-wide PM")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Once that late reply is received the channel ownership is given back
+to the agent and any pending request is then allowed to proceed and
+overwrite the SMT area of the just delivered late reply; then the wait
+for the reply to the new request starts.
+
+It has been observed that the spurious IRQ related to the late reply can
+be wrongly associated with the freshly enqueued request: when that happens
+the SCMI stack in-flight lookup procedure is fooled by the fact that the
+message header now present in the SMT area is related to the new pending
+transaction, even though the real reply has still to arrive.
+
+This race-condition on the A2P channel can be detected by looking at the
+channel status bits: a genuine reply from the platform will have set the
+channel free bit before triggering the completion IRQ.
+
+Add a consistency check to validate such condition in the A2P ISR.
+
+Reported-by: Xinglong Yang <xinglong.yang@cixtech.com>
+Closes: https://lore.kernel.org/all/PUZPR06MB54981E6FA00D82BFDBB864FBF08DA@PUZPR06MB5498.apcprd06.prod.outlook.com/
+Fixes: 5c8a47a5a91d ("firmware: arm_scmi: Make scmi core independent of the transport type")
+Cc: stable@vger.kernel.org # 5.15+
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Tested-by: Xinglong Yang <xinglong.yang@cixtech.com>
+Link: https://lore.kernel.org/r/20231220172112.763539-1-cristian.marussi@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/intel/intel_hfi.c | 43 ++++++++++++++++---------------
- 1 file changed, 22 insertions(+), 21 deletions(-)
+ drivers/firmware/arm_scmi/common.h  |    1 +
+ drivers/firmware/arm_scmi/mailbox.c |   14 ++++++++++++++
+ drivers/firmware/arm_scmi/shmem.c   |    6 ++++++
+ 3 files changed, 21 insertions(+)
 
-diff --git a/drivers/thermal/intel/intel_hfi.c b/drivers/thermal/intel/intel_hfi.c
-index c69db6c90869..820613e293cd 100644
---- a/drivers/thermal/intel/intel_hfi.c
-+++ b/drivers/thermal/intel/intel_hfi.c
-@@ -347,6 +347,26 @@ static void init_hfi_instance(struct hfi_instance *hfi_instance)
- 	hfi_instance->data = hfi_instance->hdr + hfi_features.hdr_size;
+--- a/drivers/firmware/arm_scmi/common.h
++++ b/drivers/firmware/arm_scmi/common.h
+@@ -314,6 +314,7 @@ void shmem_fetch_notification(struct scm
+ void shmem_clear_channel(struct scmi_shared_mem __iomem *shmem);
+ bool shmem_poll_done(struct scmi_shared_mem __iomem *shmem,
+ 		     struct scmi_xfer *xfer);
++bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem);
+ 
+ /* declarations for message passing transports */
+ struct scmi_msg_payld;
+--- a/drivers/firmware/arm_scmi/mailbox.c
++++ b/drivers/firmware/arm_scmi/mailbox.c
+@@ -45,6 +45,20 @@ static void rx_callback(struct mbox_clie
+ {
+ 	struct scmi_mailbox *smbox = client_to_scmi_mailbox(cl);
+ 
++	/*
++	 * An A2P IRQ is NOT valid when received while the platform still has
++	 * the ownership of the channel, because the platform at first releases
++	 * the SMT channel and then sends the completion interrupt.
++	 *
++	 * This addresses a possible race condition in which a spurious IRQ from
++	 * a previous timed-out reply which arrived late could be wrongly
++	 * associated with the next pending transaction.
++	 */
++	if (cl->knows_txdone && !shmem_channel_free(smbox->shmem)) {
++		dev_warn(smbox->cinfo->dev, "Ignoring spurious A2P IRQ !\n");
++		return;
++	}
++
+ 	scmi_rx_callback(smbox->cinfo, shmem_read_header(smbox->shmem), NULL);
  }
  
-+/* Caller must hold hfi_instance_lock. */
-+static void hfi_enable(void)
+--- a/drivers/firmware/arm_scmi/shmem.c
++++ b/drivers/firmware/arm_scmi/shmem.c
+@@ -122,3 +122,9 @@ bool shmem_poll_done(struct scmi_shared_
+ 		(SCMI_SHMEM_CHAN_STAT_CHANNEL_ERROR |
+ 		 SCMI_SHMEM_CHAN_STAT_CHANNEL_FREE);
+ }
++
++bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem)
 +{
-+	u64 msr_val;
-+
-+	rdmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
-+	msr_val |= HW_FEEDBACK_CONFIG_HFI_ENABLE_BIT;
-+	wrmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
++	return (ioread32(&shmem->channel_status) &
++			SCMI_SHMEM_CHAN_STAT_CHANNEL_FREE);
 +}
-+
-+static void hfi_set_hw_table(struct hfi_instance *hfi_instance)
-+{
-+	phys_addr_t hw_table_pa;
-+	u64 msr_val;
-+
-+	hw_table_pa = virt_to_phys(hfi_instance->hw_table);
-+	msr_val = hw_table_pa | HW_FEEDBACK_PTR_VALID_BIT;
-+	wrmsrl(MSR_IA32_HW_FEEDBACK_PTR, msr_val);
-+}
-+
- /**
-  * intel_hfi_online() - Enable HFI on @cpu
-  * @cpu:	CPU in which the HFI will be enabled
-@@ -364,8 +384,6 @@ void intel_hfi_online(unsigned int cpu)
- {
- 	struct hfi_instance *hfi_instance;
- 	struct hfi_cpu_info *info;
--	phys_addr_t hw_table_pa;
--	u64 msr_val;
- 	u16 die_id;
- 
- 	/* Nothing to do if hfi_instances are missing. */
-@@ -409,8 +427,6 @@ void intel_hfi_online(unsigned int cpu)
- 	if (!hfi_instance->hw_table)
- 		goto unlock;
- 
--	hw_table_pa = virt_to_phys(hfi_instance->hw_table);
--
- 	/*
- 	 * Allocate memory to keep a local copy of the table that
- 	 * hardware generates.
-@@ -420,16 +436,6 @@ void intel_hfi_online(unsigned int cpu)
- 	if (!hfi_instance->local_table)
- 		goto free_hw_table;
- 
--	/*
--	 * Program the address of the feedback table of this die/package. On
--	 * some processors, hardware remembers the old address of the HFI table
--	 * even after having been reprogrammed and re-enabled. Thus, do not free
--	 * the pages allocated for the table or reprogram the hardware with a
--	 * new base address. Namely, program the hardware only once.
--	 */
--	msr_val = hw_table_pa | HW_FEEDBACK_PTR_VALID_BIT;
--	wrmsrl(MSR_IA32_HW_FEEDBACK_PTR, msr_val);
--
- 	init_hfi_instance(hfi_instance);
- 
- 	INIT_DELAYED_WORK(&hfi_instance->update_work, hfi_update_work_fn);
-@@ -438,13 +444,8 @@ void intel_hfi_online(unsigned int cpu)
- 
- 	cpumask_set_cpu(cpu, hfi_instance->cpus);
- 
--	/*
--	 * Enable the hardware feedback interface and never disable it. See
--	 * comment on programming the address of the table.
--	 */
--	rdmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
--	msr_val |= HW_FEEDBACK_CONFIG_HFI_ENABLE_BIT;
--	wrmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
-+	hfi_set_hw_table(hfi_instance);
-+	hfi_enable();
- 
- unlock:
- 	mutex_unlock(&hfi_instance_lock);
--- 
-2.43.0
-
 
 
 
