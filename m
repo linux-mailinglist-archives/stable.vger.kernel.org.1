@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC85840EBD
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2DB0840F2B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EDD01C23689
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E5BF28379F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E48160879;
-	Mon, 29 Jan 2024 17:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0812115D5BA;
+	Mon, 29 Jan 2024 17:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIizRtiv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QOWGP3rD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EE415703F;
-	Mon, 29 Jan 2024 17:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7C315956D;
+	Mon, 29 Jan 2024 17:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548338; cv=none; b=Qb158DVWsa7dhD6GmBB0kOMCXQaaJEhBnBRW4QFsXhGIEJEUrMqjLtNapEl0QFh1A2gAAYqrqXgR/qbuYeBl32iuYNVFiGtxqxZdkx6nTjZ432+NkBV4EXf1XRsZgMwT8i3sMpeyEehqBuBGX/OTC8JX8+MvoY774KEBeycR1+4=
+	t=1706548395; cv=none; b=FqwoTQ9MicS7r9LSYJsKkcPiETUHGuBp5INjTTe5XLVuxUZsOfDiepDZpLTXTChQemJGExqUSKgnUdKf4zybFWvNbirdZPUtWR9aj+RAlzm4i0siMHbIwTFnjxRJBEceuw9w5ST/PUIN9wy5VP9KTNS+qypksA+WGoF0Uo2c+tY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548338; c=relaxed/simple;
-	bh=4qakkSwdREWnHRl4WY9hGljDPC3mUkBOJsuqHPAMV2o=;
+	s=arc-20240116; t=1706548395; c=relaxed/simple;
+	bh=WCZwO2FzMUzou7r8ExXYMkdQpdKAutY9sJ5HCK+qgZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PCUlucSrI2Nll/AwisQwiN53wCrrMUegTnnf1IaqxscBgM+pDnqBbVzmyZ75tdHDaFYo/Lrt/+wbDAXrhC1rgavR+FHzWIN6lqnRWHrvEC+fEdWyLhv8MHQFgMRX6HTyPNZAfDWJTY30DtyrXewfdEOzzcgBcj/k8V6kRmxjGHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIizRtiv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC69DC43390;
-	Mon, 29 Jan 2024 17:12:17 +0000 (UTC)
+	 MIME-Version; b=tT65VBI6Hk33ps1Ik1pZjXlgBKNssNX7mSRwph05rBSOZ+lK1yuB6C+jHMNDlB3CrBkiaagf/dk2PzjP7wgRr5V4sMN1GsRiiOnb2qfZBlyA507hCO9mrr0Ndr5I4wKVF7pbB12aAhp7oDFa+I21ejKjUcv6y+n566cC1Z0vOyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QOWGP3rD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F00C433F1;
+	Mon, 29 Jan 2024 17:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548338;
-	bh=4qakkSwdREWnHRl4WY9hGljDPC3mUkBOJsuqHPAMV2o=;
+	s=korg; t=1706548395;
+	bh=WCZwO2FzMUzou7r8ExXYMkdQpdKAutY9sJ5HCK+qgZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uIizRtivr+DI6W0yjx7e2sfgPA9zt1EMXj2cm2I/t8+MXR4sLSVmAqtuD3nlS2Rk/
-	 13pZA7ZPgNpFUI+/v0NK7pF+uUepTacORWbg/i6yHZhvqKrWCCyohR/jk+XBz+fSxG
-	 U+fM+coQXkJahtLqn/5pbn3K42PvdSqEQRXNedVM=
+	b=QOWGP3rDTY9QOnWyLjMwmDPtttc4l3xVy24HWvi7JNpf1kxxK+tHZpdW1RRK5R6VC
+	 iBN08UYsm0rY5S1BxPK0RtUQembMSLyeHlNuXnECG/dAfq0dEai7cvgtWVpdQagC5m
+	 UeCr+U1gIzMXcfnB4SBXTsFvz1rCfiiCpAhWay2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hsin-Yi Wang <hsinyi@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 333/346] spi: spi-cadence: Reverse the order of interleaved write and read operations
+Subject: [PATCH 6.1 164/185] drm/panel-edp: drm/panel-edp: Fix AUO B116XAK01 name and timing
 Date: Mon, 29 Jan 2024 09:06:04 -0800
-Message-ID: <20240129170026.270374311@linuxfoundation.org>
+Message-ID: <20240129170003.863702634@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+From: Hsin-Yi Wang <hsinyi@chromium.org>
 
-[ Upstream commit 633cd6fe6e1993ba80e0954c2db127a0b1a3e66f ]
+[ Upstream commit fc6e7679296530106ee0954e8ddef1aa58b2e0b5 ]
 
-In the existing implementation, when executing interleaved write and read
-operations in the ISR for a transfer length greater than the FIFO size,
-the TXFIFO write precedes the RXFIFO read. Consequently, the initially
-received data in the RXFIFO is pushed out and lost, leading to a failure
-in data integrity. To address this issue, reverse the order of interleaved
-operations and conduct the RXFIFO read followed by the TXFIFO write.
+Rename AUO 0x405c B116XAK01 to B116XAK01.0 and adjust the timing of
+auo_b116xak01: T3=200, T12=500, T7_max = 50 according to decoding edid
+and datasheet.
 
-Fixes: 6afe2ae8dc48 ("spi: spi-cadence: Interleave write of TX and read of RX FIFO")
-Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-Link: https://msgid.link/r/20231218090652.18403-1-amit.kumar-mahapatra@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: da458286a5e2 ("drm/panel: Add support for AUO B116XAK01 panel")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231107204611.3082200-2-hsinyi@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/panel/panel-edp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
-index a50eb4db79de..e5140532071d 100644
---- a/drivers/spi/spi-cadence.c
-+++ b/drivers/spi/spi-cadence.c
-@@ -317,6 +317,15 @@ static void cdns_spi_process_fifo(struct cdns_spi *xspi, int ntx, int nrx)
- 	xspi->rx_bytes -= nrx;
+diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
+index a163585a2a52..ecd6238749f7 100644
+--- a/drivers/gpu/drm/panel/panel-edp.c
++++ b/drivers/gpu/drm/panel/panel-edp.c
+@@ -975,6 +975,8 @@ static const struct panel_desc auo_b116xak01 = {
+ 	},
+ 	.delay = {
+ 		.hpd_absent = 200,
++		.unprepare = 500,
++		.enable = 50,
+ 	},
+ };
  
- 	while (ntx || nrx) {
-+		if (nrx) {
-+			u8 data = cdns_spi_read(xspi, CDNS_SPI_RXD);
-+
-+			if (xspi->rxbuf)
-+				*xspi->rxbuf++ = data;
-+
-+			nrx--;
-+		}
-+
- 		if (ntx) {
- 			if (xspi->txbuf)
- 				cdns_spi_write(xspi, CDNS_SPI_TXD, *xspi->txbuf++);
-@@ -326,14 +335,6 @@ static void cdns_spi_process_fifo(struct cdns_spi *xspi, int ntx, int nrx)
- 			ntx--;
- 		}
- 
--		if (nrx) {
--			u8 data = cdns_spi_read(xspi, CDNS_SPI_RXD);
--
--			if (xspi->rxbuf)
--				*xspi->rxbuf++ = data;
--
--			nrx--;
--		}
- 	}
- }
+@@ -1870,7 +1872,7 @@ static const struct edp_panel_entry edp_panels[] = {
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1062, &delay_200_500_e50, "B120XAN01.0"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1e9b, &delay_200_500_e50, "B133UAN02.1"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1ea5, &delay_200_500_e50, "B116XAK01.6"),
+-	EDP_PANEL_ENTRY('A', 'U', 'O', 0x405c, &auo_b116xak01.delay, "B116XAK01"),
++	EDP_PANEL_ENTRY('A', 'U', 'O', 0x405c, &auo_b116xak01.delay, "B116XAK01.0"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x615c, &delay_200_500_e50, "B116XAN06.1"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x8594, &delay_200_500_e50, "B133UAN01.0"),
  
 -- 
 2.43.0
