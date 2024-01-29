@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-16656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BADF4840DDF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5BE840FE3
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4369FB22DC1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79232283290
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 632D715AAD9;
-	Mon, 29 Jan 2024 17:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F1515EA83;
+	Mon, 29 Jan 2024 17:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIfjW9BI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="msnbx483"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2182715AAD7;
-	Mon, 29 Jan 2024 17:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F086115EA8C;
+	Mon, 29 Jan 2024 17:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548181; cv=none; b=glikUYCkqUOiOLjrTbgkhX1XBLG0pUnJc1DivQamfDlda/KsfP7GkxcaYJZaVguaQjPddGtMjItNtudXVWyG5DqxALgDW0iNhx9rF3XP8F/0tkZPzNvXXFhh9k1vIDhF5sXFbiDe6DLAokuC8dfbuC0UQXNHyBylKhqfXwYuXnE=
+	t=1706548523; cv=none; b=OSDrwN/d41Ge27EbnN/pyvktlhrErcDBrRcSOHA6aoKZlCQNhiGEdbaRXZNOwlacpQqfgVgEw5NycDX9JnpW9NdMaeRrDsENceKDPyhgJyWR0MuvG3hrVwjwDHIv2OTAGi+72YP5RInKxgg7wBpR7iJHNQDi8dQ0LaG81kdWtgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548181; c=relaxed/simple;
-	bh=i/L77O4AR806kyX4YLc0D2J05VhQWlkwHPQirAuC9aI=;
+	s=arc-20240116; t=1706548523; c=relaxed/simple;
+	bh=0sDZN+br8R3TqkFj87Ib69prPeoEGOU9WbfGb6VC3kM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o7Uyj6bcWiCaTwdC+te82yy3suK982yRaE9KSINXbiIqYwc/xLiQge6noEh+FgbHjxS/ZgyX+snAI798d6fxk3a9CHFocC+AP06SHX3MAdzdDlciRJDtPxwuiwGa639veFiKDPQtumW4wHLhcvK9XUZKMMVcyn9LHbSnqIVdGg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIfjW9BI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE943C433C7;
-	Mon, 29 Jan 2024 17:09:40 +0000 (UTC)
+	 MIME-Version; b=Ur6eT+HL9cNAjC/G9b2dF7L+4Nw+WZp0kmphxeQ41qey9KQK/r6tbheSem0PPbwzcBgFp/G9y9y5O2ma3hHkTW5Q6tH3m/4nENJJ53NwbTgC1eCFt7t8FZgH6qm2pzBE+xgiHouEU6ec0TFbsW3xufWlkvXkP5D4g8b6Lb7at9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=msnbx483; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1522C433C7;
+	Mon, 29 Jan 2024 17:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548181;
-	bh=i/L77O4AR806kyX4YLc0D2J05VhQWlkwHPQirAuC9aI=;
+	s=korg; t=1706548522;
+	bh=0sDZN+br8R3TqkFj87Ib69prPeoEGOU9WbfGb6VC3kM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wIfjW9BITZHoKCDlRV78gFFAJnK/0yoUWz+ZcSjzoUDWLgGjinzxNR/pon/zs+Jv/
-	 KSSS2PphTiD9oDW1gFACFWKOcqb1dOwBYJJr79/GwHLAx3zXAOai8qZCtc4JEJnRhp
-	 w6fTmDelVQHxZLKhd55aIW24Yf3QMtp8Zupk6qHU=
+	b=msnbx483YMv3UtRqeEJUtRIT2uUF6zZeFTJ9swROewSbA5bVrsd8ujTTWMfu6ixef
+	 e97zYFizRjMGbLgIDJjOuM5KRnJi8tjaSKNjDkayI9P5LRXN/zao0hjdJw+YS6ID0Q
+	 tISswE6mXy0YlSFU9uuGmbIZUeFqK/K5TlUkIyGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Wesley Cheng <quic_wcheng@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/185] usb: dwc3: gadget: Refactor EP0 forced stall/restart into a separate API
-Date: Mon, 29 Jan 2024 09:03:21 -0800
-Message-ID: <20240129165958.647131995@linuxfoundation.org>
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	Chris Goldsworthy <quic_cgoldswo@quicinc.com>,
+	Michal Hocko <mhocko@suse.com>,
+	David Rientjes <rientjes@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Pavankumar Kondeti <quic_pkondeti@quicinc.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Joakim Tjernlund <Joakim.Tjernlund@infinera.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 138/331] mm: page_alloc: unreserve highatomic page blocks before oom
+Date: Mon, 29 Jan 2024 09:03:22 -0800
+Message-ID: <20240129170018.982808411@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +70,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+From: Charan Teja Kalla <quic_charante@quicinc.com>
 
-[ Upstream commit 8f40fc0808137c157dd408d2632e63bfca2aecdb ]
+commit ac3f3b0a55518056bc80ed32a41931c99e1f7d81 upstream.
 
-Several sequences utilize the same routine for forcing the control endpoint
-back into the SETUP phase.  This is required, because those operations need
-to ensure that EP0 is back in the default state.
+__alloc_pages_direct_reclaim() is called from slowpath allocation where
+high atomic reserves can be unreserved after there is a progress in
+reclaim and yet no suitable page is found.  Later should_reclaim_retry()
+gets called from slow path allocation to decide if the reclaim needs to be
+retried before OOM kill path is taken.
 
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Link: https://lore.kernel.org/r/20230420212759.29429-3-quic_wcheng@quicinc.com
+should_reclaim_retry() checks the available(reclaimable + free pages)
+memory against the min wmark levels of a zone and returns:
+
+a) true, if it is above the min wmark so that slow path allocation will
+   do the reclaim retries.
+
+b) false, thus slowpath allocation takes oom kill path.
+
+should_reclaim_retry() can also unreserves the high atomic reserves **but
+only after all the reclaim retries are exhausted.**
+
+In a case where there are almost none reclaimable memory and free pages
+contains mostly the high atomic reserves but allocation context can't use
+these high atomic reserves, makes the available memory below min wmark
+levels hence false is returned from should_reclaim_retry() leading the
+allocation request to take OOM kill path.  This can turn into a early oom
+kill if high atomic reserves are holding lot of free memory and
+unreserving of them is not attempted.
+
+(early)OOM is encountered on a VM with the below state:
+[  295.998653] Normal free:7728kB boost:0kB min:804kB low:1004kB
+high:1204kB reserved_highatomic:8192KB active_anon:4kB inactive_anon:0kB
+active_file:24kB inactive_file:24kB unevictable:1220kB writepending:0kB
+present:70732kB managed:49224kB mlocked:0kB bounce:0kB free_pcp:688kB
+local_pcp:492kB free_cma:0kB
+[  295.998656] lowmem_reserve[]: 0 32
+[  295.998659] Normal: 508*4kB (UMEH) 241*8kB (UMEH) 143*16kB (UMEH)
+33*32kB (UH) 7*64kB (UH) 0*128kB 0*256kB 0*512kB 0*1024kB 0*2048kB
+0*4096kB = 7752kB
+
+Per above log, the free memory of ~7MB exist in the high atomic reserves
+is not freed up before falling back to oom kill path.
+
+Fix it by trying to unreserve the high atomic reserves in
+should_reclaim_retry() before __alloc_pages_direct_reclaim() can fallback
+to oom kill path.
+
+Link: https://lkml.kernel.org/r/1700823445-27531-1-git-send-email-quic_charante@quicinc.com
+Fixes: 0aaa29a56e4f ("mm, page_alloc: reserve pageblocks for high-order atomic allocations on demand")
+Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Reported-by: Chris Goldsworthy <quic_cgoldswo@quicinc.com>
+Suggested-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Acked-by: David Rientjes <rientjes@google.com>
+Cc: Chris Goldsworthy <quic_cgoldswo@quicinc.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Pavankumar Kondeti <quic_pkondeti@quicinc.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 3c7af52c7616 ("usb: dwc3: gadget: Queue PM runtime idle on disconnect event")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c | 53 ++++++++++++++++-----------------------
- 1 file changed, 21 insertions(+), 32 deletions(-)
+ mm/page_alloc.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 137602d9076f..339e8c3f7c50 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -139,6 +139,24 @@ int dwc3_gadget_set_link_state(struct dwc3 *dwc, enum dwc3_link_state state)
- 	return -ETIMEDOUT;
- }
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3809,14 +3809,9 @@ should_reclaim_retry(gfp_t gfp_mask, uns
+ 	else
+ 		(*no_progress_loops)++;
  
-+static void dwc3_ep0_reset_state(struct dwc3 *dwc)
-+{
-+	unsigned int	dir;
-+
-+	if (dwc->ep0state != EP0_SETUP_PHASE) {
-+		dir = !!dwc->ep0_expect_in;
-+		if (dwc->ep0state == EP0_DATA_PHASE)
-+			dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
-+		else
-+			dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
-+
-+		dwc->eps[0]->trb_enqueue = 0;
-+		dwc->eps[1]->trb_enqueue = 0;
-+
-+		dwc3_ep0_stall_and_restart(dwc);
-+	}
-+}
-+
- /**
-  * dwc3_ep_inc_trb - increment a trb index.
-  * @index: Pointer to the TRB index to increment.
-@@ -2552,16 +2570,9 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
- 		ret = wait_for_completion_timeout(&dwc->ep0_in_setup,
- 				msecs_to_jiffies(DWC3_PULL_UP_TIMEOUT));
- 		if (ret == 0) {
--			unsigned int    dir;
--
- 			dev_warn(dwc->dev, "wait for SETUP phase timed out\n");
- 			spin_lock_irqsave(&dwc->lock, flags);
--			dir = !!dwc->ep0_expect_in;
--			if (dwc->ep0state == EP0_DATA_PHASE)
--				dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
--			else
--				dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
--			dwc3_ep0_stall_and_restart(dwc);
-+			dwc3_ep0_reset_state(dwc);
- 			spin_unlock_irqrestore(&dwc->lock, flags);
- 		}
- 	}
-@@ -3848,16 +3859,7 @@ static void dwc3_gadget_disconnect_interrupt(struct dwc3 *dwc)
- 	dwc->setup_packet_pending = false;
- 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
- 
--	if (dwc->ep0state != EP0_SETUP_PHASE) {
--		unsigned int    dir;
--
--		dir = !!dwc->ep0_expect_in;
--		if (dwc->ep0state == EP0_DATA_PHASE)
--			dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
--		else
--			dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
--		dwc3_ep0_stall_and_restart(dwc);
+-	/*
+-	 * Make sure we converge to OOM if we cannot make any progress
+-	 * several times in the row.
+-	 */
+-	if (*no_progress_loops > MAX_RECLAIM_RETRIES) {
+-		/* Before OOM, exhaust highatomic_reserve */
+-		return unreserve_highatomic_pageblock(ac, true);
 -	}
-+	dwc3_ep0_reset_state(dwc);
- }
- 
- static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
-@@ -3913,20 +3915,7 @@ static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
- 	 * phase. So ensure that EP0 is in setup phase by issuing a stall
- 	 * and restart if EP0 is not in setup phase.
- 	 */
--	if (dwc->ep0state != EP0_SETUP_PHASE) {
--		unsigned int	dir;
--
--		dir = !!dwc->ep0_expect_in;
--		if (dwc->ep0state == EP0_DATA_PHASE)
--			dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
--		else
--			dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
--
--		dwc->eps[0]->trb_enqueue = 0;
--		dwc->eps[1]->trb_enqueue = 0;
--
--		dwc3_ep0_stall_and_restart(dwc);
--	}
-+	dwc3_ep0_reset_state(dwc);
++	if (*no_progress_loops > MAX_RECLAIM_RETRIES)
++		goto out;
++
  
  	/*
- 	 * In the Synopsis DesignWare Cores USB3 Databook Rev. 3.30a
--- 
-2.43.0
-
+ 	 * Keep reclaiming pages while there is a chance this will lead
+@@ -3859,6 +3854,11 @@ should_reclaim_retry(gfp_t gfp_mask, uns
+ 		schedule_timeout_uninterruptible(1);
+ 	else
+ 		cond_resched();
++out:
++	/* Before OOM, exhaust highatomic_reserve */
++	if (!ret)
++		return unreserve_highatomic_pageblock(ac, true);
++
+ 	return ret;
+ }
+ 
 
 
 
