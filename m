@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-16932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65998840F1B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F10B840EAC
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 081E1B22913
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C42791F276AC
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F61163A95;
-	Mon, 29 Jan 2024 17:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8779415FB3C;
+	Mon, 29 Jan 2024 17:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="re3jbA+G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3klMUrs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49A5163A90;
-	Mon, 29 Jan 2024 17:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEA7157050;
+	Mon, 29 Jan 2024 17:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548385; cv=none; b=Ov3m/RWAGrMf6YXYKX1Iykk848dC0kvDbY2BRPcFdDRBZW8RP2k0aX2f9xrjpwhLmaGY37SeBlbFjH2Xzao8h5FTc1sTL75QNL4iZBJ4roz+eFPPJ2v/Szw5oVvETcp765OhQVEOdTsjC8aShksoWXNcnJtQD+5cbrIxBl9CfxQ=
+	t=1706548326; cv=none; b=Hu7YwVzBEXnMhIXZ3+luYKQJxxwhZWBjBptJCmTM+I5aX5EW/WojG5q9AjCKfVbcRpNmINHb6gvq5jM9CthRMgTfUHnFxb3GmtPqDM3msiQiD16F71acTQ0ijA+k7bEzpTh5kSIGB9GfzIyMQoJpKbhxq53Uzx2IqjMEa2/not4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548385; c=relaxed/simple;
-	bh=iROTM62lg/86u4CoRwX0WWcpXcnjQKESySEB3hueEFU=;
+	s=arc-20240116; t=1706548326; c=relaxed/simple;
+	bh=yKMNwnZ7gAFlGtaU7XttzNMbr+YVCktR4bCty6wYPcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XBCiQrOYOxuzRamkVeBxp3SZ4CViijkyPPXGueyp+dpPit1WtAERuFOZ/iQ5PEseZndi5YFW3IOTO4gU1W9lMqh9RWl/nqwkYHcDc44ed2YFE6TRhsQ7El/JZxyzKxtje3q2NGQSA80v3mdFn1rr0qgH0/QE6RP74+N1QJOEZRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=re3jbA+G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF45C433F1;
-	Mon, 29 Jan 2024 17:13:05 +0000 (UTC)
+	 MIME-Version; b=NXxXRLnYy1Sar2Y8XxEzKE6bvkDh9M6+OUXv0tIzMR0QgAUvwPs3i+yfoi6H9MYKF/xtAiuuN/6eXkyXX2t95IwH7xFqIWB9HbkXeQfo2mbrm0ltmCB3W2mWJhgugYzPqqpSxF2eFUOooszZaoB+LpMQ+uUtwQYuel17w459YG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3klMUrs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077BCC433F1;
+	Mon, 29 Jan 2024 17:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548385;
-	bh=iROTM62lg/86u4CoRwX0WWcpXcnjQKESySEB3hueEFU=;
+	s=korg; t=1706548326;
+	bh=yKMNwnZ7gAFlGtaU7XttzNMbr+YVCktR4bCty6wYPcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=re3jbA+GswbEjKmNCQbYAkGoelhaRTFJUZ+NU2eSjUk7MqhxFOuRUZhBKO4U2LT2W
-	 PGO5c3XZhE62r3tKI22nMqS/Lm3BG2819SOHgzzm/pdptcqFSSS/ARIbhMl8tNwjvh
-	 m8Gpbk5fPftMHvK7HxCKKtkTw+hT+2iUgm8MWFBQ=
+	b=l3klMUrsmTuokB2ykZexhgkhnUj2TPCmTPNFLcWJ9rIfnGKeZznlhSt9QMWUc1alV
+	 n22knuZW6I19AL/3gVcx/uJlWKS3kOrndnXZDTeVaVt9HQ8kWG37fUko61McLdUMVW
+	 gPLW1rNC/vRlZ2mnjCfg7oLzV3PtURm0//JrDM5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 157/185] ARM: dts: qcom: sdx55: fix USB SS wakeup
+Subject: [PATCH 6.7 326/346] ARM: dts: exynos4212-tab3: add samsung,invert-vclk flag to fimd
 Date: Mon, 29 Jan 2024 09:05:57 -0800
-Message-ID: <20240129170003.639056998@linuxfoundation.org>
+Message-ID: <20240129170026.065577702@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-[ Upstream commit 710dd03464e4ab5b3d329768388b165d61958577 ]
+[ Upstream commit eab4f56d3e75dad697acf8dc2c8be3c341d6c63e ]
 
-The USB SS PHY interrupt needs to be provided by the PDC interrupt
-controller in order to be able to wake the system up from low-power
-states.
+After more investigation, I've found that it's not the panel driver
+config that needs to be modified to invert the data polarity, but
+the FIMD config.
 
-Fixes: fea4b41022f3 ("ARM: dts: qcom: sdx55: Add USB3 and PHY support")
-Cc: stable@vger.kernel.org	# 5.12
-Cc: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20231213173131.29436-4-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Add the missing invert-vclk option that is required to get the display
+to work correctly.
+
+Fixes: ee37a457af1d ("ARM: dts: exynos: Add Samsung Galaxy Tab 3 8.0 boards")
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Link: https://lore.kernel.org/r/20240105-tab3-display-fixes-v2-1-904d1207bf6f@gmail.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-sdx55.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/qcom-sdx55.dtsi b/arch/arm/boot/dts/qcom-sdx55.dtsi
-index de747859fdc6..b85820448b9d 100644
---- a/arch/arm/boot/dts/qcom-sdx55.dtsi
-+++ b/arch/arm/boot/dts/qcom-sdx55.dtsi
-@@ -496,7 +496,7 @@ usb: usb@a6f8800 {
- 			assigned-clock-rates = <19200000>, <200000000>;
+diff --git a/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi b/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi
+index d7954ff466b4..e5254e32aa8f 100644
+--- a/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi
++++ b/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi
+@@ -434,6 +434,7 @@ &exynos_usbphy {
+ };
  
- 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
--					      <&intc GIC_SPI 198 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc 51 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc 11 IRQ_TYPE_EDGE_BOTH>,
- 					      <&pdc 10 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ &fimd {
++	samsung,invert-vclk;
+ 	status = "okay";
+ };
+ 
 -- 
 2.43.0
 
