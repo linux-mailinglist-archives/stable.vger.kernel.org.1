@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E9C840E42
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56C3E84103A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CFC9283407
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13A9E28600D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E438715703E;
-	Mon, 29 Jan 2024 17:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1D615B30B;
+	Mon, 29 Jan 2024 17:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0ZYrqbS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ItZ+sky"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31B515EAA8;
-	Mon, 29 Jan 2024 17:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F142215A497;
+	Mon, 29 Jan 2024 17:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548251; cv=none; b=rH1tZXwZAmsGk61XINEFDvStXKou2RYhszlMY7J8ooc9hdY8AdZZTVm9R+ClosgocYXDcdLKjuj2LqIXf1Px5AJqNW/mYDx2OyPMlU5IQYQJWSfi0Jc6pk7kei/Y4/mubsTuDVG/zQaXq0vKIzrSqUr2Nf5csVeNSKn9ci57XGg=
+	t=1706548585; cv=none; b=I4wUMmSvhFnmAF18v2R8an3eB80i5bhnrmg8ij+0S1uEWWpjFF8Oni0e4LGppeKuRt50BZw1+EMTMr3Z7ffjvmkxo1VsMyvsbQxnyNszzByd3etHEdZ6aE1vPOMp+qC1pbCRDYWgetknnEokNqLsS+lN+5O+UGeKflpqh+LqFcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548251; c=relaxed/simple;
-	bh=cx+dagJoZRg8+XjNj85yh+Z9BjmXY6TRQPT6bMUrv2M=;
+	s=arc-20240116; t=1706548585; c=relaxed/simple;
+	bh=5/1Ak+baGmXZ0uTQbs/utNs8x4PlkLsuS1Sn9U6uCzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sr8t6GKoQ9aVLGams8lX7K9knqgAGknWtNgS2EeWMzWjcmz1uLlZtj+9nVNVHDopK0xrCwKpUYFNb9SVJiBqjuoZK6H30TREoqkzSBScMr9NWVWIrdBiIQcX+9Z57vcoFpyZqjKLkoyJ8ncZoSLjogl/dEYuYW6QN7mpJl4fHPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0ZYrqbS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF26C433F1;
-	Mon, 29 Jan 2024 17:10:51 +0000 (UTC)
+	 MIME-Version; b=MTHAuWDc4TBw54zQDx4WeyQ4R4CvnWU7DHbg3Yju0ZnDhuZzXj7b6iz2I2BoYTfZw/NKrKAu6RilubqLbMOCKMIns+MXroImZbMZuJiyMZ5oFe2e0d02/MOn0vQc0N71ImTo9xS5SQoPf2tnqvTeMeUELCZQl+qOdoREJQH0a4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ItZ+sky; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E71C433C7;
+	Mon, 29 Jan 2024 17:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548251;
-	bh=cx+dagJoZRg8+XjNj85yh+Z9BjmXY6TRQPT6bMUrv2M=;
+	s=korg; t=1706548584;
+	bh=5/1Ak+baGmXZ0uTQbs/utNs8x4PlkLsuS1Sn9U6uCzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z0ZYrqbSEOJUpnG41em5bBdqY6pvh+UP16zXMHsw0zad5VFVDbmW9EiLuUg0WuKGS
-	 ESimit1idvZstsHAJe3O1vYQOw4xpIgPjNzlzP89NHkWiWUPj1BGioULesR5NLN0AL
-	 YmhvJYbrg9CUPe8AH+YGld+qTFw0ZzEmZ1cD9jkA=
+	b=1ItZ+skyi/iZZrUsiM4KBZqnjJeuQirj936/vQIjnR0oFNyQEdAjgU3d3Tf+pumUA
+	 73m/t1p693K3FkBFO5g/24qadS2jYrbpuft4u1ULH4I1gRxmn2d0e9Z+wkc/0zRnAI
+	 1KOPJ7sjzjfwfZYt6ODVRvmQ0jP9d0JC6z+VaEJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom St Denis <tom.stdenis@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.7 273/346] drm/amd/amdgpu: Assign GART pages to AMD device mapping
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 240/331] wifi: iwlwifi: fix a memory corruption
 Date: Mon, 29 Jan 2024 09:05:04 -0800
-Message-ID: <20240129170024.409055947@linuxfoundation.org>
+Message-ID: <20240129170021.898995068@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom St Denis <tom.stdenis@amd.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-commit e7a8594cc2af920a905db15653c19c362d4ebd3f upstream.
+commit cf4a0d840ecc72fcf16198d5e9c505ab7d5a5e4d upstream.
 
-This allows kernel mapped pages like the PDB and PTB to be
-read via the iomem debugfs when there is no vram in the system.
+iwl_fw_ini_trigger_tlv::data is a pointer to a __le32, which means that
+if we copy to iwl_fw_ini_trigger_tlv::data + offset while offset is in
+bytes, we'll write past the buffer.
 
-Signed-off-by: Tom St Denis <tom.stdenis@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.7.x
+Cc: stable@vger.kernel.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218233
+Fixes: cf29c5b66b9f ("iwlwifi: dbg_ini: implement time point handling")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240111150610.2d2b8b870194.I14ed76505a5cf87304e0c9cc05cc0ae85ed3bf91@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gart.c
-@@ -121,6 +121,7 @@ int amdgpu_gart_table_ram_alloc(struct a
- 	struct amdgpu_bo_param bp;
- 	dma_addr_t dma_addr;
- 	struct page *p;
-+	unsigned long x;
- 	int ret;
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2018-2023 Intel Corporation
++ * Copyright (C) 2018-2024 Intel Corporation
+  */
+ #include <linux/firmware.h>
+ #include "iwl-drv.h"
+@@ -1094,7 +1094,7 @@ static int iwl_dbg_tlv_override_trig_nod
+ 		node_trig = (void *)node_tlv->data;
+ 	}
  
- 	if (adev->gart.bo != NULL)
-@@ -130,6 +131,10 @@ int amdgpu_gart_table_ram_alloc(struct a
- 	if (!p)
- 		return -ENOMEM;
+-	memcpy(node_trig->data + offset, trig->data, trig_data_len);
++	memcpy((u8 *)node_trig->data + offset, trig->data, trig_data_len);
+ 	node_tlv->length = cpu_to_le32(size);
  
-+	/* assign pages to this device */
-+	for (x = 0; x < (1UL << order); x++)
-+		p[x].mapping = adev->mman.bdev.dev_mapping;
-+
- 	/* If the hardware does not support UTCL2 snooping of the CPU caches
- 	 * then set_memory_wc() could be used as a workaround to mark the pages
- 	 * as write combine memory.
-@@ -223,6 +228,7 @@ void amdgpu_gart_table_ram_free(struct a
- 	unsigned int order = get_order(adev->gart.table_size);
- 	struct sg_table *sg = adev->gart.bo->tbo.sg;
- 	struct page *p;
-+	unsigned long x;
- 	int ret;
- 
- 	ret = amdgpu_bo_reserve(adev->gart.bo, false);
-@@ -234,6 +240,8 @@ void amdgpu_gart_table_ram_free(struct a
- 	sg_free_table(sg);
- 	kfree(sg);
- 	p = virt_to_page(adev->gart.ptr);
-+	for (x = 0; x < (1UL << order); x++)
-+		p[x].mapping = NULL;
- 	__free_pages(p, order);
- 
- 	adev->gart.ptr = NULL;
+ 	if (policy & IWL_FW_INI_APPLY_POLICY_OVERRIDE_CFG) {
 
 
 
