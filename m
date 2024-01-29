@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD9B840DE5
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C99840FEC
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4184B1C2336D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B8761C20DBD
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A9A1586C7;
-	Mon, 29 Jan 2024 17:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F154773725;
+	Mon, 29 Jan 2024 17:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpNplrFq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSs1DUo0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68F515D5B8;
-	Mon, 29 Jan 2024 17:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCF773721;
+	Mon, 29 Jan 2024 17:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548184; cv=none; b=XQfKOLFX7+ytvzvSieWBN+rUXmgIsuPIM1VV+yL+ZYsOFaYBfR7hJlkpXz6t8FFpxm6S8dUGiAdSuro1jwwGpyKRvQPB43TJahBLs9brNC4D9BHalVk+c5VLTSFTK11PnFRxMB+fyobL/s+5SjIoPnN49x7CTfIvWufaKaWP1KI=
+	t=1706548529; cv=none; b=FI2fAwJHeCZ0o+xEQfxT7NkQ2mfaPBVdV/jkKRqSkhm2K0fiJ+ZGeKXgmj+AoD4auHNjhab7dJp4xdvsctagnSh6Vfol4Pdp8HGWsfY4oAq7RyXjmgI6Bmx+81UAJVAWoJa8Cou55FMQP7iDKTyjI8T8swP4jUMTBynrxoLRXkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548184; c=relaxed/simple;
-	bh=497iyW7Us0Pbt6F1NdTHw6vOiB8O3LxipqKiuqZjlIA=;
+	s=arc-20240116; t=1706548529; c=relaxed/simple;
+	bh=Ccp/PN58CB4VwlxsfmNVgePQqrahfxiatVdkqU/ODiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q8Rb6h9p6N1tohBPOvC+KSne3i7Me3VcKF2nQk5T4AZsOWT87AvK1U+p56md8Pw4QlY4EILsqHAiv3KPAVLph7TO9L2XaGeJJo9sy9xkb4vGm3J02O3xso4qT1HQ8iZ1PP9CAGN3bop66iPNWUhhFPf88rv/ig05Azdg2FtM+jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpNplrFq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EFD2C433F1;
-	Mon, 29 Jan 2024 17:09:44 +0000 (UTC)
+	 MIME-Version; b=GU9d90eThKIa2sdg5zyjPQpTvuYGD505U08/A6MRPajT/SO6aKPSjetZ8XKeYE3Gpa2CtCdJ4fxIUvYqeCBDoA0Miygc7+JTFBhgNln3PA+SB1vbNMfSYD4ipHZs7hK0RZxVIfbtc770pem/KyyG5JTwzsJZN7b+gLPIqrPp54I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XSs1DUo0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21AA8C433F1;
+	Mon, 29 Jan 2024 17:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548184;
-	bh=497iyW7Us0Pbt6F1NdTHw6vOiB8O3LxipqKiuqZjlIA=;
+	s=korg; t=1706548529;
+	bh=Ccp/PN58CB4VwlxsfmNVgePQqrahfxiatVdkqU/ODiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lpNplrFqlR+eSGnk8cq/1I9C9HdED48pBzJZuiAzyPZMorko334FV3/bYQHl31bJ2
-	 h31JAhRB/plJN+5b97wRmJcpnJYVbS3bMe4sOV7C2xIcrLE6W6mt5YJEnVWkUe47aC
-	 W+EoqdzTtT9ayDWioP+9t08C1qu/I93HDZOExBV0=
+	b=XSs1DUo0gGpfHhpOj4T7W2QaCti6BrA+DPkzJD/cgrTESDHD/49RUbXHCn5j6OqoU
+	 PbMZAS9MLW2zJoP35jkqCOFmgE/TKlNLVEpZI4BiMwxud6qlDzZtBnEnwwBdcYG06n
+	 sG/P9RsFdU9g8VTMsZXNr9dSL1d814vA/ODv3I2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Wesley Cheng <quic_wcheng@quicinc.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 003/185] usb: dwc3: gadget: Handle EP0 request dequeuing properly
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Subject: [PATCH 6.6 139/331] serial: Do not hold the port lock when setting rx-during-tx GPIO
 Date: Mon, 29 Jan 2024 09:03:23 -0800
-Message-ID: <20240129165958.712827183@linuxfoundation.org>
+Message-ID: <20240129170019.012656054@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-[ Upstream commit 730e12fbec53ab59dd807d981a204258a4cfb29a ]
+commit 07c30ea5861fb26a77dade8cdc787252f6122fb1 upstream.
 
-Current EP0 dequeue path will share the same as other EPs.  However, there
-are some special considerations that need to be made for EP0 transfers:
+Both the imx and stm32 driver set the rx-during-tx GPIO in rs485_config().
+Since this function is called with the port lock held, this can be a
+problem in case that setting the GPIO line can sleep (e.g. if a GPIO
+expander is used which is connected via SPI or I2C).
 
-  - EP0 transfers never transition into the started_list
-  - EP0 only has one active request at a time
+Avoid this issue by moving the GPIO setting outside of the port lock into
+the serial core and thus making it a generic feature.
 
-In case there is a vendor specific control message for a function over USB
-FFS, then there is no guarantee on the timeline which the DATA/STATUS stage
-is responded to.  While this occurs, any attempt to end transfers on
-non-control EPs will end up having the DWC3_EP_DELAY_STOP flag set, and
-defer issuing of the end transfer command.  If the USB FFS application
-decides to timeout the control transfer, or if USB FFS AIO path exits, the
-USB FFS driver will issue a call to usb_ep_dequeue() for the ep0 request.
+Also with commit c54d48543689 ("serial: stm32: Add support for rs485
+RX_DURING_TX output GPIO") the SER_RS485_RX_DURING_TX flag is only set if a
+rx-during-tx GPIO is _not_ available, which is wrong. Fix this, too.
 
-In case of the AIO exit path, the AIO FS blocks until all pending USB
-requests utilizing the AIO path is completed.  However, since the dequeue
-of ep0 req does not happen properly, all non-control EPs with the
-DWC3_EP_DELAY_STOP flag set will not be handled, and the AIO exit path will
-be stuck waiting for the USB FFS data endpoints to receive a completion
-callback.
+Furthermore reset old GPIO settings in case that changing the RS485
+configuration failed.
 
-Fix is to utilize dwc3_ep0_reset_state() in the dequeue API to ensure EP0
-is brought back to the SETUP state, and ensures that any deferred end
-transfer commands are handled.  This also will end any active transfers
-on EP0, compared to the previous implementation which directly called
-giveback only.
-
-Fixes: fcd2def66392 ("usb: dwc3: gadget: Refactor dwc3_gadget_ep_dequeue")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20231206201814.32664-1-quic_wcheng@quicinc.com
+Fixes: c54d48543689 ("serial: stm32: Add support for rs485 RX_DURING_TX output GPIO")
+Fixes: ca530cfa968c ("serial: imx: Add support for RS485 RX_DURING_TX output GPIO")
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Link: https://lore.kernel.org/r/20240103061818.564-2-l.sanfilippo@kunbus.com
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/tty/serial/imx.c         |    4 ----
+ drivers/tty/serial/serial_core.c |   26 ++++++++++++++++++++++++--
+ drivers/tty/serial/stm32-usart.c |    8 ++------
+ 3 files changed, 26 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 5617a75b0d74..c4703f6b2089 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2093,7 +2093,17 @@ static int dwc3_gadget_ep_dequeue(struct usb_ep *ep,
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -1947,10 +1947,6 @@ static int imx_uart_rs485_config(struct
+ 	    rs485conf->flags & SER_RS485_RX_DURING_TX)
+ 		imx_uart_start_rx(port);
  
- 	list_for_each_entry(r, &dep->pending_list, list) {
- 		if (r == req) {
--			dwc3_gadget_giveback(dep, req, -ECONNRESET);
-+			/*
-+			 * Explicitly check for EP0/1 as dequeue for those
-+			 * EPs need to be handled differently.  Control EP
-+			 * only deals with one USB req, and giveback will
-+			 * occur during dwc3_ep0_stall_and_restart().  EP0
-+			 * requests are never added to started_list.
-+			 */
-+			if (dep->number > 1)
-+				dwc3_gadget_giveback(dep, req, -ECONNRESET);
-+			else
-+				dwc3_ep0_reset_state(dwc);
- 			goto out;
- 		}
+-	if (port->rs485_rx_during_tx_gpio)
+-		gpiod_set_value_cansleep(port->rs485_rx_during_tx_gpio,
+-					 !!(rs485conf->flags & SER_RS485_RX_DURING_TX));
+-
+ 	return 0;
+ }
+ 
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -1409,6 +1409,16 @@ static void uart_set_rs485_termination(s
+ 				 !!(rs485->flags & SER_RS485_TERMINATE_BUS));
+ }
+ 
++static void uart_set_rs485_rx_during_tx(struct uart_port *port,
++					const struct serial_rs485 *rs485)
++{
++	if (!(rs485->flags & SER_RS485_ENABLED))
++		return;
++
++	gpiod_set_value_cansleep(port->rs485_rx_during_tx_gpio,
++				 !!(rs485->flags & SER_RS485_RX_DURING_TX));
++}
++
+ static int uart_rs485_config(struct uart_port *port)
+ {
+ 	struct serial_rs485 *rs485 = &port->rs485;
+@@ -1420,12 +1430,17 @@ static int uart_rs485_config(struct uart
+ 
+ 	uart_sanitize_serial_rs485(port, rs485);
+ 	uart_set_rs485_termination(port, rs485);
++	uart_set_rs485_rx_during_tx(port, rs485);
+ 
+ 	spin_lock_irqsave(&port->lock, flags);
+ 	ret = port->rs485_config(port, NULL, rs485);
+ 	spin_unlock_irqrestore(&port->lock, flags);
+-	if (ret)
++	if (ret) {
+ 		memset(rs485, 0, sizeof(*rs485));
++		/* unset GPIOs */
++		gpiod_set_value_cansleep(port->rs485_term_gpio, 0);
++		gpiod_set_value_cansleep(port->rs485_rx_during_tx_gpio, 0);
++	}
+ 
+ 	return ret;
+ }
+@@ -1464,6 +1479,7 @@ static int uart_set_rs485_config(struct
+ 		return ret;
+ 	uart_sanitize_serial_rs485(port, &rs485);
+ 	uart_set_rs485_termination(port, &rs485);
++	uart_set_rs485_rx_during_tx(port, &rs485);
+ 
+ 	spin_lock_irqsave(&port->lock, flags);
+ 	ret = port->rs485_config(port, &tty->termios, &rs485);
+@@ -1475,8 +1491,14 @@ static int uart_set_rs485_config(struct
+ 			port->ops->set_mctrl(port, port->mctrl);
  	}
--- 
-2.43.0
-
+ 	spin_unlock_irqrestore(&port->lock, flags);
+-	if (ret)
++	if (ret) {
++		/* restore old GPIO settings */
++		gpiod_set_value_cansleep(port->rs485_term_gpio,
++			!!(port->rs485.flags & SER_RS485_TERMINATE_BUS));
++		gpiod_set_value_cansleep(port->rs485_rx_during_tx_gpio,
++			!!(port->rs485.flags & SER_RS485_RX_DURING_TX));
+ 		return ret;
++	}
+ 
+ 	if (copy_to_user(rs485_user, &port->rs485, sizeof(port->rs485)))
+ 		return -EFAULT;
+--- a/drivers/tty/serial/stm32-usart.c
++++ b/drivers/tty/serial/stm32-usart.c
+@@ -226,12 +226,6 @@ static int stm32_usart_config_rs485(stru
+ 
+ 	stm32_usart_clr_bits(port, ofs->cr1, BIT(cfg->uart_enable_bit));
+ 
+-	if (port->rs485_rx_during_tx_gpio)
+-		gpiod_set_value_cansleep(port->rs485_rx_during_tx_gpio,
+-					 !!(rs485conf->flags & SER_RS485_RX_DURING_TX));
+-	else
+-		rs485conf->flags |= SER_RS485_RX_DURING_TX;
+-
+ 	if (rs485conf->flags & SER_RS485_ENABLED) {
+ 		cr1 = readl_relaxed(port->membase + ofs->cr1);
+ 		cr3 = readl_relaxed(port->membase + ofs->cr3);
+@@ -256,6 +250,8 @@ static int stm32_usart_config_rs485(stru
+ 
+ 		writel_relaxed(cr3, port->membase + ofs->cr3);
+ 		writel_relaxed(cr1, port->membase + ofs->cr1);
++
++		rs485conf->flags |= SER_RS485_RX_DURING_TX;
+ 	} else {
+ 		stm32_usart_clr_bits(port, ofs->cr3,
+ 				     USART_CR3_DEM | USART_CR3_DEP);
 
 
 
