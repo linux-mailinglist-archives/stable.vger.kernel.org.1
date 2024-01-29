@@ -1,239 +1,158 @@
-Return-Path: <stable+bounces-16388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450B683FD11
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 05:01:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6D983FDC8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 06:44:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 025262830C8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 04:01:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3B46283EF0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 05:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347AC10A0D;
-	Mon, 29 Jan 2024 04:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7314438F;
+	Mon, 29 Jan 2024 05:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JKw8erxu"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="ClHrYCM/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C91710A20;
-	Mon, 29 Jan 2024 04:01:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706500886; cv=fail; b=f6zHwlr9vG2azjAh78U6floQ36oafIWxKrzazh1Du8l+wDLCIz6m8O/vFEPUP01EPonNNttmJaowtYdqTtx2ozefFHn1Ka4wBdbaJlmV5SnXuNqjQqQtKdL36WJ/YkqrHdODveiz0A4OF7ntI+2yuWUNQGkcmGGP+J5QiooRJrA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706500886; c=relaxed/simple;
-	bh=ynGo1Cm27aMnyC8VjM34K10vTlbR0R5t/D8/mD1gF8E=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=kg2F79dzh9+JvUOn1+UvMU3F1ORX+jZAK8Hn3W2aADsJFDq1aQlL6Vlco/L0FbfRqpxysgyWJ1E19jHByeqgZeMROhXKCyl8+jovzzN9cO4Sn3ezg7YstSYDjxKY3PsrQ2LyCW456VYvN+ppSB6xNDeIkDzwMnRvtzi7+/yTBGs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JKw8erxu; arc=fail smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706500884; x=1738036884;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=ynGo1Cm27aMnyC8VjM34K10vTlbR0R5t/D8/mD1gF8E=;
-  b=JKw8erxuxwOEpN0hpdeZSDrittjjOkf26908a2JRAVP7foUEB699Vpsm
-   SjJB7x/PkJBILLjDvuan5DY6uDvM5bAzjKebxowrfbtBH2RsLjDO20azv
-   /u4sm858tS8hnO8xI/GRP1THmQmskvK9etlGyZ+nqKJA8l2HR2ywW+Jdi
-   lZbTrkZeKgsDGaB27ukQDHOShtGBCKMgyasMyP4kqVdwHHiXkFer4DdIb
-   PkQ0fIGXBxto8V8Ew9OiAktorbCTWBiZgmX6Xnoo6q4riXRWur2lJYZwF
-   1KGlFFqmGedMwHnypZf2UCM8go0s/Ka67+H9iBKPqSmqOxnMkfdbMH8VZ
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10967"; a="2731822"
-X-IronPort-AV: E=Sophos;i="6.05,226,1701158400"; 
-   d="scan'208";a="2731822"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2024 20:01:23 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,226,1701158400"; 
-   d="scan'208";a="3328501"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 28 Jan 2024 20:01:22 -0800
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Sun, 28 Jan 2024 20:01:21 -0800
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Sun, 28 Jan 2024 20:01:21 -0800
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Sun, 28 Jan 2024 20:01:21 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.100)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Sun, 28 Jan 2024 20:01:21 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=b3DMebeduyK2Wi5OumJishoP8VGgp0QomFHF0d8QduMvTeTLuYL4tDRIfzUs7nS3kQSrKHWqxWsalijouqBcJWPjY0FK8+u4gbJr+61FdmoErbyx2aaCzGw5vnrSjlP08OMjfD64jaTpPkNU3317NkxQj4s9nt802TQfrUTK+BrDeDsixanYgDNb42kl7e94gzbp4abegmcnuqiVlLkVK8kxNVlAhY0WrodStCopfo6fHdaZNqeTdKQQ6fOguaN3JpwrtZNNQGdL58bfLOam6RXijp4bpR87OWhPKyoLkN+gMuYQaQKn2zYUbLESqA5uEaXU+n/2z2lMjwqqe7keAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mWbIlmvQl34G2GvkC6C0G0fihG8yeS3iPSAcjC1rYQE=;
- b=cAHoQr45DMZSIDHajnTQXA20HcQ2AZte9/+aE1nH2vEZF0e9pMTBvPOf+hiQHwzpV4hQ+u+oJpO3adPNrH9JWLZb0sjqpZgyrRSa9yQFH47YW1j+BH+ylwu8lelpohS0Vcg0H27hL98tOZknVXbHVKOMXkpzEe/FW9HJw0qlAxVD4aE8Eah6/q/ZajcmEdGpkptb29hxGtJCQuc3N0qL0PbuhLOAfpPOVuVyxWuyW9aJtroCEi8tRfjnmRrWT5ibKcwNi5BFfgQ8YsUVa2J8kaGpP+FwvR3GC3YdxQvEySzxo74cgwEZiUmpx9kCNT9nYHc360gKFZ6IDYTaMzDbOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB4839.namprd11.prod.outlook.com (2603:10b6:510:42::18)
- by MN6PR11MB8219.namprd11.prod.outlook.com (2603:10b6:208:471::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.32; Mon, 29 Jan
- 2024 04:01:18 +0000
-Received: from PH0PR11MB4839.namprd11.prod.outlook.com
- ([fe80::8cc7:6be8:dd32:a9e5]) by PH0PR11MB4839.namprd11.prod.outlook.com
- ([fe80::8cc7:6be8:dd32:a9e5%4]) with mapi id 15.20.7228.029; Mon, 29 Jan 2024
- 04:01:18 +0000
-Date: Mon, 29 Jan 2024 11:55:58 +0800
-From: Pengfei Xu <pengfei.xu@intel.com>
-To: Hans de Goede <hdegoede@redhat.com>
-CC: Ashok Raj <ashok.raj@intel.com>, Ilpo Jarvinen
-	<ilpo.jarvinen@linux.intel.com>, <markgross@kernel.org>, Jithu Joseph
-	<jithu.joseph@intel.com>, <rostedt@goodmis.org>, <tony.luck@intel.com>, LKML
-	<linux-kernel@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>,
-	<patches@lists.linux.dev>, <stable@vger.kernel.org>,
-	<gregkh@linuxfoundation.org>, <heng.su@intel.com>
-Subject: Re: [PATCH 1/5] platform/x86/intel/ifs: Call release_firmware() when
- handling errors.
-Message-ID: <ZbchziXFXPvIWP4s@xpf.sh.intel.com>
-References: <20240125082254.424859-1-ashok.raj@intel.com>
- <20240125082254.424859-2-ashok.raj@intel.com>
- <4e360838-36a9-41c0-a1d5-f369ed78cf04@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <4e360838-36a9-41c0-a1d5-f369ed78cf04@redhat.com>
-X-ClientProxiedBy: SI2PR06CA0017.apcprd06.prod.outlook.com
- (2603:1096:4:186::15) To PH0PR11MB4839.namprd11.prod.outlook.com
- (2603:10b6:510:42::18)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCC7446A3;
+	Mon, 29 Jan 2024 05:44:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706507053; cv=none; b=YY8pDaqIg7zdiJR3KGb15DcQtpMbpOyL5uT3VYNkUFqStCHBDFpR0M6CyjlBQfFubzJDdJOeefqENKRcQlNvrt+ON9WwvrNlcb0XFG7Mv+9whJALMmRj6hzq6WwkV19ppqmGIv2SPDNhHBWcFpY565psDOwpt6fnKC+N284cC5c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706507053; c=relaxed/simple;
+	bh=UKAsvocEeKAiwtgNwHf+OjEg9Dnpl0Djnoo2VDDBS/g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GgVx0TjXOYFlVc14dP43HiNt8ZO/wzJd4XQfntwM8cjuLrelpZqr7LpYval8LFHysmK6JE6OxMbvuWZ0zpJ7enQjOlgYUCf9YcWt3IAllI+eoyUlLwGSMhnXbgBuyEMZU9H1fTpIro2NBTrvGzol6LJCG41xlXSA7dTuHLwXAC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=ClHrYCM/; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40SMcZDn030563;
+	Mon, 29 Jan 2024 05:43:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding;
+ s=corp-2023-11-20; bh=ngI35Lv/lTP0D7PAFPS/Ey48CZkaG2kwQAM25WR3oXc=;
+ b=ClHrYCM/qxHM0+4KcBlzbM2wIK71UCjnmHaUAT6si5e8q3yHDTiY9liamB06i3Nd7Y8O
+ N/+YT91S7YcafAJRNaABQwxogOh9CqXA2H0vXRyvO+dKEWy6deTGY9APxKEKP5uo8Oqs
+ B7mFQWPUhb0pEy5otEVy9o+O5BQo4VG1fmqnK+Qsg2yY7nodMogkN3HGTCtG/LivhcE8
+ LM6VRZtX5WtDbO4NUT7ff+orqefMdUJ0kTK6oXWhVSnlzAc+Lsq261f+Z1l3TZ1Ifbtm
+ rC7lhZwbjOCi0PJHRA/veZsLeucm+47UifRozX98NeEfcy8NbSQXrt0P/LTLyU87PihZ vg== 
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vvre2axbb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 29 Jan 2024 05:43:57 +0000
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 40T4qO0E014564;
+	Mon, 29 Jan 2024 05:43:46 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3vvr954s88-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 29 Jan 2024 05:43:46 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40T5hk0O021381;
+	Mon, 29 Jan 2024 05:43:46 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3vvr954s7r-1;
+	Mon, 29 Jan 2024 05:43:46 +0000
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+To: stable@vger.kernel.org
+Cc: kovalev@altlinux.org, abuehaze@amazon.com, smfrench@gmail.com,
+        greg@kroah.com, linux-cifs@vger.kernel.org, keescook@chromium.org,
+        darren.kenny@oracle.com, pc@manguebit.com, nspmangalore@gmail.com,
+        vegard.nossum@oracle.com,
+        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 5.10.y] cifs: fix off-by-one in SMB2_query_info_init()
+Date: Sun, 28 Jan 2024 21:43:42 -0800
+Message-ID: <20240129054342.2472454-1-harshit.m.mogalapalli@oracle.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB4839:EE_|MN6PR11MB8219:EE_
-X-MS-Office365-Filtering-Correlation-Id: ce7cfc6d-a2a1-49e0-727f-08dc207ef27a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 9lhkHKH66xKUZ1xUgRPh5WMcDrZEKDWtD7v4X1z62EnqgVjKtL4OxyBg0nP0sXMck4qBaHHhilvkNJ5QMjw94E1UGNn0hMT+qxPAdrOzfcPwgUPkHnQf9tWVwROu8txTalU3f5CKYqv1dNWJnLwrVaAf5ZrcwvT/dvzRByBtXt4C/7vh990aH/XrmXQ6ouh+c1Ighjigo+i6ieQcSRjdr1Brrpga4mFO4zopTH7NXGuWMi0PgRfpmCidNzJTysucyLJpc54gvn45OHPx+zwZp7xpG+9rgolmXdk+HzwiABCwT7k5Rul2fsCLiDOUxP+4RlFYfg05DuMtfodOk0zRQ8/mbhvRJ0aaCkSAbavi0dZO5qJPTDBN+n7Y8bN+K4TvxpCcaf5IhHvP+xWMt2FTVdTW+5+2qZT+HsJcnaZvLUtCra7UbnLOMU2kTG4GXUi3WIauCmfARFjfb8f0hz8QPLSolFqxmffg3NCpvdgkKNH3xXd1ASBdx5RjPRwF8LQ46AlFJdT9xZPe8lzFMEW1qlceo7CydIrBCM+P0KXbPkQ=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB4839.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(376002)(366004)(136003)(346002)(396003)(230922051799003)(186009)(451199024)(1800799012)(64100799003)(41300700001)(6512007)(478600001)(53546011)(6506007)(6666004)(83380400001)(26005)(44832011)(4326008)(8676002)(8936002)(5660300002)(2906002)(966005)(6486002)(6916009)(54906003)(66476007)(66556008)(66946007)(316002)(86362001)(82960400001)(38100700002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?RjnjEXHsheFkVGZM/t/hAFTLWFdpSiMh4FVhOuHi3RJmHsK06XnQuKHP1Os7?=
- =?us-ascii?Q?ayGhbb4pymVjQkKIu6YJ0kkE7X0l2v9c4n4Dlm/gmOsQvjZhdx1mY679TsQZ?=
- =?us-ascii?Q?My8aCbfAfkU0Qkn8oqjr0fLnKh2Rlx5swnYkvr5XdyRc02HyToBM70QhzFqo?=
- =?us-ascii?Q?qBBghMklFsKI5WqiNG+TAM/bwFA/jMqAGmuqkHSEPoZUrnsiKiqjmCk3LB/U?=
- =?us-ascii?Q?QEhA8Aku9nAefQBKJXGFJqPZpg+eLedDuE5uBGIKZOG2Haxm7cfy+UrDaLhg?=
- =?us-ascii?Q?ItKwZJKon9W2/ymC4ZfhaCP5ZzhXQHFg1+gbiryx4pUw8E3jnAZxqt9VSAzq?=
- =?us-ascii?Q?kaDvPdECoyfEcVzGzOobKEsGItK/a+tmyVgnHWfniDADc+DynEodgYM887rV?=
- =?us-ascii?Q?ffNNmmc/amvJPq2fGAH1sdJTW4gpzZ0nGbi3uEJnfLiTPsF5ezDxKMP2+qTj?=
- =?us-ascii?Q?5eAAquc0X41ATEHBlG+lioIPYwTwpveh/rVqVsQlruhzW38riv+w3cSxamHG?=
- =?us-ascii?Q?AGJpOpKdmXTXPvS43HELgiLvLECNujWM9ubiWZwnDNaBZg9w3USwfgtnW6uw?=
- =?us-ascii?Q?gVlerEb/AKicH60kJx9NtAmlsM5VPC520jzIk+cd02MYh0lKe9uuz1fJbrG1?=
- =?us-ascii?Q?i5nuXVlQV2LaWBknqEOWurSfVzBkrbQjnI5PBTJIG3KMvFqan7U3KGh1+LUJ?=
- =?us-ascii?Q?kNm4lKXrA19iCd/0ttS9+TZtWnUexs9D4HKYY/DstvsSIVmGomOUVkUX/wEH?=
- =?us-ascii?Q?NdeLq/g/1I0UnCQrkG/vgLXizhX4spvBGwyPOdYYNaE+f0JcpvXCL7XURaQE?=
- =?us-ascii?Q?nhlP/eOdcBFXxrkMXkk7GG/CW6yWYcrxhvhmDfrKun51pvdaA1k8bSe3nfTB?=
- =?us-ascii?Q?jiApgGkl4lTPzdW2AI9rjQi0jPvQ4auG3855a7hTVKRM9f+1RxELPip/JLfD?=
- =?us-ascii?Q?OIMaHwP78O5QmxHUuOdukAYW2fdy3OAWIfHHbb5tCaKx+Njuxbc/Ftxm21gC?=
- =?us-ascii?Q?XznW+98/gPRVttqabO5NxrkOIibkFW1KhPk0CUdwxYHMKp3rH2abthQc6lqX?=
- =?us-ascii?Q?/ufoTP8xo03aPwRYsneemcd/vBSvDpZNSiPtTuce7YyKlyLLtahUjo2LzDSF?=
- =?us-ascii?Q?5ls74AsMFwf5xiz5chtC37rLHW8TvfBIN77bnjwi7OFvnBLfCHoknruvRTaP?=
- =?us-ascii?Q?pjKQftzQI72ZRVVZyma1yBH9YAn60azlMBpLgHQ/Kbm+P4UaIkXImVtJhqFK?=
- =?us-ascii?Q?9uR4EDLJzCLrQ0ltx2kDAjjfxM/XsOhxHhWuQSSK+yzIUddow4AiQoPtYmKA?=
- =?us-ascii?Q?mSFNaj+6qeEArJIMxabNBRjCMj1oh94f8SGJThyTju4zAz06Owz9fwKgcQxf?=
- =?us-ascii?Q?C17MPxbXgyxTx51P5+tCvmPVPTm3nduZr665AMWEtab2gpAHk6buTorIvknp?=
- =?us-ascii?Q?D0z369q+/d4v8wxIvGgQuw5SdGeAc+8xY2ALDZ0NGJWR0fhrY+KqBjy8i4yP?=
- =?us-ascii?Q?U2u4G7Q/xijxHyBIcfqE5FytVI2ezxJBAQLvuqaPm39DeVWHpWL2D1xAhuQg?=
- =?us-ascii?Q?qD++8w42ks8xlyZmlZskEp4Zc51lKYR7pp06XY2j?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: ce7cfc6d-a2a1-49e0-727f-08dc207ef27a
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB4839.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2024 04:01:18.7039
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: orIHmSqExT1z0E3dMU3cFG5Z/qHzjGIn8JVDGtUEi8WqywAHv1QzDXdfZMxb5OjC1dilOr0UeFxjCgVGCr2/Og==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8219
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-29_02,2024-01-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 malwarescore=0
+ suspectscore=0 phishscore=0 mlxscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2401290039
+X-Proofpoint-GUID: yEg7zu0a5Ennv_TuaS7_mUiGR57a0fP3
+X-Proofpoint-ORIG-GUID: yEg7zu0a5Ennv_TuaS7_mUiGR57a0fP3
 
-On 2024-01-26 at 20:15:46 +0100, Hans de Goede wrote:
-> Hi,
-> 
-> On 1/25/24 09:22, Ashok Raj wrote:
-> > From: Jithu Joseph <jithu.joseph@intel.com>
-> > 
-> > Missing release_firmware() due to error handling blocked any future image
-> > loading.
-> > 
-> > Fix the return code and release_fiwmare() to release the bad image.
-> > 
-> > Fixes: 25a76dbb36dd ("platform/x86/intel/ifs: Validate image size")
-> > Reported-by: Pengfei Xu <pengfei.xu@intel.com>
-> > Signed-off-by: Jithu Joseph <jithu.joseph@intel.com>
-> > Signed-off-by: Ashok Raj <ashok.raj@intel.com>
-> > Tested-by: Pengfei Xu <pengfei.xu@intel.com>
-> > Reviewed-by: Tony Luck <tony.luck@intel.com>
-> 
-> Thank you for your patch/series, I've applied this patch
-> (series) to my review-hans branch:
-> https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-hans
-> 
-> Note it will show up in the pdx86 review-hans branch once I've
-> pushed my local branch there, which might take a while.
-> 
-> I will include this patch in my next fixes pull-req to Linus
-> for the current kernel development cycle.
-> 
+Bug: After mounting the cifs fs, it complains with Resource temporarily
+unavailable messages.
 
-FYR.
+[root@vm1 xfstests-dev]# ./check -g quick -s smb3
+TEST_DEV=//<SERVER_IP>/TEST is mounted but not a type cifs filesystem
+[root@vm1 xfstests-dev]# df
+df: /mnt/test: Resource temporarily unavailable
 
-[ CC stable@vger.kernel.org ]
-Missed CC: Stable Tag.
+Paul's analysis of the bug:
 
-This (follow-up) patch is now upstream into v6.7-rc1:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=25a76dbb36dd
+	Bug is related to an off-by-one in smb2_set_next_command() when
+	the client attempts to pad SMB2_QUERY_INFO request -- since it isn't
+	8 byte aligned -- even though smb2_query_info_compound() doesn't
+	provide an extra iov for such padding.
 
-Looks like linux-6.7.y needs the above fixed patch too.
+	v5.10.y doesn't have
 
+        eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
 
-Best Regards,
-Thanks!
+	and the commit does
 
+		if (unlikely(check_add_overflow(input_len, sizeof(*req), &len) ||
+			     len > CIFSMaxBufSize))
+			return -EINVAL;
 
-> Regards,
-> 
-> Hans
-> 
-> 
-> 
-> 
-> > ---
-> >  drivers/platform/x86/intel/ifs/load.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/platform/x86/intel/ifs/load.c b/drivers/platform/x86/intel/ifs/load.c
-> > index a1ee1a74fc3c..2cf3b4a8813f 100644
-> > --- a/drivers/platform/x86/intel/ifs/load.c
-> > +++ b/drivers/platform/x86/intel/ifs/load.c
-> > @@ -399,7 +399,8 @@ int ifs_load_firmware(struct device *dev)
-> >  	if (fw->size != expected_size) {
-> >  		dev_err(dev, "File size mismatch (expected %u, actual %zu). Corrupted IFS image.\n",
-> >  			expected_size, fw->size);
-> > -		return -EINVAL;
-> > +		ret = -EINVAL;
-> > +		goto release;
-> >  	}
-> >  
-> >  	ret = image_sanity_check(dev, (struct microcode_header_intel *)fw->data);
-> 
+	so sizeof(*req) will wrongly include the extra byte from
+	smb2_query_info_req::Buffer making @len unaligned and therefore causing
+	OOB in smb2_set_next_command().
+
+Fixes: 203a412e52b5 ("smb: client: fix OOB in SMB2_query_info_init()")
+Suggested-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+---
+This patch is only for v5.10.y stable kernel.
+I have tested the patched kernel, after mounting it doesn't become
+unavailable.
+
+Context:
+[1] https://lore.kernel.org/all/CAH2r5mv2ipr4KJfMDXwHgq9L+kGdnRd1C2svcM=PCoDjA7uALA@mail.gmail.com/#t
+
+Note to Greg: This is alternative way to fix by not taking commit
+eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with
+flex-arrays").
+before applying this patch a patch in the queue needs to be removed: https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-5.10/smb3-replace-smb2pdu-1-element-arrays-with-flex-arrays.patch
+
+As I have stated in [1] I am unsure the which is the best way, but this
+commit eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with
+flex-arrays") is not in 5.15.y so I think we shouldn't queue it in
+5.10.y
+---
+ fs/cifs/smb2pdu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
+index 76679dc4e6328..514e2cf44d951 100644
+--- a/fs/cifs/smb2pdu.c
++++ b/fs/cifs/smb2pdu.c
+@@ -3379,7 +3379,7 @@ SMB2_query_info_init(struct cifs_tcon *tcon, struct TCP_Server_Info *server,
+ 
+ 	iov[0].iov_base = (char *)req;
+ 	/* 1 for Buffer */
+-	iov[0].iov_len = len;
++	iov[0].iov_len = len - 1;
+ 	return 0;
+ }
+ 
+-- 
+2.34.1
+
 
