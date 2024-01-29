@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-16501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E26F840D3A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:09:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A6E840D3C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:09:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E38A1F2BC0E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BC3B1C22AB8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 114BC157050;
-	Mon, 29 Jan 2024 17:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D59B15A4B7;
+	Mon, 29 Jan 2024 17:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKh6jgA6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPNDcVBZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC28F158D7F;
-	Mon, 29 Jan 2024 17:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A49A15A4BA;
+	Mon, 29 Jan 2024 17:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548066; cv=none; b=VOpuQzmLPFJxxhn6cUiftv4izW4R/xWbqIE1hOFbbhsYSPlHpBY8DHDbJ092IGbpu5F/X6psqqzG/dPJ70wH0n4oby3oY45Z2LwIzzthMzAelb5HVMmgOWd61k5jqsV0BxAZE7UzUmBWxwgSy+jZM+OtEL4xhMF1QnVO6AYLPGY=
+	t=1706548068; cv=none; b=pOKD4j9DhK4ovHbbsVhCch+G/coguDmVPYO/9af5L8/zkPdKyBCOWZCQgE50hK/jjO9vVJZ/gmKOkCh1y/CIbUad+9UvBDYXH3vORX8LPY8XWoStGIYCHRk135/0zPCiYILoQVn/elw/NdmsX6ThkPDX0XiDPmwAjs2yfSGXRT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548066; c=relaxed/simple;
-	bh=r/TCOozsLdyYyLKp0KjDDtweDB8vje0UqZja1xk04Ys=;
+	s=arc-20240116; t=1706548068; c=relaxed/simple;
+	bh=GFg130xJ+I3aRG94ZiuPIikc7fht608nHelwttJmRPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5U+OabTslTPp5UP1CQcQf4VEK7l04I+21xBLjXz9IoIytvPwcCmW6XsATqYwq8Std85CGoVGgmCH/J8vENqlF9qtBq/mCYcTsBEB3K/NVyMUblyFaXtnweUUbARw4BBL32PwQS3DFozb+aKzCSwDXExJSxlHuTltwNG1J3kqug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKh6jgA6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F78C433C7;
-	Mon, 29 Jan 2024 17:07:46 +0000 (UTC)
+	 MIME-Version; b=nWnqoEsxJ+ZuxVYgZFwqEcSfsE6NMZ6/TbAQoFwzIUuBazASefYyJUxQLNMLOpL3EjfHrpMti1ZhLbHam1l6qBV6Lz3iT9XSzGc6wYqAtiz5Q4MBcT4bQK8hrt+gUGph7B5htSoA+hrq7UzDjngtoJYiRh5t0alOZ7i4Y5fIjOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPNDcVBZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11046C43390;
+	Mon, 29 Jan 2024 17:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548066;
-	bh=r/TCOozsLdyYyLKp0KjDDtweDB8vje0UqZja1xk04Ys=;
+	s=korg; t=1706548068;
+	bh=GFg130xJ+I3aRG94ZiuPIikc7fht608nHelwttJmRPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKh6jgA63KJS4w1/jD8cEI13OdeMlLWUoHBCnJWgGX3mWnZ5k+b3hhc6lo1cHeej/
-	 uXLMGVCQvAQyt7HpnOdQQ7HNUDs0gmd8xzkuT2zaOHQyB/U8I0dBcDfSywuC12RT2/
-	 TU/pct+H2L2VDYKBE3XXYcIYLhFcaLHsQmLKlCik=
+	b=SPNDcVBZJk8k2Th9Lfz/YjIpOn/+hEbzeWi3LSTzNA9X1bZbVrFy6+sG8E/oOaZH1
+	 Qs6UDik6TA8ptZPxlNBcREf2UFUivdKMHSf44N8MMTXi5Q/E/ERKfYksTWosF+5sKy
+	 erFh97EVSFyFsro6nnkf3M38n5qVShWA5Tcb2fp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan@gerhold.net>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.7 074/346] arm64: dts: qcom: msm8939: Make blsp_dma controlled-remotely
-Date: Mon, 29 Jan 2024 09:01:45 -0800
-Message-ID: <20240129170018.565867626@linuxfoundation.org>
+Subject: [PATCH 6.7 075/346] arm64: dts: qcom: sc7180: fix USB wakeup interrupt types
+Date: Mon, 29 Jan 2024 09:01:46 -0800
+Message-ID: <20240129170018.595091443@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -66,48 +65,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stephan Gerhold <stephan@gerhold.net>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 4bbda9421f316efdaef5dbf642e24925ef7de130 upstream.
+commit 9b956999bf725fd62613f719c3178fdbee6e5f47 upstream.
 
-The blsp_dma controller is shared between the different subsystems,
-which is why it is already initialized by the firmware. We should not
-reinitialize it from Linux to avoid potential other users of the DMA
-engine to misbehave.
+The DP/DM wakeup interrupts are edge triggered and which edge to trigger
+on depends on use-case and whether a Low speed or Full/High speed device
+is connected.
 
-In mainline this can be described using the "qcom,controlled-remotely"
-property. In the downstream/vendor kernel from Qualcomm there is an
-opposite "qcom,managed-locally" property. This property is *not* set
-for the qcom,sps-dma@7884000 [1] so adding "qcom,controlled-remotely"
-upstream matches the behavior of the downstream/vendor kernel.
-
-Adding this seems to fix some weird issues with UART where both
-input/output becomes garbled with certain obscure firmware versions on
-some devices.
-
-[1]: https://git.codelinaro.org/clo/la/kernel/msm-3.10/-/blob/LA.BR.1.2.9.1-02310-8x16.0/arch/arm/boot/dts/qcom/msm8939-common.dtsi#L866-872
-
-Cc: stable@vger.kernel.org # 6.5
-Fixes: 61550c6c156c ("arm64: dts: qcom: Add msm8939 SoC")
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Link: https://lore.kernel.org/r/20231204-msm8916-blsp-dma-remote-v1-2-3e49c8838c8d@gerhold.net
+Fixes: 0b766e7fe5a2 ("arm64: dts: qcom: sc7180: Add USB related nodes")
+Cc: stable@vger.kernel.org      # 5.10
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231120164331.8116-4-johan+linaro@kernel.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/msm8939.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sc7180.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-@@ -1682,6 +1682,7 @@
- 			clock-names = "bam_clk";
- 			#dma-cells = <1>;
- 			qcom,ee = <0>;
-+			qcom,controlled-remotely;
- 		};
+--- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+@@ -2966,8 +2966,8 @@
  
- 		blsp_uart1: serial@78af000 {
+ 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
+-					      <&pdc 8 IRQ_TYPE_LEVEL_HIGH>,
+-					      <&pdc 9 IRQ_TYPE_LEVEL_HIGH>;
++					      <&pdc 8 IRQ_TYPE_EDGE_BOTH>,
++					      <&pdc 9 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
+ 
 
 
 
