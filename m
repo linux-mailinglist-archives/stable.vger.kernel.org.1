@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-17261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8D7841079
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78EF9840E91
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B34E285536
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2997F283BF6
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26AB47605C;
-	Mon, 29 Jan 2024 17:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8544915A4AC;
+	Mon, 29 Jan 2024 17:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ujkPyaY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVzHGt+U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D907C76032;
-	Mon, 29 Jan 2024 17:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A1115A4A3;
+	Mon, 29 Jan 2024 17:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548628; cv=none; b=HkHPwC/D19gAoaWJonbXBkTqNwyuHyJoc28v5vhQ4S5pAUTzXw+yzSyqWrgaZLJPoWsBSOwPgiQsebZw0tmLUaAqvpEI1QvnrpDpFyu1/BlZERM13c3tYzLxFkAMMX70OXJ96p3IGAVsNa3TkGuTGQjG4yQ1CxhTKL6hzjURR4Y=
+	t=1706548306; cv=none; b=r5qhcrJv2QQ6E/KXEDQnu+oypg4bP5VpraYrysRlK4ILn7c/rlq4I0XevpviPEyv4m/CxFRefxd6atzHNYNQ4k58d/9yJeu63BxQQn+4+9M4fSexQqxeOAHZ10vyWdjAUTNsrAIOGZz1amt13rGO9OsgLldLEIUZ8TQScfsGKy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548628; c=relaxed/simple;
-	bh=A3SxKA+upng5DytG2L34UC/Zmvebju8E0Evm1avDGpE=;
+	s=arc-20240116; t=1706548306; c=relaxed/simple;
+	bh=zHY2WpTalqm7lhl/ALGxAk8t2qtgcHZ2MKlVPWdCGss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+AUyni2Jj/1dBZQ6gFLDOp7Wobam3+21oc4Jsmz/CCQinBMhT8cdcqdRM06aR1ggBeEIb8QBbCi13lt694Kzl1GAzdGzNJMElohx1714LtC5qLlcQExDi81myo+/7aag83WhE0v4BGo7ZCkDikk7R/6l9ZWuRfZQCrg/gugHCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ujkPyaY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CECCC43390;
-	Mon, 29 Jan 2024 17:17:08 +0000 (UTC)
+	 MIME-Version; b=PwIHNNps4kemprV2QVjljbIRsH3VLIzY/LnhGvxEdNBAd/rV2WhpAFJU+pzCR1yFYflQERDLUggKxdSmtyHsvnP8Ts4sCIEz5Dinvq+5IdWWacLomnKrNe29r9l3DlLoZncNMQBCA+yNOuh164xNrF+G8NI2XBRfnJBv6wuQMSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVzHGt+U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC8AC433C7;
+	Mon, 29 Jan 2024 17:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548628;
-	bh=A3SxKA+upng5DytG2L34UC/Zmvebju8E0Evm1avDGpE=;
+	s=korg; t=1706548306;
+	bh=zHY2WpTalqm7lhl/ALGxAk8t2qtgcHZ2MKlVPWdCGss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ujkPyaYU0XiwAHJyLjBG67lgAs6kwBMlDofYkBJ3Ow0w/yFItIm2HC8KBWPdU7lp
-	 4ZiMHFi2z803gTbZGDctIqJ3agHefi8e7vUnup7GZDVOymOj68ohq/C36F+PCC0/8B
-	 +hBAaT4oC4o90bynd9FLTbJLet9hSyroBSR2OmRA=
+	b=fVzHGt+UMweImhxtz48DWEUiRg++njavT5KfBsUbJjYZupAlwj50WD/EXUAOpNCyb
+	 0H/NvVhXsZf+hVZBLFNtOot/4/pzGhrA1yuwW/1J8W4XtKlffIONmQ5LIwJNwH+aD4
+	 GZFTYSnDQXPZlJNYaSqYWiOsJ/9/2l0rqJaeFtQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 277/331] fs/pipe: move check to pipe_has_watch_queue()
+Subject: [PATCH 6.7 310/346] drm/bridge: sii902x: Fix probing race issue
 Date: Mon, 29 Jan 2024 09:05:41 -0800
-Message-ID: <20240129170022.969266791@linuxfoundation.org>
+Message-ID: <20240129170025.595575969@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit b4bd6b4bac8edd61eb8f7b836969d12c0c6af165 ]
+[ Upstream commit 08ac6f132dd77e40f786d8af51140c96c6d739c9 ]
 
-This declutters the code by reducing the number of #ifdefs and makes
-the watch_queue checks simpler.  This has no runtime effect; the
-machine code is identical.
+A null pointer dereference crash has been observed rarely on TI
+platforms using sii9022 bridge:
 
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Message-Id: <20230921075755.1378787-2-max.kellermann@ionos.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: e95aada4cb93 ("pipe: wakeup wr_wait after setting max_usage")
+[   53.271356]  sii902x_get_edid+0x34/0x70 [sii902x]
+[   53.276066]  sii902x_bridge_get_edid+0x14/0x20 [sii902x]
+[   53.281381]  drm_bridge_get_edid+0x20/0x34 [drm]
+[   53.286305]  drm_bridge_connector_get_modes+0x8c/0xcc [drm_kms_helper]
+[   53.292955]  drm_helper_probe_single_connector_modes+0x190/0x538 [drm_kms_helper]
+[   53.300510]  drm_client_modeset_probe+0x1f0/0xbd4 [drm]
+[   53.305958]  __drm_fb_helper_initial_config_and_unlock+0x50/0x510 [drm_kms_helper]
+[   53.313611]  drm_fb_helper_initial_config+0x48/0x58 [drm_kms_helper]
+[   53.320039]  drm_fbdev_dma_client_hotplug+0x84/0xd4 [drm_dma_helper]
+[   53.326401]  drm_client_register+0x5c/0xa0 [drm]
+[   53.331216]  drm_fbdev_dma_setup+0xc8/0x13c [drm_dma_helper]
+[   53.336881]  tidss_probe+0x128/0x264 [tidss]
+[   53.341174]  platform_probe+0x68/0xc4
+[   53.344841]  really_probe+0x188/0x3c4
+[   53.348501]  __driver_probe_device+0x7c/0x16c
+[   53.352854]  driver_probe_device+0x3c/0x10c
+[   53.357033]  __device_attach_driver+0xbc/0x158
+[   53.361472]  bus_for_each_drv+0x88/0xe8
+[   53.365303]  __device_attach+0xa0/0x1b4
+[   53.369135]  device_initial_probe+0x14/0x20
+[   53.373314]  bus_probe_device+0xb0/0xb4
+[   53.377145]  deferred_probe_work_func+0xcc/0x124
+[   53.381757]  process_one_work+0x1f0/0x518
+[   53.385770]  worker_thread+0x1e8/0x3dc
+[   53.389519]  kthread+0x11c/0x120
+[   53.392750]  ret_from_fork+0x10/0x20
+
+The issue here is as follows:
+
+- tidss probes, but is deferred as sii902x is still missing.
+- sii902x starts probing and enters sii902x_init().
+- sii902x calls drm_bridge_add(). Now the sii902x bridge is ready from
+  DRM's perspective.
+- sii902x calls sii902x_audio_codec_init() and
+  platform_device_register_data()
+- The registration of the audio platform device causes probing of the
+  deferred devices.
+- tidss probes, which eventually causes sii902x_bridge_get_edid() to be
+  called.
+- sii902x_bridge_get_edid() tries to use the i2c to read the edid.
+  However, the sii902x driver has not set up the i2c part yet, leading
+  to the crash.
+
+Fix this by moving the drm_bridge_add() to the end of the
+sii902x_init(), which is also at the very end of sii902x_probe().
+
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Fixes: 21d808405fe4 ("drm/bridge/sii902x: Fix EDID readback")
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20240103-si902x-fixes-v1-1-b9fd3e448411@ideasonboard.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240103-si902x-fixes-v1-1-b9fd3e448411@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pipe.c                 | 12 +++---------
- include/linux/pipe_fs_i.h | 16 ++++++++++++++++
- 2 files changed, 19 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/bridge/sii902x.c | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/fs/pipe.c b/fs/pipe.c
-index 139190165a1c..603ab19b0861 100644
---- a/fs/pipe.c
-+++ b/fs/pipe.c
-@@ -437,12 +437,10 @@ pipe_write(struct kiocb *iocb, struct iov_iter *from)
- 		goto out;
+diff --git a/drivers/gpu/drm/bridge/sii902x.c b/drivers/gpu/drm/bridge/sii902x.c
+index 2bdc5b439beb..69da73e414a9 100644
+--- a/drivers/gpu/drm/bridge/sii902x.c
++++ b/drivers/gpu/drm/bridge/sii902x.c
+@@ -1080,16 +1080,6 @@ static int sii902x_init(struct sii902x *sii902x)
+ 			return ret;
  	}
  
--#ifdef CONFIG_WATCH_QUEUE
--	if (pipe->watch_queue) {
-+	if (pipe_has_watch_queue(pipe)) {
- 		ret = -EXDEV;
- 		goto out;
- 	}
--#endif
+-	sii902x->bridge.funcs = &sii902x_bridge_funcs;
+-	sii902x->bridge.of_node = dev->of_node;
+-	sii902x->bridge.timings = &default_sii902x_timings;
+-	sii902x->bridge.ops = DRM_BRIDGE_OP_DETECT | DRM_BRIDGE_OP_EDID;
+-
+-	if (sii902x->i2c->irq > 0)
+-		sii902x->bridge.ops |= DRM_BRIDGE_OP_HPD;
+-
+-	drm_bridge_add(&sii902x->bridge);
+-
+ 	sii902x_audio_codec_init(sii902x, dev);
  
- 	/*
- 	 * If it wasn't empty we try to merge new data into
-@@ -1324,10 +1322,8 @@ static long pipe_set_size(struct pipe_inode_info *pipe, unsigned int arg)
- 	unsigned int nr_slots, size;
- 	long ret = 0;
+ 	i2c_set_clientdata(sii902x->i2c, sii902x);
+@@ -1102,7 +1092,21 @@ static int sii902x_init(struct sii902x *sii902x)
+ 		return -ENOMEM;
  
--#ifdef CONFIG_WATCH_QUEUE
--	if (pipe->watch_queue)
-+	if (pipe_has_watch_queue(pipe))
- 		return -EBUSY;
--#endif
- 
- 	size = round_pipe_size(arg);
- 	nr_slots = size >> PAGE_SHIFT;
-@@ -1379,10 +1375,8 @@ struct pipe_inode_info *get_pipe_info(struct file *file, bool for_splice)
- 
- 	if (file->f_op != &pipefifo_fops || !pipe)
- 		return NULL;
--#ifdef CONFIG_WATCH_QUEUE
--	if (for_splice && pipe->watch_queue)
-+	if (for_splice && pipe_has_watch_queue(pipe))
- 		return NULL;
--#endif
- 	return pipe;
+ 	sii902x->i2cmux->priv = sii902x;
+-	return i2c_mux_add_adapter(sii902x->i2cmux, 0, 0, 0);
++	ret = i2c_mux_add_adapter(sii902x->i2cmux, 0, 0, 0);
++	if (ret)
++		return ret;
++
++	sii902x->bridge.funcs = &sii902x_bridge_funcs;
++	sii902x->bridge.of_node = dev->of_node;
++	sii902x->bridge.timings = &default_sii902x_timings;
++	sii902x->bridge.ops = DRM_BRIDGE_OP_DETECT | DRM_BRIDGE_OP_EDID;
++
++	if (sii902x->i2c->irq > 0)
++		sii902x->bridge.ops |= DRM_BRIDGE_OP_HPD;
++
++	drm_bridge_add(&sii902x->bridge);
++
++	return 0;
  }
  
-diff --git a/include/linux/pipe_fs_i.h b/include/linux/pipe_fs_i.h
-index 608a9eb86bff..288a8081a9db 100644
---- a/include/linux/pipe_fs_i.h
-+++ b/include/linux/pipe_fs_i.h
-@@ -124,6 +124,22 @@ struct pipe_buf_operations {
- 	bool (*get)(struct pipe_inode_info *, struct pipe_buffer *);
- };
+ static int sii902x_probe(struct i2c_client *client)
+@@ -1170,12 +1174,11 @@ static int sii902x_probe(struct i2c_client *client)
+ }
  
-+/**
-+ * pipe_has_watch_queue - Check whether the pipe is a watch_queue,
-+ * i.e. it was created with O_NOTIFICATION_PIPE
-+ * @pipe: The pipe to check
-+ *
-+ * Return: true if pipe is a watch queue, false otherwise.
-+ */
-+static inline bool pipe_has_watch_queue(const struct pipe_inode_info *pipe)
-+{
-+#ifdef CONFIG_WATCH_QUEUE
-+	return pipe->watch_queue != NULL;
-+#else
-+	return false;
-+#endif
-+}
-+
- /**
-  * pipe_empty - Return true if the pipe is empty
-  * @head: The pipe ring head pointer
+ static void sii902x_remove(struct i2c_client *client)
+-
+ {
+ 	struct sii902x *sii902x = i2c_get_clientdata(client);
+ 
+-	i2c_mux_del_adapters(sii902x->i2cmux);
+ 	drm_bridge_remove(&sii902x->bridge);
++	i2c_mux_del_adapters(sii902x->i2cmux);
+ }
+ 
+ static const struct of_device_id sii902x_dt_ids[] = {
 -- 
 2.43.0
 
