@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-17179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0EC8841023
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F96840E90
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA2CB282931
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5CF71C22105
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2282574046;
-	Mon, 29 Jan 2024 17:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D151715B996;
+	Mon, 29 Jan 2024 17:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GW0H9+91"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKjnJ2Fk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D564B7404E;
-	Mon, 29 Jan 2024 17:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9110D15FB19;
+	Mon, 29 Jan 2024 17:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548568; cv=none; b=LyOr0LZCdDvC1QKphwqdHADzqHEopf8ytan7F1ajL3Kwov0k6Zl+9POApE3mSvxjo/DLYF3TyGzwexqIad4mnhnrSSzcSoourBaJTZaL+JYmpe8cjBMRevl2GKjwPn+4D6FQ/Y+SUusn1E7MXmFpdSTXVp6CXINYNwuDl2NpIgY=
+	t=1706548305; cv=none; b=O1uSgdInzvo+7OmwZ+BzBTcWxJJeSU+rGPvM8rgsXZOrgf7pSALymd9wLft7xMjZv8imaFkbJ7orWpZ31ZixxgnhHUY80xtSdtY8LUtWJNDbIDLjCfddNfb7X23eVk7yiAHs9r3sSP0HhJuLXfMpFH7cTOGzp3e3KJ/cF5WDn/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548568; c=relaxed/simple;
-	bh=Bt+rHsc3uaFTytD9bcQCzUZ5MG1DEoGLqqPE1TcrpLs=;
+	s=arc-20240116; t=1706548305; c=relaxed/simple;
+	bh=MFS2sdHZvGvkIWMrnSPU4KflT/heWI4pFWHVi6S7ObE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pHQAuVR282rFqTv1I++wYubK1L9HwM1/Vu5xLN8tRXILCo/sbBjPDRC2ow4kxLyPTj7TghYe8EnhzEl6DWjd5KZj/6JXWTQQlt0JPpY6xq/2J+Hc9D8KepAHvU1bZSOoLWFWiMTvgfZmoHjNej9gjFlgKFxbKTZSjWf0ktbGYow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GW0H9+91; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F95AC433C7;
-	Mon, 29 Jan 2024 17:16:08 +0000 (UTC)
+	 MIME-Version; b=kUIcYFG4HsADkwQv4Yebn8w6V1sIp/L7Lm+jyx/XOG8rG4B9PAl1ZR7EpMmCsDmevcHVSAcWrzdkV3jjbr+0G/aPRyoy+Gq02PPjeENx1JP1YTGetJYgS2oOBJYcpin9Nu4L9N8WquBlgO3UbUcOmCEmO9Mv+PvXer8nMvIJs8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKjnJ2Fk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCF0C433C7;
+	Mon, 29 Jan 2024 17:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548568;
-	bh=Bt+rHsc3uaFTytD9bcQCzUZ5MG1DEoGLqqPE1TcrpLs=;
+	s=korg; t=1706548305;
+	bh=MFS2sdHZvGvkIWMrnSPU4KflT/heWI4pFWHVi6S7ObE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GW0H9+91dj8q4oU0aJwpSsK9ec1Jq3EhP1Aiomid8cwaKsCOrM/w0W+TdlmuQEiS6
-	 iFwEFQ71Pl/8AOmhhwX2+BYs1vuMXbIKNTbTDb7tjEewqlpsK+zoxMx3/V+/lslBbh
-	 cYyw2DU54dZkWjQbukBdH7NAqM305rcrI6cq9RWY=
+	b=oKjnJ2Fk7Zf2QvQ/QajWoGXlz4YfJswxEXyI1WMd7fOD7jwJMvyHWMrLREkLQVZEZ
+	 9482wakKa25QCvfrSwW2ZKr+2x551HISYPIdkIQcrahyyPgEZsfxD9mPdNtuvc67DZ
+	 OBWV0iT/BozsX8BTkQb/ZXXk97nyNhrJYraJPCms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tirthendu Sarkar <tirthendu.sarkar@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	syzbot+b5ad66046b913bc04c6f@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 218/331] i40e: handle multi-buffer packets that are shrunk by xdp prog
+Subject: [PATCH 6.1 082/185] llc: Drop support for ETH_P_TR_802_2.
 Date: Mon, 29 Jan 2024 09:04:42 -0800
-Message-ID: <20240129170021.257261865@linuxfoundation.org>
+Message-ID: <20240129170001.235641346@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,172 +64,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tirthendu Sarkar <tirthendu.sarkar@intel.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 83014323c642b8faa2d64a5f303b41c019322478 ]
+[ Upstream commit e3f9bed9bee261e3347131764e42aeedf1ffea61 ]
 
-XDP programs can shrink packets by calling the bpf_xdp_adjust_tail()
-helper function. For multi-buffer packets this may lead to reduction of
-frag count stored in skb_shared_info area of the xdp_buff struct. This
-results in issues with the current handling of XDP_PASS and XDP_DROP
-cases.
+syzbot reported an uninit-value bug below. [0]
 
-For XDP_PASS, currently skb is being built using frag count of
-xdp_buffer before it was processed by XDP prog and thus will result in
-an inconsistent skb when frag count gets reduced by XDP prog. To fix
-this, get correct frag count while building the skb instead of using
-pre-obtained frag count.
+llc supports ETH_P_802_2 (0x0004) and used to support ETH_P_TR_802_2
+(0x0011), and syzbot abused the latter to trigger the bug.
 
-For XDP_DROP, current page recycling logic will not reuse the page but
-instead will adjust the pagecnt_bias so that the page can be freed. This
-again results in inconsistent behavior as the page refcnt has already
-been changed by the helper while freeing the frag(s) as part of
-shrinking the packet. To fix this, only adjust pagecnt_bias for buffers
-that are stillpart of the packet post-xdp prog run.
+  write$tun(r0, &(0x7f0000000040)={@val={0x0, 0x11}, @val, @mpls={[], @llc={@snap={0xaa, 0x1, ')', "90e5dd"}}}}, 0x16)
 
-Fixes: e213ced19bef ("i40e: add support for XDP multi-buffer Rx")
-Reported-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Tirthendu Sarkar <tirthendu.sarkar@intel.com>
-Link: https://lore.kernel.org/r/20240124191602.566724-6-maciej.fijalkowski@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+llc_conn_handler() initialises local variables {saddr,daddr}.mac
+based on skb in llc_pdu_decode_sa()/llc_pdu_decode_da() and passes
+them to __llc_lookup().
+
+However, the initialisation is done only when skb->protocol is
+htons(ETH_P_802_2), otherwise, __llc_lookup_established() and
+__llc_lookup_listener() will read garbage.
+
+The missing initialisation existed prior to commit 211ed865108e
+("net: delete all instances of special processing for token ring").
+
+It removed the part to kick out the token ring stuff but forgot to
+close the door allowing ETH_P_TR_802_2 packets to sneak into llc_rcv().
+
+Let's remove llc_tr_packet_type and complete the deprecation.
+
+[0]:
+BUG: KMSAN: uninit-value in __llc_lookup_established+0xe9d/0xf90
+ __llc_lookup_established+0xe9d/0xf90
+ __llc_lookup net/llc/llc_conn.c:611 [inline]
+ llc_conn_handler+0x4bd/0x1360 net/llc/llc_conn.c:791
+ llc_rcv+0xfbb/0x14a0 net/llc/llc_input.c:206
+ __netif_receive_skb_one_core net/core/dev.c:5527 [inline]
+ __netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5641
+ netif_receive_skb_internal net/core/dev.c:5727 [inline]
+ netif_receive_skb+0x58/0x660 net/core/dev.c:5786
+ tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1555
+ tun_get_user+0x53af/0x66d0 drivers/net/tun.c:2002
+ tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
+ call_write_iter include/linux/fs.h:2020 [inline]
+ new_sync_write fs/read_write.c:491 [inline]
+ vfs_write+0x8ef/0x1490 fs/read_write.c:584
+ ksys_write+0x20f/0x4c0 fs/read_write.c:637
+ __do_sys_write fs/read_write.c:649 [inline]
+ __se_sys_write fs/read_write.c:646 [inline]
+ __x64_sys_write+0x93/0xd0 fs/read_write.c:646
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+Local variable daddr created at:
+ llc_conn_handler+0x53/0x1360 net/llc/llc_conn.c:783
+ llc_rcv+0xfbb/0x14a0 net/llc/llc_input.c:206
+
+CPU: 1 PID: 5004 Comm: syz-executor994 Not tainted 6.6.0-syzkaller-14500-g1c41041124bd #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/09/2023
+
+Fixes: 211ed865108e ("net: delete all instances of special processing for token ring")
+Reported-by: syzbot+b5ad66046b913bc04c6f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b5ad66046b913bc04c6f
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240119015515.61898-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_txrx.c | 40 ++++++++++++---------
- 1 file changed, 23 insertions(+), 17 deletions(-)
+ include/net/llc_pdu.h | 6 ++----
+ net/llc/llc_core.c    | 7 -------
+ 2 files changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-index b047c587629b..2e5546e549d9 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-@@ -2100,7 +2100,8 @@ static void i40e_put_rx_buffer(struct i40e_ring *rx_ring,
- static void i40e_process_rx_buffs(struct i40e_ring *rx_ring, int xdp_res,
- 				  struct xdp_buff *xdp)
- {
--	u32 next = rx_ring->next_to_clean;
-+	u32 nr_frags = xdp_get_shared_info_from_buff(xdp)->nr_frags;
-+	u32 next = rx_ring->next_to_clean, i = 0;
- 	struct i40e_rx_buffer *rx_buffer;
- 
- 	xdp->flags = 0;
-@@ -2113,10 +2114,10 @@ static void i40e_process_rx_buffs(struct i40e_ring *rx_ring, int xdp_res,
- 		if (!rx_buffer->page)
- 			continue;
- 
--		if (xdp_res == I40E_XDP_CONSUMED)
--			rx_buffer->pagecnt_bias++;
--		else
-+		if (xdp_res != I40E_XDP_CONSUMED)
- 			i40e_rx_buffer_flip(rx_buffer, xdp->frame_sz);
-+		else if (i++ <= nr_frags)
-+			rx_buffer->pagecnt_bias++;
- 
- 		/* EOP buffer will be put in i40e_clean_rx_irq() */
- 		if (next == rx_ring->next_to_process)
-@@ -2130,20 +2131,20 @@ static void i40e_process_rx_buffs(struct i40e_ring *rx_ring, int xdp_res,
-  * i40e_construct_skb - Allocate skb and populate it
-  * @rx_ring: rx descriptor ring to transact packets on
-  * @xdp: xdp_buff pointing to the data
-- * @nr_frags: number of buffers for the packet
-  *
-  * This function allocates an skb.  It then populates it with the page
-  * data from the current receive descriptor, taking care to set up the
-  * skb correctly.
+diff --git a/include/net/llc_pdu.h b/include/net/llc_pdu.h
+index 49aa79c7b278..581cd37aa98b 100644
+--- a/include/net/llc_pdu.h
++++ b/include/net/llc_pdu.h
+@@ -262,8 +262,7 @@ static inline void llc_pdu_header_init(struct sk_buff *skb, u8 type,
   */
- static struct sk_buff *i40e_construct_skb(struct i40e_ring *rx_ring,
--					  struct xdp_buff *xdp,
--					  u32 nr_frags)
-+					  struct xdp_buff *xdp)
+ static inline void llc_pdu_decode_sa(struct sk_buff *skb, u8 *sa)
  {
- 	unsigned int size = xdp->data_end - xdp->data;
- 	struct i40e_rx_buffer *rx_buffer;
-+	struct skb_shared_info *sinfo;
- 	unsigned int headlen;
- 	struct sk_buff *skb;
-+	u32 nr_frags = 0;
+-	if (skb->protocol == htons(ETH_P_802_2))
+-		memcpy(sa, eth_hdr(skb)->h_source, ETH_ALEN);
++	memcpy(sa, eth_hdr(skb)->h_source, ETH_ALEN);
+ }
  
- 	/* prefetch first cache line of first page */
- 	net_prefetch(xdp->data);
-@@ -2181,6 +2182,10 @@ static struct sk_buff *i40e_construct_skb(struct i40e_ring *rx_ring,
- 	memcpy(__skb_put(skb, headlen), xdp->data,
- 	       ALIGN(headlen, sizeof(long)));
- 
-+	if (unlikely(xdp_buff_has_frags(xdp))) {
-+		sinfo = xdp_get_shared_info_from_buff(xdp);
-+		nr_frags = sinfo->nr_frags;
-+	}
- 	rx_buffer = i40e_rx_bi(rx_ring, rx_ring->next_to_clean);
- 	/* update all of the pointers */
- 	size -= headlen;
-@@ -2200,9 +2205,8 @@ static struct sk_buff *i40e_construct_skb(struct i40e_ring *rx_ring,
- 	}
- 
- 	if (unlikely(xdp_buff_has_frags(xdp))) {
--		struct skb_shared_info *sinfo, *skinfo = skb_shinfo(skb);
-+		struct skb_shared_info *skinfo = skb_shinfo(skb);
- 
--		sinfo = xdp_get_shared_info_from_buff(xdp);
- 		memcpy(&skinfo->frags[skinfo->nr_frags], &sinfo->frags[0],
- 		       sizeof(skb_frag_t) * nr_frags);
- 
-@@ -2225,17 +2229,17 @@ static struct sk_buff *i40e_construct_skb(struct i40e_ring *rx_ring,
-  * i40e_build_skb - Build skb around an existing buffer
-  * @rx_ring: Rx descriptor ring to transact packets on
-  * @xdp: xdp_buff pointing to the data
-- * @nr_frags: number of buffers for the packet
-  *
-  * This function builds an skb around an existing Rx buffer, taking care
-  * to set up the skb correctly and avoid any memcpy overhead.
+ /**
+@@ -275,8 +274,7 @@ static inline void llc_pdu_decode_sa(struct sk_buff *skb, u8 *sa)
   */
- static struct sk_buff *i40e_build_skb(struct i40e_ring *rx_ring,
--				      struct xdp_buff *xdp,
--				      u32 nr_frags)
-+				      struct xdp_buff *xdp)
+ static inline void llc_pdu_decode_da(struct sk_buff *skb, u8 *da)
  {
- 	unsigned int metasize = xdp->data - xdp->data_meta;
-+	struct skb_shared_info *sinfo;
- 	struct sk_buff *skb;
-+	u32 nr_frags;
+-	if (skb->protocol == htons(ETH_P_802_2))
+-		memcpy(da, eth_hdr(skb)->h_dest, ETH_ALEN);
++	memcpy(da, eth_hdr(skb)->h_dest, ETH_ALEN);
+ }
  
- 	/* Prefetch first cache line of first page. If xdp->data_meta
- 	 * is unused, this points exactly as xdp->data, otherwise we
-@@ -2244,6 +2248,11 @@ static struct sk_buff *i40e_build_skb(struct i40e_ring *rx_ring,
- 	 */
- 	net_prefetch(xdp->data_meta);
+ /**
+diff --git a/net/llc/llc_core.c b/net/llc/llc_core.c
+index 6e387aadffce..4f16d9c88350 100644
+--- a/net/llc/llc_core.c
++++ b/net/llc/llc_core.c
+@@ -135,22 +135,15 @@ static struct packet_type llc_packet_type __read_mostly = {
+ 	.func = llc_rcv,
+ };
  
-+	if (unlikely(xdp_buff_has_frags(xdp))) {
-+		sinfo = xdp_get_shared_info_from_buff(xdp);
-+		nr_frags = sinfo->nr_frags;
-+	}
-+
- 	/* build an skb around the page buffer */
- 	skb = napi_build_skb(xdp->data_hard_start, xdp->frame_sz);
- 	if (unlikely(!skb))
-@@ -2256,9 +2265,6 @@ static struct sk_buff *i40e_build_skb(struct i40e_ring *rx_ring,
- 		skb_metadata_set(skb, metasize);
- 
- 	if (unlikely(xdp_buff_has_frags(xdp))) {
--		struct skb_shared_info *sinfo;
+-static struct packet_type llc_tr_packet_type __read_mostly = {
+-	.type = cpu_to_be16(ETH_P_TR_802_2),
+-	.func = llc_rcv,
+-};
 -
--		sinfo = xdp_get_shared_info_from_buff(xdp);
- 		xdp_update_skb_shared_info(skb, nr_frags,
- 					   sinfo->xdp_frags_size,
- 					   nr_frags * xdp->frame_sz,
-@@ -2603,9 +2609,9 @@ static int i40e_clean_rx_irq(struct i40e_ring *rx_ring, int budget,
- 			total_rx_bytes += size;
- 		} else {
- 			if (ring_uses_build_skb(rx_ring))
--				skb = i40e_build_skb(rx_ring, xdp, nfrags);
-+				skb = i40e_build_skb(rx_ring, xdp);
- 			else
--				skb = i40e_construct_skb(rx_ring, xdp, nfrags);
-+				skb = i40e_construct_skb(rx_ring, xdp);
+ static int __init llc_init(void)
+ {
+ 	dev_add_pack(&llc_packet_type);
+-	dev_add_pack(&llc_tr_packet_type);
+ 	return 0;
+ }
  
- 			/* drop if we failed to retrieve a buffer */
- 			if (!skb) {
+ static void __exit llc_exit(void)
+ {
+ 	dev_remove_pack(&llc_packet_type);
+-	dev_remove_pack(&llc_tr_packet_type);
+ }
+ 
+ module_init(llc_init);
 -- 
 2.43.0
 
