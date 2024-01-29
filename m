@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-16546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6138A840D69
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC17840F97
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 186AB1F2C85C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFBB71F22269
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4983415B2E6;
-	Mon, 29 Jan 2024 17:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFE3159563;
+	Mon, 29 Jan 2024 17:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1ajNG6o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvO/1R37"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EBD15958C;
-	Mon, 29 Jan 2024 17:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA496F095;
+	Mon, 29 Jan 2024 17:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548100; cv=none; b=Mqc/nQ41fzKHpTUMbM3lDremEIyH8mEX/4GOgGedHDV1xOqBmGZOvLQk7nt+3MxJBPH127cE7Py5QPuwrnyvgBXCjdTNqprYLy5CMoAT0H3QXKc2eqTG268TOIsXPHQrjRbqK1BGr1f5wqq2pTBK52bgivsmzjqvPj9WU2Rl/7c=
+	t=1706548469; cv=none; b=McwnB24GoEJErfA8dDvUi5OWVvJCxZP2SDmn8or6TkOs1ptRDOuOju01nxXSsv4YU+zNYjkki0A/3VohaBz2rZQdYWj2ImZHyCIBo+1ReMI8KdJMJNwiGWjp3Wz0mYZ47px84Q5BJbDsB6A84r3rVUYk8oSSaZJwomjDNr4E0Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548100; c=relaxed/simple;
-	bh=aHvaxek9Sji258EIUNvCKAa1/fIEaZboDCvFuVmBzxs=;
+	s=arc-20240116; t=1706548469; c=relaxed/simple;
+	bh=ql48kMrHk/ApuyUnRSXwkCp2mQczZj5SZqZ9crTJGaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6CxbsUgo67ozBkg/o7mdhEWluz0MW1HZe+/xd5lhDNzNmlefVwXrRqkzTwcr/UdbdXMx82vN1teiUoavytHgw6cqdfzMBcdRlT+EfpozH4zZHuhHYVQC2m6qlcesQtHGGNSL288tKL042xK1ykqcAB9mPAUpU8KeGTqSInO41Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1ajNG6o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B9FC43394;
-	Mon, 29 Jan 2024 17:08:19 +0000 (UTC)
+	 MIME-Version; b=WHup9iXTt5R3rH66DVqTik/J2b+SABRVAkk+iqua0OBexaZ01t+7DBJd5ieQjFJMRJF46xIst8YfiQCwgd8dJPt4yJjj+rCuVvxWChbykfoD7cxyJYqfPIk0p5QhRwXglIUoaRgM3pdLLEKpRIYssQlSM26WXV0rBCP7mzo43/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvO/1R37; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B75C433F1;
+	Mon, 29 Jan 2024 17:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548099;
-	bh=aHvaxek9Sji258EIUNvCKAa1/fIEaZboDCvFuVmBzxs=;
+	s=korg; t=1706548469;
+	bh=ql48kMrHk/ApuyUnRSXwkCp2mQczZj5SZqZ9crTJGaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O1ajNG6oJxqpq25alG1e7PK8xuM3NBRSMJiuR9Kv4CUCLISzN6Gs4EO9mHgDhH8S8
-	 RM3BuYPm6VumAgbrNnS5XBqYtIoRA30Rafzw2vuLhGOnotxeZeeWRXfqGcGX63KOvu
-	 deY2UsNTSVYu6hBJ3qSQIp4f/Xi99lfzzwEjObfg=
+	b=jvO/1R37AC5rTs4idUyuCH6f8Cygt/QZDBWQ+T1wC+UEHLUU0+nJ6of4CGOoS5RCk
+	 UcYp8TLZhkYQ4deHcznVKE1uDdvuznjyb/lQM5c8qCj8rUhCcJyZB9C6GRdpIPp/+t
+	 Kz6QAncN59VO7CkClAayoafplFWpXsXfOaWKttys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordan Rife <jrife@google.com>,
-	David Teigland <teigland@redhat.com>
-Subject: [PATCH 6.7 093/346] dlm: use kernel_connect() and kernel_bind()
+	Tony Krowiak <akrowiak@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.6 060/331] s390/vfio-ap: loop over the shadow APCB when filtering guests AP configuration
 Date: Mon, 29 Jan 2024 09:02:04 -0800
-Message-ID: <20240129170019.139394405@linuxfoundation.org>
+Message-ID: <20240129170016.689684110@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rife <jrife@google.com>
+From: Tony Krowiak <akrowiak@linux.ibm.com>
 
-commit e9cdebbe23f1aa9a1caea169862f479ab3fa2773 upstream.
+commit 16fb78cbf56e42b8efb2682a4444ab59e32e7959 upstream.
 
-Recent changes to kernel_connect() and kernel_bind() ensure that
-callers are insulated from changes to the address parameter made by BPF
-SOCK_ADDR hooks. This patch wraps direct calls to ops->connect() and
-ops->bind() with kernel_connect() and kernel_bind() to protect callers
-in such cases.
+While filtering the mdev matrix, it doesn't make sense - and will have
+unexpected results - to filter an APID from the matrix if the APID or one
+of the associated APQIs is not in the host's AP configuration. There are
+two reasons for this:
 
-Link: https://lore.kernel.org/netdev/9944248dba1bce861375fcce9de663934d933ba9.camel@redhat.com/
-Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
-Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
+1. An adapter or domain that is not in the host's AP configuration can be
+   assigned to the matrix; this is known as over-provisioning. Queue
+   devices, however, are only created for adapters and domains in the
+   host's AP configuration, so there will be no queues associated with an
+   over-provisioned adapter or domain to filter.
+
+2. The adapter or domain may have been externally removed from the host's
+   configuration via an SE or HMC attached to a DPM enabled LPAR. In this
+   case, the vfio_ap device driver would have been notified by the AP bus
+   via the on_config_changed callback and the adapter or domain would
+   have already been filtered.
+
+Since the matrix_mdev->shadow_apcb.apm and matrix_mdev->shadow_apcb.aqm are
+copied from the mdev matrix sans the APIDs and APQIs not in the host's AP
+configuration, let's loop over those bitmaps instead of those assigned to
+the matrix.
+
+Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
+Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Fixes: 48cae940c31d ("s390/vfio-ap: refresh guest's APCB by filtering AP resources assigned to mdev")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jordan Rife <jrife@google.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Link: https://lore.kernel.org/r/20240115185441.31526-3-akrowiak@linux.ibm.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/dlm/lowcomms.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/s390/crypto/vfio_ap_ops.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/dlm/lowcomms.c
-+++ b/fs/dlm/lowcomms.c
-@@ -1817,8 +1817,8 @@ static int dlm_tcp_bind(struct socket *s
- 	memcpy(&src_addr, &dlm_local_addr[0], sizeof(src_addr));
- 	make_sockaddr(&src_addr, 0, &addr_len);
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -692,8 +692,9 @@ static bool vfio_ap_mdev_filter_matrix(s
+ 	bitmap_and(matrix_mdev->shadow_apcb.aqm, matrix_mdev->matrix.aqm,
+ 		   (unsigned long *)matrix_dev->info.aqm, AP_DOMAINS);
  
--	result = sock->ops->bind(sock, (struct sockaddr *)&src_addr,
--				 addr_len);
-+	result = kernel_bind(sock, (struct sockaddr *)&src_addr,
-+			     addr_len);
- 	if (result < 0) {
- 		/* This *may* not indicate a critical error */
- 		log_print("could not bind for connect: %d", result);
-@@ -1830,7 +1830,7 @@ static int dlm_tcp_bind(struct socket *s
- static int dlm_tcp_connect(struct connection *con, struct socket *sock,
- 			   struct sockaddr *addr, int addr_len)
- {
--	return sock->ops->connect(sock, addr, addr_len, O_NONBLOCK);
-+	return kernel_connect(sock, addr, addr_len, O_NONBLOCK);
- }
- 
- static int dlm_tcp_listen_validate(void)
-@@ -1862,8 +1862,8 @@ static int dlm_tcp_listen_bind(struct so
- 
- 	/* Bind to our port */
- 	make_sockaddr(&dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
--	return sock->ops->bind(sock, (struct sockaddr *)&dlm_local_addr[0],
--			       addr_len);
-+	return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
-+			   addr_len);
- }
- 
- static const struct dlm_proto_ops dlm_tcp_ops = {
-@@ -1888,12 +1888,12 @@ static int dlm_sctp_connect(struct conne
- 	int ret;
- 
- 	/*
--	 * Make sock->ops->connect() function return in specified time,
-+	 * Make kernel_connect() function return in specified time,
- 	 * since O_NONBLOCK argument in connect() function does not work here,
- 	 * then, we should restore the default value of this attribute.
- 	 */
- 	sock_set_sndtimeo(sock->sk, 5);
--	ret = sock->ops->connect(sock, addr, addr_len, 0);
-+	ret = kernel_connect(sock, addr, addr_len, 0);
- 	sock_set_sndtimeo(sock->sk, 0);
- 	return ret;
- }
+-	for_each_set_bit_inv(apid, matrix_mdev->matrix.apm, AP_DEVICES) {
+-		for_each_set_bit_inv(apqi, matrix_mdev->matrix.aqm, AP_DOMAINS) {
++	for_each_set_bit_inv(apid, matrix_mdev->shadow_apcb.apm, AP_DEVICES) {
++		for_each_set_bit_inv(apqi, matrix_mdev->shadow_apcb.aqm,
++				     AP_DOMAINS) {
+ 			/*
+ 			 * If the APQN is not bound to the vfio_ap device
+ 			 * driver, then we can't assign it to the guest's
 
 
 
