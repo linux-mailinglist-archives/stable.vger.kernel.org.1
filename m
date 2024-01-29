@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-16904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F502840EF9
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D79840E72
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4D5E1F2212F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A9B71F27A76
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E9015CD79;
-	Mon, 29 Jan 2024 17:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6EF715B969;
+	Mon, 29 Jan 2024 17:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNe5Qfqd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rC7+tJQY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FCE1586C5;
-	Mon, 29 Jan 2024 17:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F09157E6A;
+	Mon, 29 Jan 2024 17:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548365; cv=none; b=PN1QUk2I1mKMdQgc9bsweaUP9BcrLHLjNFYGQxCUVstSKuKOE342SCwMfhcwGnPP4tzQx9DQi/LSLCtRGz6wrHGvxV6LC4zjr8sb7UjIoAc8Jz/91TQWPYHEruXrh5rMVTEmru2Ocbh6G8pofi79fAYGcYibQvFpVUlXoD+TSSU=
+	t=1706548286; cv=none; b=CzyIv8sWtk7MO6PYUA4nGzevAXOhn4xz+WJtUNw5nZwCyVY/NYnhO3XC+YZ0FuZGYBpCa53UqpDRfalO2OUA85bCwr974pfuxree2Pri7U93SRaN2VsP2nynRX03ByqB1wuV1QOtQHQ/i2DbLjs2n9J4caoAvFNNJJRLPcxlapM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548365; c=relaxed/simple;
-	bh=MlUiS0xK7u6PqzLH936oVRlvPzK9G85j64ZH4PfRAiM=;
+	s=arc-20240116; t=1706548286; c=relaxed/simple;
+	bh=TxcpqFbfbTPuzJpH7Oeu9gt6+a5sRyKJk96GTguBTL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sYn9JbpTzRukMRYs5wQOGizCOujA8t6Z/8YAOEj7hfJevvjmwkZn58G8V53TtFnV+wjRID98u1stQR9qk5fr6LTN9y3McJaZjsee+UorlZ14MQV9YsDxj6ikgWROklqExgwAl7qYEsanShv0r1JOLUM6KauLnVBpeJpKnD5E1po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNe5Qfqd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A8CC43394;
-	Mon, 29 Jan 2024 17:12:45 +0000 (UTC)
+	 MIME-Version; b=CT8FZgwKAjeXMhnDBMYE1SIKhc2UuloejrtQ3U/13KzUhfQj7LkqG9dquN+Sw5ql1rddjQt7+DaKIdyVVqUEFO1wMnJC0Q8OKg5FawB7CGOPcbD34oZsQRugit5kxLHk00YcBSkkL7DeKqt/Ctfc8fMJffjLxeXs9aNFjZ6svlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rC7+tJQY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD7EC433C7;
+	Mon, 29 Jan 2024 17:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548365;
-	bh=MlUiS0xK7u6PqzLH936oVRlvPzK9G85j64ZH4PfRAiM=;
+	s=korg; t=1706548286;
+	bh=TxcpqFbfbTPuzJpH7Oeu9gt6+a5sRyKJk96GTguBTL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aNe5QfqdnCqHJsfM6S/g2JyC9RBieFwsPq7vO81t/9nvkLtuncGSs3PkE7epBPWh+
-	 WsrE0/iwgBv3fIVZWxrjL84fBI44wSJ5hfhFu2Mgnx3GtOUGJmSCiOgXSUnvnpO8Pm
-	 aj3ZBwgBfymAG9Bw2L6n+3Wa+9KLqy0Joo/0DyuM=
+	b=rC7+tJQYL784vUQy0GMG3eTVTYKmdPq0uaTszOOhYyTX/ZjJ0i2FxnhPP4cpB/qwP
+	 u8NsuRnR9guxP5tb7H59S6jjvZ8rVF70I1f94L+OsA3NsFPx+kC0ifgsabuO9fSSy3
+	 lKuV5BZl4xSV3YkoP6cucSE508tfK9gyOu6BmNjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinglong Yang <xinglong.yang@cixtech.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.1 129/185] firmware: arm_scmi: Check mailbox/SMT channel for consistency
+	Dillon Varone <dillon.varone@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	George Shen <george.shen@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 298/346] drm/amd/display: Disconnect phantom pipe OPP from OPTC being disabled
 Date: Mon, 29 Jan 2024 09:05:29 -0800
-Message-ID: <20240129170002.727685897@linuxfoundation.org>
+Message-ID: <20240129170025.185481862@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +65,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: George Shen <george.shen@amd.com>
 
-commit 437a310b22244d4e0b78665c3042e5d1c0f45306 upstream.
+[ Upstream commit 7bdbfb4e36e34eb788e44f27666bf0a2b3b90803 ]
 
-On reception of a completion interrupt the shared memory area is accessed
-to retrieve the message header at first and then, if the message sequence
-number identifies a transaction which is still pending, the related
-payload is fetched too.
+[Why]
+If an OPP is used for a different OPTC without first being disconnected
+from the previous OPTC, unexpected behaviour can occur. This also
+applies to phantom pipes, which is what the current logic missed.
 
-When an SCMI command times out the channel ownership remains with the
-platform until eventually a late reply is received and, as a consequence,
-any further transmission attempt remains pending, waiting for the channel
-to be relinquished by the platform.
+[How]
+Disconnect OPPs from OPTC for phantom pipes before disabling OTG master.
 
-Once that late reply is received the channel ownership is given back
-to the agent and any pending request is then allowed to proceed and
-overwrite the SMT area of the just delivered late reply; then the wait
-for the reply to the new request starts.
+Also move the disconnection to before the OTG master disable, since the
+register is double buffered.
 
-It has been observed that the spurious IRQ related to the late reply can
-be wrongly associated with the freshly enqueued request: when that happens
-the SCMI stack in-flight lookup procedure is fooled by the fact that the
-message header now present in the SMT area is related to the new pending
-transaction, even though the real reply has still to arrive.
-
-This race-condition on the A2P channel can be detected by looking at the
-channel status bits: a genuine reply from the platform will have set the
-channel free bit before triggering the completion IRQ.
-
-Add a consistency check to validate such condition in the A2P ISR.
-
-Reported-by: Xinglong Yang <xinglong.yang@cixtech.com>
-Closes: https://lore.kernel.org/all/PUZPR06MB54981E6FA00D82BFDBB864FBF08DA@PUZPR06MB5498.apcprd06.prod.outlook.com/
-Fixes: 5c8a47a5a91d ("firmware: arm_scmi: Make scmi core independent of the transport type")
-Cc: stable@vger.kernel.org # 5.15+
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Tested-by: Xinglong Yang <xinglong.yang@cixtech.com>
-Link: https://lore.kernel.org/r/20231220172112.763539-1-cristian.marussi@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: George Shen <george.shen@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 3ba2a0bfd8cf ("drm/amd/display: Clear OPTC mem select on disable")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/common.h  |    1 +
- drivers/firmware/arm_scmi/mailbox.c |   14 ++++++++++++++
- drivers/firmware/arm_scmi/shmem.c   |    6 ++++++
- 3 files changed, 21 insertions(+)
+ .../gpu/drm/amd/display/dc/dcn32/dcn32_optc.c | 19 +++++++++++++------
+ .../gpu/drm/amd/display/dc/dcn35/dcn35_optc.c | 12 ++++++------
+ 2 files changed, 19 insertions(+), 12 deletions(-)
 
---- a/drivers/firmware/arm_scmi/common.h
-+++ b/drivers/firmware/arm_scmi/common.h
-@@ -244,6 +244,7 @@ void shmem_fetch_notification(struct scm
- void shmem_clear_channel(struct scmi_shared_mem __iomem *shmem);
- bool shmem_poll_done(struct scmi_shared_mem __iomem *shmem,
- 		     struct scmi_xfer *xfer);
-+bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem);
- 
- /* declarations for message passing transports */
- struct scmi_msg_payld;
---- a/drivers/firmware/arm_scmi/mailbox.c
-+++ b/drivers/firmware/arm_scmi/mailbox.c
-@@ -43,6 +43,20 @@ static void rx_callback(struct mbox_clie
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
+index 91ea0d4da06a..1788eb29474b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
+@@ -166,12 +166,6 @@ static bool optc32_disable_crtc(struct timing_generator *optc)
  {
- 	struct scmi_mailbox *smbox = client_to_scmi_mailbox(cl);
+ 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
  
-+	/*
-+	 * An A2P IRQ is NOT valid when received while the platform still has
-+	 * the ownership of the channel, because the platform at first releases
-+	 * the SMT channel and then sends the completion interrupt.
-+	 *
-+	 * This addresses a possible race condition in which a spurious IRQ from
-+	 * a previous timed-out reply which arrived late could be wrongly
-+	 * associated with the next pending transaction.
+-	/* disable otg request until end of the first line
+-	 * in the vertical blank region
+-	 */
+-	REG_UPDATE(OTG_CONTROL,
+-			OTG_MASTER_EN, 0);
+-
+ 	REG_UPDATE_5(OPTC_DATA_SOURCE_SELECT,
+ 			OPTC_SEG0_SRC_SEL, 0xf,
+ 			OPTC_SEG1_SRC_SEL, 0xf,
+@@ -179,6 +173,12 @@ static bool optc32_disable_crtc(struct timing_generator *optc)
+ 			OPTC_SEG3_SRC_SEL, 0xf,
+ 			OPTC_NUM_OF_INPUT_SEGMENT, 0);
+ 
++	/* disable otg request until end of the first line
++	 * in the vertical blank region
 +	 */
-+	if (cl->knows_txdone && !shmem_channel_free(smbox->shmem)) {
-+		dev_warn(smbox->cinfo->dev, "Ignoring spurious A2P IRQ !\n");
-+		return;
-+	}
++	REG_UPDATE(OTG_CONTROL,
++			OTG_MASTER_EN, 0);
 +
- 	scmi_rx_callback(smbox->cinfo, shmem_read_header(smbox->shmem), NULL);
+ 	REG_UPDATE(CONTROL,
+ 			VTG0_ENABLE, 0);
+ 
+@@ -205,6 +205,13 @@ static void optc32_disable_phantom_otg(struct timing_generator *optc)
+ {
+ 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
+ 
++	REG_UPDATE_5(OPTC_DATA_SOURCE_SELECT,
++			OPTC_SEG0_SRC_SEL, 0xf,
++			OPTC_SEG1_SRC_SEL, 0xf,
++			OPTC_SEG2_SRC_SEL, 0xf,
++			OPTC_SEG3_SRC_SEL, 0xf,
++			OPTC_NUM_OF_INPUT_SEGMENT, 0);
++
+ 	REG_UPDATE(OTG_CONTROL, OTG_MASTER_EN, 0);
  }
  
---- a/drivers/firmware/arm_scmi/shmem.c
-+++ b/drivers/firmware/arm_scmi/shmem.c
-@@ -122,3 +122,9 @@ bool shmem_poll_done(struct scmi_shared_
- 		(SCMI_SHMEM_CHAN_STAT_CHANNEL_ERROR |
- 		 SCMI_SHMEM_CHAN_STAT_CHANNEL_FREE);
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c
+index 08a59cf449ca..3d6c1b2c2b4d 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c
+@@ -138,12 +138,6 @@ static bool optc35_disable_crtc(struct timing_generator *optc)
+ {
+ 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
+ 
+-	/* disable otg request until end of the first line
+-	 * in the vertical blank region
+-	 */
+-	REG_UPDATE(OTG_CONTROL,
+-			OTG_MASTER_EN, 0);
+-
+ 	REG_UPDATE_5(OPTC_DATA_SOURCE_SELECT,
+ 			OPTC_SEG0_SRC_SEL, 0xf,
+ 			OPTC_SEG1_SRC_SEL, 0xf,
+@@ -151,6 +145,12 @@ static bool optc35_disable_crtc(struct timing_generator *optc)
+ 			OPTC_SEG3_SRC_SEL, 0xf,
+ 			OPTC_NUM_OF_INPUT_SEGMENT, 0);
+ 
++	/* disable otg request until end of the first line
++	 * in the vertical blank region
++	 */
++	REG_UPDATE(OTG_CONTROL,
++			OTG_MASTER_EN, 0);
 +
-+bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem)
-+{
-+	return (ioread32(&shmem->channel_status) &
-+			SCMI_SHMEM_CHAN_STAT_CHANNEL_FREE);
-+}
+ 	REG_UPDATE(CONTROL,
+ 			VTG0_ENABLE, 0);
+ 
+-- 
+2.43.0
+
 
 
 
