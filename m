@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-16823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F96840E90
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1729840E17
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5CF71C22105
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A603C1F2D09F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D151715B996;
-	Mon, 29 Jan 2024 17:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77CE157055;
+	Mon, 29 Jan 2024 17:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKjnJ2Fk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZhGNs5Nw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9110D15FB19;
-	Mon, 29 Jan 2024 17:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6698B159583;
+	Mon, 29 Jan 2024 17:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548305; cv=none; b=O1uSgdInzvo+7OmwZ+BzBTcWxJJeSU+rGPvM8rgsXZOrgf7pSALymd9wLft7xMjZv8imaFkbJ7orWpZ31ZixxgnhHUY80xtSdtY8LUtWJNDbIDLjCfddNfb7X23eVk7yiAHs9r3sSP0HhJuLXfMpFH7cTOGzp3e3KJ/cF5WDn/A=
+	t=1706548222; cv=none; b=hrl7RU5iBiy7CYLG2oqwEQtYj6nfVhiqFsTZ/7EhKk7YTPub8oMlY2tmAjn3WcmEMfxTX62jUbEdXuxjcSitxRrDSsJ/za3TI9WKHBoMSuOPD3UWRqqBaL/cdtc6OFQ8zaN4RIxm1wvD/T1KsNCvkm8gUryNAVPdKricK1zVkgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548305; c=relaxed/simple;
-	bh=MFS2sdHZvGvkIWMrnSPU4KflT/heWI4pFWHVi6S7ObE=;
+	s=arc-20240116; t=1706548222; c=relaxed/simple;
+	bh=rc+/dLogrqkgvE4P8o91424Q94yRO/eXvazckPtqU3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kUIcYFG4HsADkwQv4Yebn8w6V1sIp/L7Lm+jyx/XOG8rG4B9PAl1ZR7EpMmCsDmevcHVSAcWrzdkV3jjbr+0G/aPRyoy+Gq02PPjeENx1JP1YTGetJYgS2oOBJYcpin9Nu4L9N8WquBlgO3UbUcOmCEmO9Mv+PvXer8nMvIJs8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKjnJ2Fk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCF0C433C7;
-	Mon, 29 Jan 2024 17:11:45 +0000 (UTC)
+	 MIME-Version; b=NJOXczDsT7+VKTJderAZsVRy2SfKxzcJ0PYwqmSFnRu9MT5FGceAgOpOebFZQ0Q4ugPcsyz0+vIKmo8whwhVy1CAWh8UYGHErwIdiduJd9QtZjCOdPB8SQn6obcNZ0HfQgApTCZ4Twgy/alNuGRNgdwjSDWksgOBbu6F2heQF58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZhGNs5Nw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC71C433C7;
+	Mon, 29 Jan 2024 17:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548305;
-	bh=MFS2sdHZvGvkIWMrnSPU4KflT/heWI4pFWHVi6S7ObE=;
+	s=korg; t=1706548222;
+	bh=rc+/dLogrqkgvE4P8o91424Q94yRO/eXvazckPtqU3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oKjnJ2Fk7Zf2QvQ/QajWoGXlz4YfJswxEXyI1WMd7fOD7jwJMvyHWMrLREkLQVZEZ
-	 9482wakKa25QCvfrSwW2ZKr+2x551HISYPIdkIQcrahyyPgEZsfxD9mPdNtuvc67DZ
-	 OBWV0iT/BozsX8BTkQb/ZXXk97nyNhrJYraJPCms=
+	b=ZhGNs5NwF9S7rEHAiL2D+s6oWZBQQsmiWlWRxZEM0StsOGoVJbskcMJzO4Qs9lRdz
+	 GfxNUzsM/sBcy/1F6oUmwE+RJOZxBu6tPZdq8roODx31kNfgQZTO3bxqKsAw6Vtt6Q
+	 yIQs2bzqGNA7M/07Il6uDW7CVyUW1RkZRZprwIqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b5ad66046b913bc04c6f@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/185] llc: Drop support for ETH_P_TR_802_2.
-Date: Mon, 29 Jan 2024 09:04:42 -0800
-Message-ID: <20240129170001.235641346@linuxfoundation.org>
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH 6.7 252/346] drm/tidss: Fix atomic_flush check
+Date: Mon, 29 Jan 2024 09:04:43 -0800
+Message-ID: <20240129170023.826500825@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,135 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit e3f9bed9bee261e3347131764e42aeedf1ffea61 ]
+commit 95d4b471953411854f9c80b568da7fcf753f3801 upstream.
 
-syzbot reported an uninit-value bug below. [0]
+tidss_crtc_atomic_flush() checks if the crtc is enabled, and if not,
+returns immediately as there's no reason to do any register changes.
 
-llc supports ETH_P_802_2 (0x0004) and used to support ETH_P_TR_802_2
-(0x0011), and syzbot abused the latter to trigger the bug.
+However, the code checks for 'crtc->state->enable', which does not
+reflect the actual HW state. We should instead look at the
+'crtc->state->active' flag.
 
-  write$tun(r0, &(0x7f0000000040)={@val={0x0, 0x11}, @val, @mpls={[], @llc={@snap={0xaa, 0x1, ')', "90e5dd"}}}}, 0x16)
+This causes the tidss_crtc_atomic_flush() to proceed with the flush even
+if the active state is false, which then causes us to hit the
+WARN_ON(!crtc->state->event) check.
 
-llc_conn_handler() initialises local variables {saddr,daddr}.mac
-based on skb in llc_pdu_decode_sa()/llc_pdu_decode_da() and passes
-them to __llc_lookup().
+Fix this by checking the active flag, and while at it, fix the related
+debug print which had "active" and "needs modeset" wrong way.
 
-However, the initialisation is done only when skb->protocol is
-htons(ETH_P_802_2), otherwise, __llc_lookup_established() and
-__llc_lookup_listener() will read garbage.
-
-The missing initialisation existed prior to commit 211ed865108e
-("net: delete all instances of special processing for token ring").
-
-It removed the part to kick out the token ring stuff but forgot to
-close the door allowing ETH_P_TR_802_2 packets to sneak into llc_rcv().
-
-Let's remove llc_tr_packet_type and complete the deprecation.
-
-[0]:
-BUG: KMSAN: uninit-value in __llc_lookup_established+0xe9d/0xf90
- __llc_lookup_established+0xe9d/0xf90
- __llc_lookup net/llc/llc_conn.c:611 [inline]
- llc_conn_handler+0x4bd/0x1360 net/llc/llc_conn.c:791
- llc_rcv+0xfbb/0x14a0 net/llc/llc_input.c:206
- __netif_receive_skb_one_core net/core/dev.c:5527 [inline]
- __netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5641
- netif_receive_skb_internal net/core/dev.c:5727 [inline]
- netif_receive_skb+0x58/0x660 net/core/dev.c:5786
- tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1555
- tun_get_user+0x53af/0x66d0 drivers/net/tun.c:2002
- tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
- call_write_iter include/linux/fs.h:2020 [inline]
- new_sync_write fs/read_write.c:491 [inline]
- vfs_write+0x8ef/0x1490 fs/read_write.c:584
- ksys_write+0x20f/0x4c0 fs/read_write.c:637
- __do_sys_write fs/read_write.c:649 [inline]
- __se_sys_write fs/read_write.c:646 [inline]
- __x64_sys_write+0x93/0xd0 fs/read_write.c:646
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Local variable daddr created at:
- llc_conn_handler+0x53/0x1360 net/llc/llc_conn.c:783
- llc_rcv+0xfbb/0x14a0 net/llc/llc_input.c:206
-
-CPU: 1 PID: 5004 Comm: syz-executor994 Not tainted 6.6.0-syzkaller-14500-g1c41041124bd #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/09/2023
-
-Fixes: 211ed865108e ("net: delete all instances of special processing for token ring")
-Reported-by: syzbot+b5ad66046b913bc04c6f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b5ad66046b913bc04c6f
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240119015515.61898-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-10-ac91b5ea35c0@ideasonboard.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/llc_pdu.h | 6 ++----
- net/llc/llc_core.c    | 7 -------
- 2 files changed, 2 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/tidss/tidss_crtc.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/llc_pdu.h b/include/net/llc_pdu.h
-index 49aa79c7b278..581cd37aa98b 100644
---- a/include/net/llc_pdu.h
-+++ b/include/net/llc_pdu.h
-@@ -262,8 +262,7 @@ static inline void llc_pdu_header_init(struct sk_buff *skb, u8 type,
-  */
- static inline void llc_pdu_decode_sa(struct sk_buff *skb, u8 *sa)
- {
--	if (skb->protocol == htons(ETH_P_802_2))
--		memcpy(sa, eth_hdr(skb)->h_source, ETH_ALEN);
-+	memcpy(sa, eth_hdr(skb)->h_source, ETH_ALEN);
- }
+--- a/drivers/gpu/drm/tidss/tidss_crtc.c
++++ b/drivers/gpu/drm/tidss/tidss_crtc.c
+@@ -169,13 +169,13 @@ static void tidss_crtc_atomic_flush(stru
+ 	struct tidss_device *tidss = to_tidss(ddev);
+ 	unsigned long flags;
  
- /**
-@@ -275,8 +274,7 @@ static inline void llc_pdu_decode_sa(struct sk_buff *skb, u8 *sa)
-  */
- static inline void llc_pdu_decode_da(struct sk_buff *skb, u8 *da)
- {
--	if (skb->protocol == htons(ETH_P_802_2))
--		memcpy(da, eth_hdr(skb)->h_dest, ETH_ALEN);
-+	memcpy(da, eth_hdr(skb)->h_dest, ETH_ALEN);
- }
+-	dev_dbg(ddev->dev,
+-		"%s: %s enabled %d, needs modeset %d, event %p\n", __func__,
+-		crtc->name, drm_atomic_crtc_needs_modeset(crtc->state),
+-		crtc->state->enable, crtc->state->event);
++	dev_dbg(ddev->dev, "%s: %s is %sactive, %s modeset, event %p\n",
++		__func__, crtc->name, crtc->state->active ? "" : "not ",
++		drm_atomic_crtc_needs_modeset(crtc->state) ? "needs" : "doesn't need",
++		crtc->state->event);
  
- /**
-diff --git a/net/llc/llc_core.c b/net/llc/llc_core.c
-index 6e387aadffce..4f16d9c88350 100644
---- a/net/llc/llc_core.c
-+++ b/net/llc/llc_core.c
-@@ -135,22 +135,15 @@ static struct packet_type llc_packet_type __read_mostly = {
- 	.func = llc_rcv,
- };
+ 	/* There is nothing to do if CRTC is not going to be enabled. */
+-	if (!crtc->state->enable)
++	if (!crtc->state->active)
+ 		return;
  
--static struct packet_type llc_tr_packet_type __read_mostly = {
--	.type = cpu_to_be16(ETH_P_TR_802_2),
--	.func = llc_rcv,
--};
--
- static int __init llc_init(void)
- {
- 	dev_add_pack(&llc_packet_type);
--	dev_add_pack(&llc_tr_packet_type);
- 	return 0;
- }
- 
- static void __exit llc_exit(void)
- {
- 	dev_remove_pack(&llc_packet_type);
--	dev_remove_pack(&llc_tr_packet_type);
- }
- 
- module_init(llc_init);
--- 
-2.43.0
-
+ 	/*
 
 
 
