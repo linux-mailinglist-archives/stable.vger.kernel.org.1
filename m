@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C25841005
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB57840DD7
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A8D41F23B34
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5EEC1F2CF15
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D23D159560;
-	Mon, 29 Jan 2024 17:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4021C15D5A1;
+	Mon, 29 Jan 2024 17:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBc/Q8tu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Gbmj/WE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C16473722;
-	Mon, 29 Jan 2024 17:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35B715956D;
+	Mon, 29 Jan 2024 17:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548546; cv=none; b=iduqxYJMWJtseFYLSFLpgx0oWz3pA2T5Lg3nZFesuAyfTCmkzhRtYV3PdzyRMcFCM5bR15+5lJNhoMFY7FIHE4i1l6k6RFvI9VyAyH+Zrv2yMV6vBff6s3c3pEViyByzqPWnke8qIz8RZNkZN7JM6iLy2o97hvXKGBPfKwF5NtA=
+	t=1706548176; cv=none; b=jtGYhsUiYZcqwA/kEGMM9jZouP9hRR1eRFJrBvGX4dJ5IgvR9zsErsEnLGDGlCg357DlcKGYTJh3+LjMss/1nITZdv2jHOKVoJ7YOaCsvYhtDWz8hYOiPeZRF+a3jlF9+jhNNefCmlr1JazXyMFyWq90ps2c8aNm8W9wzm14mww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548546; c=relaxed/simple;
-	bh=2W2orXROQgKlapPxSF0JA7LgsMmFt+2nkfqkTmKfjPI=;
+	s=arc-20240116; t=1706548176; c=relaxed/simple;
+	bh=T/Lk9hTqE7UwUkuvYcBOOEf9ZEtvyDwGbkUG3HmoovY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pWR9xhXCtC/iDMvneiqyWLAWZXv8qRwljbJA5boCGAbhOSMKyTtvXHP5LXR06NzoGdUbV0CqxVROiRWLYFJb01hr5qK6FsIEv7nHrVGh/smE9ODZ+wyikdMDocewDDMjZptvtq3iugeWIWBSk9HyyZSMa5njkutm12wVGKWPqnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBc/Q8tu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15152C433F1;
-	Mon, 29 Jan 2024 17:15:46 +0000 (UTC)
+	 MIME-Version; b=krxKyxjUlaIqymDabR3ZQ8bTX6g0etuD/IiL80R+DzqNi9mSY6MvTtA+W/DhI+YT3n+d+hBZUdvAsX/j2ASl/dj5UG7w89Rw4R7XwC/499cYmCzqlA+5+BvF4YF6nZtosGBKy2Jv32vSQMOSdumqAIqQgF8Oyuc8PJymYkmajYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Gbmj/WE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE352C433F1;
+	Mon, 29 Jan 2024 17:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548546;
-	bh=2W2orXROQgKlapPxSF0JA7LgsMmFt+2nkfqkTmKfjPI=;
+	s=korg; t=1706548175;
+	bh=T/Lk9hTqE7UwUkuvYcBOOEf9ZEtvyDwGbkUG3HmoovY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SBc/Q8tuHW/sZPFNvU/8I/vQNPBAPFkpxdZ/6EyCyTkP2lACIf8hMedY2HpzguE3O
-	 xev8ldwIgRvHs2FpKgr/l/fPaaFvqc9JVjz0oDhjGWaUjVVYLsiBrG7OLlV9mJVMEE
-	 K0mlVNUqvT5UFPty1kVF9uK90YdEaL5oKeNCxcCE=
+	b=0Gbmj/WERZz4zy65wf9C9ANngEFVt/4SmJKCwVPHxcawdI7XJc11+yOYmmzJF+X+V
+	 7XZqwkeFtIWtOIkj8tSygqA7rSBi87d3dN5DLV42HkrGAqOREiXv/qtvvxD0HWBKeg
+	 Ji+W6N6Tcp1Qf3IpmqOlvU6G2qvcDUWPRAh1+1uI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 187/331] selftest: Dont reuse port for SO_INCOMING_CPU test.
-Date: Mon, 29 Jan 2024 09:04:11 -0800
-Message-ID: <20240129170020.362202292@linuxfoundation.org>
+Subject: [PATCH 6.7 221/346] tsnep: Fix XDP_RING_NEED_WAKEUP for empty fill ring
+Date: Mon, 29 Jan 2024 09:04:12 -0800
+Message-ID: <20240129170022.883506995@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,233 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
 
-[ Upstream commit 97de5a15edf2d22184f5ff588656030bbb7fa358 ]
+[ Upstream commit 9a91c05f4bd6f6bdd6b8f90445e0da92e3ac956c ]
 
-Jakub reported that ASSERT_EQ(cpu, i) in so_incoming_cpu.c seems to
-fire somewhat randomly.
+The fill ring of the XDP socket may contain not enough buffers to
+completey fill the RX queue during socket creation. In this case the
+flag XDP_RING_NEED_WAKEUP is not set as this flag is only set if the RX
+queue is not completely filled during polling.
 
-  # #  RUN           so_incoming_cpu.before_reuseport.test3 ...
-  # # so_incoming_cpu.c:191:test3:Expected cpu (32) == i (0)
-  # # test3: Test terminated by assertion
-  # #          FAIL  so_incoming_cpu.before_reuseport.test3
-  # not ok 3 so_incoming_cpu.before_reuseport.test3
+Set XDP_RING_NEED_WAKEUP flag also if RX queue is not completely filled
+during XDP socket creation.
 
-When the test failed, not-yet-accepted CLOSE_WAIT sockets received
-SYN with a "challenging" SEQ number, which was sent from an unexpected
-CPU that did not create the receiver.
-
-The test basically does:
-
-  1. for each cpu:
-    1-1. create a server
-    1-2. set SO_INCOMING_CPU
-
-  2. for each cpu:
-    2-1. set cpu affinity
-    2-2. create some clients
-    2-3. let clients connect() to the server on the same cpu
-    2-4. close() clients
-
-  3. for each server:
-    3-1. accept() all child sockets
-    3-2. check if all children have the same SO_INCOMING_CPU with the server
-
-The root cause was the close() in 2-4. and net.ipv4.tcp_tw_reuse.
-
-In a loop of 2., close() changed the client state to FIN_WAIT_2, and
-the peer transitioned to CLOSE_WAIT.
-
-In another loop of 2., connect() happened to select the same port of
-the FIN_WAIT_2 socket, and it was reused as the default value of
-net.ipv4.tcp_tw_reuse is 2.
-
-As a result, the new client sent SYN to the CLOSE_WAIT socket from
-a different CPU, and the receiver's sk_incoming_cpu was overwritten
-with unexpected CPU ID.
-
-Also, the SYN had a different SEQ number, so the CLOSE_WAIT socket
-responded with Challenge ACK.  The new client properly returned RST
-and effectively killed the CLOSE_WAIT socket.
-
-This way, all clients were created successfully, but the error was
-detected later by 3-2., ASSERT_EQ(cpu, i).
-
-To avoid the failure, let's make sure that (i) the number of clients
-is less than the number of available ports and (ii) such reuse never
-happens.
-
-Fixes: 6df96146b202 ("selftest: Add test for SO_INCOMING_CPU.")
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Tested-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/r/20240120031642.67014-1-kuniyu@amazon.com
+Fixes: 3fc2333933fd ("tsnep: Add XDP socket zero-copy RX support")
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/so_incoming_cpu.c | 68 ++++++++++++++-----
- 1 file changed, 50 insertions(+), 18 deletions(-)
+ drivers/net/ethernet/engleder/tsnep_main.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/tools/testing/selftests/net/so_incoming_cpu.c b/tools/testing/selftests/net/so_incoming_cpu.c
-index a14818164102..e9fa14e10732 100644
---- a/tools/testing/selftests/net/so_incoming_cpu.c
-+++ b/tools/testing/selftests/net/so_incoming_cpu.c
-@@ -3,19 +3,16 @@
- #define _GNU_SOURCE
- #include <sched.h>
- 
-+#include <fcntl.h>
-+
- #include <netinet/in.h>
- #include <sys/socket.h>
- #include <sys/sysinfo.h>
- 
- #include "../kselftest_harness.h"
- 
--#define CLIENT_PER_SERVER	32 /* More sockets, more reliable */
--#define NR_SERVER		self->nproc
--#define NR_CLIENT		(CLIENT_PER_SERVER * NR_SERVER)
--
- FIXTURE(so_incoming_cpu)
- {
--	int nproc;
- 	int *servers;
- 	union {
- 		struct sockaddr addr;
-@@ -56,12 +53,47 @@ FIXTURE_VARIANT_ADD(so_incoming_cpu, after_all_listen)
- 	.when_to_set = AFTER_ALL_LISTEN,
- };
- 
-+static void write_sysctl(struct __test_metadata *_metadata,
-+			 char *filename, char *string)
-+{
-+	int fd, len, ret;
-+
-+	fd = open(filename, O_WRONLY);
-+	ASSERT_NE(fd, -1);
-+
-+	len = strlen(string);
-+	ret = write(fd, string, len);
-+	ASSERT_EQ(ret, len);
-+}
-+
-+static void setup_netns(struct __test_metadata *_metadata)
-+{
-+	ASSERT_EQ(unshare(CLONE_NEWNET), 0);
-+	ASSERT_EQ(system("ip link set lo up"), 0);
-+
-+	write_sysctl(_metadata, "/proc/sys/net/ipv4/ip_local_port_range", "10000 60001");
-+	write_sysctl(_metadata, "/proc/sys/net/ipv4/tcp_tw_reuse", "0");
-+}
-+
-+#define NR_PORT				(60001 - 10000 - 1)
-+#define NR_CLIENT_PER_SERVER_DEFAULT	32
-+static int nr_client_per_server, nr_server, nr_client;
-+
- FIXTURE_SETUP(so_incoming_cpu)
- {
--	self->nproc = get_nprocs();
--	ASSERT_LE(2, self->nproc);
-+	setup_netns(_metadata);
-+
-+	nr_server = get_nprocs();
-+	ASSERT_LE(2, nr_server);
-+
-+	if (NR_CLIENT_PER_SERVER_DEFAULT * nr_server < NR_PORT)
-+		nr_client_per_server = NR_CLIENT_PER_SERVER_DEFAULT;
-+	else
-+		nr_client_per_server = NR_PORT / nr_server;
-+
-+	nr_client = nr_client_per_server * nr_server;
- 
--	self->servers = malloc(sizeof(int) * NR_SERVER);
-+	self->servers = malloc(sizeof(int) * nr_server);
- 	ASSERT_NE(self->servers, NULL);
- 
- 	self->in_addr.sin_family = AF_INET;
-@@ -74,7 +106,7 @@ FIXTURE_TEARDOWN(so_incoming_cpu)
- {
- 	int i;
- 
--	for (i = 0; i < NR_SERVER; i++)
-+	for (i = 0; i < nr_server; i++)
- 		close(self->servers[i]);
- 
- 	free(self->servers);
-@@ -110,10 +142,10 @@ int create_server(struct __test_metadata *_metadata,
- 	if (variant->when_to_set == BEFORE_LISTEN)
- 		set_so_incoming_cpu(_metadata, fd, cpu);
- 
--	/* We don't use CLIENT_PER_SERVER here not to block
-+	/* We don't use nr_client_per_server here not to block
- 	 * this test at connect() if SO_INCOMING_CPU is broken.
- 	 */
--	ret = listen(fd, NR_CLIENT);
-+	ret = listen(fd, nr_client);
- 	ASSERT_EQ(ret, 0);
- 
- 	if (variant->when_to_set == AFTER_LISTEN)
-@@ -128,7 +160,7 @@ void create_servers(struct __test_metadata *_metadata,
- {
- 	int i, ret;
- 
--	for (i = 0; i < NR_SERVER; i++) {
-+	for (i = 0; i < nr_server; i++) {
- 		self->servers[i] = create_server(_metadata, self, variant, i);
- 
- 		if (i == 0) {
-@@ -138,7 +170,7 @@ void create_servers(struct __test_metadata *_metadata,
- 	}
- 
- 	if (variant->when_to_set == AFTER_ALL_LISTEN) {
--		for (i = 0; i < NR_SERVER; i++)
-+		for (i = 0; i < nr_server; i++)
- 			set_so_incoming_cpu(_metadata, self->servers[i], i);
- 	}
- }
-@@ -149,7 +181,7 @@ void create_clients(struct __test_metadata *_metadata,
- 	cpu_set_t cpu_set;
- 	int i, j, fd, ret;
- 
--	for (i = 0; i < NR_SERVER; i++) {
-+	for (i = 0; i < nr_server; i++) {
- 		CPU_ZERO(&cpu_set);
- 
- 		CPU_SET(i, &cpu_set);
-@@ -162,7 +194,7 @@ void create_clients(struct __test_metadata *_metadata,
- 		ret = sched_setaffinity(0, sizeof(cpu_set), &cpu_set);
- 		ASSERT_EQ(ret, 0);
- 
--		for (j = 0; j < CLIENT_PER_SERVER; j++) {
-+		for (j = 0; j < nr_client_per_server; j++) {
- 			fd  = socket(AF_INET, SOCK_STREAM, 0);
- 			ASSERT_NE(fd, -1);
- 
-@@ -180,8 +212,8 @@ void verify_incoming_cpu(struct __test_metadata *_metadata,
- 	int i, j, fd, cpu, ret, total = 0;
- 	socklen_t len = sizeof(int);
- 
--	for (i = 0; i < NR_SERVER; i++) {
--		for (j = 0; j < CLIENT_PER_SERVER; j++) {
-+	for (i = 0; i < nr_server; i++) {
-+		for (j = 0; j < nr_client_per_server; j++) {
- 			/* If we see -EAGAIN here, SO_INCOMING_CPU is broken */
- 			fd = accept(self->servers[i], &self->addr, &self->addrlen);
- 			ASSERT_NE(fd, -1);
-@@ -195,7 +227,7 @@ void verify_incoming_cpu(struct __test_metadata *_metadata,
+diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
+index 456e0336f3f6..9aeff2b37a61 100644
+--- a/drivers/net/ethernet/engleder/tsnep_main.c
++++ b/drivers/net/ethernet/engleder/tsnep_main.c
+@@ -1762,6 +1762,19 @@ static void tsnep_rx_reopen_xsk(struct tsnep_rx *rx)
+ 			allocated--;
  		}
  	}
- 
--	ASSERT_EQ(total, NR_CLIENT);
-+	ASSERT_EQ(total, nr_client);
- 	TH_LOG("SO_INCOMING_CPU is very likely to be "
- 	       "working correctly with %d sockets.", total);
++
++	/* set need wakeup flag immediately if ring is not filled completely,
++	 * first polling would be too late as need wakeup signalisation would
++	 * be delayed for an indefinite time
++	 */
++	if (xsk_uses_need_wakeup(rx->xsk_pool)) {
++		int desc_available = tsnep_rx_desc_available(rx);
++
++		if (desc_available)
++			xsk_set_rx_need_wakeup(rx->xsk_pool);
++		else
++			xsk_clear_rx_need_wakeup(rx->xsk_pool);
++	}
  }
+ 
+ static bool tsnep_pending(struct tsnep_queue *queue)
 -- 
 2.43.0
 
