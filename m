@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-17234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A86F84105D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4F9A840E99
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E05951F24617
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90F06281D27
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60BC615B979;
-	Mon, 29 Jan 2024 17:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8543A15FB27;
+	Mon, 29 Jan 2024 17:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HS+qW9li"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZwbH1cx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF5015B970;
-	Mon, 29 Jan 2024 17:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41EE7157E6B;
+	Mon, 29 Jan 2024 17:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548609; cv=none; b=E/gSlgoO1t2Jz3C2qn9cffwhlE7/yJzKh09eqDHfZCuLXw3LPQkDyeBYat/0ZxzKt59jRYnoSD4gzUJokD9J7mBtjGZMUdXyHJifNChPJNRK3uQpQO+FRCKXoGCBXdPM5+lWVpQqD8ll44SmuHvENDJoKRGoO/kS1y69do07boU=
+	t=1706548312; cv=none; b=TZhc7RDRtYM+PBfXDBASGgyr9t3gOW6uuaJo/JxIBpkvOG6IRlyFApnt1SuVEDCRnd3Q1dKxSMMDSxABzy7sYFuoxJoMlaA1YpZAT1RrZyYYoPmzWXZj5Q9d1mdeL57pJ/oKi+sSheVk2dWs2tsRGu3Wg1ezUrt4yutkrmr2V6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548609; c=relaxed/simple;
-	bh=/LJhbeep0+ODPDl2d3t+m8GOLjUNiCvRaqd18JWskjA=;
+	s=arc-20240116; t=1706548312; c=relaxed/simple;
+	bh=g8BzngOBHQ03EGrSipr+8TXX8RLrPVsVSBgsEuyr47w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qylh325lX06GW7aEc55xDAO5EsoD532OogzXepptj/r2YWi0b3njovK132N+xjJqnd0dZ9h1R8T+9Br68SW8ISzFbaNZKejga0q+h9wMP/iVwwhvxmpf+8YEdQqw3yqNJDHxm32gwgteQQykkstEd+n3yjJE9OyCau+oOi2QpOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HS+qW9li; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D908BC433F1;
-	Mon, 29 Jan 2024 17:16:48 +0000 (UTC)
+	 MIME-Version; b=CN65nNgjZMKhQ/BaDttSrhO0xzB+vDpAmAAL1A25rkk8CCmZ9sRXNb3IpkDC1uGsshOx8aiK/t7VgdonE3XeBwg0B3DwlDNoB/btgscDx13E9wVlygnjrA1Ass79KhHCONH6yy/KXwp8RTd96qK6e2JaKgPmd8irL78eQm8ik5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZwbH1cx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B703C43394;
+	Mon, 29 Jan 2024 17:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548608;
-	bh=/LJhbeep0+ODPDl2d3t+m8GOLjUNiCvRaqd18JWskjA=;
+	s=korg; t=1706548312;
+	bh=g8BzngOBHQ03EGrSipr+8TXX8RLrPVsVSBgsEuyr47w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HS+qW9lirAzXtVH2a0LtFifJ6pw0IsFF/Rx8qBnMlMx+USzGm9Jon7M2B26+LDf4D
-	 s4+Ws39SDQQR162t/vtiUtFJZVswVI7qFs3Et51wrs+iSe5kMCvRe824GBTZ+/i1r5
-	 FORnATgafTWfhqfcGdlav/xTu6B8DVqvvY++kZiA=
+	b=NZwbH1cx+ENv7RcIwawhrbLMQn0Zd2zwFlk6JkeNejWVPUQz7hf8UCjo2bAMCg974
+	 oWEsZW3hs55KDee8HYyC6Za3r9J89hxWjYG6J7Tc44FXQgrEVjSoVWguZl3fOx/q8R
+	 YYL/nZCfKSkkHAEkeBTvef6zPPtPV8Oa3JcfRtqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 250/331] drm/amdgpu: Fix the null pointer when load rlc firmware
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 283/346] media: v4l: cci: Include linux/bits.h
 Date: Mon, 29 Jan 2024 09:05:14 -0800
-Message-ID: <20240129170022.199564740@linuxfoundation.org>
+Message-ID: <20240129170024.712738827@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit bc03c02cc1991a066b23e69bbcc0f66e8f1f7453 upstream.
+[ Upstream commit eba5058633b4d11e2a4d65eae9f1fce0b96365d9 ]
 
-If the RLC firmware is invalid because of wrong header size,
-the pointer to the rlc firmware is released in function
-amdgpu_ucode_request. There will be a null pointer error
-in subsequent use. So skip validation to fix it.
+linux/bits.h is needed for GENMASK(). Include it.
 
-Fixes: 3da9b71563cb ("drm/amd: Use `amdgpu_ucode_*` helpers for GFX10")
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: d92e7a013ff3 ("media: v4l2-cci: Add support for little-endian encoded registers")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c |   15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ include/media/v4l2-cci.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -3989,16 +3989,13 @@ static int gfx_v10_0_init_microcode(stru
+diff --git a/include/media/v4l2-cci.h b/include/media/v4l2-cci.h
+index 0f6803e4b17e..f2c2962e936b 100644
+--- a/include/media/v4l2-cci.h
++++ b/include/media/v4l2-cci.h
+@@ -7,6 +7,7 @@
+ #ifndef _V4L2_CCI_H
+ #define _V4L2_CCI_H
  
- 	if (!amdgpu_sriov_vf(adev)) {
- 		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_rlc.bin", ucode_prefix);
--		err = amdgpu_ucode_request(adev, &adev->gfx.rlc_fw, fw_name);
--		/* don't check this.  There are apparently firmwares in the wild with
--		 * incorrect size in the header
--		 */
--		if (err == -ENODEV)
--			goto out;
-+		err = request_firmware(&adev->gfx.rlc_fw, fw_name, adev->dev);
- 		if (err)
--			dev_dbg(adev->dev,
--				"gfx10: amdgpu_ucode_request() failed \"%s\"\n",
--				fw_name);
-+			goto out;
-+
-+		/* don't validate this firmware. There are apparently firmwares
-+		 * in the wild with incorrect size in the header
-+		 */
- 		rlc_hdr = (const struct rlc_firmware_header_v2_0 *)adev->gfx.rlc_fw->data;
- 		version_major = le16_to_cpu(rlc_hdr->header.header_version_major);
- 		version_minor = le16_to_cpu(rlc_hdr->header.header_version_minor);
++#include <linux/bits.h>
+ #include <linux/types.h>
+ 
+ struct i2c_client;
+-- 
+2.43.0
+
 
 
 
