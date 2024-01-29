@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-17138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C67840FFB
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80466840E38
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D50F6283D89
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B25761C239ED
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500E373754;
-	Mon, 29 Jan 2024 17:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA44E15EAA0;
+	Mon, 29 Jan 2024 17:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdOxuIb6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8yCckd9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D22973748;
-	Mon, 29 Jan 2024 17:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DB61586CF;
+	Mon, 29 Jan 2024 17:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548539; cv=none; b=eNIDYTzl37R7ZcBxkZGa+Y5R37Xb97JvnVcgCC/JDPTrsv0mIoCO3RhTngCnVLkFiunsvdhYDfVV+J8SFmERk3l7raJUw95a+fubPzk+FShiuRUN3UeDjD5ZNtCgFUdn8pU7t4SSKIU5rKU6U+AYwOIlA+V8VitctGGfSEhjnDg=
+	t=1706548244; cv=none; b=EVTJQsqJFAsHNHzQOjzvuE2sOTv85WwfEUHyRqe4KxQITs0e/xW2LnSzf4nQDtdmQsEg3hKTA6ycIxlupX6eh/n/fC68lA5OSw0v1lQCqZaDym4Ug4stG3cSWb8+FT4gxTjGlDEQ7cu1VhMP8+Qp4/nLaxgarW3/oJJmzgws/5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548539; c=relaxed/simple;
-	bh=TLHYZ8p6uF3IA51uiEbxv1vToSUEHRV9bhOLQYsyU50=;
+	s=arc-20240116; t=1706548244; c=relaxed/simple;
+	bh=3oV0z0oT38cjQMXrhAmnkuMo5dlOCSTLWwkweuXDbRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YjmL+b6VzOYOO5YoO1/tsyWn2laWQmjFSzofIHyg8QZh++oyYx6R0clkiadn4yiVa9pmnsutlGxtojg+xSCvybXVKugHqRsR9ah2FxIEDNFF1O16j0nhMZ0v8U/q9I9OZSLrSRHNuB1NaKJAEwTHcsDc7wfnVJP0jXK5Q3fve0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdOxuIb6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FDEC43390;
-	Mon, 29 Jan 2024 17:15:38 +0000 (UTC)
+	 MIME-Version; b=U0MUZ9tpyLwhIIfGhiWcVjLxcUlCoYQvfcXWXKS0L37+3zfLph4SzFNhqFe+cW291Ol6hJFSkvozcQN0Cy2dHssYpf7bxLlXRbnOyQRYGb5BnYsAxToJxQtmTni8yNIDF8Kh040EWy0RA98mWzrglaA1YDSa8+4pU7OTEuSTY6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8yCckd9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4E4C43394;
+	Mon, 29 Jan 2024 17:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548538;
-	bh=TLHYZ8p6uF3IA51uiEbxv1vToSUEHRV9bhOLQYsyU50=;
+	s=korg; t=1706548244;
+	bh=3oV0z0oT38cjQMXrhAmnkuMo5dlOCSTLWwkweuXDbRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QdOxuIb6pTh+H1MW3K9ianxNq6W1WjM5XdprvLpeIQ3gC1bZNOVrg1NUoyrfR5Ffo
-	 2GptFFP67l7IlrRqE2rudUtHMCZeeNhWk0k6q53b/bKBCUoY9+oWaSomjtyg5YzYnt
-	 leXgDojl+KouYJ+DTAnlj3w7xgwyhxYAiKtCaAJc=
+	b=H8yCckd9TScvArvVPy71joJaBbY1SFK8tnSRw1q6Fy3yKpRmPh5rLk28fGSJwtLRz
+	 hroRg0hKo/25uJZi2Z36Ft8OzP+TIV0jrnkm2VHC7K3e5xydzjWBTv5zrGdJm82Tew
+	 ivixclMjbFlda2Mus4T40Q3Muj9e2CLGnnT0KX3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=D0=9C=D0=B0=D1=80=D0=BA=20=D0=9A=D0=BE=D1=80=D0=B5=D0=BD=D0=B1=D0=B5=D1=80=D0=B3?= <socketpair@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 178/331] net: fix removing a namespace with conflicting altnames
+	Jani Nikula <jani.nikula@intel.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: [PATCH 6.1 042/185] scripts/get_abi: fix source path leak
 Date: Mon, 29 Jan 2024 09:04:02 -0800
-Message-ID: <20240129170020.113724949@linuxfoundation.org>
+Message-ID: <20240129165959.935363057@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Vegard Nossum <vegard.nossum@oracle.com>
 
-[ Upstream commit d09486a04f5da0a812c26217213b89a3b1acf836 ]
+commit 5889d6ede53bc17252f79c142387e007224aa554 upstream.
 
-Mark reports a BUG() when a net namespace is removed.
+The code currently leaks the absolute path of the ABI files into the
+rendered documentation.
 
-    kernel BUG at net/core/dev.c:11520!
+There exists code to prevent this, but it is not effective when an
+absolute path is passed, which it is when $srctree is used.
 
-Physical interfaces moved outside of init_net get "refunded"
-to init_net when that namespace disappears. The main interface
-name may get overwritten in the process if it would have
-conflicted. We need to also discard all conflicting altnames.
-Recent fixes addressed ensuring that altnames get moved
-with the main interface, which surfaced this problem.
+I consider this to be a minimal, stop-gap fix; a better fix would strip
+off the actual prefix instead of hacking it off with a regex.
 
-Reported-by: Марк Коренберг <socketpair@gmail.com>
-Link: https://lore.kernel.org/all/CAEmTpZFZ4Sv3KwqFOY2WKDHeZYdi0O7N5H1nTvcGp=SAEavtDg@mail.gmail.com/
-Fixes: 7663d522099e ("net: check for altname conflicts when changing netdev's netns")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://mastodon.social/@vegard/111677490643495163
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Link: https://lore.kernel.org/r/20231231235959.3342928-1-vegard.nossum@oracle.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c | 9 +++++++++
- net/core/dev.h | 3 +++
- 2 files changed, 12 insertions(+)
+ scripts/get_abi.pl |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index e480afb50d4c..d72a4ff689ca 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -11491,6 +11491,7 @@ static struct pernet_operations __net_initdata netdev_net_ops = {
+--- a/scripts/get_abi.pl
++++ b/scripts/get_abi.pl
+@@ -98,7 +98,7 @@ sub parse_abi {
+ 	$name =~ s,.*/,,;
  
- static void __net_exit default_device_exit_net(struct net *net)
- {
-+	struct netdev_name_node *name_node, *tmp;
- 	struct net_device *dev, *aux;
- 	/*
- 	 * Push all migratable network devices back to the
-@@ -11513,6 +11514,14 @@ static void __net_exit default_device_exit_net(struct net *net)
- 		snprintf(fb_name, IFNAMSIZ, "dev%d", dev->ifindex);
- 		if (netdev_name_in_use(&init_net, fb_name))
- 			snprintf(fb_name, IFNAMSIZ, "dev%%d");
-+
-+		netdev_for_each_altname_safe(dev, name_node, tmp)
-+			if (netdev_name_in_use(&init_net, name_node->name)) {
-+				netdev_name_node_del(name_node);
-+				synchronize_rcu();
-+				__netdev_name_node_alt_destroy(name_node);
-+			}
-+
- 		err = dev_change_net_namespace(dev, &init_net, fb_name);
- 		if (err) {
- 			pr_emerg("%s: failed to move %s to init_net: %d\n",
-diff --git a/net/core/dev.h b/net/core/dev.h
-index fa2e9c5c4122..f2037d402144 100644
---- a/net/core/dev.h
-+++ b/net/core/dev.h
-@@ -64,6 +64,9 @@ int dev_change_name(struct net_device *dev, const char *newname);
+ 	my $fn = $file;
+-	$fn =~ s,Documentation/ABI/,,;
++	$fn =~ s,.*Documentation/ABI/,,;
  
- #define netdev_for_each_altname(dev, namenode)				\
- 	list_for_each_entry((namenode), &(dev)->name_node->list, list)
-+#define netdev_for_each_altname_safe(dev, namenode, next)		\
-+	list_for_each_entry_safe((namenode), (next), &(dev)->name_node->list, \
-+				 list)
- 
- int netdev_name_node_alt_create(struct net_device *dev, const char *name);
- int netdev_name_node_alt_destroy(struct net_device *dev, const char *name);
--- 
-2.43.0
-
+ 	my $nametag = "File $fn";
+ 	$data{$nametag}->{what} = "File $name";
 
 
 
