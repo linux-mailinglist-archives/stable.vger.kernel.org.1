@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-16848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B608840EA9
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE5184102F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D916B27A2D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E956F1F240A1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 683BC15B96D;
-	Mon, 29 Jan 2024 17:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F286915B319;
+	Mon, 29 Jan 2024 17:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vdYz1rgp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMNPm/G7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2806015A4B8;
-	Mon, 29 Jan 2024 17:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC6B15B30B;
+	Mon, 29 Jan 2024 17:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548324; cv=none; b=ZPGeB8pUNuKqwrtg3rAqiD/Cb9IREUO8azsTWxV7ddyS5nx9MwM1ZXCUAr5dyDRZnrH3OTY1emxkCQS0hqCy5RihYnT/GKs5BuV4Vqnz+7MAKPuJ9b01UGn8tUQNZN6LfBN094KY6JeLMOwpYuna931J/eWbhRblW6tV07H68/U=
+	t=1706548577; cv=none; b=nx7JYiZnrennR3YlU+9U0IqG48caEenb/zc+B5GUvyqbQTOM18oW78C333QkKz8tReoOkvNcibsW6QYuEQG+xtEDnChibSaQDnIq37UXmUWhC05ApVYd/W8oi9oS1YerO2TgcDPQNCkP9STp3er+xqy41Nmus7tHd4XDMvYAIPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548324; c=relaxed/simple;
-	bh=j61RwMz6vhjSUft18ss6smUAtOXV3whT1cB5EYPIsSA=;
+	s=arc-20240116; t=1706548577; c=relaxed/simple;
+	bh=QFx7fYET+7bKWz5GvU/ECdiWTP1YxjU4IqApbtIjHyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lv6pQVA+5MrnFp7zkEczKA54aTvl/aLPjaAANQzHnx8B+zRMqa+2L31VgqOH2OmN1cHgYTM3nB1YELavkqf4dA5Ls4jAfpOpZEjjrc/65mANWcqTApk22Xl7GtYMazkEocy84/HqWJlyRc90mkEpm5isFHnpEkp5fFjcSceG+7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vdYz1rgp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F6CC43390;
-	Mon, 29 Jan 2024 17:12:03 +0000 (UTC)
+	 MIME-Version; b=Ca55AiCYEdvnz1YNwfczFyFfcDt4mOHKsluZIB2L4IyxndeI35EWy926V8vH6DBg0mSd2ILPpGIYb8gpp5rJoNckRNBLnULsMIBfetUmIZFZrc7BKDBPFs7z2tvL6qK2Khu7Hwb06fMKsG9VHNaqz9QcTW7s+UcPZdvKe4dCFkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMNPm/G7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73641C43390;
+	Mon, 29 Jan 2024 17:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548324;
-	bh=j61RwMz6vhjSUft18ss6smUAtOXV3whT1cB5EYPIsSA=;
+	s=korg; t=1706548577;
+	bh=QFx7fYET+7bKWz5GvU/ECdiWTP1YxjU4IqApbtIjHyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vdYz1rgpwFKkKk86MQM3NNT0ppaqgXtUNrXJCaugwqkVxxdrJD34Neui21CdSGbv/
-	 U/5rDlVTbCu9l5QUMckJWHCOJpVeFYdx4btfgILhRYDXlL4MEUBwPzibABwBdwR0+G
-	 l5TS68lTaAj9rzR3ut3e6G32VK4WLTnBlIBbshHM=
+	b=qMNPm/G7+ewwlyo/8468DdKhea7mSVWF6v/VQh9UKfj/ixQ14i5GOZr5wCmVQIETl
+	 MS1tte7ZgjaJu/ORC2Tx/6zcSkANA6DwmflLg47E1qk78Dwxvcpgvcfq/Z2bVWokLL
+	 PhqD4bW1mAg3hdBR/sUfRN/uGusURtJjFdR3U+t4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/185] net/mlx5: DR, Use the right GVMI number for drop action
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 231/331] btrfs: zoned: fix lock ordering in btrfs_zone_activate()
 Date: Mon, 29 Jan 2024 09:04:55 -0800
-Message-ID: <20240129170001.642148318@linuxfoundation.org>
+Message-ID: <20240129170021.636912706@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit 5665954293f13642f9c052ead83c1e9d8cff186f ]
+commit b18f3b60b35a8c01c9a2a0f0d6424c6d73971dc3 upstream.
 
-When FW provides ICM addresses for drop RX/TX, the provided capability
-is 64 bits that contain its GVMI as well as the ICM address itself.
-In case of TX DROP this GVMI is different from the GVMI that the
-domain is operating on.
+The btrfs CI reported a lockdep warning as follows by running generic
+generic/129.
 
-This patch fixes the action to use these GVMI IDs, as provided by FW.
+   WARNING: possible circular locking dependency detected
+   6.7.0-rc5+ #1 Not tainted
+   ------------------------------------------------------
+   kworker/u5:5/793427 is trying to acquire lock:
+   ffff88813256d028 (&cache->lock){+.+.}-{2:2}, at: btrfs_zone_finish_one_bg+0x5e/0x130
+   but task is already holding lock:
+   ffff88810a23a318 (&fs_info->zone_active_bgs_lock){+.+.}-{2:2}, at: btrfs_zone_finish_one_bg+0x34/0x130
+   which lock already depends on the new lock.
 
-Fixes: 9db810ed2d37 ("net/mlx5: DR, Expose steering action functionality")
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+   the existing dependency chain (in reverse order) is:
+   -> #1 (&fs_info->zone_active_bgs_lock){+.+.}-{2:2}:
+   ...
+   -> #0 (&cache->lock){+.+.}-{2:2}:
+   ...
+
+This is because we take fs_info->zone_active_bgs_lock after a block_group's
+lock in btrfs_zone_activate() while doing the opposite in other places.
+
+Fix the issue by expanding the fs_info->zone_active_bgs_lock's critical
+section and taking it before a block_group's lock.
+
+Fixes: a7e1ac7bdc5a ("btrfs: zoned: reserve zones for an active metadata/system block group")
+CC: stable@vger.kernel.org # 6.6
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/zoned.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
-index a3e7602b044e..8c265250bbaf 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
-@@ -673,6 +673,7 @@ int mlx5dr_actions_build_ste_arr(struct mlx5dr_matcher *matcher,
- 		switch (action_type) {
- 		case DR_ACTION_TYP_DROP:
- 			attr.final_icm_addr = nic_dmn->drop_icm_addr;
-+			attr.hit_gvmi = nic_dmn->drop_icm_addr >> 48;
- 			break;
- 		case DR_ACTION_TYP_FT:
- 			dest_action = action;
--- 
-2.43.0
-
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1975,6 +1975,7 @@ bool btrfs_zone_activate(struct btrfs_bl
+ 
+ 	map = block_group->physical_map;
+ 
++	spin_lock(&fs_info->zone_active_bgs_lock);
+ 	spin_lock(&block_group->lock);
+ 	if (test_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE, &block_group->runtime_flags)) {
+ 		ret = true;
+@@ -1987,7 +1988,6 @@ bool btrfs_zone_activate(struct btrfs_bl
+ 		goto out_unlock;
+ 	}
+ 
+-	spin_lock(&fs_info->zone_active_bgs_lock);
+ 	for (i = 0; i < map->num_stripes; i++) {
+ 		struct btrfs_zoned_device_info *zinfo;
+ 		int reserved = 0;
+@@ -2007,20 +2007,17 @@ bool btrfs_zone_activate(struct btrfs_bl
+ 		 */
+ 		if (atomic_read(&zinfo->active_zones_left) <= reserved) {
+ 			ret = false;
+-			spin_unlock(&fs_info->zone_active_bgs_lock);
+ 			goto out_unlock;
+ 		}
+ 
+ 		if (!btrfs_dev_set_active_zone(device, physical)) {
+ 			/* Cannot activate the zone */
+ 			ret = false;
+-			spin_unlock(&fs_info->zone_active_bgs_lock);
+ 			goto out_unlock;
+ 		}
+ 		if (!is_data)
+ 			zinfo->reserved_active_zones--;
+ 	}
+-	spin_unlock(&fs_info->zone_active_bgs_lock);
+ 
+ 	/* Successfully activated all the zones */
+ 	set_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE, &block_group->runtime_flags);
+@@ -2028,8 +2025,6 @@ bool btrfs_zone_activate(struct btrfs_bl
+ 
+ 	/* For the active block group list */
+ 	btrfs_get_block_group(block_group);
+-
+-	spin_lock(&fs_info->zone_active_bgs_lock);
+ 	list_add_tail(&block_group->active_bg_list, &fs_info->zone_active_bgs);
+ 	spin_unlock(&fs_info->zone_active_bgs_lock);
+ 
+@@ -2037,6 +2032,7 @@ bool btrfs_zone_activate(struct btrfs_bl
+ 
+ out_unlock:
+ 	spin_unlock(&block_group->lock);
++	spin_unlock(&fs_info->zone_active_bgs_lock);
+ 	return ret;
+ }
+ 
 
 
 
