@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-16422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC79840AFB
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05525840AFC
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCBF81C20E87
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 16:12:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A0AF1C219D9
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 16:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A30C155A2B;
-	Mon, 29 Jan 2024 16:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5423155A2C;
+	Mon, 29 Jan 2024 16:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0WZPHhc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDNn3dRO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE967155A22
-	for <stable@vger.kernel.org>; Mon, 29 Jan 2024 16:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41D615531E
+	for <stable@vger.kernel.org>; Mon, 29 Jan 2024 16:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706544726; cv=none; b=r8CQzALTwrR3m9xdL4PCEbhrAsaNvWzOib86Uxag/i4McpOytDv7fNDBi9Xp3ltPrA40/sAYKz8gIUFzqJVwQcrOnpb5vpL3v0PGbnSaiIoatZjKOXj1BAFK6xuzLPdAw4x7APBNNf5VatSyG6rqyOmjr5Z358Kri6mvxQHPIIU=
+	t=1706544730; cv=none; b=RyO+ZUxd97k31WlvsLvZNg6z6TGtl/4fIPQEKfQbbsSs9h5fM7VOnWdhMgje3SqH+qfeA8N9a/wmmjK4iqq5auVmihFx2dKtq4vHH0omV1UsCexn5LhkPpWe3SPu5B3w1k++maF9eMFgK/Gk2d6z3/fG9/zlAggfkbDpr4ZLS7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706544726; c=relaxed/simple;
-	bh=NnfYnZtQjtHjosq2GDDfECTPDfv/b1zE0aS+uS0KxoM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hO8wEH4qeWDDMCc82QvstxJHMnsLhQ/71LbC3j9ggMEbP6nqDCbwsEBMiDysTwj3umBUL3CwocdIIwUZDlf+03+wxFNfBbVUrkZJRfJRyvA6DkBqVsZxKV2sm2RJg6/rpzdSKfyutRLkT+i3LNCBzDPblsFDpiThbxTzRxCIjZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0WZPHhc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6DBC433C7;
-	Mon, 29 Jan 2024 16:12:06 +0000 (UTC)
+	s=arc-20240116; t=1706544730; c=relaxed/simple;
+	bh=yQi4bkcZ5nGHrn2LFKCDyGHARlSruBqHoRyKMR0ZBhA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bqvPuDXYP3QmRxZurrvBFoTrB2Sh6NVvBfejuqpgXjacXxm0xLKsxhDQIgM2F1Qlu4Roe7P0iE5Q8ufTYw2SQ+aUPz6q8/4Z7Ek3cfXBQfuEBLKbaVyT86PY/mToaikcR/q38ok4O5MtLng+9o7bP452KcABSoZQ+eWJqid3jzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDNn3dRO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB69C433C7;
+	Mon, 29 Jan 2024 16:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706544726;
-	bh=NnfYnZtQjtHjosq2GDDfECTPDfv/b1zE0aS+uS0KxoM=;
+	s=korg; t=1706544730;
+	bh=yQi4bkcZ5nGHrn2LFKCDyGHARlSruBqHoRyKMR0ZBhA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=U0WZPHhcdx4FsNZV6lihu7SNKpCh8SD4hp2KGKOge8im+lte0YoVfv8fM3pUHJ8DG
-	 /D/pVYTxZD3ywzAtkW4DS+TDy/Fh41y/5I7VSlHYdIaLQOODjkGbAESFTO/Eo0hse9
-	 Lp3a1ViX3qT7ts+dx7eS59yM8NXwNkUMIAWJ6RgU=
-Subject: FAILED: patch "[PATCH] clocksource: Skip watchdog check for large watchdog intervals" failed to apply to 6.1-stable tree
+	b=BDNn3dROllpal5Utc8Xl1AKx7bxr/EN2zKZXnwiK6Dnhem9+wdf6EByUvekTYjuqg
+	 7edl/VTKFLa/aJl1ZFVpzUXZBm6XuSojf4bdKp0q+omoJU/sgZiG1z8Aoe6+1K9up7
+	 mZkkOxrkB0/CmzcgZgmD0PMIzOnrrO6mBd91T5T0=
+Subject: FAILED: patch "[PATCH] clocksource: Skip watchdog check for large watchdog intervals" failed to apply to 5.15-stable tree
 To: jwiesner@suse.de,feng.tang@intel.com,paulmck@kernel.org,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 29 Jan 2024 08:12:05 -0800
-Message-ID: <2024012905-carry-revolt-b8d5@gregkh>
+Date: Mon, 29 Jan 2024 08:12:09 -0800
+Message-ID: <2024012908-footing-happily-57fa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 644649553508b9bacf0fc7a5bdc4f9e0165576a5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012905-carry-revolt-b8d5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012908-footing-happily-57fa@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 644649553508 ("clocksource: Skip watchdog check for large watchdog intervals")
 c37e85c135ce ("clocksource: Loosen clocksource watchdog constraints")
+fc153c1c58cb ("clocksource: Add a Kconfig option for WATCHDOG_MAX_SKEW")
+c86ff8c55b8a ("clocksource: Avoid accidental unstable marking of clocksources")
 
 thanks,
 
