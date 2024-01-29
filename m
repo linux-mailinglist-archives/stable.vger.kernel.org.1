@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 541A0841045
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0E69840EA0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E91E81F23C40
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F7031C232DD
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A82A755F7;
-	Mon, 29 Jan 2024 17:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD84515CD41;
+	Mon, 29 Jan 2024 17:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuLAMiv2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUxIVuTr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A17C755F2;
-	Mon, 29 Jan 2024 17:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B14E158D71;
+	Mon, 29 Jan 2024 17:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548593; cv=none; b=k6lZhxvYd+pQDh1R6vxwPIic5Egoc54d7+lmYLvQ4xAw36YWrfH4wsIjuac8Bx+59hJaYuTf7OkRmsKwIqRQ5EcbXArq6n3Fm648EVP+NkXUf7lIO1hy2gpztjqswE9ujoZ+ixQXfKUO//hCRKr8CpBCGaL4FIEenUeq43VGSHc=
+	t=1706548317; cv=none; b=oIK+7p3PojmZuOoFG/hqe/xd16u0qKfTsbMWnbo0wql8BmnNYoDew+CrR254+uxVZtoi3sXTh+GOZ0hRJ8MQHFaMk5eZMJvehhCOWAH9jiI5bMh6yOJAfzwDMWthfOXtLRXf3hgpSx8GBXy8h4YHoQXPaM6e2v194MjWqqzDBN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548593; c=relaxed/simple;
-	bh=zOUBBvus21liFz2zCEPI/oW789vUnQA6zj8XZE+EqBc=;
+	s=arc-20240116; t=1706548317; c=relaxed/simple;
+	bh=lZ4/N3dkZ3Kfc7so0Sh7sQjwOwNGxXxNC0UcUupv2eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pvxMCGztzhgfVeEDe2rQc5qdNqwdB4htlr9fuJOqaIzDe9/SDb2vMYpne9/vncKHNvEOS4K0T+ZrQwQlQ5SobTPWNx1KMUtnuZcDbwn87EsuGwd2lvWBAKf67NxSy7SqwSyBljnw4W2tzpzKGVeSUcbLCKwtxK9zOLFvDVm5wBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuLAMiv2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 205F7C433C7;
-	Mon, 29 Jan 2024 17:16:33 +0000 (UTC)
+	 MIME-Version; b=Y8RJvWGk22sRfZ2VReHD6rsIwJ0rMmFz1b4EewX0v4nQVy7LgMHUFZqddgnGdlWSWiZlD3PyscFsuPJ6qR/Wx1+Mfa5pERmZMONlrwLvqdfsypwZM3KVripoYpYLtBjTzkklIX7ZGtyuobqACc+sUrMX5WViZf5iuDSxc32G0tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUxIVuTr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51EC9C43390;
+	Mon, 29 Jan 2024 17:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548593;
-	bh=zOUBBvus21liFz2zCEPI/oW789vUnQA6zj8XZE+EqBc=;
+	s=korg; t=1706548317;
+	bh=lZ4/N3dkZ3Kfc7so0Sh7sQjwOwNGxXxNC0UcUupv2eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tuLAMiv2+xmPCg3Cn4ubgJouoduzqPBZVKmQdeBgqkqC0ILcQ3ZMF/OrHh8aBQAVv
-	 hwV2BzUtWCUJXZP/hxk3c/8ekWvlSxQgFft8lF8rrS0Mf97fURdEtMRAfwQXgF59On
-	 +KPxRKMZdvKm6ccGzOpwPSEhC4t2BAUSe7DagMa4=
+	b=FUxIVuTruv/Myo8JSr1DIYSakvpP/9WWhFMJ2CA3WJNe2qByjK8tPaIq+Dq8/YEW0
+	 L8FcQzaDKEdrtjDMJDqpdz0K4ZzcLlLR+XE9PjpAhMD/o0aVceNK42kld8EAZ4jPnP
+	 o/C57IkAYsAAM3wKVVMbGwNkIOtPcgmDp7eTrZ0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 227/331] net: fec: fix the unhandled context fault from smmu
+Subject: [PATCH 6.1 091/185] afs: Hide silly-rename files from userspace
 Date: Mon, 29 Jan 2024 09:04:51 -0800
-Message-ID: <20240129170021.520062337@linuxfoundation.org>
+Message-ID: <20240129170001.522811291@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 5e344807735023cd3a67c37a1852b849caa42620 ]
+[ Upstream commit 57e9d49c54528c49b8bffe6d99d782ea051ea534 ]
 
-When repeatedly changing the interface link speed using the command below:
+There appears to be a race between silly-rename files being created/removed
+and various userspace tools iterating over the contents of a directory,
+leading to such errors as:
 
-ethtool -s eth0 speed 100 duplex full
-ethtool -s eth0 speed 1000 duplex full
+	find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
+	tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
 
-The following errors may sometimes be reported by the ARM SMMU driver:
+when building a kernel.
 
-[ 5395.035364] fec 5b040000.ethernet eth0: Link is Down
-[ 5395.039255] arm-smmu 51400000.iommu: Unhandled context fault:
-fsr=0x402, iova=0x00000000, fsynr=0x100001, cbfrsynra=0x852, cb=2
-[ 5398.108460] fec 5b040000.ethernet eth0: Link is Up - 100Mbps/Full -
-flow control off
+Fix afs_readdir() so that it doesn't return .__afsXXXX silly-rename files
+to userspace.  This doesn't stop them being looked up directly by name as
+we need to be able to look them up from within the kernel as part of the
+silly-rename algorithm.
 
-It is identified that the FEC driver does not properly stop the TX queue
-during the link speed transitions, and this results in the invalid virtual
-I/O address translations from the SMMU and causes the context faults.
-
-Fixes: dbc64a8ea231 ("net: fec: move calls to quiesce/resume packet processing out of fec_restart()")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Link: https://lore.kernel.org/r/20240123165141.2008104-1-shenwei.wang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 79ddbfa500b3 ("afs: Implement sillyrename for unlink and rename")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/afs/dir.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 35c95f07fd6d..54da59286df4 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -2011,6 +2011,7 @@ static void fec_enet_adjust_link(struct net_device *ndev)
- 
- 		/* if any of the above changed restart the FEC */
- 		if (status_change) {
-+			netif_stop_queue(ndev);
- 			napi_disable(&fep->napi);
- 			netif_tx_lock_bh(ndev);
- 			fec_restart(ndev);
-@@ -2020,6 +2021,7 @@ static void fec_enet_adjust_link(struct net_device *ndev)
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index 07dc4ec73520..cf811b77ee67 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -473,6 +473,14 @@ static int afs_dir_iterate_block(struct afs_vnode *dvnode,
+ 			continue;
  		}
- 	} else {
- 		if (fep->link) {
-+			netif_stop_queue(ndev);
- 			napi_disable(&fep->napi);
- 			netif_tx_lock_bh(ndev);
- 			fec_stop(ndev);
+ 
++		/* Don't expose silly rename entries to userspace. */
++		if (nlen > 6 &&
++		    dire->u.name[0] == '.' &&
++		    ctx->actor != afs_lookup_filldir &&
++		    ctx->actor != afs_lookup_one_filldir &&
++		    memcmp(dire->u.name, ".__afs", 6) == 0)
++			continue;
++
+ 		/* found the next entry */
+ 		if (!dir_emit(ctx, dire->u.name, nlen,
+ 			      ntohl(dire->u.vnode),
 -- 
 2.43.0
 
