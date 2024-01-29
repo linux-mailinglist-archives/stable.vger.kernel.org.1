@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-17069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E0A840FB4
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DDD3840FD7
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDCD71F212AC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04BD8284437
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23DD3157059;
-	Mon, 29 Jan 2024 17:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DA472250;
+	Mon, 29 Jan 2024 17:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXx9FAWs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6U3aii9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FEC6FE01;
-	Mon, 29 Jan 2024 17:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F1372249;
+	Mon, 29 Jan 2024 17:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548486; cv=none; b=GHFvIXRpWzMEPnga7oFVQrzL1+uWBAXMpSlZGDt7Ee/uRHFtGgsu6Z/jOcwjNtyUI5Yx8ZJLg1HsSpbdyZ4IWNjxMPaozrqxu4dNJF3M6k/Dkaa9mq83se2fOjpBikEYP8CKp4HgXrekRX/VcN9BmscMI+G7SRSSfEvoJ49JA7c=
+	t=1706548512; cv=none; b=JY9KV4aqKpwxNI0zPGqY5E5RQi0PxNWcnsVx2vDw+RVm0U27Xlp6RixlBGGLXXcmJ2T8JirikovF+3Kv2g/cz+nySFrxvHI2ObdUs6S0MsX3wfYdSU2bffYAcKWBp7fv8KZDB97ww+w0Dc9Gx4gEdMD8WY4Ev3amlkabDUftmCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548486; c=relaxed/simple;
-	bh=qK8gZYjUjNvg0qSItyJnL9eOmJpQK0cEsgq5wnjiozA=;
+	s=arc-20240116; t=1706548512; c=relaxed/simple;
+	bh=LMpKGrGIYdUeBfHPqR+gYQOqXvkqN2SHX/DhY9fJBrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4d3EPIoxDyuFx/sXUPsZVkopXpIK+teThj7J7MsgSbSsGq0qxKQERtRKAen/G+2brh2OkdJjomVsTBE4uwNMnqgqWvQi9VxJ2wtMRdy9QcuGKx1EWtRvRdtsX+dUdis3AB5ylQIG2EhVJd6tJmn/1ITowwZaoHVxzAj23lu4l4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXx9FAWs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F288C43390;
-	Mon, 29 Jan 2024 17:14:46 +0000 (UTC)
+	 MIME-Version; b=fJh9IHhyoNNN/kw5saPLrhlsHzHJ+LBSn8muc1nFthEbcgs4MpsgknZBurQkdaMj8LD5W5tldOVqNoO/FsObT4f+ZylsqIiLQ7xAXq7sIpP3ZsfSARuBJNn3EglhgL/7SY0XDp6pOnRcBr6Oelp+x+G6dKmRa+/HXtlYV/Xmeqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6U3aii9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A177C433B2;
+	Mon, 29 Jan 2024 17:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548486;
-	bh=qK8gZYjUjNvg0qSItyJnL9eOmJpQK0cEsgq5wnjiozA=;
+	s=korg; t=1706548512;
+	bh=LMpKGrGIYdUeBfHPqR+gYQOqXvkqN2SHX/DhY9fJBrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TXx9FAWsukvOwe6Fy1RWoJ1EFE7jKMp8uA7ZHvayzx7qyn3Of0NwdP0Z4rRE6ELBT
-	 qYAwUYUAw1Uuy6Eku96qEyLBTt4i0srh1lc0xGWheRXTCdpwk8vl5fEHZb1SJEUdbN
-	 fu3555Z/nhHpCguw463j+Xgf9rvfWAhiR3cBw2Xw=
+	b=c6U3aii9IbNlY9LT2gArXVOC7t2KQk0RZ9McDdz0jdjF9cTKMJ4OjsN1TuSGxu7m+
+	 Hzl+Kz9OU7cW0jvV0/s0lD3PczOkVefAXXI0yrq93Ee579aITaJvkB2mpOdzypnwqN
+	 /1+9lEN1MZETCHcgLgmmRFDjY4yn4Va14O3c0fjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH 6.6 108/331] media: mtk-jpeg: Fix use after free bug due to error path handling in mtk_jpeg_dec_device_run
-Date: Mon, 29 Jan 2024 09:02:52 -0800
-Message-ID: <20240129170018.089384719@linuxfoundation.org>
+	Guo Ren <guoren@linux.alibaba.com>,
+	Guo Ren <guoren@kernel.org>,
+	Leonardo Bras <leobras@redhat.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6 109/331] riscv: mm: Fixup compat arch_get_mmap_end
+Date: Mon, 29 Jan 2024 09:02:53 -0800
+Message-ID: <20240129170018.112564616@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
 References: <20240129170014.969142961@linuxfoundation.org>
@@ -67,70 +68,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Guo Ren <guoren@linux.alibaba.com>
 
-commit 206c857dd17d4d026de85866f1b5f0969f2a109e upstream.
+commit 97b7ac69be2e5a683e898f5267f659fde52efdd5 upstream.
 
-In mtk_jpeg_probe, &jpeg->job_timeout_work is bound with
-mtk_jpeg_job_timeout_work.
+When the task is in COMPAT mode, the arch_get_mmap_end should be 2GB,
+not TASK_SIZE_64. The TASK_SIZE has contained is_compat_mode()
+detection, so change the definition of STACK_TOP_MAX to TASK_SIZE
+directly.
 
-In mtk_jpeg_dec_device_run, if error happens in
-mtk_jpeg_set_dec_dst, it will finally start the worker while
-mark the job as finished by invoking v4l2_m2m_job_finish.
-
-There are two methods to trigger the bug. If we remove the
-module, it which will call mtk_jpeg_remove to make cleanup.
-The possible sequence is as follows, which will cause a
-use-after-free bug.
-
-CPU0                  CPU1
-mtk_jpeg_dec_...    |
-  start worker	    |
-                    |mtk_jpeg_job_timeout_work
-mtk_jpeg_remove     |
-  v4l2_m2m_release  |
-    kfree(m2m_dev); |
-                    |
-                    | v4l2_m2m_get_curr_priv
-                    |   m2m_dev->curr_ctx //use
-
-If we close the file descriptor, which will call mtk_jpeg_release,
-it will have a similar sequence.
-
-Fix this bug by starting timeout worker only if started jpegdec worker
-successfully. Then v4l2_m2m_job_finish will only be called in
-either mtk_jpeg_job_timeout_work or mtk_jpeg_dec_device_run.
-
-Fixes: b2f0d2724ba4 ("[media] vcodec: mediatek: Add Mediatek JPEG Decoder Driver")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
+Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+Signed-off-by: Guo Ren <guoren@kernel.org>
+Reviewed-by: Leonardo Bras <leobras@redhat.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Link: https://lore.kernel.org/r/20231222115703.2404036-3-guoren@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/riscv/include/asm/processor.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-@@ -1021,13 +1021,13 @@ static void mtk_jpeg_dec_device_run(void
- 	if (ret < 0)
- 		goto dec_end;
+--- a/arch/riscv/include/asm/processor.h
++++ b/arch/riscv/include/asm/processor.h
+@@ -15,7 +15,7 @@
  
--	schedule_delayed_work(&jpeg->job_timeout_work,
--			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
--
- 	mtk_jpeg_set_dec_src(ctx, &src_buf->vb2_buf, &bs);
- 	if (mtk_jpeg_set_dec_dst(ctx, &jpeg_src_buf->dec_param, &dst_buf->vb2_buf, &fb))
- 		goto dec_end;
+ #ifdef CONFIG_64BIT
+ #define DEFAULT_MAP_WINDOW	(UL(1) << (MMAP_VA_BITS - 1))
+-#define STACK_TOP_MAX		TASK_SIZE_64
++#define STACK_TOP_MAX		TASK_SIZE
  
-+	schedule_delayed_work(&jpeg->job_timeout_work,
-+			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
-+
- 	spin_lock_irqsave(&jpeg->hw_lock, flags);
- 	mtk_jpeg_dec_reset(jpeg->reg_base);
- 	mtk_jpeg_dec_set_config(jpeg->reg_base,
+ #define arch_get_mmap_end(addr, len, flags)			\
+ ({								\
 
 
 
