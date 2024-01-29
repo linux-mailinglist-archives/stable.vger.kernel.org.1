@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269B1840F94
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F1B2840D64
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6C0A1F2257E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 627701C238ED
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721A16F08E;
-	Mon, 29 Jan 2024 17:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4780915B112;
+	Mon, 29 Jan 2024 17:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxaCQRCd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bs4WdhFB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306906F079;
-	Mon, 29 Jan 2024 17:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1001586DB;
+	Mon, 29 Jan 2024 17:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548466; cv=none; b=MDLvTSiD88V7yelCQhf8pHfoHkWTiVeG/YmuyHcoU2Om5AJotRLiMEcLmsvRvItOelCk03RwEyOQxX0VH/8cTCvdUNf6rASxypnjtWijsHfT/WyAUxjygU7NqOVh9AfLQgHlNSyCfTa6rqsBn7Vgrg7QA+So8VNGRjDKJasAHQg=
+	t=1706548097; cv=none; b=ogn5HrzuDMn/VZ6DxwGlJwx6Z+foBxF0NENQXEFAn0+gUVPvuFrTdRmlKNMNEOBr15IFZadC30Y6Snnp9+CIh8Fw/3nzOclPO+DHPCrL3W9qkC7Iv6wTOVpZMZFR8Ud7etu5oc+EmrN1xTflqyuILj2G28z4Qu7Hu1AuAqV0Hdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548466; c=relaxed/simple;
-	bh=xrpoNzVnxbw6Bb+GClKtVnUdUrZVdqWQkJc9fm6K+tA=;
+	s=arc-20240116; t=1706548097; c=relaxed/simple;
+	bh=6DIAf9zekYcrhAR1OIE2civ5LjONzHbIDK052iInW7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R4leS444rxCSPFgBn6aOetap7y08LBfIHFbxYqnfFKRP90jMPGsZsnxz6j5XW8tCByqBFWZpRD5GgLM7APvKF9lh2E96SjkDJtDSaLcpEfvQ9ZCr82GEFMLi14HYggKTwemAjFsLxGH7SAIyaz9U25BjHCNgMPfVz6kh3dl+qLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxaCQRCd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97E1C43399;
-	Mon, 29 Jan 2024 17:14:25 +0000 (UTC)
+	 MIME-Version; b=I400jaiRIOh+6Ev4OQ++kfUsOe00kqizKQw63obVFKqHeH6Bh1y6Qk51v8Je5rogtOaWfmTdqi3pwqVB3Fo0htBDy0+x0NJ8ToEDtA0CBhCniJ69eSH0qg2rkxPwXq1b9bf/MuCTpVc2Qapx/MdexjaH2woxxJCncQLAo3GtqEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bs4WdhFB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B70C433C7;
+	Mon, 29 Jan 2024 17:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548466;
-	bh=xrpoNzVnxbw6Bb+GClKtVnUdUrZVdqWQkJc9fm6K+tA=;
+	s=korg; t=1706548096;
+	bh=6DIAf9zekYcrhAR1OIE2civ5LjONzHbIDK052iInW7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mxaCQRCdI3UbNDqOuyWhSycueAZz9A8Y3H3hghMgZb2H+0XvEuNtR3C1+mmCfeO8S
-	 uHWy3yooyLYVo6u7vpfeuUPw/zVPiGS65W2l+fjJiTD0B+4n/ghM6p/Xju5LKGLsTy
-	 SvcXgvxmMZ8/q1BwOseSBrI0ue49WwdJmqcH/ojw=
+	b=Bs4WdhFBlJly+NMzRaMj/jik7ms/Bg9BjsKQ9sk6ifLvw6skbpVY2ltlA9A4giu2C
+	 r50iB3XD0QUcyToDL+H5W8N6Xot0xSCz/iupggg/FAW89GvJwHqoeHGQItaOZ00t06
+	 09UaxKyPfSUBZQ96LUKK3mFJmRKt5C9hzoLqsqgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 6.6 056/331] soc: fsl: cpm1: tsa: Fix __iomem addresses declaration
+	Richard Acayan <mailingradian@gmail.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.7 089/346] arm64: dts: qcom: sdm670: fix USB DP/DM HS PHY interrupts
 Date: Mon, 29 Jan 2024 09:02:00 -0800
-Message-ID: <20240129170016.565681594@linuxfoundation.org>
+Message-ID: <20240129170019.018567121@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit fc0c64154e5ddeb6f63c954735bd646ce5b8d9a4 upstream.
+commit c42d12ea105f67b0f137f1e52d5c59d13fe12b1f upstream.
 
-Running sparse (make C=1) on tsa.c raises a lot of warning such as:
-  --- 8< ---
-  warning: incorrect type in assignment (different address spaces)
-     expected void *[noderef] si_regs
-     got void [noderef] __iomem *
-  --- 8< ---
+The USB DP/DM HS PHY interrupts need to be provided by the PDC interrupt
+controller in order to be able to wake the system up from low-power
+states and to be able to detect disconnect events, which requires
+triggering on falling edges.
 
-Indeed, some variable were declared 'type *__iomem var' instead of
-'type __iomem *var'.
+A recent commit updated the trigger type but failed to change the
+interrupt provider as required. This leads to the current Linux driver
+failing to probe instead of printing an error during suspend and USB
+wakeup not working as intended.
 
-Use the correct declaration to remove these warnings.
-
-Fixes: 1d4ba0b81c1c ("soc: fsl: cpm1: Add support for TSA")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312051959.9YdRIYbg-lkp@intel.com/
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/20231205152116.122512-2-herve.codina@bootlin.com
+Fixes: de3b3de30999 ("arm64: dts: qcom: sdm670: fix USB wakeup interrupt types")
+Fixes: 07c8ded6e373 ("arm64: dts: qcom: add sdm670 and pixel 3a device trees")
+Cc: stable@vger.kernel.org      # 6.2
+Cc: Richard Acayan <mailingradian@gmail.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Tested-by: Richard Acayan <mailingradian@gmail.com>
+Link: https://lore.kernel.org/r/20231214074319.11023-2-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/fsl/qe/tsa.c |   22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm670.dtsi |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/soc/fsl/qe/tsa.c
-+++ b/drivers/soc/fsl/qe/tsa.c
-@@ -98,9 +98,9 @@
- #define TSA_SIRP	0x10
+--- a/arch/arm64/boot/dts/qcom/sdm670.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm670.dtsi
+@@ -1295,10 +1295,10 @@
+ 					  <&gcc GCC_USB30_PRIM_MASTER_CLK>;
+ 			assigned-clock-rates = <19200000>, <150000000>;
  
- struct tsa_entries_area {
--	void *__iomem entries_start;
--	void *__iomem entries_next;
--	void *__iomem last_entry;
-+	void __iomem *entries_start;
-+	void __iomem *entries_next;
-+	void __iomem *last_entry;
- };
+-			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
+-				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
++			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
++					      <&intc GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
++					      <&pdc 8 IRQ_TYPE_EDGE_BOTH>,
++					      <&pdc 9 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
  
- struct tsa_tdm {
-@@ -117,8 +117,8 @@ struct tsa_tdm {
- 
- struct tsa {
- 	struct device *dev;
--	void *__iomem si_regs;
--	void *__iomem si_ram;
-+	void __iomem *si_regs;
-+	void __iomem *si_ram;
- 	resource_size_t si_ram_sz;
- 	spinlock_t	lock;
- 	int tdms; /* TSA_TDMx ORed */
-@@ -135,27 +135,27 @@ static inline struct tsa *tsa_serial_get
- 	return container_of(tsa_serial, struct tsa, serials[tsa_serial->id]);
- }
- 
--static inline void tsa_write32(void *__iomem addr, u32 val)
-+static inline void tsa_write32(void __iomem *addr, u32 val)
- {
- 	iowrite32be(val, addr);
- }
- 
--static inline void tsa_write8(void *__iomem addr, u32 val)
-+static inline void tsa_write8(void __iomem *addr, u32 val)
- {
- 	iowrite8(val, addr);
- }
- 
--static inline u32 tsa_read32(void *__iomem addr)
-+static inline u32 tsa_read32(void __iomem *addr)
- {
- 	return ioread32be(addr);
- }
- 
--static inline void tsa_clrbits32(void *__iomem addr, u32 clr)
-+static inline void tsa_clrbits32(void __iomem *addr, u32 clr)
- {
- 	tsa_write32(addr, tsa_read32(addr) & ~clr);
- }
- 
--static inline void tsa_clrsetbits32(void *__iomem addr, u32 clr, u32 set)
-+static inline void tsa_clrsetbits32(void __iomem *addr, u32 clr, u32 set)
- {
- 	tsa_write32(addr, (tsa_read32(addr) & ~clr) | set);
- }
-@@ -313,7 +313,7 @@ static u32 tsa_serial_id2csel(struct tsa
- static int tsa_add_entry(struct tsa *tsa, struct tsa_entries_area *area,
- 			 u32 count, u32 serial_id)
- {
--	void *__iomem addr;
-+	void __iomem *addr;
- 	u32 left;
- 	u32 val;
- 	u32 cnt;
 
 
 
