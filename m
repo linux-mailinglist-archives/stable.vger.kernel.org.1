@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-17242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20724841067
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B9A3840EBC
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5765B218D2
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DFDD1C2361F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3733115F338;
-	Mon, 29 Jan 2024 17:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B338116087D;
+	Mon, 29 Jan 2024 17:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0yrpmy2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWQP9ubB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD1015B960;
-	Mon, 29 Jan 2024 17:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713F5160874;
+	Mon, 29 Jan 2024 17:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548615; cv=none; b=Qf0N0A/Ad3yo5NORGurEo+nz2gEM1i81nhzfB3f8cspJ4+kilSc5xtIDp5aLAgTdtw4KzveZuXQqCwhyz8RP5F9D+DscfmAu0fI4FRhNe684F6Ic6uSXPDN4zQWFFsyK3TL7vxtu0BFxi8ay+9TwEerR2Ew1Kq7tkp6ezC7ivVg=
+	t=1706548337; cv=none; b=f6TSe4gAwJZO9SXlGouOTP14NXZ1ToYOoL8YusZEf9O/4yZhuTse7GZXhKyhQap1b8/nSXEjqL5vRtaUwFLcOorgMUdqW8oYaROQkaga4DIlGUYzFbBRuKvDZsrwIn1ewGPho3XBpKriEvN5DIPzXfywLLzWRjiJ1NDN3Xn8MZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548615; c=relaxed/simple;
-	bh=tcLtWNaD5XfK69HfFzbq7C1P3/nkGqd3b6lhzXW2PWM=;
+	s=arc-20240116; t=1706548337; c=relaxed/simple;
+	bh=bicDTt5IRCg1YzurvHjqrBqCGF85xq8KYFfMxNKhG9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t29bXnCnZ0m/Xxfvhq0H0Qngd2IBSudJR9fy3A1XvlXVhMhL1xxbu1MpXH1Vzu6iDIQG2JVxB43SvsMIRmGLQe1wjm3aM7um3izVqL6ZFz44m5anBKyxuH7YgC++7DIxKaqIoZI51DnHFtUHSOgSgEcwC+VB5xBbaIitNagzENM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0yrpmy2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2CCBC433F1;
-	Mon, 29 Jan 2024 17:16:54 +0000 (UTC)
+	 MIME-Version; b=JJ+8mJGmQM29PbMAw+eOhsab+/kT/KmPl54BjhFR+zxb/lD4la5KMgX9I6RX/3BpzloR5OSe+tgxTYlnsJZM4ZmPe0F7U3vhVw9fqcj91ubvylJdXbKFso9qH/KOi4c4+s5V8pRv9QccmmaWfs5KhN6McQLixwlfN2khbms4UCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWQP9ubB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DE5C433C7;
+	Mon, 29 Jan 2024 17:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548614;
-	bh=tcLtWNaD5XfK69HfFzbq7C1P3/nkGqd3b6lhzXW2PWM=;
+	s=korg; t=1706548337;
+	bh=bicDTt5IRCg1YzurvHjqrBqCGF85xq8KYFfMxNKhG9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o0yrpmy2OXToNjHsx/9kjZ4Yymm8BZaecjECtKKchzTQOX2ClyO2GkJ0B3s3yWkFx
-	 BMoaLaJ9RX+PyJlu3DN1IfZ4BxvstcTV8uS+Ej+Q+b9rRONqlfNWnni/qLATrdtQ7W
-	 LOnnikTq99wOCFFnDO12Bd/0RgrqVR0nrQPqT1o8=
+	b=bWQP9ubBA8He0DSkkfOAELcLLkZSF7l+Z+Uq/stTtznw+IhEX+Gflq5iEACfRaEXJ
+	 pNQdhePslCbBM/083JjGKG+dHGj2NxkYtZPyEz7KUCty1LEgr5Ux+UveVxX61EGEcG
+	 t22f5ErlcsYP0C/TWiqt18x8KMEBU22kNRTDYBTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 282/331] media: i2c: imx290: Properly encode registers as little-endian
+Subject: [PATCH 6.7 315/346] futex: Prevent the reuse of stale pi_state
 Date: Mon, 29 Jan 2024 09:05:46 -0800
-Message-ID: <20240129170023.109163549@linuxfoundation.org>
+Message-ID: <20240129170025.738516998@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,104 +63,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 60fc87a69523c294eb23a1316af922f6665a6f8c ]
+[ Upstream commit e626cb02ee8399fd42c415e542d031d185783903 ]
 
-The conversion to CCI also converted the multi-byte register access to
-big-endian. Correct the register definition by using the correct
-little-endian ones.
+Jiri Slaby reported a futex state inconsistency resulting in -EINVAL during
+a lock operation for a PI futex. It requires that the a lock process is
+interrupted by a timeout or signal:
 
-Fixes: af73323b9770 ("media: imx290: Convert to new CCI register access helpers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-[Sakari Ailus: Fixed the Fixes: tag.]
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+  T1 Owns the futex in user space.
+
+  T2 Tries to acquire the futex in kernel (futex_lock_pi()). Allocates a
+     pi_state and attaches itself to it.
+
+  T2 Times out and removes its rt_waiter from the rt_mutex. Drops the
+     rtmutex lock and tries to acquire the hash bucket lock to remove
+     the futex_q. The lock is contended and T2 schedules out.
+
+  T1 Unlocks the futex (futex_unlock_pi()). Finds a futex_q but no
+     rt_waiter. Unlocks the futex (do_uncontended) and makes it available
+     to user space.
+
+  T3 Acquires the futex in user space.
+
+  T4 Tries to acquire the futex in kernel (futex_lock_pi()). Finds the
+     existing futex_q of T2 and tries to attach itself to the existing
+     pi_state.  This (attach_to_pi_state()) fails with -EINVAL because uval
+     contains the TID of T3 but pi_state points to T1.
+
+It's incorrect to unlock the futex and make it available for user space to
+acquire as long as there is still an existing state attached to it in the
+kernel.
+
+T1 cannot hand over the futex to T2 because T2 already gave up and started
+to clean up and is blocked on the hash bucket lock, so T2's futex_q with
+the pi_state pointing to T1 is still queued.
+
+T2 observes the futex_q, but ignores it as there is no waiter on the
+corresponding rt_mutex and takes the uncontended path which allows the
+subsequent caller of futex_lock_pi() (T4) to observe that stale state.
+
+To prevent this the unlock path must dequeue all futex_q entries which
+point to the same pi_state when there is no waiter on the rt mutex. This
+requires obviously to make the dequeue conditional in the locking path to
+prevent a double dequeue. With that it's guaranteed that user space cannot
+observe an uncontended futex which has kernel state attached.
+
+Fixes: fbeb558b0dd0d ("futex/pi: Fix recursive rt_mutex waiter state")
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20240118115451.0TkD_ZhB@linutronix.de
+Closes: https://lore.kernel.org/all/4611bcf2-44d0-4c34-9b84-17406f881003@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx290.c | 42 +++++++++++++++++++-------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+ kernel/futex/core.c | 15 ++++++++++++---
+ kernel/futex/pi.c   | 11 ++++++++---
+ 2 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
-index 29098612813c..c6fea5837a19 100644
---- a/drivers/media/i2c/imx290.c
-+++ b/drivers/media/i2c/imx290.c
-@@ -41,18 +41,18 @@
- #define IMX290_WINMODE_720P				(1 << 4)
- #define IMX290_WINMODE_CROP				(4 << 4)
- #define IMX290_FR_FDG_SEL				CCI_REG8(0x3009)
--#define IMX290_BLKLEVEL					CCI_REG16(0x300a)
-+#define IMX290_BLKLEVEL					CCI_REG16_LE(0x300a)
- #define IMX290_GAIN					CCI_REG8(0x3014)
--#define IMX290_VMAX					CCI_REG24(0x3018)
-+#define IMX290_VMAX					CCI_REG24_LE(0x3018)
- #define IMX290_VMAX_MAX					0x3ffff
--#define IMX290_HMAX					CCI_REG16(0x301c)
-+#define IMX290_HMAX					CCI_REG16_LE(0x301c)
- #define IMX290_HMAX_MAX					0xffff
--#define IMX290_SHS1					CCI_REG24(0x3020)
-+#define IMX290_SHS1					CCI_REG24_LE(0x3020)
- #define IMX290_WINWV_OB					CCI_REG8(0x303a)
--#define IMX290_WINPV					CCI_REG16(0x303c)
--#define IMX290_WINWV					CCI_REG16(0x303e)
--#define IMX290_WINPH					CCI_REG16(0x3040)
--#define IMX290_WINWH					CCI_REG16(0x3042)
-+#define IMX290_WINPV					CCI_REG16_LE(0x303c)
-+#define IMX290_WINWV					CCI_REG16_LE(0x303e)
-+#define IMX290_WINPH					CCI_REG16_LE(0x3040)
-+#define IMX290_WINWH					CCI_REG16_LE(0x3042)
- #define IMX290_OUT_CTRL					CCI_REG8(0x3046)
- #define IMX290_ODBIT_10BIT				(0 << 0)
- #define IMX290_ODBIT_12BIT				(1 << 0)
-@@ -78,28 +78,28 @@
- #define IMX290_ADBIT2					CCI_REG8(0x317c)
- #define IMX290_ADBIT2_10BIT				0x12
- #define IMX290_ADBIT2_12BIT				0x00
--#define IMX290_CHIP_ID					CCI_REG16(0x319a)
-+#define IMX290_CHIP_ID					CCI_REG16_LE(0x319a)
- #define IMX290_ADBIT3					CCI_REG8(0x31ec)
- #define IMX290_ADBIT3_10BIT				0x37
- #define IMX290_ADBIT3_12BIT				0x0e
- #define IMX290_REPETITION				CCI_REG8(0x3405)
- #define IMX290_PHY_LANE_NUM				CCI_REG8(0x3407)
- #define IMX290_OPB_SIZE_V				CCI_REG8(0x3414)
--#define IMX290_Y_OUT_SIZE				CCI_REG16(0x3418)
--#define IMX290_CSI_DT_FMT				CCI_REG16(0x3441)
-+#define IMX290_Y_OUT_SIZE				CCI_REG16_LE(0x3418)
-+#define IMX290_CSI_DT_FMT				CCI_REG16_LE(0x3441)
- #define IMX290_CSI_DT_FMT_RAW10				0x0a0a
- #define IMX290_CSI_DT_FMT_RAW12				0x0c0c
- #define IMX290_CSI_LANE_MODE				CCI_REG8(0x3443)
--#define IMX290_EXTCK_FREQ				CCI_REG16(0x3444)
--#define IMX290_TCLKPOST					CCI_REG16(0x3446)
--#define IMX290_THSZERO					CCI_REG16(0x3448)
--#define IMX290_THSPREPARE				CCI_REG16(0x344a)
--#define IMX290_TCLKTRAIL				CCI_REG16(0x344c)
--#define IMX290_THSTRAIL					CCI_REG16(0x344e)
--#define IMX290_TCLKZERO					CCI_REG16(0x3450)
--#define IMX290_TCLKPREPARE				CCI_REG16(0x3452)
--#define IMX290_TLPX					CCI_REG16(0x3454)
--#define IMX290_X_OUT_SIZE				CCI_REG16(0x3472)
-+#define IMX290_EXTCK_FREQ				CCI_REG16_LE(0x3444)
-+#define IMX290_TCLKPOST					CCI_REG16_LE(0x3446)
-+#define IMX290_THSZERO					CCI_REG16_LE(0x3448)
-+#define IMX290_THSPREPARE				CCI_REG16_LE(0x344a)
-+#define IMX290_TCLKTRAIL				CCI_REG16_LE(0x344c)
-+#define IMX290_THSTRAIL					CCI_REG16_LE(0x344e)
-+#define IMX290_TCLKZERO					CCI_REG16_LE(0x3450)
-+#define IMX290_TCLKPREPARE				CCI_REG16_LE(0x3452)
-+#define IMX290_TLPX					CCI_REG16_LE(0x3454)
-+#define IMX290_X_OUT_SIZE				CCI_REG16_LE(0x3472)
- #define IMX290_INCKSEL7					CCI_REG8(0x3480)
+diff --git a/kernel/futex/core.c b/kernel/futex/core.c
+index dad981a865b8..52d0bf67e715 100644
+--- a/kernel/futex/core.c
++++ b/kernel/futex/core.c
+@@ -626,12 +626,21 @@ int futex_unqueue(struct futex_q *q)
+ }
  
- #define IMX290_PGCTRL_REGEN				BIT(0)
+ /*
+- * PI futexes can not be requeued and must remove themselves from the
+- * hash bucket. The hash bucket lock (i.e. lock_ptr) is held.
++ * PI futexes can not be requeued and must remove themselves from the hash
++ * bucket. The hash bucket lock (i.e. lock_ptr) is held.
+  */
+ void futex_unqueue_pi(struct futex_q *q)
+ {
+-	__futex_unqueue(q);
++	/*
++	 * If the lock was not acquired (due to timeout or signal) then the
++	 * rt_waiter is removed before futex_q is. If this is observed by
++	 * an unlocker after dropping the rtmutex wait lock and before
++	 * acquiring the hash bucket lock, then the unlocker dequeues the
++	 * futex_q from the hash bucket list to guarantee consistent state
++	 * vs. userspace. Therefore the dequeue here must be conditional.
++	 */
++	if (!plist_node_empty(&q->list))
++		__futex_unqueue(q);
+ 
+ 	BUG_ON(!q->pi_state);
+ 	put_pi_state(q->pi_state);
+diff --git a/kernel/futex/pi.c b/kernel/futex/pi.c
+index 90e5197f4e56..5722467f2737 100644
+--- a/kernel/futex/pi.c
++++ b/kernel/futex/pi.c
+@@ -1135,6 +1135,7 @@ int futex_unlock_pi(u32 __user *uaddr, unsigned int flags)
+ 
+ 	hb = futex_hash(&key);
+ 	spin_lock(&hb->lock);
++retry_hb:
+ 
+ 	/*
+ 	 * Check waiters first. We do not trust user space values at
+@@ -1177,12 +1178,17 @@ int futex_unlock_pi(u32 __user *uaddr, unsigned int flags)
+ 		/*
+ 		 * Futex vs rt_mutex waiter state -- if there are no rt_mutex
+ 		 * waiters even though futex thinks there are, then the waiter
+-		 * is leaving and the uncontended path is safe to take.
++		 * is leaving. The entry needs to be removed from the list so a
++		 * new futex_lock_pi() is not using this stale PI-state while
++		 * the futex is available in user space again.
++		 * There can be more than one task on its way out so it needs
++		 * to retry.
+ 		 */
+ 		rt_waiter = rt_mutex_top_waiter(&pi_state->pi_mutex);
+ 		if (!rt_waiter) {
++			__futex_unqueue(top_waiter);
+ 			raw_spin_unlock_irq(&pi_state->pi_mutex.wait_lock);
+-			goto do_uncontended;
++			goto retry_hb;
+ 		}
+ 
+ 		get_pi_state(pi_state);
+@@ -1217,7 +1223,6 @@ int futex_unlock_pi(u32 __user *uaddr, unsigned int flags)
+ 		return ret;
+ 	}
+ 
+-do_uncontended:
+ 	/*
+ 	 * We have no kernel internal state, i.e. no waiters in the
+ 	 * kernel. Waiters which are about to queue themselves are stuck
 -- 
 2.43.0
 
