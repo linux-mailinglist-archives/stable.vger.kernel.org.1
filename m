@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-17091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96EFC840FCA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBCC840D9A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9C1C1C208DA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 005D128D2FA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC9D72225;
-	Mon, 29 Jan 2024 17:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8286615A4A9;
+	Mon, 29 Jan 2024 17:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwiEVwb3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCyWqHfk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E355372223;
-	Mon, 29 Jan 2024 17:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7A0158D68;
+	Mon, 29 Jan 2024 17:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548503; cv=none; b=UjRsrx6xXAkpgKsPKTA04Jmf+J0yrhIcBEBtPQGTEbk9x2U4thUAGvJEqx4bCO3bPMyHYmllNjr4h2RmCQ6jGqka8SKLVxeoGmS6ji0phQEfv+JAckB4mNWiYOkLkfHaOMvYjKBqKyq/sAFnQy6y2RK97faffXKRCHMS+pZ25uo=
+	t=1706548133; cv=none; b=broguorhVkOVllnAvwJ1uhkQK9+FWuHNc4Ue6rx3rIUGdCYsBQQjvmkWSq9+JCi4EL3PZmHWpLJ6o+XDVC3lwvI1SwMLFkmVt7mV44pVXrgoSWaJ7hu21UPV9ymjGwe7rcm4ggY42upS9MRLYuNhYoV6Vl5hsLCr4v2VJNFoaNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548503; c=relaxed/simple;
-	bh=ea5Iuqg5YMKgbCt6gnoiFv9A90//I0ClncSTY3HQ2uA=;
+	s=arc-20240116; t=1706548133; c=relaxed/simple;
+	bh=gjpEqC1XdTNefOjhHgWVi/9ynStN2mKjvTfRx4U6lno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aJWoTt/DXH3kAR9gXZRtgR/YMq8/9DYqRxObEv0FLehY2uu+vJIM04oC8m365D3m6BrcvjOnOtA1QOtwEz9dXKI/d7QQaB0Xk6OnZaZ1HXQgMNmFE4sJYaHl10lSzY7NN46Z61XI/RJFpoAO80aW/pNlOs0ChIXxw58OQFA1bao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HwiEVwb3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC405C43390;
-	Mon, 29 Jan 2024 17:15:02 +0000 (UTC)
+	 MIME-Version; b=O5jGpaRtHkTNnVnfosLS0UF7jHGqspAC4cja1tXDAxK9RiFu2ea/Oye+ySrihXVxXUHwZLyHcpirX/jrf9a1A204XjXFDpPNCA3Pb6i01cIxvXmuCljFFz9PRMgVo+Mt5IxiTu5uxSDVFOdECI6lFaOWRDzeOs91r7vQA79H8u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCyWqHfk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07489C43390;
+	Mon, 29 Jan 2024 17:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548502;
-	bh=ea5Iuqg5YMKgbCt6gnoiFv9A90//I0ClncSTY3HQ2uA=;
+	s=korg; t=1706548133;
+	bh=gjpEqC1XdTNefOjhHgWVi/9ynStN2mKjvTfRx4U6lno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HwiEVwb3eFfI0k9KSbxJvyqb7Bn8QpHWYOm2ZetulhvXYmV+o3uWp+ghkElw9N8Fy
-	 a97NS3aqmGQiD1epuCJ9RR4Z66VJzARg056pIGS3wmliWU1NLhactBeS/KJ7Z0FNS8
-	 6Z52TNHT+QXQFu+MBJrh6xKbvX1U+hAcsRe55Kd0=
+	b=WCyWqHfkM6u2yyInsp0eiriNRorILOaxbAi/vbzxqC0jXuo+Jz3NWKzPDBFkgSZ/1
+	 Wx1eUbHeKsQJlNZC4qh6ldLmzXdR81x8c1T7+br4i8etCtR6PLv8WkaOysJBKg938v
+	 n2VSl3hIjSj0SRoL8NM4+pJ47/gYm+/q71nZvQGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.6 130/331] serial: sc16is7xx: remove global regmap from struct sc16is7xx_port
+	Jan Glaza <jan.glaza@intel.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 163/346] dpll: fix userspace availability of pins
 Date: Mon, 29 Jan 2024 09:03:14 -0800
-Message-ID: <20240129170018.742960002@linuxfoundation.org>
+Message-ID: <20240129170021.195122618@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
 
-commit f6959c5217bd799bcb770b95d3c09b3244e175c6 upstream.
+[ Upstream commit db2ec3c94667eaeecc6a74d96594fab6baf80fdc ]
 
-Remove global struct regmap so that it is more obvious that this
-regmap is to be used only in the probe function.
+If parent pin was unregistered but child pin was not, the userspace
+would see the "zombie" pins - the ones that were registered with
+a parent pin (dpll_pin_on_pin_register(..)).
+Technically those are not available - as there is no dpll device in the
+system. Do not dump those pins and prevent userspace from any
+interaction with them. Provide a unified function to determine if the
+pin is available and use it before acting/responding for user requests.
 
-Also add a comment to that effect in probe function.
-
-Fixes: 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
-Cc:  <stable@vger.kernel.org>
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231211171353.2901416-3-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9d71b54b65b1 ("dpll: netlink: Add DPLL framework base functions")
+Reviewed-by: Jan Glaza <jan.glaza@intel.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/dpll/dpll_netlink.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -335,7 +335,6 @@ struct sc16is7xx_one {
+diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
+index 4c64611d32ac..7cc99d627942 100644
+--- a/drivers/dpll/dpll_netlink.c
++++ b/drivers/dpll/dpll_netlink.c
+@@ -525,6 +525,24 @@ __dpll_device_change_ntf(struct dpll_device *dpll)
+ 	return dpll_device_event_send(DPLL_CMD_DEVICE_CHANGE_NTF, dpll);
+ }
  
- struct sc16is7xx_port {
- 	const struct sc16is7xx_devtype	*devtype;
--	struct regmap			*regmap;
- 	struct clk			*clk;
- #ifdef CONFIG_GPIOLIB
- 	struct gpio_chip		gpio;
-@@ -1413,7 +1412,8 @@ static int sc16is7xx_setup_gpio_chip(str
- /*
-  * Configure ports designated to operate as modem control lines.
-  */
--static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s)
-+static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s,
-+				       struct regmap *regmap)
- {
- 	int i;
- 	int ret;
-@@ -1442,7 +1442,7 @@ static int sc16is7xx_setup_mctrl_ports(s
++static bool dpll_pin_available(struct dpll_pin *pin)
++{
++	struct dpll_pin_ref *par_ref;
++	unsigned long i;
++
++	if (!xa_get_mark(&dpll_pin_xa, pin->id, DPLL_REGISTERED))
++		return false;
++	xa_for_each(&pin->parent_refs, i, par_ref)
++		if (xa_get_mark(&dpll_pin_xa, par_ref->pin->id,
++				DPLL_REGISTERED))
++			return true;
++	xa_for_each(&pin->dpll_refs, i, par_ref)
++		if (xa_get_mark(&dpll_device_xa, par_ref->dpll->id,
++				DPLL_REGISTERED))
++			return true;
++	return false;
++}
++
+ /**
+  * dpll_device_change_ntf - notify that the dpll device has been changed
+  * @dpll: registered dpll pointer
+@@ -551,7 +569,7 @@ dpll_pin_event_send(enum dpll_cmd event, struct dpll_pin *pin)
+ 	int ret = -ENOMEM;
+ 	void *hdr;
  
- 	if (s->mctrl_mask)
- 		regmap_update_bits(
--			s->regmap,
-+			regmap,
- 			SC16IS7XX_IOCONTROL_REG,
- 			SC16IS7XX_IOCONTROL_MODEM_A_BIT |
- 			SC16IS7XX_IOCONTROL_MODEM_B_BIT, s->mctrl_mask);
-@@ -1474,6 +1474,10 @@ static int sc16is7xx_probe(struct device
- 	 * This device does not have an identification register that would
- 	 * tell us if we are really connected to the correct device.
- 	 * The best we can do is to check if communication is at all possible.
-+	 *
-+	 * Note: regmap[0] is used in the probe function to access registers
-+	 * common to all channels/ports, as it is guaranteed to be present on
-+	 * all variants.
- 	 */
- 	ret = regmap_read(regmaps[0], SC16IS7XX_LSR_REG, &val);
- 	if (ret < 0)
-@@ -1509,7 +1513,6 @@ static int sc16is7xx_probe(struct device
- 			return -EINVAL;
+-	if (WARN_ON(!xa_get_mark(&dpll_pin_xa, pin->id, DPLL_REGISTERED)))
++	if (!dpll_pin_available(pin))
+ 		return -ENODEV;
+ 
+ 	msg = genlmsg_new(NLMSG_GOODSIZE, GFP_KERNEL);
+@@ -1102,6 +1120,10 @@ int dpll_nl_pin_id_get_doit(struct sk_buff *skb, struct genl_info *info)
  	}
+ 	pin = dpll_pin_find_from_nlattr(info);
+ 	if (!IS_ERR(pin)) {
++		if (!dpll_pin_available(pin)) {
++			nlmsg_free(msg);
++			return -ENODEV;
++		}
+ 		ret = dpll_msg_add_pin_handle(msg, pin);
+ 		if (ret) {
+ 			nlmsg_free(msg);
+@@ -1151,6 +1173,8 @@ int dpll_nl_pin_get_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
  
--	s->regmap = regmaps[0];
- 	s->devtype = devtype;
- 	dev_set_drvdata(dev, s);
- 	mutex_init(&s->efr_lock);
-@@ -1524,7 +1527,7 @@ static int sc16is7xx_probe(struct device
- 	sched_set_fifo(s->kworker_task);
- 
- 	/* reset device, purging any pending irq / data */
--	regmap_write(s->regmap, SC16IS7XX_IOCONTROL_REG,
-+	regmap_write(regmaps[0], SC16IS7XX_IOCONTROL_REG,
- 		     SC16IS7XX_IOCONTROL_SRESET_BIT);
- 
- 	for (i = 0; i < devtype->nr_uart; ++i) {
-@@ -1604,7 +1607,7 @@ static int sc16is7xx_probe(struct device
- 				s->p[u].irda_mode = true;
+ 	xa_for_each_marked_start(&dpll_pin_xa, i, pin, DPLL_REGISTERED,
+ 				 ctx->idx) {
++		if (!dpll_pin_available(pin))
++			continue;
+ 		hdr = genlmsg_put(skb, NETLINK_CB(cb->skb).portid,
+ 				  cb->nlh->nlmsg_seq,
+ 				  &dpll_nl_family, NLM_F_MULTI,
+@@ -1413,7 +1437,8 @@ int dpll_pin_pre_doit(const struct genl_split_ops *ops, struct sk_buff *skb,
  	}
- 
--	ret = sc16is7xx_setup_mctrl_ports(s);
-+	ret = sc16is7xx_setup_mctrl_ports(s, regmaps[0]);
- 	if (ret)
- 		goto out_ports;
- 
+ 	info->user_ptr[0] = xa_load(&dpll_pin_xa,
+ 				    nla_get_u32(info->attrs[DPLL_A_PIN_ID]));
+-	if (!info->user_ptr[0]) {
++	if (!info->user_ptr[0] ||
++	    !dpll_pin_available(info->user_ptr[0])) {
+ 		NL_SET_ERR_MSG(info->extack, "pin not found");
+ 		ret = -ENODEV;
+ 		goto unlock_dev;
+-- 
+2.43.0
+
 
 
 
