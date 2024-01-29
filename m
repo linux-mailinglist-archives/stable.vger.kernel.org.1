@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40AC6840E95
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD04841061
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73E901C23040
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BC651F24464
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2936515FB21;
-	Mon, 29 Jan 2024 17:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4740415B97A;
+	Mon, 29 Jan 2024 17:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONp5KJST"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ApKygHTI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC049157E6B;
-	Mon, 29 Jan 2024 17:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CAC15F326;
+	Mon, 29 Jan 2024 17:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548309; cv=none; b=TdqDPnbnZ9sqEeNZ64Rw4xiXftjfKdyAhFUCmXbT7n8drTAf2FdrrMK5YcWa2fLzXfRlSf0KAKLfz3KWIIiOI+Nbe4dEHgCpazjHYmiHSNN/QJqU2Yhte7MvhW6L14RSlMQsANMse7e/e3WqEOjuixDoieOby40AG90l5s81xbI=
+	t=1706548612; cv=none; b=gDiWcVDAyboZv0TXpg157qESQSoLmxq8Eebs8BVHrr+DOer7g8Z8KJD12r5D8H03XajUTi92cLQ3k4UzC5B9fw3A23l6snbPiNj+nKEYxJ8DGyLZ8JrGmNhVxyB1ea9sRCYFmGX6F7UvhVWOR/D03iuviIc5P/ba09y1ck/6W0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548309; c=relaxed/simple;
-	bh=FAlrh/NBA5ZRcanWXujfZ4Q2CIpNvUiYZJ8OeSG9Q6U=;
+	s=arc-20240116; t=1706548612; c=relaxed/simple;
+	bh=9JIDVbeGlcq6Egh3t4OnpYTBIiJ9HB9GPxItnCd5BUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DoPK0lPukLG0yq9E1dz8eIptK+GDtE0LM7kFiiv9NrqHb00QFEHr8WbCbD18eLJiU8VWmBCtiiS8Gaa4ZAGJmRFW18mkSfPajPY8W7vRtQKDFmZ9QXb+iy9k2DPa2vpPwufCgKCTLrWC205pEhynYVQucEX+tSfUHSZZJQWZSWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONp5KJST; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38F1C433C7;
-	Mon, 29 Jan 2024 17:11:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lnXo61U/0tVmAsEA77A7jw9CM0f5pNGcjD0gCb+COBwu+8wt9xPqF+WkIGKTLnxtPg/apCP7VBnuovKb2LcYThbAOMWXrpjyJ1TMxtFWuR37rOKoioGljgIoQhz6YjDH9ZELr+aPoiSUDECKJVLv9D6MQ0Eco31CURs0tslHVAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ApKygHTI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B3DC433C7;
+	Mon, 29 Jan 2024 17:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548309;
-	bh=FAlrh/NBA5ZRcanWXujfZ4Q2CIpNvUiYZJ8OeSG9Q6U=;
+	s=korg; t=1706548611;
+	bh=9JIDVbeGlcq6Egh3t4OnpYTBIiJ9HB9GPxItnCd5BUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ONp5KJSTbEIvS7iUPiTr7c4WG3nPZHPWmJhnqU+MEsv+4V+1/DPE+XrYDQIIa+Qw/
-	 TxLSZelK6CWZz6ZuaMNfRH2Y5NnvNbclKqm3K3F4W7kcHnQEDaIGVk/i9lIaC/m98w
-	 wf/1I9KQGLh47z6z3SIaN1nCFVFb6b7emCYs89dM=
+	b=ApKygHTI2Xi9V05xEDIsNvVoRt7yFwji15D+GS8ojckFnvfuQJZj6qVipNVtX/ZId
+	 1r2K92Y5YQCJJRxlOhQkJhdu7Pp2re9THoKGMZrgmtOv+6i54jXDsLV2mlR1AQAEJU
+	 o0wtozBov1D2VSyYJwxAfgLP4OKyVbmG6d6Qg1e4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 287/346] btrfs: zoned: factor out prepare_allocation_zoned()
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.6 254/331] Revert "drm/i915/dsi: Do display on sequence later on icl+"
 Date: Mon, 29 Jan 2024 09:05:18 -0800
-Message-ID: <20240129170024.828366911@linuxfoundation.org>
+Message-ID: <20240129170022.316117667@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit b271fee9a41ca1474d30639fd6cc912c9901d0f8 ]
+commit 6992eb815d087858f8d7e4020529c2fe800456b3 upstream.
 
-Factor out prepare_allocation_zoned() for further extension. While at
-it, optimize the if-branch a bit.
+This reverts commit 88b065943cb583e890324d618e8d4b23460d51a3.
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 02444f2ac26e ("btrfs: zoned: optimize hint byte for zoned allocator")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Lenovo 82TQ is unhappy if we do the display on sequence this
+late. The display output shows severe corruption.
+
+It's unclear if this is a failure on our part (perhaps
+something to do with sending commands in LP mode after HS
+/video mode transmission has been started? Though the backlight
+on command at least seems to work) or simply that there are
+some commands in the sequence that are needed to be done
+earlier (eg. could be some DSC init stuff?). If the latter
+then I don't think the current Windows code would work
+either, but maybe this was originally tested with an older
+driver, who knows.
+
+Root causing this fully would likely require a lot of
+experimentation which isn't really feasible without direct
+access to the machine, so let's just accept failure and
+go back to the original sequence.
+
+Cc: stable@vger.kernel.org
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10071
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240116210821.30194-1-ville.syrjala@linux.intel.com
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit dc524d05974f615b145404191fcf91b478950499)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c | 32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/i915/display/icl_dsi.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 9c8b00a917bd..9307891b4a85 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -4301,6 +4301,24 @@ static int prepare_allocation_clustered(struct btrfs_fs_info *fs_info,
- 	return 0;
- }
- 
-+static int prepare_allocation_zoned(struct btrfs_fs_info *fs_info,
-+				    struct find_free_extent_ctl *ffe_ctl)
-+{
-+	if (ffe_ctl->for_treelog) {
-+		spin_lock(&fs_info->treelog_bg_lock);
-+		if (fs_info->treelog_bg)
-+			ffe_ctl->hint_byte = fs_info->treelog_bg;
-+		spin_unlock(&fs_info->treelog_bg_lock);
-+	} else if (ffe_ctl->for_data_reloc) {
-+		spin_lock(&fs_info->relocation_bg_lock);
-+		if (fs_info->data_reloc_bg)
-+			ffe_ctl->hint_byte = fs_info->data_reloc_bg;
-+		spin_unlock(&fs_info->relocation_bg_lock);
-+	}
-+
-+	return 0;
-+}
-+
- static int prepare_allocation(struct btrfs_fs_info *fs_info,
- 			      struct find_free_extent_ctl *ffe_ctl,
- 			      struct btrfs_space_info *space_info,
-@@ -4311,19 +4329,7 @@ static int prepare_allocation(struct btrfs_fs_info *fs_info,
- 		return prepare_allocation_clustered(fs_info, ffe_ctl,
- 						    space_info, ins);
- 	case BTRFS_EXTENT_ALLOC_ZONED:
--		if (ffe_ctl->for_treelog) {
--			spin_lock(&fs_info->treelog_bg_lock);
--			if (fs_info->treelog_bg)
--				ffe_ctl->hint_byte = fs_info->treelog_bg;
--			spin_unlock(&fs_info->treelog_bg_lock);
--		}
--		if (ffe_ctl->for_data_reloc) {
--			spin_lock(&fs_info->relocation_bg_lock);
--			if (fs_info->data_reloc_bg)
--				ffe_ctl->hint_byte = fs_info->data_reloc_bg;
--			spin_unlock(&fs_info->relocation_bg_lock);
--		}
--		return 0;
-+		return prepare_allocation_zoned(fs_info, ffe_ctl);
- 	default:
- 		BUG();
+--- a/drivers/gpu/drm/i915/display/icl_dsi.c
++++ b/drivers/gpu/drm/i915/display/icl_dsi.c
+@@ -1155,6 +1155,7 @@ static void gen11_dsi_powerup_panel(stru
  	}
--- 
-2.43.0
-
+ 
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_INIT_OTP);
++	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
+ 
+ 	/* ensure all panel commands dispatched before enabling transcoder */
+ 	wait_for_cmds_dispatched_to_panel(encoder);
+@@ -1255,8 +1256,6 @@ static void gen11_dsi_enable(struct inte
+ 	/* step6d: enable dsi transcoder */
+ 	gen11_dsi_enable_transcoder(encoder);
+ 
+-	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
+-
+ 	/* step7: enable backlight */
+ 	intel_backlight_enable(crtc_state, conn_state);
+ 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_BACKLIGHT_ON);
 
 
 
