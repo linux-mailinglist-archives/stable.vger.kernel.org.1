@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5142840F0D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E0E840ED4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 141521C2401C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFD6BB227C6
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7C315D5A0;
-	Mon, 29 Jan 2024 17:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6EA161B4D;
+	Mon, 29 Jan 2024 17:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5aGhj4n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Pp+9HSB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DF1158D9B;
-	Mon, 29 Jan 2024 17:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A3015AAB1;
+	Mon, 29 Jan 2024 17:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548378; cv=none; b=IOYSVcWCgmSMarNhDkU0qSSU6bZV3wFtzZiUj9v6SYW2iit7f7ZSKqf+XXV6RiAPGSl39owthCZqKckbiDeiS6OWKjcdkjbgt45l+D6mDNhk/0rlh0kAzFJDTA35m+IHDzTqt2YmfsfTfkXmQeMCN1+pTDuRulQCLy+CAiEnK1I=
+	t=1706548352; cv=none; b=q387/xTAOv130eUjkJQmrTjnVog3hfPCj6GqdGEayqGD1ed0mHb63YZURhOq0JBjITJtmhvqQGuXbgGWBZb7ZumRqagG5BrteGoEpkCK9QLw1m3AQzykTzI8Qb0SYsoegh/CcDTR9qSD0Al/pkbsBdoL66CYABfEbd2ljrnIU5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548378; c=relaxed/simple;
-	bh=lPHW6x6UXbehDCTHycFN6CjlkzA55VQoPmr4MFyCz2M=;
+	s=arc-20240116; t=1706548352; c=relaxed/simple;
+	bh=+HKOR7pne07O1ACbCe/dlZBHX8DkdTMYHu5xGiihD7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nytdtYGdKdX0xEjWd4UqMM1r7SXShd3tkR1EhcoOrEtYS0htW09mODcjBDbShymQVSCLKIvKGfMmJ6/+o8tz4x0G6hBC/nghb5jsPr3D+FnNynZJomTOQ9fjd6d9Ov9BqayGK0tLu7ebAF/2xqJRW3H5Pmq+y+8c6olXOoOP8uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5aGhj4n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F19FC43399;
-	Mon, 29 Jan 2024 17:12:58 +0000 (UTC)
+	 MIME-Version; b=aRPqNKabWcVNRI5wPGY9/VHpm8fdyaISB4JJUtBdUGtB9JPOiNDdZsmkmVT3/V9MK/wB22NHYADQbewdEN5N57HqFxJCEKKCes2enltXh72m8CmpufrCl9U4OFhZOC+Mg1z8/4sPjGMJy3KXL9kNTRxbWyzqaaQONymbFY0P9Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Pp+9HSB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F5EC433C7;
+	Mon, 29 Jan 2024 17:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548378;
-	bh=lPHW6x6UXbehDCTHycFN6CjlkzA55VQoPmr4MFyCz2M=;
+	s=korg; t=1706548351;
+	bh=+HKOR7pne07O1ACbCe/dlZBHX8DkdTMYHu5xGiihD7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I5aGhj4n8sYy8U6O5ynvV3hYAZpMgwJdlmAphtUGd/Xk/ltzWJlA52ZzRsJICE7fJ
-	 E/IBsP0yoYrQ2MugaVplxD+YqZJjJRVvnMfsj1xQgodF4rPP4AQ4IUo8QSJ2zM5p5G
-	 OqpHbzFJns9lrdn2EmZL6+EREbfLOem7/Opsz6s8=
+	b=0Pp+9HSBcCbpVrE+B8dhSLgovKDl2gMauel9DXgDYPGk+O9eMSTYTe8jz/oBqRybt
+	 /yNOPJCZGFpU4roGSVPUjybNhvGaVF2adoNrEHaKWhHet0We06NogA9rSlBW46xW/6
+	 MTGnMgVdVySnunNP5oIJTN3YgnZXxqSHL6jgqbEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 148/185] thermal: intel: hfi: Refactor enabling code into helper functions
+Subject: [PATCH 6.7 317/346] drm/exynos: gsc: minor fix for loop iteration in gsc_runtime_resume
 Date: Mon, 29 Jan 2024 09:05:48 -0800
-Message-ID: <20240129170003.339109214@linuxfoundation.org>
+Message-ID: <20240129170025.801150400@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 8a8b6bb93c704776c4b05cb517c3fa8baffb72f5 ]
+[ Upstream commit 4050957c7c2c14aa795dbf423b4180d5ac04e113 ]
 
-In preparation for the addition of a suspend notifier, wrap the logic to
-enable HFI and program its memory buffer into helper functions. Both the
-CPU hotplug callback and the suspend notifier will use them.
+Do not forget to call clk_disable_unprepare() on the first element of
+ctx->clocks array.
 
-This refactoring does not introduce functional changes.
+Found by Linux Verification Center (linuxtesting.org).
 
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 97566d09fd02 ("thermal: intel: hfi: Add syscore callbacks for system-wide PM")
+Fixes: 8b7d3ec83aba ("drm/exynos: gsc: Convert driver to IPP v2 core API")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/intel/intel_hfi.c | 43 ++++++++++++++++---------------
- 1 file changed, 22 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_gsc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/intel/intel_hfi.c b/drivers/thermal/intel/intel_hfi.c
-index a0640f762dc5..1a014595ed49 100644
---- a/drivers/thermal/intel/intel_hfi.c
-+++ b/drivers/thermal/intel/intel_hfi.c
-@@ -338,6 +338,26 @@ static void init_hfi_instance(struct hfi_instance *hfi_instance)
- 	hfi_instance->data = hfi_instance->hdr + hfi_features.hdr_size;
- }
- 
-+/* Caller must hold hfi_instance_lock. */
-+static void hfi_enable(void)
-+{
-+	u64 msr_val;
-+
-+	rdmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
-+	msr_val |= HW_FEEDBACK_CONFIG_HFI_ENABLE_BIT;
-+	wrmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
-+}
-+
-+static void hfi_set_hw_table(struct hfi_instance *hfi_instance)
-+{
-+	phys_addr_t hw_table_pa;
-+	u64 msr_val;
-+
-+	hw_table_pa = virt_to_phys(hfi_instance->hw_table);
-+	msr_val = hw_table_pa | HW_FEEDBACK_PTR_VALID_BIT;
-+	wrmsrl(MSR_IA32_HW_FEEDBACK_PTR, msr_val);
-+}
-+
- /**
-  * intel_hfi_online() - Enable HFI on @cpu
-  * @cpu:	CPU in which the HFI will be enabled
-@@ -355,8 +375,6 @@ void intel_hfi_online(unsigned int cpu)
- {
- 	struct hfi_instance *hfi_instance;
- 	struct hfi_cpu_info *info;
--	phys_addr_t hw_table_pa;
--	u64 msr_val;
- 	u16 die_id;
- 
- 	/* Nothing to do if hfi_instances are missing. */
-@@ -400,8 +418,6 @@ void intel_hfi_online(unsigned int cpu)
- 	if (!hfi_instance->hw_table)
- 		goto unlock;
- 
--	hw_table_pa = virt_to_phys(hfi_instance->hw_table);
--
- 	/*
- 	 * Allocate memory to keep a local copy of the table that
- 	 * hardware generates.
-@@ -411,16 +427,6 @@ void intel_hfi_online(unsigned int cpu)
- 	if (!hfi_instance->local_table)
- 		goto free_hw_table;
- 
--	/*
--	 * Program the address of the feedback table of this die/package. On
--	 * some processors, hardware remembers the old address of the HFI table
--	 * even after having been reprogrammed and re-enabled. Thus, do not free
--	 * the pages allocated for the table or reprogram the hardware with a
--	 * new base address. Namely, program the hardware only once.
--	 */
--	msr_val = hw_table_pa | HW_FEEDBACK_PTR_VALID_BIT;
--	wrmsrl(MSR_IA32_HW_FEEDBACK_PTR, msr_val);
--
- 	init_hfi_instance(hfi_instance);
- 
- 	INIT_DELAYED_WORK(&hfi_instance->update_work, hfi_update_work_fn);
-@@ -429,13 +435,8 @@ void intel_hfi_online(unsigned int cpu)
- 
- 	cpumask_set_cpu(cpu, hfi_instance->cpus);
- 
--	/*
--	 * Enable the hardware feedback interface and never disable it. See
--	 * comment on programming the address of the table.
--	 */
--	rdmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
--	msr_val |= HW_FEEDBACK_CONFIG_HFI_ENABLE_BIT;
--	wrmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
-+	hfi_set_hw_table(hfi_instance);
-+	hfi_enable();
- 
- unlock:
- 	mutex_unlock(&hfi_instance_lock);
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_gsc.c b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
+index 34cdabc30b4f..5302bebbe38c 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_gsc.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
+@@ -1342,7 +1342,7 @@ static int __maybe_unused gsc_runtime_resume(struct device *dev)
+ 	for (i = 0; i < ctx->num_clocks; i++) {
+ 		ret = clk_prepare_enable(ctx->clocks[i]);
+ 		if (ret) {
+-			while (--i > 0)
++			while (--i >= 0)
+ 				clk_disable_unprepare(ctx->clocks[i]);
+ 			return ret;
+ 		}
 -- 
 2.43.0
 
