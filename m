@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-16594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA4D840D9D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC066840FCD
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2E5D1C21793
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF7D51C22FF3
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B8015B997;
-	Mon, 29 Jan 2024 17:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3BB7222F;
+	Mon, 29 Jan 2024 17:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqkTygCz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvi3/YJj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A65157E6B;
-	Mon, 29 Jan 2024 17:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A1F72223;
+	Mon, 29 Jan 2024 17:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548135; cv=none; b=KWrPm22T68gfbIQM41dVeSBTdaCmzsWHclq7/S/tewrJEoRjMzRIctnK9VgZJJQ+vJbo+dJStpRWgaIro8QW2GQeqzBxrFgxU4wfBgLHv5g7on2wacDsBz2xA/ObFEmb0/kiNCRG/wqXzPi67eIf6pwwLiKGqlx0OwZR3raiVKY=
+	t=1706548505; cv=none; b=OunaG1rA4NgE/+EdEIXX/EyKJ702vEbLxCWfLNIFHmJSSOus1Sm3zKm6Xorf1SXKU3oQiU1Pv+sA5Ef47Y33BC6tmm0qJIGyTV3mwnkBl0zbVjKhZsybOpm/xpP48U7RV5YlpfE0+LNn1E4FGUmXFdzk7rVZp/CzLpbLATAqs0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548135; c=relaxed/simple;
-	bh=rHipMsr760gF8jbZM/Q/0J3mBI6YHndIWwGwuNgZ1wU=;
+	s=arc-20240116; t=1706548505; c=relaxed/simple;
+	bh=i0QxQYwZVU0ROocT+7GUYOCNqKCgizXGrn2SMX68Y6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZEhu9jTwJ1JHC3gxZHcEKomPKklIp9mwYfgncrmMKkMtE75TB7f7iJ+d8+YspowszNeieJpqO33SnSVTh1vmPpCiwxWNCdA4yD9ScCUg+5VXppWm+8g2trRtGBcAAnNzLjw1Fe9+8zdWfqSeCCxfXQ1Reueu10yyTlibCxDOW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqkTygCz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2151EC433F1;
-	Mon, 29 Jan 2024 17:08:55 +0000 (UTC)
+	 MIME-Version; b=rOO5yD0swDVvhV+joib4Q8+dXqVijfJWATgyKcB22xWIVIRkLy6itScKTMMgOHmqT1r8PsBNCeUOoEEI35Ob02H5+fPN417K+UafOT/eA4/+d6TLKhkq3KXrK750r7N5ZOBYckCFduY/EySK+ygkhXLoH5ofUYKBZ64RSjqT04s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvi3/YJj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E031FC433C7;
+	Mon, 29 Jan 2024 17:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548135;
-	bh=rHipMsr760gF8jbZM/Q/0J3mBI6YHndIWwGwuNgZ1wU=;
+	s=korg; t=1706548505;
+	bh=i0QxQYwZVU0ROocT+7GUYOCNqKCgizXGrn2SMX68Y6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lqkTygCzh0SXMSUMIjgKidIjddFqh/wT3eeZ09YdSqmJpB1naafPpiYp/+f49UJXD
-	 nmevi3F15zdJCMALq2gIY0Hp28Qzxv2SPUYCMW4ridPjdsJOz6CQ4PuuB6Q7WcfHdb
-	 X8oQg/P/BBN3+P2gVBOWABMnL+6DkkHoyst8WN9M=
+	b=yvi3/YJjjXLxr7gXSpOVPxLKwQZ6nCmcDIMWYr5oAbxUtdSOj6sIxE3KKECwWfkhz
+	 pWCqsqBJpX/HReX6ncL0IaxAHe63Sn5Dbxc5HXpncpxRhvh1FoqjQy+wpsfyCE+8bk
+	 HxCJlRijR1UWkDuq/oUZtLgZQ9cuhtTyVmABhCZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 166/346] net/rds: Fix UBSAN: array-index-out-of-bounds in rds_cmsg_recv
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.6 133/331] serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions for FIFO
 Date: Mon, 29 Jan 2024 09:03:17 -0800
-Message-ID: <20240129170021.284676654@linuxfoundation.org>
+Message-ID: <20240129170018.839923126@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +60,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 13e788deb7348cc88df34bed736c3b3b9927ea52 ]
+commit dbf4ab821804df071c8b566d9813083125e6d97b upstream.
 
-Syzcaller UBSAN crash occurs in rds_cmsg_recv(),
-which reads inc->i_rx_lat_trace[j + 1] with index 4 (3 + 1),
-but with array size of 4 (RDS_RX_MAX_TRACES).
-Here 'j' is assigned from rs->rs_rx_trace[i] and in-turn from
-trace.rx_trace_pos[i] in rds_recv_track_latency(),
-with both arrays sized 3 (RDS_MSG_RX_DGRAM_TRACE_MAX). So fix the
-off-by-one bounds check in rds_recv_track_latency() to prevent
-a potential crash in rds_cmsg_recv().
+The SC16IS7XX IC supports a burst mode to access the FIFOs where the
+initial register address is sent ($00), followed by all the FIFO data
+without having to resend the register address each time. In this mode, the
+IC doesn't increment the register address for each R/W byte.
 
-Found by syzcaller:
-=================================================================
-UBSAN: array-index-out-of-bounds in net/rds/recv.c:585:39
-index 4 is out of range for type 'u64 [4]'
-CPU: 1 PID: 8058 Comm: syz-executor228 Not tainted 6.6.0-gd2f51b3516da #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x136/0x150 lib/dump_stack.c:106
- ubsan_epilogue lib/ubsan.c:217 [inline]
- __ubsan_handle_out_of_bounds+0xd5/0x130 lib/ubsan.c:348
- rds_cmsg_recv+0x60d/0x700 net/rds/recv.c:585
- rds_recvmsg+0x3fb/0x1610 net/rds/recv.c:716
- sock_recvmsg_nosec net/socket.c:1044 [inline]
- sock_recvmsg+0xe2/0x160 net/socket.c:1066
- __sys_recvfrom+0x1b6/0x2f0 net/socket.c:2246
- __do_sys_recvfrom net/socket.c:2264 [inline]
- __se_sys_recvfrom net/socket.c:2260 [inline]
- __x64_sys_recvfrom+0xe0/0x1b0 net/socket.c:2260
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x40/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-==================================================================
+The regmap_raw_read() and regmap_raw_write() are functions which can
+perform IO over multiple registers. They are currently used to read/write
+from/to the FIFO, and although they operate correctly in this burst mode on
+the SPI bus, they would corrupt the regmap cache if it was not disabled
+manually. The reason is that when the R/W size is more than 1 byte, these
+functions assume that the register address is incremented and handle the
+cache accordingly.
 
-Fixes: 3289025aedc0 ("RDS: add receive message trace used by application")
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Closes: https://lore.kernel.org/linux-rdma/CALGdzuoVdq-wtQ4Az9iottBqC5cv9ZhcE5q8N7LfYFvkRsOVcw@mail.gmail.com/
-Signed-off-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Convert FIFO R/W functions to use the regmap _noinc_ versions in order to
+remove the manual cache control which was a workaround when using the
+_raw_ versions. FIFO registers are properly declared as volatile so
+cache will not be used/updated for FIFO accesses.
+
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231211171353.2901416-6-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/af_rds.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/sc16is7xx.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
-index 01c4cdfef45d..8435a20968ef 100644
---- a/net/rds/af_rds.c
-+++ b/net/rds/af_rds.c
-@@ -419,7 +419,7 @@ static int rds_recv_track_latency(struct rds_sock *rs, sockptr_t optval,
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -383,9 +383,7 @@ static void sc16is7xx_fifo_read(struct u
+ 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+ 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
  
- 	rs->rs_rx_traces = trace.rx_traces;
- 	for (i = 0; i < rs->rs_rx_traces; i++) {
--		if (trace.rx_trace_pos[i] > RDS_MSG_RX_DGRAM_TRACE_MAX) {
-+		if (trace.rx_trace_pos[i] >= RDS_MSG_RX_DGRAM_TRACE_MAX) {
- 			rs->rs_rx_traces = 0;
- 			return -EFAULT;
- 		}
--- 
-2.43.0
-
+-	regcache_cache_bypass(one->regmap, true);
+-	regmap_raw_read(one->regmap, SC16IS7XX_RHR_REG, s->buf, rxlen);
+-	regcache_cache_bypass(one->regmap, false);
++	regmap_noinc_read(one->regmap, SC16IS7XX_RHR_REG, s->buf, rxlen);
+ }
+ 
+ static void sc16is7xx_fifo_write(struct uart_port *port, u8 to_send)
+@@ -400,9 +398,7 @@ static void sc16is7xx_fifo_write(struct
+ 	if (unlikely(!to_send))
+ 		return;
+ 
+-	regcache_cache_bypass(one->regmap, true);
+-	regmap_raw_write(one->regmap, SC16IS7XX_THR_REG, s->buf, to_send);
+-	regcache_cache_bypass(one->regmap, false);
++	regmap_noinc_write(one->regmap, SC16IS7XX_THR_REG, s->buf, to_send);
+ }
+ 
+ static void sc16is7xx_port_update(struct uart_port *port, u8 reg,
+@@ -494,6 +490,11 @@ static bool sc16is7xx_regmap_precious(st
+ 	return false;
+ }
+ 
++static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
++{
++	return reg == SC16IS7XX_RHR_REG;
++}
++
+ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ {
+ 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+@@ -1697,6 +1698,10 @@ static struct regmap_config regcfg = {
+ 	.cache_type = REGCACHE_RBTREE,
+ 	.volatile_reg = sc16is7xx_regmap_volatile,
+ 	.precious_reg = sc16is7xx_regmap_precious,
++	.writeable_noinc_reg = sc16is7xx_regmap_noinc,
++	.readable_noinc_reg = sc16is7xx_regmap_noinc,
++	.max_raw_read = SC16IS7XX_FIFO_SIZE,
++	.max_raw_write = SC16IS7XX_FIFO_SIZE,
+ 	.max_register = SC16IS7XX_EFCR_REG,
+ };
+ 
 
 
 
