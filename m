@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-17059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE972840FAA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE907840D77
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A1D71C234DA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9670528BCAF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1FD6FDFF;
-	Mon, 29 Jan 2024 17:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C785115B2FA;
+	Mon, 29 Jan 2024 17:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUrfT8OD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYly08er"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7736FDE1;
-	Mon, 29 Jan 2024 17:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855B01586D0;
+	Mon, 29 Jan 2024 17:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548479; cv=none; b=IBN2xiDxGOxgERGCzl/7ldPEXi/ki8QVvSjuuubSi9ljYaa3u7fw8st//2I6KWgiN8bep9HldQXNk8MA1c+GS/Nc4bQpQXBM5wOXjq1r6aGYkWTycec5/BXeUmjXaB/w9dGSgNDjOPNaP6ZtZI7Y9IuUXM+4nuMeIUqws/DRUAo=
+	t=1706548110; cv=none; b=V5P2GmxIsMAyNayWFcaEzQw3mEsoLsTSOTBnABNk8tSYEvOQHO4XNPI0VdVEDTA66PPTXQRI5J5Y+Bi9IiECjxV0/GuLK/fkb+peG4LLKzJZ3NiGy8vYDogqHxmzysChd5f3bqndpEcRGUrpPI/mSnkCtqNuvlGVR+J9uGwTGk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548479; c=relaxed/simple;
-	bh=tjUCuCsiWu1I7vyblxyTufQtdbNiGGy9eqSuTdCi4Io=;
+	s=arc-20240116; t=1706548110; c=relaxed/simple;
+	bh=LjuECmujd2gOpqQTZIeehqaLLiQXGm8XmlznzQIrjU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W4thWZGOceR/FF/oe3/WRXg/lR8fCuISkVM/VBOcIxH+ePQRKTpP1xrEMZmyP1CNL8mXo5L9Hsm6UNWh3vMnrskAYKJCblZqcJv4GtnrPcSMmSc7lXHvf9zLZLID6N9IzQqUrA9AJOxiS7ZOdH7V8ACs9kFVdYidnp0x1ioELWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUrfT8OD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755CAC433C7;
-	Mon, 29 Jan 2024 17:14:39 +0000 (UTC)
+	 MIME-Version; b=X+5sqb1kD4Y+v3MIHQLlYBBA1AM6Z3T7Ns6AlWnuGC1NqFQTTh3k2mk9x+IIzQGdWv300edJOUFjvPk7QQo/pz1rsBiJaibS3CIhRvmrOflGYpb50DVVn+GrDjozORRXDMDGb0pJ9jFmulLv+uY9UTcgxAsyKFjPVVxlJnt0zC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYly08er; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB96C43390;
+	Mon, 29 Jan 2024 17:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548479;
-	bh=tjUCuCsiWu1I7vyblxyTufQtdbNiGGy9eqSuTdCi4Io=;
+	s=korg; t=1706548110;
+	bh=LjuECmujd2gOpqQTZIeehqaLLiQXGm8XmlznzQIrjU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UUrfT8ODLx3WZ7WOiE11F3NNIQvVo0zuLRNDN+mHnycciTzHrdBuRFBkU+g0M5aee
-	 qwog17wtVQEQs41BHUkllaF8LK/gsVJrvVMYzV7RmXAxiBZG6qs3NxjVCnHjAtXkCA
-	 fqkrJNdUdbsisP+U/hVzEM9ApVbUz8vkiscjdni0=
+	b=OYly08er5FgXkbFTjZOiBGRytLimti7/jjXZAf0K5WUjmlPSbzIF/o42OJhRKTLzd
+	 Pa6QPS8rBOGfiteTr31kj+TkSMoZU1rELO9fI7qtVeyJ20V73d/6RX1AUE82uZ0tf9
+	 omBbdnWyN+qQEY1iIAWoGrQnDVuX9FzYt/xEqKCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alfred Piccioni <alpic@google.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.6 099/331] lsm: new security_file_ioctl_compat() hook
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.7 132/346] serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions for FIFO
 Date: Mon, 29 Jan 2024 09:02:43 -0800
-Message-ID: <20240129170017.827742889@linuxfoundation.org>
+Message-ID: <20240129170020.267504897@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,192 +60,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alfred Piccioni <alpic@google.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit f1bb47a31dff6d4b34fb14e99850860ee74bb003 upstream.
+commit dbf4ab821804df071c8b566d9813083125e6d97b upstream.
 
-Some ioctl commands do not require ioctl permission, but are routed to
-other permissions such as FILE_GETATTR or FILE_SETATTR. This routing is
-done by comparing the ioctl cmd to a set of 64-bit flags (FS_IOC_*).
+The SC16IS7XX IC supports a burst mode to access the FIFOs where the
+initial register address is sent ($00), followed by all the FIFO data
+without having to resend the register address each time. In this mode, the
+IC doesn't increment the register address for each R/W byte.
 
-However, if a 32-bit process is running on a 64-bit kernel, it emits
-32-bit flags (FS_IOC32_*) for certain ioctl operations. These flags are
-being checked erroneously, which leads to these ioctl operations being
-routed to the ioctl permission, rather than the correct file
-permissions.
+The regmap_raw_read() and regmap_raw_write() are functions which can
+perform IO over multiple registers. They are currently used to read/write
+from/to the FIFO, and although they operate correctly in this burst mode on
+the SPI bus, they would corrupt the regmap cache if it was not disabled
+manually. The reason is that when the R/W size is more than 1 byte, these
+functions assume that the register address is incremented and handle the
+cache accordingly.
 
-This was also noted in a RED-PEN finding from a while back -
-"/* RED-PEN how should LSM module know it's handling 32bit? */".
+Convert FIFO R/W functions to use the regmap _noinc_ versions in order to
+remove the manual cache control which was a workaround when using the
+_raw_ versions. FIFO registers are properly declared as volatile so
+cache will not be used/updated for FIFO accesses.
 
-This patch introduces a new hook, security_file_ioctl_compat(), that is
-called from the compat ioctl syscall. All current LSMs have been changed
-to support this hook.
-
-Reviewing the three places where we are currently using
-security_file_ioctl(), it appears that only SELinux needs a dedicated
-compat change; TOMOYO and SMACK appear to be functional without any
-change.
-
-Cc: stable@vger.kernel.org
-Fixes: 0b24dcb7f2f7 ("Revert "selinux: simplify ioctl checking"")
-Signed-off-by: Alfred Piccioni <alpic@google.com>
-Reviewed-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-[PM: subject tweak, line length fixes, and alignment corrections]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231211171353.2901416-6-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ioctl.c                    |    3 +--
- include/linux/lsm_hook_defs.h |    2 ++
- include/linux/security.h      |    9 +++++++++
- security/security.c           |   18 ++++++++++++++++++
- security/selinux/hooks.c      |   28 ++++++++++++++++++++++++++++
- security/smack/smack_lsm.c    |    1 +
- security/tomoyo/tomoyo.c      |    1 +
- 7 files changed, 60 insertions(+), 2 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/fs/ioctl.c
-+++ b/fs/ioctl.c
-@@ -920,8 +920,7 @@ COMPAT_SYSCALL_DEFINE3(ioctl, unsigned i
- 	if (!f.file)
- 		return -EBADF;
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -382,9 +382,7 @@ static void sc16is7xx_fifo_read(struct u
+ 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+ 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
  
--	/* RED-PEN how should LSM module know it's handling 32bit? */
--	error = security_file_ioctl(f.file, cmd, arg);
-+	error = security_file_ioctl_compat(f.file, cmd, arg);
- 	if (error)
- 		goto out;
+-	regcache_cache_bypass(one->regmap, true);
+-	regmap_raw_read(one->regmap, SC16IS7XX_RHR_REG, s->buf, rxlen);
+-	regcache_cache_bypass(one->regmap, false);
++	regmap_noinc_read(one->regmap, SC16IS7XX_RHR_REG, s->buf, rxlen);
+ }
  
---- a/include/linux/lsm_hook_defs.h
-+++ b/include/linux/lsm_hook_defs.h
-@@ -171,6 +171,8 @@ LSM_HOOK(int, 0, file_alloc_security, st
- LSM_HOOK(void, LSM_RET_VOID, file_free_security, struct file *file)
- LSM_HOOK(int, 0, file_ioctl, struct file *file, unsigned int cmd,
- 	 unsigned long arg)
-+LSM_HOOK(int, 0, file_ioctl_compat, struct file *file, unsigned int cmd,
-+	 unsigned long arg)
- LSM_HOOK(int, 0, mmap_addr, unsigned long addr)
- LSM_HOOK(int, 0, mmap_file, struct file *file, unsigned long reqprot,
- 	 unsigned long prot, unsigned long flags)
---- a/include/linux/security.h
-+++ b/include/linux/security.h
-@@ -389,6 +389,8 @@ int security_file_permission(struct file
- int security_file_alloc(struct file *file);
- void security_file_free(struct file *file);
- int security_file_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
-+int security_file_ioctl_compat(struct file *file, unsigned int cmd,
-+			       unsigned long arg);
- int security_mmap_file(struct file *file, unsigned long prot,
- 			unsigned long flags);
- int security_mmap_addr(unsigned long addr);
-@@ -986,6 +988,13 @@ static inline int security_file_ioctl(st
+ static void sc16is7xx_fifo_write(struct uart_port *port, u8 to_send)
+@@ -399,9 +397,7 @@ static void sc16is7xx_fifo_write(struct
+ 	if (unlikely(!to_send))
+ 		return;
+ 
+-	regcache_cache_bypass(one->regmap, true);
+-	regmap_raw_write(one->regmap, SC16IS7XX_THR_REG, s->buf, to_send);
+-	regcache_cache_bypass(one->regmap, false);
++	regmap_noinc_write(one->regmap, SC16IS7XX_THR_REG, s->buf, to_send);
+ }
+ 
+ static void sc16is7xx_port_update(struct uart_port *port, u8 reg,
+@@ -493,6 +489,11 @@ static bool sc16is7xx_regmap_precious(st
+ 	return false;
+ }
+ 
++static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
++{
++	return reg == SC16IS7XX_RHR_REG;
++}
++
+ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
  {
- 	return 0;
- }
-+
-+static inline int security_file_ioctl_compat(struct file *file,
-+					     unsigned int cmd,
-+					     unsigned long arg)
-+{
-+	return 0;
-+}
+ 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+@@ -1710,6 +1711,10 @@ static struct regmap_config regcfg = {
+ 	.cache_type = REGCACHE_RBTREE,
+ 	.volatile_reg = sc16is7xx_regmap_volatile,
+ 	.precious_reg = sc16is7xx_regmap_precious,
++	.writeable_noinc_reg = sc16is7xx_regmap_noinc,
++	.readable_noinc_reg = sc16is7xx_regmap_noinc,
++	.max_raw_read = SC16IS7XX_FIFO_SIZE,
++	.max_raw_write = SC16IS7XX_FIFO_SIZE,
+ 	.max_register = SC16IS7XX_EFCR_REG,
+ };
  
- static inline int security_mmap_file(struct file *file, unsigned long prot,
- 				     unsigned long flags)
---- a/security/security.c
-+++ b/security/security.c
-@@ -2648,6 +2648,24 @@ int security_file_ioctl(struct file *fil
- }
- EXPORT_SYMBOL_GPL(security_file_ioctl);
- 
-+/**
-+ * security_file_ioctl_compat() - Check if an ioctl is allowed in compat mode
-+ * @file: associated file
-+ * @cmd: ioctl cmd
-+ * @arg: ioctl arguments
-+ *
-+ * Compat version of security_file_ioctl() that correctly handles 32-bit
-+ * processes running on 64-bit kernels.
-+ *
-+ * Return: Returns 0 if permission is granted.
-+ */
-+int security_file_ioctl_compat(struct file *file, unsigned int cmd,
-+			       unsigned long arg)
-+{
-+	return call_int_hook(file_ioctl_compat, 0, file, cmd, arg);
-+}
-+EXPORT_SYMBOL_GPL(security_file_ioctl_compat);
-+
- static inline unsigned long mmap_prot(struct file *file, unsigned long prot)
- {
- 	/*
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -3725,6 +3725,33 @@ static int selinux_file_ioctl(struct fil
- 	return error;
- }
- 
-+static int selinux_file_ioctl_compat(struct file *file, unsigned int cmd,
-+			      unsigned long arg)
-+{
-+	/*
-+	 * If we are in a 64-bit kernel running 32-bit userspace, we need to
-+	 * make sure we don't compare 32-bit flags to 64-bit flags.
-+	 */
-+	switch (cmd) {
-+	case FS_IOC32_GETFLAGS:
-+		cmd = FS_IOC_GETFLAGS;
-+		break;
-+	case FS_IOC32_SETFLAGS:
-+		cmd = FS_IOC_SETFLAGS;
-+		break;
-+	case FS_IOC32_GETVERSION:
-+		cmd = FS_IOC_GETVERSION;
-+		break;
-+	case FS_IOC32_SETVERSION:
-+		cmd = FS_IOC_SETVERSION;
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return selinux_file_ioctl(file, cmd, arg);
-+}
-+
- static int default_noexec __ro_after_init;
- 
- static int file_map_prot_check(struct file *file, unsigned long prot, int shared)
-@@ -7037,6 +7064,7 @@ static struct security_hook_list selinux
- 	LSM_HOOK_INIT(file_permission, selinux_file_permission),
- 	LSM_HOOK_INIT(file_alloc_security, selinux_file_alloc_security),
- 	LSM_HOOK_INIT(file_ioctl, selinux_file_ioctl),
-+	LSM_HOOK_INIT(file_ioctl_compat, selinux_file_ioctl_compat),
- 	LSM_HOOK_INIT(mmap_file, selinux_mmap_file),
- 	LSM_HOOK_INIT(mmap_addr, selinux_mmap_addr),
- 	LSM_HOOK_INIT(file_mprotect, selinux_file_mprotect),
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -4973,6 +4973,7 @@ static struct security_hook_list smack_h
- 
- 	LSM_HOOK_INIT(file_alloc_security, smack_file_alloc_security),
- 	LSM_HOOK_INIT(file_ioctl, smack_file_ioctl),
-+	LSM_HOOK_INIT(file_ioctl_compat, smack_file_ioctl),
- 	LSM_HOOK_INIT(file_lock, smack_file_lock),
- 	LSM_HOOK_INIT(file_fcntl, smack_file_fcntl),
- 	LSM_HOOK_INIT(mmap_file, smack_mmap_file),
---- a/security/tomoyo/tomoyo.c
-+++ b/security/tomoyo/tomoyo.c
-@@ -568,6 +568,7 @@ static struct security_hook_list tomoyo_
- 	LSM_HOOK_INIT(path_rename, tomoyo_path_rename),
- 	LSM_HOOK_INIT(inode_getattr, tomoyo_inode_getattr),
- 	LSM_HOOK_INIT(file_ioctl, tomoyo_file_ioctl),
-+	LSM_HOOK_INIT(file_ioctl_compat, tomoyo_file_ioctl),
- 	LSM_HOOK_INIT(path_chmod, tomoyo_path_chmod),
- 	LSM_HOOK_INIT(path_chown, tomoyo_path_chown),
- 	LSM_HOOK_INIT(path_chroot, tomoyo_path_chroot),
 
 
 
