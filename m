@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E69840EA0
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4608841046
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F7031C232DD
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9116E286C98
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD84515CD41;
-	Mon, 29 Jan 2024 17:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2EE755F9;
+	Mon, 29 Jan 2024 17:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUxIVuTr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7cjzf+R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B14E158D71;
-	Mon, 29 Jan 2024 17:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAB2755EF;
+	Mon, 29 Jan 2024 17:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548317; cv=none; b=oIK+7p3PojmZuOoFG/hqe/xd16u0qKfTsbMWnbo0wql8BmnNYoDew+CrR254+uxVZtoi3sXTh+GOZ0hRJ8MQHFaMk5eZMJvehhCOWAH9jiI5bMh6yOJAfzwDMWthfOXtLRXf3hgpSx8GBXy8h4YHoQXPaM6e2v194MjWqqzDBN0=
+	t=1706548594; cv=none; b=CAqqS1boLOimWOCVfGXNeOv7JUbRADtPZ8WuoJBR55AVRejhSJXlRHxpESDtazxK0uBOQw0vKO8qOwoScDEXSMDtDJFWIErsrLNZskYpnB9tUEcWHJHZ6VP8paCjDskuhQQS/soAyH2LH0qgBMsmXTklNAWpSamEwsw+kOG4Ah4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548317; c=relaxed/simple;
-	bh=lZ4/N3dkZ3Kfc7so0Sh7sQjwOwNGxXxNC0UcUupv2eA=;
+	s=arc-20240116; t=1706548594; c=relaxed/simple;
+	bh=OPZNytY/7balN7G3JGLIDwRy1ALIsRTuZ/JXcbsPA/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8RJvWGk22sRfZ2VReHD6rsIwJ0rMmFz1b4EewX0v4nQVy7LgMHUFZqddgnGdlWSWiZlD3PyscFsuPJ6qR/Wx1+Mfa5pERmZMONlrwLvqdfsypwZM3KVripoYpYLtBjTzkklIX7ZGtyuobqACc+sUrMX5WViZf5iuDSxc32G0tQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUxIVuTr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51EC9C43390;
-	Mon, 29 Jan 2024 17:11:57 +0000 (UTC)
+	 MIME-Version; b=fRpOIm7IV+cYwNnSSHuQHcwvk0zomKn7ZouR6q34uXE6H+UTdDwKYilIyJRfCYAl2bCvaVh3i57RDN/K17AARX2Kc4cPfwOxfQiBFRNlyKGdzPPXA2owHZabI7UX369HC5t8SNwnuNGYZM3vapL0NWm1w1P55YS+oCwfeX5ctkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7cjzf+R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F5FC43390;
+	Mon, 29 Jan 2024 17:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548317;
-	bh=lZ4/N3dkZ3Kfc7so0Sh7sQjwOwNGxXxNC0UcUupv2eA=;
+	s=korg; t=1706548593;
+	bh=OPZNytY/7balN7G3JGLIDwRy1ALIsRTuZ/JXcbsPA/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FUxIVuTruv/Myo8JSr1DIYSakvpP/9WWhFMJ2CA3WJNe2qByjK8tPaIq+Dq8/YEW0
-	 L8FcQzaDKEdrtjDMJDqpdz0K4ZzcLlLR+XE9PjpAhMD/o0aVceNK42kld8EAZ4jPnP
-	 o/C57IkAYsAAM3wKVVMbGwNkIOtPcgmDp7eTrZ0M=
+	b=T7cjzf+RO8e0rJI7454iWRNwQCtyTzYsT7T68uzx8GauZc4Vx6Ops6YSjRlWM7TEB
+	 VXUgB+9hoL//sdQTKOWlbxBAz7BVehLRDIHuswmHL9lqKJFebrv8aWp0NW6wbg98b9
+	 Cv30aTSAfFNrUUdDp3eEgMELrhMF9T9Yx2yCbfoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 091/185] afs: Hide silly-rename files from userspace
-Date: Mon, 29 Jan 2024 09:04:51 -0800
-Message-ID: <20240129170001.522811291@linuxfoundation.org>
+Subject: [PATCH 6.6 228/331] tsnep: Remove FCS for XDP data path
+Date: Mon, 29 Jan 2024 09:04:52 -0800
+Message-ID: <20240129170021.553359401@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
 
-[ Upstream commit 57e9d49c54528c49b8bffe6d99d782ea051ea534 ]
+[ Upstream commit 50bad6f797d4d501c5ef416a6f92e1912ab5aa8b ]
 
-There appears to be a race between silly-rename files being created/removed
-and various userspace tools iterating over the contents of a directory,
-leading to such errors as:
+The RX data buffer includes the FCS. The FCS is already stripped for the
+normal data path. But for the XDP data path the FCS is included and
+acts like additional/useless data.
 
-	find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
-	tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
+Remove the FCS from the RX data buffer also for XDP.
 
-when building a kernel.
-
-Fix afs_readdir() so that it doesn't return .__afsXXXX silly-rename files
-to userspace.  This doesn't stop them being looked up directly by name as
-we need to be able to look them up from within the kernel as part of the
-silly-rename algorithm.
-
-Fixes: 79ddbfa500b3 ("afs: Implement sillyrename for unlink and rename")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
+Fixes: 65b28c810035 ("tsnep: Add XDP RX support")
+Fixes: 3fc2333933fd ("tsnep: Add XDP socket zero-copy RX support")
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/dir.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/engleder/tsnep_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index 07dc4ec73520..cf811b77ee67 100644
---- a/fs/afs/dir.c
-+++ b/fs/afs/dir.c
-@@ -473,6 +473,14 @@ static int afs_dir_iterate_block(struct afs_vnode *dvnode,
- 			continue;
- 		}
+diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
+index 38da2d6c250e..9fea97671f4b 100644
+--- a/drivers/net/ethernet/engleder/tsnep_main.c
++++ b/drivers/net/ethernet/engleder/tsnep_main.c
+@@ -1434,7 +1434,7 @@ static int tsnep_rx_poll(struct tsnep_rx *rx, struct napi_struct *napi,
  
-+		/* Don't expose silly rename entries to userspace. */
-+		if (nlen > 6 &&
-+		    dire->u.name[0] == '.' &&
-+		    ctx->actor != afs_lookup_filldir &&
-+		    ctx->actor != afs_lookup_one_filldir &&
-+		    memcmp(dire->u.name, ".__afs", 6) == 0)
-+			continue;
-+
- 		/* found the next entry */
- 		if (!dir_emit(ctx, dire->u.name, nlen,
- 			      ntohl(dire->u.vnode),
+ 			xdp_prepare_buff(&xdp, page_address(entry->page),
+ 					 XDP_PACKET_HEADROOM + TSNEP_RX_INLINE_METADATA_SIZE,
+-					 length, false);
++					 length - ETH_FCS_LEN, false);
+ 
+ 			consume = tsnep_xdp_run_prog(rx, prog, &xdp,
+ 						     &xdp_status, tx_nq, tx);
+@@ -1517,7 +1517,7 @@ static int tsnep_rx_poll_zc(struct tsnep_rx *rx, struct napi_struct *napi,
+ 		prefetch(entry->xdp->data);
+ 		length = __le32_to_cpu(entry->desc_wb->properties) &
+ 			 TSNEP_DESC_LENGTH_MASK;
+-		xsk_buff_set_size(entry->xdp, length);
++		xsk_buff_set_size(entry->xdp, length - ETH_FCS_LEN);
+ 		xsk_buff_dma_sync_for_cpu(entry->xdp, rx->xsk_pool);
+ 
+ 		/* RX metadata with timestamps is in front of actual data,
 -- 
 2.43.0
 
