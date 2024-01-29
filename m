@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-17116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC5BE840FE3
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A154840DE2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79232283290
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF22A1F2CFE1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F1515EA83;
-	Mon, 29 Jan 2024 17:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C7515D5BC;
+	Mon, 29 Jan 2024 17:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="msnbx483"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQFcjUlA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F086115EA8C;
-	Mon, 29 Jan 2024 17:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60228159574;
+	Mon, 29 Jan 2024 17:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548523; cv=none; b=OSDrwN/d41Ge27EbnN/pyvktlhrErcDBrRcSOHA6aoKZlCQNhiGEdbaRXZNOwlacpQqfgVgEw5NycDX9JnpW9NdMaeRrDsENceKDPyhgJyWR0MuvG3hrVwjwDHIv2OTAGi+72YP5RInKxgg7wBpR7iJHNQDi8dQ0LaG81kdWtgU=
+	t=1706548183; cv=none; b=WOu+U0BgxDO2SUZKufZELMHoWRzFrA4S4DC4uAzcy1TagwOXK7g+BnX3xOc+93W0X6jDJjHfM1KfCq5whNB+V4Oar6n/9VzZMGY6JiW+Pi0g5b6f2eyI93Y/miDXuelvJCSchzemW67OYu1ptanCTbyMpKxnyKgs2v2j6EAkCd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548523; c=relaxed/simple;
-	bh=0sDZN+br8R3TqkFj87Ib69prPeoEGOU9WbfGb6VC3kM=;
+	s=arc-20240116; t=1706548183; c=relaxed/simple;
+	bh=JisxY2D1/KZVAK9OWXdGAI8RzVvTwCryJlwEokh79X4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ur6eT+HL9cNAjC/G9b2dF7L+4Nw+WZp0kmphxeQ41qey9KQK/r6tbheSem0PPbwzcBgFp/G9y9y5O2ma3hHkTW5Q6tH3m/4nENJJ53NwbTgC1eCFt7t8FZgH6qm2pzBE+xgiHouEU6ec0TFbsW3xufWlkvXkP5D4g8b6Lb7at9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=msnbx483; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1522C433C7;
-	Mon, 29 Jan 2024 17:15:22 +0000 (UTC)
+	 MIME-Version; b=nv3EshmtO0ehJhj6Sbf/KqcTiDOXGK389z5TGDkL16k2J0YNakK3YuygmvURvS/6OKgZZBwPDNGubR1Wuo5XWmW/HFv5h9W0OmtEaIk5k/j9RlnJPbbon6kTuUFvu0rr1lM51rzbmao71SPAVjoQYK27e2rO2o503K8j1ztZwyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQFcjUlA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CBFC433A6;
+	Mon, 29 Jan 2024 17:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548522;
-	bh=0sDZN+br8R3TqkFj87Ib69prPeoEGOU9WbfGb6VC3kM=;
+	s=korg; t=1706548183;
+	bh=JisxY2D1/KZVAK9OWXdGAI8RzVvTwCryJlwEokh79X4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=msnbx483YMv3UtRqeEJUtRIT2uUF6zZeFTJ9swROewSbA5bVrsd8ujTTWMfu6ixef
-	 e97zYFizRjMGbLgIDJjOuM5KRnJi8tjaSKNjDkayI9P5LRXN/zao0hjdJw+YS6ID0Q
-	 tISswE6mXy0YlSFU9uuGmbIZUeFqK/K5TlUkIyGg=
+	b=EQFcjUlAjT2+CBpS/ijksB4+Td9z4VI6xlcEEGqxsQ4FtlMIEQBXNIOMluvJafdND
+	 XGB6eEgpM8EVMg5UoLfqGcAquE8501cJ+5r7aLqHmAwtkpoVxu+r3dDuYImOcAEUpO
+	 dMhcu9bhfyx/cwcVeRB5S7jSJhm9izJBMtRnOjtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	Chris Goldsworthy <quic_cgoldswo@quicinc.com>,
-	Michal Hocko <mhocko@suse.com>,
-	David Rientjes <rientjes@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Pavankumar Kondeti <quic_pkondeti@quicinc.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Joakim Tjernlund <Joakim.Tjernlund@infinera.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 138/331] mm: page_alloc: unreserve highatomic page blocks before oom
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 002/185] usb: dwc3: gadget: Queue PM runtime idle on disconnect event
 Date: Mon, 29 Jan 2024 09:03:22 -0800
-Message-ID: <20240129170018.982808411@linuxfoundation.org>
+Message-ID: <20240129165958.678243194@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,109 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charan Teja Kalla <quic_charante@quicinc.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-commit ac3f3b0a55518056bc80ed32a41931c99e1f7d81 upstream.
+[ Upstream commit 3c7af52c7616c3aa6dacd2336ec748d4a65df8f4 ]
 
-__alloc_pages_direct_reclaim() is called from slowpath allocation where
-high atomic reserves can be unreserved after there is a progress in
-reclaim and yet no suitable page is found.  Later should_reclaim_retry()
-gets called from slow path allocation to decide if the reclaim needs to be
-retried before OOM kill path is taken.
+There is a scenario where DWC3 runtime suspend is blocked due to the
+dwc->connected flag still being true while PM usage_count is zero after
+DWC3 giveback is completed and the USB gadget session is being terminated.
+This leads to a case where nothing schedules a PM runtime idle for the
+device.
 
-should_reclaim_retry() checks the available(reclaimable + free pages)
-memory against the min wmark levels of a zone and returns:
+The exact condition is seen with the following sequence:
+  1.  USB bus reset is issued by the host
+  2.  Shortly after, or concurrently, a USB PD DR SWAP request is received
+      (sink->source)
+  3.  USB bus reset event handler runs and issues
+      dwc3_stop_active_transfers(), and pending transfer are stopped
+  4.  DWC3 usage_count decremented to 0, and runtime idle occurs while
+      dwc->connected == true, returns -EBUSY
+  5.  DWC3 disconnect event seen, dwc->connected set to false due to DR
+      swap handling
+  6.  No runtime idle after this point
 
-a) true, if it is above the min wmark so that slow path allocation will
-   do the reclaim retries.
+Address this by issuing an asynchronous PM runtime idle call after the
+disconnect event is completed, as it modifies the dwc->connected flag,
+which is what blocks the initial runtime idle.
 
-b) false, thus slowpath allocation takes oom kill path.
-
-should_reclaim_retry() can also unreserves the high atomic reserves **but
-only after all the reclaim retries are exhausted.**
-
-In a case where there are almost none reclaimable memory and free pages
-contains mostly the high atomic reserves but allocation context can't use
-these high atomic reserves, makes the available memory below min wmark
-levels hence false is returned from should_reclaim_retry() leading the
-allocation request to take OOM kill path.  This can turn into a early oom
-kill if high atomic reserves are holding lot of free memory and
-unreserving of them is not attempted.
-
-(early)OOM is encountered on a VM with the below state:
-[  295.998653] Normal free:7728kB boost:0kB min:804kB low:1004kB
-high:1204kB reserved_highatomic:8192KB active_anon:4kB inactive_anon:0kB
-active_file:24kB inactive_file:24kB unevictable:1220kB writepending:0kB
-present:70732kB managed:49224kB mlocked:0kB bounce:0kB free_pcp:688kB
-local_pcp:492kB free_cma:0kB
-[  295.998656] lowmem_reserve[]: 0 32
-[  295.998659] Normal: 508*4kB (UMEH) 241*8kB (UMEH) 143*16kB (UMEH)
-33*32kB (UH) 7*64kB (UH) 0*128kB 0*256kB 0*512kB 0*1024kB 0*2048kB
-0*4096kB = 7752kB
-
-Per above log, the free memory of ~7MB exist in the high atomic reserves
-is not freed up before falling back to oom kill path.
-
-Fix it by trying to unreserve the high atomic reserves in
-should_reclaim_retry() before __alloc_pages_direct_reclaim() can fallback
-to oom kill path.
-
-Link: https://lkml.kernel.org/r/1700823445-27531-1-git-send-email-quic_charante@quicinc.com
-Fixes: 0aaa29a56e4f ("mm, page_alloc: reserve pageblocks for high-order atomic allocations on demand")
-Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Reported-by: Chris Goldsworthy <quic_cgoldswo@quicinc.com>
-Suggested-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: David Rientjes <rientjes@google.com>
-Cc: Chris Goldsworthy <quic_cgoldswo@quicinc.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Pavankumar Kondeti <quic_pkondeti@quicinc.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20240103214946.2596-1-quic_wcheng@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_alloc.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/usb/dwc3/gadget.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3809,14 +3809,9 @@ should_reclaim_retry(gfp_t gfp_mask, uns
- 	else
- 		(*no_progress_loops)++;
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 339e8c3f7c50..5617a75b0d74 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3860,6 +3860,13 @@ static void dwc3_gadget_disconnect_interrupt(struct dwc3 *dwc)
+ 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
  
--	/*
--	 * Make sure we converge to OOM if we cannot make any progress
--	 * several times in the row.
--	 */
--	if (*no_progress_loops > MAX_RECLAIM_RETRIES) {
--		/* Before OOM, exhaust highatomic_reserve */
--		return unreserve_highatomic_pageblock(ac, true);
--	}
-+	if (*no_progress_loops > MAX_RECLAIM_RETRIES)
-+		goto out;
+ 	dwc3_ep0_reset_state(dwc);
 +
- 
- 	/*
- 	 * Keep reclaiming pages while there is a chance this will lead
-@@ -3859,6 +3854,11 @@ should_reclaim_retry(gfp_t gfp_mask, uns
- 		schedule_timeout_uninterruptible(1);
- 	else
- 		cond_resched();
-+out:
-+	/* Before OOM, exhaust highatomic_reserve */
-+	if (!ret)
-+		return unreserve_highatomic_pageblock(ac, true);
-+
- 	return ret;
++	/*
++	 * Request PM idle to address condition where usage count is
++	 * already decremented to zero, but waiting for the disconnect
++	 * interrupt to set dwc->connected to FALSE.
++	 */
++	pm_request_idle(dwc->dev);
  }
  
+ static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
+-- 
+2.43.0
+
 
 
 
