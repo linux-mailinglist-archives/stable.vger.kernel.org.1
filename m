@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-16725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D920840E28
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D548841043
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ED5B1F2D101
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF2131F242CE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950C015B2EF;
-	Mon, 29 Jan 2024 17:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013AB755E3;
+	Mon, 29 Jan 2024 17:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEzTuq5d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ezH9aLcS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BB8158D64;
-	Mon, 29 Jan 2024 17:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3227755EF;
+	Mon, 29 Jan 2024 17:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548234; cv=none; b=r9fke4M1qLYQ6Z3zn3vDcvxZoJC8RM0AAvzWrnPFjURDvZtwf/9bL5UsHERmgkf6SLeHFYK+USIglg9xnUv0GeVT3oes6eZqHBzjZnTuXaCI81o+wvrRgZqgD+wH9aXLpR3HM16T0nso+y0K96PYaDSVdO8NOKI6OuT3e+vMBpg=
+	t=1706548591; cv=none; b=uvxgEHpJQtD+8vndT4+J+tgSOPAIK5xM2WbIBrLrLpumRNseZWlsjXmR+bxcf2JwtaaJFKXbuMCZ4sK7vAC7yIuDIER4otDXeVcDyQeQg4nNpBmUTuovFDHPU3Fj5qNWTaCTKJuLu5auVK72NEsQonCquXG4P6Gi0Kt5wEWWYOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548234; c=relaxed/simple;
-	bh=vVfqCSfh+X+7Ac2/yX/Qbeo/3wzJVlAsHpKt+PiM6pw=;
+	s=arc-20240116; t=1706548591; c=relaxed/simple;
+	bh=QWZtqCBWlBZoQ9IVRM1kBRdMmAMO3xuyzOACU89wT28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dNOvvrCoTpNLGmg82RsFC5f/hnBdd0r7tKhX0K6upfR7JoNl5AFHo/EjlQIb10oh+xOqDcdopcGyhMYXN36sHoz7deGbo4GHcnMEdAEeK66z5gL+LE66M0tQzqFirLAyyirucVmA+Pic1jl4PdrrW1xl+4Lwg4Ph3n/6yXIuSpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEzTuq5d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BE8C433F1;
-	Mon, 29 Jan 2024 17:10:34 +0000 (UTC)
+	 MIME-Version; b=kCwnkWFH39gClHicP8txcHgIltvn7U5tw8FEr/bLJxrKvKCY5UlOQKb1mUc2v10ITysLpVpoEBUgyhdpRSOfxwBe9UJ7OgOapkFkcm8MLcH4L/crPC9e8dUQRycpC0Ifb0tPPndoFlS65jA+VoSo4MEhnRlYMv5+QQNnCYTErK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ezH9aLcS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A9CCC43394;
+	Mon, 29 Jan 2024 17:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548234;
-	bh=vVfqCSfh+X+7Ac2/yX/Qbeo/3wzJVlAsHpKt+PiM6pw=;
+	s=korg; t=1706548591;
+	bh=QWZtqCBWlBZoQ9IVRM1kBRdMmAMO3xuyzOACU89wT28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DEzTuq5dajNI19z7uZCmKBAOWCW2Ek7NMleGJl4G85T/qdfX9B+aUJCsIFL5udzMd
-	 /f/eP7w/Jf+m1H8s27E+2UOpKXWiOHVh8uhURE79UGDJ/EK4XezXYSeDOpuHR0Nan7
-	 PEvsZmfF+V7+GeCMDZ8rZPDYw3wHIDK+dvorLGyo=
+	b=ezH9aLcSvYAwNqmz+8r63akK+wO2QkfiL1P2uKr/POmRRNEs3eKD1cdkEHLpP2I3Z
+	 CkcFNzmU8rWmXCtLRErw4n16BH2gLeIq877WHsORAh6w8owEA40xCI8waBjlU2Itjr
+	 ZiFi4uqxpsa+Eat4jfllycAV6FF0YJNdEqKtBFjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Melissa Wen <mwen@igalia.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Ivan Lipski <ivlipski@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.7 258/346] Revert "drm/amd/display: fix bandwidth validation failure on DCN 2.1"
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 225/331] fjes: fix memleaks in fjes_hw_setup
 Date: Mon, 29 Jan 2024 09:04:49 -0800
-Message-ID: <20240129170023.981943521@linuxfoundation.org>
+Message-ID: <20240129170021.457745876@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Lipski <ivlipski@amd.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-commit c2ab9ce0ee7225fc05f58a6671c43b8a3684f530 upstream.
+[ Upstream commit f6cc4b6a3ae53df425771000e9c9540cce9b7bb1 ]
 
-This commit causes dmesg-warn on several IGT tests on DCN 3.1.6: *ERROR*
-link_enc_cfg_validate: Invalid link encoder assignments - 0x1c
+In fjes_hw_setup, it allocates several memory and delay the deallocation
+to the fjes_hw_exit in fjes_probe through the following call chain:
 
-Affected IGT tests include:
-- amdgpu/[amd_assr|amd_plane|amd_hotplug]
-- kms_atomic
-- kms_color
-- kms_flip
-- kms_properties
-- kms_universal_plane
+fjes_probe
+  |-> fjes_hw_init
+        |-> fjes_hw_setup
+  |-> fjes_hw_exit
 
-and some other tests
+However, when fjes_hw_setup fails, fjes_hw_exit won't be called and thus
+all the resources allocated in fjes_hw_setup will be leaked. In this
+patch, we free those resources in fjes_hw_setup and prevents such leaks.
 
-This reverts commit 3a0fa3bc245ef92838a8296e0055569b8dff94c4.
-
-Cc: Melissa Wen <mwen@igalia.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Ivan Lipski <ivlipski@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2fcbca687702 ("fjes: platform_driver's .probe and .remove routine")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240122172445.3841883-1-alexious@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/fjes/fjes_hw.c | 37 ++++++++++++++++++++++++++++++-------
+ 1 file changed, 30 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -10479,7 +10479,7 @@ static int amdgpu_dm_atomic_check(struct
- 			DRM_DEBUG_DRIVER("drm_dp_mst_atomic_check() failed\n");
- 			goto fail;
- 		}
--		status = dc_validate_global_state(dc, dm_state->context, false);
-+		status = dc_validate_global_state(dc, dm_state->context, true);
- 		if (status != DC_OK) {
- 			DRM_DEBUG_DRIVER("DC global validation failure: %s (%d)",
- 				       dc_status_to_str(status), status);
+diff --git a/drivers/net/fjes/fjes_hw.c b/drivers/net/fjes/fjes_hw.c
+index 704e949484d0..b9b5554ea862 100644
+--- a/drivers/net/fjes/fjes_hw.c
++++ b/drivers/net/fjes/fjes_hw.c
+@@ -221,21 +221,25 @@ static int fjes_hw_setup(struct fjes_hw *hw)
+ 
+ 	mem_size = FJES_DEV_REQ_BUF_SIZE(hw->max_epid);
+ 	hw->hw_info.req_buf = kzalloc(mem_size, GFP_KERNEL);
+-	if (!(hw->hw_info.req_buf))
+-		return -ENOMEM;
++	if (!(hw->hw_info.req_buf)) {
++		result = -ENOMEM;
++		goto free_ep_info;
++	}
+ 
+ 	hw->hw_info.req_buf_size = mem_size;
+ 
+ 	mem_size = FJES_DEV_RES_BUF_SIZE(hw->max_epid);
+ 	hw->hw_info.res_buf = kzalloc(mem_size, GFP_KERNEL);
+-	if (!(hw->hw_info.res_buf))
+-		return -ENOMEM;
++	if (!(hw->hw_info.res_buf)) {
++		result = -ENOMEM;
++		goto free_req_buf;
++	}
+ 
+ 	hw->hw_info.res_buf_size = mem_size;
+ 
+ 	result = fjes_hw_alloc_shared_status_region(hw);
+ 	if (result)
+-		return result;
++		goto free_res_buf;
+ 
+ 	hw->hw_info.buffer_share_bit = 0;
+ 	hw->hw_info.buffer_unshare_reserve_bit = 0;
+@@ -246,11 +250,11 @@ static int fjes_hw_setup(struct fjes_hw *hw)
+ 
+ 			result = fjes_hw_alloc_epbuf(&buf_pair->tx);
+ 			if (result)
+-				return result;
++				goto free_epbuf;
+ 
+ 			result = fjes_hw_alloc_epbuf(&buf_pair->rx);
+ 			if (result)
+-				return result;
++				goto free_epbuf;
+ 
+ 			spin_lock_irqsave(&hw->rx_status_lock, flags);
+ 			fjes_hw_setup_epbuf(&buf_pair->tx, mac,
+@@ -273,6 +277,25 @@ static int fjes_hw_setup(struct fjes_hw *hw)
+ 	fjes_hw_init_command_registers(hw, &param);
+ 
+ 	return 0;
++
++free_epbuf:
++	for (epidx = 0; epidx < hw->max_epid ; epidx++) {
++		if (epidx == hw->my_epid)
++			continue;
++		fjes_hw_free_epbuf(&hw->ep_shm_info[epidx].tx);
++		fjes_hw_free_epbuf(&hw->ep_shm_info[epidx].rx);
++	}
++	fjes_hw_free_shared_status_region(hw);
++free_res_buf:
++	kfree(hw->hw_info.res_buf);
++	hw->hw_info.res_buf = NULL;
++free_req_buf:
++	kfree(hw->hw_info.req_buf);
++	hw->hw_info.req_buf = NULL;
++free_ep_info:
++	kfree(hw->ep_shm_info);
++	hw->ep_shm_info = NULL;
++	return result;
+ }
+ 
+ static void fjes_hw_cleanup(struct fjes_hw *hw)
+-- 
+2.43.0
+
 
 
 
