@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-16832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4F9A840E99
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2DF4840E5D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90F06281D27
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31AE21C21633
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8543A15FB27;
-	Mon, 29 Jan 2024 17:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775D015B963;
+	Mon, 29 Jan 2024 17:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZwbH1cx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEvhfXNN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41EE7157E6B;
-	Mon, 29 Jan 2024 17:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B2B15B961;
+	Mon, 29 Jan 2024 17:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548312; cv=none; b=TZhc7RDRtYM+PBfXDBASGgyr9t3gOW6uuaJo/JxIBpkvOG6IRlyFApnt1SuVEDCRnd3Q1dKxSMMDSxABzy7sYFuoxJoMlaA1YpZAT1RrZyYYoPmzWXZj5Q9d1mdeL57pJ/oKi+sSheVk2dWs2tsRGu3Wg1ezUrt4yutkrmr2V6c=
+	t=1706548271; cv=none; b=jxlRp8OV/QVZ0NsKBeReIOvglo1lK/OHhWtm616sg5TBBtfX042ESpVM4/pkSKMKkoqREFWRCkv0B5uaIaPkfVIBwn1RnPvFWEc6VZi0jst/Oqg44K1yavvDsz8WsVh3hFu8WriJXJUBfshiymlPoIoPcjA0IpOibQA1ZJrJZbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548312; c=relaxed/simple;
-	bh=g8BzngOBHQ03EGrSipr+8TXX8RLrPVsVSBgsEuyr47w=;
+	s=arc-20240116; t=1706548271; c=relaxed/simple;
+	bh=5oqWWDfeTuW2HyDLeuoSO4d2ZJuSgCuL7B9aXYum+0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CN65nNgjZMKhQ/BaDttSrhO0xzB+vDpAmAAL1A25rkk8CCmZ9sRXNb3IpkDC1uGsshOx8aiK/t7VgdonE3XeBwg0B3DwlDNoB/btgscDx13E9wVlygnjrA1Ass79KhHCONH6yy/KXwp8RTd96qK6e2JaKgPmd8irL78eQm8ik5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZwbH1cx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B703C43394;
-	Mon, 29 Jan 2024 17:11:52 +0000 (UTC)
+	 MIME-Version; b=EvdlUpSB2pTepH+l4StnYXBmMblsozK4rR5Y1xaaDTeDSREEvwuLkbLmgPDXLaZKbbWEsOTXzfek8fInYeTzOicK9r2Jo5xX//0pJdCwccTDdKu0luXeC4fREkle3MRsmciYYvD6iZQaCzh5wfrG0ERqG4c8fFE7jxyINuKTxd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pEvhfXNN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2653C433F1;
+	Mon, 29 Jan 2024 17:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548312;
-	bh=g8BzngOBHQ03EGrSipr+8TXX8RLrPVsVSBgsEuyr47w=;
+	s=korg; t=1706548271;
+	bh=5oqWWDfeTuW2HyDLeuoSO4d2ZJuSgCuL7B9aXYum+0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZwbH1cx+ENv7RcIwawhrbLMQn0Zd2zwFlk6JkeNejWVPUQz7hf8UCjo2bAMCg974
-	 oWEsZW3hs55KDee8HYyC6Za3r9J89hxWjYG6J7Tc44FXQgrEVjSoVWguZl3fOx/q8R
-	 YYL/nZCfKSkkHAEkeBTvef6zPPtPV8Oa3JcfRtqY=
+	b=pEvhfXNNM1Wz+Tt9H8dBJh6SyDixf/ylWZblmQU03+x3463dDibt+z1L2dAQhlNRl
+	 DkkQR8/13WDL2R5pLKxi6Kfx4IXc2hVDIo8F7PsziUGGNvBEhJhQDT1JdrhOnO7rfD
+	 XGsnzznuGb7MtxXN//HKSIvg1nIVNkBrwaJgzl8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 283/346] media: v4l: cci: Include linux/bits.h
-Date: Mon, 29 Jan 2024 09:05:14 -0800
-Message-ID: <20240129170024.712738827@linuxfoundation.org>
+Subject: [PATCH 6.7 284/346] media: v4l: cci: Add macros to obtain register width and address
+Date: Mon, 29 Jan 2024 09:05:15 -0800
+Message-ID: <20240129170024.739270927@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -70,9 +70,14 @@ Content-Transfer-Encoding: 8bit
 
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit eba5058633b4d11e2a4d65eae9f1fce0b96365d9 ]
+[ Upstream commit cd93cc245dfe334c38da98c14b34f9597e1b4ea6 ]
 
-linux/bits.h is needed for GENMASK(). Include it.
+Add CCI_REG_WIDTH() macro to obtain register width in bits and similarly,
+CCI_REG_WIDTH_BYTES() to obtain it in bytes.
+
+Also add CCI_REG_ADDR() macro to obtain the address of a register.
+
+Use both macros in v4l2-cci.c, too.
 
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
@@ -81,21 +86,59 @@ Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Stable-dep-of: d92e7a013ff3 ("media: v4l2-cci: Add support for little-endian encoded registers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/media/v4l2-cci.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/v4l2-core/v4l2-cci.c | 8 ++++----
+ include/media/v4l2-cci.h           | 5 +++++
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/media/v4l2-core/v4l2-cci.c b/drivers/media/v4l2-core/v4l2-cci.c
+index bc2dbec019b0..3179160abde3 100644
+--- a/drivers/media/v4l2-core/v4l2-cci.c
++++ b/drivers/media/v4l2-core/v4l2-cci.c
+@@ -25,8 +25,8 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+ 	if (err && *err)
+ 		return *err;
+ 
+-	len = FIELD_GET(CCI_REG_WIDTH_MASK, reg);
+-	reg = FIELD_GET(CCI_REG_ADDR_MASK, reg);
++	len = CCI_REG_WIDTH_BYTES(reg);
++	reg = CCI_REG_ADDR(reg);
+ 
+ 	ret = regmap_bulk_read(map, reg, buf, len);
+ 	if (ret) {
+@@ -75,8 +75,8 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
+ 	if (err && *err)
+ 		return *err;
+ 
+-	len = FIELD_GET(CCI_REG_WIDTH_MASK, reg);
+-	reg = FIELD_GET(CCI_REG_ADDR_MASK, reg);
++	len = CCI_REG_WIDTH_BYTES(reg);
++	reg = CCI_REG_ADDR(reg);
+ 
+ 	switch (len) {
+ 	case 1:
 diff --git a/include/media/v4l2-cci.h b/include/media/v4l2-cci.h
-index 0f6803e4b17e..f2c2962e936b 100644
+index f2c2962e936b..a2835a663df5 100644
 --- a/include/media/v4l2-cci.h
 +++ b/include/media/v4l2-cci.h
 @@ -7,6 +7,7 @@
  #ifndef _V4L2_CCI_H
  #define _V4L2_CCI_H
  
-+#include <linux/bits.h>
++#include <linux/bitfield.h>
+ #include <linux/bits.h>
  #include <linux/types.h>
  
- struct i2c_client;
+@@ -34,6 +35,10 @@ struct cci_reg_sequence {
+ #define CCI_REG_WIDTH_SHIFT		16
+ #define CCI_REG_WIDTH_MASK		GENMASK(19, 16)
+ 
++#define CCI_REG_WIDTH_BYTES(x)		FIELD_GET(CCI_REG_WIDTH_MASK, x)
++#define CCI_REG_WIDTH(x)		(CCI_REG_WIDTH_BYTES(x) << 3)
++#define CCI_REG_ADDR(x)			FIELD_GET(CCI_REG_ADDR_MASK, x)
++
+ #define CCI_REG8(x)			((1 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG16(x)			((2 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG24(x)			((3 << CCI_REG_WIDTH_SHIFT) | (x))
 -- 
 2.43.0
 
