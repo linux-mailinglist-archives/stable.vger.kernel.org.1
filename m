@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-16950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6687F840F30
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1559841085
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22878283958
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FF661F24A1D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10A015AAD8;
-	Mon, 29 Jan 2024 17:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E163115F336;
+	Mon, 29 Jan 2024 17:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJ1Ot1Yo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NZX8P8j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A7015AAD9;
-	Mon, 29 Jan 2024 17:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE1476058;
+	Mon, 29 Jan 2024 17:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548398; cv=none; b=jMK4Tp0dnsYYMUNwDGDzrze17CGyp8TY46iuNnxR0ugnRB/XG2g+QclwV99i+wHVRTnCfh11CmgkvUADpg85IFimE4Ae7A7qqj9jqXyq3KJZlu7TNcDzHUCI1mdD1qg/Sj5k/yC2xU1SwAaPppVW0d3+3hhKT3CnIo/siY0MMOU=
+	t=1706548637; cv=none; b=KqMUsNGO6FJMa2ijptTdHcxxBOwQ8lZ6p+rUBKelsXAs8ob4+kmTNHRBLiP2Oe7wgaeiAKt3l+cfl5rG8T2hPwxReUC7EiYBt4rMnKBUCBbQldFqEWvGAqxPwNnZaj9iRMezf1KoLLRndz7M6MqHtOpUQVYRR4K0invLniLKggQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548398; c=relaxed/simple;
-	bh=X+GejbycaQ1NCq6kbyPiA4BA4T/XdN8D9m1Wnq1qeRA=;
+	s=arc-20240116; t=1706548637; c=relaxed/simple;
+	bh=YbIURZAeyFbKpkJYkFE7T2ZaObFAD6qsbrL8rZZ4GJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6kIIfjzA5aSERvB2Mn71FDsNlWPHla/hH0/VVfKH4DZ5ILYkM0IfB5Od8fLQUEXcIHm03kylNqWQmWrKxbLWqLy8EacdAD0P6a2luqUQI4lKaMpaKmdCd1FztTid+UUbuctXXUsgNxFkJlwgvo18IXrXKskzG6swzwLZwKUFQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJ1Ot1Yo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688BBC433F1;
-	Mon, 29 Jan 2024 17:13:18 +0000 (UTC)
+	 MIME-Version; b=X5F+wXnETNnymvDYrAdrIBcsepYPsDi5fT1pT01IvNhRt7Eh7oyLqEor/W5b3axd1DHOyMydir16kxTZZc4yyin8v7Cn9VEza/zS7Is+n2mBbJrgJIOlVxRlC9wPRx7QgJ7Q87PHgfijIPF26GWM7qN0gZxD+qEAEQHtzCG3NdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NZX8P8j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BC0C43394;
+	Mon, 29 Jan 2024 17:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548398;
-	bh=X+GejbycaQ1NCq6kbyPiA4BA4T/XdN8D9m1Wnq1qeRA=;
+	s=korg; t=1706548637;
+	bh=YbIURZAeyFbKpkJYkFE7T2ZaObFAD6qsbrL8rZZ4GJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJ1Ot1YoIs6dbX9sBBMReKzH+TXhcuLIfkyX9iImglwDY2UhciDztY0X3wOyyaz48
-	 9klE9MJy6kXq0WAF45Jl4GctAKTbHpZpXM5HofgGW1ATYD1hZtOqUhtr4+WO3WRsh9
-	 If4lDYYN5+3vIoF8eB7cPEmOuzIxJQ2aQMMiKpHM=
+	b=1NZX8P8jKkoxJTitMGdONN+tRXURCOX0Xzx6mEcpVz9BeL9QkEwOEaVQFdfRqhvSd
+	 UNpy6ntpyZoAbLGJu2YR1L8uHiamTB/KYkv0D456vu+BBwi1m0FSGe76UjYCwe8JHE
+	 NZGor5y3LiE7AxFppgh384G834KkzISSMbVNTcDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Allison Karlitskaya <allison.karlitskaya@redhat.com>,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 176/185] block: Move checking GENHD_FL_NO_PART to bdev_add_partition()
-Date: Mon, 29 Jan 2024 09:06:16 -0800
-Message-ID: <20240129170004.245352604@linuxfoundation.org>
+Subject: [PATCH 6.6 313/331] ARM: dts: exynos4212-tab3: add samsung,invert-vclk flag to fimd
+Date: Mon, 29 Jan 2024 09:06:17 -0800
+Message-ID: <20240129170024.042847286@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-[ Upstream commit 7777f47f2ea64efd1016262e7b59fab34adfb869 ]
+[ Upstream commit eab4f56d3e75dad697acf8dc2c8be3c341d6c63e ]
 
-Commit 1a721de8489f ("block: don't add or resize partition on the disk
-with GENHD_FL_NO_PART") prevented all operations about partitions on disks
-with GENHD_FL_NO_PART in blkpg_do_ioctl() since they are meaningless.
-However, it changed error code in some scenarios. So move checking
-GENHD_FL_NO_PART to bdev_add_partition() to eliminate impact.
+After more investigation, I've found that it's not the panel driver
+config that needs to be modified to invert the data polarity, but
+the FIMD config.
 
-Fixes: 1a721de8489f ("block: don't add or resize partition on the disk with GENHD_FL_NO_PART")
-Reported-by: Allison Karlitskaya <allison.karlitskaya@redhat.com>
-Closes: https://lore.kernel.org/all/CAOYeF9VsmqKMcQjo1k6YkGNujwN-nzfxY17N3F-CMikE1tYp+w@mail.gmail.com/
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240118130401.792757-1-lilingfeng@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Add the missing invert-vclk option that is required to get the display
+to work correctly.
+
+Fixes: ee37a457af1d ("ARM: dts: exynos: Add Samsung Galaxy Tab 3 8.0 boards")
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Link: https://lore.kernel.org/r/20240105-tab3-display-fixes-v2-1-904d1207bf6f@gmail.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/ioctl.c           | 2 --
- block/partitions/core.c | 5 +++++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/block/ioctl.c b/block/ioctl.c
-index ebe4a2653622..47567ba1185a 100644
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -20,8 +20,6 @@ static int blkpg_do_ioctl(struct block_device *bdev,
- 	struct blkpg_partition p;
- 	sector_t start, length;
+diff --git a/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi b/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi
+index ce81e42bf5eb..39469b708f91 100644
+--- a/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi
++++ b/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi
+@@ -435,6 +435,7 @@ &exynos_usbphy {
+ };
  
--	if (disk->flags & GENHD_FL_NO_PART)
--		return -EINVAL;
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EACCES;
- 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
-diff --git a/block/partitions/core.c b/block/partitions/core.c
-index b8112f52d388..3927f4283f6b 100644
---- a/block/partitions/core.c
-+++ b/block/partitions/core.c
-@@ -453,6 +453,11 @@ int bdev_add_partition(struct gendisk *disk, int partno, sector_t start,
- 		goto out;
- 	}
+ &fimd {
++	samsung,invert-vclk;
+ 	status = "okay";
+ };
  
-+	if (disk->flags & GENHD_FL_NO_PART) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
- 	if (partition_overlaps(disk, start, length, -1)) {
- 		ret = -EBUSY;
- 		goto out;
 -- 
 2.43.0
 
