@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-16790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70859840E6D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E79E841015
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECBE3B2788D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51DEB1C239CB
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C3B15A49A;
-	Mon, 29 Jan 2024 17:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3210215A485;
+	Mon, 29 Jan 2024 17:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGEYjNG1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwEkxZux"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D2115B96E;
-	Mon, 29 Jan 2024 17:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52E415A490;
+	Mon, 29 Jan 2024 17:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548281; cv=none; b=LjrqTWgtTjoq3nCnDLKBAD+SGhKjSMmIjUXbsSRdMHbVHKwlauZg+Cshcgce2v4ZyFn1GdHwRYjhsIC0Acl5kEN7vzUQcocqb+waWZ4pO03PEKiKrmNYiYGL0xv2777xwgPzmkGHbM7BW7csnqDFyi8qduYVNIj9MRqNGTY0fRA=
+	t=1706548558; cv=none; b=uYCLhLkGyRPzS8Xa6QvdGrNY91yN2GdTqlymlaIAtVfnsf7Mr1t7DtouExwzsQeWWpgcr9n+gguwnOaIGh6/18Ddh/V5tobFni+SbxwaPtA8KSlRBIaG+V10Un0r8wLz1TLZJI1nvSM7KErGvfM+lkxDByAJKEpO0MFDJ76iCQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548281; c=relaxed/simple;
-	bh=l0vLHgnpcru7PbWhpbW2umS43udgEu4D5BVm20rDw30=;
+	s=arc-20240116; t=1706548558; c=relaxed/simple;
+	bh=4EP10tI8Opyx98TbwzhdFHkQQRC3IEXWOC8111wAUK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hs1dfIi+kz0uXj6+3hhI9rsV2WWfp9oxP3H8AAYwx3ngfqLSJ43CUi8Qd/4DyeInIKcb7qaCTfAmgiVx/RFsgpUJHuoQ50EybWFTFJa46ZNFo6y/c1bwpgM698FuG1gXZAiV2z5ZrJd2Q0/Fz8RneesZJouNFSlpaNeFEplUw3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGEYjNG1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F32C433F1;
-	Mon, 29 Jan 2024 17:11:21 +0000 (UTC)
+	 MIME-Version; b=OF05vKEuVTvZCH8CchGE5yTZKD52lqgZtf/UPYsCxcIO8ehFijf58zMXTO+PjI4V7f1Q8H8eRWy6rfQPJSBTbPQCrao3rW0LbRQL/ZLIpEKXku26Qtv8Crb68syCaZWGVxVqDBW5oySnA1RhCvamjEA25JRr6ubQH3kb2srpoug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwEkxZux; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1456C433C7;
+	Mon, 29 Jan 2024 17:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548281;
-	bh=l0vLHgnpcru7PbWhpbW2umS43udgEu4D5BVm20rDw30=;
+	s=korg; t=1706548557;
+	bh=4EP10tI8Opyx98TbwzhdFHkQQRC3IEXWOC8111wAUK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uGEYjNG1KuM8U5h6XdeIes+mhy3JP4P7tcmiQ8sTM7lwm3ljvHoyXTwY0MjpmybiR
-	 EqIXO8N70UxTo3CWDBOwTRdXl/EaTBsAr9wbPXrF3jgMTd5QY1CO5kS8IpYBdc3gLs
-	 wHvc68f3AJkprDGw6MqYdXfl5PZqrofBe7auYIGg=
+	b=BwEkxZuxP2Daiozb29RnK2D+dc1bBkj7oHjLI9OKYHyjA211jS0DEmVIICMzVIdK6
+	 Jog/Sc+E+Oj+mbJFCRUR8orr4bKZ6kXEzHyDF5BsqvCMvEUDZMPGVPLomiGUq3W7+K
+	 iJyfgaYZeGWYfXISHYbi3j0lte6bmSthIdMjMfR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 067/185] LoongArch/smp: Call rcutree_report_cpu_starting() earlier
-Date: Mon, 29 Jan 2024 09:04:27 -0800
-Message-ID: <20240129170000.758428350@linuxfoundation.org>
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Neeraj Upadhyay (AMD)" <neeraj.iitr10@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 204/331] rcu: Defer RCU kthreads wakeup when CPU is dying
+Date: Mon, 29 Jan 2024 09:04:28 -0800
+Message-ID: <20240129170020.846922833@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,82 +63,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-commit a2ccf46333d7b2cf9658f0d82ac74097c1542fae upstream.
+[ Upstream commit e787644caf7628ad3269c1fbd321c3255cf51710 ]
 
-rcutree_report_cpu_starting() must be called before cpu_probe() to avoid
-the following lockdep splat that triggered by calling __alloc_pages() when
-CONFIG_PROVE_RCU_LIST=y:
+When the CPU goes idle for the last time during the CPU down hotplug
+process, RCU reports a final quiescent state for the current CPU. If
+this quiescent state propagates up to the top, some tasks may then be
+woken up to complete the grace period: the main grace period kthread
+and/or the expedited main workqueue (or kworker).
 
- =============================
- WARNING: suspicious RCU usage
- 6.6.0+ #980 Not tainted
- -----------------------------
- kernel/locking/lockdep.c:3761 RCU-list traversed in non-reader section!!
- other info that might help us debug this:
- RCU used illegally from offline CPU!
- rcu_scheduler_active = 1, debug_locks = 1
- 1 lock held by swapper/1/0:
-  #0: 900000000c82ef98 (&pcp->lock){+.+.}-{2:2}, at: get_page_from_freelist+0x894/0x1790
- CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.0+ #980
- Stack : 0000000000000001 9000000004f79508 9000000004893670 9000000100310000
-         90000001003137d0 0000000000000000 90000001003137d8 9000000004f79508
-         0000000000000000 0000000000000001 0000000000000000 90000000048a3384
-         203a656d616e2065 ca43677b3687e616 90000001002c3480 0000000000000008
-         000000000000009d 0000000000000000 0000000000000001 80000000ffffe0b8
-         000000000000000d 0000000000000033 0000000007ec0000 13bbf50562dad831
-         9000000005140748 0000000000000000 9000000004f79508 0000000000000004
-         0000000000000000 9000000005140748 90000001002bad40 0000000000000000
-         90000001002ba400 0000000000000000 9000000003573ec8 0000000000000000
-         00000000000000b0 0000000000000004 0000000000000000 0000000000070000
-         ...
- Call Trace:
- [<9000000003573ec8>] show_stack+0x38/0x150
- [<9000000004893670>] dump_stack_lvl+0x74/0xa8
- [<900000000360d2bc>] lockdep_rcu_suspicious+0x14c/0x190
- [<900000000361235c>] __lock_acquire+0xd0c/0x2740
- [<90000000036146f4>] lock_acquire+0x104/0x2c0
- [<90000000048a955c>] _raw_spin_lock_irqsave+0x5c/0x90
- [<900000000381cd5c>] rmqueue_bulk+0x6c/0x950
- [<900000000381fc0c>] get_page_from_freelist+0xd4c/0x1790
- [<9000000003821c6c>] __alloc_pages+0x1bc/0x3e0
- [<9000000003583b40>] tlb_init+0x150/0x2a0
- [<90000000035742a0>] per_cpu_trap_init+0xf0/0x110
- [<90000000035712fc>] cpu_probe+0x3dc/0x7a0
- [<900000000357ed20>] start_secondary+0x40/0xb0
- [<9000000004897138>] smpboot_entry+0x54/0x58
+If those kthreads have a SCHED_FIFO policy, the wake up can indirectly
+arm the RT bandwith timer to the local offline CPU. Since this happens
+after hrtimers have been migrated at CPUHP_AP_HRTIMERS_DYING stage, the
+timer gets ignored. Therefore if the RCU kthreads are waiting for RT
+bandwidth to be available, they may never be actually scheduled.
 
-raw_smp_processor_id() is required in order to avoid calling into lockdep
-before RCU has declared the CPU to be watched for readers.
+This triggers TREE03 rcutorture hangs:
 
-See also commit 29368e093921 ("x86/smpboot: Move rcu_cpu_starting() earlier"),
-commit de5d9dae150c ("s390/smp: move rcu_cpu_starting() earlier") and commit
-99f070b62322 ("powerpc/smp: Call rcu_cpu_starting() earlier").
+	 rcu: INFO: rcu_preempt self-detected stall on CPU
+	 rcu:     4-...!: (1 GPs behind) idle=9874/1/0x4000000000000000 softirq=0/0 fqs=20 rcuc=21071 jiffies(starved)
+	 rcu:     (t=21035 jiffies g=938281 q=40787 ncpus=6)
+	 rcu: rcu_preempt kthread starved for 20964 jiffies! g938281 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=0
+	 rcu:     Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+	 rcu: RCU grace-period kthread stack dump:
+	 task:rcu_preempt     state:R  running task     stack:14896 pid:14    tgid:14    ppid:2      flags:0x00004000
+	 Call Trace:
+	  <TASK>
+	  __schedule+0x2eb/0xa80
+	  schedule+0x1f/0x90
+	  schedule_timeout+0x163/0x270
+	  ? __pfx_process_timeout+0x10/0x10
+	  rcu_gp_fqs_loop+0x37c/0x5b0
+	  ? __pfx_rcu_gp_kthread+0x10/0x10
+	  rcu_gp_kthread+0x17c/0x200
+	  kthread+0xde/0x110
+	  ? __pfx_kthread+0x10/0x10
+	  ret_from_fork+0x2b/0x40
+	  ? __pfx_kthread+0x10/0x10
+	  ret_from_fork_asm+0x1b/0x30
+	  </TASK>
 
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The situation can't be solved with just unpinning the timer. The hrtimer
+infrastructure and the nohz heuristics involved in finding the best
+remote target for an unpinned timer would then also need to handle
+enqueues from an offline CPU in the most horrendous way.
+
+So fix this on the RCU side instead and defer the wake up to an online
+CPU if it's too late for the local one.
+
+Reported-by: Paul E. McKenney <paulmck@kernel.org>
+Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.iitr10@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/smp.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/rcu/tree.c     | 34 +++++++++++++++++++++++++++++++++-
+ kernel/rcu/tree_exp.h |  3 +--
+ 2 files changed, 34 insertions(+), 3 deletions(-)
 
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -471,8 +471,9 @@ asmlinkage void start_secondary(void)
- 	unsigned int cpu;
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 9af42eae1ba3..4fe47ed95eeb 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -1013,6 +1013,38 @@ static bool rcu_future_gp_cleanup(struct rcu_node *rnp)
+ 	return needmore;
+ }
  
- 	sync_counter();
--	cpu = smp_processor_id();
-+	cpu = raw_smp_processor_id();
- 	set_my_cpu_offset(per_cpu_offset(cpu));
-+	rcu_cpu_starting(cpu);
++static void swake_up_one_online_ipi(void *arg)
++{
++	struct swait_queue_head *wqh = arg;
++
++	swake_up_one(wqh);
++}
++
++static void swake_up_one_online(struct swait_queue_head *wqh)
++{
++	int cpu = get_cpu();
++
++	/*
++	 * If called from rcutree_report_cpu_starting(), wake up
++	 * is dangerous that late in the CPU-down hotplug process. The
++	 * scheduler might queue an ignored hrtimer. Defer the wake up
++	 * to an online CPU instead.
++	 */
++	if (unlikely(cpu_is_offline(cpu))) {
++		int target;
++
++		target = cpumask_any_and(housekeeping_cpumask(HK_TYPE_RCU),
++					 cpu_online_mask);
++
++		smp_call_function_single(target, swake_up_one_online_ipi,
++					 wqh, 0);
++		put_cpu();
++	} else {
++		put_cpu();
++		swake_up_one(wqh);
++	}
++}
++
+ /*
+  * Awaken the grace-period kthread.  Don't do a self-awaken (unless in an
+  * interrupt or softirq handler, in which case we just might immediately
+@@ -1037,7 +1069,7 @@ static void rcu_gp_kthread_wake(void)
+ 		return;
+ 	WRITE_ONCE(rcu_state.gp_wake_time, jiffies);
+ 	WRITE_ONCE(rcu_state.gp_wake_seq, READ_ONCE(rcu_state.gp_seq));
+-	swake_up_one(&rcu_state.gp_wq);
++	swake_up_one_online(&rcu_state.gp_wq);
+ }
  
- 	cpu_probe();
- 	constant_clockevent_init();
+ /*
+diff --git a/kernel/rcu/tree_exp.h b/kernel/rcu/tree_exp.h
+index 8239b39d945b..6e87dc764f47 100644
+--- a/kernel/rcu/tree_exp.h
++++ b/kernel/rcu/tree_exp.h
+@@ -173,7 +173,6 @@ static bool sync_rcu_exp_done_unlocked(struct rcu_node *rnp)
+ 	return ret;
+ }
+ 
+-
+ /*
+  * Report the exit from RCU read-side critical section for the last task
+  * that queued itself during or before the current expedited preemptible-RCU
+@@ -201,7 +200,7 @@ static void __rcu_report_exp_rnp(struct rcu_node *rnp,
+ 			raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
+ 			if (wake) {
+ 				smp_mb(); /* EGP done before wake_up(). */
+-				swake_up_one(&rcu_state.expedited_wq);
++				swake_up_one_online(&rcu_state.expedited_wq);
+ 			}
+ 			break;
+ 		}
+-- 
+2.43.0
+
 
 
 
