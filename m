@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-16758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 837B1840E4A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9D6840E57
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28488283A05
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C30728473B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363BB15EABC;
-	Mon, 29 Jan 2024 17:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB57C15F310;
+	Mon, 29 Jan 2024 17:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q9EP9Ky4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuNiExuh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FA515A483;
-	Mon, 29 Jan 2024 17:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4CE15A497;
+	Mon, 29 Jan 2024 17:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548258; cv=none; b=RMOePy88MquzLe1v8jcjAmxh0MnkvXohe6g9wkMDKe+v/ZQMBLQ3vuqn4i2UJ3pLZrRuzNc51R3TnQdhLQeW6KacJfrIoJwzyhTbQdWFHd2Ov4uV5WZrWiZwvzYGpjAEFwQORF3OBNUbUjV5UdKOlIf78+oq8ewf1ERlOflHDQ4=
+	t=1706548267; cv=none; b=GLrtHrq53v5a1nbIo2gU2KWsnCphIcZfP1q5a9L17pyYjCTj4e/yBX8QvTJ1l8FTWbvKborDtMTyC5qHFyKmh2z6vOCkpOnfudGKSkjGDvrrQYzzUbYX9a/viZGkvOOghuw6xcg5UJdn2XEnrwNYLydlxcstHc93Vkk+ttWGDsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548258; c=relaxed/simple;
-	bh=NiqQCDuVxY7wK1+qZi6RtKcEjN9Y6YwA5L4Z8pz+QF4=;
+	s=arc-20240116; t=1706548267; c=relaxed/simple;
+	bh=9LKy4wShUo3Qykac4DJxUfuckb7Kdy5g7SFGiACevwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+RyPF4tvtywgv+DQHqVa0aYYAvnZFkO0hBajyXAmhjePS+1OJrYKxNsy5cNZ+fbH0psku0bL3paY+12hOdbtsY6DDoQwOIexx5drM0rof1uXXnSuR9+G1wlpVuNu3bJDIWa45M3N+QsKKEMrlbVmNK/sxy6eHBpf4QuOPFpJD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q9EP9Ky4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B161CC433C7;
-	Mon, 29 Jan 2024 17:10:57 +0000 (UTC)
+	 MIME-Version; b=eoOwYJUplC/1FLqUSH1X5kuX95ipS+27MruYnZf0b55j8bbJL3kPEnAvGWdZqKi+su1q5qqLVpvJytxAuBWFmLefMyXiRIJbV+iFGOS3BEWz1VftIhXV30pgZR500Gjsm93Fp0eCK/2SEW7zer7T49GqaWIpWO2ZWek8Ch+vyTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuNiExuh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCB3C43390;
+	Mon, 29 Jan 2024 17:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548257;
-	bh=NiqQCDuVxY7wK1+qZi6RtKcEjN9Y6YwA5L4Z8pz+QF4=;
+	s=korg; t=1706548267;
+	bh=9LKy4wShUo3Qykac4DJxUfuckb7Kdy5g7SFGiACevwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q9EP9Ky4wMVuAKmGysoEktc5lNfeGgG1Eu8x2j5besh8PGOkDzOcx+qOTXhjY+jtV
-	 Za3kdXNSCwNFPHme78HmH0nxu20IKSPlhOSnojTiCteuu3aNErTsx1D4FAhiN32dFO
-	 xBfbCsrSHNpk12LXyD2KFVt10yMiq6RLjCr+x6uU=
+	b=nuNiExuh3ZwL/jg+w+/HiyCDgb77jOVAMN7NLGy66PYjU46ZmoecVnMc3BPj77y2o
+	 nehjeBu8clMw/kG3BQCUUkWBfE//Jts8iW+iD51QDnR5AZG1ppnB6gCkTblt0+jnJe
+	 TUIx2y5DrBslw5HaRj7aI9Wcw8UHxwyviKUdj+UM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Mentz <danielmentz@google.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Can Guo <quic_cang@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/185] scsi: ufs: core: Remove the ufshcd_hba_exit() call from ufshcd_async_scan()
-Date: Mon, 29 Jan 2024 09:03:53 -0800
-Message-ID: <20240129165959.662373614@linuxfoundation.org>
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 034/185] arm64: dts: qcom: sc7180: fix USB wakeup interrupt types
+Date: Mon, 29 Jan 2024 09:03:54 -0800
+Message-ID: <20240129165959.691872567@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
 References: <20240129165958.589924174@linuxfoundation.org>
@@ -69,48 +65,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit ee36710912b2075c417100a8acc642c9c6496501 ]
+commit 9b956999bf725fd62613f719c3178fdbee6e5f47 upstream.
 
-Calling ufshcd_hba_exit() from a function that is called asynchronously
-from ufshcd_init() is wrong because this triggers multiple race
-conditions. Instead of calling ufshcd_hba_exit(), log an error message.
+The DP/DM wakeup interrupts are edge triggered and which edge to trigger
+on depends on use-case and whether a Low speed or Full/High speed device
+is connected.
 
-Reported-by: Daniel Mentz <danielmentz@google.com>
-Fixes: 1d337ec2f35e ("ufs: improve init sequence")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20231218225229.2542156-3-bvanassche@acm.org
-Reviewed-by: Can Guo <quic_cang@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0b766e7fe5a2 ("arm64: dts: qcom: sc7180: Add USB related nodes")
+Cc: stable@vger.kernel.org      # 5.10
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231120164331.8116-4-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/qcom/sc7180.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 474e94a69b18..9fd4e9ed93b8 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -8333,12 +8333,9 @@ static void ufshcd_async_scan(void *data, async_cookie_t cookie)
+--- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+@@ -2769,8 +2769,8 @@
  
- out:
- 	pm_runtime_put_sync(hba->dev);
--	/*
--	 * If we failed to initialize the device or the device is not
--	 * present, turn off the power/clocks etc.
--	 */
-+
- 	if (ret)
--		ufshcd_hba_exit(hba);
-+		dev_err(hba->dev, "%s failed: %d\n", __func__, ret);
- }
+ 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
+-					      <&pdc 8 IRQ_TYPE_LEVEL_HIGH>,
+-					      <&pdc 9 IRQ_TYPE_LEVEL_HIGH>;
++					      <&pdc 8 IRQ_TYPE_EDGE_BOTH>,
++					      <&pdc 9 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
  
- static const struct attribute_group *ufshcd_driver_groups[] = {
--- 
-2.43.0
-
 
 
 
