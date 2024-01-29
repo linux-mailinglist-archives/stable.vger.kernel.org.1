@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-16906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844E1840EFB
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB34841058
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3D661C239DC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EFF81C23A0B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC9815CD6F;
-	Mon, 29 Jan 2024 17:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D904115B96B;
+	Mon, 29 Jan 2024 17:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYum8Mld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJKf8G76"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9001586C5;
-	Mon, 29 Jan 2024 17:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D3B15705F;
+	Mon, 29 Jan 2024 17:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548367; cv=none; b=DgNkIEIeudKpNdmI+PfxA7ncDoTpJuGiiivsDsslck16Bxh6aVwwlRI2zNrgO2ZkeCuO2169tHkhM1kHxnpEA1cdDx6b25md+0EGm6gfbChkO0+r7wgzUD5/qNFtLFLQYGW2GuuILP5+QBCey7xKZ289AsjpFqmXgwBifRrvUfQ=
+	t=1706548605; cv=none; b=kWztWppyoL8co4Uj3r//lCCFgK4ik8skbtyPmphPp4I9TmMyP37JID6bKnPXloETw4xfgPoK6eNjFusziYMocwe/so/aBH75yPkDRVrP4kSOMvn84ZxzdurKesrU0Vqq7e9/v/1ABePskJaQORUh1XLuYSKxrkpVBSlsTjuGuk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548367; c=relaxed/simple;
-	bh=8DRFtSPxf636GA2eNgoGWsn6mgFK0rhYAVd98eJhyXk=;
+	s=arc-20240116; t=1706548605; c=relaxed/simple;
+	bh=8qpbo3Mr2hL2ucD7EaNuzAEziLGcLWKIJbKZNmgOy0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BzjhyGP6uUqk3QqUa2go7AWYO4DTMYw64D6Kx2PaN09XzcPZK/mR6vghF7Pz6i9yMgYD9u26ZuTSO+cRoLSy8VTi9ml+LNpUgFkUIVdA4a2ekvtoT7MKWnEEIRWV6WykUis2vTHrLYMJSlRvKvNu+XMexyT91JjVEtNlP972i6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYum8Mld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3426C43394;
-	Mon, 29 Jan 2024 17:12:46 +0000 (UTC)
+	 MIME-Version; b=H3KXW0uyuAtlR07OUJS7UtIiJWLTdJC47XHjE7hJFx3f+AN046hMtH4a/4kHvH9krGvO04hX4v8Hw9VO/uLt8VmuXzgZJEijj9HosNRovbU1+f95hchvIfqw2i4OBgsn4knCJjAupLXgypKGRVUoW0ckQJ7fIPwkKFkhaELe6Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJKf8G76; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6276DC43399;
+	Mon, 29 Jan 2024 17:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548366;
-	bh=8DRFtSPxf636GA2eNgoGWsn6mgFK0rhYAVd98eJhyXk=;
+	s=korg; t=1706548605;
+	bh=8qpbo3Mr2hL2ucD7EaNuzAEziLGcLWKIJbKZNmgOy0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WYum8MldUiw88qL1CHNWKChhPiPFscSrHoDawqU2dYEyX0Ab/vrnsBXwcWbyS0ne5
-	 nUK6i4RhRLmSQO/Z6hvufIAr/uaLggF23APH60h2aRW5dy5it554cyOww48EthxBXu
-	 6dfg009tPKd+9CKpul2ASL38lwJrIaUbf5izF6kc=
+	b=uJKf8G76alVX7JIjm+rxZ++k1ICgLOxZCFZH3sEzEl44MTOBcWi3K+92+RCVmk2On
+	 30EQ0GdMR6/iMdeg/TXbdrvq46zU0edULW8+ucG0h826pfNAX7A8Rq6BDWE8VJwhAj
+	 qkW0/5+Ie9hCI3nmQtpuxByKmLBgM26PWJXwzepE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Mario Limonciello <mario.limonciello@amd.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	George Melikov <mail@gmelikov.ru>
-Subject: [PATCH 6.1 131/185] gpiolib: acpi: Ignore touchpad wakeup on GPD G1619-04
-Date: Mon, 29 Jan 2024 09:05:31 -0800
-Message-ID: <20240129170002.793974246@linuxfoundation.org>
+	Alex Deucher <alexander.deucher@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.6 268/331] drm/amd/display: Port DENTIST hang and TDR fixes to OTG disable W/A
+Date: Mon, 29 Jan 2024 09:05:32 -0800
+Message-ID: <20240129170022.708181941@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +65,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-commit 805c74eac8cb306dc69b87b6b066ab4da77ceaf1 upstream.
+commit 4b56f7d47be87cde5f368b67bc7fac53a2c3e8d2 upstream.
 
-Spurious wakeups are reported on the GPD G1619-04 which
-can be absolved by programming the GPIO to ignore wakeups.
+[Why]
+We can experience DENTIST hangs during optimize_bandwidth or TDRs if
+FIFO is toggled and hangs.
 
+[How]
+Port the DCN35 fixes to DCN314.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reported-and-tested-by: George Melikov <mail@gmelikov.ru>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3073
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-acpi.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c |   21 ++++------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -1626,6 +1626,20 @@ static const struct dmi_system_id gpioli
- 			.ignore_wake = "ELAN0415:00@9",
- 		},
- 	},
-+	{
-+		/*
-+		 * Spurious wakeups from TP_ATTN# pin
-+		 * Found in BIOS 0.35
-+		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3073
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "GPD"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "G1619-04"),
-+		},
-+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_wake = "PNP0C50:00@8",
-+		},
-+	},
- 	{} /* Terminating entry */
- };
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
+@@ -131,30 +131,27 @@ static int dcn314_get_active_display_cnt
+ 	return display_count;
+ }
  
+-static void dcn314_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *context, bool disable)
++static void dcn314_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *context,
++				  bool safe_to_lower, bool disable)
+ {
+ 	struct dc *dc = clk_mgr_base->ctx->dc;
+ 	int i;
+ 
+ 	for (i = 0; i < dc->res_pool->pipe_count; ++i) {
+-		struct pipe_ctx *pipe = &dc->current_state->res_ctx.pipe_ctx[i];
++		struct pipe_ctx *pipe = safe_to_lower
++			? &context->res_ctx.pipe_ctx[i]
++			: &dc->current_state->res_ctx.pipe_ctx[i];
+ 
+ 		if (pipe->top_pipe || pipe->prev_odm_pipe)
+ 			continue;
+ 		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal))) {
+-			struct stream_encoder *stream_enc = pipe->stream_res.stream_enc;
+-
+ 			if (disable) {
+-				if (stream_enc && stream_enc->funcs->disable_fifo)
+-					pipe->stream_res.stream_enc->funcs->disable_fifo(stream_enc);
++				if (pipe->stream_res.tg && pipe->stream_res.tg->funcs->immediate_disable_crtc)
++					pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
+ 
+-				pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
+ 				reset_sync_context_for_pipe(dc, context, i);
+ 			} else {
+ 				pipe->stream_res.tg->funcs->enable_crtc(pipe->stream_res.tg);
+-
+-				if (stream_enc && stream_enc->funcs->enable_fifo)
+-					pipe->stream_res.stream_enc->funcs->enable_fifo(stream_enc);
+ 			}
+ 		}
+ 	}
+@@ -252,11 +249,11 @@ void dcn314_update_clocks(struct clk_mgr
+ 	}
+ 
+ 	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz)) {
+-		dcn314_disable_otg_wa(clk_mgr_base, context, true);
++		dcn314_disable_otg_wa(clk_mgr_base, context, safe_to_lower, true);
+ 
+ 		clk_mgr_base->clks.dispclk_khz = new_clocks->dispclk_khz;
+ 		dcn314_smu_set_dispclk(clk_mgr, clk_mgr_base->clks.dispclk_khz);
+-		dcn314_disable_otg_wa(clk_mgr_base, context, false);
++		dcn314_disable_otg_wa(clk_mgr_base, context, safe_to_lower, false);
+ 
+ 		update_dispclk = true;
+ 	}
 
 
 
