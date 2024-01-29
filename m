@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-17034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508DC840F8D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09370840D5E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07FD31F219C1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7CBD28A8CF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A2F6F080;
-	Mon, 29 Jan 2024 17:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E16815956E;
+	Mon, 29 Jan 2024 17:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftUyeUEt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCsofugd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37326F075;
-	Mon, 29 Jan 2024 17:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF13215B110;
+	Mon, 29 Jan 2024 17:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548460; cv=none; b=o5KRp3YpGo4Uxs+84WjeqojAtTX7d//H0L8vqyKNJwIEk0AF4XT0CnQv+49Hnj/4TBm7tja8bAK2uRkjh9sFjCM1Q+BqXUfwGtp5/pSURtFPXhYOhFPuHEzr5jlDFsdGHcuYRCPnjma5qP8DuG3z0YCF9WRXM9vvo9CLKnvHbcU=
+	t=1706548091; cv=none; b=UTwbwmROJYNd4DIL7GIlOfGiBDr5vWZMdIY7HO+xU0WbYT8hqB5mE/NvR3egFNVobxCzzhJLC58BsmCDgYWB/7dxfKAQEn76ajVtfmkTrmybCN0joFjsGasErNDvZAiVD74i5//nmzxqESarlDXQ8lKOG+wT3AQAPdR3cEjCM/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548460; c=relaxed/simple;
-	bh=O4v3Dk9DQZcAdLiTOYFJJcd0nUJM/cKVtYKjF0onODk=;
+	s=arc-20240116; t=1706548091; c=relaxed/simple;
+	bh=9jOUVKhzJzLko/ohGnpf9K42PQoZlen1atvPkAuxquI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CmDW46EksIXu9isCcP4tjFpuxdul9CmoxPIZkeOPpeNY2C6kpV68V04KIaDmndPiRblZbn+6SAoR7ZiKbDA0nUBvrNrCKYShFtQLtYPGM4EZSKVu8MkNGISRjjI495fmhZtmstQpOEJsXfDv9fB0lg3/b2Os0zR5DkS8rhzrN8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftUyeUEt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90134C433C7;
-	Mon, 29 Jan 2024 17:14:20 +0000 (UTC)
+	 MIME-Version; b=QxTDEMbBpGFnxcDb3Viler4Lzp5ELT9ItM62XMlDzypqwjG14WJX0eg+IDO7+8d2hIWnLBsrDhuupowKkx77QLREYzhtOAHExlrE7QREEqsmEDTHLmP6aUinEc5Lk6+uFrUvOuvQyyA7UoZctdAkO0io2v17FTYDbjompY1mNF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCsofugd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99640C43390;
+	Mon, 29 Jan 2024 17:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548460;
-	bh=O4v3Dk9DQZcAdLiTOYFJJcd0nUJM/cKVtYKjF0onODk=;
+	s=korg; t=1706548091;
+	bh=9jOUVKhzJzLko/ohGnpf9K42PQoZlen1atvPkAuxquI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ftUyeUEt4y+DSan6KiFVxpze8jebe/ddQQ5ac1rniKQ/Q3O0kMmowXlcDkJHeRMtC
-	 XrHWnDQtybDdXt1UnzjfPyQSAi0Qet7ujWB88aEE2IG7+3QnGm6J2zXpEyXe+xGAkM
-	 4iNPUpuO9P0MU7uafjm8axotPc/z1lGZt/wIcgSM=
+	b=yCsofugdxm7xP9pClBXSmibKW2yX7Xf2NsBC1IxuXwnY9YGB5ey8wWv27F3g9e6YZ
+	 GZsVpnnfJsTW5kEFLQfMx1Q434HDYmE5Ali4gKn6OcB22lTBNz0sdEahkFKr2t9uRM
+	 YMy5XBN6yjobYvdQ+JbXEo5Dg+pIIGgEiWGCc9PQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 073/331] arm64: dts: qcom: sc8280xp-crd: fix eDP phy compatible
-Date: Mon, 29 Jan 2024 09:02:17 -0800
-Message-ID: <20240129170017.058736968@linuxfoundation.org>
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.7 107/346] arm64/sme: Always exit sme_alloc() early with existing storage
+Date: Mon, 29 Jan 2024 09:02:18 -0800
+Message-ID: <20240129170019.546492059@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Mark Brown <broonie@kernel.org>
 
-commit 663affdb12b3e26c77d103327cf27de720c8117e upstream.
+commit dc7eb8755797ed41a0d1b5c0c39df3c8f401b3d9 upstream.
 
-The sc8280xp Display Port PHYs can be used in either DP or eDP mode and
-this is configured using the devicetree compatible string which defaults
-to DP mode in the SoC dtsi.
+When sme_alloc() is called with existing storage and we are not flushing we
+will always allocate new storage, both leaking the existing storage and
+corrupting the state. Fix this by separating the checks for flushing and
+for existing storage as we do for SVE.
 
-Override the default compatible string for the CRD eDP PHY node so that
-the eDP settings are used.
+Callers that reallocate (eg, due to changing the vector length) should
+call sme_free() themselves.
 
-Fixes: 4a883a8d80b5 ("arm64: dts: qcom: sc8280xp-crd: Enable EDP")
-Cc: stable@vger.kernel.org      # 6.3
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231016080658.6667-1-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 5d0a8d2fba50 ("arm64/ptrace: Ensure that SME is set up for target when writing SSVE state")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240115-arm64-sme-flush-v1-1-7472bd3459b7@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sc8280xp-crd.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/kernel/fpsimd.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts b/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts
-index e4861c61a65b..ffc4406422ae 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp-crd.dts
-@@ -458,6 +458,8 @@ mdss0_dp3_out: endpoint {
- };
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1245,8 +1245,10 @@ void fpsimd_release_task(struct task_str
+  */
+ void sme_alloc(struct task_struct *task, bool flush)
+ {
+-	if (task->thread.sme_state && flush) {
+-		memset(task->thread.sme_state, 0, sme_state_size(task));
++	if (task->thread.sme_state) {
++		if (flush)
++			memset(task->thread.sme_state, 0,
++			       sme_state_size(task));
+ 		return;
+ 	}
  
- &mdss0_dp3_phy {
-+	compatible = "qcom,sc8280xp-edp-phy";
-+
- 	vdda-phy-supply = <&vreg_l6b>;
- 	vdda-pll-supply = <&vreg_l3b>;
- 
--- 
-2.43.0
-
 
 
 
