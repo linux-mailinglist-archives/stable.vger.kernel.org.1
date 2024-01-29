@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-16798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB0B840E76
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFFA840EDA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C878BB20E9F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2E56B23217
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C94815B317;
-	Mon, 29 Jan 2024 17:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F70161B69;
+	Mon, 29 Jan 2024 17:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7/1hjw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjqUu4yu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B31315B981;
-	Mon, 29 Jan 2024 17:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBC8161B63;
+	Mon, 29 Jan 2024 17:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548287; cv=none; b=qA5++qslm68GEJ12wdQpNfTAjckx9b/LhGDQFRvMqN6+JGsM+d8dcIvtHyDY0vSOm2Wb6fEbRXJbHMO3ZxjFMi4ItYFYqhbkAi2N4R8tcDaJjjiieNhN3nB6gPy8U0Q+K4EhzoNHyRdGyytadTvRbgs+UPy5btrTPwwckty25Og=
+	t=1706548355; cv=none; b=KhZrPdpCBtQn+SK2wj1AMn9SQt3nwiroLa7ssjQ/s2mlXjYwvO+h2H4D5YLHOT6sMYwrJ3RqGgPe2N3QPg6PV3Hu8MAn2vf6RqR8kGFScYsl74S95Kazt6UPx/TRdRwTZvzCWT/F2wvXt3ncylWZ6exE/2lRPEYQLMIGEfjQStM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548287; c=relaxed/simple;
-	bh=IFZlv9gnQFw/jgt4DRUtWT5RYnJa0/BZqszU4VlqGnk=;
+	s=arc-20240116; t=1706548355; c=relaxed/simple;
+	bh=8adTff1bp46qknfGYkDavytLZvJUhpVH7Fl21OW6jh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hNzQfzgGx14PwJQAr8TmEWPXwXl/lr1RfGldB0tBq4wQPIvVX3I3bl6Rhuy0/aWyqBu/p8hibz9HDucKg3sMjD+9+fg5SkCrH931jeYZYiWW3IosSEwjANCxxNF2Zt7P74NXcVgArEJJ31D/znXwGqZwwq/IAv9gYai+ohSRd3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7/1hjw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37D2C433F1;
-	Mon, 29 Jan 2024 17:11:26 +0000 (UTC)
+	 MIME-Version; b=AQQ5SLrsGa/e63jubkUlr/GBigtliw8GvBLIJlfA9ay17wrGUYA6NPXQCFR9Olb5GaCX351SW1Ulng9oEpvW/35mGUX0UDu9zxcFqL2koXR6uV6ziO7fUtzksLTg/Z2JEaxpb2EG1o85LSJLv2NSWOwq2DNREHlX5OhB3XqMJw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjqUu4yu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2208C433F1;
+	Mon, 29 Jan 2024 17:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548287;
-	bh=IFZlv9gnQFw/jgt4DRUtWT5RYnJa0/BZqszU4VlqGnk=;
+	s=korg; t=1706548354;
+	bh=8adTff1bp46qknfGYkDavytLZvJUhpVH7Fl21OW6jh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e7/1hjw1kUksnfAjZtTpCJi4TNugezlO9Nsl+8eNixjsTAm8T4sC2v2LA2he8cQcX
-	 QC72J/mD+JEmr/gcUCvsqEfl8D5PAWlxQDLy40I0118fqoKhwyzytndpa9aeBFRX4N
-	 EmDpB4QszO4WSk/HLsTkyzqiiI509pUh8dYN/AAU=
+	b=DjqUu4yuy7are70TyI+z2KR96PTgqRE2DfBd/n4CkHNHaP6acdk7zw61bzYEchF3Y
+	 8Cc+mfmRPNHIlG8duRxSoEThWk6jQgDWIyaL3OB33DKBCpl5y7H2wwjOI2LQLUyR5+
+	 7q6mb9nXw728HyymxSAmo0Hljjd9z+9DWR7BvcfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 285/346] media: v4l2-cci: Add support for little-endian encoded registers
+	syzbot+be14ed7728594dc8bd42@syzkaller.appspotmail.com,
+	syzbot+c563a3c79927971f950f@syzkaller.appspotmail.com,
+	Anand Jain <anand.jain@oracle.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 116/185] btrfs: ref-verify: free ref cache before clearing mount opt
 Date: Mon, 29 Jan 2024 09:05:16 -0800
-Message-ID: <20240129170024.767133893@linuxfoundation.org>
+Message-ID: <20240129170002.324860441@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,159 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit d92e7a013ff33f4e0b31bbf768d0c85a8acefebf ]
+commit f03e274a8b29d1d1c1bbd7f764766cb5ca537ab7 upstream.
 
-Some sensors, e.g. Sony IMX290, are using little-endian registers. Add
-support for those by encoding the endianness into Bit 20 of the register
-address.
+As clearing REF_VERIFY mount option indicates there were some errors in a
+ref-verify process, a ref cache is not relevant anymore and should be
+freed.
 
-Fixes: af73323b9770 ("media: imx290: Convert to new CCI register access helpers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-[Sakari Ailus: Fixed commit message.]
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+btrfs_free_ref_cache() requires REF_VERIFY option being set so call
+it just before clearing the mount option.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Reported-by: syzbot+be14ed7728594dc8bd42@syzkaller.appspotmail.com
+Fixes: fd708b81d972 ("Btrfs: add a extent ref verify tool")
+CC: stable@vger.kernel.org # 5.4+
+Closes: https://lore.kernel.org/lkml/000000000000e5a65c05ee832054@google.com/
+Reported-by: syzbot+c563a3c79927971f950f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/0000000000007fe09705fdc6086c@google.com/
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-cci.c | 44 ++++++++++++++++++++++++------
- include/media/v4l2-cci.h           |  5 ++++
- 2 files changed, 41 insertions(+), 8 deletions(-)
+ fs/btrfs/ref-verify.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-cci.c b/drivers/media/v4l2-core/v4l2-cci.c
-index 3179160abde3..10005c80f43b 100644
---- a/drivers/media/v4l2-core/v4l2-cci.c
-+++ b/drivers/media/v4l2-core/v4l2-cci.c
-@@ -18,6 +18,7 @@
+--- a/fs/btrfs/ref-verify.c
++++ b/fs/btrfs/ref-verify.c
+@@ -883,8 +883,10 @@ int btrfs_ref_tree_mod(struct btrfs_fs_i
+ out_unlock:
+ 	spin_unlock(&fs_info->ref_verify_lock);
+ out:
+-	if (ret)
++	if (ret) {
++		btrfs_free_ref_cache(fs_info);
+ 		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
++	}
+ 	return ret;
+ }
  
- int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
- {
-+	bool little_endian;
- 	unsigned int len;
- 	u8 buf[8];
- 	int ret;
-@@ -25,6 +26,7 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
- 	if (err && *err)
- 		return *err;
- 
-+	little_endian = reg & CCI_REG_LE;
- 	len = CCI_REG_WIDTH_BYTES(reg);
- 	reg = CCI_REG_ADDR(reg);
- 
-@@ -40,16 +42,28 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
- 		*val = buf[0];
- 		break;
- 	case 2:
--		*val = get_unaligned_be16(buf);
-+		if (little_endian)
-+			*val = get_unaligned_le16(buf);
-+		else
-+			*val = get_unaligned_be16(buf);
- 		break;
- 	case 3:
--		*val = get_unaligned_be24(buf);
-+		if (little_endian)
-+			*val = get_unaligned_le24(buf);
-+		else
-+			*val = get_unaligned_be24(buf);
- 		break;
- 	case 4:
--		*val = get_unaligned_be32(buf);
-+		if (little_endian)
-+			*val = get_unaligned_le32(buf);
-+		else
-+			*val = get_unaligned_be32(buf);
- 		break;
- 	case 8:
--		*val = get_unaligned_be64(buf);
-+		if (little_endian)
-+			*val = get_unaligned_le64(buf);
-+		else
-+			*val = get_unaligned_be64(buf);
- 		break;
- 	default:
- 		dev_err(regmap_get_device(map), "Error invalid reg-width %u for reg 0x%04x\n",
-@@ -68,6 +82,7 @@ EXPORT_SYMBOL_GPL(cci_read);
- 
- int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
- {
-+	bool little_endian;
- 	unsigned int len;
- 	u8 buf[8];
- 	int ret;
-@@ -75,6 +90,7 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
- 	if (err && *err)
- 		return *err;
- 
-+	little_endian = reg & CCI_REG_LE;
- 	len = CCI_REG_WIDTH_BYTES(reg);
- 	reg = CCI_REG_ADDR(reg);
- 
-@@ -83,16 +99,28 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
- 		buf[0] = val;
- 		break;
- 	case 2:
--		put_unaligned_be16(val, buf);
-+		if (little_endian)
-+			put_unaligned_le16(val, buf);
-+		else
-+			put_unaligned_be16(val, buf);
- 		break;
- 	case 3:
--		put_unaligned_be24(val, buf);
-+		if (little_endian)
-+			put_unaligned_le24(val, buf);
-+		else
-+			put_unaligned_be24(val, buf);
- 		break;
- 	case 4:
--		put_unaligned_be32(val, buf);
-+		if (little_endian)
-+			put_unaligned_le32(val, buf);
-+		else
-+			put_unaligned_be32(val, buf);
- 		break;
- 	case 8:
--		put_unaligned_be64(val, buf);
-+		if (little_endian)
-+			put_unaligned_le64(val, buf);
-+		else
-+			put_unaligned_be64(val, buf);
- 		break;
- 	default:
- 		dev_err(regmap_get_device(map), "Error invalid reg-width %u for reg 0x%04x\n",
-diff --git a/include/media/v4l2-cci.h b/include/media/v4l2-cci.h
-index a2835a663df5..8b0b361b464c 100644
---- a/include/media/v4l2-cci.h
-+++ b/include/media/v4l2-cci.h
-@@ -38,12 +38,17 @@ struct cci_reg_sequence {
- #define CCI_REG_WIDTH_BYTES(x)		FIELD_GET(CCI_REG_WIDTH_MASK, x)
- #define CCI_REG_WIDTH(x)		(CCI_REG_WIDTH_BYTES(x) << 3)
- #define CCI_REG_ADDR(x)			FIELD_GET(CCI_REG_ADDR_MASK, x)
-+#define CCI_REG_LE			BIT(20)
- 
- #define CCI_REG8(x)			((1 << CCI_REG_WIDTH_SHIFT) | (x))
- #define CCI_REG16(x)			((2 << CCI_REG_WIDTH_SHIFT) | (x))
- #define CCI_REG24(x)			((3 << CCI_REG_WIDTH_SHIFT) | (x))
- #define CCI_REG32(x)			((4 << CCI_REG_WIDTH_SHIFT) | (x))
- #define CCI_REG64(x)			((8 << CCI_REG_WIDTH_SHIFT) | (x))
-+#define CCI_REG16_LE(x)			(CCI_REG_LE | (2U << CCI_REG_WIDTH_SHIFT) | (x))
-+#define CCI_REG24_LE(x)			(CCI_REG_LE | (3U << CCI_REG_WIDTH_SHIFT) | (x))
-+#define CCI_REG32_LE(x)			(CCI_REG_LE | (4U << CCI_REG_WIDTH_SHIFT) | (x))
-+#define CCI_REG64_LE(x)			(CCI_REG_LE | (8U << CCI_REG_WIDTH_SHIFT) | (x))
- 
- /**
-  * cci_read() - Read a value from a single CCI register
--- 
-2.43.0
-
+@@ -1015,8 +1017,8 @@ int btrfs_build_ref_tree(struct btrfs_fs
+ 		}
+ 	}
+ 	if (ret) {
+-		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
+ 		btrfs_free_ref_cache(fs_info);
++		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
+ 	}
+ 	btrfs_free_path(path);
+ 	return ret;
 
 
 
