@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-16767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34FFE840E54
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E75840DDA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 819641F21D0F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE4971F2D000
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD9C15F306;
-	Mon, 29 Jan 2024 17:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B21F159569;
+	Mon, 29 Jan 2024 17:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SzNdeo96"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUdg2RjS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E08315B316;
-	Mon, 29 Jan 2024 17:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F1F15AAC2;
+	Mon, 29 Jan 2024 17:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548265; cv=none; b=VYObktVxSIpWat8sm2iWdPYiYc01FP0471grBTxp/FpF5+tLTN8wiVBW8QweIGBQ5lhWyyvQZ9W3z1qWdZPGim0GpH2A2ppuxbJJ6MD0mac9jqqD4BqTLHorR0h2MbgsTld9v6N9VUgOlXNgdR53ze1K2WaYVc7PhGtvCJI65Yo=
+	t=1706548178; cv=none; b=jNxYEInffa7Zn2YJfJ74X8MosXnTkrqGnkPzivAH03xDoM4wbezXX0oo17nE3pHrLYz/dfVXF1LkdFpC+0f5wUaWyN6WEZFARA1Vs8qRuY7dq1DAFPJ44U7zTzY9qXMFBz3hO6fMv/kVD9nJ0gvrw8REJzMxUJUYPvm6ufkGXDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548265; c=relaxed/simple;
-	bh=GsGo1I9QbVwsOZms9QFgyefKstJdGFT1JVU3ZBJAaxE=;
+	s=arc-20240116; t=1706548178; c=relaxed/simple;
+	bh=Szu7bdytwR1itOEpSHsFe8g68QHLPvrYJRKNc97zzh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gk4R34Auqbwz+X6MzdBOySmz29Iefb9eX+z7oel4Rzy7ucIetRGWwV7V18OvLCwFTVPo7wM56eqMxUvbfgSCmLOpkwlhZq3Z8AzD6hj05LOG8SYDiF5l1YhOWh5GvZQxKvhe7fo2nuVRWsDrgtuLr40uKCjZK8jE8SyZ90Z9Vqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SzNdeo96; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC65C43394;
-	Mon, 29 Jan 2024 17:11:04 +0000 (UTC)
+	 MIME-Version; b=jKt+rzN7CtGSNY9DjiwATEKgCD31acjDf235kpq7xYG5B0A/E5pxvrz2dy7HKBxmP70dF6p9cLhHSS9+G1CunjnCAw4GrHm3kecbR+gNd2mRTxTXzW0GAH0rf61ziw0z8OWvpDLXzneD1cxrk33dLdeQidEv7/BeAFbYuktHdro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUdg2RjS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1967C43399;
+	Mon, 29 Jan 2024 17:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548264;
-	bh=GsGo1I9QbVwsOZms9QFgyefKstJdGFT1JVU3ZBJAaxE=;
+	s=korg; t=1706548178;
+	bh=Szu7bdytwR1itOEpSHsFe8g68QHLPvrYJRKNc97zzh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SzNdeo968ZwuduoSR4WwbkHEk71yVhnRrsyRD4MTO0hBCG91qbphRRabZk/zVI+oB
-	 eHGc4CXrljNRzzuzhZ6hkSki8AoiyZ2Eqlybxn+myOFwO2U1AYHvgn1Uqn0QM/bW7C
-	 XaLiXdjNVtqT+94R1oWlT9RC1t4S0Zm+EW5A985w=
+	b=iUdg2RjSZreozvR/pBXnGWGz5EML81jj9SUNrcvahebv6HU766IVjFvFp7TAPkU9l
+	 oTWD0QIF1lVkZXR82SuPKMgrIhMQrL+yqvigWrMHoqM3YexBOQHZkso9ay+NKUtK19
+	 0pvoZrgIjZwBd7/0eHvjXA1vcoJMBUkHB4i1o+D4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 055/185] mm/rmap: fix misplaced parenthesis of a likely()
+	syzbot+be14ed7728594dc8bd42@syzkaller.appspotmail.com,
+	syzbot+c563a3c79927971f950f@syzkaller.appspotmail.com,
+	Anand Jain <anand.jain@oracle.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.7 224/346] btrfs: ref-verify: free ref cache before clearing mount opt
 Date: Mon, 29 Jan 2024 09:04:15 -0800
-Message-ID: <20240129170000.364828537@linuxfoundation.org>
+Message-ID: <20240129170022.982934337@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit f67f8d4a8c1e1ebc85a6cbdb9a7266f14863461c upstream.
+commit f03e274a8b29d1d1c1bbd7f764766cb5ca537ab7 upstream.
 
-Running my yearly branch profiler to see where likely/unlikely annotation
-may be added or removed, I discovered this:
+As clearing REF_VERIFY mount option indicates there were some errors in a
+ref-verify process, a ref cache is not relevant anymore and should be
+freed.
 
-correct incorrect  %        Function                  File              Line
- ------- ---------  -        --------                  ----              ----
-       0   457918 100 page_try_dup_anon_rmap         rmap.h               264
-[..]
-  458021        0   0 page_try_dup_anon_rmap         rmap.h               265
+btrfs_free_ref_cache() requires REF_VERIFY option being set so call
+it just before clearing the mount option.
 
-I thought it was interesting that line 264 of rmap.h had a 100% incorrect
-annotation, but the line directly below it was 100% correct. Looking at the
-code:
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-	if (likely(!is_device_private_page(page) &&
-	    unlikely(page_needs_cow_for_dma(vma, page))))
-
-It didn't make sense. The "likely()" was around the entire if statement
-(not just the "!is_device_private_page(page)"), which also included the
-"unlikely()" portion of that if condition.
-
-If the unlikely portion is unlikely to be true, that would make the entire
-if condition unlikely to be true, so it made no sense at all to say the
-entire if condition is true.
-
-What is more likely to be likely is just the first part of the if statement
-before the && operation. It's likely to be a misplaced parenthesis. And
-after making the if condition broken into a likely() && unlikely(), both
-now appear to be correct!
-
-Link: https://lkml.kernel.org/r/20231201145936.5ddfdb50@gandalf.local.home
-Fixes:fb3d824d1a46c ("mm/rmap: split page_dup_rmap() into page_dup_file_rmap() and page_try_dup_anon_rmap()")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: syzbot+be14ed7728594dc8bd42@syzkaller.appspotmail.com
+Fixes: fd708b81d972 ("Btrfs: add a extent ref verify tool")
+CC: stable@vger.kernel.org # 5.4+
+Closes: https://lore.kernel.org/lkml/000000000000e5a65c05ee832054@google.com/
+Reported-by: syzbot+c563a3c79927971f950f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/0000000000007fe09705fdc6086c@google.com/
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/rmap.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/ref-verify.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/include/linux/rmap.h
-+++ b/include/linux/rmap.h
-@@ -250,8 +250,8 @@ static inline int page_try_dup_anon_rmap
- 	 * guarantee the pinned page won't be randomly replaced in the
- 	 * future on write faults.
- 	 */
--	if (likely(!is_device_private_page(page) &&
--	    unlikely(page_needs_cow_for_dma(vma, page))))
-+	if (likely(!is_device_private_page(page)) &&
-+	    unlikely(page_needs_cow_for_dma(vma, page)))
- 		return -EBUSY;
+--- a/fs/btrfs/ref-verify.c
++++ b/fs/btrfs/ref-verify.c
+@@ -889,8 +889,10 @@ int btrfs_ref_tree_mod(struct btrfs_fs_i
+ out_unlock:
+ 	spin_unlock(&fs_info->ref_verify_lock);
+ out:
+-	if (ret)
++	if (ret) {
++		btrfs_free_ref_cache(fs_info);
+ 		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
++	}
+ 	return ret;
+ }
  
- 	ClearPageAnonExclusive(page);
+@@ -1021,8 +1023,8 @@ int btrfs_build_ref_tree(struct btrfs_fs
+ 		}
+ 	}
+ 	if (ret) {
+-		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
+ 		btrfs_free_ref_cache(fs_info);
++		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
+ 	}
+ 	btrfs_free_path(path);
+ 	return ret;
 
 
 
