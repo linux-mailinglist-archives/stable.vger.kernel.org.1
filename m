@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BDDC840F75
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:23:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8732F840D45
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:09:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F38F1C231C7
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:23:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 267C11F2C050
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BCB3F9E2;
-	Mon, 29 Jan 2024 17:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D90815AAC5;
+	Mon, 29 Jan 2024 17:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXIQ5oXK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPtMb4Vn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E733F9D3;
-	Mon, 29 Jan 2024 17:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8C815AABD;
+	Mon, 29 Jan 2024 17:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548444; cv=none; b=sFmQ3tffMB9FnAiIKnmkJ4EKqnqHyX5tbxy5bG8d2JhpiGA2WYysNhl2M7UQDrSNRBSnlHpltxtQyv5pM25+gI0aAnoCyx3kqer5S+xw2vhrAR6ynANlo7LDGvJcls7paM2J8/xevipY3d/zT05pvsbiXV5sLuHcZPoJBLghR8Q=
+	t=1706548074; cv=none; b=j0om/uXhGqXxU1uVPPKGKWiR0fYRba9dwq66tV2blt6rYLN3AyrvFSB9CSQkVR3wgAnaD+ZK0vaeVYXRXpdJm9vYP3PwK+PmemDCYQTM19lDSu7COO+/QWwYz/bl1ibIdHRDE/mFPpnrrkJ7KEHKjM0daAshFZL1Y/mvde0LxrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548444; c=relaxed/simple;
-	bh=+wOclWmWAFgfe4Y7JZHNgb0zb0Y3BSWgAuiAjZiYkHk=;
+	s=arc-20240116; t=1706548074; c=relaxed/simple;
+	bh=51CppKGqwSEICXWnu+1xLNwFmCG73KU5f/4kgvHQVwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vl0JHMsmvGO8WaxdqqIsJwtsgEAsAS0WnTYYtGzF/9oc+LNprzhogXNcHpumVMuctZAb3mQgdx5XsglUyR/QLFi6EoGaLmXsprTG4HqO+NIRjjpvJWfq/TqAewuWZFagB6fKyyxEK0qDu0CQ8+FhFIqrVjJRjdSaeR3Q9sertI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXIQ5oXK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A62BC43390;
-	Mon, 29 Jan 2024 17:14:04 +0000 (UTC)
+	 MIME-Version; b=IMed18ee480d0lskj7v1jD7gOqlAUSc9CRKfMHreuggXa4GwYoPLW8eEdARVNV2d/J+okXx518zpHYikkWUxGL8nomyEIKIpolex/1K5neerbuea54EICMsuUtABWkvkr2AIhtb84q7kDh4m0T1z794vDqRFruRu3bSywaYDDFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPtMb4Vn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0393AC43399;
+	Mon, 29 Jan 2024 17:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548444;
-	bh=+wOclWmWAFgfe4Y7JZHNgb0zb0Y3BSWgAuiAjZiYkHk=;
+	s=korg; t=1706548074;
+	bh=51CppKGqwSEICXWnu+1xLNwFmCG73KU5f/4kgvHQVwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lXIQ5oXK6W7rqdnispxiUTwRe/sUwFNFEH1xH/gfs+u8x+tCcY9mERjGoPCrw8Nix
-	 MhE58Vq7obsW3t6DRkPwji/TQzl2xMkOqnx8UQ70YVzRIqqzKa4w19+dB5Ogn/KgjQ
-	 A/jsPSJXAWqqX6NJklx+rFO+U1f8TOeTjdtK6K6k=
+	b=iPtMb4VnbUXlGxJGrWV39EZMdXONWscLc3pXjfu+RLCg9b5IgSVjnelGeMSzHLRLU
+	 6MFrqJ36chElw/G5+9fwOlDoApHMONJKDnQu0fEF6RhCNeMPv5Em/m9TKAqeHs/1jH
+	 /QuM22Ox287yvke5khtHn00xoMPKeWFdG3OySmlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Johan Hovold <johan+linaro@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 050/331] soc: qcom: pmic_glink_altmode: fix port sanity check
+Subject: [PATCH 6.7 083/346] arm64: dts: qcom: sdm845: fix USB DP/DM HS PHY interrupts
 Date: Mon, 29 Jan 2024 09:01:54 -0800
-Message-ID: <20240129170016.396233086@linuxfoundation.org>
+Message-ID: <20240129170018.833520807@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Johan Hovold <johan+linaro@kernel.org>
 
-commit c4fb7d2eac9ff9bfc35a2e4d40c7169a332416e0 upstream.
+commit 204f9ed4bad6293933179517624143b8f412347c upstream.
 
-The PMIC GLINK altmode driver currently supports at most two ports.
+The USB DP/DM HS PHY interrupts need to be provided by the PDC interrupt
+controller in order to be able to wake the system up from low-power
+states and to be able to detect disconnect events, which requires
+triggering on falling edges.
 
-Fix the incomplete port sanity check on notifications to avoid
-accessing and corrupting memory beyond the port array if we ever get a
-notification for an unsupported port.
+A recent commit updated the trigger type but failed to change the
+interrupt provider as required. This leads to the current Linux driver
+failing to probe instead of printing an error during suspend and USB
+wakeup not working as intended.
 
-Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
-Cc: stable@vger.kernel.org	# 6.3
+Fixes: 84ad9ac8d9ca ("arm64: dts: qcom: sdm845: fix USB wakeup interrupt types")
+Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
+Cc: stable@vger.kernel.org      # 4.20
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231109093100.19971-1-johan+linaro@kernel.org
+Link: https://lore.kernel.org/r/20231213173403.29544-3-johan+linaro@kernel.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/pmic_glink_altmode.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/soc/qcom/pmic_glink_altmode.c
-+++ b/drivers/soc/qcom/pmic_glink_altmode.c
-@@ -285,7 +285,7 @@ static void pmic_glink_altmode_sc8180xp_
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -4053,10 +4053,10 @@
+ 					  <&gcc GCC_USB30_PRIM_MASTER_CLK>;
+ 			assigned-clock-rates = <19200000>, <150000000>;
  
- 	svid = mux == 2 ? USB_TYPEC_DP_SID : 0;
+-			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
+-				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
++			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
++					      <&intc GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
++					      <&pdc_intc 8 IRQ_TYPE_EDGE_BOTH>,
++					      <&pdc_intc 9 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
  
--	if (!altmode->ports[port].altmode) {
-+	if (port >= ARRAY_SIZE(altmode->ports) || !altmode->ports[port].altmode) {
- 		dev_dbg(altmode->dev, "notification on undefined port %d\n", port);
- 		return;
- 	}
-@@ -328,7 +328,7 @@ static void pmic_glink_altmode_sc8280xp_
- 	hpd_state = FIELD_GET(SC8280XP_HPD_STATE_MASK, notify->payload[8]);
- 	hpd_irq = FIELD_GET(SC8280XP_HPD_IRQ_MASK, notify->payload[8]);
+@@ -4104,10 +4104,10 @@
+ 					  <&gcc GCC_USB30_SEC_MASTER_CLK>;
+ 			assigned-clock-rates = <19200000>, <150000000>;
  
--	if (!altmode->ports[port].altmode) {
-+	if (port >= ARRAY_SIZE(altmode->ports) || !altmode->ports[port].altmode) {
- 		dev_dbg(altmode->dev, "notification on undefined port %d\n", port);
- 		return;
- 	}
+-			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 490 IRQ_TYPE_EDGE_BOTH>,
+-				     <GIC_SPI 491 IRQ_TYPE_EDGE_BOTH>;
++			interrupts-extended = <&intc GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
++					      <&intc GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
++					      <&pdc_intc 10 IRQ_TYPE_EDGE_BOTH>,
++					      <&pdc_intc 11 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
+ 
 
 
 
