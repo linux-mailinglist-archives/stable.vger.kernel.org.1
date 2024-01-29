@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A03840D47
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:09:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE18840F7F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3290B1C23299
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CACB31F23623
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE7D158D9B;
-	Mon, 29 Jan 2024 17:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92B615DBBC;
+	Mon, 29 Jan 2024 17:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yHS0qo+v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcqXNG8P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA116166D;
-	Mon, 29 Jan 2024 17:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8766515957C;
+	Mon, 29 Jan 2024 17:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548075; cv=none; b=XwyxKQNKcSDj35J+BNi7QbjhQXnOrKCObFH26CiXZLI2Aq9po0+wPJ7kQnqrjUSKBrFEMhVxqTwbFFUnJOIoq6zfOLOTB4eua3GMcBZIFu5I1m/fZoDbR5ESpjlEJqpvO3Sj5Kvgt7D/eECGx5XNOzc6sInch55j84eb/1AXMrM=
+	t=1706548451; cv=none; b=VExPLpb1Yt53UPQSuNH/Vs8k6GtSD2CWIOpDRNHUKD7fOmdNAao7lBpl5o21BK3RxsOyoMz1w5bEE3EZ2sScjzR6WZKrhBTNfrfwpPrkzI2mj8fohfVl42N0XXLodxGQlIHQyUsysQTAkKQOngj5DBhq6gTz1gmkrKtrOUdfK7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548075; c=relaxed/simple;
-	bh=GE3mqNHyFnD0ZrOXrHofPaX4rHMEGBIqLWQnrxwVkOs=;
+	s=arc-20240116; t=1706548451; c=relaxed/simple;
+	bh=4Zkj9JRb5ad7xi2oYr6t6fiIaBoGorERQAwSa1xVQNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFP9O4TKiQecTxwv0wmQ1pDho25wjSQgJx5z9dPGUCyZdqT3S32n+OMcro0bsvyH4LXsPKSG+QgLVmh0hgaTqiOr08SbN53wUOxWDJJhZmJuDjyL8l2gWQlBqkJr6Q6xZ1FpSHGAHA4NY6wKZZaqlezIBaZbqOQrMSJT1s1MlOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yHS0qo+v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C68C433C7;
-	Mon, 29 Jan 2024 17:07:55 +0000 (UTC)
+	 MIME-Version; b=oGujPXu96VVYVQT4YxiVdDrHgFaJ0MbpqxfQe9f29y2Lah6pb29cqKkopjPX2ro17A5/jcWwWwQY7WoBiJbhpImzJpXxjDodh5zWogeezT0bScevWbSSYYBg/CbPS/3gp7biFNEzZICq+kjwec84OJmWY+ipWXq/GQ2dZTPCDUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcqXNG8P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA9EC433F1;
+	Mon, 29 Jan 2024 17:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548075;
-	bh=GE3mqNHyFnD0ZrOXrHofPaX4rHMEGBIqLWQnrxwVkOs=;
+	s=korg; t=1706548451;
+	bh=4Zkj9JRb5ad7xi2oYr6t6fiIaBoGorERQAwSa1xVQNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yHS0qo+vk55AX07dcYG7aEGdpoSDCOL++kBrxy2E9SboKuh6bBtasiuR1cOll1Xds
-	 vcs9hzRmRLIFBoUgmqMRs1nRnBAwHp9zVxHI/TIzeNqQ2RYSVe0r/ZXgNVOcxzt2LS
-	 sZRosVt2ywYmgurCHswQwnYfpZCfPKaMdcSs++WI=
+	b=CcqXNG8PEFj0dW97h9c+m2rPWe3XOgAmZqbvtug7BhnKGWP7MEkN00IGfPmKF7ZcU
+	 QCHPNuYhAmnNxwOSe1F+48kls3cVzd5KJ1fBrMde7RHm8TEVSFVN7ZQmARxvmjxWd/
+	 aIVropQrEwWiMTV07Eoo6zUY26cXnlkLqE8q3WLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 059/346] riscv: Fix an off-by-one in get_early_cmdline()
+Subject: [PATCH 6.6 026/331] cifs: reconnect worker should take reference on server struct unconditionally
 Date: Mon, 29 Jan 2024 09:01:30 -0800
-Message-ID: <20240129170018.132310615@linuxfoundation.org>
+Message-ID: <20240129170015.722522570@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit adb1f95d388a43c4c564ef3e436f18900dde978e ]
+[ Upstream commit 04909192ada3285070f8ced0af7f07735478b364 ]
 
-The ending NULL is not taken into account by strncat(), so switch to
-strlcat() to correctly compute the size of the available memory when
-appending CONFIG_CMDLINE to 'early_cmdline'.
+Reconnect worker currently assumes that the server struct
+is alive and only takes reference on the server if it needs
+to call smb2_reconnect.
 
-Fixes: 26e7aacb83df ("riscv: Allow to downgrade paging mode from the command line")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/9f66d2b58c8052d4055e90b8477ee55d9a0914f9.1698564026.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+With the new ability to disable channels based on whether the
+server has multichannel disabled, this becomes a problem when
+we need to disable established channels. While disabling the
+channels and deallocating the server, there could be reconnect
+work that could not be cancelled (because it started).
+
+This change forces the reconnect worker to unconditionally
+take a reference on the server when it runs.
+
+Also, this change now allows smb2_reconnect to know if it was
+called by the reconnect worker. Based on this, the cifs_put_tcp_session
+can decide whether it can cancel the reconnect work synchronously or not.
+
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 78e727e58e54 ("cifs: update iface_last_update on each query-and-update")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/pi/cmdline_early.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/smb/client/connect.c |  8 ++++----
+ fs/smb/client/smb2pdu.c | 29 +++++++++++++++--------------
+ 2 files changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/arch/riscv/kernel/pi/cmdline_early.c b/arch/riscv/kernel/pi/cmdline_early.c
-index 68e786c84c94..f6d4dedffb84 100644
---- a/arch/riscv/kernel/pi/cmdline_early.c
-+++ b/arch/riscv/kernel/pi/cmdline_early.c
-@@ -38,8 +38,7 @@ static char *get_early_cmdline(uintptr_t dtb_pa)
- 	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) ||
- 	    IS_ENABLED(CONFIG_CMDLINE_FORCE) ||
- 	    fdt_cmdline_size == 0 /* CONFIG_CMDLINE_FALLBACK */) {
--		strncat(early_cmdline, CONFIG_CMDLINE,
--			COMMAND_LINE_SIZE - fdt_cmdline_size);
-+		strlcat(early_cmdline, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
- 	}
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index 2a30245287d5..432248e955ed 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -1612,10 +1612,6 @@ cifs_put_tcp_session(struct TCP_Server_Info *server, int from_reconnect)
+ 	list_del_init(&server->tcp_ses_list);
+ 	spin_unlock(&cifs_tcp_ses_lock);
  
- 	return early_cmdline;
+-	/* For secondary channels, we pick up ref-count on the primary server */
+-	if (SERVER_IS_CHAN(server))
+-		cifs_put_tcp_session(server->primary_server, from_reconnect);
+-
+ 	cancel_delayed_work_sync(&server->echo);
+ 
+ 	if (from_reconnect)
+@@ -1629,6 +1625,10 @@ cifs_put_tcp_session(struct TCP_Server_Info *server, int from_reconnect)
+ 	else
+ 		cancel_delayed_work_sync(&server->reconnect);
+ 
++	/* For secondary channels, we pick up ref-count on the primary server */
++	if (SERVER_IS_CHAN(server))
++		cifs_put_tcp_session(server->primary_server, from_reconnect);
++
+ 	spin_lock(&server->srv_lock);
+ 	server->tcpStatus = CifsExiting;
+ 	spin_unlock(&server->srv_lock);
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index da752f41a4e6..a3995c6dc1ad 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -158,7 +158,7 @@ smb2_hdr_assemble(struct smb2_hdr *shdr, __le16 smb2_cmd,
+ 
+ static int
+ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+-	       struct TCP_Server_Info *server)
++	       struct TCP_Server_Info *server, bool from_reconnect)
+ {
+ 	int rc = 0;
+ 	struct nls_table *nls_codepage = NULL;
+@@ -331,7 +331,7 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 				 * as cifs_put_tcp_session takes a higher lock
+ 				 * i.e. cifs_tcp_ses_lock
+ 				 */
+-				cifs_put_tcp_session(server, 1);
++				cifs_put_tcp_session(server, from_reconnect);
+ 
+ 				server->terminate = true;
+ 				cifs_signal_cifsd_for_reconnect(server, false);
+@@ -504,7 +504,7 @@ static int smb2_plain_req_init(__le16 smb2_command, struct cifs_tcon *tcon,
+ {
+ 	int rc;
+ 
+-	rc = smb2_reconnect(smb2_command, tcon, server);
++	rc = smb2_reconnect(smb2_command, tcon, server, false);
+ 	if (rc)
+ 		return rc;
+ 
+@@ -3924,6 +3924,15 @@ void smb2_reconnect_server(struct work_struct *work)
+ 	int rc;
+ 	bool resched = false;
+ 
++	/* first check if ref count has reached 0, if not inc ref count */
++	spin_lock(&cifs_tcp_ses_lock);
++	if (!server->srv_count) {
++		spin_unlock(&cifs_tcp_ses_lock);
++		return;
++	}
++	server->srv_count++;
++	spin_unlock(&cifs_tcp_ses_lock);
++
+ 	/* If server is a channel, select the primary channel */
+ 	pserver = SERVER_IS_CHAN(server) ? server->primary_server : server;
+ 
+@@ -3981,17 +3990,10 @@ void smb2_reconnect_server(struct work_struct *work)
+ 		}
+ 		spin_unlock(&ses->chan_lock);
+ 	}
+-	/*
+-	 * Get the reference to server struct to be sure that the last call of
+-	 * cifs_put_tcon() in the loop below won't release the server pointer.
+-	 */
+-	if (tcon_exist || ses_exist)
+-		server->srv_count++;
+-
+ 	spin_unlock(&cifs_tcp_ses_lock);
+ 
+ 	list_for_each_entry_safe(tcon, tcon2, &tmp_list, rlist) {
+-		rc = smb2_reconnect(SMB2_INTERNAL_CMD, tcon, server);
++		rc = smb2_reconnect(SMB2_INTERNAL_CMD, tcon, server, true);
+ 		if (!rc)
+ 			cifs_reopen_persistent_handles(tcon);
+ 		else
+@@ -4024,7 +4026,7 @@ void smb2_reconnect_server(struct work_struct *work)
+ 	/* now reconnect sessions for necessary channels */
+ 	list_for_each_entry_safe(ses, ses2, &tmp_ses_list, rlist) {
+ 		tcon->ses = ses;
+-		rc = smb2_reconnect(SMB2_INTERNAL_CMD, tcon, server);
++		rc = smb2_reconnect(SMB2_INTERNAL_CMD, tcon, server, true);
+ 		if (rc)
+ 			resched = true;
+ 		list_del_init(&ses->rlist);
+@@ -4039,8 +4041,7 @@ void smb2_reconnect_server(struct work_struct *work)
+ 	mutex_unlock(&pserver->reconnect_mutex);
+ 
+ 	/* now we can safely release srv struct */
+-	if (tcon_exist || ses_exist)
+-		cifs_put_tcp_session(server, 1);
++	cifs_put_tcp_session(server, true);
+ }
+ 
+ int
 -- 
 2.43.0
 
