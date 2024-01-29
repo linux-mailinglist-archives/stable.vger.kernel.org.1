@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-16625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 361B2840DBD
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 719E4840E1C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C99BF1F2CFAD
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96A3E1C2351F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A742915CD61;
-	Mon, 29 Jan 2024 17:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338E915DBDC;
+	Mon, 29 Jan 2024 17:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbqwZoam"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDpqS75J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1D5157031;
-	Mon, 29 Jan 2024 17:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53A0159578;
+	Mon, 29 Jan 2024 17:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548158; cv=none; b=qNcxdRNEJ/2gTq7DgSwFdcUvGFkTUdNYk4Escb21L3sy/q7cnjF+F/5p8R9KLXTYg47GoMqcCm9ex7FupteFIHjpJXTTjvNPseLoTL5NLznAuiAdt/xiu1EL+nMOKK5K10TZZWg2OgPzTlOQSC/q/g3d4cdrcKwe7giEOUYvCgs=
+	t=1706548226; cv=none; b=ElaAnUEnjRxjrH3jxirE9+7H3Tp6MY7Zl/2tECzkd4pIYCBnwn3O/O9i9kJjauhvD/WeFP1VRDuUZTYguUq3dtXOiznjLT8kCt7cm6gC4/cmapQ3JMphjk12ZnkbOlyiyPSHBkYPu6jIUqudHdZ2JL/XsIppP/XgFROrP/nZ0jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548158; c=relaxed/simple;
-	bh=kANen62pusC66uxPIB2rWxa7j/7DsMQAO8YKpfqHSN0=;
+	s=arc-20240116; t=1706548226; c=relaxed/simple;
+	bh=wRVDemsoApG7QF5yzwun5BnUJQUe/io6C+dk70U8XlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnmyyVIjyj7otLmfft7UlU91MSoi+KLM21Vt2/FEyUaATmXrrRle46uuJH1rQBNMJtDfUhNpkFx/pizLbguGqATE7zdy1BsZOQfqgwceaLiQzg7Vzqi2U2HRMu2NXeTEx9fAJH5e07y9cSAL8gR8XalLlfnkDUeYf38u/NEzZQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbqwZoam; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F72C43399;
-	Mon, 29 Jan 2024 17:09:18 +0000 (UTC)
+	 MIME-Version; b=rCpFqmx5UePbE7/9LuwuZmKtPTzG/NKdmsKO93fClnE6n8m5MP3MlP28ICfASWwAtNc2L1Pdum4nV6237JowVDLvqUUF9vSOcDEaLwhC+1rnFRu7wFhH90lKL/EpZV38j3m+Fg2HSQxBwD78f6MFppSz+61N+GjD3k+H3rS98dA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDpqS75J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA69C433C7;
+	Mon, 29 Jan 2024 17:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548158;
-	bh=kANen62pusC66uxPIB2rWxa7j/7DsMQAO8YKpfqHSN0=;
+	s=korg; t=1706548225;
+	bh=wRVDemsoApG7QF5yzwun5BnUJQUe/io6C+dk70U8XlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rbqwZoamSWrciQUg4zlDOsfmroe4rzHfGDDQRSzTwdX6U/zKuM102Oej+iF76K3e2
-	 Oa4araY4wMzFliYKTUVwJAUsFtjKmF4brYQ38XxSRui0TNq5PDlVs5iIyFEA8KUFHp
-	 gMWvAkRFUmsqT7/ZRFwfctldCjB4JRKInT000WnM=
+	b=ZDpqS75JNRgc8qCFF71NZl8bx+RGj252ujbh7ObWO/sujrdAmXB91LF2JjVne9a0B
+	 bPmcLhReCneTnk4fD5jo0tw2LCdJeHd7MkL/e8uS1RdP8E9rHdOwCMeaxzIkH8sK1P
+	 57rb7HmtDD/xjKUVVFDe0Oa9yBkbwKVHRTez2x5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 197/346] net/mlx5e: fix a potential double-free in fs_any_create_groups
-Date: Mon, 29 Jan 2024 09:03:48 -0800
-Message-ID: <20240129170022.196459020@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	Youngmin Nam <youngmin.nam@samsung.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 029/185] async: Split async_schedule_node_domain()
+Date: Mon, 29 Jan 2024 09:03:49 -0800
+Message-ID: <20240129165959.537359687@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit aef855df7e1bbd5aa4484851561211500b22707e ]
+commit 6aa09a5bccd8e224d917afdb4c278fc66aacde4d upstream.
 
-When kcalloc() for ft->g succeeds but kvzalloc() for in fails,
-fs_any_create_groups() will free ft->g. However, its caller
-fs_any_create_table() will free ft->g again through calling
-mlx5e_destroy_flow_table(), which will lead to a double-free.
-Fix this by setting ft->g to NULL in fs_any_create_groups().
+In preparation for subsequent changes, split async_schedule_node_domain()
+in two pieces so as to allow the bottom part of it to be called from a
+somewhat different code path.
 
-Fixes: 0f575c20bf06 ("net/mlx5e: Introduce Flow Steering ANY API")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+No functional impact.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Tested-by: Youngmin Nam <youngmin.nam@samsung.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/async.c |   56 ++++++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 34 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c b/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c
-index e1283531e0b8..671adbad0a40 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c
-@@ -436,6 +436,7 @@ static int fs_any_create_groups(struct mlx5e_flow_table *ft)
- 	in = kvzalloc(inlen, GFP_KERNEL);
- 	if  (!in || !ft->g) {
- 		kfree(ft->g);
-+		ft->g = NULL;
- 		kvfree(in);
- 		return -ENOMEM;
+--- a/kernel/async.c
++++ b/kernel/async.c
+@@ -145,6 +145,39 @@ static void async_run_entry_fn(struct wo
+ 	wake_up(&async_done);
+ }
+ 
++static async_cookie_t __async_schedule_node_domain(async_func_t func,
++						   void *data, int node,
++						   struct async_domain *domain,
++						   struct async_entry *entry)
++{
++	async_cookie_t newcookie;
++	unsigned long flags;
++
++	INIT_LIST_HEAD(&entry->domain_list);
++	INIT_LIST_HEAD(&entry->global_list);
++	INIT_WORK(&entry->work, async_run_entry_fn);
++	entry->func = func;
++	entry->data = data;
++	entry->domain = domain;
++
++	spin_lock_irqsave(&async_lock, flags);
++
++	/* allocate cookie and queue */
++	newcookie = entry->cookie = next_cookie++;
++
++	list_add_tail(&entry->domain_list, &domain->pending);
++	if (domain->registered)
++		list_add_tail(&entry->global_list, &async_global_pending);
++
++	atomic_inc(&entry_count);
++	spin_unlock_irqrestore(&async_lock, flags);
++
++	/* schedule for execution */
++	queue_work_node(node, system_unbound_wq, &entry->work);
++
++	return newcookie;
++}
++
+ /**
+  * async_schedule_node_domain - NUMA specific version of async_schedule_domain
+  * @func: function to execute asynchronously
+@@ -186,29 +219,8 @@ async_cookie_t async_schedule_node_domai
+ 		func(data, newcookie);
+ 		return newcookie;
  	}
--- 
-2.43.0
-
+-	INIT_LIST_HEAD(&entry->domain_list);
+-	INIT_LIST_HEAD(&entry->global_list);
+-	INIT_WORK(&entry->work, async_run_entry_fn);
+-	entry->func = func;
+-	entry->data = data;
+-	entry->domain = domain;
+-
+-	spin_lock_irqsave(&async_lock, flags);
+ 
+-	/* allocate cookie and queue */
+-	newcookie = entry->cookie = next_cookie++;
+-
+-	list_add_tail(&entry->domain_list, &domain->pending);
+-	if (domain->registered)
+-		list_add_tail(&entry->global_list, &async_global_pending);
+-
+-	atomic_inc(&entry_count);
+-	spin_unlock_irqrestore(&async_lock, flags);
+-
+-	/* schedule for execution */
+-	queue_work_node(node, system_unbound_wq, &entry->work);
+-
+-	return newcookie;
++	return __async_schedule_node_domain(func, data, node, domain, entry);
+ }
+ EXPORT_SYMBOL_GPL(async_schedule_node_domain);
+ 
 
 
 
