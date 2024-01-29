@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-16762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62D9F840E4E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A116841063
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E70828370D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3155D287F8E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4405715A489;
-	Mon, 29 Jan 2024 17:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD30A15F323;
+	Mon, 29 Jan 2024 17:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCoeu8tY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2DGplmUo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036F2159591;
-	Mon, 29 Jan 2024 17:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB1115B974;
+	Mon, 29 Jan 2024 17:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548261; cv=none; b=iyrb2/Kc9E0XHkyp/5sVmdmn7rx3TXyQZ5Hcl7bREbdD0V4Wirt5rvFK3Kf4BqXXipJtWJO1RsRzt5JdKBhWKjAiXclBnuFlpH/iAc7eQEYULuT2/hb83yfCN0dVQqq7hWYgmwlQHQfHBJI4xac+1qz1/VqqK9cQhiuXbAl51cU=
+	t=1706548613; cv=none; b=dC0sVOubWJpQNoR37yZdho+FdUmlCmZ6PIsan1UgxFrfB4Y376tZ84lxGtUoZPp1jMB2/WbqTPhLEp2xhUHTTY2BZIVhEy1iyFVqDJGVUuke1vX2Ya7fENd3o8HMxLpjbM3u41Klzq3bdezhrZ5Z/ZS7SNYDGBf3wC5UCUJtA9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548261; c=relaxed/simple;
-	bh=liap3NySlBRnj9zaJcXbCXnL2sNNjht6CzYicosHUqw=;
+	s=arc-20240116; t=1706548613; c=relaxed/simple;
+	bh=uUCGaHU6QtaslNCX3/KgHKTq6fyiIJH1L2FTMzpFt/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tuILwpIWERMFVBevmPLZens60YkwvzY0H+ZY7tZKwxXGxKH1Uf7fwTSuscYpwZVArYCzY0hrFUvAlExIfEEI9pn7Kg4/gxhbvPASRUFd02OG8o2WbShD0QOIujYzeB+hlmuao3FPn1Vi+UjooeG1cerz0IoPr9bSAA5ghtdx3UU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCoeu8tY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C253BC433C7;
-	Mon, 29 Jan 2024 17:11:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ODrHlersA6wzRbSNgYyM14BeRUOHIZ0idJ7wOQsFFSgldok7PoyrTA6OdXy6KZ1JqYE+DsfWdYsiqo54HAkEqFTPUAyj9/WEDqyzzBRWSTNHmS1f0eimTVDZ+Q60cYsyXZbH9dIW93QOdVIOPe2bBUvKjKPgnGPIF43VZTkWPtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2DGplmUo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33480C433C7;
+	Mon, 29 Jan 2024 17:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548260;
-	bh=liap3NySlBRnj9zaJcXbCXnL2sNNjht6CzYicosHUqw=;
+	s=korg; t=1706548613;
+	bh=uUCGaHU6QtaslNCX3/KgHKTq6fyiIJH1L2FTMzpFt/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HCoeu8tYspV1t3asUnjApLHE7/kyfknt8cd5RV0gKCmguriEL3TMDTh+krMIHRc5h
-	 3YZ6eu/FKgO5uh9J4/6a2yQSEIwpgRpqoow7C9PCedXvGy6baINVXYCrI0F4UP/NOZ
-	 NDTmHfD1C4K6/0T6kodewH2opI2iVF2dO2hCZpBU=
+	b=2DGplmUomoQ1mWiPrM744hgKgMCctqIDJKi6EW5bUpSFf5tSqC0tGxuiuR5YDotLS
+	 mJgyHU5EE/KhXyvWOldQVf0uQKN5p5Em0tX1kCoWyhLq0UzpgjAsd0HBjvwFjXqCiG
+	 37GK+Ml2Ze/duRX2V4AWLAV4YGx1ALgjgNlTve50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Jun Lei <Jun.Lei@amd.com>,
-	Wayne Lin <Wayne.Lin@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.7 279/346] drm/amd/display: Fix uninitialized variable usage in core_link_ read_dpcd() & write_dpcd() functions
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.6 246/331] platform/x86: p2sb: Allow p2sb_bar() calls during PCI device probe
 Date: Mon, 29 Jan 2024 09:05:10 -0800
-Message-ID: <20240129170024.583108937@linuxfoundation.org>
+Message-ID: <20240129170022.079534663@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +61,298 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
 
-commit a58371d632ebab9ea63f10893a6b6731196b6f8d upstream.
+commit 5913320eb0b3ec88158cfcb0fa5e996bf4ef681b upstream.
 
-The 'status' variable in 'core_link_read_dpcd()' &
-'core_link_write_dpcd()' was uninitialized.
+p2sb_bar() unhides P2SB device to get resources from the device. It
+guards the operation by locking pci_rescan_remove_lock so that parallel
+rescans do not find the P2SB device. However, this lock causes deadlock
+when PCI bus rescan is triggered by /sys/bus/pci/rescan. The rescan
+locks pci_rescan_remove_lock and probes PCI devices. When PCI devices
+call p2sb_bar() during probe, it locks pci_rescan_remove_lock again.
+Hence the deadlock.
 
-Thus, initializing 'status' variable to 'DC_ERROR_UNEXPECTED' by default.
+To avoid the deadlock, do not lock pci_rescan_remove_lock in p2sb_bar().
+Instead, do the lock at fs_initcall. Introduce p2sb_cache_resources()
+for fs_initcall which gets and caches the P2SB resources. At p2sb_bar(),
+refer the cache and return to the caller.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_dpcd.c:226 core_link_read_dpcd() error: uninitialized symbol 'status'.
-drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_dpcd.c:248 core_link_write_dpcd() error: uninitialized symbol 'status'.
+Before operating the device at P2SB DEVFN for resource cache, check
+that its device class is PCI_CLASS_MEMORY_OTHER 0x0580 that PCH
+specifications define. This avoids unexpected operation to other devices
+at the same DEVFN.
 
+Link: https://lore.kernel.org/linux-pci/6xb24fjmptxxn5js2fjrrddjae6twex5bjaftwqsuawuqqqydx@7cl3uik5ef6j/
+Fixes: 9745fb07474f ("platform/x86/intel: Add Primary to Sideband (P2SB) bridge support")
 Cc: stable@vger.kernel.org
-Cc: Jerry Zuo <jerry.zuo@amd.com>
-Cc: Jun Lei <Jun.Lei@amd.com>
-Cc: Wayne Lin <Wayne.Lin@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Link: https://lore.kernel.org/r/20240108062059.3583028-2-shinichiro.kawasaki@wdc.com
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Tested-by Klara Modin <klarasmodin@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/protocols/link_dpcd.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/x86/p2sb.c |  180 +++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 139 insertions(+), 41 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dpcd.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dpcd.c
-@@ -205,7 +205,7 @@ enum dc_status core_link_read_dpcd(
- 	uint32_t extended_size;
- 	/* size of the remaining partitioned address space */
- 	uint32_t size_left_to_read;
--	enum dc_status status;
-+	enum dc_status status = DC_ERROR_UNEXPECTED;
- 	/* size of the next partition to be read from */
- 	uint32_t partition_size;
- 	uint32_t data_index = 0;
-@@ -234,7 +234,7 @@ enum dc_status core_link_write_dpcd(
- {
- 	uint32_t partition_size;
- 	uint32_t data_index = 0;
--	enum dc_status status;
-+	enum dc_status status = DC_ERROR_UNEXPECTED;
+--- a/drivers/platform/x86/p2sb.c
++++ b/drivers/platform/x86/p2sb.c
+@@ -26,6 +26,21 @@ static const struct x86_cpu_id p2sb_cpu_
+ 	{}
+ };
  
- 	while (size) {
- 		partition_size = dpcd_get_next_partition_size(address, size);
++/*
++ * Cache BAR0 of P2SB device functions 0 to 7.
++ * TODO: The constant 8 is the number of functions that PCI specification
++ *       defines. Same definitions exist tree-wide. Unify this definition and
++ *       the other definitions then move to include/uapi/linux/pci.h.
++ */
++#define NR_P2SB_RES_CACHE 8
++
++struct p2sb_res_cache {
++	u32 bus_dev_id;
++	struct resource res;
++};
++
++static struct p2sb_res_cache p2sb_resources[NR_P2SB_RES_CACHE];
++
+ static int p2sb_get_devfn(unsigned int *devfn)
+ {
+ 	unsigned int fn = P2SB_DEVFN_DEFAULT;
+@@ -39,8 +54,16 @@ static int p2sb_get_devfn(unsigned int *
+ 	return 0;
+ }
+ 
++static bool p2sb_valid_resource(struct resource *res)
++{
++	if (res->flags)
++		return true;
++
++	return false;
++}
++
+ /* Copy resource from the first BAR of the device in question */
+-static int p2sb_read_bar0(struct pci_dev *pdev, struct resource *mem)
++static void p2sb_read_bar0(struct pci_dev *pdev, struct resource *mem)
+ {
+ 	struct resource *bar0 = &pdev->resource[0];
+ 
+@@ -56,49 +79,66 @@ static int p2sb_read_bar0(struct pci_dev
+ 	mem->end = bar0->end;
+ 	mem->flags = bar0->flags;
+ 	mem->desc = bar0->desc;
+-
+-	return 0;
+ }
+ 
+-static int p2sb_scan_and_read(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
++static void p2sb_scan_and_cache_devfn(struct pci_bus *bus, unsigned int devfn)
+ {
++	struct p2sb_res_cache *cache = &p2sb_resources[PCI_FUNC(devfn)];
+ 	struct pci_dev *pdev;
+-	int ret;
+ 
+ 	pdev = pci_scan_single_device(bus, devfn);
+ 	if (!pdev)
+-		return -ENODEV;
++		return;
+ 
+-	ret = p2sb_read_bar0(pdev, mem);
++	p2sb_read_bar0(pdev, &cache->res);
++	cache->bus_dev_id = bus->dev.id;
+ 
+ 	pci_stop_and_remove_bus_device(pdev);
+-	return ret;
+ }
+ 
+-/**
+- * p2sb_bar - Get Primary to Sideband (P2SB) bridge device BAR
+- * @bus: PCI bus to communicate with
+- * @devfn: PCI slot and function to communicate with
+- * @mem: memory resource to be filled in
+- *
+- * The BIOS prevents the P2SB device from being enumerated by the PCI
+- * subsystem, so we need to unhide and hide it back to lookup the BAR.
+- *
+- * if @bus is NULL, the bus 0 in domain 0 will be used.
+- * If @devfn is 0, it will be replaced by devfn of the P2SB device.
+- *
+- * Caller must provide a valid pointer to @mem.
+- *
+- * Locking is handled by pci_rescan_remove_lock mutex.
+- *
+- * Return:
+- * 0 on success or appropriate errno value on error.
+- */
+-int p2sb_bar(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
++static int p2sb_scan_and_cache(struct pci_bus *bus, unsigned int devfn)
++{
++	unsigned int slot, fn;
++
++	if (PCI_FUNC(devfn) == 0) {
++		/*
++		 * When function number of the P2SB device is zero, scan it and
++		 * other function numbers, and if devices are available, cache
++		 * their BAR0s.
++		 */
++		slot = PCI_SLOT(devfn);
++		for (fn = 0; fn < NR_P2SB_RES_CACHE; fn++)
++			p2sb_scan_and_cache_devfn(bus, PCI_DEVFN(slot, fn));
++	} else {
++		/* Scan the P2SB device and cache its BAR0 */
++		p2sb_scan_and_cache_devfn(bus, devfn);
++	}
++
++	if (!p2sb_valid_resource(&p2sb_resources[PCI_FUNC(devfn)].res))
++		return -ENOENT;
++
++	return 0;
++}
++
++static struct pci_bus *p2sb_get_bus(struct pci_bus *bus)
++{
++	static struct pci_bus *p2sb_bus;
++
++	bus = bus ?: p2sb_bus;
++	if (bus)
++		return bus;
++
++	/* Assume P2SB is on the bus 0 in domain 0 */
++	p2sb_bus = pci_find_bus(0, 0);
++	return p2sb_bus;
++}
++
++static int p2sb_cache_resources(void)
+ {
+-	struct pci_dev *pdev_p2sb;
+ 	unsigned int devfn_p2sb;
+ 	u32 value = P2SBC_HIDE;
++	struct pci_bus *bus;
++	u16 class;
+ 	int ret;
+ 
+ 	/* Get devfn for P2SB device itself */
+@@ -106,8 +146,17 @@ int p2sb_bar(struct pci_bus *bus, unsign
+ 	if (ret)
+ 		return ret;
+ 
+-	/* if @bus is NULL, use bus 0 in domain 0 */
+-	bus = bus ?: pci_find_bus(0, 0);
++	bus = p2sb_get_bus(NULL);
++	if (!bus)
++		return -ENODEV;
++
++	/*
++	 * When a device with same devfn exists and its device class is not
++	 * PCI_CLASS_MEMORY_OTHER for P2SB, do not touch it.
++	 */
++	pci_bus_read_config_word(bus, devfn_p2sb, PCI_CLASS_DEVICE, &class);
++	if (!PCI_POSSIBLE_ERROR(class) && class != PCI_CLASS_MEMORY_OTHER)
++		return -ENODEV;
+ 
+ 	/*
+ 	 * Prevent concurrent PCI bus scan from seeing the P2SB device and
+@@ -115,17 +164,16 @@ int p2sb_bar(struct pci_bus *bus, unsign
+ 	 */
+ 	pci_lock_rescan_remove();
+ 
+-	/* Unhide the P2SB device, if needed */
++	/*
++	 * The BIOS prevents the P2SB device from being enumerated by the PCI
++	 * subsystem, so we need to unhide and hide it back to lookup the BAR.
++	 * Unhide the P2SB device here, if needed.
++	 */
+ 	pci_bus_read_config_dword(bus, devfn_p2sb, P2SBC, &value);
+ 	if (value & P2SBC_HIDE)
+ 		pci_bus_write_config_dword(bus, devfn_p2sb, P2SBC, 0);
+ 
+-	pdev_p2sb = pci_scan_single_device(bus, devfn_p2sb);
+-	if (devfn)
+-		ret = p2sb_scan_and_read(bus, devfn, mem);
+-	else
+-		ret = p2sb_read_bar0(pdev_p2sb, mem);
+-	pci_stop_and_remove_bus_device(pdev_p2sb);
++	ret = p2sb_scan_and_cache(bus, devfn_p2sb);
+ 
+ 	/* Hide the P2SB device, if it was hidden */
+ 	if (value & P2SBC_HIDE)
+@@ -133,12 +181,62 @@ int p2sb_bar(struct pci_bus *bus, unsign
+ 
+ 	pci_unlock_rescan_remove();
+ 
+-	if (ret)
+-		return ret;
++	return ret;
++}
+ 
+-	if (mem->flags == 0)
++/**
++ * p2sb_bar - Get Primary to Sideband (P2SB) bridge device BAR
++ * @bus: PCI bus to communicate with
++ * @devfn: PCI slot and function to communicate with
++ * @mem: memory resource to be filled in
++ *
++ * If @bus is NULL, the bus 0 in domain 0 will be used.
++ * If @devfn is 0, it will be replaced by devfn of the P2SB device.
++ *
++ * Caller must provide a valid pointer to @mem.
++ *
++ * Return:
++ * 0 on success or appropriate errno value on error.
++ */
++int p2sb_bar(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
++{
++	struct p2sb_res_cache *cache;
++	int ret;
++
++	bus = p2sb_get_bus(bus);
++	if (!bus)
+ 		return -ENODEV;
+ 
++	if (!devfn) {
++		ret = p2sb_get_devfn(&devfn);
++		if (ret)
++			return ret;
++	}
++
++	cache = &p2sb_resources[PCI_FUNC(devfn)];
++	if (cache->bus_dev_id != bus->dev.id)
++		return -ENODEV;
++
++	if (!p2sb_valid_resource(&cache->res))
++		return -ENOENT;
++
++	memcpy(mem, &cache->res, sizeof(*mem));
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(p2sb_bar);
++
++static int __init p2sb_fs_init(void)
++{
++	p2sb_cache_resources();
++	return 0;
++}
++
++/*
++ * pci_rescan_remove_lock to avoid access to unhidden P2SB devices can
++ * not be locked in sysfs pci bus rescan path because of deadlock. To
++ * avoid the deadlock, access to P2SB devices with the lock at an early
++ * step in kernel initialization and cache required resources. This
++ * should happen after subsys_initcall which initializes PCI subsystem
++ * and before device_initcall which requires P2SB resources.
++ */
++fs_initcall(p2sb_fs_init);
 
 
 
