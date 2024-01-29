@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A08D1841006
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9A5840E4F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 562801F22B6C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2553B2310A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C95D15B2FB;
-	Mon, 29 Jan 2024 17:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784D515EABA;
+	Mon, 29 Jan 2024 17:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9dDClXc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nO1HK4Jm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0B973722;
-	Mon, 29 Jan 2024 17:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3800615B309;
+	Mon, 29 Jan 2024 17:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548547; cv=none; b=IqQvvwBFQ+jVs9WNlgxWTV/L5vnjxSTBKXIaft1LImlbin8ERJMj6YisRdPtoBDZPhUB3Vz4ZHBLTMgnxlXbizDfHe+DJIVkvFqBgZyJegL7m8XlGLcmo2PR54oF2kAR+uD7FbhLsRkmkV7v8n322MPulCmLtzSHf2lFQ6XThEs=
+	t=1706548260; cv=none; b=P2kTRgF32OpP3ptIGygcp9jH0v/d5Aec006EO67N4KDFAdguJw1Nulq1Zyti5fxYnikeyvbzDhWRUef3c28yotptlhL6oVeqBwNm1Ka3Vjr5Zk6hyEDdTJSHzr6XnzMU/4FFp2AN4+ndsdjayqbFSeNTBnEzPRjfYwhDORJJ5G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548547; c=relaxed/simple;
-	bh=mlyA1Hlub/nbWfmBtElkLe/qNysr7COtBOZ5g12AKqc=;
+	s=arc-20240116; t=1706548260; c=relaxed/simple;
+	bh=tseVDt+xTny6DMchfJnzwTCvQkxEmWervI1qiQUoXgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EkwSrKueZebaePXgEQHBfRy7Hyt5WyK1AfOiV52byOqTdAy/t/3uy1O+L6HgRsNEcWWk2n4MGwTbwfRP15EoeE+cpPpBH5wH5wzD5li9PBs3iB1imwBfdLKzY4LJ1ppwFY9STs66t3swCLyJd1GD28bn4WLd/8zlkW1sLuBwVQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9dDClXc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2146C43394;
-	Mon, 29 Jan 2024 17:15:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=M4bp2upoTlYTAxhcH+JlvUwzfTQXKLAGNLdTPx5KY6zIEYkWrIs3BPz0qWj3AHbFWpSLmmDjzDUZ25xDGnUGXaSxiHBD794QWkEKU3lyQ5byFtid4e/jFi5Ls2zdQzX23cIQt9UubdQn/py8DDU0VMON4IQlcWCaEbUVT6mj+LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nO1HK4Jm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00074C43394;
+	Mon, 29 Jan 2024 17:10:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548546;
-	bh=mlyA1Hlub/nbWfmBtElkLe/qNysr7COtBOZ5g12AKqc=;
+	s=korg; t=1706548260;
+	bh=tseVDt+xTny6DMchfJnzwTCvQkxEmWervI1qiQUoXgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p9dDClXcZ3D4IlyzNHREsyhEGI+L/+negbDp1Haj/ykcFxM4wgmtBY9WIuSHjj94w
-	 75eNupVZ9/FpDYyxoGjyuBBhJ85Dm1yldqZThoocHDdZ16VW4lz7v5UtfnBMcG1iId
-	 CSKACeI091+WMQDF4tafdXAjawTw9fTq8NAtCoVQ=
+	b=nO1HK4JmQxT//m7JujBAEoOnUgp//vzzhG4QN1Y4d5I1/FW8xtEC07rJAbMR9DMlR
+	 3FmiPCITofPI/Zh8T7o3MVnbzh66fxcJ7CTeQWEnSCoaG+LjZHjcfVeN/OkKNsVChW
+	 Lcs8bcyFIx6eHebYnK3WD7Z9JlrRfZs5+1aLrNSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 188/331] netlink: fix potential sleeping issue in mqueue_flush_file
+	Carsten Hatger <xmb8dsv4@gmail.com>,
+	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.1 052/185] rtc: Extend timeout for waiting for UIP to clear to 1s
 Date: Mon, 29 Jan 2024 09:04:12 -0800
-Message-ID: <20240129170020.391749038@linuxfoundation.org>
+Message-ID: <20240129170000.267363391@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +61,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 234ec0b6034b16869d45128b8cd2dc6ffe596f04 ]
+commit cef9ecc8e938dd48a560f7dd9be1246359248d20 upstream.
 
-I analyze the potential sleeping issue of the following processes:
-Thread A                                Thread B
-...                                     netlink_create  //ref = 1
-do_mq_notify                            ...
-  sock = netlink_getsockbyfilp          ...     //ref = 2
-  info->notify_sock = sock;             ...
-...                                     netlink_sendmsg
-...                                       skb = netlink_alloc_large_skb  //skb->head is vmalloced
-...                                       netlink_unicast
-...                                         sk = netlink_getsockbyportid //ref = 3
-...                                         netlink_sendskb
-...                                           __netlink_sendskb
-...                                             skb_queue_tail //put skb to sk_receive_queue
-...                                         sock_put //ref = 2
-...                                     ...
-...                                     netlink_release
-...                                       deferred_put_nlk_sk //ref = 1
-mqueue_flush_file
-  spin_lock
-  remove_notification
-    netlink_sendskb
-      sock_put  //ref = 0
-        sk_free
-          ...
-          __sk_destruct
-            netlink_sock_destruct
-              skb_queue_purge  //get skb from sk_receive_queue
-                ...
-                __skb_queue_purge_reason
-                  kfree_skb_reason
-                    __kfree_skb
-                    ...
-                    skb_release_all
-                      skb_release_head_state
-                        netlink_skb_destructor
-                          vfree(skb->head)  //sleeping while holding spinlock
+Specs don't say anything about UIP being cleared within 10ms. They
+only say that UIP won't occur for another 244uS. If a long NMI occurs
+while UIP is still updating it might not be possible to get valid
+data in 10ms.
 
-In netlink_sendmsg, if the memory pointed to by skb->head is allocated by
-vmalloc, and is put to sk_receive_queue queue, also the skb is not freed.
-When the mqueue executes flush, the sleeping bug will occur. Use
-vfree_atomic instead of vfree in netlink_skb_destructor to solve the issue.
+This has been observed in the wild that around s2idle some calls can
+take up to 480ms before UIP is clear.
 
-Fixes: c05cdb1b864f ("netlink: allow large data transfers from user-space")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Link: https://lore.kernel.org/r/20240122011807.2110357-1-shaozhengchao@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Adjust callers from outside an interrupt context to wait for up to a
+1s instead of 10ms.
+
+Cc:  <stable@vger.kernel.org> # 6.1.y
+Fixes: ec5895c0f2d8 ("rtc: mc146818-lib: extract mc146818_avoid_UIP")
+Reported-by: Carsten Hatger <xmb8dsv4@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217626
+Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Reviewed-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Acked-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20231128053653.101798-5-mario.limonciello@amd.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netlink/af_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/rtc.c          | 2 +-
+ drivers/base/power/trace.c     | 2 +-
+ drivers/rtc/rtc-cmos.c         | 2 +-
+ drivers/rtc/rtc-mc146818-lib.c | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index eb086b06d60d..d9107b545d36 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -374,7 +374,7 @@ static void netlink_skb_destructor(struct sk_buff *skb)
- 	if (is_vmalloc_addr(skb->head)) {
- 		if (!skb->cloned ||
- 		    !atomic_dec_return(&(skb_shinfo(skb)->dataref)))
--			vfree(skb->head);
-+			vfree_atomic(skb->head);
- 
- 		skb->head = NULL;
+diff --git a/arch/x86/kernel/rtc.c b/arch/x86/kernel/rtc.c
+index 961ebc7f1872..2e7066980f3e 100644
+--- a/arch/x86/kernel/rtc.c
++++ b/arch/x86/kernel/rtc.c
+@@ -67,7 +67,7 @@ void mach_get_cmos_time(struct timespec64 *now)
+ 		return;
  	}
+ 
+-	if (mc146818_get_time(&tm, 10)) {
++	if (mc146818_get_time(&tm, 1000)) {
+ 		pr_err("Unable to read current time from RTC\n");
+ 		now->tv_sec = now->tv_nsec = 0;
+ 		return;
+diff --git a/drivers/base/power/trace.c b/drivers/base/power/trace.c
+index c2e925357474..cd6e559648b2 100644
+--- a/drivers/base/power/trace.c
++++ b/drivers/base/power/trace.c
+@@ -120,7 +120,7 @@ static unsigned int read_magic_time(void)
+ 	struct rtc_time time;
+ 	unsigned int val;
+ 
+-	if (mc146818_get_time(&time, 10) < 0) {
++	if (mc146818_get_time(&time, 1000) < 0) {
+ 		pr_err("Unable to read current time from RTC\n");
+ 		return 0;
+ 	}
+diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
+index 468ccd99f218..7d99cd2c37a0 100644
+--- a/drivers/rtc/rtc-cmos.c
++++ b/drivers/rtc/rtc-cmos.c
+@@ -231,7 +231,7 @@ static int cmos_read_time(struct device *dev, struct rtc_time *t)
+ 	if (!pm_trace_rtc_valid())
+ 		return -EIO;
+ 
+-	ret = mc146818_get_time(t, 10);
++	ret = mc146818_get_time(t, 1000);
+ 	if (ret < 0) {
+ 		dev_err_ratelimited(dev, "unable to read current time\n");
+ 		return ret;
+diff --git a/drivers/rtc/rtc-mc146818-lib.c b/drivers/rtc/rtc-mc146818-lib.c
+index 4c17b3cef11e..651bf3c279c7 100644
+--- a/drivers/rtc/rtc-mc146818-lib.c
++++ b/drivers/rtc/rtc-mc146818-lib.c
+@@ -93,7 +93,7 @@ EXPORT_SYMBOL_GPL(mc146818_avoid_UIP);
+  */
+ bool mc146818_does_rtc_work(void)
+ {
+-	return mc146818_avoid_UIP(NULL, 10, NULL);
++	return mc146818_avoid_UIP(NULL, 1000, NULL);
+ }
+ EXPORT_SYMBOL_GPL(mc146818_does_rtc_work);
+ 
 -- 
 2.43.0
 
