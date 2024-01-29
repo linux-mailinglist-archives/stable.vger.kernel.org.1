@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-17085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D99E840FC4
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF036840D93
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AA1F28320C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E127E1C23299
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D547315EA80;
-	Mon, 29 Jan 2024 17:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E65315A494;
+	Mon, 29 Jan 2024 17:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjMGqtKo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8TU0Yrk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9478D157E61;
-	Mon, 29 Jan 2024 17:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CE715703D;
+	Mon, 29 Jan 2024 17:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548498; cv=none; b=IgcQqU5mZFzU8/+WvO6Tjvu45oqqly6EK5rACKD3JReugVSZ1ujSXjv+ex4gbzii7FZ21Kj4MEINJ7ji2U62LTNO74B78UUER2ELVXLzt8GoSqeGgz+jNft88q2NwfA3O6hwWReNPEnI4QpgI7w/Ur4OWi9e6LG3JPwwHX1GNes=
+	t=1706548129; cv=none; b=NRtY8OCuYDGpomKxv4sD5nMuhKG6FSs/gJhdOvvZzWRIzwbT2KX1hNk0voAt+3Szazr2tIwOBdt2HdxS/AEoi4UhwRziUvEtEcwwpBk4RaYbdkxHbzqkYloBEVitYvoloiVOtFy8/xrlzQw5mBIcnss5uyUJ/ZUkPhKQYzjB28Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548498; c=relaxed/simple;
-	bh=bwFl4hcqTGuoAKvE9+ldnMspZbXmTu5rLx25zgLGPD8=;
+	s=arc-20240116; t=1706548129; c=relaxed/simple;
+	bh=AKuETfpHDXWuJK57rocxksFBEbSAcfoA9fSuqyIC+e8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TSV6/ZTgIrfijxsysbxETeIpcz+To7l8djk/KPqdwnwghnm6K8CEtl+3yx1n9Ib2btT49EH+1h+osjSCHZ3KFy+WVhmGC40ApuhNv15uKQMOaEN699WuF2qW6XWd9xKJ466v8NpH+veYXAoJYC1O45Lpx50qu5zMzh2fm0Atuec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BjMGqtKo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA49C433F1;
-	Mon, 29 Jan 2024 17:14:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QDN67d/3OzLIMWzbvkYz/xbM7yE0TQ8UAh+d1Q/RZQvrYCn+AiVTMbNsaUytUBvKtoKP2vmnDiB/xEp9Mx4X6Dx8TKR/URHcB2vRZgqu67MtUKrzgPGCdtMsUjQmnEviPQaS10h3AOMAsLeBMJxweem+e3z4kCafQusRrutKlN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8TU0Yrk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA73CC433F1;
+	Mon, 29 Jan 2024 17:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548498;
-	bh=bwFl4hcqTGuoAKvE9+ldnMspZbXmTu5rLx25zgLGPD8=;
+	s=korg; t=1706548128;
+	bh=AKuETfpHDXWuJK57rocxksFBEbSAcfoA9fSuqyIC+e8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BjMGqtKov9vn1fcsOz8dprLjPRPxT9cPD7HVjeIUn7MUJ6F0hRHxOXTi/7FS37iFN
-	 dU9F9zprwalrp7h5nS3apKVRyNZxxsyhm9zX6+8PO1epG3PxLtqgwSn/3uGD42TOqm
-	 +hvq+Z4ofT8rQZC0JgrI97oRLWhDoCjES8pU+nnY=
+	b=A8TU0YrkJm+jFlFzxPN7Mj/mC54XgOMMQZUNLTKxo0VuwrJTYYrcJB6JJbDqquGD2
+	 LdukR7sLpGrND4rxvErQ9o5qToEa9FzuTJxddG6tMy38yF+TNIQqYTKyHKf3lP+cGW
+	 PoEFq76eIrAF/9jb9ej4t28jMl/+U1pyYTZgt0O0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 125/331] mm/rmap: fix misplaced parenthesis of a likely()
+	=?UTF-8?q?=D0=9C=D0=B0=D1=80=D0=BA=20=D0=9A=D0=BE=D1=80=D0=B5=D0=BD=D0=B1=D0=B5=D1=80=D0=B3?= <socketpair@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 158/346] net: fix removing a namespace with conflicting altnames
 Date: Mon, 29 Jan 2024 09:03:09 -0800
-Message-ID: <20240129170018.593253783@linuxfoundation.org>
+Message-ID: <20240129170021.053405993@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +64,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit f67f8d4a8c1e1ebc85a6cbdb9a7266f14863461c upstream.
+[ Upstream commit d09486a04f5da0a812c26217213b89a3b1acf836 ]
 
-Running my yearly branch profiler to see where likely/unlikely annotation
-may be added or removed, I discovered this:
+Mark reports a BUG() when a net namespace is removed.
 
-correct incorrect  %        Function                  File              Line
- ------- ---------  -        --------                  ----              ----
-       0   457918 100 page_try_dup_anon_rmap         rmap.h               264
-[..]
-  458021        0   0 page_try_dup_anon_rmap         rmap.h               265
+    kernel BUG at net/core/dev.c:11520!
 
-I thought it was interesting that line 264 of rmap.h had a 100% incorrect
-annotation, but the line directly below it was 100% correct. Looking at the
-code:
+Physical interfaces moved outside of init_net get "refunded"
+to init_net when that namespace disappears. The main interface
+name may get overwritten in the process if it would have
+conflicted. We need to also discard all conflicting altnames.
+Recent fixes addressed ensuring that altnames get moved
+with the main interface, which surfaced this problem.
 
-	if (likely(!is_device_private_page(page) &&
-	    unlikely(page_needs_cow_for_dma(vma, page))))
-
-It didn't make sense. The "likely()" was around the entire if statement
-(not just the "!is_device_private_page(page)"), which also included the
-"unlikely()" portion of that if condition.
-
-If the unlikely portion is unlikely to be true, that would make the entire
-if condition unlikely to be true, so it made no sense at all to say the
-entire if condition is true.
-
-What is more likely to be likely is just the first part of the if statement
-before the && operation. It's likely to be a misplaced parenthesis. And
-after making the if condition broken into a likely() && unlikely(), both
-now appear to be correct!
-
-Link: https://lkml.kernel.org/r/20231201145936.5ddfdb50@gandalf.local.home
-Fixes:fb3d824d1a46c ("mm/rmap: split page_dup_rmap() into page_dup_file_rmap() and page_try_dup_anon_rmap()")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Марк Коренберг <socketpair@gmail.com>
+Link: https://lore.kernel.org/all/CAEmTpZFZ4Sv3KwqFOY2WKDHeZYdi0O7N5H1nTvcGp=SAEavtDg@mail.gmail.com/
+Fixes: 7663d522099e ("net: check for altname conflicts when changing netdev's netns")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rmap.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/dev.c | 9 +++++++++
+ net/core/dev.h | 3 +++
+ 2 files changed, 12 insertions(+)
 
---- a/include/linux/rmap.h
-+++ b/include/linux/rmap.h
-@@ -261,8 +261,8 @@ static inline int page_try_dup_anon_rmap
- 	 * guarantee the pinned page won't be randomly replaced in the
- 	 * future on write faults.
- 	 */
--	if (likely(!is_device_private_page(page) &&
--	    unlikely(page_needs_cow_for_dma(vma, page))))
-+	if (likely(!is_device_private_page(page)) &&
-+	    unlikely(page_needs_cow_for_dma(vma, page)))
- 		return -EBUSY;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index ad20bebe153f..add22ca0dff9 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -11509,6 +11509,7 @@ static struct pernet_operations __net_initdata netdev_net_ops = {
  
- 	ClearPageAnonExclusive(page);
+ static void __net_exit default_device_exit_net(struct net *net)
+ {
++	struct netdev_name_node *name_node, *tmp;
+ 	struct net_device *dev, *aux;
+ 	/*
+ 	 * Push all migratable network devices back to the
+@@ -11531,6 +11532,14 @@ static void __net_exit default_device_exit_net(struct net *net)
+ 		snprintf(fb_name, IFNAMSIZ, "dev%d", dev->ifindex);
+ 		if (netdev_name_in_use(&init_net, fb_name))
+ 			snprintf(fb_name, IFNAMSIZ, "dev%%d");
++
++		netdev_for_each_altname_safe(dev, name_node, tmp)
++			if (netdev_name_in_use(&init_net, name_node->name)) {
++				netdev_name_node_del(name_node);
++				synchronize_rcu();
++				__netdev_name_node_alt_destroy(name_node);
++			}
++
+ 		err = dev_change_net_namespace(dev, &init_net, fb_name);
+ 		if (err) {
+ 			pr_emerg("%s: failed to move %s to init_net: %d\n",
+diff --git a/net/core/dev.h b/net/core/dev.h
+index 5aa45f0fd4ae..3f5eb92396b6 100644
+--- a/net/core/dev.h
++++ b/net/core/dev.h
+@@ -64,6 +64,9 @@ int dev_change_name(struct net_device *dev, const char *newname);
+ 
+ #define netdev_for_each_altname(dev, namenode)				\
+ 	list_for_each_entry((namenode), &(dev)->name_node->list, list)
++#define netdev_for_each_altname_safe(dev, namenode, next)		\
++	list_for_each_entry_safe((namenode), (next), &(dev)->name_node->list, \
++				 list)
+ 
+ int netdev_name_node_alt_create(struct net_device *dev, const char *name);
+ int netdev_name_node_alt_destroy(struct net_device *dev, const char *name);
+-- 
+2.43.0
+
 
 
 
