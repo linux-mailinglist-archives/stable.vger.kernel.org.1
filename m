@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-17096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48CC1840FCF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C3A840FF5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F18681F23834
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFF2E1F22DEF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4E272239;
-	Mon, 29 Jan 2024 17:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8CF73742;
+	Mon, 29 Jan 2024 17:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KREzeYIh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPo5VOgK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA49372223;
-	Mon, 29 Jan 2024 17:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B49273722;
+	Mon, 29 Jan 2024 17:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548506; cv=none; b=iynx2uAfGZm8BS2Wtcbs9fhBUPAH67MZ+rONBkbz8g4c1KN7FkJc+ioi0qw8f+cgq1BjHc61RCxanGERLyZQ1dP723b7ivVfacfSS6CrU6AkifA3vNwcOn8jcTjerQYZxjOEY5FvHzAR+MoZWfju/Vwtn42VxqnfatpUygvOLgQ=
+	t=1706548534; cv=none; b=Yu3akYgpcr+nCoZB6wSfqRl4avhpkidbuDwUt7qFtE3dE+PbhQudUIa4GK11nuQSAm7CYAUDqe3i5KbNH1ASsEpPg3boSABy4VHG60g+ARV86VCixAWzWnhBL6vh0i1OBt35gi7iOZdq9J14BiH46TCIngilMHnsCxQIqAyApG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548506; c=relaxed/simple;
-	bh=Tq5IvIdtyys7oEKni5Hui40byVsbEuFLzTzQI4OVFYQ=;
+	s=arc-20240116; t=1706548534; c=relaxed/simple;
+	bh=LNx7qKJmfE+jxcdsR1Bc4XtbSpZgrJzDn8JVAUFFJeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BgBEvkr982wWrr44upG/mWRoJZrE2gRt7WqKMUf6afpQrSe43nAMjxwLx6mKK7PJkNAIbgvYpyilLWDUuaHfFPiwwZJGJX37LCAU1seeyBzR5T3F84N8IiQpzT05vNXMZzuS8o9/64Ed8C5X2Of1MN3BmrqJ2e6+y6mL44qCrVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KREzeYIh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F53C433F1;
-	Mon, 29 Jan 2024 17:15:06 +0000 (UTC)
+	 MIME-Version; b=NjgZU5XD/k5ayfV1yI1db4MXyhfOQZ7frgonzL0Tf1/HPtPe8GaKl223ZYrNOuxcIVZZfMFtZW0apOHN+ASXf7xlQKsAlRSDqzfA1nLVFsA2HxT9LQk8E+aLFnpUgfl3q1vYOPridcZjZIkh7TbXQHCjMPZcX/alCah+dXKX24Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPo5VOgK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5327EC433F1;
+	Mon, 29 Jan 2024 17:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548506;
-	bh=Tq5IvIdtyys7oEKni5Hui40byVsbEuFLzTzQI4OVFYQ=;
+	s=korg; t=1706548534;
+	bh=LNx7qKJmfE+jxcdsR1Bc4XtbSpZgrJzDn8JVAUFFJeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KREzeYIh4Jh7AxwNkuQlRDTVrnU2Re1dDh89ofvzGiCGlTCd9h/VI2ir833PhK3Ri
-	 MjPfiFWDfMdo/wNypLqEBpwYIk1mbTo86DCGweV2YwKUSs01Yra+HzWc6qM2alpMY3
-	 C4Eabgy5sBcTME8H7Og9eoznMm10OWJEAElEjXcM=
+	b=kPo5VOgKsHdYGOtuK0vn6KkbhUJ4xovynjnbbvkrV1Aq5vJpWr1xEuiA/e31/R2Tq
+	 E5Fpg5GWdGcLq7QMQGW/DR37k1LV9tPnFcWNJPpYkmmpIJzywDVngq07LBI4sYnww+
+	 GaDio9za7TsFYGTUzJGF6HtgNNiRnSTrz60ymUoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.6 135/331] serial: sc16is7xx: remove obsolete loop in sc16is7xx_port_irq()
-Date: Mon, 29 Jan 2024 09:03:19 -0800
-Message-ID: <20240129170018.892507399@linuxfoundation.org>
+Subject: [PATCH 6.6 136/331] serial: sc16is7xx: improve do/while loop in sc16is7xx_irq()
+Date: Mon, 29 Jan 2024 09:03:20 -0800
+Message-ID: <20240129170018.925046627@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
 References: <20240129170014.969142961@linuxfoundation.org>
@@ -67,129 +67,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit ed647256e8f226241ecff7baaecdb8632ffc7ec1 upstream.
+commit d5078509c8b06c5c472a60232815e41af81c6446 upstream.
 
-Commit 834449872105 ("sc16is7xx: Fix for multi-channel stall") changed
-sc16is7xx_port_irq() from looping multiple times when there was still
-interrupts to serve. It simply changed the do {} while(1) loop to a
-do {} while(0) loop, which makes the loop itself now obsolete.
-
-Clean the code by removing this obsolete do {} while(0) loop.
+Simplify and improve readability by replacing while(1) loop with
+do {} while, and by using the keep_polling variable as the exit
+condition, making it more explicit.
 
 Fixes: 834449872105 ("sc16is7xx: Fix for multi-channel stall")
 Cc:  <stable@vger.kernel.org>
 Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-5-hugo@hugovil.com
+Link: https://lore.kernel.org/r/20231221231823.2327894-6-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   89 +++++++++++++++++++----------------------
- 1 file changed, 43 insertions(+), 46 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
 --- a/drivers/tty/serial/sc16is7xx.c
 +++ b/drivers/tty/serial/sc16is7xx.c
-@@ -724,58 +724,55 @@ static void sc16is7xx_update_mlines(stru
- static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
+@@ -782,17 +782,18 @@ out_port_irq:
+ 
+ static irqreturn_t sc16is7xx_irq(int irq, void *dev_id)
  {
- 	bool rc = true;
-+	unsigned int iir, rxlen;
- 	struct uart_port *port = &s->p[portno].port;
- 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
++	bool keep_polling;
++
+ 	struct sc16is7xx_port *s = (struct sc16is7xx_port *)dev_id;
  
- 	mutex_lock(&one->efr_lock);
+-	while (1) {
+-		bool keep_polling = false;
++	do {
+ 		int i;
  
--	do {
--		unsigned int iir, rxlen;
--
--		iir = sc16is7xx_port_read(port, SC16IS7XX_IIR_REG);
--		if (iir & SC16IS7XX_IIR_NO_INT_BIT) {
--			rc = false;
--			goto out_port_irq;
--		}
--
--		iir &= SC16IS7XX_IIR_ID_MASK;
--
--		switch (iir) {
--		case SC16IS7XX_IIR_RDI_SRC:
--		case SC16IS7XX_IIR_RLSE_SRC:
--		case SC16IS7XX_IIR_RTOI_SRC:
--		case SC16IS7XX_IIR_XOFFI_SRC:
--			rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
--
--			/*
--			 * There is a silicon bug that makes the chip report a
--			 * time-out interrupt but no data in the FIFO. This is
--			 * described in errata section 18.1.4.
--			 *
--			 * When this happens, read one byte from the FIFO to
--			 * clear the interrupt.
--			 */
--			if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
--				rxlen = 1;
--
--			if (rxlen)
--				sc16is7xx_handle_rx(port, rxlen, iir);
--			break;
-+	iir = sc16is7xx_port_read(port, SC16IS7XX_IIR_REG);
-+	if (iir & SC16IS7XX_IIR_NO_INT_BIT) {
-+		rc = false;
-+		goto out_port_irq;
-+	}
++		keep_polling = false;
 +
-+	iir &= SC16IS7XX_IIR_ID_MASK;
-+
-+	switch (iir) {
-+	case SC16IS7XX_IIR_RDI_SRC:
-+	case SC16IS7XX_IIR_RLSE_SRC:
-+	case SC16IS7XX_IIR_RTOI_SRC:
-+	case SC16IS7XX_IIR_XOFFI_SRC:
-+		rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
-+
-+		/*
-+		 * There is a silicon bug that makes the chip report a
-+		 * time-out interrupt but no data in the FIFO. This is
-+		 * described in errata section 18.1.4.
-+		 *
-+		 * When this happens, read one byte from the FIFO to
-+		 * clear the interrupt.
-+		 */
-+		if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
-+			rxlen = 1;
-+
-+		if (rxlen)
-+			sc16is7xx_handle_rx(port, rxlen, iir);
-+		break;
- 		/* CTSRTS interrupt comes only when CTS goes inactive */
--		case SC16IS7XX_IIR_CTSRTS_SRC:
--		case SC16IS7XX_IIR_MSI_SRC:
--			sc16is7xx_update_mlines(one);
+ 		for (i = 0; i < s->devtype->nr_uart; ++i)
+ 			keep_polling |= sc16is7xx_port_irq(s, i);
+-		if (!keep_polling)
 -			break;
--		case SC16IS7XX_IIR_THRI_SRC:
--			sc16is7xx_handle_tx(port);
--			break;
--		default:
--			dev_err_ratelimited(port->dev,
--					    "ttySC%i: Unexpected interrupt: %x",
--					    port->line, iir);
--			break;
--		}
--	} while (0);
-+	case SC16IS7XX_IIR_CTSRTS_SRC:
-+	case SC16IS7XX_IIR_MSI_SRC:
-+		sc16is7xx_update_mlines(one);
-+		break;
-+	case SC16IS7XX_IIR_THRI_SRC:
-+		sc16is7xx_handle_tx(port);
-+		break;
-+	default:
-+		dev_err_ratelimited(port->dev,
-+				    "ttySC%i: Unexpected interrupt: %x",
-+				    port->line, iir);
-+		break;
-+	}
+-	}
++	} while (keep_polling);
  
- out_port_irq:
- 	mutex_unlock(&one->efr_lock);
+ 	return IRQ_HANDLED;
+ }
 
 
 
