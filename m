@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-16621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3601840DBA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 304CB840FE8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 901022831FA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE64D282B09
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A6415AAA6;
-	Mon, 29 Jan 2024 17:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0310E15EA91;
+	Mon, 29 Jan 2024 17:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JD2QTsyx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUlKgS5L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62742157031;
-	Mon, 29 Jan 2024 17:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7658157E68;
+	Mon, 29 Jan 2024 17:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548155; cv=none; b=pr7J+AWT+Uk3lGjL6dmdfsRebget1DflZDXi5vODm1DOqVVRk+B0Ta/3SEdoXE/C3Vc/iViaGvsLTjoTov95ZSSmQKyQG7N2Zcb4CKA4bR7gjsRYJD8oEOXjdFQvvye0jYbAKWNSt9uq5tVaVTU1TNnvjGkLDrayYCpJ7H/g5Vk=
+	t=1706548526; cv=none; b=lPAvq/CuYiFinW5CF6/2k/zk5ZzG3hOMtTn43iueFR4MuFMCDPWurViXDz+VOCtrccN8d8q4hjypnRYoNaL5pQL6I7ReMIoAqnQhuHC5YMuOH7ZD4uJLYqeJP/P381aP00Ss23J+0XoZuHTTDtTIMna//wYNwepJmY4kzvTQrAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548155; c=relaxed/simple;
-	bh=Syh6LFDqr7Et1FBgwdRAfqT2xBBnwAjC2630qAFtPAw=;
+	s=arc-20240116; t=1706548526; c=relaxed/simple;
+	bh=sTe6ngf+AsnH5mbfoVSouz2eY2gj/YXgYXK8uBgbk/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IHQNfdOgHv7kQdv3nKJ3t85+L3uqwWg7A2bTGSc1AhH0kVnwHT+1DAvjdRHyHT37ARabR1BwnYcKWecB/9p/a9LQUaphAfky0rOj68AinnK0SV/p65YXavt3yXLGgstfaBNDC/1m1MFdgumQcxEjoy8U4N1qac9LBvFtp+/beNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JD2QTsyx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E89C433C7;
-	Mon, 29 Jan 2024 17:09:15 +0000 (UTC)
+	 MIME-Version; b=Yg3YmFbWsCObUSj4DLc7+wJaraHauXIenUU8iYnOiYr7YPGLaKhdf1bTVFJBEIBTLZq7nlYwWw5167O9OCi7KwoR4S1dHPEaICek+cpo0TbUKL71Dhr1SZQy1zC23tELPe5UPS2Cm+jNZIb2jlG7P2zaR00czN4wR7PXxI+f7qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUlKgS5L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A78C433C7;
+	Mon, 29 Jan 2024 17:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548155;
-	bh=Syh6LFDqr7Et1FBgwdRAfqT2xBBnwAjC2630qAFtPAw=;
+	s=korg; t=1706548526;
+	bh=sTe6ngf+AsnH5mbfoVSouz2eY2gj/YXgYXK8uBgbk/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JD2QTsyxZzPPjlEtzk9KwX/WwSvI9T+Q8q+u1nXvB8F9Sk7M2JezuKgFSHnn8SAIL
-	 NgoRYK/MVX5WmRkkI8QkX6coCv2FJPSN+UTg//1QqfzHG/dF/co1NFcj4ZNqBWwiW9
-	 Pj4iBh7aVP1rOKoB/LTLPVtiJisaGq0AohrnC7SY=
+	b=gUlKgS5LLuFEP/q3+5nV5aMv9HNEqvjhmdd661k7EEr9sY2eE/0Q/pSjNBWh+qui9
+	 S5LgssBJrxB0IsrVdYkVkTT4ADwlDGdshnkwRmq/PBNG10jhPbbVq1ZeVf7GbiAw9r
+	 T231UYm8OcysTe6FrpVqOf7HFiOklWpfGX7L7Sdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 193/346] net/mlx5: Use mlx5 device constant for selecting CQ period mode for ASO
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 160/331] selftests/bpf: test widening for iterating callbacks
 Date: Mon, 29 Jan 2024 09:03:44 -0800
-Message-ID: <20240129170022.079755027@linuxfoundation.org>
+Message-ID: <20240129170019.613584498@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 20cbf8cbb827094197f3b17db60d71449415db1e ]
+commit 9f3330aa644d6d979eb064c46e85c62d4b4eac75 upstream.
 
-mlx5 devices have specific constants for choosing the CQ period mode. These
-constants do not have to match the constants used by the kernel software
-API for DIM period mode selection.
+A test case to verify that imprecise scalars widening is applied to
+callback entering state, when callback call is simulated repeatedly.
 
-Fixes: cdd04f4d4d71 ("net/mlx5: Add support to create SQ and CQ for ASO")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20231121020701.26440-10-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/progs/verifier_iterating_callbacks.c |   20 ++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c
-index 40c7be124041..58bd749b5e4d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c
-@@ -98,7 +98,7 @@ static int create_aso_cq(struct mlx5_aso_cq *cq, void *cqc_data)
- 	mlx5_fill_page_frag_array(&cq->wq_ctrl.buf,
- 				  (__be64 *)MLX5_ADDR_OF(create_cq_in, in, pas));
+--- a/tools/testing/selftests/bpf/progs/verifier_iterating_callbacks.c
++++ b/tools/testing/selftests/bpf/progs/verifier_iterating_callbacks.c
+@@ -25,6 +25,7 @@ struct buf_context {
  
--	MLX5_SET(cqc,   cqc, cq_period_mode, DIM_CQ_PERIOD_MODE_START_FROM_EQE);
-+	MLX5_SET(cqc,   cqc, cq_period_mode, MLX5_CQ_PERIOD_MODE_START_FROM_EQE);
- 	MLX5_SET(cqc,   cqc, c_eqn_or_apu_element, eqn);
- 	MLX5_SET(cqc,   cqc, uar_page,      mdev->priv.uar->index);
- 	MLX5_SET(cqc,   cqc, log_page_size, cq->wq_ctrl.buf.page_shift -
--- 
-2.43.0
-
+ struct num_context {
+ 	__u64 i;
++	__u64 j;
+ };
+ 
+ __u8 choice_arr[2] = { 0, 1 };
+@@ -69,6 +70,25 @@ int unsafe_on_zero_iter(void *unused)
+ 	return choice_arr[loop_ctx.i];
+ }
+ 
++static int widening_cb(__u32 idx, struct num_context *ctx)
++{
++	++ctx->i;
++	return 0;
++}
++
++SEC("?raw_tp")
++__success
++int widening(void *unused)
++{
++	struct num_context loop_ctx = { .i = 0, .j = 1 };
++
++	bpf_loop(100, widening_cb, &loop_ctx, 0);
++	/* loop_ctx.j is not changed during callback iteration,
++	 * verifier should not apply widening to it.
++	 */
++	return choice_arr[loop_ctx.j];
++}
++
+ static int loop_detection_cb(__u32 idx, struct num_context *ctx)
+ {
+ 	for (;;) {}
 
 
 
