@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-17273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1559841085
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35C71840F32
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FF661F24A1D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD7F7B243F4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E163115F336;
-	Mon, 29 Jan 2024 17:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964B716418C;
+	Mon, 29 Jan 2024 17:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NZX8P8j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaugyyfl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE1476058;
-	Mon, 29 Jan 2024 17:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556AC159574;
+	Mon, 29 Jan 2024 17:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548637; cv=none; b=KqMUsNGO6FJMa2ijptTdHcxxBOwQ8lZ6p+rUBKelsXAs8ob4+kmTNHRBLiP2Oe7wgaeiAKt3l+cfl5rG8T2hPwxReUC7EiYBt4rMnKBUCBbQldFqEWvGAqxPwNnZaj9iRMezf1KoLLRndz7M6MqHtOpUQVYRR4K0invLniLKggQ=
+	t=1706548399; cv=none; b=FP2KqLyHNagSGB32Gao+9X0JWhPerLeXT2YjUWvrZi//vPiHfgQ0rPq9wqE0+MNdn2J0M1K04qOeNZ/x1ERtLajoXne1G3BImyavrtwP2FPc5PlpfKoSrIauJbDTkU2Lh3ZFy8bM8Y6hpSPnMKA31HFfUofGSa5QnA6+FQ9ATHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548637; c=relaxed/simple;
-	bh=YbIURZAeyFbKpkJYkFE7T2ZaObFAD6qsbrL8rZZ4GJ4=;
+	s=arc-20240116; t=1706548399; c=relaxed/simple;
+	bh=il6BlhkL3Qlx65BBHT/I8dH3imDJMflk9cCAz8GXe/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5F+wXnETNnymvDYrAdrIBcsepYPsDi5fT1pT01IvNhRt7Eh7oyLqEor/W5b3axd1DHOyMydir16kxTZZc4yyin8v7Cn9VEza/zS7Is+n2mBbJrgJIOlVxRlC9wPRx7QgJ7Q87PHgfijIPF26GWM7qN0gZxD+qEAEQHtzCG3NdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NZX8P8j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BC0C43394;
-	Mon, 29 Jan 2024 17:17:17 +0000 (UTC)
+	 MIME-Version; b=rMyObhwNYRdbBM+lVgPzUdxamlZk/j661n5OWWH2zjl2Tx82TVLzr58HvukoFfiQ4MFPqbc+2SGwc8uNPy3/KjhlJf3s3mMTxbriUm5hlrOl3JVzPewYls1XCLu7aULdGKrUcrui9GLGry09FOp3cctpvUHMBSF2RqrWU5YpjD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oaugyyfl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB4AC43390;
+	Mon, 29 Jan 2024 17:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548637;
-	bh=YbIURZAeyFbKpkJYkFE7T2ZaObFAD6qsbrL8rZZ4GJ4=;
+	s=korg; t=1706548399;
+	bh=il6BlhkL3Qlx65BBHT/I8dH3imDJMflk9cCAz8GXe/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1NZX8P8jKkoxJTitMGdONN+tRXURCOX0Xzx6mEcpVz9BeL9QkEwOEaVQFdfRqhvSd
-	 UNpy6ntpyZoAbLGJu2YR1L8uHiamTB/KYkv0D456vu+BBwi1m0FSGe76UjYCwe8JHE
-	 NZGor5y3LiE7AxFppgh384G834KkzISSMbVNTcDA=
+	b=oaugyyfljfT/4XKMU+VuoEcGPMJFsVC/YykWm/vr/kL97QED5LH1+JZDyh4Q/pOjB
+	 ETVzPxunP38G7H4MOcs15hr9iqQ+gTvFS1qgQmf6GAoujQZ6MWWMdGoy4yb6JI93Dr
+	 /t2Wxqim9UgWOyU43dOeP4E81lRK0pPOdZu//I8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Hsin-Yi Wang <hsinyi@chromium.org>,
+	Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>,
+	Pin-yen Lin <treapking@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 313/331] ARM: dts: exynos4212-tab3: add samsung,invert-vclk flag to fimd
+Subject: [PATCH 6.1 177/185] drm/bridge: anx7625: Ensure bridge is suspended in disable()
 Date: Mon, 29 Jan 2024 09:06:17 -0800
-Message-ID: <20240129170024.042847286@linuxfoundation.org>
+Message-ID: <20240129170004.282164428@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Hsin-Yi Wang <hsinyi@chromium.org>
 
-[ Upstream commit eab4f56d3e75dad697acf8dc2c8be3c341d6c63e ]
+[ Upstream commit 4d5b7daa3c610af3f322ad1e91fc0c752ff32f0e ]
 
-After more investigation, I've found that it's not the panel driver
-config that needs to be modified to invert the data polarity, but
-the FIMD config.
+Similar to commit 26db46bc9c67 ("drm/bridge: parade-ps8640: Ensure bridge
+is suspended in .post_disable()"). Add a mutex to ensure that aux transfer
+won't race with atomic_disable by holding the PM reference and prevent
+the bridge from suspend.
 
-Add the missing invert-vclk option that is required to get the display
-to work correctly.
+Also we need to use pm_runtime_put_sync_suspend() to suspend the bridge
+instead of idle with pm_runtime_put_sync().
 
-Fixes: ee37a457af1d ("ARM: dts: exynos: Add Samsung Galaxy Tab 3 8.0 boards")
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Link: https://lore.kernel.org/r/20240105-tab3-display-fixes-v2-1-904d1207bf6f@gmail.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 3203e497eb76 ("drm/bridge: anx7625: Synchronously run runtime suspend.")
+Fixes: adca62ec370c ("drm/bridge: anx7625: Support reading edid through aux channel")
+Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
+Tested-by: Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>
+Reviewed-by: Pin-yen Lin <treapking@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240118015916.2296741-1-hsinyi@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 7 ++++++-
+ drivers/gpu/drm/bridge/analogix/anx7625.h | 2 ++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi b/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi
-index ce81e42bf5eb..39469b708f91 100644
---- a/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi
-+++ b/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi
-@@ -435,6 +435,7 @@ &exynos_usbphy {
- };
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index cf86cc05b7fc..5f8137e9cfd7 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -1742,6 +1742,7 @@ static ssize_t anx7625_aux_transfer(struct drm_dp_aux *aux,
+ 	u8 request = msg->request & ~DP_AUX_I2C_MOT;
+ 	int ret = 0;
  
- &fimd {
-+	samsung,invert-vclk;
- 	status = "okay";
- };
++	mutex_lock(&ctx->aux_lock);
+ 	pm_runtime_get_sync(dev);
+ 	msg->reply = 0;
+ 	switch (request) {
+@@ -1758,6 +1759,7 @@ static ssize_t anx7625_aux_transfer(struct drm_dp_aux *aux,
+ 					msg->size, msg->buffer);
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
++	mutex_unlock(&ctx->aux_lock);
  
+ 	return ret;
+ }
+@@ -2454,7 +2456,9 @@ static void anx7625_bridge_atomic_disable(struct drm_bridge *bridge,
+ 	ctx->connector = NULL;
+ 	anx7625_dp_stop(ctx);
+ 
+-	pm_runtime_put_sync(dev);
++	mutex_lock(&ctx->aux_lock);
++	pm_runtime_put_sync_suspend(dev);
++	mutex_unlock(&ctx->aux_lock);
+ }
+ 
+ static enum drm_connector_status
+@@ -2648,6 +2652,7 @@ static int anx7625_i2c_probe(struct i2c_client *client)
+ 
+ 	mutex_init(&platform->lock);
+ 	mutex_init(&platform->hdcp_wq_lock);
++	mutex_init(&platform->aux_lock);
+ 
+ 	INIT_DELAYED_WORK(&platform->hdcp_work, hdcp_check_work_func);
+ 	platform->hdcp_workqueue = create_workqueue("hdcp workqueue");
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.h b/drivers/gpu/drm/bridge/analogix/anx7625.h
+index 14f33d6be289..239956199e1b 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.h
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.h
+@@ -471,6 +471,8 @@ struct anx7625_data {
+ 	struct workqueue_struct *hdcp_workqueue;
+ 	/* Lock for hdcp work queue */
+ 	struct mutex hdcp_wq_lock;
++	/* Lock for aux transfer and disable */
++	struct mutex aux_lock;
+ 	char edid_block;
+ 	struct display_timing dt;
+ 	u8 display_timing_valid;
 -- 
 2.43.0
 
