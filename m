@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E958841080
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80DF7840F44
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D13B21C23A04
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22DB8B2533C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988F115B980;
-	Mon, 29 Jan 2024 17:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D454F15AAD6;
+	Mon, 29 Jan 2024 17:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfgItoXp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duyrBQDb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D2176058;
-	Mon, 29 Jan 2024 17:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D6E1641A7;
+	Mon, 29 Jan 2024 17:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548634; cv=none; b=OG3K21gkwb2qAo0q/U3wNwtj1wS4rIB1LsAs0jv5z0i8sC8a/9ZpmC3ESr56CdLORWFzgU2ZGadDxMmDnTKbNA76fTEQqsLwuP0Na070m4GNyyvuiXvJmv3b0zNQuVTokLTnxr4fEnrM4y9hJYI7PE3f5T21QhIbHW0VkIktXDY=
+	t=1706548411; cv=none; b=ud5kMfSwfGKxUdorPCGRGdzHlyRJ825vtX889yyEsZllGKZVenf9Gq2woIiU4j5lZmHsvsKKgv9rTY9J8XNfyToE6bK/0vTifiQ5uUExp0Bu4im0P3edkGBtGl3rWs9H+GUB97ss7KljL2tysRjsgIt+Xw352O22Jj03fH0Xhbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548634; c=relaxed/simple;
-	bh=dH0NNeMpSy3CsfXX4m7vRDgC/1uraC+7pUMM726SO8s=;
+	s=arc-20240116; t=1706548411; c=relaxed/simple;
+	bh=DynzoE6KElPavMrOoZyVs9oOLpFOZjnbnzi1GP0Xqlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2w8JIwJhTf0BZL11f8m0p0gzkDuXyyzQXhK9mvx5FpS7j4W3dR3sllaDTFOlfAyzOVa36MzhTkQT7UB2HJRRt42tiyHYWw9Bofbq8AFWxZMWwCkHgvhKrDlXTXBqnWLeO5p34eFqnUIJlsKayuwp2MT6228mh31M9ZdPmrPRy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfgItoXp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3176C43399;
-	Mon, 29 Jan 2024 17:17:13 +0000 (UTC)
+	 MIME-Version; b=Me12OB4bDXZTcWUNlSkdqezReceWzWHGmfmU+APZKXjsFjzMrDEwJitudYkk/PTxbzvACHVG9WpQOfqmRX8v9h5e1QbTYwgPAcmQqB8/jULq96gKEKUUpXjnSdUqDmT1uBoDEv7vP5Hs4aBHBUqKBdn2dvZkSxyXw2zZ9+yqcPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duyrBQDb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58FF7C43399;
+	Mon, 29 Jan 2024 17:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548633;
-	bh=dH0NNeMpSy3CsfXX4m7vRDgC/1uraC+7pUMM726SO8s=;
+	s=korg; t=1706548411;
+	bh=DynzoE6KElPavMrOoZyVs9oOLpFOZjnbnzi1GP0Xqlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gfgItoXp/yYhh5UnojJmm2ehq38vxeM4w3I8nhxb3VpUyHHudW+luAi8UFL1337Ue
-	 Qb1sdJe5okqPeHM6x452ulutqQZQag2VgMVnE8rfCpGcZ4HakqucBf/jv/xSlZsoc3
-	 ai7/6QxDfTJdXtpZF3QhJANvVt2cibBwq7IJJ1gI=
+	b=duyrBQDbvRCTrN7R1wCkFjsl+ed606lkJNIDxURQkCVTmkKA6i50OFAqyH6xF7s84
+	 sKheyFXrnMLSheNbZ5RXWgqm2zQbHjRIDO6q/oziU6ZN9WPkhB7/K2zoZfkgHvg4cT
+	 n3w82nO+cwhUY2LzTQ1MIrc/we4FieEJFJCgyVFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Inki Dae <inki.dae@samsung.com>,
+	Hsin-Yi Wang <hsinyi@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 308/331] drm/exynos: fix accidental on-stack copy of exynos_drm_plane
+Subject: [PATCH 6.1 172/185] drm/bridge: parade-ps8640: Make sure we drop the AUX mutex in the error case
 Date: Mon, 29 Jan 2024 09:06:12 -0800
-Message-ID: <20240129170023.893737515@linuxfoundation.org>
+Message-ID: <20240129170004.114835848@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 960b537e91725bcb17dd1b19e48950e62d134078 ]
+[ Upstream commit a20f1b02bafcbf5a32d96a1d4185d6981cf7d016 ]
 
-gcc rightfully complains about excessive stack usage in the fimd_win_set_pixfmt()
-function:
+After commit 26db46bc9c67 ("drm/bridge: parade-ps8640: Ensure bridge
+is suspended in .post_disable()"), if we hit the error case in
+ps8640_aux_transfer() then we return without dropping the mutex. Fix
+this oversight.
 
-drivers/gpu/drm/exynos/exynos_drm_fimd.c: In function 'fimd_win_set_pixfmt':
-drivers/gpu/drm/exynos/exynos_drm_fimd.c:750:1: error: the frame size of 1032 bytes is larger than 1024 byte
-drivers/gpu/drm/exynos/exynos5433_drm_decon.c: In function 'decon_win_set_pixfmt':
-drivers/gpu/drm/exynos/exynos5433_drm_decon.c:381:1: error: the frame size of 1032 bytes is larger than 1024 bytes
-
-There is really no reason to copy the large exynos_drm_plane
-structure to the stack before using one of its members, so just
-use a pointer instead.
-
-Fixes: 6f8ee5c21722 ("drm/exynos: fimd: Make plane alpha configurable")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Fixes: 26db46bc9c67 ("drm/bridge: parade-ps8640: Ensure bridge is suspended in .post_disable()")
+Reviewed-by: Hsin-Yi Wang <hsinyi@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240117103502.1.Ib726a0184913925efc7e99c4d4fc801982e1bc24@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos5433_drm_decon.c | 4 ++--
- drivers/gpu/drm/exynos/exynos_drm_fimd.c      | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/bridge/parade-ps8640.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos5433_drm_decon.c b/drivers/gpu/drm/exynos/exynos5433_drm_decon.c
-index 4d986077738b..bce027552474 100644
---- a/drivers/gpu/drm/exynos/exynos5433_drm_decon.c
-+++ b/drivers/gpu/drm/exynos/exynos5433_drm_decon.c
-@@ -319,9 +319,9 @@ static void decon_win_set_bldmod(struct decon_context *ctx, unsigned int win,
- static void decon_win_set_pixfmt(struct decon_context *ctx, unsigned int win,
- 				 struct drm_framebuffer *fb)
- {
--	struct exynos_drm_plane plane = ctx->planes[win];
-+	struct exynos_drm_plane *plane = &ctx->planes[win];
- 	struct exynos_drm_plane_state *state =
--		to_exynos_plane_state(plane.base.state);
-+		to_exynos_plane_state(plane->base.state);
- 	unsigned int alpha = state->base.alpha;
- 	unsigned int pixel_alpha;
- 	unsigned long val;
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_fimd.c b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
-index 8dde7b1e9b35..5bdc246f5fad 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_fimd.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
-@@ -661,9 +661,9 @@ static void fimd_win_set_bldmod(struct fimd_context *ctx, unsigned int win,
- static void fimd_win_set_pixfmt(struct fimd_context *ctx, unsigned int win,
- 				struct drm_framebuffer *fb, int width)
- {
--	struct exynos_drm_plane plane = ctx->planes[win];
-+	struct exynos_drm_plane *plane = &ctx->planes[win];
- 	struct exynos_drm_plane_state *state =
--		to_exynos_plane_state(plane.base.state);
-+		to_exynos_plane_state(plane->base.state);
- 	uint32_t pixel_format = fb->format->format;
- 	unsigned int alpha = state->base.alpha;
- 	u32 val = WINCONx_ENWIN;
+diff --git a/drivers/gpu/drm/bridge/parade-ps8640.c b/drivers/gpu/drm/bridge/parade-ps8640.c
+index 3982568bd093..09737acc2cf4 100644
+--- a/drivers/gpu/drm/bridge/parade-ps8640.c
++++ b/drivers/gpu/drm/bridge/parade-ps8640.c
+@@ -359,11 +359,13 @@ static ssize_t ps8640_aux_transfer(struct drm_dp_aux *aux,
+ 	ret = _ps8640_wait_hpd_asserted(ps_bridge, 200 * 1000);
+ 	if (ret) {
+ 		pm_runtime_put_sync_suspend(dev);
+-		return ret;
++		goto exit;
+ 	}
+ 	ret = ps8640_aux_transfer_msg(aux, msg);
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
++
++exit:
+ 	mutex_unlock(&ps_bridge->aux_lock);
+ 
+ 	return ret;
 -- 
 2.43.0
 
