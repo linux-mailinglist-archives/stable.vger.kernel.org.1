@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-17043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A732E840F96
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F9F840D66
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 624B7282782
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 986501F2C7B2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AAE86F09D;
-	Mon, 29 Jan 2024 17:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2583315958D;
+	Mon, 29 Jan 2024 17:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2POFRB7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wr35YW0N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD306F099;
-	Mon, 29 Jan 2024 17:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82521586DB;
+	Mon, 29 Jan 2024 17:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548467; cv=none; b=lv5qskQWFBNeCnJgCoNCoYIC6jh+rnl8w/hl78AbtTGwFhwioZdrxrkHZksqtNuMhfIdiP9TA9roBpzF8LduUf7l7t7CayKJUxWqmty6BBB+yCMHzFiNWUdaMwZEBcfDYlzNY7yAt0E0xMekgnYVdR/o44K2YV3j8Ogfa2rCizA=
+	t=1706548098; cv=none; b=bhblr/n2ppuA0eVBm1jbjsRhvt7dSdy9WNlbLgLj46I55GLK7F3XIsiOcq26wrp0wF/h+ZnkPk2iCJPNRwAqh+Hjnz10y7bESO+N2a0o1+W9S2YrmkWUI4P8nyVjOdEpQqHMRPZvZuDeJejmrHqpRWLTBbnAArBr/Et8KPdBAwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548467; c=relaxed/simple;
-	bh=LxhnoQ9pmTIMG8/ruWseSOD7kkAsw1DGzZe48MZBk+c=;
+	s=arc-20240116; t=1706548098; c=relaxed/simple;
+	bh=tQOBv8siNxh5asz8vpGEfIFOCMC8QCWuM5cdbjxQ7J0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jJ7tzMqf/OqfRwHjjtT/Qmfd4HL2SrKOTSHmly7yg2MVNXDbL7HUiNVdfgokS4ZAyR+xdHMg9sOIADl7kRIGz5C8ONW7il1RBJGgyj5RgNxuvuDRCD1aD0CSP/y3oMoj0N10zOJ+XRs6Ye3D3OJh2dOjEeLN9TOFLsh8gQGL3J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2POFRB7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87212C43394;
-	Mon, 29 Jan 2024 17:14:27 +0000 (UTC)
+	 MIME-Version; b=mdBsxo4XB6pzmCDp10G+3dYislM2C3649HFUQ4yWpwRWFQ+ZkFVf3w+e2NgxYdwwVXJ+QAtW+w3DozoslWb2q5lxw864wPjq77nsKONbidQma7z6SsJrAMqUSbxltKEy3HPhpqSg7Ij7EHQBbJFQWoMoW0u3GeHdAvg3jgkORzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wr35YW0N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 525B2C433C7;
+	Mon, 29 Jan 2024 17:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548467;
-	bh=LxhnoQ9pmTIMG8/ruWseSOD7kkAsw1DGzZe48MZBk+c=;
+	s=korg; t=1706548098;
+	bh=tQOBv8siNxh5asz8vpGEfIFOCMC8QCWuM5cdbjxQ7J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V2POFRB7XaurWFS97/UpJrj12Mn00W+qIeAguMVRoGgl8MHufscOCL5wOUST5T3zS
-	 z6N/NjZLRQrxj6z1paI6Cqkd5tekEn8mOuVCkjwlAZh5uaxkjbSAsdJSbfJXhtcypj
-	 qDqi3zdJq09D0rxsGZ5PHiA0+842RATbQoKLCVlA=
+	b=wr35YW0NRbIfRahHKTPGgtq/yzgZ5a39NxNsdlA7OkLKq3oBN2ZwsvzU8l0JL5M+R
+	 FND+L2Fvniurdnxr4Pajz4Kiv2GXd3HaWoAmzcVHP6eH1cm0Lt1tYn5HnDo0F1cW7S
+	 UiR/7XlQeK6V7WY7wnuSR2005dACy3YHQ22y1EMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 6.6 058/331] soc: fsl: cpm1: qmc: Fix rx channel reset
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.7 091/346] ARM: dts: qcom: sdx55: fix USB SS wakeup
 Date: Mon, 29 Jan 2024 09:02:02 -0800
-Message-ID: <20240129170016.627332509@linuxfoundation.org>
+Message-ID: <20240129170019.085574998@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit dfe66d012af2ddfa566cf9c860b8472b412fb7e4 upstream.
+commit 710dd03464e4ab5b3d329768388b165d61958577 upstream.
 
-The qmc_chan_reset_rx() set the is_rx_stopped flag. This leads to an
-inconsistent state in the following sequence.
-    qmc_chan_stop()
-    qmc_chan_reset()
-Indeed, after the qmc_chan_reset() call, the channel must still be
-stopped. Only a qmc_chan_start() call can move the channel from stopped
-state to started state.
+The USB SS PHY interrupt needs to be provided by the PDC interrupt
+controller in order to be able to wake the system up from low-power
+states.
 
-Fix the issue removing the is_rx_stopped flag setting from
-qmc_chan_reset()
-
-Fixes: 3178d58e0b97 ("soc: fsl: cpm1: Add support for QMC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/20231205152116.122512-4-herve.codina@bootlin.com
+Fixes: fea4b41022f3 ("ARM: dts: qcom: sdx55: Add USB3 and PHY support")
+Cc: stable@vger.kernel.org	# 5.12
+Cc: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20231213173131.29436-4-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/fsl/qe/qmc.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/boot/dts/qcom/qcom-sdx55.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index 3f3de1351c96..2312152a44b3 100644
---- a/drivers/soc/fsl/qe/qmc.c
-+++ b/drivers/soc/fsl/qe/qmc.c
-@@ -685,7 +685,6 @@ static void qmc_chan_reset_rx(struct qmc_chan *chan)
- 		    qmc_read16(chan->s_param + QMC_SPE_RBASE));
+--- a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
+@@ -586,7 +586,7 @@
+ 			assigned-clock-rates = <19200000>, <200000000>;
  
- 	chan->rx_pending = 0;
--	chan->is_rx_stopped = false;
- 
- 	spin_unlock_irqrestore(&chan->rx_lock, flags);
- }
--- 
-2.43.0
-
+ 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+-					      <&intc GIC_SPI 198 IRQ_TYPE_LEVEL_HIGH>,
++					      <&pdc 51 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&pdc 11 IRQ_TYPE_EDGE_BOTH>,
+ 					      <&pdc 10 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
 
 
 
