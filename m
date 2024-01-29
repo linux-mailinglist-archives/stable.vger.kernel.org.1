@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-17208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE798841041
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C602840E20
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CEC72868E1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFA111C23577
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623BC755EA;
-	Mon, 29 Jan 2024 17:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1719B157E61;
+	Mon, 29 Jan 2024 17:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lTNrbtUR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLUrHx+/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21619755E3;
-	Mon, 29 Jan 2024 17:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC2D159578;
+	Mon, 29 Jan 2024 17:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548590; cv=none; b=IYibTBR/GAYN7qh49PR6mxHHkzoOI8ftMIM8FI2EBVi1JxqcKTcD4C3XPD2m0+8ENQZlppsrAQwEfenEVOydZVskNovZ69PeRm0KUerRHAIHFKFzojzpx433Dx5/nbg71H/+aercGInC9ltmH072ZH4Cz1NCufAzDL6dReGxIoM=
+	t=1706548228; cv=none; b=NygmXTdInZMhfKwnqC/CQVC3FqH4C7Dxzyc8cKEHCw9VY1v38BGEeT5sCNuXCSx7HF18fwMRmTttUuavsGA2E6LzkKjuppYk1+sNgocAjD4FNR4Ta94liH9Y8LXcpQS9vuFObfECm01pVbxqU5Q+ZYRSOmWJN7P7UayMyq1/rOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548590; c=relaxed/simple;
-	bh=pKzMWX4fYc8jA9353MZQ84dMfBHENCN64ShymCqX7TY=;
+	s=arc-20240116; t=1706548228; c=relaxed/simple;
+	bh=/k2dAEFEi1m9U6XRKMKnqf8Gkarm5Xy00V0jWUAtOms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JR/Jrebs92nGepRvANAX44/pWFRg7tIXQ63ghCyA3yrTj7lODhgiMhL04pJ89u+idhiZyqwyX/ZTJ4UpW+zu/ZfaYhnWJ+9yop4MrA31jVUkvRC9QOyHIQGn6Ozm+IuMINLR42e+hijnzzVhfFN/Oz2dAo1i97t8GUy9s4JEuS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lTNrbtUR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B40C433F1;
-	Mon, 29 Jan 2024 17:16:29 +0000 (UTC)
+	 MIME-Version; b=W+z+Z+9/HqUk1v7IKcjsFODejj3ivGjy5qCnrw/zA/mgpQo57ff52KE2NK/68guW75ZVZqxHBYhLR3AfZBRt5/8YgVb1uyYsvYgwv6YAF5dKzA494gjRAxh7GdqHrPkrvKujGLcdLDXudFq04nt4cCqKlcuZxGz8dNtrEHaWc8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLUrHx+/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94195C43390;
+	Mon, 29 Jan 2024 17:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548590;
-	bh=pKzMWX4fYc8jA9353MZQ84dMfBHENCN64ShymCqX7TY=;
+	s=korg; t=1706548228;
+	bh=/k2dAEFEi1m9U6XRKMKnqf8Gkarm5Xy00V0jWUAtOms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lTNrbtURmo5Krw6fQPz/DN1HBxm2n58kxQtJyiGORCNx8+j6DljsKV6Tb6cFTU675
-	 if+cOHZbNGngMwtv4np4u5SLpansgoFUb71rJJN43DV3kOkmA+TYZJJ2AfgftITIio
-	 xZBp7VJS2hJGyGxtaujEzuj/BMPyvhMJe/d2xPsI=
+	b=TLUrHx+/cBpvvuVPB/3ERIHuF1W5/tCnmMdljsbIRpthVypUSlNQHgrnEvwcmeooN
+	 F30nP22IeljPPhav7ELtJjni7bXxtQKWDe3ZI0kUqyv2KVwDyGtraPCvrhkCKbJpEF
+	 D337cITWY5gaGWgQ7y1DCm1btbU+5+/vvs/1ki/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 223/331] i40e: set xdp_rxq_info::frag_size
+	Melissa Wen <mwen@igalia.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.7 256/346] drm/amd/display: fix bandwidth validation failure on DCN 2.1
 Date: Mon, 29 Jan 2024 09:04:47 -0800
-Message-ID: <20240129170021.401418256@linuxfoundation.org>
+Message-ID: <20240129170023.927555704@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,135 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Melissa Wen <mwen@igalia.com>
 
-[ Upstream commit a045d2f2d03d23e7db6772dd83e0ba2705dfad93 ]
+commit 3a0fa3bc245ef92838a8296e0055569b8dff94c4 upstream.
 
-i40e support XDP multi-buffer so it is supposed to use
-__xdp_rxq_info_reg() instead of xdp_rxq_info_reg() and set the
-frag_size. It can not be simply converted at existing callsite because
-rx_buf_len could be un-initialized, so let us register xdp_rxq_info
-within i40e_configure_rx_ring(), which happen to be called with already
-initialized rx_buf_len value.
+IGT `amdgpu/amd_color/crtc-lut-accuracy` fails right at the beginning of
+the test execution, during atomic check, because DC rejects the
+bandwidth state for a fb sizing 64x64. The test was previously working
+with the deprecated dc_commit_state(). Now using
+dc_validate_with_context() approach, the atomic check needs to perform a
+full state validation. Therefore, set fast_validation to false in the
+dc_validate_global_state call for atomic check.
 
-Commit 5180ff1364bc ("i40e: use int for i40e_status") converted 'err' to
-int, so two variables to deal with return codes are not needed within
-i40e_configure_rx_ring(). Remove 'ret' and use 'err' to handle status
-from xdp_rxq_info registration.
-
-Fixes: e213ced19bef ("i40e: add support for XDP multi-buffer Rx")
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/r/20240124191602.566724-11-maciej.fijalkowski@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b8272241ff9d ("drm/amd/display: Drop dc_commit_state in favor of dc_commit_streams")
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 40 ++++++++++++---------
- drivers/net/ethernet/intel/i40e/i40e_txrx.c |  9 -----
- 2 files changed, 24 insertions(+), 25 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 5b20eba93d04..aadca7b3443c 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -3578,40 +3578,48 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
- 	struct i40e_hmc_obj_rxq rx_ctx;
- 	int err = 0;
- 	bool ok;
--	int ret;
- 
- 	bitmap_zero(ring->state, __I40E_RING_STATE_NBITS);
- 
- 	/* clear the context structure first */
- 	memset(&rx_ctx, 0, sizeof(rx_ctx));
- 
--	if (ring->vsi->type == I40E_VSI_MAIN)
--		xdp_rxq_info_unreg_mem_model(&ring->xdp_rxq);
-+	ring->rx_buf_len = vsi->rx_buf_len;
-+
-+	/* XDP RX-queue info only needed for RX rings exposed to XDP */
-+	if (ring->vsi->type != I40E_VSI_MAIN)
-+		goto skip;
-+
-+	if (!xdp_rxq_info_is_reg(&ring->xdp_rxq)) {
-+		err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
-+					 ring->queue_index,
-+					 ring->q_vector->napi.napi_id,
-+					 ring->rx_buf_len);
-+		if (err)
-+			return err;
-+	}
- 
- 	ring->xsk_pool = i40e_xsk_pool(ring);
- 	if (ring->xsk_pool) {
--		ring->rx_buf_len =
--		  xsk_pool_get_rx_frame_size(ring->xsk_pool);
--		ret = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
-+		ring->rx_buf_len = xsk_pool_get_rx_frame_size(ring->xsk_pool);
-+		err = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
- 						 MEM_TYPE_XSK_BUFF_POOL,
- 						 NULL);
--		if (ret)
--			return ret;
-+		if (err)
-+			return err;
- 		dev_info(&vsi->back->pdev->dev,
- 			 "Registered XDP mem model MEM_TYPE_XSK_BUFF_POOL on Rx ring %d\n",
- 			 ring->queue_index);
- 
- 	} else {
--		ring->rx_buf_len = vsi->rx_buf_len;
--		if (ring->vsi->type == I40E_VSI_MAIN) {
--			ret = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
--							 MEM_TYPE_PAGE_SHARED,
--							 NULL);
--			if (ret)
--				return ret;
--		}
-+		err = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
-+						 MEM_TYPE_PAGE_SHARED,
-+						 NULL);
-+		if (err)
-+			return err;
- 	}
- 
-+skip:
- 	xdp_init_buff(&ring->xdp, i40e_rx_pg_size(ring) / 2, &ring->xdp_rxq);
- 
- 	rx_ctx.dbuff = DIV_ROUND_UP(ring->rx_buf_len,
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-index 2e5546e549d9..1df2f9338812 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-@@ -1556,7 +1556,6 @@ void i40e_free_rx_resources(struct i40e_ring *rx_ring)
- int i40e_setup_rx_descriptors(struct i40e_ring *rx_ring)
- {
- 	struct device *dev = rx_ring->dev;
--	int err;
- 
- 	u64_stats_init(&rx_ring->syncp);
- 
-@@ -1577,14 +1576,6 @@ int i40e_setup_rx_descriptors(struct i40e_ring *rx_ring)
- 	rx_ring->next_to_process = 0;
- 	rx_ring->next_to_use = 0;
- 
--	/* XDP RX-queue info only needed for RX rings exposed to XDP */
--	if (rx_ring->vsi->type == I40E_VSI_MAIN) {
--		err = xdp_rxq_info_reg(&rx_ring->xdp_rxq, rx_ring->netdev,
--				       rx_ring->queue_index, rx_ring->q_vector->napi.napi_id);
--		if (err < 0)
--			return err;
--	}
--
- 	rx_ring->xdp_prog = rx_ring->vsi->xdp_prog;
- 
- 	rx_ring->rx_bi =
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -10479,7 +10479,7 @@ static int amdgpu_dm_atomic_check(struct
+ 			DRM_DEBUG_DRIVER("drm_dp_mst_atomic_check() failed\n");
+ 			goto fail;
+ 		}
+-		status = dc_validate_global_state(dc, dm_state->context, true);
++		status = dc_validate_global_state(dc, dm_state->context, false);
+ 		if (status != DC_OK) {
+ 			DRM_DEBUG_DRIVER("DC global validation failure: %s (%d)",
+ 				       dc_status_to_str(status), status);
 
 
 
