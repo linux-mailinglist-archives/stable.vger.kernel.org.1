@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DEF4840D81
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D621D840FB6
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC1E01C23932
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14F1B1C21A1D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77EC915B306;
-	Mon, 29 Jan 2024 17:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A0D159588;
+	Mon, 29 Jan 2024 17:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVi/vSPO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8/159KG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3315A1586D6;
-	Mon, 29 Jan 2024 17:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723AF6FDE1;
+	Mon, 29 Jan 2024 17:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548117; cv=none; b=rMJqb4AzmKrftpeNdvRQJ/E4Zt6IuF0392vwr8wh/jV6I/5dNBQ/dOFklgS0sR0cRablIvo31hBksto3/HuCEJzHeY6rPfFX6CcHHdQr0xqOLYoZC+qYZ8H+8+hL+C4wzs7dCfMKKAYBPVsx2SBP1b6Ug+ZAKkffh4omyqSB2aY=
+	t=1706548488; cv=none; b=gDk6tHwoVpe2F2S9FQ4Vgsa3TLJfkiumaK3i6F0NEMFJF6COrmH+OJgqyNrXL7K1JopNIoIx+127zHFbHXGmDfgS+RcrlAYIrtlp535XA1escf0JGYx4bJQ4mmFNa4aZfHcbzw6WmrAjRN6ImQW0FPcUt/dOcHeecdzPsRyicAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548117; c=relaxed/simple;
-	bh=/4oQinEXcJ6BfsGMGt1XvaRevdbKapAgLEkPrQ9Svdk=;
+	s=arc-20240116; t=1706548488; c=relaxed/simple;
+	bh=JFnhE8cQTn+HCtyCYO6/cG4GYc7LOZgCcWN3/bZdLV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kS/D5fIq0Z1rMXSs1B7swJmAfitpn0Zw7jbdDyHvQ8qJCFgCrfDgUHVZZfw4k8hWMu8nVOsIOPkwVDx9EDs5lR+pRpa6cd2dYnUZDqqJZQYeIMt5LPw48s+m28bq5laQ9gfl8OJJKMmGlw3DhWDvtboW8U64g+sYXQA5oP0RAaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVi/vSPO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0951C433A6;
-	Mon, 29 Jan 2024 17:08:36 +0000 (UTC)
+	 MIME-Version; b=D2gQzT6MVGbILx9XgOs9hAhiUMfm3TlWDVkQEjnhxZYwDHzAOiQReBCCem4ShjP3fb6OiDZsTMrMQ4bPTKhN4AGOnZbIQyLx1Qg/2P4MxYcEKO+EFmu2N0xg1xCdSr7TOM4fSMDxfEEDM30dKTr5p/AGEktC7X/vpT+6Z/J+GSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8/159KG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DE9C433F1;
+	Mon, 29 Jan 2024 17:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548117;
-	bh=/4oQinEXcJ6BfsGMGt1XvaRevdbKapAgLEkPrQ9Svdk=;
+	s=korg; t=1706548488;
+	bh=JFnhE8cQTn+HCtyCYO6/cG4GYc7LOZgCcWN3/bZdLV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gVi/vSPOIoS45BnNDdzHKcSvWp+ws+NFQ0nKtUDrB61WzzB1pEMx1VraBFiyrbe2/
-	 k1uRSHQhLDD/i9H+c8RYShRu+A8YtKr6DSaoH1ofQr2coPSBQHg2CQnYTlo96Y7dkh
-	 MT7jSCV0/Gnj9b4WQjZD4tO1jnq9XRUBf0bXBa68=
+	b=w8/159KGRTMZJaqeW54WIUi1a8ogPcZ2fGQ+ZAHvbTxTODnMlsQF1SsqsMIuCsZkb
+	 H6ybsTlBQj/FBBusEkKbUWfz/Tf7/nEMn5tR/ZDjbwcyKrKmZPa/N6JEFGf5WKMVTy
+	 NjwJioQKeE8Finbg6WuUPjEj+sDV06b3aJl37tWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Baoquan He <bhe@redhat.com>,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 117/346] kdump: defer the insertion of crashkernel resources
+	Richard Acayan <mailingradian@gmail.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 084/331] arm64: dts: qcom: sdm670: fix USB wakeup interrupt types
 Date: Mon, 29 Jan 2024 09:02:28 -0800
-Message-ID: <20240129170019.830208177@linuxfoundation.org>
+Message-ID: <20240129170017.395245190@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,125 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 4a693ce65b186fddc1a73621bd6f941e6e3eca21 upstream.
+commit de3b3de30999106549da4df88a7963d0ac02b91e upstream.
 
-In /proc/iomem, sub-regions should be inserted after their parent,
-otherwise the insertion of parent resource fails.  But after generic
-crashkernel reservation applied, in both RISC-V and ARM64 (LoongArch will
-also use generic reservation later on), crashkernel resources are inserted
-before their parent, which causes the parent disappear in /proc/iomem.  So
-we defer the insertion of crashkernel resources to an early_initcall().
+The DP/DM wakeup interrupts are edge triggered and which edge to trigger
+on depends on use-case and whether a Low speed or Full/High speed device
+is connected.
 
-1, Without 'crashkernel' parameter:
-
- 100d0100-100d01ff : LOON0001:00
-   100d0100-100d01ff : LOON0001:00 LOON0001:00
- 100e0000-100e0bff : LOON0002:00
-   100e0000-100e0bff : LOON0002:00 LOON0002:00
- 1fe001e0-1fe001e7 : serial
- 90400000-fa17ffff : System RAM
-   f6220000-f622ffff : Reserved
-   f9ee0000-f9ee3fff : Reserved
-   fa120000-fa17ffff : Reserved
- fa190000-fe0bffff : System RAM
-   fa190000-fa1bffff : Reserved
- fe4e0000-47fffffff : System RAM
-   43c000000-441ffffff : Reserved
-   47ff98000-47ffa3fff : Reserved
-   47ffa4000-47ffa7fff : Reserved
-   47ffa8000-47ffabfff : Reserved
-   47ffac000-47ffaffff : Reserved
-   47ffb0000-47ffb3fff : Reserved
-
-2, With 'crashkernel' parameter, before this patch:
-
- 100d0100-100d01ff : LOON0001:00
-   100d0100-100d01ff : LOON0001:00 LOON0001:00
- 100e0000-100e0bff : LOON0002:00
-   100e0000-100e0bff : LOON0002:00 LOON0002:00
- 1fe001e0-1fe001e7 : serial
- e6200000-f61fffff : Crash kernel
- fa190000-fe0bffff : System RAM
-   fa190000-fa1bffff : Reserved
- fe4e0000-47fffffff : System RAM
-   43c000000-441ffffff : Reserved
-   47ff98000-47ffa3fff : Reserved
-   47ffa4000-47ffa7fff : Reserved
-   47ffa8000-47ffabfff : Reserved
-   47ffac000-47ffaffff : Reserved
-   47ffb0000-47ffb3fff : Reserved
-
-3, With 'crashkernel' parameter, after this patch:
-
- 100d0100-100d01ff : LOON0001:00
-   100d0100-100d01ff : LOON0001:00 LOON0001:00
- 100e0000-100e0bff : LOON0002:00
-   100e0000-100e0bff : LOON0002:00 LOON0002:00
- 1fe001e0-1fe001e7 : serial
- 90400000-fa17ffff : System RAM
-   e6200000-f61fffff : Crash kernel
-   f6220000-f622ffff : Reserved
-   f9ee0000-f9ee3fff : Reserved
-   fa120000-fa17ffff : Reserved
- fa190000-fe0bffff : System RAM
-   fa190000-fa1bffff : Reserved
- fe4e0000-47fffffff : System RAM
-   43c000000-441ffffff : Reserved
-   47ff98000-47ffa3fff : Reserved
-   47ffa4000-47ffa7fff : Reserved
-   47ffa8000-47ffabfff : Reserved
-   47ffac000-47ffaffff : Reserved
-   47ffb0000-47ffb3fff : Reserved
-
-Link: https://lkml.kernel.org/r/20231229080213.2622204-1-chenhuacai@loongson.cn
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Fixes: 0ab97169aa05 ("crash_core: add generic function to do reservation")
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Zhen Lei <thunder.leizhen@huawei.com>
-Cc: <stable@vger.kernel.org>	[6.6+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 07c8ded6e373 ("arm64: dts: qcom: add sdm670 and pixel 3a device trees")
+Cc: stable@vger.kernel.org      # 6.2
+Cc: Richard Acayan <mailingradian@gmail.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Richard Acayan <mailingradian@gmail.com>
+Link: https://lore.kernel.org/r/20231120164331.8116-8-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/crash_core.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm670.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/crash_core.c
-+++ b/kernel/crash_core.c
-@@ -377,7 +377,6 @@ static int __init reserve_crashkernel_lo
+--- a/arch/arm64/boot/dts/qcom/sdm670.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm670.dtsi
+@@ -1297,8 +1297,8 @@
  
- 	crashk_low_res.start = low_base;
- 	crashk_low_res.end   = low_base + low_size - 1;
--	insert_resource(&iomem_resource, &crashk_low_res);
- #endif
- 	return 0;
- }
-@@ -459,8 +458,19 @@ retry:
+ 			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 488 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 489 IRQ_TYPE_LEVEL_HIGH>;
++				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
++				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
  
- 	crashk_res.start = crash_base;
- 	crashk_res.end = crash_base + crash_size - 1;
--	insert_resource(&iomem_resource, &crashk_res);
- }
-+
-+static __init int insert_crashkernel_resources(void)
-+{
-+	if (crashk_res.start < crashk_res.end)
-+		insert_resource(&iomem_resource, &crashk_res);
-+
-+	if (crashk_low_res.start < crashk_low_res.end)
-+		insert_resource(&iomem_resource, &crashk_low_res);
-+
-+	return 0;
-+}
-+early_initcall(insert_crashkernel_resources);
- #endif
- 
- int crash_prepare_elf64_headers(struct crash_mem *mem, int need_kernel_map,
 
 
 
