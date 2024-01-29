@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-16869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF83D840EC0
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 735E0841092
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92CFCB21C94
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F05D28713F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B29160887;
-	Mon, 29 Jan 2024 17:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8CB76C66;
+	Mon, 29 Jan 2024 17:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZEampNUJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfSUoI42"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9957C160881;
-	Mon, 29 Jan 2024 17:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B83176C62;
+	Mon, 29 Jan 2024 17:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548339; cv=none; b=kK9JmE9GJS4QMbncl1+AAXkj63tmk6CtrG/keuBGljt3hP5RjNpoABbj5sAAzrNNVKvEAnHYreFZwrDFL7Tf0yupI2bXBZ1G39d+EHSFZEdFHkYJVkwUukPTtNpkveJb8agpxJkO/JubDTnNbkBpo1zgo1o+Yob/A2ESeIVsCc8=
+	t=1706548647; cv=none; b=g1SedZCQJWYlyQ0Q1FgI4W9gaT+rnBWKYusrF5MXhAtndn3y4KzhdxGaSHwglec9lemYRpTFCYx1U20OffhFUzHJtkFUw1bO33XzdRIADsy5QqvvPwYgjhqMD8k1Awj6rckfXgXDHVcLMXF7rd+Uq6AY0l7Ds23qmQAhIgy4IB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548339; c=relaxed/simple;
-	bh=dWUT98CDH8jyHTycO3bZyrUF4yT/QpAP5+rFl1cUVyQ=;
+	s=arc-20240116; t=1706548647; c=relaxed/simple;
+	bh=S3pZbW/ex1O8SR4Qx9ZRT5V3z2r9BHAY/omvmbGlR+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Osl/PrG0n0tVOaHmukb6eMJNdzCbXdLpvF/rGZLzgvoL9JyUdS1wMugzpt1vGwz/3ZHP1s+wtAetWCHtFtCSq6Tr8K/Qyo+qPG7EIxw7Eh+V7N2YcqXIWjbEAbXl608aKWbtmtZyKex7oh6k9G+dvIDX3OVgU3eKOBb76FTuHgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZEampNUJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F744C433F1;
-	Mon, 29 Jan 2024 17:12:19 +0000 (UTC)
+	 MIME-Version; b=EU+fTBQWd6hXnTSTQyabKdv8XbjSO1SfwvbIhua4nrCUX/NEeJ4skxlSToUiTJ8c/nwaEtV629N63sfvMl/FrpyzGPBBbMisHTMhMqDxabmkQDADv0Bp/udvKw7xIOll3m6a3zmAlMzqlt/ADHQE1aokMe8bLWaVANgLOw+iFf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfSUoI42; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7686C433F1;
+	Mon, 29 Jan 2024 17:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548339;
-	bh=dWUT98CDH8jyHTycO3bZyrUF4yT/QpAP5+rFl1cUVyQ=;
+	s=korg; t=1706548646;
+	bh=S3pZbW/ex1O8SR4Qx9ZRT5V3z2r9BHAY/omvmbGlR+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZEampNUJqZZeYOW6SUIc6trbvB0JO5BH9Iz07KKDsw4QrIdnzDvG7ba8AYGwr5jjL
-	 m760JL3E3vUxzXCoRWUIXr5lW2GTSA9owHssrXmiUuZyJrSSpHwgeYd3pGu97QVuzy
-	 wwa8d8Em1zfnGTOJfyna4RiFvTxNtyl84r8a2fyg=
+	b=PfSUoI42E8V06+0hYpM2fOmlSDj1jzvPu4UKnf1qXL4vGRNVtZIH3FlGh56hCOtc3
+	 4ywcoS+o0qJ2QgmaEOr837OjIEXQ9j5i9O84rag91E/dJm+Y8VYKDrldVmyPV0giTG
+	 yZyas4snZBFmiACpMI6qgbE0SyVv/IlKX0dqYBPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 334/346] cifs: fix stray unlock in cifs_chan_skip_or_disable
+Subject: [PATCH 6.6 301/331] drm: panel-simple: add missing bus flags for Tianma tm070jvhg[30/33]
 Date: Mon, 29 Jan 2024 09:06:05 -0800
-Message-ID: <20240129170026.302780565@linuxfoundation.org>
+Message-ID: <20240129170023.680438066@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
-[ Upstream commit 993d1c346b1a51ac41b2193609a0d4e51e9748f4 ]
+[ Upstream commit 45dd7df26cee741b31c25ffdd44fb8794eb45ccd ]
 
-A recent change moved the code that decides to skip
-a channel or disable multichannel entirely, into a
-helper function.
+The DE signal is active high on this display, fill in the missing
+bus_flags. This aligns panel_desc with its display_timing.
 
-During this, a mutex_unlock of the session_mutex
-should have been removed. Doing that here.
+Fixes: 9a2654c0f62a ("drm/panel: Add and fill drm_panel type field")
+Fixes: b3bfcdf8a3b6 ("drm/panel: simple: add Tianma TM070JVHG33")
 
-Fixes: f591062bdbf4 ("cifs: handle servers that still advertise multichannel after disabling")
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://lore.kernel.org/r/20231012084208.2731650-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231012084208.2731650-1-alexander.stein@ew.tq-group.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2pdu.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/panel/panel-simple.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index bfec2ca0f4e6..f5006aa97f5b 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -195,7 +195,6 @@ cifs_chan_skip_or_disable(struct cifs_ses *ses,
- 		pserver = server->primary_server;
- 		cifs_signal_cifsd_for_reconnect(pserver, false);
- skip_terminate:
--		mutex_unlock(&ses->session_mutex);
- 		return -EHOSTDOWN;
- 	}
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 6e46e55d29a9..51f838befb32 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -3782,6 +3782,7 @@ static const struct panel_desc tianma_tm070jdhg30 = {
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+ 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
+ };
  
+ static const struct panel_desc tianma_tm070jvhg33 = {
+@@ -3794,6 +3795,7 @@ static const struct panel_desc tianma_tm070jvhg33 = {
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
+ 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
+ };
+ 
+ static const struct display_timing tianma_tm070rvhg71_timing = {
 -- 
 2.43.0
 
