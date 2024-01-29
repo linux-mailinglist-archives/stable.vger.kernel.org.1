@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-16516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36745840D4A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:09:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06216840F78
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:23:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7A13288D1B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 397401C22BF7
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F96157E75;
-	Mon, 29 Jan 2024 17:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CACF63F9FD;
+	Mon, 29 Jan 2024 17:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVcHDBal"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjzADctt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF2A157041;
-	Mon, 29 Jan 2024 17:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A42D3F9F1;
+	Mon, 29 Jan 2024 17:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548078; cv=none; b=NPGOD2H8Hzfixtv0tOOjlwAhelVhNcaRVZUHEY8GO80bd2jG8yig8N4CUuD2+8n7Xy/vodoZfu3x0PEkf2UhKde6jIowejs8GkVDuEDTlhjEHMEzjId86BI7sPfKGVatMfIxztqlDoAINUgQ+WoIl0pv7A2DU5aup8PE3bSOb9Y=
+	t=1706548446; cv=none; b=QB5qEMhR1riEY3cZoLtpQldgn/7cYOh6wkLXefsW5mQk9/3gp1jyMzddizJzK6uQkj4xFLjkK6PjLP/msbJtmghBovXhwrY/n0CpFmzerNwq80HQOIeKQ+OKrSyqoIvPDEHwvNk5PvPAc2XEETahbjuilDGHjJ5MxDqku2RAa24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548078; c=relaxed/simple;
-	bh=rZjPEjW+/lCAkGZI2J7jBjFCuoR5KZRUNMLCUPlqz+A=;
+	s=arc-20240116; t=1706548446; c=relaxed/simple;
+	bh=BoGXNR5V2tEfg1HUeUSIxe+aivcNRsNL7r7feYTrCRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lbpVUs4MqH4V2GRzAY6yTktTTGHocEoECiNOBMuP+sPe1U96vWNp3CJdPMMF8VD2XE8Nd47CttcWbT0VEg2hWeOLEMa454kgF23kMqVqoAbwchhlE7ZX8pZlD99pY8cN9gPlPKZeTvKkWYT/N0Yy+Yi/ZCUyxOT9Xtcb0t+V600=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVcHDBal; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96121C433F1;
-	Mon, 29 Jan 2024 17:07:57 +0000 (UTC)
+	 MIME-Version; b=WjeEhf3RVN3Nj8TUz0ChZHtQp15i+SsWJKIoaRW2FuqVmw85D36jTpwUiBMY3kVvxjyuLjKAdW0F2Vmh9/K4PAi7NbWQ2ueMlMhVGukb91U8EjMRt90LMhwJ5bBcILFgfEnzYutW4hQtJn+hNu6jbeZxP75quvn1O6/bFELPGU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjzADctt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D751C433F1;
+	Mon, 29 Jan 2024 17:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548077;
-	bh=rZjPEjW+/lCAkGZI2J7jBjFCuoR5KZRUNMLCUPlqz+A=;
+	s=korg; t=1706548446;
+	bh=BoGXNR5V2tEfg1HUeUSIxe+aivcNRsNL7r7feYTrCRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fVcHDBalK+FgQpO4NnJ4VQV2P9hzVI46ZGCw0JOKd1a/EmNf9eD6rKW5x7Aory1s3
-	 6e7hwbdoabE6zYWar1lZxAdJwwxN+libH4eseRVcoMHFODEY2NBKwRgxKUbpSgyteE
-	 g89i3+CSruaeBF4gfRaSinnROPrAK/mYvPjC+tgI=
+	b=IjzADctt1jB7PVXF/XuwfYz4VZID6Xmj/S94Xo7bHoIjGc4EWPuucr1SZIFHB+XC3
+	 stWOSAkN84RHEE2IUwxAQKX3LZBHiXPE3CbHMAA7NNm+o6jzGfvw1jYv+LMzBA989j
+	 OSsaagI5JdVY69j98SsfiCMx0nylyVBBwN1v3lao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Alcantara <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 062/346] smb: client: fix parsing of SMB3.1.1 POSIX create context
+	Geoff Levand <geoff@infradead.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.6 029/331] powerpc/ps3_defconfig: Disable PPC64_BIG_ENDIAN_ELF_ABI_V2
 Date: Mon, 29 Jan 2024 09:01:33 -0800
-Message-ID: <20240129170018.220112153@linuxfoundation.org>
+Message-ID: <20240129170015.805236027@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Geoff Levand <geoff@infradead.org>
 
-[ Upstream commit 76025cc2285d9ede3d717fe4305d66f8be2d9346 ]
+commit 482b718a84f08b6fc84879c3e90cc57dba11c115 upstream.
 
-The data offset for the SMB3.1.1 POSIX create context will always be
-8-byte aligned so having the check 'noff + nlen >= doff' in
-smb2_parse_contexts() is wrong as it will lead to -EINVAL because noff
-+ nlen == doff.
+Commit 8c5fa3b5c4df ("powerpc/64: Make ELFv2 the default for big-endian
+builds"), merged in Linux-6.5-rc1 changes the calling ABI in a way
+that is incompatible with the current code for the PS3's LV1 hypervisor
+calls.
 
-Fix the sanity check to correctly handle aligned create context data.
+This change just adds the line '# CONFIG_PPC64_BIG_ENDIAN_ELF_ABI_V2 is not set'
+to the ps3_defconfig file so that the PPC64_ELF_ABI_V1 is used.
 
-Fixes: af1689a9b770 ("smb: client: fix potential OOBs in smb2_parse_contexts()")
-Signed-off-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes run time errors like these:
+
+  BUG: Kernel NULL pointer dereference at 0x00000000
+  Faulting instruction address: 0xc000000000047cf0
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  Call Trace:
+  [c0000000023039e0] [c00000000100ebfc] ps3_create_spu+0xc4/0x2b0 (unreliable)
+  [c000000002303ab0] [c00000000100d4c4] create_spu+0xcc/0x3c4
+  [c000000002303b40] [c00000000100eae4] ps3_enumerate_spus+0xa4/0xf8
+
+Fixes: 8c5fa3b5c4df ("powerpc/64: Make ELFv2 the default for big-endian builds")
+Cc: stable@vger.kernel.org # v6.5+
+Signed-off-by: Geoff Levand <geoff@infradead.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/df906ac1-5f17-44b9-b0bb-7cd292a0df65@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2pdu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/configs/ps3_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 4f971c1061f0..12e41fcd0b46 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -2279,7 +2279,7 @@ int smb2_parse_contexts(struct TCP_Server_Info *server,
- 
- 		noff = le16_to_cpu(cc->NameOffset);
- 		nlen = le16_to_cpu(cc->NameLength);
--		if (noff + nlen >= doff)
-+		if (noff + nlen > doff)
- 			return -EINVAL;
- 
- 		name = (char *)cc + noff;
+diff --git a/arch/powerpc/configs/ps3_defconfig b/arch/powerpc/configs/ps3_defconfig
+index 2b175ddf82f0..aa8bb0208bcc 100644
+--- a/arch/powerpc/configs/ps3_defconfig
++++ b/arch/powerpc/configs/ps3_defconfig
+@@ -24,6 +24,7 @@ CONFIG_PS3_VRAM=m
+ CONFIG_PS3_LPM=m
+ # CONFIG_PPC_OF_BOOT_TRAMPOLINE is not set
+ CONFIG_KEXEC=y
++# CONFIG_PPC64_BIG_ENDIAN_ELF_ABI_V2 is not set
+ CONFIG_PPC_4K_PAGES=y
+ CONFIG_SCHED_SMT=y
+ CONFIG_PM=y
 -- 
 2.43.0
 
