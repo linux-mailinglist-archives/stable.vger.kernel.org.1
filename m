@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-16673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1BC840DF2
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89271840FDA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 129DD1F24410
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4695D283FA1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D8115B0EF;
-	Mon, 29 Jan 2024 17:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC98A72252;
+	Mon, 29 Jan 2024 17:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1SPzwN63"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LxOYaCeF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A689915957C;
-	Mon, 29 Jan 2024 17:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA967224F;
+	Mon, 29 Jan 2024 17:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548193; cv=none; b=Ybf7WMHi9mjcSuqD6Q8LXaQ6jNkd6VM+iCL47/mu4ip/PXLGlLu+JUAKUEiOj8dyJtmyRajNuABXH50tfLi6QAkqsaLpaSUyFP3mV9vVrWdGKyIEktuhmbbbKQk1fbamdryjCzaNbhr1rNcZKwhlUsIKY9AlL+5MUAixIq0f37w=
+	t=1706548514; cv=none; b=e4BhVtDUpKbYN27+2eqZB1iT1MtFRsXSEC2PhyoHTY00OO1CQjDw3JIP0vWR7I4nWPWw9nJ6s3z8bKuTXJj11EXAHHWp+T3UsfnqMwbmSeyOksQkJsGpa8VWjmDmcURz/ISdzIAcyXFDleENd+ohXoc0LR5z1CsTHEse4h1uGt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548193; c=relaxed/simple;
-	bh=eDau1d3lcbAgMs4ZoqC3KDrv7TPZ7KcANnke49llMks=;
+	s=arc-20240116; t=1706548514; c=relaxed/simple;
+	bh=6EyYty3BXv1MCbazAoi8aZ4Bl6rH2nLtDOnpYtqiwQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GH5lTm/YteT/qQY9UWyzk1JVeKCp0SWWKjYspdT7AR9q6+0QwzAOutbsudWPEceXV08N82195aK+sjiWPGftIbHypj9/a/ei/7C+wKF9O4OQnETtLdy3MQ99/gO0kg4ptPToCveuqTHidAesxfU/3wo9zO4VZurN3hlB2Yt3GZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1SPzwN63; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F056C43390;
-	Mon, 29 Jan 2024 17:09:53 +0000 (UTC)
+	 MIME-Version; b=A/jd1uyKXrXQ2sZaOgMKf+lYfQvx4GwbrdvcdemwydvnRqgH7F+eX2WazXTHSQ3G/glMndHqsGL3ZqeL5RP3dAmhbw4HwBShml6CPt9ymvjS3lDRuDeictsf1LwV4BlLKooSIxyJMfegmgOF+oIdjp4Mz4Rc/5EFRofMdOhtRYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LxOYaCeF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A5EC43390;
+	Mon, 29 Jan 2024 17:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548193;
-	bh=eDau1d3lcbAgMs4ZoqC3KDrv7TPZ7KcANnke49llMks=;
+	s=korg; t=1706548514;
+	bh=6EyYty3BXv1MCbazAoi8aZ4Bl6rH2nLtDOnpYtqiwQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1SPzwN63pYVq8e+AyjPctjlem2yugJQime4bqb6QnUjK5/ku+FpVA/cr8XA5JKB8T
-	 yJ4u8TLomwEPhauDAHZOh5rpokliXermil0PuOvrr2Wo1CpWi07HOnn/61T2UxuF2r
-	 Rto2JYXP5GmwDJlGpXxMdlnYUWvgGZYi2Hmra8Aw=
+	b=LxOYaCeFH7ys2H1O4mnOaS3Xh98XbMWIGmzMPHLS6xV3SiVWXrMWFdnxaI1PAz3Uc
+	 mHKVlFAmvD8y+ZU0VPZsMAoPUJO+fG1ViFED3EsrRswWMXwVF+0e4cDXb8w2FaOBTW
+	 njLhxnB3+jEyE43b4dpIz3UD4knsUZy9Db2SHuWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Disseldorp <ddiss@suse.de>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 010/185] btrfs: sysfs: validate scrub_speed_max value
-Date: Mon, 29 Jan 2024 09:03:30 -0800
-Message-ID: <20240129165958.919828634@linuxfoundation.org>
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 147/331] bpf: extract same_callsites() as utility function
+Date: Mon, 29 Jan 2024 09:03:31 -0800
+Message-ID: <20240129170019.231770865@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Disseldorp <ddiss@suse.de>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-commit 2b0122aaa800b021e36027d7f29e206f87c761d6 upstream.
+commit 4c97259abc9bc8df7712f76f58ce385581876857 upstream.
 
-The value set as scrub_speed_max accepts size with suffixes
-(k/m/g/t/p/e) but we should still validate it for trailing characters,
-similar to what we do with chunk_size_store.
+Extract same_callsites() from clean_live_states() as a utility function.
+This function would be used by the next patch in the set.
 
-CC: stable@vger.kernel.org # 5.15+
-Signed-off-by: David Disseldorp <ddiss@suse.de>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20231024000917.12153-3-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/sysfs.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/bpf/verifier.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/fs/btrfs/sysfs.c
-+++ b/fs/btrfs/sysfs.c
-@@ -1704,6 +1704,10 @@ static ssize_t btrfs_devinfo_scrub_speed
- 	unsigned long long limit;
- 
- 	limit = memparse(buf, &endptr);
-+	/* There could be trailing '\n', also catch any typos after the value. */
-+	endptr = skip_spaces(endptr);
-+	if (*endptr != 0)
-+		return -EINVAL;
- 	WRITE_ONCE(device->scrub_speed_max, limit);
- 	return len;
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -1799,6 +1799,20 @@ static struct bpf_verifier_state_list **
+ 	return &env->explored_states[(idx ^ state->callsite) % state_htab_size(env)];
  }
+ 
++static bool same_callsites(struct bpf_verifier_state *a, struct bpf_verifier_state *b)
++{
++	int fr;
++
++	if (a->curframe != b->curframe)
++		return false;
++
++	for (fr = a->curframe; fr >= 0; fr--)
++		if (a->frame[fr]->callsite != b->frame[fr]->callsite)
++			return false;
++
++	return true;
++}
++
+ static void update_branch_counts(struct bpf_verifier_env *env, struct bpf_verifier_state *st)
+ {
+ 	while (st) {
+@@ -15521,18 +15535,14 @@ static void clean_live_states(struct bpf
+ 			      struct bpf_verifier_state *cur)
+ {
+ 	struct bpf_verifier_state_list *sl;
+-	int i;
+ 
+ 	sl = *explored_state(env, insn);
+ 	while (sl) {
+ 		if (sl->state.branches)
+ 			goto next;
+ 		if (sl->state.insn_idx != insn ||
+-		    sl->state.curframe != cur->curframe)
++		    !same_callsites(&sl->state, cur))
+ 			goto next;
+-		for (i = 0; i <= cur->curframe; i++)
+-			if (sl->state.frame[i]->callsite != cur->frame[i]->callsite)
+-				goto next;
+ 		clean_verifier_state(env, &sl->state);
+ next:
+ 		sl = sl->next;
 
 
 
