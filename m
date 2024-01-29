@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-16709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1729840E17
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56726841047
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A603C1F2D09F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA0471F242F8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77CE157055;
-	Mon, 29 Jan 2024 17:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25527755FE;
+	Mon, 29 Jan 2024 17:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZhGNs5Nw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTsLikxL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6698B159583;
-	Mon, 29 Jan 2024 17:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8597755FB;
+	Mon, 29 Jan 2024 17:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548222; cv=none; b=hrl7RU5iBiy7CYLG2oqwEQtYj6nfVhiqFsTZ/7EhKk7YTPub8oMlY2tmAjn3WcmEMfxTX62jUbEdXuxjcSitxRrDSsJ/za3TI9WKHBoMSuOPD3UWRqqBaL/cdtc6OFQ8zaN4RIxm1wvD/T1KsNCvkm8gUryNAVPdKricK1zVkgE=
+	t=1706548594; cv=none; b=BL1PO4j6Lx3fAHcErGgpQcAnBpPCcDMox/pP91b5Wh5cc4PgFqLkpdx/SbAPccUkipVdXUu2y9gcAfjMho/XXhbSz0EMFpJg1qF657VdAdr+B3/sui+efylhr3vhZu9dUGXMnqGTd9Bry5heSo+6IVKHPHmMgv9g3hGD2UsPT5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548222; c=relaxed/simple;
-	bh=rc+/dLogrqkgvE4P8o91424Q94yRO/eXvazckPtqU3s=;
+	s=arc-20240116; t=1706548594; c=relaxed/simple;
+	bh=+oAcdqpL8bOOPY9l9NdQZZDApHsH1S+AvFBco6Ecc84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJOXczDsT7+VKTJderAZsVRy2SfKxzcJ0PYwqmSFnRu9MT5FGceAgOpOebFZQ0Q4ugPcsyz0+vIKmo8whwhVy1CAWh8UYGHErwIdiduJd9QtZjCOdPB8SQn6obcNZ0HfQgApTCZ4Twgy/alNuGRNgdwjSDWksgOBbu6F2heQF58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZhGNs5Nw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC71C433C7;
-	Mon, 29 Jan 2024 17:10:22 +0000 (UTC)
+	 MIME-Version; b=mcAqo5oqa6U6hgMHfwIWkOBYE8fsWDON1WdwQyQKK6B9GNJlr4EXIWR8FVH1331J3IDcpqQ8jY2IRYDElHIWPc3oLS2gl99ahlQJBgggHs68C9gf4ZsLqh783gMvthgOeSk/u+4pdJNyTpJb8cRYSVaE3gpYcpcmPtMn3DcD2TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTsLikxL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FCBDC433C7;
+	Mon, 29 Jan 2024 17:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548222;
-	bh=rc+/dLogrqkgvE4P8o91424Q94yRO/eXvazckPtqU3s=;
+	s=korg; t=1706548594;
+	bh=+oAcdqpL8bOOPY9l9NdQZZDApHsH1S+AvFBco6Ecc84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZhGNs5NwF9S7rEHAiL2D+s6oWZBQQsmiWlWRxZEM0StsOGoVJbskcMJzO4Qs9lRdz
-	 GfxNUzsM/sBcy/1F6oUmwE+RJOZxBu6tPZdq8roODx31kNfgQZTO3bxqKsAw6Vtt6Q
-	 yIQs2bzqGNA7M/07Il6uDW7CVyUW1RkZRZprwIqs=
+	b=hTsLikxLn8YSS4gFg6Wf36FbJjl4mKma+y2KTZDjsjRIijNWyPAe6pjsXct9jsSIP
+	 yOinUyQOUNvj3BzLQDM/1oVbr077cLyw/hmDsFCg66JM4fFa2CfQVUE77Ha5JypkGV
+	 m2tidSlAB7g0ZfDROuXu4v7eIbJ0HmNOzWibcDto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: [PATCH 6.7 252/346] drm/tidss: Fix atomic_flush check
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 219/331] ice: remove redundant xdp_rxq_info registration
 Date: Mon, 29 Jan 2024 09:04:43 -0800
-Message-ID: <20240129170023.826500825@linuxfoundation.org>
+Message-ID: <20240129170021.285330047@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-commit 95d4b471953411854f9c80b568da7fcf753f3801 upstream.
+[ Upstream commit 2ee788c06493d02ee85855414cca39825e768aaf ]
 
-tidss_crtc_atomic_flush() checks if the crtc is enabled, and if not,
-returns immediately as there's no reason to do any register changes.
+xdp_rxq_info struct can be registered by drivers via two functions -
+xdp_rxq_info_reg() and __xdp_rxq_info_reg(). The latter one allows
+drivers that support XDP multi-buffer to set up xdp_rxq_info::frag_size
+which in turn will make it possible to grow the packet via
+bpf_xdp_adjust_tail() BPF helper.
 
-However, the code checks for 'crtc->state->enable', which does not
-reflect the actual HW state. We should instead look at the
-'crtc->state->active' flag.
+Currently, ice registers xdp_rxq_info in two spots:
+1) ice_setup_rx_ring() // via xdp_rxq_info_reg(), BUG
+2) ice_vsi_cfg_rxq()   // via __xdp_rxq_info_reg(), OK
 
-This causes the tidss_crtc_atomic_flush() to proceed with the flush even
-if the active state is false, which then causes us to hit the
-WARN_ON(!crtc->state->event) check.
+Cited commit under fixes tag took care of setting up frag_size and
+updated registration scheme in 2) but it did not help as
+1) is called before 2) and as shown above it uses old registration
+function. This means that 2) sees that xdp_rxq_info is already
+registered and never calls __xdp_rxq_info_reg() which leaves us with
+xdp_rxq_info::frag_size being set to 0.
 
-Fix this by checking the active flag, and while at it, fix the related
-debug print which had "active" and "needs modeset" wrong way.
+To fix this misbehavior, simply remove xdp_rxq_info_reg() call from
+ice_setup_rx_ring().
 
-Cc:  <stable@vger.kernel.org>
-Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-10-ac91b5ea35c0@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2fba7dc5157b ("ice: Add support for XDP multi-buffer on Rx side")
+Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/r/20240124191602.566724-7-maciej.fijalkowski@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_crtc.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_txrx.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/drivers/gpu/drm/tidss/tidss_crtc.c
-+++ b/drivers/gpu/drm/tidss/tidss_crtc.c
-@@ -169,13 +169,13 @@ static void tidss_crtc_atomic_flush(stru
- 	struct tidss_device *tidss = to_tidss(ddev);
- 	unsigned long flags;
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index 5b0f9e53f6b4..24c914015973 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -513,11 +513,6 @@ int ice_setup_rx_ring(struct ice_rx_ring *rx_ring)
+ 	if (ice_is_xdp_ena_vsi(rx_ring->vsi))
+ 		WRITE_ONCE(rx_ring->xdp_prog, rx_ring->vsi->xdp_prog);
  
--	dev_dbg(ddev->dev,
--		"%s: %s enabled %d, needs modeset %d, event %p\n", __func__,
--		crtc->name, drm_atomic_crtc_needs_modeset(crtc->state),
--		crtc->state->enable, crtc->state->event);
-+	dev_dbg(ddev->dev, "%s: %s is %sactive, %s modeset, event %p\n",
-+		__func__, crtc->name, crtc->state->active ? "" : "not ",
-+		drm_atomic_crtc_needs_modeset(crtc->state) ? "needs" : "doesn't need",
-+		crtc->state->event);
+-	if (rx_ring->vsi->type == ICE_VSI_PF &&
+-	    !xdp_rxq_info_is_reg(&rx_ring->xdp_rxq))
+-		if (xdp_rxq_info_reg(&rx_ring->xdp_rxq, rx_ring->netdev,
+-				     rx_ring->q_index, rx_ring->q_vector->napi.napi_id))
+-			goto err;
+ 	return 0;
  
- 	/* There is nothing to do if CRTC is not going to be enabled. */
--	if (!crtc->state->enable)
-+	if (!crtc->state->active)
- 		return;
- 
- 	/*
+ err:
+-- 
+2.43.0
+
 
 
 
