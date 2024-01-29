@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-16850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B306E840EAA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5BBD841031
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 547F71F27A43
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2487D1C239F6
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78E7158D68;
-	Mon, 29 Jan 2024 17:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3A015EAAC;
+	Mon, 29 Jan 2024 17:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGVO0LPs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CsLI3qML"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87532157050;
-	Mon, 29 Jan 2024 17:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3D215B30A;
+	Mon, 29 Jan 2024 17:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548325; cv=none; b=SmWurbvEzfBQwusRth6cFTjzRad+q5CZAIt1TaKDXh0p0DSIBoIme11RO16VVaniwyw1Bab+7uw/hGJeJ60slybdZwGCb9l06rQ8zuXNgykr+HzWX3kjrq7p1TyD6FZCJPw1hnB8Xe+5nyGsdEtTpurGj75kT2473VNB36wrDic=
+	t=1706548578; cv=none; b=qhzIWmWBnyOirXumgn/+/ibWLzetHNiREhBZk3RnOn/Ovx8N1XadW0bY/OyddLDaMa8AewJwgI+LTMdzpyhbXGEYAXHbW0/zIDPKIZODBMHUevlr4JRuG240+raHLpeSbKC1tVVrCNhP1aMEwcrWlly77fgVPGGNjMa+/imTaIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548325; c=relaxed/simple;
-	bh=piNKJvwopH9iKYMW5CSFxIu54uzSAH5zNVs6Hm3HGMs=;
+	s=arc-20240116; t=1706548578; c=relaxed/simple;
+	bh=OJAq4vx5+gZuCinwLTbTJHAKkzxpFeghTk33iBbXKvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4b1BzF81mgWJ2NRvJOuq/ENwNdYckJhWKc/6OtM/tZXaqHSuoKClevlQYHNE/qzYmJh3X8DSmP75c6tulO7Sr/dzukXfaruTxQ+YdC9bjjusSbHip0iFp2p0XDn3s3506CKWhRMjSxDbdTWk8mbNsS3f04/wCfFwhZJBXayUKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGVO0LPs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE83C433C7;
-	Mon, 29 Jan 2024 17:12:05 +0000 (UTC)
+	 MIME-Version; b=T9LF0JqN9hE/8Fit7UsJ1psL2o+14XFwSEQMIOC3p0KAkvyFVNFJMjs+i33UC6VdCnlWHFwiV15qV79tzvthSy6MOWoWwWObfG42yIAMNi9vi3/am6cxUuPm+WCVHbp4qDRaqQ4JEqSEuvY82Ak7/hPudsHN1g8tUlqPcQJNxhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CsLI3qML; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C63C433F1;
+	Mon, 29 Jan 2024 17:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548325;
-	bh=piNKJvwopH9iKYMW5CSFxIu54uzSAH5zNVs6Hm3HGMs=;
+	s=korg; t=1706548578;
+	bh=OJAq4vx5+gZuCinwLTbTJHAKkzxpFeghTk33iBbXKvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RGVO0LPs+W+0U2/ZVPzwj7ZssCaJGIhRJRkPYEBDIYNI+M9a0KFZxNXZUKIklhOk1
-	 MaXxF96McWttu0/r4WYhvx7JRiB6AAYEdEJ3NL991N/xhosESdaopHi3tbzyZz/geg
-	 3j93hDm/Np+0PeEijmunv7hhnWWZYIrOZEcf/tWo=
+	b=CsLI3qMLZrsF41r7JAQo9SAmbV7G6mjW1zgVLvcoUt/uuF4o8bPOFuNYQubUvateO
+	 TvtAtncqjMCZ39h2xKijyoUxwrBNnooRTMunwIqL1MNoYaidOED/Z3xOBDotNbQism
+	 T3tVUa+oBpGf/cY7LGXYOJwp+x6+MkePGh4UhoF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Erez Shitrit <erezsh@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/185] net/mlx5: DR, Cant go to uplink vport on RX rule
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Anand Jain <anand.jain@oracle.com>,
+	Omar Sandoval <osandov@fb.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 232/331] btrfs: avoid copying BTRFS_ROOT_SUBVOL_DEAD flag to snapshot of subvolume being deleted
 Date: Mon, 29 Jan 2024 09:04:56 -0800
-Message-ID: <20240129170001.674264226@linuxfoundation.org>
+Message-ID: <20240129170021.664812894@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Omar Sandoval <osandov@fb.com>
 
-[ Upstream commit 5b2a2523eeea5f03d39a9d1ff1bad2e9f8eb98d2 ]
+commit 3324d0547861b16cf436d54abba7052e0c8aa9de upstream.
 
-Go-To-Vport action on RX is not allowed when the vport is uplink.
-In such case, the packet should be dropped.
+Sweet Tea spotted a race between subvolume deletion and snapshotting
+that can result in the root item for the snapshot having the
+BTRFS_ROOT_SUBVOL_DEAD flag set. The race is:
 
-Fixes: 9db810ed2d37 ("net/mlx5: DR, Expose steering action functionality")
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Reviewed-by: Erez Shitrit <erezsh@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Thread 1                                      | Thread 2
+----------------------------------------------|----------
+btrfs_delete_subvolume                        |
+  btrfs_set_root_flags(BTRFS_ROOT_SUBVOL_DEAD)|
+                                              |btrfs_mksubvol
+                                              |  down_read(subvol_sem)
+                                              |  create_snapshot
+                                              |    ...
+                                              |    create_pending_snapshot
+                                              |      copy root item from source
+  down_write(subvol_sem)                      |
+
+This flag is only checked in send and swap activate, which this would
+cause to fail mysteriously.
+
+create_snapshot() now checks the root refs to reject a deleted
+subvolume, so we can fix this by locking subvol_sem earlier so that the
+BTRFS_ROOT_SUBVOL_DEAD flag and the root refs are updated atomically.
+
+CC: stable@vger.kernel.org # 4.14+
+Reported-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Reviewed-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Omar Sandoval <osandov@fb.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mellanox/mlx5/core/steering/dr_action.c      | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ fs/btrfs/inode.c |   22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
-index 8c265250bbaf..bf7517725d8c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
-@@ -762,11 +762,17 @@ int mlx5dr_actions_build_ste_arr(struct mlx5dr_matcher *matcher,
- 							action->sampler->tx_icm_addr;
- 			break;
- 		case DR_ACTION_TYP_VPORT:
--			attr.hit_gvmi = action->vport->caps->vhca_gvmi;
--			dest_action = action;
--			attr.final_icm_addr = rx_rule ?
--				action->vport->caps->icm_address_rx :
--				action->vport->caps->icm_address_tx;
-+			if (unlikely(rx_rule && action->vport->caps->num == MLX5_VPORT_UPLINK)) {
-+				/* can't go to uplink on RX rule - dropping instead */
-+				attr.final_icm_addr = nic_dmn->drop_icm_addr;
-+				attr.hit_gvmi = nic_dmn->drop_icm_addr >> 48;
-+			} else {
-+				attr.hit_gvmi = action->vport->caps->vhca_gvmi;
-+				dest_action = action;
-+				attr.final_icm_addr = rx_rule ?
-+						      action->vport->caps->icm_address_rx :
-+						      action->vport->caps->icm_address_tx;
-+			}
- 			break;
- 		case DR_ACTION_TYP_POP_VLAN:
- 			if (!rx_rule && !(dmn->ste_ctx->actions_caps &
--- 
-2.43.0
-
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4447,6 +4447,8 @@ int btrfs_delete_subvolume(struct btrfs_
+ 	u64 root_flags;
+ 	int ret;
+ 
++	down_write(&fs_info->subvol_sem);
++
+ 	/*
+ 	 * Don't allow to delete a subvolume with send in progress. This is
+ 	 * inside the inode lock so the error handling that has to drop the bit
+@@ -4458,25 +4460,25 @@ int btrfs_delete_subvolume(struct btrfs_
+ 		btrfs_warn(fs_info,
+ 			   "attempt to delete subvolume %llu during send",
+ 			   dest->root_key.objectid);
+-		return -EPERM;
++		ret = -EPERM;
++		goto out_up_write;
+ 	}
+ 	if (atomic_read(&dest->nr_swapfiles)) {
+ 		spin_unlock(&dest->root_item_lock);
+ 		btrfs_warn(fs_info,
+ 			   "attempt to delete subvolume %llu with active swapfile",
+ 			   root->root_key.objectid);
+-		return -EPERM;
++		ret = -EPERM;
++		goto out_up_write;
+ 	}
+ 	root_flags = btrfs_root_flags(&dest->root_item);
+ 	btrfs_set_root_flags(&dest->root_item,
+ 			     root_flags | BTRFS_ROOT_SUBVOL_DEAD);
+ 	spin_unlock(&dest->root_item_lock);
+ 
+-	down_write(&fs_info->subvol_sem);
+-
+ 	ret = may_destroy_subvol(dest);
+ 	if (ret)
+-		goto out_up_write;
++		goto out_undead;
+ 
+ 	btrfs_init_block_rsv(&block_rsv, BTRFS_BLOCK_RSV_TEMP);
+ 	/*
+@@ -4486,7 +4488,7 @@ int btrfs_delete_subvolume(struct btrfs_
+ 	 */
+ 	ret = btrfs_subvolume_reserve_metadata(root, &block_rsv, 5, true);
+ 	if (ret)
+-		goto out_up_write;
++		goto out_undead;
+ 
+ 	trans = btrfs_start_transaction(root, 0);
+ 	if (IS_ERR(trans)) {
+@@ -4552,15 +4554,17 @@ out_end_trans:
+ 	inode->i_flags |= S_DEAD;
+ out_release:
+ 	btrfs_subvolume_release_metadata(root, &block_rsv);
+-out_up_write:
+-	up_write(&fs_info->subvol_sem);
++out_undead:
+ 	if (ret) {
+ 		spin_lock(&dest->root_item_lock);
+ 		root_flags = btrfs_root_flags(&dest->root_item);
+ 		btrfs_set_root_flags(&dest->root_item,
+ 				root_flags & ~BTRFS_ROOT_SUBVOL_DEAD);
+ 		spin_unlock(&dest->root_item_lock);
+-	} else {
++	}
++out_up_write:
++	up_write(&fs_info->subvol_sem);
++	if (!ret) {
+ 		d_invalidate(dentry);
+ 		btrfs_prune_dentries(dest);
+ 		ASSERT(dest->send_in_progress == 0);
 
 
 
