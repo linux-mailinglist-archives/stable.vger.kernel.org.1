@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-16962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50807840F3D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2130840EC6
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0744A1F255FD
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 113681C230DC
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D7E15D5CA;
-	Mon, 29 Jan 2024 17:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60C116089E;
+	Mon, 29 Jan 2024 17:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3Bsly6o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hh0xee9E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241BC15AAD4;
-	Mon, 29 Jan 2024 17:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743EA60EFF;
+	Mon, 29 Jan 2024 17:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548408; cv=none; b=JwL6CI8pEw+29Wl5Nx62CNFwAjMVJmNuV/obPXX0f1nRIlsHK1QWHxYyjYTmfK1rWFJyFU5nd0pLBl6pAWAoCJkFh56OqHqdpMK3CYEnPt/QfQh2lv9+ljLlqgzGpzEMbz3dtuSdaOTdVRRmzwqDWrjJC0pAt29CfCzVw+vHQIA=
+	t=1706548342; cv=none; b=Iik19d0S+tNyN5TDSDB70SdqkmmbkiOVAyvqX89xTMeppl2akKD4cnOPNV/cWdYQ7RHMRPlDuXCDL8enFEWnZIXX64vNj1H86GzWq6e3fPnX9o8K065a2mKAcHN1wbB6r5DQMPWc31u5J2/GYMt21h6xxyWyKDkwZeI0cZALTXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548408; c=relaxed/simple;
-	bh=jU6BnYcxmSsB+duncfaTsuraTaaQAm33Ebl63d4Qlak=;
+	s=arc-20240116; t=1706548342; c=relaxed/simple;
+	bh=HeNpPY3uCdNtq2I8Asj6IvUFb0kgGPM5hG3EpErK2UI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZvVIuZzmG83zTwBa7HR6BCdKumjWg80koLGz6PGxYJ2TtXw0qZhR0NeQn1bG5WzJ3tIXty4jJk9uZ1jbK5wK+rZFbeePuhBu+SOYls44JPQtYS+DKWXbcfLbBJzb+G0bcvdNJ4pffe+LoogU8K1Tq77Cpx4DTplDB9Nf1QHnJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3Bsly6o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 883DCC433F1;
-	Mon, 29 Jan 2024 17:13:27 +0000 (UTC)
+	 MIME-Version; b=saYwOgEIvuhASQpYO6wLeIOF9lxFgoCAYP8Kw2pYAHjS1YJCdrCfu8d+giPy807Hq6zZv41/kh+CfBx/nAGVfJjNcJwzaeL27xS22dOBax/8kh3py2ybYOsbVJDCrVJYncBXcPtlZHv4Y8sGYm+dei1tB9VCJ83pdgjJklX705g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hh0xee9E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5A3C433F1;
+	Mon, 29 Jan 2024 17:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548407;
-	bh=jU6BnYcxmSsB+duncfaTsuraTaaQAm33Ebl63d4Qlak=;
+	s=korg; t=1706548342;
+	bh=HeNpPY3uCdNtq2I8Asj6IvUFb0kgGPM5hG3EpErK2UI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L3Bsly6ocJUBQWPQJbdZR8LvwvYjVLzjGbYOPeBnM1RsitMdECLQ7HY1BPlldE4B6
-	 W+8TuMtiW7eI+oh96ZF3xnbavLOikX98D9VP7Wv67+mveVyv8YbtZgIAMYxHRSBNCl
-	 RGQG1V/2bu53hB0NYpL/t+5dv2Jt/VBvnUAQtle8=
+	b=Hh0xee9ESlF/q1GImQNriq7d09QFE37vMzeeBIGhUM1gF80J1B/cyYQIK8BVScuAu
+	 hOJJp3UC9Lt9wjA3keE5Q9Ayuy1FHW6X/EvAEv+N1Td2gG9vT6xjPnPH++NU4/vjcK
+	 UCQoOVq84XWKDiBtLKvEa+gzOnhnmwBtqWTZqz7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 167/185] drm: panel-simple: add missing bus flags for Tianma tm070jvhg[30/33]
+Subject: [PATCH 6.7 336/346] LoongArch/smp: Call rcutree_report_cpu_starting() at tlb_init()
 Date: Mon, 29 Jan 2024 09:06:07 -0800
-Message-ID: <20240129170003.956034698@linuxfoundation.org>
+Message-ID: <20240129170026.362895602@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 45dd7df26cee741b31c25ffdd44fb8794eb45ccd ]
+[ Upstream commit 5056c596c3d1848021a4eaa76ee42f4c05c50346 ]
 
-The DE signal is active high on this display, fill in the missing
-bus_flags. This aligns panel_desc with its display_timing.
+Machines which have more than 8 nodes fail to boot SMP after commit
+a2ccf46333d7b2cf96 ("LoongArch/smp: Call rcutree_report_cpu_starting()
+earlier"). Because such machines use tlb-based per-cpu base address
+rather than dmw-based per-cpu base address, resulting per-cpu variables
+can only be accessed after tlb_init(). But rcutree_report_cpu_starting()
+is now called before tlb_init() and accesses per-cpu variables indeed.
 
-Fixes: 9a2654c0f62a ("drm/panel: Add and fill drm_panel type field")
-Fixes: b3bfcdf8a3b6 ("drm/panel: simple: add Tianma TM070JVHG33")
+Since the original patch want to avoid the lockdep warning caused by
+page allocation in tlb_init(), we can move rcutree_report_cpu_starting()
+to tlb_init() where after tlb exception configuration but before page
+allocation.
 
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Link: https://lore.kernel.org/r/20231012084208.2731650-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231012084208.2731650-1-alexander.stein@ew.tq-group.com
+Fixes: a2ccf46333d7b2cf96 ("LoongArch/smp: Call rcutree_report_cpu_starting() earlier")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/loongarch/kernel/smp.c |  1 -
+ arch/loongarch/mm/tlb.c     | 16 ++++++++++------
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 005377f58eb4..b714ee1bcbaa 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -3603,6 +3603,7 @@ static const struct panel_desc tianma_tm070jdhg30 = {
- 	},
- 	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
- 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
- };
+diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
+index 5bca12d16e06..2fbf541d7b4f 100644
+--- a/arch/loongarch/kernel/smp.c
++++ b/arch/loongarch/kernel/smp.c
+@@ -506,7 +506,6 @@ asmlinkage void start_secondary(void)
+ 	sync_counter();
+ 	cpu = raw_smp_processor_id();
+ 	set_my_cpu_offset(per_cpu_offset(cpu));
+-	rcutree_report_cpu_starting(cpu);
  
- static const struct panel_desc tianma_tm070jvhg33 = {
-@@ -3615,6 +3616,7 @@ static const struct panel_desc tianma_tm070jvhg33 = {
- 	},
- 	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
- 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
- };
+ 	cpu_probe();
+ 	constant_clockevent_init();
+diff --git a/arch/loongarch/mm/tlb.c b/arch/loongarch/mm/tlb.c
+index 2c0a411f23aa..0b95d32b30c9 100644
+--- a/arch/loongarch/mm/tlb.c
++++ b/arch/loongarch/mm/tlb.c
+@@ -284,12 +284,16 @@ static void setup_tlb_handler(int cpu)
+ 		set_handler(EXCCODE_TLBNR * VECSIZE, handle_tlb_protect, VECSIZE);
+ 		set_handler(EXCCODE_TLBNX * VECSIZE, handle_tlb_protect, VECSIZE);
+ 		set_handler(EXCCODE_TLBPE * VECSIZE, handle_tlb_protect, VECSIZE);
+-	}
++	} else {
++		int vec_sz __maybe_unused;
++		void *addr __maybe_unused;
++		struct page *page __maybe_unused;
++
++		/* Avoid lockdep warning */
++		rcutree_report_cpu_starting(cpu);
++
+ #ifdef CONFIG_NUMA
+-	else {
+-		void *addr;
+-		struct page *page;
+-		const int vec_sz = sizeof(exception_handlers);
++		vec_sz = sizeof(exception_handlers);
  
- static const struct display_timing tianma_tm070rvhg71_timing = {
+ 		if (pcpu_handlers[cpu])
+ 			return;
+@@ -305,8 +309,8 @@ static void setup_tlb_handler(int cpu)
+ 		csr_write64(pcpu_handlers[cpu], LOONGARCH_CSR_EENTRY);
+ 		csr_write64(pcpu_handlers[cpu], LOONGARCH_CSR_MERRENTRY);
+ 		csr_write64(pcpu_handlers[cpu] + 80*VECSIZE, LOONGARCH_CSR_TLBRENTRY);
+-	}
+ #endif
++	}
+ }
+ 
+ void tlb_init(int cpu)
 -- 
 2.43.0
 
