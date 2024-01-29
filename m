@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-17040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02323840F93
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6AF840D6B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 969341F21BF6
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 663F1286E59
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0146F091;
-	Mon, 29 Jan 2024 17:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FCA158D64;
+	Mon, 29 Jan 2024 17:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrgAWadC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r84y/MgN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D136F079;
-	Mon, 29 Jan 2024 17:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741281586DB;
+	Mon, 29 Jan 2024 17:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548465; cv=none; b=Wqu3e7EVvr6sgu0LLwkmm+lGpKT7NckuiUbnM0F5jbKJAM5aZhlikrvo0P5kCRaKaohbVpwyf6CK2qP6zHE5x36Qtp5d7sUJUWQqQSXibQN2gcQGpERF513s8J+0mA3kKqWrCjF/1JF0rIlLKS+a8Se+2nq1GYsuQ+2SXU2L0WQ=
+	t=1706548101; cv=none; b=ZM+sUW+Eu7tAql+fhAF6NDLC0QuOSzI+HmJWUzMdelQDArgw2g3PubWBsAKENtY06qwzbzZnDfluxBcrcqLBLueYY198rSr2Nz5myAxxDMFW3z2oo18g+GQTdZ25ruxCjUGrHqWkoy6jjJf+UJbaQlVbUaK40v3dpdG20dVAZEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548465; c=relaxed/simple;
-	bh=1ksb4uBJOWgVSJIYyTb0JRtWWC4Jwo6zaiwLkPxxBKo=;
+	s=arc-20240116; t=1706548101; c=relaxed/simple;
+	bh=mkZcsTtjQm0zbXAZ2YrjKcokErQ5bS5a7sXqRRElK5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kcaVO//7qvA3hITLeqEZs1ItpKbP+hKSIO0Oh2jBUYwrTbls55op9Kc936cwm8c0eSLXAmwIHUE2a+u5dDRJ3yoyi+bb2ClNaUqUbRp+gJoBdq2IbNePdlzxluQIC8rXzSzCe6x2ypLKniV2PPWONOoKPNHkvebqZR++RZR08Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrgAWadC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6FBC433C7;
-	Mon, 29 Jan 2024 17:14:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KHfKE/iA+NirdypVYN+11HPn6sF7mKI6tDsKSCVLJec2AyjEgnaG2mJfowRa7JzbNOSe2082Om5fcYy5XJ0tZ+HohCT5MXSg8xJaMNKDssBugAybUh90tbHpKgDQb8xf6LM8dlpN5Fa770LgBxzMxYQiKrd3vJcOeL7Fp/mLmlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r84y/MgN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C107C433F1;
+	Mon, 29 Jan 2024 17:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548465;
-	bh=1ksb4uBJOWgVSJIYyTb0JRtWWC4Jwo6zaiwLkPxxBKo=;
+	s=korg; t=1706548101;
+	bh=mkZcsTtjQm0zbXAZ2YrjKcokErQ5bS5a7sXqRRElK5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wrgAWadCBuQkbv3OQZFbjrnmbhCwi5QRd7VvOoqlg9/i38LzcOsydMxaFmOwr9MnS
-	 V1cxuyzbUnJhUTszeaVXqVHxYnYaByJb8Y7jnLX3mP8C7KwlPTyzTfcc8Z7NQIhYUn
-	 ifl+4ZTvN3/q3biLlpPS3e5xJibejIPqMShalBkg=
+	b=r84y/MgN0vWkiFq3C4qDgQWscRPt/bSWep36/MPXZkKEmlm8ZTSrekJJLE8A4oG21
+	 n/HbIPgidvFtB5WbwBWP/9jW3tYXApW3Q1S94VS2zji44aheg6t0/DSJEf81k7/7yc
+	 zY6ig139ExW1y9aJCBeuvzXMJ/YoLcUfyAJ9Ul20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Edwards <CFSworks@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.6 079/331] arm64: dts: rockchip: Fix rk3588 USB power-domain clocks
-Date: Mon, 29 Jan 2024 09:02:23 -0800
-Message-ID: <20240129170017.236310334@linuxfoundation.org>
+	Carsten Hatger <xmb8dsv4@gmail.com>,
+	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.7 113/346] rtc: Extend timeout for waiting for UIP to clear to 1s
+Date: Mon, 29 Jan 2024 09:02:24 -0800
+Message-ID: <20240129170019.717526899@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +61,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Edwards <cfsworks@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 44de8996ed5a10f08f2fe947182da6535edcfae5 upstream.
+commit cef9ecc8e938dd48a560f7dd9be1246359248d20 upstream.
 
-The QoS blocks saved/restored when toggling the PD_USB power domain are
-clocked by ACLK_USB. Attempting to access these memory regions without
-that clock running will result in an indefinite CPU stall.
+Specs don't say anything about UIP being cleared within 10ms. They
+only say that UIP won't occur for another 244uS. If a long NMI occurs
+while UIP is still updating it might not be possible to get valid
+data in 10ms.
 
-The PD_USB node wasn't specifying this clock dependency, resulting in
-hangs when trying to toggle the power domain (either on or off), unless
-we get "lucky" and have ACLK_USB running for another reason at the time.
-This "luck" can result from the bootloader leaving USB powered/clocked,
-and if no built-in driver wants USB, Linux will disable the unused
-PD+CLK on boot when {pd,clk}_ignore_unused aren't given. This can also
-be unlucky because the two cleanup tasks run in parallel and race: if
-the CLK is disabled first, the PD deactivation stalls the boot. In any
-case, the PD cannot then be reenabled (if e.g. the driver loads later)
-once the clock has been stopped.
+This has been observed in the wild that around s2idle some calls can
+take up to 480ms before UIP is clear.
 
-Fix this by specifying a dependency on ACLK_USB, instead of only
-ACLK_USB_ROOT. The child-parent relationship means the former implies
-the latter anyway.
+Adjust callers from outside an interrupt context to wait for up to a
+1s instead of 10ms.
 
-Fixes: c9211fa2602b8 ("arm64: dts: rockchip: Add base DT for rk3588 SoC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sam Edwards <CFSworks@gmail.com>
-Link: https://lore.kernel.org/r/20231216021019.1543811-1-CFSworks@gmail.com
-[changed to only include the missing clock, not dropping the root-clocks]
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Cc:  <stable@vger.kernel.org> # 6.1.y
+Fixes: ec5895c0f2d8 ("rtc: mc146818-lib: extract mc146818_avoid_UIP")
+Reported-by: Carsten Hatger <xmb8dsv4@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217626
+Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Reviewed-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Acked-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20231128053653.101798-5-mario.limonciello@amd.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588s.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/rtc.c          |    2 +-
+ drivers/base/power/trace.c     |    2 +-
+ drivers/rtc/rtc-cmos.c         |    2 +-
+ drivers/rtc/rtc-mc146818-lib.c |    2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3588s.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3588s.dtsi
-@@ -890,6 +890,7 @@
- 				reg = <RK3588_PD_USB>;
- 				clocks = <&cru PCLK_PHP_ROOT>,
- 					 <&cru ACLK_USB_ROOT>,
-+					 <&cru ACLK_USB>,
- 					 <&cru HCLK_USB_ROOT>,
- 					 <&cru HCLK_HOST0>,
- 					 <&cru HCLK_HOST_ARB0>,
+--- a/arch/x86/kernel/rtc.c
++++ b/arch/x86/kernel/rtc.c
+@@ -67,7 +67,7 @@ void mach_get_cmos_time(struct timespec6
+ 		return;
+ 	}
+ 
+-	if (mc146818_get_time(&tm, 10)) {
++	if (mc146818_get_time(&tm, 1000)) {
+ 		pr_err("Unable to read current time from RTC\n");
+ 		now->tv_sec = now->tv_nsec = 0;
+ 		return;
+--- a/drivers/base/power/trace.c
++++ b/drivers/base/power/trace.c
+@@ -120,7 +120,7 @@ static unsigned int read_magic_time(void
+ 	struct rtc_time time;
+ 	unsigned int val;
+ 
+-	if (mc146818_get_time(&time, 10) < 0) {
++	if (mc146818_get_time(&time, 1000) < 0) {
+ 		pr_err("Unable to read current time from RTC\n");
+ 		return 0;
+ 	}
+--- a/drivers/rtc/rtc-cmos.c
++++ b/drivers/rtc/rtc-cmos.c
+@@ -231,7 +231,7 @@ static int cmos_read_time(struct device
+ 	if (!pm_trace_rtc_valid())
+ 		return -EIO;
+ 
+-	ret = mc146818_get_time(t, 10);
++	ret = mc146818_get_time(t, 1000);
+ 	if (ret < 0) {
+ 		dev_err_ratelimited(dev, "unable to read current time\n");
+ 		return ret;
+--- a/drivers/rtc/rtc-mc146818-lib.c
++++ b/drivers/rtc/rtc-mc146818-lib.c
+@@ -93,7 +93,7 @@ EXPORT_SYMBOL_GPL(mc146818_avoid_UIP);
+  */
+ bool mc146818_does_rtc_work(void)
+ {
+-	return mc146818_avoid_UIP(NULL, 10, NULL);
++	return mc146818_avoid_UIP(NULL, 1000, NULL);
+ }
+ EXPORT_SYMBOL_GPL(mc146818_does_rtc_work);
+ 
 
 
 
