@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-16698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD59840E0D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CEE2840E86
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12CC4B21946
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1A6E1C233BF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F7415DBD0;
-	Mon, 29 Jan 2024 17:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655E915B990;
+	Mon, 29 Jan 2024 17:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUrU+Pmv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZAvtWHc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3310C1586DA;
-	Mon, 29 Jan 2024 17:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2422615703D;
+	Mon, 29 Jan 2024 17:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548213; cv=none; b=JblXg+eJ8VgwxiHWkBg5nEmynGDcyf4doKogQStnVeD9CMTD5VtidvnrHe/XI7V2BrT86sSAxpTjyZXyX+liQK9Kdh/++AZPyLUe8mTiTHozRPtxmoKnM3BH4UFMoofdj2/xCbwejSB+Zi5RzlDU4w9Y/Yi5sr0YgNhx4KbjbnI=
+	t=1706548299; cv=none; b=TBhmEtLQdRm612JJa59jScNValqRHSspP8JZTGxb5urBwtHAQp43CTW3B57sC5QhEYUAKz6JP48/fWJsbPhudGJ0neweFpyvO4mZPRuuB4Q+bXUUmA1beGU9wTU/RDk6daW6uAsBGYkDD+pusk/+6ZCRLMAmI4EYfNNnogxbqjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548213; c=relaxed/simple;
-	bh=eVjTZK6nyMx+tm4COefGwV8KRhmauCHKICP/HaFE4Js=;
+	s=arc-20240116; t=1706548299; c=relaxed/simple;
+	bh=aax1ah8rJ1TRINMEfJanZxcnOojxD8poe7QCw8HIxd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JdDDSyyjkxnu8xasy+gNdFo+iR55ANUeBDdGjZCCCWFIOuy58LcTe7c1ud8+RmFZ2PMsKga+0uAcHQ38ZuO5NCE4T/tNVHdjhlKw/oDXxfBgW+RMsVTbeUmoBOxfdpRIQKsPFduePQ5a/l01+mOUCHL3BEkLpYy1cd/koZNiTUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUrU+Pmv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953BCC43390;
-	Mon, 29 Jan 2024 17:10:12 +0000 (UTC)
+	 MIME-Version; b=uBBp7J9S7i6wRcQC8iMZLi6Y4BgQlwf+Kqy0xvMFqjyRi70xgVUAbjMXPCFqHI7tD7cbpx+dShgZ3Eh81LNYGugg2628XcAc8bdVPbDJrFGc/eEaHazt5dINurIGECsRth1Des/8+kWDXlI3pjwgWFjgxTY44YjGpxUdY37RdCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZAvtWHc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC58C433F1;
+	Mon, 29 Jan 2024 17:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548212;
-	bh=eVjTZK6nyMx+tm4COefGwV8KRhmauCHKICP/HaFE4Js=;
+	s=korg; t=1706548298;
+	bh=aax1ah8rJ1TRINMEfJanZxcnOojxD8poe7QCw8HIxd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xUrU+PmvYYet8fQCTpESWbZrqkb8v3XOnHI5NQW7ashJxzU6ME582uix1JhR8fVHI
-	 wCVMtN3LyO+tUyd2VXvzf+taKVCu5i/UkKZ2A0BL+OCRZx9v7sRYOQY/ZB+RcCtNhk
-	 /DD55EnNVTsAkwK/D0e2Z/bRw3T6HFbB3i3ua6pU=
+	b=gZAvtWHcHwZtxCq6tvx8vFIVrdld+ADPxzVCc54YApXRQd8DHPn2r0cONU2AKdp8U
+	 lTc7iitv4eFZkk69dJJS5YO4mmUougXtfKAwqTUd0hlq/mzzFxL/5WdgUHYleDqSWa
+	 y9agGNDDUujEETT0iheB0fHdKqM43dd77cc3EM7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.7 247/346] Revert "drm/i915/dsi: Do display on sequence later on icl+"
+	Ming Shu <sming56@aliyun.com>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 078/185] tcp: make sure init the accept_queues spinlocks once
 Date: Mon, 29 Jan 2024 09:04:38 -0800
-Message-ID: <20240129170023.684415074@linuxfoundation.org>
+Message-ID: <20240129170001.105651177@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +62,177 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-commit 6992eb815d087858f8d7e4020529c2fe800456b3 upstream.
+[ Upstream commit 198bc90e0e734e5f98c3d2833e8390cac3df61b2 ]
 
-This reverts commit 88b065943cb583e890324d618e8d4b23460d51a3.
+When I run syz's reproduction C program locally, it causes the following
+issue:
+pvqspinlock: lock 0xffff9d181cd5c660 has corrupted value 0x0!
+WARNING: CPU: 19 PID: 21160 at __pv_queued_spin_unlock_slowpath (kernel/locking/qspinlock_paravirt.h:508)
+Hardware name: Red Hat KVM, BIOS 0.5.1 01/01/2011
+RIP: 0010:__pv_queued_spin_unlock_slowpath (kernel/locking/qspinlock_paravirt.h:508)
+Code: 73 56 3a ff 90 c3 cc cc cc cc 8b 05 bb 1f 48 01 85 c0 74 05 c3 cc cc cc cc 8b 17 48 89 fe 48 c7 c7
+30 20 ce 8f e8 ad 56 42 ff <0f> 0b c3 cc cc cc cc 0f 0b 0f 1f 40 00 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffffa8d200604cb8 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff9d1ef60e0908
+RDX: 00000000ffffffd8 RSI: 0000000000000027 RDI: ffff9d1ef60e0900
+RBP: ffff9d181cd5c280 R08: 0000000000000000 R09: 00000000ffff7fff
+R10: ffffa8d200604b68 R11: ffffffff907dcdc8 R12: 0000000000000000
+R13: ffff9d181cd5c660 R14: ffff9d1813a3f330 R15: 0000000000001000
+FS:  00007fa110184640(0000) GS:ffff9d1ef60c0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020000000 CR3: 000000011f65e000 CR4: 00000000000006f0
+Call Trace:
+<IRQ>
+  _raw_spin_unlock (kernel/locking/spinlock.c:186)
+  inet_csk_reqsk_queue_add (net/ipv4/inet_connection_sock.c:1321)
+  inet_csk_complete_hashdance (net/ipv4/inet_connection_sock.c:1358)
+  tcp_check_req (net/ipv4/tcp_minisocks.c:868)
+  tcp_v4_rcv (net/ipv4/tcp_ipv4.c:2260)
+  ip_protocol_deliver_rcu (net/ipv4/ip_input.c:205)
+  ip_local_deliver_finish (net/ipv4/ip_input.c:234)
+  __netif_receive_skb_one_core (net/core/dev.c:5529)
+  process_backlog (./include/linux/rcupdate.h:779)
+  __napi_poll (net/core/dev.c:6533)
+  net_rx_action (net/core/dev.c:6604)
+  __do_softirq (./arch/x86/include/asm/jump_label.h:27)
+  do_softirq (kernel/softirq.c:454 kernel/softirq.c:441)
+</IRQ>
+<TASK>
+  __local_bh_enable_ip (kernel/softirq.c:381)
+  __dev_queue_xmit (net/core/dev.c:4374)
+  ip_finish_output2 (./include/net/neighbour.h:540 net/ipv4/ip_output.c:235)
+  __ip_queue_xmit (net/ipv4/ip_output.c:535)
+  __tcp_transmit_skb (net/ipv4/tcp_output.c:1462)
+  tcp_rcv_synsent_state_process (net/ipv4/tcp_input.c:6469)
+  tcp_rcv_state_process (net/ipv4/tcp_input.c:6657)
+  tcp_v4_do_rcv (net/ipv4/tcp_ipv4.c:1929)
+  __release_sock (./include/net/sock.h:1121 net/core/sock.c:2968)
+  release_sock (net/core/sock.c:3536)
+  inet_wait_for_connect (net/ipv4/af_inet.c:609)
+  __inet_stream_connect (net/ipv4/af_inet.c:702)
+  inet_stream_connect (net/ipv4/af_inet.c:748)
+  __sys_connect (./include/linux/file.h:45 net/socket.c:2064)
+  __x64_sys_connect (net/socket.c:2073 net/socket.c:2070 net/socket.c:2070)
+  do_syscall_64 (arch/x86/entry/common.c:51 arch/x86/entry/common.c:82)
+  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:129)
+  RIP: 0033:0x7fa10ff05a3d
+  Code: 5b 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89
+  c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d ab a3 0e 00 f7 d8 64 89 01 48
+  RSP: 002b:00007fa110183de8 EFLAGS: 00000202 ORIG_RAX: 000000000000002a
+  RAX: ffffffffffffffda RBX: 0000000020000054 RCX: 00007fa10ff05a3d
+  RDX: 000000000000001c RSI: 0000000020000040 RDI: 0000000000000003
+  RBP: 00007fa110183e20 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000202 R12: 00007fa110184640
+  R13: 0000000000000000 R14: 00007fa10fe8b060 R15: 00007fff73e23b20
+</TASK>
 
-Lenovo 82TQ is unhappy if we do the display on sequence this
-late. The display output shows severe corruption.
+The issue triggering process is analyzed as follows:
+Thread A                                       Thread B
+tcp_v4_rcv	//receive ack TCP packet       inet_shutdown
+  tcp_check_req                                  tcp_disconnect //disconnect sock
+  ...                                              tcp_set_state(sk, TCP_CLOSE)
+    inet_csk_complete_hashdance                ...
+      inet_csk_reqsk_queue_add                 inet_listen  //start listen
+        spin_lock(&queue->rskq_lock)             inet_csk_listen_start
+        ...                                        reqsk_queue_alloc
+        ...                                          spin_lock_init
+        spin_unlock(&queue->rskq_lock)	//warning
 
-It's unclear if this is a failure on our part (perhaps
-something to do with sending commands in LP mode after HS
-/video mode transmission has been started? Though the backlight
-on command at least seems to work) or simply that there are
-some commands in the sequence that are needed to be done
-earlier (eg. could be some DSC init stuff?). If the latter
-then I don't think the current Windows code would work
-either, but maybe this was originally tested with an older
-driver, who knows.
+When the socket receives the ACK packet during the three-way handshake,
+it will hold spinlock. And then the user actively shutdowns the socket
+and listens to the socket immediately, the spinlock will be initialized.
+When the socket is going to release the spinlock, a warning is generated.
+Also the same issue to fastopenq.lock.
 
-Root causing this fully would likely require a lot of
-experimentation which isn't really feasible without direct
-access to the machine, so let's just accept failure and
-go back to the original sequence.
+Move init spinlock to inet_create and inet_accept to make sure init the
+accept_queue's spinlocks once.
 
-Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10071
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240116210821.30194-1-ville.syrjala@linux.intel.com
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit dc524d05974f615b145404191fcf91b478950499)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fff1f3001cc5 ("tcp: add a spinlock to protect struct request_sock_queue")
+Fixes: 168a8f58059a ("tcp: TCP Fast Open Server - main code path")
+Reported-by: Ming Shu <sming56@aliyun.com>
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240118012019.1751966-1-shaozhengchao@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/icl_dsi.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/net/inet_connection_sock.h | 8 ++++++++
+ net/core/request_sock.c            | 3 ---
+ net/ipv4/af_inet.c                 | 3 +++
+ net/ipv4/inet_connection_sock.c    | 4 ++++
+ 4 files changed, 15 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/icl_dsi.c
-+++ b/drivers/gpu/drm/i915/display/icl_dsi.c
-@@ -1155,6 +1155,7 @@ static void gen11_dsi_powerup_panel(stru
- 	}
+diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
+index c2b15f7e5516..080968d6e6c5 100644
+--- a/include/net/inet_connection_sock.h
++++ b/include/net/inet_connection_sock.h
+@@ -346,4 +346,12 @@ static inline bool inet_csk_has_ulp(struct sock *sk)
+ 	return inet_sk(sk)->is_icsk && !!inet_csk(sk)->icsk_ulp_ops;
+ }
  
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_INIT_OTP);
-+	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
++static inline void inet_init_csk_locks(struct sock *sk)
++{
++	struct inet_connection_sock *icsk = inet_csk(sk);
++
++	spin_lock_init(&icsk->icsk_accept_queue.rskq_lock);
++	spin_lock_init(&icsk->icsk_accept_queue.fastopenq.lock);
++}
++
+ #endif /* _INET_CONNECTION_SOCK_H */
+diff --git a/net/core/request_sock.c b/net/core/request_sock.c
+index f35c2e998406..63de5c635842 100644
+--- a/net/core/request_sock.c
++++ b/net/core/request_sock.c
+@@ -33,9 +33,6 @@
  
- 	/* ensure all panel commands dispatched before enabling transcoder */
- 	wait_for_cmds_dispatched_to_panel(encoder);
-@@ -1255,8 +1256,6 @@ static void gen11_dsi_enable(struct inte
- 	/* step6d: enable dsi transcoder */
- 	gen11_dsi_enable_transcoder(encoder);
- 
--	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
+ void reqsk_queue_alloc(struct request_sock_queue *queue)
+ {
+-	spin_lock_init(&queue->rskq_lock);
 -
- 	/* step7: enable backlight */
- 	intel_backlight_enable(crtc_state, conn_state);
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_BACKLIGHT_ON);
+-	spin_lock_init(&queue->fastopenq.lock);
+ 	queue->fastopenq.rskq_rst_head = NULL;
+ 	queue->fastopenq.rskq_rst_tail = NULL;
+ 	queue->fastopenq.qlen = 0;
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index c13b8ed63f87..2f646335d218 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -324,6 +324,9 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
+ 	if (INET_PROTOSW_REUSE & answer_flags)
+ 		sk->sk_reuse = SK_CAN_REUSE;
+ 
++	if (INET_PROTOSW_ICSK & answer_flags)
++		inet_init_csk_locks(sk);
++
+ 	inet = inet_sk(sk);
+ 	inet->is_icsk = (INET_PROTOSW_ICSK & answer_flags) != 0;
+ 
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 80ce0112e24b..79fa19a36bbd 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -727,6 +727,10 @@ struct sock *inet_csk_accept(struct sock *sk, int flags, int *err, bool kern)
+ 	}
+ 	if (req)
+ 		reqsk_put(req);
++
++	if (newsk)
++		inet_init_csk_locks(newsk);
++
+ 	return newsk;
+ out_err:
+ 	newsk = NULL;
+-- 
+2.43.0
+
 
 
 
