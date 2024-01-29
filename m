@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-16518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7393840D4C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:09:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20507840D31
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C6661F2C197
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFFBB2882AF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA54157E70;
-	Mon, 29 Jan 2024 17:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE7C157048;
+	Mon, 29 Jan 2024 17:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+t5pj+P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smodkWWN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674CA15AAD6;
-	Mon, 29 Jan 2024 17:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C98A15A49D;
+	Mon, 29 Jan 2024 17:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548079; cv=none; b=dsH12K8n/br+Edwbif5CqeZsu4aNJCj68N+46BtxZ+E/LH2qU13KgJEFkroUReCd0iUHIQkDDyA3nj9yp8D2dkEKAXeZHOIbiP0DqLgj0jnlBLGl3mg3WOo2Bx+VYpytyuCNb1core0XDPeOaA7fJIIHGALAIu0RVnDBvpGmePg=
+	t=1706548060; cv=none; b=haWTZvKZPqJbZ2Wunf+gboVC6soI/mafioW4XO8hpjluGpttIv5bHSRKCfwoxC50SjEab8sgkrPK8qLIDQpGqTEkvDgZamEr2yYUB7zNgMKx/Ps1S0RI4J+K4IMbAFpw9RmDXFhF95lbdQewQEjZy7Ie8QkA9+34udDc/ktfcis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548079; c=relaxed/simple;
-	bh=MODSumGFSo9dle0LnkCdo4LGve5JL4N55R/YmyldTwA=;
+	s=arc-20240116; t=1706548060; c=relaxed/simple;
+	bh=QerjX+8U+TQ+031BP+KUla1r0fMTJSFcD5Nx2imwnNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hDrU8dx0nYoJ9tYGuxSkloVz7gVLo1kIEgRRoEBO2UWaWN2gir8qPbORFn2VT02SDwU2IOdK1AOYlFFkYCbxkd9HNh0OXYBoIeLaxdwUFMSK+y9fDLAOJR4OuPkqjgRsFAW1Jxx+6nQE1/iZJN8YrqeO6odX2CIOB+muNVD6WGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+t5pj+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307D6C433F1;
-	Mon, 29 Jan 2024 17:07:59 +0000 (UTC)
+	 MIME-Version; b=REmOAnpigCEiUC8zFdwFaIRFJQmMKCIWjjDnYIwx6mnikt+AHntJfZbI8Vsc7KyYAdSCWnStS5FDtGfrxJP1GlEnVQdEGrIf320OAXp15qx80NSwqnrKClwd2Q1zvZmCvuSkgyOCNK8CYEgW+tPA3NwwnKlZmWfXq7CH5M7pcA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smodkWWN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C91C43390;
+	Mon, 29 Jan 2024 17:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548079;
-	bh=MODSumGFSo9dle0LnkCdo4LGve5JL4N55R/YmyldTwA=;
+	s=korg; t=1706548059;
+	bh=QerjX+8U+TQ+031BP+KUla1r0fMTJSFcD5Nx2imwnNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S+t5pj+Ps84kVzGtVyTsb3GQy+DQbwBpyWfS5IeDAefnVWdnCiM755RfvYBurMlrQ
-	 zMQnq6V379Ej0e9chzEyGx5d9/K3ZoRXQp2wN3FPim9qZDRjXEdaCsUGTP15HHEyti
-	 hTyr0Ia1aJKnk0reGcbNbWB7+AL8Gcl+4h1TYsPs=
+	b=smodkWWN1NpypAHDvwY0b621vWX69Y18K6vPIUcC2nzBWpZ9hCO5dND3k32kDBmP7
+	 Rwna6V/Qaj4IfQ3sO9P3iim72B9N3mrtlWSfjeg/oHtkiC2F1Ka4itIg3WVVDyBz5D
+	 A0NYv6hAEl1PUHd5pobIldi6FUBejSNe/4KZT2sU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 064/346] cifs: update iface_last_update on each query-and-update
-Date: Mon, 29 Jan 2024 09:01:35 -0800
-Message-ID: <20240129170018.275230372@linuxfoundation.org>
+	Andrejs Cainikovs <andrejs.cainikovs@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.7 065/346] ARM: dts: imx6q-apalis: add can power-up delay on ixora board
+Date: Mon, 29 Jan 2024 09:01:36 -0800
+Message-ID: <20240129170018.301662023@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -66,63 +65,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
 
-[ Upstream commit 78e727e58e54efca4c23863fbd9e16e9d2d83f81 ]
+commit b76bbf835d8945080b22b52fc1e6f41cde06865d upstream.
 
-iface_last_update was an unused field when it was introduced.
-Later, when we had periodic update of server interface list,
-this field was used regularly to decide when to update next.
+Newer variants of Ixora boards require a power-up delay when powering up
+the CAN transceiver of up to 1ms.
 
-However, with the new logic of updating the interfaces, it
-becomes crucial that this field be updated whenever
-parse_server_interfaces runs successfully.
-
-This change updates this field when either the server does
-not support query of interfaces; so that we do not query
-the interfaces repeatedly. It also updates the field when
-the function reaches the end.
-
-Fixes: aa45dadd34e4 ("cifs: change iface_list from array to sorted linked list")
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2ops.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 17310f3a9d89..beb81fa00cff 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -615,6 +615,7 @@ parse_server_interfaces(struct network_interface_info_ioctl_rsp *buf,
- 				 "Empty network interface list returned by server %s\n",
- 				 ses->server->hostname);
- 		rc = -EOPNOTSUPP;
-+		ses->iface_last_update = jiffies;
- 		goto out;
- 	}
+--- a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts
+@@ -76,6 +76,7 @@
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_enable_can1_power>;
+ 		regulator-name = "can1_supply";
++		startup-delay-us = <1000>;
+ 	};
  
-@@ -712,7 +713,6 @@ parse_server_interfaces(struct network_interface_info_ioctl_rsp *buf,
+ 	reg_can2_supply: regulator-can2-supply {
+@@ -85,6 +86,7 @@
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_enable_can2_power>;
+ 		regulator-name = "can2_supply";
++		startup-delay-us = <1000>;
+ 	};
+ };
  
- 		ses->iface_count++;
- 		spin_unlock(&ses->iface_lock);
--		ses->iface_last_update = jiffies;
- next_iface:
- 		nb_iface++;
- 		next = le32_to_cpu(p->Next);
-@@ -734,6 +734,8 @@ parse_server_interfaces(struct network_interface_info_ioctl_rsp *buf,
- 	if ((bytes_left > 8) || p->Next)
- 		cifs_dbg(VFS, "%s: incomplete interface info\n", __func__);
- 
-+	ses->iface_last_update = jiffies;
-+
- out:
- 	/*
- 	 * Go through the list again and put the inactive entries
--- 
-2.43.0
-
 
 
 
