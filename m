@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-16486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32DAA840D2B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 617FC840F50
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2711287BA3
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E3CC283138
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1EA015A48C;
-	Mon, 29 Jan 2024 17:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B68F1641BA;
+	Mon, 29 Jan 2024 17:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tFzEkQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsoJKrPW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB961586D7;
-	Mon, 29 Jan 2024 17:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4632F15D5D8;
+	Mon, 29 Jan 2024 17:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548055; cv=none; b=Gr69+vmNilhAT6Na/GtBomLSA73y83+2ZQNgX7HDA7hZn82jax/PunpH4pITNElkhZpBV49RGQXPsbrUjzJUXb+w80C39bOnTKwaqTRKjeDu9beL+7zWoxJpmZdI3r1YWhT69h9ZUrlkP4UlHv96mXpye7Fn7YFUsvNLyTztgfs=
+	t=1706548421; cv=none; b=GAQHXmX31MkjW/vJSvXcWE7We7hIXNfKx7RbFOrESvCpSprV1Z5kMaGMhpGJjfQFsr9CGs9NXR48AlXn3+YqFdkpShs49OwkSeqn1zPcyXUhyXGl9eHnnBBz1UTy6MSOqC4tocrfXqaquSy1pQJa1Gh+JmRlzAl8NgW9p4H1yYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548055; c=relaxed/simple;
-	bh=v+G6vW2cuinrVvblkDp3rPbJuirGfjGZwU4vbBHnQRg=;
+	s=arc-20240116; t=1706548421; c=relaxed/simple;
+	bh=vFko/+BTPMMhlTgjqzntZvxqnf2hPxD/8ZPIixqsLNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hiEPGb7Ocwsksquvisqp9vtqcL5WFvMqaNb7tPfdRu0Q+CKnfVmwBrdE+9Aj0gmVmWp61imz0zZ3hllDdZaIQX3aKxOQ3KjYiW9ErhsntwYPDeCFKNFl8zpkX18DTktKjPCG3JppwllMUwhn93XJy3VRXbufOggwXtmoWtBydDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tFzEkQR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F991C433A6;
-	Mon, 29 Jan 2024 17:07:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q7RwntYmXGUKFjcNnVZJFiAwMFa9JVJ1z+qIS3TWaYmSSnOY9khqt3oQdrowINiavdk7mQ3ukykbx14B7ULkIVy7BzrH6+rZ/QzKe4KyrYMG3UMN6Y6Zzw59f5ZSn0kjaM0CeTyc1WXdeEiWf45to1aotKA8zNXV+xZxOF6f2+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsoJKrPW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2CCC433F1;
+	Mon, 29 Jan 2024 17:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548055;
-	bh=v+G6vW2cuinrVvblkDp3rPbJuirGfjGZwU4vbBHnQRg=;
+	s=korg; t=1706548421;
+	bh=vFko/+BTPMMhlTgjqzntZvxqnf2hPxD/8ZPIixqsLNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0tFzEkQRKnY8ELvDZMoUcRbUh4dfGvTGEUD5s0CGU/IKCWQ9U/v7hUUB7jTBDVsLX
-	 xmgcNJfj3FWS3OHyzCKvV1yRsfBpHXtbPrBEjAlOp89/1qAL6JsYFPrwoz6WhJuJxE
-	 kbQ8iaYJr5STv4iQm1EDKYmnYPlzzXFH6TX15Ij0=
+	b=SsoJKrPWE3YkMS0iYWZxh1kpk1ri2T+WNuJqWzD27ABy9X03iE65GeaDx4OM9o04A
+	 3xT24ZvX+rQkfMsHayjG46zFscOcCdjVktKadsp5clFqTiDJCfRvpH4+RWnTLDqSaT
+	 QvH//3OVxqGxVwRcR1A7i3KhIY7QLIjhpk0eULrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 6.7 034/346] soc: fsl: cpm1: qmc: Fix __iomem addresses declaration
-Date: Mon, 29 Jan 2024 09:01:05 -0800
-Message-ID: <20240129170017.386249523@linuxfoundation.org>
+	Randy Dunlap <rdunlap@infradead.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Min-Hua Chen <minhuadotchen@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 002/331] docs: sparse: add sparse.rst to toctree
+Date: Mon, 29 Jan 2024 09:01:06 -0800
+Message-ID: <20240129170015.035200270@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,161 +61,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Min-Hua Chen <minhuadotchen@gmail.com>
 
-commit a5ec3a21220da06bdda2e686012ca64fdb6c513d upstream.
+[ Upstream commit c9ad95adc096f25004d4192258863806a68a9bc8 ]
 
-Running sparse (make C=1) on qmc.c raises a lot of warning such as:
-  ...
-  warning: incorrect type in assignment (different address spaces)
-     expected struct cpm_buf_desc [usertype] *[noderef] __iomem bd
-     got struct cpm_buf_desc [noderef] [usertype] __iomem *txbd_free
-  ...
+Add sparst.rst to toctree, so it can be part of the docs build.
 
-Indeed, some variable were declared 'type *__iomem var' instead of
-'type __iomem *var'.
-
-Use the correct declaration to remove these warnings.
-
-Fixes: 3178d58e0b97 ("soc: fsl: cpm1: Add support for QMC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/20231205152116.122512-3-herve.codina@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Suggested-by: Jonathan Corbet <corbet@lwn.net>
+Signed-off-by: Min-Hua Chen <minhuadotchen@gmail.com>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Link: https://lore.kernel.org/r/20230902052512.12184-4-minhuadotchen@gmail.com
+Stable-dep-of: c48a7c44a1d0 ("docs: kernel_feat.py: fix potential command injection")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qe/qmc.c |   34 +++++++++++++++++-----------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ .../translations/zh_TW/dev-tools/index.rst    | 40 +++++++++++++++++++
+ Documentation/translations/zh_TW/index.rst    |  2 +-
+ 2 files changed, 41 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/translations/zh_TW/dev-tools/index.rst
 
---- a/drivers/soc/fsl/qe/qmc.c
-+++ b/drivers/soc/fsl/qe/qmc.c
-@@ -175,7 +175,7 @@ struct qmc_chan {
- 	struct list_head list;
- 	unsigned int id;
- 	struct qmc *qmc;
--	void *__iomem s_param;
-+	void __iomem *s_param;
- 	enum qmc_mode mode;
- 	u64	tx_ts_mask;
- 	u64	rx_ts_mask;
-@@ -203,9 +203,9 @@ struct qmc_chan {
- struct qmc {
- 	struct device *dev;
- 	struct tsa_serial *tsa_serial;
--	void *__iomem scc_regs;
--	void *__iomem scc_pram;
--	void *__iomem dpram;
-+	void __iomem *scc_regs;
-+	void __iomem *scc_pram;
-+	void __iomem *dpram;
- 	u16 scc_pram_offset;
- 	cbd_t __iomem *bd_table;
- 	dma_addr_t bd_dma_addr;
-@@ -218,37 +218,37 @@ struct qmc {
- 	struct qmc_chan *chans[64];
- };
+diff --git a/Documentation/translations/zh_TW/dev-tools/index.rst b/Documentation/translations/zh_TW/dev-tools/index.rst
+new file mode 100644
+index 000000000000..8f101db5a07f
+--- /dev/null
++++ b/Documentation/translations/zh_TW/dev-tools/index.rst
+@@ -0,0 +1,40 @@
++.. include:: ../disclaimer-zh_TW.rst
++
++:Original: Documentation/dev-tools/index.rst
++:Translator: Min-Hua Chen <minhuadotchen@gmail.com>
++
++============
++內核開發工具
++============
++
++本文檔是有關內核開發工具文檔的合集。
++目前這些文檔已經整理在一起，不需要再花費額外的精力。
++歡迎任何補丁。
++
++有關測試專用工具的簡要概述，參見
++Documentation/dev-tools/testing-overview.rst
++
++.. class:: toc-title
++
++	   目錄
++
++.. toctree::
++   :maxdepth: 2
++
++   sparse
++
++Todolist:
++
++ - coccinelle
++ - kcov
++ - ubsan
++ - kmemleak
++ - kcsan
++ - kfence
++ - kgdb
++ - kselftest
++ - kunit/index
++ - testing-overview
++ - gcov
++ - kasan
++ - gdb-kernel-debugging
+diff --git a/Documentation/translations/zh_TW/index.rst b/Documentation/translations/zh_TW/index.rst
+index d1cf0b4d8e46..ffcaf3272fe7 100644
+--- a/Documentation/translations/zh_TW/index.rst
++++ b/Documentation/translations/zh_TW/index.rst
+@@ -55,11 +55,11 @@ TODOList:
+    :maxdepth: 1
  
--static inline void qmc_write16(void *__iomem addr, u16 val)
-+static inline void qmc_write16(void __iomem *addr, u16 val)
- {
- 	iowrite16be(val, addr);
- }
+    process/license-rules
++   dev-tools/index
  
--static inline u16 qmc_read16(void *__iomem addr)
-+static inline u16 qmc_read16(void __iomem *addr)
- {
- 	return ioread16be(addr);
- }
+ TODOList:
  
--static inline void qmc_setbits16(void *__iomem addr, u16 set)
-+static inline void qmc_setbits16(void __iomem *addr, u16 set)
- {
- 	qmc_write16(addr, qmc_read16(addr) | set);
- }
- 
--static inline void qmc_clrbits16(void *__iomem addr, u16 clr)
-+static inline void qmc_clrbits16(void __iomem *addr, u16 clr)
- {
- 	qmc_write16(addr, qmc_read16(addr) & ~clr);
- }
- 
--static inline void qmc_write32(void *__iomem addr, u32 val)
-+static inline void qmc_write32(void __iomem *addr, u32 val)
- {
- 	iowrite32be(val, addr);
- }
- 
--static inline u32 qmc_read32(void *__iomem addr)
-+static inline u32 qmc_read32(void __iomem *addr)
- {
- 	return ioread32be(addr);
- }
- 
--static inline void qmc_setbits32(void *__iomem addr, u32 set)
-+static inline void qmc_setbits32(void __iomem *addr, u32 set)
- {
- 	qmc_write32(addr, qmc_read32(addr) | set);
- }
-@@ -318,7 +318,7 @@ int qmc_chan_write_submit(struct qmc_cha
- {
- 	struct qmc_xfer_desc *xfer_desc;
- 	unsigned long flags;
--	cbd_t *__iomem bd;
-+	cbd_t __iomem *bd;
- 	u16 ctrl;
- 	int ret;
- 
-@@ -374,7 +374,7 @@ static void qmc_chan_write_done(struct q
- 	void (*complete)(void *context);
- 	unsigned long flags;
- 	void *context;
--	cbd_t *__iomem bd;
-+	cbd_t __iomem *bd;
- 	u16 ctrl;
- 
- 	/*
-@@ -425,7 +425,7 @@ int qmc_chan_read_submit(struct qmc_chan
- {
- 	struct qmc_xfer_desc *xfer_desc;
- 	unsigned long flags;
--	cbd_t *__iomem bd;
-+	cbd_t __iomem *bd;
- 	u16 ctrl;
- 	int ret;
- 
-@@ -488,7 +488,7 @@ static void qmc_chan_read_done(struct qm
- 	void (*complete)(void *context, size_t size);
- 	struct qmc_xfer_desc *xfer_desc;
- 	unsigned long flags;
--	cbd_t *__iomem bd;
-+	cbd_t __iomem *bd;
- 	void *context;
- 	u16 datalen;
- 	u16 ctrl;
-@@ -663,7 +663,7 @@ static void qmc_chan_reset_rx(struct qmc
- {
- 	struct qmc_xfer_desc *xfer_desc;
- 	unsigned long flags;
--	cbd_t *__iomem bd;
-+	cbd_t __iomem *bd;
- 	u16 ctrl;
- 
- 	spin_lock_irqsave(&chan->rx_lock, flags);
-@@ -694,7 +694,7 @@ static void qmc_chan_reset_tx(struct qmc
- {
- 	struct qmc_xfer_desc *xfer_desc;
- 	unsigned long flags;
--	cbd_t *__iomem bd;
-+	cbd_t __iomem *bd;
- 	u16 ctrl;
- 
- 	spin_lock_irqsave(&chan->tx_lock, flags);
+ * doc-guide/index
+-* dev-tools/index
+ * dev-tools/testing-overview
+ * kernel-hacking/index
+ * rust/index
+-- 
+2.43.0
+
 
 
 
