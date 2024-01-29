@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-17082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6F7840FC1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3329F840D90
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B3421C23400
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6CAC1F2CEDE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6DE15DBD5;
-	Mon, 29 Jan 2024 17:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DB815A49C;
+	Mon, 29 Jan 2024 17:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjwMeb3h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqkPo3L/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C10A6FDE1;
-	Mon, 29 Jan 2024 17:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C826D15B96C;
+	Mon, 29 Jan 2024 17:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548496; cv=none; b=AJ7A6ix6CRY579YfE4mJCi5N+6IBIsVgdEE8eD5G7ICQAAjcPvN2oO//D2yWaO1jpqIXFxaNJ3h32lICBbNGNqu9GR8X8ntn17zXTmk6IfF0LlsGCZpKcNeumW0EShPYNRmBQA5SxgD1tdndyJnXkBJO7y4/LvWYn1eo78LFqrg=
+	t=1706548126; cv=none; b=NUv8WXoYCtdu8JX31O527/Yg6mqxdU0hv3dsXb1klzXHEIBi5Wp7kCySSI3DmI3ADvYRMRQXoEHLsJbhIp4rt9mnXc90e8ut8r3nDDoN3UXq+3fhivtYCb3RnExG0McvJMOF0iqjnwEtNpKe13cSYA3f75xtFuQFaZoms0yJvYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548496; c=relaxed/simple;
-	bh=iU5W/7BI3fggk3ko3zy3jGDR1yAHAEI+ncyDi1oWBx8=;
+	s=arc-20240116; t=1706548126; c=relaxed/simple;
+	bh=daNRoYJbxqqygMuOc6+dRN2xqZb1JfnIwQKvZnBMFm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A1IdcJ2fh+mLzRei0b8vtQMLWVyCPlTT8TjybGwPY6btS36NGqGQKR2aFR2BqqSXdERPMcxks4fWWGIpETJWqb7QOlfZ6yC5uAV8zQb0m0/iaZ/+0sYGoB1XTT/XpLZ6yvehfJiDhBknzkhRibe0LFOh86xZwfe+0qgr3WVB4mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BjwMeb3h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F02C43390;
-	Mon, 29 Jan 2024 17:14:56 +0000 (UTC)
+	 MIME-Version; b=M6UF0HC1zPv1CjPCf/l4oLu1S51Ikqfh+1TlZUBeCfgpQ3lHcHRekDGeFluJh3ERRz9VvLu+s7ucGaSkCpjkcukBSU0+98HlF8NZmH3h6TxMSQTFJk5z/V/3tJwTsFo9j3sEezETqZdeMOCuvIgcrho4WhW96rz2HArRYFCFWqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqkPo3L/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91ABAC43390;
+	Mon, 29 Jan 2024 17:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548496;
-	bh=iU5W/7BI3fggk3ko3zy3jGDR1yAHAEI+ncyDi1oWBx8=;
+	s=korg; t=1706548126;
+	bh=daNRoYJbxqqygMuOc6+dRN2xqZb1JfnIwQKvZnBMFm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BjwMeb3hqEs3FKc8lOORMFCn5OtNeEl4Z9TPQOrsxVl86EoJmBYaFavSC/hiKpG/p
-	 +DlfiOjQNzH0KWYgps971SLYue0KGha89QmwfxNSlQ8wUjRmUa9SAEO6gN4P19XCxb
-	 R0tYYTXNHzoxBsUBKdRFpbc0RLAc0VGljrOIwlAs=
+	b=wqkPo3L/Ut7FJcqjn4n6EahB0pWMXqyuKfUFPKSaN+jRhjWJj5BFMPHkUmLosrwQf
+	 ISb60bKuTnBniRKjdcByNDe4Nyt0OwRKMuXYSEyNLqVMwL1nxmbplnLdTgqJAU55Dz
+	 IK4wH+gzV3QdA2igOdXosqIX++A3fvulIFr83V/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Eric Biggers <ebiggers@google.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 6.6 122/331] ubifs: ubifs_symlink: Fix memleak of inode->i_link in error path
+	syzbot+b5ad66046b913bc04c6f@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 155/346] llc: Drop support for ETH_P_TR_802_2.
 Date: Mon, 29 Jan 2024 09:03:06 -0800
-Message-ID: <20240129170018.506131481@linuxfoundation.org>
+Message-ID: <20240129170020.970641275@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +64,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 1e022216dcd248326a5bb95609d12a6815bca4e2 upstream.
+[ Upstream commit e3f9bed9bee261e3347131764e42aeedf1ffea61 ]
 
-For error handling path in ubifs_symlink(), inode will be marked as
-bad first, then iput() is invoked. If inode->i_link is initialized by
-fscrypt_encrypt_symlink() in encryption scenario, inode->i_link won't
-be freed by callchain ubifs_free_inode -> fscrypt_free_inode in error
-handling path, because make_bad_inode() has changed 'inode->i_mode' as
-'S_IFREG'.
-Following kmemleak is easy to be reproduced by injecting error in
-ubifs_jnl_update() when doing symlink in encryption scenario:
- unreferenced object 0xffff888103da3d98 (size 8):
-  comm "ln", pid 1692, jiffies 4294914701 (age 12.045s)
-  backtrace:
-   kmemdup+0x32/0x70
-   __fscrypt_encrypt_symlink+0xed/0x1c0
-   ubifs_symlink+0x210/0x300 [ubifs]
-   vfs_symlink+0x216/0x360
-   do_symlinkat+0x11a/0x190
-   do_syscall_64+0x3b/0xe0
-There are two ways fixing it:
- 1. Remove make_bad_inode() in error handling path. We can do that
-    because ubifs_evict_inode() will do same processes for good
-    symlink inode and bad symlink inode, for inode->i_nlink checking
-    is before is_bad_inode().
- 2. Free inode->i_link before marking inode bad.
-Method 2 is picked, it has less influence, personally, I think.
+syzbot reported an uninit-value bug below. [0]
 
-Cc: stable@vger.kernel.org
-Fixes: 2c58d548f570 ("fscrypt: cache decrypted symlink target in ->i_link")
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Suggested-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+llc supports ETH_P_802_2 (0x0004) and used to support ETH_P_TR_802_2
+(0x0011), and syzbot abused the latter to trigger the bug.
+
+  write$tun(r0, &(0x7f0000000040)={@val={0x0, 0x11}, @val, @mpls={[], @llc={@snap={0xaa, 0x1, ')', "90e5dd"}}}}, 0x16)
+
+llc_conn_handler() initialises local variables {saddr,daddr}.mac
+based on skb in llc_pdu_decode_sa()/llc_pdu_decode_da() and passes
+them to __llc_lookup().
+
+However, the initialisation is done only when skb->protocol is
+htons(ETH_P_802_2), otherwise, __llc_lookup_established() and
+__llc_lookup_listener() will read garbage.
+
+The missing initialisation existed prior to commit 211ed865108e
+("net: delete all instances of special processing for token ring").
+
+It removed the part to kick out the token ring stuff but forgot to
+close the door allowing ETH_P_TR_802_2 packets to sneak into llc_rcv().
+
+Let's remove llc_tr_packet_type and complete the deprecation.
+
+[0]:
+BUG: KMSAN: uninit-value in __llc_lookup_established+0xe9d/0xf90
+ __llc_lookup_established+0xe9d/0xf90
+ __llc_lookup net/llc/llc_conn.c:611 [inline]
+ llc_conn_handler+0x4bd/0x1360 net/llc/llc_conn.c:791
+ llc_rcv+0xfbb/0x14a0 net/llc/llc_input.c:206
+ __netif_receive_skb_one_core net/core/dev.c:5527 [inline]
+ __netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5641
+ netif_receive_skb_internal net/core/dev.c:5727 [inline]
+ netif_receive_skb+0x58/0x660 net/core/dev.c:5786
+ tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1555
+ tun_get_user+0x53af/0x66d0 drivers/net/tun.c:2002
+ tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
+ call_write_iter include/linux/fs.h:2020 [inline]
+ new_sync_write fs/read_write.c:491 [inline]
+ vfs_write+0x8ef/0x1490 fs/read_write.c:584
+ ksys_write+0x20f/0x4c0 fs/read_write.c:637
+ __do_sys_write fs/read_write.c:649 [inline]
+ __se_sys_write fs/read_write.c:646 [inline]
+ __x64_sys_write+0x93/0xd0 fs/read_write.c:646
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+Local variable daddr created at:
+ llc_conn_handler+0x53/0x1360 net/llc/llc_conn.c:783
+ llc_rcv+0xfbb/0x14a0 net/llc/llc_input.c:206
+
+CPU: 1 PID: 5004 Comm: syz-executor994 Not tainted 6.6.0-syzkaller-14500-g1c41041124bd #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/09/2023
+
+Fixes: 211ed865108e ("net: delete all instances of special processing for token ring")
+Reported-by: syzbot+b5ad66046b913bc04c6f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b5ad66046b913bc04c6f
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240119015515.61898-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ubifs/dir.c |    2 ++
- 1 file changed, 2 insertions(+)
+ include/net/llc_pdu.h | 6 ++----
+ net/llc/llc_core.c    | 7 -------
+ 2 files changed, 2 insertions(+), 11 deletions(-)
 
---- a/fs/ubifs/dir.c
-+++ b/fs/ubifs/dir.c
-@@ -1225,6 +1225,8 @@ out_cancel:
- 	dir_ui->ui_size = dir->i_size;
- 	mutex_unlock(&dir_ui->ui_mutex);
- out_inode:
-+	/* Free inode->i_link before inode is marked as bad. */
-+	fscrypt_free_inode(inode);
- 	make_bad_inode(inode);
- 	iput(inode);
- out_fname:
+diff --git a/include/net/llc_pdu.h b/include/net/llc_pdu.h
+index 7e73f8e5e497..1d55ba7c45be 100644
+--- a/include/net/llc_pdu.h
++++ b/include/net/llc_pdu.h
+@@ -262,8 +262,7 @@ static inline void llc_pdu_header_init(struct sk_buff *skb, u8 type,
+  */
+ static inline void llc_pdu_decode_sa(struct sk_buff *skb, u8 *sa)
+ {
+-	if (skb->protocol == htons(ETH_P_802_2))
+-		memcpy(sa, eth_hdr(skb)->h_source, ETH_ALEN);
++	memcpy(sa, eth_hdr(skb)->h_source, ETH_ALEN);
+ }
+ 
+ /**
+@@ -275,8 +274,7 @@ static inline void llc_pdu_decode_sa(struct sk_buff *skb, u8 *sa)
+  */
+ static inline void llc_pdu_decode_da(struct sk_buff *skb, u8 *da)
+ {
+-	if (skb->protocol == htons(ETH_P_802_2))
+-		memcpy(da, eth_hdr(skb)->h_dest, ETH_ALEN);
++	memcpy(da, eth_hdr(skb)->h_dest, ETH_ALEN);
+ }
+ 
+ /**
+diff --git a/net/llc/llc_core.c b/net/llc/llc_core.c
+index 6e387aadffce..4f16d9c88350 100644
+--- a/net/llc/llc_core.c
++++ b/net/llc/llc_core.c
+@@ -135,22 +135,15 @@ static struct packet_type llc_packet_type __read_mostly = {
+ 	.func = llc_rcv,
+ };
+ 
+-static struct packet_type llc_tr_packet_type __read_mostly = {
+-	.type = cpu_to_be16(ETH_P_TR_802_2),
+-	.func = llc_rcv,
+-};
+-
+ static int __init llc_init(void)
+ {
+ 	dev_add_pack(&llc_packet_type);
+-	dev_add_pack(&llc_tr_packet_type);
+ 	return 0;
+ }
+ 
+ static void __exit llc_exit(void)
+ {
+ 	dev_remove_pack(&llc_packet_type);
+-	dev_remove_pack(&llc_tr_packet_type);
+ }
+ 
+ module_init(llc_init);
+-- 
+2.43.0
+
 
 
 
