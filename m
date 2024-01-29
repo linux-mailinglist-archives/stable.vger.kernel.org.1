@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-17105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31349840FD8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A44BD840DA1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 645611C20A09
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D78E11C21793
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7077472253;
-	Mon, 29 Jan 2024 17:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D204F15A4B3;
+	Mon, 29 Jan 2024 17:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4l6k16D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIKlmXZF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA4972243;
-	Mon, 29 Jan 2024 17:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277B3157048;
+	Mon, 29 Jan 2024 17:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548513; cv=none; b=gOK1iYpCVPyyQ+7pq24jMmkfYO8ZXUoCo38FaQzpCRzBFHxXZrOW0A6KLO0b1ZBgec8+M4kE1sdxs/dTDGV2ZSgqSf4MBSQ0/U0Sre0o8baA/FvPyvJjwIyW/lkXCbb3ru82h+rlrEaIt4FgsCNNlAIGrsX3t/9wzlkv8rdHEa8=
+	t=1706548139; cv=none; b=FLw0Ak0t+qsCsYb/n3R0XeRKoV5Y8FR+O9QEv5aUgS+21+CB7KNcZFBX6pxtvG8SJfawiX6GtvDdaPgyaf35ZMh5M5RMZYGnIVGQr4+EH8WBx+h4SAvUevk2rhWWHC8QHjnCTyqxYKeGxI2cWNZolbbRZImZZGB4QEF5lgISd2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548513; c=relaxed/simple;
-	bh=y0SGJFk0EGVHfX3UKdqJEuv4gPMl6h0y/MMwF2oRvZU=;
+	s=arc-20240116; t=1706548139; c=relaxed/simple;
+	bh=AyEcydziGueM3qS3hftJr/1VEEBeT8f5KeEEbNCUe+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P7SToECjtH8ptOWz5/vhEvhhVGDp16hM+TVDayWmbZrNGrD1BZivdlWPhK35bimVTS7WmCiKm+BJlxqYW6WRt5SsPCsF+YjMa/eLb1rmQ2ay9/eL9wHgwRqIoE1+y0YXECNLiW+WL6GMl0Xz/tPCQ99Z1ElCY+IcagUtUP0V4/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4l6k16D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78BCC433F1;
-	Mon, 29 Jan 2024 17:15:12 +0000 (UTC)
+	 MIME-Version; b=tZDh54qtoJ+xd6UM9DkyBYiMBx1YO4N0m/tQdjuvD2GGDvTD6piccVbog2YrKM/pe+D4VjTjdq9V8V6J+3MXq0n/RYR1qaGquZbn60tgOcfbMYb2kbleQD1LyZf097edpJ0JlEoX2QnrbCDonGWH76uV1P67lnRlRx4IDbXPsJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIKlmXZF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE02BC433F1;
+	Mon, 29 Jan 2024 17:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548513;
-	bh=y0SGJFk0EGVHfX3UKdqJEuv4gPMl6h0y/MMwF2oRvZU=;
+	s=korg; t=1706548138;
+	bh=AyEcydziGueM3qS3hftJr/1VEEBeT8f5KeEEbNCUe+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I4l6k16D7YVM5qXv2B5rz1+o/egtYR/lwo9SCb6HAhgb798HijwSp3FKnQIVfNLyU
-	 d9fMskQSA4QBIaRYYufgEvDBunrS1yqBwY5iF3OWilgrNpqpiKmdJqGBHV1wPyh7g/
-	 rMIYZYlr9pwAJgmzmzPZBkGFzhPKsi2jm+kj+7PY=
+	b=SIKlmXZF+rTWV7m2BbFpp+w/LxtBL2I2/qnenGSUscvxnFd/JVDUAmZuz+0vy2HoX
+	 TyFlTg0Fe3P98TMFAlLkk6TwDU390Oyp0o2ABn8lDEqYhOBeXnw1ciZWZ+rXnjFn/+
+	 5rJeZTJ31Ur+y39lpSuInQfJis1/XJQCltbnIVg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 137/331] LoongArch/smp: Call rcutree_report_cpu_starting() earlier
+	Oleg Nesterov <oleg@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 170/346] afs: fix the usage of read_seqbegin_or_lock() in afs_find_server*()
 Date: Mon, 29 Jan 2024 09:03:21 -0800
-Message-ID: <20240129170018.955982269@linuxfoundation.org>
+Message-ID: <20240129170021.398247570@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,82 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit a2ccf46333d7b2cf9658f0d82ac74097c1542fae upstream.
+[ Upstream commit 1702e0654ca9a7bcd7c7619c8a5004db58945b71 ]
 
-rcutree_report_cpu_starting() must be called before cpu_probe() to avoid
-the following lockdep splat that triggered by calling __alloc_pages() when
-CONFIG_PROVE_RCU_LIST=y:
+David Howells says:
 
- =============================
- WARNING: suspicious RCU usage
- 6.6.0+ #980 Not tainted
- -----------------------------
- kernel/locking/lockdep.c:3761 RCU-list traversed in non-reader section!!
- other info that might help us debug this:
- RCU used illegally from offline CPU!
- rcu_scheduler_active = 1, debug_locks = 1
- 1 lock held by swapper/1/0:
-  #0: 900000000c82ef98 (&pcp->lock){+.+.}-{2:2}, at: get_page_from_freelist+0x894/0x1790
- CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.0+ #980
- Stack : 0000000000000001 9000000004f79508 9000000004893670 9000000100310000
-         90000001003137d0 0000000000000000 90000001003137d8 9000000004f79508
-         0000000000000000 0000000000000001 0000000000000000 90000000048a3384
-         203a656d616e2065 ca43677b3687e616 90000001002c3480 0000000000000008
-         000000000000009d 0000000000000000 0000000000000001 80000000ffffe0b8
-         000000000000000d 0000000000000033 0000000007ec0000 13bbf50562dad831
-         9000000005140748 0000000000000000 9000000004f79508 0000000000000004
-         0000000000000000 9000000005140748 90000001002bad40 0000000000000000
-         90000001002ba400 0000000000000000 9000000003573ec8 0000000000000000
-         00000000000000b0 0000000000000004 0000000000000000 0000000000070000
-         ...
- Call Trace:
- [<9000000003573ec8>] show_stack+0x38/0x150
- [<9000000004893670>] dump_stack_lvl+0x74/0xa8
- [<900000000360d2bc>] lockdep_rcu_suspicious+0x14c/0x190
- [<900000000361235c>] __lock_acquire+0xd0c/0x2740
- [<90000000036146f4>] lock_acquire+0x104/0x2c0
- [<90000000048a955c>] _raw_spin_lock_irqsave+0x5c/0x90
- [<900000000381cd5c>] rmqueue_bulk+0x6c/0x950
- [<900000000381fc0c>] get_page_from_freelist+0xd4c/0x1790
- [<9000000003821c6c>] __alloc_pages+0x1bc/0x3e0
- [<9000000003583b40>] tlb_init+0x150/0x2a0
- [<90000000035742a0>] per_cpu_trap_init+0xf0/0x110
- [<90000000035712fc>] cpu_probe+0x3dc/0x7a0
- [<900000000357ed20>] start_secondary+0x40/0xb0
- [<9000000004897138>] smpboot_entry+0x54/0x58
+ (5) afs_find_server().
 
-raw_smp_processor_id() is required in order to avoid calling into lockdep
-before RCU has declared the CPU to be watched for readers.
+     There could be a lot of servers in the list and each server can have
+     multiple addresses, so I think this would be better with an exclusive
+     second pass.
 
-See also commit 29368e093921 ("x86/smpboot: Move rcu_cpu_starting() earlier"),
-commit de5d9dae150c ("s390/smp: move rcu_cpu_starting() earlier") and commit
-99f070b62322 ("powerpc/smp: Call rcu_cpu_starting() earlier").
+     The server list isn't likely to change all that often, but when it does
+     change, there's a good chance several servers are going to be
+     added/removed one after the other.  Further, this is only going to be
+     used for incoming cache management/callback requests from the server,
+     which hopefully aren't going to happen too often - but it is remotely
+     drivable.
 
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ (6) afs_find_server_by_uuid().
+
+     Similarly to (5), there could be a lot of servers to search through, but
+     they are in a tree not a flat list, so it should be faster to process.
+     Again, it's not likely to change that often and, again, when it does
+     change it's likely to involve multiple changes.  This can be driven
+     remotely by an incoming cache management request but is mostly going to
+     be driven by setting up or reconfiguring a volume's server list -
+     something that also isn't likely to happen often.
+
+Make the "seq" counter odd on the 2nd pass, otherwise read_seqbegin_or_lock()
+never takes the lock.
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Link: https://lore.kernel.org/r/20231130115614.GA21581@redhat.com/
+Stable-dep-of: 17ba6f0bd14f ("afs: Fix error handling with lookup via FS.InlineBulkStatus")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/smp.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/afs/server.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -504,8 +504,9 @@ asmlinkage void start_secondary(void)
- 	unsigned int cpu;
+diff --git a/fs/afs/server.c b/fs/afs/server.c
+index b5237206eac3..0bd2f5ba6900 100644
+--- a/fs/afs/server.c
++++ b/fs/afs/server.c
+@@ -27,7 +27,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
+ 	const struct afs_addr_list *alist;
+ 	struct afs_server *server = NULL;
+ 	unsigned int i;
+-	int seq = 0, diff;
++	int seq = 1, diff;
  
- 	sync_counter();
--	cpu = smp_processor_id();
-+	cpu = raw_smp_processor_id();
- 	set_my_cpu_offset(per_cpu_offset(cpu));
-+	rcu_cpu_starting(cpu);
+ 	rcu_read_lock();
  
- 	cpu_probe();
- 	constant_clockevent_init();
+@@ -35,6 +35,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
+ 		if (server)
+ 			afs_unuse_server_notime(net, server, afs_server_trace_put_find_rsq);
+ 		server = NULL;
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
+ 		read_seqbegin_or_lock(&net->fs_addr_lock, &seq);
+ 
+ 		if (srx->transport.family == AF_INET6) {
+@@ -90,7 +91,7 @@ struct afs_server *afs_find_server_by_uuid(struct afs_net *net, const uuid_t *uu
+ {
+ 	struct afs_server *server = NULL;
+ 	struct rb_node *p;
+-	int diff, seq = 0;
++	int diff, seq = 1;
+ 
+ 	_enter("%pU", uuid);
+ 
+@@ -102,7 +103,7 @@ struct afs_server *afs_find_server_by_uuid(struct afs_net *net, const uuid_t *uu
+ 		if (server)
+ 			afs_unuse_server(net, server, afs_server_trace_put_uuid_rsq);
+ 		server = NULL;
+-
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
+ 		read_seqbegin_or_lock(&net->fs_lock, &seq);
+ 
+ 		p = net->fs_servers.rb_node;
+-- 
+2.43.0
+
 
 
 
