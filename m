@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-16769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ECA0840E56
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 541A0841045
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A19E7B274EA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E91E81F23C40
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6418215F30C;
-	Mon, 29 Jan 2024 17:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A82A755F7;
+	Mon, 29 Jan 2024 17:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSBOWmhO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuLAMiv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F0515A48F;
-	Mon, 29 Jan 2024 17:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A17C755F2;
+	Mon, 29 Jan 2024 17:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548266; cv=none; b=XR1rw14Sn50XlMP76dliJ0n9Ubc15hZwBHpX1F0YzixvXFLjfgTXODmIMp7jKpICa6q3y+ljBiQyWQNVr91DNVaCiqxgCy5D3hCTRKoJx1OriYKJEhpdEurTfQS9Li4SMffoXNdMU2vAHHhA/vi2EvTG953Omc/dfMRMI2djRfc=
+	t=1706548593; cv=none; b=k6lZhxvYd+pQDh1R6vxwPIic5Egoc54d7+lmYLvQ4xAw36YWrfH4wsIjuac8Bx+59hJaYuTf7OkRmsKwIqRQ5EcbXArq6n3Fm648EVP+NkXUf7lIO1hy2gpztjqswE9ujoZ+ixQXfKUO//hCRKr8CpBCGaL4FIEenUeq43VGSHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548266; c=relaxed/simple;
-	bh=9mUctPfTMI7KNnDCHXWdzLFR8DlJP0W6Gs44Xqp9cH4=;
+	s=arc-20240116; t=1706548593; c=relaxed/simple;
+	bh=zOUBBvus21liFz2zCEPI/oW789vUnQA6zj8XZE+EqBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9V0QFRlgJJOFxqxYaeCWRI2h53txLsLSBxrqtJVJSKF9QeTtkfTsRf6rLDA1huCd3KHhlC03N/yV87QSYbjmCajdsCmP9cCMlPZ/eL/y+39wDgLqcRn/sgHoz1HQL2ByHEPjmOrG4GCllzsosYE2Uz30cqnPfqVx8uWRBybPc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSBOWmhO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DE0C433C7;
-	Mon, 29 Jan 2024 17:11:05 +0000 (UTC)
+	 MIME-Version; b=pvxMCGztzhgfVeEDe2rQc5qdNqwdB4htlr9fuJOqaIzDe9/SDb2vMYpne9/vncKHNvEOS4K0T+ZrQwQlQ5SobTPWNx1KMUtnuZcDbwn87EsuGwd2lvWBAKf67NxSy7SqwSyBljnw4W2tzpzKGVeSUcbLCKwtxK9zOLFvDVm5wBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuLAMiv2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 205F7C433C7;
+	Mon, 29 Jan 2024 17:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548266;
-	bh=9mUctPfTMI7KNnDCHXWdzLFR8DlJP0W6Gs44Xqp9cH4=;
+	s=korg; t=1706548593;
+	bh=zOUBBvus21liFz2zCEPI/oW789vUnQA6zj8XZE+EqBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jSBOWmhORh1hFexCHR8LD4+ToOA5LGPEhWG5hzBRm228LH0XPBP0VHQHeo3PYZ0eQ
-	 fBPlgecypLdaAVxOw4YPouycGV7PgWhlM3UgQo8AV4yBEMkwYa7nVJKWsgd7sHw3CU
-	 70UHduO1GyFUiWbnmZhVVkPdWwjsSll+GEkjwkYA=
+	b=tuLAMiv2+xmPCg3Cn4ubgJouoduzqPBZVKmQdeBgqkqC0ILcQ3ZMF/OrHh8aBQAVv
+	 hwV2BzUtWCUJXZP/hxk3c/8ekWvlSxQgFft8lF8rrS0Mf97fURdEtMRAfwQXgF59On
+	 +KPxRKMZdvKm6ccGzOpwPSEhC4t2BAUSe7DagMa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.7 260/346] drm/amd/display: Fix a debugfs null pointer error
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 227/331] net: fec: fix the unhandled context fault from smmu
 Date: Mon, 29 Jan 2024 09:04:51 -0800
-Message-ID: <20240129170024.044151445@linuxfoundation.org>
+Message-ID: <20240129170021.520062337@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: Shenwei Wang <shenwei.wang@nxp.com>
 
-commit efb91fea652a42fcc037d2a9ef4ecd1ffc5ff4b7 upstream.
+[ Upstream commit 5e344807735023cd3a67c37a1852b849caa42620 ]
 
-[WHY & HOW]
-Check whether get_subvp_en() callback exists before calling it.
+When repeatedly changing the interface link speed using the command below:
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ethtool -s eth0 speed 100 duplex full
+ethtool -s eth0 speed 1000 duplex full
+
+The following errors may sometimes be reported by the ARM SMMU driver:
+
+[ 5395.035364] fec 5b040000.ethernet eth0: Link is Down
+[ 5395.039255] arm-smmu 51400000.iommu: Unhandled context fault:
+fsr=0x402, iova=0x00000000, fsynr=0x100001, cbfrsynra=0x852, cb=2
+[ 5398.108460] fec 5b040000.ethernet eth0: Link is Up - 100Mbps/Full -
+flow control off
+
+It is identified that the FEC driver does not properly stop the TX queue
+during the link speed transitions, and this results in the invalid virtual
+I/O address translations from the SMMU and causes the context faults.
+
+Fixes: dbc64a8ea231 ("net: fec: move calls to quiesce/resume packet processing out of fec_restart()")
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+Link: https://lore.kernel.org/r/20240123165141.2008104-1-shenwei.wang@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fec_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
-@@ -3647,12 +3647,16 @@ static int capabilities_show(struct seq_
- 	bool mall_supported = dc->caps.mall_size_total;
- 	bool subvp_supported = dc->caps.subvp_fw_processing_delay_us;
- 	unsigned int mall_in_use = false;
--	unsigned int subvp_in_use = dc->cap_funcs.get_subvp_en(dc, dc->current_state);
-+	unsigned int subvp_in_use = false;
-+
- 	struct hubbub *hubbub = dc->res_pool->hubbub;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 35c95f07fd6d..54da59286df4 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -2011,6 +2011,7 @@ static void fec_enet_adjust_link(struct net_device *ndev)
  
- 	if (hubbub->funcs->get_mall_en)
- 		hubbub->funcs->get_mall_en(hubbub, &mall_in_use);
- 
-+	if (dc->cap_funcs.get_subvp_en)
-+		subvp_in_use = dc->cap_funcs.get_subvp_en(dc, dc->current_state);
-+
- 	seq_printf(m, "mall supported: %s, enabled: %s\n",
- 			   mall_supported ? "yes" : "no", mall_in_use ? "yes" : "no");
- 	seq_printf(m, "sub-viewport supported: %s, enabled: %s\n",
+ 		/* if any of the above changed restart the FEC */
+ 		if (status_change) {
++			netif_stop_queue(ndev);
+ 			napi_disable(&fep->napi);
+ 			netif_tx_lock_bh(ndev);
+ 			fec_restart(ndev);
+@@ -2020,6 +2021,7 @@ static void fec_enet_adjust_link(struct net_device *ndev)
+ 		}
+ 	} else {
+ 		if (fep->link) {
++			netif_stop_queue(ndev);
+ 			napi_disable(&fep->napi);
+ 			netif_tx_lock_bh(ndev);
+ 			fec_stop(ndev);
+-- 
+2.43.0
+
 
 
 
