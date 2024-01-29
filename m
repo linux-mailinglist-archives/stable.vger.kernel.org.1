@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-17109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E4E840FDC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D98840DAE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5E641C2178E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EF49283445
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5379C7225C;
-	Mon, 29 Jan 2024 17:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E753615CD44;
+	Mon, 29 Jan 2024 17:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7OOvOp5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zkz8tIe0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10DE97225A;
-	Mon, 29 Jan 2024 17:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CCD157053;
+	Mon, 29 Jan 2024 17:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548516; cv=none; b=LyFt12Hl3zCvZSjl2y60yJ0W9nlrCGYPZs+X31h2x76suMtRr4wfFDBRESOURoLFAYbtGUQP0q+Fcmr2BbGZhs72h6tFhxZhx4LtWurI58aeRZ39hKTlLWUT6L+zNss+esdnoDmEkWBYlvtr4Vf6XA8zfKe70UCZIyBUtUrTiA0=
+	t=1706548146; cv=none; b=jyVYmrddlTgh3P+xbj81JvPq7lHREdue1Ngl83dxsIoHYdKcQfIucV1a48HxLlI8V2KrDySg7XRr7KwPnzR5gxLcrP62CX8+WbASzXGLWCC16tmCkD+fWWeDSu4rsc1Vd45n8J7b6BQP9xkz+QoFCCljgyPJ/PWXxkxw19ILvjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548516; c=relaxed/simple;
-	bh=paTDI2RKMyS22isHcnHlheAorETBvufnFwWbGyTAoUc=;
+	s=arc-20240116; t=1706548146; c=relaxed/simple;
+	bh=kRNDf6Rjc+PTKpCrqHDBBJGxkUd6srWSN7odisJ7G14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sm+FR7X5HEb0Z34eiY6gEMf01OY75DSKjYge25whJPAS8R6ACmHYHst1JqmFDyJUc3FfpKz2Gqte7oJoyiZbT59OGgTOW5uzFCSTCt1PuhcQ8fPd66ZoDIunhSy9wlT8Vzu/45pp5kyKisbCPOLPgQJpdyBk+nQFesCJIelGt4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7OOvOp5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC599C433C7;
-	Mon, 29 Jan 2024 17:15:15 +0000 (UTC)
+	 MIME-Version; b=JFMluyGEcz0PXkS4vGeHaa6+k14CtJjztts6O5ofWu+IkAUz0xwOfiGo+0D4LspWlwn81kYNYG3af56Img+m7vmgZ3/KeTGjX3waAuNJxtBtuddGK6PUtdf9Emjy7ugcWKqIAqibFZog1YyWn9VVKJk5ioFwBFN5b+uPYz5R788=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zkz8tIe0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F53FC43390;
+	Mon, 29 Jan 2024 17:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548515;
-	bh=paTDI2RKMyS22isHcnHlheAorETBvufnFwWbGyTAoUc=;
+	s=korg; t=1706548146;
+	bh=kRNDf6Rjc+PTKpCrqHDBBJGxkUd6srWSN7odisJ7G14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S7OOvOp5oX8BUnSkMA6KGcB+UjQ9bkMK54sBH9PdAFkKoJeGx6VJg7pHExa7HqD8x
-	 lYo0VReZ3uyrP/GpcBeb/g3bAczvVYdaF3R3mpD6w1Gqjxe1noATMKG77IyUDQQiYA
-	 DuHeW3O+XKpJpeFxUoGJiFvHBBNqaPiCw2isJa9E=
+	b=Zkz8tIe0eoKMSdIAsZ2OQQBisKqlgizS065po7JF66nwX+gxJRNSkapQUlxpJCT9i
+	 cM2/zsbb3JZ/pD0dV+RKrb1g6Lws002MvWKnlEBLfpv77tgyDEfImZ6OcbziZVGmzV
+	 oovXQlXChyoCaiTQBtgfUW3zco9ITm//1qutLrFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.6 149/331] selftests/bpf: tests with delayed read/precision makrs in loop body
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 182/346] netlink: fix potential sleeping issue in mqueue_flush_file
 Date: Mon, 29 Jan 2024 09:03:33 -0800
-Message-ID: <20240129170019.283087093@linuxfoundation.org>
+Message-ID: <20240129170021.750248565@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,561 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-commit 389ede06c2974b2f878a7ebff6b0f4f707f9db74 upstream.
+[ Upstream commit 234ec0b6034b16869d45128b8cd2dc6ffe596f04 ]
 
-These test cases try to hide read and precision marks from loop
-convergence logic: marks would only be assigned on subsequent loop
-iterations or after exploring states pushed to env->head stack first.
-Without verifier fix to use exact states comparison logic for
-iterators convergence these tests (except 'triple_continue') would be
-errorneously marked as safe.
+I analyze the potential sleeping issue of the following processes:
+Thread A                                Thread B
+...                                     netlink_create  //ref = 1
+do_mq_notify                            ...
+  sock = netlink_getsockbyfilp          ...     //ref = 2
+  info->notify_sock = sock;             ...
+...                                     netlink_sendmsg
+...                                       skb = netlink_alloc_large_skb  //skb->head is vmalloced
+...                                       netlink_unicast
+...                                         sk = netlink_getsockbyportid //ref = 3
+...                                         netlink_sendskb
+...                                           __netlink_sendskb
+...                                             skb_queue_tail //put skb to sk_receive_queue
+...                                         sock_put //ref = 2
+...                                     ...
+...                                     netlink_release
+...                                       deferred_put_nlk_sk //ref = 1
+mqueue_flush_file
+  spin_lock
+  remove_notification
+    netlink_sendskb
+      sock_put  //ref = 0
+        sk_free
+          ...
+          __sk_destruct
+            netlink_sock_destruct
+              skb_queue_purge  //get skb from sk_receive_queue
+                ...
+                __skb_queue_purge_reason
+                  kfree_skb_reason
+                    __kfree_skb
+                    ...
+                    skb_release_all
+                      skb_release_head_state
+                        netlink_skb_destructor
+                          vfree(skb->head)  //sleeping while holding spinlock
 
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20231024000917.12153-5-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In netlink_sendmsg, if the memory pointed to by skb->head is allocated by
+vmalloc, and is put to sk_receive_queue queue, also the skb is not freed.
+When the mqueue executes flush, the sleeping bug will occur. Use
+vfree_atomic instead of vfree in netlink_skb_destructor to solve the issue.
+
+Fixes: c05cdb1b864f ("netlink: allow large data transfers from user-space")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://lore.kernel.org/r/20240122011807.2110357-1-shaozhengchao@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/iters.c |  518 ++++++++++++++++++++++++++++++
- 1 file changed, 518 insertions(+)
+ net/netlink/af_netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/bpf/progs/iters.c
-+++ b/tools/testing/selftests/bpf/progs/iters.c
-@@ -14,6 +14,13 @@ int my_pid;
- int arr[256];
- int small_arr[16] SEC(".data.small_arr");
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index eb086b06d60d..d9107b545d36 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -374,7 +374,7 @@ static void netlink_skb_destructor(struct sk_buff *skb)
+ 	if (is_vmalloc_addr(skb->head)) {
+ 		if (!skb->cloned ||
+ 		    !atomic_dec_return(&(skb_shinfo(skb)->dataref)))
+-			vfree(skb->head);
++			vfree_atomic(skb->head);
  
-+struct {
-+	__uint(type, BPF_MAP_TYPE_HASH);
-+	__uint(max_entries, 10);
-+	__type(key, int);
-+	__type(value, int);
-+} amap SEC(".maps");
-+
- #ifdef REAL_TEST
- #define MY_PID_GUARD() if (my_pid != (bpf_get_current_pid_tgid() >> 32)) return 0
- #else
-@@ -716,4 +723,515 @@ int iter_pass_iter_ptr_to_subprog(const
- 	return 0;
- }
- 
-+SEC("?raw_tp")
-+__failure
-+__msg("R1 type=scalar expected=fp")
-+__naked int delayed_read_mark(void)
-+{
-+	/* This is equivalent to C program below.
-+	 * The call to bpf_iter_num_next() is reachable with r7 values &fp[-16] and 0xdead.
-+	 * State with r7=&fp[-16] is visited first and follows r6 != 42 ... continue branch.
-+	 * At this point iterator next() call is reached with r7 that has no read mark.
-+	 * Loop body with r7=0xdead would only be visited if verifier would decide to continue
-+	 * with second loop iteration. Absence of read mark on r7 might affect state
-+	 * equivalent logic used for iterator convergence tracking.
-+	 *
-+	 * r7 = &fp[-16]
-+	 * fp[-16] = 0
-+	 * r6 = bpf_get_prandom_u32()
-+	 * bpf_iter_num_new(&fp[-8], 0, 10)
-+	 * while (bpf_iter_num_next(&fp[-8])) {
-+	 *   r6++
-+	 *   if (r6 != 42) {
-+	 *     r7 = 0xdead
-+	 *     continue;
-+	 *   }
-+	 *   bpf_probe_read_user(r7, 8, 0xdeadbeef); // this is not safe
-+	 * }
-+	 * bpf_iter_num_destroy(&fp[-8])
-+	 * return 0
-+	 */
-+	asm volatile (
-+		"r7 = r10;"
-+		"r7 += -16;"
-+		"r0 = 0;"
-+		"*(u64 *)(r7 + 0) = r0;"
-+		"call %[bpf_get_prandom_u32];"
-+		"r6 = r0;"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"r2 = 0;"
-+		"r3 = 10;"
-+		"call %[bpf_iter_num_new];"
-+	"1:"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_next];"
-+		"if r0 == 0 goto 2f;"
-+		"r6 += 1;"
-+		"if r6 != 42 goto 3f;"
-+		"r7 = 0xdead;"
-+		"goto 1b;"
-+	"3:"
-+		"r1 = r7;"
-+		"r2 = 8;"
-+		"r3 = 0xdeadbeef;"
-+		"call %[bpf_probe_read_user];"
-+		"goto 1b;"
-+	"2:"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_destroy];"
-+		"r0 = 0;"
-+		"exit;"
-+		:
-+		: __imm(bpf_get_prandom_u32),
-+		  __imm(bpf_iter_num_new),
-+		  __imm(bpf_iter_num_next),
-+		  __imm(bpf_iter_num_destroy),
-+		  __imm(bpf_probe_read_user)
-+		: __clobber_all
-+	);
-+}
-+
-+SEC("?raw_tp")
-+__failure
-+__msg("math between fp pointer and register with unbounded")
-+__naked int delayed_precision_mark(void)
-+{
-+	/* This is equivalent to C program below.
-+	 * The test is similar to delayed_iter_mark but verifies that incomplete
-+	 * precision don't fool verifier.
-+	 * The call to bpf_iter_num_next() is reachable with r7 values -16 and -32.
-+	 * State with r7=-16 is visited first and follows r6 != 42 ... continue branch.
-+	 * At this point iterator next() call is reached with r7 that has no read
-+	 * and precision marks.
-+	 * Loop body with r7=-32 would only be visited if verifier would decide to continue
-+	 * with second loop iteration. Absence of precision mark on r7 might affect state
-+	 * equivalent logic used for iterator convergence tracking.
-+	 *
-+	 * r8 = 0
-+	 * fp[-16] = 0
-+	 * r7 = -16
-+	 * r6 = bpf_get_prandom_u32()
-+	 * bpf_iter_num_new(&fp[-8], 0, 10)
-+	 * while (bpf_iter_num_next(&fp[-8])) {
-+	 *   if (r6 != 42) {
-+	 *     r7 = -32
-+	 *     r6 = bpf_get_prandom_u32()
-+	 *     continue;
-+	 *   }
-+	 *   r0 = r10
-+	 *   r0 += r7
-+	 *   r8 = *(u64 *)(r0 + 0)           // this is not safe
-+	 *   r6 = bpf_get_prandom_u32()
-+	 * }
-+	 * bpf_iter_num_destroy(&fp[-8])
-+	 * return r8
-+	 */
-+	asm volatile (
-+		"r8 = 0;"
-+		"*(u64 *)(r10 - 16) = r8;"
-+		"r7 = -16;"
-+		"call %[bpf_get_prandom_u32];"
-+		"r6 = r0;"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"r2 = 0;"
-+		"r3 = 10;"
-+		"call %[bpf_iter_num_new];"
-+	"1:"
-+		"r1 = r10;"
-+		"r1 += -8;\n"
-+		"call %[bpf_iter_num_next];"
-+		"if r0 == 0 goto 2f;"
-+		"if r6 != 42 goto 3f;"
-+		"r7 = -32;"
-+		"call %[bpf_get_prandom_u32];"
-+		"r6 = r0;"
-+		"goto 1b;\n"
-+	"3:"
-+		"r0 = r10;"
-+		"r0 += r7;"
-+		"r8 = *(u64 *)(r0 + 0);"
-+		"call %[bpf_get_prandom_u32];"
-+		"r6 = r0;"
-+		"goto 1b;\n"
-+	"2:"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_destroy];"
-+		"r0 = r8;"
-+		"exit;"
-+		:
-+		: __imm(bpf_get_prandom_u32),
-+		  __imm(bpf_iter_num_new),
-+		  __imm(bpf_iter_num_next),
-+		  __imm(bpf_iter_num_destroy),
-+		  __imm(bpf_probe_read_user)
-+		: __clobber_all
-+	);
-+}
-+
-+SEC("?raw_tp")
-+__failure
-+__msg("math between fp pointer and register with unbounded")
-+__flag(BPF_F_TEST_STATE_FREQ)
-+__naked int loop_state_deps1(void)
-+{
-+	/* This is equivalent to C program below.
-+	 *
-+	 * The case turns out to be tricky in a sense that:
-+	 * - states with c=-25 are explored only on a second iteration
-+	 *   of the outer loop;
-+	 * - states with read+precise mark on c are explored only on
-+	 *   second iteration of the inner loop and in a state which
-+	 *   is pushed to states stack first.
-+	 *
-+	 * Depending on the details of iterator convergence logic
-+	 * verifier might stop states traversal too early and miss
-+	 * unsafe c=-25 memory access.
-+	 *
-+	 *   j = iter_new();		 // fp[-16]
-+	 *   a = 0;			 // r6
-+	 *   b = 0;			 // r7
-+	 *   c = -24;			 // r8
-+	 *   while (iter_next(j)) {
-+	 *     i = iter_new();		 // fp[-8]
-+	 *     a = 0;			 // r6
-+	 *     b = 0;			 // r7
-+	 *     while (iter_next(i)) {
-+	 *	 if (a == 1) {
-+	 *	   a = 0;
-+	 *	   b = 1;
-+	 *	 } else if (a == 0) {
-+	 *	   a = 1;
-+	 *	   if (random() == 42)
-+	 *	     continue;
-+	 *	   if (b == 1) {
-+	 *	     *(r10 + c) = 7;  // this is not safe
-+	 *	     iter_destroy(i);
-+	 *	     iter_destroy(j);
-+	 *	     return;
-+	 *	   }
-+	 *	 }
-+	 *     }
-+	 *     iter_destroy(i);
-+	 *     a = 0;
-+	 *     b = 0;
-+	 *     c = -25;
-+	 *   }
-+	 *   iter_destroy(j);
-+	 *   return;
-+	 */
-+	asm volatile (
-+		"r1 = r10;"
-+		"r1 += -16;"
-+		"r2 = 0;"
-+		"r3 = 10;"
-+		"call %[bpf_iter_num_new];"
-+		"r6 = 0;"
-+		"r7 = 0;"
-+		"r8 = -24;"
-+	"j_loop_%=:"
-+		"r1 = r10;"
-+		"r1 += -16;"
-+		"call %[bpf_iter_num_next];"
-+		"if r0 == 0 goto j_loop_end_%=;"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"r2 = 0;"
-+		"r3 = 10;"
-+		"call %[bpf_iter_num_new];"
-+		"r6 = 0;"
-+		"r7 = 0;"
-+	"i_loop_%=:"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_next];"
-+		"if r0 == 0 goto i_loop_end_%=;"
-+	"check_one_r6_%=:"
-+		"if r6 != 1 goto check_zero_r6_%=;"
-+		"r6 = 0;"
-+		"r7 = 1;"
-+		"goto i_loop_%=;"
-+	"check_zero_r6_%=:"
-+		"if r6 != 0 goto i_loop_%=;"
-+		"r6 = 1;"
-+		"call %[bpf_get_prandom_u32];"
-+		"if r0 != 42 goto check_one_r7_%=;"
-+		"goto i_loop_%=;"
-+	"check_one_r7_%=:"
-+		"if r7 != 1 goto i_loop_%=;"
-+		"r0 = r10;"
-+		"r0 += r8;"
-+		"r1 = 7;"
-+		"*(u64 *)(r0 + 0) = r1;"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_destroy];"
-+		"r1 = r10;"
-+		"r1 += -16;"
-+		"call %[bpf_iter_num_destroy];"
-+		"r0 = 0;"
-+		"exit;"
-+	"i_loop_end_%=:"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_destroy];"
-+		"r6 = 0;"
-+		"r7 = 0;"
-+		"r8 = -25;"
-+		"goto j_loop_%=;"
-+	"j_loop_end_%=:"
-+		"r1 = r10;"
-+		"r1 += -16;"
-+		"call %[bpf_iter_num_destroy];"
-+		"r0 = 0;"
-+		"exit;"
-+		:
-+		: __imm(bpf_get_prandom_u32),
-+		  __imm(bpf_iter_num_new),
-+		  __imm(bpf_iter_num_next),
-+		  __imm(bpf_iter_num_destroy)
-+		: __clobber_all
-+	);
-+}
-+
-+SEC("?raw_tp")
-+__success
-+__naked int triple_continue(void)
-+{
-+	/* This is equivalent to C program below.
-+	 * High branching factor of the loop body turned out to be
-+	 * problematic for one of the iterator convergence tracking
-+	 * algorithms explored.
-+	 *
-+	 * r6 = bpf_get_prandom_u32()
-+	 * bpf_iter_num_new(&fp[-8], 0, 10)
-+	 * while (bpf_iter_num_next(&fp[-8])) {
-+	 *   if (bpf_get_prandom_u32() != 42)
-+	 *     continue;
-+	 *   if (bpf_get_prandom_u32() != 42)
-+	 *     continue;
-+	 *   if (bpf_get_prandom_u32() != 42)
-+	 *     continue;
-+	 *   r0 += 0;
-+	 * }
-+	 * bpf_iter_num_destroy(&fp[-8])
-+	 * return 0
-+	 */
-+	asm volatile (
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"r2 = 0;"
-+		"r3 = 10;"
-+		"call %[bpf_iter_num_new];"
-+	"loop_%=:"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_next];"
-+		"if r0 == 0 goto loop_end_%=;"
-+		"call %[bpf_get_prandom_u32];"
-+		"if r0 != 42 goto loop_%=;"
-+		"call %[bpf_get_prandom_u32];"
-+		"if r0 != 42 goto loop_%=;"
-+		"call %[bpf_get_prandom_u32];"
-+		"if r0 != 42 goto loop_%=;"
-+		"r0 += 0;"
-+		"goto loop_%=;"
-+	"loop_end_%=:"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_destroy];"
-+		"r0 = 0;"
-+		"exit;"
-+		:
-+		: __imm(bpf_get_prandom_u32),
-+		  __imm(bpf_iter_num_new),
-+		  __imm(bpf_iter_num_next),
-+		  __imm(bpf_iter_num_destroy)
-+		: __clobber_all
-+	);
-+}
-+
-+SEC("?raw_tp")
-+__success
-+__naked int widen_spill(void)
-+{
-+	/* This is equivalent to C program below.
-+	 * The counter is stored in fp[-16], if this counter is not widened
-+	 * verifier states representing loop iterations would never converge.
-+	 *
-+	 * fp[-16] = 0
-+	 * bpf_iter_num_new(&fp[-8], 0, 10)
-+	 * while (bpf_iter_num_next(&fp[-8])) {
-+	 *   r0 = fp[-16];
-+	 *   r0 += 1;
-+	 *   fp[-16] = r0;
-+	 * }
-+	 * bpf_iter_num_destroy(&fp[-8])
-+	 * return 0
-+	 */
-+	asm volatile (
-+		"r0 = 0;"
-+		"*(u64 *)(r10 - 16) = r0;"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"r2 = 0;"
-+		"r3 = 10;"
-+		"call %[bpf_iter_num_new];"
-+	"loop_%=:"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_next];"
-+		"if r0 == 0 goto loop_end_%=;"
-+		"r0 = *(u64 *)(r10 - 16);"
-+		"r0 += 1;"
-+		"*(u64 *)(r10 - 16) = r0;"
-+		"goto loop_%=;"
-+	"loop_end_%=:"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_destroy];"
-+		"r0 = 0;"
-+		"exit;"
-+		:
-+		: __imm(bpf_iter_num_new),
-+		  __imm(bpf_iter_num_next),
-+		  __imm(bpf_iter_num_destroy)
-+		: __clobber_all
-+	);
-+}
-+
-+SEC("raw_tp")
-+__success
-+__naked int checkpoint_states_deletion(void)
-+{
-+	/* This is equivalent to C program below.
-+	 *
-+	 *   int *a, *b, *c, *d, *e, *f;
-+	 *   int i, sum = 0;
-+	 *   bpf_for(i, 0, 10) {
-+	 *     a = bpf_map_lookup_elem(&amap, &i);
-+	 *     b = bpf_map_lookup_elem(&amap, &i);
-+	 *     c = bpf_map_lookup_elem(&amap, &i);
-+	 *     d = bpf_map_lookup_elem(&amap, &i);
-+	 *     e = bpf_map_lookup_elem(&amap, &i);
-+	 *     f = bpf_map_lookup_elem(&amap, &i);
-+	 *     if (a) sum += 1;
-+	 *     if (b) sum += 1;
-+	 *     if (c) sum += 1;
-+	 *     if (d) sum += 1;
-+	 *     if (e) sum += 1;
-+	 *     if (f) sum += 1;
-+	 *   }
-+	 *   return 0;
-+	 *
-+	 * The body of the loop spawns multiple simulation paths
-+	 * with different combination of NULL/non-NULL information for a/b/c/d/e/f.
-+	 * Each combination is unique from states_equal() point of view.
-+	 * Explored states checkpoint is created after each iterator next call.
-+	 * Iterator convergence logic expects that eventually current state
-+	 * would get equal to one of the explored states and thus loop
-+	 * exploration would be finished (at-least for a specific path).
-+	 * Verifier evicts explored states with high miss to hit ratio
-+	 * to to avoid comparing current state with too many explored
-+	 * states per instruction.
-+	 * This test is designed to "stress test" eviction policy defined using formula:
-+	 *
-+	 *    sl->miss_cnt > sl->hit_cnt * N + N // if true sl->state is evicted
-+	 *
-+	 * Currently N is set to 64, which allows for 6 variables in this test.
-+	 */
-+	asm volatile (
-+		"r6 = 0;"                  /* a */
-+		"r7 = 0;"                  /* b */
-+		"r8 = 0;"                  /* c */
-+		"*(u64 *)(r10 - 24) = r6;" /* d */
-+		"*(u64 *)(r10 - 32) = r6;" /* e */
-+		"*(u64 *)(r10 - 40) = r6;" /* f */
-+		"r9 = 0;"                  /* sum */
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"r2 = 0;"
-+		"r3 = 10;"
-+		"call %[bpf_iter_num_new];"
-+	"loop_%=:"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_next];"
-+		"if r0 == 0 goto loop_end_%=;"
-+
-+		"*(u64 *)(r10 - 16) = r0;"
-+
-+		"r1 = %[amap] ll;"
-+		"r2 = r10;"
-+		"r2 += -16;"
-+		"call %[bpf_map_lookup_elem];"
-+		"r6 = r0;"
-+
-+		"r1 = %[amap] ll;"
-+		"r2 = r10;"
-+		"r2 += -16;"
-+		"call %[bpf_map_lookup_elem];"
-+		"r7 = r0;"
-+
-+		"r1 = %[amap] ll;"
-+		"r2 = r10;"
-+		"r2 += -16;"
-+		"call %[bpf_map_lookup_elem];"
-+		"r8 = r0;"
-+
-+		"r1 = %[amap] ll;"
-+		"r2 = r10;"
-+		"r2 += -16;"
-+		"call %[bpf_map_lookup_elem];"
-+		"*(u64 *)(r10 - 24) = r0;"
-+
-+		"r1 = %[amap] ll;"
-+		"r2 = r10;"
-+		"r2 += -16;"
-+		"call %[bpf_map_lookup_elem];"
-+		"*(u64 *)(r10 - 32) = r0;"
-+
-+		"r1 = %[amap] ll;"
-+		"r2 = r10;"
-+		"r2 += -16;"
-+		"call %[bpf_map_lookup_elem];"
-+		"*(u64 *)(r10 - 40) = r0;"
-+
-+		"if r6 == 0 goto +1;"
-+		"r9 += 1;"
-+		"if r7 == 0 goto +1;"
-+		"r9 += 1;"
-+		"if r8 == 0 goto +1;"
-+		"r9 += 1;"
-+		"r0 = *(u64 *)(r10 - 24);"
-+		"if r0 == 0 goto +1;"
-+		"r9 += 1;"
-+		"r0 = *(u64 *)(r10 - 32);"
-+		"if r0 == 0 goto +1;"
-+		"r9 += 1;"
-+		"r0 = *(u64 *)(r10 - 40);"
-+		"if r0 == 0 goto +1;"
-+		"r9 += 1;"
-+
-+		"goto loop_%=;"
-+	"loop_end_%=:"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_destroy];"
-+		"r0 = 0;"
-+		"exit;"
-+		:
-+		: __imm(bpf_map_lookup_elem),
-+		  __imm(bpf_iter_num_new),
-+		  __imm(bpf_iter_num_next),
-+		  __imm(bpf_iter_num_destroy),
-+		  __imm_addr(amap)
-+		: __clobber_all
-+	);
-+}
-+
- char _license[] SEC("license") = "GPL";
+ 		skb->head = NULL;
+ 	}
+-- 
+2.43.0
+
 
 
 
