@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-16589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BBF1840D97
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A15840FC9
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFCDF1F2CF3A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70570282D5A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF5C15B992;
-	Mon, 29 Jan 2024 17:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D5372220;
+	Mon, 29 Jan 2024 17:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROTZDKJc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2HlzATm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEA84158D68;
-	Mon, 29 Jan 2024 17:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35125157052;
+	Mon, 29 Jan 2024 17:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548131; cv=none; b=uqMP0qgx3XpUGaPac1pokdd6iuJGinsDoXgszLt0bqBTiNw9cc0J29U7rag/KBIy8iRd1DZHlxp6U5ZEhL4wDgBDl9wEV36UJO/L8i5thdY6f9D5kIgcpebjkbN4bc58koNN5Ph3yfk01hsPTDN9PQ9hXINqHE0GYw5WfivDlLQ=
+	t=1706548502; cv=none; b=ZVx4aoZYoKpIEM9DD+NnWBQBPkIPRjahUVK81rEt9mE/zU0qwCbD49Z7Klou0sOtmrimv1ey0pKYvJPY9RF5sMW4aLmazL513Kel9X+zhMGDjTIJJ2XW3KzhKgIUPLzKo1P0D1yd/DO9GrvSAvzUwKPgnU6erVJ96ElwJpmlgBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548131; c=relaxed/simple;
-	bh=yLm8MTD9JYWjo0VKVJ+2HPfzPIMw7CCTz70UHQXwFqQ=;
+	s=arc-20240116; t=1706548502; c=relaxed/simple;
+	bh=usbm3fwtz6GignOAD3MxlIZbkMLChih6DbmDzBLur40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cy8mBICqVsKW4orP+K6fKFUlEtwfT2O5c7PDgDOfq1RNkhsZ3Y+LXT8Y3dHzG7s6QyGNtgJyQAhEvZ2Ncf2vF6d8CNMQriT7K2NXprzfBM/+tnCCBQd5NW6RZeN1xfIP6CJb17Wrp6lSo8syJDJ6xEeN2t3Kpk2eKtEZZrFUWTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROTZDKJc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88342C43390;
-	Mon, 29 Jan 2024 17:08:51 +0000 (UTC)
+	 MIME-Version; b=RdMYU46yEzEb48NE8aRTLZhGZ/CJqKKhxoV2db/0sM6/YvBuBWyfggb9Z4SBFrEdrL+9o43jwTpezosBsbUfU4vSgLRUYXj+al0/SbPzQJR5dLxiBZymqzb6kUsmOTbXKG7Rh3CZCNfwDdFt/w3VI9dXwMfDZNnfNxR1DGfvnB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2HlzATm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F223FC433F1;
+	Mon, 29 Jan 2024 17:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548131;
-	bh=yLm8MTD9JYWjo0VKVJ+2HPfzPIMw7CCTz70UHQXwFqQ=;
+	s=korg; t=1706548502;
+	bh=usbm3fwtz6GignOAD3MxlIZbkMLChih6DbmDzBLur40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ROTZDKJcs9St06Qg7yHBqZRVuvbXYbeUxKiPhMF93tw4PTCh3bYW5me6qDANnpf0d
-	 5mSx8wlAp3JEoICjEhRr1u5TYO5RjPLGlHa7qj2fbj+bCn+7cUvgS1Mx7/k2w+Mjfm
-	 lwgW33Z7pZOHpqQ+4GfoP+SGaoDU5Bu6CUmeAiWw=
+	b=v2HlzATmToEMEMOwqWw3ciBRXgzRmbc5ym/sch993WtlsYUWTRlcTRr1r+SZcsU6O
+	 GcUO/9prksYvsv8c8tUH7O0WQfbr3DDuzq0Y2C9yg3a73DxifRzTOL22rqFydxEdhd
+	 MFmH5qW2bbV6Xz3FWXjKFjHqkqQ2wKz7PIW1kqNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@nvidia.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 161/346] dpll: fix broken error path in dpll_pin_alloc(..)
-Date: Mon, 29 Jan 2024 09:03:12 -0800
-Message-ID: <20240129170021.136506619@linuxfoundation.org>
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.6 129/331] serial: sc16is7xx: remove wasteful static buffer in sc16is7xx_regmap_name()
+Date: Mon, 29 Jan 2024 09:03:13 -0800
+Message-ID: <20240129170018.714581556@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit b6a11a7fc4d6337f7ea720b9287d1b9749c4eae0 ]
+commit 6bcab3c8acc88e265c570dea969fd04f137c8a4c upstream.
 
-If pin type is not expected, or pin properities failed to allocate
-memory, the unwind error path shall not destroy pin's xarrays, which
-were not yet initialized.
-Add new goto label and use it to fix broken error path.
+Using a static buffer inside sc16is7xx_regmap_name() was a convenient and
+simple way to set the regmap name without having to allocate and free a
+buffer each time it is called. The drawback is that the static buffer
+wastes memory for nothing once regmap is fully initialized.
 
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 830ead5fb0c5 ("dpll: fix pin dump crash for rebound module")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Remove static buffer and use constant strings instead.
+
+This also avoids a truncation warning when using "%d" or "%u" in snprintf
+which was flagged by kernel test robot.
+
+Fixes: 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
+Cc:  <stable@vger.kernel.org> # 6.1.x: 3837a03 serial: sc16is7xx: improve regmap debugfs by using one regmap per port
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231211171353.2901416-2-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dpll/dpll_core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
-index 3568149b9562..36f5c0eaf604 100644
---- a/drivers/dpll/dpll_core.c
-+++ b/drivers/dpll/dpll_core.c
-@@ -440,7 +440,7 @@ dpll_pin_alloc(u64 clock_id, u32 pin_idx, struct module *module,
- 	if (WARN_ON(prop->type < DPLL_PIN_TYPE_MUX ||
- 		    prop->type > DPLL_PIN_TYPE_MAX)) {
- 		ret = -EINVAL;
--		goto err;
-+		goto err_pin_prop;
- 	}
- 	pin->prop = prop;
- 	refcount_set(&pin->refcount, 1);
-@@ -448,11 +448,12 @@ dpll_pin_alloc(u64 clock_id, u32 pin_idx, struct module *module,
- 	xa_init_flags(&pin->parent_refs, XA_FLAGS_ALLOC);
- 	ret = xa_alloc(&dpll_pin_xa, &pin->id, pin, xa_limit_16b, GFP_KERNEL);
- 	if (ret)
--		goto err;
-+		goto err_xa_alloc;
- 	return pin;
--err:
-+err_xa_alloc:
- 	xa_destroy(&pin->dpll_refs);
- 	xa_destroy(&pin->parent_refs);
-+err_pin_prop:
- 	kfree(pin);
- 	return ERR_PTR(ret);
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1696,13 +1696,15 @@ static struct regmap_config regcfg = {
+ 	.max_register = SC16IS7XX_EFCR_REG,
+ };
+ 
+-static const char *sc16is7xx_regmap_name(unsigned int port_id)
++static const char *sc16is7xx_regmap_name(u8 port_id)
+ {
+-	static char buf[6];
+-
+-	snprintf(buf, sizeof(buf), "port%d", port_id);
+-
+-	return buf;
++	switch (port_id) {
++	case 0:	return "port0";
++	case 1:	return "port1";
++	default:
++		WARN_ON(true);
++		return NULL;
++	}
  }
--- 
-2.43.0
-
+ 
+ static unsigned int sc16is7xx_regmap_port_mask(unsigned int port_id)
 
 
 
