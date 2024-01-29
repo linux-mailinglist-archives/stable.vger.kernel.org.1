@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-16639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC7A840DCD
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F389A840FFC
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57A9A2852C4
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 325DF1C2366B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1113115CD79;
-	Mon, 29 Jan 2024 17:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0182F73756;
+	Mon, 29 Jan 2024 17:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFCtURAZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adPjDH0Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFBF15AABF;
-	Mon, 29 Jan 2024 17:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B399673748;
+	Mon, 29 Jan 2024 17:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548168; cv=none; b=A6fUCBKfPfXb0g9AhSJs+29YkMThBcZgpQ7ePhnsiO0Q1wJR8fh2q2YwfAa9Q69r6fuMeuif4MUN3be8V6b3vA8bQoRlCOT90yEpLnUmVztkdi/ZYMxFm3vVB1lBwRnkcZoIpNctQHGoR6HR3JIL7KdXTbgU5GJ9qYexGNT4wTc=
+	t=1706548539; cv=none; b=RFeYKbQy7sZZgCISXXNtZVPeIZYD5PYVQum/Dw3uV8J0YCXrxP0jGiAXAh1AAC3RtfGajRkR6twiXtICl2KDTe+wdUNYmfiwGeJASupdCSES37Fas5NzgBs6xNaJgfwCqrYfx1BwbA97V13+K0fxTHA2b7DVIfFT8oHiIZgiqoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548168; c=relaxed/simple;
-	bh=4lGc4eff8RcJ/udBmK2LGPHNHDmKWAb+uSRtn2EPIXI=;
+	s=arc-20240116; t=1706548539; c=relaxed/simple;
+	bh=yIsfTkso4vuNqt+h1Eh7AYhI+4hTyX5ErHaKF+pqVnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dPgddfkgcNKc/drhBkerdBgaPqg/i4e3EVB+4Ko+kPlQW/ZIUr1a90Ftpbc3uVIjdqcQN93oJPnnOqGPQfZnQcgKZoxx4XrBSzkHLaQQLW9cGvslTJe4srqKsb4ZAHMLAGI4JbKQ2eARfncPakf2WcwpZLztu06MVcfNXBz+hP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFCtURAZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87409C433F1;
-	Mon, 29 Jan 2024 17:09:28 +0000 (UTC)
+	 MIME-Version; b=u6NmI6LxqdwL79UkwprYMRnN4pmztdVeDtbXjIyuofvxiDW1fIHpcY2F6VFNTABtaSLWi4av2jH/68rIK5AxU78ZxnJdeKYqxdWNBRR6eOGxTnDlggM80Qiz6b8nRx3YhB68+8akS8yeQduUEFvyhFoZ8E2cfgf+OfZohOBYnL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adPjDH0Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD12C433C7;
+	Mon, 29 Jan 2024 17:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548168;
-	bh=4lGc4eff8RcJ/udBmK2LGPHNHDmKWAb+uSRtn2EPIXI=;
+	s=korg; t=1706548539;
+	bh=yIsfTkso4vuNqt+h1Eh7AYhI+4hTyX5ErHaKF+pqVnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CFCtURAZw0f1M1+On+sJ9T36iTXKi7YhY9G/TXU6H5pe4muhQC9B3hSVf1VkGU0TJ
-	 oxbMWu2o4ep3atcmeyu17w7cIEFFogL+8atve19eBfCKsX/wN2LdHRKhXDIlj7CkWw
-	 pIbMFAxmCrJ8HE5jk6bqkrAdErIfsart+q/OA/ns=
+	b=adPjDH0ZVMfEKxlQkinl+iVbTzBsa63Ize8rD6w58iVgfShoPMgOZ7Z8OZ+yZDQPa
+	 TCmtaJPbJh0YOILkZfa4M2Utw8I7DquAIqtXR6Qx0BlW4OaMIzqLhtKStesQ5FLB5b
+	 6yOxefn7Q9ErEMKt90eZnSKnnoD55BNloQhDF4O8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Yunjian Wang <wangyunjian@huawei.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 212/346] intel: xsk: initialize skb_frag_t::bv_offset in ZC drivers
+Subject: [PATCH 6.6 179/331] tun: fix missing dropped counter in tun_xdp_act
 Date: Mon, 29 Jan 2024 09:04:03 -0800
-Message-ID: <20240129170022.618945086@linuxfoundation.org>
+Message-ID: <20240129170020.140209493@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Yunjian Wang <wangyunjian@huawei.com>
 
-[ Upstream commit 290779905d09d5fdf6caa4f58ddefc3f4db0c0a9 ]
+[ Upstream commit 5744ba05e7c4bff8fec133dd0f9e51ddffba92f5 ]
 
-Ice and i40e ZC drivers currently set offset of a frag within
-skb_shared_info to 0, which is incorrect. xdp_buffs that come from
-xsk_buff_pool always have 256 bytes of a headroom, so they need to be
-taken into account to retrieve xdp_buff::data via skb_frag_address().
-Otherwise, bpf_xdp_frags_increase_tail() would be starting its job from
-xdp_buff::data_hard_start which would result in overwriting existing
-payload.
+The commit 8ae1aff0b331 ("tuntap: split out XDP logic") includes
+dropped counter for XDP_DROP, XDP_ABORTED, and invalid XDP actions.
+Unfortunately, that commit missed the dropped counter when error
+occurs during XDP_TX and XDP_REDIRECT actions. This patch fixes
+this issue.
 
-Fixes: 1c9ba9c14658 ("i40e: xsk: add RX multi-buffer support")
-Fixes: 1bbc04de607b ("ice: xsk: add RX multi-buffer support")
-Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/r/20240124191602.566724-8-maciej.fijalkowski@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 8ae1aff0b331 ("tuntap: split out XDP logic")
+Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_xsk.c | 3 ++-
- drivers/net/ethernet/intel/ice/ice_xsk.c   | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/tun.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-index fede0bb3e047..65f38a57b3df 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
-@@ -414,7 +414,8 @@ i40e_add_xsk_frag(struct i40e_ring *rx_ring, struct xdp_buff *first,
- 	}
- 
- 	__skb_fill_page_desc_noacc(sinfo, sinfo->nr_frags++,
--				   virt_to_page(xdp->data_hard_start), 0, size);
-+				   virt_to_page(xdp->data_hard_start),
-+				   XDP_PACKET_HEADROOM, size);
- 	sinfo->xdp_frags_size += size;
- 	xsk_buff_add_frag(xdp);
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
-index 951f84bfdf2b..f3663b3f6390 100644
---- a/drivers/net/ethernet/intel/ice/ice_xsk.c
-+++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
-@@ -820,7 +820,8 @@ ice_add_xsk_frag(struct ice_rx_ring *rx_ring, struct xdp_buff *first,
- 	}
- 
- 	__skb_fill_page_desc_noacc(sinfo, sinfo->nr_frags++,
--				   virt_to_page(xdp->data_hard_start), 0, size);
-+				   virt_to_page(xdp->data_hard_start),
-+				   XDP_PACKET_HEADROOM, size);
- 	sinfo->xdp_frags_size += size;
- 	xsk_buff_add_frag(xdp);
- 
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index afa5497f7c35..237fef557ba5 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -1630,13 +1630,17 @@ static int tun_xdp_act(struct tun_struct *tun, struct bpf_prog *xdp_prog,
+ 	switch (act) {
+ 	case XDP_REDIRECT:
+ 		err = xdp_do_redirect(tun->dev, xdp, xdp_prog);
+-		if (err)
++		if (err) {
++			dev_core_stats_rx_dropped_inc(tun->dev);
+ 			return err;
++		}
+ 		break;
+ 	case XDP_TX:
+ 		err = tun_xdp_tx(tun->dev, xdp);
+-		if (err < 0)
++		if (err < 0) {
++			dev_core_stats_rx_dropped_inc(tun->dev);
+ 			return err;
++		}
+ 		break;
+ 	case XDP_PASS:
+ 		break;
 -- 
 2.43.0
 
