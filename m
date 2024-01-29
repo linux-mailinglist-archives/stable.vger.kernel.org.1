@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B20840DC8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C18840E21
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03C031F2CF9B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 483441C23721
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEB515CD73;
-	Mon, 29 Jan 2024 17:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A6115EA84;
+	Mon, 29 Jan 2024 17:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvHjeqdt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnPXoODA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CD5157E8F;
-	Mon, 29 Jan 2024 17:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942D6157052;
+	Mon, 29 Jan 2024 17:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548165; cv=none; b=ZetMFOWV40FZP/5eJV7MQruU/CQk0X5ZfhWLqEGAXAwlXmtcFj3pz1S223y5s54t0dFyltqxt2wBYQCcTJXFsNUyfIau4gEaO7++Glp+vj9UPPCMWyN6lV43M9c8+u9RUWZ9ZJfWY0Tw6+P4UqB0+eku+vczrvO5VSX/BPgKCWU=
+	t=1706548229; cv=none; b=IGsxX4nBPpW0hJkUvb7Sm1fb6bF5M4LBT4PMGxXRKMZAFhrirJOC1/GlVYw0Yr3AP80hn5MHCDTVFc2B96gg4cO2EehSwq8GxeIu9bf9Gxl1xbB0RCcf67BOGB3Gp+UxBSxeof/YQiZDO1gIvyBKN1R9CeNeCFbLiS0XOHHACC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548165; c=relaxed/simple;
-	bh=KuM/MpGDWAKhShvbTxaNFPiGd4OlfTncISfsKRrNBtA=;
+	s=arc-20240116; t=1706548229; c=relaxed/simple;
+	bh=AXFHR1qRjmZ+ouIhlpAsy6c5KB6RBbM0Zkb4y+Nu2K8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dRHr1ul9wbstlRa0b3Z5tmAWCGzONlebs8ScShEKqO+anBDEM4eko7QXcy5Ie4a6XJPPpdHRBVNMx9tYzLfYFn1YhkVs/J81UFgUoef5/WljyRcK73KyezfhgcpB+NVLmJbmAVrrHMJrbokouplyQ+2KRbrchVspmjqTmyCAFZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvHjeqdt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8892CC43399;
-	Mon, 29 Jan 2024 17:09:25 +0000 (UTC)
+	 MIME-Version; b=A/1vA3KA++dZ1LQCntwrwvdEgrmISVhReUij7L0GnJY1Q6dfTOmC1CpC/LwGcxe2noOoy/mkiqI8gmqS3ufX2ivKlbT7/UpUB9+eor94vQzu5rhR+3T22Po1DRcwvbgGnsp3+LENBEYsfl4CjhGXp6tJBDcX9+/mO70T4v1kDe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnPXoODA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D06DC433C7;
+	Mon, 29 Jan 2024 17:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548165;
-	bh=KuM/MpGDWAKhShvbTxaNFPiGd4OlfTncISfsKRrNBtA=;
+	s=korg; t=1706548229;
+	bh=AXFHR1qRjmZ+ouIhlpAsy6c5KB6RBbM0Zkb4y+Nu2K8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YvHjeqdt74bxcAgoxpvoLUKGWRGJYmviKsQ6cIbdik9L0hOgYbD7hdz7aF/OzcpWW
-	 5IQiooVp+aH2JwnJSxaoFqJEuBLtpRHuyltESMEmTisnzcaLxU0uKqcXXz6YuQcIkr
-	 h8dlzVDr/bgQc/BkICcCyolkEolwWAME7XS45k+A=
+	b=bnPXoODAxhzwtfw+tEei2MYYfxJg+uHYbazBOZzJzxI04sJG5kmxOMGi1Mc/coOuV
+	 6cC/RumOPnPUArNo+EVYRfLAjJcT5Ahf3BJ6WMOz+aiJstKfSvGXCp70sr3YV66F7R
+	 d3R7X2s1vAqYmmT64HbX8t1RgH8UNZZfj0QXc5KE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 200/346] netfilter: nf_tables: restrict anonymous set and map names to 16 bytes
+Subject: [PATCH 6.1 031/185] iio: adc: ad7091r: Enable internal vref if external vref is not supplied
 Date: Mon, 29 Jan 2024 09:03:51 -0800
-Message-ID: <20240129170022.284081430@linuxfoundation.org>
+Message-ID: <20240129165959.597494127@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 
-[ Upstream commit b462579b2b86a8f5230543cadd3a4836be27baf7 ]
+[ Upstream commit e71c5c89bcb165a02df35325aa13d1ee40112401 ]
 
-nftables has two types of sets/maps, one where userspace defines the
-name, and anonymous sets/maps, where userspace defines a template name.
+The ADC needs a voltage reference to work correctly.
+Users can provide an external voltage reference or use the chip internal
+reference to operate the ADC.
+The availability of an in chip reference for the ADC saves the user from
+having to supply an external voltage reference, which makes the external
+reference an optional property as described in the device tree
+documentation.
+Though, to use the internal reference, it must be enabled by writing to
+the configuration register.
+Enable AD7091R internal voltage reference if no external vref is supplied.
 
-For the latter, kernel requires presence of exactly one "%d".
-nftables uses "__set%d" and "__map%d" for this.  The kernel will
-expand the format specifier and replaces it with the smallest unused
-number.
-
-As-is, userspace could define a template name that allows to move
-the set name past the 256 bytes upperlimit (post-expansion).
-
-I don't see how this could be a problem, but I would prefer if userspace
-cannot do this, so add a limit of 16 bytes for the '%d' template name.
-
-16 bytes is the old total upper limit for set names that existed when
-nf_tables was merged initially.
-
-Fixes: 387454901bd6 ("netfilter: nf_tables: Allow set names of up to 255 chars")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 260442cc5be4 ("iio: adc: ad7091r5: Add scale and external VREF support")
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Link: https://lore.kernel.org/r/b865033fa6a4fc4bf2b4a98ec51a6144e0f64f77.1703013352.git.marcelo.schmitt1@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iio/adc/ad7091r-base.c | 7 +++++++
+ drivers/iio/adc/ad7091r-base.h | 2 ++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index f032c29f1da6..5282e8377782 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -24,6 +24,7 @@
- #include <net/sock.h>
- 
- #define NFT_MODULE_AUTOLOAD_LIMIT (MODULE_NAME_LEN - sizeof("nft-expr-255-"))
-+#define NFT_SET_MAX_ANONLEN 16
- 
- unsigned int nf_tables_net_id __read_mostly;
- 
-@@ -4411,6 +4412,9 @@ static int nf_tables_set_alloc_name(struct nft_ctx *ctx, struct nft_set *set,
- 		if (p[1] != 'd' || strchr(p + 2, '%'))
- 			return -EINVAL;
- 
-+		if (strnlen(name, NFT_SET_MAX_ANONLEN) >= NFT_SET_MAX_ANONLEN)
-+			return -EINVAL;
+diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
+index 3d36bcd26b0c..76002b91c86a 100644
+--- a/drivers/iio/adc/ad7091r-base.c
++++ b/drivers/iio/adc/ad7091r-base.c
+@@ -405,7 +405,14 @@ int ad7091r_probe(struct device *dev, const char *name,
+ 	if (IS_ERR(st->vref)) {
+ 		if (PTR_ERR(st->vref) == -EPROBE_DEFER)
+ 			return -EPROBE_DEFER;
 +
- 		inuse = (unsigned long *)get_zeroed_page(GFP_KERNEL);
- 		if (inuse == NULL)
- 			return -ENOMEM;
+ 		st->vref = NULL;
++		/* Enable internal vref */
++		ret = regmap_set_bits(st->map, AD7091R_REG_CONF,
++				      AD7091R_REG_CONF_INT_VREF);
++		if (ret)
++			return dev_err_probe(st->dev, ret,
++					     "Error on enable internal reference\n");
+ 	} else {
+ 		ret = regulator_enable(st->vref);
+ 		if (ret)
+diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
+index 7a78976a2f80..b9e1c8bf3440 100644
+--- a/drivers/iio/adc/ad7091r-base.h
++++ b/drivers/iio/adc/ad7091r-base.h
+@@ -8,6 +8,8 @@
+ #ifndef __DRIVERS_IIO_ADC_AD7091R_BASE_H__
+ #define __DRIVERS_IIO_ADC_AD7091R_BASE_H__
+ 
++#define AD7091R_REG_CONF_INT_VREF	BIT(0)
++
+ /* AD7091R_REG_CH_LIMIT */
+ #define AD7091R_HIGH_LIMIT		0xFFF
+ #define AD7091R_LOW_LIMIT		0x0
 -- 
 2.43.0
 
