@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-16879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F05F2840ECC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62D9F840E4E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75BAAB2094F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E70828370D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10383161B47;
-	Mon, 29 Jan 2024 17:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4405715A489;
+	Mon, 29 Jan 2024 17:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rih92B/v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCoeu8tY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0500157E79;
-	Mon, 29 Jan 2024 17:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036F2159591;
+	Mon, 29 Jan 2024 17:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548346; cv=none; b=WdDsJaG4SCOLKoleuvCaSLU/O5YJxwrHEGRTMZlFS6YtyCMIZAvva61fWUp/zbPn14D9cEFIdcVw4HmpSRJR0rf/3RFBWbgg9OoOokvQlQKcMErcByBKalwXnaIiszbCSlkSvZIJ1BDo8IQZtKzYt0qTAj3GSaE52Wm0Mt12Ass=
+	t=1706548261; cv=none; b=iyrb2/Kc9E0XHkyp/5sVmdmn7rx3TXyQZ5Hcl7bREbdD0V4Wirt5rvFK3Kf4BqXXipJtWJO1RsRzt5JdKBhWKjAiXclBnuFlpH/iAc7eQEYULuT2/hb83yfCN0dVQqq7hWYgmwlQHQfHBJI4xac+1qz1/VqqK9cQhiuXbAl51cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548346; c=relaxed/simple;
-	bh=NU9IxkYtsutmoK7tUYHf5UH7xNtEU5SMxOWem8rnxfA=;
+	s=arc-20240116; t=1706548261; c=relaxed/simple;
+	bh=liap3NySlBRnj9zaJcXbCXnL2sNNjht6CzYicosHUqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nbgzixqvaGQXGQ7X2dJ2yvkp3Z3sFivDn5o+GXGPtbvl7ycS9joE76elRi2SeJ0mahdxXVZXdS45NlrrKTmBjDPQYBT+lklfueZkmwKLMn5hHhnpNHTDGxeLfx+tfVl1Fa2q1VoHbjBsVzpGzJMnAitJ6HeJ/yrdiDKxyg4kig0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rih92B/v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA01C433C7;
-	Mon, 29 Jan 2024 17:12:26 +0000 (UTC)
+	 MIME-Version; b=tuILwpIWERMFVBevmPLZens60YkwvzY0H+ZY7tZKwxXGxKH1Uf7fwTSuscYpwZVArYCzY0hrFUvAlExIfEEI9pn7Kg4/gxhbvPASRUFd02OG8o2WbShD0QOIujYzeB+hlmuao3FPn1Vi+UjooeG1cerz0IoPr9bSAA5ghtdx3UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCoeu8tY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C253BC433C7;
+	Mon, 29 Jan 2024 17:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548346;
-	bh=NU9IxkYtsutmoK7tUYHf5UH7xNtEU5SMxOWem8rnxfA=;
+	s=korg; t=1706548260;
+	bh=liap3NySlBRnj9zaJcXbCXnL2sNNjht6CzYicosHUqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rih92B/vaxkNWD9bBsh8wuxwANx3YcBG3yKWMkjlxencoFppDaTCuSbslf2jVyc34
-	 /xn0PofsjgEYSQYWoxyJWdOyZXCNmcYW3H3rJ86stq5MvCdhTw9DY2GWj4KjPCOz7U
-	 fdEikJVKWZNPE9eCutRapeFmWUdCt3YXGDBKkyIo=
+	b=HCoeu8tYspV1t3asUnjApLHE7/kyfknt8cd5RV0gKCmguriEL3TMDTh+krMIHRc5h
+	 3YZ6eu/FKgO5uh9J4/6a2yQSEIwpgRpqoow7C9PCedXvGy6baINVXYCrI0F4UP/NOZ
+	 NDTmHfD1C4K6/0T6kodewH2opI2iVF2dO2hCZpBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernd Edlinger <bernd.edlinger@hotmail.de>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/185] net: stmmac: Wait a bit for the reset to take effect
-Date: Mon, 29 Jan 2024 09:05:09 -0800
-Message-ID: <20240129170002.096234392@linuxfoundation.org>
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Jun Lei <Jun.Lei@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.7 279/346] drm/amd/display: Fix uninitialized variable usage in core_link_ read_dpcd() & write_dpcd() functions
+Date: Mon, 29 Jan 2024 09:05:10 -0800
+Message-ID: <20240129170024.583108937@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +67,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernd Edlinger <bernd.edlinger@hotmail.de>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit a5f5eee282a0aae80227697e1d9c811b1726d31d ]
+commit a58371d632ebab9ea63f10893a6b6731196b6f8d upstream.
 
-otherwise the synopsys_id value may be read out wrong,
-because the GMAC_VERSION register might still be in reset
-state, for at least 1 us after the reset is de-asserted.
+The 'status' variable in 'core_link_read_dpcd()' &
+'core_link_write_dpcd()' was uninitialized.
 
-Add a wait for 10 us before continuing to be on the safe side.
+Thus, initializing 'status' variable to 'DC_ERROR_UNEXPECTED' by default.
 
-> From what have you got that delay value?
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_dpcd.c:226 core_link_read_dpcd() error: uninitialized symbol 'status'.
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_dpcd.c:248 core_link_write_dpcd() error: uninitialized symbol 'status'.
 
-Just try and error, with very old linux versions and old gcc versions
-the synopsys_id was read out correctly most of the time (but not always),
-with recent linux versions and recnet gcc versions it was read out
-wrongly most of the time, but again not always.
-I don't have access to the VHDL code in question, so I cannot
-tell why it takes so long to get the correct values, I also do not
-have more than a few hardware samples, so I cannot tell how long
-this timeout must be in worst case.
-Experimentally I can tell that the register is read several times
-as zero immediately after the reset is de-asserted, also adding several
-no-ops is not enough, adding a printk is enough, also udelay(1) seems to
-be enough but I tried that not very often, and I have not access to many
-hardware samples to be 100% sure about the necessary delay.
-And since the udelay here is only executed once per device instance,
-it seems acceptable to delay the boot for 10 us.
-
-BTW: my hardware's synopsys id is 0x37.
-
-Fixes: c5e4ddbdfa11 ("net: stmmac: Add support for optional reset control")
-Signed-off-by: Bernd Edlinger <bernd.edlinger@hotmail.de>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Link: https://lore.kernel.org/r/AS8P193MB1285A810BD78C111E7F6AA34E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Jerry Zuo <jerry.zuo@amd.com>
+Cc: Jun Lei <Jun.Lei@amd.com>
+Cc: Wayne Lin <Wayne.Lin@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/display/dc/link/protocols/link_dpcd.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 8f8de14347a9..e988a60c8561 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -7166,6 +7166,9 @@ int stmmac_dvr_probe(struct device *device,
- 		dev_err(priv->device, "unable to bring out of ahb reset: %pe\n",
- 			ERR_PTR(ret));
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dpcd.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dpcd.c
+@@ -205,7 +205,7 @@ enum dc_status core_link_read_dpcd(
+ 	uint32_t extended_size;
+ 	/* size of the remaining partitioned address space */
+ 	uint32_t size_left_to_read;
+-	enum dc_status status;
++	enum dc_status status = DC_ERROR_UNEXPECTED;
+ 	/* size of the next partition to be read from */
+ 	uint32_t partition_size;
+ 	uint32_t data_index = 0;
+@@ -234,7 +234,7 @@ enum dc_status core_link_write_dpcd(
+ {
+ 	uint32_t partition_size;
+ 	uint32_t data_index = 0;
+-	enum dc_status status;
++	enum dc_status status = DC_ERROR_UNEXPECTED;
  
-+	/* Wait a bit for the reset to take effect */
-+	udelay(10);
-+
- 	/* Init MAC and get the capabilities */
- 	ret = stmmac_hw_init(priv);
- 	if (ret)
--- 
-2.43.0
-
+ 	while (size) {
+ 		partition_size = dpcd_get_next_partition_size(address, size);
 
 
 
