@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-16773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB9D840E5A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C74840E2A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE3FF1F24C82
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD8801C2360D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593A215F313;
-	Mon, 29 Jan 2024 17:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBD815704E;
+	Mon, 29 Jan 2024 17:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qO1c2nI9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KuWRVPxA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DBF15A48F;
-	Mon, 29 Jan 2024 17:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E7415EA8C;
+	Mon, 29 Jan 2024 17:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548269; cv=none; b=nMo+24HZgPkkU8XuIU5XpkBunLXE1pZR2D7tKjjsOl53bcUn9lrmemDP25q6L+2Zb0B5v0YS6dlHUfp24SIR3u3pnP4GBp6XDXRo3cPpYcU8lYrXAKfaYWG9KAihR+K+DBJPZAToS9iOj7vg0HQgrpg7tetByJpJGJaC/pr+P5U=
+	t=1706548235; cv=none; b=e3YOAwqL/scCfGtAflddlZayCDabt/ayrrYkZ+hpVArRTdgQBgOx/EeXmzzcL/seKcisnKWRn5nWFKaOjGzPAVIkPMwMkN62PODbLwTubcblRwDoRSO1ESOVpO0sC3jqSR+lx6VN19yrFWdCGFhXqp+tAj5L5aS+pNMjN/GrCik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548269; c=relaxed/simple;
-	bh=9SZ0XjusaAVJoITwCUoRMs5qGhE/g279549RDm8Jw5s=;
+	s=arc-20240116; t=1706548235; c=relaxed/simple;
+	bh=t9KLQKY2zMvxBtZkO7z2vR06dxCK616k82LPWLW44qM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YchW7ZeNzy5f90IwvwUXuAp+lCH89KObljRjHhuBH7x8d5sh8mqoTJgHG6eRFis+F8wJfd2qsiMC434XiCxQeVisVnScW44wpWBxyaM3r1aRQoONHlEa6i4IB5znirHN7X3a6ai0N9kjLkdG4FaYsaIHpmyOIOwYgQFv9cOQ1XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qO1c2nI9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3030C433F1;
-	Mon, 29 Jan 2024 17:11:08 +0000 (UTC)
+	 MIME-Version; b=Iu9FljBzxb81pl1IYpVJa9UKhLDmGp4Zk7RwjRZRPqCBVb8iCLdXstfzO/+QpqKh2lGo6i+hJpnb67WlThT1lnt9vK3dVSiCoe0XCZUAw+BmP4DhFBEyVAX6EyFXSBuekt9L0ukPpouoBPkQN/o2yrzhAtsG/HdV02yXbhy2yN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KuWRVPxA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8BEC43390;
+	Mon, 29 Jan 2024 17:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548268;
-	bh=9SZ0XjusaAVJoITwCUoRMs5qGhE/g279549RDm8Jw5s=;
+	s=korg; t=1706548234;
+	bh=t9KLQKY2zMvxBtZkO7z2vR06dxCK616k82LPWLW44qM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qO1c2nI9EzPMmp1wQMHr+m3QR4GN4hjStkv1ZDG7nsPlCvfmvcnjITekJXTb44i6B
-	 lJTuucxJqggix2bznXurbgvky6eFc3BBUg4KwU/c+uvyXPuUc2t0Tf2JIUSCKbtNjX
-	 NEBA/jDun6MGXeIMOyI/FQYLVZeKAkYc48pm0dqM=
+	b=KuWRVPxAWi8MgPkBNrQpCJwssFT+kR3000zmVJDgrRp65QUKzDUpyt7J/d4vY/0Q5
+	 GMtJiDTyfnQ3fHqNjnxonbrYp9NfNPZJWbHm77ZnXMtSljduBEsX69ZUmruHR62Ydu
+	 lM9DVE+ptXZjTYtE5MoaE3vq+xoBuegRV9N+Otes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jonathan Marek <jonathan@marek.ca>,
+	Jack Pham <quic_jackp@quicinc.com>,
 	Johan Hovold <johan+linaro@kernel.org>,
 	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 035/185] arm64: dts: qcom: sdm845: fix USB wakeup interrupt types
-Date: Mon, 29 Jan 2024 09:03:55 -0800
-Message-ID: <20240129165959.720872122@linuxfoundation.org>
+Subject: [PATCH 6.1 036/185] arm64: dts: qcom: sm8150: fix USB wakeup interrupt types
+Date: Mon, 29 Jan 2024 09:03:56 -0800
+Message-ID: <20240129165959.748717140@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
 References: <20240129165958.589924174@linuxfoundation.org>
@@ -67,25 +69,29 @@ Content-Transfer-Encoding: 8bit
 
 From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 84ad9ac8d9ca29033d589e79a991866b38e23b85 upstream.
+commit 54524b6987d1fffe64cbf3dded1b2fa6b903edf9 upstream.
 
 The DP/DM wakeup interrupts are edge triggered and which edge to trigger
 on depends on use-case and whether a Low speed or Full/High speed device
 is connected.
 
-Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
-Cc: stable@vger.kernel.org      # 4.20
+Fixes: 0c9dde0d2015 ("arm64: dts: qcom: sm8150: Add secondary USB and PHY nodes")
+Fixes: b33d2868e8d3 ("arm64: dts: qcom: sm8150: Add USB and PHY device nodes")
+Cc: stable@vger.kernel.org      # 5.10
+Cc: Jonathan Marek <jonathan@marek.ca>
+Cc: Jack Pham <quic_jackp@quicinc.com>
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231120164331.8116-9-johan+linaro@kernel.org
+Reviewed-by: Jack Pham <quic_jackp@quicinc.com>
+Link: https://lore.kernel.org/r/20231120164331.8116-11-johan+linaro@kernel.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi |    8 ++++----
+ arch/arm64/boot/dts/qcom/sm8150.dtsi |    8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -4050,8 +4050,8 @@
+--- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+@@ -3630,8 +3630,8 @@
  
  			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
  				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
@@ -96,7 +102,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  			interrupt-names = "hs_phy_irq", "ss_phy_irq",
  					  "dm_hs_phy_irq", "dp_hs_phy_irq";
  
-@@ -4101,8 +4101,8 @@
+@@ -3679,8 +3679,8 @@
  
  			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
  				     <GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
