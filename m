@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D052E840E8F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A7B840F24
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F67D1F280DF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADD1B1F2432A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7551B15B994;
-	Mon, 29 Jan 2024 17:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9EDC163AB5;
+	Mon, 29 Jan 2024 17:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPBmItoM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzMGX1n5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3289D15A4A6;
-	Mon, 29 Jan 2024 17:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84F215956D;
+	Mon, 29 Jan 2024 17:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548305; cv=none; b=GKRUf53y85/Nb9DA+8kK0LIx27kx/LzWjoid2A+d32xDQnahKtON/ou4ZFBQ3SgkVWbIThS2Iqz7ALmoJsMbby+2kdqHVaVHAHHr94fxb9yfNnic3WGXZz1I8fjwEXz+Ss/wxNm3FVwxnBhLF6BfhwqppJFrvswHdPuesgAuR0Y=
+	t=1706548390; cv=none; b=pN9yFKxwLgB5PkF1EOxEd9+ULRsDPrC9F9Nh2q+zV1LpYNDs/ymHInBuXVL7cZaxEY9HTcLeI6B4EVLDTOGeRVmCm3e7tYNgazcsHIxp7CS4WlceBCiKh3A+cMs9f6cU102y9JyvkxDq4X/wP/WnmR2B/DX63S/jDSnTKonfDvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548305; c=relaxed/simple;
-	bh=GnbqD4GGma+o4RjPJ+KE6L9LSQbKOBxAE2KzkZvwE68=;
+	s=arc-20240116; t=1706548390; c=relaxed/simple;
+	bh=RST3cAKUq2wQ906JwjV52ODaAgp6rs1vcCjTvOmt9+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KmGf7IARkoLMfSL/WbqWMl95RsmfEeV9KS6iYEbTgSGgtBIA0z42lY2NWMLpJRj0mwCu49PgE8sGoHBxnMnCpAry4uiYdrf+jqhZK6OJBQEoynINnIVE/0jQVqT3GP6xaaduSKnpt9qnQ8g2f5I7SdT0lyBUApQ5IwLPnv5/dkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPBmItoM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88F3C433C7;
-	Mon, 29 Jan 2024 17:11:44 +0000 (UTC)
+	 MIME-Version; b=EIikamXDvSFYJhNMo+iASL3npjZCF0AtNpz58Zo5EeCNSkrWLHKnHQXrHgcV3sqMYpdNdghjnNxWRR3fAPxipbGbwuOmo897l3vbx55NkfZndXIIfbacn5KSY4RTfpXlhDuc9l7EFq9yt7s/+8aiIJYkVLAT+Shjnlfd7b8ryko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzMGX1n5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C92C433F1;
+	Mon, 29 Jan 2024 17:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548304;
-	bh=GnbqD4GGma+o4RjPJ+KE6L9LSQbKOBxAE2KzkZvwE68=;
+	s=korg; t=1706548390;
+	bh=RST3cAKUq2wQ906JwjV52ODaAgp6rs1vcCjTvOmt9+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wPBmItoM1gd2zl6lvINoqSVedWtbLarHqXnBqwIWezzgqN3Tf+Tr2Uk+CZzr5OXrX
-	 VB5pMgISL6k15aDduutJ3qoz91b2+KhGxABfIBmaN1r2hYMuk0MtP6fSYXga5lm6xP
-	 pGxpnWLYBYO5R2HV0PujmRJefd8Ornm2eFD9GH10=
+	b=PzMGX1n59a6nmN8wEfpKIvyzIpQ1KFydXXkVDvhs9shCURcFT4TTXvkdXqjfdtR1G
+	 sPWoa49S5eUvD7cQiuMj2g9cQTqh/S8nYfTsHB581/KV5NhO85LX1cxGRZLdb7FguM
+	 fb46qE0GSixqyr0hkln9PMqnICAegBwdmjJPaDRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 309/346] drm/panel/raydium-rm692e5: select CONFIG_DRM_DISPLAY_DP_HELPER
+	Ma Jun <Jun.Ma2@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 140/185] drm/amdgpu/pm: Fix the power source flag error
 Date: Mon, 29 Jan 2024 09:05:40 -0800
-Message-ID: <20240129170025.561201194@linuxfoundation.org>
+Message-ID: <20240129170003.088172598@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit 589830b13ac21bddf99b9bc5a4ec17813d0869ef ]
+commit ca1ffb174f16b699c536734fc12a4162097c49f4 upstream.
 
-As with several other panel drivers, this fails to link without the DP
-helper library:
+The power source flag should be updated when
+[1] System receives an interrupt indicating that the power source
+has changed.
+[2] System resumes from suspend or runtime suspend
 
-ld: drivers/gpu/drm/panel/panel-raydium-rm692e5.o: in function `rm692e5_prepare':
-panel-raydium-rm692e5.c:(.text+0x11f4): undefined reference to `drm_dsc_pps_payload_pack'
-
-Select the same symbols that the others already use.
-
-Fixes: 988d0ff29ecf7 ("drm/panel: Add driver for BOE RM692E5 AMOLED panel")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20231023115619.3551348-1-arnd@kernel.org
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231023115619.3551348-1-arnd@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c      |   13 +++----------
+ drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c |    2 ++
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c |    2 ++
+ 3 files changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/Kconfig b/drivers/gpu/drm/panel/Kconfig
-index 99e14dc212ec..a4ac4b47777f 100644
---- a/drivers/gpu/drm/panel/Kconfig
-+++ b/drivers/gpu/drm/panel/Kconfig
-@@ -530,6 +530,8 @@ config DRM_PANEL_RAYDIUM_RM692E5
- 	depends on OF
- 	depends on DRM_MIPI_DSI
- 	depends on BACKLIGHT_CLASS_DEVICE
-+	select DRM_DISPLAY_DP_HELPER
-+	select DRM_DISPLAY_HELPER
- 	help
- 	  Say Y here if you want to enable support for Raydium RM692E5-based
- 	  display panels, such as the one found in the Fairphone 5 smartphone.
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -24,6 +24,7 @@
+ 
+ #include <linux/firmware.h>
+ #include <linux/pci.h>
++#include <linux/power_supply.h>
+ #include <linux/reboot.h>
+ 
+ #include "amdgpu.h"
+@@ -731,16 +732,8 @@ static int smu_late_init(void *handle)
+ 	 * handle the switch automatically. Driver involvement
+ 	 * is unnecessary.
+ 	 */
+-	if (!smu->dc_controlled_by_gpio) {
+-		ret = smu_set_power_source(smu,
+-					   adev->pm.ac_power ? SMU_POWER_SOURCE_AC :
+-					   SMU_POWER_SOURCE_DC);
+-		if (ret) {
+-			dev_err(adev->dev, "Failed to switch to %s mode!\n",
+-				adev->pm.ac_power ? "AC" : "DC");
+-			return ret;
+-		}
+-	}
++	adev->pm.ac_power = power_supply_is_system_supplied() > 0;
++	smu_set_ac_dc(smu);
+ 
+ 	if ((adev->ip_versions[MP1_HWIP][0] == IP_VERSION(13, 0, 1)) ||
+ 	    (adev->ip_versions[MP1_HWIP][0] == IP_VERSION(13, 0, 3)))
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
+@@ -1467,10 +1467,12 @@ static int smu_v11_0_irq_process(struct
+ 			case 0x3:
+ 				dev_dbg(adev->dev, "Switched to AC mode!\n");
+ 				schedule_work(&smu->interrupt_work);
++				adev->pm.ac_power = true;
+ 				break;
+ 			case 0x4:
+ 				dev_dbg(adev->dev, "Switched to DC mode!\n");
+ 				schedule_work(&smu->interrupt_work);
++				adev->pm.ac_power = false;
+ 				break;
+ 			case 0x7:
+ 				/*
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -1415,10 +1415,12 @@ static int smu_v13_0_irq_process(struct
+ 			case 0x3:
+ 				dev_dbg(adev->dev, "Switched to AC mode!\n");
+ 				smu_v13_0_ack_ac_dc_interrupt(smu);
++				adev->pm.ac_power = true;
+ 				break;
+ 			case 0x4:
+ 				dev_dbg(adev->dev, "Switched to DC mode!\n");
+ 				smu_v13_0_ack_ac_dc_interrupt(smu);
++				adev->pm.ac_power = false;
+ 				break;
+ 			case 0x7:
+ 				/*
 
 
 
