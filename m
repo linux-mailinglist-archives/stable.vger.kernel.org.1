@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-16949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D14BD840F2E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D03A9841084
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01EBE1C22F79
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0125E1C23C09
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D20915D5B1;
-	Mon, 29 Jan 2024 17:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278EF15B98D;
+	Mon, 29 Jan 2024 17:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTy5i5wg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BAYtsEGd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C6515AAD9;
-	Mon, 29 Jan 2024 17:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A4476058;
+	Mon, 29 Jan 2024 17:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548398; cv=none; b=GlTijdTsmT2gHjQ/itjdjLo2ySUOLpherfQV3GIyB3V29SnXrOXEpuVyjj68qiGmSdmkPDSSS0UK1d19afHKav5NL22eQm8fcU//aO/J0tVFXwU6A+aszjCG5I6ZN/oKSttof4IL2gvN/RIdmZ6c04bYs1qM5z9lUfNh8v0y8cg=
+	t=1706548636; cv=none; b=hkqZaWTwSGkVoyXHpgudUoIbnXIyA/+wCLKQfBytZBxagmpuAse7MSf+Xs3dg/Ur6l0f2QZ7V6Qn7Ah/YHWoOMPEhqL9KO4lgHicW5JUuuaqIlRB+TDG0V16Dp+Y4xUG8NF8F6wf0VwMeixzYiwDbq0rnh3Utct1mPx0uToj2qA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548398; c=relaxed/simple;
-	bh=l6LAkea+A8vV/b5Xsdwq+fyPkyO2dbrRrSXAtOecahI=;
+	s=arc-20240116; t=1706548636; c=relaxed/simple;
+	bh=8f80xcaCfrDQtt/xw2dX7xHZdD8Jdp03x/45Ry1t36g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iSB5F82cRIUHaEKdOWmd8RGyk+EhSoc8rOrI5LFDkeD9UnJxKmJCBfMfiRkiV1lSVcCNdh0XB+iCA4hH7hqUGUzlT2HOeNj0aEEvP8FKpEwWPv14oKCzAmR9ItEW0RWeTySlwn/sDgr6vd0mOQwYprYG76d7Qo/G8LZEh2ww5sE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTy5i5wg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE01EC43390;
-	Mon, 29 Jan 2024 17:13:17 +0000 (UTC)
+	 MIME-Version; b=WzjyGfw9LuAR+wgwBS49/csFISJsJCgrmvg6jgW6FxFMbYWCs6aV0TYgTebfqVIvC0b4Sd3rULSAdSEb3ag/GXXy437njcrJOaYsd17ICdHPznK08SIsNDpHOVcc4X0CWliEHe3MlMiDLnpQQmUQbhmYt4lp05O+/B4Ruu3rEZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BAYtsEGd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A475C433C7;
+	Mon, 29 Jan 2024 17:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548397;
-	bh=l6LAkea+A8vV/b5Xsdwq+fyPkyO2dbrRrSXAtOecahI=;
+	s=korg; t=1706548636;
+	bh=8f80xcaCfrDQtt/xw2dX7xHZdD8Jdp03x/45Ry1t36g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yTy5i5wg704z9P96cz3/E38Vu5zFJOzFA8x5izjHp/l/oOr/N6Hu6WacNQEjJ97Vp
-	 QhVZ/5OGO/mapC9gV19OWD2ur9D5BJD/nRSfxuBrqq5KM6w8EhFLnkT2leJgBXo440
-	 YyAvkL3RGBYduS9ojOSPZxaC5/fbDhei43Wgatn8=
+	b=BAYtsEGduYsle8sulDQYFoFMkriKQEpVALnkzRhS4P5pZVtXnYaq5Wl/1GQbeC5yI
+	 6u44wgEvgpqZOAMSZBez3Etii9oe1NIIEB7HqXQS4DjrxsotJRivSxZpapQVkmWJjQ
+	 YAtT9PHQZ2g50EzQHZtW0rMM0DvPpHzL7KnOmqu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Wenhua Lin <Wenhua.Lin@unisoc.com>,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 175/185] gpio: eic-sprd: Clear interrupt after set the interrupt type
-Date: Mon, 29 Jan 2024 09:06:15 -0800
-Message-ID: <20240129170004.211966854@linuxfoundation.org>
+Subject: [PATCH 6.6 312/331] gpio: eic-sprd: Clear interrupt after set the interrupt type
+Date: Mon, 29 Jan 2024 09:06:16 -0800
+Message-ID: <20240129170024.012462704@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -86,10 +86,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 28 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/gpio/gpio-eic-sprd.c b/drivers/gpio/gpio-eic-sprd.c
-index 8d722e026e9c..c2857ed0c78a 100644
+index 5320cf1de89c..b24e349deed5 100644
 --- a/drivers/gpio/gpio-eic-sprd.c
 +++ b/drivers/gpio/gpio-eic-sprd.c
-@@ -318,20 +318,27 @@ static int sprd_eic_irq_set_type(struct irq_data *data, unsigned int flow_type)
+@@ -321,20 +321,27 @@ static int sprd_eic_irq_set_type(struct irq_data *data, unsigned int flow_type)
  		switch (flow_type) {
  		case IRQ_TYPE_LEVEL_HIGH:
  			sprd_eic_update(chip, offset, SPRD_EIC_DBNC_IEV, 1);
@@ -119,7 +119,7 @@ index 8d722e026e9c..c2857ed0c78a 100644
  			break;
  		default:
  			return -ENOTSUPP;
-@@ -343,20 +350,27 @@ static int sprd_eic_irq_set_type(struct irq_data *data, unsigned int flow_type)
+@@ -346,20 +353,27 @@ static int sprd_eic_irq_set_type(struct irq_data *data, unsigned int flow_type)
  		switch (flow_type) {
  		case IRQ_TYPE_LEVEL_HIGH:
  			sprd_eic_update(chip, offset, SPRD_EIC_LATCH_INTPOL, 0);
@@ -149,7 +149,7 @@ index 8d722e026e9c..c2857ed0c78a 100644
  			break;
  		default:
  			return -ENOTSUPP;
-@@ -370,29 +384,34 @@ static int sprd_eic_irq_set_type(struct irq_data *data, unsigned int flow_type)
+@@ -373,29 +387,34 @@ static int sprd_eic_irq_set_type(struct irq_data *data, unsigned int flow_type)
  			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTBOTH, 0);
  			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTMODE, 0);
  			sprd_eic_update(chip, offset, SPRD_EIC_ASYNC_INTPOL, 1);
@@ -184,7 +184,7 @@ index 8d722e026e9c..c2857ed0c78a 100644
  			irq_set_handler_locked(data, handle_level_irq);
  			break;
  		default:
-@@ -405,29 +424,34 @@ static int sprd_eic_irq_set_type(struct irq_data *data, unsigned int flow_type)
+@@ -408,29 +427,34 @@ static int sprd_eic_irq_set_type(struct irq_data *data, unsigned int flow_type)
  			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTBOTH, 0);
  			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTMODE, 0);
  			sprd_eic_update(chip, offset, SPRD_EIC_SYNC_INTPOL, 1);
