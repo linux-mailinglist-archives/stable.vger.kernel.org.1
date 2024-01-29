@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0834D840F1D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC7E841074
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D0A81C228D9
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6EAD1C23B1B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840D2163AA4;
-	Mon, 29 Jan 2024 17:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF5276048;
+	Mon, 29 Jan 2024 17:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gz1Aitcz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqy59mlz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4336C163A99;
-	Mon, 29 Jan 2024 17:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2B576041;
+	Mon, 29 Jan 2024 17:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548387; cv=none; b=LAyiW9CiSmIeQkxDaylUyMRNhqTKBIk+VUxZK1DGJwIN3+IGJU3dFU89fwdHZMIoL8Ob2rJsKlBp+WuspTlMw9eSsuE85BP09u0IjKTIXJ+3KdzL2XV6n1jpqC0y2GzyOGI1LlsJULaPIqB5lNNvBDSriNFDHEBwRKcYB98zOH0=
+	t=1706548625; cv=none; b=IdDUT0beDLDWLXzIoF43gCQTUTmaRVFLIXo+/YyeusjyR2XWWAD3bXDictV7Sigg8AjLQ8O+Qh22IaDJ2sDTy2pNnu2aD3ka4ii8iF12L5GMCBmCiCOr8223nrwC3xMw95LRXzlE+C0ZE4m6f71gyXkKvLVDv6w2vADyDQ+ha0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548387; c=relaxed/simple;
-	bh=R9fyRyp/zKQu4bT7a6qzRexWlHyzuJo8KkTcG/Y2Q7A=;
+	s=arc-20240116; t=1706548625; c=relaxed/simple;
+	bh=QNnEyYqKHwtLOP7kpBH0aAZMjN3+Se8I4IsJghwjb+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dsaer/plbXLsYGZRk2ff0gjvyUvSVE1Gz06Ri5gqr9lq4MUHTu1RzeLqDLDbsT+VVloxxSfznIXGXUtrO2RU+r9QmG5NMUuK61cY1Vy9oqH8HNezpJ8wf7PJMrbxWjmomXPky9Ddfq23Zq19hj7jWogfGm1b/YFwMyOgpj+IT+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gz1Aitcz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A91AC43390;
-	Mon, 29 Jan 2024 17:13:07 +0000 (UTC)
+	 MIME-Version; b=OMGGeKkJxP2lJdtuhuRsNluf7U+hTj2k7TNjYPsZQvXf1yb4ptHfpqQ9u77SIEQXNrdyulnFOPETe6VoVQybxjI8w4A1O0bcLeOn0Pw0BOfCavWuJ3kiFwxwDyqF7T6e47TPkXXKBP4CADgCq4M29Tr30QP7TVGiEyoSo0ep7S8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqy59mlz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60A9C433F1;
+	Mon, 29 Jan 2024 17:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548387;
-	bh=R9fyRyp/zKQu4bT7a6qzRexWlHyzuJo8KkTcG/Y2Q7A=;
+	s=korg; t=1706548624;
+	bh=QNnEyYqKHwtLOP7kpBH0aAZMjN3+Se8I4IsJghwjb+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gz1AitczCUrejfvcJYqHgzIKnLfvrjOkq0qHdrS2WoYKDBe6Zik3o8RzabmC+b+B2
-	 qRc/G88ILNwnAGY+5/dBIEpCub8p/w/B2Ort+cKfjaOn0yhJzVBMdfe6lUBtEbjkEJ
-	 lSc0dxSdjV77yLXx2o49GS7F7zHhmgcRkaOjkBWw=
+	b=wqy59mlzhaLwiZPFteTg23y7iXnhncoLLZkJ1W7+GdUnZ4Wu0ZH9R5cSOgbfJaTOx
+	 s0cwpz3hcOS5cc2kPxgC3xeqdU1k4Ks1yuU+jOHIh1L5jgXHhJhIewSi3aMqXsH0zc
+	 Ol7vnFIYoCKElzBjK8fEGkc8PH7lIy9mxEgIJDKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	John Ogness <john.ogness@linutronix.de>,
+	Sheng-Liang Pan <sheng-liang.pan@quanta.corp-partner.google.com>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 159/185] serial: core: Provide port lock wrappers
+Subject: [PATCH 6.6 295/331] drm/panel-edp: Add AUO B116XTN02, BOE NT116WHM-N21,836X2, NV116WHM-N49 V8.0
 Date: Mon, 29 Jan 2024 09:05:59 -0800
-Message-ID: <20240129170003.703057339@linuxfoundation.org>
+Message-ID: <20240129170023.496914794@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,138 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Sheng-Liang Pan <sheng-liang.pan@quanta.corp-partner.google.com>
 
-[ Upstream commit b0af4bcb49464c221ad5f95d40f2b1b252ceedcc ]
+[ Upstream commit 3db2420422a5912d97966e0176050bb0fc9aa63e ]
 
-When a serial port is used for kernel console output, then all
-modifications to the UART registers which are done from other contexts,
-e.g. getty, termios, are interference points for the kernel console.
+Add panel identification entry for
+- AUO B116XTN02 family (product ID:0x235c)
+- BOE NT116WHM-N21,836X2 (product ID:0x09c3)
+- BOE NV116WHM-N49 V8.0 (product ID:0x0979)
 
-So far this has been ignored and the printk output is based on the
-principle of hope. The rework of the console infrastructure which aims to
-support threaded and atomic consoles, requires to mark sections which
-modify the UART registers as unsafe. This allows the atomic write function
-to make informed decisions and eventually to restore operational state. It
-also allows to prevent the regular UART code from modifying UART registers
-while printk output is in progress.
-
-All modifications of UART registers are guarded by the UART port lock,
-which provides an obvious synchronization point with the console
-infrastructure.
-
-Provide wrapper functions for spin_[un]lock*(port->lock) invocations so
-that the console mechanics can be applied later on at a single place and
-does not require to copy the same logic all over the drivers.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Link: https://lore.kernel.org/r/20230914183831.587273-2-john.ogness@linutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 9915753037eb ("serial: sc16is7xx: fix unconditional activation of THRI interrupt")
+Signed-off-by: Sheng-Liang Pan <sheng-liang.pan@quanta.corp-partner.google.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231027110435.1.Ia01fe9ec1c0953e0050a232eaa782fef2c037516@changeid
+Stable-dep-of: fc6e76792965 ("drm/panel-edp: drm/panel-edp: Fix AUO B116XAK01 name and timing")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/serial_core.h | 79 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 79 insertions(+)
+ drivers/gpu/drm/panel/panel-edp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index d657f2a42a7b..6055dbe5c12e 100644
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -583,6 +583,85 @@ struct uart_port {
- 	void			*private_data;		/* generic platform data pointer */
- };
- 
-+/**
-+ * uart_port_lock - Lock the UART port
-+ * @up:		Pointer to UART port structure
-+ */
-+static inline void uart_port_lock(struct uart_port *up)
-+{
-+	spin_lock(&up->lock);
-+}
-+
-+/**
-+ * uart_port_lock_irq - Lock the UART port and disable interrupts
-+ * @up:		Pointer to UART port structure
-+ */
-+static inline void uart_port_lock_irq(struct uart_port *up)
-+{
-+	spin_lock_irq(&up->lock);
-+}
-+
-+/**
-+ * uart_port_lock_irqsave - Lock the UART port, save and disable interrupts
-+ * @up:		Pointer to UART port structure
-+ * @flags:	Pointer to interrupt flags storage
-+ */
-+static inline void uart_port_lock_irqsave(struct uart_port *up, unsigned long *flags)
-+{
-+	spin_lock_irqsave(&up->lock, *flags);
-+}
-+
-+/**
-+ * uart_port_trylock - Try to lock the UART port
-+ * @up:		Pointer to UART port structure
-+ *
-+ * Returns: True if lock was acquired, false otherwise
-+ */
-+static inline bool uart_port_trylock(struct uart_port *up)
-+{
-+	return spin_trylock(&up->lock);
-+}
-+
-+/**
-+ * uart_port_trylock_irqsave - Try to lock the UART port, save and disable interrupts
-+ * @up:		Pointer to UART port structure
-+ * @flags:	Pointer to interrupt flags storage
-+ *
-+ * Returns: True if lock was acquired, false otherwise
-+ */
-+static inline bool uart_port_trylock_irqsave(struct uart_port *up, unsigned long *flags)
-+{
-+	return spin_trylock_irqsave(&up->lock, *flags);
-+}
-+
-+/**
-+ * uart_port_unlock - Unlock the UART port
-+ * @up:		Pointer to UART port structure
-+ */
-+static inline void uart_port_unlock(struct uart_port *up)
-+{
-+	spin_unlock(&up->lock);
-+}
-+
-+/**
-+ * uart_port_unlock_irq - Unlock the UART port and re-enable interrupts
-+ * @up:		Pointer to UART port structure
-+ */
-+static inline void uart_port_unlock_irq(struct uart_port *up)
-+{
-+	spin_unlock_irq(&up->lock);
-+}
-+
-+/**
-+ * uart_port_lock_irqrestore - Unlock the UART port, restore interrupts
-+ * @up:		Pointer to UART port structure
-+ * @flags:	The saved interrupt flags for restore
-+ */
-+static inline void uart_port_unlock_irqrestore(struct uart_port *up, unsigned long flags)
-+{
-+	spin_unlock_irqrestore(&up->lock, flags);
-+}
-+
- static inline int serial_port_in(struct uart_port *up, int offset)
- {
- 	return up->serial_in(up, offset);
+diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
+index 95c8472d878a..5bf28c8443ef 100644
+--- a/drivers/gpu/drm/panel/panel-edp.c
++++ b/drivers/gpu/drm/panel/panel-edp.c
+@@ -1840,6 +1840,7 @@ static const struct edp_panel_entry edp_panels[] = {
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x145c, &delay_200_500_e50, "B116XAB01.4"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1e9b, &delay_200_500_e50, "B133UAN02.1"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1ea5, &delay_200_500_e50, "B116XAK01.6"),
++	EDP_PANEL_ENTRY('A', 'U', 'O', 0x235c, &delay_200_500_e50, "B116XTN02"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x405c, &auo_b116xak01.delay, "B116XAK01"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x582d, &delay_200_500_e50, "B133UAN01.0"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x615c, &delay_200_500_e50, "B116XAN06.1"),
+@@ -1848,8 +1849,10 @@ static const struct edp_panel_entry edp_panels[] = {
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0786, &delay_200_500_p2e80, "NV116WHM-T01"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x07d1, &boe_nv133fhm_n61.delay, "NV133FHM-N61"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x082d, &boe_nv133fhm_n61.delay, "NV133FHM-N62"),
++	EDP_PANEL_ENTRY('B', 'O', 'E', 0x09c3, &delay_200_500_e50, "NT116WHM-N21,836X2"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x094b, &delay_200_500_e50, "NT116WHM-N21"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x095f, &delay_200_500_e50, "NE135FBM-N41 v8.1"),
++	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0979, &delay_200_500_e50, "NV116WHM-N49 V8.0"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x098d, &boe_nv110wtm_n61.delay, "NV110WTM-N61"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x09dd, &delay_200_500_e50, "NT116WHM-N21"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0a5d, &delay_200_500_e50, "NV116WHM-N45"),
 -- 
 2.43.0
 
