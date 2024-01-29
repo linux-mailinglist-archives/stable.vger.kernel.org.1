@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-16470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E464840D19
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:07:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3411840F46
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29E86284BE3
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:07:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30AB1B2543C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513C9159571;
-	Mon, 29 Jan 2024 17:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 599A715957F;
+	Mon, 29 Jan 2024 17:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KNN4/5oV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgSeM1br"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B518159563;
-	Mon, 29 Jan 2024 17:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1618215D5D2;
+	Mon, 29 Jan 2024 17:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548043; cv=none; b=Y3EPouDYBrXqhKw2tI2M7olk8VYUSh+aUnp8fPQZkdussMIG/7+1/4MDje1gXFgh80VmnYfq5sMDKrlyFlYPArZ9lW3gKr0/3tkvgp1IzpFVGFtTm9wPBlsNaJ8MT6BABwmgKWc10aRhQEGOFuK2H8A4g+1WlHF5Wyc6Kuht02E=
+	t=1706548414; cv=none; b=jqk+f4kdybjyPks9mnQeHc+3DsduJh157JoWk2RDZgYaGVSR/KIW1itTx2Ry1PJCJMnNgw7nU5Y5si/2qaGh6u6QGr2P2kzTvNlRibx0PxA1gW5Qw1rloGcagoqhZd6V3oQIbtGuAIz3PBvwR0VmvYM/EF347l6YMlFg7cjUKPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548043; c=relaxed/simple;
-	bh=yoTKsYq/z3wgpTRkPE58/HQQqIRa/ensADsU63icdgA=;
+	s=arc-20240116; t=1706548414; c=relaxed/simple;
+	bh=qZI3f66A4PiP6kCLvXe1VxdCDYQBvM0T/oSpDHRtwqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EmhHexS4C+VyTfhukjKC09yL3ns/91uHLTxAblWxkzcn2aebabEFfVIcSAzy1LpLgkaxz8uistvXGaFdUfOAemEXebiHzcp0omRjXYR73xzInoGn6QyoyIMoVQ63XuJtxzLjQQxSa+0CSxRF9ai1OKn1Y3CczRno4lDI+8l2twE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNN4/5oV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34DDC433C7;
-	Mon, 29 Jan 2024 17:07:22 +0000 (UTC)
+	 MIME-Version; b=aX2ooWTEaQs/8lTJ0JvGH0EXhbfgcJoK4rLryeMIyvQNKyeiAws3w8bd5l48CcRZjY/ip+dX78HSekn1QxgaJOpAZ7lCwwt3I0Ay/n6b7n2SrGvOoHCcCm27yaoG9w9SDoi8LC1THxsvbQs3emdRc5YE5QgapWcVdTfmkPp7SBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgSeM1br; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5EDC433A6;
+	Mon, 29 Jan 2024 17:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548042;
-	bh=yoTKsYq/z3wgpTRkPE58/HQQqIRa/ensADsU63icdgA=;
+	s=korg; t=1706548413;
+	bh=qZI3f66A4PiP6kCLvXe1VxdCDYQBvM0T/oSpDHRtwqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KNN4/5oVNqtdDrC6xFVTcoFtA3prSCNrdahyVJP8kGtgYRGGjXOz4npxxospJGf1w
-	 qaGZQouc0j/iziDNfJYQyEHAu2Y0cdQMaHTynCx96Y+Zs9LFwqgIoeMAYRDAElA5YV
-	 lq9x75WD9OjCB3tDnfLj+vqs4m2z2PXro0g4J3t4=
+	b=bgSeM1brZKB1lGxM3SurxVsb2zv16CcxlPsBcvHhyAdcKWrzAmGYCZGUwvGJ7/mdt
+	 /2eUoR3dCg+UtxP2lq3uZ5FjDI/+iFkc6sa+aYPSmMkEwl+G0nZwvM7TSphiVOckdK
+	 40DaB735HqjOA9+fcy9KNKokkR2sLu65zNlizp5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org,
-	nbd@other.debian.org,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH 6.7 043/346] nbd: always initialize struct msghdr completely
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 010/331] iio: adc: ad7091r: Set alert bit in config register
 Date: Mon, 29 Jan 2024 09:01:14 -0800
-Message-ID: <20240129170017.649979424@linuxfoundation.org>
+Message-ID: <20240129170015.265607549@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 
-commit 78fbb92af27d0982634116c7a31065f24d092826 upstream.
+[ Upstream commit 149694f5e79b0c7a36ceb76e7c0d590db8f151c1 ]
 
-syzbot complains that msg->msg_get_inq value can be uninitialized [1]
+The ad7091r-base driver sets up an interrupt handler for firing events
+when inputs are either above or below a certain threshold.
+However, for the interrupt signal to come from the device it must be
+configured to enable the ALERT/BUSY/GPO pin to be used as ALERT, which
+was not being done until now.
+Enable interrupt signals on the ALERT/BUSY/GPO pin by setting the proper
+bit in the configuration register.
 
-struct msghdr got many new fields recently, we should always make
-sure their values is zero by default.
-
-[1]
- BUG: KMSAN: uninit-value in tcp_recvmsg+0x686/0xac0 net/ipv4/tcp.c:2571
-  tcp_recvmsg+0x686/0xac0 net/ipv4/tcp.c:2571
-  inet_recvmsg+0x131/0x580 net/ipv4/af_inet.c:879
-  sock_recvmsg_nosec net/socket.c:1044 [inline]
-  sock_recvmsg+0x12b/0x1e0 net/socket.c:1066
-  __sock_xmit+0x236/0x5c0 drivers/block/nbd.c:538
-  nbd_read_reply drivers/block/nbd.c:732 [inline]
-  recv_work+0x262/0x3100 drivers/block/nbd.c:863
-  process_one_work kernel/workqueue.c:2627 [inline]
-  process_scheduled_works+0x104e/0x1e70 kernel/workqueue.c:2700
-  worker_thread+0xf45/0x1490 kernel/workqueue.c:2781
-  kthread+0x3ed/0x540 kernel/kthread.c:388
-  ret_from_fork+0x66/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
-
-Local variable msg created at:
-  __sock_xmit+0x4c/0x5c0 drivers/block/nbd.c:513
-  nbd_read_reply drivers/block/nbd.c:732 [inline]
-  recv_work+0x262/0x3100 drivers/block/nbd.c:863
-
-CPU: 1 PID: 7465 Comm: kworker/u5:1 Not tainted 6.7.0-rc7-syzkaller-00041-gf016f7547aee #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-Workqueue: nbd5-recv recv_work
-
-Fixes: f94fd25cb0aa ("tcp: pass back data left in socket after receive")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: stable@vger.kernel.org
-Cc: Josef Bacik <josef@toxicpanda.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org
-Cc: nbd@other.debian.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240112132657.647112-1-edumazet@google.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Link: https://lore.kernel.org/r/e8da2ee98d6df88318b14baf3dc9630e20218418.1702746240.git.marcelo.schmitt1@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 020e71c7ffc2 ("iio: adc: ad7091r: Allow users to configure device events")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/iio/adc/ad7091r-base.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -510,7 +510,7 @@ static int __sock_xmit(struct nbd_device
- 		       struct iov_iter *iter, int msg_flags, int *sent)
- {
- 	int result;
--	struct msghdr msg;
-+	struct msghdr msg = {} ;
- 	unsigned int noreclaim_flag;
+diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
+index 0e5d3d2e9c98..8aaa854f816f 100644
+--- a/drivers/iio/adc/ad7091r-base.c
++++ b/drivers/iio/adc/ad7091r-base.c
+@@ -28,6 +28,7 @@
+ #define AD7091R_REG_RESULT_CONV_RESULT(x)   ((x) & 0xfff)
  
- 	if (unlikely(!sock)) {
-@@ -526,10 +526,6 @@ static int __sock_xmit(struct nbd_device
- 	do {
- 		sock->sk->sk_allocation = GFP_NOIO | __GFP_MEMALLOC;
- 		sock->sk->sk_use_task_frag = false;
--		msg.msg_name = NULL;
--		msg.msg_namelen = 0;
--		msg.msg_control = NULL;
--		msg.msg_controllen = 0;
- 		msg.msg_flags = msg_flags | MSG_NOSIGNAL;
+ /* AD7091R_REG_CONF */
++#define AD7091R_REG_CONF_ALERT_EN   BIT(4)
+ #define AD7091R_REG_CONF_AUTO   BIT(8)
+ #define AD7091R_REG_CONF_CMD    BIT(10)
  
- 		if (send)
+@@ -232,6 +233,11 @@ int ad7091r_probe(struct device *dev, const char *name,
+ 	iio_dev->channels = chip_info->channels;
+ 
+ 	if (irq) {
++		ret = regmap_update_bits(st->map, AD7091R_REG_CONF,
++					 AD7091R_REG_CONF_ALERT_EN, BIT(4));
++		if (ret)
++			return ret;
++
+ 		ret = devm_request_threaded_irq(dev, irq, NULL,
+ 				ad7091r_event_handler,
+ 				IRQF_TRIGGER_FALLING | IRQF_ONESHOT, name, iio_dev);
+-- 
+2.43.0
+
 
 
 
