@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-16880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7033F840ECE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9DD1840F3F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB44CB21464
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 576BE1F27347
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65FA15CD43;
-	Mon, 29 Jan 2024 17:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508C81641A5;
+	Mon, 29 Jan 2024 17:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ThrKeO5z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtPGzDwY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D66157E79;
-	Mon, 29 Jan 2024 17:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E01416419C;
+	Mon, 29 Jan 2024 17:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548347; cv=none; b=IaRI0YrsZB9JHc8y0jfmEM4p617XnHG/eCTdwjSZUKHOsMpRf3Skp9eD3mcElo+YrgJwl4viTlwUAp9mmDyCY+f9VxpNQPp0eqCktiJ2AQVUNpvkyaf32gym2xdJKsPUUXudf9WnfF1oPw7U8A7gZOvA3JWCWQZ/U03St9jr+/w=
+	t=1706548410; cv=none; b=T21pJKa4sARni9htqU4OYRau7rdn+g4dQRCiQGS4eKNeJsGuxU4o4CVIx88FYo1xgYWsxy8ZxP11c9O/6nhmk79256vPKVaxe3tLNLlOZPTdZmkvVhfWdNxKoc/rKX9gJEiGs1Jb3Cg8Jj46TX81/3z1g/DxGhBruChY7yZsKpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548347; c=relaxed/simple;
-	bh=28zrTII80AOz81jh0VcLiJ3DKKjQbrdWZRJVMWOwLRM=;
+	s=arc-20240116; t=1706548410; c=relaxed/simple;
+	bh=US6ZvIfaLF//ipuNlR/G5t+xcH0dR9f0ireINE3pZkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1+Qf3Fz3IfysOmFv5EEYWJNmTMFJXqfeyM3Y215TEoaDmipS/9FP/3mD5g0In7BHKmYZSjxGQzTYHi69Ot1jEI0PF3SUA8H2TYEDuCG0yCVUt3DcoZMtUC/Olm3ZYNKdngmiBBw2QsjNSnvL45GRgD3jPNq7Q+YRVKpVLinOyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ThrKeO5z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E206C43399;
-	Mon, 29 Jan 2024 17:12:27 +0000 (UTC)
+	 MIME-Version; b=ghSxfAmP7GDNTpzRMXgkSSgK0tj86UFYLjCBj/Hkh02FAZ1Vu20FSM267zsJK+PoDij/wSm4S7CPAN31jamjkFaX+onyk3C0AAjEXo+gBVvEuptsE5+hJLmonXSnAQSjBz4/62w2tCIIdSKkGayUmUsCe7/FQgmycvVq7vhOMIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtPGzDwY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACDCC43394;
+	Mon, 29 Jan 2024 17:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548347;
-	bh=28zrTII80AOz81jh0VcLiJ3DKKjQbrdWZRJVMWOwLRM=;
+	s=korg; t=1706548409;
+	bh=US6ZvIfaLF//ipuNlR/G5t+xcH0dR9f0ireINE3pZkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ThrKeO5zsA0SUrDkY9bUnZ/vgY1xonVilbWs0d0pkQomMXDW/km440wXuA8llHfA3
-	 9FiB9It5+bCkOb6mPhssoRUXQ7J00QXF/OOmZZAXoHYGmlEi5wbgBoe8m611L7XJ5p
-	 nMfNhZdaZj0Eb6pHyOVQvtZfmkiX2b78HQ/O6nN8=
+	b=HtPGzDwY3ztQGh+KBLHFoEg1AXfrRgkpbD5cUvptF0EKEegjP42xwsMgZ507V0C+V
+	 9KbXXNsD2Qfx0qpXIt8l7kQxdjAJjRaAUVUygMIwoPYDemcxoGOB6LwEgGvTVq9DZj
+	 XCaXMOzxPqkyPlSOWJLQfz0UZwfu72XBAtr3GOKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	Inki Dae <inki.dae@samsung.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Jyri Sarha <jsarha@ti.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 339/346] drm: bridge: samsung-dsim: Dont use FORCE_STOP_STATE
+Subject: [PATCH 6.1 170/185] drm/bridge: sii902x: Fix audio codec unregistration
 Date: Mon, 29 Jan 2024 09:06:10 -0800
-Message-ID: <20240129170026.467861734@linuxfoundation.org>
+Message-ID: <20240129170004.050980795@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit ff3d5d04db07e5374758baa7e877fde8d683ebab ]
+[ Upstream commit 3fc6c76a8d208d3955c9e64b382d0ff370bc61fc ]
 
-The FORCE_STOP_STATE bit is unsuitable to force the DSI link into LP-11
-mode. It seems the bridge internally queues DSI packets and when the
-FORCE_STOP_STATE bit is cleared, they are sent in close succession
-without any useful timing (this also means that the DSI lanes won't go
-into LP-11 mode). The length of this gibberish varies between 1ms and
-5ms. This sometimes breaks an attached bridge (TI SN65DSI84 in this
-case). In our case, the bridge will fail in about 1 per 500 reboots.
+The driver never unregisters the audio codec platform device, which can
+lead to a crash on module reloading, nor does it handle the return value
+from sii902x_audio_codec_init().
 
-The FORCE_STOP_STATE handling was introduced to have the DSI lanes in
-LP-11 state during the .pre_enable phase. But as it turns out, none of
-this is needed at all. Between samsung_dsim_init() and
-samsung_dsim_set_display_enable() the lanes are already in LP-11 mode.
-The code as it was before commit 20c827683de0 ("drm: bridge:
-samsung-dsim: Fix init during host transfer") and 0c14d3130654 ("drm:
-bridge: samsung-dsim: Fix i.MX8M enable flow to meet spec") was correct
-in this regard.
-
-This patch basically reverts both commits. It was tested on an i.MX8M
-SoC with an SN65DSI84 bridge. The signals were probed and the DSI
-packets were decoded during initialization and link start-up. After this
-patch the first DSI packet on the link is a VSYNC packet and the timing
-is correct.
-
-Command mode between .pre_enable and .enable was also briefly tested by
-a quick hack. There was no DSI link partner which would have responded,
-but it was made sure the DSI packet was send on the link. As a side
-note, the command mode seems to just work in HS mode. I couldn't find
-that the bridge will handle commands in LP mode.
-
-Fixes: 20c827683de0 ("drm: bridge: samsung-dsim: Fix init during host transfer")
-Fixes: 0c14d3130654 ("drm: bridge: samsung-dsim: Fix i.MX8M enable flow to meet spec")
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231113164344.1612602-1-mwalle@kernel.org
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Fixes: ff5781634c41 ("drm/bridge: sii902x: Implement HDMI audio support")
+Cc: Jyri Sarha <jsarha@ti.com>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20240103-si902x-fixes-v1-2-b9fd3e448411@ideasonboard.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240103-si902x-fixes-v1-2-b9fd3e448411@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/samsung-dsim.c | 32 ++-------------------------
- 1 file changed, 2 insertions(+), 30 deletions(-)
+ drivers/gpu/drm/bridge/sii902x.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
-index be5914caa17d..63a1a0c88be4 100644
---- a/drivers/gpu/drm/bridge/samsung-dsim.c
-+++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-@@ -969,10 +969,6 @@ static int samsung_dsim_init_link(struct samsung_dsim *dsi)
- 	reg = samsung_dsim_read(dsi, DSIM_ESCMODE_REG);
- 	reg &= ~DSIM_STOP_STATE_CNT_MASK;
- 	reg |= DSIM_STOP_STATE_CNT(driver_data->reg_values[STOP_STATE_CNT]);
--
--	if (!samsung_dsim_hw_is_exynos(dsi->plat_data->hw_type))
--		reg |= DSIM_FORCE_STOP_STATE;
--
- 	samsung_dsim_write(dsi, DSIM_ESCMODE_REG, reg);
- 
- 	reg = DSIM_BTA_TIMEOUT(0xff) | DSIM_LPDR_TIMEOUT(0xffff);
-@@ -1431,18 +1427,6 @@ static void samsung_dsim_disable_irq(struct samsung_dsim *dsi)
- 	disable_irq(dsi->irq);
- }
- 
--static void samsung_dsim_set_stop_state(struct samsung_dsim *dsi, bool enable)
--{
--	u32 reg = samsung_dsim_read(dsi, DSIM_ESCMODE_REG);
--
--	if (enable)
--		reg |= DSIM_FORCE_STOP_STATE;
--	else
--		reg &= ~DSIM_FORCE_STOP_STATE;
--
--	samsung_dsim_write(dsi, DSIM_ESCMODE_REG, reg);
--}
--
- static int samsung_dsim_init(struct samsung_dsim *dsi)
- {
- 	const struct samsung_dsim_driver_data *driver_data = dsi->driver_data;
-@@ -1492,9 +1476,6 @@ static void samsung_dsim_atomic_pre_enable(struct drm_bridge *bridge,
- 		ret = samsung_dsim_init(dsi);
- 		if (ret)
- 			return;
--
--		samsung_dsim_set_display_mode(dsi);
--		samsung_dsim_set_display_enable(dsi, true);
+diff --git a/drivers/gpu/drm/bridge/sii902x.c b/drivers/gpu/drm/bridge/sii902x.c
+index f648d686eb37..6359d6f53a1b 100644
+--- a/drivers/gpu/drm/bridge/sii902x.c
++++ b/drivers/gpu/drm/bridge/sii902x.c
+@@ -1040,7 +1040,9 @@ static int sii902x_init(struct sii902x *sii902x)
+ 			return ret;
  	}
- }
  
-@@ -1503,12 +1484,8 @@ static void samsung_dsim_atomic_enable(struct drm_bridge *bridge,
- {
- 	struct samsung_dsim *dsi = bridge_to_dsi(bridge);
+-	sii902x_audio_codec_init(sii902x, dev);
++	ret = sii902x_audio_codec_init(sii902x, dev);
++	if (ret)
++		return ret;
  
--	if (samsung_dsim_hw_is_exynos(dsi->plat_data->hw_type)) {
--		samsung_dsim_set_display_mode(dsi);
--		samsung_dsim_set_display_enable(dsi, true);
--	} else {
--		samsung_dsim_set_stop_state(dsi, false);
--	}
-+	samsung_dsim_set_display_mode(dsi);
-+	samsung_dsim_set_display_enable(dsi, true);
+ 	i2c_set_clientdata(sii902x->i2c, sii902x);
  
- 	dsi->state |= DSIM_STATE_VIDOUT_AVAILABLE;
- }
-@@ -1521,9 +1498,6 @@ static void samsung_dsim_atomic_disable(struct drm_bridge *bridge,
- 	if (!(dsi->state & DSIM_STATE_ENABLED))
- 		return;
+@@ -1048,13 +1050,15 @@ static int sii902x_init(struct sii902x *sii902x)
+ 					1, 0, I2C_MUX_GATE,
+ 					sii902x_i2c_bypass_select,
+ 					sii902x_i2c_bypass_deselect);
+-	if (!sii902x->i2cmux)
+-		return -ENOMEM;
++	if (!sii902x->i2cmux) {
++		ret = -ENOMEM;
++		goto err_unreg_audio;
++	}
  
--	if (!samsung_dsim_hw_is_exynos(dsi->plat_data->hw_type))
--		samsung_dsim_set_stop_state(dsi, true);
--
- 	dsi->state &= ~DSIM_STATE_VIDOUT_AVAILABLE;
- }
- 
-@@ -1828,8 +1802,6 @@ static ssize_t samsung_dsim_host_transfer(struct mipi_dsi_host *host,
+ 	sii902x->i2cmux->priv = sii902x;
+ 	ret = i2c_mux_add_adapter(sii902x->i2cmux, 0, 0, 0);
  	if (ret)
- 		return ret;
+-		return ret;
++		goto err_unreg_audio;
  
--	samsung_dsim_set_stop_state(dsi, false);
--
- 	ret = mipi_dsi_create_packet(&xfer.packet, msg);
- 	if (ret < 0)
- 		return ret;
+ 	sii902x->bridge.funcs = &sii902x_bridge_funcs;
+ 	sii902x->bridge.of_node = dev->of_node;
+@@ -1067,6 +1071,12 @@ static int sii902x_init(struct sii902x *sii902x)
+ 	drm_bridge_add(&sii902x->bridge);
+ 
+ 	return 0;
++
++err_unreg_audio:
++	if (!PTR_ERR_OR_ZERO(sii902x->audio.pdev))
++		platform_device_unregister(sii902x->audio.pdev);
++
++	return ret;
+ }
+ 
+ static int sii902x_probe(struct i2c_client *client,
+@@ -1139,6 +1149,9 @@ static void sii902x_remove(struct i2c_client *client)
+ 
+ 	drm_bridge_remove(&sii902x->bridge);
+ 	i2c_mux_del_adapters(sii902x->i2cmux);
++
++	if (!PTR_ERR_OR_ZERO(sii902x->audio.pdev))
++		platform_device_unregister(sii902x->audio.pdev);
+ }
+ 
+ static const struct of_device_id sii902x_dt_ids[] = {
 -- 
 2.43.0
 
