@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F61840E43
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0CA6841000
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E12F28359A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 204DF1C2398B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AC115EAA8;
-	Mon, 29 Jan 2024 17:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060A71586CF;
+	Mon, 29 Jan 2024 17:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dH7westV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SQF8oAp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FBE15B2FA;
-	Mon, 29 Jan 2024 17:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F0D73722;
+	Mon, 29 Jan 2024 17:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548252; cv=none; b=qKyRUjG9fnbiu4Yn858mNpo4LRHXUb+iVFmB/kNzZvnowTxTSBxf20Hfg1Wn5Y9Uyvp7WgPu94aQcInSZqoW5vFkBXfAm+imXw5KUMsoJZKyfc5fu4etjGi2IEFK29foJ1hvBHedW6VEf3q0XE3t9HQLvFVRE8m0+B8DE+0f8Wg=
+	t=1706548542; cv=none; b=t6J2ekUd7r6a0EZQlLPqesvX4YuGOWNqio0LR1SWPDeN6k5vt0dCj1CiwKeJ1WVY0ywXU0vQR344lVXBHSX0vTzI5iP6IMYQdw+FuwJ4ZMPbqrs1l5qBF0KxUBjSWrxplYG4WwjoOMuHkswE6S7MbyVxtb7eKmERyDiUqn180x8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548252; c=relaxed/simple;
-	bh=QFvhgMdhNAg4c09MDhcOLnlmmJn6jW2ZD1KLN2kSKGo=;
+	s=arc-20240116; t=1706548542; c=relaxed/simple;
+	bh=FshGyPnN7aErYl27bI5K9dYuHZFSRpTDvLMp3IR9vGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UWMYlBZ6myB9h0FUlC5r5aHt4tHAU/F7WSX8aIJW8VaIgn0XTymz+aXc2RdRnO8VP7vLwm/Ji4MB+UwW9MVfy7aKaqkhZM63ajOtJKmy7oLOuSOi84RXheyGLn5O+HXNViMlROZYA0oduujxo+Dc2vMIOXbYFlZDrXzLeqpggaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dH7westV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA0DC43390;
-	Mon, 29 Jan 2024 17:10:52 +0000 (UTC)
+	 MIME-Version; b=SFj4FZiwIpX5FD7rDa9xf+ZIvf+KU4jy97SXNxukcX9ZSLocjxtTfsw3FM5xvGhT0nD0AFL8TuczLBsIE7EjabQofEmOY0l3m7d9SVVvP/g0we99tUeknKKdyM6oJ2IKA1/knZG+jWl2Chgpc7NI2GctILVEuDUiZuLEArOjJ0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SQF8oAp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB35C433C7;
+	Mon, 29 Jan 2024 17:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548252;
-	bh=QFvhgMdhNAg4c09MDhcOLnlmmJn6jW2ZD1KLN2kSKGo=;
+	s=korg; t=1706548542;
+	bh=FshGyPnN7aErYl27bI5K9dYuHZFSRpTDvLMp3IR9vGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dH7westVPZqVDMUpsFsJS6AUDPvl/Lx+lbboPnPPEvGSIOLMQYkMq3cS9l3u3FVl6
-	 0kM14GMFkfzmcYpQHilAX9Z72JSyNFkoV6miA7CkJUs8yUuLOUA8ZpaMC9d0+MZyu3
-	 QRddZqvYcIAA1gXt8qjYcw9M/nH16HRf9vkcgy8g=
+	b=2SQF8oAp6Zjtuls/T67OBjCCRPEVUM0vSVIA7ZNcka9QCu79VOjoXWsFbrIjjtval
+	 DvWI/a8DEjU367TIz9y7TWmcFbpnX8ZpeG1MdbeYT/jtWt5y/pHzZwTQhClE2kbR36
+	 6Qg3dktOw9AvTlQkL6UDg6fzi1SMnHVAUJrySnd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 047/185] arm64: Rename ARM64_WORKAROUND_2966298
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	David Howells <dhowells@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 183/331] netfs, fscache: Prevent Oops in fscache_put_cache()
 Date: Mon, 29 Jan 2024 09:04:07 -0800
-Message-ID: <20240129170000.100100939@linuxfoundation.org>
+Message-ID: <20240129170020.252484948@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 546b7cde9b1dd36089649101b75266564600ffe5 upstream.
+[ Upstream commit 3be0b3ed1d76c6703b9ee482b55f7e01c369cc68 ]
 
-In preparation to apply ARM64_WORKAROUND_2966298 for multiple errata,
-rename the kconfig and capability. No functional change.
+This function dereferences "cache" and then checks if it's
+IS_ERR_OR_NULL().  Check first, then dereference.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Rob Herring <robh@kernel.org>
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20240110-arm-errata-a510-v1-1-d02bc51aeeee@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9549332df4ed ("fscache: Implement cache registration")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/e84bc740-3502-4f16-982a-a40d5676615c@moroto.mountain/ # v2
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/Kconfig             |    4 ++++
- arch/arm64/kernel/cpu_errata.c |    4 ++--
- arch/arm64/kernel/entry.S      |    2 +-
- arch/arm64/tools/cpucaps       |    2 +-
- 4 files changed, 8 insertions(+), 4 deletions(-)
+ fs/fscache/cache.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -983,8 +983,12 @@ config ARM64_ERRATUM_2457168
+diff --git a/fs/fscache/cache.c b/fs/fscache/cache.c
+index d645f8b302a2..9397ed39b0b4 100644
+--- a/fs/fscache/cache.c
++++ b/fs/fscache/cache.c
+@@ -179,13 +179,14 @@ EXPORT_SYMBOL(fscache_acquire_cache);
+ void fscache_put_cache(struct fscache_cache *cache,
+ 		       enum fscache_cache_trace where)
+ {
+-	unsigned int debug_id = cache->debug_id;
++	unsigned int debug_id;
+ 	bool zero;
+ 	int ref;
  
- 	  If unsure, say Y.
+ 	if (IS_ERR_OR_NULL(cache))
+ 		return;
  
-+config ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
-+	bool
-+
- config ARM64_ERRATUM_2966298
- 	bool "Cortex-A520: 2966298: workaround for speculatively executed unprivileged load"
-+	select ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
- 	default y
- 	help
- 	  This option adds the workaround for ARM Cortex-A520 erratum 2966298.
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -723,10 +723,10 @@ const struct arm64_cpu_capabilities arm6
- 		.cpu_enable = cpu_clear_bf16_from_user_emulation,
- 	},
- #endif
--#ifdef CONFIG_ARM64_ERRATUM_2966298
-+#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
- 	{
- 		.desc = "ARM erratum 2966298",
--		.capability = ARM64_WORKAROUND_2966298,
-+		.capability = ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD,
- 		/* Cortex-A520 r0p0 - r0p1 */
- 		ERRATA_MIDR_REV_RANGE(MIDR_CORTEX_A520, 0, 0, 1),
- 	},
---- a/arch/arm64/kernel/entry.S
-+++ b/arch/arm64/kernel/entry.S
-@@ -419,7 +419,7 @@ alternative_else_nop_endif
- 	ldp	x28, x29, [sp, #16 * 14]
++	debug_id = cache->debug_id;
+ 	zero = __refcount_dec_and_test(&cache->ref, &ref);
+ 	trace_fscache_cache(debug_id, ref - 1, where);
  
- 	.if	\el == 0
--alternative_if ARM64_WORKAROUND_2966298
-+alternative_if ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
- 	tlbi	vale1, xzr
- 	dsb	nsh
- alternative_else_nop_endif
---- a/arch/arm64/tools/cpucaps
-+++ b/arch/arm64/tools/cpucaps
-@@ -71,7 +71,6 @@ WORKAROUND_2064142
- WORKAROUND_2077057
- WORKAROUND_2457168
- WORKAROUND_2658417
--WORKAROUND_2966298
- WORKAROUND_AMPERE_AC03_CPU_38
- WORKAROUND_TRBE_OVERWRITE_FILL_MODE
- WORKAROUND_TSB_FLUSH_FAILURE
-@@ -87,3 +86,4 @@ WORKAROUND_NVIDIA_CARMEL_CNP
- WORKAROUND_QCOM_FALKOR_E1003
- WORKAROUND_REPEAT_TLBI
- WORKAROUND_SPECULATIVE_AT
-+WORKAROUND_SPECULATIVE_UNPRIV_LOAD
+-- 
+2.43.0
+
 
 
 
