@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-17144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822D5841001
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4847C840E1F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 220601F237D8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 004A6282582
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FE173755;
-	Mon, 29 Jan 2024 17:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F54815B2E8;
+	Mon, 29 Jan 2024 17:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddJLhmia"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GvrEwkMw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6331273748;
-	Mon, 29 Jan 2024 17:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDC0159578;
+	Mon, 29 Jan 2024 17:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548543; cv=none; b=IuuOpBas/0aiM709WiCNEmNZXXBZDf+BgYjBhfEizErnaA6QmI9t0ikTHFwtgQE7GWpZYnb0FTbekKB4WI+viQmOsgtI6IiosJLNxicC+Db14ZX0Q0BGiiIddLgfL+SmOa0iswHSKC1FAVHMSwGuSYjcmUSYNcbXSWX9R1S2rHw=
+	t=1706548228; cv=none; b=VDfjle3iyO0ME4qdddIMEc1u3uDCBKDLK+XblSnml2ULo9lcERvsd4Z65anf8atsCEEQZ8kcgh8Cf1rKvoWZJS06RW0y28cleNG99rpiCUs7u+0zSWH6jJgDzbnEll9HpHRenpQXzekNJ9z3C0M7OXlBnahmrLxR3U8eFnGGCN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548543; c=relaxed/simple;
-	bh=GfVrHMERLr/v5madS4hNMGRgMUYeU3eBSlwpnon1Wnw=;
+	s=arc-20240116; t=1706548228; c=relaxed/simple;
+	bh=tQZK2+RMOawaCWJWkSSGXTGnCYdSFw90JKdOtWWBRVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AqDfP83r/2ZI27/Z2olTCJ9dWg3xOmk3PO7DdbUE3h2aSf2yOV1lFA20xN1boRtxgzUFiXHCsM4y9GMnJ/i/VbSJa3xEjbSoHxb++CktGFwmJk4tNDhaI73zdbMuLTM4bcTXnq+FWK8MvBTtWinnI48CQjeRnKcbgZ1e5mDOtxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddJLhmia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D634C433C7;
-	Mon, 29 Jan 2024 17:15:43 +0000 (UTC)
+	 MIME-Version; b=ccX+sspNcy21RzZ4gZxbPfJoe8coACAXzlGyp/T9UGHNNohbLtNEXJGkt8/nlt/grH1lE4tG/jeB306mRKrhqH/4fj6gjE1emL90VKA4dM5yTag9W8mUMlUYVHkklJXBNLQoI03X9/ihRZMFAaAkJG85PFfbZ+s9J+6Q7t1PcKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GvrEwkMw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC507C433F1;
+	Mon, 29 Jan 2024 17:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548543;
-	bh=GfVrHMERLr/v5madS4hNMGRgMUYeU3eBSlwpnon1Wnw=;
+	s=korg; t=1706548228;
+	bh=tQZK2+RMOawaCWJWkSSGXTGnCYdSFw90JKdOtWWBRVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ddJLhmiaoUQ/wmkIsRdDf8zOjc8ZO5qbX/fUE2BK9O5yitOJBMXX02EptVJCgLWN0
-	 W5h5JHXNkNzv/+QcLZHy1HLrAtX3W1vR2idFtM2ILD4BzQblFzSOVWDdAQGHv/ImgV
-	 P9rJOmqf8l62n1C2hxDwJ4q3H/I22ScR3nRpmvOE=
+	b=GvrEwkMw/iv/xWUCi2dI/uHQF6Mo++qB9iKJzYdORWXjE95EuhNgIOdgmELu6NTSP
+	 fgVpQcL6a+0NLqCfP7Og8IKrI+PAC7GfMU5hHhxrfjJosskwx1stUODM9LKR6JVS3f
+	 3baDWfobz1U0mWwpnWhT3bM9PK/7CTSMOe0vp9Dw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 166/331] cifs: after disabling multichannel, mark tcon for reconnect
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Youngmin Nam <youngmin.nam@samsung.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Subject: [PATCH 6.1 030/185] async: Introduce async_schedule_dev_nocall()
 Date: Mon, 29 Jan 2024 09:03:50 -0800
-Message-ID: <20240129170019.780116532@linuxfoundation.org>
+Message-ID: <20240129165959.565390530@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 27e1fd343f80168ff456785c2443136b6b7ca3cc upstream.
+commit 7d4b5d7a37bdd63a5a3371b988744b060d5bb86f upstream.
 
-Once the server disables multichannel for an active multichannel
-session, on the following reconnect, the client would reduce
-the number of channels to 1. However, it could be the case that
-the tree connect was active on one of these disabled channels.
-This results in an unrecoverable state.
+In preparation for subsequent changes, introduce a specialized variant
+of async_schedule_dev() that will not invoke the argument function
+synchronously when it cannot be scheduled for asynchronous execution.
 
-This change fixes that by making sure that whenever a channel
-is being terminated, the session and tcon are marked for
-reconnect too. This could mean a few redundant tree connect
-calls to the server, but considering that this is not a frequent
-event, we should be okay.
+The new function, async_schedule_dev_nocall(), will be used for fixing
+possible deadlocks in the system-wide power management core code.
 
-Fixes: ee1d21794e55 ("cifs: handle when server stops supporting multichannel")
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com> for the series.
+Tested-by: Youngmin Nam <youngmin.nam@samsung.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |   20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ include/linux/async.h |    2 ++
+ kernel/async.c        |   29 +++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -212,17 +212,21 @@ cifs_mark_tcp_ses_conns_for_reconnect(st
- 	/* If server is a channel, select the primary channel */
- 	pserver = SERVER_IS_CHAN(server) ? server->primary_server : server;
+--- a/include/linux/async.h
++++ b/include/linux/async.h
+@@ -90,6 +90,8 @@ async_schedule_dev(async_func_t func, st
+ 	return async_schedule_node(func, dev, dev_to_node(dev));
+ }
  
-+	/*
-+	 * if the server has been marked for termination, there is a
-+	 * chance that the remaining channels all need reconnect. To be
-+	 * on the safer side, mark the session and trees for reconnect
-+	 * for this scenario. This might cause a few redundant session
-+	 * setup and tree connect requests, but it is better than not doing
-+	 * a tree connect when needed, and all following requests failing
-+	 */
-+	if (server->terminate) {
-+		mark_smb_session = true;
-+		server = pserver;
++bool async_schedule_dev_nocall(async_func_t func, struct device *dev);
++
+ /**
+  * async_schedule_dev_domain - A device specific version of async_schedule_domain
+  * @func: function to execute asynchronously
+--- a/kernel/async.c
++++ b/kernel/async.c
+@@ -244,6 +244,35 @@ async_cookie_t async_schedule_node(async
+ EXPORT_SYMBOL_GPL(async_schedule_node);
+ 
+ /**
++ * async_schedule_dev_nocall - A simplified variant of async_schedule_dev()
++ * @func: function to execute asynchronously
++ * @dev: device argument to be passed to function
++ *
++ * @dev is used as both the argument for the function and to provide NUMA
++ * context for where to run the function.
++ *
++ * If the asynchronous execution of @func is scheduled successfully, return
++ * true. Otherwise, do nothing and return false, unlike async_schedule_dev()
++ * that will run the function synchronously then.
++ */
++bool async_schedule_dev_nocall(async_func_t func, struct device *dev)
++{
++	struct async_entry *entry;
++
++	entry = kzalloc(sizeof(struct async_entry), GFP_KERNEL);
++
++	/* Give up if there is no memory or too much work. */
++	if (!entry || atomic_read(&entry_count) > MAX_WORK) {
++		kfree(entry);
++		return false;
 +	}
- 
- 	spin_lock(&cifs_tcp_ses_lock);
- 	list_for_each_entry_safe(ses, nses, &pserver->smb_ses_list, smb_ses_list) {
--		/*
--		 * if channel has been marked for termination, nothing to do
--		 * for the channel. in fact, we cannot find the channel for the
--		 * server. So safe to exit here
--		 */
--		if (server->terminate)
--			break;
--
- 		/* check if iface is still active */
- 		spin_lock(&ses->chan_lock);
- 		if (!cifs_chan_is_iface_active(ses, server)) {
++
++	__async_schedule_node_domain(func, dev, dev_to_node(dev),
++				     &async_dfl_domain, entry);
++	return true;
++}
++
++/**
+  * async_synchronize_full - synchronize all asynchronous function calls
+  *
+  * This function waits until all asynchronous function calls have been done.
 
 
 
