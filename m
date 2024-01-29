@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-17232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12FC84105B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F915840F00
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C43A2878D7
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56A0F1F25310
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52FA15F31B;
-	Mon, 29 Jan 2024 17:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0470016275D;
+	Mon, 29 Jan 2024 17:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtNXl2c/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4W9BXll"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A450115B961;
-	Mon, 29 Jan 2024 17:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77641586C5;
+	Mon, 29 Jan 2024 17:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548607; cv=none; b=OB4h/ayGYQoVkybvfJLUkxGTjzG9qnlmGPrzLeCkaFil/zAV0KLkvMxguUmBbGGRmdQBd4L55WqqGpm5wc6YQJBP7N7M0j+JWDI60Kwov8zh0+t/aquS6dhFSo6m2iP/qjrjbFf/NSYg0NGZG756bIZaZgWG24P31eDbhV8pK/I=
+	t=1706548369; cv=none; b=aHAdYSfVEomZHy3kvni3dERqiC3h8T25FoZknFCWTocSRE8bkTh/Gk3JACsppu8V/znbnoHZtTi5gSDUKP7ThkJpqhog7njfWa0bCGirFUWUWI3DgzteVfcsW2QpJ4Q1mMQ2oHEoh+THcvQaN4yYGDpugvgF7DDFpqQ4L0Wb3Mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548607; c=relaxed/simple;
-	bh=l4uyJO3Mjm1/BVQgDiv+4ld6vEC1v8t4A+VQcBl/vUQ=;
+	s=arc-20240116; t=1706548369; c=relaxed/simple;
+	bh=15fiWpRmpKzFokUdTX76aQ2x+VsnsfxwmHRNqhrzC2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e0Nandu/j3u8WGb91/hN0Plm9N5D3y16jeEt1kwVPFMmVdIkSoJtJPTlrFx5THKdy7LoGtH1D6wJQYkB5HYJrQ8R27LsAQbbEpZDXmCEEuJG7rByAfrBcficm2/I89/iJRXUNWRs0jBMVLCSMKFbAaol8Hb8IX2Qw7Jw5uc5BeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtNXl2c/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7032BC433C7;
-	Mon, 29 Jan 2024 17:16:47 +0000 (UTC)
+	 MIME-Version; b=aiPf+jpKzT612xJjfOkCDyZWai57UrVyVKLHe5TiavxmhrgxXeSUXxeNNEZZCJHrr1khhRM5LvgtDSAxM9tajdlrI57wCFNiioPxijiBos90A01LbinhcB2TavZ8k4QgyiK7nydCzSdSm6QTbwMsZteT/uTaMdkxFOme41DPauE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4W9BXll; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F721C433C7;
+	Mon, 29 Jan 2024 17:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548607;
-	bh=l4uyJO3Mjm1/BVQgDiv+4ld6vEC1v8t4A+VQcBl/vUQ=;
+	s=korg; t=1706548369;
+	bh=15fiWpRmpKzFokUdTX76aQ2x+VsnsfxwmHRNqhrzC2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtNXl2c/2PIzWG4+68MkiL/bPM/YmwT8nyVN3qzUwOtMATQAR8bvUcZbUK+E9p2ui
-	 nQbj+0X5BPXCMrJbRWW2smUN4AlR03HphodkR5lEXmsjokHJi5pOgL6DOnmYFHIe85
-	 AGFxmaLQys2jVvddWrsJORBlalyBtF7b8e+SoVCU=
+	b=L4W9BXllNikgUJNpcxf67HQ2anzRp/9lVoCWx/ORG2WLrv7Ao1YUeMXzIEM3o4BDU
+	 yiSBUQtaWkYxFbxEfmNdwFNr9GtnZZ4bEvlXFZF2Z429RI1NKE4HRcJekZC/n58R/S
+	 tNL9nEl906MwRCc5N0oOMSacSG4aY2rLlKWhmua8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 271/331] drm/amdgpu/pm: Fix the power source flag error
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH 6.1 135/185] drm/tidss: Fix atomic_flush check
 Date: Mon, 29 Jan 2024 09:05:35 -0800
-Message-ID: <20240129170022.796220002@linuxfoundation.org>
+Message-ID: <20240129170002.928928337@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit ca1ffb174f16b699c536734fc12a4162097c49f4 upstream.
+commit 95d4b471953411854f9c80b568da7fcf753f3801 upstream.
 
-The power source flag should be updated when
-[1] System receives an interrupt indicating that the power source
-has changed.
-[2] System resumes from suspend or runtime suspend
+tidss_crtc_atomic_flush() checks if the crtc is enabled, and if not,
+returns immediately as there's no reason to do any register changes.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+However, the code checks for 'crtc->state->enable', which does not
+reflect the actual HW state. We should instead look at the
+'crtc->state->active' flag.
+
+This causes the tidss_crtc_atomic_flush() to proceed with the flush even
+if the active state is false, which then causes us to hit the
+WARN_ON(!crtc->state->event) check.
+
+Fix this by checking the active flag, and while at it, fix the related
+debug print which had "active" and "needs modeset" wrong way.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-10-ac91b5ea35c0@ideasonboard.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c      |   13 +++----------
- drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c |    2 ++
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c |    2 ++
- 3 files changed, 7 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/tidss/tidss_crtc.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -24,6 +24,7 @@
+--- a/drivers/gpu/drm/tidss/tidss_crtc.c
++++ b/drivers/gpu/drm/tidss/tidss_crtc.c
+@@ -170,13 +170,13 @@ static void tidss_crtc_atomic_flush(stru
+ 	struct tidss_device *tidss = to_tidss(ddev);
+ 	unsigned long flags;
  
- #include <linux/firmware.h>
- #include <linux/pci.h>
-+#include <linux/power_supply.h>
- #include <linux/reboot.h>
+-	dev_dbg(ddev->dev,
+-		"%s: %s enabled %d, needs modeset %d, event %p\n", __func__,
+-		crtc->name, drm_atomic_crtc_needs_modeset(crtc->state),
+-		crtc->state->enable, crtc->state->event);
++	dev_dbg(ddev->dev, "%s: %s is %sactive, %s modeset, event %p\n",
++		__func__, crtc->name, crtc->state->active ? "" : "not ",
++		drm_atomic_crtc_needs_modeset(crtc->state) ? "needs" : "doesn't need",
++		crtc->state->event);
  
- #include "amdgpu.h"
-@@ -741,16 +742,8 @@ static int smu_late_init(void *handle)
- 	 * handle the switch automatically. Driver involvement
- 	 * is unnecessary.
- 	 */
--	if (!smu->dc_controlled_by_gpio) {
--		ret = smu_set_power_source(smu,
--					   adev->pm.ac_power ? SMU_POWER_SOURCE_AC :
--					   SMU_POWER_SOURCE_DC);
--		if (ret) {
--			dev_err(adev->dev, "Failed to switch to %s mode!\n",
--				adev->pm.ac_power ? "AC" : "DC");
--			return ret;
--		}
--	}
-+	adev->pm.ac_power = power_supply_is_system_supplied() > 0;
-+	smu_set_ac_dc(smu);
+ 	/* There is nothing to do if CRTC is not going to be enabled. */
+-	if (!crtc->state->enable)
++	if (!crtc->state->active)
+ 		return;
  
- 	if ((adev->ip_versions[MP1_HWIP][0] == IP_VERSION(13, 0, 1)) ||
- 	    (adev->ip_versions[MP1_HWIP][0] == IP_VERSION(13, 0, 3)))
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
-@@ -1441,10 +1441,12 @@ static int smu_v11_0_irq_process(struct
- 			case 0x3:
- 				dev_dbg(adev->dev, "Switched to AC mode!\n");
- 				schedule_work(&smu->interrupt_work);
-+				adev->pm.ac_power = true;
- 				break;
- 			case 0x4:
- 				dev_dbg(adev->dev, "Switched to DC mode!\n");
- 				schedule_work(&smu->interrupt_work);
-+				adev->pm.ac_power = false;
- 				break;
- 			case 0x7:
- 				/*
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-@@ -1377,10 +1377,12 @@ static int smu_v13_0_irq_process(struct
- 			case 0x3:
- 				dev_dbg(adev->dev, "Switched to AC mode!\n");
- 				smu_v13_0_ack_ac_dc_interrupt(smu);
-+				adev->pm.ac_power = true;
- 				break;
- 			case 0x4:
- 				dev_dbg(adev->dev, "Switched to DC mode!\n");
- 				smu_v13_0_ack_ac_dc_interrupt(smu);
-+				adev->pm.ac_power = false;
- 				break;
- 			case 0x7:
- 				/*
+ 	/*
 
 
 
