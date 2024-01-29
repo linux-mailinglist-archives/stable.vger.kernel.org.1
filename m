@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E9AD840F1F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE7D841076
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 880D31F23EBE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C197B1C23ABA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37635163AAB;
-	Mon, 29 Jan 2024 17:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D6C76052;
+	Mon, 29 Jan 2024 17:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUnnJepy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6+VQvtm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8E8163AA7;
-	Mon, 29 Jan 2024 17:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B182B76050;
+	Mon, 29 Jan 2024 17:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548388; cv=none; b=XcL0Q9S8RLV/LsDkMzF9b8WCUgU3nYgVTB76M7IJI+4BQQUks3NY7AKc+o1BMibIh3wV38N6pMWI0ndxRmOH9tcGn3QVQ4FcKrpLHmxR071CKoVl0eODEd2NBjRYI6PGYyunrWS/BEtvn2/7G/8wK42I2qt/yrIu05KHWy9k+yQ=
+	t=1706548626; cv=none; b=c+bnvv8b54lk1p4LgIUyqU3imUJSOSM5MoQBAcIlKC2JZudEqvFlEDnEoljPs8vNyLqqSFSQH6EkYeAaG+s9ZuXQPrc1BZgz4hVa9FH6sbHiYZCXMuBECBm2L1WCxX0U2DPEvxbIa2GessLr3aDTEBSk67Q786OzIfVsK2zj43Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548388; c=relaxed/simple;
-	bh=xjF6DJt8HdpOMy+Ufd/LmCRIWPfCFzO/6mzyStv6qxw=;
+	s=arc-20240116; t=1706548626; c=relaxed/simple;
+	bh=nZl8mSGTHgZ45FdkeAqEOLliaElJRjmjEad6005tjYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVH+4qr8wsvyGme6UpqXWlkfTCt+U7FN32enlhS1UJCY712G8eqp1T9llhWqcUYluUHwSCX7GLwh5G0y27OqiC/rbd9R26eDi8g4zML4cfpulIzFHhsZOblTjTqDThwZfNun9DPW8cYIlfpLB0eeNQJUL3S8h+G8og7bAo8Xrc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUnnJepy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34B7C433F1;
-	Mon, 29 Jan 2024 17:13:07 +0000 (UTC)
+	 MIME-Version; b=l5bRFIdnQG9FZ3c52fIhtx7CKcA+UOgsncUWz3L8SQYnb90zdxChPkSgq028hOWObftCm37jv9ItsvYIfU728zM0yUWAk/4vLx7gc8DxeFukdbD8clxsRmdEUrwOYTsePyS9DP+fadCwARG5lvZsv/+gikzlV5QhtN1xATYfpl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6+VQvtm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C74BC433F1;
+	Mon, 29 Jan 2024 17:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548387;
-	bh=xjF6DJt8HdpOMy+Ufd/LmCRIWPfCFzO/6mzyStv6qxw=;
+	s=korg; t=1706548626;
+	bh=nZl8mSGTHgZ45FdkeAqEOLliaElJRjmjEad6005tjYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sUnnJepy0J0Ix0ZaMUZKR9DJLaSBPP4PHj3LrhPnWhc7ldslXgweN0sYvHWnudiKd
-	 X8qQC5FnKH/pHDMPeTspWVCAl+VeMzSgRQ5nrrDqZAXhfcuIFn0oQwttoIyvg4/yHt
-	 aNVF+CFUTYifAJElBixAk0Vwbqr89wavV1XQUNiI=
+	b=G6+VQvtmLsEzlW0vhtf6ieipIVlH7X5lyQ3HmFVnl5F7tDNPZY9sEtHoRJLpTxIaF
+	 0x3RVJTx/LDgbBoEzZnIQth/0v2Ek98j9njrHfc/CgdM31HTms6ah0v0qlCb48OCja
+	 gxf2QRjImfIx8/gM2gBXQ2u9AG1i+Ycyhwz5EUCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	John Ogness <john.ogness@linutronix.de>,
+	Hsin-Yi Wang <hsinyi@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 160/185] serial: sc16is7xx: Use port lock wrappers
-Date: Mon, 29 Jan 2024 09:06:00 -0800
-Message-ID: <20240129170003.730858166@linuxfoundation.org>
+Subject: [PATCH 6.6 297/331] drm/panel-edp: drm/panel-edp: Fix AUO B116XTN02 name
+Date: Mon, 29 Jan 2024 09:06:01 -0800
+Message-ID: <20240129170023.555866959@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,193 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Hsin-Yi Wang <hsinyi@chromium.org>
 
-[ Upstream commit b465848be8a652e2c5fefe102661fb660cff8497 ]
+[ Upstream commit 962845c090c4f85fa4f6872a5b6c89ee61f53cc0 ]
 
-When a serial port is used for kernel console output, then all
-modifications to the UART registers which are done from other contexts,
-e.g. getty, termios, are interference points for the kernel console.
+Rename AUO 0x235c B116XTN02 to B116XTN02.3 according to decoding edid.
 
-So far this has been ignored and the printk output is based on the
-principle of hope. The rework of the console infrastructure which aims to
-support threaded and atomic consoles, requires to mark sections which
-modify the UART registers as unsafe. This allows the atomic write function
-to make informed decisions and eventually to restore operational state. It
-also allows to prevent the regular UART code from modifying UART registers
-while printk output is in progress.
-
-All modifications of UART registers are guarded by the UART port lock,
-which provides an obvious synchronization point with the console
-infrastructure.
-
-To avoid adding this functionality to all UART drivers, wrap the
-spin_[un]lock*() invocations for uart_port::lock into helper functions
-which just contain the spin_[un]lock*() invocations for now. In a
-subsequent step these helpers will gain the console synchronization
-mechanisms.
-
-Converted with coccinelle. No functional change.
-
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: John Ogness <john.ogness@linutronix.de>
-Link: https://lore.kernel.org/r/20230914183831.587273-56-john.ogness@linutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 9915753037eb ("serial: sc16is7xx: fix unconditional activation of THRI interrupt")
+Fixes: 3db2420422a5 ("drm/panel-edp: Add AUO B116XTN02, BOE NT116WHM-N21,836X2, NV116WHM-N49 V8.0")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231107204611.3082200-3-hsinyi@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 40 +++++++++++++++++-----------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/panel/panel-edp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index ab9159441d02..4def1b7266f6 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -641,9 +641,9 @@ static void sc16is7xx_handle_tx(struct uart_port *port)
- 	}
- 
- 	if (uart_circ_empty(xmit) || uart_tx_stopped(port)) {
--		spin_lock_irqsave(&port->lock, flags);
-+		uart_port_lock_irqsave(port, &flags);
- 		sc16is7xx_stop_tx(port);
--		spin_unlock_irqrestore(&port->lock, flags);
-+		uart_port_unlock_irqrestore(port, flags);
- 		return;
- 	}
- 
-@@ -672,13 +672,13 @@ static void sc16is7xx_handle_tx(struct uart_port *port)
- 		sc16is7xx_fifo_write(port, to_send);
- 	}
- 
--	spin_lock_irqsave(&port->lock, flags);
-+	uart_port_lock_irqsave(port, &flags);
- 	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
- 		uart_write_wakeup(port);
- 
- 	if (uart_circ_empty(xmit))
- 		sc16is7xx_stop_tx(port);
--	spin_unlock_irqrestore(&port->lock, flags);
-+	uart_port_unlock_irqrestore(port, flags);
- }
- 
- static unsigned int sc16is7xx_get_hwmctrl(struct uart_port *port)
-@@ -709,7 +709,7 @@ static void sc16is7xx_update_mlines(struct sc16is7xx_one *one)
- 
- 	one->old_mctrl = status;
- 
--	spin_lock_irqsave(&port->lock, flags);
-+	uart_port_lock_irqsave(port, &flags);
- 	if ((changed & TIOCM_RNG) && (status & TIOCM_RNG))
- 		port->icount.rng++;
- 	if (changed & TIOCM_DSR)
-@@ -720,7 +720,7 @@ static void sc16is7xx_update_mlines(struct sc16is7xx_one *one)
- 		uart_handle_cts_change(port, status & TIOCM_CTS);
- 
- 	wake_up_interruptible(&port->state->port.delta_msr_wait);
--	spin_unlock_irqrestore(&port->lock, flags);
-+	uart_port_unlock_irqrestore(port, flags);
- }
- 
- static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
-@@ -814,9 +814,9 @@ static void sc16is7xx_tx_proc(struct kthread_work *ws)
- 	sc16is7xx_handle_tx(port);
- 	mutex_unlock(&one->efr_lock);
- 
--	spin_lock_irqsave(&port->lock, flags);
-+	uart_port_lock_irqsave(port, &flags);
- 	sc16is7xx_ier_set(port, SC16IS7XX_IER_THRI_BIT);
--	spin_unlock_irqrestore(&port->lock, flags);
-+	uart_port_unlock_irqrestore(port, flags);
- }
- 
- static void sc16is7xx_reconf_rs485(struct uart_port *port)
-@@ -827,14 +827,14 @@ static void sc16is7xx_reconf_rs485(struct uart_port *port)
- 	struct serial_rs485 *rs485 = &port->rs485;
- 	unsigned long irqflags;
- 
--	spin_lock_irqsave(&port->lock, irqflags);
-+	uart_port_lock_irqsave(port, &irqflags);
- 	if (rs485->flags & SER_RS485_ENABLED) {
- 		efcr |=	SC16IS7XX_EFCR_AUTO_RS485_BIT;
- 
- 		if (rs485->flags & SER_RS485_RTS_AFTER_SEND)
- 			efcr |= SC16IS7XX_EFCR_RTS_INVERT_BIT;
- 	}
--	spin_unlock_irqrestore(&port->lock, irqflags);
-+	uart_port_unlock_irqrestore(port, irqflags);
- 
- 	sc16is7xx_port_update(port, SC16IS7XX_EFCR_REG, mask, efcr);
- }
-@@ -845,10 +845,10 @@ static void sc16is7xx_reg_proc(struct kthread_work *ws)
- 	struct sc16is7xx_one_config config;
- 	unsigned long irqflags;
- 
--	spin_lock_irqsave(&one->port.lock, irqflags);
-+	uart_port_lock_irqsave(&one->port, &irqflags);
- 	config = one->config;
- 	memset(&one->config, 0, sizeof(one->config));
--	spin_unlock_irqrestore(&one->port.lock, irqflags);
-+	uart_port_unlock_irqrestore(&one->port, irqflags);
- 
- 	if (config.flags & SC16IS7XX_RECONF_MD) {
- 		u8 mcr = 0;
-@@ -954,18 +954,18 @@ static void sc16is7xx_throttle(struct uart_port *port)
- 	 * value set in MCR register. Stop reading data from RX FIFO so the
- 	 * AutoRTS feature will de-activate RTS output.
- 	 */
--	spin_lock_irqsave(&port->lock, flags);
-+	uart_port_lock_irqsave(port, &flags);
- 	sc16is7xx_ier_clear(port, SC16IS7XX_IER_RDI_BIT);
--	spin_unlock_irqrestore(&port->lock, flags);
-+	uart_port_unlock_irqrestore(port, flags);
- }
- 
- static void sc16is7xx_unthrottle(struct uart_port *port)
- {
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&port->lock, flags);
-+	uart_port_lock_irqsave(port, &flags);
- 	sc16is7xx_ier_set(port, SC16IS7XX_IER_RDI_BIT);
--	spin_unlock_irqrestore(&port->lock, flags);
-+	uart_port_unlock_irqrestore(port, flags);
- }
- 
- static unsigned int sc16is7xx_tx_empty(struct uart_port *port)
-@@ -1103,7 +1103,7 @@ static void sc16is7xx_set_termios(struct uart_port *port,
- 	/* Setup baudrate generator */
- 	baud = sc16is7xx_set_baud(port, baud);
- 
--	spin_lock_irqsave(&port->lock, flags);
-+	uart_port_lock_irqsave(port, &flags);
- 
- 	/* Update timeout according to new baud rate */
- 	uart_update_timeout(port, termios->c_cflag, baud);
-@@ -1111,7 +1111,7 @@ static void sc16is7xx_set_termios(struct uart_port *port,
- 	if (UART_ENABLE_MS(port, termios->c_cflag))
- 		sc16is7xx_enable_ms(port);
- 
--	spin_unlock_irqrestore(&port->lock, flags);
-+	uart_port_unlock_irqrestore(port, flags);
- }
- 
- static int sc16is7xx_config_rs485(struct uart_port *port, struct ktermios *termios,
-@@ -1197,9 +1197,9 @@ static int sc16is7xx_startup(struct uart_port *port)
- 	sc16is7xx_port_write(port, SC16IS7XX_IER_REG, val);
- 
- 	/* Enable modem status polling */
--	spin_lock_irqsave(&port->lock, flags);
-+	uart_port_lock_irqsave(port, &flags);
- 	sc16is7xx_enable_ms(port);
--	spin_unlock_irqrestore(&port->lock, flags);
-+	uart_port_unlock_irqrestore(port, flags);
- 
- 	return 0;
- }
+diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
+index e93e54a98260..7dc6fb7308ce 100644
+--- a/drivers/gpu/drm/panel/panel-edp.c
++++ b/drivers/gpu/drm/panel/panel-edp.c
+@@ -1842,7 +1842,7 @@ static const struct edp_panel_entry edp_panels[] = {
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x145c, &delay_200_500_e50, "B116XAB01.4"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1e9b, &delay_200_500_e50, "B133UAN02.1"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1ea5, &delay_200_500_e50, "B116XAK01.6"),
+-	EDP_PANEL_ENTRY('A', 'U', 'O', 0x235c, &delay_200_500_e50, "B116XTN02"),
++	EDP_PANEL_ENTRY('A', 'U', 'O', 0x235c, &delay_200_500_e50, "B116XTN02.3"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x405c, &auo_b116xak01.delay, "B116XAK01.0"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x582d, &delay_200_500_e50, "B133UAN01.0"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x615c, &delay_200_500_e50, "B116XAN06.1"),
 -- 
 2.43.0
 
