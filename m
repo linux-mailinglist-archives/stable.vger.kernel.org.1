@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-16820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6966A840E8D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0B1841060
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 226E9283914
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F37D1C23B1F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971E615A4AA;
-	Mon, 29 Jan 2024 17:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCBE515F31E;
+	Mon, 29 Jan 2024 17:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+GtnmT4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fO3DVaus"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DB715703D;
-	Mon, 29 Jan 2024 17:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C87115A49A;
+	Mon, 29 Jan 2024 17:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548303; cv=none; b=Cughn0Qy8qTP+FU+uNcVhTkvJRemedqcpVxeCiOtDuMhMm1fYhPMmnca8E5S+ucnDHiIPJjYREvz66xIoEVgyfQ6BdcfG7S2C0QkZv7k9r3P/WzzhxY0IGsU+9zG19mBVcoARyCxQoxrhGdeNmZMMjsPQzkNoS8aNiGxGQJ9mlU=
+	t=1706548611; cv=none; b=pBpzR1Zp5+whdfwN/r7Fl3Dp0+8hrH8lUb0udS5lELHzM0S868OzebdvQNqbBsyh2iuKD+kIZLOtDHJAK5CLxj+bAKAAz+PXlLj3MtzkUzZVvJ1uOCti4kudkdydlUOU/+TvR3TzU5QsA/soJ+6k4HzvYjHVThwitMpRDpUoTOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548303; c=relaxed/simple;
-	bh=TCZAsNi5BK2MbsjCEOzhNHlF3AcNwgXQqgmenrtn494=;
+	s=arc-20240116; t=1706548611; c=relaxed/simple;
+	bh=ghHoW/Imrv8uxOVIn32zrkgHXUF25ApByZ+bekLqtIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YCn4nT9V9+63AhpuO6GpbMAbSVKgLXVYYgydK6j5IZc5Mxrn128BycUCrqnLALEfoKWsjbHPz47sNeDjfrCZy8egWBql20cV09B81pnxKmxghh21ALBKPCBBoeI9kqNpJ+hsWg/bVXImKjLETtcEZpgeALrPd0hypzL2kKC8KGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+GtnmT4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF0BC433C7;
-	Mon, 29 Jan 2024 17:11:43 +0000 (UTC)
+	 MIME-Version; b=WWisQnczblCrgq8019YAJIMEHr2FhpWoEbRDIj+UiiDMCM6F1wb5WoVR16PX8oFnOBTDxXgs4mDt3xzIDxBimm75FGKxumo8j/GSxzqBhCWCPlYdSexZ2SwkO8sA6LPczM2BofonfbDgd92nC0wrUoUeWUP/1sMcz2jzXvKTO/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fO3DVaus; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061D5C43390;
+	Mon, 29 Jan 2024 17:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548303;
-	bh=TCZAsNi5BK2MbsjCEOzhNHlF3AcNwgXQqgmenrtn494=;
+	s=korg; t=1706548611;
+	bh=ghHoW/Imrv8uxOVIn32zrkgHXUF25ApByZ+bekLqtIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+GtnmT41pPd2jfYaplSXPnp1Qc2ry9IYv70KNcKkavHYaqekQ7NOi/1YBG021ymz
-	 EC0tx/jpKMpAOQfmh+77xJ8Th0Q5+eqZ38XMQVgytnGAlla5Ye9GkZcQIzvpTi+TNc
-	 Qy6poXeHNMbcOGVG4aY0Je05Z2fA2sRXkw1xZur0=
+	b=fO3DVausAcjm9Y9uQGOjiDr0YdqETLfcbbAiKXwS18zpxUsYC2PYvFkoYTHORtkly
+	 M3Z31oOC2H753W9X9oZV5tQhmct/c0DeeLdyY+C7WTIIvJbQM3/NHjv129aVI7BxF+
+	 qSGPcrZ6z3iBuhuJzCcOxtQXlFkU7LlT7MCBIc94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 286/346] media: i2c: imx290: Properly encode registers as little-endian
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 253/331] cpufreq: intel_pstate: Refine computation of P-state for given frequency
 Date: Mon, 29 Jan 2024 09:05:17 -0800
-Message-ID: <20240129170024.798290232@linuxfoundation.org>
+Message-ID: <20240129170022.285436050@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,107 +61,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 60fc87a69523c294eb23a1316af922f6665a6f8c ]
+commit 192cdb1c907fd8df2d764c5bb17496e415e59391 upstream.
 
-The conversion to CCI also converted the multi-byte register access to
-big-endian. Correct the register definition by using the correct
-little-endian ones.
+On systems using HWP, if a given frequency is equal to the maximum turbo
+frequency or the maximum non-turbo frequency, the HWP performance level
+corresponding to it is already known and can be used directly without
+any computation.
 
-Fixes: af73323b9770 ("media: imx290: Convert to new CCI register access helpers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-[Sakari Ailus: Fixed the Fixes: tag.]
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Accordingly, adjust the code to use the known HWP performance levels in
+the cases mentioned above.
+
+This also helps to avoid limiting CPU capacity artificially in some
+cases when the BIOS produces the HWP_CAP numbers using a different
+E-core-to-P-core performance scaling factor than expected by the kernel.
+
+Fixes: f5c8cf2a4992 ("cpufreq: intel_pstate: hybrid: Use known scaling factor for P-cores")
+Cc: 6.1+ <stable@vger.kernel.org> # 6.1+
+Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/imx290.c | 42 +++++++++++++++++++-------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+ drivers/cpufreq/intel_pstate.c |   55 +++++++++++++++++++++++++----------------
+ 1 file changed, 34 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
-index 29098612813c..c6fea5837a19 100644
---- a/drivers/media/i2c/imx290.c
-+++ b/drivers/media/i2c/imx290.c
-@@ -41,18 +41,18 @@
- #define IMX290_WINMODE_720P				(1 << 4)
- #define IMX290_WINMODE_CROP				(4 << 4)
- #define IMX290_FR_FDG_SEL				CCI_REG8(0x3009)
--#define IMX290_BLKLEVEL					CCI_REG16(0x300a)
-+#define IMX290_BLKLEVEL					CCI_REG16_LE(0x300a)
- #define IMX290_GAIN					CCI_REG8(0x3014)
--#define IMX290_VMAX					CCI_REG24(0x3018)
-+#define IMX290_VMAX					CCI_REG24_LE(0x3018)
- #define IMX290_VMAX_MAX					0x3ffff
--#define IMX290_HMAX					CCI_REG16(0x301c)
-+#define IMX290_HMAX					CCI_REG16_LE(0x301c)
- #define IMX290_HMAX_MAX					0xffff
--#define IMX290_SHS1					CCI_REG24(0x3020)
-+#define IMX290_SHS1					CCI_REG24_LE(0x3020)
- #define IMX290_WINWV_OB					CCI_REG8(0x303a)
--#define IMX290_WINPV					CCI_REG16(0x303c)
--#define IMX290_WINWV					CCI_REG16(0x303e)
--#define IMX290_WINPH					CCI_REG16(0x3040)
--#define IMX290_WINWH					CCI_REG16(0x3042)
-+#define IMX290_WINPV					CCI_REG16_LE(0x303c)
-+#define IMX290_WINWV					CCI_REG16_LE(0x303e)
-+#define IMX290_WINPH					CCI_REG16_LE(0x3040)
-+#define IMX290_WINWH					CCI_REG16_LE(0x3042)
- #define IMX290_OUT_CTRL					CCI_REG8(0x3046)
- #define IMX290_ODBIT_10BIT				(0 << 0)
- #define IMX290_ODBIT_12BIT				(1 << 0)
-@@ -78,28 +78,28 @@
- #define IMX290_ADBIT2					CCI_REG8(0x317c)
- #define IMX290_ADBIT2_10BIT				0x12
- #define IMX290_ADBIT2_12BIT				0x00
--#define IMX290_CHIP_ID					CCI_REG16(0x319a)
-+#define IMX290_CHIP_ID					CCI_REG16_LE(0x319a)
- #define IMX290_ADBIT3					CCI_REG8(0x31ec)
- #define IMX290_ADBIT3_10BIT				0x37
- #define IMX290_ADBIT3_12BIT				0x0e
- #define IMX290_REPETITION				CCI_REG8(0x3405)
- #define IMX290_PHY_LANE_NUM				CCI_REG8(0x3407)
- #define IMX290_OPB_SIZE_V				CCI_REG8(0x3414)
--#define IMX290_Y_OUT_SIZE				CCI_REG16(0x3418)
--#define IMX290_CSI_DT_FMT				CCI_REG16(0x3441)
-+#define IMX290_Y_OUT_SIZE				CCI_REG16_LE(0x3418)
-+#define IMX290_CSI_DT_FMT				CCI_REG16_LE(0x3441)
- #define IMX290_CSI_DT_FMT_RAW10				0x0a0a
- #define IMX290_CSI_DT_FMT_RAW12				0x0c0c
- #define IMX290_CSI_LANE_MODE				CCI_REG8(0x3443)
--#define IMX290_EXTCK_FREQ				CCI_REG16(0x3444)
--#define IMX290_TCLKPOST					CCI_REG16(0x3446)
--#define IMX290_THSZERO					CCI_REG16(0x3448)
--#define IMX290_THSPREPARE				CCI_REG16(0x344a)
--#define IMX290_TCLKTRAIL				CCI_REG16(0x344c)
--#define IMX290_THSTRAIL					CCI_REG16(0x344e)
--#define IMX290_TCLKZERO					CCI_REG16(0x3450)
--#define IMX290_TCLKPREPARE				CCI_REG16(0x3452)
--#define IMX290_TLPX					CCI_REG16(0x3454)
--#define IMX290_X_OUT_SIZE				CCI_REG16(0x3472)
-+#define IMX290_EXTCK_FREQ				CCI_REG16_LE(0x3444)
-+#define IMX290_TCLKPOST					CCI_REG16_LE(0x3446)
-+#define IMX290_THSZERO					CCI_REG16_LE(0x3448)
-+#define IMX290_THSPREPARE				CCI_REG16_LE(0x344a)
-+#define IMX290_TCLKTRAIL				CCI_REG16_LE(0x344c)
-+#define IMX290_THSTRAIL					CCI_REG16_LE(0x344e)
-+#define IMX290_TCLKZERO					CCI_REG16_LE(0x3450)
-+#define IMX290_TCLKPREPARE				CCI_REG16_LE(0x3452)
-+#define IMX290_TLPX					CCI_REG16_LE(0x3454)
-+#define IMX290_X_OUT_SIZE				CCI_REG16_LE(0x3472)
- #define IMX290_INCKSEL7					CCI_REG8(0x3480)
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -526,6 +526,30 @@ static int intel_pstate_cppc_get_scaling
+ }
+ #endif /* CONFIG_ACPI_CPPC_LIB */
  
- #define IMX290_PGCTRL_REGEN				BIT(0)
--- 
-2.43.0
-
++static int intel_pstate_freq_to_hwp_rel(struct cpudata *cpu, int freq,
++					unsigned int relation)
++{
++	if (freq == cpu->pstate.turbo_freq)
++		return cpu->pstate.turbo_pstate;
++
++	if (freq == cpu->pstate.max_freq)
++		return cpu->pstate.max_pstate;
++
++	switch (relation) {
++	case CPUFREQ_RELATION_H:
++		return freq / cpu->pstate.scaling;
++	case CPUFREQ_RELATION_C:
++		return DIV_ROUND_CLOSEST(freq, cpu->pstate.scaling);
++	}
++
++	return DIV_ROUND_UP(freq, cpu->pstate.scaling);
++}
++
++static int intel_pstate_freq_to_hwp(struct cpudata *cpu, int freq)
++{
++	return intel_pstate_freq_to_hwp_rel(cpu, freq, CPUFREQ_RELATION_L);
++}
++
+ /**
+  * intel_pstate_hybrid_hwp_adjust - Calibrate HWP performance levels.
+  * @cpu: Target CPU.
+@@ -543,6 +567,7 @@ static void intel_pstate_hybrid_hwp_adju
+ 	int perf_ctl_scaling = cpu->pstate.perf_ctl_scaling;
+ 	int perf_ctl_turbo = pstate_funcs.get_turbo(cpu->cpu);
+ 	int scaling = cpu->pstate.scaling;
++	int freq;
+ 
+ 	pr_debug("CPU%d: perf_ctl_max_phys = %d\n", cpu->cpu, perf_ctl_max_phys);
+ 	pr_debug("CPU%d: perf_ctl_turbo = %d\n", cpu->cpu, perf_ctl_turbo);
+@@ -556,16 +581,16 @@ static void intel_pstate_hybrid_hwp_adju
+ 	cpu->pstate.max_freq = rounddown(cpu->pstate.max_pstate * scaling,
+ 					 perf_ctl_scaling);
+ 
+-	cpu->pstate.max_pstate_physical =
+-			DIV_ROUND_UP(perf_ctl_max_phys * perf_ctl_scaling,
+-				     scaling);
++	freq = perf_ctl_max_phys * perf_ctl_scaling;
++	cpu->pstate.max_pstate_physical = intel_pstate_freq_to_hwp(cpu, freq);
+ 
+-	cpu->pstate.min_freq = cpu->pstate.min_pstate * perf_ctl_scaling;
++	freq = cpu->pstate.min_pstate * perf_ctl_scaling;
++	cpu->pstate.min_freq = freq;
+ 	/*
+ 	 * Cast the min P-state value retrieved via pstate_funcs.get_min() to
+ 	 * the effective range of HWP performance levels.
+ 	 */
+-	cpu->pstate.min_pstate = DIV_ROUND_UP(cpu->pstate.min_freq, scaling);
++	cpu->pstate.min_pstate = intel_pstate_freq_to_hwp(cpu, freq);
+ }
+ 
+ static inline void update_turbo_state(void)
+@@ -2528,13 +2553,12 @@ static void intel_pstate_update_perf_lim
+ 	 * abstract values to represent performance rather than pure ratios.
+ 	 */
+ 	if (hwp_active && cpu->pstate.scaling != perf_ctl_scaling) {
+-		int scaling = cpu->pstate.scaling;
+ 		int freq;
+ 
+ 		freq = max_policy_perf * perf_ctl_scaling;
+-		max_policy_perf = DIV_ROUND_UP(freq, scaling);
++		max_policy_perf = intel_pstate_freq_to_hwp(cpu, freq);
+ 		freq = min_policy_perf * perf_ctl_scaling;
+-		min_policy_perf = DIV_ROUND_UP(freq, scaling);
++		min_policy_perf = intel_pstate_freq_to_hwp(cpu, freq);
+ 	}
+ 
+ 	pr_debug("cpu:%d min_policy_perf:%d max_policy_perf:%d\n",
+@@ -2908,18 +2932,7 @@ static int intel_cpufreq_target(struct c
+ 
+ 	cpufreq_freq_transition_begin(policy, &freqs);
+ 
+-	switch (relation) {
+-	case CPUFREQ_RELATION_L:
+-		target_pstate = DIV_ROUND_UP(freqs.new, cpu->pstate.scaling);
+-		break;
+-	case CPUFREQ_RELATION_H:
+-		target_pstate = freqs.new / cpu->pstate.scaling;
+-		break;
+-	default:
+-		target_pstate = DIV_ROUND_CLOSEST(freqs.new, cpu->pstate.scaling);
+-		break;
+-	}
+-
++	target_pstate = intel_pstate_freq_to_hwp_rel(cpu, freqs.new, relation);
+ 	target_pstate = intel_cpufreq_update_pstate(policy, target_pstate, false);
+ 
+ 	freqs.new = target_pstate * cpu->pstate.scaling;
+@@ -2937,7 +2950,7 @@ static unsigned int intel_cpufreq_fast_s
+ 
+ 	update_turbo_state();
+ 
+-	target_pstate = DIV_ROUND_UP(target_freq, cpu->pstate.scaling);
++	target_pstate = intel_pstate_freq_to_hwp(cpu, target_freq);
+ 
+ 	target_pstate = intel_cpufreq_update_pstate(policy, target_pstate, true);
+ 
 
 
 
