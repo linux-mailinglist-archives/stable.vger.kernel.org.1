@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-17036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41EB9840F90
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD009840D60
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A27D5B2383B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50BA1B23980
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF806F088;
-	Mon, 29 Jan 2024 17:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75CC015B119;
+	Mon, 29 Jan 2024 17:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKDHnoWw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fM83K5FU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5982F6F06C;
-	Mon, 29 Jan 2024 17:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34AD715B110;
+	Mon, 29 Jan 2024 17:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548462; cv=none; b=igo3P3fdYD+5OQGgLSOENPXnFJje+NmtjgZvqncb6/3jaxihp3anm4BFCsBOII4sgMoR214o0A0WrDyy5v5hUFELx3yxnglXhgykvuUOuCEAnhNTghTgh5zRvl1krVfy8Jtr4AddL9TBYk4ykp13LBgdqqdxLTV/sgrERN4K1aU=
+	t=1706548093; cv=none; b=d3bISQ1z3ndfhUCLg2OvgitlFUM047Jfzbb6w2hHTWjQXaVClAUxyWLZ5aIAgH0V2i2q8Tplm3PUWshRryCAAsvOuj7kcwZKGNAvMEkpCeQWnN9dZeGk9lUvTTEyh6aJBud+ZhdqsDdHltB3AH7U0LaLlAqGE0ks544zUCB5ulU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548462; c=relaxed/simple;
-	bh=cFj73Qj2Ss8rRxv2qxDNd+LF/Od22ce5T6ObFs6V7Ec=;
+	s=arc-20240116; t=1706548093; c=relaxed/simple;
+	bh=nuelweQr/Kmb8yPHWiMYYD/R8wI3Qs5oBDyOlEoFzAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UlfjG/sNcWPRe38v5jdxZ6xooZatkZn6w/x/n8sbi4nBZv1x0p1WU9G64dMWWPvF1LPZFDhOWK49w8463SqpvacBnQsInCEXyjCgOZ8QjUt0QZviI/kIWg5awEgnkB5MgOMUTryT+BB5tgz2T8q3qidnzow0q9mA2pz5M4uHno4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKDHnoWw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 211AFC433F1;
-	Mon, 29 Jan 2024 17:14:22 +0000 (UTC)
+	 MIME-Version; b=r/hiVhuKtSWhn1emigCDYD6fm3kkAGj+YkcTWJTwgp6cxBsPsxnnzlONjLaSxugr6uQiBBXy4qg/tim6LQDj5Jl8wkZ8daXtsqIQbtPFLGiMq2qLkQn4+EgDAwKgkO3hYspaEeJHWxaCSw4btCYNIgdywTNzay5PpezSRzrmANk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fM83K5FU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF41DC433C7;
+	Mon, 29 Jan 2024 17:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548462;
-	bh=cFj73Qj2Ss8rRxv2qxDNd+LF/Od22ce5T6ObFs6V7Ec=;
+	s=korg; t=1706548093;
+	bh=nuelweQr/Kmb8yPHWiMYYD/R8wI3Qs5oBDyOlEoFzAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RKDHnoWwXdRZ/IXAlt74Cfqbr7R9eUjPUu+D5XOgkCOVd48anRpWtiJx0tovBwB6w
-	 r8DjMm2Iw5+gsYbhPU0XolK/2lnIRJNjAfU+NwVpKrzIsC6LCXjLjKVeZ6D01USD5P
-	 Cml0V04vn7t2dS9WzlwD9bWtSfs2YBNbe/BUhuiI=
+	b=fM83K5FUt9ZezZ2aPp2I9AsrjlkGk+HWijVvqAYX9Uq3yFv/7qE+jceFYEZgY0BJ0
+	 WOybEmRqH2N22ib1A48MgH6uDL9/o0HJlsZ4uwRSdWVZFmlKVm+zHVDMDiG1k90uzk
+	 Muk2FBgKVYvhxYF3xMJZBj7dxKMwPQAvsdkfbqI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Cercueil <paul@crapouillou.net>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.6 075/331] ARM: dts: samsung: exynos4210-i9100: Unconditionally enable LDO12
-Date: Mon, 29 Jan 2024 09:02:19 -0800
-Message-ID: <20240129170017.119301418@linuxfoundation.org>
+	alvin.zhuge@gmail.com,
+	renzhamin@gmail.com,
+	Kelvie Wong <kelvie@kelvie.ca>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.7 109/346] rtc: cmos: Use ACPI alarm for non-Intel x86 systems too
+Date: Mon, 29 Jan 2024 09:02:20 -0800
+Message-ID: <20240129170019.604418192@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Cercueil <paul@crapouillou.net>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 84228d5e29dbc7a6be51e221000e1d122125826c upstream.
+commit 3d762e21d56370a43478b55e604b4a83dd85aafc upstream.
 
-The kernel hangs for a good 12 seconds without any info being printed to
-dmesg, very early in the boot process, if this regulator is not enabled.
+Intel systems > 2015 have been configured to use ACPI alarm instead
+of HPET to avoid s2idle issues.
 
-Force-enable it to work around this issue, until we know more about the
-underlying problem.
+Having HPET programmed for wakeup causes problems on AMD systems with
+s2idle as well.
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Fixes: 8620cc2f99b7 ("ARM: dts: exynos: Add devicetree file for the Galaxy S2")
-Cc: stable@vger.kernel.org # v5.8+
-Link: https://lore.kernel.org/r/20231206221556.15348-2-paul@crapouillou.net
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+One particular case is that the systemd "SuspendThenHibernate" feature
+doesn't work properly on the Framework 13" AMD model. Switching to
+using ACPI alarm fixes the issue.
+
+Adjust the quirk to apply to AMD/Hygon systems from 2021 onwards.
+This matches what has been tested and is specifically to avoid potential
+risk to older systems.
+
+Cc:  <stable@vger.kernel.org> # 6.1+
+Reported-by:  <alvin.zhuge@gmail.com>
+Reported-by:  <renzhamin@gmail.com>
+Closes: https://github.com/systemd/systemd/issues/24279
+Reported-by: Kelvie Wong <kelvie@kelvie.ca>
+Closes: https://community.frame.work/t/systemd-suspend-then-hibernate-wakes-up-after-5-minutes/39392
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20231106162310.85711-1-mario.limonciello@amd.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/samsung/exynos4210-i9100.dts |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/rtc/rtc-cmos.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
-+++ b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
-@@ -527,6 +527,14 @@
- 				regulator-name = "VT_CAM_1.8V";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
-+
-+				/*
-+				 * Force-enable this regulator; otherwise the
-+				 * kernel hangs very early in the boot process
-+				 * for about 12 seconds, without apparent
-+				 * reason.
-+				 */
-+				regulator-always-on;
- 			};
+--- a/drivers/rtc/rtc-cmos.c
++++ b/drivers/rtc/rtc-cmos.c
+@@ -818,18 +818,24 @@ static void rtc_wake_off(struct device *
+ }
  
- 			vcclcd_reg: LDO13 {
+ #ifdef CONFIG_X86
+-/* Enable use_acpi_alarm mode for Intel platforms no earlier than 2015 */
+ static void use_acpi_alarm_quirks(void)
+ {
+-	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
++	switch (boot_cpu_data.x86_vendor) {
++	case X86_VENDOR_INTEL:
++		if (dmi_get_bios_year() < 2015)
++			return;
++		break;
++	case X86_VENDOR_AMD:
++	case X86_VENDOR_HYGON:
++		if (dmi_get_bios_year() < 2021)
++			return;
++		break;
++	default:
+ 		return;
+-
++	}
+ 	if (!is_hpet_enabled())
+ 		return;
+ 
+-	if (dmi_get_bios_year() < 2015)
+-		return;
+-
+ 	use_acpi_alarm = true;
+ }
+ #else
 
 
 
