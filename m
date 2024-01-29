@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD1A840E8C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8598E841077
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D8001C227FE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7AB31C23A54
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B4615FB18;
-	Mon, 29 Jan 2024 17:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B030F76055;
+	Mon, 29 Jan 2024 17:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcn+QpRP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmNoXwMN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4CE15A4A4;
-	Mon, 29 Jan 2024 17:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D11276032;
+	Mon, 29 Jan 2024 17:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548302; cv=none; b=AbemaOjK2fqZavihZ0ImWjpmC2sJ4O6iIGG9UO/9CvhmHKaT6/nQjM21ioyzq8PzJnLxK6AxHTJ9/P+dVz44sX1hDWtjZZjfmx3A22bTp/W7BkMLARgZc5jkF6pAHkijCySTOho/zJ1nSD/xDM+r1eCwW48+XalYKYilJ4eiGHk=
+	t=1706548627; cv=none; b=ci61SCkxqW07Hw0lYd0IixN250dbpxT7DUtV2pXSEPoTLcbPjR4Zmz7oTj9kLH3RFqXIL0rpb3WV1Au7OvHDPECeZkDSVWx1xBd6FDl6iHEpQsDfqmvaUQWkksntWbJATxdG+lUMgmwVx4+n32edRRs3vCdTiW82XEU7s5jtBO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548302; c=relaxed/simple;
-	bh=A7jJcdJvmrbzCyeM4ZHlGj3DTy0pZM8ti1weh8uq4mI=;
+	s=arc-20240116; t=1706548627; c=relaxed/simple;
+	bh=mHojW8cUb9OsIVAVKZXhNzG1JQ/ORO8IAa02pMhN12g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oRYQopnkDPUF4CFS/N1RK5yBbudQGR2SQYthBugzv77tHzsMUUx4YIybJVYiADIgQc4AqyKZKiAnxPT6Jzw2s+giuflhkvAuflAJWRWyGuQfiuGbGWnwUW4ivJPulZorrs3mnEjH8FiDrIOvvq+0pIdBZLQr2CgG26RfdixYs4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcn+QpRP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467EBC433F1;
-	Mon, 29 Jan 2024 17:11:42 +0000 (UTC)
+	 MIME-Version; b=uyENvhK6NJRpU+4vL528Co4NeIfcFaPXNyxIROQHg3dISX6R/pULi8EQot/zVrU5mJdK1BEAoZ0zlyZsNpFBcrJz9BQCqtFfkDoJpexcB6xjq6BWRWY4x2BB7TlwWAXfJJXrk0YS+RNbO8NB8KsBjCuBvPdLB/FiKPTExpiOCUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmNoXwMN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD90C433C7;
+	Mon, 29 Jan 2024 17:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548302;
-	bh=A7jJcdJvmrbzCyeM4ZHlGj3DTy0pZM8ti1weh8uq4mI=;
+	s=korg; t=1706548627;
+	bh=mHojW8cUb9OsIVAVKZXhNzG1JQ/ORO8IAa02pMhN12g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kcn+QpRPAClDO4Z52t/PV3urYK5AsZMhDNBSoB7G1eJZyi8zYlDf9ORHHqW2zCfmH
-	 BwyHPMmDjSICxPH1mop1fqB6tUd7PVEeTLlO2jam3WqIeEvSeyct4jCyDSwYOOs5/h
-	 AjGV3wsrLsFTuv7eLrNQot+edYPDX1Z/HgVF1xWY=
+	b=DmNoXwMNy8ctuzzcxWKXm3W6ZEmzeq9/kSHeu1DidGWN6pbI/MQfZ0GcBS/jIMAvP
+	 OmGMMM5sIUIW9otVLS0mVa7ucq2ahBvw30hAqMKkAZmqcAMBBvLStCxC6h/8EOkpCe
+	 pyMD+rmjlT47YQ6sfL2yCOaUy0tJ7sp2j26SwMec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 308/346] drm/panel: samsung-s6d7aa0: drop DRM_BUS_FLAG_DE_HIGH for lsl080al02
+Subject: [PATCH 6.6 275/331] thermal: intel: hfi: Disable an HFI instance when all its CPUs go offline
 Date: Mon, 29 Jan 2024 09:05:39 -0800
-Message-ID: <20240129170025.529068501@linuxfoundation.org>
+Message-ID: <20240129170022.915578548@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 
-[ Upstream commit 62b143b5ec4a14e1ae0dede5aabaf1832e3b0073 ]
+[ Upstream commit 1c53081d773c2cb4461636559b0d55b46559ceec ]
 
-It turns out that I had misconfigured the device I was using the panel
-with; the bus data polarity is not high for this panel, I had to change
-the config on the display controller's side.
+In preparation to support hibernation, add functionality to disable an HFI
+instance during CPU offline. The last CPU of an instance that goes offline
+will disable such instance.
 
-Fix the panel config to properly reflect its accurate settings.
+The Intel Software Development Manual states that the operating system must
+wait for the hardware to set MSR_IA32_PACKAGE_THERM_STATUS[26] after
+disabling an HFI instance to ensure that it will no longer write on the HFI
+memory. Some processors, however, do not ever set such bit. Wait a minimum
+of 2ms to give time hardware to complete any pending memory writes.
 
-Fixes: 6810bb390282 ("drm/panel: Add Samsung S6D7AA0 panel controller driver")
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Link: https://lore.kernel.org/r/20240105-tab3-display-fixes-v2-2-904d1207bf6f@gmail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240105-tab3-display-fixes-v2-2-904d1207bf6f@gmail.com
+Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 97566d09fd02 ("thermal: intel: hfi: Add syscore callbacks for system-wide PM")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-samsung-s6d7aa0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thermal/intel/intel_hfi.c | 35 +++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-samsung-s6d7aa0.c b/drivers/gpu/drm/panel/panel-samsung-s6d7aa0.c
-index ea5a85779382..f23d8832a1ad 100644
---- a/drivers/gpu/drm/panel/panel-samsung-s6d7aa0.c
-+++ b/drivers/gpu/drm/panel/panel-samsung-s6d7aa0.c
-@@ -309,7 +309,7 @@ static const struct s6d7aa0_panel_desc s6d7aa0_lsl080al02_desc = {
- 	.off_func = s6d7aa0_lsl080al02_off,
- 	.drm_mode = &s6d7aa0_lsl080al02_mode,
- 	.mode_flags = MIPI_DSI_MODE_VSYNC_FLUSH | MIPI_DSI_MODE_VIDEO_NO_HFP,
--	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
-+	.bus_flags = 0,
+diff --git a/drivers/thermal/intel/intel_hfi.c b/drivers/thermal/intel/intel_hfi.c
+index 820613e293cd..bb25c75acd45 100644
+--- a/drivers/thermal/intel/intel_hfi.c
++++ b/drivers/thermal/intel/intel_hfi.c
+@@ -24,6 +24,7 @@
+ #include <linux/bitops.h>
+ #include <linux/cpufeature.h>
+ #include <linux/cpumask.h>
++#include <linux/delay.h>
+ #include <linux/gfp.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+@@ -367,6 +368,32 @@ static void hfi_set_hw_table(struct hfi_instance *hfi_instance)
+ 	wrmsrl(MSR_IA32_HW_FEEDBACK_PTR, msr_val);
+ }
  
- 	.has_backlight = false,
- 	.use_passwd3 = false,
++/* Caller must hold hfi_instance_lock. */
++static void hfi_disable(void)
++{
++	u64 msr_val;
++	int i;
++
++	rdmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
++	msr_val &= ~HW_FEEDBACK_CONFIG_HFI_ENABLE_BIT;
++	wrmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
++
++	/*
++	 * Wait for hardware to acknowledge the disabling of HFI. Some
++	 * processors may not do it. Wait for ~2ms. This is a reasonable
++	 * time for hardware to complete any pending actions on the HFI
++	 * memory.
++	 */
++	for (i = 0; i < 2000; i++) {
++		rdmsrl(MSR_IA32_PACKAGE_THERM_STATUS, msr_val);
++		if (msr_val & PACKAGE_THERM_STATUS_HFI_UPDATED)
++			break;
++
++		udelay(1);
++		cpu_relax();
++	}
++}
++
+ /**
+  * intel_hfi_online() - Enable HFI on @cpu
+  * @cpu:	CPU in which the HFI will be enabled
+@@ -421,6 +448,10 @@ void intel_hfi_online(unsigned int cpu)
+ 	/*
+ 	 * Hardware is programmed with the physical address of the first page
+ 	 * frame of the table. Hence, the allocated memory must be page-aligned.
++	 *
++	 * Some processors do not forget the initial address of the HFI table
++	 * even after having been reprogrammed. Keep using the same pages. Do
++	 * not free them.
+ 	 */
+ 	hfi_instance->hw_table = alloc_pages_exact(hfi_features.nr_table_pages,
+ 						   GFP_KERNEL | __GFP_ZERO);
+@@ -485,6 +516,10 @@ void intel_hfi_offline(unsigned int cpu)
+ 
+ 	mutex_lock(&hfi_instance_lock);
+ 	cpumask_clear_cpu(cpu, hfi_instance->cpus);
++
++	if (!cpumask_weight(hfi_instance->cpus))
++		hfi_disable();
++
+ 	mutex_unlock(&hfi_instance_lock);
+ }
+ 
 -- 
 2.43.0
 
