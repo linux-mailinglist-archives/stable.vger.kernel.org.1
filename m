@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-16830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F103840E98
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED726840DE7
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E64BCB24536
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EC092860E8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC57A15FB1B;
-	Mon, 29 Jan 2024 17:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB85215AAD6;
+	Mon, 29 Jan 2024 17:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTeiBp/v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0KwJMjW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE1C157E6B;
-	Mon, 29 Jan 2024 17:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E5F15D5D1;
+	Mon, 29 Jan 2024 17:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548310; cv=none; b=ndWu+b1+HvSfUIe/jlj4GBHvyXPzygzNPrKIss/R+wiXGSk9DQzCvvyI91rc34cMPu1dy6uFX2T9ZghSLaY8wtGMZQMpl7xLruDzPTUB3I2z5gtQQvsQ4drqVdJLWrrApLQYJoGsQ4EPC6XBdcSCXM4i9UnKyjSXNoNBKXk5MIA=
+	t=1706548185; cv=none; b=H9TJW0kF231UrJXeXPIwzliOzCgdCbfdeV4LmNufVw70loKT8seV0XnbI541/108HHULnkJLg7J03Lrhevo79mBGbBw1hCCOtm33SXQ4iGaEEIor4a3NCqFaXI9HIDaKoQ5xzEJXQo8NKdoVoxeC7y4ItR8NhjTkjPQ7QqbTzXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548310; c=relaxed/simple;
-	bh=y8V6/qgHmUCedl8p+lozXK58QP+hIQUCHs8vUZ0lG9I=;
+	s=arc-20240116; t=1706548185; c=relaxed/simple;
+	bh=ZfgWbFPGdEXn4EsetL2LFxL/PK1BTv1z8XPv4wsQbfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKSufXkx2aKM41lMuFkbneDVpd694Xv2IaSzlpynO78CBEquSs50wPNmrTY39oZchUtEt2VRW3GM5DgZM940EKnT+zpIVwuUMXRR0xSNERfgkzCqbRaxyYCGyfyfTCVj9ZlO5eOZI0HUtLHuweptepPb0v/LoQ4O/4zBokIjXPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTeiBp/v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741BAC43330;
-	Mon, 29 Jan 2024 17:11:50 +0000 (UTC)
+	 MIME-Version; b=lIxBXrkD92+Gr6lCt0+JoNh5L3hkCwVGSKxdRii/oHix0YadPsyJfS5FOgB5Abb6/MBYiVbrRNwxrlFUs0JHdAKrjzNAvFjRQWYfoFpgEqUaO1nEoACCXxFeUG1WFjsN9MZOdMDtwuru4EHeLAC7BcfRctW9ijzxzIixWOeKw1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0KwJMjW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E715C433C7;
+	Mon, 29 Jan 2024 17:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548310;
-	bh=y8V6/qgHmUCedl8p+lozXK58QP+hIQUCHs8vUZ0lG9I=;
+	s=korg; t=1706548185;
+	bh=ZfgWbFPGdEXn4EsetL2LFxL/PK1BTv1z8XPv4wsQbfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MTeiBp/vvtThDk8BDGiuXR09fTnlnRG2ig/IUA9MqLvsEmHItaKXTFVGGip0WbQ3b
-	 zdlW6izV/U804fSOe3j2uL9k5rTwK0WNzyMJSaaFWzZm4pD15ivKFthkg2OOVY3r4p
-	 9kOSF63ZO8u6vF6lZHUcWpMYGA+WGmRUTNNmv28o=
+	b=L0KwJMjW2CDWNW8zp86CBZBAfzxGmw0pkLpsaKF9TBA/jtJ7zqCi7KKoVEjbFCcAb
+	 gUxsr8RhHvhn270ayJMkszmK+fES945AzD1KG58GMbBFKia8pEjBmuUoqVEO5+tAF4
+	 AK45pFAX1jHJJB32dkLH+Ar/gPgr8Aj2LopJ9CSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.1 060/185] serial: sc16is7xx: remove global regmap from struct sc16is7xx_port
+	Ilya Dryomov <idryomov@gmail.com>,
+	Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: [PATCH 6.7 229/346] rbd: dont move requests to the running list on errors
 Date: Mon, 29 Jan 2024 09:04:20 -0800
-Message-ID: <20240129170000.532043379@linuxfoundation.org>
+Message-ID: <20240129170023.133622539@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit f6959c5217bd799bcb770b95d3c09b3244e175c6 upstream.
+commit ded080c86b3f99683774af0441a58fc2e3d60cae upstream.
 
-Remove global struct regmap so that it is more obvious that this
-regmap is to be used only in the probe function.
+The running list is supposed to contain requests that are pinning the
+exclusive lock, i.e. those that must be flushed before exclusive lock
+is released.  When wake_lock_waiters() is called to handle an error,
+requests on the acquiring list are failed with that error and no
+flushing takes place.  Briefly moving them to the running list is not
+only pointless but also harmful: if exclusive lock gets acquired
+before all of their state machines are scheduled and go through
+rbd_lock_del_request(), we trigger
 
-Also add a comment to that effect in probe function.
+    rbd_assert(list_empty(&rbd_dev->running_list));
 
-Fixes: 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
-Cc:  <stable@vger.kernel.org>
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231211171353.2901416-3-hugo@hugovil.com
+in rbd_try_acquire_lock().
+
+Cc: stable@vger.kernel.org
+Fixes: 637cd060537d ("rbd: new exclusive lock wait/wake code")
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/block/rbd.c |   22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -335,7 +335,6 @@ struct sc16is7xx_one {
- 
- struct sc16is7xx_port {
- 	const struct sc16is7xx_devtype	*devtype;
--	struct regmap			*regmap;
- 	struct clk			*clk;
- #ifdef CONFIG_GPIOLIB
- 	struct gpio_chip		gpio;
-@@ -1415,7 +1414,8 @@ static int sc16is7xx_setup_gpio_chip(str
- /*
-  * Configure ports designated to operate as modem control lines.
-  */
--static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s)
-+static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s,
-+				       struct regmap *regmap)
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -3452,14 +3452,15 @@ static bool rbd_lock_add_request(struct
+ static void rbd_lock_del_request(struct rbd_img_request *img_req)
  {
- 	int i;
- 	int ret;
-@@ -1444,7 +1444,7 @@ static int sc16is7xx_setup_mctrl_ports(s
+ 	struct rbd_device *rbd_dev = img_req->rbd_dev;
+-	bool need_wakeup;
++	bool need_wakeup = false;
  
- 	if (s->mctrl_mask)
- 		regmap_update_bits(
--			s->regmap,
-+			regmap,
- 			SC16IS7XX_IOCONTROL_REG,
- 			SC16IS7XX_IOCONTROL_MODEM_A_BIT |
- 			SC16IS7XX_IOCONTROL_MODEM_B_BIT, s->mctrl_mask);
-@@ -1476,6 +1476,10 @@ static int sc16is7xx_probe(struct device
- 	 * This device does not have an identification register that would
- 	 * tell us if we are really connected to the correct device.
- 	 * The best we can do is to check if communication is at all possible.
-+	 *
-+	 * Note: regmap[0] is used in the probe function to access registers
-+	 * common to all channels/ports, as it is guaranteed to be present on
-+	 * all variants.
- 	 */
- 	ret = regmap_read(regmaps[0], SC16IS7XX_LSR_REG, &val);
- 	if (ret < 0)
-@@ -1511,7 +1515,6 @@ static int sc16is7xx_probe(struct device
- 			return -EINVAL;
+ 	lockdep_assert_held(&rbd_dev->lock_rwsem);
+ 	spin_lock(&rbd_dev->lock_lists_lock);
+-	rbd_assert(!list_empty(&img_req->lock_item));
+-	list_del_init(&img_req->lock_item);
+-	need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_RELEASING &&
+-		       list_empty(&rbd_dev->running_list));
++	if (!list_empty(&img_req->lock_item)) {
++		list_del_init(&img_req->lock_item);
++		need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_RELEASING &&
++			       list_empty(&rbd_dev->running_list));
++	}
+ 	spin_unlock(&rbd_dev->lock_lists_lock);
+ 	if (need_wakeup)
+ 		complete(&rbd_dev->releasing_wait);
+@@ -3842,14 +3843,19 @@ static void wake_lock_waiters(struct rbd
+ 		return;
  	}
  
--	s->regmap = regmaps[0];
- 	s->devtype = devtype;
- 	dev_set_drvdata(dev, s);
- 	mutex_init(&s->efr_lock);
-@@ -1526,7 +1529,7 @@ static int sc16is7xx_probe(struct device
- 	sched_set_fifo(s->kworker_task);
- 
- 	/* reset device, purging any pending irq / data */
--	regmap_write(s->regmap, SC16IS7XX_IOCONTROL_REG,
-+	regmap_write(regmaps[0], SC16IS7XX_IOCONTROL_REG,
- 		     SC16IS7XX_IOCONTROL_SRESET_BIT);
- 
- 	for (i = 0; i < devtype->nr_uart; ++i) {
-@@ -1606,7 +1609,7 @@ static int sc16is7xx_probe(struct device
- 				s->p[u].irda_mode = true;
+-	list_for_each_entry(img_req, &rbd_dev->acquiring_list, lock_item) {
++	while (!list_empty(&rbd_dev->acquiring_list)) {
++		img_req = list_first_entry(&rbd_dev->acquiring_list,
++					   struct rbd_img_request, lock_item);
+ 		mutex_lock(&img_req->state_mutex);
+ 		rbd_assert(img_req->state == RBD_IMG_EXCLUSIVE_LOCK);
++		if (!result)
++			list_move_tail(&img_req->lock_item,
++				       &rbd_dev->running_list);
++		else
++			list_del_init(&img_req->lock_item);
+ 		rbd_img_schedule(img_req, result);
+ 		mutex_unlock(&img_req->state_mutex);
  	}
+-
+-	list_splice_tail_init(&rbd_dev->acquiring_list, &rbd_dev->running_list);
+ }
  
--	ret = sc16is7xx_setup_mctrl_ports(s);
-+	ret = sc16is7xx_setup_mctrl_ports(s, regmaps[0]);
- 	if (ret)
- 		goto out_ports;
- 
+ static bool locker_equal(const struct ceph_locker *lhs,
 
 
 
