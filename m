@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3519C840E2E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A6D8840FF7
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEF081F2D0E3
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEE321F20FE5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB0115EA97;
-	Mon, 29 Jan 2024 17:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DFB173744;
+	Mon, 29 Jan 2024 17:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4/Da+QK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FTvsds/v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FA31586DC;
-	Mon, 29 Jan 2024 17:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB1D73722;
+	Mon, 29 Jan 2024 17:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548238; cv=none; b=QvPQsrMxrPGcXzZTcnVX1B8Tox9yKBNp2A009U7tBGcv4hiO8TTUubYtDuwfvvgAzINarwWBom+nmZz0jSm8B/9hzHetoe4gOLQSpLjFLjNXaf2nQ4+gzWN+te27Jh7BxA6LNyMc+/uCQBbIuKigSuP0ONAxMnzUkYU6/5+p8X0=
+	t=1706548536; cv=none; b=tGfx0/lqL27+Vz/nKMIALAxxK1saZDpmKbMUlzY4WKufX8/18CTsIKsw9njXW/W6BIb4DFJByH+DOUNWD9dL7YZPGAlCOLTOoV9BofM7+pgn4LqzYLegRf9Tub1Feit/BqQlWWxxCFpBy7APcK6x8S85TxjXl18iwEvT/qEAmJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548238; c=relaxed/simple;
-	bh=M5l3on6zsPHDfBWJqL6DjxZcgZi8eJX8cgm3aTZiJ74=;
+	s=arc-20240116; t=1706548536; c=relaxed/simple;
+	bh=Ht5K8UXGgkMTbW/kpsa9kWGZfQI9WeMVXXxafd+GpjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNcreQqn4IYchfx4x1KtKVJsklVVUZmYsA1SPz0ncKLuTjuIsEaH2eA5EPp6RM0GRf9q//FyyyMnRP8yybQN/IkoA4Ra8rqru+UkWwwr23nDtkmrV3yFrdJsPzKCQVe/eoq2EJhLGwoXKqf1fiChAU3oLpV+6d/x85K/jW8epLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4/Da+QK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A0FC433C7;
-	Mon, 29 Jan 2024 17:10:37 +0000 (UTC)
+	 MIME-Version; b=CDC//jui8Z2VuB/zJfezOduA46TRp5SSZLupOdxjwy6s3F7ZO3JWYC7aBGal/v7YbD0uTCtd7BxCvaD1YLdXVTBuQDozAvOdL6x7461lUpwgntPqU2P51/ewtnqfPTWieJ4tqZrFCyjK00e3X168wLVg3Skz5d0V4kkhpQOfwwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FTvsds/v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A5AC433F1;
+	Mon, 29 Jan 2024 17:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548237;
-	bh=M5l3on6zsPHDfBWJqL6DjxZcgZi8eJX8cgm3aTZiJ74=;
+	s=korg; t=1706548535;
+	bh=Ht5K8UXGgkMTbW/kpsa9kWGZfQI9WeMVXXxafd+GpjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4/Da+QKHfJC6k6xSOeNGTKPPwoV8gXPZ5RAwv3M61s9D8OyIBthshoyN9pZ9PQTl
-	 fOXPw09MIdTFtH5A23BuvZI+J8RPEQNOGmMuLIFPAVFE71UgnpqL2JSSG0eSwHDJwX
-	 KeBz7pE7iEk5dg/xQ192yH5pmyoXP6HicfFug4gI=
+	b=FTvsds/vf4kIiS17oXGobXynCh7KuJqCZxEduZ21tYlAUSBtkMGwzyNYL17QPHeD5
+	 grFWT1Nko0UdhldsCJCRu4FBHyScZDl+bAEG9k2aPfgutSwfv5aASsSyn4T4NIAH9N
+	 OaW44L/TMWHLYPxs/VmagHJcvq/PWiDw3aGyfMSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 038/185] arm64: dts: qcom: sdm845: fix USB DP/DM HS PHY interrupts
+	Lin Ma <linma@zju.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 174/331] vlan: skip nested type that is not IFLA_VLAN_QOS_MAPPING
 Date: Mon, 29 Jan 2024 09:03:58 -0800
-Message-ID: <20240129165959.808437170@linuxfoundation.org>
+Message-ID: <20240129170020.008432165@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Lin Ma <linma@zju.edu.cn>
 
-commit 204f9ed4bad6293933179517624143b8f412347c upstream.
+[ Upstream commit 6c21660fe221a15c789dee2bc2fd95516bc5aeaf ]
 
-The USB DP/DM HS PHY interrupts need to be provided by the PDC interrupt
-controller in order to be able to wake the system up from low-power
-states and to be able to detect disconnect events, which requires
-triggering on falling edges.
+In the vlan_changelink function, a loop is used to parse the nested
+attributes IFLA_VLAN_EGRESS_QOS and IFLA_VLAN_INGRESS_QOS in order to
+obtain the struct ifla_vlan_qos_mapping. These two nested attributes are
+checked in the vlan_validate_qos_map function, which calls
+nla_validate_nested_deprecated with the vlan_map_policy.
 
-A recent commit updated the trigger type but failed to change the
-interrupt provider as required. This leads to the current Linux driver
-failing to probe instead of printing an error during suspend and USB
-wakeup not working as intended.
+However, this deprecated validator applies a LIBERAL strictness, allowing
+the presence of an attribute with the type IFLA_VLAN_QOS_UNSPEC.
+Consequently, the loop in vlan_changelink may parse an attribute of type
+IFLA_VLAN_QOS_UNSPEC and believe it carries a payload of
+struct ifla_vlan_qos_mapping, which is not necessarily true.
 
-Fixes: 84ad9ac8d9ca ("arm64: dts: qcom: sdm845: fix USB wakeup interrupt types")
-Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
-Cc: stable@vger.kernel.org      # 4.20
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231213173403.29544-3-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To address this issue and ensure compatibility, this patch introduces two
+type checks that skip attributes whose type is not IFLA_VLAN_QOS_MAPPING.
+
+Fixes: 07b5b17e157b ("[VLAN]: Use rtnl_link API")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240118130306.1644001-1-linma@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ net/8021q/vlan_netlink.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -4048,10 +4048,10 @@
- 					  <&gcc GCC_USB30_PRIM_MASTER_CLK>;
- 			assigned-clock-rates = <19200000>, <150000000>;
- 
--			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
--				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
-+			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&intc GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc_intc 8 IRQ_TYPE_EDGE_BOTH>,
-+					      <&pdc_intc 9 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
- 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
- 
-@@ -4099,10 +4099,10 @@
- 					  <&gcc GCC_USB30_SEC_MASTER_CLK>;
- 			assigned-clock-rates = <19200000>, <150000000>;
- 
--			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 490 IRQ_TYPE_EDGE_BOTH>,
--				     <GIC_SPI 491 IRQ_TYPE_EDGE_BOTH>;
-+			interrupts-extended = <&intc GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&intc GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc_intc 10 IRQ_TYPE_EDGE_BOTH>,
-+					      <&pdc_intc 11 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
- 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
- 
+diff --git a/net/8021q/vlan_netlink.c b/net/8021q/vlan_netlink.c
+index 214532173536..a3b68243fd4b 100644
+--- a/net/8021q/vlan_netlink.c
++++ b/net/8021q/vlan_netlink.c
+@@ -118,12 +118,16 @@ static int vlan_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	}
+ 	if (data[IFLA_VLAN_INGRESS_QOS]) {
+ 		nla_for_each_nested(attr, data[IFLA_VLAN_INGRESS_QOS], rem) {
++			if (nla_type(attr) != IFLA_VLAN_QOS_MAPPING)
++				continue;
+ 			m = nla_data(attr);
+ 			vlan_dev_set_ingress_priority(dev, m->to, m->from);
+ 		}
+ 	}
+ 	if (data[IFLA_VLAN_EGRESS_QOS]) {
+ 		nla_for_each_nested(attr, data[IFLA_VLAN_EGRESS_QOS], rem) {
++			if (nla_type(attr) != IFLA_VLAN_QOS_MAPPING)
++				continue;
+ 			m = nla_data(attr);
+ 			err = vlan_dev_set_egress_priority(dev, m->from, m->to);
+ 			if (err)
+-- 
+2.43.0
+
 
 
 
