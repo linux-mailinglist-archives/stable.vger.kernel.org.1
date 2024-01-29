@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-17254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7012841072
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65998840F1B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62DC62843EA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 081E1B22913
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0232C76046;
-	Mon, 29 Jan 2024 17:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F61163A95;
+	Mon, 29 Jan 2024 17:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9nEVoi/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="re3jbA+G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E8376043;
-	Mon, 29 Jan 2024 17:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49A5163A90;
+	Mon, 29 Jan 2024 17:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548623; cv=none; b=iZ9fBZtA3t0UxLWBk0if+5FGAe1G6WXLNH02OHFgTRilggZe2uPmoWPtBN47cPmTH9NV81ZuqCQA1sQU9AnxWQijD3ZwNPVRo1xaXx3ylUppe2FzldIikPCeVu5kt+e/JR/H0ZxLFESv+R/E7zTl/dzPf/akuBFh05b9gtcq/Gs=
+	t=1706548385; cv=none; b=Ov3m/RWAGrMf6YXYKX1Iykk848dC0kvDbY2BRPcFdDRBZW8RP2k0aX2f9xrjpwhLmaGY37SeBlbFjH2Xzao8h5FTc1sTL75QNL4iZBJ4roz+eFPPJ2v/Szw5oVvETcp765OhQVEOdTsjC8aShksoWXNcnJtQD+5cbrIxBl9CfxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548623; c=relaxed/simple;
-	bh=YGYTjUjs3lANfHAI2Jjo/4DDpeVF5sONeWhM8ksO3es=;
+	s=arc-20240116; t=1706548385; c=relaxed/simple;
+	bh=iROTM62lg/86u4CoRwX0WWcpXcnjQKESySEB3hueEFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OLbyKhtv55xNiGcjDolXahaEsYEceyx1urSdrrgj7zWyTyTP0NbJJ8Lxoaj7ckiaty/dP7yKm5vh1n580PPY+0aHrrw26uuf+mVDomHdpGkq1OBH9LhQxAb40LvblFiu0BskYRW0+XOv3Kvz2dj12HA1kAsRYeRPMAvJPwl7Reg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9nEVoi/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C19FC43390;
-	Mon, 29 Jan 2024 17:17:03 +0000 (UTC)
+	 MIME-Version; b=XBCiQrOYOxuzRamkVeBxp3SZ4CViijkyPPXGueyp+dpPit1WtAERuFOZ/iQ5PEseZndi5YFW3IOTO4gU1W9lMqh9RWl/nqwkYHcDc44ed2YFE6TRhsQ7El/JZxyzKxtje3q2NGQSA80v3mdFn1rr0qgH0/QE6RP74+N1QJOEZRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=re3jbA+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF45C433F1;
+	Mon, 29 Jan 2024 17:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548623;
-	bh=YGYTjUjs3lANfHAI2Jjo/4DDpeVF5sONeWhM8ksO3es=;
+	s=korg; t=1706548385;
+	bh=iROTM62lg/86u4CoRwX0WWcpXcnjQKESySEB3hueEFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g9nEVoi/kdf6LP3wcL/QpY87jSouRtkI9XkQdDa+4L1BRGoUvxG6cKZucjNuspt1g
-	 Ti/mrR/hD9Ffj9IyIzZcuE3EbgQJlkWblVkNLbRCmaO9bDeRh4WRoJ/ueU8wKVo489
-	 St6JrVCFNTJsbU/OqaxiYkiSgMeGJ3/p66F5M30M=
+	b=re3jbA+GswbEjKmNCQbYAkGoelhaRTFJUZ+NU2eSjUk7MqhxFOuRUZhBKO4U2LT2W
+	 PGO5c3XZhE62r3tKI22nMqS/Lm3BG2819SOHgzzm/pdptcqFSSS/ARIbhMl8tNwjvh
+	 m8Gpbk5fPftMHvK7HxCKKtkTw+hT+2iUgm8MWFBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Kahola <mika.kahola@intel.com>,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 293/331] drm/i915/lnl: Remove watchdog timers for PSR
+Subject: [PATCH 6.1 157/185] ARM: dts: qcom: sdx55: fix USB SS wakeup
 Date: Mon, 29 Jan 2024 09:05:57 -0800
-Message-ID: <20240129170023.435920858@linuxfoundation.org>
+Message-ID: <20240129170003.639056998@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +63,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Kahola <mika.kahola@intel.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit a2cd15c2411624a7a97bad60d98d7e0a1e5002a6 ]
+[ Upstream commit 710dd03464e4ab5b3d329768388b165d61958577 ]
 
-Watchdog timers for Lunarlake HW were removed for PSR/PSR2
-The patch removes the use of these timers from the driver code.
+The USB SS PHY interrupt needs to be provided by the PDC interrupt
+controller in order to be able to wake the system up from low-power
+states.
 
-BSpec: 69895
-
-v2: Reword commit message (Ville)
-    Drop HPD mask from LNL (Ville)
-    Revise masking logic (Jouni)
-v3: Revise commit message (Ville)
-    Revert HPD mask removal as irrelevant for this patch (Ville)
-
-Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231010095233.590613-1-mika.kahola@intel.com
-Stable-dep-of: f9f031dd21a7 ("drm/i915/psr: Only allow PSR in LPSP mode on HSW non-ULT")
+Fixes: fea4b41022f3 ("ARM: dts: qcom: sdx55: Add USB3 and PHY support")
+Cc: stable@vger.kernel.org	# 5.12
+Cc: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20231213173131.29436-4-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_psr.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/qcom-sdx55.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
-index 97d5eef10130..848ac483259b 100644
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -674,7 +674,9 @@ static void hsw_activate_psr1(struct intel_dp *intel_dp)
+diff --git a/arch/arm/boot/dts/qcom-sdx55.dtsi b/arch/arm/boot/dts/qcom-sdx55.dtsi
+index de747859fdc6..b85820448b9d 100644
+--- a/arch/arm/boot/dts/qcom-sdx55.dtsi
++++ b/arch/arm/boot/dts/qcom-sdx55.dtsi
+@@ -496,7 +496,7 @@ usb: usb@a6f8800 {
+ 			assigned-clock-rates = <19200000>, <200000000>;
  
- 	val |= EDP_PSR_IDLE_FRAMES(psr_compute_idle_frames(intel_dp));
- 
--	val |= EDP_PSR_MAX_SLEEP_TIME(max_sleep_time);
-+	if (DISPLAY_VER(dev_priv) < 20)
-+		val |= EDP_PSR_MAX_SLEEP_TIME(max_sleep_time);
-+
- 	if (IS_HASWELL(dev_priv))
- 		val |= EDP_PSR_MIN_LINK_ENTRY_TIME_8_LINES;
- 
-@@ -1399,8 +1401,10 @@ static void intel_psr_enable_source(struct intel_dp *intel_dp,
- 	 */
- 	mask = EDP_PSR_DEBUG_MASK_MEMUP |
- 	       EDP_PSR_DEBUG_MASK_HPD |
--	       EDP_PSR_DEBUG_MASK_LPSP |
--	       EDP_PSR_DEBUG_MASK_MAX_SLEEP;
-+	       EDP_PSR_DEBUG_MASK_LPSP;
-+
-+	if (DISPLAY_VER(dev_priv) < 20)
-+		mask |= EDP_PSR_DEBUG_MASK_MAX_SLEEP;
- 
- 	/*
- 	 * No separate pipe reg write mask on hsw/bdw, so have to unmask all
+ 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+-					      <&intc GIC_SPI 198 IRQ_TYPE_LEVEL_HIGH>,
++					      <&pdc 51 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&pdc 11 IRQ_TYPE_EDGE_BOTH>,
+ 					      <&pdc 10 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
 -- 
 2.43.0
 
