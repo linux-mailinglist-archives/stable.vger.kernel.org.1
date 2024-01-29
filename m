@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8345A840E08
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83302840FE5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5C721C21678
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E741A1F23D4A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4937B15B111;
-	Mon, 29 Jan 2024 17:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0C815EA94;
+	Mon, 29 Jan 2024 17:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hd2P9Fwo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKgp1+s9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084F915B0EC;
-	Mon, 29 Jan 2024 17:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB52157E68;
+	Mon, 29 Jan 2024 17:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548212; cv=none; b=dMN7CRVsMrVN8KOGP7C+oui+UFbvy2+4an/pANMBsdieZ5LxAtc5pm+BnPE8EPmWE56y+A3IbAD5CltEK4PYGK+3G9lIUe3HU9teWpy2e/oDbKWtmBXCsFUM6AuUG6OlNBqx/zeudAjG1CF0vKu0MgZOKgLj7vkZF/Li01I0OZY=
+	t=1706548524; cv=none; b=ezAOb/yOXNsuZtxCoOyYqOlEq9UI1IwxyjmJgEKAFqzlnYRuroCLbEjPw29ugeTWoIs9+rtsOo0+nrLxbHtApp3ATseo0Jl3T8MGihtFHqjUACS6JM31Gcbc4ES5lgoGxIEN05yTX+1OqxympvftKQ0DkZJkXUoICCQyuv17qX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548212; c=relaxed/simple;
-	bh=WPo+op3tnvst4nxsMelMFfkXXFYYMLGNydbCK/WNqkU=;
+	s=arc-20240116; t=1706548524; c=relaxed/simple;
+	bh=jluPK85iHwgfP6gU5yFUoSvECmL5/Rmm/a2Ebu9rhco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kj+gSwDg9Sd8ljF6Tom51fKIsQ0vjzYscgPHnoZ4Om+sTnWKZXsIMrCBStee+VDR4OGmS99FlOkpKHqZudct4YEuTiJyumpjY0fSJr1kNG6nV3JlUHok++FF4k63Jh9tg9y6SaVW3/jcS/+iXMcGX7x/DGuedcrVrv4ckEgWWAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hd2P9Fwo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A490C433A6;
-	Mon, 29 Jan 2024 17:10:11 +0000 (UTC)
+	 MIME-Version; b=JIwuqHxKQ3z8b7vSPQBWvj3zmyROCU4uS4QUsTOXScrlqH7YliD6sZQyd71U1zcKqU732H4SrGJqlkt38ZuQyDNJLalEdJP4WYt0OQXVocICwdXMWBj/U+IETey/8rgqepbo3Lsk45mb/0W4GhzwwSS+Py/svMAksWNXwfErDoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKgp1+s9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F695C433F1;
+	Mon, 29 Jan 2024 17:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548211;
-	bh=WPo+op3tnvst4nxsMelMFfkXXFYYMLGNydbCK/WNqkU=;
+	s=korg; t=1706548524;
+	bh=jluPK85iHwgfP6gU5yFUoSvECmL5/Rmm/a2Ebu9rhco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hd2P9Fwod0cpN9F63Q0ZaSXOJlwEQSoLDftLQnqYwzBNSHZJBFLA1jzZBsllY2igl
-	 c8DRfPcPTnKSdduNW25Zp2mID9PY822znwJYV2lp9ncHUId5E29pJj2SqK2eaGeAGb
-	 75Mg6jdfkI5as4y/UUGRet9DLue4MFzKeVkbylY4=
+	b=hKgp1+s9pCF2sKcs61xphhHXefkxxNPX4jtdf6IAbbpfl57t/p3fvuzbJ7Da3ItIS
+	 b4VL5dCJxRM3xGvMm7vZFeuHaJgi2geKGeY09dJRg1YYnPJtRnoGvurtfzrco/jGig
+	 ON9rGw5ecEQO2kji7+4G5TAjmXEceZH+upggxBFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Krowiak <akrowiak@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.1 021/185] s390/vfio-ap: loop over the shadow APCB when filtering guests AP configuration
+	Andrew Werner <awerner32@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 157/331] bpf: verify callbacks as if they are called unknown number of times
 Date: Mon, 29 Jan 2024 09:03:41 -0800
-Message-ID: <20240129165959.286016022@linuxfoundation.org>
+Message-ID: <20240129170019.516063027@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,665 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Krowiak <akrowiak@linux.ibm.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-commit 16fb78cbf56e42b8efb2682a4444ab59e32e7959 upstream.
+commit ab5cfac139ab8576fb54630d4cca23c3e690ee90 upstream.
 
-While filtering the mdev matrix, it doesn't make sense - and will have
-unexpected results - to filter an APID from the matrix if the APID or one
-of the associated APQIs is not in the host's AP configuration. There are
-two reasons for this:
+Prior to this patch callbacks were handled as regular function calls,
+execution of callback body was modeled exactly once.
+This patch updates callbacks handling logic as follows:
+- introduces a function push_callback_call() that schedules callback
+  body verification in env->head stack;
+- updates prepare_func_exit() to reschedule callback body verification
+  upon BPF_EXIT;
+- as calls to bpf_*_iter_next(), calls to callback invoking functions
+  are marked as checkpoints;
+- is_state_visited() is updated to stop callback based iteration when
+  some identical parent state is found.
 
-1. An adapter or domain that is not in the host's AP configuration can be
-   assigned to the matrix; this is known as over-provisioning. Queue
-   devices, however, are only created for adapters and domains in the
-   host's AP configuration, so there will be no queues associated with an
-   over-provisioned adapter or domain to filter.
+Paths with callback function invoked zero times are now verified first,
+which leads to necessity to modify some selftests:
+- the following negative tests required adding release/unlock/drop
+  calls to avoid previously masked unrelated error reports:
+  - cb_refs.c:underflow_prog
+  - exceptions_fail.c:reject_rbtree_add_throw
+  - exceptions_fail.c:reject_with_cp_reference
+- the following precision tracking selftests needed change in expected
+  log trace:
+  - verifier_subprog_precision.c:callback_result_precise
+    (note: r0 precision is no longer propagated inside callback and
+           I think this is a correct behavior)
+  - verifier_subprog_precision.c:parent_callee_saved_reg_precise_with_callback
+  - verifier_subprog_precision.c:parent_stack_slot_precise_with_callback
 
-2. The adapter or domain may have been externally removed from the host's
-   configuration via an SE or HMC attached to a DPM enabled LPAR. In this
-   case, the vfio_ap device driver would have been notified by the AP bus
-   via the on_config_changed callback and the adapter or domain would
-   have already been filtered.
-
-Since the matrix_mdev->shadow_apcb.apm and matrix_mdev->shadow_apcb.aqm are
-copied from the mdev matrix sans the APIDs and APQIs not in the host's AP
-configuration, let's loop over those bitmaps instead of those assigned to
-the matrix.
-
-Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Fixes: 48cae940c31d ("s390/vfio-ap: refresh guest's APCB by filtering AP resources assigned to mdev")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240115185441.31526-3-akrowiak@linux.ibm.com
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reported-by: Andrew Werner <awerner32@gmail.com>
+Closes: https://lore.kernel.org/bpf/CA+vRuzPChFNXmouzGG+wsy=6eMcfr1mFG0F3g7rbg-sedGKW3w@mail.gmail.com/
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20231121020701.26440-7-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/crypto/vfio_ap_ops.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/linux/bpf_verifier.h                                   |    5 
+ kernel/bpf/verifier.c                                          |  272 ++++++----
+ tools/testing/selftests/bpf/progs/cb_refs.c                    |    1 
+ tools/testing/selftests/bpf/progs/verifier_subprog_precision.c |   71 ++
+ 4 files changed, 237 insertions(+), 112 deletions(-)
 
---- a/drivers/s390/crypto/vfio_ap_ops.c
-+++ b/drivers/s390/crypto/vfio_ap_ops.c
-@@ -660,8 +660,9 @@ static bool vfio_ap_mdev_filter_matrix(s
- 	bitmap_and(matrix_mdev->shadow_apcb.aqm, matrix_mdev->matrix.aqm,
- 		   (unsigned long *)matrix_dev->info.aqm, AP_DOMAINS);
+--- a/include/linux/bpf_verifier.h
++++ b/include/linux/bpf_verifier.h
+@@ -399,6 +399,7 @@ struct bpf_verifier_state {
+ 	struct bpf_idx_pair *jmp_history;
+ 	u32 jmp_history_cnt;
+ 	u32 dfs_depth;
++	u32 callback_unroll_depth;
+ };
  
--	for_each_set_bit_inv(apid, matrix_mdev->matrix.apm, AP_DEVICES) {
--		for_each_set_bit_inv(apqi, matrix_mdev->matrix.aqm, AP_DOMAINS) {
-+	for_each_set_bit_inv(apid, matrix_mdev->shadow_apcb.apm, AP_DEVICES) {
-+		for_each_set_bit_inv(apqi, matrix_mdev->shadow_apcb.aqm,
-+				     AP_DOMAINS) {
- 			/*
- 			 * If the APQN is not bound to the vfio_ap device
- 			 * driver, then we can't assign it to the guest's
+ #define bpf_get_spilled_reg(slot, frame)				\
+@@ -506,6 +507,10 @@ struct bpf_insn_aux_data {
+ 	 * this instruction, regardless of any heuristics
+ 	 */
+ 	bool force_checkpoint;
++	/* true if instruction is a call to a helper function that
++	 * accepts callback function as a parameter.
++	 */
++	bool calls_callback;
+ };
+ 
+ #define MAX_USED_MAPS 64 /* max number of maps accessed by one eBPF program */
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -542,12 +542,11 @@ static bool is_dynptr_ref_function(enum
+ 	return func_id == BPF_FUNC_dynptr_data;
+ }
+ 
+-static bool is_callback_calling_kfunc(u32 btf_id);
++static bool is_sync_callback_calling_kfunc(u32 btf_id);
+ 
+-static bool is_callback_calling_function(enum bpf_func_id func_id)
++static bool is_sync_callback_calling_function(enum bpf_func_id func_id)
+ {
+ 	return func_id == BPF_FUNC_for_each_map_elem ||
+-	       func_id == BPF_FUNC_timer_set_callback ||
+ 	       func_id == BPF_FUNC_find_vma ||
+ 	       func_id == BPF_FUNC_loop ||
+ 	       func_id == BPF_FUNC_user_ringbuf_drain;
+@@ -558,6 +557,18 @@ static bool is_async_callback_calling_fu
+ 	return func_id == BPF_FUNC_timer_set_callback;
+ }
+ 
++static bool is_callback_calling_function(enum bpf_func_id func_id)
++{
++	return is_sync_callback_calling_function(func_id) ||
++	       is_async_callback_calling_function(func_id);
++}
++
++static bool is_sync_callback_calling_insn(struct bpf_insn *insn)
++{
++	return (bpf_helper_call(insn) && is_sync_callback_calling_function(insn->imm)) ||
++	       (bpf_pseudo_kfunc_call(insn) && is_sync_callback_calling_kfunc(insn->imm));
++}
++
+ static bool is_storage_get_function(enum bpf_func_id func_id)
+ {
+ 	return func_id == BPF_FUNC_sk_storage_get ||
+@@ -1772,6 +1783,7 @@ static int copy_verifier_state(struct bp
+ 	dst_state->first_insn_idx = src->first_insn_idx;
+ 	dst_state->last_insn_idx = src->last_insn_idx;
+ 	dst_state->dfs_depth = src->dfs_depth;
++	dst_state->callback_unroll_depth = src->callback_unroll_depth;
+ 	dst_state->used_as_loop_entry = src->used_as_loop_entry;
+ 	for (i = 0; i <= src->curframe; i++) {
+ 		dst = dst_state->frame[i];
+@@ -3613,6 +3625,8 @@ static void fmt_stack_mask(char *buf, ss
+ 	}
+ }
+ 
++static bool calls_callback(struct bpf_verifier_env *env, int insn_idx);
++
+ /* For given verifier state backtrack_insn() is called from the last insn to
+  * the first insn. Its purpose is to compute a bitmask of registers and
+  * stack slots that needs precision in the parent verifier state.
+@@ -3788,16 +3802,13 @@ static int backtrack_insn(struct bpf_ver
+ 					return -EFAULT;
+ 				return 0;
+ 			}
+-		} else if ((bpf_helper_call(insn) &&
+-			    is_callback_calling_function(insn->imm) &&
+-			    !is_async_callback_calling_function(insn->imm)) ||
+-			   (bpf_pseudo_kfunc_call(insn) && is_callback_calling_kfunc(insn->imm))) {
+-			/* callback-calling helper or kfunc call, which means
+-			 * we are exiting from subprog, but unlike the subprog
+-			 * call handling above, we shouldn't propagate
+-			 * precision of r1-r5 (if any requested), as they are
+-			 * not actually arguments passed directly to callback
+-			 * subprogs
++		} else if (is_sync_callback_calling_insn(insn) && idx != subseq_idx - 1) {
++			/* exit from callback subprog to callback-calling helper or
++			 * kfunc call. Use idx/subseq_idx check to discern it from
++			 * straight line code backtracking.
++			 * Unlike the subprog call handling above, we shouldn't
++			 * propagate precision of r1-r5 (if any requested), as they are
++			 * not actually arguments passed directly to callback subprogs
+ 			 */
+ 			if (bt_reg_mask(bt) & ~BPF_REGMASK_ARGS) {
+ 				verbose(env, "BUG regs %x\n", bt_reg_mask(bt));
+@@ -3832,10 +3843,18 @@ static int backtrack_insn(struct bpf_ver
+ 		} else if (opcode == BPF_EXIT) {
+ 			bool r0_precise;
+ 
++			/* Backtracking to a nested function call, 'idx' is a part of
++			 * the inner frame 'subseq_idx' is a part of the outer frame.
++			 * In case of a regular function call, instructions giving
++			 * precision to registers R1-R5 should have been found already.
++			 * In case of a callback, it is ok to have R1-R5 marked for
++			 * backtracking, as these registers are set by the function
++			 * invoking callback.
++			 */
++			if (subseq_idx >= 0 && calls_callback(env, subseq_idx))
++				for (i = BPF_REG_1; i <= BPF_REG_5; i++)
++					bt_clear_reg(bt, i);
+ 			if (bt_reg_mask(bt) & BPF_REGMASK_ARGS) {
+-				/* if backtracing was looking for registers R1-R5
+-				 * they should have been found already.
+-				 */
+ 				verbose(env, "BUG regs %x\n", bt_reg_mask(bt));
+ 				WARN_ONCE(1, "verifier backtracking bug");
+ 				return -EFAULT;
+@@ -9218,11 +9237,11 @@ err_out:
+ 	return err;
+ }
+ 
+-static int __check_func_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
+-			     int *insn_idx, int subprog,
+-			     set_callee_state_fn set_callee_state_cb)
++static int push_callback_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
++			      int insn_idx, int subprog,
++			      set_callee_state_fn set_callee_state_cb)
+ {
+-	struct bpf_verifier_state *state = env->cur_state;
++	struct bpf_verifier_state *state = env->cur_state, *callback_state;
+ 	struct bpf_func_state *caller, *callee;
+ 	int err;
+ 
+@@ -9230,43 +9249,21 @@ static int __check_func_call(struct bpf_
+ 	err = btf_check_subprog_call(env, subprog, caller->regs);
+ 	if (err == -EFAULT)
+ 		return err;
+-	if (subprog_is_global(env, subprog)) {
+-		if (err) {
+-			verbose(env, "Caller passes invalid args into func#%d\n",
+-				subprog);
+-			return err;
+-		} else {
+-			if (env->log.level & BPF_LOG_LEVEL)
+-				verbose(env,
+-					"Func#%d is global and valid. Skipping.\n",
+-					subprog);
+-			clear_caller_saved_regs(env, caller->regs);
+-
+-			/* All global functions return a 64-bit SCALAR_VALUE */
+-			mark_reg_unknown(env, caller->regs, BPF_REG_0);
+-			caller->regs[BPF_REG_0].subreg_def = DEF_NOT_SUBREG;
+-
+-			/* continue with next insn after call */
+-			return 0;
+-		}
+-	}
+ 
+ 	/* set_callee_state is used for direct subprog calls, but we are
+ 	 * interested in validating only BPF helpers that can call subprogs as
+ 	 * callbacks
+ 	 */
+-	if (set_callee_state_cb != set_callee_state) {
+-		if (bpf_pseudo_kfunc_call(insn) &&
+-		    !is_callback_calling_kfunc(insn->imm)) {
+-			verbose(env, "verifier bug: kfunc %s#%d not marked as callback-calling\n",
+-				func_id_name(insn->imm), insn->imm);
+-			return -EFAULT;
+-		} else if (!bpf_pseudo_kfunc_call(insn) &&
+-			   !is_callback_calling_function(insn->imm)) { /* helper */
+-			verbose(env, "verifier bug: helper %s#%d not marked as callback-calling\n",
+-				func_id_name(insn->imm), insn->imm);
+-			return -EFAULT;
+-		}
++	if (bpf_pseudo_kfunc_call(insn) &&
++	    !is_sync_callback_calling_kfunc(insn->imm)) {
++		verbose(env, "verifier bug: kfunc %s#%d not marked as callback-calling\n",
++			func_id_name(insn->imm), insn->imm);
++		return -EFAULT;
++	} else if (!bpf_pseudo_kfunc_call(insn) &&
++		   !is_callback_calling_function(insn->imm)) { /* helper */
++		verbose(env, "verifier bug: helper %s#%d not marked as callback-calling\n",
++			func_id_name(insn->imm), insn->imm);
++		return -EFAULT;
+ 	}
+ 
+ 	if (insn->code == (BPF_JMP | BPF_CALL) &&
+@@ -9277,25 +9274,76 @@ static int __check_func_call(struct bpf_
+ 		/* there is no real recursion here. timer callbacks are async */
+ 		env->subprog_info[subprog].is_async_cb = true;
+ 		async_cb = push_async_cb(env, env->subprog_info[subprog].start,
+-					 *insn_idx, subprog);
++					 insn_idx, subprog);
+ 		if (!async_cb)
+ 			return -EFAULT;
+ 		callee = async_cb->frame[0];
+ 		callee->async_entry_cnt = caller->async_entry_cnt + 1;
+ 
+ 		/* Convert bpf_timer_set_callback() args into timer callback args */
+-		err = set_callee_state_cb(env, caller, callee, *insn_idx);
++		err = set_callee_state_cb(env, caller, callee, insn_idx);
+ 		if (err)
+ 			return err;
+ 
++		return 0;
++	}
++
++	/* for callback functions enqueue entry to callback and
++	 * proceed with next instruction within current frame.
++	 */
++	callback_state = push_stack(env, env->subprog_info[subprog].start, insn_idx, false);
++	if (!callback_state)
++		return -ENOMEM;
++
++	err = setup_func_entry(env, subprog, insn_idx, set_callee_state_cb,
++			       callback_state);
++	if (err)
++		return err;
++
++	callback_state->callback_unroll_depth++;
++	return 0;
++}
++
++static int check_func_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
++			   int *insn_idx)
++{
++	struct bpf_verifier_state *state = env->cur_state;
++	struct bpf_func_state *caller;
++	int err, subprog, target_insn;
++
++	target_insn = *insn_idx + insn->imm + 1;
++	subprog = find_subprog(env, target_insn);
++	if (subprog < 0) {
++		verbose(env, "verifier bug. No program starts at insn %d\n", target_insn);
++		return -EFAULT;
++	}
++
++	caller = state->frame[state->curframe];
++	err = btf_check_subprog_call(env, subprog, caller->regs);
++	if (err == -EFAULT)
++		return err;
++	if (subprog_is_global(env, subprog)) {
++		if (err) {
++			verbose(env, "Caller passes invalid args into func#%d\n", subprog);
++			return err;
++		}
++
++		if (env->log.level & BPF_LOG_LEVEL)
++			verbose(env, "Func#%d is global and valid. Skipping.\n", subprog);
+ 		clear_caller_saved_regs(env, caller->regs);
++
++		/* All global functions return a 64-bit SCALAR_VALUE */
+ 		mark_reg_unknown(env, caller->regs, BPF_REG_0);
+ 		caller->regs[BPF_REG_0].subreg_def = DEF_NOT_SUBREG;
++
+ 		/* continue with next insn after call */
+ 		return 0;
+ 	}
+ 
+-	err = setup_func_entry(env, subprog, *insn_idx, set_callee_state_cb, state);
++	/* for regular function entry setup new frame and continue
++	 * from that frame.
++	 */
++	err = setup_func_entry(env, subprog, *insn_idx, set_callee_state, state);
+ 	if (err)
+ 		return err;
+ 
+@@ -9355,22 +9403,6 @@ static int set_callee_state(struct bpf_v
+ 	return 0;
+ }
+ 
+-static int check_func_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
+-			   int *insn_idx)
+-{
+-	int subprog, target_insn;
+-
+-	target_insn = *insn_idx + insn->imm + 1;
+-	subprog = find_subprog(env, target_insn);
+-	if (subprog < 0) {
+-		verbose(env, "verifier bug. No program starts at insn %d\n",
+-			target_insn);
+-		return -EFAULT;
+-	}
+-
+-	return __check_func_call(env, insn, insn_idx, subprog, set_callee_state);
+-}
+-
+ static int set_map_elem_callback_state(struct bpf_verifier_env *env,
+ 				       struct bpf_func_state *caller,
+ 				       struct bpf_func_state *callee,
+@@ -9601,6 +9633,11 @@ static int prepare_func_exit(struct bpf_
+ 			verbose_invalid_scalar(env, r0, &range, "callback return", "R0");
+ 			return -EINVAL;
+ 		}
++		if (!calls_callback(env, callee->callsite)) {
++			verbose(env, "BUG: in callback at %d, callsite %d !calls_callback\n",
++				*insn_idx, callee->callsite);
++			return -EFAULT;
++		}
+ 	} else {
+ 		/* return to the caller whatever r0 had in the callee */
+ 		caller->regs[BPF_REG_0] = *r0;
+@@ -9618,7 +9655,15 @@ static int prepare_func_exit(struct bpf_
+ 			return err;
+ 	}
+ 
+-	*insn_idx = callee->callsite + 1;
++	/* for callbacks like bpf_loop or bpf_for_each_map_elem go back to callsite,
++	 * there function call logic would reschedule callback visit. If iteration
++	 * converges is_state_visited() would prune that visit eventually.
++	 */
++	if (callee->in_callback_fn)
++		*insn_idx = callee->callsite;
++	else
++		*insn_idx = callee->callsite + 1;
++
+ 	if (env->log.level & BPF_LOG_LEVEL) {
+ 		verbose(env, "returning from callee:\n");
+ 		print_verifier_state(env, callee, true);
+@@ -10009,24 +10054,24 @@ static int check_helper_call(struct bpf_
+ 		}
+ 		break;
+ 	case BPF_FUNC_for_each_map_elem:
+-		err = __check_func_call(env, insn, insn_idx_p, meta.subprogno,
+-					set_map_elem_callback_state);
++		err = push_callback_call(env, insn, insn_idx, meta.subprogno,
++					 set_map_elem_callback_state);
+ 		break;
+ 	case BPF_FUNC_timer_set_callback:
+-		err = __check_func_call(env, insn, insn_idx_p, meta.subprogno,
+-					set_timer_callback_state);
++		err = push_callback_call(env, insn, insn_idx, meta.subprogno,
++					 set_timer_callback_state);
+ 		break;
+ 	case BPF_FUNC_find_vma:
+-		err = __check_func_call(env, insn, insn_idx_p, meta.subprogno,
+-					set_find_vma_callback_state);
++		err = push_callback_call(env, insn, insn_idx, meta.subprogno,
++					 set_find_vma_callback_state);
+ 		break;
+ 	case BPF_FUNC_snprintf:
+ 		err = check_bpf_snprintf_call(env, regs);
+ 		break;
+ 	case BPF_FUNC_loop:
+ 		update_loop_inline_state(env, meta.subprogno);
+-		err = __check_func_call(env, insn, insn_idx_p, meta.subprogno,
+-					set_loop_callback_state);
++		err = push_callback_call(env, insn, insn_idx, meta.subprogno,
++					 set_loop_callback_state);
+ 		break;
+ 	case BPF_FUNC_dynptr_from_mem:
+ 		if (regs[BPF_REG_1].type != PTR_TO_MAP_VALUE) {
+@@ -10105,8 +10150,8 @@ static int check_helper_call(struct bpf_
+ 		break;
+ 	}
+ 	case BPF_FUNC_user_ringbuf_drain:
+-		err = __check_func_call(env, insn, insn_idx_p, meta.subprogno,
+-					set_user_ringbuf_callback_state);
++		err = push_callback_call(env, insn, insn_idx, meta.subprogno,
++					 set_user_ringbuf_callback_state);
+ 		break;
+ 	}
+ 
+@@ -10956,7 +11001,7 @@ static bool is_bpf_graph_api_kfunc(u32 b
+ 	       btf_id == special_kfunc_list[KF_bpf_refcount_acquire_impl];
+ }
+ 
+-static bool is_callback_calling_kfunc(u32 btf_id)
++static bool is_sync_callback_calling_kfunc(u32 btf_id)
+ {
+ 	return btf_id == special_kfunc_list[KF_bpf_rbtree_add_impl];
+ }
+@@ -11660,6 +11705,21 @@ static int check_kfunc_call(struct bpf_v
+ 		return -EACCES;
+ 	}
+ 
++	/* Check the arguments */
++	err = check_kfunc_args(env, &meta, insn_idx);
++	if (err < 0)
++		return err;
++
++	if (meta.func_id == special_kfunc_list[KF_bpf_rbtree_add_impl]) {
++		err = push_callback_call(env, insn, insn_idx, meta.subprogno,
++					 set_rbtree_add_callback_state);
++		if (err) {
++			verbose(env, "kfunc %s#%d failed callback verification\n",
++				func_name, meta.func_id);
++			return err;
++		}
++	}
++
+ 	rcu_lock = is_kfunc_bpf_rcu_read_lock(&meta);
+ 	rcu_unlock = is_kfunc_bpf_rcu_read_unlock(&meta);
+ 
+@@ -11694,10 +11754,6 @@ static int check_kfunc_call(struct bpf_v
+ 		return -EINVAL;
+ 	}
+ 
+-	/* Check the arguments */
+-	err = check_kfunc_args(env, &meta, insn_idx);
+-	if (err < 0)
+-		return err;
+ 	/* In case of release function, we get register number of refcounted
+ 	 * PTR_TO_BTF_ID in bpf_kfunc_arg_meta, do the release now.
+ 	 */
+@@ -11731,16 +11787,6 @@ static int check_kfunc_call(struct bpf_v
+ 		}
+ 	}
+ 
+-	if (meta.func_id == special_kfunc_list[KF_bpf_rbtree_add_impl]) {
+-		err = __check_func_call(env, insn, insn_idx_p, meta.subprogno,
+-					set_rbtree_add_callback_state);
+-		if (err) {
+-			verbose(env, "kfunc %s#%d failed callback verification\n",
+-				func_name, meta.func_id);
+-			return err;
+-		}
+-	}
+-
+ 	for (i = 0; i < CALLER_SAVED_REGS; i++)
+ 		mark_reg_not_init(env, regs, caller_saved[i]);
+ 
+@@ -15047,6 +15093,15 @@ static bool is_force_checkpoint(struct b
+ 	return env->insn_aux_data[insn_idx].force_checkpoint;
+ }
+ 
++static void mark_calls_callback(struct bpf_verifier_env *env, int idx)
++{
++	env->insn_aux_data[idx].calls_callback = true;
++}
++
++static bool calls_callback(struct bpf_verifier_env *env, int insn_idx)
++{
++	return env->insn_aux_data[insn_idx].calls_callback;
++}
+ 
+ enum {
+ 	DONE_EXPLORING = 0,
+@@ -15160,6 +15215,21 @@ static int visit_insn(int t, struct bpf_
+ 			 * async state will be pushed for further exploration.
+ 			 */
+ 			mark_prune_point(env, t);
++		/* For functions that invoke callbacks it is not known how many times
++		 * callback would be called. Verifier models callback calling functions
++		 * by repeatedly visiting callback bodies and returning to origin call
++		 * instruction.
++		 * In order to stop such iteration verifier needs to identify when a
++		 * state identical some state from a previous iteration is reached.
++		 * Check below forces creation of checkpoint before callback calling
++		 * instruction to allow search for such identical states.
++		 */
++		if (is_sync_callback_calling_insn(insn)) {
++			mark_calls_callback(env, t);
++			mark_force_checkpoint(env, t);
++			mark_prune_point(env, t);
++			mark_jmp_point(env, t);
++		}
+ 		if (insn->src_reg == BPF_PSEUDO_KFUNC_CALL) {
+ 			struct bpf_kfunc_call_arg_meta meta;
+ 
+@@ -16553,10 +16623,16 @@ static int is_state_visited(struct bpf_v
+ 				}
+ 				goto skip_inf_loop_check;
+ 			}
++			if (calls_callback(env, insn_idx)) {
++				if (states_equal(env, &sl->state, cur, true))
++					goto hit;
++				goto skip_inf_loop_check;
++			}
+ 			/* attempt to detect infinite loop to avoid unnecessary doomed work */
+ 			if (states_maybe_looping(&sl->state, cur) &&
+ 			    states_equal(env, &sl->state, cur, false) &&
+-			    !iter_active_depths_differ(&sl->state, cur)) {
++			    !iter_active_depths_differ(&sl->state, cur) &&
++			    sl->state.callback_unroll_depth == cur->callback_unroll_depth) {
+ 				verbose_linfo(env, insn_idx, "; ");
+ 				verbose(env, "infinite loop detected at insn %d\n", insn_idx);
+ 				verbose(env, "cur state:");
+--- a/tools/testing/selftests/bpf/progs/cb_refs.c
++++ b/tools/testing/selftests/bpf/progs/cb_refs.c
+@@ -33,6 +33,7 @@ int underflow_prog(void *ctx)
+ 	if (!p)
+ 		return 0;
+ 	bpf_for_each_map_elem(&array_map, cb1, &p, 0);
++	bpf_kfunc_call_test_release(p);
+ 	return 0;
+ }
+ 
+--- a/tools/testing/selftests/bpf/progs/verifier_subprog_precision.c
++++ b/tools/testing/selftests/bpf/progs/verifier_subprog_precision.c
+@@ -119,15 +119,26 @@ __naked int global_subprog_result_precis
+ 
+ SEC("?raw_tp")
+ __success __log_level(2)
++/* First simulated path does not include callback body */
+ __msg("14: (0f) r1 += r6")
+-__msg("mark_precise: frame0: last_idx 14 first_idx 10")
++__msg("mark_precise: frame0: last_idx 14 first_idx 9")
+ __msg("mark_precise: frame0: regs=r6 stack= before 13: (bf) r1 = r7")
+ __msg("mark_precise: frame0: regs=r6 stack= before 12: (27) r6 *= 4")
+ __msg("mark_precise: frame0: regs=r6 stack= before 11: (25) if r6 > 0x3 goto pc+4")
+ __msg("mark_precise: frame0: regs=r6 stack= before 10: (bf) r6 = r0")
+-__msg("mark_precise: frame0: parent state regs=r0 stack=:")
+-__msg("mark_precise: frame0: last_idx 18 first_idx 0")
+-__msg("mark_precise: frame0: regs=r0 stack= before 18: (95) exit")
++__msg("mark_precise: frame0: regs=r0 stack= before 9: (85) call bpf_loop")
++/* State entering callback body popped from states stack */
++__msg("from 9 to 17: frame1:")
++__msg("17: frame1: R1=scalar() R2=0 R10=fp0 cb")
++__msg("17: (b7) r0 = 0")
++__msg("18: (95) exit")
++__msg("returning from callee:")
++__msg("to caller at 9:")
++/* r4 (flags) is always precise for bpf_loop() */
++__msg("frame 0: propagating r4")
++__msg("mark_precise: frame0: last_idx 9 first_idx 9 subseq_idx -1")
++__msg("mark_precise: frame0: regs=r4 stack= before 18: (95) exit")
++__msg("from 18 to 9: safe")
+ __naked int callback_result_precise(void)
+ {
+ 	asm volatile (
+@@ -233,20 +244,36 @@ __naked int parent_callee_saved_reg_prec
+ 
+ SEC("?raw_tp")
+ __success __log_level(2)
++/* First simulated path does not include callback body */
+ __msg("12: (0f) r1 += r6")
+-__msg("mark_precise: frame0: last_idx 12 first_idx 10")
++__msg("mark_precise: frame0: last_idx 12 first_idx 9")
+ __msg("mark_precise: frame0: regs=r6 stack= before 11: (bf) r1 = r7")
+ __msg("mark_precise: frame0: regs=r6 stack= before 10: (27) r6 *= 4")
++__msg("mark_precise: frame0: regs=r6 stack= before 9: (85) call bpf_loop")
+ __msg("mark_precise: frame0: parent state regs=r6 stack=:")
+-__msg("mark_precise: frame0: last_idx 16 first_idx 0")
+-__msg("mark_precise: frame0: regs=r6 stack= before 16: (95) exit")
+-__msg("mark_precise: frame1: regs= stack= before 15: (b7) r0 = 0")
+-__msg("mark_precise: frame1: regs= stack= before 9: (85) call bpf_loop#181")
++__msg("mark_precise: frame0: last_idx 8 first_idx 0 subseq_idx 9")
+ __msg("mark_precise: frame0: regs=r6 stack= before 8: (b7) r4 = 0")
+ __msg("mark_precise: frame0: regs=r6 stack= before 7: (b7) r3 = 0")
+ __msg("mark_precise: frame0: regs=r6 stack= before 6: (bf) r2 = r8")
+ __msg("mark_precise: frame0: regs=r6 stack= before 5: (b7) r1 = 1")
+ __msg("mark_precise: frame0: regs=r6 stack= before 4: (b7) r6 = 3")
++/* State entering callback body popped from states stack */
++__msg("from 9 to 15: frame1:")
++__msg("15: frame1: R1=scalar() R2=0 R10=fp0 cb")
++__msg("15: (b7) r0 = 0")
++__msg("16: (95) exit")
++__msg("returning from callee:")
++__msg("to caller at 9:")
++/* r4 (flags) is always precise for bpf_loop(),
++ * r6 was marked before backtracking to callback body.
++ */
++__msg("frame 0: propagating r4,r6")
++__msg("mark_precise: frame0: last_idx 9 first_idx 9 subseq_idx -1")
++__msg("mark_precise: frame0: regs=r4,r6 stack= before 16: (95) exit")
++__msg("mark_precise: frame1: regs= stack= before 15: (b7) r0 = 0")
++__msg("mark_precise: frame1: regs= stack= before 9: (85) call bpf_loop")
++__msg("mark_precise: frame0: parent state regs= stack=:")
++__msg("from 16 to 9: safe")
+ __naked int parent_callee_saved_reg_precise_with_callback(void)
+ {
+ 	asm volatile (
+@@ -373,22 +400,38 @@ __naked int parent_stack_slot_precise_gl
+ 
+ SEC("?raw_tp")
+ __success __log_level(2)
++/* First simulated path does not include callback body */
+ __msg("14: (0f) r1 += r6")
+-__msg("mark_precise: frame0: last_idx 14 first_idx 11")
++__msg("mark_precise: frame0: last_idx 14 first_idx 10")
+ __msg("mark_precise: frame0: regs=r6 stack= before 13: (bf) r1 = r7")
+ __msg("mark_precise: frame0: regs=r6 stack= before 12: (27) r6 *= 4")
+ __msg("mark_precise: frame0: regs=r6 stack= before 11: (79) r6 = *(u64 *)(r10 -8)")
++__msg("mark_precise: frame0: regs= stack=-8 before 10: (85) call bpf_loop")
+ __msg("mark_precise: frame0: parent state regs= stack=-8:")
+-__msg("mark_precise: frame0: last_idx 18 first_idx 0")
+-__msg("mark_precise: frame0: regs= stack=-8 before 18: (95) exit")
+-__msg("mark_precise: frame1: regs= stack= before 17: (b7) r0 = 0")
+-__msg("mark_precise: frame1: regs= stack= before 10: (85) call bpf_loop#181")
++__msg("mark_precise: frame0: last_idx 9 first_idx 0 subseq_idx 10")
+ __msg("mark_precise: frame0: regs= stack=-8 before 9: (b7) r4 = 0")
+ __msg("mark_precise: frame0: regs= stack=-8 before 8: (b7) r3 = 0")
+ __msg("mark_precise: frame0: regs= stack=-8 before 7: (bf) r2 = r8")
+ __msg("mark_precise: frame0: regs= stack=-8 before 6: (bf) r1 = r6")
+ __msg("mark_precise: frame0: regs= stack=-8 before 5: (7b) *(u64 *)(r10 -8) = r6")
+ __msg("mark_precise: frame0: regs=r6 stack= before 4: (b7) r6 = 3")
++/* State entering callback body popped from states stack */
++__msg("from 10 to 17: frame1:")
++__msg("17: frame1: R1=scalar() R2=0 R10=fp0 cb")
++__msg("17: (b7) r0 = 0")
++__msg("18: (95) exit")
++__msg("returning from callee:")
++__msg("to caller at 10:")
++/* r4 (flags) is always precise for bpf_loop(),
++ * fp-8 was marked before backtracking to callback body.
++ */
++__msg("frame 0: propagating r4,fp-8")
++__msg("mark_precise: frame0: last_idx 10 first_idx 10 subseq_idx -1")
++__msg("mark_precise: frame0: regs=r4 stack=-8 before 18: (95) exit")
++__msg("mark_precise: frame1: regs= stack= before 17: (b7) r0 = 0")
++__msg("mark_precise: frame1: regs= stack= before 10: (85) call bpf_loop#181")
++__msg("mark_precise: frame0: parent state regs= stack=:")
++__msg("from 18 to 10: safe")
+ __naked int parent_stack_slot_precise_with_callback(void)
+ {
+ 	asm volatile (
 
 
 
