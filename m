@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-16812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2808840E85
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED8284101F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8C321F27FD0
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C18E81C20A09
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A250015B988;
-	Mon, 29 Jan 2024 17:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649D57405E;
+	Mon, 29 Jan 2024 17:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEIYzhhu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuFdYJi6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D4A15A49E;
-	Mon, 29 Jan 2024 17:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19EDC7405B;
+	Mon, 29 Jan 2024 17:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548297; cv=none; b=IgEo02B/vyxZoAE9UjHfU2Jt4OyS5TVvspxYl7BvSNFVAQaCeoE+s9xqh4a7QTetUERNF37VThluDhB6QhiYRTwPmaKydyD0JDxSQ/2KYOzq6aWFVXXhODa7+qsHQABt8XAbqwHh3QK6aNYABbQz+b4agJJBhKP2YSbdXZKuRqU=
+	t=1706548565; cv=none; b=cjR+cSOl6ELvTWTHGQhIdPFxUfGKWpHd9YEwKlVTfkdMVSjN2uT77JxxADu3tEWgvxBcMF1VStkHy4dSDUWGQoh2/6YwvZYwCQwlMaA3jNqWQftY+NOmG8/U2fMiJs/xUA0zJiyw6c9XKmo8ZkrwZCADYRo/r3TSk4c5dMHIjuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548297; c=relaxed/simple;
-	bh=keEZ6RkiIvnUS2isTSZ5L0EkfEbVIzO2MF/XvsNqVL4=;
+	s=arc-20240116; t=1706548565; c=relaxed/simple;
+	bh=u4M1xd0//2F4Pc7MTA7NImOT1i8dZgMeCg0WgZCigEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8RlmiUnJaNNEgXdloYpmFreKu+xKuMDTgamD3VX3E9NxkzdVF3xFkhDeOeVNViGKMn9l3+AphsSDX+ZkBewguCVA7xyMDFGcCffLCqVVasX+eDJoSKIuzCxvC0n5X4bdtazLeGP6pkTXiDi5oHAAUTcpLIfCqWFMgAxqAJ23zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEIYzhhu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2922EC433C7;
-	Mon, 29 Jan 2024 17:11:37 +0000 (UTC)
+	 MIME-Version; b=PFfxbHaG4+R2Vc7tf5FoIERhu7PIVfcsNORgzSvz97EoBSmpJd/P4pPqTegVadFICeBjqcaz4UYzGPpoaXgi6Wv95sMjY2TS5DjMb8RRutMJeF+cnBfifOuWmB/JBAJXigMKSiHh5xAr/gEIY585ZxYz44O+Niitp5jEQLWNeWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuFdYJi6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81FBC433C7;
+	Mon, 29 Jan 2024 17:16:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548297;
-	bh=keEZ6RkiIvnUS2isTSZ5L0EkfEbVIzO2MF/XvsNqVL4=;
+	s=korg; t=1706548564;
+	bh=u4M1xd0//2F4Pc7MTA7NImOT1i8dZgMeCg0WgZCigEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EEIYzhhuTd+RcPK1s5/i/jzOn/aQljyu1Fcw88CIeYMGJnWrJHuQg2hgg3q6UOuBM
-	 VfBGGfQ1Tvz5XOdRJc6TC1CoObxS7SgvIs3atdNv5WWKxFRnl3eLJYaXwCRGR67Fzy
-	 4RhDzCGDHRrMND5blRRyZTnHB4EPrfPM5btWxFbY=
+	b=NuFdYJi6RN0o3pbKFLUZ1+Ppqz4OXQcMWHCJm34BOvjziCS9RU+PAkqeHMch+9bxC
+	 77MoccMLkUgaNHkayUM9XsDLY2/7vg0o6kgJcDCiqmQP+2CCvYTKVLO0M6uv/Emexs
+	 2g2+2v+sb2XZ+C5zhg9Eam2IZJpSkmQxCajITZks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 077/185] net/smc: fix illegal rmb_desc access in SMC-D connection dump
+Subject: [PATCH 6.6 213/331] xsk: make xsk_buff_pool responsible for clearing xdp_buff::flags
 Date: Mon, 29 Jan 2024 09:04:37 -0800
-Message-ID: <20240129170001.078129579@linuxfoundation.org>
+Message-ID: <20240129170021.112457168@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wen Gu <guwen@linux.alibaba.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit dbc153fd3c142909e564bb256da087e13fbf239c ]
+[ Upstream commit f7f6aa8e24383fbb11ac55942e66da9660110f80 ]
 
-A crash was found when dumping SMC-D connections. It can be reproduced
-by following steps:
+XDP multi-buffer support introduced XDP_FLAGS_HAS_FRAGS flag that is
+used by drivers to notify data path whether xdp_buff contains fragments
+or not. Data path looks up mentioned flag on first buffer that occupies
+the linear part of xdp_buff, so drivers only modify it there. This is
+sufficient for SKB and XDP_DRV modes as usually xdp_buff is allocated on
+stack or it resides within struct representing driver's queue and
+fragments are carried via skb_frag_t structs. IOW, we are dealing with
+only one xdp_buff.
 
-- run nginx/wrk test:
-  smc_run nginx
-  smc_run wrk -t 16 -c 1000 -d <duration> -H 'Connection: Close' <URL>
+ZC mode though relies on list of xdp_buff structs that is carried via
+xsk_buff_pool::xskb_list, so ZC data path has to make sure that
+fragments do *not* have XDP_FLAGS_HAS_FRAGS set. Otherwise,
+xsk_buff_free() could misbehave if it would be executed against xdp_buff
+that carries a frag with XDP_FLAGS_HAS_FRAGS flag set. Such scenario can
+take place when within supplied XDP program bpf_xdp_adjust_tail() is
+used with negative offset that would in turn release the tail fragment
+from multi-buffer frame.
 
-- continuously dump SMC-D connections in parallel:
-  watch -n 1 'smcss -D'
+Calling xsk_buff_free() on tail fragment with XDP_FLAGS_HAS_FRAGS would
+result in releasing all the nodes from xskb_list that were produced by
+driver before XDP program execution, which is not what is intended -
+only tail fragment should be deleted from xskb_list and then it should
+be put onto xsk_buff_pool::free_list. Such multi-buffer frame will never
+make it up to user space, so from AF_XDP application POV there would be
+no traffic running, however due to free_list getting constantly new
+nodes, driver will be able to feed HW Rx queue with recycled buffers.
+Bottom line is that instead of traffic being redirected to user space,
+it would be continuously dropped.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000030
- CPU: 2 PID: 7204 Comm: smcss Kdump: loaded Tainted: G	E      6.7.0+ #55
- RIP: 0010:__smc_diag_dump.constprop.0+0x5e5/0x620 [smc_diag]
- Call Trace:
-  <TASK>
-  ? __die+0x24/0x70
-  ? page_fault_oops+0x66/0x150
-  ? exc_page_fault+0x69/0x140
-  ? asm_exc_page_fault+0x26/0x30
-  ? __smc_diag_dump.constprop.0+0x5e5/0x620 [smc_diag]
-  ? __kmalloc_node_track_caller+0x35d/0x430
-  ? __alloc_skb+0x77/0x170
-  smc_diag_dump_proto+0xd0/0xf0 [smc_diag]
-  smc_diag_dump+0x26/0x60 [smc_diag]
-  netlink_dump+0x19f/0x320
-  __netlink_dump_start+0x1dc/0x300
-  smc_diag_handler_dump+0x6a/0x80 [smc_diag]
-  ? __pfx_smc_diag_dump+0x10/0x10 [smc_diag]
-  sock_diag_rcv_msg+0x121/0x140
-  ? __pfx_sock_diag_rcv_msg+0x10/0x10
-  netlink_rcv_skb+0x5a/0x110
-  sock_diag_rcv+0x28/0x40
-  netlink_unicast+0x22a/0x330
-  netlink_sendmsg+0x1f8/0x420
-  __sock_sendmsg+0xb0/0xc0
-  ____sys_sendmsg+0x24e/0x300
-  ? copy_msghdr_from_user+0x62/0x80
-  ___sys_sendmsg+0x7c/0xd0
-  ? __do_fault+0x34/0x160
-  ? do_read_fault+0x5f/0x100
-  ? do_fault+0xb0/0x110
-  ? __handle_mm_fault+0x2b0/0x6c0
-  __sys_sendmsg+0x4d/0x80
-  do_syscall_64+0x69/0x180
-  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+To fix this, let us clear the mentioned flag on xsk_buff_pool side
+during xdp_buff initialization, which is what should have been done
+right from the start of XSK multi-buffer support.
 
-It is possible that the connection is in process of being established
-when we dump it. Assumed that the connection has been registered in a
-link group by smc_conn_create() but the rmb_desc has not yet been
-initialized by smc_buf_create(), thus causing the illegal access to
-conn->rmb_desc. So fix it by checking before dump.
-
-Fixes: 4b1b7d3b30a6 ("net/smc: add SMC-D diag support")
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 1bbc04de607b ("ice: xsk: add RX multi-buffer support")
+Fixes: 1c9ba9c14658 ("i40e: xsk: add RX multi-buffer support")
+Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/r/20240124191602.566724-3-maciej.fijalkowski@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_diag.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_xsk.c | 1 -
+ drivers/net/ethernet/intel/ice/ice_xsk.c   | 1 -
+ include/net/xdp_sock_drv.h                 | 1 +
+ net/xdp/xsk_buff_pool.c                    | 1 +
+ 4 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
-index 801044e7d194..7a907186a33a 100644
---- a/net/smc/smc_diag.c
-+++ b/net/smc/smc_diag.c
-@@ -163,7 +163,7 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
- 	}
- 	if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd &&
- 	    (req->diag_ext & (1 << (SMC_DIAG_DMBINFO - 1))) &&
--	    !list_empty(&smc->conn.lgr->list)) {
-+	    !list_empty(&smc->conn.lgr->list) && smc->conn.rmb_desc) {
- 		struct smc_connection *conn = &smc->conn;
- 		struct smcd_diag_dmbinfo dinfo;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+index 7d991e4d9b89..b75e6b6d317c 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+@@ -503,7 +503,6 @@ int i40e_clean_rx_irq_zc(struct i40e_ring *rx_ring, int budget)
+ 		xdp_res = i40e_run_xdp_zc(rx_ring, first, xdp_prog);
+ 		i40e_handle_xdp_result_zc(rx_ring, first, rx_desc, &rx_packets,
+ 					  &rx_bytes, xdp_res, &failure);
+-		first->flags = 0;
+ 		next_to_clean = next_to_process;
+ 		if (failure)
+ 			break;
+diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
+index 2a3f0834e139..33f194c870bb 100644
+--- a/drivers/net/ethernet/intel/ice/ice_xsk.c
++++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
+@@ -897,7 +897,6 @@ int ice_clean_rx_irq_zc(struct ice_rx_ring *rx_ring, int budget)
  
+ 		if (!first) {
+ 			first = xdp;
+-			xdp_buff_clear_frags_flag(first);
+ 		} else if (ice_add_xsk_frag(rx_ring, first, xdp, size)) {
+ 			break;
+ 		}
+diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
+index 1f6fc8c7a84c..7290eb721c07 100644
+--- a/include/net/xdp_sock_drv.h
++++ b/include/net/xdp_sock_drv.h
+@@ -152,6 +152,7 @@ static inline void xsk_buff_set_size(struct xdp_buff *xdp, u32 size)
+ 	xdp->data = xdp->data_hard_start + XDP_PACKET_HEADROOM;
+ 	xdp->data_meta = xdp->data;
+ 	xdp->data_end = xdp->data + size;
++	xdp->flags = 0;
+ }
+ 
+ static inline dma_addr_t xsk_buff_raw_get_dma(struct xsk_buff_pool *pool,
+diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+index 49cb9f9a09be..b0a611677865 100644
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -541,6 +541,7 @@ struct xdp_buff *xp_alloc(struct xsk_buff_pool *pool)
+ 
+ 	xskb->xdp.data = xskb->xdp.data_hard_start + XDP_PACKET_HEADROOM;
+ 	xskb->xdp.data_meta = xskb->xdp.data;
++	xskb->xdp.flags = 0;
+ 
+ 	if (pool->dma_need_sync) {
+ 		dma_sync_single_range_for_device(pool->dev, xskb->dma, 0,
 -- 
 2.43.0
 
