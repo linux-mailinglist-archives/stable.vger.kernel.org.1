@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-17300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EDDA8410A1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05FBB84109C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71E7E1C23BBF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85E93B20355
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A0476C89;
-	Mon, 29 Jan 2024 17:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C03C76C74;
+	Mon, 29 Jan 2024 17:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5TRqGSX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/z2USzS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD7976C7E;
-	Mon, 29 Jan 2024 17:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DFF76C75;
+	Mon, 29 Jan 2024 17:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548658; cv=none; b=JTce51+Z5SZBeYFLWheBWM8rqTuITksQ+l3EzPCRTxyYb8ISSL/rx5VhTqkhqaTxwdExBst+1Jl5oza74Hkog+E9qOp22xAhc9HXQ082MpD62E7vLHKx6YGgK6xfSkw4KwY37oPU1muynm3eQ775O5gM9e0qrtzklCfmpKfsU+o=
+	t=1706548653; cv=none; b=FThb7X0sKbh65kOrBptJfmh/2hSr9S82SdOz5lyopmjBRvVyfHsEsg5tktk87Gj3nqnaJB5n2vRvKawtlYRzvIlZpiFr8SvOT3QZ4k4TJmCxIvOHXt3LVEjdE27gsljM63JxDTzZAfqjhtctA81j3sXH76zaPPJJ8jXZ6mm7jZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548658; c=relaxed/simple;
-	bh=uhkc5FLLi/QhBY0cHFq1wW3ffbBG2o3zHPKC4Nkysc4=;
+	s=arc-20240116; t=1706548653; c=relaxed/simple;
+	bh=W+FXRcRoUKGPwT2qy9FeHCb/y5rhYdjjiCIJ6lCsO0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AFRLPYcucSXWA5pjSrYcbh6DviB1WYjh95ECA3DxbjhIoalvgQn7zFgLQMuhaOVqBEv6b2g/D8BJVNxRDRjzIM92hrwiUjKvnxkfb5BRVtQb6uZxH2mfxIoKnvpbiZRRT8FT7PsV23vYNi7fDC9vpA3eGKJdh8t9ab9OerkU010=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5TRqGSX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A316AC433C7;
-	Mon, 29 Jan 2024 17:17:37 +0000 (UTC)
+	 MIME-Version; b=iYVcb5I+gV4iiAZQBHYRe5MN80cIh9GP0WkIp4MF4/Yozn0URRH6ZXja/rB/Zf8jcK9nbLaFQGMR8QI5zG4TSwZ0RRO56RZwmwTo85im7Lfr5zPwr+J7jwp0ZnUArXUpFHf+A8kUU6OHgRLWpVzbT9fjvA6kUjb9A62U5tGTH04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/z2USzS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204EFC43390;
+	Mon, 29 Jan 2024 17:17:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548657;
-	bh=uhkc5FLLi/QhBY0cHFq1wW3ffbBG2o3zHPKC4Nkysc4=;
+	s=korg; t=1706548653;
+	bh=W+FXRcRoUKGPwT2qy9FeHCb/y5rhYdjjiCIJ6lCsO0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A5TRqGSXDE1vpG2Sw0IuFqN+NxUVD2SORgwmdi570kES42mVb4Ko4B61R2P4p+Ipu
-	 Z5P62V3v7kKdBoIsA3Q39Zy4g/K0WmytGelikumx7vHXi1kIXP8eRpO/ZLi0yj6PlA
-	 rXalU/KdMTVLQCxEWFr1HIAL6r+xYSi/5IDEvfiQ=
+	b=j/z2USzS5e6Ve1E1VgZpTlcv+IFKYZIXcN55bEWH003B70tA0oNNhb54SnwUKSZGn
+	 i8jPiGYnLue1rE2IP8bh2N3CQziYLz8VTE5KqwapopMYppf5zSGc6iTD9lRebUWg2x
+	 B8pq0qixb6aoc0VajxMOCr1orFNMp5P9G3eqM2zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.6 325/331] mips: Call lose_fpu(0) before initializing fcr31 in mips_set_personality_nan
-Date: Mon, 29 Jan 2024 09:06:29 -0800
-Message-ID: <20240129170024.386363192@linuxfoundation.org>
+	Dawei Li <dawei.li@shingroup.cn>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.6 326/331] genirq: Initialize resend_node hlist for all interrupt descriptors
+Date: Mon, 29 Jan 2024 09:06:30 -0800
+Message-ID: <20240129170024.421646430@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
 References: <20240129170014.969142961@linuxfoundation.org>
@@ -65,58 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Dawei Li <dawei.li@shingroup.cn>
 
-commit 59be5c35850171e307ca5d3d703ee9ff4096b948 upstream.
+commit b184c8c2889ceef0a137c7d0567ef9fe3d92276e upstream.
 
-If we still own the FPU after initializing fcr31, when we are preempted
-the dirty value in the FPU will be read out and stored into fcr31,
-clobbering our setting.  This can cause an improper floating-point
-environment after execve().  For example:
+For a CONFIG_SPARSE_IRQ=n kernel, early_irq_init() is supposed to
+initialize all interrupt descriptors.
 
-    zsh% cat measure.c
-    #include <fenv.h>
-    int main() { return fetestexcept(FE_INEXACT); }
-    zsh% cc measure.c -o measure -lm
-    zsh% echo $((1.0/3)) # raising FE_INEXACT
-    0.33333333333333331
-    zsh% while ./measure; do ; done
-    (stopped in seconds)
+It does except for irq_desc::resend_node, which ia only initialized for the
+first descriptor.
 
-Call lose_fpu(0) before setting fcr31 to prevent this.
+Use the indexed decriptor and not the base pointer to address that.
 
-Closes: https://lore.kernel.org/linux-mips/7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site/
-Fixes: 9b26616c8d9d ("MIPS: Respect the ISA level in FCSR handling")
+Fixes: bc06a9e08742 ("genirq: Use hlist for managing resend handlers")
+Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Link: https://lore.kernel.org/r/20240122085716.2999875-5-dawei.li@shingroup.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/elf.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/irq/irqdesc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/kernel/elf.c
-+++ b/arch/mips/kernel/elf.c
-@@ -11,6 +11,7 @@
- 
- #include <asm/cpu-features.h>
- #include <asm/cpu-info.h>
-+#include <asm/fpu.h>
- 
- #ifdef CONFIG_MIPS_FP_SUPPORT
- 
-@@ -309,6 +310,11 @@ void mips_set_personality_nan(struct arc
- 	struct cpuinfo_mips *c = &boot_cpu_data;
- 	struct task_struct *t = current;
- 
-+	/* Do this early so t->thread.fpu.fcr31 won't be clobbered in case
-+	 * we are preempted before the lose_fpu(0) in start_thread.
-+	 */
-+	lose_fpu(0);
-+
- 	t->thread.fpu.fcr31 = c->fpu_csr31;
- 	switch (state->nan_2008) {
- 	case 0:
+--- a/kernel/irq/irqdesc.c
++++ b/kernel/irq/irqdesc.c
+@@ -600,7 +600,7 @@ int __init early_irq_init(void)
+ 		mutex_init(&desc[i].request_mutex);
+ 		init_waitqueue_head(&desc[i].wait_for_threads);
+ 		desc_set_defaults(i, &desc[i], node, NULL, NULL);
+-		irq_resend_init(desc);
++		irq_resend_init(&desc[i]);
+ 	}
+ 	return arch_early_irq_init();
+ }
 
 
 
