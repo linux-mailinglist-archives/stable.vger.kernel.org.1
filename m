@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-16914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5637D840F04
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1B6184105C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAEB31F24B6E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D326287BB5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFEE9162766;
-	Mon, 29 Jan 2024 17:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AED15F31D;
+	Mon, 29 Jan 2024 17:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XA++uq/A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6dsPlq/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F23F1586C5;
-	Mon, 29 Jan 2024 17:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662AC15B975;
+	Mon, 29 Jan 2024 17:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548372; cv=none; b=adFxYp1DwMuH/QR/ksiSwEy2Qq2Kx4IQhCqXsghkbDjda5ko5NtMeRP07HoCEih4NGS58SfiAnhGF8VZR2wGC3v/NanfY9JDKN7NmD3Ud5G3MYWCBoWZkx6/lVDKZBzmh/2uMmvwh6DmOwy4umE3XNOuE9f/fuSdq//rXjhVics=
+	t=1706548608; cv=none; b=hkMk915wSx8x0XE6ue/mtQtwj1jf9c8e+PF5zZj7VoumGsDy1738yoHkzGzAdDG7EZIP/zQbwPzeVM3g6ENGReFpFZnOYVBNL9EOwe3tGgC+nDKAMHjArxEHcAsRXcLJDmOotUiJEawGH5u5p0XXCPhJ3CwjLTnz8ka3wespWt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548372; c=relaxed/simple;
-	bh=QxD2dubYuhKOayhcLO9bhuJASSEwi02nQ9ZMg5fFrnU=;
+	s=arc-20240116; t=1706548608; c=relaxed/simple;
+	bh=rULr6lInr3S3QEwYuBv4r3yrzUY+O7WV+QGen10QEqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JlmZiCzIrRJVqMXvwG3eJ5dsuc5+sg62zIvTKTHLMeOTSSg0mZEgyWWaatlZdo/Rexl3SZhSDNzd9bX3oXeQfUqxtloHNVsIx3W6gtibh7DDzqNSL+ZQttU2IAf3jSkjN74sszG8kHAGJotfMsN5WgXG8BQRRPnSAI2DtMuGUkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XA++uq/A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D11C43390;
-	Mon, 29 Jan 2024 17:12:52 +0000 (UTC)
+	 MIME-Version; b=TE/0RODi9+QQHfhues+ViImF7MKOmEkiBVYVh2DYigkc6rvxcVPmuzWdV0CVMQZjAx/E1pH1Quf9apItkgZ+h6lnBR7dpDPtz8KSWQUs+3jQTuKRx53l2lfAa7kkdgHgeqUQ0g81Wnd0X2m0pFlwRChgODpvsZd4Q0WlNWpR8Rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6dsPlq/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B827C433C7;
+	Mon, 29 Jan 2024 17:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548372;
-	bh=QxD2dubYuhKOayhcLO9bhuJASSEwi02nQ9ZMg5fFrnU=;
+	s=korg; t=1706548608;
+	bh=rULr6lInr3S3QEwYuBv4r3yrzUY+O7WV+QGen10QEqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XA++uq/ArcQ8pmy0FOQWxr9KruVzo3cXDUqZAjNayrN0B9xUcY/3KOATZdohL7Rs5
-	 va1PEMa4g6h2EfXwN0JGUI1z1BT/eaHUsUdwlv8uviQ8bmAmCj1uzL6LYgc1BQCHrl
-	 9UDNnzJ4hOiBVFvne/4eq15ZF0g54oAzerVMzQdM=
+	b=U6dsPlq/IW2QSuwkGwdLR+thalWBxkAKF5cyJtvlLrHuEL46akXB+nSVhV4g1+x4V
+	 31zK6D5K1geefpQII6iWpBxjD0P9oHNp9nRCBcoIRTfmmIjGim8zTV/XauQZivoI/M
+	 Hgovto2UFby/SlMagmyl8Gx8sDy9tKw/iD2bMM8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 113/185] net: fec: fix the unhandled context fault from smmu
+	Jaak Ristioja <jaak@ristioja.ee>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Thorsten Leemhuis <regressions@leemhuis.info>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 249/331] Revert "drivers/firmware: Move sysfb_init() from device_initcall to subsys_initcall_sync"
 Date: Mon, 29 Jan 2024 09:05:13 -0800
-Message-ID: <20240129170002.221730368@linuxfoundation.org>
+Message-ID: <20240129170022.172617266@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +66,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 5e344807735023cd3a67c37a1852b849caa42620 ]
+commit d1b163aa0749706379055e40a52cf7a851abf9dc upstream.
 
-When repeatedly changing the interface link speed using the command below:
+This reverts commit 60aebc9559492cea6a9625f514a8041717e3a2e4.
 
-ethtool -s eth0 speed 100 duplex full
-ethtool -s eth0 speed 1000 duplex full
+Commit 60aebc9559492cea ("drivers/firmware: Move sysfb_init() from
+device_initcall to subsys_initcall_sync") messes up initialization order
+of the graphics drivers and leads to blank displays on some systems. So
+revert the commit.
 
-The following errors may sometimes be reported by the ARM SMMU driver:
+To make the display drivers fully independent from initialization
+order requires to track framebuffer memory by device and independently
+from the loaded drivers. The kernel currently lacks the infrastructure
+to do so.
 
-[ 5395.035364] fec 5b040000.ethernet eth0: Link is Down
-[ 5395.039255] arm-smmu 51400000.iommu: Unhandled context fault:
-fsr=0x402, iova=0x00000000, fsynr=0x100001, cbfrsynra=0x852, cb=2
-[ 5398.108460] fec 5b040000.ethernet eth0: Link is Up - 100Mbps/Full -
-flow control off
-
-It is identified that the FEC driver does not properly stop the TX queue
-during the link speed transitions, and this results in the invalid virtual
-I/O address translations from the SMMU and causes the context faults.
-
-Fixes: dbc64a8ea231 ("net: fec: move calls to quiesce/resume packet processing out of fec_restart()")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Link: https://lore.kernel.org/r/20240123165141.2008104-1-shenwei.wang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Jaak Ristioja <jaak@ristioja.ee>
+Closes: https://lore.kernel.org/dri-devel/ZUnNi3q3yB3zZfTl@P70.localdomain/T/#t
+Reported-by: Huacai Chen <chenhuacai@loongson.cn>
+Closes: https://lore.kernel.org/dri-devel/20231108024613.2898921-1-chenhuacai@loongson.cn/
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10133
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: stable@vger.kernel.org # v6.5+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240123120937.27736-1-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/firmware/sysfb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 6d1b76002282..97d12c7eea77 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1917,6 +1917,7 @@ static void fec_enet_adjust_link(struct net_device *ndev)
+--- a/drivers/firmware/sysfb.c
++++ b/drivers/firmware/sysfb.c
+@@ -128,4 +128,4 @@ unlock_mutex:
+ }
  
- 		/* if any of the above changed restart the FEC */
- 		if (status_change) {
-+			netif_stop_queue(ndev);
- 			napi_disable(&fep->napi);
- 			netif_tx_lock_bh(ndev);
- 			fec_restart(ndev);
-@@ -1926,6 +1927,7 @@ static void fec_enet_adjust_link(struct net_device *ndev)
- 		}
- 	} else {
- 		if (fep->link) {
-+			netif_stop_queue(ndev);
- 			napi_disable(&fep->napi);
- 			netif_tx_lock_bh(ndev);
- 			fec_stop(ndev);
--- 
-2.43.0
-
+ /* must execute after PCI subsystem for EFI quirks */
+-subsys_initcall_sync(sysfb_init);
++device_initcall(sysfb_init);
 
 
 
