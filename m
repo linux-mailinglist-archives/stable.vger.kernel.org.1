@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4847C840E1F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68B20840DC8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 004A6282582
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03C031F2CF9B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F54815B2E8;
-	Mon, 29 Jan 2024 17:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEB515CD73;
+	Mon, 29 Jan 2024 17:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GvrEwkMw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvHjeqdt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDC0159578;
-	Mon, 29 Jan 2024 17:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CD5157E8F;
+	Mon, 29 Jan 2024 17:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548228; cv=none; b=VDfjle3iyO0ME4qdddIMEc1u3uDCBKDLK+XblSnml2ULo9lcERvsd4Z65anf8atsCEEQZ8kcgh8Cf1rKvoWZJS06RW0y28cleNG99rpiCUs7u+0zSWH6jJgDzbnEll9HpHRenpQXzekNJ9z3C0M7OXlBnahmrLxR3U8eFnGGCN0=
+	t=1706548165; cv=none; b=ZetMFOWV40FZP/5eJV7MQruU/CQk0X5ZfhWLqEGAXAwlXmtcFj3pz1S223y5s54t0dFyltqxt2wBYQCcTJXFsNUyfIau4gEaO7++Glp+vj9UPPCMWyN6lV43M9c8+u9RUWZ9ZJfWY0Tw6+P4UqB0+eku+vczrvO5VSX/BPgKCWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548228; c=relaxed/simple;
-	bh=tQZK2+RMOawaCWJWkSSGXTGnCYdSFw90JKdOtWWBRVM=;
+	s=arc-20240116; t=1706548165; c=relaxed/simple;
+	bh=KuM/MpGDWAKhShvbTxaNFPiGd4OlfTncISfsKRrNBtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ccX+sspNcy21RzZ4gZxbPfJoe8coACAXzlGyp/T9UGHNNohbLtNEXJGkt8/nlt/grH1lE4tG/jeB306mRKrhqH/4fj6gjE1emL90VKA4dM5yTag9W8mUMlUYVHkklJXBNLQoI03X9/ihRZMFAaAkJG85PFfbZ+s9J+6Q7t1PcKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GvrEwkMw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC507C433F1;
-	Mon, 29 Jan 2024 17:10:27 +0000 (UTC)
+	 MIME-Version; b=dRHr1ul9wbstlRa0b3Z5tmAWCGzONlebs8ScShEKqO+anBDEM4eko7QXcy5Ie4a6XJPPpdHRBVNMx9tYzLfYFn1YhkVs/J81UFgUoef5/WljyRcK73KyezfhgcpB+NVLmJbmAVrrHMJrbokouplyQ+2KRbrchVspmjqTmyCAFZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvHjeqdt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8892CC43399;
+	Mon, 29 Jan 2024 17:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548228;
-	bh=tQZK2+RMOawaCWJWkSSGXTGnCYdSFw90JKdOtWWBRVM=;
+	s=korg; t=1706548165;
+	bh=KuM/MpGDWAKhShvbTxaNFPiGd4OlfTncISfsKRrNBtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GvrEwkMw/iv/xWUCi2dI/uHQF6Mo++qB9iKJzYdORWXjE95EuhNgIOdgmELu6NTSP
-	 fgVpQcL6a+0NLqCfP7Og8IKrI+PAC7GfMU5hHhxrfjJosskwx1stUODM9LKR6JVS3f
-	 3baDWfobz1U0mWwpnWhT3bM9PK/7CTSMOe0vp9Dw=
+	b=YvHjeqdt74bxcAgoxpvoLUKGWRGJYmviKsQ6cIbdik9L0hOgYbD7hdz7aF/OzcpWW
+	 5IQiooVp+aH2JwnJSxaoFqJEuBLtpRHuyltESMEmTisnzcaLxU0uKqcXXz6YuQcIkr
+	 h8dlzVDr/bgQc/BkICcCyolkEolwWAME7XS45k+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Youngmin Nam <youngmin.nam@samsung.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Subject: [PATCH 6.1 030/185] async: Introduce async_schedule_dev_nocall()
-Date: Mon, 29 Jan 2024 09:03:50 -0800
-Message-ID: <20240129165959.565390530@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 200/346] netfilter: nf_tables: restrict anonymous set and map names to 16 bytes
+Date: Mon, 29 Jan 2024 09:03:51 -0800
+Message-ID: <20240129170022.284081430@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 7d4b5d7a37bdd63a5a3371b988744b060d5bb86f upstream.
+[ Upstream commit b462579b2b86a8f5230543cadd3a4836be27baf7 ]
 
-In preparation for subsequent changes, introduce a specialized variant
-of async_schedule_dev() that will not invoke the argument function
-synchronously when it cannot be scheduled for asynchronous execution.
+nftables has two types of sets/maps, one where userspace defines the
+name, and anonymous sets/maps, where userspace defines a template name.
 
-The new function, async_schedule_dev_nocall(), will be used for fixing
-possible deadlocks in the system-wide power management core code.
+For the latter, kernel requires presence of exactly one "%d".
+nftables uses "__set%d" and "__map%d" for this.  The kernel will
+expand the format specifier and replaces it with the smallest unused
+number.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com> for the series.
-Tested-by: Youngmin Nam <youngmin.nam@samsung.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As-is, userspace could define a template name that allows to move
+the set name past the 256 bytes upperlimit (post-expansion).
+
+I don't see how this could be a problem, but I would prefer if userspace
+cannot do this, so add a limit of 16 bytes for the '%d' template name.
+
+16 bytes is the old total upper limit for set names that existed when
+nf_tables was merged initially.
+
+Fixes: 387454901bd6 ("netfilter: nf_tables: Allow set names of up to 255 chars")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/async.h |    2 ++
- kernel/async.c        |   29 +++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
+ net/netfilter/nf_tables_api.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/include/linux/async.h
-+++ b/include/linux/async.h
-@@ -90,6 +90,8 @@ async_schedule_dev(async_func_t func, st
- 	return async_schedule_node(func, dev, dev_to_node(dev));
- }
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index f032c29f1da6..5282e8377782 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -24,6 +24,7 @@
+ #include <net/sock.h>
  
-+bool async_schedule_dev_nocall(async_func_t func, struct device *dev);
-+
- /**
-  * async_schedule_dev_domain - A device specific version of async_schedule_domain
-  * @func: function to execute asynchronously
---- a/kernel/async.c
-+++ b/kernel/async.c
-@@ -244,6 +244,35 @@ async_cookie_t async_schedule_node(async
- EXPORT_SYMBOL_GPL(async_schedule_node);
+ #define NFT_MODULE_AUTOLOAD_LIMIT (MODULE_NAME_LEN - sizeof("nft-expr-255-"))
++#define NFT_SET_MAX_ANONLEN 16
  
- /**
-+ * async_schedule_dev_nocall - A simplified variant of async_schedule_dev()
-+ * @func: function to execute asynchronously
-+ * @dev: device argument to be passed to function
-+ *
-+ * @dev is used as both the argument for the function and to provide NUMA
-+ * context for where to run the function.
-+ *
-+ * If the asynchronous execution of @func is scheduled successfully, return
-+ * true. Otherwise, do nothing and return false, unlike async_schedule_dev()
-+ * that will run the function synchronously then.
-+ */
-+bool async_schedule_dev_nocall(async_func_t func, struct device *dev)
-+{
-+	struct async_entry *entry;
+ unsigned int nf_tables_net_id __read_mostly;
+ 
+@@ -4411,6 +4412,9 @@ static int nf_tables_set_alloc_name(struct nft_ctx *ctx, struct nft_set *set,
+ 		if (p[1] != 'd' || strchr(p + 2, '%'))
+ 			return -EINVAL;
+ 
++		if (strnlen(name, NFT_SET_MAX_ANONLEN) >= NFT_SET_MAX_ANONLEN)
++			return -EINVAL;
 +
-+	entry = kzalloc(sizeof(struct async_entry), GFP_KERNEL);
-+
-+	/* Give up if there is no memory or too much work. */
-+	if (!entry || atomic_read(&entry_count) > MAX_WORK) {
-+		kfree(entry);
-+		return false;
-+	}
-+
-+	__async_schedule_node_domain(func, dev, dev_to_node(dev),
-+				     &async_dfl_domain, entry);
-+	return true;
-+}
-+
-+/**
-  * async_synchronize_full - synchronize all asynchronous function calls
-  *
-  * This function waits until all asynchronous function calls have been done.
+ 		inuse = (unsigned long *)get_zeroed_page(GFP_KERNEL);
+ 		if (inuse == NULL)
+ 			return -ENOMEM;
+-- 
+2.43.0
+
 
 
 
