@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A5B840E22
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC092840FF4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6A9A1F2CF3B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8843D2842EA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA584157052;
-	Mon, 29 Jan 2024 17:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5DB73737;
+	Mon, 29 Jan 2024 17:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfhpw2VH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qL2R3dc9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A430E158D64;
-	Mon, 29 Jan 2024 17:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA9C73732;
+	Mon, 29 Jan 2024 17:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548230; cv=none; b=J51BS3vghouL5+t32WSivS0CHoISARB2dX/uUP3l0rtnruS+6iIPPhaWPM9KLEzBqvsc316kO+VXwC9sMDlzevjBfS7rTxTnQhKXUQ0y5o437LVk9BWxW16jJBXlqRsNd3YneoAnEWA3qkLpw5bP2cQcX0pIHojW2zzq8zATmEE=
+	t=1706548534; cv=none; b=B4SlAOEEnXJmu/gMzj8Zf330Vwmer8P9c+5YTDTyQKdOd+cPb37JDdtJa6BvLn/+b+ptWHQOCbYMI9qI+i/k0fQ4Mn5V0RRouvn29/CHxB+XpfOP5p3LTNAFVze4+IsDheF4YU994bvfLUZIbr0+/kw2JDOAgD3htE2+81VpoDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548230; c=relaxed/simple;
-	bh=AYCZMToLc6rLCS8gg4VuBXgXhg+qCt+1/DPBt8eUV0U=;
+	s=arc-20240116; t=1706548534; c=relaxed/simple;
+	bh=J1G2JV9vEDvDuL+EHiWLaoFL8ZFF3VCvcK3kS69H3a8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IcVdfYvH5MQrIlJ1sabwD2OzBihwPtLQ6aZM2Z0CgpzZMG+odSwmYraCFYj8AhroC0oWPewtWUsgDvnGISPvXwe1Dch4jfwGoIORZg9wblfm7WlSRqRd+sTXNa86xoTt1Dsma0GwfLRYoHVALSh6M/gPjqJM6BnIhSTvS/VEnTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfhpw2VH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A95BC433F1;
-	Mon, 29 Jan 2024 17:10:30 +0000 (UTC)
+	 MIME-Version; b=UF2ctgyIlD8RrBV8lh2zKXRTqhi/7stei8s0O4IEVfffdk8mQ3usYj9ZjDUtRf+omCdptL/jLCGn/33XE14d8Knybwl+T6dFyKZPCHPE49enlAShJZ5LS5KGaFmw35ZDPxJwBQsgzvjfK4B/LaeLQm8zfSXMoIQjqtwdqflZiB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qL2R3dc9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F012C433C7;
+	Mon, 29 Jan 2024 17:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548230;
-	bh=AYCZMToLc6rLCS8gg4VuBXgXhg+qCt+1/DPBt8eUV0U=;
+	s=korg; t=1706548533;
+	bh=J1G2JV9vEDvDuL+EHiWLaoFL8ZFF3VCvcK3kS69H3a8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pfhpw2VHoKSP9o5DPQlytFheBClN8bsux5wXmcs6xesQ3XgbC+Sic7dUIfCJBLZFP
-	 goty1I8PdPQv5uq7007J/k2LUmegO5rAu7SjvHsin+WayiX9qgnEmR+TQ7o2na5Lbv
-	 SQvQfrs3tqG9s99QFrNkYTmj83KdZ6J8F7+gEuKo=
+	b=qL2R3dc9cTKnwxK4KSYiHciTgyJ7w9nerKctTDAdD9AqVPVp96Y/biS7DuiqCFafP
+	 Q25noCUsWbaWmrZ3xNWwVgm01fjLrwOq10dGdXB7MbQ9CZgOcuNF4s/JyNQC7qRFI5
+	 fxo8E0I/gUFgeGXJ1xlxlRwZkKIUfLd7a7rZEbHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Simon Glass <sjg@chromium.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 008/185] arm64: properly install vmlinuz.efi
-Date: Mon, 29 Jan 2024 09:03:28 -0800
-Message-ID: <20240129165958.859327843@linuxfoundation.org>
+	Rohan G Thomas <rohan.g.thomas@intel.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 145/331] dt-bindings: net: snps,dwmac: Tx coe unsupported
+Date: Mon, 29 Jan 2024 09:03:29 -0800
+Message-ID: <20240129170019.174526925@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Rohan G Thomas <rohan.g.thomas@intel.com>
 
-commit 7b21ed7d119dc06b0ed2ba3e406a02cafe3a8d03 upstream.
+commit 6fb8c20a04be234cf1cfd4bdd8cfb8860c9d2d3b upstream.
 
-If you select CONFIG_EFI_ZBOOT, we will generate vmlinuz.efi, and then
-when we go to install the kernel we'll install the vmlinux instead
-because install.sh only recognizes Image.gz as wanting the compressed
-install image.  With CONFIG_EFI_ZBOOT we don't get the proper kernel
-installed, which means it doesn't boot, which makes for a very confused
-and subsequently angry kernel developer.
+Add dt-bindings for coe-unsupported property per tx queue. Some DWMAC
+IPs support tx checksum offloading(coe) only for a few tx queues.
 
-Fix this by properly installing our compressed kernel if we've enabled
-CONFIG_EFI_ZBOOT.
+DW xGMAC IP can be synthesized such that it can support tx coe only
+for a few initial tx queues. Also as Serge pointed out, for the DW
+QoS IP tx coe can be individually configured for each tx queue. This
+property is added to have sw fallback for checksum calculation if a
+tx queue doesn't support tx coe.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Cc: <stable@vger.kernel.org> # 6.1.x
-Fixes: c37b830fef13 ("arm64: efi: enable generic EFI compressed boot")
-Reviewed-by: Simon Glass <sjg@chromium.org>
-Link: https://lore.kernel.org/r/6edb1402769c2c14c4fbef8f7eaedb3167558789.1702570674.git.josef@toxicpanda.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Rohan G Thomas <rohan.g.thomas@intel.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/install.sh | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/net/snps,dwmac.yaml |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/install.sh b/arch/arm64/boot/install.sh
-index 7399d706967a..9b7a09808a3d 100755
---- a/arch/arm64/boot/install.sh
-+++ b/arch/arm64/boot/install.sh
-@@ -17,7 +17,8 @@
- #   $3 - kernel map file
- #   $4 - default install path (blank if root directory)
- 
--if [ "$(basename $2)" = "Image.gz" ]; then
-+if [ "$(basename $2)" = "Image.gz" ] || [ "$(basename $2)" = "vmlinuz.efi" ]
-+then
- # Compressed install
-   echo "Installing compressed kernel"
-   base=vmlinuz
--- 
-2.43.0
-
+--- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+@@ -394,6 +394,11 @@ properties:
+               When a PFC frame is received with priorities matching the bitmask,
+               the queue is blocked from transmitting for the pause time specified
+               in the PFC frame.
++
++          snps,coe-unsupported:
++            type: boolean
++            description: TX checksum offload is unsupported by the TX queue.
++
+         allOf:
+           - if:
+               required:
 
 
 
