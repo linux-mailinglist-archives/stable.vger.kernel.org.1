@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-16603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49F4840DA6
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ECD0840FD1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D07228D4CC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE991283D3B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73AE615B99D;
-	Mon, 29 Jan 2024 17:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F84D72236;
+	Mon, 29 Jan 2024 17:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xd9uacwq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jn2qkv6f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2044C1586E8;
-	Mon, 29 Jan 2024 17:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D90D72223;
+	Mon, 29 Jan 2024 17:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548142; cv=none; b=KxGv0gr+hbrUEmQHqLilkWIZ/ortnDq0+3SokP1pDwY/pJrnhh1EfB4B0hpo5jRWlOY8gOi+EeeGUr/kZ1YzITeSdQaBfQimwt5s+fNx+prhbEfaFaMgN1IOd6nb8u6f9Uq9I3T4UcNBiCdrhhgve7bLoebR5FvCr49vqzG/V38=
+	t=1706548508; cv=none; b=bGVq02d7ALTjV3piXDoTvdADtK9VkOyTvziAqw3pEYwGNfZ90fYlQ4+fwYTPprrCR400mQ/vgDga466gRnN1I+SClNoURaqMb3dqMS4nOCymmYom6ugVsCH5ny6UD6soCYmrvxpnyQAMZs7u2W7GN2VLQY0eIkmohG+3ziLsW7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548142; c=relaxed/simple;
-	bh=i/Wdz/3Sb6hFrn5WPZjZmNRJorR8givYoCJtkic4cyg=;
+	s=arc-20240116; t=1706548508; c=relaxed/simple;
+	bh=DDlwDc+xM2X8vQgWiBTK5HMTxwxCJfNU+D7E7WianR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sAHQEsW75IvHqKLed+vf1MCPQHrL3+yKgut8eL7YqdRbJ734YU4/hDqFZJFhvk5KkHqwwo3cNrgMP4dbV6TCsnqvj9LdP+2sl74VkQmVyj0cq9R3WFQNYq+LbbWHMGQ3+wUFviIuVUx1Q4B3MSI+xehPw+yhT2cHenE6tO0pm4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xd9uacwq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3B7C433F1;
-	Mon, 29 Jan 2024 17:09:01 +0000 (UTC)
+	 MIME-Version; b=BLEp/U6LguJzSxgj48TjfEuIwFBr/KJ/HT/3fc2IW4EJHhuYU2TnQyI54oRGRpHG+nF/9P0o6Q289uoPC5SdI+GUsMftsSWWZslkaLkAl7k98cn9jkDv50i/epDy+ulv7477vu9XLBY4kUw+qed2C5h52xYY/V0p6E8CvIeoaQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jn2qkv6f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA890C433C7;
+	Mon, 29 Jan 2024 17:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548142;
-	bh=i/Wdz/3Sb6hFrn5WPZjZmNRJorR8givYoCJtkic4cyg=;
+	s=korg; t=1706548508;
+	bh=DDlwDc+xM2X8vQgWiBTK5HMTxwxCJfNU+D7E7WianR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xd9uacwqxAq+o70JureTOvHGH2ck9WzQDw9p5Fw0XBgOt4ldNu6N1PdVy+XUG5wdb
-	 /SY8xQ2oUmrqjmtiK+UJ2TGrQf/r0Cxus2dbglAftdjpGXDNcggTAx4vbFIAkgCc8C
-	 8B5AzaeXKZMnZ0ULqhBGIjWPhNqt7Fs0SJXwtoUA=
+	b=Jn2qkv6fpJGn79P/F2QjSquzX6ntDmFDGIvbGxNFwMiJ7UhrwaWLgGCz3o/1usdEH
+	 QQTgeZJ5LYhSFmfV1fkN7X0mu4jJsNMNXm7R9xT/FKjgYf4WBfu6QuvxQNBg/m5nU3
+	 lKjdV+cj/lpdlgeJ3Nly6l/QTPViBdvtMD7zuPaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 146/346] wifi: mac80211: fix potential sta-link leak
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 113/331] arm64/sme: Always exit sme_alloc() early with existing storage
 Date: Mon, 29 Jan 2024 09:02:57 -0800
-Message-ID: <20240129170020.697044128@linuxfoundation.org>
+Message-ID: <20240129170018.229687608@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit b01a74b3ca6fd51b62c67733ba7c3280fa6c5d26 ]
+commit dc7eb8755797ed41a0d1b5c0c39df3c8f401b3d9 upstream.
 
-When a station is allocated, links are added but not
-set to valid yet (e.g. during connection to an AP MLD),
-we might remove the station without ever marking links
-valid, and leak them. Fix that.
+When sme_alloc() is called with existing storage and we are not flushing we
+will always allocate new storage, both leaking the existing storage and
+corrupting the state. Fix this by separating the checks for flushing and
+for existing storage as we do for SVE.
 
-Fixes: cb71f1d136a6 ("wifi: mac80211: add sta link addition/removal")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240111181514.6573998beaf8.I09ac2e1d41c80f82a5a616b8bd1d9d8dd709a6a6@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Callers that reallocate (eg, due to changing the vector length) should
+call sme_free() themselves.
+
+Fixes: 5d0a8d2fba50 ("arm64/ptrace: Ensure that SME is set up for target when writing SSVE state")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240115-arm64-sme-flush-v1-1-7472bd3459b7@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/sta_info.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/kernel/fpsimd.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 0ba613dd1cc4..c33decbb97f2 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -404,7 +404,10 @@ void sta_info_free(struct ieee80211_local *local, struct sta_info *sta)
- 	int i;
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1280,8 +1280,10 @@ void fpsimd_release_task(struct task_str
+  */
+ void sme_alloc(struct task_struct *task, bool flush)
+ {
+-	if (task->thread.sme_state && flush) {
+-		memset(task->thread.sme_state, 0, sme_state_size(task));
++	if (task->thread.sme_state) {
++		if (flush)
++			memset(task->thread.sme_state, 0,
++			       sme_state_size(task));
+ 		return;
+ 	}
  
- 	for (i = 0; i < ARRAY_SIZE(sta->link); i++) {
--		if (!(sta->sta.valid_links & BIT(i)))
-+		struct link_sta_info *link_sta;
-+
-+		link_sta = rcu_access_pointer(sta->link[i]);
-+		if (!link_sta)
- 			continue;
- 
- 		sta_remove_link(sta, i, false);
--- 
-2.43.0
-
 
 
 
