@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-17032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E6B840F8B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 925EE840D5C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 978101C231CD
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F39828A8ED
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950676F07A;
-	Mon, 29 Jan 2024 17:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E61215B111;
+	Mon, 29 Jan 2024 17:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UsQ/loSK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5hW4R/W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5424D6F06C;
-	Mon, 29 Jan 2024 17:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1770157E92;
+	Mon, 29 Jan 2024 17:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548459; cv=none; b=KqI0cS6SzJA7hEOU0uKtCPqy1z8BYKebRC3NmTspY82xiRRnsmuGbNmGO2yVTFw7x4nfV485fwGvz/Mh9ecB2vBCZ6/2+VveSx2kZb21y9m+DebXlF80/dU0tpq9CAqRYXa1Gw4imUP53yF5fS3XIiCR5U/RNyxpw2XGyRP4/aM=
+	t=1706548090; cv=none; b=RxFtCZjPBhRyMlYFDcK+sca73hOd9hUF+K1u8WMJiaiJA9VndcYH1ubB7Bb6qDO/R9Yiqhyyu33N2Oo8KxEp5e9Z/1EzWXSEwtkT9u3GBAmRobqQGY1T0rsI1WtpRweO4MfVG4qGEYMIXfrBC784S71C1hmN9B55Awtw0QOsRWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548459; c=relaxed/simple;
-	bh=bETKP+miETJp7o9GuqmoY/wZnE6fdMW97skATo0GuG8=;
+	s=arc-20240116; t=1706548090; c=relaxed/simple;
+	bh=op3jJcxnLdXn1Q5t7kEpqjSpq9XOja41c2yjO5BGHlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qt05uSB6cj7KWjpEml4QqUDuY33/WlLiSCGV52fftqpSD6BPNLLzqGaxel+C3IxrMCWbhXBCKsOlt4KTKB69MFX3Ize4COK8sfhzOK+draXZCCUe0z4pYEvMaSj65mNbHS7UujPtz3zbC9HaBMWxZvm/R4e1SkV+6Vx6e3xabWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UsQ/loSK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DE4BC433F1;
-	Mon, 29 Jan 2024 17:14:19 +0000 (UTC)
+	 MIME-Version; b=KMEdhbBS1lT7GaOfJx15WPSm6mmCXEIRlavpniWGFEZ0V7gneAPpYyxX1LQYvpxuUzuX8yfNIAfRH7f2kZb5TdiMOD5Ntjy5c8G7nUHU4hGFkAZ+vy5ZPSf48CZDBe4Cy9gsFF93AH+nIZRfss4musMJjqShuIYG4bCiRkirCDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5hW4R/W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446A5C433B1;
+	Mon, 29 Jan 2024 17:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548459;
-	bh=bETKP+miETJp7o9GuqmoY/wZnE6fdMW97skATo0GuG8=;
+	s=korg; t=1706548090;
+	bh=op3jJcxnLdXn1Q5t7kEpqjSpq9XOja41c2yjO5BGHlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UsQ/loSK8JujqhrAS/2OMiRRUVmuuMC2K8C5rj4QomAIc/D9WqZegXQXlF+HkKt/a
-	 G8cnzeRflSxWAzHOQQYhwGjdErD3hIBz0qIIH9DeutVN2r1oWyq84a8UERw5KWYV1D
-	 b12dpaimRHdkzYBabFwsT6RYajX483L0JoshWI3M=
+	b=V5hW4R/Wt26bova6cEIkenntBFbGnECaWWblk9UUMEW873cLzcHlYQ0UaPNElEAtZ
+	 K5uKlXvGsDsTQ6n9sIOTE9b0lYwjidXGVoVED6H43oKMrw1AElvSDbBiWN9GaOquuW
+	 2/K0Fv8nNLVv9T75bHiu1u/P7MZi0l9I3DVf2Ssg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrejs Cainikovs <andrejs.cainikovs@toradex.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.6 072/331] ARM: dts: imx6q-apalis: add can power-up delay on ixora board
+	Rob Herring <robh@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.7 105/346] arm64: Rename ARM64_WORKAROUND_2966298
 Date: Mon, 29 Jan 2024 09:02:16 -0800
-Message-ID: <20240129170017.030619314@linuxfoundation.org>
+Message-ID: <20240129170019.486033946@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
+From: Rob Herring <robh@kernel.org>
 
-commit b76bbf835d8945080b22b52fc1e6f41cde06865d upstream.
+commit 546b7cde9b1dd36089649101b75266564600ffe5 upstream.
 
-Newer variants of Ixora boards require a power-up delay when powering up
-the CAN transceiver of up to 1ms.
+In preparation to apply ARM64_WORKAROUND_2966298 for multiple errata,
+rename the kconfig and capability. No functional change.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20240110-arm-errata-a510-v1-1-d02bc51aeeee@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/Kconfig             |    4 ++++
+ arch/arm64/kernel/cpu_errata.c |    4 ++--
+ arch/arm64/kernel/entry.S      |    2 +-
+ arch/arm64/tools/cpucaps       |    2 +-
+ 4 files changed, 8 insertions(+), 4 deletions(-)
 
---- a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts
-@@ -76,6 +76,7 @@
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_enable_can1_power>;
- 		regulator-name = "can1_supply";
-+		startup-delay-us = <1000>;
- 	};
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1037,8 +1037,12 @@ config ARM64_ERRATUM_2645198
  
- 	reg_can2_supply: regulator-can2-supply {
-@@ -85,6 +86,7 @@
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_enable_can2_power>;
- 		regulator-name = "can2_supply";
-+		startup-delay-us = <1000>;
- 	};
- };
+ 	  If unsure, say Y.
  
++config ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
++	bool
++
+ config ARM64_ERRATUM_2966298
+ 	bool "Cortex-A520: 2966298: workaround for speculatively executed unprivileged load"
++	select ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
+ 	default y
+ 	help
+ 	  This option adds the workaround for ARM Cortex-A520 erratum 2966298.
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -713,10 +713,10 @@ const struct arm64_cpu_capabilities arm6
+ 		MIDR_FIXED(MIDR_CPU_VAR_REV(1,1), BIT(25)),
+ 	},
+ #endif
+-#ifdef CONFIG_ARM64_ERRATUM_2966298
++#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
+ 	{
+ 		.desc = "ARM erratum 2966298",
+-		.capability = ARM64_WORKAROUND_2966298,
++		.capability = ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD,
+ 		/* Cortex-A520 r0p0 - r0p1 */
+ 		ERRATA_MIDR_REV_RANGE(MIDR_CORTEX_A520, 0, 0, 1),
+ 	},
+--- a/arch/arm64/kernel/entry.S
++++ b/arch/arm64/kernel/entry.S
+@@ -428,7 +428,7 @@ alternative_else_nop_endif
+ 	ldp	x28, x29, [sp, #16 * 14]
+ 
+ 	.if	\el == 0
+-alternative_if ARM64_WORKAROUND_2966298
++alternative_if ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
+ 	tlbi	vale1, xzr
+ 	dsb	nsh
+ alternative_else_nop_endif
+--- a/arch/arm64/tools/cpucaps
++++ b/arch/arm64/tools/cpucaps
+@@ -84,7 +84,6 @@ WORKAROUND_2077057
+ WORKAROUND_2457168
+ WORKAROUND_2645198
+ WORKAROUND_2658417
+-WORKAROUND_2966298
+ WORKAROUND_AMPERE_AC03_CPU_38
+ WORKAROUND_TRBE_OVERWRITE_FILL_MODE
+ WORKAROUND_TSB_FLUSH_FAILURE
+@@ -100,3 +99,4 @@ WORKAROUND_NVIDIA_CARMEL_CNP
+ WORKAROUND_QCOM_FALKOR_E1003
+ WORKAROUND_REPEAT_TLBI
+ WORKAROUND_SPECULATIVE_AT
++WORKAROUND_SPECULATIVE_UNPRIV_LOAD
 
 
 
