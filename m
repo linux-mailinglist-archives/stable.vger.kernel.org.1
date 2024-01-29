@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-17183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10A6841028
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F103840E98
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 518F01F23D81
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E64BCB24536
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049227407F;
-	Mon, 29 Jan 2024 17:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC57A15FB1B;
+	Mon, 29 Jan 2024 17:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHQrdKh2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTeiBp/v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B368B7406A;
-	Mon, 29 Jan 2024 17:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE1C157E6B;
+	Mon, 29 Jan 2024 17:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548571; cv=none; b=O8osiWtqmard4jhwIVng/bXDBifnUT6LtMAgoj13bVL0jf7pNTe2Y1sHVklHM8OeHZ1qJV493taNL2reHtTHhnZ0vsS4Wga2sOuGyVAEZjBfv+cPppBGzBf0RAbe6Zxgr7Vqs7ZUZSBC6WFBSeFiwQ1g8FWyTSYSwRC5SsFZGww=
+	t=1706548310; cv=none; b=ndWu+b1+HvSfUIe/jlj4GBHvyXPzygzNPrKIss/R+wiXGSk9DQzCvvyI91rc34cMPu1dy6uFX2T9ZghSLaY8wtGMZQMpl7xLruDzPTUB3I2z5gtQQvsQ4drqVdJLWrrApLQYJoGsQ4EPC6XBdcSCXM4i9UnKyjSXNoNBKXk5MIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548571; c=relaxed/simple;
-	bh=nDxX7DGPngWmmGDkfHdyOpHP/sGZKN2RGyXLLU0EEyg=;
+	s=arc-20240116; t=1706548310; c=relaxed/simple;
+	bh=y8V6/qgHmUCedl8p+lozXK58QP+hIQUCHs8vUZ0lG9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lE/MYmWY4x+KrHVbj8i4FVDyPWhGmyofoh/tyHHEeE7HewNs9LsMh/2+9/Z08c+e+LrITXOV3poqW3jwM7mnwyHJTZSPOFTcM1QBhwAcpndLNPX/FkaD4Ksndy+kymGVHoLMNsz8sgPdA4ocCgBIIQh9IHzD7D9+yCyI0xzZ/PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHQrdKh2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3ABFC433C7;
-	Mon, 29 Jan 2024 17:16:10 +0000 (UTC)
+	 MIME-Version; b=WKSufXkx2aKM41lMuFkbneDVpd694Xv2IaSzlpynO78CBEquSs50wPNmrTY39oZchUtEt2VRW3GM5DgZM940EKnT+zpIVwuUMXRR0xSNERfgkzCqbRaxyYCGyfyfTCVj9ZlO5eOZI0HUtLHuweptepPb0v/LoQ4O/4zBokIjXPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTeiBp/v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741BAC43330;
+	Mon, 29 Jan 2024 17:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548570;
-	bh=nDxX7DGPngWmmGDkfHdyOpHP/sGZKN2RGyXLLU0EEyg=;
+	s=korg; t=1706548310;
+	bh=y8V6/qgHmUCedl8p+lozXK58QP+hIQUCHs8vUZ0lG9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CHQrdKh2CLMVSAHjzSvaR1smMD+t9luyaP+QRhXcaXBIom5wcWt5zmfCCG0ZvbLbB
-	 SBFog8RgXO/b9qTiWGC25XWDBlec1xDZV8TpFDVsIGx9SN34E47E7E1wc5dUzQDFst
-	 fB5r+07XZSa7fmeHJuUHbh38/0O8TS2Ve68RR5S8=
+	b=MTeiBp/vvtThDk8BDGiuXR09fTnlnRG2ig/IUA9MqLvsEmHItaKXTFVGGip0WbQ3b
+	 zdlW6izV/U804fSOe3j2uL9k5rTwK0WNzyMJSaaFWzZm4pD15ivKFthkg2OOVY3r4p
+	 9kOSF63ZO8u6vF6lZHUcWpMYGA+WGmRUTNNmv28o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 196/331] net/mlx5: Bridge, fix multicast packets sent to uplink
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.1 060/185] serial: sc16is7xx: remove global regmap from struct sc16is7xx_port
 Date: Mon, 29 Jan 2024 09:04:20 -0800
-Message-ID: <20240129170020.609820789@linuxfoundation.org>
+Message-ID: <20240129170000.532043379@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit ec7cc38ef9f83553102e84c82536971a81630739 ]
+commit f6959c5217bd799bcb770b95d3c09b3244e175c6 upstream.
 
-To enable multicast packets which are offloaded in bridge multicast
-offload mode to be sent also to uplink, FTE bit uplink_hairpin_en should
-be set. Add this bit to FTE for the bridge multicast offload rules.
+Remove global struct regmap so that it is more obvious that this
+regmap is to be used only in the probe function.
 
-Fixes: 18c2916cee12 ("net/mlx5: Bridge, snoop igmp/mld packets")
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also add a comment to that effect in probe function.
+
+Fixes: 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
+Cc:  <stable@vger.kernel.org>
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231211171353.2901416-3-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c | 3 +++
- drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c           | 2 ++
- include/linux/mlx5/fs.h                                    | 1 +
- include/linux/mlx5/mlx5_ifc.h                              | 2 +-
- 4 files changed, 7 insertions(+), 1 deletion(-)
+ drivers/tty/serial/sc16is7xx.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c
-index a7ed87e9d842..22dd30cf8033 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c
-@@ -83,6 +83,7 @@ mlx5_esw_bridge_mdb_flow_create(u16 esw_owner_vhca_id, struct mlx5_esw_bridge_md
- 		i++;
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -335,7 +335,6 @@ struct sc16is7xx_one {
+ 
+ struct sc16is7xx_port {
+ 	const struct sc16is7xx_devtype	*devtype;
+-	struct regmap			*regmap;
+ 	struct clk			*clk;
+ #ifdef CONFIG_GPIOLIB
+ 	struct gpio_chip		gpio;
+@@ -1415,7 +1414,8 @@ static int sc16is7xx_setup_gpio_chip(str
+ /*
+  * Configure ports designated to operate as modem control lines.
+  */
+-static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s)
++static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s,
++				       struct regmap *regmap)
+ {
+ 	int i;
+ 	int ret;
+@@ -1444,7 +1444,7 @@ static int sc16is7xx_setup_mctrl_ports(s
+ 
+ 	if (s->mctrl_mask)
+ 		regmap_update_bits(
+-			s->regmap,
++			regmap,
+ 			SC16IS7XX_IOCONTROL_REG,
+ 			SC16IS7XX_IOCONTROL_MODEM_A_BIT |
+ 			SC16IS7XX_IOCONTROL_MODEM_B_BIT, s->mctrl_mask);
+@@ -1476,6 +1476,10 @@ static int sc16is7xx_probe(struct device
+ 	 * This device does not have an identification register that would
+ 	 * tell us if we are really connected to the correct device.
+ 	 * The best we can do is to check if communication is at all possible.
++	 *
++	 * Note: regmap[0] is used in the probe function to access registers
++	 * common to all channels/ports, as it is guaranteed to be present on
++	 * all variants.
+ 	 */
+ 	ret = regmap_read(regmaps[0], SC16IS7XX_LSR_REG, &val);
+ 	if (ret < 0)
+@@ -1511,7 +1515,6 @@ static int sc16is7xx_probe(struct device
+ 			return -EINVAL;
  	}
  
-+	rule_spec->flow_context.flags |= FLOW_CONTEXT_UPLINK_HAIRPIN_EN;
- 	rule_spec->match_criteria_enable = MLX5_MATCH_OUTER_HEADERS;
- 	dmac_v = MLX5_ADDR_OF(fte_match_param, rule_spec->match_value, outer_headers.dmac_47_16);
- 	ether_addr_copy(dmac_v, entry->key.addr);
-@@ -587,6 +588,7 @@ mlx5_esw_bridge_mcast_vlan_flow_create(u16 vlan_proto, struct mlx5_esw_bridge_po
- 	if (!rule_spec)
- 		return ERR_PTR(-ENOMEM);
+-	s->regmap = regmaps[0];
+ 	s->devtype = devtype;
+ 	dev_set_drvdata(dev, s);
+ 	mutex_init(&s->efr_lock);
+@@ -1526,7 +1529,7 @@ static int sc16is7xx_probe(struct device
+ 	sched_set_fifo(s->kworker_task);
  
-+	rule_spec->flow_context.flags |= FLOW_CONTEXT_UPLINK_HAIRPIN_EN;
- 	rule_spec->match_criteria_enable = MLX5_MATCH_OUTER_HEADERS;
+ 	/* reset device, purging any pending irq / data */
+-	regmap_write(s->regmap, SC16IS7XX_IOCONTROL_REG,
++	regmap_write(regmaps[0], SC16IS7XX_IOCONTROL_REG,
+ 		     SC16IS7XX_IOCONTROL_SRESET_BIT);
  
- 	flow_act.action |= MLX5_FLOW_CONTEXT_ACTION_PACKET_REFORMAT;
-@@ -662,6 +664,7 @@ mlx5_esw_bridge_mcast_fwd_flow_create(struct mlx5_esw_bridge_port *port)
- 		dest.vport.flags = MLX5_FLOW_DEST_VPORT_VHCA_ID;
- 		dest.vport.vhca_id = port->esw_owner_vhca_id;
+ 	for (i = 0; i < devtype->nr_uart; ++i) {
+@@ -1606,7 +1609,7 @@ static int sc16is7xx_probe(struct device
+ 				s->p[u].irda_mode = true;
  	}
-+	rule_spec->flow_context.flags |= FLOW_CONTEXT_UPLINK_HAIRPIN_EN;
- 	handle = mlx5_add_flow_rules(port->mcast.ft, rule_spec, &flow_act, &dest, 1);
  
- 	kvfree(rule_spec);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
-index a4b925331661..b29299c49ab3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
-@@ -566,6 +566,8 @@ static int mlx5_cmd_set_fte(struct mlx5_core_dev *dev,
- 		 fte->flow_context.flow_tag);
- 	MLX5_SET(flow_context, in_flow_context, flow_source,
- 		 fte->flow_context.flow_source);
-+	MLX5_SET(flow_context, in_flow_context, uplink_hairpin_en,
-+		 !!(fte->flow_context.flags & FLOW_CONTEXT_UPLINK_HAIRPIN_EN));
+-	ret = sc16is7xx_setup_mctrl_ports(s);
++	ret = sc16is7xx_setup_mctrl_ports(s, regmaps[0]);
+ 	if (ret)
+ 		goto out_ports;
  
- 	MLX5_SET(flow_context, in_flow_context, extended_destination,
- 		 extended_dest);
-diff --git a/include/linux/mlx5/fs.h b/include/linux/mlx5/fs.h
-index 6f7725238abc..3fb428ce7d1c 100644
---- a/include/linux/mlx5/fs.h
-+++ b/include/linux/mlx5/fs.h
-@@ -132,6 +132,7 @@ struct mlx5_flow_handle;
- 
- enum {
- 	FLOW_CONTEXT_HAS_TAG = BIT(0),
-+	FLOW_CONTEXT_UPLINK_HAIRPIN_EN = BIT(1),
- };
- 
- struct mlx5_flow_context {
-diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-index 8ac6ae79e083..51eb83f77938 100644
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -3536,7 +3536,7 @@ struct mlx5_ifc_flow_context_bits {
- 	u8         action[0x10];
- 
- 	u8         extended_destination[0x1];
--	u8         reserved_at_81[0x1];
-+	u8         uplink_hairpin_en[0x1];
- 	u8         flow_source[0x2];
- 	u8         encrypt_decrypt_type[0x4];
- 	u8         destination_list_size[0x18];
--- 
-2.43.0
-
 
 
 
