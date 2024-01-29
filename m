@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-17162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C7D841013
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06994840E6A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 341D81F21537
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2E16282EEA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3D415EAB7;
-	Mon, 29 Jan 2024 17:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4270315F32A;
+	Mon, 29 Jan 2024 17:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/4pufRX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2KIddLu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D32C15B305;
-	Mon, 29 Jan 2024 17:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E3415B96E;
+	Mon, 29 Jan 2024 17:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548556; cv=none; b=vDY1WgxCL0TkyiR63dwaSA5YZoU0vayk4uGsTNPHx2a2vjG81AX+emUpUrIr3u/zJvRMo3lzn/3t3kWmNkQK/j9ZHkmIhlmECbxkSXnoJ3FfxcuPQaHHx6pcZPzemMjqTFRJKbLKGzPGLfZv/2AkvuEH6tGeamPpd9rksjYefSw=
+	t=1706548280; cv=none; b=hy6R6jhw0/tjKISi9ZF9Gx5Xy/1sYItBFwqGl6PlefCCtCPHAc75qNhdghTcz4Txv2ehQxNTY5TqIKSi7C1Nu1RBmOJF0TtFL/5K73Vm6BwOeSY4xqLiD+xypYx+wg9+62pXQH651C0FSmEdZvPc+rSRE81P4W3xJQxI6MtffR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548556; c=relaxed/simple;
-	bh=aDtB0gWN9n8TLkSDJjIvJgaB7xTiFHh5OzsYsuY62aQ=;
+	s=arc-20240116; t=1706548280; c=relaxed/simple;
+	bh=YBYldfPdDPwiYRZOjKikI8iQN+XQcrCf993wYqkB190=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sB5E8sTcQjxq3f0G8oYUtHCOEuzL3uI7BnzEv0y93uj7naDUPi/2SH6dOl0aoj38tmhKbCK87qRVZ9cxwtyJJRhE2BVymvX3+NVnaIGn+v5sjFo9cMu05ulEYINTIaX9hfxkSG+9UaA77r/s1BmctM0WGHjGuwknvTh82uJHkps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/4pufRX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F20C433C7;
-	Mon, 29 Jan 2024 17:15:56 +0000 (UTC)
+	 MIME-Version; b=jOcVGFXQ0Xh2ZZ8C2xkt2ll9MJcHJoBnMl3Vc+HuufvIQ6j+1E5R5HaSInNXIrsJos8/144BtZ9bvPXDekIpZ4amUqHZ/RjfQSTW89nXYIp5zPSe4FXF1bY6Ke62sERODcaCVVGvLWgf+1KTBJ53CMgvgMd3hwuitGD8w7b4MTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2KIddLu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD93FC433F1;
+	Mon, 29 Jan 2024 17:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548556;
-	bh=aDtB0gWN9n8TLkSDJjIvJgaB7xTiFHh5OzsYsuY62aQ=;
+	s=korg; t=1706548279;
+	bh=YBYldfPdDPwiYRZOjKikI8iQN+XQcrCf993wYqkB190=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/4pufRXlKzpHPtyhCO1xG2gVjvNWd8OHlaTV/TCv0bWdAFo2eAcJY16t6LzTmLNW
-	 LRxIDOwJIfKKQx7VKkJBacZNZ/fs3A1K9m7S361rRmsxug/RgLwvxdD3s1EK7UT7b9
-	 s8Af8evwVdZPwS2kKDDfv9qTP4ValXQYKORXFIpU=
+	b=C2KIddLuRv86UaAUHeLfKnZz5s5MjLfRu6cWoijIA4qFV4+YHzLDsi8UwSaUnZQ1K
+	 HU/nl3p8G0as21oiUrYHzLKdztpFqTaivZGWm0NXuokijocIEnhzL8TKmgPHEChkwF
+	 BH3/8lgpH3mqQngYP2kI6UI1LbHcJuO7J7Vy9ROg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 202/331] net/mlx5e: fix a double-free in arfs_create_groups
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.1 066/185] serial: sc16is7xx: improve do/while loop in sc16is7xx_irq()
 Date: Mon, 29 Jan 2024 09:04:26 -0800
-Message-ID: <20240129170020.788635118@linuxfoundation.org>
+Message-ID: <20240129170000.727001003@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 3c6d5189246f590e4e1f167991558bdb72a4738b ]
+commit d5078509c8b06c5c472a60232815e41af81c6446 upstream.
 
-When `in` allocated by kvzalloc fails, arfs_create_groups will free
-ft->g and return an error. However, arfs_create_table, the only caller of
-arfs_create_groups, will hold this error and call to
-mlx5e_destroy_flow_table, in which the ft->g will be freed again.
+Simplify and improve readability by replacing while(1) loop with
+do {} while, and by using the keep_polling variable as the exit
+condition, making it more explicit.
 
-Fixes: 1cabe6b0965e ("net/mlx5e: Create aRFS flow tables")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 834449872105 ("sc16is7xx: Fix for multi-channel stall")
+Cc:  <stable@vger.kernel.org>
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231221231823.2327894-6-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_arfs.c | 26 +++++++++++--------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-index bb7f86c993e5..e66f486faafe 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
-@@ -254,11 +254,13 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -784,17 +784,18 @@ out_port_irq:
  
- 	ft->g = kcalloc(MLX5E_ARFS_NUM_GROUPS,
- 			sizeof(*ft->g), GFP_KERNEL);
--	in = kvzalloc(inlen, GFP_KERNEL);
--	if  (!in || !ft->g) {
--		kfree(ft->g);
--		kvfree(in);
-+	if (!ft->g)
- 		return -ENOMEM;
+ static irqreturn_t sc16is7xx_irq(int irq, void *dev_id)
+ {
++	bool keep_polling;
 +
-+	in = kvzalloc(inlen, GFP_KERNEL);
-+	if (!in) {
-+		err = -ENOMEM;
-+		goto err_free_g;
- 	}
+ 	struct sc16is7xx_port *s = (struct sc16is7xx_port *)dev_id;
  
- 	mc = MLX5_ADDR_OF(create_flow_group_in, in, match_criteria);
-@@ -278,7 +280,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 		break;
- 	default:
- 		err = -EINVAL;
--		goto out;
-+		goto err_free_in;
- 	}
+-	while (1) {
+-		bool keep_polling = false;
++	do {
+ 		int i;
  
- 	switch (type) {
-@@ -300,7 +302,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 		break;
- 	default:
- 		err = -EINVAL;
--		goto out;
-+		goto err_free_in;
- 	}
++		keep_polling = false;
++
+ 		for (i = 0; i < s->devtype->nr_uart; ++i)
+ 			keep_polling |= sc16is7xx_port_irq(s, i);
+-		if (!keep_polling)
+-			break;
+-	}
++	} while (keep_polling);
  
- 	MLX5_SET_CFG(in, match_criteria_enable, MLX5_MATCH_OUTER_HEADERS);
-@@ -309,7 +311,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 	MLX5_SET_CFG(in, end_flow_index, ix - 1);
- 	ft->g[ft->num_groups] = mlx5_create_flow_group(ft->t, in);
- 	if (IS_ERR(ft->g[ft->num_groups]))
--		goto err;
-+		goto err_clean_group;
- 	ft->num_groups++;
- 
- 	memset(in, 0, inlen);
-@@ -318,18 +320,20 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
- 	MLX5_SET_CFG(in, end_flow_index, ix - 1);
- 	ft->g[ft->num_groups] = mlx5_create_flow_group(ft->t, in);
- 	if (IS_ERR(ft->g[ft->num_groups]))
--		goto err;
-+		goto err_clean_group;
- 	ft->num_groups++;
- 
- 	kvfree(in);
- 	return 0;
- 
--err:
-+err_clean_group:
- 	err = PTR_ERR(ft->g[ft->num_groups]);
- 	ft->g[ft->num_groups] = NULL;
--out:
-+err_free_in:
- 	kvfree(in);
--
-+err_free_g:
-+	kfree(ft->g);
-+	ft->g = NULL;
- 	return err;
+ 	return IRQ_HANDLED;
  }
- 
--- 
-2.43.0
-
 
 
 
