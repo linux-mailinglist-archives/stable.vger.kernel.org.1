@@ -1,60 +1,70 @@
-Return-Path: <stable+bounces-16784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F165840E66
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFD5384104D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3682B277D3
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F4151C23AE6
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A508115F322;
-	Mon, 29 Jan 2024 17:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83BB75610;
+	Mon, 29 Jan 2024 17:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQ9HTtSV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kP+o9go"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6342215B965;
-	Mon, 29 Jan 2024 17:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D9D755F1;
+	Mon, 29 Jan 2024 17:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548277; cv=none; b=mL8ZSnpRvZeRtzxDB1tYM+Tzi08WN9x8lvEr9JMLdyuvuduYP6S0x54AYoh770PVVOJRzVG7puSndpB6NSU5NQovdS2CWjd6heq4++4GF05wPd3RENESGPmCPz5XNwHiLBXJbW5vuGh+Vy2y+hlBJqLDWGwfMJwMZec9nfc2de0=
+	t=1706548598; cv=none; b=DZ4s9gQXHkjA7evt6we8KY5/3ARWlBbYesZT45MI4LpfRYHJw3GC/eiEcwm326XwqzeNI16Mg0/XgFBt2uaFLzMYa4MnSfz38UWt6EMMti/7K7asPITVxkbdGHGlHGnIbi/QgGlMigisG9noPtzPWUuBebzwE3c1OQVZkx77IiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548277; c=relaxed/simple;
-	bh=hPw+HxSrx+S8E1imjRhRsxg757fV6it2Vi0Dkq/bZvI=;
+	s=arc-20240116; t=1706548598; c=relaxed/simple;
+	bh=Bp1dyDO7354wIAEdTjNf7v9p8l29FKqGzHZCwkKLMYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVSj600AhGAYsdugVpa771seyP4tpR1AQB0oQAZEISFe6AzDzNqXf+U1gc0KxWqPKSffCqKhxIriapmBiEAZU+K/MT93aXAgdpvVopb6u2Y207s5POGra4wx4LDcB0JqWLg6M41TmSfntSBOgVJLnvko6vB0ZIlRisjIw0hAh34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQ9HTtSV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC211C433C7;
-	Mon, 29 Jan 2024 17:11:16 +0000 (UTC)
+	 MIME-Version; b=eia7fO4MfYV1QVum9ruPlSLMbPCfLOkIITVJKh3NYpaG/99UwAS8PGUG2EHutcO1csOzWyEMWt6ZhvVMpdM74P36nVXTMINyapbtKnxoqgNIBQ/5XyqpjBDnWa5rwB0bZA+8Aa7YWtigHjp//ZFwjqCrpbF/PL1CpFfW/d0fvWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kP+o9go; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252FAC433C7;
+	Mon, 29 Jan 2024 17:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548277;
-	bh=hPw+HxSrx+S8E1imjRhRsxg757fV6it2Vi0Dkq/bZvI=;
+	s=korg; t=1706548598;
+	bh=Bp1dyDO7354wIAEdTjNf7v9p8l29FKqGzHZCwkKLMYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQ9HTtSVV69mUSTfNR8gxSZQDWvgM1r9A6gPrf9aMwUXDkjUN2xyVO9RHT+1/Fvp6
-	 d657IlDe5Q/CaWc7PgoTrxXVAM0ccF0ZdCAwyxMd/WEkCI2+tfGp2jqigHhcayP8h5
-	 f5k/bMu3LkwdaFe+LnUkqcWQAhYb9CdqCVX01E6s=
+	b=2kP+o9gonsw3e0+TmGRXRkDfl/YEtbwaZK2mAvUYtPmIh61MCRvztMMz7tiveK9Gk
+	 JfxRl2wHXjBG7HLK7SnlbevJIGDq1eLh01fJlfbmDxqKKrILefZthBTI8/Fp3u2DEo
+	 rqF+yFH03BAAhcIcVescE36o6AZDvhNm+4a3MUq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Hansen Dsouza <hansen.dsouza@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 292/346] drm/amd/display: Wake DMCUB before executing GPINT commands
+	Zack Rusin <zackr@vmware.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@linux.ie>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Dave Airlie <airlied@redhat.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Gurchetan Singh <gurchetansingh@chromium.org>,
+	Chia-I Wu <olvaffe@gmail.com>,
+	dri-devel@lists.freedesktop.org,
+	virtualization@lists.linux-foundation.org,
+	spice-devel@lists.freedesktop.org,
+	Pekka Paalanen <pekka.paalanen@collabora.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Simon Ser <contact@emersion.fr>
+Subject: [PATCH 6.6 259/331] drm: Disable the cursor plane on atomic contexts with virtualized drivers
 Date: Mon, 29 Jan 2024 09:05:23 -0800
-Message-ID: <20240129170024.991178668@linuxfoundation.org>
+Message-ID: <20240129170022.458985226@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,221 +76,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Zack Rusin <zackr@vmware.com>
 
-[ Upstream commit e5ffd1263dd5b44929c676171802e7b6af483f21 ]
+commit 4e3b70da64a53784683cfcbac2deda5d6e540407 upstream.
 
-[Why]
-DMCUB can be in idle when we attempt to interface with the HW through
-the GPINT mailbox resulting in a system hang.
+Cursor planes on virtualized drivers have special meaning and require
+that the clients handle them in specific ways, e.g. the cursor plane
+should react to the mouse movement the way a mouse cursor would be
+expected to and the client is required to set hotspot properties on it
+in order for the mouse events to be routed correctly.
 
-[How]
-Add dc_wake_and_execute_gpint() to wrap the wake, execute, sleep
-sequence.
+This breaks the contract as specified by the "universal planes". Fix it
+by disabling the cursor planes on virtualized drivers while adding
+a foundation on top of which it's possible to special case mouse cursor
+planes for clients that want it.
 
-If the GPINT executes successfully then DMCUB will be put back into
-sleep after the optional response is returned.
+Disabling the cursor planes makes some kms compositors which were broken,
+e.g. Weston, fallback to software cursor which works fine or at least
+better than currently while having no effect on others, e.g. gnome-shell
+or kwin, which put virtualized drivers on a deny-list when running in
+atomic context to make them fallback to legacy kms and avoid this issue.
 
-It functions similar to the inbox command interface.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Hansen Dsouza <hansen.dsouza@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zack Rusin <zackr@vmware.com>
+Fixes: 681e7ec73044 ("drm: Allow userspace to ask for universal plane list (v2)")
+Cc: <stable@vger.kernel.org> # v5.4+
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@linux.ie>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Hans de Goede <hdegoede@redhat.com>
+Cc: Gurchetan Singh <gurchetansingh@chromium.org>
+Cc: Chia-I Wu <olvaffe@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: virtualization@lists.linux-foundation.org
+Cc: spice-devel@lists.freedesktop.org
+Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Acked-by: Simon Ser <contact@emersion.fr>
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231023074613.41327-2-aesteve@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c  | 72 ++++++++++++++-----
- drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h  | 11 +++
- drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c | 19 ++---
- 3 files changed, 72 insertions(+), 30 deletions(-)
+ drivers/gpu/drm/drm_plane.c          |   13 +++++++++++++
+ drivers/gpu/drm/qxl/qxl_drv.c        |    2 +-
+ drivers/gpu/drm/vboxvideo/vbox_drv.c |    2 +-
+ drivers/gpu/drm/virtio/virtgpu_drv.c |    2 +-
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c  |    2 +-
+ include/drm/drm_drv.h                |    9 +++++++++
+ include/drm/drm_file.h               |   12 ++++++++++++
+ 7 files changed, 38 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-index 50f1e6d5321e..61d1b4eadbee 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-+++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-@@ -282,17 +282,11 @@ bool dc_dmub_srv_optimized_init_done(struct dc_dmub_srv *dc_dmub_srv)
- bool dc_dmub_srv_notify_stream_mask(struct dc_dmub_srv *dc_dmub_srv,
- 				    unsigned int stream_mask)
- {
--	struct dmub_srv *dmub;
--	const uint32_t timeout = 30;
--
- 	if (!dc_dmub_srv || !dc_dmub_srv->dmub)
- 		return false;
+--- a/drivers/gpu/drm/drm_plane.c
++++ b/drivers/gpu/drm/drm_plane.c
+@@ -678,6 +678,19 @@ int drm_mode_getplane_res(struct drm_dev
+ 		    !file_priv->universal_planes)
+ 			continue;
  
--	dmub = dc_dmub_srv->dmub;
--
--	return dmub_srv_send_gpint_command(
--		       dmub, DMUB_GPINT__IDLE_OPT_NOTIFY_STREAM_MASK,
--		       stream_mask, timeout) == DMUB_STATUS_OK;
-+	return dc_wake_and_execute_gpint(dc_dmub_srv->ctx, DMUB_GPINT__IDLE_OPT_NOTIFY_STREAM_MASK,
-+					 stream_mask, NULL, DM_DMUB_WAIT_TYPE_WAIT);
- }
++		/*
++		 * If we're running on a virtualized driver then,
++		 * unless userspace advertizes support for the
++		 * virtualized cursor plane, disable cursor planes
++		 * because they'll be broken due to missing cursor
++		 * hotspot info.
++		 */
++		if (plane->type == DRM_PLANE_TYPE_CURSOR &&
++		    drm_core_check_feature(dev, DRIVER_CURSOR_HOTSPOT) &&
++		    file_priv->atomic &&
++		    !file_priv->supports_virtualized_cursor_plane)
++			continue;
++
+ 		if (drm_lease_held(file_priv, plane->base.id)) {
+ 			if (count < plane_resp->count_planes &&
+ 			    put_user(plane->base.id, plane_ptr + count))
+--- a/drivers/gpu/drm/qxl/qxl_drv.c
++++ b/drivers/gpu/drm/qxl/qxl_drv.c
+@@ -283,7 +283,7 @@ static const struct drm_ioctl_desc qxl_i
+ };
  
- bool dc_dmub_srv_is_restore_required(struct dc_dmub_srv *dc_dmub_srv)
-@@ -1107,25 +1101,20 @@ bool dc_dmub_check_min_version(struct dmub_srv *srv)
- void dc_dmub_srv_enable_dpia_trace(const struct dc *dc)
- {
- 	struct dc_dmub_srv *dc_dmub_srv = dc->ctx->dmub_srv;
--	struct dmub_srv *dmub;
--	enum dmub_status status;
--	static const uint32_t timeout_us = 30;
+ static struct drm_driver qxl_driver = {
+-	.driver_features = DRIVER_GEM | DRIVER_MODESET | DRIVER_ATOMIC,
++	.driver_features = DRIVER_GEM | DRIVER_MODESET | DRIVER_ATOMIC | DRIVER_CURSOR_HOTSPOT,
  
- 	if (!dc_dmub_srv || !dc_dmub_srv->dmub) {
- 		DC_LOG_ERROR("%s: invalid parameters.", __func__);
- 		return;
- 	}
+ 	.dumb_create = qxl_mode_dumb_create,
+ 	.dumb_map_offset = drm_gem_ttm_dumb_map_offset,
+--- a/drivers/gpu/drm/vboxvideo/vbox_drv.c
++++ b/drivers/gpu/drm/vboxvideo/vbox_drv.c
+@@ -182,7 +182,7 @@ DEFINE_DRM_GEM_FOPS(vbox_fops);
  
--	dmub = dc_dmub_srv->dmub;
--
--	status = dmub_srv_send_gpint_command(dmub, DMUB_GPINT__SET_TRACE_BUFFER_MASK_WORD1, 0x0010, timeout_us);
--	if (status != DMUB_STATUS_OK) {
-+	if (!dc_wake_and_execute_gpint(dc->ctx, DMUB_GPINT__SET_TRACE_BUFFER_MASK_WORD1,
-+				       0x0010, NULL, DM_DMUB_WAIT_TYPE_WAIT)) {
- 		DC_LOG_ERROR("timeout updating trace buffer mask word\n");
- 		return;
- 	}
+ static const struct drm_driver driver = {
+ 	.driver_features =
+-	    DRIVER_MODESET | DRIVER_GEM | DRIVER_ATOMIC,
++	    DRIVER_MODESET | DRIVER_GEM | DRIVER_ATOMIC | DRIVER_CURSOR_HOTSPOT,
  
--	status = dmub_srv_send_gpint_command(dmub, DMUB_GPINT__UPDATE_TRACE_BUFFER_MASK, 0x0000, timeout_us);
--	if (status != DMUB_STATUS_OK) {
-+	if (!dc_wake_and_execute_gpint(dc->ctx, DMUB_GPINT__UPDATE_TRACE_BUFFER_MASK,
-+				       0x0000, NULL, DM_DMUB_WAIT_TYPE_WAIT)) {
- 		DC_LOG_ERROR("timeout updating trace buffer mask word\n");
- 		return;
- 	}
-@@ -1337,3 +1326,52 @@ bool dc_wake_and_execute_dmub_cmd_list(const struct dc_context *ctx, unsigned in
+ 	.fops = &vbox_fops,
+ 	.name = DRIVER_NAME,
+--- a/drivers/gpu/drm/virtio/virtgpu_drv.c
++++ b/drivers/gpu/drm/virtio/virtgpu_drv.c
+@@ -177,7 +177,7 @@ static const struct drm_driver driver =
+ 	 * out via drm_device::driver_features:
+ 	 */
+ 	.driver_features = DRIVER_MODESET | DRIVER_GEM | DRIVER_RENDER | DRIVER_ATOMIC |
+-			   DRIVER_SYNCOBJ | DRIVER_SYNCOBJ_TIMELINE,
++			   DRIVER_SYNCOBJ | DRIVER_SYNCOBJ_TIMELINE | DRIVER_CURSOR_HOTSPOT,
+ 	.open = virtio_gpu_driver_open,
+ 	.postclose = virtio_gpu_driver_postclose,
  
- 	return result;
- }
-+
-+static bool dc_dmub_execute_gpint(const struct dc_context *ctx, enum dmub_gpint_command command_code,
-+				  uint16_t param, uint32_t *response, enum dm_dmub_wait_type wait_type)
-+{
-+	struct dc_dmub_srv *dc_dmub_srv = ctx->dmub_srv;
-+	const uint32_t wait_us = wait_type == DM_DMUB_WAIT_TYPE_NO_WAIT ? 0 : 30;
-+	enum dmub_status status;
-+
-+	if (response)
-+		*response = 0;
-+
-+	if (!dc_dmub_srv || !dc_dmub_srv->dmub)
-+		return false;
-+
-+	status = dmub_srv_send_gpint_command(dc_dmub_srv->dmub, command_code, param, wait_us);
-+	if (status != DMUB_STATUS_OK) {
-+		if (status == DMUB_STATUS_TIMEOUT && wait_type == DM_DMUB_WAIT_TYPE_NO_WAIT)
-+			return true;
-+
-+		return false;
-+	}
-+
-+	if (response && wait_type == DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY)
-+		dmub_srv_get_gpint_response(dc_dmub_srv->dmub, response);
-+
-+	return true;
-+}
-+
-+bool dc_wake_and_execute_gpint(const struct dc_context *ctx, enum dmub_gpint_command command_code,
-+			       uint16_t param, uint32_t *response, enum dm_dmub_wait_type wait_type)
-+{
-+	struct dc_dmub_srv *dc_dmub_srv = ctx->dmub_srv;
-+	bool result = false, reallow_idle = false;
-+
-+	if (!dc_dmub_srv || !dc_dmub_srv->dmub)
-+		return false;
-+
-+	if (dc_dmub_srv->idle_allowed) {
-+		dc_dmub_srv_apply_idle_power_optimizations(ctx->dc, false);
-+		reallow_idle = true;
-+	}
-+
-+	result = dc_dmub_execute_gpint(ctx, command_code, param, response, wait_type);
-+
-+	if (result && reallow_idle)
-+		dc_dmub_srv_apply_idle_power_optimizations(ctx->dc, true);
-+
-+	return result;
-+}
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h
-index 784ca3e44414..952bfb368886 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h
-@@ -145,5 +145,16 @@ bool dc_wake_and_execute_dmub_cmd(const struct dc_context *ctx, union dmub_rb_cm
- bool dc_wake_and_execute_dmub_cmd_list(const struct dc_context *ctx, unsigned int count,
- 				       union dmub_rb_cmd *cmd, enum dm_dmub_wait_type wait_type);
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+@@ -1611,7 +1611,7 @@ static const struct file_operations vmwg
  
-+/**
-+ * dc_wake_and_execute_gpint()
-+ *
-+ * @ctx: DC context
-+ * @command_code: The command ID to send to DMCUB
-+ * @param: The parameter to message DMCUB
-+ * @response: Optional response out value - may be NULL.
-+ * @wait_type: The wait behavior for the execution
-+ */
-+bool dc_wake_and_execute_gpint(const struct dc_context *ctx, enum dmub_gpint_command command_code,
-+			       uint16_t param, uint32_t *response, enum dm_dmub_wait_type wait_type);
+ static const struct drm_driver driver = {
+ 	.driver_features =
+-	DRIVER_MODESET | DRIVER_RENDER | DRIVER_ATOMIC | DRIVER_GEM,
++	DRIVER_MODESET | DRIVER_RENDER | DRIVER_ATOMIC | DRIVER_GEM | DRIVER_CURSOR_HOTSPOT,
+ 	.ioctls = vmw_ioctls,
+ 	.num_ioctls = ARRAY_SIZE(vmw_ioctls),
+ 	.master_set = vmw_master_set,
+--- a/include/drm/drm_drv.h
++++ b/include/drm/drm_drv.h
+@@ -110,6 +110,15 @@ enum drm_driver_feature {
+ 	 * Driver supports user defined GPU VA bindings for GEM objects.
+ 	 */
+ 	DRIVER_GEM_GPUVA		= BIT(8),
++	/**
++	 * @DRIVER_CURSOR_HOTSPOT:
++	 *
++	 * Driver supports and requires cursor hotspot information in the
++	 * cursor plane (e.g. cursor plane has to actually track the mouse
++	 * cursor and the clients are required to set hotspot in order for
++	 * the cursor planes to work correctly).
++	 */
++	DRIVER_CURSOR_HOTSPOT           = BIT(9),
  
- #endif /* _DMUB_DC_SRV_H_ */
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
-index 3d7cef17f881..3e243e407bb8 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
-@@ -105,23 +105,18 @@ static enum dc_psr_state convert_psr_state(uint32_t raw_state)
-  */
- static void dmub_psr_get_state(struct dmub_psr *dmub, enum dc_psr_state *state, uint8_t panel_inst)
- {
--	struct dmub_srv *srv = dmub->ctx->dmub_srv->dmub;
- 	uint32_t raw_state = 0;
- 	uint32_t retry_count = 0;
--	enum dmub_status status;
+ 	/* IMPORTANT: Below are all the legacy flags, add new ones above. */
  
- 	do {
- 		// Send gpint command and wait for ack
--		status = dmub_srv_send_gpint_command(srv, DMUB_GPINT__GET_PSR_STATE, panel_inst, 30);
--
--		if (status == DMUB_STATUS_OK) {
--			// GPINT was executed, get response
--			dmub_srv_get_gpint_response(srv, &raw_state);
-+		if (dc_wake_and_execute_gpint(dmub->ctx, DMUB_GPINT__GET_PSR_STATE, panel_inst, &raw_state,
-+					      DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY)) {
- 			*state = convert_psr_state(raw_state);
--		} else
-+		} else {
- 			// Return invalid state when GPINT times out
- 			*state = PSR_STATE_INVALID;
--
-+		}
- 	} while (++retry_count <= 1000 && *state == PSR_STATE_INVALID);
+--- a/include/drm/drm_file.h
++++ b/include/drm/drm_file.h
+@@ -229,6 +229,18 @@ struct drm_file {
+ 	bool is_master;
  
- 	// Assert if max retry hit
-@@ -452,13 +447,11 @@ static void dmub_psr_force_static(struct dmub_psr *dmub, uint8_t panel_inst)
-  */
- static void dmub_psr_get_residency(struct dmub_psr *dmub, uint32_t *residency, uint8_t panel_inst)
- {
--	struct dmub_srv *srv = dmub->ctx->dmub_srv->dmub;
- 	uint16_t param = (uint16_t)(panel_inst << 8);
- 
- 	/* Send gpint command and wait for ack */
--	dmub_srv_send_gpint_command(srv, DMUB_GPINT__PSR_RESIDENCY, param, 30);
--
--	dmub_srv_get_gpint_response(srv, residency);
-+	dc_wake_and_execute_gpint(dmub->ctx, DMUB_GPINT__PSR_RESIDENCY, param, residency,
-+				  DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY);
- }
- 
- static const struct dmub_psr_funcs psr_funcs = {
--- 
-2.43.0
-
+ 	/**
++	 * @supports_virtualized_cursor_plane:
++	 *
++	 * This client is capable of handling the cursor plane with the
++	 * restrictions imposed on it by the virtualized drivers.
++	 *
++	 * This implies that the cursor plane has to behave like a cursor
++	 * i.e. track cursor movement. It also requires setting of the
++	 * hotspot properties by the client on the cursor plane.
++	 */
++	bool supports_virtualized_cursor_plane;
++
++	/**
+ 	 * @master:
+ 	 *
+ 	 * Master this node is currently associated with. Protected by struct
 
 
 
