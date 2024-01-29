@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19DA840DF6
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B3B840DAC
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76CC81F2D009
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 395A71C210EE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFAD15B0F8;
-	Mon, 29 Jan 2024 17:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCAD15B99E;
+	Mon, 29 Jan 2024 17:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s1ZLNw34"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJ/xi8wl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE9C15AADC;
-	Mon, 29 Jan 2024 17:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C8C15A4B9;
+	Mon, 29 Jan 2024 17:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548196; cv=none; b=SXTIXblyAro759K33IIe/2MZlRnVrmrX71KDGEfoe9vAv+1+SlrRcBe8JiIh1AUrKoxykr9dsc8i/ZKjN2HI/ghc3JGdOhHOlF8gqZG4sUrwq+jVdRCPviCXAklWJ+CFYGT2uEAdffDqWFKsAUMfTbV178mUmELbGYPcpp++cdQ=
+	t=1706548146; cv=none; b=lzQhwG396xQ8hqABejWNtvMs7nDn6PWsUCk7nDC2fw1Mz1MvjyXWpBMKUo68W/VMN0oiOxWzOkjUocx7tfwYTxjDd9eMSIfoKf8ZGEwlYOnCAfvKD/ihKFNBFhgwYU91LN35W1yTCLpXgs1CnZV1ZBejWRveuyWMQrgSlA7M03g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548196; c=relaxed/simple;
-	bh=eWOQ3s+7Bfzi1AcvugxTVrTPmuRDZWYEVxU/9FnfzMw=;
+	s=arc-20240116; t=1706548146; c=relaxed/simple;
+	bh=k2NZX2q+6f0ywMU+LhI/6/GT7i76Wf2TkDKHQr5jLLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rljqv1P6qGI2X1Rn6lud6i8wbAuiohlKI/4nSvuxpFx97KCI3k11f7XJCvHUaA+Vw6tDWpAE4AWI99+R1EvL5MrbMWeZtEp3UdVvy8ta1BRVZOh6RoGVNSv6zHLaCQmeQQd1JyH5/4yWLkRb2Jxq8pZ1V4UdhpzYQDiD3T8X6zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s1ZLNw34; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652AFC43394;
-	Mon, 29 Jan 2024 17:09:56 +0000 (UTC)
+	 MIME-Version; b=j/y5n+WEq7JIrdXRxWlqIzBJ33YLIlF5uQqoYPrq24tfEo4PVIFNoK80cR3af4O8SRAnVquZ4jpKNd+0RnZQGsZyPJASqEdxW/BQrO0m9mIBrtYU+ZeAqVBudA/fMwKROM/NxwMDgEFe94YFy864GKn0Qyxmaa5TOxpdQ1FMzk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJ/xi8wl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A13C433F1;
+	Mon, 29 Jan 2024 17:09:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548196;
-	bh=eWOQ3s+7Bfzi1AcvugxTVrTPmuRDZWYEVxU/9FnfzMw=;
+	s=korg; t=1706548145;
+	bh=k2NZX2q+6f0ywMU+LhI/6/GT7i76Wf2TkDKHQr5jLLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s1ZLNw34RXLBGzdGxOkQ7h/x5dhkoa3CvJKLSvrtHwoNa2xdilnfF7Sfv/y8TN5Fk
-	 KGazEqyQ+/UkFFNZ4DAdtm6kxZQ7thAsvd+GjM2gLRUSipdGNG5/1TULmS9WFV3mNg
-	 I7GB57YqGcaSqhh5+fWkdl6k1UoMD5WwQMPxtK1c=
+	b=kJ/xi8wlI3en4gliSgs0c5h5lSECqHUjVkzvdT0/bwBiwNJF/agS0cnNdA0/Cox6F
+	 JZgxDSbZTiAfsJONhpBWDLe4Dzq5J4uUeLATLsEaRe7tlDdsilTPihX4Sg0MdTzLPX
+	 SCrACzbil014CY/sWDe0RffCYFcMwSva4q6ME3qw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongchen Zhang <zhanghongchen@loongson.cn>,
-	Weihao Li <liweihao@loongson.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 012/185] PM: hibernate: Enforce ordering during image compression/decompression
+	Jakub Kicinski <kuba@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 181/346] selftest: Dont reuse port for SO_INCOMING_CPU test.
 Date: Mon, 29 Jan 2024 09:03:32 -0800
-Message-ID: <20240129165958.987279732@linuxfoundation.org>
+Message-ID: <20240129170021.717034075@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,207 +63,236 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongchen Zhang <zhanghongchen@loongson.cn>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 71cd7e80cfde548959952eac7063aeaea1f2e1c6 upstream.
+[ Upstream commit 97de5a15edf2d22184f5ff588656030bbb7fa358 ]
 
-An S4 (suspend to disk) test on the LoongArch 3A6000 platform sometimes
-fails with the following error messaged in the dmesg log:
+Jakub reported that ASSERT_EQ(cpu, i) in so_incoming_cpu.c seems to
+fire somewhat randomly.
 
-	Invalid LZO compressed length
+  # #  RUN           so_incoming_cpu.before_reuseport.test3 ...
+  # # so_incoming_cpu.c:191:test3:Expected cpu (32) == i (0)
+  # # test3: Test terminated by assertion
+  # #          FAIL  so_incoming_cpu.before_reuseport.test3
+  # not ok 3 so_incoming_cpu.before_reuseport.test3
 
-That happens because when compressing/decompressing the image, the
-synchronization between the control thread and the compress/decompress/crc
-thread is based on a relaxed ordering interface, which is unreliable, and the
-following situation may occur:
+When the test failed, not-yet-accepted CLOSE_WAIT sockets received
+SYN with a "challenging" SEQ number, which was sent from an unexpected
+CPU that did not create the receiver.
 
-CPU 0					CPU 1
-save_image_lzo				lzo_compress_threadfn
-					  atomic_set(&d->stop, 1);
-  atomic_read(&data[thr].stop)
-  data[thr].cmp = data[thr].cmp_len;
-	  				  WRITE data[thr].cmp_len
+The test basically does:
 
-Then CPU0 gets a stale cmp_len and writes it to disk. During resume from S4,
-wrong cmp_len is loaded.
+  1. for each cpu:
+    1-1. create a server
+    1-2. set SO_INCOMING_CPU
 
-To maintain data consistency between the two threads, use the acquire/release
-variants of atomic set and read operations.
+  2. for each cpu:
+    2-1. set cpu affinity
+    2-2. create some clients
+    2-3. let clients connect() to the server on the same cpu
+    2-4. close() clients
 
-Fixes: 081a9d043c98 ("PM / Hibernate: Improve performance of LZO/plain hibernation, checksum image")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
-Co-developed-by: Weihao Li <liweihao@loongson.cn>
-Signed-off-by: Weihao Li <liweihao@loongson.cn>
-[ rjw: Subject rewrite and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  3. for each server:
+    3-1. accept() all child sockets
+    3-2. check if all children have the same SO_INCOMING_CPU with the server
+
+The root cause was the close() in 2-4. and net.ipv4.tcp_tw_reuse.
+
+In a loop of 2., close() changed the client state to FIN_WAIT_2, and
+the peer transitioned to CLOSE_WAIT.
+
+In another loop of 2., connect() happened to select the same port of
+the FIN_WAIT_2 socket, and it was reused as the default value of
+net.ipv4.tcp_tw_reuse is 2.
+
+As a result, the new client sent SYN to the CLOSE_WAIT socket from
+a different CPU, and the receiver's sk_incoming_cpu was overwritten
+with unexpected CPU ID.
+
+Also, the SYN had a different SEQ number, so the CLOSE_WAIT socket
+responded with Challenge ACK.  The new client properly returned RST
+and effectively killed the CLOSE_WAIT socket.
+
+This way, all clients were created successfully, but the error was
+detected later by 3-2., ASSERT_EQ(cpu, i).
+
+To avoid the failure, let's make sure that (i) the number of clients
+is less than the number of available ports and (ii) such reuse never
+happens.
+
+Fixes: 6df96146b202 ("selftest: Add test for SO_INCOMING_CPU.")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Tested-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20240120031642.67014-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/power/swap.c |   38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ tools/testing/selftests/net/so_incoming_cpu.c | 68 ++++++++++++++-----
+ 1 file changed, 50 insertions(+), 18 deletions(-)
 
---- a/kernel/power/swap.c
-+++ b/kernel/power/swap.c
-@@ -605,11 +605,11 @@ static int crc32_threadfn(void *data)
- 	unsigned i;
+diff --git a/tools/testing/selftests/net/so_incoming_cpu.c b/tools/testing/selftests/net/so_incoming_cpu.c
+index a14818164102..e9fa14e10732 100644
+--- a/tools/testing/selftests/net/so_incoming_cpu.c
++++ b/tools/testing/selftests/net/so_incoming_cpu.c
+@@ -3,19 +3,16 @@
+ #define _GNU_SOURCE
+ #include <sched.h>
  
- 	while (1) {
--		wait_event(d->go, atomic_read(&d->ready) ||
-+		wait_event(d->go, atomic_read_acquire(&d->ready) ||
- 		                  kthread_should_stop());
- 		if (kthread_should_stop()) {
- 			d->thr = NULL;
--			atomic_set(&d->stop, 1);
-+			atomic_set_release(&d->stop, 1);
- 			wake_up(&d->done);
- 			break;
- 		}
-@@ -618,7 +618,7 @@ static int crc32_threadfn(void *data)
- 		for (i = 0; i < d->run_threads; i++)
- 			*d->crc32 = crc32_le(*d->crc32,
- 			                     d->unc[i], *d->unc_len[i]);
--		atomic_set(&d->stop, 1);
-+		atomic_set_release(&d->stop, 1);
- 		wake_up(&d->done);
- 	}
- 	return 0;
-@@ -648,12 +648,12 @@ static int lzo_compress_threadfn(void *d
- 	struct cmp_data *d = data;
++#include <fcntl.h>
++
+ #include <netinet/in.h>
+ #include <sys/socket.h>
+ #include <sys/sysinfo.h>
  
- 	while (1) {
--		wait_event(d->go, atomic_read(&d->ready) ||
-+		wait_event(d->go, atomic_read_acquire(&d->ready) ||
- 		                  kthread_should_stop());
- 		if (kthread_should_stop()) {
- 			d->thr = NULL;
- 			d->ret = -1;
--			atomic_set(&d->stop, 1);
-+			atomic_set_release(&d->stop, 1);
- 			wake_up(&d->done);
- 			break;
- 		}
-@@ -662,7 +662,7 @@ static int lzo_compress_threadfn(void *d
- 		d->ret = lzo1x_1_compress(d->unc, d->unc_len,
- 		                          d->cmp + LZO_HEADER, &d->cmp_len,
- 		                          d->wrk);
--		atomic_set(&d->stop, 1);
-+		atomic_set_release(&d->stop, 1);
- 		wake_up(&d->done);
- 	}
- 	return 0;
-@@ -797,7 +797,7 @@ static int save_image_lzo(struct swap_ma
+ #include "../kselftest_harness.h"
  
- 			data[thr].unc_len = off;
+-#define CLIENT_PER_SERVER	32 /* More sockets, more reliable */
+-#define NR_SERVER		self->nproc
+-#define NR_CLIENT		(CLIENT_PER_SERVER * NR_SERVER)
+-
+ FIXTURE(so_incoming_cpu)
+ {
+-	int nproc;
+ 	int *servers;
+ 	union {
+ 		struct sockaddr addr;
+@@ -56,12 +53,47 @@ FIXTURE_VARIANT_ADD(so_incoming_cpu, after_all_listen)
+ 	.when_to_set = AFTER_ALL_LISTEN,
+ };
  
--			atomic_set(&data[thr].ready, 1);
-+			atomic_set_release(&data[thr].ready, 1);
- 			wake_up(&data[thr].go);
- 		}
++static void write_sysctl(struct __test_metadata *_metadata,
++			 char *filename, char *string)
++{
++	int fd, len, ret;
++
++	fd = open(filename, O_WRONLY);
++	ASSERT_NE(fd, -1);
++
++	len = strlen(string);
++	ret = write(fd, string, len);
++	ASSERT_EQ(ret, len);
++}
++
++static void setup_netns(struct __test_metadata *_metadata)
++{
++	ASSERT_EQ(unshare(CLONE_NEWNET), 0);
++	ASSERT_EQ(system("ip link set lo up"), 0);
++
++	write_sysctl(_metadata, "/proc/sys/net/ipv4/ip_local_port_range", "10000 60001");
++	write_sysctl(_metadata, "/proc/sys/net/ipv4/tcp_tw_reuse", "0");
++}
++
++#define NR_PORT				(60001 - 10000 - 1)
++#define NR_CLIENT_PER_SERVER_DEFAULT	32
++static int nr_client_per_server, nr_server, nr_client;
++
+ FIXTURE_SETUP(so_incoming_cpu)
+ {
+-	self->nproc = get_nprocs();
+-	ASSERT_LE(2, self->nproc);
++	setup_netns(_metadata);
++
++	nr_server = get_nprocs();
++	ASSERT_LE(2, nr_server);
++
++	if (NR_CLIENT_PER_SERVER_DEFAULT * nr_server < NR_PORT)
++		nr_client_per_server = NR_CLIENT_PER_SERVER_DEFAULT;
++	else
++		nr_client_per_server = NR_PORT / nr_server;
++
++	nr_client = nr_client_per_server * nr_server;
  
-@@ -805,12 +805,12 @@ static int save_image_lzo(struct swap_ma
- 			break;
+-	self->servers = malloc(sizeof(int) * NR_SERVER);
++	self->servers = malloc(sizeof(int) * nr_server);
+ 	ASSERT_NE(self->servers, NULL);
  
- 		crc->run_threads = thr;
--		atomic_set(&crc->ready, 1);
-+		atomic_set_release(&crc->ready, 1);
- 		wake_up(&crc->go);
+ 	self->in_addr.sin_family = AF_INET;
+@@ -74,7 +106,7 @@ FIXTURE_TEARDOWN(so_incoming_cpu)
+ {
+ 	int i;
  
- 		for (run_threads = thr, thr = 0; thr < run_threads; thr++) {
- 			wait_event(data[thr].done,
--			           atomic_read(&data[thr].stop));
-+				atomic_read_acquire(&data[thr].stop));
- 			atomic_set(&data[thr].stop, 0);
+-	for (i = 0; i < NR_SERVER; i++)
++	for (i = 0; i < nr_server; i++)
+ 		close(self->servers[i]);
  
- 			ret = data[thr].ret;
-@@ -849,7 +849,7 @@ static int save_image_lzo(struct swap_ma
- 			}
- 		}
+ 	free(self->servers);
+@@ -110,10 +142,10 @@ int create_server(struct __test_metadata *_metadata,
+ 	if (variant->when_to_set == BEFORE_LISTEN)
+ 		set_so_incoming_cpu(_metadata, fd, cpu);
  
--		wait_event(crc->done, atomic_read(&crc->stop));
-+		wait_event(crc->done, atomic_read_acquire(&crc->stop));
- 		atomic_set(&crc->stop, 0);
- 	}
+-	/* We don't use CLIENT_PER_SERVER here not to block
++	/* We don't use nr_client_per_server here not to block
+ 	 * this test at connect() if SO_INCOMING_CPU is broken.
+ 	 */
+-	ret = listen(fd, NR_CLIENT);
++	ret = listen(fd, nr_client);
+ 	ASSERT_EQ(ret, 0);
  
-@@ -1131,12 +1131,12 @@ static int lzo_decompress_threadfn(void
- 	struct dec_data *d = data;
+ 	if (variant->when_to_set == AFTER_LISTEN)
+@@ -128,7 +160,7 @@ void create_servers(struct __test_metadata *_metadata,
+ {
+ 	int i, ret;
  
- 	while (1) {
--		wait_event(d->go, atomic_read(&d->ready) ||
-+		wait_event(d->go, atomic_read_acquire(&d->ready) ||
- 		                  kthread_should_stop());
- 		if (kthread_should_stop()) {
- 			d->thr = NULL;
- 			d->ret = -1;
--			atomic_set(&d->stop, 1);
-+			atomic_set_release(&d->stop, 1);
- 			wake_up(&d->done);
- 			break;
- 		}
-@@ -1149,7 +1149,7 @@ static int lzo_decompress_threadfn(void
- 			flush_icache_range((unsigned long)d->unc,
- 					   (unsigned long)d->unc + d->unc_len);
+-	for (i = 0; i < NR_SERVER; i++) {
++	for (i = 0; i < nr_server; i++) {
+ 		self->servers[i] = create_server(_metadata, self, variant, i);
  
--		atomic_set(&d->stop, 1);
-+		atomic_set_release(&d->stop, 1);
- 		wake_up(&d->done);
- 	}
- 	return 0;
-@@ -1334,7 +1334,7 @@ static int load_image_lzo(struct swap_ma
- 		}
- 
- 		if (crc->run_threads) {
--			wait_event(crc->done, atomic_read(&crc->stop));
-+			wait_event(crc->done, atomic_read_acquire(&crc->stop));
- 			atomic_set(&crc->stop, 0);
- 			crc->run_threads = 0;
- 		}
-@@ -1370,7 +1370,7 @@ static int load_image_lzo(struct swap_ma
- 					pg = 0;
- 			}
- 
--			atomic_set(&data[thr].ready, 1);
-+			atomic_set_release(&data[thr].ready, 1);
- 			wake_up(&data[thr].go);
- 		}
- 
-@@ -1389,7 +1389,7 @@ static int load_image_lzo(struct swap_ma
- 
- 		for (run_threads = thr, thr = 0; thr < run_threads; thr++) {
- 			wait_event(data[thr].done,
--			           atomic_read(&data[thr].stop));
-+				atomic_read_acquire(&data[thr].stop));
- 			atomic_set(&data[thr].stop, 0);
- 
- 			ret = data[thr].ret;
-@@ -1420,7 +1420,7 @@ static int load_image_lzo(struct swap_ma
- 				ret = snapshot_write_next(snapshot);
- 				if (ret <= 0) {
- 					crc->run_threads = thr + 1;
--					atomic_set(&crc->ready, 1);
-+					atomic_set_release(&crc->ready, 1);
- 					wake_up(&crc->go);
- 					goto out_finish;
- 				}
-@@ -1428,13 +1428,13 @@ static int load_image_lzo(struct swap_ma
- 		}
- 
- 		crc->run_threads = thr;
--		atomic_set(&crc->ready, 1);
-+		atomic_set_release(&crc->ready, 1);
- 		wake_up(&crc->go);
+ 		if (i == 0) {
+@@ -138,7 +170,7 @@ void create_servers(struct __test_metadata *_metadata,
  	}
  
- out_finish:
- 	if (crc->run_threads) {
--		wait_event(crc->done, atomic_read(&crc->stop));
-+		wait_event(crc->done, atomic_read_acquire(&crc->stop));
- 		atomic_set(&crc->stop, 0);
+ 	if (variant->when_to_set == AFTER_ALL_LISTEN) {
+-		for (i = 0; i < NR_SERVER; i++)
++		for (i = 0; i < nr_server; i++)
+ 			set_so_incoming_cpu(_metadata, self->servers[i], i);
  	}
- 	stop = ktime_get();
+ }
+@@ -149,7 +181,7 @@ void create_clients(struct __test_metadata *_metadata,
+ 	cpu_set_t cpu_set;
+ 	int i, j, fd, ret;
+ 
+-	for (i = 0; i < NR_SERVER; i++) {
++	for (i = 0; i < nr_server; i++) {
+ 		CPU_ZERO(&cpu_set);
+ 
+ 		CPU_SET(i, &cpu_set);
+@@ -162,7 +194,7 @@ void create_clients(struct __test_metadata *_metadata,
+ 		ret = sched_setaffinity(0, sizeof(cpu_set), &cpu_set);
+ 		ASSERT_EQ(ret, 0);
+ 
+-		for (j = 0; j < CLIENT_PER_SERVER; j++) {
++		for (j = 0; j < nr_client_per_server; j++) {
+ 			fd  = socket(AF_INET, SOCK_STREAM, 0);
+ 			ASSERT_NE(fd, -1);
+ 
+@@ -180,8 +212,8 @@ void verify_incoming_cpu(struct __test_metadata *_metadata,
+ 	int i, j, fd, cpu, ret, total = 0;
+ 	socklen_t len = sizeof(int);
+ 
+-	for (i = 0; i < NR_SERVER; i++) {
+-		for (j = 0; j < CLIENT_PER_SERVER; j++) {
++	for (i = 0; i < nr_server; i++) {
++		for (j = 0; j < nr_client_per_server; j++) {
+ 			/* If we see -EAGAIN here, SO_INCOMING_CPU is broken */
+ 			fd = accept(self->servers[i], &self->addr, &self->addrlen);
+ 			ASSERT_NE(fd, -1);
+@@ -195,7 +227,7 @@ void verify_incoming_cpu(struct __test_metadata *_metadata,
+ 		}
+ 	}
+ 
+-	ASSERT_EQ(total, NR_CLIENT);
++	ASSERT_EQ(total, nr_client);
+ 	TH_LOG("SO_INCOMING_CPU is very likely to be "
+ 	       "working correctly with %d sockets.", total);
+ }
+-- 
+2.43.0
+
 
 
 
