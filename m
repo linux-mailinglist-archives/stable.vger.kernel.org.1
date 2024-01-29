@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEE22840DB6
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8345A840E08
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83BE9281C22
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5C721C21678
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A940E15AAA4;
-	Mon, 29 Jan 2024 17:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4937B15B111;
+	Mon, 29 Jan 2024 17:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="va0kQ6ZG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hd2P9Fwo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674C615A4B0;
-	Mon, 29 Jan 2024 17:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084F915B0EC;
+	Mon, 29 Jan 2024 17:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548152; cv=none; b=dklWZlUupnw7eRnJODvYGOT4hAAgfy3KptdrTT68YP2AGIFHzb99+Yfq1raZqy4GhPr/Ap2rVveug8Gf2Hx2y4Rc07+bFDVHkjFxZyKXHjfXiX3e9OqOSgDyGrKUc8WMMsHCVKv0M6bfaSfi1p6rmomLzMESigA5/jpWIQe1Jqs=
+	t=1706548212; cv=none; b=dMN7CRVsMrVN8KOGP7C+oui+UFbvy2+4an/pANMBsdieZ5LxAtc5pm+BnPE8EPmWE56y+A3IbAD5CltEK4PYGK+3G9lIUe3HU9teWpy2e/oDbKWtmBXCsFUM6AuUG6OlNBqx/zeudAjG1CF0vKu0MgZOKgLj7vkZF/Li01I0OZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548152; c=relaxed/simple;
-	bh=2idfw3NMgyLL/YM/r36x8K44+a+RXyk1Ep2culI+/GE=;
+	s=arc-20240116; t=1706548212; c=relaxed/simple;
+	bh=WPo+op3tnvst4nxsMelMFfkXXFYYMLGNydbCK/WNqkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Om7TsBrzLIDL/QvVND8kiR8+TO/4o7cP1N8EG3dsWDoKJWbNLKi/n4PDbujZR9Q6jJDMhE49f8FwQErWuY0IPVu8LB0O1jVt/jq0FErf1pv+M3WMLmLcjF8mMExe6Is3X6/6P2s5OnnjQMEq9x++gmeLE4dadl58aNfl1W8kiPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=va0kQ6ZG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFFBC433F1;
-	Mon, 29 Jan 2024 17:09:12 +0000 (UTC)
+	 MIME-Version; b=Kj+gSwDg9Sd8ljF6Tom51fKIsQ0vjzYscgPHnoZ4Om+sTnWKZXsIMrCBStee+VDR4OGmS99FlOkpKHqZudct4YEuTiJyumpjY0fSJr1kNG6nV3JlUHok++FF4k63Jh9tg9y6SaVW3/jcS/+iXMcGX7x/DGuedcrVrv4ckEgWWAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hd2P9Fwo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A490C433A6;
+	Mon, 29 Jan 2024 17:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548152;
-	bh=2idfw3NMgyLL/YM/r36x8K44+a+RXyk1Ep2culI+/GE=;
+	s=korg; t=1706548211;
+	bh=WPo+op3tnvst4nxsMelMFfkXXFYYMLGNydbCK/WNqkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=va0kQ6ZGoHw9FhHmSktSu7eomn1EXRSem2TrIbeJN/eQD46FfOjzrVLSW2fWCxtqA
-	 xC4fHl3Wv5vJvCM62fRNwgdk1Zkf7vIyoFlQFFDYgbzoFBKtUWyI5VhFd3L93Am2Cf
-	 jU0kLIQqNhtO7HVY7zegR0r3iYj8bPluxilF7GOE=
+	b=Hd2P9Fwod0cpN9F63Q0ZaSXOJlwEQSoLDftLQnqYwzBNSHZJBFLA1jzZBsllY2igl
+	 c8DRfPcPTnKSdduNW25Zp2mID9PY822znwJYV2lp9ncHUId5E29pJj2SqK2eaGeAGb
+	 75Mg6jdfkI5as4y/UUGRet9DLue4MFzKeVkbylY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 190/346] net/mlx5: Bridge, fix multicast packets sent to uplink
+	Tony Krowiak <akrowiak@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.1 021/185] s390/vfio-ap: loop over the shadow APCB when filtering guests AP configuration
 Date: Mon, 29 Jan 2024 09:03:41 -0800
-Message-ID: <20240129170021.989595126@linuxfoundation.org>
+Message-ID: <20240129165959.286016022@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Tony Krowiak <akrowiak@linux.ibm.com>
 
-[ Upstream commit ec7cc38ef9f83553102e84c82536971a81630739 ]
+commit 16fb78cbf56e42b8efb2682a4444ab59e32e7959 upstream.
 
-To enable multicast packets which are offloaded in bridge multicast
-offload mode to be sent also to uplink, FTE bit uplink_hairpin_en should
-be set. Add this bit to FTE for the bridge multicast offload rules.
+While filtering the mdev matrix, it doesn't make sense - and will have
+unexpected results - to filter an APID from the matrix if the APID or one
+of the associated APQIs is not in the host's AP configuration. There are
+two reasons for this:
 
-Fixes: 18c2916cee12 ("net/mlx5: Bridge, snoop igmp/mld packets")
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1. An adapter or domain that is not in the host's AP configuration can be
+   assigned to the matrix; this is known as over-provisioning. Queue
+   devices, however, are only created for adapters and domains in the
+   host's AP configuration, so there will be no queues associated with an
+   over-provisioned adapter or domain to filter.
+
+2. The adapter or domain may have been externally removed from the host's
+   configuration via an SE or HMC attached to a DPM enabled LPAR. In this
+   case, the vfio_ap device driver would have been notified by the AP bus
+   via the on_config_changed callback and the adapter or domain would
+   have already been filtered.
+
+Since the matrix_mdev->shadow_apcb.apm and matrix_mdev->shadow_apcb.aqm are
+copied from the mdev matrix sans the APIDs and APQIs not in the host's AP
+configuration, let's loop over those bitmaps instead of those assigned to
+the matrix.
+
+Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
+Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Fixes: 48cae940c31d ("s390/vfio-ap: refresh guest's APCB by filtering AP resources assigned to mdev")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240115185441.31526-3-akrowiak@linux.ibm.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c | 3 +++
- drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c           | 2 ++
- include/linux/mlx5/fs.h                                    | 1 +
- include/linux/mlx5/mlx5_ifc.h                              | 2 +-
- 4 files changed, 7 insertions(+), 1 deletion(-)
+ drivers/s390/crypto/vfio_ap_ops.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c
-index a7ed87e9d842..22dd30cf8033 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c
-@@ -83,6 +83,7 @@ mlx5_esw_bridge_mdb_flow_create(u16 esw_owner_vhca_id, struct mlx5_esw_bridge_md
- 		i++;
- 	}
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -660,8 +660,9 @@ static bool vfio_ap_mdev_filter_matrix(s
+ 	bitmap_and(matrix_mdev->shadow_apcb.aqm, matrix_mdev->matrix.aqm,
+ 		   (unsigned long *)matrix_dev->info.aqm, AP_DOMAINS);
  
-+	rule_spec->flow_context.flags |= FLOW_CONTEXT_UPLINK_HAIRPIN_EN;
- 	rule_spec->match_criteria_enable = MLX5_MATCH_OUTER_HEADERS;
- 	dmac_v = MLX5_ADDR_OF(fte_match_param, rule_spec->match_value, outer_headers.dmac_47_16);
- 	ether_addr_copy(dmac_v, entry->key.addr);
-@@ -587,6 +588,7 @@ mlx5_esw_bridge_mcast_vlan_flow_create(u16 vlan_proto, struct mlx5_esw_bridge_po
- 	if (!rule_spec)
- 		return ERR_PTR(-ENOMEM);
- 
-+	rule_spec->flow_context.flags |= FLOW_CONTEXT_UPLINK_HAIRPIN_EN;
- 	rule_spec->match_criteria_enable = MLX5_MATCH_OUTER_HEADERS;
- 
- 	flow_act.action |= MLX5_FLOW_CONTEXT_ACTION_PACKET_REFORMAT;
-@@ -662,6 +664,7 @@ mlx5_esw_bridge_mcast_fwd_flow_create(struct mlx5_esw_bridge_port *port)
- 		dest.vport.flags = MLX5_FLOW_DEST_VPORT_VHCA_ID;
- 		dest.vport.vhca_id = port->esw_owner_vhca_id;
- 	}
-+	rule_spec->flow_context.flags |= FLOW_CONTEXT_UPLINK_HAIRPIN_EN;
- 	handle = mlx5_add_flow_rules(port->mcast.ft, rule_spec, &flow_act, &dest, 1);
- 
- 	kvfree(rule_spec);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
-index a4b925331661..b29299c49ab3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_cmd.c
-@@ -566,6 +566,8 @@ static int mlx5_cmd_set_fte(struct mlx5_core_dev *dev,
- 		 fte->flow_context.flow_tag);
- 	MLX5_SET(flow_context, in_flow_context, flow_source,
- 		 fte->flow_context.flow_source);
-+	MLX5_SET(flow_context, in_flow_context, uplink_hairpin_en,
-+		 !!(fte->flow_context.flags & FLOW_CONTEXT_UPLINK_HAIRPIN_EN));
- 
- 	MLX5_SET(flow_context, in_flow_context, extended_destination,
- 		 extended_dest);
-diff --git a/include/linux/mlx5/fs.h b/include/linux/mlx5/fs.h
-index 6f7725238abc..3fb428ce7d1c 100644
---- a/include/linux/mlx5/fs.h
-+++ b/include/linux/mlx5/fs.h
-@@ -132,6 +132,7 @@ struct mlx5_flow_handle;
- 
- enum {
- 	FLOW_CONTEXT_HAS_TAG = BIT(0),
-+	FLOW_CONTEXT_UPLINK_HAIRPIN_EN = BIT(1),
- };
- 
- struct mlx5_flow_context {
-diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-index 3f7b664d625b..fb8d26a15df4 100644
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -3557,7 +3557,7 @@ struct mlx5_ifc_flow_context_bits {
- 	u8         action[0x10];
- 
- 	u8         extended_destination[0x1];
--	u8         reserved_at_81[0x1];
-+	u8         uplink_hairpin_en[0x1];
- 	u8         flow_source[0x2];
- 	u8         encrypt_decrypt_type[0x4];
- 	u8         destination_list_size[0x18];
--- 
-2.43.0
-
+-	for_each_set_bit_inv(apid, matrix_mdev->matrix.apm, AP_DEVICES) {
+-		for_each_set_bit_inv(apqi, matrix_mdev->matrix.aqm, AP_DOMAINS) {
++	for_each_set_bit_inv(apid, matrix_mdev->shadow_apcb.apm, AP_DEVICES) {
++		for_each_set_bit_inv(apqi, matrix_mdev->shadow_apcb.aqm,
++				     AP_DOMAINS) {
+ 			/*
+ 			 * If the APQN is not bound to the vfio_ap device
+ 			 * driver, then we can't assign it to the guest's
 
 
 
