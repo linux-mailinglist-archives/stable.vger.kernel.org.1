@@ -1,74 +1,79 @@
-Return-Path: <stable+bounces-16389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6D983FDC8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 06:44:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08D5083FDCF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 06:46:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3B46283EF0
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 05:44:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0845B22A4F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 05:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7314438F;
-	Mon, 29 Jan 2024 05:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38055433D0;
+	Mon, 29 Jan 2024 05:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="ClHrYCM/"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZH9cEY8U"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCC7446A3;
-	Mon, 29 Jan 2024 05:44:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D664C3A9
+	for <stable@vger.kernel.org>; Mon, 29 Jan 2024 05:46:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706507053; cv=none; b=YY8pDaqIg7zdiJR3KGb15DcQtpMbpOyL5uT3VYNkUFqStCHBDFpR0M6CyjlBQfFubzJDdJOeefqENKRcQlNvrt+ON9WwvrNlcb0XFG7Mv+9whJALMmRj6hzq6WwkV19ppqmGIv2SPDNhHBWcFpY565psDOwpt6fnKC+N284cC5c=
+	t=1706507190; cv=none; b=OdlApZsPPZ9gXnmPCutZCsF2lsOsQZNrPywBRMD5Y/RbatOqYywbnUu4x+edW0K2QtkC+YAuv2GT6kZVSH35bAQL/U7JWTYbYryraxUSAenko5/SUSFfO3qPZj69W9BqUWuIYJraHjs2NrsWw5cbzNnuFs1EsSPwNMl8136LAm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706507053; c=relaxed/simple;
-	bh=UKAsvocEeKAiwtgNwHf+OjEg9Dnpl0Djnoo2VDDBS/g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GgVx0TjXOYFlVc14dP43HiNt8ZO/wzJd4XQfntwM8cjuLrelpZqr7LpYval8LFHysmK6JE6OxMbvuWZ0zpJ7enQjOlgYUCf9YcWt3IAllI+eoyUlLwGSMhnXbgBuyEMZU9H1fTpIro2NBTrvGzol6LJCG41xlXSA7dTuHLwXAC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=ClHrYCM/; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40SMcZDn030563;
-	Mon, 29 Jan 2024 05:43:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding;
- s=corp-2023-11-20; bh=ngI35Lv/lTP0D7PAFPS/Ey48CZkaG2kwQAM25WR3oXc=;
- b=ClHrYCM/qxHM0+4KcBlzbM2wIK71UCjnmHaUAT6si5e8q3yHDTiY9liamB06i3Nd7Y8O
- N/+YT91S7YcafAJRNaABQwxogOh9CqXA2H0vXRyvO+dKEWy6deTGY9APxKEKP5uo8Oqs
- B7mFQWPUhb0pEy5otEVy9o+O5BQo4VG1fmqnK+Qsg2yY7nodMogkN3HGTCtG/LivhcE8
- LM6VRZtX5WtDbO4NUT7ff+orqefMdUJ0kTK6oXWhVSnlzAc+Lsq261f+Z1l3TZ1Ifbtm
- rC7lhZwbjOCi0PJHRA/veZsLeucm+47UifRozX98NeEfcy8NbSQXrt0P/LTLyU87PihZ vg== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vvre2axbb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 29 Jan 2024 05:43:57 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 40T4qO0E014564;
-	Mon, 29 Jan 2024 05:43:46 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3vvr954s88-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 29 Jan 2024 05:43:46 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40T5hk0O021381;
-	Mon, 29 Jan 2024 05:43:46 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3vvr954s7r-1;
-	Mon, 29 Jan 2024 05:43:46 +0000
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-To: stable@vger.kernel.org
-Cc: kovalev@altlinux.org, abuehaze@amazon.com, smfrench@gmail.com,
-        greg@kroah.com, linux-cifs@vger.kernel.org, keescook@chromium.org,
-        darren.kenny@oracle.com, pc@manguebit.com, nspmangalore@gmail.com,
-        vegard.nossum@oracle.com,
-        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.10.y] cifs: fix off-by-one in SMB2_query_info_init()
-Date: Sun, 28 Jan 2024 21:43:42 -0800
-Message-ID: <20240129054342.2472454-1-harshit.m.mogalapalli@oracle.com>
-X-Mailer: git-send-email 2.42.0
+	s=arc-20240116; t=1706507190; c=relaxed/simple;
+	bh=JQjkZ3gP0XjDUpUvaCoN+F4/IRB7oKd7AWUlBBnxp7w=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FSg/AhIOoc43H2ecbylvjVzoW3K2ccmISov34kFVeHkkfedsgSMoaPagg8AvF8EgWtQx2jSHOL9fPTjatHgis2VG1etg74G7Fh/N4V/7zBbKByH4DgLOtV8nithm55D8wMEJ12nXeb/znDixHsU3nXIf8HWl+TFbHFmPQH0TDTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZH9cEY8U; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-5c65ca2e1eeso1040333a12.2
+        for <stable@vger.kernel.org>; Sun, 28 Jan 2024 21:46:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706507188; x=1707111988; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GuUdnmgvw6SJ6vQm7Y8iC2P6J3wX3eujuggx0jwG1nY=;
+        b=ZH9cEY8UtX43hLT1uA01sFfUVLHbOAxuuzHGkiBo96pJYQ6EA3MctQaUKm8fDi3f+p
+         SoO0b6a9TvRK80Hb7SP4niAIhUQNNincgkYkm1sCswPifzrxXuN+BnOSUyp8iyehpyBi
+         NilCpD0JY2s/kXgiBMPpULw+4b1LQ2gsrL/Z+AtOscTXOwqp+ixXReBDPOlydNSuOb8H
+         Vg1yWTCsHk6KPli3nYSvoJJfnt5iIy1Mu2tkD03pEG+7nVOEQxkDG08rrUZl71QHMniz
+         WTHhRCV6ZP8Kbn3K5elc66jYtVyYgBaq+KXPZtG1/4k9+4vdjYFEpRhzD6Ek2q+9uQeO
+         GanQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706507188; x=1707111988;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GuUdnmgvw6SJ6vQm7Y8iC2P6J3wX3eujuggx0jwG1nY=;
+        b=s66rC4ig+vWxUpo/HorvarqxBnJFB4wzgQjGl4ZeYewk38BRDoUJRIqzGwb0PWeqx3
+         ctqNlMtpgPC2ioQr5YYe2v4j+BBbSO00e0jlFuKUnrpRao8bBMqBHoK/MypVeV0id//C
+         6hdju+bEgLeLAiF++Ow4xxdvAvwPCrIsNZcTpWQybZk4Wsj2k4M9DaCJL/oUH1Nno/rK
+         19bxFU6y7MU2zlxYONoGsOPYIXlLxi/z0wKkgzFNJjMpSpEzl+CzHTU9QFRejX/JKL/9
+         79GaXCLsnmpSPW6rtfps0tILt3Dt+kup8oaPStx5/BJexl5E0w++AJ8o0ZLRpZJa5M5y
+         m9sQ==
+X-Gm-Message-State: AOJu0YxwrKMsel16AUSGbVosIvcmGN+3SxggIvnwEj7Rq62nu8axoTTW
+	4+ojIIU+i6FiViLs8oTcLanOik4d43pXFN/urg+ZWzrtavQny9O58D0cjkbIfps=
+X-Google-Smtp-Source: AGHT+IHjNvX5YBY5yCFm9llMlMnYGbRHx+wVZhmbYPeeCo326wOpb/7BlNonrqLeNp22AjPQy93TmQ==
+X-Received: by 2002:a17:90a:ab92:b0:28c:9093:b0c4 with SMTP id n18-20020a17090aab9200b0028c9093b0c4mr1429201pjq.43.1706507187586;
+        Sun, 28 Jan 2024 21:46:27 -0800 (PST)
+Received: from x-wing.lan ([106.51.161.37])
+        by smtp.gmail.com with ESMTPSA id y19-20020a170902ed5300b001d8b0750940sm3264642plb.175.2024.01.28.21.46.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jan 2024 21:46:27 -0800 (PST)
+From: Amit Pundir <amit.pundir@linaro.org>
+To: Greg KH <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: Stable <stable@vger.kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH for-5.4.y] drm/msm/dsi: Enable runtime PM
+Date: Mon, 29 Jan 2024 11:16:23 +0530
+Message-Id: <20240129054623.3169507-1-amit.pundir@linaro.org>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,83 +81,45 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-29_02,2024-01-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 malwarescore=0
- suspectscore=0 phishscore=0 mlxscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401290039
-X-Proofpoint-GUID: yEg7zu0a5Ennv_TuaS7_mUiGR57a0fP3
-X-Proofpoint-ORIG-GUID: yEg7zu0a5Ennv_TuaS7_mUiGR57a0fP3
 
-Bug: After mounting the cifs fs, it complains with Resource temporarily
-unavailable messages.
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[root@vm1 xfstests-dev]# ./check -g quick -s smb3
-TEST_DEV=//<SERVER_IP>/TEST is mounted but not a type cifs filesystem
-[root@vm1 xfstests-dev]# df
-df: /mnt/test: Resource temporarily unavailable
+[ Upstream commit 6ab502bc1cf3147ea1d8540d04b83a7a4cb6d1f1 ]
 
-Paul's analysis of the bug:
+Some devices power the DSI PHY/PLL through a power rail that we model
+as a GENPD. Enable runtime PM to make it suspendable.
 
-	Bug is related to an off-by-one in smb2_set_next_command() when
-	the client attempts to pad SMB2_QUERY_INFO request -- since it isn't
-	8 byte aligned -- even though smb2_query_info_compound() doesn't
-	provide an extra iov for such padding.
-
-	v5.10.y doesn't have
-
-        eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
-
-	and the commit does
-
-		if (unlikely(check_add_overflow(input_len, sizeof(*req), &len) ||
-			     len > CIFSMaxBufSize))
-			return -EINVAL;
-
-	so sizeof(*req) will wrongly include the extra byte from
-	smb2_query_info_req::Buffer making @len unaligned and therefore causing
-	OOB in smb2_set_next_command().
-
-Fixes: 203a412e52b5 ("smb: client: fix OOB in SMB2_query_info_init()")
-Suggested-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/543352/
+Link: https://lore.kernel.org/r/20230620-topic-dsiphy_rpm-v2-2-a11a751f34f0@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Stable-dep-of: 3d07a411b4fa ("drm/msm/dsi: Use pm_runtime_resume_and_get to prevent refcnt leaks")
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 ---
-This patch is only for v5.10.y stable kernel.
-I have tested the patched kernel, after mounting it doesn't become
-unavailable.
+Rebased to v5.4.y: s/devm_pm_runtime_enable/pm_runtime_enable
 
-Context:
-[1] https://lore.kernel.org/all/CAH2r5mv2ipr4KJfMDXwHgq9L+kGdnRd1C2svcM=PCoDjA7uALA@mail.gmail.com/#t
+Alternate solution maybe to revert the problematic commit 31b169a8bed7
+("drm/msm/dsi: Use pm_runtime_resume_and_get to prevent refcnt leaks")
+from v5.4.y which broke display on DB845c.
 
-Note to Greg: This is alternative way to fix by not taking commit
-eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with
-flex-arrays").
-before applying this patch a patch in the queue needs to be removed: https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-5.10/smb3-replace-smb2pdu-1-element-arrays-with-flex-arrays.patch
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-As I have stated in [1] I am unsure the which is the best way, but this
-commit eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with
-flex-arrays") is not in 5.15.y so I think we shouldn't queue it in
-5.10.y
----
- fs/cifs/smb2pdu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
-index 76679dc4e6328..514e2cf44d951 100644
---- a/fs/cifs/smb2pdu.c
-+++ b/fs/cifs/smb2pdu.c
-@@ -3379,7 +3379,7 @@ SMB2_query_info_init(struct cifs_tcon *tcon, struct TCP_Server_Info *server,
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+index 1582386fe162..30f07b8a5421 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+@@ -606,6 +606,8 @@ static int dsi_phy_driver_probe(struct platform_device *pdev)
+ 			goto fail;
+ 	}
  
- 	iov[0].iov_base = (char *)req;
- 	/* 1 for Buffer */
--	iov[0].iov_len = len;
-+	iov[0].iov_len = len - 1;
- 	return 0;
- }
- 
++	pm_runtime_enable(&pdev->dev);
++
+ 	/* PLL init will call into clk_register which requires
+ 	 * register access, so we need to enable power and ahb clock.
+ 	 */
 -- 
-2.34.1
+2.25.1
 
 
