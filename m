@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-17104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DDD3840FD7
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F76E840DA0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04BD8284437
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2E9D1C22E01
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DA472250;
-	Mon, 29 Jan 2024 17:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2E215A4A8;
+	Mon, 29 Jan 2024 17:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6U3aii9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRHMfWZh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F1372249;
-	Mon, 29 Jan 2024 17:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF6A157048;
+	Mon, 29 Jan 2024 17:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548512; cv=none; b=JY9KV4aqKpwxNI0zPGqY5E5RQi0PxNWcnsVx2vDw+RVm0U27Xlp6RixlBGGLXXcmJ2T8JirikovF+3Kv2g/cz+nySFrxvHI2ObdUs6S0MsX3wfYdSU2bffYAcKWBp7fv8KZDB97ww+w0Dc9Gx4gEdMD8WY4Ev3amlkabDUftmCw=
+	t=1706548137; cv=none; b=Bt9GwHE+uMDVc4XC5/zpUH9+iy6IJKORhmpsXkRk+ECrTFJkCl/Jl2pX53vmcC3GoyxPi18nk8YnATQ90qVP0DDfF+Lc9btLuhRwyKmgHctad9y/AYuiQxlW7OZJZRGk3iAegVMEpGd0jf5gbNN7+sTCtppTk60weEyMI0PKxow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548512; c=relaxed/simple;
-	bh=LMpKGrGIYdUeBfHPqR+gYQOqXvkqN2SHX/DhY9fJBrM=;
+	s=arc-20240116; t=1706548137; c=relaxed/simple;
+	bh=9e78tw+dtAJeVCx0gOfJD7D45SR9cOa6EZY5AFCfQqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJh9IHhyoNNN/kw5saPLrhlsHzHJ+LBSn8muc1nFthEbcgs4MpsgknZBurQkdaMj8LD5W5tldOVqNoO/FsObT4f+ZylsqIiLQ7xAXq7sIpP3ZsfSARuBJNn3EglhgL/7SY0XDp6pOnRcBr6Oelp+x+G6dKmRa+/HXtlYV/Xmeqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6U3aii9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A177C433B2;
-	Mon, 29 Jan 2024 17:15:12 +0000 (UTC)
+	 MIME-Version; b=mqYld7+CpW0N5UQ+pk+cscxRKQpyhkpHOOinoP3mBzEk8wnFIkAOs8MWerJBqBt06PQ2/ZwdFPvbwmikVkS5nB2DauHXbMTzRb+LyTONMMZivcdsGBMGhnS2gWM+RniKExM50QwFp1tueWCre6j9avht/5AXGXi7bLXO2s2oAL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRHMfWZh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A846C43394;
+	Mon, 29 Jan 2024 17:08:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548512;
-	bh=LMpKGrGIYdUeBfHPqR+gYQOqXvkqN2SHX/DhY9fJBrM=;
+	s=korg; t=1706548137;
+	bh=9e78tw+dtAJeVCx0gOfJD7D45SR9cOa6EZY5AFCfQqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c6U3aii9IbNlY9LT2gArXVOC7t2KQk0RZ9McDdz0jdjF9cTKMJ4OjsN1TuSGxu7m+
-	 Hzl+Kz9OU7cW0jvV0/s0lD3PczOkVefAXXI0yrq93Ee579aITaJvkB2mpOdzypnwqN
-	 /1+9lEN1MZETCHcgLgmmRFDjY4yn4Va14O3c0fjM=
+	b=LRHMfWZhY2QL2okI3Ivjn81zwGonDLQtt6RsOMJ7y5DVTawStTh9mmwcMzLlW80AX
+	 vsvH/+jYfgve+6GZSJjGaweY/AWZsz2e5mk8h/BiN3NMBmx5VjoqbvxD6v1lMF/Vw+
+	 3m9Sh/h18kXPGtjyjGgpyBxGwY8z+a7qPfuwRdB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Ren <guoren@linux.alibaba.com>,
-	Guo Ren <guoren@kernel.org>,
-	Leonardo Bras <leobras@redhat.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 109/331] riscv: mm: Fixup compat arch_get_mmap_end
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.7 142/346] ksmbd: dont increment epoch if current state and request state are same
 Date: Mon, 29 Jan 2024 09:02:53 -0800
-Message-ID: <20240129170018.112564616@linuxfoundation.org>
+Message-ID: <20240129170020.579560216@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guo Ren <guoren@linux.alibaba.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 97b7ac69be2e5a683e898f5267f659fde52efdd5 upstream.
+[ Upstream commit b6e9a44e99603fe10e1d78901fdd97681a539612 ]
 
-When the task is in COMPAT mode, the arch_get_mmap_end should be 2GB,
-not TASK_SIZE_64. The TASK_SIZE has contained is_compat_mode()
-detection, so change the definition of STACK_TOP_MAX to TASK_SIZE
-directly.
+If existing lease state and request state are same, don't increment
+epoch in create context.
 
-Cc: stable@vger.kernel.org
-Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Signed-off-by: Guo Ren <guoren@kernel.org>
-Reviewed-by: Leonardo Bras <leobras@redhat.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Link: https://lore.kernel.org/r/20231222115703.2404036-3-guoren@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/processor.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/oplock.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/arch/riscv/include/asm/processor.h
-+++ b/arch/riscv/include/asm/processor.h
-@@ -15,7 +15,7 @@
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -105,7 +105,7 @@ static int alloc_lease(struct oplock_inf
+ 	lease->is_dir = lctx->is_dir;
+ 	memcpy(lease->parent_lease_key, lctx->parent_lease_key, SMB2_LEASE_KEY_SIZE);
+ 	lease->version = lctx->version;
+-	lease->epoch = le16_to_cpu(lctx->epoch);
++	lease->epoch = le16_to_cpu(lctx->epoch) + 1;
+ 	INIT_LIST_HEAD(&opinfo->lease_entry);
+ 	opinfo->o_lease = lease;
  
- #ifdef CONFIG_64BIT
- #define DEFAULT_MAP_WINDOW	(UL(1) << (MMAP_VA_BITS - 1))
--#define STACK_TOP_MAX		TASK_SIZE_64
-+#define STACK_TOP_MAX		TASK_SIZE
+@@ -541,6 +541,9 @@ static struct oplock_info *same_client_h
+ 				continue;
+ 			}
  
- #define arch_get_mmap_end(addr, len, flags)			\
- ({								\
++			if (lctx->req_state != lease->state)
++				lease->epoch++;
++
+ 			/* upgrading lease */
+ 			if ((atomic_read(&ci->op_count) +
+ 			     atomic_read(&ci->sop_count)) == 1) {
+@@ -1035,7 +1038,7 @@ static void copy_lease(struct oplock_inf
+ 	       SMB2_LEASE_KEY_SIZE);
+ 	lease2->duration = lease1->duration;
+ 	lease2->flags = lease1->flags;
+-	lease2->epoch = lease1->epoch++;
++	lease2->epoch = lease1->epoch;
+ 	lease2->version = lease1->version;
+ }
+ 
+@@ -1454,7 +1457,7 @@ void create_lease_buf(u8 *rbuf, struct l
+ 		memcpy(buf->lcontext.LeaseKey, lease->lease_key,
+ 		       SMB2_LEASE_KEY_SIZE);
+ 		buf->lcontext.LeaseFlags = lease->flags;
+-		buf->lcontext.Epoch = cpu_to_le16(++lease->epoch);
++		buf->lcontext.Epoch = cpu_to_le16(lease->epoch);
+ 		buf->lcontext.LeaseState = lease->state;
+ 		memcpy(buf->lcontext.ParentLeaseKey, lease->parent_lease_key,
+ 		       SMB2_LEASE_KEY_SIZE);
 
 
 
