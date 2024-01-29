@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-16811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 301F7840E84
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C79B8840E87
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63BF91C22FAA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 364ECB24179
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C611586D9;
-	Mon, 29 Jan 2024 17:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FAE15FB07;
+	Mon, 29 Jan 2024 17:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbQm4bRV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MqXLHsi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07D015A49F;
-	Mon, 29 Jan 2024 17:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7425B15703D;
+	Mon, 29 Jan 2024 17:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548296; cv=none; b=qhC90erqgAt+YcXm0y/Co/p/qnXpz0T6rfQvx9ISl+SrS4YBYm+UXzIg9mO+3J0c1Kd9maOjdzKmLGUIQ/Gl9cvckjKMALfHcrsg5YFMZy4P8JZ74rPhAKe4B3e9t3kBjp2hyqR/F9dw/hAJR9vAc65tykZhbBldCnIpI3hIetg=
+	t=1706548298; cv=none; b=ErzdpmdnLFptX5yz7+Ds7xu8H2E1UMzhRaJWBReQpHqT2N0BiL11bY5Q5Hh6SNiMnlIkdd88uDxvStEsTtqeRTehEihkm8kLPntFZEdB2W9ln/n105Af0wHko87OtGTJLuDTETIcqu1ZcuoEBOPwjAC0IYIutu/adAP+UU5XFHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548296; c=relaxed/simple;
-	bh=zFsfY2XHV2sWTyIbxQfCbXNMZSJhBiUc4rwcR+heyfU=;
+	s=arc-20240116; t=1706548298; c=relaxed/simple;
+	bh=N2mqsFgHH3MqWsOZO3X2wMA18BrG+l0cA5lSUdHVGm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k1L25A2wWApjN8LqwtXLWZQuZqutkp0ZyA28LiY1RcvXA7KkNlC2vHkJNnSEzx3EflU54HyjlchGspPnJ2Pl7VHuw5J4BeyLK16RLOJkbkFCYu8t2TC942Fbari802IYG6b0XGLlB9KWeGIMvz/FEJE5o8oWB6eiPTF0f/cbV0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbQm4bRV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DC1C433F1;
-	Mon, 29 Jan 2024 17:11:36 +0000 (UTC)
+	 MIME-Version; b=fxR9Kn7U3oXTKvAW15X6oTmkvYXTODN1Iu2n6Ha/4RNtBVZzdhZXhrCt/p/1hwT2jH+PHC3P0wfM3jOcaNh8yjHwn9NPZulT9Vb2/eUWjRWWmWR5WOtO81rIaFJgEcVqGr/s2qCelhgcIkt0pE/OEi1qp9cEhETmYf/dP1kCCsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MqXLHsi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BF9C43390;
+	Mon, 29 Jan 2024 17:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548296;
-	bh=zFsfY2XHV2sWTyIbxQfCbXNMZSJhBiUc4rwcR+heyfU=;
+	s=korg; t=1706548297;
+	bh=N2mqsFgHH3MqWsOZO3X2wMA18BrG+l0cA5lSUdHVGm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xbQm4bRVY/j9jTD72KS9oZBd8APfxdtHjWhRZOyC//x1kPQJjNcNOrWz+2C7m7DiA
-	 3ELFfZ30S7y4lv4q+j+UpENYCO12tKUmifkhjVqis+THFvbdxbj6iujffcrkpzLorj
-	 Hed42LDz2evnTLW2vUTg5pM5SyeEwMoliHghcxd8=
+	b=0MqXLHsi0V//0KmbW8Q7jwGiarxPR6/ibIta8KTGTBQ9/S+YeM3/yMSZWJSgDQWKX
+	 m2I8+FL5/u0oXwLmhLia+E1VBLsWB33OjyJs1hyK8oVlzgfSFQ+Fg5coxRpzVUKbHP
+	 DjkYf1jJkDaJozXkMPId+64Esr6Ci24SuK+nmS1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Feifei Xu <Feifei.Xu@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 304/346] drm/amdgpu/gfx10: set UNORD_DISPATCH in compute MQDs
-Date: Mon, 29 Jan 2024 09:05:35 -0800
-Message-ID: <20240129170025.389157822@linuxfoundation.org>
+Subject: [PATCH 6.7 305/346] drm/amdgpu/gfx11: set UNORD_DISPATCH in compute MQDs
+Date: Mon, 29 Jan 2024 09:05:36 -0800
+Message-ID: <20240129170025.427425125@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -68,12 +68,12 @@ Content-Transfer-Encoding: 8bit
 
 From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 03ff6d7238b77e5fb2b85dc5fe01d2db9eb893bd ]
+[ Upstream commit 3380fcad2c906872110d31ddf7aa1fdea57f9df6 ]
 
 This needs to be set to 1 to avoid a potential deadlock in
 the GC 10.x and newer.  On GC 9.x and older, this needs
-to be set to 0.  This can lead to hangs in some mixed
-graphics and compute workloads.  Updated firmware is also
+to be set to 0. This can lead to hangs in some mixed
+graphics and compute workloads. Updated firmware is also
 required for AQL.
 
 Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
@@ -81,28 +81,28 @@ Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c           | 2 +-
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c | 1 +
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c           | 2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c | 1 +
  2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index d63cab294883..ecb622b7f970 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -6589,7 +6589,7 @@ static int gfx_v10_0_compute_mqd_init(struct amdgpu_device *adev, void *m,
- #ifdef __BIG_ENDIAN
- 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, ENDIAN_SWAP, 1);
- #endif
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index 4824a4c04d35..806a8cf90487 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -3838,7 +3838,7 @@ static int gfx_v11_0_compute_mqd_init(struct amdgpu_device *adev, void *m,
+ 			    (order_base_2(prop->queue_size / 4) - 1));
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, RPTR_BLOCK_SIZE,
+ 			    (order_base_2(AMDGPU_GPU_PAGE_SIZE / 4) - 1));
 -	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, UNORD_DISPATCH, 0);
 +	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, UNORD_DISPATCH, 1);
  	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, TUNNEL_DISPATCH,
  			    prop->allow_tunneling);
  	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, PRIV_STATE, 1);
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
-index 8b7fed913526..22cbfa1bdadd 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
-@@ -170,6 +170,7 @@ static void update_mqd(struct mqd_manager *mm, void *mqd,
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
+index 15277f1d5cf0..d722cbd31783 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
+@@ -224,6 +224,7 @@ static void update_mqd(struct mqd_manager *mm, void *mqd,
  	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
  	m->cp_hqd_pq_control |=
  			ffs(q->queue_size / sizeof(unsigned int)) - 1 - 1;
