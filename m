@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-17132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C3A840FF5
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6577840DA2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFF2E1F22DEF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B4361F2CF28
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE8CF73742;
-	Mon, 29 Jan 2024 17:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18DE15A4A5;
+	Mon, 29 Jan 2024 17:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPo5VOgK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBEp142V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B49273722;
-	Mon, 29 Jan 2024 17:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F099115CD53;
+	Mon, 29 Jan 2024 17:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548534; cv=none; b=Yu3akYgpcr+nCoZB6wSfqRl4avhpkidbuDwUt7qFtE3dE+PbhQudUIa4GK11nuQSAm7CYAUDqe3i5KbNH1ASsEpPg3boSABy4VHG60g+ARV86VCixAWzWnhBL6vh0i1OBt35gi7iOZdq9J14BiH46TCIngilMHnsCxQIqAyApG0=
+	t=1706548139; cv=none; b=p0xb5qOmwuWhfZfxaabex+q2CQJ+H06wLI2xt3YLhQ7irUsJwAFnWkhwzW/6ipVB2i5sU0fiZjjZPlA+Tqqp3PmHqjttU6l67o/l9q17eUzgdfkXvFXcoEH0HeeHjtNwQTQzeWhZtEEUVksXfHhCUcgx/+h83UGXJUlfwJzMjBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548534; c=relaxed/simple;
-	bh=LNx7qKJmfE+jxcdsR1Bc4XtbSpZgrJzDn8JVAUFFJeE=;
+	s=arc-20240116; t=1706548139; c=relaxed/simple;
+	bh=hhnwtf4WZrVu2se+xP+wwN71wvXyq0qKynpJs9MAl5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NjgZU5XD/k5ayfV1yI1db4MXyhfOQZ7frgonzL0Tf1/HPtPe8GaKl223ZYrNOuxcIVZZfMFtZW0apOHN+ASXf7xlQKsAlRSDqzfA1nLVFsA2HxT9LQk8E+aLFnpUgfl3q1vYOPridcZjZIkh7TbXQHCjMPZcX/alCah+dXKX24Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPo5VOgK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5327EC433F1;
-	Mon, 29 Jan 2024 17:15:34 +0000 (UTC)
+	 MIME-Version; b=jePNilmkT5Q01kFqpsJgLdOSB/aP2WXVP1+9xYEM5dlEDV+dktfpfOEVktgsLHjtfDhxXB/d7zYXCPfKTVdPyEJKfJhjyvoXsDTNaxVV2mw/H1aTz45ttGMVLAFoBbVRxZk4TQejTDhK6KVUlCim56XZDxOA7VAAbXNIrYbVwIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBEp142V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A032C433C7;
+	Mon, 29 Jan 2024 17:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548534;
-	bh=LNx7qKJmfE+jxcdsR1Bc4XtbSpZgrJzDn8JVAUFFJeE=;
+	s=korg; t=1706548138;
+	bh=hhnwtf4WZrVu2se+xP+wwN71wvXyq0qKynpJs9MAl5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kPo5VOgKsHdYGOtuK0vn6KkbhUJ4xovynjnbbvkrV1Aq5vJpWr1xEuiA/e31/R2Tq
-	 E5Fpg5GWdGcLq7QMQGW/DR37k1LV9tPnFcWNJPpYkmmpIJzywDVngq07LBI4sYnww+
-	 GaDio9za7TsFYGTUzJGF6HtgNNiRnSTrz60ymUoc=
+	b=zBEp142VAl3jabixrhWrypabU819Lzl3l8vHcztewjm0FUBCK/N3tn3oh9PS968DO
+	 sFm/Zc6Y22PVzzkyArmP30GBzOt1siq199JCp2qQeqEOXd+VtusnhFxeq7fYzBPgzQ
+	 6fA7rn6JjAmihEt8D2bSTENki73EhoVD0Da3GPv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.6 136/331] serial: sc16is7xx: improve do/while loop in sc16is7xx_irq()
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 169/346] afs: Hide silly-rename files from userspace
 Date: Mon, 29 Jan 2024 09:03:20 -0800
-Message-ID: <20240129170018.925046627@linuxfoundation.org>
+Message-ID: <20240129170021.370287784@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: David Howells <dhowells@redhat.com>
 
-commit d5078509c8b06c5c472a60232815e41af81c6446 upstream.
+[ Upstream commit 57e9d49c54528c49b8bffe6d99d782ea051ea534 ]
 
-Simplify and improve readability by replacing while(1) loop with
-do {} while, and by using the keep_polling variable as the exit
-condition, making it more explicit.
+There appears to be a race between silly-rename files being created/removed
+and various userspace tools iterating over the contents of a directory,
+leading to such errors as:
 
-Fixes: 834449872105 ("sc16is7xx: Fix for multi-channel stall")
-Cc:  <stable@vger.kernel.org>
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-6-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
+	tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
+
+when building a kernel.
+
+Fix afs_readdir() so that it doesn't return .__afsXXXX silly-rename files
+to userspace.  This doesn't stop them being looked up directly by name as
+we need to be able to look them up from within the kernel as part of the
+silly-rename algorithm.
+
+Fixes: 79ddbfa500b3 ("afs: Implement sillyrename for unlink and rename")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ fs/afs/dir.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -782,17 +782,18 @@ out_port_irq:
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index 5219182e52e1..2df2e9ee130d 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -474,6 +474,14 @@ static int afs_dir_iterate_block(struct afs_vnode *dvnode,
+ 			continue;
+ 		}
  
- static irqreturn_t sc16is7xx_irq(int irq, void *dev_id)
- {
-+	bool keep_polling;
++		/* Don't expose silly rename entries to userspace. */
++		if (nlen > 6 &&
++		    dire->u.name[0] == '.' &&
++		    ctx->actor != afs_lookup_filldir &&
++		    ctx->actor != afs_lookup_one_filldir &&
++		    memcmp(dire->u.name, ".__afs", 6) == 0)
++			continue;
 +
- 	struct sc16is7xx_port *s = (struct sc16is7xx_port *)dev_id;
- 
--	while (1) {
--		bool keep_polling = false;
-+	do {
- 		int i;
- 
-+		keep_polling = false;
-+
- 		for (i = 0; i < s->devtype->nr_uart; ++i)
- 			keep_polling |= sc16is7xx_port_irq(s, i);
--		if (!keep_polling)
--			break;
--	}
-+	} while (keep_polling);
- 
- 	return IRQ_HANDLED;
- }
+ 		/* found the next entry */
+ 		if (!dir_emit(ctx, dire->u.name, nlen,
+ 			      ntohl(dire->u.vnode),
+-- 
+2.43.0
+
 
 
 
