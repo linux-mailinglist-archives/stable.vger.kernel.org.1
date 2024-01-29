@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-16551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F3AB840D6E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E205D840FA2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7313D1C23B3B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 935701F222DC
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85C715B2EA;
-	Mon, 29 Jan 2024 17:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E7915B118;
+	Mon, 29 Jan 2024 17:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFS1X0Ye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1ljOhQr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60771586DB;
-	Mon, 29 Jan 2024 17:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2021E15DBCB;
+	Mon, 29 Jan 2024 17:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548103; cv=none; b=uPKKwin4/Zl4BUqsrIrILgo2+ZMM+WuQBdBzPos4ZjR77WoVMOGdFpMBBnRpB2xgoZEbecEVu21YEDpotQ0yGnKCxCDU/TZFfPyIzjtz1LT/pagWL/UNbReHUPxz1T1d7CGaMJ8DNzg9oyhmAh66mMiNChVXQnwi422jPP/R5/4=
+	t=1706548474; cv=none; b=OmPwVdH37eZR9/2Z+2dcpoyEAjO+lihRgYFEV+JzKQA8MQ8ZL1nATr0FW7g5i6G4BheCVUmtqNOAejJW15sdVFQk4AJwqwJ/w3vLZFfNrEgF0T+peqrEBz5tOPFP/9Y5qzBSXprUmVKm+YF/fgTiNNYPoOkFvbF4eH+SmLbjxbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548103; c=relaxed/simple;
-	bh=szyaLSWtSzxmUtbKn81HgE0AeWp1eoneOzTY0b5DPA0=;
+	s=arc-20240116; t=1706548474; c=relaxed/simple;
+	bh=HEo+kqmrVUacfRk6oljEZYKV0b2N2aL1k5bpnSjTolA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cxp0R4Ht4qkuCnm3R1V7bWhfwFAu+a8YrrjAT6aWZN4PaqVXvhFBkdonjvD5WU2Mq7feUdEKjQPKAx7wCgCTSPZyRXNYYKOH0hO+Cu1IB1/lgA36in/QAcX8ATvUw6AHuWvAmMgaK4APfEcoG0OagqhuAIjpEDJo/OsnPp/f+ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFS1X0Ye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CBFBC433F1;
-	Mon, 29 Jan 2024 17:08:23 +0000 (UTC)
+	 MIME-Version; b=s8zrALd+ZpLisHBqAdn+1o0ZKDAzbVsmTK/2S0M3gu6gb8HWmPLkchVoCjEboEBb6ai39gEMn1ri51oMOejXDiGUhsN3gzfLoUJgeK9KaUQPbOuNST6JAJCJq1x12MusrZS9pzO/U5SJcHcdU/K2k3K4ww3Q2g1mxSY5mHRZiW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1ljOhQr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81214C433C7;
+	Mon, 29 Jan 2024 17:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548103;
-	bh=szyaLSWtSzxmUtbKn81HgE0AeWp1eoneOzTY0b5DPA0=;
+	s=korg; t=1706548473;
+	bh=HEo+kqmrVUacfRk6oljEZYKV0b2N2aL1k5bpnSjTolA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gFS1X0Yet4GotbuDhZjIJgNt/+VsmM76I4/76ISeACLnR0cCIIp6pUXmV0X6wNK6g
-	 UEgNawfGy4Ovadq9q4qJagbZC3CWClv2TfKbzuk3tyRMxUt/h9cipvL104kTBn/wNq
-	 NcG9fQxr01FMAblscU2YCXXnrCMFOMCrF33nGVFw=
+	b=g1ljOhQr/HOyLb8ZXmWe0A3tM//qaGqFbBvmZKnZQrI5HJB0PDPm/KmSDSInCtofW
+	 0fRLsDnSPV7oevlczIX8iWa14AO3LsN8sa6C0hWbW/AI6nwud8aPNcb0eDFAztKXWH
+	 D/eQKtkBqXkm6cURwf6NZqXqCb99Cw48+sYTBtUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Xu Yu <xuyu@linux.alibaba.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 124/346] mm: migrate: fix getting incorrect page mapping during page migration
+	Johan Hovold <johan+linaro@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 091/331] arm64: dts: qcom: sdm845: fix USB SS wakeup
 Date: Mon, 29 Jan 2024 09:02:35 -0800
-Message-ID: <20240129170020.028521453@linuxfoundation.org>
+Message-ID: <20240129170017.592246715@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,134 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit d1adb25df7111de83b64655a80b5a135adbded61 upstream.
+commit 971f5d8b0618d09db75184ddd8cca0767514db5d upstream.
 
-When running stress-ng testing, we found below kernel crash after a few hours:
+The USB SS PHY interrupts need to be provided by the PDC interrupt
+controller in order to be able to wake the system up from low-power
+states.
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-pc : dentry_name+0xd8/0x224
-lr : pointer+0x22c/0x370
-sp : ffff800025f134c0
-......
-Call trace:
-  dentry_name+0xd8/0x224
-  pointer+0x22c/0x370
-  vsnprintf+0x1ec/0x730
-  vscnprintf+0x2c/0x60
-  vprintk_store+0x70/0x234
-  vprintk_emit+0xe0/0x24c
-  vprintk_default+0x3c/0x44
-  vprintk_func+0x84/0x2d0
-  printk+0x64/0x88
-  __dump_page+0x52c/0x530
-  dump_page+0x14/0x20
-  set_migratetype_isolate+0x110/0x224
-  start_isolate_page_range+0xc4/0x20c
-  offline_pages+0x124/0x474
-  memory_block_offline+0x44/0xf4
-  memory_subsys_offline+0x3c/0x70
-  device_offline+0xf0/0x120
-  ......
-
-After analyzing the vmcore, I found this issue is caused by page migration.
-The scenario is that, one thread is doing page migration, and we will use the
-target page's ->mapping field to save 'anon_vma' pointer between page unmap and
-page move, and now the target page is locked and refcount is 1.
-
-Currently, there is another stress-ng thread performing memory hotplug,
-attempting to offline the target page that is being migrated. It discovers that
-the refcount of this target page is 1, preventing the offline operation, thus
-proceeding to dump the page. However, page_mapping() of the target page may
-return an incorrect file mapping to crash the system in dump_mapping(), since
-the target page->mapping only saves 'anon_vma' pointer without setting
-PAGE_MAPPING_ANON flag.
-
-There are seveval ways to fix this issue:
-(1) Setting the PAGE_MAPPING_ANON flag for target page's ->mapping when saving
-'anon_vma', but this can confuse PageAnon() for PFN walkers, since the target
-page has not built mappings yet.
-(2) Getting the page lock to call page_mapping() in __dump_page() to avoid crashing
-the system, however, there are still some PFN walkers that call page_mapping()
-without holding the page lock, such as compaction.
-(3) Using target page->private field to save the 'anon_vma' pointer and 2 bits
-page state, just as page->mapping records an anonymous page, which can remove
-the page_mapping() impact for PFN walkers and also seems a simple way.
-
-So I choose option 3 to fix this issue, and this can also fix other potential
-issues for PFN walkers, such as compaction.
-
-Link: https://lkml.kernel.org/r/e60b17a88afc38cb32f84c3e30837ec70b343d2b.1702641709.git.baolin.wang@linux.alibaba.com
-Fixes: 64c8902ed441 ("migrate_pages: split unmap_and_move() to _unmap() and _move()")
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Xu Yu <xuyu@linux.alibaba.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
+Cc: stable@vger.kernel.org	# 4.20
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231213173403.29544-4-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/migrate.c |   27 ++++++++++-----------------
- 1 file changed, 10 insertions(+), 17 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1025,38 +1025,31 @@ out:
- }
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -4085,7 +4085,7 @@
+ 			assigned-clock-rates = <19200000>, <150000000>;
  
- /*
-- * To record some information during migration, we use some unused
-- * fields (mapping and private) of struct folio of the newly allocated
-- * destination folio.  This is safe because nobody is using them
-- * except us.
-+ * To record some information during migration, we use unused private
-+ * field of struct folio of the newly allocated destination folio.
-+ * This is safe because nobody is using it except us.
-  */
--union migration_ptr {
--	struct anon_vma *anon_vma;
--	struct address_space *mapping;
--};
--
- enum {
- 	PAGE_WAS_MAPPED = BIT(0),
- 	PAGE_WAS_MLOCKED = BIT(1),
-+	PAGE_OLD_STATES = PAGE_WAS_MAPPED | PAGE_WAS_MLOCKED,
- };
+ 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+-					      <&intc GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
++					      <&pdc_intc 6 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&pdc_intc 8 IRQ_TYPE_EDGE_BOTH>,
+ 					      <&pdc_intc 9 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+@@ -4136,7 +4136,7 @@
+ 			assigned-clock-rates = <19200000>, <150000000>;
  
- static void __migrate_folio_record(struct folio *dst,
--				   unsigned long old_page_state,
-+				   int old_page_state,
- 				   struct anon_vma *anon_vma)
- {
--	union migration_ptr ptr = { .anon_vma = anon_vma };
--	dst->mapping = ptr.mapping;
--	dst->private = (void *)old_page_state;
-+	dst->private = (void *)anon_vma + old_page_state;
- }
- 
- static void __migrate_folio_extract(struct folio *dst,
- 				   int *old_page_state,
- 				   struct anon_vma **anon_vmap)
- {
--	union migration_ptr ptr = { .mapping = dst->mapping };
--	*anon_vmap = ptr.anon_vma;
--	*old_page_state = (unsigned long)dst->private;
--	dst->mapping = NULL;
-+	unsigned long private = (unsigned long)dst->private;
-+
-+	*anon_vmap = (struct anon_vma *)(private & ~PAGE_OLD_STATES);
-+	*old_page_state = private & PAGE_OLD_STATES;
- 	dst->private = NULL;
- }
- 
+ 			interrupts-extended = <&intc GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
+-					      <&intc GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
++					      <&pdc_intc 7 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&pdc_intc 10 IRQ_TYPE_EDGE_BOTH>,
+ 					      <&pdc_intc 11 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
 
 
 
