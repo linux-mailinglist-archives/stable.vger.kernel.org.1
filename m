@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-17189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 522D2841030
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 345F2840E5B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1316B2256C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E53A5284870
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB1B15B30F;
-	Mon, 29 Jan 2024 17:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14EFE15F314;
+	Mon, 29 Jan 2024 17:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sr2vYO7B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6F+upcB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3BB15705C;
-	Mon, 29 Jan 2024 17:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A0115A48F;
+	Mon, 29 Jan 2024 17:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548576; cv=none; b=QMktyTrlDy7XNZ6VklXAR3b/2Hv1E5V6BbklvFqLYs0HmPbqQBdTgc3x8vsCZqEcF+wxXoI4AO/FnVU9G0Qd5ZBDXGwv3syt7an2FYbxltxfxvutv9+GfEuC70redFkPHAEn7HTfczERzVfW6kcfwKWJ9YYr6yfzxcjIKcepGx0=
+	t=1706548269; cv=none; b=piQTlsd73d/f45kQG0PmkSk3463Ry+326x1KFXnSpySQoPvgL6l+c5atjCpPsBcETkhRPwAUM9orFNOb8KIt0CNEvk+1OIwUUhYSWZHVKpKc1+T9+XvHr0uxQzTn1jR/W0WGYcgoe/58GFo8nsroNAWVZJ+3a5ncw5tV0Wdv9fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548576; c=relaxed/simple;
-	bh=igIZPu6FJJaC4Mlwy+P7SiAnnoeaS2broH/WYKtRSB8=;
+	s=arc-20240116; t=1706548269; c=relaxed/simple;
+	bh=gFUp3Z9x/Ndha8oFOOlh4Ba+5E8QjoxImCoXAkHoRWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fh20CD7LcySt85hDn9p91Zy3JIgPsDCziz7glW3lcaLtp2eCNCNB3BwwIykCPzPPTXZ0iJiEZTEanvnuDDBn745HZ++s8FPRWRYyEYBniEfhqOmW18P3GkdWeQ/eqjdkpUrtxMJq8WiOwIu4/mIVTUTr3y4MemJHmddqkoWyDiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sr2vYO7B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82A7C43399;
-	Mon, 29 Jan 2024 17:16:15 +0000 (UTC)
+	 MIME-Version; b=pFIoUm8vwolTXIzz79cppc4mPiIqhLsb4ID3wwtDYDdTCLGk+9h+B4YiRe7KwR84jNuum3DgkSiXIFgetF1ZpMgvnk0cshmBf7Y/xY/7P7qkAQilTccfcjhw2YdsYsoNNJJU0FgVfvi3J++WWP+uG2pM3MKXn0FBfjHFnOHo444=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6F+upcB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2F0C43390;
+	Mon, 29 Jan 2024 17:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548576;
-	bh=igIZPu6FJJaC4Mlwy+P7SiAnnoeaS2broH/WYKtRSB8=;
+	s=korg; t=1706548269;
+	bh=gFUp3Z9x/Ndha8oFOOlh4Ba+5E8QjoxImCoXAkHoRWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sr2vYO7BO6cMQeEQWK9nNDLjbcC5oG5GmXNpVB30RpOonzFO69e5qvbdhhrfOmb0R
-	 n2PwMOCv77Jvl6J7JRVb0HhzPSsDJn3p6sr1GoFLbai5vUMWqPsPPnH+1X2JCgdkP3
-	 L6skWJiVPMwCqvSPoWMNJ7wZARgJK4YeNaEztmo0=
+	b=R6F+upcBVDgnFhHaXDEChcVGuArECpGV544t5wtczFdtBBhkHFesbAM8N8juwrVVI
+	 5Xt4oUNDuNQ50lw8TxBmgZ+f/zECx144r0vDQ1TE25Dn+ar4uSqw3x7GzljKRaL6cS
+	 +JDQjpQWeo5gXhwmYIow9H7wyfWUgNgf3BGE63SA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 229/331] tsnep: Fix XDP_RING_NEED_WAKEUP for empty fill ring
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.7 262/346] drm/amdgpu: drop exp hw support check for GC 9.4.3
 Date: Mon, 29 Jan 2024 09:04:53 -0800
-Message-ID: <20240129170021.583431704@linuxfoundation.org>
+Message-ID: <20240129170024.096741944@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 9a91c05f4bd6f6bdd6b8f90445e0da92e3ac956c ]
+commit c3d5e297dcae88274dc6924db337a2159279eced upstream.
 
-The fill ring of the XDP socket may contain not enough buffers to
-completey fill the RX queue during socket creation. In this case the
-flag XDP_RING_NEED_WAKEUP is not set as this flag is only set if the RX
-queue is not completely filled during polling.
+No longer needed.
 
-Set XDP_RING_NEED_WAKEUP flag also if RX queue is not completely filled
-during XDP socket creation.
-
-Fixes: 3fc2333933fd ("tsnep: Add XDP socket zero-copy RX support")
-Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.7.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/engleder/tsnep_main.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
-index 9fea97671f4b..08e113e785a7 100644
---- a/drivers/net/ethernet/engleder/tsnep_main.c
-+++ b/drivers/net/ethernet/engleder/tsnep_main.c
-@@ -1711,6 +1711,19 @@ static void tsnep_rx_reopen_xsk(struct tsnep_rx *rx)
- 			allocated--;
- 		}
- 	}
-+
-+	/* set need wakeup flag immediately if ring is not filled completely,
-+	 * first polling would be too late as need wakeup signalisation would
-+	 * be delayed for an indefinite time
-+	 */
-+	if (xsk_uses_need_wakeup(rx->xsk_pool)) {
-+		int desc_available = tsnep_rx_desc_available(rx);
-+
-+		if (desc_available)
-+			xsk_set_rx_need_wakeup(rx->xsk_pool);
-+		else
-+			xsk_clear_rx_need_wakeup(rx->xsk_pool);
-+	}
- }
- 
- static bool tsnep_pending(struct tsnep_queue *queue)
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+@@ -1963,8 +1963,6 @@ static int amdgpu_discovery_set_gc_ip_bl
+ 		amdgpu_device_ip_block_add(adev, &gfx_v9_0_ip_block);
+ 		break;
+ 	case IP_VERSION(9, 4, 3):
+-		if (!amdgpu_exp_hw_support)
+-			return -EINVAL;
+ 		amdgpu_device_ip_block_add(adev, &gfx_v9_4_3_ip_block);
+ 		break;
+ 	case IP_VERSION(10, 1, 10):
 
 
 
