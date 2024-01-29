@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-17264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9964484107B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 725BD840F28
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53F6B285AD8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A56B21C21998
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D20E15A49C;
-	Mon, 29 Jan 2024 17:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD60715956C;
+	Mon, 29 Jan 2024 17:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/AZd2il"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oyXj/KWy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FBA76051;
-	Mon, 29 Jan 2024 17:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CECE15956D;
+	Mon, 29 Jan 2024 17:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548631; cv=none; b=p527Kk1kJGhidvq788Tqc/r7TReymPNZ87/inGS779itvdlg7k/uiq+d6re3FOMXhJ3aftRPpuxtiHlZOkuXkEQRitgkC2wPxyoSdpqZxaOTkHrc/bs/3RpGvMebW8D3HYFTMhTrh9lCjFXNhuUmQi5RmNzcMV7NR3uJMzCTp5Y=
+	t=1706548393; cv=none; b=mo9UoQ4xOCBBm8ksBpHwAYfaG9pdBpBE0/nKogIYWxD092ndhME/aMZNIuTtXIhynzJlXB3H2NbBmuw8iLuQV19jSTWXdwTvxi+FnVLoVozq/NiEW3HWw7WsyECq0USr+Rfw4OOCNItx2FhSBY7pCibeAXE2XMMd9T5gZKx47mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548631; c=relaxed/simple;
-	bh=XgQIvs8XtoZD3PzsV6hb4pUzZapiKARTl+ft/Vzv95w=;
+	s=arc-20240116; t=1706548393; c=relaxed/simple;
+	bh=kAmGcrJJARJ5MfOWKV7UJy0WlVsn2cHCbZu8mzNFdew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPXj1D5pTQn7wDs3gMF/Sxm2SC9Y4f5yER6gZyWBnkERy5MygzQ0jMzM4I/vQNNjVGO2/HKKRDpnYzNMe8iwm2WjuvASqiiAZJ8N7qvBg42QkjxPoOR4EUaa5YGm2wGTcmwGBDam44H9Z2VoXjoG9GrKNK2n1Pe65YGXWzyd/6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/AZd2il; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7A73C43399;
-	Mon, 29 Jan 2024 17:17:10 +0000 (UTC)
+	 MIME-Version; b=J2HGhjodHVRiEkqIHIHOmuMUfZ9VnaBylnwCpumBaSwvYdyzdGsV8OWrj/M+3zPnqyEmlcjunNRpQ0/6YZZwbtVPRjs1nCmexXmy5JxK/orvTT8d1KaJMw3ZokNbyRfyhLC9CnjP8QGjiHfN/qm81GTOl2Igqg1s1/7Q+6RrW9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oyXj/KWy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB35C433A6;
+	Mon, 29 Jan 2024 17:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548630;
-	bh=XgQIvs8XtoZD3PzsV6hb4pUzZapiKARTl+ft/Vzv95w=;
+	s=korg; t=1706548393;
+	bh=kAmGcrJJARJ5MfOWKV7UJy0WlVsn2cHCbZu8mzNFdew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F/AZd2ilQRa1rZoZn9fMggvIqtd6cobH4LFVV+R6sj2DzTCZ2/wGfKnT01ElpelQL
-	 uVugCQjr2wJFQrNfcTD9uJvq/XgZy8Z2gnLbA3kMQKsNSeSqlM9DL7G+wv8KMNQ0gA
-	 WYfKuXaGZBpNefzqirx2KnpkDBPvP3qoGfXuv8E8=
+	b=oyXj/KWyKPkGwSds+bFK4IM38Fr9QXX81G0BRNzC4BXAM2Sow2RatdL4Rl4KNG4v7
+	 8s9EMwvvYPSY/ObRjilasuyiZLM7Ms1uMw925thM/a8amn6cwPCOK2Ly5wM49t4Kmv
+	 Vsd14MPIMtEUZm+nGPaY/6VOem8GVJb5ze7ifJxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Bingbu Cao <bingbu.cao@intel.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 280/331] media: v4l: cci: Add macros to obtain register width and address
+Subject: [PATCH 6.1 144/185] media: ov13b10: Enable runtime PM before registering async sub-device
 Date: Mon, 29 Jan 2024 09:05:44 -0800
-Message-ID: <20240129170023.056975525@linuxfoundation.org>
+Message-ID: <20240129170003.213698233@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Bingbu Cao <bingbu.cao@intel.com>
 
-[ Upstream commit cd93cc245dfe334c38da98c14b34f9597e1b4ea6 ]
+[ Upstream commit 7b0454cfd8edb3509619407c3b9f78a6d0dee1a5 ]
 
-Add CCI_REG_WIDTH() macro to obtain register width in bits and similarly,
-CCI_REG_WIDTH_BYTES() to obtain it in bytes.
+As the sensor device maybe accessible right after its async sub-device is
+registered, such as ipu-bridge will try to power up sensor by sensor's
+client device's runtime PM from the async notifier callback, if runtime PM
+is not enabled, it will fail.
 
-Also add CCI_REG_ADDR() macro to obtain the address of a register.
+So runtime PM should be ready before its async sub-device is registered
+and accessible by others.
 
-Use both macros in v4l2-cci.c, too.
-
+Fixes: 7ee850546822 ("media: Add sensor driver support for the ov13b10 camera.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: d92e7a013ff3 ("media: v4l2-cci: Add support for little-endian encoded registers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-cci.c | 8 ++++----
- include/media/v4l2-cci.h           | 5 +++++
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ drivers/media/i2c/ov13b10.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-cci.c b/drivers/media/v4l2-core/v4l2-cci.c
-index bc2dbec019b0..3179160abde3 100644
---- a/drivers/media/v4l2-core/v4l2-cci.c
-+++ b/drivers/media/v4l2-core/v4l2-cci.c
-@@ -25,8 +25,8 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
- 	if (err && *err)
- 		return *err;
+diff --git a/drivers/media/i2c/ov13b10.c b/drivers/media/i2c/ov13b10.c
+index 722f490f9db4..368a3c2bfe34 100644
+--- a/drivers/media/i2c/ov13b10.c
++++ b/drivers/media/i2c/ov13b10.c
+@@ -1439,24 +1439,27 @@ static int ov13b10_probe(struct i2c_client *client)
+ 		goto error_handler_free;
+ 	}
  
--	len = FIELD_GET(CCI_REG_WIDTH_MASK, reg);
--	reg = FIELD_GET(CCI_REG_ADDR_MASK, reg);
-+	len = CCI_REG_WIDTH_BYTES(reg);
-+	reg = CCI_REG_ADDR(reg);
+-	ret = v4l2_async_register_subdev_sensor(&ov13b->sd);
+-	if (ret < 0)
+-		goto error_media_entity;
  
- 	ret = regmap_bulk_read(map, reg, buf, len);
- 	if (ret) {
-@@ -75,8 +75,8 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
- 	if (err && *err)
- 		return *err;
+ 	/*
+ 	 * Device is already turned on by i2c-core with ACPI domain PM.
+ 	 * Enable runtime PM and turn off the device.
+ 	 */
+-
+ 	/* Set the device's state to active if it's in D0 state. */
+ 	if (full_power)
+ 		pm_runtime_set_active(&client->dev);
+ 	pm_runtime_enable(&client->dev);
+ 	pm_runtime_idle(&client->dev);
  
--	len = FIELD_GET(CCI_REG_WIDTH_MASK, reg);
--	reg = FIELD_GET(CCI_REG_ADDR_MASK, reg);
-+	len = CCI_REG_WIDTH_BYTES(reg);
-+	reg = CCI_REG_ADDR(reg);
- 
- 	switch (len) {
- 	case 1:
-diff --git a/include/media/v4l2-cci.h b/include/media/v4l2-cci.h
-index f2c2962e936b..a2835a663df5 100644
---- a/include/media/v4l2-cci.h
-+++ b/include/media/v4l2-cci.h
-@@ -7,6 +7,7 @@
- #ifndef _V4L2_CCI_H
- #define _V4L2_CCI_H
- 
-+#include <linux/bitfield.h>
- #include <linux/bits.h>
- #include <linux/types.h>
- 
-@@ -34,6 +35,10 @@ struct cci_reg_sequence {
- #define CCI_REG_WIDTH_SHIFT		16
- #define CCI_REG_WIDTH_MASK		GENMASK(19, 16)
- 
-+#define CCI_REG_WIDTH_BYTES(x)		FIELD_GET(CCI_REG_WIDTH_MASK, x)
-+#define CCI_REG_WIDTH(x)		(CCI_REG_WIDTH_BYTES(x) << 3)
-+#define CCI_REG_ADDR(x)			FIELD_GET(CCI_REG_ADDR_MASK, x)
++	ret = v4l2_async_register_subdev_sensor(&ov13b->sd);
++	if (ret < 0)
++		goto error_media_entity_runtime_pm;
 +
- #define CCI_REG8(x)			((1 << CCI_REG_WIDTH_SHIFT) | (x))
- #define CCI_REG16(x)			((2 << CCI_REG_WIDTH_SHIFT) | (x))
- #define CCI_REG24(x)			((3 << CCI_REG_WIDTH_SHIFT) | (x))
+ 	return 0;
+ 
+-error_media_entity:
++error_media_entity_runtime_pm:
++	pm_runtime_disable(&client->dev);
++	if (full_power)
++		pm_runtime_set_suspended(&client->dev);
+ 	media_entity_cleanup(&ov13b->sd.entity);
+ 
+ error_handler_free:
+@@ -1476,6 +1479,7 @@ static void ov13b10_remove(struct i2c_client *client)
+ 	ov13b10_free_controls(ov13b);
+ 
+ 	pm_runtime_disable(&client->dev);
++	pm_runtime_set_suspended(&client->dev);
+ }
+ 
+ static const struct dev_pm_ops ov13b10_pm_ops = {
 -- 
 2.43.0
 
