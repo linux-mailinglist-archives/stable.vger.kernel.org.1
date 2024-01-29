@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-16766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3791E840E53
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 862A2840E55
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E88B62845B0
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 217C61F21EC1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EFEC15F302;
-	Mon, 29 Jan 2024 17:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38C915B318;
+	Mon, 29 Jan 2024 17:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6yXDd/Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TeSxthGj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A8415B313;
-	Mon, 29 Jan 2024 17:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20B115A48F;
+	Mon, 29 Jan 2024 17:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548264; cv=none; b=Hv3Xj4X/ADh8vjdN48AWoWqFwCd2mKVlUjPiYJSBBEMua2J5tR5tZ/2juF3HLI7Cu4bZe2lvRMD5wLCLp198WnYuPr9f1kiqrbqQ2QeIkqH8pyHaWG+WoEs7tVqoTLyKpi2MpiRSBROHATpHoxEuIFmGgMlpLh33UbRJOOksc6E=
+	t=1706548265; cv=none; b=G/xw2sQfOHorKU2Yzbxa+TU8A/4P/XrivOuO9X6OrYtAY8e7A//pc9hOHl8dZJyTMa1gC5H8Wg5mBzuVdXoQ61EgYQ5xb+yK+tpBDjrKoNt+0wEtAsWV8rrErjrQZHrcKQIVymdlajNAJQut2WKfb+N4m7jBcFA5osiT/bt9JzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548264; c=relaxed/simple;
-	bh=soTI/TfVbsA34OUhn0ktYBAKkgQRcB6lzcS10rhRlb4=;
+	s=arc-20240116; t=1706548265; c=relaxed/simple;
+	bh=JbwWTJ4Ss2g+cCd7W1cFy9+KvSl5U5gGDwWFK7loOKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RoChiFt6UMaY2tm6gAeRpbWMtGxNvBAbe70LR5Lp/yO3yTWUSi8tFM2G04S49Ms7xhYLlZO7M/shqRa9Muqfkk1g0s0bG5sq0h6nGMQNL0eydwUk3+v1bgPOZ+rCwRwAzu+GHPwyHN3j0eKUy1P0fU/kaS39P37jODn1lfZsWp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6yXDd/Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8677C433A6;
-	Mon, 29 Jan 2024 17:11:03 +0000 (UTC)
+	 MIME-Version; b=cSOMEAypTWzsjhzk6eO/dK1mOr2S94VIRdOFL+7ZONTOUqFWyLfVfiXuvFy7aUDacGLhby15iXclSj26vSQtWvmOP+ROxd/93ijSYqNrQfT6zwGwgdgaJfT7//tjzje/NMFsCjxb4eyYNXA3XQ7NicvNxdJdey8mcvjXjvfGwRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TeSxthGj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F98C43399;
+	Mon, 29 Jan 2024 17:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548263;
-	bh=soTI/TfVbsA34OUhn0ktYBAKkgQRcB6lzcS10rhRlb4=;
+	s=korg; t=1706548265;
+	bh=JbwWTJ4Ss2g+cCd7W1cFy9+KvSl5U5gGDwWFK7loOKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E6yXDd/ZOTYlHBfchNh9ZZzgAvM/3tv53xw3aZXH0aHas+CbUejqBS69swpb+g7uR
-	 lba9xTBb87yZ/pbH+XmnUMvpAI4CtYJ4ELuE9JYWi68N5hZstmPUEgjHYyTSu+UfcG
-	 kPMCQYX99WwPRkLHbOJiEqD+vucG3fVHhWCnALxI=
+	b=TeSxthGjZH/d3Ve3I0fW2TTHW/B++z9lO9olNcgiJta78GCyD1FLn0TIG90J1ityy
+	 9H0fFnoVG11mU34clVhtseElheoNCySAbsgPZ1jLMfVsqeFRtKC+yAHMnFVdX0N03W
+	 jSVnpINWTHwoD2mIj0N863gxbfTgLjxjLkDZekb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 281/346] thermal: intel: hfi: Disable an HFI instance when all its CPUs go offline
-Date: Mon, 29 Jan 2024 09:05:12 -0800
-Message-ID: <20240129170024.641904657@linuxfoundation.org>
+Subject: [PATCH 6.7 282/346] thermal: intel: hfi: Add syscore callbacks for system-wide PM
+Date: Mon, 29 Jan 2024 09:05:13 -0800
+Message-ID: <20240129170024.672167742@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -68,93 +68,97 @@ Content-Transfer-Encoding: 8bit
 
 From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 
-[ Upstream commit 1c53081d773c2cb4461636559b0d55b46559ceec ]
+[ Upstream commit 97566d09fd02d2ab329774bb89a2cdf2267e86d9 ]
 
-In preparation to support hibernation, add functionality to disable an HFI
-instance during CPU offline. The last CPU of an instance that goes offline
-will disable such instance.
+The kernel allocates a memory buffer and provides its location to the
+hardware, which uses it to update the HFI table. This allocation occurs
+during boot and remains constant throughout runtime.
 
-The Intel Software Development Manual states that the operating system must
-wait for the hardware to set MSR_IA32_PACKAGE_THERM_STATUS[26] after
-disabling an HFI instance to ensure that it will no longer write on the HFI
-memory. Some processors, however, do not ever set such bit. Wait a minimum
-of 2ms to give time hardware to complete any pending memory writes.
+When resuming from hibernation, the restore kernel allocates a second
+memory buffer and reprograms the HFI hardware with the new location as
+part of a normal boot. The location of the second memory buffer may
+differ from the one allocated by the image kernel.
 
+When the restore kernel transfers control to the image kernel, its HFI
+buffer becomes invalid, potentially leading to memory corruption if the
+hardware writes to it (the hardware continues to use the buffer from the
+restore kernel).
+
+It is also possible that the hardware "forgets" the address of the memory
+buffer when resuming from "deep" suspend. Memory corruption may also occur
+in such a scenario.
+
+To prevent the described memory corruption, disable HFI when preparing to
+suspend or hibernate. Enable it when resuming.
+
+Add syscore callbacks to handle the package of the boot CPU (packages of
+non-boot CPUs are handled via CPU offline). Syscore ops always run on the
+boot CPU. Additionally, HFI only needs to be disabled during "deep" suspend
+and hibernation. Syscore ops only run in these cases.
+
+Cc: 6.1+ <stable@vger.kernel.org> # 6.1+
 Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+[ rjw: Comment adjustment, subject and changelog edits ]
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 97566d09fd02 ("thermal: intel: hfi: Add syscore callbacks for system-wide PM")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/intel/intel_hfi.c | 35 +++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ drivers/thermal/intel/intel_hfi.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
 diff --git a/drivers/thermal/intel/intel_hfi.c b/drivers/thermal/intel/intel_hfi.c
-index 820613e293cd..bb25c75acd45 100644
+index bb25c75acd45..1c5a429b2e3e 100644
 --- a/drivers/thermal/intel/intel_hfi.c
 +++ b/drivers/thermal/intel/intel_hfi.c
-@@ -24,6 +24,7 @@
- #include <linux/bitops.h>
- #include <linux/cpufeature.h>
- #include <linux/cpumask.h>
-+#include <linux/delay.h>
- #include <linux/gfp.h>
- #include <linux/io.h>
- #include <linux/kernel.h>
-@@ -367,6 +368,32 @@ static void hfi_set_hw_table(struct hfi_instance *hfi_instance)
- 	wrmsrl(MSR_IA32_HW_FEEDBACK_PTR, msr_val);
+@@ -35,7 +35,9 @@
+ #include <linux/processor.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
++#include <linux/suspend.h>
+ #include <linux/string.h>
++#include <linux/syscore_ops.h>
+ #include <linux/topology.h>
+ #include <linux/workqueue.h>
+ 
+@@ -568,6 +570,30 @@ static __init int hfi_parse_features(void)
+ 	return 0;
  }
  
-+/* Caller must hold hfi_instance_lock. */
-+static void hfi_disable(void)
++static void hfi_do_enable(void)
 +{
-+	u64 msr_val;
-+	int i;
++	/* This code runs only on the boot CPU. */
++	struct hfi_cpu_info *info = &per_cpu(hfi_cpu_info, 0);
++	struct hfi_instance *hfi_instance = info->hfi_instance;
 +
-+	rdmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
-+	msr_val &= ~HW_FEEDBACK_CONFIG_HFI_ENABLE_BIT;
-+	wrmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
-+
-+	/*
-+	 * Wait for hardware to acknowledge the disabling of HFI. Some
-+	 * processors may not do it. Wait for ~2ms. This is a reasonable
-+	 * time for hardware to complete any pending actions on the HFI
-+	 * memory.
-+	 */
-+	for (i = 0; i < 2000; i++) {
-+		rdmsrl(MSR_IA32_PACKAGE_THERM_STATUS, msr_val);
-+		if (msr_val & PACKAGE_THERM_STATUS_HFI_UPDATED)
-+			break;
-+
-+		udelay(1);
-+		cpu_relax();
-+	}
++	/* No locking needed. There is no concurrency with CPU online. */
++	hfi_set_hw_table(hfi_instance);
++	hfi_enable();
 +}
 +
- /**
-  * intel_hfi_online() - Enable HFI on @cpu
-  * @cpu:	CPU in which the HFI will be enabled
-@@ -421,6 +448,10 @@ void intel_hfi_online(unsigned int cpu)
- 	/*
- 	 * Hardware is programmed with the physical address of the first page
- 	 * frame of the table. Hence, the allocated memory must be page-aligned.
-+	 *
-+	 * Some processors do not forget the initial address of the HFI table
-+	 * even after having been reprogrammed. Keep using the same pages. Do
-+	 * not free them.
- 	 */
- 	hfi_instance->hw_table = alloc_pages_exact(hfi_features.nr_table_pages,
- 						   GFP_KERNEL | __GFP_ZERO);
-@@ -485,6 +516,10 @@ void intel_hfi_offline(unsigned int cpu)
- 
- 	mutex_lock(&hfi_instance_lock);
- 	cpumask_clear_cpu(cpu, hfi_instance->cpus);
++static int hfi_do_disable(void)
++{
++	/* No locking needed. There is no concurrency with CPU offline. */
++	hfi_disable();
 +
-+	if (!cpumask_weight(hfi_instance->cpus))
-+		hfi_disable();
++	return 0;
++}
 +
- 	mutex_unlock(&hfi_instance_lock);
- }
++static struct syscore_ops hfi_pm_ops = {
++	.resume = hfi_do_enable,
++	.suspend = hfi_do_disable,
++};
++
+ void __init intel_hfi_init(void)
+ {
+ 	struct hfi_instance *hfi_instance;
+@@ -599,6 +625,8 @@ void __init intel_hfi_init(void)
+ 	if (!hfi_updates_wq)
+ 		goto err_nomem;
  
++	register_syscore_ops(&hfi_pm_ops);
++
+ 	return;
+ 
+ err_nomem:
 -- 
 2.43.0
 
