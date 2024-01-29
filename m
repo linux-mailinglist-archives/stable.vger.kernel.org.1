@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEAFA840EB0
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09463841033
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50670B27B6A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BF3F1C23934
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1FE157050;
-	Mon, 29 Jan 2024 17:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329A015EABA;
+	Mon, 29 Jan 2024 17:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ha54yZ3e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sXP+wEmf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6634B15703F;
-	Mon, 29 Jan 2024 17:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C0115705C;
+	Mon, 29 Jan 2024 17:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548328; cv=none; b=r9tv7/yBiW8nt8CyWprtc85meHlwjUC4JT9gBlUXeWCluTJt4AlJPlj96YS43l6IBxrOB+DtAivrKAtepC3sCuvPgSW3ChD9i1WSHkiTrJuTbLt+Vw/zlKLJHV95Vep5QXes93wFb6suPS++mCSWmeq5zFSiiox6xl9E3S9X72k=
+	t=1706548580; cv=none; b=QiVgDeM5IwSj4XZ6fr0TeoeSeoNat4+9G8EVxSWG/KRTMMTMOFbBqvHz7okfC7z5B1CNrEFeY3NF33mU8DMIHuys2H6OE/OyVjyf1ZfDRe3C3TmBq7MHAzIHQVjgfQKuUAAo0IlEpfgkxB6CrbNYiFdDVvdpC31bQ7SKrc+Z8J8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548328; c=relaxed/simple;
-	bh=PBPkinmIZNgRpdJ6Nz9HaxiREPrQd/SKrZEMB/6Eeww=;
+	s=arc-20240116; t=1706548580; c=relaxed/simple;
+	bh=+4+6nDRG5c/iFepHS/WoUWNmGk72wASXQCCxVpseHvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ry6BM8RCd/s3GuaM7Wt6g1FzYmkZoEPaKTFd5yFZZDtBcOjGWjOCtn4mvQTSIJ0DG2n0uNgoXhNM/Vp6CB5yS/s0aZaY8mSgyqnjyUn0R4mMKHSQ+bWSlzeAmGh3T9qxF8dr7OmBrGmzw9EAqYCbWMFghyIDfjbTzI0dcJ3Jwzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ha54yZ3e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9FAC433C7;
-	Mon, 29 Jan 2024 17:12:08 +0000 (UTC)
+	 MIME-Version; b=Qcwic69/zOoxiObJWnZlClU3P/1XjwSpvfCvgKTaYncqkAikTC7lnQRfyXLkS0Eo+xo33tt8hHhVJ73iURhpAvec4E6cHY2ruC/QDIR0ZbZKqRi6+qn0qJkneStV9bgzO/8THfDufxEEMZgm8yJAq1e4vWSBSUBV5hsmALCf9s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sXP+wEmf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC74CC433C7;
+	Mon, 29 Jan 2024 17:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548328;
-	bh=PBPkinmIZNgRpdJ6Nz9HaxiREPrQd/SKrZEMB/6Eeww=;
+	s=korg; t=1706548579;
+	bh=+4+6nDRG5c/iFepHS/WoUWNmGk72wASXQCCxVpseHvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ha54yZ3edkh8yOeriHrhUf4UiKCM0yryXBz73NRAijFq8ADegv/FAV9qLu1GUkvfo
-	 YCbWWe2aR0q1OmdPOZitlpJZErT5H9TTpk5vp11bB6bhgaJYTiu5Oz5NEyT6ehNAgy
-	 SwmBJHuRlOSrWbpWoTub7G4HtPYzjQWutbSkUWgo=
+	b=sXP+wEmfHIpIIOEgtdXUL9CZ/yc4IY61+ZWVKMkH0HQXzjWDrcGbD9h5T32r0pSnn
+	 +hlk3+FEANr94RHQ2ErNkVglEQK5jNDvfjRH6LKgSm31Loku0qz0CdkBPzepBa6+wJ
+	 tJbrCQxGpz6/fD9VwY7TAneKsw4q683qgaXzoD3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/185] net/mlx5e: Allow software parsing when IPsec crypto is enabled
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Chung-Chiang Cheng <cccheng@synology.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 234/331] btrfs: tree-checker: fix inline ref size in error messages
 Date: Mon, 29 Jan 2024 09:04:58 -0800
-Message-ID: <20240129170001.745906693@linuxfoundation.org>
+Message-ID: <20240129170021.721362993@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Chung-Chiang Cheng <cccheng@synology.com>
 
-[ Upstream commit 20f5468a7988dedd94a57ba8acd65ebda6a59723 ]
+commit f398e70dd69e6ceea71463a5380e6118f219197e upstream.
 
-All ConnectX devices have software parsing capability enabled, but it is
-more correct to set allow_swp only if capability exists, which for IPsec
-means that crypto offload is supported.
+The error message should accurately reflect the size rather than the
+type.
 
-Fixes: 2451da081a34 ("net/mlx5: Unify device IPsec capabilities check")
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f82d1c7ca8ae ("btrfs: tree-checker: Add EXTENT_ITEM and METADATA_ITEM check")
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Chung-Chiang Cheng <cccheng@synology.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/params.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/tree-checker.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-index 29dd3a04c154..d3de1b7a80bf 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
-@@ -990,8 +990,8 @@ void mlx5e_build_sq_param(struct mlx5_core_dev *mdev,
- 	void *wq = MLX5_ADDR_OF(sqc, sqc, wq);
- 	bool allow_swp;
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -1417,7 +1417,7 @@ static int check_extent_item(struct exte
+ 		if (unlikely(ptr + btrfs_extent_inline_ref_size(inline_type) > end)) {
+ 			extent_err(leaf, slot,
+ "inline ref item overflows extent item, ptr %lu iref size %u end %lu",
+-				   ptr, inline_type, end);
++				   ptr, btrfs_extent_inline_ref_size(inline_type), end);
+ 			return -EUCLEAN;
+ 		}
  
--	allow_swp =
--		mlx5_geneve_tx_allowed(mdev) || !!mlx5_ipsec_device_caps(mdev);
-+	allow_swp = mlx5_geneve_tx_allowed(mdev) ||
-+		    (mlx5_ipsec_device_caps(mdev) & MLX5_IPSEC_CAP_CRYPTO);
- 	mlx5e_build_sq_param_common(mdev, param);
- 	MLX5_SET(wq, wq, log_wq_sz, params->log_sq_size);
- 	MLX5_SET(sqc, sqc, allow_swp, allow_swp);
--- 
-2.43.0
-
 
 
 
