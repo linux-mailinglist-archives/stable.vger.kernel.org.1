@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-17124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8811C840FEB
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A42F841010
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FC351F2276D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB2BE28449B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED14915EAA4;
-	Mon, 29 Jan 2024 17:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A318A15A48A;
+	Mon, 29 Jan 2024 17:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dudMymdJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tlnlQSJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3E215EA9D;
-	Mon, 29 Jan 2024 17:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627E17375F;
+	Mon, 29 Jan 2024 17:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548528; cv=none; b=iSCtYFEyH2GYE1IlbqyUZT0ydstn2bdzo+Mmu84J+cFoqitH2dY3wIXtuDu405IsnlEwTSCp+4gRg/+kzk/v8aWFC/VMRdjmKF+CF6XTESbXDLImnwo4fGBd4nCdpd0fvwNXpqmHI7x8wYTYjRtznWdtArtP6kty3xSJkEh77d0=
+	t=1706548554; cv=none; b=hlubwPz8jbsxV6w15YbqyLbv5C8f7k+OVRTnU6X02kSy4pVu37cfwo+x42p/DZUsO6kdCcdez4Vom7BEWRTzm46f+xXa1SsmWMld/uLT5Cjh344t7vvHNXUxDpx7Vm408y09RU7+8srxugPyIVz+qpOE5IshGAR4YLoBHMh1R7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548528; c=relaxed/simple;
-	bh=/vNMii2+Ag+cWaZqETk7TuR1imIoYOCOY8eZa1YiEl4=;
+	s=arc-20240116; t=1706548554; c=relaxed/simple;
+	bh=iAi2Z8L3YzHBchvN8Gt3FekIeKC/RucG4yVej5ZjT8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZgRjI2HXMGr7EXJNw/ZATpOu5TbgZ/gdMS5jdYyttyP7MTfkVJrYLPDoJ4niauQdOMDha6GvTBCR/C9g7LG2ns6D42G9RoVHXxnNA10iWJtQHL0QHM8tUhqqsqAjngrvBH13QinY7xpIOwfa764CzNNiFimxU7hlbrZJMjn/j/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dudMymdJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6E8C433C7;
-	Mon, 29 Jan 2024 17:15:28 +0000 (UTC)
+	 MIME-Version; b=gnY2kFExTZNbV5+gOOTpVoV113eIzly8JaTXdOSyqW22s5kOSNOoMQU/iGbyYSayeUDmS44U5NuDgaYhH7iiSHEsyU9rv6IgHBARo+0RxhnzgYZEytSiOjFdJ0iSk45Fo3fRFdn+vxN9jM3flCdRtycUJ4jDAet9n/+GqwrKIgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tlnlQSJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2966EC43394;
+	Mon, 29 Jan 2024 17:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548528;
-	bh=/vNMii2+Ag+cWaZqETk7TuR1imIoYOCOY8eZa1YiEl4=;
+	s=korg; t=1706548554;
+	bh=iAi2Z8L3YzHBchvN8Gt3FekIeKC/RucG4yVej5ZjT8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dudMymdJ8NStkEeS3qDsNjKJJxKa/zpKz7LZauScCWKTPE3BeRCUl6NYgo4WPnrBp
-	 c/b0pRapVTiElby+Up2zIfh8DL6NFFVDO+pe+K9ESDlMI7lZ0vfq/ZgVdtJJ3AEf8j
-	 cnKqg0vtGmGtjztih9nHS1xS48V2bhG8ltkO0T/Y=
+	b=0tlnlQSJeiEiGn/J+s6928NSr2gUjNBdo8uPettDhZZxBrugd3/AflR09ltROEn7V
+	 tmR5/70W+pVSU4d+lQLNzvDMVuA8Ajx0mOSxfSEGi/yct525J2cIue+rjIzQYa/6Cq
+	 HxUt7pIMXJMO9Irp/qvRxNS/XJRyUfhPxOyf1Dq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Gray <jsg@jsg.id.au>
-Subject: [PATCH 6.6 163/331] Revert "drm/amd: Enable PCIe PME from D3"
-Date: Mon, 29 Jan 2024 09:03:47 -0800
-Message-ID: <20240129170019.699691673@linuxfoundation.org>
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 164/331] cifs: fix lock ordering while disabling multichannel
+Date: Mon, 29 Jan 2024 09:03:48 -0800
+Message-ID: <20240129170019.726573280@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
 References: <20240129170014.969142961@linuxfoundation.org>
@@ -64,31 +66,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonathan Gray <jsg@jsg.id.au>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-This reverts commit 847e6947afd3c46623172d2eabcfc2481ee8668e.
+commit 5eef12c4e3230f2025dc46ad8c4a3bc19978e5d7 upstream.
 
-duplicated a change made in 6.6.5
-49227bea27ebcd260f0c94a3055b14bbd8605c5e
+The code to handle the case of server disabling multichannel
+was picking iface_lock with chan_lock held. This goes against
+the lock ordering rules, as iface_lock is a higher order lock
+(even if it isn't so obvious).
 
-Cc: stable@vger.kernel.org # 6.6
-Signed-off-by: Jonathan Gray <jsg@jsg.id.au>
+This change fixes the lock ordering by doing the following in
+that order for each secondary channel:
+1. store iface and server pointers in local variable
+2. remove references to iface and server in channels
+3. unlock chan_lock
+4. lock iface_lock
+5. dec ref count for iface
+6. unlock iface_lock
+7. dec ref count for server
+8. lock chan_lock again
+
+Since this function can only be called in smb2_reconnect, and
+that cannot be called by two parallel processes, we should not
+have races due to dropping chan_lock between steps 3 and 8.
+
+Fixes: ee1d21794e55 ("cifs: handle when server stops supporting multichannel")
+Reported-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |    2 --
- 1 file changed, 2 deletions(-)
+ fs/smb/client/sess.c |   22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2197,8 +2197,6 @@ retry_init:
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -316,28 +316,32 @@ cifs_disable_secondary_channels(struct c
+ 		iface = ses->chans[i].iface;
+ 		server = ses->chans[i].server;
  
- 		pci_wake_from_d3(pdev, TRUE);
++		/*
++		 * remove these references first, since we need to unlock
++		 * the chan_lock here, since iface_lock is a higher lock
++		 */
++		ses->chans[i].iface = NULL;
++		ses->chans[i].server = NULL;
++		spin_unlock(&ses->chan_lock);
++
+ 		if (iface) {
+ 			spin_lock(&ses->iface_lock);
+ 			kref_put(&iface->refcount, release_iface);
+-			ses->chans[i].iface = NULL;
+ 			iface->num_channels--;
+ 			if (iface->weight_fulfilled)
+ 				iface->weight_fulfilled--;
+ 			spin_unlock(&ses->iface_lock);
+ 		}
  
--		pci_wake_from_d3(pdev, TRUE);
+-		spin_unlock(&ses->chan_lock);
+-		if (server && !server->terminate) {
+-			server->terminate = true;
+-			cifs_signal_cifsd_for_reconnect(server, false);
+-		}
+-		spin_lock(&ses->chan_lock);
 -
- 		/*
- 		 * For runpm implemented via BACO, PMFW will handle the
- 		 * timing for BACO in and out:
+ 		if (server) {
+-			ses->chans[i].server = NULL;
++			if (!server->terminate) {
++				server->terminate = true;
++				cifs_signal_cifsd_for_reconnect(server, false);
++			}
+ 			cifs_put_tcp_session(server, false);
+ 		}
+ 
++		spin_lock(&ses->chan_lock);
+ 	}
+ 
+ done:
 
 
 
