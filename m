@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-16488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8C2840D2D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92250840F59
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42B561C229FA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 486A61F27A94
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD24615A49E;
-	Mon, 29 Jan 2024 17:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD4915DBA3;
+	Mon, 29 Jan 2024 17:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kefLOomY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X054Oyw3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6948C15A494;
-	Mon, 29 Jan 2024 17:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B47515956B;
+	Mon, 29 Jan 2024 17:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548057; cv=none; b=hUbcX0VRH0p7DIdYRSOgoTJ0uf+7TURiAXbg5ytCfg9c8tBeIX+mgDOwJomefkx5fYDzhYLRNTRMaW1xrpU267Qd5h7UC02ywjBxyjlQZxzjjM3mMpHkaMh7l8eHQklysiuLawimyCEMPSo/Qwl/CQeYWNL6MORk5iDSV5XK4Yo=
+	t=1706548427; cv=none; b=OnMVZlb6tc8tf3Q4ieV5SKE+fFlFSaFzYzACzJhzHhBDhyZ/uM/NWIaHqkuRiFGyGkSNEu+7B3F7cMBYJn16lOVmOb+AZ4CvyKwQNs2MNDLVI/QioOKcRPzRP2YmWfVhUPtzQ/Jh3mvcLydfQZ+AfTzrP+SBe8LT2TXIlqThaJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548057; c=relaxed/simple;
-	bh=Pz+qex2lmoLe09komb/iYYHySp3iCfZ/FxAm+UN7+u8=;
+	s=arc-20240116; t=1706548427; c=relaxed/simple;
+	bh=2IKtRSb8S1xpicig3AtGLudMCNrt0EfuochPviUyl00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pzjt7nQLgiJEqimx/RvjmdDIYUoAR7a0sTM/3pWLwgotmmwkK0xl+DNDqxfZ3q+A74Wm7sZg6VyNHEkPpRG9wbSvBylf46uM6clrWpFj2f67iCe6KMuGHkccXMbc52HbqTpZt2DJ0vZmvQDmgkRBZFE7fS6gZ5w+gPWx6bQ0vBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kefLOomY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A7DC43330;
-	Mon, 29 Jan 2024 17:07:36 +0000 (UTC)
+	 MIME-Version; b=Cq6dQr1O8xZS0dqN+JMaJm+N3UEWHfQq05RrxdjXernRBGG6tJNIoptpBVNhHu0k4Eoxzq/tJKvN/Br69z6qnqsWY1V35F/brPGjhPBsdpvH1WIsjbVxv6vSYS+Xj0bXH0f06He4fmnP7Gh9QTvmL2qmv1+wXqFxvxD2NVSfITI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X054Oyw3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3222C433C7;
+	Mon, 29 Jan 2024 17:13:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548056;
-	bh=Pz+qex2lmoLe09komb/iYYHySp3iCfZ/FxAm+UN7+u8=;
+	s=korg; t=1706548427;
+	bh=2IKtRSb8S1xpicig3AtGLudMCNrt0EfuochPviUyl00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kefLOomYBUKZSxXAHrCTJTs3idduv4FxG7vkDSYzGyNMpEvyLhaQqYq6E0p7pDnFc
-	 pmCZr6CPfjz8GVdSJEg3+l///GnoyLsjIx7lF6Mmrj2XfBPLn1+X6oX7M4dvY4ka+B
-	 nv9a/Nq5r1fbspMFNS0kYwH07wQfnQyVi/ah9Cis=
+	b=X054Oyw3Gd52GektU0Kdj4SlxJrOYzUK/gMm/amSsaVkflbmRRtuIvzIKjkVMyvSh
+	 eUgf4hV0WzOH15PtTGyuOFawQgVt3dav0P0CX8o38iYXoy7qYayJU7k0Mv7CElYa4o
+	 N44PgIX30IlMn9DM+yqq9AXMPYJcDYkAVxfed4m4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Krowiak <akrowiak@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.7 036/346] s390/vfio-ap: always filter entire AP matrix
-Date: Mon, 29 Jan 2024 09:01:07 -0800
-Message-ID: <20240129170017.448266165@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 004/331] serial: core: Simplify uart_get_rs485_mode()
+Date: Mon, 29 Jan 2024 09:01:08 -0800
+Message-ID: <20240129170015.093132204@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,188 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Krowiak <akrowiak@linux.ibm.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 850fb7fa8c684a4c6bf0e4b6978f4ddcc5d43d11 upstream.
+[ Upstream commit 7cda0b9eb6eb9e761f452e2ef4e81eca20b19938 ]
 
-The vfio_ap_mdev_filter_matrix function is called whenever a new adapter or
-domain is assigned to the mdev. The purpose of the function is to update
-the guest's AP configuration by filtering the matrix of adapters and
-domains assigned to the mdev. When an adapter or domain is assigned, only
-the APQNs associated with the APID of the new adapter or APQI of the new
-domain are inspected. If an APQN does not reference a queue device bound to
-the vfio_ap device driver, then it's APID will be filtered from the mdev's
-matrix when updating the guest's AP configuration.
+Simplify uart_get_rs485_mode() by using temporary variable for
+the GPIO descriptor. With that, use proper type for the flags
+of the GPIO descriptor.
 
-Inspecting only the APID of the new adapter or APQI of the new domain will
-result in passing AP queues through to a guest that are not bound to the
-vfio_ap device driver under certain circumstances. Consider the following:
-
-guest's AP configuration (all also assigned to the mdev's matrix):
-14.0004
-14.0005
-14.0006
-16.0004
-16.0005
-16.0006
-
-unassign domain 4
-unbind queue 16.0005
-assign domain 4
-
-When domain 4 is re-assigned, since only domain 4 will be inspected, the
-APQNs that will be examined will be:
-14.0004
-16.0004
-
-Since both of those APQNs reference queue devices that are bound to the
-vfio_ap device driver, nothing will get filtered from the mdev's matrix
-when updating the guest's AP configuration. Consequently, queue 16.0005
-will get passed through despite not being bound to the driver. This
-violates the linux device model requirement that a guest shall only be
-given access to devices bound to the device driver facilitating their
-pass-through.
-
-To resolve this problem, every adapter and domain assigned to the mdev will
-be inspected when filtering the mdev's matrix.
-
-Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
-Acked-by: Halil Pasic <pasic@linux.ibm.com>
-Fixes: 48cae940c31d ("s390/vfio-ap: refresh guest's APCB by filtering AP resources assigned to mdev")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240115185441.31526-2-akrowiak@linux.ibm.com
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20231003142346.3072929-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 1a33e33ca0e8 ("serial: core: set missing supported flag for RX during TX GPIO")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/vfio_ap_ops.c |   57 +++++++++++---------------------------
- 1 file changed, 17 insertions(+), 40 deletions(-)
+ drivers/tty/serial/serial_core.c | 30 ++++++++++++------------------
+ 1 file changed, 12 insertions(+), 18 deletions(-)
 
---- a/drivers/s390/crypto/vfio_ap_ops.c
-+++ b/drivers/s390/crypto/vfio_ap_ops.c
-@@ -671,8 +671,7 @@ static bool vfio_ap_mdev_filter_cdoms(st
-  * Return: a boolean value indicating whether the KVM guest's APCB was changed
-  *	   by the filtering or not.
-  */
--static bool vfio_ap_mdev_filter_matrix(unsigned long *apm, unsigned long *aqm,
--				       struct ap_matrix_mdev *matrix_mdev)
-+static bool vfio_ap_mdev_filter_matrix(struct ap_matrix_mdev *matrix_mdev)
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index 18b49b1439a5..021e096bc4ed 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -3572,9 +3572,10 @@ int uart_get_rs485_mode(struct uart_port *port)
  {
- 	unsigned long apid, apqi, apqn;
- 	DECLARE_BITMAP(prev_shadow_apm, AP_DEVICES);
-@@ -693,8 +692,8 @@ static bool vfio_ap_mdev_filter_matrix(u
- 	bitmap_and(matrix_mdev->shadow_apcb.aqm, matrix_mdev->matrix.aqm,
- 		   (unsigned long *)matrix_dev->info.aqm, AP_DOMAINS);
- 
--	for_each_set_bit_inv(apid, apm, AP_DEVICES) {
--		for_each_set_bit_inv(apqi, aqm, AP_DOMAINS) {
-+	for_each_set_bit_inv(apid, matrix_mdev->matrix.apm, AP_DEVICES) {
-+		for_each_set_bit_inv(apqi, matrix_mdev->matrix.aqm, AP_DOMAINS) {
- 			/*
- 			 * If the APQN is not bound to the vfio_ap device
- 			 * driver, then we can't assign it to the guest's
-@@ -959,7 +958,6 @@ static ssize_t assign_adapter_store(stru
- {
+ 	struct serial_rs485 *rs485conf = &port->rs485;
+ 	struct device *dev = port->dev;
++	enum gpiod_flags dflags;
++	struct gpio_desc *desc;
+ 	u32 rs485_delay[2];
  	int ret;
- 	unsigned long apid;
--	DECLARE_BITMAP(apm_delta, AP_DEVICES);
- 	struct ap_matrix_mdev *matrix_mdev = dev_get_drvdata(dev);
+-	int rx_during_tx_gpio_flag;
  
- 	mutex_lock(&ap_perms_mutex);
-@@ -988,11 +986,8 @@ static ssize_t assign_adapter_store(stru
- 	}
+ 	if (!(port->rs485_supported.flags & SER_RS485_ENABLED))
+ 		return 0;
+@@ -3616,26 +3617,19 @@ int uart_get_rs485_mode(struct uart_port *port)
+ 	 * bus participants enable it, no communication is possible at all.
+ 	 * Works fine for short cables and users may enable for longer cables.
+ 	 */
+-	port->rs485_term_gpio = devm_gpiod_get_optional(dev, "rs485-term",
+-							GPIOD_OUT_LOW);
+-	if (IS_ERR(port->rs485_term_gpio)) {
+-		ret = PTR_ERR(port->rs485_term_gpio);
+-		port->rs485_term_gpio = NULL;
+-		return dev_err_probe(dev, ret, "Cannot get rs485-term-gpios\n");
+-	}
++	desc = devm_gpiod_get_optional(dev, "rs485-term", GPIOD_OUT_LOW);
++	if (IS_ERR(desc))
++		return dev_err_probe(dev, PTR_ERR(desc), "Cannot get rs485-term-gpios\n");
++	port->rs485_term_gpio = desc;
+ 	if (port->rs485_term_gpio)
+ 		port->rs485_supported.flags |= SER_RS485_TERMINATE_BUS;
  
- 	vfio_ap_mdev_link_adapter(matrix_mdev, apid);
--	memset(apm_delta, 0, sizeof(apm_delta));
--	set_bit_inv(apid, apm_delta);
+-	rx_during_tx_gpio_flag = (rs485conf->flags & SER_RS485_RX_DURING_TX) ?
+-				 GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
+-	port->rs485_rx_during_tx_gpio = devm_gpiod_get_optional(dev,
+-								"rs485-rx-during-tx",
+-								rx_during_tx_gpio_flag);
+-	if (IS_ERR(port->rs485_rx_during_tx_gpio)) {
+-		ret = PTR_ERR(port->rs485_rx_during_tx_gpio);
+-		port->rs485_rx_during_tx_gpio = NULL;
+-		return dev_err_probe(dev, ret, "Cannot get rs485-rx-during-tx-gpios\n");
+-	}
++	dflags = (rs485conf->flags & SER_RS485_RX_DURING_TX) ?
++		 GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
++	desc = devm_gpiod_get_optional(dev, "rs485-rx-during-tx", dflags);
++	if (IS_ERR(desc))
++		return dev_err_probe(dev, PTR_ERR(desc), "Cannot get rs485-rx-during-tx-gpios\n");
++	port->rs485_rx_during_tx_gpio = desc;
  
--	if (vfio_ap_mdev_filter_matrix(apm_delta,
--				       matrix_mdev->matrix.aqm, matrix_mdev))
-+	if (vfio_ap_mdev_filter_matrix(matrix_mdev))
- 		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
- 
- 	ret = count;
-@@ -1168,7 +1163,6 @@ static ssize_t assign_domain_store(struc
- {
- 	int ret;
- 	unsigned long apqi;
--	DECLARE_BITMAP(aqm_delta, AP_DOMAINS);
- 	struct ap_matrix_mdev *matrix_mdev = dev_get_drvdata(dev);
- 
- 	mutex_lock(&ap_perms_mutex);
-@@ -1197,11 +1191,8 @@ static ssize_t assign_domain_store(struc
- 	}
- 
- 	vfio_ap_mdev_link_domain(matrix_mdev, apqi);
--	memset(aqm_delta, 0, sizeof(aqm_delta));
--	set_bit_inv(apqi, aqm_delta);
- 
--	if (vfio_ap_mdev_filter_matrix(matrix_mdev->matrix.apm, aqm_delta,
--				       matrix_mdev))
-+	if (vfio_ap_mdev_filter_matrix(matrix_mdev))
- 		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
- 
- 	ret = count;
-@@ -2092,9 +2083,7 @@ int vfio_ap_mdev_probe_queue(struct ap_d
- 	if (matrix_mdev) {
- 		vfio_ap_mdev_link_queue(matrix_mdev, q);
- 
--		if (vfio_ap_mdev_filter_matrix(matrix_mdev->matrix.apm,
--					       matrix_mdev->matrix.aqm,
--					       matrix_mdev))
-+		if (vfio_ap_mdev_filter_matrix(matrix_mdev))
- 			vfio_ap_mdev_update_guest_apcb(matrix_mdev);
- 	}
- 	dev_set_drvdata(&apdev->device, q);
-@@ -2444,34 +2433,22 @@ void vfio_ap_on_cfg_changed(struct ap_co
- 
- static void vfio_ap_mdev_hot_plug_cfg(struct ap_matrix_mdev *matrix_mdev)
- {
--	bool do_hotplug = false;
--	int filter_domains = 0;
--	int filter_adapters = 0;
--	DECLARE_BITMAP(apm, AP_DEVICES);
--	DECLARE_BITMAP(aqm, AP_DOMAINS);
-+	bool filter_domains, filter_adapters, filter_cdoms, do_hotplug = false;
- 
- 	mutex_lock(&matrix_mdev->kvm->lock);
- 	mutex_lock(&matrix_dev->mdevs_lock);
- 
--	filter_adapters = bitmap_and(apm, matrix_mdev->matrix.apm,
--				     matrix_mdev->apm_add, AP_DEVICES);
--	filter_domains = bitmap_and(aqm, matrix_mdev->matrix.aqm,
--				    matrix_mdev->aqm_add, AP_DOMAINS);
--
--	if (filter_adapters && filter_domains)
--		do_hotplug |= vfio_ap_mdev_filter_matrix(apm, aqm, matrix_mdev);
--	else if (filter_adapters)
--		do_hotplug |=
--			vfio_ap_mdev_filter_matrix(apm,
--						   matrix_mdev->shadow_apcb.aqm,
--						   matrix_mdev);
--	else
--		do_hotplug |=
--			vfio_ap_mdev_filter_matrix(matrix_mdev->shadow_apcb.apm,
--						   aqm, matrix_mdev);
-+	filter_adapters = bitmap_intersects(matrix_mdev->matrix.apm,
-+					    matrix_mdev->apm_add, AP_DEVICES);
-+	filter_domains = bitmap_intersects(matrix_mdev->matrix.aqm,
-+					   matrix_mdev->aqm_add, AP_DOMAINS);
-+	filter_cdoms = bitmap_intersects(matrix_mdev->matrix.adm,
-+					 matrix_mdev->adm_add, AP_DOMAINS);
-+
-+	if (filter_adapters || filter_domains)
-+		do_hotplug = vfio_ap_mdev_filter_matrix(matrix_mdev);
- 
--	if (bitmap_intersects(matrix_mdev->matrix.adm, matrix_mdev->adm_add,
--			      AP_DOMAINS))
-+	if (filter_cdoms)
- 		do_hotplug |= vfio_ap_mdev_filter_cdoms(matrix_mdev);
- 
- 	if (do_hotplug)
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
