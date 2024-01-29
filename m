@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-16740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B80840E39
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2375F841035
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 382A71C23A13
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56C1C1C239B4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCF515B2F9;
-	Mon, 29 Jan 2024 17:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B9215F302;
+	Mon, 29 Jan 2024 17:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWN8vLbS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aWZ8nN2+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5AC15703E;
-	Mon, 29 Jan 2024 17:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5307B15B30B;
+	Mon, 29 Jan 2024 17:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548245; cv=none; b=bknErWiEUH+qyiBBr8XAG8RuhBXFHmnN9CtnBM5SgL4wKA5jcIrWdTwlYyD4MA0e1vHHkwnWztqgvs+MJjqcl3lqB7nK1urfeUYDCzPW1j5OqfzUIkgASyd62hlUcJQz83pvhebHIhOkcAmT4ctL+z9W1Rv/HogP9PrFA29olAs=
+	t=1706548581; cv=none; b=r0uh5kBnClc8zIT4/TofBmirqN0FUpTxfaeJZQJK57HijPqx50YaqtGZz+DydG+bRnNPk/eF1McnoKRijhG52KpXaQxx7HfSFgwqVYF8xMwy7u42JqsbEy58I6WyKwxMamn515FhEDJkrLXKm6uHo3oqNRxQ43T/u04Z4RtllYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548245; c=relaxed/simple;
-	bh=iIDHRdir7zBjGO+Db8ox+QpCkEIK55sgIDKzCcr2GaM=;
+	s=arc-20240116; t=1706548581; c=relaxed/simple;
+	bh=VbdtgJ+Q0X/5gHhLBOF3sMoOYkcxaDv3uSJAexAS9wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H3sM7CrOWMx/PkvYIK5q05nZW3TGA2BZku60XpGjGcljvdzUIX38MdaaugpU4pih+ll9KIyzsY85aPz/rNz7vWOgEZf/S3NJYAo9c27MZeyEqZiaE2cP5ZxL2YgXdYcXn0P6Z8YCtaR2pratyUiOZRBYGhVFZsjbs5lAwwiMMqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWN8vLbS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E65BDC433F1;
-	Mon, 29 Jan 2024 17:10:44 +0000 (UTC)
+	 MIME-Version; b=pnAK7GWrETslsUZPwKiwyPDinuDoPQ3YaZ0QHXFbSOXJwf1SFd94kxeDNry5GI6qRwBn+D1xEKmjsP+Uz4pC3hlc92QNM3So04iBV6YILcAb/ZyqncZVLZqREuZ5tGWUpbmp2w16ELX8C50Faxjw2WTnEzndEQurK/qQsdMcUcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aWZ8nN2+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6ECC433C7;
+	Mon, 29 Jan 2024 17:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548245;
-	bh=iIDHRdir7zBjGO+Db8ox+QpCkEIK55sgIDKzCcr2GaM=;
+	s=korg; t=1706548581;
+	bh=VbdtgJ+Q0X/5gHhLBOF3sMoOYkcxaDv3uSJAexAS9wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pWN8vLbSYAmDvSB36bffDs0qP9ZPsI5/WfneIKizwSiy9/+AiVFVMbZN0ZAhKrrz2
-	 JN/8LEjo+JXN7B/cOc8xJ0HeC8lgOJDmuIzLwZzvUQDgK/fnqWFaMxaDE2amjLd0O5
-	 e7ciWMBjLp8GWU+r86d9MNg1p5OgpnqrNYI/H+Z8=
+	b=aWZ8nN2+/4FKrpdPLj/AoY2ieq5l5yOZsxiTccPA0t1Y79a5xLQQYcvQty9cAJXFL
+	 OxNIyex7BAh4wv09/Ut7ploK//+pokiFYZWopo4iFvv5CwIse+XRlWyRwDCaOSIvb1
+	 6VzaS6FT/8/fG3NZctWqbKjd4ORaKFFmvl9dyrY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.7 269/346] drm/amd/display: Port DENTIST hang and TDR fixes to OTG disable W/A
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 236/331] btrfs: defrag: reject unknown flags of btrfs_ioctl_defrag_range_args
 Date: Mon, 29 Jan 2024 09:05:00 -0800
-Message-ID: <20240129170024.297101314@linuxfoundation.org>
+Message-ID: <20240129170021.784905021@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 4b56f7d47be87cde5f368b67bc7fac53a2c3e8d2 upstream.
+commit 173431b274a9a54fc10b273b46e67f46bcf62d2e upstream.
 
-[Why]
-We can experience DENTIST hangs during optimize_bandwidth or TDRs if
-FIFO is toggled and hangs.
+Add extra sanity check for btrfs_ioctl_defrag_range_args::flags.
 
-[How]
-Port the DCN35 fixes to DCN314.
+This is not really to enhance fuzzing tests, but as a preparation for
+future expansion on btrfs_ioctl_defrag_range_args.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+In the future we're going to add new members, allowing more fine tuning
+for btrfs defrag.  Without the -ENONOTSUPP error, there would be no way
+to detect if the kernel supports those new defrag features.
+
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c |   21 ++++------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ fs/btrfs/ioctl.c           |    4 ++++
+ include/uapi/linux/btrfs.h |    3 +++
+ 2 files changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
-@@ -131,30 +131,27 @@ static int dcn314_get_active_display_cnt
- 	return display_count;
- }
- 
--static void dcn314_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *context, bool disable)
-+static void dcn314_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *context,
-+				  bool safe_to_lower, bool disable)
- {
- 	struct dc *dc = clk_mgr_base->ctx->dc;
- 	int i;
- 
- 	for (i = 0; i < dc->res_pool->pipe_count; ++i) {
--		struct pipe_ctx *pipe = &dc->current_state->res_ctx.pipe_ctx[i];
-+		struct pipe_ctx *pipe = safe_to_lower
-+			? &context->res_ctx.pipe_ctx[i]
-+			: &dc->current_state->res_ctx.pipe_ctx[i];
- 
- 		if (pipe->top_pipe || pipe->prev_odm_pipe)
- 			continue;
- 		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal))) {
--			struct stream_encoder *stream_enc = pipe->stream_res.stream_enc;
--
- 			if (disable) {
--				if (stream_enc && stream_enc->funcs->disable_fifo)
--					pipe->stream_res.stream_enc->funcs->disable_fifo(stream_enc);
-+				if (pipe->stream_res.tg && pipe->stream_res.tg->funcs->immediate_disable_crtc)
-+					pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
- 
--				pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
- 				reset_sync_context_for_pipe(dc, context, i);
- 			} else {
- 				pipe->stream_res.tg->funcs->enable_crtc(pipe->stream_res.tg);
--
--				if (stream_enc && stream_enc->funcs->enable_fifo)
--					pipe->stream_res.stream_enc->funcs->enable_fifo(stream_enc);
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -2608,6 +2608,10 @@ static int btrfs_ioctl_defrag(struct fil
+ 				ret = -EFAULT;
+ 				goto out;
  			}
- 		}
- 	}
-@@ -252,11 +249,11 @@ void dcn314_update_clocks(struct clk_mgr
- 	}
- 
- 	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz)) {
--		dcn314_disable_otg_wa(clk_mgr_base, context, true);
-+		dcn314_disable_otg_wa(clk_mgr_base, context, safe_to_lower, true);
- 
- 		clk_mgr_base->clks.dispclk_khz = new_clocks->dispclk_khz;
- 		dcn314_smu_set_dispclk(clk_mgr, clk_mgr_base->clks.dispclk_khz);
--		dcn314_disable_otg_wa(clk_mgr_base, context, false);
-+		dcn314_disable_otg_wa(clk_mgr_base, context, safe_to_lower, false);
- 
- 		update_dispclk = true;
- 	}
++			if (range.flags & ~BTRFS_DEFRAG_RANGE_FLAGS_SUPP) {
++				ret = -EOPNOTSUPP;
++				goto out;
++			}
+ 			/* compression requires us to start the IO */
+ 			if ((range.flags & BTRFS_DEFRAG_RANGE_COMPRESS)) {
+ 				range.flags |= BTRFS_DEFRAG_RANGE_START_IO;
+--- a/include/uapi/linux/btrfs.h
++++ b/include/uapi/linux/btrfs.h
+@@ -612,6 +612,9 @@ struct btrfs_ioctl_clone_range_args {
+  */
+ #define BTRFS_DEFRAG_RANGE_COMPRESS 1
+ #define BTRFS_DEFRAG_RANGE_START_IO 2
++#define BTRFS_DEFRAG_RANGE_FLAGS_SUPP	(BTRFS_DEFRAG_RANGE_COMPRESS |		\
++					 BTRFS_DEFRAG_RANGE_START_IO)
++
+ struct btrfs_ioctl_defrag_range_args {
+ 	/* start of the defrag operation */
+ 	__u64 start;
 
 
 
