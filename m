@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-16592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777DB840D9B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4BF2840FCB
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F4EC28D411
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 921F2284048
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3581515A48E;
-	Mon, 29 Jan 2024 17:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6557222A;
+	Mon, 29 Jan 2024 17:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGbZXHKi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="md1wDA8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E865515A48D;
-	Mon, 29 Jan 2024 17:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1F372223;
+	Mon, 29 Jan 2024 17:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548134; cv=none; b=AEChiJvmsoNsbvNUfr1JTSTmULOaOj0UOi67ZnuX36uLDPh6fL5nmIsW26Lgu1FFeunKKktWaSPa7J7OuN4HI+XIcArsPFcpJnV6ilXqpi2GpM/seN7I5lWKuANq5EshMlEMEeBeWYzhyJ18cwSQTvM+XC6eBLtFA+YkwA2B7uk=
+	t=1706548503; cv=none; b=XP63C2uaDRm7PuvwxMp0iVCFnjKOy8hMOtrPD5Ouc3zJ1kSq7nB+5k88kBn5dJXIPAgQuikY7+CyzdH+bImEFMwru1ioFbseSWoHuf7FpYPhDgV/v9QxX1VnFNlEBxzR3jGdfWhITy9QedJDqM8b5ytcAzh9zM2JHb4xryJ4imA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548134; c=relaxed/simple;
-	bh=1Jcfaqt32XyjvhaIlK8GzRRu6mG5GCzNFI0PDy9+otQ=;
+	s=arc-20240116; t=1706548503; c=relaxed/simple;
+	bh=b+K6aWXo7dKfxVh1bFcP5alfIAnKxrB/b2UmIJBqFdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HjJsYGxX9s66IawCwS43hp7KUhuVwpIIvW8IIkrTi08/3+iIf8wA4UTkpkcm+hxhD1jZK1PDN3kpFuwylZAaCQFuLBI4EXa8GcllH3WiU+muvYQwkrbfvz7GCEP7iV9ga+pF8hBa+dwBp+73j3viQqhIQBy9Xvk7Scm4ulkjm/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGbZXHKi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B01F7C43390;
-	Mon, 29 Jan 2024 17:08:53 +0000 (UTC)
+	 MIME-Version; b=HWH/8jkW84NhOGrmwDH73zPcebasJcl6rgiuQ5doa8JNkALGNaoge6quPOfu81rx70LveiC1Phm/S6OYdbrzhFbXuOpNwQyIRQOXGzIie+8e2GkoLROwcQL4YGdmWVQalqFhrWWCyr1cZCE0Bu1i6qg3UxxooZQcTNydB8BUA5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=md1wDA8r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73884C433C7;
+	Mon, 29 Jan 2024 17:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548133;
-	bh=1Jcfaqt32XyjvhaIlK8GzRRu6mG5GCzNFI0PDy9+otQ=;
+	s=korg; t=1706548503;
+	bh=b+K6aWXo7dKfxVh1bFcP5alfIAnKxrB/b2UmIJBqFdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGbZXHKiSk0sYsuiQIZW6lj8cDGumhq89ENifoI30wuoQn62z9a4kq7hmT181bxHv
-	 joFETg9QMXz02ch5UOd0jL+V4EOGaaa4F0MH9j/bgl96tRzD7DNNseXXfwSIcunftQ
-	 bRPsA8Uk8zO+Y6xaMzCRtD7G8ZshmWW6yamhLfY8=
+	b=md1wDA8rIkbQEGxjKZpHkg7edy/SrEKScSOLMClF1TqNtDR2JVvpYc6EZpjcdo7EH
+	 Yx5FSpIW4u8loVBJyYrm+FsQmfqmCn/iyh1UZW+zk2XLlqR4/LkyXMO93i1ley8Z/m
+	 auv1T44JHt3ZGq9MUzgIHvfJ4iEwbQYazvEN84DA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Glaza <jan.glaza@intel.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 164/346] dpll: fix register pin with unregistered parent pin
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.6 131/331] serial: sc16is7xx: remove unused line structure member
 Date: Mon, 29 Jan 2024 09:03:15 -0800
-Message-ID: <20240129170021.222816429@linuxfoundation.org>
+Message-ID: <20240129170018.781589516@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 7dc5b18ff71bd6f948810ab8a08b6a6ff8b315c5 ]
+commit 41a308cbedb2a68a6831f0f2e992e296c4b8aff0 upstream.
 
-In case of multiple kernel module instances using the same dpll device:
-if only one registers dpll device, then only that one can register
-directly connected pins with a dpll device. When unregistered parent is
-responsible for determining if the muxed pin can be registered with it
-or not, the drivers need to be loaded in serialized order to work
-correctly - first the driver instance which registers the direct pins
-needs to be loaded, then the other instances could register muxed type
-pins.
+Now that the driver has been converted to use one regmap per port, the line
+structure member is no longer used, so remove it.
 
-Allow registration of a pin with a parent even if the parent was not
-yet registered, thus allow ability for unserialized driver instance
-load order.
-Do not WARN_ON notification for unregistered pin, which can be invoked
-for described case, instead just return error.
-
-Fixes: 9431063ad323 ("dpll: core: Add DPLL framework base functions")
-Fixes: 9d71b54b65b1 ("dpll: netlink: Add DPLL framework base functions")
-Reviewed-by: Jan Glaza <jan.glaza@intel.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231211171353.2901416-4-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dpll/dpll_core.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
-index 5e3b9b5679f9..f8fbf0394288 100644
---- a/drivers/dpll/dpll_core.c
-+++ b/drivers/dpll/dpll_core.c
-@@ -28,8 +28,6 @@ static u32 dpll_xa_id;
- 	WARN_ON_ONCE(!xa_get_mark(&dpll_device_xa, (d)->id, DPLL_REGISTERED))
- #define ASSERT_DPLL_NOT_REGISTERED(d)	\
- 	WARN_ON_ONCE(xa_get_mark(&dpll_device_xa, (d)->id, DPLL_REGISTERED))
--#define ASSERT_PIN_REGISTERED(p)	\
--	WARN_ON_ONCE(!xa_get_mark(&dpll_pin_xa, (p)->id, DPLL_REGISTERED))
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -323,7 +323,6 @@ struct sc16is7xx_one_config {
  
- struct dpll_device_registration {
- 	struct list_head list;
-@@ -614,8 +612,6 @@ dpll_pin_register(struct dpll_device *dpll, struct dpll_pin *pin,
- 	    WARN_ON(!ops->state_on_dpll_get) ||
- 	    WARN_ON(!ops->direction_get))
- 		return -EINVAL;
--	if (ASSERT_DPLL_REGISTERED(dpll))
--		return -EINVAL;
+ struct sc16is7xx_one {
+ 	struct uart_port		port;
+-	u8				line;
+ 	struct regmap			*regmap;
+ 	struct kthread_work		tx_work;
+ 	struct kthread_work		reg_work;
+@@ -1531,7 +1530,6 @@ static int sc16is7xx_probe(struct device
+ 		     SC16IS7XX_IOCONTROL_SRESET_BIT);
  
- 	mutex_lock(&dpll_lock);
- 	if (WARN_ON(!(dpll->module == pin->module &&
-@@ -693,8 +689,6 @@ int dpll_pin_on_pin_register(struct dpll_pin *parent, struct dpll_pin *pin,
- 	    WARN_ON(!ops->state_on_pin_get) ||
- 	    WARN_ON(!ops->direction_get))
- 		return -EINVAL;
--	if (ASSERT_PIN_REGISTERED(parent))
--		return -EINVAL;
- 
- 	mutex_lock(&dpll_lock);
- 	ret = dpll_xa_ref_pin_add(&pin->parent_refs, parent, ops, priv);
--- 
-2.43.0
-
+ 	for (i = 0; i < devtype->nr_uart; ++i) {
+-		s->p[i].line		= i;
+ 		/* Initialize port data */
+ 		s->p[i].port.dev	= dev;
+ 		s->p[i].port.irq	= irq;
 
 
 
