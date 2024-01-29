@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-16710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C5FA840E18
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8811C840FEB
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E54B1F2D04D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FC351F2276D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6349115B11A;
-	Mon, 29 Jan 2024 17:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED14915EAA4;
+	Mon, 29 Jan 2024 17:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cknaOgWp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dudMymdJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2076D159583;
-	Mon, 29 Jan 2024 17:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3E215EA9D;
+	Mon, 29 Jan 2024 17:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548223; cv=none; b=oFKYknOqy9qeOlm11u/BvitFRFgKliABrxuotS+XONLlhgfaAWjBt2M08qPhCwN17n7ezvNEuo/9rD5VGtGlzufwzsi/qNqlhDwUFRO9W5Zy4avFyqmVGcSpqbt64v53u5OmZfpp6PNhjRLJOZuxHO7U0eUaX2GMZK5XSqBhsGQ=
+	t=1706548528; cv=none; b=iSCtYFEyH2GYE1IlbqyUZT0ydstn2bdzo+Mmu84J+cFoqitH2dY3wIXtuDu405IsnlEwTSCp+4gRg/+kzk/v8aWFC/VMRdjmKF+CF6XTESbXDLImnwo4fGBd4nCdpd0fvwNXpqmHI7x8wYTYjRtznWdtArtP6kty3xSJkEh77d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548223; c=relaxed/simple;
-	bh=dgPsUnHTZZOw7d0SbiECY4NDnQSiTeRjMC3/PAuSvFM=;
+	s=arc-20240116; t=1706548528; c=relaxed/simple;
+	bh=/vNMii2+Ag+cWaZqETk7TuR1imIoYOCOY8eZa1YiEl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n96F+nX1Aro73/v9FI4RUO8O7tZjjyNt8c/AoaQHzijHUUEuGP3+2a9IOrN9AzWaaYXD0PQ0/rdH3m8Mp5UGR/+uLb/EaD8PFvs74Jy2sldOpxV2C1O6IVMfgtps2kbhUFJMbmsqTWwENkkk6RHwu0lQOkJXwdimz45fHgvL5FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cknaOgWp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA47AC433F1;
-	Mon, 29 Jan 2024 17:10:22 +0000 (UTC)
+	 MIME-Version; b=ZgRjI2HXMGr7EXJNw/ZATpOu5TbgZ/gdMS5jdYyttyP7MTfkVJrYLPDoJ4niauQdOMDha6GvTBCR/C9g7LG2ns6D42G9RoVHXxnNA10iWJtQHL0QHM8tUhqqsqAjngrvBH13QinY7xpIOwfa764CzNNiFimxU7hlbrZJMjn/j/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dudMymdJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E6E8C433C7;
+	Mon, 29 Jan 2024 17:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548222;
-	bh=dgPsUnHTZZOw7d0SbiECY4NDnQSiTeRjMC3/PAuSvFM=;
+	s=korg; t=1706548528;
+	bh=/vNMii2+Ag+cWaZqETk7TuR1imIoYOCOY8eZa1YiEl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cknaOgWp9RoX58PGpGo8AC/mc1Pxxi+jLaNLbBN3c3Wke56hIgBQrVcg26kBkBqAk
-	 oN1ipeOva889+ONl6oNlBGFDp2q5RBA1yCzPCWRP+GpJJOpjCBdomGej1szbQf1PMd
-	 R63KP+S0fPETZRUGL/0JvOpn0keaeCvf6muQzyUY=
+	b=dudMymdJ8NStkEeS3qDsNjKJJxKa/zpKz7LZauScCWKTPE3BeRCUl6NYgo4WPnrBp
+	 c/b0pRapVTiElby+Up2zIfh8DL6NFFVDO+pe+K9ESDlMI7lZ0vfq/ZgVdtJJ3AEf8j
+	 cnKqg0vtGmGtjztih9nHS1xS48V2bhG8ltkO0T/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 027/185] parisc/firmware: Fix F-extend for PDC addresses
+	Jonathan Gray <jsg@jsg.id.au>
+Subject: [PATCH 6.6 163/331] Revert "drm/amd: Enable PCIe PME from D3"
 Date: Mon, 29 Jan 2024 09:03:47 -0800
-Message-ID: <20240129165959.469755366@linuxfoundation.org>
+Message-ID: <20240129170019.699691673@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Jonathan Gray <jsg@jsg.id.au>
 
-commit 735ae74f73e55c191d48689bd11ff4a06ea0508f upstream.
+This reverts commit 847e6947afd3c46623172d2eabcfc2481ee8668e.
 
-When running with narrow firmware (64-bit kernel using a 32-bit
-firmware), extend PDC addresses into the 0xfffffff0.00000000
-region instead of the 0xf0f0f0f0.00000000 region.
+duplicated a change made in 6.6.5
+49227bea27ebcd260f0c94a3055b14bbd8605c5e
 
-This fixes the power button on the C3700 machine in qemu (64-bit CPU
-with 32-bit firmware), and my assumption is that the previous code was
-really never used (because most 64-bit machines have a 64-bit firmware),
-or it just worked on very old machines because they may only decode
-40-bit of virtual addresses.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # 6.6
+Signed-off-by: Jonathan Gray <jsg@jsg.id.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/firmware.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/arch/parisc/kernel/firmware.c
-+++ b/arch/parisc/kernel/firmware.c
-@@ -123,10 +123,10 @@ static unsigned long f_extend(unsigned l
- #ifdef CONFIG_64BIT
- 	if(unlikely(parisc_narrow_firmware)) {
- 		if((address & 0xff000000) == 0xf0000000)
--			return 0xf0f0f0f000000000UL | (u32)address;
-+			return (0xfffffff0UL << 32) | (u32)address;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2197,8 +2197,6 @@ retry_init:
  
- 		if((address & 0xf0000000) == 0xf0000000)
--			return 0xffffffff00000000UL | (u32)address;
-+			return (0xffffffffUL << 32) | (u32)address;
- 	}
- #endif
- 	return address;
+ 		pci_wake_from_d3(pdev, TRUE);
+ 
+-		pci_wake_from_d3(pdev, TRUE);
+-
+ 		/*
+ 		 * For runpm implemented via BACO, PMFW will handle the
+ 		 * timing for BACO in and out:
 
 
 
