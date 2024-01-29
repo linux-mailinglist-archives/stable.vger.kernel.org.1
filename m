@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-16858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C34D840EB3
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E9AD840F1F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 119AE1F2830F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 880D31F23EBE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C529A15CD4B;
-	Mon, 29 Jan 2024 17:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37635163AAB;
+	Mon, 29 Jan 2024 17:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mo7rxV3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUnnJepy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E5F15CD49;
-	Mon, 29 Jan 2024 17:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8E8163AA7;
+	Mon, 29 Jan 2024 17:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548331; cv=none; b=X2Syx8e2kpOV1xWEQ3YvJ3rcnSFN95hRmZRurjg/sz3j/DgV0yBKJNTgQ0Cft3vhAo7SBh/+g5R0PGAUYREC3N100EPbqHDKdEGOgdeUAs2LUD/vr14EctGFCgsH5lxqzlHCV9owrXNbTM3F9s27Xqx5SNdM6Wxx6Duj/IlzDMM=
+	t=1706548388; cv=none; b=XcL0Q9S8RLV/LsDkMzF9b8WCUgU3nYgVTB76M7IJI+4BQQUks3NY7AKc+o1BMibIh3wV38N6pMWI0ndxRmOH9tcGn3QVQ4FcKrpLHmxR071CKoVl0eODEd2NBjRYI6PGYyunrWS/BEtvn2/7G/8wK42I2qt/yrIu05KHWy9k+yQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548331; c=relaxed/simple;
-	bh=TmsxVF/uYqxsg8V8ckbVnBt0alSsBkpJvYdNMCa7Brc=;
+	s=arc-20240116; t=1706548388; c=relaxed/simple;
+	bh=xjF6DJt8HdpOMy+Ufd/LmCRIWPfCFzO/6mzyStv6qxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e7aLoHhju2i5fX7sbUUhj+7SYgYMuoLbAxgnPr1HytSoq0cdArHJ/YIRCbr0MOyvfd6AtO8BhtAS4qp7HBrcfubzQ+d15gNDOuxm/BlbO2k2SrVCbxIfLItwmsths9h6AxIQmanTFFRs0OqT++HMPF9MoBHA3ejv8NX7jadfC/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mo7rxV3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B89C43394;
-	Mon, 29 Jan 2024 17:12:11 +0000 (UTC)
+	 MIME-Version; b=QVH+4qr8wsvyGme6UpqXWlkfTCt+U7FN32enlhS1UJCY712G8eqp1T9llhWqcUYluUHwSCX7GLwh5G0y27OqiC/rbd9R26eDi8g4zML4cfpulIzFHhsZOblTjTqDThwZfNun9DPW8cYIlfpLB0eeNQJUL3S8h+G8og7bAo8Xrc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUnnJepy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34B7C433F1;
+	Mon, 29 Jan 2024 17:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548331;
-	bh=TmsxVF/uYqxsg8V8ckbVnBt0alSsBkpJvYdNMCa7Brc=;
+	s=korg; t=1706548387;
+	bh=xjF6DJt8HdpOMy+Ufd/LmCRIWPfCFzO/6mzyStv6qxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mo7rxV3GAVq+hWIwTeaoONLqSvGxKN/wLcg9QyutMqokfAhDKVlaNcZ/n1CL1nntr
-	 +xiK7jdTV2FFZcUhHCzzlHiAdVBIJ+3jAfyBMT9mD7L1U77flWj4+n0lQkrXBwZFro
-	 4dfSi0/lBXa5ig9Fo0b5aSUXZiPwOOIl2a0YWCGw=
+	b=sUnnJepy0J0Ix0ZaMUZKR9DJLaSBPP4PHj3LrhPnWhc7ldslXgweN0sYvHWnudiKd
+	 X8qQC5FnKH/pHDMPeTspWVCAl+VeMzSgRQ5nrrDqZAXhfcuIFn0oQwttoIyvg4/yHt
+	 aNVF+CFUTYifAJElBixAk0Vwbqr89wavV1XQUNiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Allison Karlitskaya <allison.karlitskaya@redhat.com>,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	John Ogness <john.ogness@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 329/346] block: Move checking GENHD_FL_NO_PART to bdev_add_partition()
+Subject: [PATCH 6.1 160/185] serial: sc16is7xx: Use port lock wrappers
 Date: Mon, 29 Jan 2024 09:06:00 -0800
-Message-ID: <20240129170026.158425808@linuxfoundation.org>
+Message-ID: <20240129170003.730858166@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,193 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 7777f47f2ea64efd1016262e7b59fab34adfb869 ]
+[ Upstream commit b465848be8a652e2c5fefe102661fb660cff8497 ]
 
-Commit 1a721de8489f ("block: don't add or resize partition on the disk
-with GENHD_FL_NO_PART") prevented all operations about partitions on disks
-with GENHD_FL_NO_PART in blkpg_do_ioctl() since they are meaningless.
-However, it changed error code in some scenarios. So move checking
-GENHD_FL_NO_PART to bdev_add_partition() to eliminate impact.
+When a serial port is used for kernel console output, then all
+modifications to the UART registers which are done from other contexts,
+e.g. getty, termios, are interference points for the kernel console.
 
-Fixes: 1a721de8489f ("block: don't add or resize partition on the disk with GENHD_FL_NO_PART")
-Reported-by: Allison Karlitskaya <allison.karlitskaya@redhat.com>
-Closes: https://lore.kernel.org/all/CAOYeF9VsmqKMcQjo1k6YkGNujwN-nzfxY17N3F-CMikE1tYp+w@mail.gmail.com/
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240118130401.792757-1-lilingfeng@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+So far this has been ignored and the printk output is based on the
+principle of hope. The rework of the console infrastructure which aims to
+support threaded and atomic consoles, requires to mark sections which
+modify the UART registers as unsafe. This allows the atomic write function
+to make informed decisions and eventually to restore operational state. It
+also allows to prevent the regular UART code from modifying UART registers
+while printk output is in progress.
+
+All modifications of UART registers are guarded by the UART port lock,
+which provides an obvious synchronization point with the console
+infrastructure.
+
+To avoid adding this functionality to all UART drivers, wrap the
+spin_[un]lock*() invocations for uart_port::lock into helper functions
+which just contain the spin_[un]lock*() invocations for now. In a
+subsequent step these helpers will gain the console synchronization
+mechanisms.
+
+Converted with coccinelle. No functional change.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: John Ogness <john.ogness@linutronix.de>
+Link: https://lore.kernel.org/r/20230914183831.587273-56-john.ogness@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 9915753037eb ("serial: sc16is7xx: fix unconditional activation of THRI interrupt")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/ioctl.c           | 2 --
- block/partitions/core.c | 5 +++++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/tty/serial/sc16is7xx.c | 40 +++++++++++++++++-----------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/block/ioctl.c b/block/ioctl.c
-index 9c73a763ef88..438f79c564cf 100644
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -20,8 +20,6 @@ static int blkpg_do_ioctl(struct block_device *bdev,
- 	struct blkpg_partition p;
- 	sector_t start, length;
- 
--	if (disk->flags & GENHD_FL_NO_PART)
--		return -EINVAL;
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EACCES;
- 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
-diff --git a/block/partitions/core.c b/block/partitions/core.c
-index f47ffcfdfcec..f14602022c5e 100644
---- a/block/partitions/core.c
-+++ b/block/partitions/core.c
-@@ -447,6 +447,11 @@ int bdev_add_partition(struct gendisk *disk, int partno, sector_t start,
- 		goto out;
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index ab9159441d02..4def1b7266f6 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -641,9 +641,9 @@ static void sc16is7xx_handle_tx(struct uart_port *port)
  	}
  
-+	if (disk->flags & GENHD_FL_NO_PART) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
- 	if (partition_overlaps(disk, start, length, -1)) {
- 		ret = -EBUSY;
- 		goto out;
+ 	if (uart_circ_empty(xmit) || uart_tx_stopped(port)) {
+-		spin_lock_irqsave(&port->lock, flags);
++		uart_port_lock_irqsave(port, &flags);
+ 		sc16is7xx_stop_tx(port);
+-		spin_unlock_irqrestore(&port->lock, flags);
++		uart_port_unlock_irqrestore(port, flags);
+ 		return;
+ 	}
+ 
+@@ -672,13 +672,13 @@ static void sc16is7xx_handle_tx(struct uart_port *port)
+ 		sc16is7xx_fifo_write(port, to_send);
+ 	}
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
+ 		uart_write_wakeup(port);
+ 
+ 	if (uart_circ_empty(xmit))
+ 		sc16is7xx_stop_tx(port);
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static unsigned int sc16is7xx_get_hwmctrl(struct uart_port *port)
+@@ -709,7 +709,7 @@ static void sc16is7xx_update_mlines(struct sc16is7xx_one *one)
+ 
+ 	one->old_mctrl = status;
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 	if ((changed & TIOCM_RNG) && (status & TIOCM_RNG))
+ 		port->icount.rng++;
+ 	if (changed & TIOCM_DSR)
+@@ -720,7 +720,7 @@ static void sc16is7xx_update_mlines(struct sc16is7xx_one *one)
+ 		uart_handle_cts_change(port, status & TIOCM_CTS);
+ 
+ 	wake_up_interruptible(&port->state->port.delta_msr_wait);
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
+@@ -814,9 +814,9 @@ static void sc16is7xx_tx_proc(struct kthread_work *ws)
+ 	sc16is7xx_handle_tx(port);
+ 	mutex_unlock(&one->efr_lock);
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 	sc16is7xx_ier_set(port, SC16IS7XX_IER_THRI_BIT);
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static void sc16is7xx_reconf_rs485(struct uart_port *port)
+@@ -827,14 +827,14 @@ static void sc16is7xx_reconf_rs485(struct uart_port *port)
+ 	struct serial_rs485 *rs485 = &port->rs485;
+ 	unsigned long irqflags;
+ 
+-	spin_lock_irqsave(&port->lock, irqflags);
++	uart_port_lock_irqsave(port, &irqflags);
+ 	if (rs485->flags & SER_RS485_ENABLED) {
+ 		efcr |=	SC16IS7XX_EFCR_AUTO_RS485_BIT;
+ 
+ 		if (rs485->flags & SER_RS485_RTS_AFTER_SEND)
+ 			efcr |= SC16IS7XX_EFCR_RTS_INVERT_BIT;
+ 	}
+-	spin_unlock_irqrestore(&port->lock, irqflags);
++	uart_port_unlock_irqrestore(port, irqflags);
+ 
+ 	sc16is7xx_port_update(port, SC16IS7XX_EFCR_REG, mask, efcr);
+ }
+@@ -845,10 +845,10 @@ static void sc16is7xx_reg_proc(struct kthread_work *ws)
+ 	struct sc16is7xx_one_config config;
+ 	unsigned long irqflags;
+ 
+-	spin_lock_irqsave(&one->port.lock, irqflags);
++	uart_port_lock_irqsave(&one->port, &irqflags);
+ 	config = one->config;
+ 	memset(&one->config, 0, sizeof(one->config));
+-	spin_unlock_irqrestore(&one->port.lock, irqflags);
++	uart_port_unlock_irqrestore(&one->port, irqflags);
+ 
+ 	if (config.flags & SC16IS7XX_RECONF_MD) {
+ 		u8 mcr = 0;
+@@ -954,18 +954,18 @@ static void sc16is7xx_throttle(struct uart_port *port)
+ 	 * value set in MCR register. Stop reading data from RX FIFO so the
+ 	 * AutoRTS feature will de-activate RTS output.
+ 	 */
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 	sc16is7xx_ier_clear(port, SC16IS7XX_IER_RDI_BIT);
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static void sc16is7xx_unthrottle(struct uart_port *port)
+ {
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 	sc16is7xx_ier_set(port, SC16IS7XX_IER_RDI_BIT);
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static unsigned int sc16is7xx_tx_empty(struct uart_port *port)
+@@ -1103,7 +1103,7 @@ static void sc16is7xx_set_termios(struct uart_port *port,
+ 	/* Setup baudrate generator */
+ 	baud = sc16is7xx_set_baud(port, baud);
+ 
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 
+ 	/* Update timeout according to new baud rate */
+ 	uart_update_timeout(port, termios->c_cflag, baud);
+@@ -1111,7 +1111,7 @@ static void sc16is7xx_set_termios(struct uart_port *port,
+ 	if (UART_ENABLE_MS(port, termios->c_cflag))
+ 		sc16is7xx_enable_ms(port);
+ 
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static int sc16is7xx_config_rs485(struct uart_port *port, struct ktermios *termios,
+@@ -1197,9 +1197,9 @@ static int sc16is7xx_startup(struct uart_port *port)
+ 	sc16is7xx_port_write(port, SC16IS7XX_IER_REG, val);
+ 
+ 	/* Enable modem status polling */
+-	spin_lock_irqsave(&port->lock, flags);
++	uart_port_lock_irqsave(port, &flags);
+ 	sc16is7xx_enable_ms(port);
+-	spin_unlock_irqrestore(&port->lock, flags);
++	uart_port_unlock_irqrestore(port, flags);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
