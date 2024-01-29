@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-17048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30502840F9B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94910840D5A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D77D91F22A45
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 345821F2C595
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C712C159587;
-	Mon, 29 Jan 2024 17:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654EA15B108;
+	Mon, 29 Jan 2024 17:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImRyRcHz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUTLL/hf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B3B6F099;
-	Mon, 29 Jan 2024 17:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249DD157E92;
+	Mon, 29 Jan 2024 17:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548471; cv=none; b=HBYId0lh6sLzwK5w8WLWrW/g6UKI5hNaNPkLsTGg/U0dtW6VTXHz3gN7Ua52VTI7HvZHJBo/EZi6L2YHqf//avHrRj1RCLiNPXv7P6NHU24mTjoR7VWEcPPRTLTVS8m+/XA45yIBv35NA0v6J9qDgzmKc0M7FFOFoUt83tBPhAI=
+	t=1706548089; cv=none; b=ZzYBnCLGMMdTUpYlGgjcMHmoLr0V/Q3hSXMol4Y41rA3r/BvVDWwXTy62G9g9Jrknq+ryzyNJ8HFCBotZvjChni5FpaTqchr81gbB6RU0trSlldPy6aF+XbfflfZuCsr74kIlwERA7NocH5wp1xEeWZj7X3gJRdC4CRwCI7Kq1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548471; c=relaxed/simple;
-	bh=CWT/71nBS254sEMBMV8NMR2z/xN3+7jcAR3L8erZIvA=;
+	s=arc-20240116; t=1706548089; c=relaxed/simple;
+	bh=c9iFI9N7wqQwp3LHStRfu4i30EzL8F3R0R4nVCIbAa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uo4eJXo41RzIm3NKFpgt3OzAWJue0ggzGAMZRNFwGLSgSgmOKeNnJg3oEDsc9x0D9ozT92KTdPaWszQykz5OFotOpCzrZr8KVZIObYjkrIwHkGU4q3a2LR+Uay47BFPLsD/V9dqU8zcva2ojxuQqHthqzvdhEnRSQ3NT8LypdDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImRyRcHz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F45DC433B1;
-	Mon, 29 Jan 2024 17:14:31 +0000 (UTC)
+	 MIME-Version; b=JO0qkjv8pBImiSbUP1zxYdVtIxP0vDwjMAlpgMNv1Zo/C1nEzFl8HtjUla6WhCpeM1YOSSQLvQC4EeCT6/+sFYCFEAowowddHsxFTKQzpIU7e6tYjxbfJ2q80H4Pu/DsEEZ+p1xyhYCwHm/hHDxPIXv0yMfHamyeuoQpX/x+gU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUTLL/hf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D742AC43390;
+	Mon, 29 Jan 2024 17:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548471;
-	bh=CWT/71nBS254sEMBMV8NMR2z/xN3+7jcAR3L8erZIvA=;
+	s=korg; t=1706548088;
+	bh=c9iFI9N7wqQwp3LHStRfu4i30EzL8F3R0R4nVCIbAa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ImRyRcHzYE2mBsOXjBtZzLAqDA9lcEmKo1+reuv2K7yUxfjYYkp/boe48kOqamxk8
-	 syB0uA5b7vTetIEwbttmywwD8dTZWXMGtVqPzgk7CmRokANNXHttZbAnRpalCCBCuC
-	 ZHTkRks7hJhHYaRUSdgD/zrzxJfNeKAhCwsDj9g4=
+	b=iUTLL/hfLsFObt9osSJUfoMDj1aCIonxhwZfiZdjIuXkQ2HZ9kwnzx4MwqT99i5pU
+	 Zd7JxK7NVM+FJZIvDcMrui91zJrBRhLcnNSppD532xVSu4l8/8BmeHIlFe13SC+8J7
+	 rV3DiD/f61XIAtLDmzkeDOrlQwAF9Z7X8r12VVTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.6 053/331] media: ov9734: Enable runtime PM before registering async sub-device
+	Jack Pham <quic_jackp@quicinc.com>,
+	Jonathan Marek <jonathan@marek.ca>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.7 086/346] arm64: dts: qcom: sm8150: fix USB SS wakeup
 Date: Mon, 29 Jan 2024 09:01:57 -0800
-Message-ID: <20240129170016.483304393@linuxfoundation.org>
+Message-ID: <20240129170018.925910804@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bingbu Cao <bingbu.cao@intel.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit e242e9c144050ed120cf666642ba96b7c4462a4c upstream.
+commit cc4e1da491b84ca05339a19893884cda78f74aef upstream.
 
-As the sensor device maybe accessible right after its async sub-device is
-registered, such as ipu-bridge will try to power up sensor by sensor's
-client device's runtime PM from the async notifier callback, if runtime PM
-is not enabled, it will fail.
+The USB SS PHY interrupts need to be provided by the PDC interrupt
+controller in order to be able to wake the system up from low-power
+states.
 
-So runtime PM should be ready before its async sub-device is registered
-and accessible by others.
-
-Fixes: d3f863a63fe4 ("media: i2c: Add ov9734 image sensor driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 0c9dde0d2015 ("arm64: dts: qcom: sm8150: Add secondary USB and PHY nodes")
+Fixes: b33d2868e8d3 ("arm64: dts: qcom: sm8150: Add USB and PHY device nodes")
+Cc: stable@vger.kernel.org      # 5.10
+Cc: Jack Pham <quic_jackp@quicinc.com>
+Cc: Jonathan Marek <jonathan@marek.ca>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231213173403.29544-6-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov9734.c |   19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8150.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/i2c/ov9734.c
-+++ b/drivers/media/i2c/ov9734.c
-@@ -939,6 +939,7 @@ static void ov9734_remove(struct i2c_cli
- 	media_entity_cleanup(&sd->entity);
- 	v4l2_ctrl_handler_free(sd->ctrl_handler);
- 	pm_runtime_disable(&client->dev);
-+	pm_runtime_set_suspended(&client->dev);
- 	mutex_destroy(&ov9734->mutex);
- }
+--- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+@@ -3566,7 +3566,7 @@
+ 			assigned-clock-rates = <19200000>, <200000000>;
  
-@@ -984,13 +985,6 @@ static int ov9734_probe(struct i2c_clien
- 		goto probe_error_v4l2_ctrl_handler_free;
- 	}
+ 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+-					      <&intc GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
++					      <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&pdc 8 IRQ_TYPE_EDGE_BOTH>,
+ 					      <&pdc 9 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+@@ -3619,7 +3619,7 @@
+ 			assigned-clock-rates = <19200000>, <200000000>;
  
--	ret = v4l2_async_register_subdev_sensor(&ov9734->sd);
--	if (ret < 0) {
--		dev_err(&client->dev, "failed to register V4L2 subdev: %d",
--			ret);
--		goto probe_error_media_entity_cleanup;
--	}
--
- 	/*
- 	 * Device is already turned on by i2c-core with ACPI domain PM.
- 	 * Enable runtime PM and turn off the device.
-@@ -999,9 +993,18 @@ static int ov9734_probe(struct i2c_clien
- 	pm_runtime_enable(&client->dev);
- 	pm_runtime_idle(&client->dev);
- 
-+	ret = v4l2_async_register_subdev_sensor(&ov9734->sd);
-+	if (ret < 0) {
-+		dev_err(&client->dev, "failed to register V4L2 subdev: %d",
-+			ret);
-+		goto probe_error_media_entity_cleanup_pm;
-+	}
-+
- 	return 0;
- 
--probe_error_media_entity_cleanup:
-+probe_error_media_entity_cleanup_pm:
-+	pm_runtime_disable(&client->dev);
-+	pm_runtime_set_suspended(&client->dev);
- 	media_entity_cleanup(&ov9734->sd.entity);
- 
- probe_error_v4l2_ctrl_handler_free:
+ 			interrupts-extended = <&intc GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
+-					      <&intc GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
++					      <&pdc 7 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&pdc 10 IRQ_TYPE_EDGE_BOTH>,
+ 					      <&pdc 11 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
 
 
 
