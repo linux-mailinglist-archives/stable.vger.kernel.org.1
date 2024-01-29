@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E648840E01
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86AB4840FE1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F7121C23532
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DDAF282C6F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3959215B10B;
-	Mon, 29 Jan 2024 17:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F1C159595;
+	Mon, 29 Jan 2024 17:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wTyUuYom"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6VUApVi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51F515B0F0;
-	Mon, 29 Jan 2024 17:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BDB157E66;
+	Mon, 29 Jan 2024 17:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548204; cv=none; b=MRgbEnSn+hdK58l2U/0uUd1/skBMBX1bgxWqaK0vWlHQ6D2Nc3PECFEsHSdnvkwteant8htQxaaCgKhwOhJl18NbvlgjvCBvNpZH31x2OPh0zYUm2KKAOfzpii2GXcylg5h7TM8LAYXIWp1MOxzz4nIaRQ6Phy4XkF/Ql70Xs2s=
+	t=1706548521; cv=none; b=RYVifNVIpJXHTiK2sStWR2Mzduujx+fvejFcISbcp2vcWQ9atMKqWNM2mWtPnFzW/9sMuLxyFvcLRx2k/gYMs1ApEoTF8iaKGZcQFRRwCZr1XnFkGlyI7LPoRrX9STAxpG8RPPW//yNyNzIGm/t1t3WjocoF/SnkTG1xHCIhQHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548204; c=relaxed/simple;
-	bh=sr2CI6IWQ7ZZdwyF5CjTRWip9R8YIVilkNtZfSDlSOM=;
+	s=arc-20240116; t=1706548521; c=relaxed/simple;
+	bh=Eb6sTmIR35IweU+3y/HkbWubibnH1DNLrjuvM1IfoO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b0Y7+XmJTAf4ejVbgwU916HuJZccuub49gUnGiZzb5BDP38l8ifm/b1K5hkSBcE/2vu8vX7OHxoy9Gw+LAM9eNEuWdFDdyYv5w0yDfZ7iIzTd4Qdoo+Yy+Opj4V6UmdOXUsVqV8Ia7+osrX/yPxjR6tqhXDubmdnf+zFaHfjnoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wTyUuYom; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D590C433C7;
-	Mon, 29 Jan 2024 17:10:04 +0000 (UTC)
+	 MIME-Version; b=F7q2Nz+jwFhft3ZGf56ZG8F1XeExZnEBDPQFbRSSjGDr/1VT0amij1BJI9Kdf2CCiSLH4t7RN733qpRD2zWF2m7QP5jkEXF9RxyPZF8PdUyrC213bTv/Q4EDRoEPyTgkto9pNF1NvStQ+mRzlGBApx7g/d+SgcIj91AFa3/kgfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6VUApVi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEC9C43394;
+	Mon, 29 Jan 2024 17:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548204;
-	bh=sr2CI6IWQ7ZZdwyF5CjTRWip9R8YIVilkNtZfSDlSOM=;
+	s=korg; t=1706548521;
+	bh=Eb6sTmIR35IweU+3y/HkbWubibnH1DNLrjuvM1IfoO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wTyUuYomd4BsOLEd6EfjPUFynKzb6UG/ZWbT1YE++6CH3v49ACwFAHRCbDBMiBJ18
-	 SduFReSdhAgADEAvAbDzylOP0XhHv7kbYAl8f2ZPJuQw2NSMHLHmsq3DWnkXepbO6U
-	 RtEdXUgjxFP5Hts85s+oqmDKmI33VOH4riYWSPig=
+	b=E6VUApVitbPBBwrSuTVjyGpSXfqYeM3AXxzFrzBU3+6HZhL29xjP7fk2WUaOuqR2n
+	 sglKLdTXNHu3Kre3NgHeoFKUDb5BdTONNVRkX+oYVqNwurH8/34m0tNzOncs69Z7WH
+	 r1HRjemu6zKsmK8eOi4HfSIazR4++kNfSZ5uLzeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.1 017/185] media: imx355: Enable runtime PM before registering async sub-device
-Date: Mon, 29 Jan 2024 09:03:37 -0800
-Message-ID: <20240129165959.153829372@linuxfoundation.org>
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 154/331] selftests/bpf: track string payload offset as scalar in strobemeta
+Date: Mon, 29 Jan 2024 09:03:38 -0800
+Message-ID: <20240129170019.432504094@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,257 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bingbu Cao <bingbu.cao@intel.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-commit efa5fe19c0a9199f49e36e1f5242ed5c88da617d upstream.
+commit 87eb0152bcc102ecbda866978f4e54db5a3be1ef upstream.
 
-As the sensor device maybe accessible right after its async sub-device is
-registered, such as ipu-bridge will try to power up sensor by sensor's
-client device's runtime PM from the async notifier callback, if runtime PM
-is not enabled, it will fail.
+This change prepares strobemeta for update in callbacks verification
+logic. To allow bpf_loop() verification converge when multiple
+callback iterations are considered:
+- track offset inside strobemeta_payload->payload directly as scalar
+  value;
+- at each iteration make sure that remaining
+  strobemeta_payload->payload capacity is sufficient for execution of
+  read_{map,str}_var functions;
+- make sure that offset is tracked as unbound scalar between
+  iterations, otherwise verifier won't be able infer that bpf_loop
+  callback reaches identical states.
 
-So runtime PM should be ready before its async sub-device is registered
-and accessible by others.
-
-Fixes: df0b5c4a7ddd ("media: add imx355 camera sensor driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20231121020701.26440-3-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/imx355.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ tools/testing/selftests/bpf/progs/strobemeta.h |   78 +++++++++++++++----------
+ 1 file changed, 48 insertions(+), 30 deletions(-)
 
---- a/drivers/media/i2c/imx355.c
-+++ b/drivers/media/i2c/imx355.c
-@@ -1784,10 +1784,6 @@ static int imx355_probe(struct i2c_clien
- 		goto error_handler_free;
+--- a/tools/testing/selftests/bpf/progs/strobemeta.h
++++ b/tools/testing/selftests/bpf/progs/strobemeta.h
+@@ -24,9 +24,11 @@ struct task_struct {};
+ #define STACK_TABLE_EPOCH_SHIFT 20
+ #define STROBE_MAX_STR_LEN 1
+ #define STROBE_MAX_CFGS 32
++#define READ_MAP_VAR_PAYLOAD_CAP					\
++	((1 + STROBE_MAX_MAP_ENTRIES * 2) * STROBE_MAX_STR_LEN)
+ #define STROBE_MAX_PAYLOAD						\
+ 	(STROBE_MAX_STRS * STROBE_MAX_STR_LEN +				\
+-	STROBE_MAX_MAPS * (1 + STROBE_MAX_MAP_ENTRIES * 2) * STROBE_MAX_STR_LEN)
++	 STROBE_MAX_MAPS * READ_MAP_VAR_PAYLOAD_CAP)
+ 
+ struct strobe_value_header {
+ 	/*
+@@ -355,7 +357,7 @@ static __always_inline uint64_t read_str
+ 					     size_t idx, void *tls_base,
+ 					     struct strobe_value_generic *value,
+ 					     struct strobemeta_payload *data,
+-					     void *payload)
++					     size_t off)
+ {
+ 	void *location;
+ 	uint64_t len;
+@@ -366,7 +368,7 @@ static __always_inline uint64_t read_str
+ 		return 0;
+ 
+ 	bpf_probe_read_user(value, sizeof(struct strobe_value_generic), location);
+-	len = bpf_probe_read_user_str(payload, STROBE_MAX_STR_LEN, value->ptr);
++	len = bpf_probe_read_user_str(&data->payload[off], STROBE_MAX_STR_LEN, value->ptr);
+ 	/*
+ 	 * if bpf_probe_read_user_str returns error (<0), due to casting to
+ 	 * unsinged int, it will become big number, so next check is
+@@ -378,14 +380,14 @@ static __always_inline uint64_t read_str
+ 		return 0;
+ 
+ 	data->str_lens[idx] = len;
+-	return len;
++	return off + len;
+ }
+ 
+-static __always_inline void *read_map_var(struct strobemeta_cfg *cfg,
+-					  size_t idx, void *tls_base,
+-					  struct strobe_value_generic *value,
+-					  struct strobemeta_payload *data,
+-					  void *payload)
++static __always_inline uint64_t read_map_var(struct strobemeta_cfg *cfg,
++					     size_t idx, void *tls_base,
++					     struct strobe_value_generic *value,
++					     struct strobemeta_payload *data,
++					     size_t off)
+ {
+ 	struct strobe_map_descr* descr = &data->map_descrs[idx];
+ 	struct strobe_map_raw map;
+@@ -397,11 +399,11 @@ static __always_inline void *read_map_va
+ 
+ 	location = calc_location(&cfg->map_locs[idx], tls_base);
+ 	if (!location)
+-		return payload;
++		return off;
+ 
+ 	bpf_probe_read_user(value, sizeof(struct strobe_value_generic), location);
+ 	if (bpf_probe_read_user(&map, sizeof(struct strobe_map_raw), value->ptr))
+-		return payload;
++		return off;
+ 
+ 	descr->id = map.id;
+ 	descr->cnt = map.cnt;
+@@ -410,10 +412,10 @@ static __always_inline void *read_map_va
+ 		data->req_meta_valid = 1;
  	}
  
--	ret = v4l2_async_register_subdev_sensor(&imx355->sd);
--	if (ret < 0)
--		goto error_media_entity;
--
- 	/*
- 	 * Device is already turned on by i2c-core with ACPI domain PM.
- 	 * Enable runtime PM and turn off the device.
-@@ -1796,9 +1792,15 @@ static int imx355_probe(struct i2c_clien
- 	pm_runtime_enable(&client->dev);
- 	pm_runtime_idle(&client->dev);
+-	len = bpf_probe_read_user_str(payload, STROBE_MAX_STR_LEN, map.tag);
++	len = bpf_probe_read_user_str(&data->payload[off], STROBE_MAX_STR_LEN, map.tag);
+ 	if (len <= STROBE_MAX_STR_LEN) {
+ 		descr->tag_len = len;
+-		payload += len;
++		off += len;
+ 	}
  
-+	ret = v4l2_async_register_subdev_sensor(&imx355->sd);
-+	if (ret < 0)
-+		goto error_media_entity_runtime_pm;
-+
+ #ifdef NO_UNROLL
+@@ -426,22 +428,22 @@ static __always_inline void *read_map_va
+ 			break;
+ 
+ 		descr->key_lens[i] = 0;
+-		len = bpf_probe_read_user_str(payload, STROBE_MAX_STR_LEN,
++		len = bpf_probe_read_user_str(&data->payload[off], STROBE_MAX_STR_LEN,
+ 					      map.entries[i].key);
+ 		if (len <= STROBE_MAX_STR_LEN) {
+ 			descr->key_lens[i] = len;
+-			payload += len;
++			off += len;
+ 		}
+ 		descr->val_lens[i] = 0;
+-		len = bpf_probe_read_user_str(payload, STROBE_MAX_STR_LEN,
++		len = bpf_probe_read_user_str(&data->payload[off], STROBE_MAX_STR_LEN,
+ 					      map.entries[i].val);
+ 		if (len <= STROBE_MAX_STR_LEN) {
+ 			descr->val_lens[i] = len;
+-			payload += len;
++			off += len;
+ 		}
+ 	}
+ 
+-	return payload;
++	return off;
+ }
+ 
+ #ifdef USE_BPF_LOOP
+@@ -455,14 +457,20 @@ struct read_var_ctx {
+ 	struct strobemeta_payload *data;
+ 	void *tls_base;
+ 	struct strobemeta_cfg *cfg;
+-	void *payload;
++	size_t payload_off;
+ 	/* value gets mutated */
+ 	struct strobe_value_generic *value;
+ 	enum read_type type;
+ };
+ 
+-static int read_var_callback(__u32 index, struct read_var_ctx *ctx)
++static int read_var_callback(__u64 index, struct read_var_ctx *ctx)
+ {
++	/* lose precision info for ctx->payload_off, verifier won't track
++	 * double xor, barrier_var() is needed to force clang keep both xors.
++	 */
++	ctx->payload_off ^= index;
++	barrier_var(ctx->payload_off);
++	ctx->payload_off ^= index;
+ 	switch (ctx->type) {
+ 	case READ_INT_VAR:
+ 		if (index >= STROBE_MAX_INTS)
+@@ -472,14 +480,18 @@ static int read_var_callback(__u32 index
+ 	case READ_MAP_VAR:
+ 		if (index >= STROBE_MAX_MAPS)
+ 			return 1;
+-		ctx->payload = read_map_var(ctx->cfg, index, ctx->tls_base,
+-					    ctx->value, ctx->data, ctx->payload);
++		if (ctx->payload_off > sizeof(ctx->data->payload) - READ_MAP_VAR_PAYLOAD_CAP)
++			return 1;
++		ctx->payload_off = read_map_var(ctx->cfg, index, ctx->tls_base,
++						ctx->value, ctx->data, ctx->payload_off);
+ 		break;
+ 	case READ_STR_VAR:
+ 		if (index >= STROBE_MAX_STRS)
+ 			return 1;
+-		ctx->payload += read_str_var(ctx->cfg, index, ctx->tls_base,
+-					     ctx->value, ctx->data, ctx->payload);
++		if (ctx->payload_off > sizeof(ctx->data->payload) - STROBE_MAX_STR_LEN)
++			return 1;
++		ctx->payload_off = read_str_var(ctx->cfg, index, ctx->tls_base,
++						ctx->value, ctx->data, ctx->payload_off);
+ 		break;
+ 	}
  	return 0;
+@@ -501,7 +513,8 @@ static void *read_strobe_meta(struct tas
+ 	pid_t pid = bpf_get_current_pid_tgid() >> 32;
+ 	struct strobe_value_generic value = {0};
+ 	struct strobemeta_cfg *cfg;
+-	void *tls_base, *payload;
++	size_t payload_off;
++	void *tls_base;
  
--error_media_entity:
-+error_media_entity_runtime_pm:
-+	pm_runtime_disable(&client->dev);
-+	pm_runtime_set_suspended(&client->dev);
- 	media_entity_cleanup(&imx355->sd.entity);
+ 	cfg = bpf_map_lookup_elem(&strobemeta_cfgs, &pid);
+ 	if (!cfg)
+@@ -509,7 +522,7 @@ static void *read_strobe_meta(struct tas
  
- error_handler_free:
+ 	data->int_vals_set_mask = 0;
+ 	data->req_meta_valid = 0;
+-	payload = data->payload;
++	payload_off = 0;
+ 	/*
+ 	 * we don't have struct task_struct definition, it should be:
+ 	 * tls_base = (void *)task->thread.fsbase;
+@@ -522,7 +535,7 @@ static void *read_strobe_meta(struct tas
+ 		.tls_base = tls_base,
+ 		.value = &value,
+ 		.data = data,
+-		.payload = payload,
++		.payload_off = 0,
+ 	};
+ 	int err;
+ 
+@@ -540,6 +553,11 @@ static void *read_strobe_meta(struct tas
+ 	err = bpf_loop(STROBE_MAX_MAPS, read_var_callback, &ctx, 0);
+ 	if (err != STROBE_MAX_MAPS)
+ 		return NULL;
++
++	payload_off = ctx.payload_off;
++	/* this should not really happen, here only to satisfy verifer */
++	if (payload_off > sizeof(data->payload))
++		payload_off = sizeof(data->payload);
+ #else
+ #ifdef NO_UNROLL
+ #pragma clang loop unroll(disable)
+@@ -555,7 +573,7 @@ static void *read_strobe_meta(struct tas
+ #pragma unroll
+ #endif /* NO_UNROLL */
+ 	for (int i = 0; i < STROBE_MAX_STRS; ++i) {
+-		payload += read_str_var(cfg, i, tls_base, &value, data, payload);
++		payload_off = read_str_var(cfg, i, tls_base, &value, data, payload_off);
+ 	}
+ #ifdef NO_UNROLL
+ #pragma clang loop unroll(disable)
+@@ -563,7 +581,7 @@ static void *read_strobe_meta(struct tas
+ #pragma unroll
+ #endif /* NO_UNROLL */
+ 	for (int i = 0; i < STROBE_MAX_MAPS; ++i) {
+-		payload = read_map_var(cfg, i, tls_base, &value, data, payload);
++		payload_off = read_map_var(cfg, i, tls_base, &value, data, payload_off);
+ 	}
+ #endif /* USE_BPF_LOOP */
+ 
+@@ -571,7 +589,7 @@ static void *read_strobe_meta(struct tas
+ 	 * return pointer right after end of payload, so it's possible to
+ 	 * calculate exact amount of useful data that needs to be sent
+ 	 */
+-	return payload;
++	return &data->payload[payload_off];
+ }
+ 
+ SEC("raw_tracepoint/kfree_skb")
 
 
 
