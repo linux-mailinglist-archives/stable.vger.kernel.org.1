@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-16806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15C49840E7E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B24840EFE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C15511F27C02
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B199B2834DF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5841515FB00;
-	Mon, 29 Jan 2024 17:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D44B16275C;
+	Mon, 29 Jan 2024 17:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJpKS3M+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibldvs+0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DEB157E6A;
-	Mon, 29 Jan 2024 17:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED92F157E8F;
+	Mon, 29 Jan 2024 17:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548293; cv=none; b=YiMsxBUX6XEJ3nggDt5eXf7O1RH/IFx4S1iUu3QVHc8bSdZxPFZcvRfkaNqvvxwEnx4WowxUQVaKy/aIN60qCBQ+Di9S+l4GRnt9IBcitC3X9DFlHNCyek8lOkWmPm7dNSsPxuPz/WxfOhbUNvfc0qYmdGQVaGsG4XlQr2VsgJU=
+	t=1706548369; cv=none; b=fb3QPJei3Fc0VkSXLIWqBYjkfAVDUS23nTF6gbqDq9GVg2xi7c/kT0u7SwIN/5FS6lhcneGdDc4DXnEDK2If25/bTPYuBrPymc+aZYhHcgexMA7w58Tiif/Dzz7weVkxGLs2ct5W4pw+Cm3dVOZQoy8ZyLgoRMXKc7QbuJLL7ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548293; c=relaxed/simple;
-	bh=cbpVvNjll1xR8gD/GM9XSQvECkCSUzXLfzP1sB5vZ44=;
+	s=arc-20240116; t=1706548369; c=relaxed/simple;
+	bh=6Z04K6aHUKd3bZVwHEnwzXd3hJiCzgcXazFzucZPU/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8CqcoUVYJd5Si6hGEkqt0rr2Bx+QT3QTOUoaPq0a9lcEVIMbBudoyNg9nG5Lb46JjWmwreJKjtSxdjHtAGTDhAept63nTopxyhAAkpOLema0eApLhfG6hICT0YviAFR5dnA8K8BK9+REdPXB6HdYM+TJKl1l6ISrPbbTKvxPEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJpKS3M+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DD3C43399;
-	Mon, 29 Jan 2024 17:11:32 +0000 (UTC)
+	 MIME-Version; b=DZx0oMD9XghpQL7H9BmygPKyDWddo6Q3TWMmTYwcSXCxZlPNZZEOIpV7k8E4B/CLZZMa4lhz0VqDAUfFx4LM3u3b1HtAPl1KNmsQ9eG77QSI6dAVb3JyEHPpMTmcbXcrEjsyx+2wyNccoX+5ZjfsKPL+UcNIqBYdXVRZ4sdkUBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibldvs+0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5410C43390;
+	Mon, 29 Jan 2024 17:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548292;
-	bh=cbpVvNjll1xR8gD/GM9XSQvECkCSUzXLfzP1sB5vZ44=;
+	s=korg; t=1706548368;
+	bh=6Z04K6aHUKd3bZVwHEnwzXd3hJiCzgcXazFzucZPU/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jJpKS3M+iZ0OIgVwaeKBkwI/b4A4OyjdPsPejZtiBFCqSaCZhdYcj2m2iYQoCbntO
-	 t57tAHM71LD+Cy+BNrME2dAQJURZXbUUy39ZisgfcJSAShjUGAwB2JOBiGWjTTsH9f
-	 DQc8ouLXAJORbOL6appIvsdbadUzboWCujTgOpJY=
+	b=ibldvs+0ZixRVPuaFxXryubRiJf2hKOsSgRiV4ZJkj8X/9CiZ2xZhCrhcM80+dNq0
+	 3PJzsrghBICFZNDYj5ZZhbiHtpp+EEDOs+fzdaeKrRGyEZpi1Yj/xeXbqhNNjQ0e4a
+	 TLMwDRFQaqX2+YzzvTEAnYOeuXJRzour3B77wQaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Martin Leung <martin.leung@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Dillon Varone <dillon.varone@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 302/346] drm/amd/display: Init link enc resources in dc_state only if res_pool presents
-Date: Mon, 29 Jan 2024 09:05:33 -0800
-Message-ID: <20240129170025.316787670@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Robert Foss <rfoss@kernel.org>
+Subject: [PATCH 6.1 134/185] drm/bridge: nxp-ptn3460: fix i2c_master_send() error checking
+Date: Mon, 29 Jan 2024 09:05:34 -0800
+Message-ID: <20240129170002.896582027@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,49 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dillon Varone <dillon.varone@amd.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit aa36d8971fccb55ef3241cbfff9d1799e31d8628 ]
+commit 914437992876838662c968cb416f832110fb1093 upstream.
 
-[Why & How]
-res_pool is not initialized in all situations such as virtual
-environments, and therefore link encoder resources should not be
-initialized if res_pool is NULL.
+The i2c_master_send/recv() functions return negative error codes or the
+number of bytes that were able to be sent/received.  This code has
+two problems.  1)  Instead of checking if all the bytes were sent or
+received, it checks that at least one byte was sent or received.
+2) If there was a partial send/receive then we should return a negative
+error code but this code returns success.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+Fixes: a9fe713d7d45 ("drm/bridge: Add PTN3460 bridge driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Martin Leung <martin.leung@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Dillon Varone <dillon.varone@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/0cdc2dce-ca89-451a-9774-1482ab2f4762@moroto.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/nxp-ptn3460.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index c16190a10883..990d775e4cea 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -3774,7 +3774,8 @@ void dc_resource_state_construct(
- 	dst_ctx->clk_mgr = dc->clk_mgr;
+--- a/drivers/gpu/drm/bridge/nxp-ptn3460.c
++++ b/drivers/gpu/drm/bridge/nxp-ptn3460.c
+@@ -56,13 +56,13 @@ static int ptn3460_read_bytes(struct ptn
+ 	ret = i2c_master_send(ptn_bridge->client, &addr, 1);
+ 	if (ret <= 0) {
+ 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
+-		return ret;
++		return ret ?: -EIO;
+ 	}
  
- 	/* Initialise DIG link encoder resource tracking variables. */
--	link_enc_cfg_init(dc, dst_ctx);
-+	if (dc->res_pool)
-+		link_enc_cfg_init(dc, dst_ctx);
- }
+ 	ret = i2c_master_recv(ptn_bridge->client, buf, len);
+-	if (ret <= 0) {
++	if (ret != len) {
+ 		DRM_ERROR("Failed to recv i2c data, ret=%d\n", ret);
+-		return ret;
++		return ret < 0 ? ret : -EIO;
+ 	}
  
+ 	return 0;
+@@ -78,9 +78,9 @@ static int ptn3460_write_byte(struct ptn
+ 	buf[1] = val;
  
--- 
-2.43.0
-
+ 	ret = i2c_master_send(ptn_bridge->client, buf, ARRAY_SIZE(buf));
+-	if (ret <= 0) {
++	if (ret != ARRAY_SIZE(buf)) {
+ 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
+-		return ret;
++		return ret < 0 ? ret : -EIO;
+ 	}
+ 
+ 	return 0;
 
 
 
