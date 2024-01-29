@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E002E840EB2
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F73841075
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E3EDB27B8C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A52CF1F2490D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38496160864;
-	Mon, 29 Jan 2024 17:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC057604C;
+	Mon, 29 Jan 2024 17:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEbiD324"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8GwIVEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E629A15CD49;
-	Mon, 29 Jan 2024 17:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3467603A;
+	Mon, 29 Jan 2024 17:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548330; cv=none; b=cI66a2nR73aerI8Q/dJBLa4U4tLK9/GVblvxt29rIXV5mVYf5e1jP9TvzhgNHRvaOJpxVIs5HNO5MZ3QvH57zUUl2jWvgrsYj1q4J7IL3bA4a9yldO4R6+Ro1gwMgyN2iN76T1mEP0x9g2TsvlGKSr4wyNc16lZDSF/ETjyFFZI=
+	t=1706548626; cv=none; b=INYe00T0dclBx4qg7tVhyoYTahyNj5OxtNYmljSP6MfHehzLRlbNiqUUMcPfGcJlbfe5gSx8OJnPiEtYYLkOeVzFjdAf802hcmg22aRGLIFMqpXg+Ps4c1HhsYRkzTqvW994AP+ZTBz/YUbOd4wUl528IxyeQFLcWRpksMaZMyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548330; c=relaxed/simple;
-	bh=Ae+4I5OJfiada0mo9SsyU9A2w2Pithzv/laXhHorNXE=;
+	s=arc-20240116; t=1706548626; c=relaxed/simple;
+	bh=dtFSRvyX7HVLPqgdHxE/7UGT8IM9mqDLcTDjDs46Fx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b7tCzGRIXT8lFGm6CYSoLJGfHoBYLxZG75bzqWXVfGK/YyGAlWL4VYXtCBZHgFX/0XbHLqos54X+7K6GMAW8A7IJzrqDQvoE4fkVr11BStYdweBS2hWrhPmjdCnzRpnN+cKPA+HqWOkf71V3faZAha6u7rgYvbjbgvOfW23kVrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEbiD324; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB34DC433C7;
-	Mon, 29 Jan 2024 17:12:09 +0000 (UTC)
+	 MIME-Version; b=g3/tMV+J96GK3H6uwQNPRS5mC8KEsamUw/2LIaWBRmbxrEg1De0ros/L7B2hzgM1HIsatO7xOZJTns/GWnP72K+ufi6d8bBLMGk74O6HiiX0B1R7LAjM7f+yXx+824sCcdUgZ1PaLUg1kLDupf5Mlq6QdsNPaE/dirpu/tPwS5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8GwIVEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C27C433C7;
+	Mon, 29 Jan 2024 17:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548329;
-	bh=Ae+4I5OJfiada0mo9SsyU9A2w2Pithzv/laXhHorNXE=;
+	s=korg; t=1706548625;
+	bh=dtFSRvyX7HVLPqgdHxE/7UGT8IM9mqDLcTDjDs46Fx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bEbiD3242qiQS4/9BThgV0+m5YFsbuCMRDRNJBpcZdVSZBFAMwMLzFVfKJyaATMr+
-	 EndXwcCY3SoP0VTqICqD5HsNXp05cooz8MLRpyR2CW33yRGrMr3hjx7uom2uRMIsRh
-	 VO6EoZ+5+2gdhQeZjOAQdOnDmwSGXk+HRKA0/DDU=
+	b=x8GwIVEEg8oiJmcMxQZgYH2K7kXceiFHeDCZ5mjJrpvKXC1jKSmRIEOx2yIdsQAA7
+	 uA/kJH2t254AdVIAWkYeJ/Sm3rmXCfmbG4YPUhWEApE7G0dngxFRqul5QY85LmEtrn
+	 PV4Yioe0cgu4i8d9PzAl+QtY63nwjAzlgoLd+ZeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hsin-Yi Wang <hsinyi@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 328/346] spi: intel-pci: Remove Meteor Lake-S SoC PCI ID from the list
-Date: Mon, 29 Jan 2024 09:05:59 -0800
-Message-ID: <20240129170026.125038316@linuxfoundation.org>
+Subject: [PATCH 6.6 296/331] drm/panel-edp: drm/panel-edp: Fix AUO B116XAK01 name and timing
+Date: Mon, 29 Jan 2024 09:06:00 -0800
+Message-ID: <20240129170023.523204140@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Hsin-Yi Wang <hsinyi@chromium.org>
 
-[ Upstream commit 6c314425b9ef6b247cefd0903e287eb072580c3b ]
+[ Upstream commit fc6e7679296530106ee0954e8ddef1aa58b2e0b5 ]
 
-Turns out this "SoC" side controller does not support certain commands,
-such as reading chip JEDEC ID, so the controller is pretty much unusable
-in Linux. We should be using the "PCH" side controller instead. For this
-reason remove this PCI ID from the list.
+Rename AUO 0x405c B116XAK01 to B116XAK01.0 and adjust the timing of
+auo_b116xak01: T3=200, T12=500, T7_max = 50 according to decoding edid
+and datasheet.
 
-Fixes: c2912d42e86e ("spi: intel-pci: Add support for Meteor Lake-S SPI serial flash")
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://msgid.link/r/20240122120034.2664812-2-mika.westerberg@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: da458286a5e2 ("drm/panel: Add support for AUO B116XAK01 panel")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231107204611.3082200-2-hsinyi@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-intel-pci.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/panel/panel-edp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-intel-pci.c b/drivers/spi/spi-intel-pci.c
-index 57d767a68e7b..b9918dcc3802 100644
---- a/drivers/spi/spi-intel-pci.c
-+++ b/drivers/spi/spi-intel-pci.c
-@@ -84,7 +84,6 @@ static const struct pci_device_id intel_spi_pci_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0xa2a4), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xa324), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xa3a4), (unsigned long)&cnl_info },
--	{ PCI_VDEVICE(INTEL, 0xae23), (unsigned long)&cnl_info },
- 	{ },
+diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
+index 5bf28c8443ef..e93e54a98260 100644
+--- a/drivers/gpu/drm/panel/panel-edp.c
++++ b/drivers/gpu/drm/panel/panel-edp.c
+@@ -973,6 +973,8 @@ static const struct panel_desc auo_b116xak01 = {
+ 	},
+ 	.delay = {
+ 		.hpd_absent = 200,
++		.unprepare = 500,
++		.enable = 50,
+ 	},
  };
- MODULE_DEVICE_TABLE(pci, intel_spi_pci_ids);
+ 
+@@ -1841,7 +1843,7 @@ static const struct edp_panel_entry edp_panels[] = {
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1e9b, &delay_200_500_e50, "B133UAN02.1"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1ea5, &delay_200_500_e50, "B116XAK01.6"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x235c, &delay_200_500_e50, "B116XTN02"),
+-	EDP_PANEL_ENTRY('A', 'U', 'O', 0x405c, &auo_b116xak01.delay, "B116XAK01"),
++	EDP_PANEL_ENTRY('A', 'U', 'O', 0x405c, &auo_b116xak01.delay, "B116XAK01.0"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x582d, &delay_200_500_e50, "B133UAN01.0"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x615c, &delay_200_500_e50, "B116XAN06.1"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x8594, &delay_200_500_e50, "B133UAN01.0"),
 -- 
 2.43.0
 
