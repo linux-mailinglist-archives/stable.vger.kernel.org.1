@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-16700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED59840E0C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F853840E8A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91F2C1C235F7
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9055F1C22038
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9005159586;
-	Mon, 29 Jan 2024 17:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE4015FB0F;
+	Mon, 29 Jan 2024 17:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tSNMiz2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAEmn9l/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6C5157059;
-	Mon, 29 Jan 2024 17:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C242115703D;
+	Mon, 29 Jan 2024 17:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548215; cv=none; b=a8TCF0XUTXSDDfjwCzN9RsUqP9Q5DvmxB/8APlAl05kxX4PbMjr0J09rGFNFDUVM6vv+7xfP03BE2ivhyz/S3YzAcjr9/aO1+CdukFh6TDWj2tYvgOze0h/THF571Zf2sL92NHqsTxql//oDx3wS59mCaw67SGKsRfI4F673PDg=
+	t=1706548301; cv=none; b=rO1zF7QPWP1R1jiZ8DGCIOmZSgKt9XY2wStkBPa0QNTXataqHTYyt9a/urL2piUtzE1bUmLunLpu1F1oJnPSb+HRBIa8sdHFN6RTXtqJwRX91rf84I+h/B3cSomsohmNL1BeBZejBPFR6PFMwhE/nte3dWIKdZ/FgpIyKDqpKvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548215; c=relaxed/simple;
-	bh=FRGSJbIylJZVF/UeThVFneSWLW9OTs/c7xWOYpEAiEk=;
+	s=arc-20240116; t=1706548301; c=relaxed/simple;
+	bh=n3nj6rtqocCFwlA/OObieaYy7b+sHbdw4dM7u7OicwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fa40qPAHnbnDZxNpR8ITWWcTuUZQJiQc6hADbP3bjVEXrxtB/hV7SaIE7OR8i1vF0g1CGEO2QAQFln6OyDrAlqjYHwi0pIHXZ5sVZnsVBLFCvZJCXij0flKueKBcKx3h3OaoZmtfdLF/3hF2XVZ4TKFL66CRbT6DTT7w3p+LAA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tSNMiz2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13259C43390;
-	Mon, 29 Jan 2024 17:10:15 +0000 (UTC)
+	 MIME-Version; b=rg+jchZuxo64LwwvdEywznp/xAHiLZ8loLN9hDgiOciNW8nbBFrFIyO0Aie38smj4wwB1rXZUAD1wg4Ncotf2ET8HJflNxJuFLhtjPeyaSV1qEaK+VIqMgkuAwQ2QFBIA+h4C1gvyTGZFXtlJvNmQhCZATso/sJWM2Q7EpVFSII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAEmn9l/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0DBC43390;
+	Mon, 29 Jan 2024 17:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548215;
-	bh=FRGSJbIylJZVF/UeThVFneSWLW9OTs/c7xWOYpEAiEk=;
+	s=korg; t=1706548301;
+	bh=n3nj6rtqocCFwlA/OObieaYy7b+sHbdw4dM7u7OicwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0tSNMiz2Uh0HkopF/oQiNhXoTMEzsTvLjJWzUf8oRFoPUMPWbYyI2wkbeBkWQo8CK
-	 bEGhmMfgtJphnXKLH4excCi8umwsd5dNQT5qM6K6EGMSWIOGkB0KsolmDWJSOVgtXL
-	 ITNnF8ZUpEzbMSZgjDu60STsksLafnLWtquJ+Co8=
+	b=gAEmn9l/eVw6OF60qf+87oFwBVQq67KD8gm3NEpsQNVZ1NBGCBWaYEqC1cFz3jDhl
+	 rT1vTVyeQEHDBJMlIJyU1utmrC3O/yRi/A2jzmc2feT+0ne2xXd7hVv96/cdlSxvsI
+	 ljEpNlKBTGfSidbypvtOTVdA7N6Cf4QurfFeZEq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Javier Martinez Canillas <javierm@redhat.com>
-Subject: [PATCH 6.7 248/346] drm: Dont unref the same fb many times by mistake due to deadlock handling
-Date: Mon, 29 Jan 2024 09:04:39 -0800
-Message-ID: <20240129170023.713863277@linuxfoundation.org>
+	Lin Ma <linma@zju.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 080/185] vlan: skip nested type that is not IFLA_VLAN_QOS_MAPPING
+Date: Mon, 29 Jan 2024 09:04:40 -0800
+Message-ID: <20240129170001.168577139@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-commit cb4daf271302d71a6b9a7c01bd0b6d76febd8f0c upstream.
+[ Upstream commit 6c21660fe221a15c789dee2bc2fd95516bc5aeaf ]
 
-If we get a deadlock after the fb lookup in drm_mode_page_flip_ioctl()
-we proceed to unref the fb and then retry the whole thing from the top.
-But we forget to reset the fb pointer back to NULL, and so if we then
-get another error during the retry, before the fb lookup, we proceed
-the unref the same fb again without having gotten another reference.
-The end result is that the fb will (eventually) end up being freed
-while it's still in use.
+In the vlan_changelink function, a loop is used to parse the nested
+attributes IFLA_VLAN_EGRESS_QOS and IFLA_VLAN_INGRESS_QOS in order to
+obtain the struct ifla_vlan_qos_mapping. These two nested attributes are
+checked in the vlan_validate_qos_map function, which calls
+nla_validate_nested_deprecated with the vlan_map_policy.
 
-Reset fb to NULL once we've unreffed it to avoid doing it again
-until we've done another fb lookup.
+However, this deprecated validator applies a LIBERAL strictness, allowing
+the presence of an attribute with the type IFLA_VLAN_QOS_UNSPEC.
+Consequently, the loop in vlan_changelink may parse an attribute of type
+IFLA_VLAN_QOS_UNSPEC and believe it carries a payload of
+struct ifla_vlan_qos_mapping, which is not necessarily true.
 
-This turned out to be pretty easy to hit on a DG2 when doing async
-flips (and CONFIG_DEBUG_WW_MUTEX_SLOWPATH=y). The first symptom I
-saw that drm_closefb() simply got stuck in a busy loop while walking
-the framebuffer list. Fortunately I was able to convince it to oops
-instead, and from there it was easier to track down the culprit.
+To address this issue and ensure compatibility, this patch introduces two
+type checks that skip attributes whose type is not IFLA_VLAN_QOS_MAPPING.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231211081625.25704-1-ville.syrjala@linux.intel.com
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 07b5b17e157b ("[VLAN]: Use rtnl_link API")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240118130306.1644001-1-linma@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_plane.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/8021q/vlan_netlink.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/drm_plane.c
-+++ b/drivers/gpu/drm/drm_plane.c
-@@ -1387,6 +1387,7 @@ retry:
- out:
- 	if (fb)
- 		drm_framebuffer_put(fb);
-+	fb = NULL;
- 	if (plane->old_fb)
- 		drm_framebuffer_put(plane->old_fb);
- 	plane->old_fb = NULL;
+diff --git a/net/8021q/vlan_netlink.c b/net/8021q/vlan_netlink.c
+index 214532173536..a3b68243fd4b 100644
+--- a/net/8021q/vlan_netlink.c
++++ b/net/8021q/vlan_netlink.c
+@@ -118,12 +118,16 @@ static int vlan_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	}
+ 	if (data[IFLA_VLAN_INGRESS_QOS]) {
+ 		nla_for_each_nested(attr, data[IFLA_VLAN_INGRESS_QOS], rem) {
++			if (nla_type(attr) != IFLA_VLAN_QOS_MAPPING)
++				continue;
+ 			m = nla_data(attr);
+ 			vlan_dev_set_ingress_priority(dev, m->to, m->from);
+ 		}
+ 	}
+ 	if (data[IFLA_VLAN_EGRESS_QOS]) {
+ 		nla_for_each_nested(attr, data[IFLA_VLAN_EGRESS_QOS], rem) {
++			if (nla_type(attr) != IFLA_VLAN_QOS_MAPPING)
++				continue;
+ 			m = nla_data(attr);
+ 			err = vlan_dev_set_egress_priority(dev, m->from, m->to);
+ 			if (err)
+-- 
+2.43.0
+
 
 
 
