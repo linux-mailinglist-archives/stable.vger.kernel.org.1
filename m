@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63EBD840EF5
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1D7841083
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03C061F21067
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC7DB1C23087
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DD0162751;
-	Mon, 29 Jan 2024 17:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C56B15B96F;
+	Mon, 29 Jan 2024 17:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdsgRPUf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2o0/ReF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453B41586C5;
-	Mon, 29 Jan 2024 17:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A10E15B317;
+	Mon, 29 Jan 2024 17:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548362; cv=none; b=QUaG/41J7euvK/aIxAIKKQpWK7MIAy6FwMQR/Nw0EA7N62Sf8+wpUjE06h+W828t/CZ+RILwjW1hg3ygHK+CCsv8omsXWJfEYs1wz1WwfIc64fHkfEffF0hDvq0ooLcsccdSow4/jZiSpZ+J6Vq1l5cA0I/aZM6bsZayDpePCRA=
+	t=1706548636; cv=none; b=or3VCzidnJ4h/OBAZbJ6DOfItKV9AoNfLXqOaer/+/pPMyC5dm9ruJckO5QBeQwhqr3BI5gQdglUCHImJ508Nm7gj/FworuphB0ZbfEeJ3Nq4scQDQCDu1sU8R8TSv4eoP5p0emM0hBisZFJzK+i1HE3cUlTQrjKygBFbIiY8aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548362; c=relaxed/simple;
-	bh=R778/iumBAfDnTstV9hHY7M9Vqz6GVLAenVPQ4dCIKU=;
+	s=arc-20240116; t=1706548636; c=relaxed/simple;
+	bh=fTOEKKPxUnd2aYPyEm53SBhcdj7KpbxDeDX8CYjq88I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FlG+uq1hF7nI9LL1fY2nJYNnZYe2NaYCWYp2eN/CPXy/ya5jCb9so8Y2We4ipNBaJI/KnfWNrRqKCigkIoP52yK2qUcL5BXGm0QOoEvMQZdoBy4ux+Mm045NedI4mQ2unA368jSq0qqKJJlSRQI+gVEdM5byzZA2cGhL00V0iR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdsgRPUf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC64C43394;
-	Mon, 29 Jan 2024 17:12:42 +0000 (UTC)
+	 MIME-Version; b=PUYW2owphXa/x8an1cIj2A55cWxYQD5FLAS7vqz435DL0s5lTEtKfUK79i/0MeByLseM42k6yAKq9atqDIhQ8q5f8WkT22rwHVZa0I88xs8mwX1m7sAantqXWVpveidi36Rh1nKwFs71PLZto3i9LwKdzJsIZoFHjU+rOig3iAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2o0/ReF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C11C433F1;
+	Mon, 29 Jan 2024 17:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548362;
-	bh=R778/iumBAfDnTstV9hHY7M9Vqz6GVLAenVPQ4dCIKU=;
+	s=korg; t=1706548635;
+	bh=fTOEKKPxUnd2aYPyEm53SBhcdj7KpbxDeDX8CYjq88I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XdsgRPUfUDCS/bARSRHi3YDkABxKCr5e8nMrT6fgEb/a5jFOkzN8G7ja0sdww1Stg
-	 G1T+ldrMV189SxNgNtWWk3luzCAU4dKv+mC6v0PK22V7oOVX2Mw+BmHP8wHRlbygGM
-	 oSPU2gtcCcXW76xqXsZN6/lAiP3Zu5+Oza7AVNQQ=
+	b=P2o0/ReFi0wtOp1M9cCfI0AZVKSs/ng/k5ZjtXt/H+2ltbQZJxloTg2Z6wAnNsoLk
+	 ptEWFN0n7+FmRsG3r+pZRc0VWdK/GKTQyWaJ4b5OGGSEvwWs4YgACqtV+17KFPChLb
+	 ooS0x72eSSJ3KYPDPAb0FjDAYNWp9X8E7VKM7hyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dawei Li <dawei.li@shingroup.cn>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.7 343/346] genirq: Initialize resend_node hlist for all interrupt descriptors
-Date: Mon, 29 Jan 2024 09:06:14 -0800
-Message-ID: <20240129170026.603457020@linuxfoundation.org>
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 311/331] firmware: arm_scmi: Use xa_insert() when saving raw queues
+Date: Mon, 29 Jan 2024 09:06:15 -0800
+Message-ID: <20240129170023.983613572@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dawei Li <dawei.li@shingroup.cn>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-commit b184c8c2889ceef0a137c7d0567ef9fe3d92276e upstream.
+[ Upstream commit b5dc0ffd36560dbadaed9a3d9fd7838055d62d74 ]
 
-For a CONFIG_SPARSE_IRQ=n kernel, early_irq_init() is supposed to
-initialize all interrupt descriptors.
+Use xa_insert() when saving per-channel raw queues to better check for
+duplicates.
 
-It does except for irq_desc::resend_node, which ia only initialized for the
-first descriptor.
-
-Use the indexed decriptor and not the base pointer to address that.
-
-Fixes: bc06a9e08742 ("genirq: Use hlist for managing resend handlers")
-Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240122085716.2999875-5-dawei.li@shingroup.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7860701d1e6e ("firmware: arm_scmi: Add per-channel raw injection support")
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Link: https://lore.kernel.org/r/20240108185050.1628687-2-cristian.marussi@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/irq/irqdesc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/arm_scmi/raw_mode.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -600,7 +600,7 @@ int __init early_irq_init(void)
- 		mutex_init(&desc[i].request_mutex);
- 		init_waitqueue_head(&desc[i].wait_for_threads);
- 		desc_set_defaults(i, &desc[i], node, NULL, NULL);
--		irq_resend_init(desc);
-+		irq_resend_init(&desc[i]);
- 	}
- 	return arch_early_irq_init();
- }
+diff --git a/drivers/firmware/arm_scmi/raw_mode.c b/drivers/firmware/arm_scmi/raw_mode.c
+index 0493aa3c12bf..350573518503 100644
+--- a/drivers/firmware/arm_scmi/raw_mode.c
++++ b/drivers/firmware/arm_scmi/raw_mode.c
+@@ -1111,7 +1111,6 @@ static int scmi_raw_mode_setup(struct scmi_raw_mode_info *raw,
+ 		int i;
+ 
+ 		for (i = 0; i < num_chans; i++) {
+-			void *xret;
+ 			struct scmi_raw_queue *q;
+ 
+ 			q = scmi_raw_queue_init(raw);
+@@ -1120,13 +1119,12 @@ static int scmi_raw_mode_setup(struct scmi_raw_mode_info *raw,
+ 				goto err_xa;
+ 			}
+ 
+-			xret = xa_store(&raw->chans_q, channels[i], q,
++			ret = xa_insert(&raw->chans_q, channels[i], q,
+ 					GFP_KERNEL);
+-			if (xa_err(xret)) {
++			if (ret) {
+ 				dev_err(dev,
+ 					"Fail to allocate Raw queue 0x%02X\n",
+ 					channels[i]);
+-				ret = xa_err(xret);
+ 				goto err_xa;
+ 			}
+ 		}
+@@ -1322,6 +1320,12 @@ void scmi_raw_message_report(void *r, struct scmi_xfer *xfer,
+ 	dev = raw->handle->dev;
+ 	q = scmi_raw_queue_select(raw, idx,
+ 				  SCMI_XFER_IS_CHAN_SET(xfer) ? chan_id : 0);
++	if (!q) {
++		dev_warn(dev,
++			 "RAW[%d] - NO queue for chan 0x%X. Dropping report.\n",
++			 idx, chan_id);
++		return;
++	}
+ 
+ 	/*
+ 	 * Grab the msg_q_lock upfront to avoid a possible race between
+-- 
+2.43.0
+
 
 
 
