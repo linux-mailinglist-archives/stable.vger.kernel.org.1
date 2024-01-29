@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-17044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2312B840F99
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C989E840D68
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91D89B214DC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5B481C23A5A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C716F09F;
-	Mon, 29 Jan 2024 17:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F8E155A2A;
+	Mon, 29 Jan 2024 17:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAw02JL1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJcPpTzh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83ED96F095;
-	Mon, 29 Jan 2024 17:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BC9156967;
+	Mon, 29 Jan 2024 17:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548468; cv=none; b=dZxB4+voqC2BotstBam2ccKTwGp4GY7k1GkotpSLbFHGVrVZwiAsR6kdnRv2whZ67OFFoLrEkB3v6sVIxY0tmvMVOkncEbSjgDqpvfeCEP/BdLGt8JhZsILMqCuGV7rsqb4meOXiSA8/4Yml9DHQ9ytIIgtRuje+UGmo21Si2Yo=
+	t=1706548099; cv=none; b=qEq3gk6+W3H40Uh1dt4e5maGmtYgw2dz5/9/JilR2aHPRlvUvNVikioBw+szLivAraxqXh1qOjqABf3Voaw8lseGRmz/xyPXMYqPR8EGPHsXezM2ULrU3b7VfIxDdzTNe6l7Zv4JDFr2y/7ZJKsgenxneafDvOSmJKwAihl/ECk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548468; c=relaxed/simple;
-	bh=cu/oBP/UO3MbMFvbrcO8OO2nO4rVasVJGYhbCJlGb1o=;
+	s=arc-20240116; t=1706548099; c=relaxed/simple;
+	bh=Ns9AR+OBFdqxZXuj1+bfEdoU7PHj5Hz+LcVfIHIn8c8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ayHkidmkYlraVUIjb4UEcd3P7ugGcN5/+sPcyP6G+Rz7hbyoDdE4MJxR2ILUyJpuEFk9i3IVRIvWV+0EnzgAYRdF2b/kacqzl3lKw5/NyBCUz73IRd1bCR0FZfhg03688PRxKDfkjoONowpND4s5k4eZrEupOCTN0pdMfMX3I1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAw02JL1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A877C433F1;
-	Mon, 29 Jan 2024 17:14:28 +0000 (UTC)
+	 MIME-Version; b=moMdlPkh4p2EvhenW9N8K3yEEOUBkVukt624d7Uk8UTfqFaYrwzZpmUOrkUpOxhPObfZwmeP2T2R6lbPn0GePInfldynPzXfiFZSIkRulVGkFrT09erFbuWc0UpYZ+Zg2diLXLEhu4EcJkUpu1Vdjnof1bC9iNxg0iVRNJ7OHU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJcPpTzh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1301EC433B1;
+	Mon, 29 Jan 2024 17:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548468;
-	bh=cu/oBP/UO3MbMFvbrcO8OO2nO4rVasVJGYhbCJlGb1o=;
+	s=korg; t=1706548099;
+	bh=Ns9AR+OBFdqxZXuj1+bfEdoU7PHj5Hz+LcVfIHIn8c8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wAw02JL1MXpJEBH7eQlk56HvAlfbpm2BpPIOs1tyX2a3W/icBzAEhaFfprwFgMLkj
-	 CtXOLcPnc6CC7VnGlA53uvDV8lfgErb72dGHr2Xd0xk//kidSqn79jL+LHTLXGI1fj
-	 jEO0T4dlzvBQdHbfezxfZSJL3XqUs8FfNAvUUfRE=
+	b=gJcPpTzh2NcCbJrqmlFTTX2v5T5HzopHL9wNhX87HBWoYeQx/9Kh1xzlXyDkowxum
+	 UUhifgv3MAZfqVafJk3JAbL7YXOrqyCIpMSCsspBp5dEAAmNCSYlUfFiZKA7SDdSTj
+	 3Jvf3FhAxFEBHJtsi8MXHnoXUsxgBM0+mpu6a5iU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Krowiak <akrowiak@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.6 059/331] s390/vfio-ap: always filter entire AP matrix
+	Alfred Piccioni <alpic@google.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.7 092/346] lsm: new security_file_ioctl_compat() hook
 Date: Mon, 29 Jan 2024 09:02:03 -0800
-Message-ID: <20240129170016.660462996@linuxfoundation.org>
+Message-ID: <20240129170019.113316232@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,188 +62,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Krowiak <akrowiak@linux.ibm.com>
+From: Alfred Piccioni <alpic@google.com>
 
-commit 850fb7fa8c684a4c6bf0e4b6978f4ddcc5d43d11 upstream.
+commit f1bb47a31dff6d4b34fb14e99850860ee74bb003 upstream.
 
-The vfio_ap_mdev_filter_matrix function is called whenever a new adapter or
-domain is assigned to the mdev. The purpose of the function is to update
-the guest's AP configuration by filtering the matrix of adapters and
-domains assigned to the mdev. When an adapter or domain is assigned, only
-the APQNs associated with the APID of the new adapter or APQI of the new
-domain are inspected. If an APQN does not reference a queue device bound to
-the vfio_ap device driver, then it's APID will be filtered from the mdev's
-matrix when updating the guest's AP configuration.
+Some ioctl commands do not require ioctl permission, but are routed to
+other permissions such as FILE_GETATTR or FILE_SETATTR. This routing is
+done by comparing the ioctl cmd to a set of 64-bit flags (FS_IOC_*).
 
-Inspecting only the APID of the new adapter or APQI of the new domain will
-result in passing AP queues through to a guest that are not bound to the
-vfio_ap device driver under certain circumstances. Consider the following:
+However, if a 32-bit process is running on a 64-bit kernel, it emits
+32-bit flags (FS_IOC32_*) for certain ioctl operations. These flags are
+being checked erroneously, which leads to these ioctl operations being
+routed to the ioctl permission, rather than the correct file
+permissions.
 
-guest's AP configuration (all also assigned to the mdev's matrix):
-14.0004
-14.0005
-14.0006
-16.0004
-16.0005
-16.0006
+This was also noted in a RED-PEN finding from a while back -
+"/* RED-PEN how should LSM module know it's handling 32bit? */".
 
-unassign domain 4
-unbind queue 16.0005
-assign domain 4
+This patch introduces a new hook, security_file_ioctl_compat(), that is
+called from the compat ioctl syscall. All current LSMs have been changed
+to support this hook.
 
-When domain 4 is re-assigned, since only domain 4 will be inspected, the
-APQNs that will be examined will be:
-14.0004
-16.0004
+Reviewing the three places where we are currently using
+security_file_ioctl(), it appears that only SELinux needs a dedicated
+compat change; TOMOYO and SMACK appear to be functional without any
+change.
 
-Since both of those APQNs reference queue devices that are bound to the
-vfio_ap device driver, nothing will get filtered from the mdev's matrix
-when updating the guest's AP configuration. Consequently, queue 16.0005
-will get passed through despite not being bound to the driver. This
-violates the linux device model requirement that a guest shall only be
-given access to devices bound to the device driver facilitating their
-pass-through.
-
-To resolve this problem, every adapter and domain assigned to the mdev will
-be inspected when filtering the mdev's matrix.
-
-Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
-Acked-by: Halil Pasic <pasic@linux.ibm.com>
-Fixes: 48cae940c31d ("s390/vfio-ap: refresh guest's APCB by filtering AP resources assigned to mdev")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240115185441.31526-2-akrowiak@linux.ibm.com
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 0b24dcb7f2f7 ("Revert "selinux: simplify ioctl checking"")
+Signed-off-by: Alfred Piccioni <alpic@google.com>
+Reviewed-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+[PM: subject tweak, line length fixes, and alignment corrections]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/crypto/vfio_ap_ops.c |   57 +++++++++++---------------------------
- 1 file changed, 17 insertions(+), 40 deletions(-)
+ fs/ioctl.c                    |    3 +--
+ include/linux/lsm_hook_defs.h |    2 ++
+ include/linux/security.h      |    9 +++++++++
+ security/security.c           |   18 ++++++++++++++++++
+ security/selinux/hooks.c      |   28 ++++++++++++++++++++++++++++
+ security/smack/smack_lsm.c    |    1 +
+ security/tomoyo/tomoyo.c      |    1 +
+ 7 files changed, 60 insertions(+), 2 deletions(-)
 
---- a/drivers/s390/crypto/vfio_ap_ops.c
-+++ b/drivers/s390/crypto/vfio_ap_ops.c
-@@ -671,8 +671,7 @@ static bool vfio_ap_mdev_filter_cdoms(st
-  * Return: a boolean value indicating whether the KVM guest's APCB was changed
-  *	   by the filtering or not.
-  */
--static bool vfio_ap_mdev_filter_matrix(unsigned long *apm, unsigned long *aqm,
--				       struct ap_matrix_mdev *matrix_mdev)
-+static bool vfio_ap_mdev_filter_matrix(struct ap_matrix_mdev *matrix_mdev)
+--- a/fs/ioctl.c
++++ b/fs/ioctl.c
+@@ -920,8 +920,7 @@ COMPAT_SYSCALL_DEFINE3(ioctl, unsigned i
+ 	if (!f.file)
+ 		return -EBADF;
+ 
+-	/* RED-PEN how should LSM module know it's handling 32bit? */
+-	error = security_file_ioctl(f.file, cmd, arg);
++	error = security_file_ioctl_compat(f.file, cmd, arg);
+ 	if (error)
+ 		goto out;
+ 
+--- a/include/linux/lsm_hook_defs.h
++++ b/include/linux/lsm_hook_defs.h
+@@ -171,6 +171,8 @@ LSM_HOOK(int, 0, file_alloc_security, st
+ LSM_HOOK(void, LSM_RET_VOID, file_free_security, struct file *file)
+ LSM_HOOK(int, 0, file_ioctl, struct file *file, unsigned int cmd,
+ 	 unsigned long arg)
++LSM_HOOK(int, 0, file_ioctl_compat, struct file *file, unsigned int cmd,
++	 unsigned long arg)
+ LSM_HOOK(int, 0, mmap_addr, unsigned long addr)
+ LSM_HOOK(int, 0, mmap_file, struct file *file, unsigned long reqprot,
+ 	 unsigned long prot, unsigned long flags)
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -389,6 +389,8 @@ int security_file_permission(struct file
+ int security_file_alloc(struct file *file);
+ void security_file_free(struct file *file);
+ int security_file_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
++int security_file_ioctl_compat(struct file *file, unsigned int cmd,
++			       unsigned long arg);
+ int security_mmap_file(struct file *file, unsigned long prot,
+ 			unsigned long flags);
+ int security_mmap_addr(unsigned long addr);
+@@ -986,6 +988,13 @@ static inline int security_file_ioctl(st
  {
- 	unsigned long apid, apqi, apqn;
- 	DECLARE_BITMAP(prev_shadow_apm, AP_DEVICES);
-@@ -693,8 +692,8 @@ static bool vfio_ap_mdev_filter_matrix(u
- 	bitmap_and(matrix_mdev->shadow_apcb.aqm, matrix_mdev->matrix.aqm,
- 		   (unsigned long *)matrix_dev->info.aqm, AP_DOMAINS);
- 
--	for_each_set_bit_inv(apid, apm, AP_DEVICES) {
--		for_each_set_bit_inv(apqi, aqm, AP_DOMAINS) {
-+	for_each_set_bit_inv(apid, matrix_mdev->matrix.apm, AP_DEVICES) {
-+		for_each_set_bit_inv(apqi, matrix_mdev->matrix.aqm, AP_DOMAINS) {
- 			/*
- 			 * If the APQN is not bound to the vfio_ap device
- 			 * driver, then we can't assign it to the guest's
-@@ -959,7 +958,6 @@ static ssize_t assign_adapter_store(stru
- {
- 	int ret;
- 	unsigned long apid;
--	DECLARE_BITMAP(apm_delta, AP_DEVICES);
- 	struct ap_matrix_mdev *matrix_mdev = dev_get_drvdata(dev);
- 
- 	mutex_lock(&ap_perms_mutex);
-@@ -988,11 +986,8 @@ static ssize_t assign_adapter_store(stru
- 	}
- 
- 	vfio_ap_mdev_link_adapter(matrix_mdev, apid);
--	memset(apm_delta, 0, sizeof(apm_delta));
--	set_bit_inv(apid, apm_delta);
- 
--	if (vfio_ap_mdev_filter_matrix(apm_delta,
--				       matrix_mdev->matrix.aqm, matrix_mdev))
-+	if (vfio_ap_mdev_filter_matrix(matrix_mdev))
- 		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
- 
- 	ret = count;
-@@ -1168,7 +1163,6 @@ static ssize_t assign_domain_store(struc
- {
- 	int ret;
- 	unsigned long apqi;
--	DECLARE_BITMAP(aqm_delta, AP_DOMAINS);
- 	struct ap_matrix_mdev *matrix_mdev = dev_get_drvdata(dev);
- 
- 	mutex_lock(&ap_perms_mutex);
-@@ -1197,11 +1191,8 @@ static ssize_t assign_domain_store(struc
- 	}
- 
- 	vfio_ap_mdev_link_domain(matrix_mdev, apqi);
--	memset(aqm_delta, 0, sizeof(aqm_delta));
--	set_bit_inv(apqi, aqm_delta);
- 
--	if (vfio_ap_mdev_filter_matrix(matrix_mdev->matrix.apm, aqm_delta,
--				       matrix_mdev))
-+	if (vfio_ap_mdev_filter_matrix(matrix_mdev))
- 		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
- 
- 	ret = count;
-@@ -2092,9 +2083,7 @@ int vfio_ap_mdev_probe_queue(struct ap_d
- 	if (matrix_mdev) {
- 		vfio_ap_mdev_link_queue(matrix_mdev, q);
- 
--		if (vfio_ap_mdev_filter_matrix(matrix_mdev->matrix.apm,
--					       matrix_mdev->matrix.aqm,
--					       matrix_mdev))
-+		if (vfio_ap_mdev_filter_matrix(matrix_mdev))
- 			vfio_ap_mdev_update_guest_apcb(matrix_mdev);
- 	}
- 	dev_set_drvdata(&apdev->device, q);
-@@ -2444,34 +2433,22 @@ void vfio_ap_on_cfg_changed(struct ap_co
- 
- static void vfio_ap_mdev_hot_plug_cfg(struct ap_matrix_mdev *matrix_mdev)
- {
--	bool do_hotplug = false;
--	int filter_domains = 0;
--	int filter_adapters = 0;
--	DECLARE_BITMAP(apm, AP_DEVICES);
--	DECLARE_BITMAP(aqm, AP_DOMAINS);
-+	bool filter_domains, filter_adapters, filter_cdoms, do_hotplug = false;
- 
- 	mutex_lock(&matrix_mdev->kvm->lock);
- 	mutex_lock(&matrix_dev->mdevs_lock);
- 
--	filter_adapters = bitmap_and(apm, matrix_mdev->matrix.apm,
--				     matrix_mdev->apm_add, AP_DEVICES);
--	filter_domains = bitmap_and(aqm, matrix_mdev->matrix.aqm,
--				    matrix_mdev->aqm_add, AP_DOMAINS);
--
--	if (filter_adapters && filter_domains)
--		do_hotplug |= vfio_ap_mdev_filter_matrix(apm, aqm, matrix_mdev);
--	else if (filter_adapters)
--		do_hotplug |=
--			vfio_ap_mdev_filter_matrix(apm,
--						   matrix_mdev->shadow_apcb.aqm,
--						   matrix_mdev);
--	else
--		do_hotplug |=
--			vfio_ap_mdev_filter_matrix(matrix_mdev->shadow_apcb.apm,
--						   aqm, matrix_mdev);
-+	filter_adapters = bitmap_intersects(matrix_mdev->matrix.apm,
-+					    matrix_mdev->apm_add, AP_DEVICES);
-+	filter_domains = bitmap_intersects(matrix_mdev->matrix.aqm,
-+					   matrix_mdev->aqm_add, AP_DOMAINS);
-+	filter_cdoms = bitmap_intersects(matrix_mdev->matrix.adm,
-+					 matrix_mdev->adm_add, AP_DOMAINS);
+ 	return 0;
+ }
 +
-+	if (filter_adapters || filter_domains)
-+		do_hotplug = vfio_ap_mdev_filter_matrix(matrix_mdev);
++static inline int security_file_ioctl_compat(struct file *file,
++					     unsigned int cmd,
++					     unsigned long arg)
++{
++	return 0;
++}
  
--	if (bitmap_intersects(matrix_mdev->matrix.adm, matrix_mdev->adm_add,
--			      AP_DOMAINS))
-+	if (filter_cdoms)
- 		do_hotplug |= vfio_ap_mdev_filter_cdoms(matrix_mdev);
+ static inline int security_mmap_file(struct file *file, unsigned long prot,
+ 				     unsigned long flags)
+--- a/security/security.c
++++ b/security/security.c
+@@ -2648,6 +2648,24 @@ int security_file_ioctl(struct file *fil
+ }
+ EXPORT_SYMBOL_GPL(security_file_ioctl);
  
- 	if (do_hotplug)
++/**
++ * security_file_ioctl_compat() - Check if an ioctl is allowed in compat mode
++ * @file: associated file
++ * @cmd: ioctl cmd
++ * @arg: ioctl arguments
++ *
++ * Compat version of security_file_ioctl() that correctly handles 32-bit
++ * processes running on 64-bit kernels.
++ *
++ * Return: Returns 0 if permission is granted.
++ */
++int security_file_ioctl_compat(struct file *file, unsigned int cmd,
++			       unsigned long arg)
++{
++	return call_int_hook(file_ioctl_compat, 0, file, cmd, arg);
++}
++EXPORT_SYMBOL_GPL(security_file_ioctl_compat);
++
+ static inline unsigned long mmap_prot(struct file *file, unsigned long prot)
+ {
+ 	/*
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -3725,6 +3725,33 @@ static int selinux_file_ioctl(struct fil
+ 	return error;
+ }
+ 
++static int selinux_file_ioctl_compat(struct file *file, unsigned int cmd,
++			      unsigned long arg)
++{
++	/*
++	 * If we are in a 64-bit kernel running 32-bit userspace, we need to
++	 * make sure we don't compare 32-bit flags to 64-bit flags.
++	 */
++	switch (cmd) {
++	case FS_IOC32_GETFLAGS:
++		cmd = FS_IOC_GETFLAGS;
++		break;
++	case FS_IOC32_SETFLAGS:
++		cmd = FS_IOC_SETFLAGS;
++		break;
++	case FS_IOC32_GETVERSION:
++		cmd = FS_IOC_GETVERSION;
++		break;
++	case FS_IOC32_SETVERSION:
++		cmd = FS_IOC_SETVERSION;
++		break;
++	default:
++		break;
++	}
++
++	return selinux_file_ioctl(file, cmd, arg);
++}
++
+ static int default_noexec __ro_after_init;
+ 
+ static int file_map_prot_check(struct file *file, unsigned long prot, int shared)
+@@ -7037,6 +7064,7 @@ static struct security_hook_list selinux
+ 	LSM_HOOK_INIT(file_permission, selinux_file_permission),
+ 	LSM_HOOK_INIT(file_alloc_security, selinux_file_alloc_security),
+ 	LSM_HOOK_INIT(file_ioctl, selinux_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, selinux_file_ioctl_compat),
+ 	LSM_HOOK_INIT(mmap_file, selinux_mmap_file),
+ 	LSM_HOOK_INIT(mmap_addr, selinux_mmap_addr),
+ 	LSM_HOOK_INIT(file_mprotect, selinux_file_mprotect),
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -4973,6 +4973,7 @@ static struct security_hook_list smack_h
+ 
+ 	LSM_HOOK_INIT(file_alloc_security, smack_file_alloc_security),
+ 	LSM_HOOK_INIT(file_ioctl, smack_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, smack_file_ioctl),
+ 	LSM_HOOK_INIT(file_lock, smack_file_lock),
+ 	LSM_HOOK_INIT(file_fcntl, smack_file_fcntl),
+ 	LSM_HOOK_INIT(mmap_file, smack_mmap_file),
+--- a/security/tomoyo/tomoyo.c
++++ b/security/tomoyo/tomoyo.c
+@@ -568,6 +568,7 @@ static struct security_hook_list tomoyo_
+ 	LSM_HOOK_INIT(path_rename, tomoyo_path_rename),
+ 	LSM_HOOK_INIT(inode_getattr, tomoyo_inode_getattr),
+ 	LSM_HOOK_INIT(file_ioctl, tomoyo_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, tomoyo_file_ioctl),
+ 	LSM_HOOK_INIT(path_chmod, tomoyo_path_chmod),
+ 	LSM_HOOK_INIT(path_chown, tomoyo_path_chown),
+ 	LSM_HOOK_INIT(path_chroot, tomoyo_path_chroot),
 
 
 
