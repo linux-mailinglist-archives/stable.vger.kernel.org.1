@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-17241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9EB841064
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE1D840F09
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EF8F1C23B3B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 911B41C22EDA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FB315F332;
-	Mon, 29 Jan 2024 17:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C85E16276B;
+	Mon, 29 Jan 2024 17:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e61PoEfC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORjsK6y8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3038415B960;
-	Mon, 29 Jan 2024 17:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4D9157E8F;
+	Mon, 29 Jan 2024 17:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548614; cv=none; b=FVttRlyi1w6vGbXOQDoTMJAY9wwd77EiaU37fsyQKmEaNm6DheSoidqdjpwljdEPuwaBsdk9VM2vGbBYc3miOepemHwLUZYZ7twAPqu9RLwkABrlJt5y+X32dqu9v+F2DsoOTwdGh97T3fFunExW8v7xQh7CG/B1pC9Af/xk7qc=
+	t=1706548376; cv=none; b=JJWn5jhLHk9+l0o8brEx5O/YGQv0Ax/MbE49u0tLTVVz9OqAtK94sFgkew6SlLtunfNwnnFBAwn79YJpwQGOLImltgYY1BzcyDYNb2fy1wn3mIUAa5p15InV4kM7fYpt/TTFRk+6K3GH7QWLPc/uYzB5kHk3VYQs2KQb7sCYtB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548614; c=relaxed/simple;
-	bh=mKDiog61/upL5zmtDxFeX4sUPU87hSJYTX19ovsZSco=;
+	s=arc-20240116; t=1706548376; c=relaxed/simple;
+	bh=efWN6upCMLx+hFMVWeZERx98/Ha4/RfmRQjnXbWVaJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQ74k6zcsg5Tp0k8qzyIuBeK5oNeXTcOUSbCFTNthC3etaiMDQ6/U6wWGsutwlaSw73r4/bk+ksMkX4DR3O8b8pa0unITveBNf3+dfHNo0bF6CJCK363HZu+5hnxMpcwMDub9v6KLnwci/wqXeV546/s1HrP1z/GUH/dcBW0AFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e61PoEfC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3FBC433F1;
-	Mon, 29 Jan 2024 17:16:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AFxGbLspwCwfvnXe0WxvtyH9dF3GfMaZDiZAZAVHgX5gfbMjCS76cUzBEcpJbIES3nSzF68WPDipCtAH34dYwuf9OaKiKmQNwDyD0hTh7EUidLKzDebyRZmWbeXuaDJQIsHTOfrGCcJmduD/CmqrRKD+W/G9SSSWVTmF5TdcCME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORjsK6y8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99FFC43390;
+	Mon, 29 Jan 2024 17:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548614;
-	bh=mKDiog61/upL5zmtDxFeX4sUPU87hSJYTX19ovsZSco=;
+	s=korg; t=1706548375;
+	bh=efWN6upCMLx+hFMVWeZERx98/Ha4/RfmRQjnXbWVaJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e61PoEfCAb6Xz5K18/sZMkSa48W/zIs0cD6T5SpGH9A26pSRc+eQx2QET8vkh/81E
-	 d+Rf/NI7q3MCbF/DTVvi9j0NFihdnq6Y1+O8+3RGhY544aDQTsP54GqnJOEdHc+gqM
-	 7WKb8BKpFX1UJ9UX/yiIiuHn5BqfxISDA8b+Q1ek=
+	b=ORjsK6y8WnKPVPdHuKEnLREa5Vfry+uoTYTZxIGVQnwBaOpFnliSYCaQESWsyK1V+
+	 TEpgBHJvj3O6WINNCiLm+HVvu6e88/nyFdoo/darx8R0fnFiPxFr0HW+TRQqv0AfVC
+	 iZuoXRQAtuIQ9uQqovtCSOruiIhBcGkN66VsDSKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>
-Subject: [PATCH 6.6 273/331] net/bpf: Avoid unused "sin_addr_len" warning when CONFIG_CGROUP_BPF is not set
+	Nathan Chancellor <nathan@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.1 137/185] platform/x86: intel-uncore-freq: Fix types in sysfs callbacks
 Date: Mon, 29 Jan 2024 09:05:37 -0800
-Message-ID: <20240129170022.854794125@linuxfoundation.org>
+Message-ID: <20240129170002.995711350@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,220 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 9c1292eca243821249fa99f40175b0660d9329e3 upstream.
+commit 416de0246f35f43d871a57939671fe814f4455ee upstream.
 
-It was reported that there is a compiler warning on the unused variable
-"sin_addr_len" in af_inet.c when CONFIG_CGROUP_BPF is not set.
-This patch is to address it similar to the ipv6 counterpart
-in inet6_getname(). It is to "return sin_addr_len;"
-instead of "return sizeof(*sin);".
+When booting a kernel with CONFIG_CFI_CLANG, there is a CFI failure when
+accessing any of the values under
+/sys/devices/system/cpu/intel_uncore_frequency/package_00_die_00:
 
-Fixes: fefba7d1ae19 ("bpf: Propagate modified uaddrlen from cgroup sockaddr programs")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/bpf/20231013185702.3993710-1-martin.lau@linux.dev
-Closes: https://lore.kernel.org/bpf/20231013114007.2fb09691@canb.auug.org.au/
+  $ cat /sys/devices/system/cpu/intel_uncore_frequency/package_00_die_00/max_freq_khz
+  fish: Job 1, 'cat /sys/devices/system/cpu/int…' terminated by signal SIGSEGV (Address boundary error)
+
+  $ sudo dmesg &| grep 'CFI failure'
+  [  170.953925] CFI failure at kobj_attr_show+0x19/0x30 (target: show_max_freq_khz+0x0/0xc0 [intel_uncore_frequency_common]; expected type: 0xd34078c5
+
+The sysfs callback functions such as show_domain_id() are written as if
+they are going to be called by dev_attr_show() but as the above message
+shows, they are instead called by kobj_attr_show(). kCFI checks that the
+destination of an indirect jump has the exact same type as the prototype
+of the function pointer it is called through and fails when they do not.
+
+These callbacks are called through kobj_attr_show() because
+uncore_root_kobj was initialized with kobject_create_and_add(), which
+means uncore_root_kobj has a ->sysfs_ops of kobj_sysfs_ops from
+kobject_create(), which uses kobj_attr_show() as its ->show() value.
+
+The only reason there has not been a more noticeable problem until this
+point is that 'struct kobj_attribute' and 'struct device_attribute' have
+the same layout, so getting the callback from container_of() works the
+same with either value.
+
+Change all the callbacks and their uses to be compatible with
+kobj_attr_show() and kobj_attr_store(), which resolves the kCFI failure
+and allows the sysfs files to work properly.
+
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1974
+Fixes: ae7b2ce57851 ("platform/x86/intel/uncore-freq: Use sysfs API to create attributes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://lore.kernel.org/r/20240104-intel-uncore-freq-kcfi-fix-v1-1-bf1e8939af40@kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+[nathan: Fix conflicts due to lack of 9b8dea80e3cb in 6.1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/af_inet.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c |   64 +++++-----
+ drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.h |   20 +--
+ 2 files changed, 42 insertions(+), 42 deletions(-)
 
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -823,7 +823,7 @@ int inet_getname(struct socket *sock, st
- 	}
- 	release_sock(sk);
- 	memset(sin->sin_zero, 0, sizeof(sin->sin_zero));
--	return sizeof(*sin);
-+	return sin_addr_len;
+--- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
++++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
+@@ -74,30 +74,30 @@ static ssize_t show_perf_status_freq_khz
  }
- EXPORT_SYMBOL(inet_getname);
+ 
+ #define store_uncore_min_max(name, min_max)				\
+-	static ssize_t store_##name(struct device *dev,		\
+-				     struct device_attribute *attr,	\
++	static ssize_t store_##name(struct kobject *kobj,		\
++				     struct kobj_attribute *attr,	\
+ 				     const char *buf, size_t count)	\
+ 	{								\
+-		struct uncore_data *data = container_of(attr, struct uncore_data, name##_dev_attr);\
++		struct uncore_data *data = container_of(attr, struct uncore_data, name##_kobj_attr);\
+ 									\
+ 		return store_min_max_freq_khz(data, buf, count,	\
+ 					      min_max);		\
+ 	}
+ 
+ #define show_uncore_min_max(name, min_max)				\
+-	static ssize_t show_##name(struct device *dev,		\
+-				    struct device_attribute *attr, char *buf)\
++	static ssize_t show_##name(struct kobject *kobj,		\
++				    struct kobj_attribute *attr, char *buf)\
+ 	{                                                               \
+-		struct uncore_data *data = container_of(attr, struct uncore_data, name##_dev_attr);\
++		struct uncore_data *data = container_of(attr, struct uncore_data, name##_kobj_attr);\
+ 									\
+ 		return show_min_max_freq_khz(data, buf, min_max);	\
+ 	}
+ 
+ #define show_uncore_perf_status(name)					\
+-	static ssize_t show_##name(struct device *dev,		\
+-				   struct device_attribute *attr, char *buf)\
++	static ssize_t show_##name(struct kobject *kobj,		\
++				   struct kobj_attribute *attr, char *buf)\
+ 	{                                                               \
+-		struct uncore_data *data = container_of(attr, struct uncore_data, name##_dev_attr);\
++		struct uncore_data *data = container_of(attr, struct uncore_data, name##_kobj_attr);\
+ 									\
+ 		return show_perf_status_freq_khz(data, buf); \
+ 	}
+@@ -111,11 +111,11 @@ show_uncore_min_max(max_freq_khz, 1);
+ show_uncore_perf_status(current_freq_khz);
+ 
+ #define show_uncore_data(member_name)					\
+-	static ssize_t show_##member_name(struct device *dev,	\
+-					   struct device_attribute *attr, char *buf)\
++	static ssize_t show_##member_name(struct kobject *kobj,	\
++					   struct kobj_attribute *attr, char *buf)\
+ 	{                                                               \
+ 		struct uncore_data *data = container_of(attr, struct uncore_data,\
+-							  member_name##_dev_attr);\
++							  member_name##_kobj_attr);\
+ 									\
+ 		return sysfs_emit(buf, "%u\n",				\
+ 				 data->member_name);			\
+@@ -126,29 +126,29 @@ show_uncore_data(initial_max_freq_khz);
+ 
+ #define init_attribute_rw(_name)					\
+ 	do {								\
+-		sysfs_attr_init(&data->_name##_dev_attr.attr);	\
+-		data->_name##_dev_attr.show = show_##_name;		\
+-		data->_name##_dev_attr.store = store_##_name;		\
+-		data->_name##_dev_attr.attr.name = #_name;		\
+-		data->_name##_dev_attr.attr.mode = 0644;		\
++		sysfs_attr_init(&data->_name##_kobj_attr.attr);	\
++		data->_name##_kobj_attr.show = show_##_name;		\
++		data->_name##_kobj_attr.store = store_##_name;		\
++		data->_name##_kobj_attr.attr.name = #_name;		\
++		data->_name##_kobj_attr.attr.mode = 0644;		\
+ 	} while (0)
+ 
+ #define init_attribute_ro(_name)					\
+ 	do {								\
+-		sysfs_attr_init(&data->_name##_dev_attr.attr);	\
+-		data->_name##_dev_attr.show = show_##_name;		\
+-		data->_name##_dev_attr.store = NULL;			\
+-		data->_name##_dev_attr.attr.name = #_name;		\
+-		data->_name##_dev_attr.attr.mode = 0444;		\
++		sysfs_attr_init(&data->_name##_kobj_attr.attr);	\
++		data->_name##_kobj_attr.show = show_##_name;		\
++		data->_name##_kobj_attr.store = NULL;			\
++		data->_name##_kobj_attr.attr.name = #_name;		\
++		data->_name##_kobj_attr.attr.mode = 0444;		\
+ 	} while (0)
+ 
+ #define init_attribute_root_ro(_name)					\
+ 	do {								\
+-		sysfs_attr_init(&data->_name##_dev_attr.attr);	\
+-		data->_name##_dev_attr.show = show_##_name;		\
+-		data->_name##_dev_attr.store = NULL;			\
+-		data->_name##_dev_attr.attr.name = #_name;		\
+-		data->_name##_dev_attr.attr.mode = 0400;		\
++		sysfs_attr_init(&data->_name##_kobj_attr.attr);	\
++		data->_name##_kobj_attr.show = show_##_name;		\
++		data->_name##_kobj_attr.store = NULL;			\
++		data->_name##_kobj_attr.attr.name = #_name;		\
++		data->_name##_kobj_attr.attr.mode = 0400;		\
+ 	} while (0)
+ 
+ static int create_attr_group(struct uncore_data *data, char *name)
+@@ -161,14 +161,14 @@ static int create_attr_group(struct unco
+ 	init_attribute_ro(initial_max_freq_khz);
+ 	init_attribute_root_ro(current_freq_khz);
+ 
+-	data->uncore_attrs[index++] = &data->max_freq_khz_dev_attr.attr;
+-	data->uncore_attrs[index++] = &data->min_freq_khz_dev_attr.attr;
+-	data->uncore_attrs[index++] = &data->initial_min_freq_khz_dev_attr.attr;
+-	data->uncore_attrs[index++] = &data->initial_max_freq_khz_dev_attr.attr;
++	data->uncore_attrs[index++] = &data->max_freq_khz_kobj_attr.attr;
++	data->uncore_attrs[index++] = &data->min_freq_khz_kobj_attr.attr;
++	data->uncore_attrs[index++] = &data->initial_min_freq_khz_kobj_attr.attr;
++	data->uncore_attrs[index++] = &data->initial_max_freq_khz_kobj_attr.attr;
+ 
+ 	ret = uncore_read_freq(data, &freq);
+ 	if (!ret)
+-		data->uncore_attrs[index++] = &data->current_freq_khz_dev_attr.attr;
++		data->uncore_attrs[index++] = &data->current_freq_khz_kobj_attr.attr;
+ 
+ 	data->uncore_attrs[index] = NULL;
+ 
+--- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.h
++++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.h
+@@ -23,11 +23,11 @@
+  * @die_id:		Die id for this instance
+  * @name:		Sysfs entry name for this instance
+  * @uncore_attr_group:	Attribute group storage
+- * @max_freq_khz_dev_attr: Storage for device attribute max_freq_khz
+- * @mix_freq_khz_dev_attr: Storage for device attribute min_freq_khz
+- * @initial_max_freq_khz_dev_attr: Storage for device attribute initial_max_freq_khz
+- * @initial_min_freq_khz_dev_attr: Storage for device attribute initial_min_freq_khz
+- * @current_freq_khz_dev_attr: Storage for device attribute current_freq_khz
++ * @max_freq_khz_dev_attr: Storage for kobject attribute max_freq_khz
++ * @mix_freq_khz_dev_attr: Storage for kobject attribute min_freq_khz
++ * @initial_max_freq_khz_dev_attr: Storage for kobject attribute initial_max_freq_khz
++ * @initial_min_freq_khz_dev_attr: Storage for kobject attribute initial_min_freq_khz
++ * @current_freq_khz_dev_attr: Storage for kobject attribute current_freq_khz
+  * @uncore_attrs:	Attribute storage for group creation
+  *
+  * This structure is used to encapsulate all data related to uncore sysfs
+@@ -44,11 +44,11 @@ struct uncore_data {
+ 	char name[32];
+ 
+ 	struct attribute_group uncore_attr_group;
+-	struct device_attribute max_freq_khz_dev_attr;
+-	struct device_attribute min_freq_khz_dev_attr;
+-	struct device_attribute initial_max_freq_khz_dev_attr;
+-	struct device_attribute initial_min_freq_khz_dev_attr;
+-	struct device_attribute current_freq_khz_dev_attr;
++	struct kobj_attribute max_freq_khz_kobj_attr;
++	struct kobj_attribute min_freq_khz_kobj_attr;
++	struct kobj_attribute initial_max_freq_khz_kobj_attr;
++	struct kobj_attribute initial_min_freq_khz_kobj_attr;
++	struct kobj_attribute current_freq_khz_kobj_attr;
+ 	struct attribute *uncore_attrs[6];
+ };
  
 
 
