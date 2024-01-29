@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-16701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9FBA840E0E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A40A2840E10
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D26B287757
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EB1A2877DE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB32159587;
-	Mon, 29 Jan 2024 17:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B85E15DBD3;
+	Mon, 29 Jan 2024 17:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImZNon0Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkyXjE4Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49517157059;
-	Mon, 29 Jan 2024 17:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF73E159588;
+	Mon, 29 Jan 2024 17:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548216; cv=none; b=TU2UOD65ziOaWM/F1EbW9Lg0GtUYWwyIkizMy5QQwjvB0H5N8pLazENdArY85id56+8LuGD3ueUW3mvpdqbrxiLL9GgRy0nj99GeBSTOou2ckuNnPskGsnbi20VjqOvl2ZPlvzeOHbi+e43fSFjokLhjb48fLs1Yxa9seeVOgH0=
+	t=1706548217; cv=none; b=uS+Y1E0hvTctTQoseUuz5lf6NsqdQMi0nrLtEWAe6sPRioEhkr2bLXJhzYVH6yN7u9z1hWLEgpDQld4d6hzNQE6eZIGO2mgGUy6hW5psA6sEVhslZ8gDpw0Cau7YNmxxTG2DnufyKCk8Z2swE5bQXtTOLkEeNJRnGEOwRnOMf1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548216; c=relaxed/simple;
-	bh=fkPpcqPNnlL6E67tP1ealJ2P0fWiRTzDN3E8Mn6YndY=;
+	s=arc-20240116; t=1706548217; c=relaxed/simple;
+	bh=3IgD35KFcDdIcXmmphasteCgmK+27yRUwO/gebQQZ9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qDnGpp6jXiYbB29iMjMg4smiusupUpRmF3sltkTP2ZezUN1ZaIYQDtaJc/PZrbQ9dy6zb16hZqe8fr7Hqzxty3+09GZl9+F4nUHHZaRQVUBFqeugNQoPgMnYMxBIQ/S0B1zL9yVYFq6HyJFHXtURTj77ZpP1AxmwTXHqOTbXoMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImZNon0Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD03C43399;
-	Mon, 29 Jan 2024 17:10:16 +0000 (UTC)
+	 MIME-Version; b=aiJGo2k7qdi+0qqk09ysXgoeEjKPfGUFyYe8XSETj+WTe59p8z7YWVUGe0GqrYV0VUvHJZ3GgyHBa4QSvEMY46MuFmKhDQm5T7cXPCbiCQFvU8+nY4APt+tFULIwaYEHT6F6fkUDlFtpku/hNyqCCYKyXOnSIeHq9EU5iXhNPIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkyXjE4Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960B6C43390;
+	Mon, 29 Jan 2024 17:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548216;
-	bh=fkPpcqPNnlL6E67tP1ealJ2P0fWiRTzDN3E8Mn6YndY=;
+	s=korg; t=1706548217;
+	bh=3IgD35KFcDdIcXmmphasteCgmK+27yRUwO/gebQQZ9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ImZNon0Z8QE0N97Oq4jbQwSkUn1eAvQXdJ/c4BrCk0iAaKv5f3ikicZRSYNfHaj8k
-	 8pAs7UwtpZjhwCrpafxKKVjr9bOuX2jau5dbKvVauAIm7eELXbknQdSTWfWAZizs3v
-	 BUqVv9e6FlNRfwFdNhliDj8ms24HfXgSLh45ya70=
+	b=xkyXjE4YS8s8Vz7lmgb2R/Fv5kvzoxTcZtulKA7PZ0wDPfa8clkyzh2zH0sGvX+ku
+	 VCTSyuf+Gzmh5s00xsK+KVthMlNCJXxcUBIChL0PPN3+7HWmRZxhdh4Y3ZlFu8ci7V
+	 jX2TOrhL0OHD1c/HHGOwPVYy7yod4uqzO4oYPOoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.1 023/185] mips: Fix max_mapnr being uninitialized on early stages
-Date: Mon, 29 Jan 2024 09:03:43 -0800
-Message-ID: <20240129165959.345084220@linuxfoundation.org>
+	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.1 024/185] bus: mhi: host: Add alignment check for event ring read pointer
+Date: Mon, 29 Jan 2024 09:03:44 -0800
+Message-ID: <20240129165959.376553999@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
 References: <20240129165958.589924174@linuxfoundation.org>
@@ -65,87 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Serge Semin <fancer.lancer@gmail.com>
+From: Krishna chaitanya chundru <quic_krichai@quicinc.com>
 
-commit e1a9ae45736989c972a8d1c151bc390678ae6205 upstream.
+commit eff9704f5332a13b08fbdbe0f84059c9e7051d5f upstream.
 
-max_mapnr variable is utilized in the pfn_valid() method in order to
-determine the upper PFN space boundary. Having it uninitialized
-effectively makes any PFN passed to that method invalid. That in its turn
-causes the kernel mm-subsystem occasion malfunctions even after the
-max_mapnr variable is actually properly updated. For instance,
-pfn_valid() is called in the init_unavailable_range() method in the
-framework of the calls-chain on MIPS:
-setup_arch()
-+-> paging_init()
-    +-> free_area_init()
-        +-> memmap_init()
-            +-> memmap_init_zone_range()
-                +-> init_unavailable_range()
+Though we do check the event ring read pointer by "is_valid_ring_ptr"
+to make sure it is in the buffer range, but there is another risk the
+pointer may be not aligned.  Since we are expecting event ring elements
+are 128 bits(struct mhi_ring_element) aligned, an unaligned read pointer
+could lead to multiple issues like DoS or ring buffer memory corruption.
 
-Since pfn_valid() always returns "false" value before max_mapnr is
-initialized in the mem_init() method, any flatmem page-holes will be left
-in the poisoned/uninitialized state including the IO-memory pages. Thus
-any further attempts to map/remap the IO-memory by using MMU may fail.
-In particular it happened in my case on attempt to map the SRAM region.
-The kernel bootup procedure just crashed on the unhandled unaligned access
-bug raised in the __update_cache() method:
+So add a alignment check for event ring read pointer.
 
-> Unhandled kernel unaligned access[#1]:
-> CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc1-XXX-dirty #2056
-> ...
-> Call Trace:
-> [<8011ef9c>] __update_cache+0x88/0x1bc
-> [<80385944>] ioremap_page_range+0x110/0x2a4
-> [<80126948>] ioremap_prot+0x17c/0x1f4
-> [<80711b80>] __devm_ioremap+0x8c/0x120
-> [<80711e0c>] __devm_ioremap_resource+0xf4/0x218
-> [<808bf244>] sram_probe+0x4f4/0x930
-> [<80889d20>] platform_probe+0x68/0xec
-> ...
-
-Let's fix the problem by initializing the max_mapnr variable as soon as
-the required data is available. In particular it can be done right in the
-paging_init() method before free_area_init() is called since all the PFN
-zone boundaries have already been calculated by that time.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: ec32332df764 ("bus: mhi: core: Sanity check values from remote device before use")
+cc: stable@vger.kernel.org
+Signed-off-by: Krishna chaitanya chundru <quic_krichai@quicinc.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20231031-alignment_check-v2-1-1441db7c5efd@quicinc.com
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/init.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/bus/mhi/host/main.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -417,7 +417,12 @@ void __init paging_init(void)
- 		       (highend_pfn - max_low_pfn) << (PAGE_SHIFT - 10));
- 		max_zone_pfns[ZONE_HIGHMEM] = max_low_pfn;
- 	}
-+
-+	max_mapnr = highend_pfn ? highend_pfn : max_low_pfn;
-+#else
-+	max_mapnr = max_low_pfn;
- #endif
-+	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
+--- a/drivers/bus/mhi/host/main.c
++++ b/drivers/bus/mhi/host/main.c
+@@ -268,7 +268,8 @@ static void mhi_del_ring_element(struct
  
- 	free_area_init(max_zone_pfns);
+ static bool is_valid_ring_ptr(struct mhi_ring *ring, dma_addr_t addr)
+ {
+-	return addr >= ring->iommu_base && addr < ring->iommu_base + ring->len;
++	return addr >= ring->iommu_base && addr < ring->iommu_base + ring->len &&
++			!(addr & (sizeof(struct mhi_ring_element) - 1));
  }
-@@ -453,13 +458,6 @@ void __init mem_init(void)
- 	 */
- 	BUILD_BUG_ON(IS_ENABLED(CONFIG_32BIT) && (_PFN_SHIFT > PAGE_SHIFT));
  
--#ifdef CONFIG_HIGHMEM
--	max_mapnr = highend_pfn ? highend_pfn : max_low_pfn;
--#else
--	max_mapnr = max_low_pfn;
--#endif
--	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
--
- 	maar_init();
- 	memblock_free_all();
- 	setup_zero_pages();	/* Setup zeroed pages.  */
+ int mhi_destroy_device(struct device *dev, void *data)
 
 
 
