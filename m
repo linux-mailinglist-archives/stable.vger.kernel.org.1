@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-17150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88581841007
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C9F840DD9
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 461C0284BFE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74C501F2D017
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AB315B2FC;
-	Mon, 29 Jan 2024 17:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5FF157E75;
+	Mon, 29 Jan 2024 17:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zX/zH2Xs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5aXWLyu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B076B157E62;
-	Mon, 29 Jan 2024 17:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6834215956D;
+	Mon, 29 Jan 2024 17:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548547; cv=none; b=kxQLoBZdueREgG5r9mW94T3sCyCu4fLNawV6VxAyYUgKoGtGcuuth8NNxhieZxPCxy9jpvMEcGJPfcDc4/SzrNuvh8ut7wu6bZYuEV8b0uGi2pZm5pLd/SGefTx7IBxMhcM0IUTOJN1DXBu755jg/0qXNi+oit8R0XXFkNUy86s=
+	t=1706548177; cv=none; b=ndi3CPmC3lhnMuo9q2mS8izymj/xDXGpI8ittH8GbeWX/MVUpWZ6xZEehraoPyPEe6mE2qFQpD9BaGYtNDXstJTdJ5vUct0z5IiA71WgS+wWW+G9I4wnFZzYMMO6cTBiN8BUz0zkPdgmpGFFKKwVactDoelf73iAnuGvYKVCX80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548547; c=relaxed/simple;
-	bh=C+n+nFagVjdIhh2G/3iE6Dnsiv1NwRklDoQdLQH25jQ=;
+	s=arc-20240116; t=1706548177; c=relaxed/simple;
+	bh=WIK6Yv4m+6bjfti8JQUSmf0HznD7BsA3s0QonZHUauQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HjDPRylbSKwD5l7sCH0nGC4GSs18pjhgFomZkh/w7IpurBZIKTbJE19EpRvwx6LdNt544ye4h6L9phKYFJD6XiAln/gMFjh9ygq03NpukFlR54Em+3nQP+yLbY2wjhUbEGrMpSpQAMlYUJF7NATppXlCIpWAZ1ezFewaaqu630A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zX/zH2Xs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79211C433F1;
-	Mon, 29 Jan 2024 17:15:47 +0000 (UTC)
+	 MIME-Version; b=nAEYFzqU6cj/bdNIFaprcdlAL371o6wB8SESd71tvzuJMSpFSw2qod/OIXLZymJQd3zwIeNczlZLCpWSl7TST880gaShdnXKq5MxS8w+lfSu2gtBJPWWlke2UskOCbUJ2zU7QF8IiuHZuT7eXz878fgyCKvUmPDc/LINTlUeFsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5aXWLyu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD61C433F1;
+	Mon, 29 Jan 2024 17:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548547;
-	bh=C+n+nFagVjdIhh2G/3iE6Dnsiv1NwRklDoQdLQH25jQ=;
+	s=korg; t=1706548177;
+	bh=WIK6Yv4m+6bjfti8JQUSmf0HznD7BsA3s0QonZHUauQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zX/zH2XsONfDRaMk8ejh+pwiHnPLnPaR5Ukf3sZF0ARhPMzRPtW2ZrOuFm8x3LBVd
-	 jUQLjq9O/54TeCtqP+5tyF28R8nzWd+D90cms92wSCwsbqPgcVm9CMuv743u+BiOPK
-	 fcZNXijMO50wg4ri89hPe8FCTnxTgM2tpu4zjEtY=
+	b=R5aXWLyuj+sk1rZIvH+YHca0kmUsJWMTZHDG2LYilxDn4wOVZ6rpU4vwgf14WOfAG
+	 EIKeq3Z0j8te/cEUuEdOeF7srNSOdhidSD3jPKLcZY2jNEnLqKMiMgndHLgopc+NxA
+	 Bc+NePli6JQvcLEAZ7KGOB9hRr3SxyohzbtIas3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 189/331] ipv6: init the accept_queues spinlocks in inet6_create
-Date: Mon, 29 Jan 2024 09:04:13 -0800
-Message-ID: <20240129170020.417640537@linuxfoundation.org>
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Anand Jain <anand.jain@oracle.com>,
+	Omar Sandoval <osandov@fb.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.7 223/346] btrfs: avoid copying BTRFS_ROOT_SUBVOL_DEAD flag to snapshot of subvolume being deleted
+Date: Mon, 29 Jan 2024 09:04:14 -0800
+Message-ID: <20240129170022.950114557@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Omar Sandoval <osandov@fb.com>
 
-[ Upstream commit 435e202d645c197dcfd39d7372eb2a56529b6640 ]
+commit 3324d0547861b16cf436d54abba7052e0c8aa9de upstream.
 
-In commit 198bc90e0e73("tcp: make sure init the accept_queue's spinlocks
-once"), the spinlocks of accept_queue are initialized only when socket is
-created in the inet4 scenario. The locks are not initialized when socket
-is created in the inet6 scenario. The kernel reports the following error:
-INFO: trying to register non-static key.
-The code is fine but needs lockdep annotation, or maybe
-you didn't initialize this object before use?
-turning off the locking correctness validator.
-Hardware name: Red Hat KVM, BIOS 0.5.1 01/01/2011
-Call Trace:
-<TASK>
-	dump_stack_lvl (lib/dump_stack.c:107)
-	register_lock_class (kernel/locking/lockdep.c:1289)
-	__lock_acquire (kernel/locking/lockdep.c:5015)
-	lock_acquire.part.0 (kernel/locking/lockdep.c:5756)
-	_raw_spin_lock_bh (kernel/locking/spinlock.c:178)
-	inet_csk_listen_stop (net/ipv4/inet_connection_sock.c:1386)
-	tcp_disconnect (net/ipv4/tcp.c:2981)
-	inet_shutdown (net/ipv4/af_inet.c:935)
-	__sys_shutdown (./include/linux/file.h:32 net/socket.c:2438)
-	__x64_sys_shutdown (net/socket.c:2445)
-	do_syscall_64 (arch/x86/entry/common.c:52)
-	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:129)
-RIP: 0033:0x7f52ecd05a3d
-Code: 5b 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7
-48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff
-ff 73 01 c3 48 8b 0d ab a3 0e 00 f7 d8 64 89 01 48
-RSP: 002b:00007f52ecf5dde8 EFLAGS: 00000293 ORIG_RAX: 0000000000000030
-RAX: ffffffffffffffda RBX: 00007f52ecf5e640 RCX: 00007f52ecd05a3d
-RDX: 00007f52ecc8b188 RSI: 0000000000000000 RDI: 0000000000000004
-RBP: 00007f52ecf5de20 R08: 00007ffdae45c69f R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000293 R12: 00007f52ecf5e640
-R13: 0000000000000000 R14: 00007f52ecc8b060 R15: 00007ffdae45c6e0
+Sweet Tea spotted a race between subvolume deletion and snapshotting
+that can result in the root item for the snapshot having the
+BTRFS_ROOT_SUBVOL_DEAD flag set. The race is:
 
-Fixes: 198bc90e0e73 ("tcp: make sure init the accept_queue's spinlocks once")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240122102001.2851701-1-shaozhengchao@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Thread 1                                      | Thread 2
+----------------------------------------------|----------
+btrfs_delete_subvolume                        |
+  btrfs_set_root_flags(BTRFS_ROOT_SUBVOL_DEAD)|
+                                              |btrfs_mksubvol
+                                              |  down_read(subvol_sem)
+                                              |  create_snapshot
+                                              |    ...
+                                              |    create_pending_snapshot
+                                              |      copy root item from source
+  down_write(subvol_sem)                      |
+
+This flag is only checked in send and swap activate, which this would
+cause to fail mysteriously.
+
+create_snapshot() now checks the root refs to reject a deleted
+subvolume, so we can fix this by locking subvol_sem earlier so that the
+BTRFS_ROOT_SUBVOL_DEAD flag and the root refs are updated atomically.
+
+CC: stable@vger.kernel.org # 4.14+
+Reported-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Reviewed-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Omar Sandoval <osandov@fb.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/af_inet6.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/inode.c |   22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
-index 368824fe9719..b6c5b5e25a2f 100644
---- a/net/ipv6/af_inet6.c
-+++ b/net/ipv6/af_inet6.c
-@@ -199,6 +199,9 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
- 	if (INET_PROTOSW_REUSE & answer_flags)
- 		sk->sk_reuse = SK_CAN_REUSE;
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4449,6 +4449,8 @@ int btrfs_delete_subvolume(struct btrfs_
+ 	u64 root_flags;
+ 	int ret;
  
-+	if (INET_PROTOSW_ICSK & answer_flags)
-+		inet_init_csk_locks(sk);
++	down_write(&fs_info->subvol_sem);
 +
- 	inet = inet_sk(sk);
- 	inet_assign_bit(IS_ICSK, sk, INET_PROTOSW_ICSK & answer_flags);
+ 	/*
+ 	 * Don't allow to delete a subvolume with send in progress. This is
+ 	 * inside the inode lock so the error handling that has to drop the bit
+@@ -4460,25 +4462,25 @@ int btrfs_delete_subvolume(struct btrfs_
+ 		btrfs_warn(fs_info,
+ 			   "attempt to delete subvolume %llu during send",
+ 			   dest->root_key.objectid);
+-		return -EPERM;
++		ret = -EPERM;
++		goto out_up_write;
+ 	}
+ 	if (atomic_read(&dest->nr_swapfiles)) {
+ 		spin_unlock(&dest->root_item_lock);
+ 		btrfs_warn(fs_info,
+ 			   "attempt to delete subvolume %llu with active swapfile",
+ 			   root->root_key.objectid);
+-		return -EPERM;
++		ret = -EPERM;
++		goto out_up_write;
+ 	}
+ 	root_flags = btrfs_root_flags(&dest->root_item);
+ 	btrfs_set_root_flags(&dest->root_item,
+ 			     root_flags | BTRFS_ROOT_SUBVOL_DEAD);
+ 	spin_unlock(&dest->root_item_lock);
  
--- 
-2.43.0
-
+-	down_write(&fs_info->subvol_sem);
+-
+ 	ret = may_destroy_subvol(dest);
+ 	if (ret)
+-		goto out_up_write;
++		goto out_undead;
+ 
+ 	btrfs_init_block_rsv(&block_rsv, BTRFS_BLOCK_RSV_TEMP);
+ 	/*
+@@ -4488,7 +4490,7 @@ int btrfs_delete_subvolume(struct btrfs_
+ 	 */
+ 	ret = btrfs_subvolume_reserve_metadata(root, &block_rsv, 5, true);
+ 	if (ret)
+-		goto out_up_write;
++		goto out_undead;
+ 
+ 	trans = btrfs_start_transaction(root, 0);
+ 	if (IS_ERR(trans)) {
+@@ -4554,15 +4556,17 @@ out_end_trans:
+ 	inode->i_flags |= S_DEAD;
+ out_release:
+ 	btrfs_subvolume_release_metadata(root, &block_rsv);
+-out_up_write:
+-	up_write(&fs_info->subvol_sem);
++out_undead:
+ 	if (ret) {
+ 		spin_lock(&dest->root_item_lock);
+ 		root_flags = btrfs_root_flags(&dest->root_item);
+ 		btrfs_set_root_flags(&dest->root_item,
+ 				root_flags & ~BTRFS_ROOT_SUBVOL_DEAD);
+ 		spin_unlock(&dest->root_item_lock);
+-	} else {
++	}
++out_up_write:
++	up_write(&fs_info->subvol_sem);
++	if (!ret) {
+ 		d_invalidate(dentry);
+ 		btrfs_prune_dentries(dest);
+ 		ASSERT(dest->send_in_progress == 0);
 
 
 
