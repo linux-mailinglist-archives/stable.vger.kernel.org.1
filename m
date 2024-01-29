@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-17072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D041C840FB7
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F03F0840D82
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EE0F1C2137D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABE0E28C524
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63EBE15958D;
-	Mon, 29 Jan 2024 17:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6B115B30C;
+	Mon, 29 Jan 2024 17:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHyRDMzY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U67/Q7K+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A2E15958A;
-	Mon, 29 Jan 2024 17:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB8E15B308;
+	Mon, 29 Jan 2024 17:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548489; cv=none; b=VTlMP46ECErzuqyodUWpUttYX64gtfkPDZP6yzmooYoowGe5Ytl0KqfOEbwbKvqitwVePqx27+QdxktY1vabzpp7ASB9pNbpTwySfjsBFxd/4fRcUoFhE6J7wuKcOdplAymuYJ+c9iJJfL38/3QF7LN2objI0szbjj20u7qKt4I=
+	t=1706548118; cv=none; b=AxxAJAKPJw73+6Sp90uBcXoEisj1RFzJTZYI+O+ctiMOEXfjfw8Kp4Fu1bXPkgLMAjOHxu0vaunbeYwj8Ov/TYYzsbetyqpMgTMOCgEYiJ1JJx0Jp0TzSnocNN1vrv6yFmwonAjewQsX/lrGmcvXG8CY733n+iFDM7Kf5xBUMOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548489; c=relaxed/simple;
-	bh=Qrd27lQf1BzDkOI49EBgKoDzvbGERTsrEs76Q0D/UmM=;
+	s=arc-20240116; t=1706548118; c=relaxed/simple;
+	bh=A8TU86Drc/k9FAAx+WDMDGwqryCP0JmQRQrZvnoFvcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qhxa8zEZA9DdisCklvzLNqf3QmhSqSqNqUi/si9OGhtnEcN5/BZFVj3gJBwbiu6xyPQyCDPjP+pLE1AzOIEPED5kycsLlNiMCICJkSthJGuAc5ydWm4eKnU3wpkNPTQkMDav5omri3aEIFY3x0J1HOzj8VlIlgpERXIMU+UL+TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHyRDMzY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2201C433F1;
-	Mon, 29 Jan 2024 17:14:48 +0000 (UTC)
+	 MIME-Version; b=tOrFBge1Bz+MGI99ct6YbfQckrb7RPkgiTsd8+9yg+8OpKfuuNGl4kVtYVYisOAiR3CYpSHjN658ERx5nR3q3/vNp6qfkGMdcFaEaAqZ4++TSqOyi2CAqevyC6vSLw3vC8mvG38+SdWeKZmwtQ+ookdBl+sW1d5HoGpxJe/+HB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U67/Q7K+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B450DC43390;
+	Mon, 29 Jan 2024 17:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548489;
-	bh=Qrd27lQf1BzDkOI49EBgKoDzvbGERTsrEs76Q0D/UmM=;
+	s=korg; t=1706548117;
+	bh=A8TU86Drc/k9FAAx+WDMDGwqryCP0JmQRQrZvnoFvcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHyRDMzYS1BdziJYKm+WqXEXEM6xm9pyYt64KPmEPJPax7X8GLNoXzS4utIkN5FQK
-	 bSAq2+bhmsYX7fSdBBdZyFW5ZWuDe1t5y/5YenNZj01EiEzYhRyZQElCIrTYTQr2Yh
-	 5O/jnPbbdykluscmi1jRAcvkhFvcTL8fmS6jWvBA=
+	b=U67/Q7K+TxZ1jWkvfpjEm+fae6pPcU4u44gxPYcHbrHSKMHV6kHRVbOx5T9o+0Mgk
+	 VWorcJ0t0IvDe0XU3IcBOiQLl6yDOMdJ8smlGxGkbOHXubfGYLgx7ZqJjyH2AkPszJ
+	 wnousbx63zS8CjQVWISMVrVaMMU258QB1uRSu1m8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Marek <jonathan@marek.ca>,
-	Jack Pham <quic_jackp@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 085/331] arm64: dts: qcom: sm8150: fix USB wakeup interrupt types
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Eric Biggers <ebiggers@google.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 6.7 118/346] ubifs: ubifs_symlink: Fix memleak of inode->i_link in error path
 Date: Mon, 29 Jan 2024 09:02:29 -0800
-Message-ID: <20240129170017.421837186@linuxfoundation.org>
+Message-ID: <20240129170019.856653356@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit 54524b6987d1fffe64cbf3dded1b2fa6b903edf9 upstream.
+commit 1e022216dcd248326a5bb95609d12a6815bca4e2 upstream.
 
-The DP/DM wakeup interrupts are edge triggered and which edge to trigger
-on depends on use-case and whether a Low speed or Full/High speed device
-is connected.
+For error handling path in ubifs_symlink(), inode will be marked as
+bad first, then iput() is invoked. If inode->i_link is initialized by
+fscrypt_encrypt_symlink() in encryption scenario, inode->i_link won't
+be freed by callchain ubifs_free_inode -> fscrypt_free_inode in error
+handling path, because make_bad_inode() has changed 'inode->i_mode' as
+'S_IFREG'.
+Following kmemleak is easy to be reproduced by injecting error in
+ubifs_jnl_update() when doing symlink in encryption scenario:
+ unreferenced object 0xffff888103da3d98 (size 8):
+  comm "ln", pid 1692, jiffies 4294914701 (age 12.045s)
+  backtrace:
+   kmemdup+0x32/0x70
+   __fscrypt_encrypt_symlink+0xed/0x1c0
+   ubifs_symlink+0x210/0x300 [ubifs]
+   vfs_symlink+0x216/0x360
+   do_symlinkat+0x11a/0x190
+   do_syscall_64+0x3b/0xe0
+There are two ways fixing it:
+ 1. Remove make_bad_inode() in error handling path. We can do that
+    because ubifs_evict_inode() will do same processes for good
+    symlink inode and bad symlink inode, for inode->i_nlink checking
+    is before is_bad_inode().
+ 2. Free inode->i_link before marking inode bad.
+Method 2 is picked, it has less influence, personally, I think.
 
-Fixes: 0c9dde0d2015 ("arm64: dts: qcom: sm8150: Add secondary USB and PHY nodes")
-Fixes: b33d2868e8d3 ("arm64: dts: qcom: sm8150: Add USB and PHY device nodes")
-Cc: stable@vger.kernel.org      # 5.10
-Cc: Jonathan Marek <jonathan@marek.ca>
-Cc: Jack Pham <quic_jackp@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Jack Pham <quic_jackp@quicinc.com>
-Link: https://lore.kernel.org/r/20231120164331.8116-11-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 2c58d548f570 ("fscrypt: cache decrypted symlink target in ->i_link")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Suggested-by: Eric Biggers <ebiggers@kernel.org>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8150.dtsi |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ubifs/dir.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-@@ -3594,8 +3594,8 @@
- 
- 			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 488 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 489 IRQ_TYPE_LEVEL_HIGH>;
-+				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
-+				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
- 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
- 
-@@ -3647,8 +3647,8 @@
- 
- 			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 490 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 491 IRQ_TYPE_LEVEL_HIGH>;
-+				     <GIC_SPI 490 IRQ_TYPE_EDGE_BOTH>,
-+				     <GIC_SPI 491 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
- 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
- 
+--- a/fs/ubifs/dir.c
++++ b/fs/ubifs/dir.c
+@@ -1234,6 +1234,8 @@ out_cancel:
+ 	dir_ui->ui_size = dir->i_size;
+ 	mutex_unlock(&dir_ui->ui_mutex);
+ out_inode:
++	/* Free inode->i_link before inode is marked as bad. */
++	fscrypt_free_inode(inode);
+ 	make_bad_inode(inode);
+ 	iput(inode);
+ out_fname:
 
 
 
