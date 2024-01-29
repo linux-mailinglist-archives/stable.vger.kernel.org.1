@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-16970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3411840F46
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F440840D1A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30AB1B2543C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D83D61F2B381
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 599A715957F;
-	Mon, 29 Jan 2024 17:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190A51586C7;
+	Mon, 29 Jan 2024 17:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgSeM1br"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmISt1qv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1618215D5D2;
-	Mon, 29 Jan 2024 17:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCF8159563;
+	Mon, 29 Jan 2024 17:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548414; cv=none; b=jqk+f4kdybjyPks9mnQeHc+3DsduJh157JoWk2RDZgYaGVSR/KIW1itTx2Ry1PJCJMnNgw7nU5Y5si/2qaGh6u6QGr2P2kzTvNlRibx0PxA1gW5Qw1rloGcagoqhZd6V3oQIbtGuAIz3PBvwR0VmvYM/EF347l6YMlFg7cjUKPQ=
+	t=1706548043; cv=none; b=GACg0BkgTR2ZVZuMv+Cav+k+EILOYWXLYNxJrdVI2P9n/QvwGkwn4wbhl8Gk1f0xWyywj1xGDuxrUmJV+2j5xASqf5yE2JtbBNDc0+SjXw78/rzosSRG9YmBxp5fFKuwBnp1I55TitZuMo8zRLE9YS4L1eQIBqngIqovuwfdths=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548414; c=relaxed/simple;
-	bh=qZI3f66A4PiP6kCLvXe1VxdCDYQBvM0T/oSpDHRtwqY=;
+	s=arc-20240116; t=1706548043; c=relaxed/simple;
+	bh=+hUWxm4qOKew7axXRnKyDNd3yYfdPABqR2tpM3TgXt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aX2ooWTEaQs/8lTJ0JvGH0EXhbfgcJoK4rLryeMIyvQNKyeiAws3w8bd5l48CcRZjY/ip+dX78HSekn1QxgaJOpAZ7lCwwt3I0Ay/n6b7n2SrGvOoHCcCm27yaoG9w9SDoi8LC1THxsvbQs3emdRc5YE5QgapWcVdTfmkPp7SBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgSeM1br; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5EDC433A6;
-	Mon, 29 Jan 2024 17:13:33 +0000 (UTC)
+	 MIME-Version; b=oxMoL7HdLMeF1cu2HU2nBvF8hJGrmw0Pnj0iGOzizCLTvMym0DbOO5XCjc+dgR8wP1/o84NaqjA8D6/bdU1fjJ/fRO4Jrymo0B7paS7RMZ82NdYnspUwfodX5Svw+czjSQy+PHfXzre+xxpNOvaQVZ9gElm0EvQj1Hecco1Ao2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmISt1qv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96520C433F1;
+	Mon, 29 Jan 2024 17:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548413;
-	bh=qZI3f66A4PiP6kCLvXe1VxdCDYQBvM0T/oSpDHRtwqY=;
+	s=korg; t=1706548043;
+	bh=+hUWxm4qOKew7axXRnKyDNd3yYfdPABqR2tpM3TgXt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bgSeM1brZKB1lGxM3SurxVsb2zv16CcxlPsBcvHhyAdcKWrzAmGYCZGUwvGJ7/mdt
-	 /2eUoR3dCg+UtxP2lq3uZ5FjDI/+iFkc6sa+aYPSmMkEwl+G0nZwvM7TSphiVOckdK
-	 40DaB735HqjOA9+fcy9KNKokkR2sLu65zNlizp5w=
+	b=HmISt1qvYDnevKVopvJgi8zIN7SWfwCFvgM1+jrOBQIPSzGwn8qFX/T0gRWZhgls8
+	 WPCsQpnonUSFBdyXMWOWlNSN11R4FdEeBZ4/Y50zQeNrY36DeOFx2roDbgeyoUAc1v
+	 qpIjs3ThT7WhV5W9t/BW641DLgSVfn3BypuFZSwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/331] iio: adc: ad7091r: Set alert bit in config register
-Date: Mon, 29 Jan 2024 09:01:14 -0800
-Message-ID: <20240129170015.265607549@linuxfoundation.org>
+	Serge Semin <fancer.lancer@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.7 044/346] mips: Fix max_mapnr being uninitialized on early stages
+Date: Mon, 29 Jan 2024 09:01:15 -0800
+Message-ID: <20240129170017.681111175@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-[ Upstream commit 149694f5e79b0c7a36ceb76e7c0d590db8f151c1 ]
+commit e1a9ae45736989c972a8d1c151bc390678ae6205 upstream.
 
-The ad7091r-base driver sets up an interrupt handler for firing events
-when inputs are either above or below a certain threshold.
-However, for the interrupt signal to come from the device it must be
-configured to enable the ALERT/BUSY/GPO pin to be used as ALERT, which
-was not being done until now.
-Enable interrupt signals on the ALERT/BUSY/GPO pin by setting the proper
-bit in the configuration register.
+max_mapnr variable is utilized in the pfn_valid() method in order to
+determine the upper PFN space boundary. Having it uninitialized
+effectively makes any PFN passed to that method invalid. That in its turn
+causes the kernel mm-subsystem occasion malfunctions even after the
+max_mapnr variable is actually properly updated. For instance,
+pfn_valid() is called in the init_unavailable_range() method in the
+framework of the calls-chain on MIPS:
+setup_arch()
++-> paging_init()
+    +-> free_area_init()
+        +-> memmap_init()
+            +-> memmap_init_zone_range()
+                +-> init_unavailable_range()
 
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Link: https://lore.kernel.org/r/e8da2ee98d6df88318b14baf3dc9630e20218418.1702746240.git.marcelo.schmitt1@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 020e71c7ffc2 ("iio: adc: ad7091r: Allow users to configure device events")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since pfn_valid() always returns "false" value before max_mapnr is
+initialized in the mem_init() method, any flatmem page-holes will be left
+in the poisoned/uninitialized state including the IO-memory pages. Thus
+any further attempts to map/remap the IO-memory by using MMU may fail.
+In particular it happened in my case on attempt to map the SRAM region.
+The kernel bootup procedure just crashed on the unhandled unaligned access
+bug raised in the __update_cache() method:
+
+> Unhandled kernel unaligned access[#1]:
+> CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc1-XXX-dirty #2056
+> ...
+> Call Trace:
+> [<8011ef9c>] __update_cache+0x88/0x1bc
+> [<80385944>] ioremap_page_range+0x110/0x2a4
+> [<80126948>] ioremap_prot+0x17c/0x1f4
+> [<80711b80>] __devm_ioremap+0x8c/0x120
+> [<80711e0c>] __devm_ioremap_resource+0xf4/0x218
+> [<808bf244>] sram_probe+0x4f4/0x930
+> [<80889d20>] platform_probe+0x68/0xec
+> ...
+
+Let's fix the problem by initializing the max_mapnr variable as soon as
+the required data is available. In particular it can be done right in the
+paging_init() method before free_area_init() is called since all the PFN
+zone boundaries have already been calculated by that time.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7091r-base.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/mm/init.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-index 0e5d3d2e9c98..8aaa854f816f 100644
---- a/drivers/iio/adc/ad7091r-base.c
-+++ b/drivers/iio/adc/ad7091r-base.c
-@@ -28,6 +28,7 @@
- #define AD7091R_REG_RESULT_CONV_RESULT(x)   ((x) & 0xfff)
- 
- /* AD7091R_REG_CONF */
-+#define AD7091R_REG_CONF_ALERT_EN   BIT(4)
- #define AD7091R_REG_CONF_AUTO   BIT(8)
- #define AD7091R_REG_CONF_CMD    BIT(10)
- 
-@@ -232,6 +233,11 @@ int ad7091r_probe(struct device *dev, const char *name,
- 	iio_dev->channels = chip_info->channels;
- 
- 	if (irq) {
-+		ret = regmap_update_bits(st->map, AD7091R_REG_CONF,
-+					 AD7091R_REG_CONF_ALERT_EN, BIT(4));
-+		if (ret)
-+			return ret;
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -422,7 +422,12 @@ void __init paging_init(void)
+ 		       (highend_pfn - max_low_pfn) << (PAGE_SHIFT - 10));
+ 		max_zone_pfns[ZONE_HIGHMEM] = max_low_pfn;
+ 	}
 +
- 		ret = devm_request_threaded_irq(dev, irq, NULL,
- 				ad7091r_event_handler,
- 				IRQF_TRIGGER_FALLING | IRQF_ONESHOT, name, iio_dev);
--- 
-2.43.0
-
++	max_mapnr = highend_pfn ? highend_pfn : max_low_pfn;
++#else
++	max_mapnr = max_low_pfn;
+ #endif
++	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
+ 
+ 	free_area_init(max_zone_pfns);
+ }
+@@ -458,13 +463,6 @@ void __init mem_init(void)
+ 	 */
+ 	BUILD_BUG_ON(IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT));
+ 
+-#ifdef CONFIG_HIGHMEM
+-	max_mapnr = highend_pfn ? highend_pfn : max_low_pfn;
+-#else
+-	max_mapnr = max_low_pfn;
+-#endif
+-	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
+-
+ 	maar_init();
+ 	memblock_free_all();
+ 	setup_zero_pages();	/* Setup zeroed pages.  */
 
 
 
