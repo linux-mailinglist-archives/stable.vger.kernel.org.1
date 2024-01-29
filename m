@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-16887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F39A840ED3
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E73E840E5C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 344D61F26D1E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1C991C227FE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091AE15AAB3;
-	Mon, 29 Jan 2024 17:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29151586D7;
+	Mon, 29 Jan 2024 17:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ja5sING+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A++Oe6V9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D4C161B4C;
-	Mon, 29 Jan 2024 17:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822D215A48F;
+	Mon, 29 Jan 2024 17:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548352; cv=none; b=hrdDBAVUvcjiOYaRkFXJ2u1pH0iHPCLyMGWjenbU+3h7dE1oDfGV53kJkG5JdzTnLwlf1Y3eLcY53y0d5LjZf09hphyfRFq4fdB3d2UzLDe0g9AVuO189Jq3s1u4rAf/tS7W/C6/UhIkTKDuAEvyKQmUnNDnEa8we1VlZiiczwY=
+	t=1706548270; cv=none; b=kLGQuVup78jqSw0RNfkFYZEQ5K0Hy70uUc73yiD/rXZrV4hzYN7Q34+q1wSJSRgCtjBeThvvoE8V1iao1yd06PXTjz/kQZf4gMyBWhdGIZ/kDh0mc+SMrrf/U7X6fnwKE89tYRQC5f+dzxkvsF5GW9nGYSAYCKBJYElajbjBiNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548352; c=relaxed/simple;
-	bh=a4t0NzY4EK+ctzOABWuk+haaWbx6eIN6fSdVxUsdifQ=;
+	s=arc-20240116; t=1706548270; c=relaxed/simple;
+	bh=URA//+x52o8H9Rdh0TE4Cqiqc63N7fuT9HFjT0dgG2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=InLuIxy/y7jqK+8+Wc0Cdz/Eyv49nuuzwIWh7mnTpE6jl3RrKpuqW8jioDVZDArmhOyU74o6csZKvcda6W3O/Gw4fgvSleURT88ZdbD2Qq1Cb41K3vgDWlidsvunlTzjMyBVgUhhr1S5/yS0f85b/9sJGWcClP0ufVq8CEfIv4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ja5sING+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED21C433C7;
-	Mon, 29 Jan 2024 17:12:32 +0000 (UTC)
+	 MIME-Version; b=aUw/4jH2ovc1pRxYAnHHUxzCeze4y5lPuae8GHkc2b2sZex0ynrVawyIWqTc5wOkdLDXM7/tHSrrnv7cosR9/C/bCNt/z5gleJZGM125yIU+9Blp3NDTKYSbqKLNcjKL4ONU9FNPCN26Bfh5D35zF9OneYsrE3BfNd2w+TbE3jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A++Oe6V9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F44C433C7;
+	Mon, 29 Jan 2024 17:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548352;
-	bh=a4t0NzY4EK+ctzOABWuk+haaWbx6eIN6fSdVxUsdifQ=;
+	s=korg; t=1706548270;
+	bh=URA//+x52o8H9Rdh0TE4Cqiqc63N7fuT9HFjT0dgG2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ja5sING+2fgpYuWm+3OUQ1j2q0kRYa2mA+Lniw4bQD6nwzW2hbreStRZbLwy63aNv
-	 9nagEgw6KMNxgShCokn1bjSgQZTRCP6ZoZI2DYjREu1NGclDuH24ejZep6t7LM3pmx
-	 XI9knDQadV7POaR0ts3VmrDPk53/wO//WqMN5XqI=
+	b=A++Oe6V9oKFusvS51MSEopoPsy8ks4QgZVQKJ++Nxw1YAKOwevSKUSaO26sgJpc0t
+	 e/ReN2ehox6QGgGI4nb7FJVkgVdVXoLzc/zQ8+QtorTIcvqsHX06BdpDKFmpMVJ7fL
+	 UuPvzBaso4pY9zJUjXnjrtkTOzIG2v3yLCOqTrHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/185] net/rds: Fix UBSAN: array-index-out-of-bounds in rds_cmsg_recv
+	aaron.ma@canonical.com,
+	binli@gnome.org,
+	Marc Rossi <Marc.Rossi@amd.com>,
+	Hamza Mahfooz <Hamza.Mahfooz@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>
+Subject: [PATCH 6.7 257/346] drm/amd/display: Disable PSR-SU on Parade 0803 TCON again
 Date: Mon, 29 Jan 2024 09:04:48 -0800
-Message-ID: <20240129170001.430823134@linuxfoundation.org>
+Message-ID: <20240129170023.957212553@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +66,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 13e788deb7348cc88df34bed736c3b3b9927ea52 ]
+commit 571c2fa26aa654946447c282a09d40a56c7ff128 upstream.
 
-Syzcaller UBSAN crash occurs in rds_cmsg_recv(),
-which reads inc->i_rx_lat_trace[j + 1] with index 4 (3 + 1),
-but with array size of 4 (RDS_RX_MAX_TRACES).
-Here 'j' is assigned from rs->rs_rx_trace[i] and in-turn from
-trace.rx_trace_pos[i] in rds_recv_track_latency(),
-with both arrays sized 3 (RDS_MSG_RX_DGRAM_TRACE_MAX). So fix the
-off-by-one bounds check in rds_recv_track_latency() to prevent
-a potential crash in rds_cmsg_recv().
+When screen brightness is rapidly changed and PSR-SU is enabled the
+display hangs on panels with this TCON even on the latest DCN 3.1.4
+microcode (0x8002a81 at this time).
 
-Found by syzcaller:
-=================================================================
-UBSAN: array-index-out-of-bounds in net/rds/recv.c:585:39
-index 4 is out of range for type 'u64 [4]'
-CPU: 1 PID: 8058 Comm: syz-executor228 Not tainted 6.6.0-gd2f51b3516da #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x136/0x150 lib/dump_stack.c:106
- ubsan_epilogue lib/ubsan.c:217 [inline]
- __ubsan_handle_out_of_bounds+0xd5/0x130 lib/ubsan.c:348
- rds_cmsg_recv+0x60d/0x700 net/rds/recv.c:585
- rds_recvmsg+0x3fb/0x1610 net/rds/recv.c:716
- sock_recvmsg_nosec net/socket.c:1044 [inline]
- sock_recvmsg+0xe2/0x160 net/socket.c:1066
- __sys_recvfrom+0x1b6/0x2f0 net/socket.c:2246
- __do_sys_recvfrom net/socket.c:2264 [inline]
- __se_sys_recvfrom net/socket.c:2260 [inline]
- __x64_sys_recvfrom+0xe0/0x1b0 net/socket.c:2260
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x40/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-==================================================================
+This was disabled previously as commit 072030b17830 ("drm/amd: Disable
+PSR-SU on Parade 0803 TCON") but reverted as commit 1e66a17ce546 ("Revert
+"drm/amd: Disable PSR-SU on Parade 0803 TCON"") in favor of testing for
+a new enough microcode (commit cd2e31a9ab93 ("drm/amd/display: Set minimum
+requirement for using PSR-SU on Phoenix")).
 
-Fixes: 3289025aedc0 ("RDS: add receive message trace used by application")
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Closes: https://lore.kernel.org/linux-rdma/CALGdzuoVdq-wtQ4Az9iottBqC5cv9ZhcE5q8N7LfYFvkRsOVcw@mail.gmail.com/
-Signed-off-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As hangs are still happening specifically with this TCON, disable PSR-SU
+again for it until it can be root caused.
+
+Cc: stable@vger.kernel.org
+Cc: aaron.ma@canonical.com
+Cc: binli@gnome.org
+Cc: Marc Rossi <Marc.Rossi@amd.com>
+Cc: Hamza Mahfooz <Hamza.Mahfooz@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2046131
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/af_rds.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/modules/power/power_helpers.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
-index 3ff6995244e5..d107f7605db4 100644
---- a/net/rds/af_rds.c
-+++ b/net/rds/af_rds.c
-@@ -419,7 +419,7 @@ static int rds_recv_track_latency(struct rds_sock *rs, sockptr_t optval,
- 
- 	rs->rs_rx_traces = trace.rx_traces;
- 	for (i = 0; i < rs->rs_rx_traces; i++) {
--		if (trace.rx_trace_pos[i] > RDS_MSG_RX_DGRAM_TRACE_MAX) {
-+		if (trace.rx_trace_pos[i] >= RDS_MSG_RX_DGRAM_TRACE_MAX) {
- 			rs->rs_rx_traces = 0;
- 			return -EFAULT;
+--- a/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
++++ b/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
+@@ -841,6 +841,8 @@ bool is_psr_su_specific_panel(struct dc_
+ 				isPSRSUSupported = false;
+ 			else if (dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x03)
+ 				isPSRSUSupported = false;
++			else if (dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x03)
++				isPSRSUSupported = false;
+ 			else if (dpcd_caps->psr_info.force_psrsu_cap == 0x1)
+ 				isPSRSUSupported = true;
  		}
--- 
-2.43.0
-
 
 
 
