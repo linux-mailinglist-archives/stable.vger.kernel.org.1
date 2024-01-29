@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49806840DF8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6B7840E70
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B63D1B26910
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF9CEB276CF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB13C15B0FA;
-	Mon, 29 Jan 2024 17:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996A315B97F;
+	Mon, 29 Jan 2024 17:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNCVcwv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtK6xlBl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665FE15AADC;
-	Mon, 29 Jan 2024 17:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AD015A492;
+	Mon, 29 Jan 2024 17:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548197; cv=none; b=AQsooEhwHMj/iZOX6+XIrrqaBcelEdCKNF3SWkTrf7oSMBNgSwVhEXD/qftbfBlBIRXHY+glc93H6zCKKTvSFLU2d34sIT9ObxAH/c1qFOMqE5VXws3iE3D2GozU35a1nLq6KbJpwymvpCnTrmaKdQVzc3IMt29KKgHb7zNOccg=
+	t=1706548284; cv=none; b=pVHnxKRt5ZgMcWo5TQMqTS+MEXIQpRMOsCaHJnONLjnkeZIHdYBuI6nTHA+IJdw03N7okYbOKOKkCnCqILRm7otpZrdBk9NvdqYpoFbW59QDIg5UZDsCcPk1tHD2KKPhtr2+CzW6XedhqqX+aLfmfRfxhUvV8KE6le8Bwk90wfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548197; c=relaxed/simple;
-	bh=Q8+J90TGyvVTm2wgS0yZCz5kBA5W3b/8l0rhrmbU/fo=;
+	s=arc-20240116; t=1706548284; c=relaxed/simple;
+	bh=GOmj4yQo8zzDhudY76VRDptTLSfeu23oVIUQGYhgggs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g6xVuIDS2Gn6PeuhMqi4MAWf15ZKcr1uWvS6D1cAHglVnK0+ldWhD+kl+3DW5ZI3H0h5xHr7oDgBcokrmYnOBFcRjrcryi3eWHf2Jrn9/m+QmQTypJ1lJkJpg8InOufZIB/ZgjzB/lie4yE2tOsbEX7xoeOaVgcKrXpE2cdiXcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNCVcwv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3007CC43390;
-	Mon, 29 Jan 2024 17:09:57 +0000 (UTC)
+	 MIME-Version; b=OQGQjtNbFmXVa6h5WtaVqHXnvw0VJlClhIlKIFvISAnQ20tukBvMqskRGp24lwoQV64YP0Myi3pYpEdZr6mMb2FPr4icBeIlMpEjffJvrzyTPJK63nllKy/SdSQq5tKpp/Fq7CGSxdkJoxSMTDBO0ZoLt55TRUuVYeX2u6o8/MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtK6xlBl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20021C433C7;
+	Mon, 29 Jan 2024 17:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548197;
-	bh=Q8+J90TGyvVTm2wgS0yZCz5kBA5W3b/8l0rhrmbU/fo=;
+	s=korg; t=1706548284;
+	bh=GOmj4yQo8zzDhudY76VRDptTLSfeu23oVIUQGYhgggs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VNCVcwv5+27j585gi6YNmc5kCmVVoDPkcr2DvqsHUDIYejdNRGZOFMivm4FtRtlo1
-	 gdYcWrAQZ+O1h6gRDGfO98DAojLMPs49bClojyp5dGxgMyQCVxFEGce3emzIoc8vzu
-	 CBwZeJ+5lPlCJIKUJZh307bPbyD9zytLA1GTHhUk=
+	b=qtK6xlBlRpgDK8045dJVRMC+4rv9i7M14ydwdeWU3NkAN3Y4tX/QmKvOjK/YinXPS
+	 vj4694NBMvpPd9l2BkJ7T/NsS73QNM+JGsSGDY7tPP0B0Isfrqv/YkEbVD6hyw9kYt
+	 QJB1Za9YKUf49VTJ5TbKZjWUh5Y9oPIxhV2jdEvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.7 238/346] platform/x86: p2sb: Allow p2sb_bar() calls during PCI device probe
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Tom Talpey <tom@talpey.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 069/185] ksmbd: set v2 lease version on lease upgrade
 Date: Mon, 29 Jan 2024 09:04:29 -0800
-Message-ID: <20240129170023.404164958@linuxfoundation.org>
+Message-ID: <20240129170000.814281452@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,298 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 5913320eb0b3ec88158cfcb0fa5e996bf4ef681b upstream.
+[ Upstream commit bb05367a66a9990d2c561282f5620bb1dbe40c28 ]
 
-p2sb_bar() unhides P2SB device to get resources from the device. It
-guards the operation by locking pci_rescan_remove_lock so that parallel
-rescans do not find the P2SB device. However, this lock causes deadlock
-when PCI bus rescan is triggered by /sys/bus/pci/rescan. The rescan
-locks pci_rescan_remove_lock and probes PCI devices. When PCI devices
-call p2sb_bar() during probe, it locks pci_rescan_remove_lock again.
-Hence the deadlock.
+If file opened with v2 lease is upgraded with v1 lease, smb server
+should response v2 lease create context to client.
+This patch fix smb2.lease.v2_epoch2 test failure.
 
-To avoid the deadlock, do not lock pci_rescan_remove_lock in p2sb_bar().
-Instead, do the lock at fs_initcall. Introduce p2sb_cache_resources()
-for fs_initcall which gets and caches the P2SB resources. At p2sb_bar(),
-refer the cache and return to the caller.
+This test case assumes the following scenario:
+ 1. smb2 create with v2 lease(R, LEASE1 key)
+ 2. smb server return smb2 create response with v2 lease context(R,
+LEASE1 key, epoch + 1)
+ 3. smb2 create with v1 lease(RH, LEASE1 key)
+ 4. smb server return smb2 create response with v2 lease context(RH,
+LEASE1 key, epoch + 2)
 
-Before operating the device at P2SB DEVFN for resource cache, check
-that its device class is PCI_CLASS_MEMORY_OTHER 0x0580 that PCH
-specifications define. This avoids unexpected operation to other devices
-at the same DEVFN.
+i.e. If same client(same lease key) try to open a file that is being
+opened with v2 lease with v1 lease, smb server should return v2 lease.
 
-Link: https://lore.kernel.org/linux-pci/6xb24fjmptxxn5js2fjrrddjae6twex5bjaftwqsuawuqqqydx@7cl3uik5ef6j/
-Fixes: 9745fb07474f ("platform/x86/intel: Add Primary to Sideband (P2SB) bridge support")
-Cc: stable@vger.kernel.org
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Link: https://lore.kernel.org/r/20240108062059.3583028-2-shinichiro.kawasaki@wdc.com
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Tested-by Klara Modin <klarasmodin@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Acked-by: Tom Talpey <tom@talpey.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/p2sb.c |  180 +++++++++++++++++++++++++++++++++-----------
- 1 file changed, 139 insertions(+), 41 deletions(-)
+ fs/smb/server/oplock.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/platform/x86/p2sb.c
-+++ b/drivers/platform/x86/p2sb.c
-@@ -26,6 +26,21 @@ static const struct x86_cpu_id p2sb_cpu_
- 	{}
- };
- 
-+/*
-+ * Cache BAR0 of P2SB device functions 0 to 7.
-+ * TODO: The constant 8 is the number of functions that PCI specification
-+ *       defines. Same definitions exist tree-wide. Unify this definition and
-+ *       the other definitions then move to include/uapi/linux/pci.h.
-+ */
-+#define NR_P2SB_RES_CACHE 8
-+
-+struct p2sb_res_cache {
-+	u32 bus_dev_id;
-+	struct resource res;
-+};
-+
-+static struct p2sb_res_cache p2sb_resources[NR_P2SB_RES_CACHE];
-+
- static int p2sb_get_devfn(unsigned int *devfn)
- {
- 	unsigned int fn = P2SB_DEVFN_DEFAULT;
-@@ -39,8 +54,16 @@ static int p2sb_get_devfn(unsigned int *
- 	return 0;
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -1036,6 +1036,7 @@ static void copy_lease(struct oplock_inf
+ 	lease2->duration = lease1->duration;
+ 	lease2->flags = lease1->flags;
+ 	lease2->epoch = lease1->epoch++;
++	lease2->version = lease1->version;
  }
  
-+static bool p2sb_valid_resource(struct resource *res)
-+{
-+	if (res->flags)
-+		return true;
-+
-+	return false;
-+}
-+
- /* Copy resource from the first BAR of the device in question */
--static int p2sb_read_bar0(struct pci_dev *pdev, struct resource *mem)
-+static void p2sb_read_bar0(struct pci_dev *pdev, struct resource *mem)
- {
- 	struct resource *bar0 = &pdev->resource[0];
- 
-@@ -56,49 +79,66 @@ static int p2sb_read_bar0(struct pci_dev
- 	mem->end = bar0->end;
- 	mem->flags = bar0->flags;
- 	mem->desc = bar0->desc;
--
--	return 0;
- }
- 
--static int p2sb_scan_and_read(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
-+static void p2sb_scan_and_cache_devfn(struct pci_bus *bus, unsigned int devfn)
- {
-+	struct p2sb_res_cache *cache = &p2sb_resources[PCI_FUNC(devfn)];
- 	struct pci_dev *pdev;
--	int ret;
- 
- 	pdev = pci_scan_single_device(bus, devfn);
- 	if (!pdev)
--		return -ENODEV;
-+		return;
- 
--	ret = p2sb_read_bar0(pdev, mem);
-+	p2sb_read_bar0(pdev, &cache->res);
-+	cache->bus_dev_id = bus->dev.id;
- 
- 	pci_stop_and_remove_bus_device(pdev);
--	return ret;
- }
- 
--/**
-- * p2sb_bar - Get Primary to Sideband (P2SB) bridge device BAR
-- * @bus: PCI bus to communicate with
-- * @devfn: PCI slot and function to communicate with
-- * @mem: memory resource to be filled in
-- *
-- * The BIOS prevents the P2SB device from being enumerated by the PCI
-- * subsystem, so we need to unhide and hide it back to lookup the BAR.
-- *
-- * if @bus is NULL, the bus 0 in domain 0 will be used.
-- * If @devfn is 0, it will be replaced by devfn of the P2SB device.
-- *
-- * Caller must provide a valid pointer to @mem.
-- *
-- * Locking is handled by pci_rescan_remove_lock mutex.
-- *
-- * Return:
-- * 0 on success or appropriate errno value on error.
-- */
--int p2sb_bar(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
-+static int p2sb_scan_and_cache(struct pci_bus *bus, unsigned int devfn)
-+{
-+	unsigned int slot, fn;
-+
-+	if (PCI_FUNC(devfn) == 0) {
-+		/*
-+		 * When function number of the P2SB device is zero, scan it and
-+		 * other function numbers, and if devices are available, cache
-+		 * their BAR0s.
-+		 */
-+		slot = PCI_SLOT(devfn);
-+		for (fn = 0; fn < NR_P2SB_RES_CACHE; fn++)
-+			p2sb_scan_and_cache_devfn(bus, PCI_DEVFN(slot, fn));
-+	} else {
-+		/* Scan the P2SB device and cache its BAR0 */
-+		p2sb_scan_and_cache_devfn(bus, devfn);
-+	}
-+
-+	if (!p2sb_valid_resource(&p2sb_resources[PCI_FUNC(devfn)].res))
-+		return -ENOENT;
-+
-+	return 0;
-+}
-+
-+static struct pci_bus *p2sb_get_bus(struct pci_bus *bus)
-+{
-+	static struct pci_bus *p2sb_bus;
-+
-+	bus = bus ?: p2sb_bus;
-+	if (bus)
-+		return bus;
-+
-+	/* Assume P2SB is on the bus 0 in domain 0 */
-+	p2sb_bus = pci_find_bus(0, 0);
-+	return p2sb_bus;
-+}
-+
-+static int p2sb_cache_resources(void)
- {
--	struct pci_dev *pdev_p2sb;
- 	unsigned int devfn_p2sb;
- 	u32 value = P2SBC_HIDE;
-+	struct pci_bus *bus;
-+	u16 class;
- 	int ret;
- 
- 	/* Get devfn for P2SB device itself */
-@@ -106,8 +146,17 @@ int p2sb_bar(struct pci_bus *bus, unsign
- 	if (ret)
- 		return ret;
- 
--	/* if @bus is NULL, use bus 0 in domain 0 */
--	bus = bus ?: pci_find_bus(0, 0);
-+	bus = p2sb_get_bus(NULL);
-+	if (!bus)
-+		return -ENODEV;
-+
-+	/*
-+	 * When a device with same devfn exists and its device class is not
-+	 * PCI_CLASS_MEMORY_OTHER for P2SB, do not touch it.
-+	 */
-+	pci_bus_read_config_word(bus, devfn_p2sb, PCI_CLASS_DEVICE, &class);
-+	if (!PCI_POSSIBLE_ERROR(class) && class != PCI_CLASS_MEMORY_OTHER)
-+		return -ENODEV;
- 
- 	/*
- 	 * Prevent concurrent PCI bus scan from seeing the P2SB device and
-@@ -115,17 +164,16 @@ int p2sb_bar(struct pci_bus *bus, unsign
- 	 */
- 	pci_lock_rescan_remove();
- 
--	/* Unhide the P2SB device, if needed */
-+	/*
-+	 * The BIOS prevents the P2SB device from being enumerated by the PCI
-+	 * subsystem, so we need to unhide and hide it back to lookup the BAR.
-+	 * Unhide the P2SB device here, if needed.
-+	 */
- 	pci_bus_read_config_dword(bus, devfn_p2sb, P2SBC, &value);
- 	if (value & P2SBC_HIDE)
- 		pci_bus_write_config_dword(bus, devfn_p2sb, P2SBC, 0);
- 
--	pdev_p2sb = pci_scan_single_device(bus, devfn_p2sb);
--	if (devfn)
--		ret = p2sb_scan_and_read(bus, devfn, mem);
--	else
--		ret = p2sb_read_bar0(pdev_p2sb, mem);
--	pci_stop_and_remove_bus_device(pdev_p2sb);
-+	ret = p2sb_scan_and_cache(bus, devfn_p2sb);
- 
- 	/* Hide the P2SB device, if it was hidden */
- 	if (value & P2SBC_HIDE)
-@@ -133,12 +181,62 @@ int p2sb_bar(struct pci_bus *bus, unsign
- 
- 	pci_unlock_rescan_remove();
- 
--	if (ret)
--		return ret;
-+	return ret;
-+}
- 
--	if (mem->flags == 0)
-+/**
-+ * p2sb_bar - Get Primary to Sideband (P2SB) bridge device BAR
-+ * @bus: PCI bus to communicate with
-+ * @devfn: PCI slot and function to communicate with
-+ * @mem: memory resource to be filled in
-+ *
-+ * If @bus is NULL, the bus 0 in domain 0 will be used.
-+ * If @devfn is 0, it will be replaced by devfn of the P2SB device.
-+ *
-+ * Caller must provide a valid pointer to @mem.
-+ *
-+ * Return:
-+ * 0 on success or appropriate errno value on error.
-+ */
-+int p2sb_bar(struct pci_bus *bus, unsigned int devfn, struct resource *mem)
-+{
-+	struct p2sb_res_cache *cache;
-+	int ret;
-+
-+	bus = p2sb_get_bus(bus);
-+	if (!bus)
- 		return -ENODEV;
- 
-+	if (!devfn) {
-+		ret = p2sb_get_devfn(&devfn);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	cache = &p2sb_resources[PCI_FUNC(devfn)];
-+	if (cache->bus_dev_id != bus->dev.id)
-+		return -ENODEV;
-+
-+	if (!p2sb_valid_resource(&cache->res))
-+		return -ENOENT;
-+
-+	memcpy(mem, &cache->res, sizeof(*mem));
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(p2sb_bar);
-+
-+static int __init p2sb_fs_init(void)
-+{
-+	p2sb_cache_resources();
-+	return 0;
-+}
-+
-+/*
-+ * pci_rescan_remove_lock to avoid access to unhidden P2SB devices can
-+ * not be locked in sysfs pci bus rescan path because of deadlock. To
-+ * avoid the deadlock, access to P2SB devices with the lock at an early
-+ * step in kernel initialization and cache required resources. This
-+ * should happen after subsys_initcall which initializes PCI subsystem
-+ * and before device_initcall which requires P2SB resources.
-+ */
-+fs_initcall(p2sb_fs_init);
+ static int add_lease_global_list(struct oplock_info *opinfo)
 
 
 
