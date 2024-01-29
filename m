@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23EF584102B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1215840DF1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84D97B222AB
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ACE5286A6C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5BA67407E;
-	Mon, 29 Jan 2024 17:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBC015B0ED;
+	Mon, 29 Jan 2024 17:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1Ix+aoH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QreZF35q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FFB7406A;
-	Mon, 29 Jan 2024 17:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F040515957C;
+	Mon, 29 Jan 2024 17:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548572; cv=none; b=l8cRpFDNrJrV+0rDBryjH+ZNjFX0U72qWxSY97cubStPxZiZydgqZhDHaQVrODYRXBJdNMfdsU15blNGVwv12BB1W6BoAKthUfPlC39xRerb2bw6TjDFfvB9ROjBlgIoL4fpnClKiKCis5+gdn8bowvzmuSlXW6LjzWo31XOo7Q=
+	t=1706548193; cv=none; b=K+vk1eYnr75j9m5ueEDmFXb9wZRn53ffuo5+Jz1EfVDuQbfOkr+gP2am+fXp4NA3KGMDIXoI8aSA8qQz7CZDYW0TS3hra3KfWnMLuDz3JUEeHWLOtYz+7/q3+7ESNJ2jmzrx5DG/OUCTZifPgcbqJt9tNT8AyIrMnlq5lVPirwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548572; c=relaxed/simple;
-	bh=4h++c2b7cqNXYuiOMV7ZiO+Q3Gd2yskywIDTFtqdCXU=;
+	s=arc-20240116; t=1706548193; c=relaxed/simple;
+	bh=UqSHOyHyrUSX5WJ2x37aMfX+Cg2OioofkXaPtKb1wz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Euptgmi0Nc1Tf6y8pnyrmK3WAWwgHaRNDGJVZkhxi0oBBUrGkajGk+haRS8muiK4/v0Dug2UEgKsnbFpZVwAsJbs6KJTRjm8tBFDc8uH3hrJCOprkohlM/IyHwlatIjoBbRYWD/ZIz0zKDbIYoEkmFv/VIvdYHyMm9LrZXBP++0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1Ix+aoH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB1DC433F1;
-	Mon, 29 Jan 2024 17:16:12 +0000 (UTC)
+	 MIME-Version; b=rABmafYtM4OG6Kab95KGUDfTvU0MOqGd/+xR4JRozGeLifg+CB2KpdgB1rzlUjNWW+4LtnUN9zbhCeHQcpgxFqjFvZ59akLZu8bhx9ZKSrBy2jyHYtS2kegx8TynrRFFmS5CRastS1lYnxHwWM8QUQ02Nc25TUoqKbQZbaEaXBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QreZF35q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92E2C433C7;
+	Mon, 29 Jan 2024 17:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548572;
-	bh=4h++c2b7cqNXYuiOMV7ZiO+Q3Gd2yskywIDTFtqdCXU=;
+	s=korg; t=1706548192;
+	bh=UqSHOyHyrUSX5WJ2x37aMfX+Cg2OioofkXaPtKb1wz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y1Ix+aoHphJ/rO8V6WPrSVdk4ptoPweMx/+qJ7IhqkGWyHfZ/1KvfptqFgq8SM085
-	 M4qnIlZBPQHAqIPIL6qofUsavmygXKjYfMGzEM/uJPkt7d4h1B+LxI5ubWGaxaufBB
-	 VMmJjRR+d+vME3e3MsZexBukAgFFBplmbzfPrucQ=
+	b=QreZF35qqmKVJOovrMFjAe3rU8xxyUZ2W1MnU68YTFw2UZik4SyidBhJOyxU+bRTB
+	 dArnaAVcPS+ie7FSCLX+c1vSZwJa5dLJKmbwIljXvlJXNHD2aRo16QaD7CFDVPWsTn
+	 TYmjJSVZTS85/3McCvD9AzbF+lkXRj6gyXXZB6uo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Erez Shitrit <erezsh@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 198/331] net/mlx5: DR, Cant go to uplink vport on RX rule
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.7 231/346] wifi: iwlwifi: fix a memory corruption
 Date: Mon, 29 Jan 2024 09:04:22 -0800
-Message-ID: <20240129170020.674826833@linuxfoundation.org>
+Message-ID: <20240129170023.192079405@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 5b2a2523eeea5f03d39a9d1ff1bad2e9f8eb98d2 ]
+commit cf4a0d840ecc72fcf16198d5e9c505ab7d5a5e4d upstream.
 
-Go-To-Vport action on RX is not allowed when the vport is uplink.
-In such case, the packet should be dropped.
+iwl_fw_ini_trigger_tlv::data is a pointer to a __le32, which means that
+if we copy to iwl_fw_ini_trigger_tlv::data + offset while offset is in
+bytes, we'll write past the buffer.
 
-Fixes: 9db810ed2d37 ("net/mlx5: DR, Expose steering action functionality")
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Reviewed-by: Erez Shitrit <erezsh@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218233
+Fixes: cf29c5b66b9f ("iwlwifi: dbg_ini: implement time point handling")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240111150610.2d2b8b870194.I14ed76505a5cf87304e0c9cc05cc0ae85ed3bf91@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mellanox/mlx5/core/steering/dr_action.c      | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
-index 1a5aee8a7f13..90c38cbbde18 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
-@@ -867,11 +867,17 @@ int mlx5dr_actions_build_ste_arr(struct mlx5dr_matcher *matcher,
- 							action->sampler->tx_icm_addr;
- 			break;
- 		case DR_ACTION_TYP_VPORT:
--			attr.hit_gvmi = action->vport->caps->vhca_gvmi;
--			dest_action = action;
--			attr.final_icm_addr = rx_rule ?
--				action->vport->caps->icm_address_rx :
--				action->vport->caps->icm_address_tx;
-+			if (unlikely(rx_rule && action->vport->caps->num == MLX5_VPORT_UPLINK)) {
-+				/* can't go to uplink on RX rule - dropping instead */
-+				attr.final_icm_addr = nic_dmn->drop_icm_addr;
-+				attr.hit_gvmi = nic_dmn->drop_icm_addr >> 48;
-+			} else {
-+				attr.hit_gvmi = action->vport->caps->vhca_gvmi;
-+				dest_action = action;
-+				attr.final_icm_addr = rx_rule ?
-+						      action->vport->caps->icm_address_rx :
-+						      action->vport->caps->icm_address_tx;
-+			}
- 			break;
- 		case DR_ACTION_TYP_POP_VLAN:
- 			if (!rx_rule && !(dmn->ste_ctx->actions_caps &
--- 
-2.43.0
-
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2018-2023 Intel Corporation
++ * Copyright (C) 2018-2024 Intel Corporation
+  */
+ #include <linux/firmware.h>
+ #include "iwl-drv.h"
+@@ -1096,7 +1096,7 @@ static int iwl_dbg_tlv_override_trig_nod
+ 		node_trig = (void *)node_tlv->data;
+ 	}
+ 
+-	memcpy(node_trig->data + offset, trig->data, trig_data_len);
++	memcpy((u8 *)node_trig->data + offset, trig->data, trig_data_len);
+ 	node_tlv->length = cpu_to_le32(size);
+ 
+ 	if (policy & IWL_FW_INI_APPLY_POLICY_OVERRIDE_CFG) {
 
 
 
