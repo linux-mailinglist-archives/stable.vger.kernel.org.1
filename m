@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48898840F81
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A5A840D53
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:09:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDBD01F22080
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B060D1F2C34B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D181115DBC6;
-	Mon, 29 Jan 2024 17:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F2715957C;
+	Mon, 29 Jan 2024 17:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WfDRRuRL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfYBH3w7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F78615B107;
-	Mon, 29 Jan 2024 17:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B7A15B0E9;
+	Mon, 29 Jan 2024 17:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548453; cv=none; b=U5f7IZaPzrrU/FTD1uDhHjd+rhbR2c3sxbUnuE8ZIFOU9Imxy42DtMNsxOnfvhOmLdCnSJlaOwKAG5MARcf4gt5wiMTmcs7nMoigG3JWG5sM4Yih/doykDIG+CO/KZMXRq27qjSlUwtHE/JS6B6ewITl/Nwzhh63J99a4YWB4M8=
+	t=1706548084; cv=none; b=sb4mkqP8QBLcbDInJ1iHk9/4hsHI7hOenyqfffKa67Ef919SFul0IzqD5iZpY7GeHU9jBaIEyH+k0KEhCen1YRZYCBxzJXukfrobwRMdS+m/hoF7cb8LVp/49lxqtz+G5KR/4ys/GFaP65kfW266T7pDULy9gV6axyaG5mNmhw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548453; c=relaxed/simple;
-	bh=/0I9j1XNuaiRzDPCroyxRmiqGVEUKsriA5DIAuuF3no=;
+	s=arc-20240116; t=1706548084; c=relaxed/simple;
+	bh=2R4IoVPthtmRbLp2G6LnLvpRItFNAkaLk9u9WDkSw7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X28qNfKxffO8k/Oh3GgVN/lteTfOXkU8A1FA25vCxDLSoAgwr3PkEuBbxkOLdLoyzPI63z7V1byB2/l55b/IOyZqUKUEgTjb7qWMIUXP6qJqBtGh16MPFgroroFiEZYtQrn1lIjWIX3LnYosd4FDdJeG3xKJ5NoqTJ5B9e5bIQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WfDRRuRL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575D9C433C7;
-	Mon, 29 Jan 2024 17:14:13 +0000 (UTC)
+	 MIME-Version; b=Jpml92AM2QpRrhZCuz5oy/JeLhbkqgYficcrGi36rIhkcs1wwB0z8b2FyJRWydQ753Y84BFvUvkyYmjJ2QinJ8SP8PEKZgwmtVpmHANJVVn1LEMNPoDbb7CbtGue3ukSoKbAppSXQAwxp/zBl9sqT2k1CIPcP3rO/zmtR0msois=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfYBH3w7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD63C433F1;
+	Mon, 29 Jan 2024 17:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548453;
-	bh=/0I9j1XNuaiRzDPCroyxRmiqGVEUKsriA5DIAuuF3no=;
+	s=korg; t=1706548083;
+	bh=2R4IoVPthtmRbLp2G6LnLvpRItFNAkaLk9u9WDkSw7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WfDRRuRLr8gOMwRrrMVGHNM9w8uxqj8P6jgVElWTF15j+wclYDnZbwoFK5QAzmvTV
-	 1YO1iFJU0/MDXqNT9r2dNNVD0W2AUnmYthvWe6+1ztSgrbRWm7QA446qzh7Fm1kZHc
-	 uBimwi1lBoV4NXdvni4FyWEpp6S+Z8ObRjJOiMyE=
+	b=lfYBH3w7NjonI1o9cdgccY+oH/GT+ygLYuG8O/gZIlpM0zNrSB1AaPpYDKDpGb52e
+	 BITim5BrkpAFfEeNqIBo967q4SqkwWbJD4roge0VTzr/Ec7t8pHFrI5EEtvMi/axEM
+	 7jGnXmtqK70m7mwJjwmpLjqAiD+GzUKXFIaSJfek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Krowiak <akrowiak@linux.ibm.com>,
-	"Jason J. Herne" <jjherne@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.6 064/331] s390/vfio-ap: do not reset queue removed from host config
+	Avri Altman <avri.altman@wdc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.7 097/346] mmc: core: Use mrq.sbc in close-ended ffu
 Date: Mon, 29 Jan 2024 09:02:08 -0800
-Message-ID: <20240129170016.809170425@linuxfoundation.org>
+Message-ID: <20240129170019.253534715@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Krowiak <akrowiak@linux.ibm.com>
+From: Avri Altman <avri.altman@wdc.com>
 
-commit b9bd10c43456d16abd97b717446f51afb3b88411 upstream.
+commit 4d0c8d0aef6355660b6775d57ccd5d4ea2e15802 upstream.
 
-When a queue is unbound from the vfio_ap device driver, it is reset to
-ensure its crypto data is not leaked when it is bound to another device
-driver. If the queue is unbound due to the fact that the adapter or domain
-was removed from the host's AP configuration, then attempting to reset it
-will fail with response code 01 (APID not valid) getting returned from the
-reset command. Let's ensure that the queue is assigned to the host's
-configuration before resetting it.
+Field Firmware Update (ffu) may use close-ended or open ended sequence.
+Each such sequence is comprised of a write commands enclosed between 2
+switch commands - to and from ffu mode. So for the close-ended case, it
+will be: cmd6->cmd23-cmd25-cmd6.
 
-Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
-Reviewed-by: "Jason J. Herne" <jjherne@linux.ibm.com>
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Fixes: eeb386aeb5b7 ("s390/vfio-ap: handle config changed and scan complete notification")
+Some host controllers however, get confused when multi-block rw is sent
+without sbc, and may generate auto-cmd12 which breaks the ffu sequence.
+I encountered  this issue while testing fwupd (github.com/fwupd/fwupd)
+on HP Chromebook x2, a qualcomm based QC-7c, code name - strongbad.
+
+Instead of a quirk, or hooking the request function of the msm ops,
+it would be better to fix the ioctl handling and make it use mrq.sbc
+instead of issuing SET_BLOCK_COUNT separately.
+
+Signed-off-by: Avri Altman <avri.altman@wdc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240115185441.31526-7-akrowiak@linux.ibm.com
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Link: https://lore.kernel.org/r/20231129092535.3278-1-avri.altman@wdc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/crypto/vfio_ap_ops.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/mmc/core/block.c |   46 +++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 43 insertions(+), 3 deletions(-)
 
---- a/drivers/s390/crypto/vfio_ap_ops.c
-+++ b/drivers/s390/crypto/vfio_ap_ops.c
-@@ -2198,10 +2198,10 @@ void vfio_ap_mdev_remove_queue(struct ap
- 	q = dev_get_drvdata(&apdev->device);
- 	get_update_locks_for_queue(q);
- 	matrix_mdev = q->matrix_mdev;
-+	apid = AP_QID_CARD(q->apqn);
-+	apqi = AP_QID_QUEUE(q->apqn);
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -400,6 +400,10 @@ struct mmc_blk_ioc_data {
+ 	struct mmc_ioc_cmd ic;
+ 	unsigned char *buf;
+ 	u64 buf_bytes;
++	unsigned int flags;
++#define MMC_BLK_IOC_DROP	BIT(0)	/* drop this mrq */
++#define MMC_BLK_IOC_SBC	BIT(1)	/* use mrq.sbc */
++
+ 	struct mmc_rpmb_data *rpmb;
+ };
  
- 	if (matrix_mdev) {
--		apid = AP_QID_CARD(q->apqn);
--		apqi = AP_QID_QUEUE(q->apqn);
- 		/* If the queue is assigned to the guest's AP configuration */
- 		if (test_bit_inv(apid, matrix_mdev->shadow_apcb.apm) &&
- 		    test_bit_inv(apqi, matrix_mdev->shadow_apcb.aqm)) {
-@@ -2217,8 +2217,16 @@ void vfio_ap_mdev_remove_queue(struct ap
- 		}
+@@ -465,7 +469,7 @@ static int mmc_blk_ioctl_copy_to_user(st
+ }
+ 
+ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
+-			       struct mmc_blk_ioc_data *idata)
++			       struct mmc_blk_ioc_data **idatas, int i)
+ {
+ 	struct mmc_command cmd = {}, sbc = {};
+ 	struct mmc_data data = {};
+@@ -475,10 +479,18 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 	unsigned int busy_timeout_ms;
+ 	int err;
+ 	unsigned int target_part;
++	struct mmc_blk_ioc_data *idata = idatas[i];
++	struct mmc_blk_ioc_data *prev_idata = NULL;
+ 
+ 	if (!card || !md || !idata)
+ 		return -EINVAL;
+ 
++	if (idata->flags & MMC_BLK_IOC_DROP)
++		return 0;
++
++	if (idata->flags & MMC_BLK_IOC_SBC)
++		prev_idata = idatas[i - 1];
++
+ 	/*
+ 	 * The RPMB accesses comes in from the character device, so we
+ 	 * need to target these explicitly. Else we just target the
+@@ -532,7 +544,7 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 			return err;
  	}
  
--	vfio_ap_mdev_reset_queue(q);
--	flush_work(&q->reset_work);
-+	/*
-+	 * If the queue is not in the host's AP configuration, then resetting
-+	 * it will fail with response code 01, (APQN not valid); so, let's make
-+	 * sure it is in the host's config.
-+	 */
-+	if (test_bit_inv(apid, (unsigned long *)matrix_dev->info.apm) &&
-+	    test_bit_inv(apqi, (unsigned long *)matrix_dev->info.aqm)) {
-+		vfio_ap_mdev_reset_queue(q);
-+		flush_work(&q->reset_work);
-+	}
+-	if (idata->rpmb) {
++	if (idata->rpmb || prev_idata) {
+ 		sbc.opcode = MMC_SET_BLOCK_COUNT;
+ 		/*
+ 		 * We don't do any blockcount validation because the max size
+@@ -540,6 +552,8 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 		 * 'Reliable Write' bit here.
+ 		 */
+ 		sbc.arg = data.blocks | (idata->ic.write_flag & BIT(31));
++		if (prev_idata)
++			sbc.arg = prev_idata->ic.arg;
+ 		sbc.flags = MMC_RSP_R1 | MMC_CMD_AC;
+ 		mrq.sbc = &sbc;
+ 	}
+@@ -557,6 +571,15 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 	mmc_wait_for_req(card->host, &mrq);
+ 	memcpy(&idata->ic.response, cmd.resp, sizeof(cmd.resp));
  
- done:
- 	if (matrix_mdev)
++	if (prev_idata) {
++		memcpy(&prev_idata->ic.response, sbc.resp, sizeof(sbc.resp));
++		if (sbc.error) {
++			dev_err(mmc_dev(card->host), "%s: sbc error %d\n",
++							__func__, sbc.error);
++			return sbc.error;
++		}
++	}
++
+ 	if (cmd.error) {
+ 		dev_err(mmc_dev(card->host), "%s: cmd error %d\n",
+ 						__func__, cmd.error);
+@@ -1034,6 +1057,20 @@ static inline void mmc_blk_reset_success
+ 	md->reset_done &= ~type;
+ }
+ 
++static void mmc_blk_check_sbc(struct mmc_queue_req *mq_rq)
++{
++	struct mmc_blk_ioc_data **idata = mq_rq->drv_op_data;
++	int i;
++
++	for (i = 1; i < mq_rq->ioc_count; i++) {
++		if (idata[i - 1]->ic.opcode == MMC_SET_BLOCK_COUNT &&
++		    mmc_op_multi(idata[i]->ic.opcode)) {
++			idata[i - 1]->flags |= MMC_BLK_IOC_DROP;
++			idata[i]->flags |= MMC_BLK_IOC_SBC;
++		}
++	}
++}
++
+ /*
+  * The non-block commands come back from the block layer after it queued it and
+  * processed it with all other requests and then they get issued in this
+@@ -1061,11 +1098,14 @@ static void mmc_blk_issue_drv_op(struct
+ 			if (ret)
+ 				break;
+ 		}
++
++		mmc_blk_check_sbc(mq_rq);
++
+ 		fallthrough;
+ 	case MMC_DRV_OP_IOCTL_RPMB:
+ 		idata = mq_rq->drv_op_data;
+ 		for (i = 0, ret = 0; i < mq_rq->ioc_count; i++) {
+-			ret = __mmc_blk_ioctl_cmd(card, md, idata[i]);
++			ret = __mmc_blk_ioctl_cmd(card, md, idata, i);
+ 			if (ret)
+ 				break;
+ 		}
 
 
 
