@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-17193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2634A841032
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEAFA840EB0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7F8E2851C6
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50670B27B6A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA5815EAB9;
-	Mon, 29 Jan 2024 17:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1FE157050;
+	Mon, 29 Jan 2024 17:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgRSyCc9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ha54yZ3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDCD15705C;
-	Mon, 29 Jan 2024 17:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6634B15703F;
+	Mon, 29 Jan 2024 17:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548579; cv=none; b=JjrqQx3V8703GYJ9qkq0zbIpDI1On2SbV/P5fPUu1aukmDKdWj+E6nB2OB7L9KoHt4l+uPumi4zq2OlUHCeS7I+eNPF6ym13kmSrD3bZPoTfGHTib4C5AVY55hwDosPTeXGo0CEbPJl+9MxfYxQFUyVfLahdNAiX4SP7eP+VeC4=
+	t=1706548328; cv=none; b=r9tv7/yBiW8nt8CyWprtc85meHlwjUC4JT9gBlUXeWCluTJt4AlJPlj96YS43l6IBxrOB+DtAivrKAtepC3sCuvPgSW3ChD9i1WSHkiTrJuTbLt+Vw/zlKLJHV95Vep5QXes93wFb6suPS++mCSWmeq5zFSiiox6xl9E3S9X72k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548579; c=relaxed/simple;
-	bh=Yj79Bw1Sn1N8EkgSIzY7NnKQ8dv9PPxSM/8yAefEd8M=;
+	s=arc-20240116; t=1706548328; c=relaxed/simple;
+	bh=PBPkinmIZNgRpdJ6Nz9HaxiREPrQd/SKrZEMB/6Eeww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F/eCrjsBhf9gc1x1FBtpC/FYQ7GgbN5ummj4YNheID6U7Y7NcO8gnqTIeLT54OuvIztpYkZgtOyaywKQxVmKEKq06ZRDCezZy4su2zGWv4OJJ7FNE+C4j2f7YCjl8oi16fWg+I678N1OScpX/knjqmmXWbjWvfI/prxQQ0uIois=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LgRSyCc9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5FDC433C7;
-	Mon, 29 Jan 2024 17:16:18 +0000 (UTC)
+	 MIME-Version; b=ry6BM8RCd/s3GuaM7Wt6g1FzYmkZoEPaKTFd5yFZZDtBcOjGWjOCtn4mvQTSIJ0DG2n0uNgoXhNM/Vp6CB5yS/s0aZaY8mSgyqnjyUn0R4mMKHSQ+bWSlzeAmGh3T9qxF8dr7OmBrGmzw9EAqYCbWMFghyIDfjbTzI0dcJ3Jwzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ha54yZ3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9FAC433C7;
+	Mon, 29 Jan 2024 17:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548579;
-	bh=Yj79Bw1Sn1N8EkgSIzY7NnKQ8dv9PPxSM/8yAefEd8M=;
+	s=korg; t=1706548328;
+	bh=PBPkinmIZNgRpdJ6Nz9HaxiREPrQd/SKrZEMB/6Eeww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LgRSyCc9qQ24FRJlvnrHoaEYZK+jWgK0m9W/ERyxXM12oWGsSS7/u+WZ2F1eObhZs
-	 FySc/O9A5cUZp1j54qC8h5VePUrx9GAHUS676mp31SGXDmwaJmq6zxtsZ7C0cjlvWR
-	 HXM07DtQxz2bF2YGeIPIRo1H89HWGkduv9XA4Jt0=
+	b=Ha54yZ3edkh8yOeriHrhUf4UiKCM0yryXBz73NRAijFq8ADegv/FAV9qLu1GUkvfo
+	 YCbWWe2aR0q1OmdPOZitlpJZErT5H9TTpk5vp11bB6bhgaJYTiu5Oz5NEyT6ehNAgy
+	 SwmBJHuRlOSrWbpWoTub7G4HtPYzjQWutbSkUWgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+be14ed7728594dc8bd42@syzkaller.appspotmail.com,
-	syzbot+c563a3c79927971f950f@syzkaller.appspotmail.com,
-	Anand Jain <anand.jain@oracle.com>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 233/331] btrfs: ref-verify: free ref cache before clearing mount opt
-Date: Mon, 29 Jan 2024 09:04:57 -0800
-Message-ID: <20240129170021.690891405@linuxfoundation.org>
+	Leon Romanovsky <leonro@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 098/185] net/mlx5e: Allow software parsing when IPsec crypto is enabled
+Date: Mon, 29 Jan 2024 09:04:58 -0800
+Message-ID: <20240129170001.745906693@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-commit f03e274a8b29d1d1c1bbd7f764766cb5ca537ab7 upstream.
+[ Upstream commit 20f5468a7988dedd94a57ba8acd65ebda6a59723 ]
 
-As clearing REF_VERIFY mount option indicates there were some errors in a
-ref-verify process, a ref cache is not relevant anymore and should be
-freed.
+All ConnectX devices have software parsing capability enabled, but it is
+more correct to set allow_swp only if capability exists, which for IPsec
+means that crypto offload is supported.
 
-btrfs_free_ref_cache() requires REF_VERIFY option being set so call
-it just before clearing the mount option.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Reported-by: syzbot+be14ed7728594dc8bd42@syzkaller.appspotmail.com
-Fixes: fd708b81d972 ("Btrfs: add a extent ref verify tool")
-CC: stable@vger.kernel.org # 5.4+
-Closes: https://lore.kernel.org/lkml/000000000000e5a65c05ee832054@google.com/
-Reported-by: syzbot+c563a3c79927971f950f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/0000000000007fe09705fdc6086c@google.com/
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2451da081a34 ("net/mlx5: Unify device IPsec capabilities check")
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ref-verify.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/params.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/ref-verify.c
-+++ b/fs/btrfs/ref-verify.c
-@@ -886,8 +886,10 @@ int btrfs_ref_tree_mod(struct btrfs_fs_i
- out_unlock:
- 	spin_unlock(&fs_info->ref_verify_lock);
- out:
--	if (ret)
-+	if (ret) {
-+		btrfs_free_ref_cache(fs_info);
- 		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
-+	}
- 	return ret;
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+index 29dd3a04c154..d3de1b7a80bf 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+@@ -990,8 +990,8 @@ void mlx5e_build_sq_param(struct mlx5_core_dev *mdev,
+ 	void *wq = MLX5_ADDR_OF(sqc, sqc, wq);
+ 	bool allow_swp;
  
-@@ -1018,8 +1020,8 @@ int btrfs_build_ref_tree(struct btrfs_fs
- 		}
- 	}
- 	if (ret) {
--		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
- 		btrfs_free_ref_cache(fs_info);
-+		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
- 	}
- 	btrfs_free_path(path);
- 	return ret;
+-	allow_swp =
+-		mlx5_geneve_tx_allowed(mdev) || !!mlx5_ipsec_device_caps(mdev);
++	allow_swp = mlx5_geneve_tx_allowed(mdev) ||
++		    (mlx5_ipsec_device_caps(mdev) & MLX5_IPSEC_CAP_CRYPTO);
+ 	mlx5e_build_sq_param_common(mdev, param);
+ 	MLX5_SET(wq, wq, log_wq_sz, params->log_sq_size);
+ 	MLX5_SET(sqc, sqc, allow_swp, allow_swp);
+-- 
+2.43.0
+
 
 
 
