@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-17033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD78E840F8C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 269B1840F94
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DED7A1C231CA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6C0A1F2257E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465216F07D;
-	Mon, 29 Jan 2024 17:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721A16F08E;
+	Mon, 29 Jan 2024 17:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTJEIevW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxaCQRCd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039AC6F06C;
-	Mon, 29 Jan 2024 17:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306906F079;
+	Mon, 29 Jan 2024 17:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548460; cv=none; b=EXz6d3DAO4KjwxRvlnHk/TisucX8Uzioy1/+UeuA5KVl8ZmztKswWgEARe91zkXy97Yp73D5DO9FPJbrnVwdYGHc6vc//akDQVUTZ8Wsq7twr/U7nsWPr155VNehD+2QrZenRAtN//SvkC81mt3nB9NMWZo55dlAVSRnle6Fye0=
+	t=1706548466; cv=none; b=MDLvTSiD88V7yelCQhf8pHfoHkWTiVeG/YmuyHcoU2Om5AJotRLiMEcLmsvRvItOelCk03RwEyOQxX0VH/8cTCvdUNf6rASxypnjtWijsHfT/WyAUxjygU7NqOVh9AfLQgHlNSyCfTa6rqsBn7Vgrg7QA+So8VNGRjDKJasAHQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548460; c=relaxed/simple;
-	bh=9qsQz/ooNfCzjyNzwG4MeaIuQ2uw1k1l6bzqTg3Ncus=;
+	s=arc-20240116; t=1706548466; c=relaxed/simple;
+	bh=xrpoNzVnxbw6Bb+GClKtVnUdUrZVdqWQkJc9fm6K+tA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8o/M6PK+aCU2NtCqyACGQXWG2Wu2VnrnVL87VDskNafMTT7fq1VyBYNbaOsc6cNNtbjxDlTGoKy6Q0he4wwO/vMs8weME5gLN+DBOjGb2wOAoh5OgOyCiuakyifTLqyLPb5LYG771rTPXT7jJ7C59HPi2chaDQbp3Q8eWoDjHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTJEIevW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E0BC433C7;
-	Mon, 29 Jan 2024 17:14:19 +0000 (UTC)
+	 MIME-Version; b=R4leS444rxCSPFgBn6aOetap7y08LBfIHFbxYqnfFKRP90jMPGsZsnxz6j5XW8tCByqBFWZpRD5GgLM7APvKF9lh2E96SjkDJtDSaLcpEfvQ9ZCr82GEFMLi14HYggKTwemAjFsLxGH7SAIyaz9U25BjHCNgMPfVz6kh3dl+qLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxaCQRCd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97E1C43399;
+	Mon, 29 Jan 2024 17:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548459;
-	bh=9qsQz/ooNfCzjyNzwG4MeaIuQ2uw1k1l6bzqTg3Ncus=;
+	s=korg; t=1706548466;
+	bh=xrpoNzVnxbw6Bb+GClKtVnUdUrZVdqWQkJc9fm6K+tA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xTJEIevWxCj7fmXGmjQe1So6N3zUCdBPgQrL9vf/A77GdRmFU4mxcsyg25/mzGWO7
-	 JvVDcAld6KGsl5JGCJVM1eLUWp5+Wnnu8Y4Lrs+ykCvwfxyhZkyRZ/uPI8V3uzU9qV
-	 1rzOhh4eAkNk4m+mE5Bs0WOpWBvleE/hhxKUZgBk=
+	b=mxaCQRCdI3UbNDqOuyWhSycueAZz9A8Y3H3hghMgZb2H+0XvEuNtR3C1+mmCfeO8S
+	 uHWy3yooyLYVo6u7vpfeuUPw/zVPiGS65W2l+fjJiTD0B+4n/ghM6p/Xju5LKGLsTy
+	 SvcXgvxmMZ8/q1BwOseSBrI0ue49WwdJmqcH/ojw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.6 055/331] media: ov01a10: Enable runtime PM before registering async sub-device
-Date: Mon, 29 Jan 2024 09:01:59 -0800
-Message-ID: <20240129170016.535847376@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 6.6 056/331] soc: fsl: cpm1: tsa: Fix __iomem addresses declaration
+Date: Mon, 29 Jan 2024 09:02:00 -0800
+Message-ID: <20240129170016.565681594@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
 References: <20240129170014.969142961@linuxfoundation.org>
@@ -66,72 +66,102 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bingbu Cao <bingbu.cao@intel.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-commit 47a78052db51b16e8045524fbf33373b58f1323b upstream.
+commit fc0c64154e5ddeb6f63c954735bd646ce5b8d9a4 upstream.
 
-As the sensor device maybe accessible right after its async sub-device is
-registered, such as ipu-bridge will try to power up sensor by sensor's
-client device's runtime PM from the async notifier callback, if runtime PM
-is not enabled, it will fail.
+Running sparse (make C=1) on tsa.c raises a lot of warning such as:
+  --- 8< ---
+  warning: incorrect type in assignment (different address spaces)
+     expected void *[noderef] si_regs
+     got void [noderef] __iomem *
+  --- 8< ---
 
-So runtime PM should be ready before its async sub-device is registered
-and accessible by others.
+Indeed, some variable were declared 'type *__iomem var' instead of
+'type __iomem *var'.
 
-It also sets the runtime PM status to active as the sensor was turned
-on by i2c-core.
+Use the correct declaration to remove these warnings.
 
-Fixes: 0827b58dabff ("media: i2c: add ov01a10 image sensor driver")
+Fixes: 1d4ba0b81c1c ("soc: fsl: cpm1: Add support for TSA")
 Cc: stable@vger.kernel.org
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312051959.9YdRIYbg-lkp@intel.com/
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/20231205152116.122512-2-herve.codina@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov01a10.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/soc/fsl/qe/tsa.c |   22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
---- a/drivers/media/i2c/ov01a10.c
-+++ b/drivers/media/i2c/ov01a10.c
-@@ -907,6 +907,7 @@ static void ov01a10_remove(struct i2c_cl
- 	v4l2_ctrl_handler_free(sd->ctrl_handler);
+--- a/drivers/soc/fsl/qe/tsa.c
++++ b/drivers/soc/fsl/qe/tsa.c
+@@ -98,9 +98,9 @@
+ #define TSA_SIRP	0x10
  
- 	pm_runtime_disable(&client->dev);
-+	pm_runtime_set_suspended(&client->dev);
+ struct tsa_entries_area {
+-	void *__iomem entries_start;
+-	void *__iomem entries_next;
+-	void *__iomem last_entry;
++	void __iomem *entries_start;
++	void __iomem *entries_next;
++	void __iomem *last_entry;
+ };
+ 
+ struct tsa_tdm {
+@@ -117,8 +117,8 @@ struct tsa_tdm {
+ 
+ struct tsa {
+ 	struct device *dev;
+-	void *__iomem si_regs;
+-	void *__iomem si_ram;
++	void __iomem *si_regs;
++	void __iomem *si_ram;
+ 	resource_size_t si_ram_sz;
+ 	spinlock_t	lock;
+ 	int tdms; /* TSA_TDMx ORed */
+@@ -135,27 +135,27 @@ static inline struct tsa *tsa_serial_get
+ 	return container_of(tsa_serial, struct tsa, serials[tsa_serial->id]);
  }
  
- static int ov01a10_probe(struct i2c_client *client)
-@@ -953,17 +954,26 @@ static int ov01a10_probe(struct i2c_clie
- 		goto err_media_entity_cleanup;
- 	}
+-static inline void tsa_write32(void *__iomem addr, u32 val)
++static inline void tsa_write32(void __iomem *addr, u32 val)
+ {
+ 	iowrite32be(val, addr);
+ }
  
-+	/*
-+	 * Device is already turned on by i2c-core with ACPI domain PM.
-+	 * Enable runtime PM and turn off the device.
-+	 */
-+	pm_runtime_set_active(&client->dev);
-+	pm_runtime_enable(dev);
-+	pm_runtime_idle(dev);
-+
- 	ret = v4l2_async_register_subdev_sensor(&ov01a10->sd);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to register subdev: %d\n", ret);
--		goto err_media_entity_cleanup;
-+		goto err_pm_disable;
- 	}
+-static inline void tsa_write8(void *__iomem addr, u32 val)
++static inline void tsa_write8(void __iomem *addr, u32 val)
+ {
+ 	iowrite8(val, addr);
+ }
  
--	pm_runtime_enable(dev);
--	pm_runtime_idle(dev);
--
- 	return 0;
+-static inline u32 tsa_read32(void *__iomem addr)
++static inline u32 tsa_read32(void __iomem *addr)
+ {
+ 	return ioread32be(addr);
+ }
  
-+err_pm_disable:
-+	pm_runtime_disable(dev);
-+	pm_runtime_set_suspended(&client->dev);
-+
- err_media_entity_cleanup:
- 	media_entity_cleanup(&ov01a10->sd.entity);
+-static inline void tsa_clrbits32(void *__iomem addr, u32 clr)
++static inline void tsa_clrbits32(void __iomem *addr, u32 clr)
+ {
+ 	tsa_write32(addr, tsa_read32(addr) & ~clr);
+ }
  
+-static inline void tsa_clrsetbits32(void *__iomem addr, u32 clr, u32 set)
++static inline void tsa_clrsetbits32(void __iomem *addr, u32 clr, u32 set)
+ {
+ 	tsa_write32(addr, (tsa_read32(addr) & ~clr) | set);
+ }
+@@ -313,7 +313,7 @@ static u32 tsa_serial_id2csel(struct tsa
+ static int tsa_add_entry(struct tsa *tsa, struct tsa_entries_area *area,
+ 			 u32 count, u32 serial_id)
+ {
+-	void *__iomem addr;
++	void __iomem *addr;
+ 	u32 left;
+ 	u32 val;
+ 	u32 cnt;
 
 
 
