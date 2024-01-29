@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE1D840F09
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF1484106F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 911B41C22EDA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38D3B284461
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C85E16276B;
-	Mon, 29 Jan 2024 17:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CF97603F;
+	Mon, 29 Jan 2024 17:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORjsK6y8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SwxHNDeD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4D9157E8F;
-	Mon, 29 Jan 2024 17:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B3D7602D;
+	Mon, 29 Jan 2024 17:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548376; cv=none; b=JJWn5jhLHk9+l0o8brEx5O/YGQv0Ax/MbE49u0tLTVVz9OqAtK94sFgkew6SlLtunfNwnnFBAwn79YJpwQGOLImltgYY1BzcyDYNb2fy1wn3mIUAa5p15InV4kM7fYpt/TTFRk+6K3GH7QWLPc/uYzB5kHk3VYQs2KQb7sCYtB4=
+	t=1706548622; cv=none; b=g7CNO3tkbNeDLaL/SuriEV3cdLtDJBU6d1Kvx/fEtYahuI96xI055Zd2X7Myxwe7XjHAS0hposdoKORWdS5/QQSa2IQ1NRT/WbxR/2EM6yu6tbucaKB4/8mhqL3xOkkPdK6p97kdaDW2tPNSRZII5FwhcLxSUdzLN7W0QCLeTs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548376; c=relaxed/simple;
-	bh=efWN6upCMLx+hFMVWeZERx98/Ha4/RfmRQjnXbWVaJs=;
+	s=arc-20240116; t=1706548622; c=relaxed/simple;
+	bh=1VTR4Td5OTDaWTRsWhV0wccDKIcVvulOjAuVs+3wTBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AFxGbLspwCwfvnXe0WxvtyH9dF3GfMaZDiZAZAVHgX5gfbMjCS76cUzBEcpJbIES3nSzF68WPDipCtAH34dYwuf9OaKiKmQNwDyD0hTh7EUidLKzDebyRZmWbeXuaDJQIsHTOfrGCcJmduD/CmqrRKD+W/G9SSSWVTmF5TdcCME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORjsK6y8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99FFC43390;
-	Mon, 29 Jan 2024 17:12:55 +0000 (UTC)
+	 MIME-Version; b=OVJ3NId3hn8ajFnDRwmenDqT3Ji+aRXmPFjfkz+8XLfHV/c5KA5NOUkCToLXIoxdvcKHJp47tuVww9Pwa3f08ZOWPUL0c+AZnB4Xq/f8L6Ckt2mz9FlBAvHdQipupTVM4UTpvEZ1gWi62RHuJuaMeDvUDmL1nQvxXdHSs0Uft7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SwxHNDeD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067AEC433C7;
+	Mon, 29 Jan 2024 17:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548375;
-	bh=efWN6upCMLx+hFMVWeZERx98/Ha4/RfmRQjnXbWVaJs=;
+	s=korg; t=1706548622;
+	bh=1VTR4Td5OTDaWTRsWhV0wccDKIcVvulOjAuVs+3wTBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ORjsK6y8WnKPVPdHuKEnLREa5Vfry+uoTYTZxIGVQnwBaOpFnliSYCaQESWsyK1V+
-	 TEpgBHJvj3O6WINNCiLm+HVvu6e88/nyFdoo/darx8R0fnFiPxFr0HW+TRQqv0AfVC
-	 iZuoXRQAtuIQ9uQqovtCSOruiIhBcGkN66VsDSKc=
+	b=SwxHNDeDaGocnxWAnsYgc3xtshaab/HQ3gfUGVMHK0EaWvtYaJyn97QAwJkRXfeEB
+	 DQcmBLEjSh3zIpOh7gTRRjiwpxHfUPBfB3bMz5BNZB1vK9FUqlRU/44+D6T/j7NVnw
+	 cu8mReIBwh8exWHt018XjUOUrVN5DsucuQ8qM6ZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.1 137/185] platform/x86: intel-uncore-freq: Fix types in sysfs callbacks
-Date: Mon, 29 Jan 2024 09:05:37 -0800
-Message-ID: <20240129170002.995711350@linuxfoundation.org>
+	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 274/331] thermal: intel: hfi: Refactor enabling code into helper functions
+Date: Mon, 29 Jan 2024 09:05:38 -0800
+Message-ID: <20240129170022.885929608@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,221 +60,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 
-commit 416de0246f35f43d871a57939671fe814f4455ee upstream.
+[ Upstream commit 8a8b6bb93c704776c4b05cb517c3fa8baffb72f5 ]
 
-When booting a kernel with CONFIG_CFI_CLANG, there is a CFI failure when
-accessing any of the values under
-/sys/devices/system/cpu/intel_uncore_frequency/package_00_die_00:
+In preparation for the addition of a suspend notifier, wrap the logic to
+enable HFI and program its memory buffer into helper functions. Both the
+CPU hotplug callback and the suspend notifier will use them.
 
-  $ cat /sys/devices/system/cpu/intel_uncore_frequency/package_00_die_00/max_freq_khz
-  fish: Job 1, 'cat /sys/devices/system/cpu/int…' terminated by signal SIGSEGV (Address boundary error)
+This refactoring does not introduce functional changes.
 
-  $ sudo dmesg &| grep 'CFI failure'
-  [  170.953925] CFI failure at kobj_attr_show+0x19/0x30 (target: show_max_freq_khz+0x0/0xc0 [intel_uncore_frequency_common]; expected type: 0xd34078c5
-
-The sysfs callback functions such as show_domain_id() are written as if
-they are going to be called by dev_attr_show() but as the above message
-shows, they are instead called by kobj_attr_show(). kCFI checks that the
-destination of an indirect jump has the exact same type as the prototype
-of the function pointer it is called through and fails when they do not.
-
-These callbacks are called through kobj_attr_show() because
-uncore_root_kobj was initialized with kobject_create_and_add(), which
-means uncore_root_kobj has a ->sysfs_ops of kobj_sysfs_ops from
-kobject_create(), which uses kobj_attr_show() as its ->show() value.
-
-The only reason there has not been a more noticeable problem until this
-point is that 'struct kobj_attribute' and 'struct device_attribute' have
-the same layout, so getting the callback from container_of() works the
-same with either value.
-
-Change all the callbacks and their uses to be compatible with
-kobj_attr_show() and kobj_attr_store(), which resolves the kCFI failure
-and allows the sysfs files to work properly.
-
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1974
-Fixes: ae7b2ce57851 ("platform/x86/intel/uncore-freq: Use sysfs API to create attributes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://lore.kernel.org/r/20240104-intel-uncore-freq-kcfi-fix-v1-1-bf1e8939af40@kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-[nathan: Fix conflicts due to lack of 9b8dea80e3cb in 6.1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 97566d09fd02 ("thermal: intel: hfi: Add syscore callbacks for system-wide PM")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c |   64 +++++-----
- drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.h |   20 +--
- 2 files changed, 42 insertions(+), 42 deletions(-)
+ drivers/thermal/intel/intel_hfi.c | 43 ++++++++++++++++---------------
+ 1 file changed, 22 insertions(+), 21 deletions(-)
 
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
-@@ -74,30 +74,30 @@ static ssize_t show_perf_status_freq_khz
+diff --git a/drivers/thermal/intel/intel_hfi.c b/drivers/thermal/intel/intel_hfi.c
+index c69db6c90869..820613e293cd 100644
+--- a/drivers/thermal/intel/intel_hfi.c
++++ b/drivers/thermal/intel/intel_hfi.c
+@@ -347,6 +347,26 @@ static void init_hfi_instance(struct hfi_instance *hfi_instance)
+ 	hfi_instance->data = hfi_instance->hdr + hfi_features.hdr_size;
  }
  
- #define store_uncore_min_max(name, min_max)				\
--	static ssize_t store_##name(struct device *dev,		\
--				     struct device_attribute *attr,	\
-+	static ssize_t store_##name(struct kobject *kobj,		\
-+				     struct kobj_attribute *attr,	\
- 				     const char *buf, size_t count)	\
- 	{								\
--		struct uncore_data *data = container_of(attr, struct uncore_data, name##_dev_attr);\
-+		struct uncore_data *data = container_of(attr, struct uncore_data, name##_kobj_attr);\
- 									\
- 		return store_min_max_freq_khz(data, buf, count,	\
- 					      min_max);		\
- 	}
++/* Caller must hold hfi_instance_lock. */
++static void hfi_enable(void)
++{
++	u64 msr_val;
++
++	rdmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
++	msr_val |= HW_FEEDBACK_CONFIG_HFI_ENABLE_BIT;
++	wrmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
++}
++
++static void hfi_set_hw_table(struct hfi_instance *hfi_instance)
++{
++	phys_addr_t hw_table_pa;
++	u64 msr_val;
++
++	hw_table_pa = virt_to_phys(hfi_instance->hw_table);
++	msr_val = hw_table_pa | HW_FEEDBACK_PTR_VALID_BIT;
++	wrmsrl(MSR_IA32_HW_FEEDBACK_PTR, msr_val);
++}
++
+ /**
+  * intel_hfi_online() - Enable HFI on @cpu
+  * @cpu:	CPU in which the HFI will be enabled
+@@ -364,8 +384,6 @@ void intel_hfi_online(unsigned int cpu)
+ {
+ 	struct hfi_instance *hfi_instance;
+ 	struct hfi_cpu_info *info;
+-	phys_addr_t hw_table_pa;
+-	u64 msr_val;
+ 	u16 die_id;
  
- #define show_uncore_min_max(name, min_max)				\
--	static ssize_t show_##name(struct device *dev,		\
--				    struct device_attribute *attr, char *buf)\
-+	static ssize_t show_##name(struct kobject *kobj,		\
-+				    struct kobj_attribute *attr, char *buf)\
- 	{                                                               \
--		struct uncore_data *data = container_of(attr, struct uncore_data, name##_dev_attr);\
-+		struct uncore_data *data = container_of(attr, struct uncore_data, name##_kobj_attr);\
- 									\
- 		return show_min_max_freq_khz(data, buf, min_max);	\
- 	}
+ 	/* Nothing to do if hfi_instances are missing. */
+@@ -409,8 +427,6 @@ void intel_hfi_online(unsigned int cpu)
+ 	if (!hfi_instance->hw_table)
+ 		goto unlock;
  
- #define show_uncore_perf_status(name)					\
--	static ssize_t show_##name(struct device *dev,		\
--				   struct device_attribute *attr, char *buf)\
-+	static ssize_t show_##name(struct kobject *kobj,		\
-+				   struct kobj_attribute *attr, char *buf)\
- 	{                                                               \
--		struct uncore_data *data = container_of(attr, struct uncore_data, name##_dev_attr);\
-+		struct uncore_data *data = container_of(attr, struct uncore_data, name##_kobj_attr);\
- 									\
- 		return show_perf_status_freq_khz(data, buf); \
- 	}
-@@ -111,11 +111,11 @@ show_uncore_min_max(max_freq_khz, 1);
- show_uncore_perf_status(current_freq_khz);
+-	hw_table_pa = virt_to_phys(hfi_instance->hw_table);
+-
+ 	/*
+ 	 * Allocate memory to keep a local copy of the table that
+ 	 * hardware generates.
+@@ -420,16 +436,6 @@ void intel_hfi_online(unsigned int cpu)
+ 	if (!hfi_instance->local_table)
+ 		goto free_hw_table;
  
- #define show_uncore_data(member_name)					\
--	static ssize_t show_##member_name(struct device *dev,	\
--					   struct device_attribute *attr, char *buf)\
-+	static ssize_t show_##member_name(struct kobject *kobj,	\
-+					   struct kobj_attribute *attr, char *buf)\
- 	{                                                               \
- 		struct uncore_data *data = container_of(attr, struct uncore_data,\
--							  member_name##_dev_attr);\
-+							  member_name##_kobj_attr);\
- 									\
- 		return sysfs_emit(buf, "%u\n",				\
- 				 data->member_name);			\
-@@ -126,29 +126,29 @@ show_uncore_data(initial_max_freq_khz);
+-	/*
+-	 * Program the address of the feedback table of this die/package. On
+-	 * some processors, hardware remembers the old address of the HFI table
+-	 * even after having been reprogrammed and re-enabled. Thus, do not free
+-	 * the pages allocated for the table or reprogram the hardware with a
+-	 * new base address. Namely, program the hardware only once.
+-	 */
+-	msr_val = hw_table_pa | HW_FEEDBACK_PTR_VALID_BIT;
+-	wrmsrl(MSR_IA32_HW_FEEDBACK_PTR, msr_val);
+-
+ 	init_hfi_instance(hfi_instance);
  
- #define init_attribute_rw(_name)					\
- 	do {								\
--		sysfs_attr_init(&data->_name##_dev_attr.attr);	\
--		data->_name##_dev_attr.show = show_##_name;		\
--		data->_name##_dev_attr.store = store_##_name;		\
--		data->_name##_dev_attr.attr.name = #_name;		\
--		data->_name##_dev_attr.attr.mode = 0644;		\
-+		sysfs_attr_init(&data->_name##_kobj_attr.attr);	\
-+		data->_name##_kobj_attr.show = show_##_name;		\
-+		data->_name##_kobj_attr.store = store_##_name;		\
-+		data->_name##_kobj_attr.attr.name = #_name;		\
-+		data->_name##_kobj_attr.attr.mode = 0644;		\
- 	} while (0)
+ 	INIT_DELAYED_WORK(&hfi_instance->update_work, hfi_update_work_fn);
+@@ -438,13 +444,8 @@ void intel_hfi_online(unsigned int cpu)
  
- #define init_attribute_ro(_name)					\
- 	do {								\
--		sysfs_attr_init(&data->_name##_dev_attr.attr);	\
--		data->_name##_dev_attr.show = show_##_name;		\
--		data->_name##_dev_attr.store = NULL;			\
--		data->_name##_dev_attr.attr.name = #_name;		\
--		data->_name##_dev_attr.attr.mode = 0444;		\
-+		sysfs_attr_init(&data->_name##_kobj_attr.attr);	\
-+		data->_name##_kobj_attr.show = show_##_name;		\
-+		data->_name##_kobj_attr.store = NULL;			\
-+		data->_name##_kobj_attr.attr.name = #_name;		\
-+		data->_name##_kobj_attr.attr.mode = 0444;		\
- 	} while (0)
+ 	cpumask_set_cpu(cpu, hfi_instance->cpus);
  
- #define init_attribute_root_ro(_name)					\
- 	do {								\
--		sysfs_attr_init(&data->_name##_dev_attr.attr);	\
--		data->_name##_dev_attr.show = show_##_name;		\
--		data->_name##_dev_attr.store = NULL;			\
--		data->_name##_dev_attr.attr.name = #_name;		\
--		data->_name##_dev_attr.attr.mode = 0400;		\
-+		sysfs_attr_init(&data->_name##_kobj_attr.attr);	\
-+		data->_name##_kobj_attr.show = show_##_name;		\
-+		data->_name##_kobj_attr.store = NULL;			\
-+		data->_name##_kobj_attr.attr.name = #_name;		\
-+		data->_name##_kobj_attr.attr.mode = 0400;		\
- 	} while (0)
+-	/*
+-	 * Enable the hardware feedback interface and never disable it. See
+-	 * comment on programming the address of the table.
+-	 */
+-	rdmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
+-	msr_val |= HW_FEEDBACK_CONFIG_HFI_ENABLE_BIT;
+-	wrmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
++	hfi_set_hw_table(hfi_instance);
++	hfi_enable();
  
- static int create_attr_group(struct uncore_data *data, char *name)
-@@ -161,14 +161,14 @@ static int create_attr_group(struct unco
- 	init_attribute_ro(initial_max_freq_khz);
- 	init_attribute_root_ro(current_freq_khz);
- 
--	data->uncore_attrs[index++] = &data->max_freq_khz_dev_attr.attr;
--	data->uncore_attrs[index++] = &data->min_freq_khz_dev_attr.attr;
--	data->uncore_attrs[index++] = &data->initial_min_freq_khz_dev_attr.attr;
--	data->uncore_attrs[index++] = &data->initial_max_freq_khz_dev_attr.attr;
-+	data->uncore_attrs[index++] = &data->max_freq_khz_kobj_attr.attr;
-+	data->uncore_attrs[index++] = &data->min_freq_khz_kobj_attr.attr;
-+	data->uncore_attrs[index++] = &data->initial_min_freq_khz_kobj_attr.attr;
-+	data->uncore_attrs[index++] = &data->initial_max_freq_khz_kobj_attr.attr;
- 
- 	ret = uncore_read_freq(data, &freq);
- 	if (!ret)
--		data->uncore_attrs[index++] = &data->current_freq_khz_dev_attr.attr;
-+		data->uncore_attrs[index++] = &data->current_freq_khz_kobj_attr.attr;
- 
- 	data->uncore_attrs[index] = NULL;
- 
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.h
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.h
-@@ -23,11 +23,11 @@
-  * @die_id:		Die id for this instance
-  * @name:		Sysfs entry name for this instance
-  * @uncore_attr_group:	Attribute group storage
-- * @max_freq_khz_dev_attr: Storage for device attribute max_freq_khz
-- * @mix_freq_khz_dev_attr: Storage for device attribute min_freq_khz
-- * @initial_max_freq_khz_dev_attr: Storage for device attribute initial_max_freq_khz
-- * @initial_min_freq_khz_dev_attr: Storage for device attribute initial_min_freq_khz
-- * @current_freq_khz_dev_attr: Storage for device attribute current_freq_khz
-+ * @max_freq_khz_dev_attr: Storage for kobject attribute max_freq_khz
-+ * @mix_freq_khz_dev_attr: Storage for kobject attribute min_freq_khz
-+ * @initial_max_freq_khz_dev_attr: Storage for kobject attribute initial_max_freq_khz
-+ * @initial_min_freq_khz_dev_attr: Storage for kobject attribute initial_min_freq_khz
-+ * @current_freq_khz_dev_attr: Storage for kobject attribute current_freq_khz
-  * @uncore_attrs:	Attribute storage for group creation
-  *
-  * This structure is used to encapsulate all data related to uncore sysfs
-@@ -44,11 +44,11 @@ struct uncore_data {
- 	char name[32];
- 
- 	struct attribute_group uncore_attr_group;
--	struct device_attribute max_freq_khz_dev_attr;
--	struct device_attribute min_freq_khz_dev_attr;
--	struct device_attribute initial_max_freq_khz_dev_attr;
--	struct device_attribute initial_min_freq_khz_dev_attr;
--	struct device_attribute current_freq_khz_dev_attr;
-+	struct kobj_attribute max_freq_khz_kobj_attr;
-+	struct kobj_attribute min_freq_khz_kobj_attr;
-+	struct kobj_attribute initial_max_freq_khz_kobj_attr;
-+	struct kobj_attribute initial_min_freq_khz_kobj_attr;
-+	struct kobj_attribute current_freq_khz_kobj_attr;
- 	struct attribute *uncore_attrs[6];
- };
- 
+ unlock:
+ 	mutex_unlock(&hfi_instance_lock);
+-- 
+2.43.0
+
 
 
 
