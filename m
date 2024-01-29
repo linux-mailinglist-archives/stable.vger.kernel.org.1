@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-16831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6742E840E97
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1006841049
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24391284564
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD810286E5A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB38515FB20;
-	Mon, 29 Jan 2024 17:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B912755F2;
+	Mon, 29 Jan 2024 17:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYyR9znk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEzG3G5+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A050157E6B;
-	Mon, 29 Jan 2024 17:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF76755FB;
+	Mon, 29 Jan 2024 17:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548311; cv=none; b=FIYQrlcy4HxhCbS7v5ncoFBtfLi1fReBOPZgaeU/6BtmhNY6ESGjrrWIEZZLogB7qo6s87rKfAqBxG2BW8Zp4PJ/k4NihZEbM+yOGLq20bYmPv1AcidugD2/Kzbr5CiZE68ggHQzdxyfm4rMPQQhdB9yXR4CntlcPqJUJpdYMck=
+	t=1706548596; cv=none; b=pKaYGrZkOEz+eCg1TyuvMgAKeVUV1H1FSeQu5gDPZMI0ZLLVeqRzcEF++4EazyuAaS/6lTvJgLPdVaQBMEQMEsNWcbnzvGlbsRUgVYa1iZIrpoCs1l9AutI8iDtZbL6Cq9YKfn6zzB2KF8I/Q4dPGpfDzFf9YmwJ6hBj9Pnz91Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548311; c=relaxed/simple;
-	bh=T7DHVT32eQ6n1TKu28LW27V4znnP9oBM0jiYCXlQuFQ=;
+	s=arc-20240116; t=1706548596; c=relaxed/simple;
+	bh=9/3nGjYUicCzJNvKaMaR53/3yn6/iE9TpCCJGoEXcPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sZPwH/dSDYhi9DlxIYCHIF5+I/rnqgaCbJK/NsqkGOABONFmCEu5FPSB8T8PUiQaDN6ZtZ7uqfmPVjdFhn9fTiSlWycopca3+ow4Q8Xna08sO8ucp73tI6VnbHL+YFIz7jSvlsu+pjZQbyxDESn2GbXu4YZezfPImedI+kyy4gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYyR9znk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E3CC433C7;
-	Mon, 29 Jan 2024 17:11:51 +0000 (UTC)
+	 MIME-Version; b=aYYR18oVlkmb4WhdhEGLMQNhsubdSj7hA8XarwyftzMzkfCrtwgBT1hmyhy0UNnUG19zG9rqfquu2RWm2BqAc0x+hZTQJxu6vAHFNfljNcAB32HyIGmERl9ntg4ibwwu89k+vmIzDN/ahnFD4hXgz3m/fbJapOWLynCPx1HvlL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEzG3G5+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11547C433F1;
+	Mon, 29 Jan 2024 17:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548311;
-	bh=T7DHVT32eQ6n1TKu28LW27V4znnP9oBM0jiYCXlQuFQ=;
+	s=korg; t=1706548596;
+	bh=9/3nGjYUicCzJNvKaMaR53/3yn6/iE9TpCCJGoEXcPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gYyR9znky27GdmP6aD0q4iGGSA2u9FgXUOlj/vFAb4Vr4vB4PWjtikVmXbpOcK/am
-	 QoN2WhzC/15l9y7RhpQHI/TmW2zYbpGXE4i+DBOc3HqIRewm8eP/xvH9IIVjWMdt7X
-	 6XCxC8HJRMAuc3EkWZa6wM2/u/unPP42iLZjtaXE=
+	b=CEzG3G5+phehDcYw1ZWevbntg2NgFSPUh5UBJvOFi/pzlaGMM7pWUN1Mm183Izy2f
+	 pNfLp5/naDEwT4OGmgq5HmSMnLCtGnl22+fcCXtq0TYA2K1ZjuWkeqVIX/nZkwNAh6
+	 1vidM+J118Lf+qnhU55gVSuH+dh+PwcS6/aDpAQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 288/346] btrfs: zoned: optimize hint byte for zoned allocator
-Date: Mon, 29 Jan 2024 09:05:19 -0800
-Message-ID: <20240129170024.858554750@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Robert Foss <rfoss@kernel.org>
+Subject: [PATCH 6.6 256/331] drm/bridge: nxp-ptn3460: fix i2c_master_send() error checking
+Date: Mon, 29 Jan 2024 09:05:20 -0800
+Message-ID: <20240129170022.381138541@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 02444f2ac26eae6385a65fcd66915084d15dffba ]
+commit 914437992876838662c968cb416f832110fb1093 upstream.
 
-Writing sequentially to a huge file on btrfs on a SMR HDD revealed a
-decline of the performance (220 MiB/s to 30 MiB/s after 500 minutes).
+The i2c_master_send/recv() functions return negative error codes or the
+number of bytes that were able to be sent/received.  This code has
+two problems.  1)  Instead of checking if all the bytes were sent or
+received, it checks that at least one byte was sent or received.
+2) If there was a partial send/receive then we should return a negative
+error code but this code returns success.
 
-The performance goes down because of increased latency of the extent
-allocation, which is induced by a traversing of a lot of full block groups.
-
-So, this patch optimizes the ffe_ctl->hint_byte by choosing a block group
-with sufficient size from the active block group list, which does not
-contain full block groups.
-
-After applying the patch, the performance is maintained well.
-
-Fixes: 2eda57089ea3 ("btrfs: zoned: implement sequential extent allocation")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a9fe713d7d45 ("drm/bridge: Add PTN3460 bridge driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/0cdc2dce-ca89-451a-9774-1482ab2f4762@moroto.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/gpu/drm/bridge/nxp-ptn3460.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 9307891b4a85..31d64812bb60 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -4314,6 +4314,24 @@ static int prepare_allocation_zoned(struct btrfs_fs_info *fs_info,
- 		if (fs_info->data_reloc_bg)
- 			ffe_ctl->hint_byte = fs_info->data_reloc_bg;
- 		spin_unlock(&fs_info->relocation_bg_lock);
-+	} else if (ffe_ctl->flags & BTRFS_BLOCK_GROUP_DATA) {
-+		struct btrfs_block_group *block_group;
-+
-+		spin_lock(&fs_info->zone_active_bgs_lock);
-+		list_for_each_entry(block_group, &fs_info->zone_active_bgs, active_bg_list) {
-+			/*
-+			 * No lock is OK here because avail is monotinically
-+			 * decreasing, and this is just a hint.
-+			 */
-+			u64 avail = block_group->zone_capacity - block_group->alloc_offset;
-+
-+			if (block_group_bits(block_group, ffe_ctl->flags) &&
-+			    avail >= ffe_ctl->num_bytes) {
-+				ffe_ctl->hint_byte = block_group->start;
-+				break;
-+			}
-+		}
-+		spin_unlock(&fs_info->zone_active_bgs_lock);
+--- a/drivers/gpu/drm/bridge/nxp-ptn3460.c
++++ b/drivers/gpu/drm/bridge/nxp-ptn3460.c
+@@ -56,13 +56,13 @@ static int ptn3460_read_bytes(struct ptn
+ 	ret = i2c_master_send(ptn_bridge->client, &addr, 1);
+ 	if (ret <= 0) {
+ 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
+-		return ret;
++		return ret ?: -EIO;
+ 	}
+ 
+ 	ret = i2c_master_recv(ptn_bridge->client, buf, len);
+-	if (ret <= 0) {
++	if (ret != len) {
+ 		DRM_ERROR("Failed to recv i2c data, ret=%d\n", ret);
+-		return ret;
++		return ret < 0 ? ret : -EIO;
  	}
  
  	return 0;
--- 
-2.43.0
-
+@@ -78,9 +78,9 @@ static int ptn3460_write_byte(struct ptn
+ 	buf[1] = val;
+ 
+ 	ret = i2c_master_send(ptn_bridge->client, buf, ARRAY_SIZE(buf));
+-	if (ret <= 0) {
++	if (ret != ARRAY_SIZE(buf)) {
+ 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
+-		return ret;
++		return ret < 0 ? ret : -EIO;
+ 	}
+ 
+ 	return 0;
 
 
 
