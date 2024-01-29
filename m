@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-16529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89029840D58
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B740840F88
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB1401C23485
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B6981F22BA8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB2415B10E;
-	Mon, 29 Jan 2024 17:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D7F6F071;
+	Mon, 29 Jan 2024 17:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQtrBvOw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLP9LX3i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B84D15957A;
-	Mon, 29 Jan 2024 17:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378E66F062;
+	Mon, 29 Jan 2024 17:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548087; cv=none; b=ov/bVE5Ei64PSUmjOLVXh7cnvlr4VgAnoAmmTZfj34x6D+KTIM1m8RHLKSP4XF8uvcUrnzB5YqzbDK5OF6LMNouZPxbT6wg1kJ/c7dhQqoZAJN7oAOBy49S5PLbE/Bb/rpLfDgPPoAkmN0XJAqRU4AHu1F15f9Pnm3x0y9aib1E=
+	t=1706548457; cv=none; b=klOeP83JmL7ybOSZTaR8qoXd7cMmc+LAZ+px3S0velSC0tXgN9/HCBl08Ls2OEvBRa8Jjzm6n2lByJl2ErU5ygPJFc743Rmj3Jv2HTF2zdYUMsZRx5zqXzSxyrsM46wp5eSD09BDVmql/eIN3zI2baAfRIAdmDm4FVZUiTbF8+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548087; c=relaxed/simple;
-	bh=BwFmundTnuCYmdiGaWlWhTKVaYmy1juRn4qriHZkRg0=;
+	s=arc-20240116; t=1706548457; c=relaxed/simple;
+	bh=/RVfp5prStTJF0adS/CjGVF1PJLp1AlpxJS7me7SVl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACC/mFe2P7DcvwiwEB7F2GwEYzZ1XX2c8nrVSTxSLDY6Iym8yMC7QD+KooGQ8xuLoSB5dZ00UwUGBSILUE6zyRjnuj+BeYoPEdwL0887mxYjdY0PGmSgGFOI8KClANLKRKAymomKQJdI+D2HyuSzJv0pSU6bqXrJqeCp7R+35wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQtrBvOw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5180FC433C7;
-	Mon, 29 Jan 2024 17:08:07 +0000 (UTC)
+	 MIME-Version; b=ZQelEuoL+u3gL3OiMoKCafPJ8LP/vVaCMDBx+wPtOpBOa5EO/mDOSYLvx+SLMcpkAA5HWBX1SlZzAFw+g/ClgVeAXZti15jZFhh/9hSIW0ono8gakTJN4vMv3WjPOv/l+1U+wkmwSkZj9/ALCfGTDWVNRqTCH1ScAl+OGMO+g3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLP9LX3i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26A6C433C7;
+	Mon, 29 Jan 2024 17:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548087;
-	bh=BwFmundTnuCYmdiGaWlWhTKVaYmy1juRn4qriHZkRg0=;
+	s=korg; t=1706548457;
+	bh=/RVfp5prStTJF0adS/CjGVF1PJLp1AlpxJS7me7SVl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mQtrBvOw+vs5hu6QvHZcAUW7DQI1XMSDhgXuzD0US7ZSpapTE2dmQ+t90PaVPyHrf
-	 IH0jaoDDePlvlwK8G8m6VDKA7pgD55IgIVkQQGY5PSnq5I5ZBJlJ6EQnbzSN9zqL9k
-	 GjAg4sknYJxUrPbL7RH8J9sUHyKgK1wo6YJzYMMI=
+	b=jLP9LX3iqMz2K18TOiR/VxeE9voQ7zyprGtujir2BwiBwrChLc4+6CBNlQJgt2e/i
+	 yCyETzHLo3l9YuFtY3Lsf3xlWJimpb2nsQj6kX9sdFStSdJC9TCfKxPNNE3cidFe8Y
+	 ADv1ICaJOoeULSEnzm45fMF1GoP1VJSMdInjWqqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Ren <guoren@linux.alibaba.com>,
-	Guo Ren <guoren@kernel.org>,
-	Leonardo Bras <leobras@redhat.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.7 102/346] riscv: mm: Fixup compat arch_get_mmap_end
+	Bhaumik Bhatt <bbhatt@codeaurora.org>,
+	Qiang Yu <quic_qianyu@quicinc.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.6 069/331] bus: mhi: host: Add spinlock to protect WP access when queueing TREs
 Date: Mon, 29 Jan 2024 09:02:13 -0800
-Message-ID: <20240129170019.405020133@linuxfoundation.org>
+Message-ID: <20240129170016.945886064@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guo Ren <guoren@linux.alibaba.com>
+From: Bhaumik Bhatt <bbhatt@codeaurora.org>
 
-commit 97b7ac69be2e5a683e898f5267f659fde52efdd5 upstream.
+commit b89b6a863dd53bc70d8e52d50f9cfaef8ef5e9c9 upstream.
 
-When the task is in COMPAT mode, the arch_get_mmap_end should be 2GB,
-not TASK_SIZE_64. The TASK_SIZE has contained is_compat_mode()
-detection, so change the definition of STACK_TOP_MAX to TASK_SIZE
-directly.
+Protect WP accesses such that multiple threads queueing buffers for
+incoming data do not race.
+
+Meanwhile, if CONFIG_TRACE_IRQFLAGS is enabled, irq will be enabled once
+__local_bh_enable_ip is called as part of write_unlock_bh. Hence, let's
+take irqsave lock after TRE is generated to avoid running write_unlock_bh
+when irqsave lock is held.
 
 Cc: stable@vger.kernel.org
-Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Signed-off-by: Guo Ren <guoren@kernel.org>
-Reviewed-by: Leonardo Bras <leobras@redhat.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Link: https://lore.kernel.org/r/20231222115703.2404036-3-guoren@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 189ff97cca53 ("bus: mhi: core: Add support for data transfer")
+Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
+Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Tested-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/1702276972-41296-2-git-send-email-quic_qianyu@quicinc.com
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/processor.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bus/mhi/host/main.c |   22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
---- a/arch/riscv/include/asm/processor.h
-+++ b/arch/riscv/include/asm/processor.h
-@@ -16,7 +16,7 @@
+--- a/drivers/bus/mhi/host/main.c
++++ b/drivers/bus/mhi/host/main.c
+@@ -1127,17 +1127,15 @@ static int mhi_queue(struct mhi_device *
+ 	if (unlikely(MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state)))
+ 		return -EIO;
  
- #ifdef CONFIG_64BIT
- #define DEFAULT_MAP_WINDOW	(UL(1) << (MMAP_VA_BITS - 1))
--#define STACK_TOP_MAX		TASK_SIZE_64
-+#define STACK_TOP_MAX		TASK_SIZE
+-	read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
+-
+ 	ret = mhi_is_ring_full(mhi_cntrl, tre_ring);
+-	if (unlikely(ret)) {
+-		ret = -EAGAIN;
+-		goto exit_unlock;
+-	}
++	if (unlikely(ret))
++		return -EAGAIN;
  
- #define arch_get_mmap_end(addr, len, flags)			\
- ({								\
+ 	ret = mhi_gen_tre(mhi_cntrl, mhi_chan, buf_info, mflags);
+ 	if (unlikely(ret))
+-		goto exit_unlock;
++		return ret;
++
++	read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
+ 
+ 	/* Packet is queued, take a usage ref to exit M3 if necessary
+ 	 * for host->device buffer, balanced put is done on buffer completion
+@@ -1157,7 +1155,6 @@ static int mhi_queue(struct mhi_device *
+ 	if (dir == DMA_FROM_DEVICE)
+ 		mhi_cntrl->runtime_put(mhi_cntrl);
+ 
+-exit_unlock:
+ 	read_unlock_irqrestore(&mhi_cntrl->pm_lock, flags);
+ 
+ 	return ret;
+@@ -1209,6 +1206,9 @@ int mhi_gen_tre(struct mhi_controller *m
+ 	int eot, eob, chain, bei;
+ 	int ret;
+ 
++	/* Protect accesses for reading and incrementing WP */
++	write_lock_bh(&mhi_chan->lock);
++
+ 	buf_ring = &mhi_chan->buf_ring;
+ 	tre_ring = &mhi_chan->tre_ring;
+ 
+@@ -1226,8 +1226,10 @@ int mhi_gen_tre(struct mhi_controller *m
+ 
+ 	if (!info->pre_mapped) {
+ 		ret = mhi_cntrl->map_single(mhi_cntrl, buf_info);
+-		if (ret)
++		if (ret) {
++			write_unlock_bh(&mhi_chan->lock);
+ 			return ret;
++		}
+ 	}
+ 
+ 	eob = !!(flags & MHI_EOB);
+@@ -1244,6 +1246,8 @@ int mhi_gen_tre(struct mhi_controller *m
+ 	mhi_add_ring_element(mhi_cntrl, tre_ring);
+ 	mhi_add_ring_element(mhi_cntrl, buf_ring);
+ 
++	write_unlock_bh(&mhi_chan->lock);
++
+ 	return 0;
+ }
+ 
 
 
 
