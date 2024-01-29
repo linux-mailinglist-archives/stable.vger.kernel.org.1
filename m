@@ -1,68 +1,55 @@
-Return-Path: <stable+bounces-16572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B30840D85
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD639840FBA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 588E6B2618E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C6551C21532
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE4715B309;
-	Mon, 29 Jan 2024 17:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A109515B11D;
+	Mon, 29 Jan 2024 17:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCzTlk4M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqGx0K4r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595E715705F;
-	Mon, 29 Jan 2024 17:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6070E6FDE1;
+	Mon, 29 Jan 2024 17:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548119; cv=none; b=oBVpp5Iz29kYvkIjbpjztqsg7HMFq7lIrIxLZWfJAL5qmDcB1LFbohKxQnkucckJc+24mIvnNHAFddMCw9pci2MG+j8DKNQrEThtHY9S/i2Xr0bpd7iVvo4JUcCKYSAx92hOBiPB2i3pw1YWqpIf+lKe9UYb/d1DHP1TaYpD/Gw=
+	t=1706548491; cv=none; b=j1SWcZfbk9A+FcWPk2oqI3J3bche57qPribSVtnnc7DwEnJ2T0xMeVEUwOXYSLXO4AILP8ydKJ/wu5s2RGrQpdy7rLsqgh8A5yjFkxq4Y3hDeYaYTGKKHVKueb49+dqJCw6tH6YhbUhDht/h6jHOZLb48tNBkyArp5mjYQaT8Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548119; c=relaxed/simple;
-	bh=drJ8lor/P9YHejQjOEJ7/9OUi+TQ7dGB4STcQ2jB2Us=;
+	s=arc-20240116; t=1706548491; c=relaxed/simple;
+	bh=l1zBQwcntQbZ0MrzHlZ+IsmC7nDe0ZU1hNJ4b1KS8ak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aARFcckqOFvOSlqdImcZXG4aM5Bp6j+AH/UMcT3ewDZAG9k9yb5qjoHcEG9tVYg9UETRo1TcRq3RafC1WNsyPY8zAOMu8W8Cwcfpg3ggLcgtWCL95kX1JtUY0uZ9br4DLOGJTEKX1xC+p2TSM/XzGynqRnDwtdD4jpQ66KfK4Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCzTlk4M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16933C433F1;
-	Mon, 29 Jan 2024 17:08:39 +0000 (UTC)
+	 MIME-Version; b=q7U/0ekfAQ4xJYFxhUY50S00wLxGP87csB3q2TfNXpNBEHH7/5k2xiFKsZQEkhTiq1iFPtY3Y6TYNIU0hw81JcuH7Ptj0g4LoTJTI5OIwLP0vz4uIKkKQyGX1Atl3ZtnpxdFC2axg+S+MsRmHR2WZJ9ICEbgjWqh39sStLPN55U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqGx0K4r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F6FC433C7;
+	Mon, 29 Jan 2024 17:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548119;
-	bh=drJ8lor/P9YHejQjOEJ7/9OUi+TQ7dGB4STcQ2jB2Us=;
+	s=korg; t=1706548491;
+	bh=l1zBQwcntQbZ0MrzHlZ+IsmC7nDe0ZU1hNJ4b1KS8ak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TCzTlk4MN6Ak4huJT2dz/HKHNJO6h33Hli9e4ltwycItE+WVKbGBn5f9wLQvAnE5K
-	 4xyV5FVmDW/qqvykGZMVqOxpsoFq3ossLWo5N2RxpblduGtuiAbXOlsa5lWB/dLG+4
-	 0zJoS1t7/wJjsfy2Nvq+IJoPCP2OmW63RNJT0eUI=
+	b=aqGx0K4rKT5HQ3s6DV1LUleDQH11/tFA1NRtKveMvgNJg8IWdHPXt19zR3Nxmlu83
+	 fbMM9rQoDX3P75OYavy8alq9FQmvo2BbJA9pExm7Nc5iw23xM3CUyeFeTcU+rkVASL
+	 YOTDDm1/YLjviZZTUU42ohjpE/l4BdYbQGdHv+GQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	syzbot+81227d2bd69e9dedb802@syzkaller.appspotmail.com,
-	Sean Christopherson <seanjc@google.com>,
-	Andrei Vagin <avagin@google.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	=?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
-	Peter Xu <peterx@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 120/346] fs/proc/task_mmu: move mmu notification mechanism inside mm lock
-Date: Mon, 29 Jan 2024 09:02:31 -0800
-Message-ID: <20240129170019.917774527@linuxfoundation.org>
+	Stephan Gerhold <stephan@gerhold.net>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 088/331] arm64: dts: qcom: Add missing vio-supply for AW2013
+Date: Mon, 29 Jan 2024 09:02:32 -0800
+Message-ID: <20240129170017.504561621@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,111 +59,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Stephan Gerhold <stephan@gerhold.net>
 
-commit 4cccb6221cae6d020270606b9e52b1678fc8b71a upstream.
+commit cc1ec484f2d0f464ad11b56fe3de2589c23f73ec upstream.
 
-Move mmu notification mechanism inside mm lock to prevent race condition
-in other components which depend on it.  The notifier will invalidate
-memory range.  Depending upon the number of iterations, different memory
-ranges would be invalidated.
+Add the missing vio-supply to all usages of the AW2013 LED controller
+to ensure that the regulator needed for pull-up of the interrupt and
+I2C lines is really turned on. While this seems to have worked fine so
+far some of these regulators are not guaranteed to be always-on. For
+example, pm8916_l6 is typically turned off together with the display
+if there aren't any other devices (e.g. sensors) keeping it always-on.
 
-The following warning would be removed by this patch:
-WARNING: CPU: 0 PID: 5067 at arch/x86/kvm/../../../virt/kvm/kvm_main.c:734 kvm_mmu_notifier_change_pte+0x860/0x960 arch/x86/kvm/../../../virt/kvm/kvm_main.c:734
-
-There is no behavioural and performance change with this patch when
-there is no component registered with the mmu notifier.
-
-[akpm@linux-foundation.org: narrow the scope of `range', per Sean]
-Link: https://lkml.kernel.org/r/20240109112445.590736-1-usama.anjum@collabora.com
-Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reported-by: syzbot+81227d2bd69e9dedb802@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/000000000000f6d051060c6785bc@google.com/
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Cc: Andrei Vagin <avagin@google.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Michał Mirosław <mirq-linux@rere.qmqm.pl>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org # 6.6
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+Link: https://lore.kernel.org/r/20231204-qcom-aw2013-vio-v1-1-5d264bb5c0b2@gerhold.net
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/task_mmu.c |   24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts  |    1 +
+ arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts |    1 +
+ arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts      |    1 +
+ arch/arm64/boot/dts/qcom/msm8953-xiaomi-tissot.dts    |    1 +
+ arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts     |    1 +
+ 5 files changed, 5 insertions(+)
 
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -2415,7 +2415,6 @@ static long pagemap_scan_flush_buffer(st
+--- a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
+@@ -88,6 +88,7 @@
+ 		#size-cells = <0>;
  
- static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
- {
--	struct mmu_notifier_range range;
- 	struct pagemap_scan_private p = {0};
- 	unsigned long walk_start;
- 	size_t n_ranges_out = 0;
-@@ -2431,15 +2430,9 @@ static long do_pagemap_scan(struct mm_st
- 	if (ret)
- 		return ret;
+ 		vcc-supply = <&pm8916_l17>;
++		vio-supply = <&pm8916_l6>;
  
--	/* Protection change for the range is going to happen. */
--	if (p.arg.flags & PM_SCAN_WP_MATCHING) {
--		mmu_notifier_range_init(&range, MMU_NOTIFY_PROTECTION_VMA, 0,
--					mm, p.arg.start, p.arg.end);
--		mmu_notifier_invalidate_range_start(&range);
--	}
--
- 	for (walk_start = p.arg.start; walk_start < p.arg.end;
- 			walk_start = p.arg.walk_end) {
-+		struct mmu_notifier_range range;
- 		long n_out;
+ 		led@0 {
+ 			reg = <0>;
+--- a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
+@@ -118,6 +118,7 @@
+ 		#size-cells = <0>;
  
- 		if (fatal_signal_pending(current)) {
-@@ -2450,8 +2443,20 @@ static long do_pagemap_scan(struct mm_st
- 		ret = mmap_read_lock_killable(mm);
- 		if (ret)
- 			break;
-+
-+		/* Protection change for the range is going to happen. */
-+		if (p.arg.flags & PM_SCAN_WP_MATCHING) {
-+			mmu_notifier_range_init(&range, MMU_NOTIFY_PROTECTION_VMA, 0,
-+						mm, walk_start, p.arg.end);
-+			mmu_notifier_invalidate_range_start(&range);
-+		}
-+
- 		ret = walk_page_range(mm, walk_start, p.arg.end,
- 				      &pagemap_scan_ops, &p);
-+
-+		if (p.arg.flags & PM_SCAN_WP_MATCHING)
-+			mmu_notifier_invalidate_range_end(&range);
-+
- 		mmap_read_unlock(mm);
+ 		vcc-supply = <&pm8916_l16>;
++		vio-supply = <&pm8916_l5>;
  
- 		n_out = pagemap_scan_flush_buffer(&p);
-@@ -2477,9 +2482,6 @@ static long do_pagemap_scan(struct mm_st
- 	if (pagemap_scan_writeback_args(&p.arg, uarg))
- 		ret = -EFAULT;
+ 		led@0 {
+ 			reg = <0>;
+--- a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts
++++ b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts
+@@ -111,6 +111,7 @@
+ 		reg = <0x45>;
  
--	if (p.arg.flags & PM_SCAN_WP_MATCHING)
--		mmu_notifier_invalidate_range_end(&range);
--
- 	kfree(p.vec_buf);
- 	return ret;
- }
+ 		vcc-supply = <&pm8953_l10>;
++		vio-supply = <&pm8953_l5>;
+ 
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+--- a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-tissot.dts
++++ b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-tissot.dts
+@@ -104,6 +104,7 @@
+ 		reg = <0x45>;
+ 
+ 		vcc-supply = <&pm8953_l10>;
++		vio-supply = <&pm8953_l5>;
+ 
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+--- a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts
++++ b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts
+@@ -113,6 +113,7 @@
+ 		reg = <0x45>;
+ 
+ 		vcc-supply = <&pm8953_l10>;
++		vio-supply = <&pm8953_l5>;
+ 
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
 
 
 
