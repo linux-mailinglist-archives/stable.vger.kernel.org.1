@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAA24840F71
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:23:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9281E840D41
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:09:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 755511F23A18
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:23:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35E5FB25BED
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E143F9C5;
-	Mon, 29 Jan 2024 17:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD36159560;
+	Mon, 29 Jan 2024 17:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+JauT6F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0yWQyi1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4291649DD;
-	Mon, 29 Jan 2024 17:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEAD4157049;
+	Mon, 29 Jan 2024 17:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548442; cv=none; b=a6wg3/CvI+HKZdZUxmIVHESR389ioUXE6mSHXOMRCsdSvC2CT4+IPACzMSLpR33UB5yMSQagUbLFKu2rsydBkkuxzYoPathDSET97xcxOWtaD+N2FDV+VcziNAC2IUcwZpfM4VrmAY9PP2/vC9a2X0lemfo7QcnTqH/VJH7GTjo=
+	t=1706548072; cv=none; b=rNWY10oVBBMB/IJZwWhr7d/1/KEQ0cGCXCf9TMuvY0jitXJABc8ZE+UfOb8EVvaf9JopBaTkwkhuUIHMRxX4F28VZB+m0NvjPKiLZzFb9HDqdLU/eCap6tOBA4FbN0yr1nVDwlPlAppd3cWI4LrmnUN4lT591gFE7LFa8lXOnMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548442; c=relaxed/simple;
-	bh=YjTPITiYpeYjASyYXydZmv1O4gNkfsCkI7VMAskgrok=;
+	s=arc-20240116; t=1706548072; c=relaxed/simple;
+	bh=m7XKDClg21nTRxdf1FN0D2tTKWG8hAx4ZoPj0crU5N8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s7670weaefpN5uYYA0EvRvtNgv7HSDBBjSgo9pCmFZOzRt64d4MMC7/pz7uwGQP52A0J5RbzcjvVx6/EBttJlHotxz8cyEfwUjij2IVua5uxvLnob/nwRdBKLYpmL9IHJ+6xuadWWvmO6z2XBFDXkKv6ywreY08pSZmlHxV5VYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+JauT6F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE8EC433F1;
-	Mon, 29 Jan 2024 17:14:01 +0000 (UTC)
+	 MIME-Version; b=fQcRRjbnw3JVdwNcpz1wQjwcGaDrd9Z5bGYk/ZuqX8VOxyFvxvnDf9UUgkM3zdp38rCv1xZ7eLjZiuyQDUwJCd9EVXb8MwiqngMRTgAy3dKgrGVrNsdDGj9hTV/PBURDZxBp8H97kYZEDjI84SvQdeXXLiLyDePpXQ7OnW96QJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0yWQyi1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B32C43399;
+	Mon, 29 Jan 2024 17:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548442;
-	bh=YjTPITiYpeYjASyYXydZmv1O4gNkfsCkI7VMAskgrok=;
+	s=korg; t=1706548071;
+	bh=m7XKDClg21nTRxdf1FN0D2tTKWG8hAx4ZoPj0crU5N8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S+JauT6FzwKEYnOz+lfA0FiLTHgrxsdGDq6vGUTKiNWGQ6UG4RlYL9ch7uceVSLHL
-	 V3qZP9eM0IuN4juzOIJGmS2hdqoiA8nNbt1fK3dn21Ns8nBWuUnwT4FilZM7ksPjCh
-	 J2AfZcCR1mjQrvl0LZwpFB5h5xjWBJLerzJtIuNI=
+	b=z0yWQyi1FCMTJVseQzwamxi5QxNaTvjldORV/RmgITZ0WaHfdxpZIdgRI1KEdpiaH
+	 axacI6LNb1oolQBR9gBmxXtBZR4VSdPJ92ASRiiqSvrDpeXvATj7tMyrUDLSDmzmBc
+	 T8I0l4ItY1Chunkkc4Q0yULGlwf20P3EHt/Vesi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shiyan <eagle.alexander923@gmail.com>,
-	=?UTF-8?q?M=C3=A5ns=20Rullg=C3=A5rd?= <mans@mansr.com>,
-	=?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 047/331] mtd: rawnand: Fix core interference with sequential reads
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.7 080/346] arm64: dts: qcom: sc7280: fix usb_1 wakeup interrupt types
 Date: Mon, 29 Jan 2024 09:01:51 -0800
-Message-ID: <20240129170016.312225094@linuxfoundation.org>
+Message-ID: <20240129170018.742768520@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 7c9414c870c027737d0f2ed7b0ed10f26edb1c61 upstream.
+commit c34199d967a946e55381404fa949382691737521 upstream.
 
-A couple of reports pointed at some strange failures happening a bit
-randomly since the introduction of sequential page reads support. After
-investigation it turned out the most likely reason for these issues was
-the fact that sometimes a (longer) read might happen, starting at the
-same page that was read previously. This is optimized by the raw NAND
-core, by not sending the READ_PAGE command to the NAND device and just
-reading out the data in a local cache. When this page is also flagged as
-being the starting point for a sequential read, it means the page right
-next will be accessed without the right instructions. The NAND chip will
-be confused and will not output correct data. In order to avoid such
-situation from happening anymore, we can however handle this case with a
-bit of additional logic, to postpone the initialization of the read
-sequence by one page.
+A recent cleanup reordering the usb_1 wakeup interrupts inadvertently
+switched the DP and SuperSpeed interrupt trigger types.
 
-Reported-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-Closes: https://lore.kernel.org/linux-mtd/CAP1tNvS=NVAm-vfvYWbc3k9Cx9YxMc2uZZkmXk8h1NhGX877Zg@mail.gmail.com/
-Reported-by: Måns Rullgård <mans@mansr.com>
-Closes: https://lore.kernel.org/linux-mtd/yw1xfs6j4k6q.fsf@mansr.com/
-Reported-by: Martin Hundebøll <martin@geanix.com>
-Closes: https://lore.kernel.org/linux-mtd/9d0c42fcde79bfedfe5b05d6a4e9fdef71d3dd52.camel@geanix.com/
-Fixes: 003fe4b9545b ("mtd: rawnand: Support for sequential cache reads")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Tested-by: Martin Hundebøll <martin@geanix.com>
-Link: https://lore.kernel.org/linux-mtd/20231215123208.516590-3-miquel.raynal@bootlin.com
+Fixes: 4a7ffc10d195 ("arm64: dts: qcom: align DWC3 USB interrupts with DT schema")
+Cc: stable@vger.kernel.org      # 5.19
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20231120164331.8116-5-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/nand_base.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/arm64/boot/dts/qcom/sc7280.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -3479,6 +3479,18 @@ static void rawnand_enable_cont_reads(st
- 	rawnand_cap_cont_reads(chip);
- }
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -3685,9 +3685,9 @@
+ 			assigned-clock-rates = <19200000>, <200000000>;
  
-+static void rawnand_cont_read_skip_first_page(struct nand_chip *chip, unsigned int page)
-+{
-+	if (!chip->cont_read.ongoing || page != chip->cont_read.first_page)
-+		return;
-+
-+	chip->cont_read.first_page++;
-+	if (chip->cont_read.first_page == chip->cont_read.pause_page)
-+		chip->cont_read.first_page++;
-+	if (chip->cont_read.first_page >= chip->cont_read.last_page)
-+		chip->cont_read.ongoing = false;
-+}
-+
- /**
-  * nand_setup_read_retry - [INTERN] Set the READ RETRY mode
-  * @chip: NAND chip object
-@@ -3653,6 +3665,8 @@ read_retry:
- 			buf += bytes;
- 			max_bitflips = max_t(unsigned int, max_bitflips,
- 					     chip->pagecache.bitflips);
-+
-+			rawnand_cont_read_skip_first_page(chip, page);
- 		}
- 
- 		readlen -= bytes;
+ 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+-					      <&pdc 14 IRQ_TYPE_LEVEL_HIGH>,
++					      <&pdc 14 IRQ_TYPE_EDGE_BOTH>,
+ 					      <&pdc 15 IRQ_TYPE_EDGE_BOTH>,
+-					      <&pdc 17 IRQ_TYPE_EDGE_BOTH>;
++					      <&pdc 17 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "hs_phy_irq",
+ 					  "dp_hs_phy_irq",
+ 					  "dm_hs_phy_irq",
 
 
 
