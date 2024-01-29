@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-17286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735E0841092
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA829840EC3
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F05D28713F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 808311F2AA1C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8CB76C66;
-	Mon, 29 Jan 2024 17:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A055160891;
+	Mon, 29 Jan 2024 17:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfSUoI42"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i09xlhy4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B83176C62;
-	Mon, 29 Jan 2024 17:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08ECE16088C;
+	Mon, 29 Jan 2024 17:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548647; cv=none; b=g1SedZCQJWYlyQ0Q1FgI4W9gaT+rnBWKYusrF5MXhAtndn3y4KzhdxGaSHwglec9lemYRpTFCYx1U20OffhFUzHJtkFUw1bO33XzdRIADsy5QqvvPwYgjhqMD8k1Awj6rckfXgXDHVcLMXF7rd+Uq6AY0l7Ds23qmQAhIgy4IB8=
+	t=1706548341; cv=none; b=qM6oT3xkhEAjofIOlvFpDpy9HwEwJrWreNDweybkWVd8zQX/WI1K/+wfcAibbzE88ii47l0sgBQYnHskOUX269sUqReKwEtMqFjLGPVvN/he50ihPt0l4jllwoz4H7yJkIlRxxNK3rlabGyjINm+Nwvt0DO2CbiJxZ2HyP008a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548647; c=relaxed/simple;
-	bh=S3pZbW/ex1O8SR4Qx9ZRT5V3z2r9BHAY/omvmbGlR+U=;
+	s=arc-20240116; t=1706548341; c=relaxed/simple;
+	bh=xulY5m4TV4zJ1QAuo0miWp3VzAhbM9FbjUbjSzGVR+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EU+fTBQWd6hXnTSTQyabKdv8XbjSO1SfwvbIhua4nrCUX/NEeJ4skxlSToUiTJ8c/nwaEtV629N63sfvMl/FrpyzGPBBbMisHTMhMqDxabmkQDADv0Bp/udvKw7xIOll3m6a3zmAlMzqlt/ADHQE1aokMe8bLWaVANgLOw+iFf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfSUoI42; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7686C433F1;
-	Mon, 29 Jan 2024 17:17:26 +0000 (UTC)
+	 MIME-Version; b=Z6z2B8WctujRxlsmP8DQjBnAvka/sf19FALGXmRnw7nHnDvuHTkoDys+P9cNCMhwyvfPCCNVl/AHyjQH26Y2L2Ed+mPBVGeXWdpP84vBHsUfkwQDHAUJoCw74b2sb7Aq554vjG2LdpvpYCNpi8mWFxbbFbJ2JUqRIJZnr9Xk/Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i09xlhy4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4091C433F1;
+	Mon, 29 Jan 2024 17:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548646;
-	bh=S3pZbW/ex1O8SR4Qx9ZRT5V3z2r9BHAY/omvmbGlR+U=;
+	s=korg; t=1706548340;
+	bh=xulY5m4TV4zJ1QAuo0miWp3VzAhbM9FbjUbjSzGVR+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PfSUoI42E8V06+0hYpM2fOmlSDj1jzvPu4UKnf1qXL4vGRNVtZIH3FlGh56hCOtc3
-	 4ywcoS+o0qJ2QgmaEOr837OjIEXQ9j5i9O84rag91E/dJm+Y8VYKDrldVmyPV0giTG
-	 yZyas4snZBFmiACpMI6qgbE0SyVv/IlKX0dqYBPM=
+	b=i09xlhy4iRF3t/t9pFEb+9Ribfi9qHFmFRUWQvxR12iDYVSODiVDytjPDIhvTNLkz
+	 Tr9Za1hRnGqLeWFn9vM9y17EuAFDxHR07aq9LaTaUqhjw0z+cp44pP6QC46eNK8eZ8
+	 jn4Q5ZiZ2Mne6yP9FRddb3vTqvbNVESCrcS86Fyg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 301/331] drm: panel-simple: add missing bus flags for Tianma tm070jvhg[30/33]
-Date: Mon, 29 Jan 2024 09:06:05 -0800
-Message-ID: <20240129170023.680438066@linuxfoundation.org>
+Subject: [PATCH 6.7 335/346] spi: fix finalize message on error return
+Date: Mon, 29 Jan 2024 09:06:06 -0800
+Message-ID: <20240129170026.330618186@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 45dd7df26cee741b31c25ffdd44fb8794eb45ccd ]
+[ Upstream commit 8c2ae772fe08e33f3d7a83849e85539320701abd ]
 
-The DE signal is active high on this display, fill in the missing
-bus_flags. This aligns panel_desc with its display_timing.
+In __spi_pump_transfer_message(), the message was not finalized in the
+first error return as it is in the other error return paths. Not
+finalizing the message could cause anything waiting on the message to
+complete to hang forever.
 
-Fixes: 9a2654c0f62a ("drm/panel: Add and fill drm_panel type field")
-Fixes: b3bfcdf8a3b6 ("drm/panel: simple: add Tianma TM070JVHG33")
+This adds the missing call to spi_finalize_current_message().
 
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Link: https://lore.kernel.org/r/20231012084208.2731650-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231012084208.2731650-1-alexander.stein@ew.tq-group.com
+Fixes: ae7d2346dc89 ("spi: Don't use the message queue if possible in spi_sync")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://msgid.link/r/20240125205312.3458541-2-dlechner@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 6e46e55d29a9..51f838befb32 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -3782,6 +3782,7 @@ static const struct panel_desc tianma_tm070jdhg30 = {
- 	},
- 	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
- 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
- };
- 
- static const struct panel_desc tianma_tm070jvhg33 = {
-@@ -3794,6 +3795,7 @@ static const struct panel_desc tianma_tm070jvhg33 = {
- 	},
- 	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
- 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
- };
- 
- static const struct display_timing tianma_tm070rvhg71_timing = {
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 8ead7acb99f3..4adc56dabf55 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1624,6 +1624,10 @@ static int __spi_pump_transfer_message(struct spi_controller *ctlr,
+ 			pm_runtime_put_noidle(ctlr->dev.parent);
+ 			dev_err(&ctlr->dev, "Failed to power device: %d\n",
+ 				ret);
++
++			msg->status = ret;
++			spi_finalize_current_message(ctlr);
++
+ 			return ret;
+ 		}
+ 	}
 -- 
 2.43.0
 
