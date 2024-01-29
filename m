@@ -1,108 +1,117 @@
-Return-Path: <stable+bounces-17354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A13841601
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 23:50:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C88F384167E
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 00:06:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 746C81C239B6
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 22:50:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34531B2154B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 23:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C3F50A9D;
-	Mon, 29 Jan 2024 22:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB86524AA;
+	Mon, 29 Jan 2024 23:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="40T+yWrj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDLr5zs0"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6A14F5ED;
-	Mon, 29 Jan 2024 22:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641FB51C3B
+	for <stable@vger.kernel.org>; Mon, 29 Jan 2024 23:06:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706568623; cv=none; b=oeFdK0gyHJLOpkCYj5fxu6cAu+T1wLy5OIhqqGGyyPt4t1rVTXOWUOxG9tkcDyVuCyCmR36KxNydSg06mswcRR01P7hwD9NTYDgqvImCn5cYrlOEdAbuPs6InmD5jAdnydoL6vI5DSbZxSEh4iTZ2+H4HlBBpPEOQptD/oMjE9s=
+	t=1706569563; cv=none; b=PIB2VWepU0mBZMghTYPfEVzJdHO/ThP/SRzvIyIWRancC8A7crGlk6K3dU8rxxOBBU8TPb/XP7a1dBI1J8UQF2Nr7+CDgOyEbLmqBfGEX7hsXRURfZAZboucTVtMh9qzXJYIIeqtbi9zrQ61pzB+yT+MTjEtKYCyd5jOSupFQTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706568623; c=relaxed/simple;
-	bh=QwxS36Fs8KqCf1UAhmxBRh7I0VEHIgeYiJUVvMVZB/0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gL+zb41wW47rMnd2Dbf0OZuh4rCiH77ObeuBsqU8vi5d8FpjujZV9K/AwXk5GAp34luBkeT5rnxa04/PDoB/PDFA/V/xZlRjZV1+CIoivII9QF5BYfGL6vn0MPTichf4L0LJUngfhIuaMa+CZZouYiIDlOWU9kYjOLxXB33LuKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=40T+yWrj; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-	Cc:To:From:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	Content-Disposition:In-Reply-To:References;
-	bh=VYGzllOGvsjuYhCTcQrDKGQ3L1G9SFVv1wvxvFjxSl8=; b=40T+yWrjWmC5mKVLzfuiXcDjFd
-	BwwTepL9JzLGZ5rGVLj1U+zOqwCKWRpAnNFFHdazCEkWtCtS1Cy88PScoLLsA1GNmg5ECoUkhQT3F
-	te+TJ5Vffdl2bVZa8lfL4qq81ODmAt4tK5HDIJ+xmD8sqeQ3JzEFmTOCGTt+V5ZcKxh0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1rUaS9-006QPA-Jr; Mon, 29 Jan 2024 23:50:09 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: netdev-maintainers <edumazet@google.com>,
-	<kuba@kernel.org>,
-	<pabeni@redhat.com>,
-	<davem@davemloft.net>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
-	netdev <netdev@vger.kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	stable@vger.kernel.org,
-	Tim Menninger <tmenninger@purestorage.com>
-Subject: [PATCH net v2] net: dsa: mv88e6xxx: Fix failed probe due to unsupported C45 reads
-Date: Mon, 29 Jan 2024 23:49:48 +0100
-Message-Id: <20240129224948.1531452-1-andrew@lunn.ch>
-X-Mailer: git-send-email 2.37.2
+	s=arc-20240116; t=1706569563; c=relaxed/simple;
+	bh=T1i+0Z7ACB0e1waX+DNelGsHpBxFRWm1UAJdYGSjW3Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OHTylWkdQKgOLfLNUOjRVAsdv67kE+kF9HEC8JdO/+KuuD193/INS6X6KJyD2a1oQ4umaJqpZ71EiNGInlIvAzqaEwITXxvLUIPq+oy3zn6DNxesw9aMe3KjffGiBRlNTrxxHweSdF/NwKOJ39fmMOkq1rudyIBOvKxJFplgByo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDLr5zs0; arc=none smtp.client-ip=209.85.166.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-7bf3283c18dso45444339f.0
+        for <stable@vger.kernel.org>; Mon, 29 Jan 2024 15:06:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1706569559; x=1707174359; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DtZNDuZTycih5i2sdrujtgrVVk9yC+uswOIOzkl33jM=;
+        b=aDLr5zs0/rTnaP4tr0X0Fvc2D7IABQDbLWl+oYH1uUWKApamAFTJn6u5E5BWvlQckw
+         KVVbA5R2/tdMpLjdzJx2d39lCHZSpC3VoJNSLJFVbpNyGfBFHuc/XUn5nnBjDR8JBj5J
+         8Mpa4veB4v0eKU2IOhFlKGh+oOA5WcD4kBij4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706569559; x=1707174359;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DtZNDuZTycih5i2sdrujtgrVVk9yC+uswOIOzkl33jM=;
+        b=TNNd3WvKMCwyxE5Erxn1rwtQOzndJ7Ne79KjaImw/aY1u3NTL4urR321UJC6P92CIp
+         BQ/G3i0QTyRDFRdeGK66iwVGaGCLcY9Wes6uVjUwqrHWeAVG4af9KUAmTiJJzRQN7AGO
+         YXtlF/p3TKRI+aaGLAQ4mkh98xLB0ADe+ttH5OKOcg2d/YwO2Pns0z3h1Fi8iq9Ik4rJ
+         ykj+V9paMaFNTMZIsMVoRTN3gqrVeOx+tm36n6rLrcatBVmzp38pL55cPnVR91RITHpE
+         tX998jqA2ai8FlGIO7ZObdFIdRIVmiU4qt7AMtHvDY8a9g8cGPU7civlqGIHLBJrQcOf
+         hvJQ==
+X-Gm-Message-State: AOJu0YzvNFqKMYE8aoqYYv0RYUC6idSh6RvjpjtaJ6xP0zDczfYGgK6Y
+	qXIDueBDwnRlzAPdygIUahxwkcaW9kwQ/+jfjtJR3jtYn1nADx9gFz0haoOAMKg=
+X-Google-Smtp-Source: AGHT+IE6XcnK4WKeliuDrDTChW1y9AdUOP8cK1betdjliW8+3UzXaLc7J+q720eiwMh/frzYuEP3zg==
+X-Received: by 2002:a05:6e02:1c8c:b0:363:812d:d6a0 with SMTP id w12-20020a056e021c8c00b00363812dd6a0mr4567440ill.0.1706569559541;
+        Mon, 29 Jan 2024 15:05:59 -0800 (PST)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id e12-20020a056e0204ac00b0036382acbf8fsm822713ils.24.2024.01.29.15.05.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Jan 2024 15:05:58 -0800 (PST)
+Message-ID: <b74d661a-a857-4c7a-99a2-e5902f174052@linuxfoundation.org>
+Date: Mon, 29 Jan 2024 16:05:58 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.7 000/346] 6.7.3-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Not all mv88e6xxx device support C45 read/write operations. Those
-which do not return -EOPNOTSUPP. However, when phylib scans the bus,
-it considers this fatal, and the probe of the MDIO bus fails, which in
-term causes the mv88e6xxx probe as a whole to fail.
+On 1/29/24 10:00, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.7.3 release.
+> There are 346 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 31 Jan 2024 16:59:28 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.3-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-When there is no device on the bus for a given address, the pull up
-resistor on the data line results in the read returning 0xffff. The
-phylib core code understands this when scanning for devices on the
-bus. C45 allows multiple devices to be supported at one address, so
-phylib will perform a few reads at each address, so although thought
-not the most efficient solution, it is a way to avoid fatal
-errors. Make use of this as a minimal fix for stable to fix the
-probing problems.
+Compiled and booted on my test system. No dmesg regressions.
 
-Follow up patches will rework how C45 operates to make it similar to
-C22 which considers -ENODEV as a none-fatal, and swap mv88e6xxx to
-using this.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Cc: stable@vger.kernel.org
-Fixes: 743a19e38d02 ("net: dsa: mv88e6xxx: Separate C22 and C45 transactions")
-Reported-by: Tim Menninger <tmenninger@purestorage.com>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
----
- drivers/net/dsa/mv88e6xxx/chip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 383b3c4d6f59..614cabb5c1b0 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3659,7 +3659,7 @@ static int mv88e6xxx_mdio_read_c45(struct mii_bus *bus, int phy, int devad,
- 	int err;
- 
- 	if (!chip->info->ops->phy_read_c45)
--		return -EOPNOTSUPP;
-+		return 0xffff;
- 
- 	mv88e6xxx_reg_lock(chip);
- 	err = chip->info->ops->phy_read_c45(chip, bus, phy, devad, reg, &val);
--- 
-2.43.0
-
+thanks,
+-- Shuah
 
