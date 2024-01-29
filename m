@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-16845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4688840EA6
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF31984106D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 915D1285366
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F6841F24989
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B74115FB32;
-	Mon, 29 Jan 2024 17:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E4276028;
+	Mon, 29 Jan 2024 17:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0SvEljE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIJsZkF+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B12158D68;
-	Mon, 29 Jan 2024 17:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C4476030;
+	Mon, 29 Jan 2024 17:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548322; cv=none; b=sBKYEZbNW+HUBZ8pQ/AXP3BPsJQTNp49LBLBHZo2VwZhRFmxG22HkGGB/qUp9j40JZfQqcKrNa/u2or20aAMZ0jhzUOZqzqTacdVAZcuhhchZOG0QkOQ88F+sfy8cV7m47TyiWlBnkP87TrUKxLjrHCUGdfW6ilABLemnoUC4Ww=
+	t=1706548621; cv=none; b=E2MdUdhGDJeO/yg/+mEdXP1Ecl9NspfIBBxuoLQATELI/M0v7KBJPMe8JR4iO7RfUiZT6xWK6/lfWeUwxLLHwifI4QooXb2jKXNN5QcAUOwRg8m07tWJoLVmQY6lBgE/g9Pj4wcSqEY1/ryQiMYQjN0v6bJPmnFvRXcO2k8XPBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548322; c=relaxed/simple;
-	bh=0/Z6oG2siQuOTB4805l7vdPsmC8tx5IK71iESFT5xtU=;
+	s=arc-20240116; t=1706548621; c=relaxed/simple;
+	bh=M5EGZmOpV61W+2XLBSBYmmLk+anOeGYcNhyPd/wxN6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RjvvyihespacYAldUnUhLEuRpF0mXuYOzLNRJaEg4fcb5Rkb3WFf+7Zam1VrgZjfLX9aZcGDZvr+JoN3qbHA+ADwhZyYuumkitDdDgBZ/sBi/jekHSfaFacXBezqnfgdB+8lVK2FHtINB9r51OOgquCQMH0gssKn6tJoOXXLmsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0SvEljE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D5EC433F1;
-	Mon, 29 Jan 2024 17:12:01 +0000 (UTC)
+	 MIME-Version; b=bTbxAd5z5vAz5MHDq5t8m9eWbQFEgRvrGZMkrrs90Xnu6usv92fpJLPgE5Z7+PWzhYegFjTgnnGGTA1lkXdWMDfIEbMFSbIMi0/DH1YREIA5pneQvohPaxBatvwfuokDZvOoijaIfWZO4TNlK8uShxT01wJDP4cIHvH68JQlv34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIJsZkF+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778D9C433F1;
+	Mon, 29 Jan 2024 17:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548321;
-	bh=0/Z6oG2siQuOTB4805l7vdPsmC8tx5IK71iESFT5xtU=;
+	s=korg; t=1706548620;
+	bh=M5EGZmOpV61W+2XLBSBYmmLk+anOeGYcNhyPd/wxN6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c0SvEljE2Rx89s4xOADdGJfq7IuK17dP6soxl5HBSU0AWm5Iqrqyjh9TljBwd1s6z
-	 oNlFBJVfQeEEr8nMFPv9xu9Oa0ThFbEEUX3YOIRsoanHZNYfiWFAVmVeSOKYLkr+7s
-	 VBbfYWK6yds8fYY0SIX5JlMwJsrXr3dihdIj6S/U=
+	b=GIJsZkF+j11v4weRqUSZCseDJCeBV7ySqA9ISbKL9p9O2A7/NONgT/hapWWseIi1l
+	 nv6s6j0ZswhA/mjoTiSjiitZN2h+VUbf/8OxIRGA6fGYbaRN56NbCEo/uYlqG+xVfj
+	 w0I6CUph+g6Bn9qatoc5BHivMVxSBUqRFZRd9+cY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 323/346] firmware: arm_ffa: Check xa_load() return value
+Subject: [PATCH 6.6 290/331] serial: sc16is7xx: fix unconditional activation of THRI interrupt
 Date: Mon, 29 Jan 2024 09:05:54 -0800
-Message-ID: <20240129170025.975954440@linuxfoundation.org>
+Message-ID: <20240129170023.345299173@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit c00d9738fd5fce15dc5494d05b7599dce23e8146 ]
+[ Upstream commit 9915753037eba7135b209fef4f2afeca841af816 ]
 
-Add a check to verify the result of xa_load() during the partition
-lookups done while registering/unregistering the scheduler receiver
-interrupt callbacks and while executing the main scheduler receiver
-interrupt callback handler.
+Commit cc4c1d05eb10 ("sc16is7xx: Properly resume TX after stop") changed
+behavior to unconditionnaly set the THRI interrupt in sc16is7xx_tx_proc().
 
-Fixes: 0184450b8b1e ("firmware: arm_ffa: Add schedule receiver callback mechanism")
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Link: https://lore.kernel.org/r/20240108-ffa_fixes_6-8-v1-3-75bf7035bc50@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+For example when sending a 65 bytes message, and assuming the Tx FIFO is
+initially empty, sc16is7xx_handle_tx() will write the first 64 bytes of the
+message to the FIFO and sc16is7xx_tx_proc() will then activate THRI. When
+the THRI IRQ is fired, the driver will write the remaining byte of the
+message to the FIFO, and disable THRI by calling sc16is7xx_stop_tx().
+
+When sending a 2 bytes message, sc16is7xx_handle_tx() will write the 2
+bytes of the message to the FIFO and call sc16is7xx_stop_tx(), disabling
+THRI. After sc16is7xx_handle_tx() exits, control returns to
+sc16is7xx_tx_proc() which will unconditionally set THRI. When the THRI IRQ
+is fired, the driver simply acknowledges the interrupt and does nothing
+more, since all the data has already been written to the FIFO. This results
+in 2 register writes and 4 register reads all for nothing and taking
+precious cycles from the I2C/SPI bus.
+
+Fix this by enabling the THRI interrupt only when we fill the Tx FIFO to
+its maximum capacity and there are remaining bytes to send in the message.
+
+Fixes: cc4c1d05eb10 ("sc16is7xx: Properly resume TX after stop")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231211171353.2901416-7-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/tty/serial/sc16is7xx.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index 8df92c9521f4..0ea1dd6e55c4 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -733,6 +733,11 @@ static void __do_sched_recv_cb(u16 part_id, u16 vcpu, bool is_per_vcpu)
- 	void *cb_data;
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index 425093ce3f24..f75b8bceb8ca 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -676,6 +676,8 @@ static void sc16is7xx_handle_tx(struct uart_port *port)
  
- 	partition = xa_load(&drv_info->partition_info, part_id);
-+	if (!partition) {
-+		pr_err("%s: Invalid partition ID 0x%x\n", __func__, part_id);
-+		return;
-+	}
-+
- 	read_lock(&partition->rw_lock);
- 	callback = partition->callback;
- 	cb_data = partition->cb_data;
-@@ -915,6 +920,11 @@ static int ffa_sched_recv_cb_update(u16 part_id, ffa_sched_recv_cb callback,
- 		return -EOPNOTSUPP;
+ 	if (uart_circ_empty(xmit))
+ 		sc16is7xx_stop_tx(port);
++	else
++		sc16is7xx_ier_set(port, SC16IS7XX_IER_THRI_BIT);
+ 	uart_port_unlock_irqrestore(port, flags);
+ }
  
- 	partition = xa_load(&drv_info->partition_info, part_id);
-+	if (!partition) {
-+		pr_err("%s: Invalid partition ID 0x%x\n", __func__, part_id);
-+		return -EINVAL;
-+	}
-+
- 	write_lock(&partition->rw_lock);
+@@ -802,7 +804,6 @@ static void sc16is7xx_tx_proc(struct kthread_work *ws)
+ {
+ 	struct uart_port *port = &(to_sc16is7xx_one(ws, tx_work)->port);
+ 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+-	unsigned long flags;
  
- 	cb_valid = !!partition->callback;
+ 	if ((port->rs485.flags & SER_RS485_ENABLED) &&
+ 	    (port->rs485.delay_rts_before_send > 0))
+@@ -811,10 +812,6 @@ static void sc16is7xx_tx_proc(struct kthread_work *ws)
+ 	mutex_lock(&one->efr_lock);
+ 	sc16is7xx_handle_tx(port);
+ 	mutex_unlock(&one->efr_lock);
+-
+-	uart_port_lock_irqsave(port, &flags);
+-	sc16is7xx_ier_set(port, SC16IS7XX_IER_THRI_BIT);
+-	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static void sc16is7xx_reconf_rs485(struct uart_port *port)
 -- 
 2.43.0
 
