@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-17095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C1A840FCE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F43840D9E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8B8A1C22FF3
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBFAF2873A4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C3D72233;
-	Mon, 29 Jan 2024 17:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66670157E6B;
+	Mon, 29 Jan 2024 17:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mo+JJzOY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTHrbZQd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD2C72223;
-	Mon, 29 Jan 2024 17:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA2E15B99A;
+	Mon, 29 Jan 2024 17:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548505; cv=none; b=q3smr3yGU7RVntLPknQtoi2eT+KkKcH7IvWWw6Yn2O6ZiiM/hyprzW0aysUHkUeike+GoYG8BMfeCL6JW+oD9xKE3rKMrb4oXbIBUlBZ8FVhFsj5g17+TrIvOzThxRzy5kVar7hrbAiAeqNVauEjaISM9LWju6UmHaVNWPZfLhw=
+	t=1706548136; cv=none; b=Tr+aB0wL+jrYuS3SQUgjx0XlZVTUTXrCLR7mylfJ0x6TcP99r4x+2wT/foTPQUouZam5HocsdZRWuOVgw2lOHxZPGlVBvI3EuavncPLey8v1gvN2di7VkCjfZ+JbRD9Bt8JV8S++dcMWkwQeB0ta85oeZ/0iOaT4BQUI+eDxTK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548505; c=relaxed/simple;
-	bh=oT1xGV0jRieGWBxkEPdx1aF/BAUwkF2yAoJXurF2Xqk=;
+	s=arc-20240116; t=1706548136; c=relaxed/simple;
+	bh=A8T/TUOJ+UECMnrImOZkcMQGtVI8zIz/NsYVPgBml88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K6fTewZv80tK/632kbT3N4tZbPr1rmFijjFX6jCnAKXxXLx1asVoko007X8FwT9VWzlgpVYLZ2V5XTO7605LFYY+0Ky/qGzQav+W/ygeM8k9cx+duyyuaptvl6jGY8FkazbsAr741Lj0IVVUR8/KRICuVFHbYyJ7QBzL/y/c8lE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mo+JJzOY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D61C433C7;
-	Mon, 29 Jan 2024 17:15:05 +0000 (UTC)
+	 MIME-Version; b=R6yywk8COKMoW3+SGxWgenpnr6QJeJnj3RkDOijl1m+U/C8bAkCHYo3kqmHkDelmCIXgk9yZnk5hVWkBNVh3SunxynM2rsrXvtsanIDiTfa3egB/2oTtuhKznMaavgDJyUQmC9psn699jwFSY4lQvjEbaIrCG4kM3gSz1Pq/Zyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTHrbZQd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5ECC433C7;
+	Mon, 29 Jan 2024 17:08:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548505;
-	bh=oT1xGV0jRieGWBxkEPdx1aF/BAUwkF2yAoJXurF2Xqk=;
+	s=korg; t=1706548135;
+	bh=A8T/TUOJ+UECMnrImOZkcMQGtVI8zIz/NsYVPgBml88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mo+JJzOYQvpaPAvdqjFQSoIzCyqI/rI+FDCXfTqFiQ7Nw/cBUNdvl6RrYqhwx8Q23
-	 eSr8KdvRQZb3Xvfy5TGGEN4ci4OnxSum/Ghm45SLC9InevtW+TzEleqk7jouYFW0rz
-	 xUj/ilDlp2sPCFBH6WIpPDMOqZhA3Dp9qR0YEB9Q=
+	b=UTHrbZQdrtkd+rl9kDVtZiJBosT33+EH4OXNKWWr3m2d68a+rDqSEAIkWllb+Un65
+	 t41ooHkANWYhdGT4TPbGUF2v85mYjCuGEK7gu1nZ2wRJRqEhZhxk6IfNxc3O+DePD2
+	 HTXyMGFzK0Iud/DfcD2znorJ83/Bcnm/etG8zRts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yury Norov <yury.norov@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.6 134/331] serial: sc16is7xx: fix invalid sc16is7xx_lines bitfield in case of probe error
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	David Howells <dhowells@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 167/346] netfs, fscache: Prevent Oops in fscache_put_cache()
 Date: Mon, 29 Jan 2024 09:03:18 -0800
-Message-ID: <20240129170018.864785775@linuxfoundation.org>
+Message-ID: <20240129170021.309863730@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,133 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 8a1060ce974919f2a79807527ad82ac39336eda2 upstream.
+[ Upstream commit 3be0b3ed1d76c6703b9ee482b55f7e01c369cc68 ]
 
-If an error occurs during probing, the sc16is7xx_lines bitfield may be left
-in a state that doesn't represent the correct state of lines allocation.
+This function dereferences "cache" and then checks if it's
+IS_ERR_OR_NULL().  Check first, then dereference.
 
-For example, in a system with two SC16 devices, if an error occurs only
-during probing of channel (port) B of the second device, sc16is7xx_lines
-final state will be 00001011b instead of the expected 00000011b.
-
-This is caused in part because of the "i--" in the for/loop located in
-the out_ports: error path.
-
-Fix this by checking the return value of uart_add_one_port() and set line
-allocation bit only if this was successful. This allows the refactor of
-the obfuscated for(i--...) loop in the error path, and properly call
-uart_remove_one_port() only when needed, and properly unset line allocation
-bits.
-
-Also use same mechanism in remove() when calling uart_remove_one_port().
-
-Fixes: c64349722d14 ("sc16is7xx: support multiple devices")
-Cc:  <stable@vger.kernel.org>
-Cc: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-2-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9549332df4ed ("fscache: Implement cache registration")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/e84bc740-3502-4f16-982a-a40d5676615c@moroto.mountain/ # v2
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   44 ++++++++++++++++-------------------------
- 1 file changed, 18 insertions(+), 26 deletions(-)
+ fs/fscache/cache.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -409,19 +409,6 @@ static void sc16is7xx_port_update(struct
- 	regmap_update_bits(one->regmap, reg, mask, val);
- }
- 
--static int sc16is7xx_alloc_line(void)
--{
--	int i;
--
--	BUILD_BUG_ON(SC16IS7XX_MAX_DEVS > BITS_PER_LONG);
--
--	for (i = 0; i < SC16IS7XX_MAX_DEVS; i++)
--		if (!test_and_set_bit(i, &sc16is7xx_lines))
--			break;
--
--	return i;
--}
--
- static void sc16is7xx_power(struct uart_port *port, int on)
+diff --git a/fs/fscache/cache.c b/fs/fscache/cache.c
+index d645f8b302a2..9397ed39b0b4 100644
+--- a/fs/fscache/cache.c
++++ b/fs/fscache/cache.c
+@@ -179,13 +179,14 @@ EXPORT_SYMBOL(fscache_acquire_cache);
+ void fscache_put_cache(struct fscache_cache *cache,
+ 		       enum fscache_cache_trace where)
  {
- 	sc16is7xx_port_update(port, SC16IS7XX_IER_REG,
-@@ -1532,6 +1519,13 @@ static int sc16is7xx_probe(struct device
- 		     SC16IS7XX_IOCONTROL_SRESET_BIT);
+-	unsigned int debug_id = cache->debug_id;
++	unsigned int debug_id;
+ 	bool zero;
+ 	int ref;
  
- 	for (i = 0; i < devtype->nr_uart; ++i) {
-+		s->p[i].port.line = find_first_zero_bit(&sc16is7xx_lines,
-+							SC16IS7XX_MAX_DEVS);
-+		if (s->p[i].port.line >= SC16IS7XX_MAX_DEVS) {
-+			ret = -ERANGE;
-+			goto out_ports;
-+		}
-+
- 		/* Initialize port data */
- 		s->p[i].port.dev	= dev;
- 		s->p[i].port.irq	= irq;
-@@ -1551,14 +1545,8 @@ static int sc16is7xx_probe(struct device
- 		s->p[i].port.rs485_supported = sc16is7xx_rs485_supported;
- 		s->p[i].port.ops	= &sc16is7xx_ops;
- 		s->p[i].old_mctrl	= 0;
--		s->p[i].port.line	= sc16is7xx_alloc_line();
- 		s->p[i].regmap		= regmaps[i];
+ 	if (IS_ERR_OR_NULL(cache))
+ 		return;
  
--		if (s->p[i].port.line >= SC16IS7XX_MAX_DEVS) {
--			ret = -ENOMEM;
--			goto out_ports;
--		}
--
- 		mutex_init(&s->p[i].efr_lock);
++	debug_id = cache->debug_id;
+ 	zero = __refcount_dec_and_test(&cache->ref, &ref);
+ 	trace_fscache_cache(debug_id, ref - 1, where);
  
- 		ret = uart_get_rs485_mode(&s->p[i].port);
-@@ -1576,8 +1564,13 @@ static int sc16is7xx_probe(struct device
- 		kthread_init_work(&s->p[i].tx_work, sc16is7xx_tx_proc);
- 		kthread_init_work(&s->p[i].reg_work, sc16is7xx_reg_proc);
- 		kthread_init_delayed_work(&s->p[i].ms_work, sc16is7xx_ms_proc);
-+
- 		/* Register port */
--		uart_add_one_port(&sc16is7xx_uart, &s->p[i].port);
-+		ret = uart_add_one_port(&sc16is7xx_uart, &s->p[i].port);
-+		if (ret)
-+			goto out_ports;
-+
-+		set_bit(s->p[i].port.line, &sc16is7xx_lines);
- 
- 		/* Enable EFR */
- 		sc16is7xx_port_write(&s->p[i].port, SC16IS7XX_LCR_REG,
-@@ -1644,10 +1637,9 @@ static int sc16is7xx_probe(struct device
- #endif
- 
- out_ports:
--	for (i--; i >= 0; i--) {
--		uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
--		clear_bit(s->p[i].port.line, &sc16is7xx_lines);
--	}
-+	for (i = 0; i < devtype->nr_uart; i++)
-+		if (test_and_clear_bit(s->p[i].port.line, &sc16is7xx_lines))
-+			uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
- 
- 	kthread_stop(s->kworker_task);
- 
-@@ -1669,8 +1661,8 @@ static void sc16is7xx_remove(struct devi
- 
- 	for (i = 0; i < s->devtype->nr_uart; i++) {
- 		kthread_cancel_delayed_work_sync(&s->p[i].ms_work);
--		uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
--		clear_bit(s->p[i].port.line, &sc16is7xx_lines);
-+		if (test_and_clear_bit(s->p[i].port.line, &sc16is7xx_lines))
-+			uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
- 		sc16is7xx_power(&s->p[i].port, 0);
- 	}
- 
+-- 
+2.43.0
+
 
 
 
