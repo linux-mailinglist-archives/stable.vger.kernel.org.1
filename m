@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-16674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38CE9840DF3
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70859840E6D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B9DA1C2357B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECBE3B2788D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A075D15DBAC;
-	Mon, 29 Jan 2024 17:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C3B15A49A;
+	Mon, 29 Jan 2024 17:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qy0mULTz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGEYjNG1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB1815705E;
-	Mon, 29 Jan 2024 17:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D2115B96E;
+	Mon, 29 Jan 2024 17:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548194; cv=none; b=PcIyTzFfkdWZ5mlHiO1yH9wFeEKWr9nYhNjFbPiU/XpAyGqX1OmUAYfF3mBn6uhKd7IrLG10Xwygtvvf39yNNm3gWR3pz2gDwVNDW2/Fnk9QJTQvMed7mzwe6+I/rjz8hPBlKZuf7IHKxR7eoSd0drwN7GXPkW7wn4LQsxOEeh8=
+	t=1706548281; cv=none; b=LjrqTWgtTjoq3nCnDLKBAD+SGhKjSMmIjUXbsSRdMHbVHKwlauZg+Cshcgce2v4ZyFn1GdHwRYjhsIC0Acl5kEN7vzUQcocqb+waWZ4pO03PEKiKrmNYiYGL0xv2777xwgPzmkGHbM7BW7csnqDFyi8qduYVNIj9MRqNGTY0fRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548194; c=relaxed/simple;
-	bh=EYWiqkxiGznfeNFW1YA2LFYoeS9bcjpLIo5upidrAJQ=;
+	s=arc-20240116; t=1706548281; c=relaxed/simple;
+	bh=l0vLHgnpcru7PbWhpbW2umS43udgEu4D5BVm20rDw30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cfhar3X12ydEnisPyNFKl40kZ0awqfqrygkeF/A9Kt7MWTU2zmFFMH29Ao163lIMf50GB78oyOdJ7MtgSXwBv5PMxNFNp9fdlQvFcT+rOW3T9HB1SdcuVa+SqzDVC+j9ln06M7etPI1YD1T6SVRSu3ZqHWYcYpI76wRGznoHJZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qy0mULTz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29001C433F1;
-	Mon, 29 Jan 2024 17:09:54 +0000 (UTC)
+	 MIME-Version; b=hs1dfIi+kz0uXj6+3hhI9rsV2WWfp9oxP3H8AAYwx3ngfqLSJ43CUi8Qd/4DyeInIKcb7qaCTfAmgiVx/RFsgpUJHuoQ50EybWFTFJa46ZNFo6y/c1bwpgM698FuG1gXZAiV2z5ZrJd2Q0/Fz8RneesZJouNFSlpaNeFEplUw3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGEYjNG1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F32C433F1;
+	Mon, 29 Jan 2024 17:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548194;
-	bh=EYWiqkxiGznfeNFW1YA2LFYoeS9bcjpLIo5upidrAJQ=;
+	s=korg; t=1706548281;
+	bh=l0vLHgnpcru7PbWhpbW2umS43udgEu4D5BVm20rDw30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qy0mULTznsaM6CBP1n0Wp+SqyHGyJ2WVwFbKeYhIe4kBxs1SRfLKHPgPzkAQ/fP4R
-	 DCKu8nR4ITSpsSdABcgSMEBS6+CcfzULUNVd1kjAmT3f6f9zS5zzjHl36ZU5WTIDFa
-	 id+rRCm3luSC/+Pa8ZXTd94+XdIhXNqY/bbr3zqw=
+	b=uGEYjNG1KuM8U5h6XdeIes+mhy3JP4P7tcmiQ8sTM7lwm3ljvHoyXTwY0MjpmybiR
+	 EqIXO8N70UxTo3CWDBOwTRdXl/EaTBsAr9wbPXrF3jgMTd5QY1CO5kS8IpYBdc3gLs
+	 wHvc68f3AJkprDGw6MqYdXfl5PZqrofBe7auYIGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Notselwyn <notselwyn@pwning.tech>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.7 236/346] netfilter: nf_tables: reject QUEUE/DROP verdict parameters
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 067/185] LoongArch/smp: Call rcutree_report_cpu_starting() earlier
 Date: Mon, 29 Jan 2024 09:04:27 -0800
-Message-ID: <20240129170023.342488576@linuxfoundation.org>
+Message-ID: <20240129170000.758428350@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +60,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit f342de4e2f33e0e39165d8639387aa6c19dff660 upstream.
+commit a2ccf46333d7b2cf9658f0d82ac74097c1542fae upstream.
 
-This reverts commit e0abdadcc6e1.
+rcutree_report_cpu_starting() must be called before cpu_probe() to avoid
+the following lockdep splat that triggered by calling __alloc_pages() when
+CONFIG_PROVE_RCU_LIST=y:
 
-core.c:nf_hook_slow assumes that the upper 16 bits of NF_DROP
-verdicts contain a valid errno, i.e. -EPERM, -EHOSTUNREACH or similar,
-or 0.
+ =============================
+ WARNING: suspicious RCU usage
+ 6.6.0+ #980 Not tainted
+ -----------------------------
+ kernel/locking/lockdep.c:3761 RCU-list traversed in non-reader section!!
+ other info that might help us debug this:
+ RCU used illegally from offline CPU!
+ rcu_scheduler_active = 1, debug_locks = 1
+ 1 lock held by swapper/1/0:
+  #0: 900000000c82ef98 (&pcp->lock){+.+.}-{2:2}, at: get_page_from_freelist+0x894/0x1790
+ CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.0+ #980
+ Stack : 0000000000000001 9000000004f79508 9000000004893670 9000000100310000
+         90000001003137d0 0000000000000000 90000001003137d8 9000000004f79508
+         0000000000000000 0000000000000001 0000000000000000 90000000048a3384
+         203a656d616e2065 ca43677b3687e616 90000001002c3480 0000000000000008
+         000000000000009d 0000000000000000 0000000000000001 80000000ffffe0b8
+         000000000000000d 0000000000000033 0000000007ec0000 13bbf50562dad831
+         9000000005140748 0000000000000000 9000000004f79508 0000000000000004
+         0000000000000000 9000000005140748 90000001002bad40 0000000000000000
+         90000001002ba400 0000000000000000 9000000003573ec8 0000000000000000
+         00000000000000b0 0000000000000004 0000000000000000 0000000000070000
+         ...
+ Call Trace:
+ [<9000000003573ec8>] show_stack+0x38/0x150
+ [<9000000004893670>] dump_stack_lvl+0x74/0xa8
+ [<900000000360d2bc>] lockdep_rcu_suspicious+0x14c/0x190
+ [<900000000361235c>] __lock_acquire+0xd0c/0x2740
+ [<90000000036146f4>] lock_acquire+0x104/0x2c0
+ [<90000000048a955c>] _raw_spin_lock_irqsave+0x5c/0x90
+ [<900000000381cd5c>] rmqueue_bulk+0x6c/0x950
+ [<900000000381fc0c>] get_page_from_freelist+0xd4c/0x1790
+ [<9000000003821c6c>] __alloc_pages+0x1bc/0x3e0
+ [<9000000003583b40>] tlb_init+0x150/0x2a0
+ [<90000000035742a0>] per_cpu_trap_init+0xf0/0x110
+ [<90000000035712fc>] cpu_probe+0x3dc/0x7a0
+ [<900000000357ed20>] start_secondary+0x40/0xb0
+ [<9000000004897138>] smpboot_entry+0x54/0x58
 
-Due to the reverted commit, its possible to provide a positive
-value, e.g. NF_ACCEPT (1), which results in use-after-free.
+raw_smp_processor_id() is required in order to avoid calling into lockdep
+before RCU has declared the CPU to be watched for readers.
 
-Its not clear to me why this commit was made.
+See also commit 29368e093921 ("x86/smpboot: Move rcu_cpu_starting() earlier"),
+commit de5d9dae150c ("s390/smp: move rcu_cpu_starting() earlier") and commit
+99f070b62322 ("powerpc/smp: Call rcu_cpu_starting() earlier").
 
-NF_QUEUE is not used by nftables; "queue" rules in nftables
-will result in use of "nft_queue" expression.
-
-If we later need to allow specifiying errno values from userspace
-(do not know why), this has to call NF_DROP_GETERR and check that
-"err <= 0" holds true.
-
-Fixes: e0abdadcc6e1 ("netfilter: nf_tables: accept QUEUE/DROP verdict parameters")
-Cc: stable@vger.kernel.org
-Reported-by: Notselwyn <notselwyn@pwning.tech>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |   16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ arch/loongarch/kernel/smp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -10909,16 +10909,10 @@ static int nft_verdict_init(const struct
- 	data->verdict.code = ntohl(nla_get_be32(tb[NFTA_VERDICT_CODE]));
+--- a/arch/loongarch/kernel/smp.c
++++ b/arch/loongarch/kernel/smp.c
+@@ -471,8 +471,9 @@ asmlinkage void start_secondary(void)
+ 	unsigned int cpu;
  
- 	switch (data->verdict.code) {
--	default:
--		switch (data->verdict.code & NF_VERDICT_MASK) {
--		case NF_ACCEPT:
--		case NF_DROP:
--		case NF_QUEUE:
--			break;
--		default:
--			return -EINVAL;
--		}
--		fallthrough;
-+	case NF_ACCEPT:
-+	case NF_DROP:
-+	case NF_QUEUE:
-+		break;
- 	case NFT_CONTINUE:
- 	case NFT_BREAK:
- 	case NFT_RETURN:
-@@ -10953,6 +10947,8 @@ static int nft_verdict_init(const struct
+ 	sync_counter();
+-	cpu = smp_processor_id();
++	cpu = raw_smp_processor_id();
+ 	set_my_cpu_offset(per_cpu_offset(cpu));
++	rcu_cpu_starting(cpu);
  
- 		data->verdict.chain = chain;
- 		break;
-+	default:
-+		return -EINVAL;
- 	}
- 
- 	desc->len = sizeof(data->verdict);
+ 	cpu_probe();
+ 	constant_clockevent_init();
 
 
 
