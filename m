@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865DE841009
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A16FC840E34
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B94911C235CF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 416811F2D0A8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFDB15B304;
-	Mon, 29 Jan 2024 17:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9981715EAA1;
+	Mon, 29 Jan 2024 17:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="02Y7mnRV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/uQ0a9+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0BB7375F;
-	Mon, 29 Jan 2024 17:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A62C15703E;
+	Mon, 29 Jan 2024 17:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548549; cv=none; b=eb15PF/FDquGzB1gkaQUgL1DD3V2e+apLtxq5/+1/H1uGDpoHzcxtKzhZ1rEacN8Egs8k6jUDgSu/9drzyK3P91Pz3+lJhfxOlu6HVW3FcTY0vPSWR67E6zseFZwOeNR97BoEFa+GC4klQ5Dwmv1Fy+wREj3L1tc/ueebPXFI88=
+	t=1706548242; cv=none; b=LRxm8pskLEXPxeqFSkkCPngbSDbK1oQFKswvHiJaM0WlxRoENBO79Y+zJbIBOdOdjcFjXFk8on8BjBh1pJbdVoOGnLEVKASB9X0oJNupA4h7yh1oOBZJyaMDMO8uSdTofPoAux3C7eBlgjeO6rNyXJvXVggKSg5u1zZcGEdOtRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548549; c=relaxed/simple;
-	bh=2LWEzyWVA5Igj/JsCANDi27/ujQqQ9Jcf/nC2PiBAF4=;
+	s=arc-20240116; t=1706548242; c=relaxed/simple;
+	bh=5obUmovnegDPzmi3ytJQbQnaIjhUXCRdsehg6h5WvGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k6zSKkeEsOpxFLO6S7PzbUiddcLWnWJ/rR0I84K82B5NsrNSFfox+ZGIxiZFivw/yBTuxGr1F+Fsd0M7IYy4kBkAUzXo7+hhqUzxsa/8vcCNfnBpEVedmROZe7Jam/eYd7pRFOtvn+5wESzhcfszBHY4rMUWCi0vM0tFhoUYJp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=02Y7mnRV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006DCC43394;
-	Mon, 29 Jan 2024 17:15:48 +0000 (UTC)
+	 MIME-Version; b=g/zvy2ehCgDNy2HvHpY7fZxtDGrECMfbXrSQz/ZW3k4Iqy6lV0PEVuRSXpCStSffezs+oYrUG6HQsbOk/5xUbg1rlnNwqrQMUqAdrQcorFyShw8u1xh6gt7jpgbD9pqnKID/yujl4P//F9F6uu0ccW9S2lBs9r55X3YW6Mmj0H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/uQ0a9+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4EBC433C7;
+	Mon, 29 Jan 2024 17:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548549;
-	bh=2LWEzyWVA5Igj/JsCANDi27/ujQqQ9Jcf/nC2PiBAF4=;
+	s=korg; t=1706548242;
+	bh=5obUmovnegDPzmi3ytJQbQnaIjhUXCRdsehg6h5WvGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=02Y7mnRVPMJoVSRzvG5LQtB5RnhLHhpvkp82pV3jWqmMNJD9a6l4R/j+cAdQtXxb9
-	 RtZtcWXGfusfWnZ9UmmvilZVA6mvs2TgcXl3QIJ3vB5c740Rlv8W0rVmI7I88nmfAa
-	 wL4Dgao7xLM0fJRKiZLo0HJMB+iL3Ej7hiwme7eg=
+	b=i/uQ0a9+VRJ/J1YREneuG3MC7PWBnCmnvfPjGTXX64HZcja2lojYnX83ru78Jyzy8
+	 NALj8kIpUEcSQou0WbMycpZAXk0uNTegbVWrX3993+8pw1VpZlUwrHwq+zzB9PZrk0
+	 KSWP/rELMBrOV2XkA3REaZW9wnUyJsTU5m7Bx7II=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/331] SUNRPC: use request size to initialize bio_vec in svc_udp_sendto()
-Date: Mon, 29 Jan 2024 09:03:51 -0800
-Message-ID: <20240129170019.805577606@linuxfoundation.org>
+Subject: [PATCH 6.1 032/185] dmaengine: fix NULL pointer in channel unregistration function
+Date: Mon, 29 Jan 2024 09:03:52 -0800
+Message-ID: <20240129165959.629150949@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
 
-[ Upstream commit 1d9cabe2817edd215779dc9c2fe5e7ab9aac0704 ]
+[ Upstream commit f5c24d94512f1b288262beda4d3dcb9629222fc7 ]
 
-Use the proper size when setting up the bio_vec, as otherwise only
-zero-length UDP packets will be sent.
+__dma_async_device_channel_register() can fail. In case of failure,
+chan->local is freed (with free_percpu()), and chan->local is nullified.
+When dma_async_device_unregister() is called (because of managed API or
+intentionally by DMA controller driver), channels are unconditionally
+unregistered, leading to this NULL pointer:
+[    1.318693] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000d0
+[...]
+[    1.484499] Call trace:
+[    1.486930]  device_del+0x40/0x394
+[    1.490314]  device_unregister+0x20/0x7c
+[    1.494220]  __dma_async_device_channel_unregister+0x68/0xc0
 
-Fixes: baabf59c2414 ("SUNRPC: Convert svc_udp_sendto() to use the per-socket bio_vec array")
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Look at dma_async_device_register() function error path, channel device
+unregistration is done only if chan->local is not NULL.
+
+Then add the same condition at the beginning of
+__dma_async_device_channel_unregister() function, to avoid NULL pointer
+issue whatever the API used to reach this function.
+
+Fixes: d2fb0a043838 ("dmaengine: break out channel registration")
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20231213160452.2598073-1-amelie.delaunay@foss.st.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/svcsock.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dma/dmaengine.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-index 998687421fa6..e0ce4276274b 100644
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -717,12 +717,12 @@ static int svc_udp_sendto(struct svc_rqst *rqstp)
- 				ARRAY_SIZE(rqstp->rq_bvec), xdr);
- 
- 	iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, rqstp->rq_bvec,
--		      count, 0);
-+		      count, rqstp->rq_res.len);
- 	err = sock_sendmsg(svsk->sk_sock, &msg);
- 	if (err == -ECONNREFUSED) {
- 		/* ICMP error on earlier request. */
- 		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, rqstp->rq_bvec,
--			      count, 0);
-+			      count, rqstp->rq_res.len);
- 		err = sock_sendmsg(svsk->sk_sock, &msg);
- 	}
- 
+diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+index 8a6e6b60d66f..892e8389232e 100644
+--- a/drivers/dma/dmaengine.c
++++ b/drivers/dma/dmaengine.c
+@@ -1103,6 +1103,9 @@ EXPORT_SYMBOL_GPL(dma_async_device_channel_register);
+ static void __dma_async_device_channel_unregister(struct dma_device *device,
+ 						  struct dma_chan *chan)
+ {
++	if (chan->local == NULL)
++		return;
++
+ 	WARN_ONCE(!device->device_release && chan->client_count,
+ 		  "%s called while %d clients hold a reference\n",
+ 		  __func__, chan->client_count);
 -- 
 2.43.0
 
