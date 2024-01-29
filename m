@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-16996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D90840F62
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6915840D35
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 119D8B25699
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 051B51C23236
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CEC15956B;
-	Mon, 29 Jan 2024 17:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B42015A49B;
+	Mon, 29 Jan 2024 17:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0EwTfdxo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQkhpiBh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6368015DBA5;
-	Mon, 29 Jan 2024 17:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08AE2158D71;
+	Mon, 29 Jan 2024 17:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548433; cv=none; b=FDglrXuRLqSP+qhEoy+AeJwplFLHTFdk/hHnCvDYANsfRYz6mc067NisOgEPIy1M+RpB2vDLYMDc046aFb0GxYNtka2Ti1P77l/ePGwd7KQXKhUL6A9PyRQ0cMJBf0vKIM+MN7la2Ab6jCPkgJRz7mX8YuUUwij9zoeFmKYp8Zk=
+	t=1706548063; cv=none; b=NFtf6Av58vALGxL4EMWsXiRdYg7cY8U8/e1q9CMNMmnv6mJC5ToR2aqdPeLuLkMzDtBq56mD/Vi1Cpkx3EvMKSiRd2uf//hXIKZoAzIkJqm/6sx4okC0QcMSF6Nx77FrntP9MCQnxclTxXZMehVnphaMtwOmHW8mnHVKLmxdVpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548433; c=relaxed/simple;
-	bh=rVNU7d49QV9+RqxP7Jo2ANEqSaan+Rbfan1fP0nOk9c=;
+	s=arc-20240116; t=1706548063; c=relaxed/simple;
+	bh=hJygC1NoUfuWdhEBoRYWVBt5o72TLGiqqo5FCUXFmkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKIBkK4CbLSRQ3C9ZKfRu9r76l4ErDmfMR+OHVGg2eBICKJbyN7xmLsf0KV/Vziqyw3fHlykiToWVXa6yCK/dB5UwYGWMi2RstWsL/YP4sFL1hsVHE+r2n8oeLXXlxKJe0w4HsnWONYruKkVLPHTlE7a/ZXPQAsWJhTmKB0g4Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0EwTfdxo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE86C43390;
-	Mon, 29 Jan 2024 17:13:53 +0000 (UTC)
+	 MIME-Version; b=F/h01wIUZwek0JwQ6AT0gdckFN/QPj9bBpxTAgGk2nbur4Jr1K5Tv2PtAZBRYTL1u70aw1cxpDWWO3gCLEYJMtllHSLTkfvY9w62cDqLLTVIOgNMcGIXUncfjd8/eo1zyC7990IUgVwj9tZLnxk6xJrZ0WIWVE4X1GGcMW2gDic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQkhpiBh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2998C433F1;
+	Mon, 29 Jan 2024 17:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548433;
-	bh=rVNU7d49QV9+RqxP7Jo2ANEqSaan+Rbfan1fP0nOk9c=;
+	s=korg; t=1706548062;
+	bh=hJygC1NoUfuWdhEBoRYWVBt5o72TLGiqqo5FCUXFmkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0EwTfdxoditFYDSm6nTgZ0nNkHcn3EnRqSV7iewRiPHVQa8a9puxSGyglgnZipM5w
-	 QOwkGH/cKiuv9bNi6iPxVXgcbD0+TepTL4sNd2QAZbTrt3kWn+GrmfQ6WqNnN59gG3
-	 ZIAI3JcuXUyhwsHDr6oNBNuSd9RJo8UUZ7gJo0Zc=
+	b=JQkhpiBh5uAhq3GEH2+Q5mVgzjsknF53vdZq6R1EBKGXPULUOBeG8qFmlOnx1RqMq
+	 NCOMbp/2sf5TaVjOFxt+H1m3wlTXqJC+LWeepFspUAvud4rzD9lF5KPftU6T0bJxek
+	 EkH4awbpgC+B1eT9r9/uBKv7TKIEVnS7b9O984OQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Disseldorp <ddiss@suse.de>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 036/331] btrfs: sysfs: validate scrub_speed_max value
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.7 069/346] ARM: dts: qcom: sdx55: fix pdc #interrupt-cells
 Date: Mon, 29 Jan 2024 09:01:40 -0800
-Message-ID: <20240129170015.996717259@linuxfoundation.org>
+Message-ID: <20240129170018.416363318@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Disseldorp <ddiss@suse.de>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 2b0122aaa800b021e36027d7f29e206f87c761d6 upstream.
+commit cc25bd06c16aa582596a058d375b2e3133f79b93 upstream.
 
-The value set as scrub_speed_max accepts size with suffixes
-(k/m/g/t/p/e) but we should still validate it for trailing characters,
-similar to what we do with chunk_size_store.
+The Qualcomm PDC interrupt controller binding expects two cells in
+interrupt specifiers.
 
-CC: stable@vger.kernel.org # 5.15+
-Signed-off-by: David Disseldorp <ddiss@suse.de>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 9d038b2e62de ("ARM: dts: qcom: Add SDX55 platform and MTP board support")
+Cc: stable@vger.kernel.org      # 5.12
+Cc: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20231213173131.29436-2-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/sysfs.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/boot/dts/qcom/qcom-sdx55.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/sysfs.c
-+++ b/fs/btrfs/sysfs.c
-@@ -1760,6 +1760,10 @@ static ssize_t btrfs_devinfo_scrub_speed
- 	unsigned long long limit;
- 
- 	limit = memparse(buf, &endptr);
-+	/* There could be trailing '\n', also catch any typos after the value. */
-+	endptr = skip_spaces(endptr);
-+	if (*endptr != 0)
-+		return -EINVAL;
- 	WRITE_ONCE(device->scrub_speed_max, limit);
- 	return len;
- }
+--- a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
+@@ -612,7 +612,7 @@
+ 			compatible = "qcom,sdx55-pdc", "qcom,pdc";
+ 			reg = <0x0b210000 0x30000>;
+ 			qcom,pdc-ranges = <0 179 52>;
+-			#interrupt-cells = <3>;
++			#interrupt-cells = <2>;
+ 			interrupt-parent = <&intc>;
+ 			interrupt-controller;
+ 		};
 
 
 
