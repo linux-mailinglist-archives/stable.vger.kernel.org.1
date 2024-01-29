@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-16824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78EF9840E91
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A53F5840F25
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2997F283BF6
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36B52B24846
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8544915A4AC;
-	Mon, 29 Jan 2024 17:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD14815D5B2;
+	Mon, 29 Jan 2024 17:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVzHGt+U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWrpV088"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A1115A4A3;
-	Mon, 29 Jan 2024 17:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A92E15D5B4;
+	Mon, 29 Jan 2024 17:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548306; cv=none; b=r5qhcrJv2QQ6E/KXEDQnu+oypg4bP5VpraYrysRlK4ILn7c/rlq4I0XevpviPEyv4m/CxFRefxd6atzHNYNQ4k58d/9yJeu63BxQQn+4+9M4fSexQqxeOAHZ10vyWdjAUTNsrAIOGZz1amt13rGO9OsgLldLEIUZ8TQScfsGKy4=
+	t=1706548391; cv=none; b=DTZ+IaA4phenCLBX3uJD4BEkzLHyiYn5JGOJOG4SbZKtS/B+kl6ggjV2zOBq6LvndUNmKlfo0squ7eWWsbuUKo1uUdOa+UU0KRfPbU9Vrbb2/XVZSABD081EbU3UnlQPk6XlHjPDhNa66yjEhlsLb4ZGgNV295g9N2wb1MXkxWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548306; c=relaxed/simple;
-	bh=zHY2WpTalqm7lhl/ALGxAk8t2qtgcHZ2MKlVPWdCGss=;
+	s=arc-20240116; t=1706548391; c=relaxed/simple;
+	bh=anJgL6OnHNveA7A/EADRu6T8iw1+tyk/5P5jaNVswQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PwIHNNps4kemprV2QVjljbIRsH3VLIzY/LnhGvxEdNBAd/rV2WhpAFJU+pzCR1yFYflQERDLUggKxdSmtyHsvnP8Ts4sCIEz5Dinvq+5IdWWacLomnKrNe29r9l3DlLoZncNMQBCA+yNOuh164xNrF+G8NI2XBRfnJBv6wuQMSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVzHGt+U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC8AC433C7;
-	Mon, 29 Jan 2024 17:11:46 +0000 (UTC)
+	 MIME-Version; b=hbXYfJFAavm6l3+kFJ9Y5CnCoySQd8RpQ1USN39skYuyE4pS6WxgO+8I/v7/CJyEC0W5gfH+wlUi0RHL3AaXbW+UK1XCarLD5TvLRxbLbmzwpDk2JAYcswT8uYs/gHKlwyN3hOVzv9gLKTTb9B2g6AJNgnG1NubbnUFP9A3xw+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWrpV088; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE0CC433F1;
+	Mon, 29 Jan 2024 17:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548306;
-	bh=zHY2WpTalqm7lhl/ALGxAk8t2qtgcHZ2MKlVPWdCGss=;
+	s=korg; t=1706548391;
+	bh=anJgL6OnHNveA7A/EADRu6T8iw1+tyk/5P5jaNVswQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fVzHGt+UMweImhxtz48DWEUiRg++njavT5KfBsUbJjYZupAlwj50WD/EXUAOpNCyb
-	 0H/NvVhXsZf+hVZBLFNtOot/4/pzGhrA1yuwW/1J8W4XtKlffIONmQ5LIwJNwH+aD4
-	 GZFTYSnDQXPZlJNYaSqYWiOsJ/9/2l0rqJaeFtQc=
+	b=DWrpV088o58a1/xDrodPEFk+mcLyNw2gpyjzJNhUaN38BCfV/gff7Nllq3froF+TL
+	 UEm2IakR22jMGiMNyy63veKGcGOoYTGs9VBv1zqgy+x1SpdepW0t1KDfw+eEJUuUny
+	 mYv/6YY0c2Ln+vBH5HC7vWujXqmu8kKdNrGQizFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Yue Hu <huyue2@coolpad.com>,
+	Chao Yu <chao@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 310/346] drm/bridge: sii902x: Fix probing race issue
+Subject: [PATCH 6.1 141/185] erofs: get rid of the remaining kmap_atomic()
 Date: Mon, 29 Jan 2024 09:05:41 -0800
-Message-ID: <20240129170025.595575969@linuxfoundation.org>
+Message-ID: <20240129170003.121279737@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 08ac6f132dd77e40f786d8af51140c96c6d739c9 ]
+[ Upstream commit 123ec246ebe323d468c5ca996700ea4739d20ddf ]
 
-A null pointer dereference crash has been observed rarely on TI
-platforms using sii9022 bridge:
+It's unnecessary to use kmap_atomic() compared with kmap_local_page().
+In addition, kmap_atomic() is deprecated now.
 
-[   53.271356]  sii902x_get_edid+0x34/0x70 [sii902x]
-[   53.276066]  sii902x_bridge_get_edid+0x14/0x20 [sii902x]
-[   53.281381]  drm_bridge_get_edid+0x20/0x34 [drm]
-[   53.286305]  drm_bridge_connector_get_modes+0x8c/0xcc [drm_kms_helper]
-[   53.292955]  drm_helper_probe_single_connector_modes+0x190/0x538 [drm_kms_helper]
-[   53.300510]  drm_client_modeset_probe+0x1f0/0xbd4 [drm]
-[   53.305958]  __drm_fb_helper_initial_config_and_unlock+0x50/0x510 [drm_kms_helper]
-[   53.313611]  drm_fb_helper_initial_config+0x48/0x58 [drm_kms_helper]
-[   53.320039]  drm_fbdev_dma_client_hotplug+0x84/0xd4 [drm_dma_helper]
-[   53.326401]  drm_client_register+0x5c/0xa0 [drm]
-[   53.331216]  drm_fbdev_dma_setup+0xc8/0x13c [drm_dma_helper]
-[   53.336881]  tidss_probe+0x128/0x264 [tidss]
-[   53.341174]  platform_probe+0x68/0xc4
-[   53.344841]  really_probe+0x188/0x3c4
-[   53.348501]  __driver_probe_device+0x7c/0x16c
-[   53.352854]  driver_probe_device+0x3c/0x10c
-[   53.357033]  __device_attach_driver+0xbc/0x158
-[   53.361472]  bus_for_each_drv+0x88/0xe8
-[   53.365303]  __device_attach+0xa0/0x1b4
-[   53.369135]  device_initial_probe+0x14/0x20
-[   53.373314]  bus_probe_device+0xb0/0xb4
-[   53.377145]  deferred_probe_work_func+0xcc/0x124
-[   53.381757]  process_one_work+0x1f0/0x518
-[   53.385770]  worker_thread+0x1e8/0x3dc
-[   53.389519]  kthread+0x11c/0x120
-[   53.392750]  ret_from_fork+0x10/0x20
-
-The issue here is as follows:
-
-- tidss probes, but is deferred as sii902x is still missing.
-- sii902x starts probing and enters sii902x_init().
-- sii902x calls drm_bridge_add(). Now the sii902x bridge is ready from
-  DRM's perspective.
-- sii902x calls sii902x_audio_codec_init() and
-  platform_device_register_data()
-- The registration of the audio platform device causes probing of the
-  deferred devices.
-- tidss probes, which eventually causes sii902x_bridge_get_edid() to be
-  called.
-- sii902x_bridge_get_edid() tries to use the i2c to read the edid.
-  However, the sii902x driver has not set up the i2c part yet, leading
-  to the crash.
-
-Fix this by moving the drm_bridge_add() to the end of the
-sii902x_init(), which is also at the very end of sii902x_probe().
-
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Fixes: 21d808405fe4 ("drm/bridge/sii902x: Fix EDID readback")
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20240103-si902x-fixes-v1-1-b9fd3e448411@ideasonboard.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240103-si902x-fixes-v1-1-b9fd3e448411@ideasonboard.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20230627161240.331-1-hsiangkao@linux.alibaba.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Stable-dep-of: 3c12466b6b7b ("erofs: fix lz4 inplace decompression")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/sii902x.c | 29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ fs/erofs/decompressor.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/sii902x.c b/drivers/gpu/drm/bridge/sii902x.c
-index 2bdc5b439beb..69da73e414a9 100644
---- a/drivers/gpu/drm/bridge/sii902x.c
-+++ b/drivers/gpu/drm/bridge/sii902x.c
-@@ -1080,16 +1080,6 @@ static int sii902x_init(struct sii902x *sii902x)
- 			return ret;
+diff --git a/fs/erofs/decompressor.c b/fs/erofs/decompressor.c
+index 51b7ac7166d9..59294182e4cb 100644
+--- a/fs/erofs/decompressor.c
++++ b/fs/erofs/decompressor.c
+@@ -148,7 +148,7 @@ static void *z_erofs_lz4_handle_overlap(struct z_erofs_lz4_decompress_ctx *ctx,
+ 		*maptype = 0;
+ 		return inpage;
+ 	}
+-	kunmap_atomic(inpage);
++	kunmap_local(inpage);
+ 	might_sleep();
+ 	src = erofs_vm_map_ram(rq->in, ctx->inpages);
+ 	if (!src)
+@@ -162,7 +162,7 @@ static void *z_erofs_lz4_handle_overlap(struct z_erofs_lz4_decompress_ctx *ctx,
+ 	src = erofs_get_pcpubuf(ctx->inpages);
+ 	if (!src) {
+ 		DBG_BUGON(1);
+-		kunmap_atomic(inpage);
++		kunmap_local(inpage);
+ 		return ERR_PTR(-EFAULT);
  	}
  
--	sii902x->bridge.funcs = &sii902x_bridge_funcs;
--	sii902x->bridge.of_node = dev->of_node;
--	sii902x->bridge.timings = &default_sii902x_timings;
--	sii902x->bridge.ops = DRM_BRIDGE_OP_DETECT | DRM_BRIDGE_OP_EDID;
--
--	if (sii902x->i2c->irq > 0)
--		sii902x->bridge.ops |= DRM_BRIDGE_OP_HPD;
--
--	drm_bridge_add(&sii902x->bridge);
--
- 	sii902x_audio_codec_init(sii902x, dev);
+@@ -173,9 +173,9 @@ static void *z_erofs_lz4_handle_overlap(struct z_erofs_lz4_decompress_ctx *ctx,
+ 			min_t(unsigned int, total, PAGE_SIZE - *inputmargin);
  
- 	i2c_set_clientdata(sii902x->i2c, sii902x);
-@@ -1102,7 +1092,21 @@ static int sii902x_init(struct sii902x *sii902x)
- 		return -ENOMEM;
+ 		if (!inpage)
+-			inpage = kmap_atomic(*in);
++			inpage = kmap_local_page(*in);
+ 		memcpy(tmp, inpage + *inputmargin, page_copycnt);
+-		kunmap_atomic(inpage);
++		kunmap_local(inpage);
+ 		inpage = NULL;
+ 		tmp += page_copycnt;
+ 		total -= page_copycnt;
+@@ -214,7 +214,7 @@ static int z_erofs_lz4_decompress_mem(struct z_erofs_lz4_decompress_ctx *ctx,
+ 	int ret, maptype;
  
- 	sii902x->i2cmux->priv = sii902x;
--	return i2c_mux_add_adapter(sii902x->i2cmux, 0, 0, 0);
-+	ret = i2c_mux_add_adapter(sii902x->i2cmux, 0, 0, 0);
-+	if (ret)
-+		return ret;
-+
-+	sii902x->bridge.funcs = &sii902x_bridge_funcs;
-+	sii902x->bridge.of_node = dev->of_node;
-+	sii902x->bridge.timings = &default_sii902x_timings;
-+	sii902x->bridge.ops = DRM_BRIDGE_OP_DETECT | DRM_BRIDGE_OP_EDID;
-+
-+	if (sii902x->i2c->irq > 0)
-+		sii902x->bridge.ops |= DRM_BRIDGE_OP_HPD;
-+
-+	drm_bridge_add(&sii902x->bridge);
-+
-+	return 0;
- }
+ 	DBG_BUGON(*rq->in == NULL);
+-	headpage = kmap_atomic(*rq->in);
++	headpage = kmap_local_page(*rq->in);
  
- static int sii902x_probe(struct i2c_client *client)
-@@ -1170,12 +1174,11 @@ static int sii902x_probe(struct i2c_client *client)
- }
+ 	/* LZ4 decompression inplace is only safe if zero_padding is enabled */
+ 	if (erofs_sb_has_zero_padding(EROFS_SB(rq->sb))) {
+@@ -223,7 +223,7 @@ static int z_erofs_lz4_decompress_mem(struct z_erofs_lz4_decompress_ctx *ctx,
+ 				min_t(unsigned int, rq->inputsize,
+ 				      EROFS_BLKSIZ - rq->pageofs_in));
+ 		if (ret) {
+-			kunmap_atomic(headpage);
++			kunmap_local(headpage);
+ 			return ret;
+ 		}
+ 		may_inplace = !((rq->pageofs_in + rq->inputsize) &
+@@ -261,7 +261,7 @@ static int z_erofs_lz4_decompress_mem(struct z_erofs_lz4_decompress_ctx *ctx,
+ 	}
  
- static void sii902x_remove(struct i2c_client *client)
--
- {
- 	struct sii902x *sii902x = i2c_get_clientdata(client);
- 
--	i2c_mux_del_adapters(sii902x->i2cmux);
- 	drm_bridge_remove(&sii902x->bridge);
-+	i2c_mux_del_adapters(sii902x->i2cmux);
- }
- 
- static const struct of_device_id sii902x_dt_ids[] = {
+ 	if (maptype == 0) {
+-		kunmap_atomic(headpage);
++		kunmap_local(headpage);
+ 	} else if (maptype == 1) {
+ 		vm_unmap_ram(src, ctx->inpages);
+ 	} else if (maptype == 2) {
+@@ -289,7 +289,7 @@ static int z_erofs_lz4_decompress(struct z_erofs_decompress_req *rq,
+ 	/* one optimized fast path only for non bigpcluster cases yet */
+ 	if (ctx.inpages == 1 && ctx.outpages == 1 && !rq->inplace_io) {
+ 		DBG_BUGON(!*rq->out);
+-		dst = kmap_atomic(*rq->out);
++		dst = kmap_local_page(*rq->out);
+ 		dst_maptype = 0;
+ 		goto dstmap_out;
+ 	}
+@@ -311,7 +311,7 @@ static int z_erofs_lz4_decompress(struct z_erofs_decompress_req *rq,
+ dstmap_out:
+ 	ret = z_erofs_lz4_decompress_mem(&ctx, dst + rq->pageofs_out);
+ 	if (!dst_maptype)
+-		kunmap_atomic(dst);
++		kunmap_local(dst);
+ 	else if (dst_maptype == 2)
+ 		vm_unmap_ram(dst, ctx.outpages);
+ 	return ret;
 -- 
 2.43.0
 
