@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62FAF840F86
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9006E840D57
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 964811C236FA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 474A5286A6F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8896F06F;
-	Mon, 29 Jan 2024 17:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C3815AAD5;
+	Mon, 29 Jan 2024 17:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQXiIpnz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLjbok/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7856F06D;
-	Mon, 29 Jan 2024 17:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D63EE15957A;
+	Mon, 29 Jan 2024 17:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548456; cv=none; b=cWcjVeHKUAqCBU5lnx58EwaBmejmQU4M4Rz9hKA0wjBhuqgSIJ8H/ck66NkT/oJNVdM03iDAf9oT518hgmOJlOK6R9qRP5skhMi3c1PFy2s1HwuITYc22lMlNT509tVtmPI5//I2VHYDg2XLruzFsrXQdsGKoxPcbGyDbM3zJFc=
+	t=1706548086; cv=none; b=Xsw3zPTeyF/y8fIACzUzfcRrf1ACmL9PZ57Fqv/2bl3cTZr1kuXK5EBcdxzzd9CmbOYDJuMgNQemmVHYP9X/EnDBkch/0QUG88rwAq+9TCXV31GoMqSAKaStBOJPx4jeeGBmHrF2GU2l2tCDWp96wvwWGyqZgktEmWbUyEAlsHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548456; c=relaxed/simple;
-	bh=kZeLg6J0BNf8ppkldDm+7ulco4YEAzBO4PA3ASOo1i0=;
+	s=arc-20240116; t=1706548086; c=relaxed/simple;
+	bh=4FVrRJ/tPzlFofc5xlLQrfkuoD6KYEyc5cQHmzcZF4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X9IX4mnqiccvfqj3L5s/qqlrEQGYfCF3w8iJHDHj+L0Zsaaxr94MJqT399LE/7YiR7Gg0MvrWhbc98JsjntmBGXdBawyJKPVhX+Xdnm+Gs3oRnwY6jSAQw+HKKNyFZcjXzvrMXyrBmanNyuN4cArmorljeOc+KkzHLz5k5D6poM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQXiIpnz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CBB8C433F1;
-	Mon, 29 Jan 2024 17:14:16 +0000 (UTC)
+	 MIME-Version; b=cAli4XSerZ6PEp4gxgrtwMmOW8snobnxMWx7h0YaRtG+/bw223OU0tVFUdfwnBHgFqESkERTD0wdOSRwmSvyoOVgNxtq7xit4aWO3mwcP3KziLZu9ZfoepmLi6w7FZSZOvshKF+tOegZ0bDhl2LV9TDWmUPcGWNWDcF2US33/1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLjbok/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E764C433F1;
+	Mon, 29 Jan 2024 17:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548456;
-	bh=kZeLg6J0BNf8ppkldDm+7ulco4YEAzBO4PA3ASOo1i0=;
+	s=korg; t=1706548086;
+	bh=4FVrRJ/tPzlFofc5xlLQrfkuoD6KYEyc5cQHmzcZF4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQXiIpnzTsI8m7DRiGqnOri5xDiMoau+zwKpKBuSiW/I8zh+Wtv325njTRuqf5zVy
-	 u4tc9/tXtfKy58M0IuJtMajAF7HaiGMgMzlT8KFGCKfis6sA7KOspwmcRwNP2XJ+Wj
-	 mby/GeTyeC74YiFxFpfTJ6f7XLr55k8BGlgsMJJw=
+	b=cLjbok/IrHilldcDyXbWehVApeXjShtqmJxr/KkNbBrfHLvS8xqzx/hwq/JQUZJuq
+	 Cu3Q3/LLvLO8bVsdHYCkXPbm3LxDSf3EevuKMqFXgxkNmBKe2TOUdlS8bfTFc485p/
+	 Lp/zIAv1+GK6dQHhGrkPgoyMfJjDRqrumnpwRTTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Yu <quic_qianyu@quicinc.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.6 068/331] bus: mhi: host: Drop chan lock before queuing buffers
+	Zheng Wang <zyytlz.wz@163.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH 6.7 101/346] media: mtk-jpeg: Fix use after free bug due to error path handling in mtk_jpeg_dec_device_run
 Date: Mon, 29 Jan 2024 09:02:12 -0800
-Message-ID: <20240129170016.918050709@linuxfoundation.org>
+Message-ID: <20240129170019.372162334@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiang Yu <quic_qianyu@quicinc.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-commit 01bd694ac2f682fb8017e16148b928482bc8fa4b upstream.
+commit 206c857dd17d4d026de85866f1b5f0969f2a109e upstream.
 
-Ensure read and write locks for the channel are not taken in succession by
-dropping the read lock from parse_xfer_event() such that a callback given
-to client can potentially queue buffers and acquire the write lock in that
-process. Any queueing of buffers should be done without channel read lock
-acquired as it can result in multiple locks and a soft lockup.
+In mtk_jpeg_probe, &jpeg->job_timeout_work is bound with
+mtk_jpeg_job_timeout_work.
 
-Cc: <stable@vger.kernel.org> # 5.7
-Fixes: 1d3173a3bae7 ("bus: mhi: core: Add support for processing events from client device")
-Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Tested-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/1702276972-41296-3-git-send-email-quic_qianyu@quicinc.com
-[mani: added fixes tag and cc'ed stable]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+In mtk_jpeg_dec_device_run, if error happens in
+mtk_jpeg_set_dec_dst, it will finally start the worker while
+mark the job as finished by invoking v4l2_m2m_job_finish.
+
+There are two methods to trigger the bug. If we remove the
+module, it which will call mtk_jpeg_remove to make cleanup.
+The possible sequence is as follows, which will cause a
+use-after-free bug.
+
+CPU0                  CPU1
+mtk_jpeg_dec_...    |
+  start worker	    |
+                    |mtk_jpeg_job_timeout_work
+mtk_jpeg_remove     |
+  v4l2_m2m_release  |
+    kfree(m2m_dev); |
+                    |
+                    | v4l2_m2m_get_curr_priv
+                    |   m2m_dev->curr_ctx //use
+
+If we close the file descriptor, which will call mtk_jpeg_release,
+it will have a similar sequence.
+
+Fix this bug by starting timeout worker only if started jpegdec worker
+successfully. Then v4l2_m2m_job_finish will only be called in
+either mtk_jpeg_job_timeout_work or mtk_jpeg_dec_device_run.
+
+Fixes: b2f0d2724ba4 ("[media] vcodec: mediatek: Add Mediatek JPEG Decoder Driver")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/main.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/bus/mhi/host/main.c
-+++ b/drivers/bus/mhi/host/main.c
-@@ -643,6 +643,8 @@ static int parse_xfer_event(struct mhi_c
- 			mhi_del_ring_element(mhi_cntrl, tre_ring);
- 			local_rp = tre_ring->rp;
+--- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
++++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+@@ -1021,13 +1021,13 @@ static void mtk_jpeg_dec_device_run(void
+ 	if (ret < 0)
+ 		goto dec_end;
  
-+			read_unlock_bh(&mhi_chan->lock);
-+
- 			/* notify client */
- 			mhi_chan->xfer_cb(mhi_chan->mhi_dev, &result);
+-	schedule_delayed_work(&jpeg->job_timeout_work,
+-			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
+-
+ 	mtk_jpeg_set_dec_src(ctx, &src_buf->vb2_buf, &bs);
+ 	if (mtk_jpeg_set_dec_dst(ctx, &jpeg_src_buf->dec_param, &dst_buf->vb2_buf, &fb))
+ 		goto dec_end;
  
-@@ -668,6 +670,8 @@ static int parse_xfer_event(struct mhi_c
- 					kfree(buf_info->cb_buf);
- 				}
- 			}
++	schedule_delayed_work(&jpeg->job_timeout_work,
++			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
 +
-+			read_lock_bh(&mhi_chan->lock);
- 		}
- 		break;
- 	} /* CC_EOT */
+ 	spin_lock_irqsave(&jpeg->hw_lock, flags);
+ 	mtk_jpeg_dec_reset(jpeg->reg_base);
+ 	mtk_jpeg_dec_set_config(jpeg->reg_base,
 
 
 
