@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-17227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2AD0841056
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC03840E77
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C976287590
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE8A41C23190
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3E015B965;
-	Mon, 29 Jan 2024 17:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D8315F33B;
+	Mon, 29 Jan 2024 17:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBMmxvNM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTDHyp3t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE3775606;
-	Mon, 29 Jan 2024 17:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F5E15B308;
+	Mon, 29 Jan 2024 17:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548604; cv=none; b=lbhHU1/dAzvP/Oa86WsZzt5ZVgFQEBPV63lPyYKH/pkWSZX/fD2ggWjYYhJ12heWzQBSj5uzR9xrHZ7SqEhEzGEa4mVdQGmGIF+5DAY0eP4XHpidHrQvkCmuIPbcELsXSoqsneRrmMLYawWxSgF7x4AeBnraGMlzKuLkPlb31fs=
+	t=1706548288; cv=none; b=twlhPIEz4fQXhAOQ982Yl8DCHc7RIoXJWyIIWwXa5wU+FoRM3IQqjpfGu/LLvHlJYTZtMdb5L/PPPHGtYkCnpU15sQLmxbkaaSy4F71GS5m/Sf5uoeszA3aQXyW+DNt0TwktS/56qE1fz/lNrUHxPac5xCHmI0FVJf1Uem6i12Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548604; c=relaxed/simple;
-	bh=+yGgYmdzVuY9TGqQhGUfh/XNb9t06uadYTQCEZ5M2hg=;
+	s=arc-20240116; t=1706548288; c=relaxed/simple;
+	bh=QOrr65D15KklHojKNZ6Zm7tcK6/7Uo4RRUlGzcpccD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dcFLbZ4NTgRt3EDCeBBhGlGRYvR8uvrvmxP6RoJBL4ayPN5q1Yv5H9VzK1MIKRXzErpJ9WJDlxGKGWR9+sct8+/oqdbj585cZC+sIZq2o0UXtlN0v4KKiLCYpK8IGBWv92H6RQ94Fr91ab3Q9kx1NJI4h11nTp9o2kZ50NyTMLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBMmxvNM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3753C43390;
-	Mon, 29 Jan 2024 17:16:43 +0000 (UTC)
+	 MIME-Version; b=uFuhadgYk+5wJ/iISzzFJW2To50ZrAiS4StteU4aiy1EBa55OuerugSJ3Ljz69gNvTif4zmm9pgUdKQzDkTo4GPFZBGic3umMQtkpOFJA4rMJ4G+JagmT7nwFv0akyM/aduxXYr37aDtgFgv2afONz/po9IOo5APf5hCVzK8MII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTDHyp3t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68BFEC433F1;
+	Mon, 29 Jan 2024 17:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548604;
-	bh=+yGgYmdzVuY9TGqQhGUfh/XNb9t06uadYTQCEZ5M2hg=;
+	s=korg; t=1706548288;
+	bh=QOrr65D15KklHojKNZ6Zm7tcK6/7Uo4RRUlGzcpccD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fBMmxvNMrcgTnRj6hOK5V9jHadkv8zaJ8DnZ5JowOGxvPHFIQ5Wi/wrLB/yV74sTA
-	 8VjMLC1reXS/vs9nWiDstKE6Z/GxMLjVgCPlW8mFD6lpmgNuBtuH2v7dlJky59kh2H
-	 quOYgPdU6JCJD4J55Gm7mNfusl/U9hLKK+2JOXx4=
+	b=OTDHyp3tG3DQmHAC0SwBTRvXGoPJnM1e8pjw6Jnza91bTLhkVoemriPf5u/rtJOFq
+	 Am7V2zbTChDpDmpYbhdtO1NqMICkLxp6c5KcRhkjt8x4BqG0gczximZR90rR6ogOS7
+	 cTjn2KYJECat2yYFP2ZTg7RroXZ2a8787e4Jj0iE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Likun Gao <Likun.Gao@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 266/331] drm/amdgpu: correct the cu count for gfx v11
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Ilya Bakoulin <ilya.bakoulin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 299/346] drm/amd/display: Clear OPTC mem select on disable
 Date: Mon, 29 Jan 2024 09:05:30 -0800
-Message-ID: <20240129170022.646290962@linuxfoundation.org>
+Message-ID: <20240129170025.213232069@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +66,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Likun Gao <Likun.Gao@amd.com>
+From: Ilya Bakoulin <ilya.bakoulin@amd.com>
 
-commit f4a94dbb6dc0bed10a5fc63718d00f1de45b12c0 upstream.
+[ Upstream commit 3ba2a0bfd8cf94eb225e1c60dff16e5c35bde1da ]
 
-Correct the algorithm of active CU to skip disabled
-sa for gfx v11.
+[Why]
+Not clearing the memory select bits prior to OPTC disable can cause DSC
+corruption issues when attempting to reuse a memory instance for another
+OPTC that enables ODM.
 
-Signed-off-by: Likun Gao <Likun.Gao@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[How]
+Clear the memory select bits prior to disabling an OPTC.
+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Ilya Bakoulin <ilya.bakoulin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c | 3 +++
+ drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c | 3 +++
+ 2 files changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -6353,6 +6353,9 @@ static int gfx_v11_0_get_cu_info(struct
- 	mutex_lock(&adev->grbm_idx_mutex);
- 	for (i = 0; i < adev->gfx.config.max_shader_engines; i++) {
- 		for (j = 0; j < adev->gfx.config.max_sh_per_se; j++) {
-+			bitmap = i * adev->gfx.config.max_sh_per_se + j;
-+			if (!((gfx_v11_0_get_sa_active_bitmap(adev) >> bitmap) & 1))
-+				continue;
- 			mask = 1;
- 			counter = 0;
- 			gfx_v11_0_select_se_sh(adev, i, j, 0xffffffff, 0);
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
+index 1788eb29474b..823493543325 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
+@@ -173,6 +173,9 @@ static bool optc32_disable_crtc(struct timing_generator *optc)
+ 			OPTC_SEG3_SRC_SEL, 0xf,
+ 			OPTC_NUM_OF_INPUT_SEGMENT, 0);
+ 
++	REG_UPDATE(OPTC_MEMORY_CONFIG,
++			OPTC_MEM_SEL, 0);
++
+ 	/* disable otg request until end of the first line
+ 	 * in the vertical blank region
+ 	 */
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c
+index 3d6c1b2c2b4d..5b1547508850 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c
+@@ -145,6 +145,9 @@ static bool optc35_disable_crtc(struct timing_generator *optc)
+ 			OPTC_SEG3_SRC_SEL, 0xf,
+ 			OPTC_NUM_OF_INPUT_SEGMENT, 0);
+ 
++	REG_UPDATE(OPTC_MEMORY_CONFIG,
++			OPTC_MEM_SEL, 0);
++
+ 	/* disable otg request until end of the first line
+ 	 * in the vertical blank region
+ 	 */
+-- 
+2.43.0
+
 
 
 
